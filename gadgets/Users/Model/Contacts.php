@@ -126,19 +126,19 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
                         'province' => isset($data['province_home']) ? $data['province_home'] : 0,
                         'city' => isset($data['city_home']) ? $data['city_home'] : 0,
                         'address' => isset($data['address_home']) ? $data['address_home'] : '',
-                        'postal_code' => isset($data['postal_code_home'])) ? $data['postal_code_home'] : '',
+                        'postal_code' => isset($data['postal_code_home']) ? $data['postal_code_home'] : ''),
                 'work' =>
                     array(
                         'province' => isset($data['province_work']) ? $data['province_work'] : 0,
                         'city' => isset($data['city_work']) ? $data['city_work'] : 0,
                         'address' => isset($data['address_work']) ? $data['address_work'] : '',
-                        'postal_code' => isset($data['postal_code_work'])) ? $data['postal_code_work'] : '',
+                        'postal_code' => isset($data['postal_code_work']) ? $data['postal_code_work'] : ''),
                 'other' =>
                     array(
                         'province' => isset($data['province_other']) ? $data['province_other'] : 0,
                         'city' => isset($data['city_other']) ? $data['city_other'] : 0,
                         'address' => isset($data['address_other']) ? $data['address_other'] : '',
-                        'postal_code' => isset($data['postal_code_other'])) ? $data['postal_code_other'] : '',
+                        'postal_code' => isset($data['postal_code_other']) ? $data['postal_code_other'] : ''),
             )
         );
 

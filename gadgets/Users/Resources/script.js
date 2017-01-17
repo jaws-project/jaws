@@ -587,7 +587,7 @@ function editContacts(rowElement, uid)
  */
 function changeProvince(province, cityElement)
 {
-    var cities = UsersAjax.callSync('GetCities', {'province': province});
+    var cities = SettingsInUsersAjax.callSync('GetCities', {'province': province});
     $('#' + cityElement ).html('');
     $.each(cities, function (index, city) {
         $("#" + cityElement).append('<option value="' + city.id + '">' + city.title + '</option>');
@@ -841,6 +841,7 @@ $(document).ready(function() {
 });
 
 var UsersAjax = new JawsAjax('Users', UsersCallback);
+var SettingsInUsersAjax = new JawsAjax('Settings');
 
 // timeout id
 var fTimeout = null;

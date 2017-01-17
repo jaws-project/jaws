@@ -25,6 +25,13 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
+        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('lbl_addContact', _t('USERS_CONTACTS_ADD'));
+        $this->gadget->layout->setVariable('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
+        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
+
         $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
@@ -64,17 +71,13 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
         $tpl->SetVariable('lbl_addContact', _t('USERS_CONTACTS_ADD'));
-        $tpl->SetVariable('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
-        $tpl->SetVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
         $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
 
         // province
-        $model = $this->gadget->model->load('Contacts');
-        $provinces = $model->GetProvinces();
+        $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zone');
+        $provinces = $zModel->GetProvinces();
         if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
             array_unshift($provinces, array('id' => 0, 'title' => ''));
             foreach ($provinces as $province) {
@@ -109,7 +112,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         // city
         if (!empty($contacts['province'])) {
-            $cities = $model->GetCities($contacts['province']);
+            $cities = $zModel->GetCities($contacts['province']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
                     $tpl->SetBlock('contacts/city');
@@ -238,28 +241,4 @@ class Users_Actions_Contacts extends Users_Actions_Default
             return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CONTACTINFO_DELETED'), RESPONSE_NOTICE);
         }
     }
-
-    /**
-     * Get cities
-     *
-     * @access  public
-     * @return  array   Response array (notice or error)
-     */
-    function GetCities()
-    {
-        $province = jaws()->request->fetch('province', 'post');
-        if (empty($province)) {
-            $provinces = jaws()->request->fetch('provinces:array', 'post');
-        } else {
-            $provinces = array($province);
-        }
-        $model = $this->gadget->model->load('Contacts');
-        $res = $model->GetCities($provinces);
-        if (Jaws_Error::IsError($res) || $res === false) {
-            return array();
-        } else {
-            return $res;
-        }
-    }
-
 }

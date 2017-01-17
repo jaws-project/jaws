@@ -889,28 +889,4 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         return $users;
     }
-
-    /**
-     * Get cities
-     *
-     * @access  public
-     * @return  array   Response array (notice or error)
-     */
-    function GetCities()
-    {
-        $province = jaws()->request->fetch('province', 'post');
-        if (empty($province)) {
-            $provinces = jaws()->request->fetch('provinces:array', 'post');
-        } else {
-            $provinces = array($province);
-        }
-        $model = $this->gadget->model->load('Contacts');
-        $res = $model->GetCities($provinces);
-        if (Jaws_Error::IsError($res) || $res === false) {
-            return array();
-        } else {
-            return $res;
-        }
-    }
-
 }

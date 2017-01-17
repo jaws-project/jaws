@@ -71,8 +71,8 @@ class Users_Actions_Contact extends Users_Actions_Default
         }
 
         // province
-        $model = $this->gadget->model->load('Contacts');
-        $provinces = $model->GetProvinces();
+        $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zone');
+        $provinces = $zModel->GetProvinces();
         if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
             array_unshift($provinces, array('id' => 0, 'title' => ''));
             foreach ($provinces as $province) {
@@ -107,7 +107,7 @@ class Users_Actions_Contact extends Users_Actions_Default
 
         // city_home
         if (!empty($contact['province_home'])) {
-            $cities = $model->GetCities($contact['province_home']);
+            $cities = $zModel->GetCities($contact['province_home']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
                     $tpl->SetBlock('contact/city_home');
@@ -124,7 +124,7 @@ class Users_Actions_Contact extends Users_Actions_Default
 
         // city_work
         if (!empty($contact['province_work'])) {
-            $cities = $model->GetCities($contact['province_work']);
+            $cities = $zModel->GetCities($contact['province_work']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
                     $tpl->SetBlock('contact/city_work');
@@ -141,7 +141,7 @@ class Users_Actions_Contact extends Users_Actions_Default
 
         // city_other
         if (!empty($contact['province_other'])) {
-            $cities = $model->GetCities($contact['province_other']);
+            $cities = $zModel->GetCities($contact['province_other']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
                     $tpl->SetBlock('contact/city_other');
@@ -226,29 +226,6 @@ class Users_Actions_Contact extends Users_Actions_Default
         }
 
         Jaws_Header::Location($this->gadget->urlMap('Contact'), 'Users.Contact');
-    }
-
-    /**
-     * Get cities
-     *
-     * @access  public
-     * @return  array   Response array (notice or error)
-     */
-    function GetCities()
-    {
-        $province = jaws()->request->fetch('province', 'post');
-        if (empty($province)) {
-            $provinces = jaws()->request->fetch('provinces:array', 'post');
-        } else {
-            $provinces = array($province);
-        }
-        $model = $this->gadget->model->load('Contacts');
-        $res = $model->GetCities($provinces);
-        if (Jaws_Error::IsError($res) || $res === false) {
-            return array();
-        } else {
-            return $res;
-        }
     }
 
 }

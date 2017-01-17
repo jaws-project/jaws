@@ -17,6 +17,15 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $this->AjaxMe('index.js');
+        $this->gadget->layout->setVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+        $this->gadget->layout->setVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $this->gadget->layout->setVariable('addUser_title', _t('USERS_USERS_ADD'));
+        $this->gadget->layout->setVariable('editUser_title', _t('USERS_USERS_EDIT'));
+        $this->gadget->layout->setVariable('deleteUser_title', _t('USERS_USERS_DELETE'));
+        $this->gadget->layout->setVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
+        $this->gadget->layout->setVariable('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('wrongPassword', _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
+        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Users.html');
         $tpl->SetBlock('Users');
@@ -76,13 +85,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
 
         $tpl->SetVariable('addUser_title', _t('USERS_USERS_ADD'));
-        $tpl->SetVariable('editUser_title', _t('USERS_USERS_EDIT'));
-        $tpl->SetVariable('deleteUser_title', _t('USERS_USERS_DELETE'));
-        $tpl->SetVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
-        $tpl->SetVariable('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('wrongPassword', _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
         $tpl->SetVariable('lbl_userGroups', _t('USERS_USERS_GROUPS'));
-        $tpl->SetVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         // Groups
         $uModel = new Jaws_User();

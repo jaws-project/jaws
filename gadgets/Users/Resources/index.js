@@ -146,7 +146,7 @@ function saveContact()
  */
 function deleteContacts(ids)
 {
-    var confirmation = confirm(confirmDelete);
+    var confirmation = confirm(jaws.gadgets.Users.confirmDelete);
     if (confirmation) {
         UsersAjax.callAsync('DeleteContacts', {'ids': ids});
     }
@@ -158,7 +158,7 @@ function deleteContacts(ids)
 function editContact(cid)
 {
     selectedContact = cid;
-    $('#contactModalLabel').html(lbl_editContact);
+    $('#contactModalLabel').html(jaws.gadgets.Users.lbl_editContact);
     var cInfo = UsersAjax.callSync('GetContact', {'id': selectedContact});
     if (cInfo) {
         changeProvince(cInfo['province'])
@@ -186,29 +186,13 @@ function updatePreferences(form)
 }
 
 /**
- * Add a group - UI
- */
-function addGroup()
-{
-    $('#group_workarea').w2popup({
-        title: addGroup_title,
-        modal: true,
-        width: 350,
-        height: 350,
-        onClose : function (event) {
-            $('form[name="group"]')[0].reset();
-        }
-    });
-}
-
-/**
  * Edit a user
  */
 function editUser(id)
 {
     currentAction = "UserAccount";
     selectedUser = id;
-    $('#userModalLabel').html(editUser_title);
+    $('#userModalLabel').html(jaws.gadgets.Users.editUser_title);
     var userInfo = UsersAjax.callSync('GetUser', {'id': selectedUser, 'account': true});
     if (userInfo) {
         $('#users-form input, #users-form select, #users-form textarea').each(
@@ -265,7 +249,7 @@ function editUserGroups(id)
 {
     currentAction = "UserGroups";
     selectedUser = id;
-    $('#userGroupsModalLabel').html(editUser_title);
+    $('#userGroupsModalLabel').html(jaws.gadgets.Users.editUser_title);
     var uGroups = UsersAjax.callSync('GetUserGroups', {'uid': selectedUser});
     if (uGroups) {
         $.each(uGroups, function(index, gid) {
@@ -304,7 +288,7 @@ function saveUser()
     switch (currentAction) {
         case 'UserAccount':
             if ($('#users-form #pass1').val() != "" && $('#users-form #pass1').val() != $('#users-form #pass2').val()) {
-                alert(wrongPassword);
+                alert(jaws.gadgets.Users.wrongPassword);
                 return false;
             }
 
@@ -312,7 +296,7 @@ function saveUser()
                 !$('#users-form #nickname').val() ||
                 !$('#users-form #email').val())
             {
-                alert(incompleteUserFields);
+                alert(jaws.gadgets.Users.incompleteUserFields);
                 return false;
             }
 
@@ -330,7 +314,7 @@ function saveUser()
 
             if (selectedUser == null) {
                 if (!$('#users-form #pass1').val()) {
-                    alert(incompleteUserFields);
+                    alert(jaws.gadgets.Users.incompleteUserFields);
                     return false;
                 }
 
@@ -379,7 +363,7 @@ function saveGroup()
     switch (currentAction) {
         case 'Group':
             if (!$('#groups-form #name').val() || !$('#groups-form #title').val()) {
-                alert(incompleteGroupFields);
+                alert(jaws.gadgets.Users.incompleteGroupFields);
                 return false;
             }
             if (selectedGroup == null) {
@@ -417,7 +401,7 @@ function saveGroup()
  */
 function changeProvince(province, cityElement)
 {
-    var cities = UsersAjax.callSync('GetCities', {'province': province});
+    var cities = SettingsInUsersAjax.callSync('GetCities', {'province': province});
     $('#' + cityElement ).html('');
     $.each(cities, function (index, city) {
         $("#" + cityElement).append('<option value="' + city.id + '">' + city.title + '</option>');
@@ -429,7 +413,7 @@ function changeProvince(province, cityElement)
  */
 function deleteUser(id)
 {
-    if (confirm(confirmDelete)) {
+    if (confirm(jaws.gadgets.Users.confirmDelete)) {
         UsersAjax.callAsync('DeleteUser', {'id': id});
     }
 }
@@ -439,7 +423,7 @@ function deleteUser(id)
  */
 function deleteGroup(id)
 {
-    if (confirm(confirmDelete)) {
+    if (confirm(jaws.gadgets.Users.confirmDelete)) {
         UsersAjax.callAsync('DeleteGlobalGroup', {'id': id});
     }
 }
@@ -452,12 +436,12 @@ function usersDataSource(options, callback) {
     // define the columns for the grid
     var columns = [
         {
-            'label': lbl_nickname,
+            'label': jaws.gadgets.Users.lbl_nickname,
             'property': 'nickname',
             'sortable': true
         },
         {
-            'label': lbl_username,
+            'label': jaws.gadgets.Users.lbl_username,
             'property': 'username',
             'sortable': true
         }
@@ -515,7 +499,7 @@ function initiateUsersDG() {
         items: [
             {
                 name: 'editUser',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + editUser_title,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.Users.editUser_title,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editUser(helpers.rowData.id);
@@ -525,7 +509,7 @@ function initiateUsersDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + deleteUser_title,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.Users.deleteUser_title,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteUser(helpers.rowData.id);
@@ -534,7 +518,7 @@ function initiateUsersDG() {
             },
             {
                 name: 'userGroup',
-                html: '<span class="glyphicon glyphicon-user"></span> ' + editUserGroups_title,
+                html: '<span class="glyphicon glyphicon-user"></span> ' + jaws.gadgets.Users.editUserGroups_title,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editUserGroups(helpers.rowData.id);
@@ -577,12 +561,12 @@ function groupsDataSource(options, callback) {
     // define the columns for the grid
     var columns = [
         {
-            'label': lbl_title,
+            'label': jaws.gadgets.Users.lbl_title,
             'property': 'title',
             'sortable': true
         },
         {
-            'label': lbl_name,
+            'label': jaws.gadgets.Users.lbl_name,
             'property': 'name',
             'sortable': true
         }
@@ -633,7 +617,7 @@ function initiateGroupsDG() {
         items: [
             {
                 name: 'editUser',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + editGroup_title,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.editGroup_title,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editGroup(helpers.rowData.id);
@@ -643,7 +627,7 @@ function initiateGroupsDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + lbl_delete,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.Users.lbl_delete,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteGroup(helpers.rowData.id);
@@ -652,7 +636,7 @@ function initiateGroupsDG() {
             },
             {
                 name: 'userGroup',
-                html: '<span class="glyphicon glyphicon-user"></span> ' + editGroupUsers_title,
+                html: '<span class="glyphicon glyphicon-user"></span> ' + jaws.gadgets.Users.editGroupUsers_title,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editGroupUsers(helpers.rowData.id);
@@ -679,16 +663,148 @@ function initiateGroupsDG() {
     });
 }
 
+
+// Define the data to be displayed in the repeater.
+function contactsDataSource(options, callback) {
+
+    // define the columns for the grid
+    var columns = [
+        {
+            'label': jaws.gadgets.Users.lbl_title,
+            'property': 'title',
+            'sortable': true
+        }
+    ];
+
+    // set options
+    var pageIndex = options.pageIndex;
+    var pageSize = options.pageSize;
+    var options = {
+        'pageIndex': pageIndex,
+        'pageSize': pageSize,
+        'sortDirection': options.sortDirection,
+        'sortBy': options.sortProperty,
+        'filterBy': options.filter.value || '',
+        'searchBy': options.search || ''
+    };
+
+    var rows = UsersAjax.callSync('GetContacts', options);
+
+    var items = rows.records;
+    var totalItems = rows.total;
+    var totalPages = Math.ceil(totalItems / pageSize);
+    var startIndex = (pageIndex * pageSize) + 1;
+    var endIndex = (startIndex + pageSize) - 1;
+
+    if(endIndex > items.length) {
+        endIndex = items.length;
+    }
+
+    // configure datasource
+    var dataSource = {
+        'page':    pageIndex,
+        'pages':   totalPages,
+        'count':   totalItems,
+        'start':   startIndex,
+        'end':     endIndex,
+        'columns': columns,
+        'items':   items
+    };
+
+    // pass the datasource back to the repeater
+    callback(dataSource);
+}
+
 /**
- * Initiates gadget
+ * initiate contacts datagrid
  */
+function initiateContactsDG() {
+
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'edit',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.Users.lbl_edit,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editContact(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.Users.lbl_delete ,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+
+                    // detect multi select
+                    var ids = new Array();
+                    if (helpers.length > 1) {
+                        helpers.forEach(function(entry) {
+                            ids.push(entry.rowData.id);
+                        });
+
+                    } else {
+                        ids.push(helpers.rowData.id);
+                    }
+
+                    deleteContacts(ids);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    var repeater = $('#contractsGrid');
+    repeater.repeater({
+        // setup your custom datasource to handle data retrieval;
+        // responsible for any paging, sorting, filtering, searching logic
+        dataSource: contactsDataSource,
+        staticHeight: 600,
+        list_actions: list_actions,
+        list_selectable: 'multi'
+    });
+
+    $('#contactModal').on('hidden.bs.modal', function (e) {
+        stopAction();
+    })
+
+}
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Users':
+            currentAction = "UserAccount";
+            initiateUsersDG();
+            break;
+
+        case 'ManageGroups':
+            currentAction = "Group";
+            initiateGroupsDG();
+            break;
+
+        case 'Contacts':
+            currentAction = "UserContacts";
+            initiateContactsDG();
+            break;
+    }
+});
+/*
+
+/!**
+ * Initiates gadget
+ *!/
 $(document).ready(function () {
     if (currentAction == 'UserAccount') {
-        initiateUsersDG();
     } else if (currentAction == 'Group') {
         initiateGroupsDG();
     }
 });
+*/
 
 var UsersAjax = new JawsAjax('Users', UsersCallback);
+var SettingsInUsersAjax = new JawsAjax('Settings');
+
 var currentAction, selectedUser, selectedGroup;
+var selectedContact = 0;
