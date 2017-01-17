@@ -40,7 +40,7 @@ class Settings_Model_Zone extends Jaws_Gadget_Model
      * Get a list of the Cities
      *
      * @access  public
-     * @param   array     $provinces   Provinces Id
+     * @param   int|array     $provinces   Provinces Id
      * @return mixed Array of Cities or Jaws_Error on failure
      */
     function GetCities($provinces = array())
@@ -48,8 +48,10 @@ class Settings_Model_Zone extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('cities')
             ->select('id:integer', 'province:integer', 'title')
             ->orderBy('title');
-        if (!empty($provinces) && count($provinces) > 0) {
+        if (!empty($provinces) && is_array($provinces) && count($provinces) > 0) {
             $table->where('province', $provinces, 'in');
+        } else if (!empty($provinces)) {
+            $table->where('province', $provinces);
         }
         return $table->fetchAll();
     }
