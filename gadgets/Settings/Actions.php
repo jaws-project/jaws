@@ -18,7 +18,7 @@ $actions['UpdateSettings'] = array(
 );
 $actions['GetCities'] = array(
     'standalone' => true,
-    'file'   => 'Zone',
+    'file'   => 'Zones',
 );
 
 /**
@@ -80,5 +80,5 @@ $admin_actions['UpdateProxySettings'] = array(
 );
 $admin_actions['GetCities'] = array(
     'standalone' => true,
-    'file'   => 'Zone',
+    'file'   => 'Zones',
 );

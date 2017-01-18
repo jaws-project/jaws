@@ -5,7 +5,7 @@
  * @category    GadgetAdmin
  * @package     Settings
  */
-class Settings_Actions_Zone extends Jaws_Gadget_Action
+class Settings_Actions_Zones extends Jaws_Gadget_Action
 {
     /**
      * Get cities
@@ -21,12 +21,12 @@ class Settings_Actions_Zone extends Jaws_Gadget_Action
         } else {
             $provinces = array($province);
         }
-        $model = $this->gadget->model->load('Zone');
-        $res = $model->GetCities($provinces);
-        if (Jaws_Error::IsError($res) || $res === false) {
+        $zModel = $this->gadget->model->load('Zones');
+        $cities = $zModel->GetCities($provinces);
+        if (Jaws_Error::IsError($cities) || $cities === false) {
             return array();
         } else {
-            return $res;
+            return $cities;
         }
     }
 
