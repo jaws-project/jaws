@@ -367,12 +367,14 @@
             <field>
                 <name>province</name>
                 <type>integer</type>
+                <length>8</length>
                 <default>0</default>
             </field>
 
             <field>
                 <name>city</name>
                 <type>integer</type>
+                <length>8</length>
                 <default>0</default>
             </field>
 
@@ -393,13 +395,8 @@
                 <type>text</type>
             </field>
 
-            <field>
-                <name>order</name>
-                <type>integer</type>
-            </field>
-
             <index>
-                <name><variable>table_prefix</variable>zones_cpco</name>
+                <name><variable>table_prefix</variable>zones_cpc</name>
                 <field>
                     <name>country</name>
                 </field>
@@ -408,9 +405,6 @@
                 </field>
                 <field>
                     <name>city</name>
-                </field>
-                <field>
-                    <name>order</name>
                 </field>
             </index>
 
