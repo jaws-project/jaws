@@ -79,7 +79,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zones');
         $provinces = $zModel->GetProvinces();
         if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
-            array_unshift($provinces, array('id' => 0, 'title' => ''));
+            array_unshift($provinces, array('province' => 0, 'title' => ''));
             foreach ($provinces as $province) {
                 $tpl->SetBlock('contacts/province_home');
                 $tpl->SetVariable('value', $province['province']);
