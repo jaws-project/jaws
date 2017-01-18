@@ -76,7 +76,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
 
         // province
-        $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zone');
+        $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zones');
         $provinces = $zModel->GetProvinces();
         if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
             array_unshift($provinces, array('id' => 0, 'title' => ''));
