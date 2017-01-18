@@ -26,9 +26,7 @@ class FileEntry extends Entry
         $this->_name       = $name;
         $this->_value      = $value;
         $this->_title      = $title;
-        $this->_isReadOnly = false;
         $this->_validate   = false;
-        $this->_isRequired = false;
         $this->_type       = 'file';
         $this->_availableEvents = array("tabindex", "accesskey", "onfocus", "onblur",
                                          "onselect", "onchange", "onclick", "ondblclick",
@@ -47,5 +45,5 @@ class FileEntry extends Entry
     {
         return;
     }
+
 }
-?>

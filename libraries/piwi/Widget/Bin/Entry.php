@@ -25,11 +25,29 @@ class Entry extends Bin
     /**
      * Gives the 'readonly' status
      *
-     * @var      string $_IsReadOnly
+     * @var      bool $_isReadOnly
      * @access   private
      * @see      SetReadOnly ()
      */
-    var $_isReadOnly;
+    var $_isReadOnly = false;
+
+    /**
+     * Gives the 'required' status
+     *
+     * @var      bool $_isRequired
+     * @access   private
+     * @see      SetRequired()
+     */
+    var $_isRequired = false;
+
+    /**
+     * Gives the html5 'pattern' attribute
+     *
+     * @var      string $_pattern
+     * @access   private
+     * @see      SetPattern()
+     */
+    var $_pattern = false;
 
     /**
      * Gives the type of the entry. By default is: any
@@ -95,7 +113,29 @@ class Entry extends Bin
     {
         $this->_isReadOnly = $status;
     }
-    
+
+    /**
+     * Set the required status
+     *
+     * @param   boolean status
+     * @access  public
+     */
+    function setRequired($status = true)
+    {
+        $this->_isRequired = $status;
+    }
+
+    /**
+     * Set the html5 pattern attribute
+     *
+     * @param   string pattern
+     * @access  public
+     */
+    function SetPattern($pattern = '')
+    {
+        $this->_pattern = $pattern;
+    }
+
     /*
      * Set the type of the entry
      *
@@ -189,6 +229,15 @@ class Entry extends Bin
         if (!empty($this->_maxLength) && is_numeric($this->_maxLength)) {
             $this->_XHTML .= " maxlength=\"".$this->_maxLength."\"";
         }
+
+        if ($this->_isRequired) {
+            $this->_XHTML .= ' required="required"';
+        }
+
+        if ($this->_pattern) {
+            $this->_XHTML .= ' pattern="'. $this->_pattern . '"';
+        }
+
 
         if (!empty($this->_autocomplete)) {
         $this->_XHTML .= " autocomplete='{$this->_autocomplete}'";

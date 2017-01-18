@@ -32,6 +32,15 @@ class Combo extends Bin
     var $_multiple;
 
     /**
+     * Gives the 'required' status
+     *
+     * @var      bool $_isRequired
+     * @access   private
+     * @see      SetRequired()
+     */
+    var $_isRequired = false;
+
+    /**
      * Odd/Even row color
      *
      * @var     array  $_colors
@@ -196,6 +205,17 @@ class Combo extends Bin
     }
 
     /**
+     * Set the required status
+     *
+     * @param   boolean status
+     * @access  public
+     */
+    function setRequired($status = true)
+    {
+        $this->_isRequired = $status;
+    }
+
+    /**
      * Build the piwiXML data.
      *
      * @access    public
@@ -271,6 +291,10 @@ class Combo extends Bin
 
         if (!$this->_isEnabled) {
             $this->_XHTML .= " disabled=\"disabled\"";
+        }
+
+        if ($this->_isRequired) {
+            $this->_XHTML .= ' required="required"';
         }
 
         $this->_XHTML .= ">\n";
