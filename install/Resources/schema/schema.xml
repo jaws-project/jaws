@@ -349,7 +349,7 @@
     </table>
 
     <table>
-        <name><variable>table_prefix</variable>provinces</name>
+        <name><variable>table_prefix</variable>zones</name>
         <declaration>
             <field>
                 <name>id</name>
@@ -365,9 +365,15 @@
             </field>
 
             <field>
-                <name>province_code</name>
+                <name>province</name>
                 <type>integer</type>
-                <notnull>true</notnull>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>city</name>
+                <type>integer</type>
+                <default>0</default>
             </field>
 
             <field>
@@ -377,56 +383,7 @@
             </field>
 
             <field>
-                <name>order</name>
-                <type>integer</type>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>provinces_cpo</name>
-                <field>
-                    <name>country</name>
-                </field>
-                <field>
-                    <name>province_code</name>
-                </field>
-                <field>
-                    <name>order</name>
-                </field>
-            </index>
-
-        </declaration>
-    </table>
-
-    <table>
-        <name><variable>table_prefix</variable>cities</name>
-        <declaration>
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>province_code</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>city_code</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>title</name>
-                <type>text</type>
-                <length>128</length>
-            </field>
-
-            <field>
-                <name>position</name>
+                <name>center</name>
                 <type>text</type>
                 <length>16</length>
             </field>
@@ -442,15 +399,16 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>cities_pco</name>
+                <name><variable>table_prefix</variable>zones_cpco</name>
                 <field>
-                    <name>province_code</name>
+                    <name>country</name>
                 </field>
-
                 <field>
-                    <name>city_code</name>
+                    <name>province</name>
                 </field>
-
+                <field>
+                    <name>city</name>
+                </field>
                 <field>
                     <name>order</name>
                 </field>
