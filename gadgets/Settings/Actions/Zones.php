@@ -15,14 +15,14 @@ class Settings_Actions_Zones extends Jaws_Gadget_Action
      */
     function GetCities()
     {
-        $province = (int)jaws()->request->fetch('province', 'post');
-        if (empty($province)) {
-            $provinces = jaws()->request->fetch('provinces:array', 'post');
+        $zone = jaws()->request->fetch(array('province', 'country'));
+        if (empty($zone['province'])) {
+            $provinces = jaws()->request->fetch('province:array', 'post');
         } else {
-            $provinces = array($province);
+            $provinces = array($zone['province']);
         }
-        $zModel = $this->gadget->model->load('Zones');
-        $cities = $zModel->GetCities($provinces);
+
+        $cities = $this->gadget->model->load('Zones')->GetCities($provinces, $zone['country']);
         if (Jaws_Error::IsError($cities) || $cities === false) {
             return array();
         } else {
