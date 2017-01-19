@@ -393,7 +393,9 @@ class Jaws_ORM
         $parts = preg_split($this->regexp_separators, $column, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         foreach ($parts as $idx => $column) {
             if (in_array($column, $this->separators) || in_array($column, $this->reserved_words)) {
-                $prev_is_as = $column == 'as'? true : false;
+                if (trim($column) !== '') {
+                    $prev_is_as = ($column == 'as');
+                }
                 continue;
             }
 
