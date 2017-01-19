@@ -21,7 +21,7 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
             ->where('country', (int)$country)
             ->and()
             ->where('city', 0)
-            ->orderBy('order')
+            ->orderBy('province')
             ->fetchAll();
     }
     
@@ -56,7 +56,7 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
     function GetCities($provinces = array(), $country = 0)
     {
         if (!is_array($provinces)) {
-            $provinces = array($provinces)
+            $provinces = array($provinces);
         }
 
         return Jaws_ORM::getInstance()
@@ -67,7 +67,7 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
             ->where('province', $provinces, 'in')
             ->and()
             ->where('city', 0, '<>')
-            ->orderBy('order')
+            ->orderBy('city')
             ->fetchAll();
     }
 
@@ -90,7 +90,6 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
             ->where('province', (int)$province)
             ->and()
             ->where('city', (int)$city)
-            ->orderBy('order')
             ->fetchRow();
     }
 
