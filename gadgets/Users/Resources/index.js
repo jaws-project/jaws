@@ -416,7 +416,7 @@ function changeProvince(province, cityElement, countryElement)
     $('#' + cityElement ).html('');
     var cities = SettingsInUsersAjax.callSync(
         'GetCities',
-        {'province': province, 'country': $("#" + cityElement).val()}
+        {'province': province, 'country': $("#" + countryElement).val()}
     );
     $.each(cities, function (index, city) {
         $("#" + cityElement).append('<option value="' + city.city + '">' + city.title + '</option>');

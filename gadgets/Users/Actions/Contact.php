@@ -62,6 +62,7 @@ class Users_Actions_Contact extends Users_Actions_Default
         $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_country', _t('GLOBAL_COUNTRY'));
         $tpl->SetVariable('lbl_province', _t('GLOBAL_PROVINCE'));
         $tpl->SetVariable('lbl_city', _t('GLOBAL_CITY'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
@@ -77,7 +78,7 @@ class Users_Actions_Contact extends Users_Actions_Default
         $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zones');
         $countries = $zModel->GetCountries();
         if (!Jaws_Error::IsError($countries)) {
-            array_unshift($countries, array('country' => 0, 'title' => ''));
+            array_unshift($countries, array('country' => '', 'title' => ''));
             foreach ($countries as $country) {
                 $tpl->SetBlock('contact/country_home');
                 $tpl->SetVariable('value', $country['country']);
@@ -112,7 +113,7 @@ class Users_Actions_Contact extends Users_Actions_Default
         if (!empty($contact['country_home'])) {
             $provinces = $zModel->GetProvinces($contact['country_home']);
             if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
-                array_unshift($provinces, array('province' => 0, 'title' => ''));
+                array_unshift($provinces, array('province' => '', 'title' => ''));
                 foreach ($provinces as $province) {
                     $tpl->SetBlock('contact/province_home');
                     $tpl->SetVariable('value', $province['province']);
@@ -129,7 +130,7 @@ class Users_Actions_Contact extends Users_Actions_Default
         if (!empty($contact['country_work'])) {
             $provinces = $zModel->GetProvinces($contact['country_work']);
             if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
-                array_unshift($provinces, array('province' => 0, 'title' => ''));
+                array_unshift($provinces, array('province' => '', 'title' => ''));
                 foreach ($provinces as $province) {
                     $tpl->SetBlock('contact/province_work');
                     $tpl->SetVariable('value', $province['province']);
@@ -146,7 +147,7 @@ class Users_Actions_Contact extends Users_Actions_Default
         if (!empty($contact['country_other'])) {
             $provinces = $zModel->GetProvinces($contact['country_other']);
             if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
-                array_unshift($provinces, array('province' => 0, 'title' => ''));
+                array_unshift($provinces, array('province' => '', 'title' => ''));
                 foreach ($provinces as $province) {
                     $tpl->SetBlock('contact/province_other');
                     $tpl->SetVariable('value', $province['province']);
