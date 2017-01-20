@@ -21,12 +21,12 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
     {
         $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/Templates', 'Layout.html');
         // Load ControlPanel header
-        //$GLOBALS['app']->Layout->LoadControlPanelHead();
         $GLOBALS['app']->Layout->Populate($ReqResult);
-        $GLOBALS['app']->Layout->addLink('gadgets/ControlPanel/Resources/style.css?'.JAWS_VERSION);
-        $GLOBALS['app']->Layout->addLink('gadgets/'.$ReqGadget.'/Resources/style.css?'.$ReqGadgetVersion);
 
         $tpl = $GLOBALS['app']->Layout->_Template;
+        $tpl->SetVariable('gadget', $ReqGadget);
+        $tpl->SetVariable('gadget_version', $ReqGadgetVersion);
+        $tpl->SetVariable('requested_gadget', strtolower($ReqGadget));
         $tpl->SetBlock('layout/login-info', false);
         $tpl->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
         $uInfo = $GLOBALS['app']->Session->GetAttributes('username', 'nickname', 'avatar', 'email');
