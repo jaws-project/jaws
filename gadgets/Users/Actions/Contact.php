@@ -30,6 +30,9 @@ class Users_Actions_Contact extends Users_Actions_Default
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
             $contact = $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'));
+            if (Jaws_Error::IsError($contact)) {
+                return Jaws_HTTPError::Get(500);
+            }
         } else {
             $contact = $response['data'];
         }
