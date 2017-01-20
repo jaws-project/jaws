@@ -73,38 +73,90 @@ class Users_Actions_Contact extends Users_Actions_Default
             $tpl->SetVariablesArray($contact);
         }
 
-        // province
+        // country
         $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zones');
-        $provinces = $zModel->GetProvinces();
-        if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
-            array_unshift($provinces, array('province' => 0, 'title' => ''));
-            foreach ($provinces as $province) {
-                $tpl->SetBlock('contact/province_home');
-                $tpl->SetVariable('value', $province['province']);
-                $tpl->SetVariable('title', $province['title']);
+        $countries = $zModel->GetCountries();
+        if (!Jaws_Error::IsError($countries)) {
+            array_unshift($countries, array('country' => 0, 'title' => ''));
+            foreach ($countries as $country) {
+                $tpl->SetBlock('contact/country_home');
+                $tpl->SetVariable('value', $country['country']);
+                $tpl->SetVariable('title', $country['title']);
                 $tpl->SetVariable('selected', '');
-                if (isset($contact['province_home']) && $contact['province_home'] == $province['province']) {
+                if (isset($contact['country_home']) && $contact['country_home'] == $country['country']) {
                     $tpl->SetVariable('selected', 'selected');
                 }
-                $tpl->ParseBlock('contact/province_home');
+                $tpl->ParseBlock('contact/country_home');
 
-                $tpl->SetBlock('contact/province_work');
-                $tpl->SetVariable('value', $province['province']);
-                $tpl->SetVariable('title', $province['title']);
+                $tpl->SetBlock('contact/country_work');
+                $tpl->SetVariable('value', $country['country']);
+                $tpl->SetVariable('title', $country['title']);
                 $tpl->SetVariable('selected', '');
-                if (isset($contact['province_work']) && $contact['province_work'] == $province['province']) {
+                if (isset($contact['country_work']) && $contact['country_work'] == $country['country']) {
                     $tpl->SetVariable('selected', 'selected');
                 }
-                $tpl->ParseBlock('contact/province_work');
+                $tpl->ParseBlock('contact/country_work');
 
-                $tpl->SetBlock('contact/province_other');
-                $tpl->SetVariable('value', $province['province']);
-                $tpl->SetVariable('title', $province['title']);
+                $tpl->SetBlock('contact/country_other');
+                $tpl->SetVariable('value', $country['country']);
+                $tpl->SetVariable('title', $country['title']);
                 $tpl->SetVariable('selected', '');
-                if (isset($contact['province_other']) && $contact['province_other'] == $province['province']) {
+                if (isset($contact['country_other']) && $contact['country_other'] == $country['country']) {
                     $tpl->SetVariable('selected', 'selected');
                 }
-                $tpl->ParseBlock('contact/province_other');
+                $tpl->ParseBlock('contact/country_other');
+            }
+        }
+        
+        // province
+        if (!empty($contact['country_home'])) {
+            $provinces = $zModel->GetProvinces($contact['country_home']);
+            if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
+                array_unshift($provinces, array('province' => 0, 'title' => ''));
+                foreach ($provinces as $province) {
+                    $tpl->SetBlock('contact/province_home');
+                    $tpl->SetVariable('value', $province['province']);
+                    $tpl->SetVariable('title', $province['title']);
+                    $tpl->SetVariable('selected', '');
+                    if (isset($contact['province_home']) && $contact['province_home'] == $province['province']) {
+                        $tpl->SetVariable('selected', 'selected');
+                    }
+                    $tpl->ParseBlock('contact/province_home');
+                }
+            }
+        }
+
+        if (!empty($contact['country_work'])) {
+            $provinces = $zModel->GetProvinces($contact['country_work']);
+            if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
+                array_unshift($provinces, array('province' => 0, 'title' => ''));
+                foreach ($provinces as $province) {
+                    $tpl->SetBlock('contact/province_work');
+                    $tpl->SetVariable('value', $province['province']);
+                    $tpl->SetVariable('title', $province['title']);
+                    $tpl->SetVariable('selected', '');
+                    if (isset($contact['province_work']) && $contact['province_work'] == $province['province']) {
+                        $tpl->SetVariable('selected', 'selected');
+                    }
+                    $tpl->ParseBlock('contact/province_work');
+                }
+            }
+        }
+
+        if (!empty($contact['country_other'])) {
+            $provinces = $zModel->GetProvinces($contact['country_other']);
+            if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
+                array_unshift($provinces, array('province' => 0, 'title' => ''));
+                foreach ($provinces as $province) {
+                    $tpl->SetBlock('contact/province_other');
+                    $tpl->SetVariable('value', $province['province']);
+                    $tpl->SetVariable('title', $province['title']);
+                    $tpl->SetVariable('selected', '');
+                    if (isset($contact['province_other']) && $contact['province_other'] == $province['province']) {
+                        $tpl->SetVariable('selected', 'selected');
+                    }
+                    $tpl->ParseBlock('contact/province_other');
+                }
             }
         }
 

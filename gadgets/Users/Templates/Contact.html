@@ -181,9 +181,18 @@
                   <td>{{lbl_home}}:</td>
                   <td>
 
+                    <div><label for="country_home">{{lbl_country}}:</label>
+                      <select name="country_home" id="country_home" class="form-control"
+                              onchange="javascript:changeCountry(this.value, 'province_home');">
+                        <!-- BEGIN country_home -->
+                        <option value="{{value}}" {{selected}}>{{title}}</option>
+                        <!-- END country_home -->
+                      </select>
+                    </div>
+
                     <div><label for="province_home">{{lbl_province}}:</label>
                       <select name="province_home" id="province_home" class="form-control"
-                              onchange="javascript:changeProvince(this.value, 'city_home');">
+                              onchange="javascript:changeProvince(this.value, 'city_home', 'country_home');">
                         <!-- BEGIN province_home -->
                         <option value="{{value}}" {{selected}}>{{title}}</option>
                         <!-- END province_home -->
@@ -215,9 +224,18 @@
                   <td>{{lbl_work}}:</td>
                   <td>
 
+                    <div><label for="country_work">{{lbl_country}}:</label>
+                      <select name="country_work" id="country_work" class="form-control"
+                              onchange="javascript:changeCountry(this.value, 'province_work');">
+                        <!-- BEGIN country_work -->
+                        <option value="{{value}}" {{selected}}>{{title}}</option>
+                        <!-- END country_work -->
+                      </select>
+                    </div>
+
                     <div><label for="province_work">{{lbl_province}}:</label>
                       <select name="province_work" id="province_work" class="form-control"
-                              onchange="javascript:changeProvince(this.value, 'city_work');">
+                              onchange="javascript:changeProvince(this.value, 'city_work', 'country_work');">
                         <!-- BEGIN province_work -->
                         <option value="{{value}}" {{selected}}>{{title}}</option>
                         <!-- END province_work -->
@@ -249,9 +267,18 @@
                   <td>{{lbl_other}}:</td>
                   <td>
 
+                    <div><label for="country_other">{{lbl_country}}:</label>
+                      <select name="country_other" id="country_other" class="form-control"
+                              onchange="javascript:changeCountry(this.value, 'province_other');">
+                        <!-- BEGIN country_other -->
+                        <option value="{{value}}" {{selected}}>{{title}}</option>
+                        <!-- END country_other -->
+                      </select>
+                    </div>
+
                     <div><label for="province_other">{{lbl_province}}:</label>
                       <select name="province_other" id="province_other" class="form-control"
-                              onchange="javascript:changeProvince(this.value, 'city_other');">
+                              onchange="javascript:changeProvince(this.value, 'city_other', 'country_other');">
                         <!-- BEGIN province_other -->
                         <option value="{{value}}" {{selected}}>{{title}}</option>
                         <!-- END province_other -->

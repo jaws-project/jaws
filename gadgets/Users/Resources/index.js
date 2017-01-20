@@ -397,14 +397,29 @@ function saveGroup()
 }
 
 /**
+ * change country combo
+ */
+function changeCountry(country, provinceElement)
+{
+    $('#' + provinceElement ).html('');
+    var provinces = SettingsInUsersAjax.callSync('GetProvinces', {'country': country});
+    $.each(provinces, function (index, province) {
+        $("#" + provinceElement).append('<option value="' + province.province + '">' + province.title + '</option>');
+    });
+}
+
+/**
  * change province combo
  */
-function changeProvince(province, cityElement)
+function changeProvince(province, cityElement, countryElement)
 {
-    var cities = SettingsInUsersAjax.callSync('GetCities', {'province': province});
     $('#' + cityElement ).html('');
+    var cities = SettingsInUsersAjax.callSync(
+        'GetCities',
+        {'province': province, 'country': $("#" + cityElement).val()}
+    );
     $.each(cities, function (index, city) {
-        $("#" + cityElement).append('<option value="' + city.id + '">' + city.title + '</option>');
+        $("#" + cityElement).append('<option value="' + city.city + '">' + city.title + '</option>');
     });
 }
 
