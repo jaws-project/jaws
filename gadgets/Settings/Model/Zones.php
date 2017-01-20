@@ -8,11 +8,26 @@
 class Settings_Model_Zones extends Jaws_Gadget_Model
 {
     /**
-     * Get a list of the Provinces
+     * Get a list of the countries
+     *
+     * @access  public
+     * @return  mixed   Array of countries or Jaws_Error on failure
+     */
+    function GetCountries()
+    {
+        return Jaws_ORM::getInstance()->table('zones')
+            ->select('country:integer', 'title')
+            ->where('province', -1)
+            ->orderBy('country')
+            ->fetchAll();
+    }
+
+    /**
+     * Get a list of the provinces
      *
      * @access  public
      * @param   int     $country    Country code
-     * @return  mixed   Array of Provinces or Jaws_Error on failure
+     * @return  mixed   Array of provinces or Jaws_Error on failure
      */
     function GetProvinces($country = 0)
     {

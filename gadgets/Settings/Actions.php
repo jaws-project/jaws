@@ -16,6 +16,10 @@ $actions['UpdateSettings'] = array(
     'standalone' => true,
     'file' => 'Settings',
 );
+$actions['GetProvinces'] = array(
+    'standalone' => true,
+    'file'   => 'Zones',
+);
 $actions['GetCities'] = array(
     'standalone' => true,
     'file'   => 'Zones',
