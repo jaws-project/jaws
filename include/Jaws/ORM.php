@@ -346,8 +346,7 @@ class Jaws_ORM
         $this->_alias = $alias;
         $this->_pk_field = $pk_field;
 
-        $this->_tableAliasIdentifier = empty($alias)? '': $this->quoteIdentifier($alias);
-        $alias_str = empty($alias)? '': (' as '. $this->_tableAliasIdentifier);
+        $alias_str = empty($alias)? '': (' as '. $this->quoteIdentifier($this->_tbl_prefix. $alias));
         if (is_object($table)) {
             $table_quoted = '('. $table->get(). ')';
         } else {
