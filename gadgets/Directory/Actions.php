@@ -27,7 +27,11 @@ $actions['UploadFile'] = array(
     'standalone' => true,
     'file' => 'File'
 );
-$actions['CreateFile'] = array(
+$actions['SaveFile'] = array(
+    'standalone' => true,
+    'file' => 'File'
+);
+$actions['DeleteFile'] = array(
     'standalone' => true,
     'file' => 'File'
 );

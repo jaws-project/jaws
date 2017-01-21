@@ -23,7 +23,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         } else {
             $table->select(
                 'directory.id:integer', 'directory.parent:integer', 'directory.user:integer',
-                'is_dir:boolean', 'directory.public:boolean',
+                'is_dir:boolean', 'directory.public:boolean', 'directory.key:integer',
                 'directory.title', 'directory.description',
                 'user_filename', 'host_filename', 'mime_type', 'file_type', 'file_size', 'directory.hits',
                 'directory.published:boolean', 'directory.create_time:integer', 'directory.update_time:integer'
@@ -37,6 +37,10 @@ class Directory_Model_Files extends Jaws_Gadget_Model
                 $table->join('users', 'users.id', 'directory.user', 'left');
                 $table->where('users.username', $params['user'])->and();
             }
+        }
+
+        if (isset($params['user_privates']) && !empty($params['user_privates'])) {
+            $table->openWhere('public', true)->or()->CloseWhere('user', $params['user_privates'])->and();
         }
 
         if (isset($params['parent'])) {
@@ -81,7 +85,6 @@ class Directory_Model_Files extends Jaws_Gadget_Model
 
         if (!$count && isset($params['limit']) && $params['limit'] > 0) {
             $table->limit($params['limit'], $params['offset']);
-//            $table->orderBy('is_dir desc', 'title asc');
         }
 
         if (!$count && (int)$orderBy > 0) {
@@ -106,10 +109,25 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function GetFile($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
-        $table->select('id', 'parent', 'user', 'title', 'description',
+        $table->select('id', 'parent', 'user', 'title', 'description', 'key:integer',
             'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
             'is_dir:boolean', 'public:boolean', 'published:boolean', 'create_time', 'update_time');
-        return $table->where('id', $id)->fetchRow();
+        $fileInfo = $table->where('id', $id)->fetchRow();
+        if (Jaws_Error::IsError($fileInfo)) {
+            return $fileInfo;
+        }
+
+        if (!empty($fileInfo)) {
+            $fileInfo['tags'] = array();
+            // Fetch tags
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                $tags = $tModel->GetReferenceTags('Directory', 'file', $id);
+                $fileInfo['tags'] = implode(', ', array_filter($tags));
+            }
+        }
+        return $fileInfo;
+
     }
 
     /**
@@ -122,14 +140,82 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function InsertFile($data)
     {
         $data['public'] = (bool)$data['public'];
+        $data['parent'] = (int)$data['parent'];
         if (!$data['public']) {
             $data['key'] = mt_rand(1000, 9999999999);
         }
         $data['create_time'] = $data['update_time'] = time();
-        $table = Jaws_ORM::getInstance()->table('directory');
-        return $table->insert($data)->exec();
+        return  Jaws_ORM::getInstance()->table('directory')->insert($data)->exec();
     }
 
+    /**
+     * Update a file/directory
+     *
+     * @access  public
+     * @param   int     $id      File id
+     * @param   array   $data    File data
+     * @return  mixed   Query result
+     */
+    function UpdateFile($id, $data)
+    {
+        $data['public'] = (bool)$data['public'];
+        $data['parent'] = (int)$data['parent'];
+        if (!$data['public']) {
+            $data['key'] = mt_rand(1000, 9999999999);
+        }
+        $data['create_time'] = $data['update_time'] = time();
+        return Jaws_ORM::getInstance()->table('directory')->update($data)->where('id', $id)->exec();
+    }
+
+
+    /**
+     * Deletes file/directory
+     *
+     * @access  public
+     * @param   array   $data  File data
+     * @return  mixed   Query result
+     */
+    function DeleteFile($data)
+    {
+        if ($data['is_dir']) {
+            $files = $this->GetFiles(array('parent' => $data['id']));
+            if (Jaws_Error::IsError($files)) {
+                return false;
+            }
+            foreach ($files as $file) {
+                $this->Delete($file);
+            }
+        }
+
+        // Delete file/folder and related shortcuts
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->delete()->where('id', $data['id']);
+        $res = $table->exec();
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
+        // Delete from disk
+        if (!$data['is_dir']) {
+            $filename = JAWS_DATA . 'directory/' . $data['host_filename'];
+            if (file_exists($filename)) {
+                if (!Jaws_Utils::delete($filename)) {
+                    return false;
+                }
+            }
+
+            // delete thumbnail file
+            $fileInfo = pathinfo($filename);
+            $thumbnailPath = JAWS_DATA . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
+            if (file_exists($thumbnailPath)) {
+                if (!Jaws_Utils::delete($thumbnailPath)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Fetches path of a file/directory

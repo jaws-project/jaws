@@ -167,7 +167,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
      * Deletes file/directory
      *
      * @access  public
-     * @param   int     $id  File ID
+     * @param   array   $data  File data
      * @return  mixed   Query result
      */
     function Delete($data)
