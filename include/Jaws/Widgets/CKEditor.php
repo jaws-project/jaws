@@ -172,7 +172,7 @@ class Jaws_Widgets_CKEditor extends Container
      * @param   string  $label  Label/Title of editor
      * @return  void
      */
-    function Jaws_Widgets_CKEditor($gadget, $name, $value = '', $label = '')
+    function __construct($gadget, $name, $value = '', $label = '')
     {
         require_once JAWS_PATH . 'include/Jaws/String.php';
         $value = str_replace('&lt;', '&amp;lt;', $value);

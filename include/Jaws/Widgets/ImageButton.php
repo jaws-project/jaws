@@ -93,7 +93,7 @@ class Jaws_Widgets_ImageButton extends Bin
      * @param   string  $action
      * @return  void
      */
-    function Jaws_Widgets_ImageButton($text, $img, $action = '')
+    function __construct($text, $img, $action = '')
     {
         $this->_ImageSRC = $img;
         $this->_Text = $text;

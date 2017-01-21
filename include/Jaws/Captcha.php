@@ -41,7 +41,7 @@ class Jaws_Captcha
      * @param   string  $driver Captcha driver name
      * @return  void
      */
-    function Jaws_Captcha($driver)
+    function __construct($driver)
     {
         $this->_driver = $driver;
     }

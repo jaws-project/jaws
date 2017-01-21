@@ -27,7 +27,7 @@ class Jaws_Widgets_XHTMLMenu
      * @param   string  $style
      * @return  void
      */
-    function Jaws_Widgets_XHTMLMenu($name = '', $id = 'nav', $style = '')
+    function __construct($name = '', $id = 'nav', $style = '')
     {
         $this->_Name  = $name;
         $this->_id    = $id;

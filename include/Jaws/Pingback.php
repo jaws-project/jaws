@@ -23,7 +23,7 @@ class Jaws_Pingback
      *
      * @access  public
      */
-    function Jaws_Pingback()
+    function __construct()
     {
         $options = array(
             'timeout' => 5,

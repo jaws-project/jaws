@@ -25,7 +25,7 @@ class AtomContentConstruct
      * @param   string $type text | html | xhtml 
      * @access  public
      */
-    function AtomContentConstruct($element, $content, $type = 'text')
+    function __construct($element, $content, $type = 'text')
     {
         $this->ElementName = $element;
         $this->Content     = $content;

@@ -78,7 +78,7 @@ class Jaws_Widgets_TextArea extends Container
      * @param   string  $label
      * @return  void
      */
-    function Jaws_Widgets_TextArea($gadget, $name, $value = '', $label = '')
+    function __construct($gadget, $name, $value = '', $label = '')
     {
         $this->_Name   = $name;
         $this->_Value  = $value;

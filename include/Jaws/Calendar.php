@@ -33,7 +33,7 @@ class Jaws_Calendar
     /**
      * Class constructor
      */
-    function Jaws_Calendar($templateDir)
+    function __construct($templateDir)
     {
         $objDate = Jaws_Date::getInstance();
         $this->Items = array();

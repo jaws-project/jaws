@@ -78,7 +78,7 @@ class Jaws_Plugin
      * @param   string $plugin Plugin name(same as the filesystem name)
      * @return  void
      */
-    function Jaws_Plugin($plugin)
+    function __construct($plugin)
     {
         $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
         $this->name        = $plugin;

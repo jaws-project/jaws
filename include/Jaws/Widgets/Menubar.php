@@ -56,7 +56,7 @@ class Jaws_Widgets_Menubar
      */
     static function getInstance($action = 'menubar')
     {
-        return new Jaws_Widgets_Menubar($action);
+        return new __construct($action);
     }
 
     /**

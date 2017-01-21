@@ -48,7 +48,7 @@ class Jaws_HTTPRequest
      * @param   array   $options    Associated request options
      * @return  void
      */
-    function Jaws_HTTPRequest($options = array())
+    function __construct($options = array())
     {
         $this->options['timeout'] = (int)$GLOBALS['app']->Registry->fetch('connection_timeout', 'Settings');
         if ($GLOBALS['app']->Registry->fetch('proxy_enabled', 'Settings') == 'true') {

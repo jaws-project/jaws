@@ -32,7 +32,7 @@ class Jaws_Widgets_AutoComplete extends Entry
      * @param   string $status boolean Set the readonly status (optional)
      * @access  public
      */
-    function Jaws_Widgets_AutoComplete($name, $value = '', $title = '', $length = '', $status = false)
+    function __construct($name, $value = '', $title = '', $length = '', $status = false)
     {
         parent::Entry($name, $value, $title, $length, $status);
     }

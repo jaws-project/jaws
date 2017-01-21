@@ -112,7 +112,7 @@ class Jaws_Widgets_TinyMCE extends Container
      * @param   string  $label
      * @return  void
      */
-    function Jaws_Widgets_TinyMCE($gadget, $name, $value = '', $label = '')
+    function __construct($gadget, $name, $value = '', $label = '')
     {
         require_once JAWS_PATH . 'include/Jaws/String.php';
         //$value = Jaws_String::AutoParagraph($value);
