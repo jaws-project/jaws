@@ -109,7 +109,7 @@ class Jaws_Request
      * @access  public
      * @return  void
      */
-    function Jaws_Request()
+    function __construct()
     {
         // initialize some server options
         $_SERVER['REQUEST_METHOD'] =
