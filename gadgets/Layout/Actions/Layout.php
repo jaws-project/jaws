@@ -105,7 +105,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         // remove script tag
         $layoutContent = preg_replace('@<script[^>]*>.*?</script>@sim', '', $layoutContent);
-
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
             '<body\1>'. $working_box. $response_box. $this->LayoutBar($theme, $theme_locality, $layout),
@@ -117,7 +116,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $fakeLayout->_Template->SetVariable('site-title', $this->gadget->registry->fetch('site_name', 'Settings'));
 
         $fakeLayout->addLink(PIWI_URL. 'piwidata/css/default.css');
-        $fakeLayout->addLink('gadgets/Layout/Resources/style.css');
+        $fakeLayout->addLink('gadgets/Layout/Resources/style'.$fakeLayout->_Template->globalVariables['.dir'].'.css');
 
         foreach ($fakeLayout->_Template->Blocks['layout']->InnerBlock as $name => $data) {
             if ($name == 'head') {
