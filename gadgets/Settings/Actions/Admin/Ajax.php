@@ -18,7 +18,7 @@ class Settings_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Settings_Actions_Admin_Ajax($gadget)
+    function __construct($gadget)
     {
         parent::__construct($gadget);
         $this->_Model = $this->gadget->model->loadAdmin('Settings');
