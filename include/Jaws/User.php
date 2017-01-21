@@ -288,20 +288,22 @@ class Jaws_User
             unset($contact['email']);
 
             $address = json_decode($contact['address'], true);
+            $contact['country_home'] = $address['home']['country'];
             $contact['province_home'] = $address['home']['province'];
             $contact['city_home'] = $address['home']['city'];
             $contact['address_home'] = $address['home']['address'];
             $contact['postal_code_home'] = $address['home']['postal_code'];
+            $contact['country_work'] = $address['work']['country'];
             $contact['province_work'] = $address['work']['province'];
             $contact['city_work'] = $address['work']['city'];
             $contact['address_work'] = $address['work']['address'];
             $contact['postal_code_work'] = $address['work']['postal_code'];
+            $contact['country_other'] = $address['other']['country'];
             $contact['province_other'] = $address['other']['province'];
             $contact['city_other'] = $address['other']['city'];
             $contact['address_other'] = $address['other']['address'];
             $contact['postal_code_other'] = $address['other']['postal_code'];
             unset($contact['address']);
-
         }
 
         return $contact;
