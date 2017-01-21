@@ -917,6 +917,16 @@ class Jaws_User
             return false;
         }
 
+        if (JAWS_GODUSER == $user['id']) {
+            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
         if (isset($GLOBALS['app']->Session) && !$GLOBALS['app']->Session->IsSuperAdmin()) {
             unset($uData['superadmin']);
             // non-superadmin user can't change properties of superadmin users
@@ -1018,13 +1028,23 @@ class Jaws_User
             unset($pData[$invalid]);
         }
 
-        if (array_key_exists('avatar', $pData)) {
-            // get user information
-            $user = Jaws_User::GetUser((int)$id, true, true);
-            if (Jaws_Error::IsError($user) || empty($user)) {
-                return false;
-            }
+        // get user information
+        $user = Jaws_User::GetUser((int)$id, true, true);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
 
+        if (JAWS_GODUSER == $user['id']) {
+            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
+        if (array_key_exists('avatar', $pData)) {
             if (!empty($user['avatar'])) {
                 Jaws_Utils::Delete(AVATAR_PATH. $user['avatar']);
             }
@@ -1095,6 +1115,16 @@ class Jaws_User
         $user = $this->GetUser($uid);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
+        }
+
+        if (JAWS_GODUSER == $user['id']) {
+            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
         }
 
         // begin transaction
@@ -1282,6 +1312,12 @@ class Jaws_User
         $user = $this->GetUser((int)$id, true, false, true, false);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
+        }
+
+        if (JAWS_GODUSER == $user['id']) {
+            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+                return false;
+            }
         }
 
         //Start Transaction

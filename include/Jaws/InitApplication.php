@@ -61,6 +61,10 @@ if (!defined('COMPRESS_LEVEL')) {
     define('COMPRESS_LEVEL', 4);
 }
 
+if (!defined('JAWS_GODUSER')) {
+    define('JAWS_GODUSER', 0);
+}
+
 // Lets support older PHP versions so we can use spanking new functions
 require JAWS_PATH . 'include/Jaws/PHPFunctions.php';
 
