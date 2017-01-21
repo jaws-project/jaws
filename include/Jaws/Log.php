@@ -141,7 +141,7 @@ class Jaws_Log
      * @param   string  $logger     Logger method
      * @return  void
      */
-    function Jaws_Log($activated = 0, $logger = null)
+    function __construct($activated = 0, $logger = null)
     {
         $this->_MessageStack = '';
         $this->_LogActivated = (int)$activated;
