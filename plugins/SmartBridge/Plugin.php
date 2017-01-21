@@ -35,7 +35,7 @@ class SmartBridge_Plugin extends Jaws_Plugin
      * @access  public
      * @return  void
      */
-    function SmartBridge_Plugin($plugin)
+    function __construct($plugin)
     {
         parent::Jaws_Plugin($plugin);
         $eg = $GLOBALS['app']->Registry->fetch('gadgets_enabled_items');
