@@ -70,11 +70,11 @@ class Layout_Info extends Jaws_Gadget
     /**
      * Constructor
      *
-     * @access  protected
+     * @access  public
      * @param   string  $gadget Gadget's name(filesystem name)
      * @return  void
      */
-    protected function __construct($gadget)
+    function __construct($gadget)
     {
         parent::__construct($gadget);
         if (isset($GLOBALS['app']) && isset($GLOBALS['app']->Session)) {
