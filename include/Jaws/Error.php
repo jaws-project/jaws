@@ -54,7 +54,7 @@ class Jaws_Error
      * @param   int     $backtrace  Log trace back level
      * @return  void
      */
-    function Jaws_Error($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
+    function __construct($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
         $this->_Message = $message;
         $this->_Code    = $code;
