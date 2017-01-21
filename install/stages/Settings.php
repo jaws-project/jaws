@@ -25,7 +25,7 @@ class Installer_Settings extends JawsInstallerStage
      *
      * @access public
      */
-    function Installer_Settings()
+    function __construct()
     {
         $this->_Fields = array(
             'site_name'     => 'Jaws ' . JAWS_VERSION,

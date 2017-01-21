@@ -38,7 +38,7 @@ class JawsInstaller
      *
      * @param string The path this installer is running from.
      */
-    function JawsInstaller($config = null)
+    function __construct($config = null)
     {
         $this->_stage_config = $config;
         if (file_exists('data.ini')) {
