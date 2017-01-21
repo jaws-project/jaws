@@ -74,7 +74,7 @@ class PiwiXMLBuilder
      *
      * @access   public
      */
-    function PiwiXMLBuilder()
+    function __construct()
     {
         $this->_Data = '';
         $this->_Indentation = 0;

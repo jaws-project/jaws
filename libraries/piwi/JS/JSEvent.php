@@ -43,7 +43,7 @@ class JSEvent
      * @param   string  ID of the Event
      * @param   string  Code of the Event
      */
-    function JSEvent($id, $code, $src = '')
+    function __construct($id, $code, $src = '')
     {
         $this->_id = $id;
         $this->_code = $code;

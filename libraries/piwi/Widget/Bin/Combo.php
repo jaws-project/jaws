@@ -57,7 +57,7 @@ class Combo extends Bin
      * @param array  Data that will be used in the combo
      * @access  public
      */
-    function Combo($name, $title = '', $options = array())
+    function __construct($name, $title = '', $options = array())
     {
         $this->_name     = $name;
         $this->_title    = $title;

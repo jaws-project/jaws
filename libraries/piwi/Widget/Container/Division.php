@@ -19,7 +19,7 @@ class Division extends Box
      * @param  int   $border  Border size
      * @access public
      */
-    function Division()
+    function __construct()
     {
         parent::init();
         $this->_class = 'piwi_division';

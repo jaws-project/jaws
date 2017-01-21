@@ -50,7 +50,7 @@ class MenuItem extends Container
      * @param    strng    $icon   If you want to add an image to the MenuItem
      * @access   public
      */
-    function MenuItem ($value, $action = '', $icon = '')
+    function __construct($value, $action = '', $icon = '')
     {
         $this->_value  = $value;
         $this->_action = $action;

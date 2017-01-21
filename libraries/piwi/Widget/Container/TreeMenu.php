@@ -40,7 +40,7 @@ class TreeMenu extends MenuBar
      * @param    string   $id      The ID of the div that will have the treemenu
      * @access   public
      */
-    function TreeMenu($toptext, $id = 'treemenu')
+    function __construct($toptext, $id = 'treemenu')
     {
         $this->_rootText = $toptext;
         $this->_paths = array();

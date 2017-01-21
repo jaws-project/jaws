@@ -21,7 +21,7 @@ class JSPositiveNumericValidator extends JSValidator
      * @param  string  $field  Field to validate
      * @param  string  $error  Error to print
      */
-    function JSPositiveNumericValidator($field, $error)
+    function __construct($field, $error)
     {
         parent::__construct($field, $error);
 

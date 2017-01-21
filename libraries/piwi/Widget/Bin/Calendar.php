@@ -68,7 +68,7 @@ class Calendar extends Entry
      * @param   string Title of the calendar
      * @access  public
      */
-    function Calendar($name, $date = '', $title = '')
+    function __construct($name, $date = '', $title = '')
     {
         $this->_name        = $name;
         $this->_title       = $title;

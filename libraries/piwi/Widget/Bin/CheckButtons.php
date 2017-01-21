@@ -58,7 +58,7 @@ class CheckButtons extends Bin
      * @param  string  $title     Title of the checkbuttons
      * @access public
      */
-    function CheckButtons($name, $direction = 'horizontal', $title = '')
+    function __construct($name, $direction = 'horizontal', $title = '')
     {
         $this->_name      = $name;
         $this->_direction = $direction;

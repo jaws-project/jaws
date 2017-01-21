@@ -102,7 +102,7 @@ class Column extends Misc
      *
      * @access   public
      */
-    function Column ($title, $colname, $sortable = true, $type = 'String', $visible = true, $url = '', $callback = null,
+    function __construct($title, $colname, $sortable = true, $type = 'String', $visible = true, $url = '', $callback = null,
                       $js = '')
     {
         $this->_title      = $title;

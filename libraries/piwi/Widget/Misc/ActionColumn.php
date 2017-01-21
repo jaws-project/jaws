@@ -60,7 +60,7 @@ class ActionColumn extends Misc
      *
      * @access   public
      */
-    function ActionColumn($title, $url, $img = '',  $colname = '', $callback = null)
+    function __construct($title, $url, $img = '',  $colname = '', $callback = null)
     {
         $this->_title      = $title;
         $this->_url        = $url;

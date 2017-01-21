@@ -13,7 +13,7 @@ require_once PIWI_PATH . '/Widget/Bin/Bin.php';
 define('STATICENTRY_REQ_PARAMS', 1);
 class StaticEntry extends Bin
 {
-    function StaticEntry($value, $title = '')
+    function __construct($value, $title = '')
     {
         $this->_value = $value;
         $this->_title = $title;

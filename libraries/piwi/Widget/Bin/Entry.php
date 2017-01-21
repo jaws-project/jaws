@@ -77,7 +77,7 @@ class Entry extends Bin
      * @param   boolean Set the readonly status (optional)
      * @access   public
      */
-    function Entry($name, $value = '', $title = '', $length = '', $status = false)
+    function __construct($name, $value = '', $title = '', $length = '', $status = false)
     {
         $this->_name       = $name;
         $this->_value      = $value;

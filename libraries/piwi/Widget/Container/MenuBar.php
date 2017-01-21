@@ -22,7 +22,7 @@ class MenuBar extends Container
      *                          another CSS sheet!
      * @access   public
      */
-    function MenuBar ($id = 'menubar')
+    function __construct($id = 'menubar')
     {
         $this->_id    = $id;
         $this->_paths = array();

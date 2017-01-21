@@ -101,7 +101,7 @@ class ColorPicker extends Bin
      * @param   string   $stock  Stock image (the button image)
      * @access  public
      */
-    function ColorPicker($name, $value = '', $text = '', $stock = '')
+    function __construct($name, $value = '', $text = '', $stock = '')
     {
         $this->_name  = $name;
         $this->_value = $value;

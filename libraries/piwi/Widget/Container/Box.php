@@ -26,7 +26,7 @@ class Box extends Container
      *
      * @access public
      */
-    function Box()
+    function __construct()
     {
         $this->setDirection('');
     }

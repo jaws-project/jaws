@@ -21,7 +21,7 @@ class JSPasswordValidator extends JSValidator
      * @param  int     $min    Min number of characters
      * @param  int     $max    Max number of characters (default 100)
      */
-    function JSPasswordValidator($field, $error, $min, $max = 100)
+    function __construct($field, $error, $min, $max = 100)
     {
         parent::__construct($field, $error);
 

@@ -232,7 +232,7 @@ class DatePicker extends Bin
      * @param   string   $stock  Stock image (the button image)
      * @access  public
      */
-    function DatePicker($name, $value = '', $text = '', $stock = '')
+    function __construct($name, $value = '', $text = '', $stock = '')
     {
         if (empty($stock)) {
             $stock = STOCK_CALENDAR;

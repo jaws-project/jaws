@@ -19,7 +19,7 @@ class JSRequiredValidator extends JSValidator
      * @param  string  $field  Field to validate
      * @param  string  $error  Error to print
      */
-    function JSRequiredValidator($field, $error)
+    function __construct($field, $error)
     {
         parent::__construct($field, $error);
 

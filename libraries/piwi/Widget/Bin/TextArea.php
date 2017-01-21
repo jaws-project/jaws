@@ -59,7 +59,7 @@ class TextArea extends Bin
      * @param    int     Number of columns
      * @access   public
      */
-    function TextArea($name, $value = '', $title = '', $rows = 0, $cols = 0)
+    function __construct($name, $value = '', $title = '', $rows = 0, $cols = 0)
     {
         $this->_name       = $name;
         $this->_value      = $value;

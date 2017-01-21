@@ -66,7 +66,7 @@ class Image extends Bin
      * @param   string Border of the image
      * @access  public
      */
-    function Image($src, $alt = '', $border = '0', $width = null, $height = null)
+    function __construct($src, $alt = '', $border = '0', $width = null, $height = null)
     {
         $this->_src    = (substr($src,0,1) == '?' ||
                           substr($src,0,7) == 'http://' ||

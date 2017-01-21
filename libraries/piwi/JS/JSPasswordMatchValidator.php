@@ -20,7 +20,7 @@ class JSPasswordMatchValidator extends JSValidator
      * @param  string  $error  Error to print
      * @param  string  $comparefield Field to compare the password entry
      */
-    function JSPasswordMatchValidator($field, $error, $comparefield)
+    function __construct($field, $error, $comparefield)
     {
         parent::__construct($field, $error);
 

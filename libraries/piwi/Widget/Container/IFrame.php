@@ -68,7 +68,7 @@ class IFrame extends Bin
      * @param   int height (optional)
      * @access  public
      */
-    function IFrame($name, $src, $border = 0, $scrolling = 'auto', $width = null, $height = null)
+    function __construct($name, $src, $border = 0, $scrolling = 'auto', $width = null, $height = null)
     {
         $this->_name        = $name;
         $this->_src         = (substr($src,0,1) == '?' ||

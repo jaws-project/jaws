@@ -21,7 +21,7 @@ class JSLengthValidator extends JSValidator
      * @param  int     $max    Max length
      * @param  int     $min    Min length (Default 0)
      */
-    function JSLengthValidator($field, $error, $max, $min = 0)
+    function __construct($field, $error, $max, $min = 0)
     {
         parent::__construct($field, $error);
 

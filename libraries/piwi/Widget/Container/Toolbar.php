@@ -19,7 +19,7 @@ class Toolbar extends Container
      *
      * @access public
      */
-    function Toolbar()
+    function __construct()
     {
         parent::init();
     }

@@ -109,7 +109,7 @@ class Form extends Container
      *
      * @access   public
      */
-    function Form($action, $method = 'get', $encoding = '', $id = '')
+    function __construct($action, $method = 'get', $encoding = '', $id = '')
     {
         $this->_action         = $action;
         $this->_method         = strtolower($method);

@@ -20,7 +20,7 @@ class JSCreditCardValidator extends JSValidator
      * @param  string  $error  Error to print
      * @param  string  $cardtype CardType field to use as reference
      */
-    function JSCreditCardValidator($field, $error, $cardtype)
+    function __construct($field, $error, $cardtype)
     {
         parent::_construct($field, $error, $cardtype);
 

@@ -29,7 +29,7 @@ class Label extends Bin
      * @param    mixed  $bound Bound to element object or ID
      * @access   public
      */
-    function Label($label, $bound = '')
+    function __construct($label, $bound = '')
     {
         $this->_value = $label;
         $this->_bound = $bound;

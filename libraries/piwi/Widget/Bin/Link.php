@@ -66,7 +66,7 @@ class Link extends Bin
      * @param   string $image Link Image
      * @access  public
      */
-    function Link($text, $href, $image = '')
+    function __construct($text, $href, $image = '')
     {
         $this->_text  = $text;
         $this->_link  = $href;

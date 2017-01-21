@@ -49,7 +49,7 @@ class ComboGroup extends Bin
      * @param   string Title of the combo
      * @access  public
      */
-    function ComboGroup ($name, $title = '')
+    function __construct($name, $title = '')
     {
         $this->_name   = $name;
         $this->_title  = $title;

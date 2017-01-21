@@ -36,7 +36,7 @@ class FieldSet extends Container
      *
      * @access   public
      */
-    function FieldSet($legend = '')
+    function __construct($legend = '')
     {
         $this->_name      = 'fieldset' . rand(1, 100);
         $this->_direction = 'horizontal';

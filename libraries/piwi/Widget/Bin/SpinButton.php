@@ -40,7 +40,7 @@ class SpinButton extends Combo
      * @param   string Title of the Spin
      * @access  public
      */
-    function SpinButton($name, $size = 20, $title = '', $step = 1)
+    function __construct($name, $size = 20, $title = '', $step = 1)
     {
         $this->_name     = $name;
         $this->_spinSize = $size;

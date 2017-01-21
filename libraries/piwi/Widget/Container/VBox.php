@@ -20,7 +20,7 @@ class VBox extends Box
      * @param  int   $border  Border size
      * @access public
      */
-    function VBox($spacing = 0, $border = 0)
+    function __construct($spacing = 0, $border = 0)
     {
         $this->setBorder($border);
         $this->setName('vbox' . rand(1, 100));

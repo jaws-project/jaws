@@ -20,7 +20,7 @@ class HiddenEntry extends Entry
      * @param    string Value of the entry (optional)
      * @access   public
      */
-    function HiddenEntry($name, $value = '')
+    function __construct($name, $value = '')
     {
         $this->_name  = $name;
         $this->_value = $value;

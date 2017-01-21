@@ -52,7 +52,7 @@ class Button extends Bin
      * @param    string Stock that button wil use
      * @access   public
      */
-    function Button($name, $value, $stock = '')
+    function __construct($name, $value, $stock = '')
     {
         $this->_name     = $name;
         $this->_value    = $value;

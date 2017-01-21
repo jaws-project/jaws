@@ -181,7 +181,7 @@ class DataGrid extends Container
      * @param   string  $id    Id of the DataGrid
      * @access  public
      */
-    function DataGrid($data, $caption = '', $id = '')
+    function __construct($data, $caption = '', $id = '')
     {
         $this->_columns       = array();
         $this->_caption       = $caption;

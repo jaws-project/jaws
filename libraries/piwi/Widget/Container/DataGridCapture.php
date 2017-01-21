@@ -66,7 +66,7 @@ class DataGridCapture extends Container
      * @param   string  $id    Id of the DataGridCapture
      * @access  public
      */
-    function DataGridCapture($numrows, $numcolumns, $titles, $gadget, $action, $entry_type, $caption = '', $id = '')
+    function __construct($numrows, $numcolumns, $titles, $gadget, $action, $entry_type, $caption = '', $id = '')
     {
         $this->_name          = 'datagridcapture';
         $this->_class         = 'datagrid';

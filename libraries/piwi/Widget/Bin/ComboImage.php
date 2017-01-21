@@ -59,7 +59,7 @@ class ComboImage extends Combo
      * @param   string Widget ID
      * @access  public
      */
-    function ComboImage($name, $title = '', $id = '')
+    function __construct($name, $title = '', $id = '')
     {
         $this->_name    = $name;
         $this->_title   = $title;

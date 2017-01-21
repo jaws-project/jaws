@@ -19,7 +19,7 @@ class JSNumericValidator extends JSValidator
      * @param  string  $error  Error to print
      * @access public
      */
-    function JSNumericValidator($field, $error)
+    function __construct($field, $error)
     {
         parent::__construct($field, $error);
 

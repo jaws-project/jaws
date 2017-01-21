@@ -21,7 +21,7 @@ class IntEntry extends Entry
      * @param    string Title of the entry (optional)
      * @access   public
      */
-    function IntEntry($name, $value = '', $title = '')
+    function __construct($name, $value = '', $title = '')
     {
         $this->_name  = $name;
         $this->_value = $value;

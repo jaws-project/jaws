@@ -96,7 +96,7 @@ class ComboOption
      * @param   string  $style Style of the Option
      * @access  public
      */
-    function ComboOption($value, $text, $id = null, $isselected = false, $isdisabled = false, $class = '', $style = '')
+    function __construct($value, $text, $id = null, $isselected = false, $isdisabled = false, $class = '', $style = '')
     {
         $this->_value      = $value;
         $this->_text       = $text;

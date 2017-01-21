@@ -39,7 +39,7 @@ class ViewPort extends Container
      * @param  string    $height Height of the Viewport
      * @access public
      */
-    function ViewPort($id = 'viewport', $width = 300, $height = 150)
+    function __construct($id = 'viewport', $width = 300, $height = 150)
     {
         $this->_id = $id;
         $this->_width = $width;
