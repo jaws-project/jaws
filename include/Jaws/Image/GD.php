@@ -17,7 +17,7 @@ class Jaws_Image_GD extends Jaws_Image
      * @access  public
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function Jaws_Image_GD()
+    function __construct()
     {
         if (!extension_loaded('gd')) {
             return Jaws_Error::raiseError('GD library is not available.',

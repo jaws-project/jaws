@@ -17,7 +17,7 @@ class Jaws_Image_Imagick extends Jaws_Image
      * @access  public
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function Jaws_Image_Imagick()
+    function __construct()
     {
         if (!extension_loaded('imagick')) {
             return Jaws_Error::raiseError('Imagick library is not available.',

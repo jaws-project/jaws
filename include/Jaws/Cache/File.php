@@ -22,7 +22,7 @@ class Jaws_Cache_File extends Jaws_Cache
      * @access  public
      * @return Null
      */
-    function Jaws_Cache_File()
+    function __construct()
     {
         // initializing driver
         $this->_path = JAWS_CACHE;

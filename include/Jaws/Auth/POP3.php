@@ -29,7 +29,7 @@ class Jaws_Auth_POP3
      * @access  public
      * @return  void
      */
-    function Jaws_Auth_POP3()
+    function __construct()
     {
         $this->_Server = 'localhost';
         $this->_Port   = '110';

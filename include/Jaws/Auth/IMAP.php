@@ -40,7 +40,7 @@ class Jaws_Auth_IMAP
      * @access  public
      * @return  void
      */
-    function Jaws_Auth_IMAP()
+    function __construct()
     {
         $this->_Server = 'localhost';
         $this->_Port   = '143';

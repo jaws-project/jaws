@@ -49,7 +49,7 @@ class Jaws_Auth_LDAP
      * @access  public
      * @return  void
      */
-    function Jaws_Auth_LDAP()
+    function __construct()
     {
         $this->_Server = 'localhost';
         $this->_Port   = '389';
