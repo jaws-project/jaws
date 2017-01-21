@@ -88,7 +88,7 @@ class File_Archive_Writer_Mail extends File_Archive_Writer
      *        object
      * @param string $message Text body of the mail
      */
-    function File_Archive_Writer_Mail($to, $headers, $message, &$mail)
+    function __construct($to, $headers, $message, &$mail)
     {
         $this->mime = new Mail_mime();
         $this->mime->setTXTBody($message);

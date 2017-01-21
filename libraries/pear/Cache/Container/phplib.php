@@ -116,7 +116,7 @@ class Cache_Container_phplib extends Cache_Container
     *                   see $local_path for some hints.s
     * @see  $local_path
     */
-    function Cache_Container_phplib($options = '')
+    function __construct($options = '')
     {
         if (is_array($options)) {
             $this->setOptions($options,  array_merge($this->allowed_options, array('db_class', 'db_file', 'db_path', 'local_file', 'local_path')));

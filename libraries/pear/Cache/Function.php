@@ -79,7 +79,7 @@ class Cache_Function extends Cache
     * @param    array   Array with container class options
     * @param    integer Number of seconds for which to cache
     */
-    function Cache_Function($container  = 'file',
+    function __construct($container  = 'file',
                             $container_options = array('cache_dir'       => '.',
                                                        'filename_prefix' => 'cache_'
                                                       ),

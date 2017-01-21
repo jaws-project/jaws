@@ -74,7 +74,7 @@ class File_Archive_Reader_Archive extends File_Archive_Reader
     }
 
 //PUBLIC
-    function File_Archive_Reader_Archive(&$source, $sourceOpened = false)
+    function __construct(&$source, $sourceOpened = false)
     {
         $this->source =& $source;
         $this->sourceOpened = $this->sourceInitiallyOpened = $sourceOpened;

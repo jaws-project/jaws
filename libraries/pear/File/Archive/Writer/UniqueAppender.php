@@ -56,7 +56,7 @@ class File_Archive_Writer_UniqueAppender extends File_Archive_Writer
      * Construct a unique writer that will write to the specified writer
      * and remove duplicate files from the reader on close
      */
-    function File_Archive_Writer_UniqueAppender(&$reader)
+    function __construct(&$reader)
     {
         $reader->close();
         $pos = 0;

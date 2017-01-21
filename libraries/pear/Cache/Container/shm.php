@@ -106,7 +106,7 @@ class Cache_Container_shm extends Cache_Container
     *
     * @param array    shm_key, sem_key, shm_size, sem_perm, shm_perm
     */    
-    function Cache_Container_shm($options = '')
+    function __construct($options = '')
     {
         if (is_array($options)) {
             $this->setOptions($options, array_merge($this->allowed_options, 

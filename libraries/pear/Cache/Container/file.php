@@ -100,7 +100,7 @@ class Cache_Container_file extends Cache_Container
     *
     * @param    array   Config options: ["cache_dir" => ..., "filename_prefix" => ...]
     */
-    function Cache_Container_file($options = '')
+    function __construct($options = '')
     {
         if (is_array($options)) {
             $this->setOptions($options, array_merge($this->allowed_options, array('cache_dir', 'filename_prefix', 'max_userdata_linelength')));

@@ -707,7 +707,7 @@ class Net_FTP extends PEAR
      * @return void
      * @see Net_FTP::setHostname(), Net_FTP::setPort(), Net_FTP::connect()
      */
-    function Net_FTP($host = null, $port = null, $timeout = 90)
+    function __construct($host = null, $port = null, $timeout = 90)
     {
         $this->PEAR();
         if (isset($host)) {

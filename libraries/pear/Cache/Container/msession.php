@@ -81,7 +81,7 @@ class Cache_Container_msession extends Cache_Container
     var $ms = null;
 
     
-    function Cache_Container_msession($options = '')
+    function __construct($options = '')
     {
         if (is_array($options)) {
             $this->setOptions($options, array_merge($this->allowed_options, array('id_length', 'uniq', 'host', 'port', 'connect')));

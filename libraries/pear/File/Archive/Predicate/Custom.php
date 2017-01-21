@@ -55,7 +55,7 @@ class File_Archive_Predicate_Custom extends File_Archive_Predicate
      *        added to the begining of the expression. A ; will also be added at
      *        the end so that you don't need to write it
      */
-    function File_Archive_Predicate_Custom($expression)
+    function __construct($expression)
     {
         $this->expression = $expression.";";
         if (strpos($this->expression, "return") === false) {

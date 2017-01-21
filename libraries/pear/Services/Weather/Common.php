@@ -174,7 +174,7 @@ class Services_Weather_Common {
      * @throws  PEAR_Error
      * @access  private
      */
-    function Services_Weather_Common($options, &$error)
+    function __construct($options, &$error)
     {
         // Set some constants for the case when PHP4 is used, as the
         // date_sunset/sunrise functions are not implemented there

@@ -68,8 +68,8 @@ class File_Archive_Writer_Archive extends File_Archive_Writer
      * @param bool $autoClose Indicate if the inner writer must be closed when
      *        closing this
      */
-    function File_Archive_Writer_Archive($filename, &$innerWriter,
-                                         $stat = array(), $autoClose = true)
+    function __construct($filename, &$innerWriter,
+                         $stat = array(), $autoClose = true)
     {
         $this->innerWriter =& $innerWriter;
         $this->autoClose = $autoClose;

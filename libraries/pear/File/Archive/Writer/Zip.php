@@ -60,8 +60,7 @@ class File_Archive_Writer_Zip extends File_Archive_Writer_MemoryArchive
      */
     var $central = "";
 
-    function File_Archive_Writer_Zip($filename, &$innerWriter,
-                                     $stat=array(), $autoClose = true)
+    function __construct($filename, &$innerWriter, $stat=array(), $autoClose = true)
     {
         global $_File_Archive_Options;
         parent::File_Archive_Writer_MemoryArchive(

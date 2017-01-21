@@ -128,9 +128,9 @@ class Cache_HTTP_Request extends Cache
     * @see Cache, HTTP_Request
     * @access public
     */
-    function Cache_HTTP_Request($url, $params = null, $container  = 'file',
-                                $containerOptions = null, $expires = 3600,
-                                $mode = CACHE_HTTP_REQUEST_KEEP_LOCAL_COPY)
+    function __construct($url, $params = null, $container  = 'file',
+                         $containerOptions = null, $expires = 3600,
+                         $mode = CACHE_HTTP_REQUEST_KEEP_LOCAL_COPY)
     {
         if (!isset($params)) {
             $params = array();

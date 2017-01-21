@@ -43,7 +43,7 @@ class File_Archive_Predicate_Preg extends File_Archive_Predicate
     /**
      * @param string $ereg is the regular expression
      */
-    function File_Archive_Predicate_Preg($preg)
+    function __construct($preg)
     {
         $this->preg = $preg;
     }

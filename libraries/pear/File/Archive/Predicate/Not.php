@@ -39,7 +39,7 @@ require_once "File/Archive/Predicate.php";
 class File_Archive_Predicate_Not extends File_Archive_Predicate
 {
     var $pred;
-    function File_Archive_Predicate_Not($pred)
+    function __construct($pred)
     {
         $this->pred = $pred;
     }

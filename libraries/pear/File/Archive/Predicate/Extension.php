@@ -43,7 +43,7 @@ class File_Archive_Predicate_Extension extends File_Archive_Predicate
     /**
      * @param $extensions array or comma separated string of allowed extensions
      */
-    function File_Archive_Predicate_Extension($extensions)
+    function __construct($extensions)
     {
         if (is_string($extensions)) {
             $this->extensions = explode(",",$extensions);

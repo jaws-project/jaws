@@ -59,7 +59,7 @@ class File_Archive_Writer_Memory extends File_Archive_Writer
      *        Any data located after $seek will be erased
      *        The default value is 0
      */
-    function File_Archive_Writer_Memory(&$data, $seek = 0)
+    function __construct(&$data, $seek = 0)
     {
         $this->data =& $data;
         $this->data = substr($data, 0, $seek);

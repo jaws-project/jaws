@@ -598,7 +598,7 @@ class XML_Serializer extends PEAR
      *
      * @access public
      */
-    function XML_Serializer( $options = null )
+    function __construct( $options = null )
     {
         $this->PEAR();
         if (is_array($options)) {

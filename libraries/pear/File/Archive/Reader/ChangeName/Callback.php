@@ -37,7 +37,7 @@ require_once "File/Archive/Reader/ChangeName.php";
 class File_Archive_Reader_ChangeName_Callback extends File_Archive_Reader_ChangeName
 {
     var $function;
-    function File_Archive_Reader_ChangeName_Callback($function, &$source)
+    function __construct($function, &$source)
     {
         parent::File_Archive_Reader_ChangeName($source);
         $this->function = $function;

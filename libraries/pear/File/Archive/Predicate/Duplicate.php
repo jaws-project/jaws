@@ -61,7 +61,7 @@ class File_Archive_Predicate_Duplicate extends File_Archive_Predicate
      *        The predicate should then be used on the same source to remove the
      *        old duplicate files
      */
-    function File_Archive_Predicate_Duplicate(&$source)
+    function __construct(&$source)
     {
         //Ensure we are at the begining of the file
         $source->close();

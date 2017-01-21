@@ -136,7 +136,7 @@ class Cache_Graphics extends Cache
     * Instantiates a cache file container.
     *
     */
-    function Cache_Graphics()
+    function __construct()
     {
         $this->Cache('file', array('cache_dir' => $this->cache_dir, 'filename_prefix' => $this->cache_file_prefix));
         

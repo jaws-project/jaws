@@ -83,8 +83,8 @@ class SOAP_Value
      * @param mixed $value       Value to set.
      * @param array $attributes  Attributes.
      */
-    function SOAP_Value($name = '', $type = false, $value = null,
-                        $attributes = array())
+    function __construct($name = '', $type = false, $value = null,
+                         $attributes = array())
     {
         // Detect type if not passed.
         $this->nqn = new QName($name);
@@ -145,7 +145,7 @@ class SOAP_Header extends SOAP_Value
      * @param integer $mustunderstand  Zero or one.
      * @param mixed $attributes        Attributes.
      */
-    function SOAP_Header($name = '', $type, $value, $mustunderstand = 0,
+    function __construct($name = '', $type, $value, $mustunderstand = 0,
                          $attributes = array())
     {
         if (!is_array($attributes)) {
@@ -184,8 +184,8 @@ class SOAP_Attachment extends SOAP_Value
      *                          is provide.
      * @param string $file      The attachment data.
      */
-    function SOAP_Attachment($name = '', $type = 'application/octet-stream',
-                             $filename, $file = null)
+    function __construct($name = '', $type = 'application/octet-stream',
+                         $filename, $file = null)
     {
         parent::SOAP_Value($name, null, null);
 

@@ -41,7 +41,7 @@ class SOAP_Server_Email extends SOAP_Server {
 
     var $headers = array();
 
-    function SOAP_Server_Email($send_response = true)
+    function __construct($send_response = true)
     {
         parent::SOAP_Server();
         $this->send_response = $send_response;

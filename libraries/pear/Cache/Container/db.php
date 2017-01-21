@@ -79,7 +79,7 @@ class Cache_Container_db extends Cache_Container
     */
     var $db;
 
-    function Cache_Container_db($options)
+    function __construct($options)
     {
         if (!is_array($options) || !isset($options['dsn'])) {
             return new Cache_Error('No dsn specified!', __FILE__, __LINE__);

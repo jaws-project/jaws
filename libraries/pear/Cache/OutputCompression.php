@@ -85,7 +85,7 @@ class Cache_OutputCompression extends Cache_Output
     * @param    array   Array with container class options
     * @param    string  content encoding mode - auto => test which encoding the user accepts
     */    
-    function Cache_OutputCompression($container, $container_options = '', $encoding = 'auto')
+    function __construct($container, $container_options = '', $encoding = 'auto')
     {
         $this->setEncoding($encoding);
         $this->Cache($container, $container_options);

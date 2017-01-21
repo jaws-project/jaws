@@ -161,11 +161,11 @@ class SOAP_WSDL extends SOAP_Base
      *
      * @access public
      */
-    function SOAP_WSDL($wsdl_uri    = false,
-                       $proxy       = array(),
-                       $cacheUse    = false,
-                       $cacheMaxAge = WSDL_CACHE_MAX_AGE,
-                       $docs        = false)
+    function __construct($wsdl_uri    = false,
+                         $proxy       = array(),
+                         $cacheUse    = false,
+                         $cacheMaxAge = WSDL_CACHE_MAX_AGE,
+                         $docs        = false)
     {
         parent::SOAP_Base('WSDL');
         $this->uri         = $wsdl_uri;
@@ -980,9 +980,9 @@ class SOAP_WSDL_Cache extends SOAP_Base
      * @param boolean $cashUse      Use caching?
      * @param integer $cacheMaxAge  Cache maximum lifetime (in seconds)
      */
-    function SOAP_WSDL_Cache($cacheUse = false,
-                             $cacheMaxAge = WSDL_CACHE_MAX_AGE,
-                             $cacheDir = null)
+    function __construct($cacheUse = false,
+                         $cacheMaxAge = WSDL_CACHE_MAX_AGE,
+                         $cacheDir = null)
     {
         parent::SOAP_Base('WSDLCACHE');
         $this->_cacheUse = $cacheUse;
@@ -1143,7 +1143,7 @@ class SOAP_WSDL_Parser extends SOAP_Base
     /**
      * Constructor.
      */
-    function SOAP_WSDL_Parser($uri, &$wsdl, $docs = false)
+    function __construct($uri, &$wsdl, $docs = false)
     {
         parent::SOAP_Base('WSDLPARSER');
         $this->cache =& new SOAP_WSDL_Cache($wsdl->cacheUse,
@@ -1974,8 +1974,8 @@ class SOAP_WSDL_ObjectParser extends SOAP_Base
      * @param string $service_desc     Optional description of the WSDL
      *                                 <service>.
      */
-    function SOAP_WSDL_ObjectParser(&$objects, &$wsdl, $targetNamespace,
-                                    $service_name, $service_desc = '')
+    function __construct(&$objects, &$wsdl, $targetNamespace,
+                         $service_name, $service_desc = '')
     {
         parent::SOAP_Base('WSDLOBJECTPARSER');
 

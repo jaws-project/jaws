@@ -46,7 +46,7 @@ class File_Archive_Predicate_Index extends File_Archive_Predicate
     /**
      * @param $extensions array or comma separated string of allowed extensions
      */
-    function File_Archive_Predicate_Index($indexes)
+    function __construct($indexes)
     {
         $this->indexes = $indexes;
     }

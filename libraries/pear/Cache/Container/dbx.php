@@ -109,7 +109,7 @@ class Cache_Container_dbx extends Cache_Container
     var $persistent = true;
     
 
-    function Cache_Container_dbx($options)
+    function __construct($options)
     {
         if (!is_array($options) ) {
             return new Cache_Error('No options specified!', __FILE__, __LINE__);

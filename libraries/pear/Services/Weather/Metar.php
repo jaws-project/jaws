@@ -144,7 +144,7 @@ class Services_Weather_Metar extends Services_Weather_Common
      * @throws  PEAR_Error
      * @access  private
      */
-    function Services_Weather_Metar($options, &$error)
+    function __construct($options, &$error)
     {
         $perror = null;
         $this->Services_Weather_Common($options, $perror);

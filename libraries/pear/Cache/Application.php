@@ -84,7 +84,7 @@ class Cache_Application extends Cache
     * @param    string  Name of container class
     * @param    array   Array with container class options
     */
-    function Cache_Application($container = 'file', $container_options = array('cache_dir' => '/tmp/', 'filename_prefix' => 'cache_'), $id = 'application_var', $group = 'application_cache')
+    function __construct($container = 'file', $container_options = array('cache_dir' => '/tmp/', 'filename_prefix' => 'cache_'), $id = 'application_var', $group = 'application_cache')
     {
         $this->id    = $id;
         $this->group = $group;

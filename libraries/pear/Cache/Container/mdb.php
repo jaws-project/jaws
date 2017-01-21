@@ -86,7 +86,7 @@ class Cache_Container_mdb extends Cache_Container
      *
      * @param mixed Array with connection info or dsn string
      */
-    function Cache_Container_mdb($options)
+    function __construct($options)
     {
         $this->db = &MDB::Connect($options);
         if (MDB::isError($this->db)) {

@@ -251,7 +251,7 @@ class Services_Pingback
      *
      * @access public
      */
-    function Services_Pingback($data = null, $options = null)
+    function __construct($data = null, $options = null)
     {
         if (is_array($data)) {
             $this->setFromArray($data);

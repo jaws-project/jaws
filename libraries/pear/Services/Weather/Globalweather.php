@@ -115,7 +115,7 @@ class Services_Weather_Globalweather extends Services_Weather_Common {
      * @throws  PEAR_Error::SERVICES_WEATHER_ERROR_WRONG_SERVER_DATA
      * @access  private
      */
-    function Services_Weather_Globalweather($options, &$error)
+    function __construct($options, &$error)
     {
         $perror = null;
         $this->Services_Weather_Common($options, $perror);

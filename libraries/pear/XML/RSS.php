@@ -172,7 +172,7 @@ class XML_RSS extends XML_Parser
      *                default encoding (ISO-8859-1)
      * @return void
      */
-    function XML_RSS($handle = '', $srcenc = null, $tgtenc = null)
+    function __construct($handle = '', $srcenc = null, $tgtenc = null)
     {
         if ($srcenc === null && $tgtenc === null) {
             $this->XML_Parser();

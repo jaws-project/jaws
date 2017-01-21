@@ -59,7 +59,7 @@ class SOAP_Type_dateTime
      *                              date and time this object is going to
      *                              represent.
      */
-    function SOAP_Type_dateTime($date = -1)
+    function __construct($date = -1)
     {
         if ($date == -1) {
             $this->timestamp = time();

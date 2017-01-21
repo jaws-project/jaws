@@ -198,7 +198,7 @@ class SOAP_Client extends SOAP_Client_Overload
      * @param boolean|string $cache  Use WSDL caching? The cache directory if
      *                               a string.
      */
-    function SOAP_Client($endpoint, $wsdl = false, $portName = false,
+    function __construct($endpoint, $wsdl = false, $portName = false,
                          $proxy_params = array(), $cache = false)
     {
         parent::SOAP_Base('Client');

@@ -58,7 +58,7 @@ class Net_FTP_Observer
      * @since 1.3.0
      * @access public
      */
-    function Net_FTP_Observer()
+    function __construct()
     {
         $this->_id = md5(microtime());
     }

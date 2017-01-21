@@ -46,7 +46,7 @@ class SOAP_Transport_TCP extends SOAP_Transport
      *
      * @access public
      */
-    function SOAP_Transport_TCP($url, $encoding = SOAP_DEFAULT_ENCODING)
+    function __construct($url, $encoding = SOAP_DEFAULT_ENCODING)
     {
         parent::SOAP_Base_Object('TCP');
         $this->urlparts = @parse_url($url);
