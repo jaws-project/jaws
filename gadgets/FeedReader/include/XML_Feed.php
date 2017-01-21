@@ -42,7 +42,7 @@ class XML_Feed extends XML_Parser
      * @access  public
      * @return  void
      */
-    function XML_Feed()
+    function __construct()
     {
         parent::__construct();
     }
