@@ -46,7 +46,7 @@ class HttpBl
      *
      * @access  public
      */    
-    function HttpBl()
+    function __construct()
     {
         $this->Version = '0.1';
         if (!$this->VerifyKey()) {

@@ -102,7 +102,7 @@ class TypePad
      *
      * @access  public
      */
-    function TypePad()
+    function __construct()
     {
         if (is_null($GLOBALS['app']->Registry->fetch('typepad_key', 'Policy'))) {
             $GLOBALS['app']->Registry->insert('typepad_key', '', false, 'Policy');

@@ -103,7 +103,7 @@ class Akismet
      *
      * @access  public
      */
-    function Akismet()
+    function __construct()
     {
         if (is_null($GLOBALS['app']->Registry->fetch('akismet_key', 'Policy'))) {
             $GLOBALS['app']->Registry->insert('akismet_key', '', false, 'Policy');
