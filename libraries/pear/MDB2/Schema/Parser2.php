@@ -123,13 +123,6 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         parent::XML_Unserializer($this->options);
     }
 
-    function MDB2_Schema_Parser2($variables, $fail_on_invalid_names = true,
-        $structure = false, $valid_types = array(), $force_defaults = true,
-        $max_identifiers_length = null
-    ) {
-        $this->__construct($variables, $fail_on_invalid_names, $structure, $valid_types, $force_defaults);
-    }
-
     function parse()
     {
         $result = $this->unserialize($this->filename, true);

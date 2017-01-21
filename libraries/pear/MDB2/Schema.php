@@ -2779,7 +2779,7 @@ class MDB2_Schema_Error extends PEAR_Error
      *
      * @access  public
      */
-    function MDB2_Schema_Error($code = MDB2_SCHEMA_ERROR, $mode = PEAR_ERROR_RETURN,
+    function __construct($code = MDB2_SCHEMA_ERROR, $mode = PEAR_ERROR_RETURN,
               $level = E_USER_NOTICE, $debuginfo = null)
     {
         $this->PEAR_Error('MDB2_Schema Error: ' . MDB2_Schema::errorMessage($code), $code,

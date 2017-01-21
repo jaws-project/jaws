@@ -92,12 +92,6 @@ class MDB2_Schema_Validate
         $this->max_identifiers_length = $max_identifiers_length;
     }
 
-    function MDB2_Schema_Validate($fail_on_invalid_names = true, $valid_types = array(),
-        $force_defaults = true, $max_identifiers_length = null
-    ) {
-        $this->__construct($fail_on_invalid_names, $valid_types, $force_defaults);
-    }
-
     // }}}
     // {{{ raiseError()
 
