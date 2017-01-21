@@ -72,6 +72,7 @@ function submitFile()
     uploadedFileInfo.title = $('#frm_file #title').val();
     uploadedFileInfo.tags = $('#frm_file #tags').val();
     uploadedFileInfo.thumbnailPath = uploadedThumbnailPath;
+    uploadedFileInfo.public = $('#frm_file #public').prop('checked');
     if ($('#frm_file #published').prop('checked') != undefined) {
         uploadedFileInfo.published = $('#frm_file #published').prop('checked');
     }

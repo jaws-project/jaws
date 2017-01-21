@@ -19,10 +19,9 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $parent = (int)jaws()->request->fetch('parent');
+        $get = jaws()->request->fetch(array('id', 'parent'), 'get');
         $this->AjaxMe('index.js');
-        //
-        $this->gadget->layout->setVariable('parentId', $parent);
+        $this->gadget->layout->setVariable('parentId', $get['parent']);
 
         $tpl = $this->gadget->template->load('UploadFile.html');
         $tpl->SetBlock('uploadUI');
@@ -30,13 +29,32 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         $this->SetTitle(_t('DIRECTORY_UPLOAD_FILE'));
         $tpl->SetVariable('title', _t('DIRECTORY_UPLOAD_FILE'));
 
-        $tpl->SetVariable('parentId', $parent);
+        $tpl->SetVariable('parentId', $get['parent']);
+
+        // check must edit a file
+        $fileInfo = array();
+        if (!empty($get['id'])) {
+            $fileInfo = $this->gadget->model->load('Files')->GetFile($get['id']);
+            if(Jaws_Error::IsError($fileInfo)) {
+                return Jaws_HTTPError::Get(500);
+            }
+            if(empty($fileInfo)) {
+                return Jaws_HTTPError::Get(404);
+            }
+            if ($fileInfo['public']) {
+                return Jaws_HTTPError::Get(403);
+            }
+            $tpl->SetVariable('title', $fileInfo['title']);
+            $tpl->SetVariable('tags', $fileInfo['tags']);
+
+        }
 
         $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
         $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
+        $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC'));
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
@@ -54,7 +72,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
 
         $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
         $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
-        $tpl->SetVariable('path', $this->GetPath($parent));
+        $tpl->SetVariable('path', $this->GetPath($get['parent']));
 
         $tpl->ParseBlock('uploadUI');
         return $tpl->Get();
@@ -126,7 +144,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
 
         try {
             $data = jaws()->request->fetch(
-                array('parent', 'title', 'description', 'parent', 'published',
+                array('parent', 'title', 'description', 'parent', 'public', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnailPath')
             );
             if (empty($data['title'])) {

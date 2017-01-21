@@ -7,7 +7,7 @@
  */
 $maps[] = array(
     'Directory',
-    'directory[/{id}][/user/{user}][/type/{type}][/page/{page}][/order/{order}]',
+    'directory[/user/{user}][/public/{public}][/{id}][/type/{type}][/page/{page}][/order/{order}]',
     array(
         'id' => '[[:digit:]]+',
         'user' => '[[:alnum:]\-_.@]+',
@@ -18,14 +18,14 @@ $maps[] = array(
 );
 $maps[] = array(
     'UploadFileUI',
-    'directory/upload[/{parent}]',
+    'directory[/id/{id}][/parent/{parent}]',
     array(
         'parent' => '[[:digit:]]+',
     )
 );
 $maps[] = array(
     'Download',
-    'directory/download/{id}[.{ext}]',
+    'directory/download/{id}[/user/{user}][/key/{key}][.{ext}]',
     array('id' => '[[:digit:]]+'),
     ''
 );

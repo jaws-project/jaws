@@ -108,7 +108,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
             'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
-            'is_dir:boolean', 'public:boolean', 'create_time', 'update_time');
+            'is_dir:boolean', 'public:boolean', 'published:boolean', 'create_time', 'update_time');
         return $table->where('id', $id)->fetchRow();
     }
 
@@ -121,6 +121,10 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function InsertFile($data)
     {
+        $data['public'] = (bool)$data['public'];
+        if (!$data['public']) {
+            $data['key'] = mt_rand(1000, 9999999999);
+        }
         $data['create_time'] = $data['update_time'] = time();
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->insert($data)->exec();
