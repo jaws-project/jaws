@@ -9,7 +9,13 @@
  * Use async mode, create Callback
  */
 var DirectoryCallback = {
-    CreateFile: function(response) {
+    SaveFile: function(response) {
+        if (response.type === 'alert-success') {
+            stopAction();
+        }
+        DirectoryAjax.showResponse(response);
+    },
+    DeleteFile: function(response) {
         if (response.type === 'alert-success') {
             stopAction();
         }
@@ -65,8 +71,7 @@ function uploadThumbnailFile() {
  */
 function submitFile()
 {
-    var action = (fileId === 0)? 'CreateFile' : 'UpdateFile';
-
+    uploadedFileInfo.id = jaws.gadgets.Directory.fileId;
     uploadedFileInfo.parent = jaws.gadgets.Directory.parentId;
     uploadedFileInfo.description = getEditorValue('#description');
     uploadedFileInfo.title = $('#frm_file #title').val();
@@ -78,7 +83,16 @@ function submitFile()
     }
 
 
-    DirectoryAjax.callAsync(action, uploadedFileInfo);
+    DirectoryAjax.callAsync('SaveFile', uploadedFileInfo);
+}
+
+/**
+ * Submits file data to create or update
+ */
+function deleteFile(id) {
+    if (confirm(jaws.gadgets.Directory.confirmDelete)) {
+        DirectoryAjax.callAsync('DeleteFile', {fileId: id});
+    }
 }
 
 /**

@@ -54,6 +54,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function Directory($type = null, $orderBy = 0, $limit = 0)
     {
+        $this->AjaxMe('index.js');
+        $this->gadget->layout->setVariable('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
+
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('directory');
 
@@ -263,6 +266,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->ParseBlock('filters');
 
 
+        $params['user_privates'] = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Files');
         $files = $model->GetFiles($params, false, $orderBy);
         if (Jaws_Error::IsError($files)) {
@@ -310,6 +314,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             if (!$file['public']) {
                 $tpl->SetBlock('files/file/action');
                 $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+                $tpl->SetVariable('id', $file['id']);
                 $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
                 $tpl->SetVariable('edit_url',
                     $this->gadget->urlMap('UploadFileUI',
@@ -495,11 +500,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function Download()
     {
-        $id = jaws()->request->fetch('id');
-        if (is_null($id)) {
+        $get = jaws()->request->fetch(array('id', 'user', 'key'), 'get');
+        $id = (int)$get['id'];
+        if (empty($id)) {
             return Jaws_HTTPError::Get(500);
         }
-        $id = (int)$id;
         $model = $this->gadget->model->load('Files');
 
         // Validate file
@@ -509,6 +514,20 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
         if (empty($file) || empty($file['user_filename'])) {
             return Jaws_HTTPError::Get(404);
+        }
+
+        // check private file
+        if (!$file['public']) {
+            $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+            if ($currentUser > 0) {
+                if ($file['user'] != $currentUser) {
+                    return Jaws_HTTPError::Get(403);
+                }
+            } else {
+                if ($get['key'] !== $file['key'] || $get['user'] !== $file['user']) {
+                    return Jaws_HTTPError::Get(403);
+                }
+            }
         }
 
         // Check for file existence
