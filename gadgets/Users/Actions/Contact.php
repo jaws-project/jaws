@@ -163,7 +163,7 @@ class Users_Actions_Contact extends Users_Actions_Default
 
         // city_home
         if (!empty($contact['province_home'])) {
-            $cities = $zModel->GetCities($contact['province_home']);
+            $cities = $zModel->GetCities($contact['province_home'], $contact['country_home']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
                     $tpl->SetBlock('contact/city_home');
@@ -180,7 +180,7 @@ class Users_Actions_Contact extends Users_Actions_Default
 
         // city_work
         if (!empty($contact['province_work'])) {
-            $cities = $zModel->GetCities($contact['province_work']);
+            $cities = $zModel->GetCities($contact['province_work'], $contact['country_work']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
                     $tpl->SetBlock('contact/city_work');
@@ -197,7 +197,7 @@ class Users_Actions_Contact extends Users_Actions_Default
 
         // city_other
         if (!empty($contact['province_other'])) {
-            $cities = $zModel->GetCities($contact['province_other']);
+            $cities = $zModel->GetCities($contact['province_other'], $contact['country_other']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
                     $tpl->SetBlock('contact/city_other');
@@ -254,9 +254,9 @@ class Users_Actions_Contact extends Users_Actions_Default
                 'title', 'name', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
                 'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
                 'email_home', 'email_work', 'email_other',
-                'province_home', 'city_home', 'address_home', 'postal_code_home',
-                'province_work', 'city_work', 'address_work', 'postal_code_work',
-                'province_other', 'city_other', 'address_other', 'postal_code_other',
+                'country_home', 'province_home', 'city_home', 'address_home', 'postal_code_home',
+                'country_work', 'province_work', 'city_work', 'address_work', 'postal_code_work',
+                'country_other', 'province_other', 'city_other', 'address_other', 'postal_code_other',
                 'note'
             ),
             'post'
