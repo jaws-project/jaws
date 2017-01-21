@@ -16,7 +16,7 @@ class Upgrader_Authentication extends JawsUpgraderStage
      *
      * @access public
      */
-    function Upgrader_Authentication()
+    function __construct()
     {
         if (!isset($_SESSION['upgrade']['Authentication'])) {
             $_SESSION['secure']= false;

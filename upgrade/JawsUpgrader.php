@@ -29,7 +29,7 @@ class JawsUpgrader
      *
      * @param string The path this upgrader is running from.
      */
-    function JawsUpgrader($db_config)
+    function __construct($db_config)
     {
         $this->_db_file_config = $db_config;
     }
