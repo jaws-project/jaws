@@ -33,7 +33,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             $table->where('parent', $params['parent'])->and();
         }
         if (isset($params['public'])) {
-            $table->where('public', $params['public'])->and();
+            $table->where('directory.public', (bool)$params['public'])->and();
         }
         if (isset($params['is_dir'])) {
             $table->where('is_dir', $params['is_dir'])->and();
@@ -51,7 +51,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             }
         }
         if (isset($params['published'])) {
-            $table->where('published', $params['published'])->and();
+            $table->where('published', (bool)$params['published'])->and();
         }
         if (isset($params['date'])){
             if (!empty($params['date'][0])) {

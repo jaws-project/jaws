@@ -172,6 +172,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
     {
         $data = jaws()->request->fetch(array('parent'));
         $model = $this->gadget->model->loadAdmin('Files');
+        $data['public'] = true;
         $files = $model->GetFiles($data);
         if (Jaws_Error::IsError($files)){
             return array();

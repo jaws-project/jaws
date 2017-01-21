@@ -282,6 +282,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
+        $tpl->SetVariable('lbl_action', _t('GLOBAL_ACTIONS'));
 
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
         $theme = $GLOBALS['app']->GetTheme();
@@ -305,6 +306,18 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['file_size']));
             $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
             $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
+
+            if (!$file['public']) {
+                $tpl->SetBlock('files/file/action');
+                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+                $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+                $tpl->SetVariable('edit_url',
+                    $this->gadget->urlMap('UploadFileUI',
+                        array('id' => $file['id'], 'parent'=>$parent))
+                );
+
+                $tpl->ParseBlock('files/file/action');
+            }
 
             $thumbnailURL = $model->GetThumbnailURL($file['host_filename']);
             if (!empty($thumbnailURL)) {
