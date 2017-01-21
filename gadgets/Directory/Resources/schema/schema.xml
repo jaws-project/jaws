@@ -88,6 +88,7 @@
       <field>
         <name>key</name>
         <type>integer</type>
+        <length>8</length>
         <default>0</default>
       </field>
 
