@@ -60,7 +60,7 @@ class Underground_Weather
      * @param   array   $options
      * @return  void
      */
-    function Underground_Weather($apikey, $metric = true, $cache_dir = '', $expire_time = 3600, $options = array())
+    function __construct($apikey, $metric = true, $cache_dir = '', $expire_time = 3600, $options = array())
     {
         $this->_apikey      = $apikey;
         $this->_metric      = $metric;

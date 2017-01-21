@@ -50,7 +50,7 @@ class Google_Weather
      * @param   array   $options
      * @return  void
      */
-    function Google_Weather($metric = true, $cache_dir = '', $expire_time = 3600, $options = array())
+    function __construct($metric = true, $cache_dir = '', $expire_time = 3600, $options = array())
     {
         $this->_metric      = $metric;
         $this->_cache_dir   = $cache_dir;
