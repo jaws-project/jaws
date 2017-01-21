@@ -78,7 +78,6 @@ class Jaws_DB
      */
      var $_dsn;
 
-
     /**
      * Constructor
      *
@@ -86,7 +85,7 @@ class Jaws_DB
      * @param   array  $options  Database connection options
      * @return  void
      */
-    function Jaws_DB($options)
+    function __construct($options)
     {
         $options['driver'] = strtolower($options['driver']);
         $this->_dsn = array(

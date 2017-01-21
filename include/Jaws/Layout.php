@@ -84,7 +84,7 @@ class Jaws_Layout
      *
      * @access  public
      */
-    function Jaws_Layout()
+    function __construct()
     {
         // fetch all registry keys related to site attributes
         $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);

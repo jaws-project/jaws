@@ -54,7 +54,7 @@ class Jaws_Template
      * @param   bool    $loadGlobalVariables    Fetch and set global variables 
      * @return  void
      */
-    function Jaws_Template($loadFromTheme = false, $loadGlobalVariables = true)
+    function __construct($loadFromTheme = false, $loadGlobalVariables = true)
     {
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';

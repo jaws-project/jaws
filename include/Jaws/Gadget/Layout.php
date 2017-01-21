@@ -25,7 +25,7 @@ class Jaws_Gadget_Layout
      * @param   object  $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jaws_Gadget_Layout($gadget)
+    function __construct($gadget)
     {
         $this->gadget = $gadget;
     }
