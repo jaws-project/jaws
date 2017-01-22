@@ -94,6 +94,18 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
             $tpl->ParseBlock('edit_album/group');
         }
 
+        // Meta keywords
+        $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
+        $metaKeywords->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
+
+        // Meta Description
+        $metaDesc =& Piwi::CreateWidget('Entry', 'meta_description', '');
+        $metaDesc->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('meta_description', $metaDesc->Get());
+
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, 'history.go(-1)');
         $tpl->SetVariable('cancel', $cancel->Get());
@@ -115,7 +127,10 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     function SaveNewAlbum()
     {
         $this->gadget->CheckPermission('ManageAlbums');
-        $post = jaws()->request->fetch(array('name', 'allow_comments:array', 'groups:array', 'published'), 'post');
+        $post = jaws()->request->fetch(
+            array('name', 'allow_comments:array', 'meta_keywords', 'meta_description',
+                'groups:array', 'published'), 'post');
+
         if (!empty($post['groups']) && !empty($post['name'])) {
             $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
             $model = $this->gadget->model->loadAdmin('Albums');
@@ -123,7 +138,9 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 $post['name'],
                 $description,
                 isset($post['allow_comments'][0]),
-                $post['published']
+                $post['published'],
+                $post['meta_keywords'],
+                $post['meta_description']
             );
             if (!Jaws_Error::IsError($album)) {
                 $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
@@ -230,6 +247,18 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
             $tpl->ParseBlock('edit_album/group');
         }
 
+        // Meta keywords
+        $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $album['meta_keywords']);
+        $metaKeywords->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
+
+        // Meta Description
+        $metaDesc =& Piwi::CreateWidget('Entry', 'meta_description', $album['meta_description']);
+        $metaDesc->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('meta_description', $metaDesc->Get());
+
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "gotoLocation({$get['album']})");
         $tpl->SetVariable('cancel', $cancel->Get());
@@ -254,14 +283,17 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
 
         $post= jaws()->request->fetch(
-            array('name', 'album', 'allow_comments:array', 'groups:array', 'published'),
+            array('name', 'album', 'meta_keywords', 'meta_description', 'allow_comments:array', 'groups:array', 'published'),
             'post'
         );
         if (!empty($post['groups']) && !empty($post['name'])) {
             $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
             $id = (int)$post['album'];
             $model = $this->gadget->model->loadAdmin('Albums');
-            $result = $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
+            $result = $model->UpdateAlbum(
+                $id, $post['name'], $description, isset($post['allow_comments'][0]),
+                $post['published'], $post['meta_keywords'], $post['meta_description']
+            );
             if (!Jaws_Error::IsError($result)) {
                 // AlbumGroup
                 $agModel = $this->gadget->model->loadAdmin('AlbumGroup');

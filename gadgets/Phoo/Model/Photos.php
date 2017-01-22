@@ -338,6 +338,8 @@ class Phoo_Model_Photos extends Phoo_Model
             'phoo_image.description',
             'title',
             'allow_comments:boolean',
+            'meta_keywords',
+            'meta_description',
             'published:boolean',
             'phoo_image_album.phoo_album_id');
         $table->join('phoo_image_album', 'phoo_image.id',
@@ -351,18 +353,31 @@ class Phoo_Model_Photos extends Phoo_Model
         $entry = array();
         foreach ($rs as $i) {
             if (empty($entry)) {
-                $entry['id']             = $i['id'];
-                $entry['thumb']          = Phoo_Model::GetThumbPath($i['filename']);
-                $entry['medium']         = Phoo_Model::GetMediumPath($i['filename']);
-                $entry['image']          = Phoo_Model::GetOriginalPath($i['filename']);
-                $entry['description']    = $i['description'];
-                $entry['title']          = $i['title'];
-                $entry['allow_comments'] = $i['allow_comments'];
-                $entry['published']      = $i['published'];
+                $entry['id']                = $i['id'];
+                $entry['thumb']             = Phoo_Model::GetThumbPath($i['filename']);
+                $entry['medium']            = Phoo_Model::GetMediumPath($i['filename']);
+                $entry['image']             = Phoo_Model::GetOriginalPath($i['filename']);
+                $entry['description']       = $i['description'];
+                $entry['meta_keywords']     = $i['meta_keywords'];
+                $entry['meta_description']  = $i['meta_description'];
+                $entry['title']             = $i['title'];
+                $entry['allow_comments']    = $i['allow_comments'];
+                $entry['published']         = $i['published'];
             }
 
             if (empty($entry['albums']) || !in_array($i['phoo_album_id'], $entry['albums'])) {
                 $entry['albums'][] = $i['phoo_album_id'];
+            }
+        }
+
+
+        // Fetch tags
+        if (!empty($entry)) {
+            $entry['tags'] = array();
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                $tags = $tModel->GetReferenceTags('Phoo', 'image',$id);
+                $entry['tags'] = implode(', ', array_filter($tags));
             }
         }
 

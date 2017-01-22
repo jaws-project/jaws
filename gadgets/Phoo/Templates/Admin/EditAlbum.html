@@ -18,7 +18,23 @@
      <td colspan="2" class="extra" align="right">
       <table style="width: 100%;">
        <tr>
-        <td id="group-cell">
+
+          <tr>
+              <td colspan="3">
+                  <table style="width:100%">
+                      <tr>
+                          <td><label for="meta_keywords">{{lbl_meta_keywords}}:</label></td>
+                          <td>{{meta_keywords}}</td>
+                      </tr>
+                      <tr>
+                          <td><label for="meta_description">{{lbl_meta_description}}:</label></td>
+                          <td>{{meta_description}}</td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+
+          <td id="group-cell">
          <label>{{lbl_group}}</label><br />
           <!-- BEGIN group -->
           <label class="form-check-label" for="group_{{gid}}">

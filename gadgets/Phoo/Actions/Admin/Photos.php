@@ -274,13 +274,16 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
-        $id             = $image['id'];
-        $filename       = $GLOBALS['app']->getDataURL('phoo/' . $image['medium']);
-        $title          = $image['title'];
-        $desc           = $image['description'];
-        $albums         = $image['albums'];
-        $allow_comments = $image['allow_comments'];
-        $published      = $image['published'];
+        $id                 = $image['id'];
+        $filename           = $GLOBALS['app']->getDataURL('phoo/' . $image['medium']);
+        $title              = $image['title'];
+        $desc               = $image['description'];
+        $meta_keywords      = $image['meta_keywords'];
+        $meta_description   = $image['meta_description'];
+        $tags               = $image['tags'];
+        $albums             = $image['albums'];
+        $allow_comments     = $image['allow_comments'];
+        $published          = $image['published'];
 
         $tpl = $this->gadget->template->loadAdmin('EditPhoto.html');
         $tpl->SetBlock('edit_photo');
@@ -319,6 +322,28 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         $editor->setId('description');
         $tpl->SetVariable('description', $editor->Get());
+
+        // Meta keywords
+        $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $meta_keywords);
+        $metaKeywords->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
+
+        // Meta Description
+        $metaDesc =& Piwi::CreateWidget('Entry', 'meta_description', $meta_description);
+        $metaDesc->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('meta_description', $metaDesc->Get());
+
+        // Tags
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tpl->SetBlock('edit_photo/tags');
+            $tpl->SetVariable('lbl_tag', _t('GLOBAL_TAGS'));
+            $linktags =& Piwi::CreateWidget('Entry', 'tags', $tags);
+            $linktags->SetStyle('width: 100%;');
+            $tpl->SetVariable('tag', $linktags->Get());
+            $tpl->ParseBlock('edit_photo/tags');
+        }
 
         $albumchecks =& Piwi::CreateWidget('CheckButtons', 'album', 'vertical');
         $albumsbyname = $aModel->GetAlbums('name', 'ASC');
@@ -387,7 +412,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
     function SaveEditPhoto()
     {
         $post = jaws()->request->fetch(array('allow_comments', 'image', 'title', 'published',
-            'title', 'album', 'fromalbum'), 'post');
+            'title', 'album', 'fromalbum', 'meta_keywords', 'meta_description', 'tags'), 'post');
 
         if (isset($post['allow_comments'][0])) {
             $allow_comments = true;
@@ -404,9 +429,15 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
         // Update photo
         $model = $this->gadget->model->loadAdmin('Photos');
-        $res = $model->UpdateEntry($post['image'], $post['title'],
-            $description, $allow_comments,
-            $published);
+        $res = $model->UpdateEntry(
+            $post['image'],
+            $post['title'],
+            $description,
+            $post['meta_keywords'],
+            $post['meta_description'],
+            $allow_comments,
+            $published,
+            $post['tags']);
         if (!Jaws_Error::IsError($res)) {
             // Update albums
             $rs2 = $model->SetEntryAlbums($post['image'], $post['album']);

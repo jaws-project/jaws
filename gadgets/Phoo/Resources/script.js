@@ -55,11 +55,14 @@ function ImportImages()
 
 function updatePhoto()
 {
-    var id             = $('#image').val();
-    var title          = $('#title').val();
-    var allow_comments = $('#allow_comments').prop('checked');
-    var published      = $('#published').val();
-    var description    = getEditorValue('#description');
+    var id                  = $('#image').val();
+    var title               = $('#title').val();
+    var meta_keywords       = $('#meta_keywords').val();
+    var meta_description    = $('#meta_description').val();
+    var allow_comments      = $('#allow_comments').prop('checked');
+    var published           = $('#published').val();
+    var description         = getEditorValue('#description');
+    var tags                = $('#tags').val();
 
     var albumsNode  = $('#album-checkboxes input');
     var albums      = new Array();
@@ -73,7 +76,7 @@ function updatePhoto()
 
     PhooAjax.callAsync(
         'UpdatePhoto',
-        [id, title, description, allow_comments, published, albums]
+        [id, title, description, allow_comments, published, albums, meta_description, meta_keywords, tags]
     );
 }
 

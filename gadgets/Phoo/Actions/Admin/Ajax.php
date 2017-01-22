@@ -45,7 +45,8 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdatePhoto()
     {
-        @list($id, $title, $desc, $allow_comments, $published, $albums) = jaws()->request->fetchAll('post');
+        @list($id, $title, $desc, $allow_comments, $published, $albums, $meta_keywords, $meta_description, $tags) =
+            jaws()->request->fetchAll('post');
         $albums = jaws()->request->fetch('5:array', 'post');
         $desc = jaws()->request->fetch(2, 'post', 'strip_crlf');
         if (!$this->gadget->GetPermission('ManageAlbums')) {
@@ -54,7 +55,8 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         $model = $this->gadget->model->loadAdmin('Photos');
-        $model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
+        $model->UpdateEntry($id, $title, $desc, $meta_keywords, $meta_description,
+            $allow_comments, $published, $albums, $tags);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

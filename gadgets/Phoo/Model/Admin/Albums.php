@@ -16,18 +16,22 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
      * Update the Album information
      *
      * @access  public
-     * @param   int      $id             ID of the album
-     * @param   string   $name           Name of the album
-     * @param   string   $description    Description of the album
-     * @param   bool     $comments       If a comments are enabled
-     * @param   bool     $published      If the album is visable to users or not
+     * @param   int      $id                ID of the album
+     * @param   string   $name              Name of the album
+     * @param   string   $description       Description of the album
+     * @param   bool     $comments          If a comments are enabled
+     * @param   bool     $published         If the album is visable to users or not
+     * @param   string   $meta_keywords     Meta keywords
+     * @param   string   $meta_description  Meta description
      * @return  mixed    Returns true if album was updated without problems, Jaws_Error if not.
      */
-    function UpdateAlbum($id, $name, $description, $comments, $published)
+    function UpdateAlbum($id, $name, $description, $comments, $published, $meta_keywords, $meta_description)
     {
         $data = array();
         $data['name'] = $name;
         $data['description'] = $description;
+        $data['meta_keywords'] = $meta_keywords;
+        $data['meta_description'] = $meta_description;
         $data['allow_comments'] = $comments;
         $data['published'] = (bool)$published;
 
@@ -129,30 +133,34 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
      * Create a new album
      *
      * @access  public
-     * @param   string   $name        Name of the album
-     * @param   string   $description Description of the album
-     * @param   bool     $comments    If a comments are enabled
-     * @param   bool     $published   If the album is visable to users or not
+     * @param   string   $name              Name of the album
+     * @param   string   $description       Description of the album
+     * @param   bool     $comments          If a comments are enabled
+     * @param   bool     $published         If the album is visable to users or not
+     * @param   string   $meta_keywords     Meta keywords
+     * @param   string   $meta_description  Meta description
      * @return  mixed    Returns the ID of the new album and Jaws_Error on error
      */
-    function NewAlbum($name, $description, $comments, $published)
+    function NewAlbum($name, $description, $comments, $published, $meta_keywords, $meta_description)
     {
         $data = array();
         $data['name'] = $name;
         $data['description'] = $description;
+        $data['meta_keywords'] = $meta_keywords;
+        $data['meta_description'] = $meta_description;
         $data['allow_comments'] = $comments;
         $data['published'] = (bool)$published;
         $data['createtime'] = Jaws_DB::getInstance()->date();
 
         $table = Jaws_ORM::getInstance()->table('phoo_album');
-        $result = $table->insert($data)->exec();
-        if (Jaws_Error::IsError($result)) {
+        $id = $table->insert($data)->exec();
+        if (Jaws_Error::IsError($id)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_CREATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_CREATED'), RESPONSE_NOTICE);
-        return $result;
+        return $id;
     }
 
 }

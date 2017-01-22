@@ -19,16 +19,21 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
      * @param   int     $id                 ID of the image
      * @param   string  $title              Title of the image
      * @param   string  $description        Description of the image
+     * @param   string  $meta_keywords      Meta keywords
+     * @param   string  $meta_description   Meta description
      * @param   bool    $allow_comments     True is comments allowed, False is not allowed
      * @param   bool    $published          true for Published, false for Hidden
      * @param   array   $albums
+     * @param   string  $tags
      * @return  mixed   True if entry was updated successfully and Jaws_Error if not
      */
-    function UpdateEntry($id, $title, $description, $allow_comments, $published, $albums = null)
+    function UpdateEntry($id, $title, $description, $meta_keywords, $meta_description, $allow_comments, $published, $albums = null, $tags = '')
     {
         $data = array();
         $data['title'] = $title;
         $data['description'] = $description;
+        $data['meta_keywords'] = $meta_keywords;
+        $data['meta_description'] = $meta_description;
         $data['allow_comments'] = $allow_comments;
         $data['updatetime'] = Jaws_DB::getInstance()->date();
         $data['published'] = (bool)$published;
@@ -43,6 +48,13 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         if ($albums !== null) {
             $this->SetEntryAlbums($id, $albums);
         }
+
+        // Insert Tags
+        if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
+            $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+            $tModel->InsertReferenceTags('Phoo', 'image', $id, $data['published'], time(), $tags);
+        }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_PHOTO_UPDATED'), RESPONSE_NOTICE);
         return true;
     }

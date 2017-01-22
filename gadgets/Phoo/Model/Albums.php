@@ -91,7 +91,7 @@ class Phoo_Model_Albums extends Phoo_Model
     {
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $table->select('id', 'name', 'description', 'allow_comments:boolean',
-            'published:boolean', 'createtime');
+            'published:boolean', 'meta_keywords', 'meta_description', 'createtime');
         $table->where('id', $id);
         return $table->fetchRow();
     }

@@ -104,7 +104,6 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
 
         $failures = array();
         $uploadedImages = array();
-        $user_id = $GLOBALS['app']->Session->GetAttribute('user');
         $album_data = $aModel->getAlbumInfo($album);
         if (Jaws_Error::IsError($album_data) || empty($album_data)) {
             $GLOBALS['app']->Session->PushLastResponse($album_data->getMessage());
@@ -120,7 +119,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
                 $exploded = explode('.', $filename);
                 $ext  = array_pop($exploded);
                 $name = basename($filename, '.'.$ext);
-                $id = $pModel->NewEntry($user_id, $files['photo'.$i], $name, '', true, $album_data);
+                $id = $pModel->NewEntry(0, $files['photo'.$i], $name, '', true, $album_data);
                 if (!Jaws_Error::IsError($id)) {
                     $uploadedImages[] = $id;
                 } else {
