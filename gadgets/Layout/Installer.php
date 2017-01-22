@@ -83,7 +83,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '2.0.0', '<')) {
-            $result = $this->installSchema('2.0.0.xml', '', '1.0.0.xml');
+            $result = $this->installSchema('2.0.0.xml', array(), '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -94,14 +94,14 @@ class Layout_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '3.0.0', '<')) {
-            $result = $this->installSchema('3.0.0.xml', '', '2.0.0.xml');
+            $result = $this->installSchema('3.0.0.xml', array(), '2.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
 
         if (version_compare($old, '3.1.0', '<')) {
-            $result = $this->installSchema('3.1.0.xml', '', '3.0.0.xml');
+            $result = $this->installSchema('3.1.0.xml', array(), '3.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -118,7 +118,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '4.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '3.1.0.xml');
+            $result = $this->installSchema('schema.xml', array(), '3.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
