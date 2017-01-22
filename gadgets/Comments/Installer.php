@@ -99,7 +99,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.2.0', '<')) {
-            $result = $this->installSchema('1.2.0.xml', '', '1.1.0.xml');
+            $result = $this->installSchema('1.2.0.xml', array(), '1.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -171,7 +171,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '1.2.0.xml');
+            $result = $this->installSchema('schema.xml', array(), '1.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
