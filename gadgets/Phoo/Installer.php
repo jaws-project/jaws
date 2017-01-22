@@ -129,7 +129,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '1.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '0.9.0.xml');
+            $result = $this->installSchema('1.0.0.xml', array(), '0.9.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -152,6 +152,13 @@ class Phoo_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '1.1.0', '<')) {
             $this->gadget->registry->insert('recommended', ',Comments,Tags,');
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
