@@ -34,7 +34,7 @@ class Jaws_Widgets_AutoComplete extends Entry
      */
     function __construct($name, $value = '', $title = '', $length = '', $status = false)
     {
-        parent::Entry($name, $value, $title, $length, $status);
+        parent::__construct($name, $value, $title, $length, $status);
     }
 
     /**

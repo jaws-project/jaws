@@ -21,7 +21,7 @@ class Jaws_Widgets_FieldSet extends FieldSet
      */
     function __construct($legend = '')
     {
-        parent::FieldSet($legend);
+        parent::__construct($legend);
         $this->_direction = 'vertical';
     }
 
