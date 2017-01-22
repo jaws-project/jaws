@@ -14,8 +14,16 @@ $maps[] = array(
     'photos[/group/{group}]',
 );
 $maps[] = array(
+    'ViewUserPhotos',
+    'photos/user/{user}',
+);
+$maps[] = array(
+    'UploadPhotoUI',
+    'photos/upload',
+);
+$maps[] = array(
     'ViewAlbum',
-    'photos/album/{id}',
+    'photos/album/{id}[/user/{user}]',
 );
 $maps[] = array(
     'ViewAlbumPage',

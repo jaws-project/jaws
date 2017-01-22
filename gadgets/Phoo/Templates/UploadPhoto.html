@@ -1,0 +1,44 @@
+<!-- BEGIN uploadUI -->
+<div class="gadget_header">
+    <h3><a href="{{url}}">{{title}}</a></h3>
+</div>
+<div class="gadget_container">
+    <div class="gadget_content content">
+        <div class="gadget_response">
+            <div id="phoo_uploadphotoui_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
+        </div>
+
+        <form id="frm_upload" action="{{base_script}}"
+              method="post" enctype="multipart/form-data">
+        <fieldset>
+            <input type="hidden" name="gadget" value="Phoo"/>
+            <input type="hidden" name="action" value="UploadPhoto"/>
+            <table class="table">
+                <tr>
+                    <th>{{lbl_file}}:</th>
+                    <td>
+                        <input class="form-control-file file" type="file" name="photo" id="photo"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{lbl_title}}:</th>
+                    <td>
+                        <input name="title" id="title" class="form-control"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{lbl_description}}:</th>
+                    <td>{{description}}</td>
+                </tr>
+            </table>
+        </fieldset>
+            <div class="gadget_actions actions">
+                <a href="{{back_url}}" class="btn btn-default">{{lbl_cancel}}</a>
+                <button class="btn btn-primary" type="submit">{{lbl_save}}</button>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+<!-- END uploadUI -->

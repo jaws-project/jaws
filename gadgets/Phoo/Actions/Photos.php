@@ -26,6 +26,17 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
     }
 
     /**
+     * Displays an index of pictures of user photos.
+     *
+     * @access  public
+     * @return  string   XHTML template content
+     */
+    function ViewUserPhotos()
+    {
+        return $this->ViewAlbumPage();
+    }
+
+    /**
      * Displays a paged index of pictures in an album.
      * TODO: Test it, maybe we need some modifications in ViewImage...
      *
@@ -37,13 +48,14 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ViewAlbumPage.html');
         $tpl->SetBlock('ViewAlbumPage');
 
-        $get = jaws()->request->fetch(array('id', 'page'), 'get');
+        $get = jaws()->request->fetch(array('id', 'user', 'page'), 'get');
         $id  = !empty($get['id'])? $get['id'] : '0';
+        $user = !empty($get['user'])? (int) $get['user'] : 0;
         $page = !empty($get['page'])? (int) $get['page'] : 1;
 
         $pModel = $this->gadget->model->load('Photos');
         $aModel = $this->gadget->model->load('Albums');
-        $album = $pModel->GetAlbumImages($id, $page);
+        $album = $pModel->GetAlbumImages($id, $page, null, null, null, $user);
         if (!Jaws_Error::IsError($album) && !empty($album) && $album['published']) {
             // display album info
             if ($id == '0') {
@@ -94,7 +106,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                 $limit,
                 $total,
                 'ViewAlbumPage',
-                array('id' => $image['albumid']),
+                array('id' => $id),
                 _t('PHOO_PHOTOS_COUNT', $total)
             );
         } else {
@@ -275,6 +287,95 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl->ParseBlock('ViewImage');
 
         return $tpl->Get();
+    }
+
+    /**
+     * Upload photo UI
+     *
+     * @access  public
+     * @return  string  HTML content
+     */
+    function UploadPhotoUI()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            $userGadget = Jaws_Gadget::getInstance('Users');
+            Jaws_Header::Location(
+                $userGadget->urlMap(
+                    'LoginBox',
+                    array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
+                ), 401
+            );
+        }
+
+        $tpl = $this->gadget->template->load('UploadPhoto.html');
+        $tpl->SetBlock('uploadUI');
+
+        if ($response = $GLOBALS['app']->Session->PopResponse('Phoo.UploadPhoto')) {
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+        }
+
+        $this->SetTitle(_t('PHOO_UPLOAD_PHOTO'));
+        $tpl->SetVariable('title', _t('PHOO_UPLOAD_PHOTO'));
+
+        $tpl->SetVariable('lbl_file', _t('GLOBAL_FILE'));
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+
+        if ($this->gadget->GetPermission('PublishFiles')) {
+            $tpl->SetBlock('uploadUI/published');
+            $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+            if (isset($fileInfo['published']) && $fileInfo['published']) {
+                $tpl->SetVariable('published_checked', 'checked');
+            }
+            $tpl->ParseBlock('uploadUI/published');
+        }
+
+        // description
+        $descriptionEditor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', '');
+        $descriptionEditor->setId('description');
+        $descriptionEditor->TextArea->SetRows(8);
+        $tpl->SetVariable('description', $descriptionEditor->Get());
+
+        $tpl->SetVariable('url', $this->gadget->urlMap('UploadPhotoUI'));
+        $tpl->SetVariable('back_url', $this->gadget->urlMap('AlbumList'));
+
+        $tpl->ParseBlock('uploadUI');
+        return $tpl->Get();
+    }
+
+    /**
+     * Upload photo
+     *
+     * @access  public
+     * @return  string  HTML content
+     */
+    function UploadPhoto()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+        $post  = jaws()->request->fetch(array('title', 'description'), 'post');
+
+        $model = $this->gadget->model->load('Photos');
+        $res = $model->SavePhoto($_FILES['photo'], $post['title'], $post['description']);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'Phoo.UploadPhoto',
+                RESPONSE_ERROR
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PHOO_PHOTO_ADDED'),
+                'Phoo.UploadPhoto',
+                RESPONSE_NOTICE
+            );
+        }
+
+        Jaws_Header::Location($this->gadget->urlMap('UploadPhotoUI'));
     }
 
 }

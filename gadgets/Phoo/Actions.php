@@ -34,6 +34,18 @@ $actions['ViewImage'] = array(
     'normal' => true,
     'file' => 'Photos',
 );
+$actions['UploadPhotoUI'] = array(
+    'normal' => true,
+    'file' => 'Photos',
+);
+$actions['UploadPhoto'] = array(
+    'standalone' => true,
+    'file' => 'Photos',
+);
+$actions['ViewUserPhotos'] = array(
+    'normal' => true,
+    'file' => 'Photos',
+);
 $actions['Random'] = array(
     'layout' => true,
     'file' => 'Random',

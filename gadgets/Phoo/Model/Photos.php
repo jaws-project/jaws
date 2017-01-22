@@ -76,10 +76,11 @@ class Phoo_Model_Photos extends Phoo_Model
      * @param   int    $day     Optional, get only photos in this day/month/year plus 30 days
      * @param   int    $month   Optional, get only photos in this month/year plus 30 days
      * @param   int    $year    Optional, get only photos in this month/year plus 30 days
+     * @param   int    $user    User id
      * @return  mixed  Returns an array with some phoo entries of a certain
      *                 album and Jaws_Error on error.
      */
-    function GetAlbumImages($id, $page = null, $day = null, $month = null, $year = null)
+    function GetAlbumImages($id, $page = null, $day = null, $month = null, $year = null, $user = null)
     {
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $table->select('id', 'name', 'description', 'createtime', 'published:boolean');
@@ -130,6 +131,10 @@ class Phoo_Model_Photos extends Phoo_Model
                 $table->and()->where('phoo_image.createtime', array($start, $end), 'between');
             }
         }
+        if ($user != null) {
+            $table->and()->where('phoo_image.user_id', (int)$user);
+        }
+
         $table->select('phoo_image.id', 'phoo_album_id', 'filename',
             'phoo_image.title', 'phoo_image.description', 'published:boolean');
         $table->orderBy('phoo_image.' . $this->GetOrderType('photos_order_type'));
@@ -384,4 +389,121 @@ class Phoo_Model_Photos extends Phoo_Model
         return $entry;
     }
 
+    /**
+     * Save new photo by user
+     *
+     * @access  public
+     * @param   file    $photoFile      Photo file
+     * @param   string  $title          Title
+     * @param   string  $description    Description
+     * @return  mixed   True or False on error
+     */
+    function SavePhoto($photoFile, $title, $description)
+    {
+//        $res = Jaws_Utils::UploadFiles($_FILES['logo'], $tmpDir, 'png,jpg,jpeg,bmp,gif');
+        $uploaddir = JAWS_DATA . 'phoo/' . date('Y_m_d') . '/';
+        if (!is_dir($uploaddir)) {
+            if (!Jaws_Utils::is_writable(JAWS_DATA . 'phoo/')) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+            }
+
+            $new_dirs = array();
+            $new_dirs[] = $uploaddir;
+            $new_dirs[] = $uploaddir . 'thumb';
+            $new_dirs[] = $uploaddir . 'medium';
+            foreach ($new_dirs as $new_dir) {
+                if (!Jaws_Utils::mkdir($new_dir)) {
+                    $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+                }
+            }
+        }
+
+        $res = Jaws_Utils::UploadFiles($photoFile, $uploaddir, 'jpg,gif,png,jpeg', false, true);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        } elseif (empty($res)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'));
+        }
+        $filename = $res[0][0]['host_filename'];
+        $uploadfile = $uploaddir . $filename;
+
+        // Resize Image
+        include_once JAWS_PATH . 'include/Jaws/Image.php';
+        $objImage = Jaws_Image::factory();
+        if (Jaws_Error::IsError($objImage)) {
+            return Jaws_Error::raiseError($objImage->GetMessage());
+        }
+
+        $thumbSize = explode('x', $this->gadget->registry->fetch('thumbsize'));
+        $mediumSize = explode('x', $this->gadget->registry->fetch('mediumsize'));
+
+        $objImage->load($uploadfile);
+        $objImage->resize($thumbSize[0], $thumbSize[1]);
+        $res = $objImage->save($this->GetThumbPath($uploadfile));
+        $objImage->free();
+        if (Jaws_Error::IsError($res)) {
+            // Return an error if image can't be resized
+            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
+            return new Jaws_Error($res->GetMessage());
+        }
+
+        $objImage->load($uploadfile);
+        $objImage->resize($mediumSize[0], $mediumSize[1]);
+        $res = $objImage->save($this->GetMediumPath($uploadfile));
+        $objImage->free();
+        if (Jaws_Error::IsError($res)) {
+            // Return an error if image can't be resized
+            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'));
+        }
+
+        $data = array();
+        $data['user_id'] = $GLOBALS['app']->Session->GetAttribute('user');
+        $data['filename'] = date('Y_m_d') . '/' . $filename;
+        $data['title'] = $title;
+        $data['description'] = $description;
+        $data['allow_comments'] = false;
+
+        if ($this->gadget->registry->fetch('published') === 'true' &&
+            $this->gadget->GetPermission('ManageAlbums')
+        ) {
+            $data['published'] = true;
+        } else {
+            $data['published'] = false;
+        }
+
+        $jDate = Jaws_Date::getInstance();
+        $createtime = Jaws_DB::getInstance()->date();
+        if (function_exists('exif_read_data') &&
+            (preg_match("/\.jpg$|\.jpeg$/i", $photoFile['name'])) &&
+            ($exifData = @exif_read_data($uploadfile, 1, true))
+            && !empty($exifData['IFD0']['DateTime']) && $jDate->ValidDBDate($exifData['IFD0']['DateTime'])
+        ) {
+            $aux = explode(' ', $exifData['IFD0']['DateTime']);
+            $auxdate = str_replace(':', '-', $aux[0]);
+            $auxtime = $aux[1];
+            $createtime = $auxdate . ' ' . $auxtime;
+        }
+        $data['createtime'] = $createtime;
+
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        $result = $table->insert($data)->exec();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+        }
+
+        // Lets remove the original if keep_original = false
+        if ($this->gadget->registry->fetch('keep_original') == 'false') {
+            if (!empty($data['filename'])) {
+                Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $data['filename']);
+            }
+        }
+
+        // shout Activities event
+        $saParams = array();
+        $saParams['action'] = 'Photo';
+        $this->gadget->event->shout('Activities', $saParams);
+    }
 }
