@@ -42,7 +42,7 @@ class Banner_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', '', 'schema.xml', true);
+        $result = $this->installSchema('insert.xml', array(), 'schema.xml', true);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
