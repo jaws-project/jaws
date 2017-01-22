@@ -127,14 +127,14 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.2.0', '<')) {
-            $result = $this->installSchema('2.2.0.xml', '', '2.1.0.xml');
+            $result = $this->installSchema('2.2.0.xml', array(), '2.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
 
         if (version_compare($old, '2.3.0', '<')) {
-            $result = $this->installSchema('2.3.0.xml', '', '2.2.0.xml');
+            $result = $this->installSchema('2.3.0.xml', array(), '2.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -189,7 +189,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.4.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '2.3.0.xml');
+            $result = $this->installSchema('schema.xml', array(), '2.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
