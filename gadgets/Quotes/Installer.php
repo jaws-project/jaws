@@ -48,7 +48,7 @@ class Quotes_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', null, 'schema.xml', true);
+        $result = $this->installSchema('insert.xml', array(), 'schema.xml', true);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
