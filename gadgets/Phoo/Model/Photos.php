@@ -328,6 +328,23 @@ class Phoo_Model_Photos extends Phoo_Model
     }
 
     /**
+     * Image Hits
+     *
+     * @access  public
+     * @param   int     $id     ID of the image
+     * @return  mixed   True or False and Jaws_Error on error
+     */
+    function ImageHits($id)
+    {
+        $table = Jaws_ORM::getInstance()->table('phoo_image');
+        return $table->update(
+            array(
+                'hits' => $table->expr('hits + ?', 1)
+            )
+        )->where('id', $id)->exec();
+    }
+
+    /**
      * Get an image entry
      *
      * @access  public

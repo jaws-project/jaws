@@ -286,6 +286,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         }
         $tpl->ParseBlock('ViewImage');
 
+        $pModel->ImageHits($id);
         return $tpl->Get();
     }
 
