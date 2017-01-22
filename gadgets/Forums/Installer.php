@@ -60,7 +60,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', '', 'schema.xml', true);
+        $result = $this->installSchema('insert.xml', array(), 'schema.xml', true);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -110,7 +110,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '0.9.0', '<')) {
-            $result = $this->installSchema('0.9.0.xml', '', '0.1.0.xml');
+            $result = $this->installSchema('0.9.0.xml', array(), '0.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -146,7 +146,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.9.0.xml');
+            $result = $this->installSchema('schema.xml', array(), '0.9.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
