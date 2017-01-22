@@ -59,10 +59,10 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $t_item->Blocks['working_notification']->Parsed = '';
 
         $t_item->SetBlock('response');
-        $responses = $GLOBALS['app']->Session->PopLastResponse();
-        if ($responses) {
-            $t_item->SetVariable('text', $responses[0]['text']);
-            $t_item->SetVariable('type', $responses[0]['type']);
+        $response = $GLOBALS['app']->Session->PopResponse('Layout');
+        if ($response) {
+            $t_item->SetVariable('response_text', $response['text']);
+            $t_item->SetVariable('response_type', $response['type']);
         }
         $response_box = $t_item->ParseBlock('response');
         $t_item->Blocks['response']->Parsed = '';
@@ -322,15 +322,42 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout'), RESPONSE_ERROR);
-            return false;
-        }
-        if (!isset($tpl->Blocks['layout']->InnerBlock['head'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'head'), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushResponse(
+                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout'),
+                'Layout',
+                RESPONSE_ERROR
+            );
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['main'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'main'), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushResponse(
+                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/main'),
+                'Layout',
+                RESPONSE_ERROR);
+            return false;
+        }
+        if (!isset($tpl->Blocks['layout']->InnerBlock['links'])) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/links'),
+                'Layout',
+                RESPONSE_ERROR
+            );
+            return false;
+        }
+        if (!isset($tpl->Blocks['layout']->InnerBlock['metas'])) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/metas'),
+                'Layout',
+                RESPONSE_ERROR
+            );
+            return false;
+        }
+        if (!isset($tpl->Blocks['layout']->InnerBlock['scripts'])) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/scripts'),
+                'Layout',
+                RESPONSE_ERROR
+            );
             return false;
         }
 
@@ -340,7 +367,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             null,
             'Settings'
         );
-        $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushResponse(
+            _t('LAYOUT_THEME_CHANGED'),
+            'Layout',
+            RESPONSE_NOTICE
+        );
     }
 
 }
