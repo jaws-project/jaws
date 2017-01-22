@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+    <name><variable>database</variable></name>
+
+    <table>
+        <name><variable>table_prefix</variable>abuse_reports</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>url</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>gadget</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>action</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>reference</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>comment</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>type</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>priority</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>status</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>response</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>insert_time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>update_time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+        </declaration>
+    </table>
+
+</database>

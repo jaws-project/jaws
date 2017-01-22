@@ -1,0 +1,37 @@
+<!-- BEGIN Reports -->
+<div class="gadget_menubar">{{menubar}}</div>
+<div id="main">
+<table width="100%">
+  <tr>
+    <td id="c_datagrid" valign="top">
+      <div><label for="recipient_filter">{{lbl_recipient_filter}}: </label>{{recipient_filter}}</div>
+      {{grid}}
+    </td>
+    <td id="report_ui">
+      <input type="hidden" name="id" id="id" value="0" />
+      <fieldset>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
+        <div id="c_work_area">{{report_ui}}</div>
+      </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td class="buttons" colspan="2">{{btn_cancel}}{{btn_save}}{{btn_save_send}}</td>
+  </tr>
+</table>
+</div>
+<!-- END Reports -->
+<!-- BEGIN ReportUI -->
+<table id="report_box">
+  <tr><td><label for="url">{{lbl_url}}:</label></td><td>{{url}}</td></tr>
+  <tr><td><label for="gadget">{{lbl_gadget}}:</label></td><td dir="ltr">{{gadget}}</td></tr>
+  <tr><td><label for="action">{{lbl_action}}:</label></td><td>{{action}}</td></tr>
+  <tr><td><label for="reference">{{lbl_reference}}:</label></td><td dir="ltr">{{reference}}</td></tr>
+  <tr><td><label for="comment">{{lbl_comment}}:</label></td><td dir="ltr">{{comment}}</td></tr>
+  <tr><td><label for="type">{{lbl_type}}:</label></td><td dir="ltr">{{type}}</td></tr>
+  <tr><td><label for="priority">{{lbl_priority}}:</label></td><td dir="ltr">{{priority}}</td></tr>
+  <tr><td><label for="status">{{lbl_status}}:</label></td><td>{{status}}</td></tr>
+  <tr><td><label for="response">{{lbl_response}}:</label></td><td>{{response}}</td></tr>
+  <tr><td><label for="insert_time">{{lbl_insert_time}}:</label></td><td>{{insert_time}}</td></tr>
+</table>
+<!-- END ReportUI -->
