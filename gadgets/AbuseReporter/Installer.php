@@ -25,7 +25,7 @@ class AbuseReporter_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLKeys = array(
-        'Settings',
+        'ManageReports',
     );
 
     /**
@@ -53,7 +53,7 @@ class AbuseReporter_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'abuse_reporter',
+            'abuse_reports',
         );
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);

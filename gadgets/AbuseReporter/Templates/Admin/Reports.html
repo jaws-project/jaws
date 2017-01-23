@@ -1,37 +1,173 @@
 <!-- BEGIN Reports -->
 <div class="gadget_menubar">{{menubar}}</div>
-<div id="main">
-<table width="100%">
-  <tr>
-    <td id="c_datagrid" valign="top">
-      <div><label for="recipient_filter">{{lbl_recipient_filter}}: </label>{{recipient_filter}}</div>
-      {{grid}}
-    </td>
-    <td id="report_ui">
-      <input type="hidden" name="id" id="id" value="0" />
-      <fieldset>
-        <legend><span id="legend_title">{{legend_title}}</span></legend>
-        <div id="c_work_area">{{report_ui}}</div>
-      </fieldset>
-    </td>
-  </tr>
-  <tr>
-    <td class="buttons" colspan="2">{{btn_cancel}}{{btn_save}}{{btn_save_send}}</td>
-  </tr>
-</table>
+<div>
+  <div class="repeater" id="reportsGrid" data-staticheight="500">
+    <div class="repeater-header">
+      <div class="datagrid-filters">
+        <table style="width: 100%;">
+          <tr>
+            <td><label for="filter_gadget">{{lbl_gadget}}: </label></td>
+            <td><select name="filter_gadget" id="filter_gadget" class="form-control">
+              <!-- BEGIN filter_gadget -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END filter_gadget -->
+            </select></td>
+
+            <td><label for="filter_action">{{lbl_action}}: </label></td>
+            <td><input type="text" id="filter_action" name="filter_action" class="form-control"></td>
+          </tr>
+
+          <tr>
+            <td><label for="filter_priority">{{lbl_priority}}: </label></td>
+            <td><select name="filter_priority" id="filter_priority" class="form-control">
+              <!-- BEGIN filter_priority -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END filter_priority -->
+            </select></td>
+
+            <td><label for="filter_status">{{lbl_status}}: </label></td>
+            <td><select name="filter_status" id="filter_status" class="form-control">
+              <!-- BEGIN filter_status -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END filter_status -->
+            </select></td>
+
+          </tr>
+        </table>
+      </div>
+      <div class="repeater-header-right">
+      </div>
+    </div>
+    <div class="repeater-viewport">
+      <div class="repeater-canvas"></div>
+      <div class="loader repeater-loader"></div>
+    </div>
+    <div class="repeater-footer">
+      <div class="repeater-footer-left">
+        <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{lbl_to}} <span class="repeater-end"></span>
+            {{lbl_of}} <span class="repeater-count"></span>
+            {{lbl_items}}
+          </span>
+          <div class="btn-group selectlist dropup" data-resize="auto">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+              <span class="selected-label">?</span>
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li data-value="10" data-selected="true"><a href="#">10</a></li>
+              <li data-value="25"><a href="#">25</a></li>
+              <li data-value="50"><a href="#">50</a></li>
+            </ul>
+            <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+          </div>
+          <span>{{lbl_per_page}}</span>
+        </div>
+      </div>
+      <div class="repeater-footer-right">
+        <div class="repeater-pagination">
+          <button type="button" class="btn btn-default btn-sm repeater-prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous Page</span>
+          </button>
+          <label class="page-label" id="myPageLabel"></label>
+          <div class="repeater-primaryPaging active">
+            <div class="input-group input-append dropdown combobox dropup">
+              <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right"></ul>
+              </div>
+            </div>
+          </div>
+          <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+          <button type="button" class="btn btn-default btn-sm repeater-next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next Page</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="reportModalLabel">{{lbl_addContact}}</h4>
+        </div>
+        <div class="modal-body">
+
+
+          <form action="#" id="report-form">
+            <div class="form-group">
+              <label for="url">{{lbl_url}}: </label>
+              <span><a href="" id="url" target="_blank"></a></span>
+            </div>
+
+            <div class="form-group"><label for="gadget">{{lbl_gadget}}:</label>
+              <input class="form-control" name="gadget" id="gadget" value="{{gadget}}" type="text" disabled />
+            </div>
+
+            <div class="form-group"><label for="action">{{lbl_action}}:</label>
+              <input class="form-control" name="action" id="action" value="{{action}}" type="text" disabled/>
+            </div>
+
+            <div class="form-group"><label for="reference">{{lbl_reference}}:</label>
+              <input class="form-control" name="reference" id="reference" value="{{reference}}" type="text" disabled/>
+            </div>
+
+            <div class="form-group"><label for="comment">{{lbl_comment}}:</label>
+              <textarea class="form-control" name="comment" id="comment" cols="45" rows="2">{{comment}}</textarea>
+            </div>
+
+            <div class="form-group"><label for="type">{{lbl_type}}:</label>
+              <select name="type" id="type" class="form-control">
+                <!-- BEGIN type -->
+                <option value="{{value}}">{{title}}</option>
+                <!-- END type -->
+              </select>
+            </div>
+
+            <div class="form-group"><label for="priority">{{lbl_priority}}:</label>
+              <select name="priority" id="priority" class="form-control">
+                <!-- BEGIN priority -->
+                <option value="{{value}}">{{title}}</option>
+                <!-- END priority -->
+              </select>
+            </div>
+
+            <div class="form-group"><label for="status">{{lbl_status}}:</label>
+              <select name="status" id="status" class="form-control">
+                <!-- BEGIN status -->
+                <option value="{{value}}">{{title}}</option>
+                <!-- END status -->
+              </select>
+            </div>
+
+            <div class="form-group"><label for="response">{{lbl_response}}:</label>
+              <textarea class="form-control" name="response" id="response" cols="45" rows="2">{{response}}</textarea>
+            </div>
+
+            <div class="form-group"><label for="insert_time">{{lbl_insert_time}}:</label>
+              <input class="form-control" name="insert_time" id="insert_time" value="{{insert_time}}" type="text" disabled />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
+          <button type="button" class="btn btn-primary" onclick="javascript:saveReport()">{{lbl_save}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 <!-- END Reports -->
-<!-- BEGIN ReportUI -->
-<table id="report_box">
-  <tr><td><label for="url">{{lbl_url}}:</label></td><td>{{url}}</td></tr>
-  <tr><td><label for="gadget">{{lbl_gadget}}:</label></td><td dir="ltr">{{gadget}}</td></tr>
-  <tr><td><label for="action">{{lbl_action}}:</label></td><td>{{action}}</td></tr>
-  <tr><td><label for="reference">{{lbl_reference}}:</label></td><td dir="ltr">{{reference}}</td></tr>
-  <tr><td><label for="comment">{{lbl_comment}}:</label></td><td dir="ltr">{{comment}}</td></tr>
-  <tr><td><label for="type">{{lbl_type}}:</label></td><td dir="ltr">{{type}}</td></tr>
-  <tr><td><label for="priority">{{lbl_priority}}:</label></td><td dir="ltr">{{priority}}</td></tr>
-  <tr><td><label for="status">{{lbl_status}}:</label></td><td>{{status}}</td></tr>
-  <tr><td><label for="response">{{lbl_response}}:</label></td><td>{{response}}</td></tr>
-  <tr><td><label for="insert_time">{{lbl_insert_time}}:</label></td><td>{{insert_time}}</td></tr>
-</table>
-<!-- END ReportUI -->

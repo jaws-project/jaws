@@ -16,394 +16,211 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     function Reports()
     {
         $this->gadget->CheckPermission('ManageReports');
+        $GLOBALS['app']->Layout->addLink('libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.css');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
+        $this->gadget->layout->setVariable('lbl_action', _t('ABUSEREPORTER_ACTION'));
+        $this->gadget->layout->setVariable('lbl_type', _t('ABUSEREPORTER_TYPE'));
+        $this->gadget->layout->setVariable('lbl_priority', _t('ABUSEREPORTER_PRIORITY'));
+        $this->gadget->layout->setVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->layout->setVariable('lbl_editReport', _t('ABUSEREPORTER_REPORT_EDIT'));
+
         $tpl = $this->gadget->template->loadAdmin('Reports.html');
         $tpl->SetBlock('Reports');
 
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Reports'));
 
-        //Recipient filter
-        $recipientCombo =& Piwi::CreateWidget('Combo', 'recipient_filter');
-        $recipientCombo->SetID('recipient_filter');
-        $recipientCombo->AddEvent(ON_CHANGE, "getReports('reports_datagrid', 0, true)");
-        $recipientCombo->AddOption('', -1);
-        $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
-        $model = $this->gadget->model->load('Recipients');
-        $recipients = $model->GetRecipients();
-        if (!Jaws_Error::IsError($result)) {
-            foreach ($recipients as $recipient) {
-                $recipientCombo->AddOption($recipient['name'], $recipient['id']);
+        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
+        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PER_PAGE'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
+        $tpl->SetVariable('lbl_action', _t('ABUSEREPORTER_ACTION'));
+        $tpl->SetVariable('lbl_reference', _t('ABUSEREPORTER_REFERENCE'));
+        $tpl->SetVariable('lbl_comment', _t('ABUSEREPORTER_COMMENT'));
+        $tpl->SetVariable('lbl_type', _t('ABUSEREPORTER_TYPE'));
+        $tpl->SetVariable('lbl_priority', _t('ABUSEREPORTER_PRIORITY'));
+        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_response', _t('ABUSEREPORTER_RESPONSE'));
+        $tpl->SetVariable('lbl_insert_time', _t('ABUSEREPORTER_INSERT_TIME'));
+
+        // gadgets filter
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
+        $gadgetList = $cmpModel->GetGadgetsList();
+        if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
+            array_unshift($gadgetList, array('name' => 0, 'title' => _t('GLOBAL_ALL')));
+            foreach ($gadgetList as $gadget) {
+                $tpl->SetBlock('Reports/filter_gadget');
+                $tpl->SetVariable('value', $gadget['name']);
+                $tpl->SetVariable('title', $gadget['title']);
+                $tpl->ParseBlock('Reports/filter_gadget');
+            }
+            array_shift($gadgetList);
+            foreach ($gadgetList as $gadget) {
+                $tpl->SetBlock('Reports/gadget');
+                $tpl->SetVariable('value', $gadget['name']);
+                $tpl->SetVariable('title', $gadget['title']);
+                $tpl->ParseBlock('Reports/gadget');
             }
         }
-        $recipientCombo->SetDefault(-1);
-        $tpl->SetVariable('lbl_recipient_filter', _t('CONTACT_RECIPIENT'));
-        $tpl->SetVariable('recipient_filter', $recipientCombo->Get());
-        $tpl->SetVariable('lbl_recipient_filter', _t('CONTACT_RECIPIENT'));
 
-        //DataGrid
-        $tpl->SetVariable('grid', $this->ReportsDataGrid());
+        // priority filter
+        $priorities = array(
+            0 => _t('GLOBAL_ALL'),
+            AbuseReporter_Info::PRIORITY_VERY_HIGH => _t('ABUSEREPORTER_PRIORITY_VERY_HIGH'),
+            AbuseReporter_Info::PRIORITY_HIGH => _t('ABUSEREPORTER_PRIORITY_HIGH'),
+            AbuseReporter_Info::PRIORITY_NORMAL => _t('ABUSEREPORTER_PRIORITY_NORMAL'),
+            AbuseReporter_Info::PRIORITY_LOW => _t('ABUSEREPORTER_PRIORITY_LOW'),
+            AbuseReporter_Info::PRIORITY_VERY_LOW => _t('ABUSEREPORTER_PRIORITY_VERY_LOW'),
+        );
+        foreach ($priorities as $priority => $title) {
+            $tpl->SetBlock('Reports/filter_priority');
+            $tpl->SetVariable('value', $priority);
+            $tpl->SetVariable('title', $title);
+            $tpl->ParseBlock('Reports/filter_priority');
+        }
+        array_shift($priorities);
+        foreach ($priorities as $priority => $title) {
+            $tpl->SetBlock('Reports/priority');
+            $tpl->SetVariable('value', $priority);
+            $tpl->SetVariable('title', $title);
+            $tpl->ParseBlock('Reports/priority');
+        }
 
-        //ReportUI
-        $tpl->SetVariable('report_ui', $this->ReportUI());
+        // status filter
+        $statuses = array(
+            0 => _t('GLOBAL_ALL'),
+            AbuseReporter_Info::STATUS_NOT_CHECKED => _t('ABUSEREPORTER_STATUS_NOT_CHECKED'),
+            AbuseReporter_Info::PRIORITY_HIGH => _t('ABUSEREPORTER_STATUS_CHECKED'),
+        );
+        foreach ($statuses as $status => $title) {
+            $tpl->SetBlock('Reports/filter_status');
+            $tpl->SetVariable('value', $status);
+            $tpl->SetVariable('title', $title);
+            $tpl->ParseBlock('Reports/filter_status');
+        }
+        array_shift($statuses);
+        foreach ($statuses as $status => $title) {
+            $tpl->SetBlock('Reports/status');
+            $tpl->SetVariable('value', $status);
+            $tpl->SetVariable('title', $title);
+            $tpl->ParseBlock('Reports/status');
+        }
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
-        $btnCancel->SetStyle('display:none;');
-        $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->SetEnabled($this->gadget->GetPermission('ManageReports'));
-        $btnSave->AddEvent(ON_CLICK, 'updateReport(false);');
-        $btnSave->SetStyle('display:none;');
-        $tpl->SetVariable('btn_save', $btnSave->Get());
-
-        $btnSaveSend =& Piwi::CreateWidget('Button', 'btn_save_send', _t('CONTACT_REPLAY_SAVE_SEND'), STOCK_SAVE);
-        $btnSaveSend->SetEnabled($this->gadget->GetPermission('ManageReports'));
-        $btnSaveSend->AddEvent(ON_CLICK, 'updateReport(true);');
-        $btnSaveSend->SetStyle('display:none;');
-        $tpl->SetVariable('btn_save_send', $btnSaveSend->Get());
-
-        $this->gadget->layout->setVariable('incompleteReportFields', _t('CONTACT_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('confirmReportDelete',    _t('CONTACT_CONTACTS_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('legend_title',            _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
-        $this->gadget->layout->setVariable('messageDetail_title',     _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
-        $this->gadget->layout->setVariable('reportReply_title',      _t('CONTACT_CONTACTS_MESSAGE_REPLY'));
-        $this->gadget->layout->setVariable('dataURL',                 $GLOBALS['app']->getDataURL() . 'report/');
+        // types
+        $types = array(
+            AbuseReporter_Info::TYPE_ABUSE => _t('ABUSEREPORTER_TYPE_ABUSE'),
+            AbuseReporter_Info::TYPE_FRAUD => _t('ABUSEREPORTER_TYPE_FRAUD'),
+            AbuseReporter_Info::TYPE_VIRUS => _t('ABUSEREPORTER_TYPE_VIRUS'),
+            AbuseReporter_Info::TYPE_SPAM => _t('ABUSEREPORTER_TYPE_SPAM'),
+            AbuseReporter_Info::TYPE_OTHER => _t('ABUSEREPORTER_TYPE_OTHER'),
+        );
+        foreach ($types as $type => $title) {
+            $tpl->SetBlock('Reports/type');
+            $tpl->SetVariable('value', $type);
+            $tpl->SetVariable('title', $title);
+            $tpl->ParseBlock('Reports/type');
+        }
 
         $tpl->ParseBlock('Reports');
         return $tpl->Get();
     }
 
     /**
-     * Builds reports datagrid
+     * Get reports list
      *
      * @access  public
-     * @return  string  XHTML datagrid
+     * @return  JSON
      */
-    function ReportsDataGrid()
+    function GetReports()
     {
-        $model = $this->gadget->model->load();
-        $total = $model->TotalOfData('reports');
+        $this->gadget->CheckPermission('ManageReports');
+        $post = jaws()->request->fetch(
+            array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
+            'post'
+        );
 
-        $grid =& Piwi::CreateWidget('DataGrid', array());
-        $grid->SetID('reports_datagrid');
-        $grid->TotalRows($total);
-        $grid->pageBy(12);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_NAME'), null, false);
-        $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', '', null, false);
-        $grid->AddColumn($column2);
-        $column2->SetStyle('width:16px;');
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
-        $column3->SetStyle('width:72px; white-space:nowrap;');
-        $grid->AddColumn($column3);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column4->SetStyle('width:64px; white-space:nowrap;');
-        $grid->AddColumn($column4);
-
-        return $grid->Get();
-    }
-
-    /**
-     * Prepares reports data for data grid
-     *
-     * @access  public
-     * @param   int    $recipient   Recipient ID
-     * @param   int    $offset      Offset of data array
-     * @return  array  Data array
-     */
-    function GetReports($recipient = -1, $offset = null)
-    {
         $model = $this->gadget->model->loadAdmin('Reports');
-        $reports = $model->GetReports($recipient, 12, $offset);
-        if (Jaws_Error::IsError($reports)) {
-            return array();
+        $reports = $model->GetReports($post['filters'], $post['limit'], $post['offset']);
+
+        foreach ($reports as $key => $report) {
+            $report['recid'] = $report['id'];
+            $reports[$key] = $report;
         }
+        $reportsCount = $model->GetReportsCount($post['filters']);
 
-        $date = Jaws_Date::getInstance();
-        $newData = array();
-        foreach ($reports as $report) {
-            $reportData = array();
-
-            // Name
-            $label =& Piwi::CreateWidget('Label', $report['name']);
-            $label->setTitle($report['subject']);
-            if (empty($report['reply'])) {
-                $label->setStyle('font-weight:bold;');
-            }
-            $reportData['name'] = $label->get();
-
-            // Attachment
-            if (empty($report['attachment'])) {
-                $reportData['attach'] = '';
-            } else {
-                $image =& Piwi::CreateWidget('Image', 'gadgets/Report/Resources/images/attachment.png');
-                $image->setTitle($report['attachment']);
-                $reportData['attach'] = $image->get();
-            }
-
-            // Date
-            $label =& Piwi::CreateWidget('Label', $date->Format($report['createtime'],'Y-m-d'));
-            $label->setTitle($date->Format($report['createtime'],'H:i:s'));
-            $reportData['time'] = $label->get();
-
-            // Actions
-            $actions = '';
-            if ($this->gadget->GetPermission('ManageReports')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                            "javascript:editReport(this, '".$report['id']."');",
-                                            STOCK_EDIT);
-                $actions.= $link->Get().'&nbsp;';
-
-                $link =& Piwi::CreateWidget('Link', _t('CONTACT_CONTACTS_MESSAGE_REPLY'),
-                                            "javascript:editReply(this, '" . $report['id'] . "');",
-                                            'gadgets/Report/Resources/images/report_mini.png');
-                $actions.= $link->Get().'&nbsp;';
-
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                            "javascript:deleteReport(this, '".$report['id']."');",
-                                            STOCK_DELETE);
-                $actions.= $link->Get().'&nbsp;';
-            }
-            $reportData['actions'] = $actions;
-            $newData[] = $reportData;
-        }
-        return $newData;
+        return array(
+            'status' => 'success',
+            'total' => $reportsCount,
+            'records' => $reports
+        );
     }
 
     /**
-     * Show a form to show/edit a given report
+     * Get a report info
      *
      * @access  public
-     * @return  string  XHTML template content
+     * @return  JSON
      */
-    function ReportUI()
+    function GetReport()
     {
-        $tpl = $this->gadget->template->loadAdmin('Reports.html');
-        $tpl->SetBlock('ReportUI');
-
-        //IP
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-
-        //name
-        $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-        $tpl->SetVariable('name', $nameEntry->Get());
-
-        //email
-        $nameEntry =& Piwi::CreateWidget('Entry', 'email', '');
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email', $nameEntry->Get());
-
-        //company
-        $nameEntry =& Piwi::CreateWidget('Entry', 'company', '');
-        $tpl->SetVariable('lbl_company', _t('CONTACT_COMPANY'));
-        $tpl->SetVariable('company', $nameEntry->Get());
-
-        //url
-        $nameEntry =& Piwi::CreateWidget('Entry', 'url', '');
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-        $tpl->SetVariable('url', $nameEntry->Get());
-
-        //tel
-        $nameEntry =& Piwi::CreateWidget('Entry', 'tel', '');
-        $tpl->SetVariable('lbl_tel', _t('CONTACT_TEL'));
-        $tpl->SetVariable('tel', $nameEntry->Get());
-
-        //fax
-        $nameEntry =& Piwi::CreateWidget('Entry', 'fax', '');
-        $tpl->SetVariable('lbl_fax', _t('CONTACT_FAX'));
-        $tpl->SetVariable('fax', $nameEntry->Get());
-
-        //mobile
-        $nameEntry =& Piwi::CreateWidget('Entry', 'mobile', '');
-        $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
-        $tpl->SetVariable('mobile', $nameEntry->Get());
-
-        //address
-        $nameEntry =& Piwi::CreateWidget('Entry', 'address', '');
-        $tpl->SetVariable('lbl_address', _t('CONTACT_ADDRESS'));
-        $tpl->SetVariable('address', $nameEntry->Get());
-
-        //recipient
-        $recipientCombo =& Piwi::CreateWidget('Combo', 'rid');
-        $recipientCombo->SetID('rid');
-        $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
-        $model = $this->gadget->model->load('Recipients');
-        $recipients = $model->GetRecipients();
-        if (!Jaws_Error::IsError($result)) {
-            foreach ($recipients as $recipient) {
-                $recipientCombo->AddOption($recipient['name'], $recipient['id']);
-            }
+        $this->gadget->CheckPermission('ManageReports');
+        $id = (int)jaws()->request->fetch('id', 'post');
+        $reportInfo = $this->gadget->model->loadAdmin('Reports')->GetReport($id);
+        if (Jaws_Error::IsError($reportInfo)) {
+            return $reportInfo;;
         }
-        $tpl->SetVariable('lbl_recipient', _t('CONTACT_RECIPIENT'));
-        $tpl->SetVariable('recipient', $recipientCombo->Get());
-
-        //subject
-        $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
-        $tpl->SetVariable('lbl_subject', _t('CONTACT_SUBJECT'));
-        $tpl->SetVariable('subject', $subjectEntry->Get());
-
-        //message
-        $messageText =& Piwi::CreateWidget('TextArea', 'message','');
-        $messageText->SetRows(8);
-        $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
-        $tpl->SetVariable('message', $messageText->Get());
-
-        $tpl->ParseBlock('ReportUI');
-        return $tpl->Get();
+        if (!empty($reportInfo)) {
+            $objDate = Jaws_Date::getInstance();
+            $reportInfo['insert_time'] = $objDate->Format($reportInfo['insert_time']);
+        }
+        return $reportInfo;
     }
 
     /**
-     * Show a form to edit/send report reply
+     * Update a report
      *
      * @access  public
-     * @return  string  XHTML template content
+     * @return  void
      */
-    function ReplyUI()
+    function UpdateReport()
     {
-        $tpl = $this->gadget->template->loadAdmin('Reports.html');
-        $tpl->SetBlock('ReplyUI');
+        $this->gadget->CheckPermission('ManageReports');
 
-        //name
-        $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
-        $nameEntry->SetReadOnly(true);
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-        $tpl->SetVariable('name', $nameEntry->Get());
-
-        //email
-        $nameEntry =& Piwi::CreateWidget('Entry', 'email', '');
-        $nameEntry->SetReadOnly(true);
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email', $nameEntry->Get());
-
-        //subject
-        $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
-        $subjectEntry->SetReadOnly(true);
-        $tpl->SetVariable('lbl_subject', _t('CONTACT_SUBJECT'));
-        $tpl->SetVariable('subject', $subjectEntry->Get());
-
-        //message
-        $messageText =& Piwi::CreateWidget('TextArea', 'message','');
-        $messageText->SetReadOnly(true);
-        $messageText->SetRows(8);
-        $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
-        $tpl->SetVariable('message', $messageText->Get());
-
-        //reply
-        $replyText =& Piwi::CreateWidget('TextArea', 'reply','');
-        $replyText->SetRows(10);
-        $tpl->SetVariable('lbl_reply', _t('CONTACT_REPLY'));
-        $tpl->SetVariable('reply', $replyText->Get());
-
-        $tpl->ParseBlock('ReplyUI');
-        return $tpl->Get();
-    }
-
-    /**
-     * Send report reply
-     *
-     * @access  public
-     * @param   int     $cid    Report ID
-     * @return  mixed   True on Success or Jaws_Error on Failure
-     */
-    function SendReply($cid)
-    {
-        $model = $this->gadget->model->loadAdmin('Reports');
-        $report = $model->GetReply($cid);
-        if (Jaws_Error::IsError($report)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
-                                                       RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
-        }
-
-        if (!isset($report['id'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
-                                                       RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'));
-        }
-
-        $from_name  = '';
-        $from_email = '';
-        $to  = $report['email'];
-        $rid = $report['recipient'];
-        if ($rid != 0) {
-            $rModel = $this->gadget->model->load('Recipients');
-            $recipient = $rModel->GetRecipient($rid);
-            if (Jaws_Error::IsError($recipient)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
-                                                           RESPONSE_ERROR);
-                return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
-            }
-            if (!isset($recipient['id'])) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),
-                                                           RESPONSE_ERROR);
-                return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'));
-            }
-            $from_name  = $recipient['name'];
-            $from_email = $recipient['email'];
-        }
-
-        $format = $this->gadget->registry->fetch('email_format');
-        if ($format == 'html') {
-            $reply = $this->gadget->ParseText($report['reply']);
+        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $result = $this->gadget->model->loadAdmin('Reports')->UpdateReport($post['id'], $post['data']);
+        if (Jaws_Error::isError($result)) {
+            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            $reply = $report['reply'];
+            return $GLOBALS['app']->Session->GetResponse(_t('ABUSEREPORTER_REPORT_UPDATED'), RESPONSE_NOTICE);
         }
-
-        $jDate = Jaws_Date::getInstance();
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
-        $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
-        $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $profile_url = $GLOBALS['app']->getSiteURL('/'). $GLOBALS['app']->Map->GetURLFor(
-            'Users',
-            'Profile',
-            array('user' => $GLOBALS['app']->Session->GetAttribute('username'))
-        );
-        Jaws_Translate::getInstance()->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
-        Jaws_Translate::getInstance()->LoadTranslation('Report', JAWS_COMPONENT_GADGET, $site_language);
-
-        $tpl = $this->gadget->template->load('SendReplyTo.html',
-            array(
-                'loadFromTheme' => true,
-                'loadRTLDirection' => _t_lang($site_language, 'GLOBAL_LANG_DIRECTION') == 'rtl',
-            )
-        );
-        $tpl->SetBlock($format);
-
-        $tpl->SetVariable('lbl_name',    _t_lang($site_language, 'GLOBAL_NAME'));
-        $tpl->SetVariable('lbl_email',   _t_lang($site_language, 'GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_message', _t_lang($site_language, 'CONTACT_MESSAGE'));
-        $tpl->SetVariable('lbl_reply',   _t_lang($site_language, 'CONTACT_REPLY'));
-        $tpl->SetVariable('name',        $report['name']);
-        $tpl->SetVariable('email',       $report['email']);
-        $tpl->SetVariable('subject',     $report['subject']);
-        $tpl->SetVariable('message',     $report['msg_txt']);
-        $tpl->SetVariable('reply',       $reply);
-        $tpl->SetVariable('createtime',  $jDate->Format($report['createtime']));
-        $tpl->SetVariable('nickname',    $GLOBALS['app']->Session->GetAttribute('nickname'));
-        $tpl->SetVariable('profile_url', $profile_url);
-        $tpl->SetVariable('site-name',   $site_name);
-        $tpl->SetVariable('site-url',    $site_url);
-        $tpl->ParseBlock($format);
-        $template = $tpl->Get();
-        $subject = _t_lang($site_language, 'CONTACT_REPLY_TO', Jaws_XSS::defilter($report['subject']));
-
-        $mail = Jaws_Mail::getInstance();
-        $mail->SetFrom($from_email, $from_name);
-        $mail->AddRecipient($to);
-        $mail->AddRecipient('', 'cc');
-        $mail->SetSubject($subject);
-        $mail->SetBody($template, $format);
-        $result = $mail->send();
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);
-            return false;
-        }
-
-        $model->UpdateReplySent($cid, true);
-        $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_REPLY_SENT'), RESPONSE_NOTICE);
-        return true;
     }
+
+    /**
+     * Delete a report
+     *
+     * @access  public
+     * @return  void
+     */
+    function DeleteReport()
+    {
+        $this->gadget->CheckPermission('ManageReports');
+
+        $id = (int)jaws()->request->fetch('id', 'post');
+        $result =  $this->gadget->model->loadAdmin('Reports')->DeleteReport($id);
+        if (Jaws_Error::isError($result)) {
+            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('ABUSEREPORTER_REPORT_DELETED'), RESPONSE_NOTICE);
+        }
+    }
+
 }
