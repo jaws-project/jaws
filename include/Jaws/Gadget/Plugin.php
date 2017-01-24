@@ -41,7 +41,7 @@ class Jaws_Gadget_Plugin
      * @param   string  $gadget     Gadget name
      * @return  string  Returns the parsed text
      */
-    function parse($text, $reference, $action = '', $gadget = '')
+    function parse($text, $reference = 0, $action = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
@@ -75,7 +75,7 @@ class Jaws_Gadget_Plugin
      * @param   string  $gadget     Gadget name
      * @return  string  Returns the parsed text
      */
-    function parseAdmin($text, $reference, $action = '', $gadget = '')
+    function parseAdmin($text, $reference = 0, $action = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
