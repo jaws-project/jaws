@@ -53,7 +53,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
                     $url = $this->gadget->urlMap('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $tpl->SetVariable('url', $url);
                     $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($entry['description']));
                     $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $tpl->SetVariable('width',  $imgData[0]);
                     $tpl->SetVariable('height', $imgData[1]);
@@ -68,7 +68,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
                     $tpl->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
                     $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
                     $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($entry['description']));
                     $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $tpl->SetVariable('width',  $imgData[0]);
                     $tpl->SetVariable('height', $imgData[1]);
@@ -86,7 +86,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
                     $tpl->SetVariable('medium', $GLOBALS['app']->getDataURL('phoo/' . $entry['medium']));
                     $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $entry['image']));
                     $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($entry['description']));
                     $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $tpl->SetVariable('width',  $imgData[0]);
                     $tpl->SetVariable('height', $imgData[1]);
@@ -102,7 +102,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
                     $url = $this->gadget->urlMap('PhotoblogPortrait', array('photoid' => $entry['id']));
                     $tpl->SetVariable('url', $url);
                     $tpl->SetVariable('title', $entry['name']);
-                    $tpl->SetVariable('description', $this->gadget->ParseText($entry['description']));
+                    $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($entry['description']));
                     $tpl->SetVariable('createtime',  $date->Format($entry['createtime']));
                     $tpl->SetVariable('width',  $imgData[0]);
                     $tpl->SetVariable('height', $imgData[1]);
