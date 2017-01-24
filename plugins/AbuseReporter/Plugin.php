@@ -16,10 +16,13 @@ class AbuseReporter_Plugin extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html   HTML to be parsed
+     * @param   string  $html       HTML to be parsed
+     * @param   int     $reference  Action reference entity
+     * @param   string  $action     Gadget action name
+     * @param   string  $gadget     Gadget name
      * @return  string  Parsed content
      */
-    function ParseText($html)
+    function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
         $GLOBALS['app']->Layout->addScript('gadgets/AbuseReporter/Resources/index.js');
 
@@ -33,9 +36,9 @@ class AbuseReporter_Plugin extends Jaws_Plugin
         $tpl->SetVariable('lbl_send', _t('PLUGINS_ABUSEREPORTER_SEND'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
 
-        $tpl->SetVariable('gadget', $GLOBALS['app']->requestedGadget);
-        $tpl->SetVariable('action', $GLOBALS['app']->requestedAction);
-        $tpl->SetVariable('reference', '0');
+        $tpl->SetVariable('gadget', $gadget);
+        $tpl->SetVariable('action', $action);
+        $tpl->SetVariable('reference', $reference);
         $tpl->SetVariable('url', Jaws_Utils::getRequestURL(true));
 
         $tpl->ParseBlock('Report');
