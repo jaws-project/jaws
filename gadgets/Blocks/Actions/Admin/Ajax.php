@@ -105,6 +105,6 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function ParseText()
     {
         $text = jaws()->request->fetch(0, 'post', 'strip_crlf');
-        return $this->gadget->ParseText($text);
+        return $this->gadget->plugin->parseAdmin($text);
     }
 }
