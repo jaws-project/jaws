@@ -197,7 +197,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $this->gadget->CheckPermission('AccessToMailer');
         $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
-            $message = $this->gadget->ParseText($message);
+            $message = $this->gadget->plugin->parseAdmin($message);
         } else {
             $message = strip_tags($message);
         }
