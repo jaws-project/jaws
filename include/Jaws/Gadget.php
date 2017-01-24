@@ -303,50 +303,6 @@ class Jaws_Gadget
     }
 
     /**
-     * Parses the input text
-     *
-     * @access  public
-     * @param   string  $text           The Text to parse
-     * @param   string  $gadget         The Gadget name
-     * @param   string  $plugins_set    Plugins set name(admin or index)
-     * @return  string  Returns the parsed text
-     */
-    function ParseText($text, $gadget = '', $plugins_set = 'admin')
-    {
-        $res = $text;
-        $gadget = empty($gadget)? $this->name : $gadget;
-
-        $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
-        if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
-            $plugins = array_filter(explode(',', $plugins));
-            foreach ($plugins as $plugin) {
-                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
-                if (!Jaws_Error::IsError($objPlugin)) {
-                    $use_in = '*';
-                    if ($plugins_set == 'admin') {
-                        $use_in = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
-                    } else {
-                        $use_in = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
-                    }
-                    if (!Jaws_Error::isError($use_in) &&
-                       ($use_in == '*' || in_array($gadget, explode(',', $use_in))))
-                    {
-                        $res = $objPlugin->ParseText($res);
-                    }
-                }
-            }
-        }
-
-        //So we don't call require_once each time we invoke it
-        if (!Jaws::classExists('Jaws_String')) {
-            require JAWS_PATH . 'include/Jaws/String.php';
-        }
-        $res = Jaws_String::AutoParagraph($res);
-
-        return $res;
-    }
-
-    /**
      * Returns is gadget installed
      *
      * @access  public
