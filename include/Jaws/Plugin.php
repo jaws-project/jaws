@@ -145,10 +145,13 @@ class Jaws_Plugin
      * Parse the text.
      *
      * @access  public
-     * @param   string  $html Html to Parse
+     * @param   string  $html       Html to Parse
+     * @param   int     $reference  Action reference entity
+     * @param   string  $action     Gadget action name
+     * @param   string  $gadget     Gadget name
      * @return  string  The parsed Html
      */
-    function ParseText($html)
+    function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
         //This method does nothing
         return $html;
