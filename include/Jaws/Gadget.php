@@ -488,6 +488,7 @@ class Jaws_Gadget
             case 'hook':
             case 'event':
             case 'model':
+            case 'plugin':
             case 'action':
             case 'layout':
             case 'request':
