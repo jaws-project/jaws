@@ -57,7 +57,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_Action
             if (!Jaws_Error::IsError($block)) {
                 $tpl->SetBlock('blocks');
                 $tpl->SetVariable('id', $block['id']);
-                $contents = $this->gadget->ParseText($block['contents']);
+                $contents = $this->gadget->plugin->parseAdmin($block['contents']);
                 $tpl->SetVariable('contents', $contents);
                 if ($block['display_title']) {
                     $tpl->SetBlock('blocks/block_title');

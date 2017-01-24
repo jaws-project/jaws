@@ -71,7 +71,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
                 $tpl->SetVariable('filename', $album['filename']);
                 $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $album['thumb']));
                 $tpl->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
-                $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
+                $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
                 $tpl->SetVariable('createtime', $date->Format($album['createtime']));
                 $tpl->ParseBlock('albums/item');
             }

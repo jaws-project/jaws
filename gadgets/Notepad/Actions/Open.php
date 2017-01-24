@@ -33,7 +33,7 @@ class Notepad_Actions_Open extends Jaws_Gadget_Action
         $tpl->SetBlock('note');
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('note_title', $note['title']);
-        $tpl->SetVariable('note_content', $this->gadget->ParseText($note['content'], 'Notepad'));
+        $tpl->SetVariable('note_content', $this->gadget->plugin->parseAdmin($note['content']));
 
         // Actions
         if ($note['user'] == $user) {

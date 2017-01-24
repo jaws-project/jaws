@@ -141,8 +141,8 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         }
 
         $summary = empty($summary)? $text : $summary;
-        $summary = $this->gadget->ParseText($summary);
-        $text    = $this->gadget->ParseText($text);
+        $summary = $this->gadget->plugin->parseAdmin($summary);
+        $text    = $this->gadget->plugin->parseAdmin($text);
 
         if ($show_summary){
             if (Jaws_UTF8::trim($text) != '') {

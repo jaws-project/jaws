@@ -123,7 +123,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             }
             if ($group['view_mode']!= 0) {
                 $tpl->SetBlock("quotes/$block/quote/full_mode");
-                $tpl->SetVariable('quotation', $this->gadget->ParseText($quote['quotation']));
+                $tpl->SetVariable('quotation', $this->gadget->plugin->parseAdmin($quote['quotation']));
                 $tpl->ParseBlock("quotes/$block/quote/full_mode");
             }
             $tpl->ParseBlock("quotes/$block/quote");
@@ -173,7 +173,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
 
         $tpl->SetVariable('title', $group['title']);
         $tpl->SetVariable('quote_title', $quote['title']);
-        $tpl->SetVariable('quotation', $this->gadget->ParseText($quote['quotation']));
+        $tpl->SetVariable('quotation', $this->gadget->plugin->parseAdmin($quote['quotation']));
 
         $tpl->ParseBlock('quote');
         return $tpl->Get();

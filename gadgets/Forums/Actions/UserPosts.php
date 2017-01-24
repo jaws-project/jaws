@@ -66,7 +66,7 @@ class Forums_Actions_UserPosts extends Jaws_Gadget_Action
                 $tpl->SetVariable(
                     'message',
                     Jaws_UTF8::substr(
-                        strip_tags($this->gadget->ParseText($post['message'], 'Forums', 'index')),
+                        strip_tags($this->gadget->plugin->parse($post['message'])),
                         0,
                         $max_size
                     ). ' ...'

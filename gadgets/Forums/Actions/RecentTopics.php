@@ -97,7 +97,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
                 $tpl->SetVariable(
                     'message',
                     Jaws_UTF8::substr(
-                        strip_tags($this->gadget->ParseText($topic['message'], 'Forums', 'index')),
+                        strip_tags($this->gadget->plugin->parse($topic['message'])),
                         0,
                         $max_size
                     ). ' ...'

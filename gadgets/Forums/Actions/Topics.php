@@ -234,7 +234,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $topic['update_reason'] = $rqst['update_reason'];
             $tpl->SetBlock('topic/preview');
             $tpl->SetVariable('lbl_preview', _t('GLOBAL_PREVIEW'));
-            $tpl->SetVariable('message', $this->gadget->ParseText($topic['message'], 'Forums', 'index'));
+            $tpl->SetVariable('message', $this->gadget->plugin->parse($topic['message']));
             $tpl->ParseBlock('topic/preview');
         }
 
@@ -568,7 +568,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 $topic['forum_title'],
                 $topic_link,
                 $topic['subject'],
-                $this->gadget->ParseText($topic['message'], 'Forums', 'index')
+                $this->gadget->plugin->parse($topic['message'])
             );
             if (Jaws_Error::IsError($result)) {
                 // do nothing
@@ -637,8 +637,8 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                         $topic['forum_title'],
                         $forum_link,
                         $topic['subject'],
-                        $this->gadget->ParseText($topic['message'], 'Forums', 'index'),
-                        $this->gadget->ParseText($rqst['delete_reason'], 'Forums', 'index')
+                        $this->gadget->plugin->parse($topic['message']),
+                        $this->gadget->plugin->parse($rqst['delete_reason'])
                     );
                     if (Jaws_Error::IsError($result)) {
                         // do nothing
@@ -690,7 +690,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$topic['first_post_time']));
 
             // message
-            $tpl->SetVariable('message', $this->gadget->ParseText($topic['message']));
+            $tpl->SetVariable('message', $this->gadget->plugin->parseAdmin($topic['message']));
 
             // delete reason
             $tpl->SetVariable('lbl_delete_reason', _t('FORUMS_POSTS_DELETE_REASON'));
@@ -750,7 +750,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $topic['forum_title'],
             $topic_link,
             $topic['subject'],
-            $this->gadget->ParseText($topic['message'], 'Forums', 'index')
+            $this->gadget->plugin->parse($topic['message'])
         );
         if (Jaws_Error::IsError($result)) {
             // do nothing
@@ -803,7 +803,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $topic['forum_title'],
             $topic_link,
             $topic['subject'],
-            $this->gadget->ParseText($topic['message'], 'Forums', 'index')
+            $this->gadget->plugin->parse($topic['message'])
         );
         if (Jaws_Error::IsError($result)) {
             // do nothing

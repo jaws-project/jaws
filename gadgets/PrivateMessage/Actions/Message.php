@@ -334,7 +334,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl->SetVariable('nickname', $message['from_nickname']);
         $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
         $tpl->SetVariable('subject', $message['subject']);
-        $tpl->SetVariable('body', $this->gadget->ParseText($message['body'], 'PrivateMessage', 'index'));
+        $tpl->SetVariable('body', $this->gadget->plugin->parse($message['body']));
 
         $tpl->SetVariable('trash_url', $this->gadget->urlMap('TrashMessage', array('id' => $id)));
         $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteMessage', array('id' => $id)));

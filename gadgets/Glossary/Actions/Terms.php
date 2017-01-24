@@ -53,7 +53,7 @@ class Glossary_Actions_Terms extends Jaws_Gadget_Action
                 $tpl->SetVariable('term', $term['term']);
                 $tid = empty($term['fast_url']) ? $term['id'] : $term['fast_url'];
                 $tpl->SetVariable('url',  $this->gadget->urlMap('ViewTerm', array('term' => $tid)));
-                $tpl->SetVariable('description', $this->gadget->ParseText($term['description']));
+                $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($term['description']));
                 $tpl->ParseBlock('list/letter/term');
             }
         }
@@ -91,7 +91,7 @@ class Glossary_Actions_Terms extends Jaws_Gadget_Action
             $tpl->SetVariable('term', $term['term']);
             $tid = empty($term['fast_url']) ? $term['id'] : $term['fast_url'];
             $tpl->SetVariable('url', $this->gadget->urlMap('ViewTerm', array('term' => $tid)));
-            $tpl->SetVariable('description', $this->gadget->ParseText($term['description']));
+            $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($term['description']));
             $tpl->SetVariable('created_in', _t('GLOBAL_CREATETIME'));
             $tpl->SetVariable('updated_in', _t('GLOBAL_UPDATETIME'));
             $tpl->SetVariable('createtime', $date->Format($term['createtime']));
@@ -120,7 +120,7 @@ class Glossary_Actions_Terms extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($term)) {
             $tpl->SetVariable('title', _t('GLOSSARY_RANDOM_TERM'));
             $tpl->SetVariable('term', $term['term']);
-            $tpl->SetVariable('description', $this->gadget->ParseText($term['description']));
+            $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($term['description']));
         }
         $tpl->ParseBlock('random');
 

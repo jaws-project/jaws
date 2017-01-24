@@ -313,7 +313,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $mail->SetFrom();
         $mail->AddRecipient($user['email']);
         $mail->SetSubject($subject);
-        $mail->SetBody($this->gadget->ParseText($body));
+        $mail->SetBody($this->gadget->plugin->parseAdmin($body));
         return $mail->send();
     }
 

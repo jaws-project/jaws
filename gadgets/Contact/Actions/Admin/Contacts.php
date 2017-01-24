@@ -352,7 +352,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
 
         $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
-            $reply = $this->gadget->ParseText($contact['reply']);
+            $reply = $this->gadget->plugin->parseAdmin($contact['reply']);
         } else {
             $reply = $contact['reply'];
         }

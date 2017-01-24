@@ -489,7 +489,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
         $tpl->ParseBlock($type);
 
-        return $this->gadget->ParseText($tpl->get(), 'Directory', 'index');
+        return $this->gadget->plugin->parse($tpl->get());
     }
 
     /**

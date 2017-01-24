@@ -89,7 +89,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $mail->SetFrom();
         $mail->AddRecipient($user['email']);
         $mail->SetSubject($subject);
-        $mail->SetBody($this->gadget->ParseText($message));
+        $mail->SetBody($this->gadget->plugin->parseAdmin($message));
         $mresult = $mail->send();
         if (Jaws_Error::IsError($mresult)) {
             return new Jaws_Error(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));

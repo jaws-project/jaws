@@ -699,7 +699,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $tpl->SetVariable('id', $idHidden->Get());
         $tpl->SetVariable('title', $entry['title']);
-        $tpl->SetVariable('text', $this->gadget->ParseText($entry['text']));
+        $tpl->SetVariable('text', $this->gadget->plugin->parseAdmin($entry['text']));
         $tpl->SetVariable('user', $entry['username']);
         $date = Jaws_Date::getInstance();
         $tpl->SetVariable('createtime', $date->Format($entry['publishtime']));

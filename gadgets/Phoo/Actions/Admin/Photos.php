@@ -143,7 +143,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                         }
                         $tpl->SetBlock('phoo/photos/albums');
                         $tpl->SetVariable('title', $album['name']);
-                        $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
+                        $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
                         $tpl->SetVariable('createtime', $objDate->Format($album['createtime']));
                         $upload_url = BASE_SCRIPT."?gadget=Phoo&amp;action=UploadPhotos&amp;album={$album['id']}";
                         $manageAlbumActions = "<a href=\"{$upload_url}\">"._t('PHOO_UPLOAD_PHOTOS')."</a>";

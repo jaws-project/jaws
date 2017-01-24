@@ -65,7 +65,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             } else {
                 $tpl->SetVariable('title', $album['name']);
                 $this->SetTitle($album['name']);
-                $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
+                $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
             }
 
             // display images
@@ -154,7 +154,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl->SetVariable('filename',    $image['filename']);
         $tpl->SetVariable('img_desc',    $image['stripped_description']);
         $tpl->SetVariable('albumid',     $albumid);
-        $tpl->SetVariable('description', $this->gadget->ParseText($image['description']));
+        $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($image['description']));
         $tpl->SetVariable('medium',      $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
         $tpl->SetVariable('image',       $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
         $tpl->SetVariable('width',       $imgData[0]);

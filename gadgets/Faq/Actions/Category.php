@@ -60,7 +60,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
                 $tpl->SetBlock('faq_category');
                 $tpl->SetVariable('title', _t('FAQ_TITLE'));
                 $tpl->SetVariable('category', $cat['category']);
-                $tpl->SetVariable('description', $this->gadget->ParseText($cat['description']));
+                $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($cat['description']));
                 if (isset($cat['questions']) && is_array($cat['questions'])) {
                     $qPos = 0;
                 }
@@ -89,7 +89,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
                     $qid = empty($q['fast_url']) ? $q['id'] : $q['fast_url'];
                     $tpl->SetVariable('url', $this->gadget->urlMap('ViewQuestion', array('id' => $qid)));
                     $tpl->SetVariable('question', $q['question']);
-                    $tpl->SetVariable('answer', $this->gadget->ParseText($q['answer']));
+                    $tpl->SetVariable('answer', $this->gadget->plugin->parseAdmin($q['answer']));
                     $tpl->ParseBlock('faq_category/item');
                 }
                 $tpl->ParseBlock('faq_category');

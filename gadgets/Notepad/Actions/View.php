@@ -34,7 +34,7 @@ class Notepad_Actions_View extends Jaws_Gadget_Action
         }
 
         $tpl->SetVariable('title', $note['title']);
-        $tpl->SetVariable('content', $this->gadget->ParseText($note['content'], 'Notepad'));
+        $tpl->SetVariable('content', $this->gadget->plugin->parseAdmin($note['content']));
 
         $tpl->ParseBlock('note');
         return $tpl->Get();
