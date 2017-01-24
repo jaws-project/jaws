@@ -7,10 +7,10 @@
  */
 class AbuseReporter_Plugin extends Jaws_Plugin
 {
-    var $friendly = true;
+    var $friendly = false;
     var $version  = '0.1';
-    var $_DefaultFrontendEnabled = true;
-    var $_DefaultBackendEnabled = false;
+    var $_DefaultFrontendEnabled = false;
+    var $_DefaultBackendEnabled  = false;
 
     /**
      * Overrides, Parses the text
