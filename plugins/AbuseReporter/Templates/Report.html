@@ -2,7 +2,7 @@
 {{content}}
 
 <div class="abuse-repeater">
-    <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#reportModal">
+    <button type="button" class="btn btn-success"  onclick="javascript:openReportWindows('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')">
         <span class="glyphicon glyphicon-plus"></span> {{lbl_report}}
     </button>
 </div>
@@ -12,45 +12,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="reportModalLabel">{{lbl_addContact}}</h4>
+                <h4 class="modal-title" id="reportModalLabel">{{lbl_title}}</h4>
             </div>
-            <div class="modal-body">
-
-
-                <form action="#" id="report-form">
-                    <div class="form-group"><label for="comment">{{lbl_comment}}:</label>
-                        <textarea class="form-control" name="comment" id="comment" cols="45" rows="2">{{comment}}</textarea>
-                    </div>
-
-                    <div class="form-group"><label for="type">{{lbl_type}}:</label>
-                        <select name="type" id="type" class="form-control">
-                            <!-- BEGIN type -->
-                            <option value="{{value}}">{{title}}</option>
-                            <!-- END type -->
-                        </select>
-                    </div>
-
-                    <div class="form-group"><label for="priority">{{lbl_priority}}:</label>
-                        <select name="priority" id="priority" class="form-control">
-                            <!-- BEGIN priority -->
-                            <option value="{{value}}">{{title}}</option>
-                            <!-- END priority -->
-                        </select>
-                    </div>
-                </form>
+            <div class="modal-body" id="report-dialog-{{gadget}}-{{action}}-{{reference}}">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
-                <button type="button" class="btn btn-primary" onclick="javascript:saveReport()">{{lbl_send}}</button>
+                <button type="button" class="btn btn-primary" onclick="javascript:saveReport('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')">{{lbl_send}}</button>
             </div>
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        alert(1);
-    });
-
-</script>
 <!-- END Report -->
