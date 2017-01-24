@@ -16,11 +16,10 @@ $actions['PhotoblogPortrait'] = array(
     'normal' => true,
     'file' => 'Photoblog',
 );
-$actions['AlbumList'] = array(
+$actions['Albums'] = array(
     'normal' => true,
     'layout' => true,
     'file' => 'Albums',
-    'parametric' => true,
 );
 $actions['ViewAlbum'] = array(
     'normal' => true,

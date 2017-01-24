@@ -34,7 +34,7 @@ class Phoo_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'AlbumList';
+    var $default_action = 'Albums';
 
     /**
      * Default back-end action name

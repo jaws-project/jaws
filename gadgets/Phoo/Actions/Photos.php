@@ -341,7 +341,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl->SetVariable('description', $descriptionEditor->Get());
 
         $tpl->SetVariable('url', $this->gadget->urlMap('UploadPhotoUI'));
-        $tpl->SetVariable('back_url', $this->gadget->urlMap('AlbumList'));
+        $tpl->SetVariable('back_url', $this->gadget->urlMap('Albums'));
 
         $tpl->ParseBlock('uploadUI');
         return $tpl->Get();

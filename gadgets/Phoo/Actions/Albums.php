@@ -14,24 +14,12 @@
 class Phoo_Actions_Albums extends Jaws_Gadget_Action
 {
     /**
-     * Get AlbumList action params(group list)
-     *
-     * @access  public
-     * @return  array list of AlbumList action params(group list)
-     */
-    function AlbumListLayoutParams()
-    {
-        $result = array();
-        return $result;
-    }
-
-    /**
      * Displays an index of galleries.
      *
      * @access  public
      * @return  string XHTML template content
      */
-    function AlbumList()
+    function Albums()
     {
         $tpl = $this->gadget->template->load('Albums.html');
         $tpl->SetBlock('albums');

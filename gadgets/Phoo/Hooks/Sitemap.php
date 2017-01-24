@@ -26,7 +26,7 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('PHOO_TITLE'),
-                'url'    => $this->gadget->urlMap('AlbumList', array(), true)
+                'url'    => $this->gadget->urlMap('Albums', array(), true)
             ),
             'levels' => array(),
             'items'  => array()

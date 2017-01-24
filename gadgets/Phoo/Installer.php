@@ -17,7 +17,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        array('default_action', 'AlbumList'),
+        array('default_action', 'Albums'),
         array('thumbsize', '133x100'),
         array('mediumsize', '400x300'),
         array('moblog_limit', '10'),

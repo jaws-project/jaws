@@ -10,6 +10,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 $maps[] = array(
+    'Albums',
+    'photos/albums',
+);
+$maps[] = array(
+    'Photos',
+    'photos[/users/{user}][/albums/{album}][order/{order}][/page/{page}]',
+);
+$maps[] = array(
+    'Photo',
+    'photos[/users/{user}][/albums/{album}]/{photo}',
+);
+$maps[] = array(
+    'PhotoEdit',
+    'photos/users/{user}/{photo}/edit',
+);
+$maps[] = array(
+    'PhotoblogPortrait',
+    'photoblog[/{photoid}]',
+);
+
+
+/*$maps[] = array(
     'AlbumList',
     'photos[/group/{group}]',
 );
@@ -44,4 +66,4 @@ $maps[] = array(
 $maps[] = array(
     'PhotoblogPortrait',
     'photoblog',
-);
+);*/

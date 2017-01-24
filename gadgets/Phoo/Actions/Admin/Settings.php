@@ -51,7 +51,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $viewCombo =& Piwi::CreateWidget('Combo', 'default_action');
         $viewCombo->setContainerClass('oneline');
         $viewCombo->SetTitle(_t('PHOO_DEFAULT_VIEW'));
-        $viewCombo->AddOption(_t('PHOO_ALBUM_LIST'), 'AlbumList');
+        $viewCombo->AddOption(_t('PHOO_ALBUM_LIST'), 'Albums');
         $viewCombo->AddOption(_t('PHOO_PHOTOBLOG'), 'PhotoblogPortrait');
         $viewCombo->SetDefault($settings['default_action']);
 
