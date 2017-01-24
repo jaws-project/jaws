@@ -9,8 +9,12 @@
 /**
  * Index actions
  */
-$actions['Report'] = array(
-    'normal' => true,
+$actions['ReportUI'] = array(
+    'standalone' => true,
+    'file'   => 'Report'
+);
+$actions['SaveReport'] = array(
+    'standalone' => true,
     'file'   => 'Report'
 );
 
