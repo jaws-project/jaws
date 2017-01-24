@@ -74,7 +74,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
         foreach ($notes as $note) {
             $tpl->SetBlock('notes/note');
             $tpl->SetVariable('note_title', $note['title']);
-            $tpl->SetVariable('note_content', $this->gadget->ParseText($note['content'], 'Notepad'));
+            $tpl->SetVariable('note_content', $this->gadget->plugin->parseAdmin($note['content']));
             $tpl->SetVariable('created', $objDate->Format($note['createtime'], 'n/j/Y g:i a'));
             $tpl->SetVariable('note_url', $this->gadget->urlMap('ViewNote', array('id' => $note['id'])));
             $tpl->ParseBlock('notes/note');
