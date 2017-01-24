@@ -42,9 +42,7 @@ class AbuseReporter_Plugin extends Jaws_Plugin
         $tpl->SetVariable('url', Jaws_Utils::getRequestURL(true));
 
         $tpl->ParseBlock('Report');
-        return $tpl->Get();
-
-        return $html;
+        return $html . $tpl->Get();
     }
 
 }
