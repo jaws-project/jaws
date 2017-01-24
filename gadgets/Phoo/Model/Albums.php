@@ -16,24 +16,13 @@ class Phoo_Model_Albums extends Phoo_Model
      * Get a list of albums
      *
      * @access  public
-     * @param   int|string $gid     Group Id or Fast url
      * @return  array  Returns an array of the dates of the phoo entries and Jaws_Error on error
      */
-    function GetAlbumList($gid = 0)
+    function GetAlbumList()
     {
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $table->select('phoo_album.id:integer', 'phoo_album.name', 'phoo_album.description', 'createtime');
         $table->where('published', true)->orderBy($this->GetOrderType('albums_order_type'));
-
-        if (!empty($gid)) {
-            $table->join('phoo_album_group', 'phoo_album.id', 'album', 'left');
-            if (is_numeric($gid)) {
-                $table->and()->where('group', $gid);
-            } else {
-                $table->join('phoo_group', 'phoo_group.id', 'phoo_album_group.group');
-                $table->and()->where('phoo_group.fast_url', $gid);
-            }
-        }
 
         $albums = $table->fetchAll();
         if (Jaws_Error::IsError($albums)) {
@@ -103,11 +92,10 @@ class Phoo_Model_Albums extends Phoo_Model
      * @access  public
      * @param   string  $by order by
      * @param   string  $direction order direction
-     * @param   int     $group
      * @param   bool    $published
      * @return  mixed   A list of available albums and Jaws_Error on error
      */
-    function GetAlbums($by = 'name', $direction = 'asc', $group = 0, $published = null)
+    function GetAlbums($by = 'name', $direction = 'asc', $published = null)
     {
         $directions = array('asc', 'desc');
         $direction = strtolower($direction);
@@ -127,11 +115,6 @@ class Phoo_Model_Albums extends Phoo_Model
         $table->join('phoo_image_album', 'phoo_album.id', 'phoo_album_id', 'left');
         $table->groupBy('phoo_album.id', 'name', 'published', 'createtime');
         $table->orderBy("$by $direction");
-
-        if (!empty($group) && $group != 0) {
-            $table->join('phoo_album_group', 'phoo_album.id', 'album', 'left');
-            $table->where('group', $group);
-        }
 
         if (!empty($published)) {
             $table->and()->where('published', $published);

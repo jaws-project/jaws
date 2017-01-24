@@ -93,101 +93,11 @@ function addEntry(title)
 }
 
 /**
- * add a group entry
- */
-function saveGroup()
-{
-    if (!$('#name').val()) {
-        alert(jaws.gadgets.Phoo.incompleteGroupFields);
-        return false;
-    }
-    var groupData = {
-        'name': $('#name').val(),
-        'fast_url': $('#fast_url').val(),
-        'meta_keywords': $('#meta_keywords').val(),
-        'meta_description': $('#meta_description').val(),
-        'description': $('#description').val()
-    };
-
-    if ($('#gid').val() == 0) {
-        var response = PhooAjax.callSync('AddGroup', groupData);
-        if (response[0]['type'] == 'alert-success') {
-            $('#groups_combo')
-                .append($("<option></option>")
-                    .attr("value",response[0]['text']['id'])
-                    .text($('#name').val()));
-            response[0]['text'] = response[0]['text']['message'];
-            stopAction();
-        }
-        PhooAjax.showResponse(response);
-    } else {
-        var response = PhooAjax.callSync('UpdateGroup',
-                            {'id': $('#gid').val(), data: groupData});
-        if (response[0]['type'] == 'alert-success') {
-            $('#groups_combo').find('option:selected').text($('#name').val());
-            stopAction();
-        }
-        PhooAjax.showResponse(response);
-    }
-}
-
-/**
- * Fill form with selected group data
- */
-function editGroup(id) 
-{
-    if (id == 0) return;
-    var groupInfo = PhooAjax.callSync('GetGroup', {'gid': id});
-    $('#gid').val(groupInfo['id']);
-    $('#name').val(groupInfo['name'].defilter());
-    $('#fast_url').val(groupInfo['fast_url']);
-    $('#meta_keywords').val(groupInfo['meta_keywords'].defilter());
-    $('#meta_description').val(groupInfo['meta_description'].defilter());
-    $('#description').val(groupInfo['description'].defilter());
-    $('#btn_delete').css('display', 'inline');
-    $('#legend_title').html(jaws.gadgets.Phoo.editGroupTitle);
-}
-
-/**
- * Delete group
- */
-function deleteGroup()
-{
-    var answer = confirm(jaws.gadgets.Phoo.confirmGroupDelete);
-    if (answer) {
-        var box = $('#groups_combo');
-        var quoteIndex = box.selectedIndex;
-        var response = PhooAjax.callSync('DeleteGroup', {'id': $('#gid').val()});
-        if (response[0]['type'] == 'alert-success') {
-            $('#groups_combo').find('option:selected').remove();
-            stopAction();
-        }
-        PhooAjax.showResponse(response);
-    }
-}
-
-/**
- * Clean the form
- */
-function stopAction() 
-{
-    $('#gid').val(0);
-    $('#name').val('');
-    $('#fast_url').val('');
-    $('#meta_keywords').val('');
-    $('#meta_description').val('');
-    $('#description').val('');
-    $('#groups_combo').prop('selectedIndex', -1);
-    $('#btn_delete').css('display', 'none');
-    $('#legend_title').html(jaws.gadgets.Phoo.addGroupTitle);
-}
-
-/**
- * Filter albums combo with selected group
+ * Filter albums combo
  */
 function filterAlbums(gid)
 {
-    var response = PhooAjax.callSync('GetAlbums', {'gid': gid});
+    var response = PhooAjax.callSync('GetAlbums');
     var select = $('#albums_list');
     select.options.length = 0;
     for (var i=0; i<response.length; i++) {
@@ -202,17 +112,6 @@ function selectAllAlbums()
         c.options[i].selected = true;
     }
 }
-
-$(document).ready(function() {
-    switch (jaws.core.mainAction) {
-        case 'Groups':
-            $('#legend_title').html(jaws.gadgets.Phoo.addGroupTitle);
-            break;
-
-        case 'Properties':
-            break;
-    }
-});
 
 function toggleChk(el, id) {
     if (el.checked) {

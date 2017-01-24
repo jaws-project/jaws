@@ -32,38 +32,11 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
             'items'  => array()
         );
         if ($data_type == 0) {
-            $gModel = $this->gadget->model->load('Groups');
-            $groups = $gModel->GetGroups(true);
-            if (Jaws_Error::IsError($groups)) {
-                return $groups;
-            }
 
-            foreach ($groups as $group) {
-                $result['levels'][] = array(
-                    'id'     => $group['id'],
-                    'title'  => $group['name'],
-                );
-            }
         } elseif ($data_type == 1 || $data_type == 2) {
-            $gModel = $this->gadget->model->load('Groups');
-            $groups = $gModel->GetGroups(true);
-            if (Jaws_Error::IsError($groups)) {
-                return $groups;
-            }
-            foreach ($groups as $group) {
-                $entry = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
-                $result['levels'][] = array(
-                    'id'     => $group['id'],
-                    'parent' => $group['id'],
-                    'title'  => $group['name'],
-                    'lastmod'=> null,
-                    'url'    => $this->gadget->urlMap('AlbumList', array('group' => $entry), true),
-                );
-            }
-
             if ($data_type == 2) {
                 $pModel = $this->gadget->model->load('Albums');
-                $albums  = $pModel->GetAlbums('name', 'asc', 0, true);
+                $albums  = $pModel->GetAlbums('name', 'asc', true);
                 if (Jaws_Error::IsError($albums)) {
                     return $albums;
                 }

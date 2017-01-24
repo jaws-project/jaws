@@ -25,12 +25,11 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
         $album = jaws()->request->fetch('album', 'get');
-        $post  = jaws()->request->fetch(array('date', 'album:array', 'group'), 'post');
+        $post  = jaws()->request->fetch(array('date', 'album:array'), 'post');
 
         $aModel = $this->gadget->model->load('Albums');
-        $pModel = $this->gadget->model->loadAdmin('Photos');
         $pnModel = $this->gadget->model->load('Photos');
-        $albums = $aModel->GetAlbums('createtime', 'ASC', $post['group']);
+        $albums = $aModel->GetAlbums('createtime', 'ASC');
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $this->AjaxMe('script.js');
             $objDate = Jaws_Date::getInstance();
@@ -214,27 +213,6 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             }
             //Delete key
             $GLOBALS['app']->Session->DeleteAttribute('failures');
-
-            // Groups
-            $gModel = $this->gadget->model->load('Groups');
-            $groups = $gModel->GetGroups();
-            $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUP'));
-            $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
-            if (!isset($post['group'])) {
-                $post['group'] = 0;
-            }
-
-            foreach ($groups as $group) {
-                $tpl->SetBlock('phoo/photos/group');
-                $tpl->SetVariable('gid', $group['id']);
-                $tpl->SetVariable('group', $group['name']);
-                if ($post['group'] == $group['id']) {
-                    $tpl->SetBlock('phoo/photos/group/selected_group');
-                    $tpl->ParseBlock('phoo/photos/group/selected_group');
-                }
-                $tpl->ParseBlock('phoo/photos/group');
-            }
-
             $tpl->ParseBlock('phoo/photos');
 
         } else {

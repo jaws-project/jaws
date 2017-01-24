@@ -56,10 +56,6 @@ $actions['Moblog'] = array(
     'file' => 'Moblog',
     'parametric' => true,
 );
-$actions['Groups'] = array(
-    'layout' => true,
-    'file' => 'Groups',
-);
 
 /**
  * Admin actions
@@ -140,10 +136,6 @@ $admin_actions['FinishImport'] = array(
     'normal' => true,
     'file' => 'Import',
 );
-$admin_actions['Groups'] = array(
-    'normal' => true,
-    'file' => 'Groups',
-);
 $admin_actions['Thumb'] = array(
     'standalone' => true,
     'file' => 'Thumb',
@@ -161,22 +153,6 @@ $admin_actions['ImportImage'] = array(
     'file' => 'Ajax',
 );
 $admin_actions['UpdatePhoto'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['AddGroup'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['UpdateGroup'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['DeleteGroup'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['GetGroup'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );

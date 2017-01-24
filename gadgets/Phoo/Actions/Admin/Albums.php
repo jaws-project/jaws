@@ -79,21 +79,6 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
 
-        // Groups
-        $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
-        $gModel = $this->gadget->model->load('Groups');
-        $groups = $gModel->GetGroups();
-        foreach ($groups as $key => $group) {
-            $tpl->SetBlock('edit_album/group');
-            $tpl->SetVariable('gid', $group['id']);
-            $tpl->SetVariable('lbl_group', $group['name']);
-            if ($key == 0) {
-                $tpl->SetBlock('edit_album/group/selected_group');
-                $tpl->ParseBlock('edit_album/group/selected_group');
-            }
-            $tpl->ParseBlock('edit_album/group');
-        }
-
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
         $metaKeywords->SetStyle('width: 100%;');
@@ -129,9 +114,9 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
         $post = jaws()->request->fetch(
             array('name', 'allow_comments:array', 'meta_keywords', 'meta_description',
-                'groups:array', 'published'), 'post');
+                 'published'), 'post');
 
-        if (!empty($post['groups']) && !empty($post['name'])) {
+        if (!empty($post['name'])) {
             $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
             $model = $this->gadget->model->loadAdmin('Albums');
             $album = $model->NewAlbum(
@@ -143,13 +128,6 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 $post['meta_description']
             );
             if (!Jaws_Error::IsError($album)) {
-                $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
-                foreach ($post['groups'] as $group) {
-                    $insertData = array();
-                    $insertData['album'] = $album;
-                    $insertData['group'] = $group;
-                    $agModel->AddAlbumGroup($insertData);
-                }
                 Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
             }
         } else {
@@ -230,23 +208,6 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
 
-        // Groups
-        $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
-        $gModel = $this->gadget->model->load('Groups');
-        $agModel = $this->gadget->model->load('AlbumGroup');
-        $currentGroups = $agModel->GetAlbumGroupsID($id);
-        $groups = $gModel->GetGroups();
-        foreach ($groups as $group) {
-            $tpl->SetBlock('edit_album/group');
-            $tpl->SetVariable('gid', $group['id']);
-            $tpl->SetVariable('lbl_group', $group['name']);
-            if (in_array($group['id'], $currentGroups)) {
-                $tpl->SetBlock('edit_album/group/selected_group');
-                $tpl->ParseBlock('edit_album/group/selected_group');
-            }
-            $tpl->ParseBlock('edit_album/group');
-        }
-
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $album['meta_keywords']);
         $metaKeywords->SetStyle('width: 100%;');
@@ -283,10 +244,10 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
 
         $post= jaws()->request->fetch(
-            array('name', 'album', 'meta_keywords', 'meta_description', 'allow_comments:array', 'groups:array', 'published'),
+            array('name', 'album', 'meta_keywords', 'meta_description', 'allow_comments:array', 'published'),
             'post'
         );
-        if (!empty($post['groups']) && !empty($post['name'])) {
+        if (!empty($post['name'])) {
             $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
             $id = (int)$post['album'];
             $model = $this->gadget->model->loadAdmin('Albums');
@@ -295,15 +256,6 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 $post['published'], $post['meta_keywords'], $post['meta_description']
             );
             if (!Jaws_Error::IsError($result)) {
-                // AlbumGroup
-                $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
-                $agModel->DeleteAlbum($id);
-                foreach ($post['groups'] as $group) {
-                    $insertData = array();
-                    $insertData['album'] = $id;
-                    $insertData['group'] = $group;
-                    $agModel->AddAlbumGroup($insertData);
-                }
                 Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
             }
         } else {
@@ -323,17 +275,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     function DeleteAlbum()
     {
         $this->gadget->CheckPermission('ManageAlbums');
-
         $album = (int)jaws()->request->fetch('album', 'get');
-        $model = $this->gadget->model->loadAdmin('Albums');
-        $foo = $model->DeleteAlbum($album);
-
-        // AlbumGroup
-        if (!Jaws_Error::IsError($foo)) {
-            $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
-            $agModel->DeleteAlbum($album);
-        }
-
+        $this->gadget->model->loadAdmin('Albums')->DeleteAlbum($album);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
     }
 

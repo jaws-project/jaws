@@ -47,7 +47,6 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         'ModifyOthersPhotos',
         'ManageComments',
         'ManageAlbums',
-        'ManageGroups',
         'Settings',
         'Import',
     );
@@ -76,11 +75,6 @@ class Phoo_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', array(), 'schema.xml', true);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
         if (!empty($input_schema)) {
             $result = $this->installSchema($input_schema, $input_variables, 'schema.xml', true);
             if (Jaws_Error::IsError($result)) {
@@ -104,9 +98,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
     {
         $tables = array('phoo_album',
                         'phoo_image',
-                        'phoo_image_album',
-                        'phoo_group',
-                        'phoo_album_group');
+                        'phoo_image_album');
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
@@ -134,20 +126,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            // set default group for albums
-            $table = Jaws_ORM::getInstance()->table('phoo_album');
-            $albums = $table->select('id:integer')->fetchColumn();
-            if (Jaws_Error::IsError($albums)) {
-                return $albums;
-            }
-
-            $table = Jaws_ORM::getInstance()->table('phoo_album_group');
-            foreach ($albums as $album) {
-                $table->insert(array('album' => $album, 'group' => 1))->exec();
-            }
-
             $this->gadget->registry->delete('plugabble');
-            $this->gadget->acl->insert('ManageGroups');
         }
 
         if (version_compare($old, '1.1.0', '<')) {

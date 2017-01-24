@@ -39,20 +39,6 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
             }
         }
 
-        //Load model
-        $model  = $this->gadget->model->load('Groups');
-        $groups = $model->GetGroups();
-        if (!Jaws_Error::IsError($groups) && !empty($groups)) {
-            $max_size = 20;
-            foreach($groups as $group) {
-                $url = $this->gadget->urlMap('AlbumList', array('group' => $group['fast_url']));
-                $urls[] = array('url'   => $url,
-                                'title' => (Jaws_UTF8::strlen($group['name']) > $max_size)?
-                                            Jaws_UTF8::substr($group['name'], 0, $max_size).'...' :
-                                            $group['name']);
-            }
-        }
-
         return $urls;
     }
 

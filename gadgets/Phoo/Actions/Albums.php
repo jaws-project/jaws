@@ -22,21 +22,6 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
     function AlbumListLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->model->load('Groups');
-        $groups = $model->GetGroups();
-        if (!Jaws_Error::IsError($groups)) {
-            $pgroups = array();
-            $pgroups[0] = _t('GLOBAL_ALL');
-            foreach ($groups as $group) {
-                $pgroups[$group['id']] = $group['name'];
-            }
-
-            $result[] = array(
-                'title' => _t('GLOBAL_GROUP'),
-                'value' => $pgroups
-            );
-        }
-
         return $result;
     }
 
@@ -44,27 +29,17 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
      * Displays an index of galleries.
      *
      * @access  public
-     * @param   int      $gid         Group ID
      * @return  string XHTML template content
      */
-    function AlbumList($gid = null)
+    function AlbumList()
     {
         $tpl = $this->gadget->template->load('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
         $model = $this->gadget->model->load('Albums');
 
-        if (empty($gid)) {
-            $gid = $this->gadget->request->fetch('group', 'get');
-        }
-        if (is_null($gid)) {
-            $group = (int)$this->gadget->request->fetch('group');
-            if (!empty($group) && $group != 0) {
-                $gid = $group;
-            }
-        }
 
-        $albums = $model->GetAlbumList($gid);
+        $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
             $date = Jaws_Date::getInstance();
             $agModel = $this->gadget->model->load('AlbumGroup');
@@ -88,24 +63,6 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
                 $tpl->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
                 $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
                 $tpl->SetVariable('createtime', $date->Format($album['createtime']));
-
-                $pos = 1;
-                $groups = $agModel->GetAlbumGroupsInfo($album['id']);
-                if (is_array($groups)) {
-                    foreach ($groups as $group) {
-                        $url = $this->gadget->urlMap('AlbumList', array('group' => $group['fast_url']));
-                        $tpl->SetBlock('albums/item/group');
-                        $tpl->SetVariable('url', $url);
-                        $tpl->SetVariable('name', $group['name']);
-                        if ($pos == count($groups)) {
-                            $tpl->SetVariable('separator', '');
-                        } else {
-                            $tpl->SetVariable('separator', ',');
-                        }
-                        $pos++;
-                        $tpl->ParseBlock('albums/item/group');
-                    }
-                }
                 $tpl->ParseBlock('albums/item');
             }
         }
