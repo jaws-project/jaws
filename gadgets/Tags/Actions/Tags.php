@@ -286,7 +286,12 @@ class Tags_Actions_Tags extends Tags_Actions_Default
                         $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
                         $tpl->SetVariable('image',  $reference['image']);
                         if (!isset($reference['parse_text']) || $reference['parse_text']) {
-                            $reference['snippet'] = $this->gadget->ParseText($reference['snippet'], $gadget);
+                            $reference['snippet'] = $this->gadget->plugin->parseAdmin(
+                                $reference['snippet'],
+                                0,
+                                '',
+                                $gadget
+                            );
                         }
                         if (!isset($reference['strip_tags']) || $reference['strip_tags']) {
                             $reference['snippet'] = strip_tags($reference['snippet']);
@@ -426,7 +431,12 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
             $tpl->SetVariable('image',  $reference['image']);
             if (!isset($reference['parse_text']) || $reference['parse_text']) {
-                $reference['snippet'] = $this->gadget->ParseText($reference['snippet'], $gadget);
+                $reference['snippet'] = $this->gadget->plugin->parseAdmin(
+                    $reference['snippet'],
+                    0,
+                    '',
+                    $gadget
+                );
             }
             if (!isset($reference['strip_tags']) || $reference['strip_tags']) {
                 $reference['snippet'] = strip_tags($reference['snippet']);
