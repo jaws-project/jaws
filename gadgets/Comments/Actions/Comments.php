@@ -228,7 +228,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 );
                 $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
-                $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt'], 'Comments', 'index'));
+                $tpl->SetVariable('message', $this->gadget->plugin->parse($entry['msg_txt']));
                 $tpl->SetVariable('message_abbr', (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size)?
                     Jaws_UTF8::substr($entry['msg_txt'], 0, $max_size).'...' :
                     $entry['msg_txt']
