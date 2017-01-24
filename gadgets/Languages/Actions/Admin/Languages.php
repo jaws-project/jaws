@@ -28,8 +28,8 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetVariable('language',   _t('LANGUAGES_LANGUAGE'));
         $tpl->SetVariable('component',  _t('LANGUAGES_COMPONENT'));
         $tpl->SetVariable('settings',   _t('LANGUAGES_SETTINGS'));
-        $tpl->SetVariable('from',       _t('GLOBAL_FROM'));
-        $tpl->SetVariable('to',         _t('GLOBAL_TO'));
+        $tpl->SetVariable('from',       _t('LANGUAGES_FROM'));
+        $tpl->SetVariable('to',         _t('LANGUAGES_TO'));
 
         $btnExport =& Piwi::CreateWidget('Button','btn_export',
                                          _t('LANGUAGES_LANGUAGE_EXPORT'), STOCK_DOWN);
