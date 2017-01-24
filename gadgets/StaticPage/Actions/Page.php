@@ -107,7 +107,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
             $this->SetTitle($page['title']);
             $this->AddToMetaKeywords($page['meta_keywords']);
             $this->SetDescription($page['meta_description']);
-            $text = $this->gadget->ParseText($page['content']);
+            $text = $this->gadget->plugin->parseAdmin($page['content']);
             $tpl->SetVariable('content', $text, false);
             if ($page['show_title']) {
                 $tpl->SetBlock('page/title');
