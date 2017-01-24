@@ -10,6 +10,7 @@ class AbuseReporter_Plugin extends Jaws_Plugin
     var $friendly = true;
     var $version  = '0.1';
     var $_DefaultFrontendEnabled = true;
+    var $_DefaultBackendEnabled = false;
 
     /**
      * Overrides, Parses the text
@@ -20,10 +21,6 @@ class AbuseReporter_Plugin extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        if (JAWS_SCRIPT == 'admin') {
-            return $html;
-        }
-
         $GLOBALS['app']->Layout->addScript('gadgets/AbuseReporter/Resources/index.js');
 
         $tpl = new Jaws_Template();
