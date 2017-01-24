@@ -20,9 +20,11 @@ class AbuseReporter_Plugin extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        $GLOBALS['app']->Layout->addScript('gadgets/AbuseReporter/Resources/index.js');
+        if (JAWS_SCRIPT == 'admin') {
+            return $html;
+        }
 
-        $html = str_replace('JAWS_REPORT', '', $html);
+        $GLOBALS['app']->Layout->addScript('gadgets/AbuseReporter/Resources/index.js');
 
         $tpl = new Jaws_Template();
         $tpl->Load('Report.html', 'plugins/AbuseReporter/Templates/');
