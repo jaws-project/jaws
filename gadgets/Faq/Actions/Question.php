@@ -30,7 +30,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($q) && !empty($q)) {
             $this->SetTitle($q['question']);
             $tpl->SetVariable('title', $q['question']);
-            $tpl->SetVariable('answer', $this->gadget->ParseText($q['answer']));
+            $tpl->SetVariable('answer', $this->gadget->plugin->parseAdmin($q['answer']));
         }
         $tpl->ParseBlock('faq_question');
 
@@ -104,7 +104,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
                         $qid = empty($q['fast_url']) ? $q['id'] : $q['fast_url'];
                         $tpl->SetVariable('url', $this->gadget->urlMap('ViewQuestion', array('id' => $qid)));
                         $tpl->SetVariable('question', $q['question']);
-                        $tpl->SetVariable('answer', $this->gadget->ParseText($q['answer']));
+                        $tpl->SetVariable('answer', $this->gadget->plugin->parseAdmin($q['answer']));
                         $tpl->ParseBlock('faq/answers/category/question');
                     }
                     $tpl->ParseBlock('faq/answers/category');
