@@ -9918,7 +9918,7 @@ label.fuelux .checkbox-inline {
 .fuelux .tree > .tree-loader {
   margin-left: 50px;
 }
-.fuelux .tree .tree-open > .tree-branch-header .glyphicon-play {
+.fuelux .tree .tree-open > .tree-branch-header .glyphicon-triangle-right {
   transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   -webkit-transform: rotate(90deg);
@@ -9935,12 +9935,12 @@ label.fuelux .checkbox-inline {
 .fuelux .tree .tree-branch .tree-branch-header .tree-branch-name:hover {
   color: #999999;
 }
-.fuelux .tree .tree-branch .tree-branch-header .glyphicon-play {
+.fuelux .tree .tree-branch .tree-branch-header .glyphicon-triangle-right {
   font-size: 10px;
   padding-right: 5px;
   padding-left: 7px;
 }
-.fuelux .tree .tree-branch .tree-branch-header .glyphicon-play:before {
+.fuelux .tree .tree-branch .tree-branch-header .glyphicon-triangle-right:before {
   position: relative;
   top: -2px;
 }
