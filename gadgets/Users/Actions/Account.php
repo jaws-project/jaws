@@ -268,7 +268,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $mail->SetFrom();
         $mail->AddRecipient($new_email);
         $mail->SetSubject($subject);
-        $mail->SetBody($this->gadget->ParseText($body));
+        $mail->SetBody($this->gadget->plugin->parseAdmin($body));
         $mresult = $mail->send();
         if (Jaws_Error::IsError($mresult)) {
             return $mresult;
