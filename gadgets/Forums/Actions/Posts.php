@@ -94,7 +94,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             $tpl->SetVariable('post_id',  $post['id']);
-            $tpl->SetVariable('message',  $this->gadget->plugin->parse($post['message']));
+            $tpl->SetVariable('message',  $this->gadget->plugin->parse($post['message'], $post['id'], 'Post', 'Forums'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             // user's avatar
