@@ -13,6 +13,13 @@ var AbuseReporterCallback = {
 }
 
 /**
+ * stop Action
+ */
+function stopAction() {
+    $('.report-modal-body').html('');
+}
+
+/**
  * Open report windows
  */
 function openReportWindows(gadget, action, reference, url) {
@@ -25,8 +32,7 @@ function openReportWindows(gadget, action, reference, url) {
         }
     );
     $("#report-dialog-" + gadget + '-' + action + '-' + reference).html(reportUI);
-    $('#reportModal').modal();
-
+    $('#reportModal-'+ gadget + '-' + action + '-' + reference).modal();
 }
 
 /**
