@@ -4,14 +4,14 @@
     <button type="button" class="btn btn-info"  onclick="javascript:openReportWindows('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')"><span class="glyphicon glyphicon-ban-circle"></span> {{lbl_report}}</button>
 </div>
 
-<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel">
+<div class="modal fade" id="reportModal-{{gadget}}-{{action}}-{{reference}}" tabindex="-1" role="dialog" aria-labelledby="reportModal-{{gadget}}-{{action}}-{{reference}}Label">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="reportModalLabel">{{lbl_title}}</h4>
+                <h4 class="modal-title" id="reportModal-{{gadget}}-{{action}}-{{reference}}Label">{{lbl_title}}</h4>
             </div>
-            <div class="modal-body" id="report-dialog-{{gadget}}-{{action}}-{{reference}}">
+            <div class="modal-body report-modal-body" id="report-dialog-{{gadget}}-{{action}}-{{reference}}">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
