@@ -123,10 +123,13 @@ class BBCode_Plugin extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html   HTML to be parsed
+     * @param   string  $html       HTML to be parsed
+     * @param   int     $reference  Action reference entity
+     * @param   string  $action     Gadget action name
+     * @param   string  $gadget     Gadget name
      * @return  string  Parsed content
      */
-    function ParseText($html)
+    function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
         while (preg_match_all('#\[(\w+|\*)[=]?(.*?)\][\n]?(.+?)\[/\1\]#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {

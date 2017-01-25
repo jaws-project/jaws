@@ -38,10 +38,13 @@ class PhooInsert_Plugin extends Jaws_Plugin
      * Overrides, Parses the text
      *
      * @access  public
-     * @param   string  $html   HTML to be parsed
+     * @param   string  $html       HTML to be parsed
+     * @param   int     $reference  Action reference entity
+     * @param   string  $action     Gadget action name
+     * @param   string  $gadget     Gadget name
      * @return  string  Parsed content
      */
-    function ParseText($html)
+    function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
         if (file_exists (JAWS_PATH.'gadgets/Phoo/Model.php') && Jaws_Gadget::IsGadgetInstalled ('Phoo')) {
             $howMany = preg_match_all("#\[phoo album=\"(.*?)\" picture=\"(.*?)\" title=\"(.*?)\" class=\"(.*?)\" size=\"(.*?)\" linked=\"(.*?)\"\]#si", $html, $matches);
