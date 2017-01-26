@@ -65,7 +65,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
                     $tpl->SetVariable('width',    $imgData[0]);
                     $tpl->SetVariable('height',   $imgData[1]);
                 }
-                $url = $this->gadget->urlMap('ViewAlbum', array('id' => $album['id']));
+                $url = $this->gadget->urlMap('Photos', array('album' => $album['id']));
                 $tpl->SetVariable('url',      $url);
                 $tpl->SetVariable('name',     $album['name']);
                 $tpl->SetVariable('filename', $album['filename']);

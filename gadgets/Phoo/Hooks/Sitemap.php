@@ -47,7 +47,7 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'parent'    => null,
                         'title'     => $album['name'],
                         'lastmod'   => $album['createtime'],
-                        'url'       => $this->gadget->urlMap('ViewAlbum', array('id' => $entry), true),
+                        'url'       => $this->gadget->urlMap('Photos', array('album' => $entry), true),
                     );
                 }
             }

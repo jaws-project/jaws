@@ -31,7 +31,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $max_size = 20;
             foreach($albums as $a) {
-                $url = $this->gadget->urlMap('ViewAlbum', array('id' => $a['id']));
+                $url = $this->gadget->urlMap('Photos', array('album' => $a['id']));
                 $urls[] = array('url'   => $url,
                                 'title' => (Jaws_UTF8::strlen($a['name']) > $max_size)?
                                             Jaws_UTF8::substr($a['name'], 0, $max_size).'...' :

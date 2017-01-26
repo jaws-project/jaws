@@ -21,14 +21,14 @@ $actions['Albums'] = array(
     'layout' => true,
     'file' => 'Albums',
 );
-$actions['ViewAlbum'] = array(
+$actions['Photos'] = array(
     'normal' => true,
     'file' => 'Photos',
 );
-$actions['ViewAlbumPage'] = array(
-    'normal' => true,
-    'file' => 'Photos',
-);
+//$actions['ViewAlbumPage'] = array(
+//    'normal' => true,
+//    'file' => 'Photos',
+//);
 $actions['ViewImage'] = array(
     'normal' => true,
     'file' => 'Photos',

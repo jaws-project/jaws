@@ -20,10 +20,10 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      * @access  public
      * @return  string   XHTML template content
      */
-    function ViewAlbum()
-    {
-        return $this->ViewAlbumPage();
-    }
+//    function ViewAlbum()
+//    {
+//        return $this->ViewAlbumPage();
+//    }
 
     /**
      * Displays an index of pictures of user photos.
@@ -43,14 +43,15 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      * @access  public
      * @return  string   XHTML template content
      */
-    function ViewAlbumPage()
+    function Photos()
     {
         $tpl = $this->gadget->template->load('ViewAlbumPage.html');
         $tpl->SetBlock('ViewAlbumPage');
 
-        $get = jaws()->request->fetch(array('id', 'user', 'page'), 'get');
-        $id  = !empty($get['id'])? $get['id'] : '0';
+        $get = jaws()->request->fetch(array('user', 'album', 'order', 'page'), 'get');
         $user = !empty($get['user'])? (int) $get['user'] : 0;
+        $album  = !empty($get['album'])? $get['album'] : 0;
+        $order = !empty($get['order'])? (int) $get['order'] : 1;
         $page = !empty($get['page'])? (int) $get['page'] : 1;
 
         $pModel = $this->gadget->model->load('Photos');
@@ -207,7 +208,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl->SetBlock('ViewImage/navigation');
         $tpl->SetVariable('lbl_page_counter', _t('PHOO_PHOTO_COUNTER', $image['pos'], $image['total']));
         $tpl->SetVariable('lbl_thumbs', _t('PHOO_THUMBS'));
-        $url = $this->gadget->urlMap('ViewAlbum', array('id' => $albumid));
+        $url = $this->gadget->urlMap('Photos', array('album' => $albumid));
         $tpl->SetVariable('url_thumbs', $url);
 
         if ($image['first'] != $image['id']) {
