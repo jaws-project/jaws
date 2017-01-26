@@ -124,8 +124,9 @@ function updateContact()
 {
     UsersAjax.callAsync(
         'UpdateContact',
-        $.unserialize($('form[name=contacts]').serialize())
+        $.unserialize($('fieldset#contact').serialize())
     );
+    return false;
 }
 
 /**
@@ -161,16 +162,31 @@ function editContact(cid)
     $('#contactModalLabel').html(jaws.gadgets.Users.lbl_editContact);
     var cInfo = UsersAjax.callSync('GetContact', {'id': selectedContact});
     if (cInfo) {
-        changeProvince(cInfo['province'])
-
-        $('#contacts-form input, #contacts-form select, #contacts-form textarea').each(
-            function () {
-                $(this).val(cInfo[$(this).attr('name')]);
-            }
-        );
-
+        initContactForm(cInfo);
         $('#contactModal').modal('show');
     }
+}
+
+/**
+ * Initialize contact form
+ */
+function initContactForm(contact)
+{
+    $('#country_home').val(contact.country_home);
+    $('#country_work').val(contact.country_work);
+    $('#country_other').val(contact.country_other);
+    changeCountry(contact.country_home,  'province_home');
+    changeCountry(contact.country_work,  'province_work');
+    changeCountry(contact.country_other, 'province_other');
+    $('#province_home').val(contact.province_home);
+    $('#province_work').val(contact.province_work);
+    $('#province_other').val(contact.province_other);
+    changeProvince(contact.province_home,  'city_home',  'country_home');
+    changeProvince(contact.province_work,  'city_work',  'country_work');
+    changeProvince(contact.province_other, 'city_other', 'country_other');
+    $('fieldset#contact .form-control').each(function () {
+        $(this).val(contact[$(this).attr('name')]);
+    });
 }
 
 /**
@@ -787,6 +803,7 @@ function initiateContactsDG() {
     })
 
 }
+
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Users':
@@ -797,6 +814,11 @@ $(document).ready(function() {
         case 'ManageGroups':
             currentAction = "Group";
             initiateGroupsDG();
+            break;
+
+        case 'Contact':
+            currentAction = "UserContact";
+            initContactForm(jaws.gadgets.Users.contact);
             break;
 
         case 'Contacts':

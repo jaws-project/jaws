@@ -120,12 +120,12 @@ $actions['UpdatePreferences'] = array(
 );
 $actions['Contact'] = array(
     'normal' => true,
-    'file' => 'Contact',
+    'file' => 'Contacts',
 );
 $actions['UpdateContact'] = array(
     'standalone' => true,
     'internal' => true,
-    'file' => 'Contact',
+    'file' => 'Contacts',
 );
 $actions['GetContact'] = array(
     'standalone' => true,
