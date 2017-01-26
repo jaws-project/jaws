@@ -23,11 +23,6 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         $tpl->SetBlock('NoPermission');
         $tpl->SetVariable('nopermission', _t('USERS_NO_PERMISSION_TITLE'));
         $tpl->SetVariable('description', _t('USERS_NO_PERMISSION_DESC', $gadget, $action));
-        $tpl->SetVariable('admin_script', BASE_SCRIPT);
-        $tpl->SetVariable('site-name', $this->gadget->registry->fetch('site_name', 'Settings'));
-        $tpl->SetVariable('site-slogan', $this->gadget->registry->fetch('site_slogan', 'Settings'));
-        $tpl->SetVariable('BASE_URL', $GLOBALS['app']->GetSiteURL('/'));
-        $tpl->SetVariable('.dir', _t('GLOBAL_LANG_DIRECTION') == 'rtl' ? '.rtl' : '');
         if ($GLOBALS['app']->Session->Logged()) {
             $tpl->SetBlock('NoPermission/known');
             $logoutLink = $this->gadget->urlMap('Logout');

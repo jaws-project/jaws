@@ -1,32 +1,14 @@
-<!-- BEGIN NoPermission --><?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
- <head>
-  <base href="{{BASE_URL}}" />
-  <title>{{site-name}}</title>
-  <meta http-equiv="Content-Type" content="text/html" />
-  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" media="screen" />
-  <!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
-</head>
- <body>
-  <div id="header">
-   <h1><a href="{{admin_script}}">{{site-name}}</a></h1>
-   <p>{{site-slogan}}</p>
+<!-- BEGIN NoPermission -->
+<div id="container" class="clearfix">
+  <div id="main-section" class="nopermission">
+    <h3><strong>{{nopermission}}</strong></h3>
+    <p>{{description}}</p>
+    <!-- BEGIN anon -->
+    <p>{{anon_description}}</p>
+    <!-- END anon -->
+    <!-- BEGIN known -->
+    <p>{{known_description}}</p>
+    <!-- END known -->
   </div>
-  <hr />
-  <div id="container" class="clearfix">
-   <div id="main-section" class="nopermission">
-     <h3><strong>{{nopermission}}</strong></h3>
-     <p>{{description}}</p>
-     <!-- BEGIN anon -->
-     <p>{{anon_description}}</p>
-     <!-- END anon -->
-     <!-- BEGIN known -->
-     <p>{{known_description}}</p>
-     <!-- END known -->
-   </div>
-  </div>
- </body>
-</html>
+</div>
 <!-- END NoPermission -->
