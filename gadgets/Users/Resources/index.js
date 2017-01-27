@@ -795,7 +795,8 @@ function initiateContactsDG() {
         dataSource: contactsDataSource,
         staticHeight: 600,
         list_actions: list_actions,
-        list_selectable: 'multi'
+        list_selectable: 'multi',
+        list_direction: $('.repeater-canvas').css('direction')
     });
 
     $('#contactModal').on('hidden.bs.modal', function (e) {
