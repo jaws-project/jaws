@@ -308,9 +308,9 @@ class Users_Actions_Contacts extends Users_Actions_Default
                 'title', 'name', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
                 'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
                 'email_home', 'email_work', 'email_other',
-                'province_home', 'city_home', 'address_home', 'postal_code_home',
-                'province_work', 'city_work', 'address_work', 'postal_code_work',
-                'province_other', 'city_other', 'address_other', 'postal_code_other',
+                'country_home', 'province_home', 'city_home', 'address_home', 'postal_code_home',
+                'country_work', 'province_work', 'city_work', 'address_work', 'postal_code_work',
+                'country_other', 'province_other', 'city_other', 'address_other', 'postal_code_other',
                 'note'
             )
         );
