@@ -40,23 +40,23 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
             array(
                 'home' =>
                     array(
-                        'country' => isset($data['country_home']) ? $data['country_home'] : 0,
-                        'province' => isset($data['province_home']) ? $data['province_home'] : 0,
-                        'city' => isset($data['city_home']) ? $data['city_home'] : 0,
+                        'country' => isset($data['country_home']) ? $data['country_home'] : '',
+                        'province' => isset($data['province_home']) ? $data['province_home'] : '',
+                        'city' => isset($data['city_home']) ? $data['city_home'] : '',
                         'address' => $data['address_home'],
                         'postal_code' => $data['postal_code_home']),
                 'work' =>
                     array(
-                        'country' => isset($data['country_work']) ? $data['country_work'] : 0,
-                        'province' => isset($data['province_work']) ? $data['province_work'] : 0,
-                        'city' => isset($data['city_work']) ? $data['city_work'] : 0,
+                        'country' => isset($data['country_work']) ? $data['country_work'] : '',
+                        'province' => isset($data['province_work']) ? $data['province_work'] : '',
+                        'city' => isset($data['city_work']) ? $data['city_work'] : '',
                         'address' => $data['address_work'],
                         'postal_code' => $data['postal_code_work']),
                 'other' =>
                     array(
-                        'country' => isset($data['country_other']) ? $data['country_other'] : 0,
-                        'province' => isset($data['province_other']) ? $data['province_other'] : 0,
-                        'city' => isset($data['city_other']) ? $data['city_other'] : 0,
+                        'country' => isset($data['country_other']) ? $data['country_other'] : '',
+                        'province' => isset($data['province_other']) ? $data['province_other'] : '',
+                        'city' => isset($data['city_other']) ? $data['city_other'] : '',
                         'address' => $data['address_other'],
                         'postal_code' => $data['postal_code_other']),
             )
@@ -125,23 +125,23 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
         $contactData['address'] = json_encode(
             array(
                 'home' => array(
-                    'country' => isset($data['country_home']) ? $data['country_home'] : 0,
-                    'province' => isset($data['province_home']) ? $data['province_home'] : 0,
-                    'city' => isset($data['city_home']) ? $data['city_home'] : 0,
+                    'country' => isset($data['country_home']) ? $data['country_home'] : '',
+                    'province' => isset($data['province_home']) ? $data['province_home'] : '',
+                    'city' => isset($data['city_home']) ? $data['city_home'] : '',
                     'address' => isset($data['address_home']) ? $data['address_home'] : '',
                     'postal_code' => isset($data['postal_code_home']) ? $data['postal_code_home'] : ''
                 ),
                 'work' => array(
-                    'country' => isset($data['country_work']) ? $data['country_work'] : 0,
-                    'province' => isset($data['province_work']) ? $data['province_work'] : 0,
-                    'city' => isset($data['city_work']) ? $data['city_work'] : 0,
+                    'country' => isset($data['country_work']) ? $data['country_work'] : '',
+                    'province' => isset($data['province_work']) ? $data['province_work'] : '',
+                    'city' => isset($data['city_work']) ? $data['city_work'] : '',
                     'address' => isset($data['address_work']) ? $data['address_work'] : '',
                     'postal_code' => isset($data['postal_code_work']) ? $data['postal_code_work'] : ''
                 ),
                 'other' => array(
-                    'country' => isset($data['country_other']) ? $data['country_other'] : 0,
-                    'province' => isset($data['province_other']) ? $data['province_other'] : 0,
-                    'city' => isset($data['city_other']) ? $data['city_other'] : 0,
+                    'country' => isset($data['country_other']) ? $data['country_other'] : '',
+                    'province' => isset($data['province_other']) ? $data['province_other'] : '',
+                    'city' => isset($data['city_other']) ? $data['city_other'] : '',
                     'address' => isset($data['address_other']) ? $data['address_other'] : '',
                     'postal_code' => isset($data['postal_code_other']) ? $data['postal_code_other'] : ''
                 ),
