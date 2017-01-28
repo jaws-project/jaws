@@ -130,6 +130,9 @@ class Jaws_Widgets_TinyMCE extends Container
         }
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $this->_Value, '', '14');
+        $this->TextArea->setData('editor', 'tinymce');
+        $this->TextArea->setData('direction', _t('GLOBAL_LANG_DIRECTION'));
+        $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
         $this->setClass($name);
 
@@ -224,7 +227,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $tpl->SetVariable('selector', empty($id)? "textarea[name={$this->_Name}]" : "textarea#$id");
 
         $tpl->ParseBlock($block);
-        $this->_XHTML.= $tpl->Get();
+        //$this->_XHTML.= $tpl->Get();
     }
 
     /**
