@@ -325,6 +325,60 @@ function paintCombo(combo, oddColor, evenColor)
 }
 
 /**
+ * Prepares the editor with basic data
+ */
+function initEditor(selector)
+{
+    var editorType = $(selector).data('editor') || 'textarea';
+    switch(editorType) {
+        case 'ckeditor':
+            $.loadScript('libraries/ckeditor/ckeditor.js', function() {
+                $(selector).ckeditor({
+                    'contentsLangDirection': $(selector).data('direction') || 'ltr',
+                    'language': $(selector).data('language') || 'en',
+
+                    'indentUnit': 'em',
+                    'indentOffset': '1',
+                });
+            });
+            break;
+
+        case 'tinymce':
+            $.loadScript('libraries/tinymce/tinymce.min.js', function() {
+                $(selector).tinymce({
+                    directionality: $(selector).data('direction') || 'ltr',
+                    'language': $(selector).data('language') || 'en',
+                    'theme': 'modern',
+                    'toolbar_items_size': 'small',
+                    'template_external_list_url': 'libraries/tinymce/templates.js',
+                    'theme_modern_toolbar_location': 'top',
+                    'theme_modern_toolbar_align': 'center',
+                    'theme_modern_path_location': 'bottom',
+                    'theme_modern_resizing': true,
+                    'theme_modern_resize_horizontal': false,
+                    'tab_focus': ':prev,:next',
+                    'dialog_type': 'window',
+                    'entity_encoding':    'raw',
+                    'relative_urls':      true,
+                    'remove_script_host': false,
+                    'force_p_newlines':   true,
+                    'force_br_newlines':  false,
+                    'remove_linebreaks':  true,
+                    'nowrap':             false,
+                    'automatic_uploads':  false,
+                    'convert_newlines_to_brs': false,
+                    'apply_source_formatting': true
+
+                });
+            });
+            break;
+
+        default:
+            break;
+    }
+}
+
+/**
  * Set the value of the editor/textarea
  */
 function setEditorValue(name, value)

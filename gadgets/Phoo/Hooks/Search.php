@@ -51,7 +51,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
             foreach ($result as $r) {
                 $entry = array();
                 $entry['title']   = $r['name'];
-                $entry['url']     = $this->gadget->urlMap('ViewAlbum', array('id' => $r['id']));
+                $entry['url']     = $this->gadget->urlMap('Photos', array('album' => $r['id']));
                 $entry['image']   = 'gadgets/Phoo/Resources/images/logo.png';
                 $entry['snippet'] = $r['description'];
                 $entry['date']    = $date->ToISO($r['createtime']);

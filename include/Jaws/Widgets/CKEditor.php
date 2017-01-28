@@ -174,7 +174,6 @@ class Jaws_Widgets_CKEditor extends Container
      */
     function __construct($gadget, $name, $value = '', $label = '')
     {
-        require_once JAWS_PATH . 'include/Jaws/String.php';
         $value = str_replace('&lt;', '&amp;lt;', $value);
         $value = str_replace('&gt;', '&amp;gt;', $value);
 
@@ -200,6 +199,9 @@ class Jaws_Widgets_CKEditor extends Container
         $this->setClass($name);
         $this->TextArea->setID($this->_Name);
         $this->TextArea->setName($this->_Name);
+        $this->TextArea->setData('editor', 'ckeditor');
+        $this->TextArea->setData('direction', _t('GLOBAL_LANG_DIRECTION'));
+        $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
         $this->_BasePath = 'libraries/ckeditor/';
@@ -292,7 +294,7 @@ class Jaws_Widgets_CKEditor extends Container
         }
 
         $tpl->ParseBlock($block);
-        $this->_XHTML.= $tpl->Get();
+        //$this->_XHTML.= $tpl->Get();
     }
 
     /**

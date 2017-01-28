@@ -404,7 +404,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $btn_title = _t('FORUMS_POSTS_EDIT_BUTTON');
         }
 
-        $this->AjaxMe('site_script.js');
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('EditPost.html');
         $tpl->SetBlock('post');
 

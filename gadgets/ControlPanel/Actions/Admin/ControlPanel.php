@@ -51,7 +51,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->ParseBlock('layout/login-info');
 
         // Set the header items for each gadget and the response box
-        if (isset($ReqGadget) && ($ReqGadget != 'ControlPanel')){
+        if (!empty($ReqGadget) && ($ReqGadget != 'ControlPanel')) {
             $gInfo  = Jaws_Gadget::getInstance($ReqGadget);
             $docurl = null;
             if (!Jaws_Error::isError($gInfo)) {

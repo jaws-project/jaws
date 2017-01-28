@@ -25,3 +25,19 @@ function removeAttachment(element)
 {
     Element.destroy(element.getParent());
 }
+
+/**
+ * on document ready
+ */
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'NewPost':
+        case 'EditPost':
+            initEditor('#message');
+            break;
+
+        case 'NewTopic':
+        case 'EditTopic':
+            break;
+    }
+});

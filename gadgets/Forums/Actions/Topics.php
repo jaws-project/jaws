@@ -210,7 +210,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $this->AjaxMe('site_script.js');
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('EditTopic.html');
         $tpl->SetBlock('topic');
 

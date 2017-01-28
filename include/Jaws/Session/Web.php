@@ -139,10 +139,13 @@ class Jaws_Session_Web extends Jaws_Session
         }
 
         $GLOBALS['app']->InstanceLayout();
-        $GLOBALS['app']->Layout->LoadControlPanelHead();
         $user = Jaws_Gadget::getInstance('Users')->action->load('Default');
-        $data = $user->ShowNoPermission($this->GetAttribute('username'), $gadget, $key);
-        terminate($data, 403);
+        $result = $user->ShowNoPermission($this->GetAttribute('username'), $gadget, $key);
+        $result = Jaws_Gadget::getInstance('ControlPanel')
+            ->action
+            ->loadAdmin('ControlPanel')
+            ->Layout('', $result, '');
+        terminate($result, 403);
     }
 
 }
