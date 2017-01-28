@@ -155,40 +155,4 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
         //TODO: catch error
         return $result;
     }
-
-    /**
-     * Get provinces list
-     *
-     * @access  public
-     * @param   int     $country    Country id
-     * @return  array   Response array (notice or error)
-     */
-    function GetProvinces($country = null)
-    {
-        $pTable = Jaws_ORM::getInstance()->table('provinces')
-            ->select('id:integer', 'title', 'country')
-            ->orderBy('order');
-        if (!empty($country)) {
-            $pTable->where('country', $country);
-        }
-        return $pTable->fetchAll();
-    }
-
-    /**
-     * Get cities list
-     *
-     * @access  public
-     * @param   int     $province       Province id
-     * @return  array   Response array (notice or error)
-     */
-    function GetCities($province = null)
-    {
-        $cTable = Jaws_ORM::getInstance()->table('cities')
-            ->select('id:integer', 'title', 'province')
-            ->orderBy('order');
-        if (!empty($province)) {
-            $cTable->where('province', $province);
-        }
-        return $cTable->fetchAll();
-    }
 }
