@@ -71,22 +71,6 @@ class Jaws_Widgets_CKEditor extends Container
     var $_BasePath;
 
     /**
-     * Width of the CKEditor.
-     * Examples: 100%, 600
-     *
-     * @var mixed
-     */
-    var $_Width = '100%';
-
-    /**
-     * Height of the CKEditor.
-     * Examples: 400, 50%
-     *
-     * @var mixed
-     */
-    var $_Height = '200';
-
-    /**
      * This is where additional configuration can be passed.
      * Example:
      * $oCKEditor->Config['EnterMode'] = 'br';
@@ -94,18 +78,6 @@ class Jaws_Widgets_CKEditor extends Container
      * @var array
      */
     var $_Config;
-
-    /**
-     * @access  private
-     * @var     string = {default}
-     */
-    var $_Theme = 'default';
-
-    /**
-     * @access  private
-     * @var     string = {kama,office2003,v2}
-     */
-    var $_Skin = 'moono';
 
     /**
      * CKEditor base toolbar{Basic, Full, Array of items}
@@ -200,8 +172,6 @@ class Jaws_Widgets_CKEditor extends Container
         $this->TextArea->setID($this->_Name);
         $this->TextArea->setName($this->_Name);
         $this->TextArea->setData('editor', 'ckeditor');
-        $this->TextArea->setData('direction', _t('GLOBAL_LANG_DIRECTION'));
-        $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
         $this->_BasePath = 'libraries/ckeditor/';
@@ -225,9 +195,11 @@ class Jaws_Widgets_CKEditor extends Container
         if (!empty($label)) {
             $this->_Container->PackStart($this->_Label);
         }
-        $this->_Container->PackStart($this->TextArea);
-        $this->_Container->SetWidth($this->_Width);
-        $this->_XHTML .= $this->_Container->Get();
+        // set editor configuration
+        $this->TextArea->setData('direction', $this->_Direction);
+        $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
+        $this->TextArea->setData('readonly', $this->_IsEnabled? 0 : 1);
+        $this->TextArea->setData('resizable', (int)$this->_IsResizable);
 
         $extraPlugins = array();
         $pluginDir = JAWS_PATH . 'libraries/ckeditor/plugins/';
@@ -242,37 +214,12 @@ class Jaws_Widgets_CKEditor extends Container
             }
         }
 
-        $tpl = new Jaws_Template();
-        $tpl->Load('CKEditor.html', 'include/Jaws/Resources');
-        $block = (JAWS_SCRIPT == 'admin')? 'ckeditor_backend' : 'ckeditor_frontend';
-        $tpl->SetBlock($block);
-        $id = $this->TextArea->getID();
-        $tpl->SetVariable('name', empty($id)? "textarea[name={$this->_Name}]" : "textarea#$id");
-        $tpl->SetVariable('baseUrl', Jaws_Utils::getBaseURL('/', true));
-        $tpl->SetVariable('contentsLangDirection', $this->_Direction);
-        $tpl->SetVariable('language', $this->_Language);
-        $tpl->SetVariable('AutoDetectLanguage', 'false');
-        $tpl->SetVariable('autoParagraph', 'false');
-        $tpl->SetVariable('height', $this->_Height);
-        $tpl->SetVariable('skin', $this->_Skin);
-        $tpl->SetVariable('theme', $this->_Theme);
-        $tpl->SetVariable('readOnly', $this->_IsEnabled? 'false' : 'true');
-        $tpl->SetVariable('resize_enabled', $this->_IsResizable? 'true' : 'false');
-        $tpl->SetVariable('toolbar', json_encode($this->toolbars));
-        if(!empty($extraPlugins)) {
-            $tpl->SetBlock("$block/extra");
-            $tpl->SetVariable('extraPlugins', implode(',', $extraPlugins));
-            $tpl->ParseBlock("$block/extra");
-        }
+        $GLOBALS['app']->Layout->setVariable('editorExtraPlugins', implode(',', $extraPlugins));
+        $GLOBALS['app']->Layout->setVariable('editorToolbar', $this->toolbars);
 
-        // removed plugins
-        $tpl->SetVariable('removePlugins', $this->_RemovePlugins);
-        // direction
-        if ('rtl' == $this->_Direction) {
-            $tpl->SetVariable('contentsCss', 'gadgets/ControlPanel/Resources/ckeditor.rtl.css');
-        } else {
-            $tpl->SetVariable('contentsCss', 'gadgets/ControlPanel/Resources/ckeditor.css');
-        }
+        $this->_Container->PackStart($this->TextArea);
+        $this->_XHTML .= $this->_Container->Get();
+/*
         // FileBrowser
         if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
             $tpl->SetBlock("$block/filebrowser");
@@ -292,9 +239,7 @@ class Jaws_Widgets_CKEditor extends Container
             $tpl->SetVariable('filebrowserFlashBrowseUrl', BASE_SCRIPT. '?gadget=Directory&action=Browse');
             $tpl->ParseBlock("$block/directory");
         }
-
-        $tpl->ParseBlock($block);
-        //$this->_XHTML.= $tpl->Get();
+*/
     }
 
     /**
@@ -354,30 +299,6 @@ class Jaws_Widgets_CKEditor extends Container
     function setLabel($label)
     {
         $this->_Label->SetValue($label);
-    }
-
-    /**
-     * Set the CKEditor theme
-     *
-     * @access  public
-     * @param   string  $Theme
-     * @return  void
-     */
-    function setTheme($Theme)
-    {
-        $this->_Theme = $Theme;
-    }
-
-    /**
-     * Set skin of editor
-     *
-     * @access  public
-     * @param   string  $Skin
-     * @return  void
-     */
-    function setSkin($Skin)
-    {
-        $this->_Skin = $Skin;
     }
 
     /**
@@ -457,30 +378,6 @@ class Jaws_Widgets_CKEditor extends Container
                 $this->toolbars[] = array('name' => "extra$key", 'items' => $items);
             }
         }
-    }
-
-    /**
-     * Set height of editor
-     *
-     * @access  public
-     * @param   array  $height
-     * @return  void
-     */
-    function setHeight($height)
-    {
-        $this->_Height = $height;
-    }
-
-    /**
-     * Set width of editor
-     *
-     * @access  public
-     * @param   array  $width
-     * @return  void
-     */
-    function setWidth($width)
-    {
-        $this->_Width = $width;
     }
 
 }

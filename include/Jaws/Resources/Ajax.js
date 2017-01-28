@@ -336,9 +336,17 @@ function initEditor(selector)
                 $(selector).ckeditor({
                     'contentsLangDirection': $(selector).data('direction') || 'ltr',
                     'language': $(selector).data('language') || 'en',
-
+                    'AutoDetectLanguage': false,
+                    'skin': 'moono',
+                    'theme': 'default',
+                    'readOnly': $(selector).data('readonly') == '1',
+                    'resize_enabled': $(selector).data('resizable') == '1',
+                    'toolbar': jaws.core.editorToolbar,
+                    'extraPlugins': jaws.core.editorExtraPlugins,
+                    'removePlugins': '',
+                    'autoParagraph': false,
                     'indentUnit': 'em',
-                    'indentOffset': '1',
+                    'indentOffset': '1'
                 });
             });
             break;
