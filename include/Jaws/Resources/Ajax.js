@@ -80,17 +80,6 @@ function JawsAjax(gadget, callback, baseScript)
     this.msgBox  = "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase();
 
     /**
-     * Supports backward ajax mechanism
-     *
-     * @param   string  baseScript  Base URL
-     * @return  void
-     */
-    this.backwardSupport = function (baseScript) {
-        baseScript = (baseScript === undefined)?$('meta[name=script]').attr('content') : baseScript;
-        this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
-    };
-
-    /**
      * Performs asynchronous Ajax request
      *
      * @param   string  action  Name of the new JawsAjax( to be executed
@@ -342,7 +331,7 @@ function initEditor(selector)
                     'readOnly': $(selector).data('readonly') == '1',
                     'resize_enabled': $(selector).data('resizable') == '1',
                     'toolbar': jaws.core.editorToolbar,
-                    'extraPlugins': jaws.core.editorExtraPlugins,
+                    'extraPlugins': jaws.core.editorPlugins,
                     'removePlugins': '',
                     'autoParagraph': false,
                     'indentUnit': 'em',
@@ -354,9 +343,13 @@ function initEditor(selector)
         case 'tinymce':
             $.loadScript('libraries/tinymce/tinymce.min.js', function() {
                 $(selector).tinymce({
-                    directionality: $(selector).data('direction') || 'ltr',
+                    'document_base_url': '',
+                    'directionality': $(selector).data('direction') || 'ltr',
                     'language': $(selector).data('language') || 'en',
                     'theme': 'modern',
+                    'plugins': jaws.core.editorPlugins,
+                    'toolbar1': jaws.core.editorToolbar,
+                    'toolbar2': '',
                     'toolbar_items_size': 'small',
                     'template_external_list_url': 'libraries/tinymce/templates.js',
                     'theme_modern_toolbar_location': 'top',
@@ -375,8 +368,10 @@ function initEditor(selector)
                     'nowrap':             false,
                     'automatic_uploads':  false,
                     'convert_newlines_to_brs': false,
-                    'apply_source_formatting': true
-
+                    'apply_source_formatting': true,
+                    'extended_valid_elements': 'iframe[class|id|marginheight|marginwidth|align|frameborder=0|scrolling|align|name|src|height|width]',
+                    'invalid_elements': '',
+                    'menubar': false // must enabled for admin side
                 });
             });
             break;

@@ -123,16 +123,8 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Value  = $value;
         $this->_Gadget = $gadget;
 
-        if (JAWS_SCRIPT == 'admin') {
-            $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_backend_toolbar', 'Settings');
-        } else {
-            $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_frontend_toolbar', 'Settings');
-        }
-
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $this->_Value, '', '14');
         $this->TextArea->setData('editor', 'tinymce');
-        $this->TextArea->setData('direction', _t('GLOBAL_LANG_DIRECTION'));
-        $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
         $this->setClass($name);
 
@@ -152,6 +144,10 @@ class Jaws_Widgets_TinyMCE extends Container
         static $alreadyLoaded;
         $alreadyLoaded = isset($alreadyLoaded)? true : false;
 
+        // set editor configuration
+        $this->TextArea->setData('direction', _t('GLOBAL_LANG_DIRECTION'));
+        $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
+
         $plugins = array();
         $lang = $GLOBALS['app']->GetLanguage();
         $pluginDir = JAWS_PATH . 'libraries/tinymce/plugins/';
@@ -164,15 +160,25 @@ class Jaws_Widgets_TinyMCE extends Container
             }
         }
         $plugins = implode(',', $plugins);
+        if (JAWS_SCRIPT == 'admin') {
+            $plugins = str_replace(',bbcode,', ',', $plugins);
+            $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_backend_toolbar', 'Settings');
+        } else {
+            $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_frontend_toolbar', 'Settings');
+        }
 
         $label = $this->_Label->GetValue();
         if (!empty($label)) {
             $this->_Container->PackStart($this->_Label);
         }
+
+        $GLOBALS['app']->Layout->setVariable('editorPlugins', $plugins);
+        $GLOBALS['app']->Layout->setVariable('editorToolbar', $toolbars);
+
         $this->_Container->PackStart($this->TextArea);
         $this->_Container->SetWidth($this->_Width);
         $this->_XHTML .= $this->_Container->Get();
-
+/*
         $ibrowser = '';
         if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
             $ibrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
@@ -187,47 +193,7 @@ class Jaws_Widgets_TinyMCE extends Container
         if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
             $mbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Directory&action=Browse';
         }
-
-        if (JAWS_SCRIPT == 'admin') {
-            $plugins = str_replace(',bbcode,', ',', $plugins);
-            $block = 'tinymce_backend';
-        } else {
-            $block = 'tinymce_frontend';
-        }
-
-        $tpl = new Jaws_Template();
-        $tpl->Load('TinyMCE.html', 'include/Jaws/Resources');
-        $tpl->SetBlock($block);
-
-        $tpl->SetVariable('ibrowser', $ibrowser);
-        $tpl->SetVariable('fbrowser', $fbrowser);
-        $tpl->SetVariable('mbrowser', !empty($mbrowser)? $mbrowser : $fbrowser);
-        $tpl->SetVariable('lang',     $lang);
-        $tpl->SetVariable('theme',    $this->_Theme);
-        $tpl->SetVariable('plugins',  $plugins);
-
-        // set toolbars
-        $index = 0;
-        foreach ($this->toolbars as $key => $toolbar) {
-            $tpl->SetBlock("$block/toolbar");
-            $index = $key + 1;
-            $tpl->SetVariable('theme',   $this->_Theme);
-            $tpl->SetVariable('key',     $index);
-            $tpl->SetVariable('toolbar', $toolbar);
-            $tpl->ParseBlock("$block/toolbar");
-        }
-        $index = $index + 1;
-        $tpl->SetVariable('key', $index);
-
-        $tpl->SetVariable('browsers', implode($this->_Browsers, ','));
-        $tpl->SetVariable('dir',      _t('GLOBAL_LANG_DIRECTION'));
-        $tpl->SetVariable('valid_elements',   $this->_ExtendedValidElements);
-        $tpl->SetVariable('invalid_elements', $this->_InvalidElements);
-        $id = $this->TextArea->getID();
-        $tpl->SetVariable('selector', empty($id)? "textarea[name={$this->_Name}]" : "textarea#$id");
-
-        $tpl->ParseBlock($block);
-        //$this->_XHTML.= $tpl->Get();
+*/
     }
 
     /**
@@ -266,42 +232,6 @@ class Jaws_Widgets_TinyMCE extends Container
     function SetLabel($label)
     {
         $this->_Label->SetValue($label);
-    }
-
-    /**
-     * Set the TinyMCE theme
-     *
-     * @access  public
-     * @param   string $theme
-     * @return  void
-     */
-    function setTheme($theme)
-    {
-        $this->_Theme = $theme;
-    }
-
-    /**
-     * Set default editor toolbar
-     *
-     * @access  public
-     * @param   string  $toolbars   Toolbars
-     * @return  void
-     */
-    function setToolbar($toolbars)
-    {
-        $this->toolbars = array($toolbars);
-    }
-
-    /**
-     * Set width of TinyMCE editor
-     *
-     * @access  public
-     * @param   string  $width
-     * @return  void
-     */
-    function setWidth($width)
-    {
-        $this->_Width = $width;
     }
 
 }

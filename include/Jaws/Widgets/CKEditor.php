@@ -214,7 +214,7 @@ class Jaws_Widgets_CKEditor extends Container
             }
         }
 
-        $GLOBALS['app']->Layout->setVariable('editorExtraPlugins', implode(',', $extraPlugins));
+        $GLOBALS['app']->Layout->setVariable('editorPlugins', implode(',', $extraPlugins));
         $GLOBALS['app']->Layout->setVariable('editorToolbar', $this->toolbars);
 
         $this->_Container->PackStart($this->TextArea);
