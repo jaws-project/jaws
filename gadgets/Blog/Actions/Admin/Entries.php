@@ -106,7 +106,6 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
         $summary->TextArea->SetStyle('width: 750px;');
-        $summary->SetWidth('96%');
         $tpl->SetVariable('summary', $summary->Get());
 
         // Body
@@ -115,7 +114,6 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $editor->setId('text_block');
         $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width: 100%;');
-        $editor->SetWidth('96%');
         $tpl->SetVariable('editor', $editor->Get());
 
         // Allow Comments
@@ -415,7 +413,6 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
         $summary->TextArea->SetStyle('width: 750px;');
-        $summary->SetWidth('96%');
         $tpl->SetVariable('summary', $summary->Get());
 
         // Body
@@ -424,7 +421,6 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $editor->setId('text_block');
         $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width: 100%;');
-        $editor->SetWidth('96%');
         $tpl->SetVariable('editor', $editor->Get());
 
         // Allow Comments
