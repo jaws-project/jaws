@@ -67,7 +67,6 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
         $contents =& $GLOBALS['app']->LoadEditor('Blocks', 'block_contents');
         $contents->setID('block_contents');
         $contents->TextArea->SetStyle('width: 99%;');
-        $contents->SetWidth('100%');
 
         $tpl->SetVariable('contents', _t('BLOCKS_CONTENT'));
         $tpl->SetVariable('contents_field', $contents->Get());
