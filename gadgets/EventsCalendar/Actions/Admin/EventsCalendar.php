@@ -121,7 +121,6 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $text =& $GLOBALS['app']->LoadEditor('EventsCalendar', 'description');
 //        $text->setId('description');
         $text->setClass('form-control');
-        $text->SetWidth('85%');
         $text->TextArea->SetStyle('width:85%;');
         $text->TextArea->SetRows(5);
         $tpl->SetVariable('description', $text->Get());
