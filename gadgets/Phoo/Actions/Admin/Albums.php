@@ -74,7 +74,6 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $editor->setLabel(_t('PHOO_ALBUM_DESC'));
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
-        $editor->SetWidth('100%');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
@@ -203,7 +202,6 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $editor->setLabel(_t('PHOO_ALBUM_DESC'));
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
-        $editor->SetWidth('100%');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());

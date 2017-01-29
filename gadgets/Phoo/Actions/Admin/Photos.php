@@ -293,7 +293,6 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $editor->setLabel(_t('PHOO_PHOTO_DESCRIPTION'));
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 99%;');
-        $editor->SetWidth('100%');
 
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(6);
