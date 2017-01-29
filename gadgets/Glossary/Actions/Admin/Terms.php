@@ -74,7 +74,6 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
         $contents =& $GLOBALS['app']->LoadEditor('Glossary', 'term_contents', $selected_content);
         $contents->setID('term_contents');
         $contents->TextArea->SetStyle('width: 99%; height: 260px;');
-        $contents->SetWidth('99%');
         $tpl->SetVariable('contents', _t('GLOSSARY_DESC'));
         $tpl->SetVariable('contents_field', $contents->Get());
         $dispTitle =& Piwi::CreateWidget('CheckButtons', 'display_title');
