@@ -124,7 +124,6 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         // Message
         $editor =& $GLOBALS['app']->LoadEditor('Contact', 'message');
         $editor->setID('message');
-        $editor->SetWidth('1000px');
         $tpl->SetVariable('message', $editor->Get());
         $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_MESSAGE'), $editor->TextArea);
         $label->SetID('');
