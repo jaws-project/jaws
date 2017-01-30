@@ -47,10 +47,6 @@ $admin_actions['Statistics'] = array(
     'normal' => true,
     'file' => 'Statistics'
 );
-$admin_actions['Browse'] = array(
-    'normal' => true,
-    'file' => 'Directory'
-);
 $admin_actions['GetFiles'] = array(
     'standalone' => true,
     'file' => 'Directory'

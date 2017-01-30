@@ -13,8 +13,9 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      * @access  public
      * @return  string  XHTML UI
      */
-    function Directory($standalone = false)
+    function Directory()
     {
+        $standalone = (bool)jaws()->request->fetch('standalone', 'get');
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
@@ -149,17 +150,6 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         $tpl->ParseBlock('workspace');
         return $tpl->Get();
-    }
-
-    /**
-     * Browse for files and directories
-     *
-     * @access  public
-     * @return  string  HTML content
-     */
-    function Browse()
-    {
-        return $this->Directory($standalone = true);
     }
 
     /**
