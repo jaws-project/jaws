@@ -68,7 +68,7 @@ class AtomDateConstruct
      * @param   string $date Date in a valid w3c format
      * @access  public
      */
-    function AtomDateConstruct($element, $date)
+    function __construct($element, $date)
     {
         $this->ElementName = $element;
         //TODO: Verfy if is a valid date
@@ -120,7 +120,7 @@ class AtomLinkConstruct
      * @param   string $title Conveys human-readable information about the link
      * @access  public
      */
-    function AtomLinkConstruct($rel, $type, $href, $title = null)
+    function __construct($rel, $type, $href, $title = null)
     {
         $this->Rel   = $rel;
         $this->Type  = $type;
@@ -168,7 +168,7 @@ class AtomPersonConstruct
      * @param   string $email E-mail address associated with the person
      * @access  public
      */
-    function AtomPersonConstruct($element, $name, $url = null, $email = null)
+    function __construct($element, $name, $url = null, $email = null)
     {
         $this->ElementName = $element;
         $this->Name  = $name;
@@ -214,7 +214,7 @@ class AtomEnclosureConstruct
      * @param   string   $size     Media size (bytes)
      * @param   string   $mime     Media mime type
      */
-    function AtomEnclosureConstruct($element, $url, $size, $mime)
+    function __construct($element, $url, $size, $mime)
     {
         $this->ElementName = $element;
         $this->URL         = $url;
@@ -238,7 +238,7 @@ class AtomCategoryConstruct
 {
     var $ElementName, $Term, $Label, $Scheme;
 
-    function AtomCategoryConstruct($element, $term, $label, $scheme)
+    function __construct($element, $term, $label, $scheme)
     {
         $this->ElementName = $element;
         $this->Term = $term;
@@ -470,7 +470,7 @@ class Jaws_AtomFeed
      * @param   string $lang Default natural language of the feed, must be a registered language tag(RFC3066)
      * @access  public
      */
-    function Jaws_AtomFeed($version = '1.0', $lang = 'en-us')
+    function __construct($version = '1.0', $lang = 'en-us')
     {
         $this->Version = $version;
         $this->Lang    = $lang;
