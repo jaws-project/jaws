@@ -37,7 +37,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
         $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
         $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PER_PAGE'));
+        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
 
