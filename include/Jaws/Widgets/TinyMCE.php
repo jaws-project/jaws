@@ -60,36 +60,6 @@ class Jaws_Widgets_TinyMCE extends Container
     /**
      * @access  private
      * @var     string
-     */
-    var $_Theme = 'modern';
-
-    /**
-     * Width of the editor, examples: 100%, 600
-     *
-     * @var     string
-     * @access  private
-     */
-    var $_Width = '100%';
-
-    /**
-     * TinyMCE base actions
-     *
-     * @var     array
-     * @access  private
-     */
-    var $toolbars = array();
-
-    /**
-     * TinyMCE ompatibile browsers
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_Browsers = array('msie', 'gecko', 'opera', 'safari');
-
-    /**
-     * @access  private
-     * @var     string
      * @see     http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/extended_valid_elements
      */
     var $_ExtendedValidElements =
