@@ -318,18 +318,19 @@ function paintCombo(combo, oddColor, evenColor)
  */
 function initEditor(selector)
 {
-    var editorType = $(selector).data('editor') || 'textarea';
+    var objEditor = $(selector);
+    var editorType = objEditor.data('editor') || 'textarea';
     switch(editorType) {
         case 'ckeditor':
             $.loadScript('libraries/ckeditor/ckeditor.js', function() {
-                $(selector).ckeditor({
-                    'contentsLangDirection': $(selector).data('direction') || 'ltr',
-                    'language': $(selector).data('language') || 'en',
+                objEditor.ckeditor({
+                    'contentsLangDirection': objEditor.data('direction') || 'ltr',
+                    'language': objEditor.data('language') || 'en',
                     'AutoDetectLanguage': false,
                     'skin': 'moono',
                     'theme': 'default',
-                    'readOnly': $(selector).data('readonly') == '1',
-                    'resize_enabled': $(selector).data('resizable') == '1',
+                    'readOnly': objEditor.data('readonly') == '1',
+                    'resize_enabled': objEditor.data('resizable') == '1',
                     'toolbar': jaws.core.editorToolbar,
                     'extraPlugins': jaws.core.editorPlugins,
                     'removePlugins': '',
@@ -342,10 +343,10 @@ function initEditor(selector)
 
         case 'tinymce':
             $.loadScript('libraries/tinymce/tinymce.min.js', function() {
-                $(selector).tinymce({
+                objEditor.tinymce({
                     'document_base_url': '',
-                    'directionality': $(selector).data('direction') || 'ltr',
-                    'language': $(selector).data('language') || 'en',
+                    'directionality': objEditor.data('direction') || 'ltr',
+                    'language': objEditor.data('language') || 'en',
                     'theme': 'modern',
                     'plugins': jaws.core.editorPlugins,
                     'toolbar1': jaws.core.editorToolbar,
@@ -954,3 +955,12 @@ $.encodeJSON = function(v) {
     }
     return null;
 }
+
+/**
+ * on document ready
+ */
+$(document).ready(function() {
+    $('textarea[role="editor"]').each(function(index) {
+        initEditor(this)
+    });
+});
