@@ -121,20 +121,6 @@ class Jaws_Widgets_CKEditor extends Container
     var $_IsResizable = true;
 
     /**
-     * Default plugins
-     *
-     * @var     array   $_DefaultPlugins
-     * @access  private
-     */
-    var $_DefaultPlugins = array(
-        'autogrow', 'clipboard', 'colordialog', 'dialog', 'div', 'docprops',
-        'find', 'flash', 'forms', 'image', 'link', 'liststyle', 'pagebreak',
-        'pastefromword', 'pastetext', 'preview', 'showblocks', 'smiley',
-        'specialchar', 'styles', 'stylesheetparser', 'table', 'tableresize',
-        'tabletools', 'templates', 'uicolor'
-    );
-
-    /**
      * Main Constructor
      *
      * @access  public
@@ -201,20 +187,15 @@ class Jaws_Widgets_CKEditor extends Container
         $this->TextArea->setData('readonly', $this->_IsEnabled? 0 : 1);
         $this->TextArea->setData('resizable', (int)$this->_IsResizable);
 
-        $extraPlugins = array();
-        $pluginDir = JAWS_PATH . 'libraries/ckeditor/plugins/';
-        if (is_dir($pluginDir)) {
-            $dirs = scandir($pluginDir);
-            foreach ($dirs as $dir) {
-                if ($dir{0} != '.' && is_dir($pluginDir . $dir)) {
-                    if (!in_array($dir, $this->_DefaultPlugins)) {
-                        $extraPlugins[] = $dir;
-                    }
-                }
-            }
+        $plugins = implode(
+            ',',
+            array_map('basename', glob(JAWS_PATH.'libraries/ckeditor/plugins/*', GLOB_ONLYDIR))
+        );
+        if (JAWS_SCRIPT == 'admin') {
+            $plugins = str_replace('bbcode,', '', $plugins);
         }
 
-        $GLOBALS['app']->Layout->setVariable('editorPlugins', implode(',', $extraPlugins));
+        $GLOBALS['app']->Layout->setVariable('editorPlugins', $plugins);
         $GLOBALS['app']->Layout->setVariable('editorToolbar', $this->toolbars);
 
         $this->_Container->PackStart($this->TextArea);
