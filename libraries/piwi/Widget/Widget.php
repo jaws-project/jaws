@@ -147,6 +147,16 @@ class Widget
     var $_title;
 
     /**
+     *
+     * Role of the widget
+     *
+     * @var     string   $_role
+     * @access  private
+     * @see     setRole()
+     */
+    var $_role;
+
+    /**
      * Container Class (HTML wise)
      * Container is for example a div or a td
      *
@@ -313,6 +323,17 @@ class Widget
     }
 
     /**
+     * Set vale of the role attribute
+     *
+     * @access  public
+     * @param   string  Role value
+     */
+    function setRole($role)
+    {
+        $this->_role = $role;
+    }
+
+    /**
      * Set the widget size
      *
      * @access   public
@@ -419,6 +440,10 @@ class Widget
 
         if (!empty($this->_title)) {
             $xhtml .= " title=\"".$this->getTitle()."\"";
+        }
+
+        if (!empty($this->_role)) {
+            $xhtml .= " role=\"".$this->_role."\"";
         }
 
         return $xhtml;
