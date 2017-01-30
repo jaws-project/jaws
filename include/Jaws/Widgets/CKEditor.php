@@ -64,13 +64,6 @@ class Jaws_Widgets_CKEditor extends Container
     var $_Label;
 
     /**
-     * Path to CKEditor relative to the document root.
-     *
-     * @var string
-     */
-    var $_BasePath;
-
-    /**
      * This is where additional configuration can be passed.
      * Example:
      * $oCKEditor->Config['EnterMode'] = 'br';
@@ -157,10 +150,10 @@ class Jaws_Widgets_CKEditor extends Container
         $this->setClass($name);
         $this->TextArea->setID($this->_Name);
         $this->TextArea->setName($this->_Name);
+        $this->TextArea->setRole('editor');
         $this->TextArea->setData('editor', 'ckeditor');
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
-        $this->_BasePath = 'libraries/ckeditor/';
         $this->_Language = $GLOBALS['app']->GetLanguage();
         $this->_Direction = _t('GLOBAL_LANG_DIRECTION');
 
@@ -183,8 +176,8 @@ class Jaws_Widgets_CKEditor extends Container
         }
         // set editor configuration
         $this->TextArea->setData('direction', $this->_Direction);
-        $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
-        $this->TextArea->setData('readonly', $this->_IsEnabled? 0 : 1);
+        $this->TextArea->setData('language',  $this->_Language);
+        $this->TextArea->setData('readonly',  $this->_IsEnabled? 0 : 1);
         $this->TextArea->setData('resizable', (int)$this->_IsResizable);
 
         $plugins = implode(

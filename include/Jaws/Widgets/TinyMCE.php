@@ -94,6 +94,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Gadget = $gadget;
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $this->_Value, '', '14');
+        $this->TextArea->setRole('editor');
         $this->TextArea->setData('editor', 'tinymce');
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
         $this->setClass($name);
