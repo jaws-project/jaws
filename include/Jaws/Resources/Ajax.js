@@ -314,6 +314,60 @@ function paintCombo(combo, oddColor, evenColor)
 }
 
 /**
+ * TinyMCE file picker callback
+ */
+function tinymce_file_picker_callback(callback, value, meta)
+{
+    var browser = '';
+    switch (meta.filetype) {
+        case 'media':
+            browser = jaws.core.editorMediaBrowser || '';
+            break;
+        case 'image':
+            browser = jaws.core.editorImageBrowser || '';
+            break;
+        case 'file':
+            browser = jaws.core.editorFileBrowser || '';
+            break;
+    }
+
+    if (browser != '') {
+        tinyMCE.activeEditor.windowManager.open({
+                url: browser,
+                title: 'Jaws File Browser',
+                width: 640,
+                height: 480,
+                resizable: 'yes',
+                scrollbars: 'yes',
+                inline: 'yes',
+                close_previous: 'no'
+            }, {
+                oninsert: function(url, title, desc, height, width) {
+                    switch (meta.filetype) {
+                        case 'media':
+                            callback(url, {});
+                            break;
+
+                        case 'image':
+                            callback(url, {'alt': title});
+                            break;
+
+                        case 'file':
+                            callback(url, {'title': title, 'text': desc});
+                            break;
+
+                        default:
+                            callback(url, {'text': title, 'title': title, 'alt': desc});
+                    }
+                }
+            }
+        );
+    }
+
+    return false;
+}
+
+/**
  * Prepares the editor with basic data
  */
 function initEditor(selector)
@@ -333,6 +387,9 @@ function initEditor(selector)
                     'resize_enabled': objEditor.data('resizable') == '1',
                     'toolbar': jaws.core.editorToolbar,
                     'extraPlugins': jaws.core.editorPlugins,
+                    'filebrowserBrowseUrl': jaws.core.editorFileBrowser || '',
+                    'filebrowserImageBrowseUrl': jaws.core.editorImageBrowser || '',
+                    'filebrowserFlashBrowseUrl': jaws.core.editorMediaBrowser || '',
                     'removePlugins': '',
                     'autoParagraph': false,
                     'indentUnit': 'em',
@@ -370,6 +427,8 @@ function initEditor(selector)
                     'automatic_uploads':  false,
                     'convert_newlines_to_brs': false,
                     'apply_source_formatting': true,
+                    'file_picker_types': 'file image media',
+                    'file_picker_callback': tinymce_file_picker_callback,
                     'extended_valid_elements': 'iframe[class|id|marginheight|marginwidth|align|frameborder=0|scrolling|align|name|src|height|width]',
                     'invalid_elements': '',
                     'menubar': false // must enabled for admin side

@@ -141,22 +141,26 @@ class Jaws_Widgets_TinyMCE extends Container
 
         $this->_Container->PackStart($this->TextArea);
         $this->_XHTML .= $this->_Container->Get();
-/*
-        $ibrowser = '';
+
+        // Phoo
         if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-            $ibrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
+            $GLOBALS['app']->Layout->setVariable(
+                'editorImageBrowser',
+                BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo'
+            );
         }
-
-        $fbrowser = '';
-        if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
-            $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
-        }
-
-        $mbrowser = '';
+        // Directory
         if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-            $mbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Directory&action=Browse';
+            $GLOBALS['app']->Layout->setVariable(
+                'editorFileBrowser',
+                BASE_SCRIPT. '?gadget=Directory&action=Browse'
+            );
+            $GLOBALS['app']->Layout->setVariable(
+                'editorMediaBrowser',
+                BASE_SCRIPT. '?gadget=Directory&action=Browse'
+            );
         }
-*/
+
     }
 
     /**

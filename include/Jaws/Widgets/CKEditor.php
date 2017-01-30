@@ -193,27 +193,26 @@ class Jaws_Widgets_CKEditor extends Container
 
         $this->_Container->PackStart($this->TextArea);
         $this->_XHTML .= $this->_Container->Get();
-/*
-        // FileBrowser
-        if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
-            $tpl->SetBlock("$block/filebrowser");
-            $tpl->SetVariable('filebrowserBrowseUrl', BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile');
-            $tpl->SetVariable('filebrowserFlashBrowseUrl', BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile');
-            $tpl->ParseBlock("$block/filebrowser");
-        }
+
         // Phoo
         if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-            $tpl->SetBlock("$block/phoo");
-            $tpl->SetVariable('filebrowserImageBrowseUrl', BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo');
-            $tpl->ParseBlock("$block/phoo");
+            $GLOBALS['app']->Layout->setVariable(
+                'editorImageBrowser',
+                BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo'
+            );
         }
         // Directory
         if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-            $tpl->SetBlock("$block/directory");
-            $tpl->SetVariable('filebrowserFlashBrowseUrl', BASE_SCRIPT. '?gadget=Directory&action=Browse');
-            $tpl->ParseBlock("$block/directory");
+            $GLOBALS['app']->Layout->setVariable(
+                'editorFileBrowser',
+                BASE_SCRIPT. '?gadget=Directory&action=Browse'
+            );
+            $GLOBALS['app']->Layout->setVariable(
+                'editorMediaBrowser',
+                BASE_SCRIPT. '?gadget=Directory&action=Browse'
+            );
         }
-*/
+
     }
 
     /**
