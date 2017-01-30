@@ -118,20 +118,13 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->TextArea->setData('direction', _t('GLOBAL_LANG_DIRECTION'));
         $this->TextArea->setData('language', $GLOBALS['app']->GetLanguage());
 
-        $plugins = array();
-        $lang = $GLOBALS['app']->GetLanguage();
-        $pluginDir = JAWS_PATH . 'libraries/tinymce/plugins/';
-        if (is_dir($pluginDir)) {
-            $dirs = scandir($pluginDir);
-            foreach($dirs as $dir) {
-                if ($dir{0} != '.' && is_dir($pluginDir.$dir)) {
-                    $plugins[] = $dir;
-                }
-            }
-        }
-        $plugins = implode(',', $plugins);
+
+        $plugins = implode(
+            ',',
+            array_map('basename', glob(JAWS_PATH.'libraries/tinymce/plugins/*', GLOB_ONLYDIR))
+        );
         if (JAWS_SCRIPT == 'admin') {
-            $plugins = str_replace(',bbcode,', ',', $plugins);
+            $plugins = str_replace('bbcode,', '', $plugins);
             $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_backend_toolbar', 'Settings');
         } else {
             $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_frontend_toolbar', 'Settings');
@@ -146,7 +139,6 @@ class Jaws_Widgets_TinyMCE extends Container
         $GLOBALS['app']->Layout->setVariable('editorToolbar', $toolbars);
 
         $this->_Container->PackStart($this->TextArea);
-        $this->_Container->SetWidth($this->_Width);
         $this->_XHTML .= $this->_Container->Get();
 /*
         $ibrowser = '';
