@@ -33,7 +33,6 @@ $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'NewPost':
         case 'EditPost':
-            initEditor('#message');
             break;
 
         case 'NewTopic':
