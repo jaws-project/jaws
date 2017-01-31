@@ -157,7 +157,7 @@ class Jaws_Widgets_TinyMCE extends Container
             );
             $GLOBALS['app']->Layout->setVariable(
                 'editorMediaBrowser',
-                BASE_SCRIPT. '?gadget=Directory&action=Browse'
+                BASE_SCRIPT. '?gadget=Directory&standalone=1'
             );
         }
 
