@@ -19,6 +19,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
      */
     function Posts()
     {
+        $this->AjaxMe('index.js');
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
@@ -225,17 +226,10 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                     (!$topic['locked'] || $forumManage) &&
                     ((time() - $post['insert_time']) <= $edit_max_limit_time || $forumManage)
                 ) {
-                    $tpl->SetBlock('posts/post/action');
-                    $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_EDIT'));
-                    $tpl->SetVariable('action_title',_t('FORUMS_POSTS_EDIT_TITLE'));
-                    $tpl->SetVariable(
-                        'action_url',
-                        $this->gadget->urlMap(
-                            'EditPost',
-                            array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
-                        )
-                    );
-                    $tpl->ParseBlock('posts/post/action');
+                    $tpl->SetBlock('posts/post/editPostAction');
+                    $tpl->SetVariable('lbl_edit_post', _t('FORUMS_POSTS_EDIT'));
+                    $tpl->SetVariable('pid', $post['id']);
+                    $tpl->ParseBlock('posts/post/editPostAction');
                 }
 
                 // check permission for delete post
@@ -274,13 +268,14 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
         // check permission to add new post
         if ($this->gadget->GetPermission('AddPost') && (!$topic['locked'] || $forumManage)) {
-            $tpl->SetBlock('posts/action');
-            $tpl->SetVariable('action_lbl', _t('FORUMS_POSTS_NEW'));
-            $tpl->SetVariable(
-                'action_url',
-                $this->gadget->urlMap('NewPost', array('fid' => $rqst['fid'], 'tid' => $rqst['tid']))
-            );
-            $tpl->ParseBlock('posts/action');
+            $tpl->SetBlock('posts/newPostAction');
+            $tpl->SetVariable('lbl_new_post', _t('FORUMS_POSTS_NEW'));
+            $tpl->ParseBlock('posts/newPostAction');
+
+            // display post UI
+            $tpl->SetBlock('posts/postUI');
+            $tpl->SetVariable('post_ui', $this->GetPostUI($rqst['fid'], $rqst['tid']));
+            $tpl->ParseBlock('posts/postUI');
         }
 
         // check permission to lock/unlock topic
@@ -316,14 +311,82 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
     }
 
     /**
-     * Show new post form
+     * return post UI
      *
      * @access  public
+     * @param   int     $fid    Forum id
+     * @param   int     $tid    Topic id
      * @return  string  XHTML template content
      */
-    function NewPost()
+    function GetPostUI($fid, $tid)
     {
-        return $this->EditPost();
+        $tpl = $this->gadget->template->load('Posts.html');
+        $tpl->SetBlock('post');
+        $tpl->SetVariable('fid', $fid);
+        $tpl->SetVariable('tid', $tid);
+
+//        if (!empty($post['id'])) {
+//            // date format
+//            $date_format = $this->gadget->registry->fetch('date_format');
+//            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+//            // post meta data
+//            $tpl->SetBlock('post/post_meta');
+//            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+//            $tpl->SetVariable('username', $post['username']);
+//            $tpl->SetVariable('nickname', $post['nickname']);
+//            $tpl->SetVariable(
+//                'user_url',
+//                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
+//            );
+//            $objDate = Jaws_Date::getInstance();
+//            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
+//            $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
+//            $tpl->ParseBlock('post/post_meta');
+//        }
+
+        // message
+        $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', '', false);
+        $message->setId('message');
+        $message->TextArea->SetRows(8);
+        $tpl->SetVariable('message', $message->Get());
+
+        // attachment
+        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
+            $this->gadget->GetPermission('AddPostAttachment'))
+        {
+            $tpl->SetBlock('post/attachment');
+            $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
+            $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
+            $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+            $tpl->ParseBlock('post/attachment');
+        }
+
+        $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
+        $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+
+        // display captcha
+        $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+        $htmlPolicy->loadCaptcha($tpl, 'post');
+
+        // buttons
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+
+        $tpl->ParseBlock('post');
+        return $tpl->Get();
+    }
+
+    /**
+     * Get a post info
+     *
+     * @access  public
+     * @return  array   Directory hierarchy
+     */
+    function GetPost()
+    {
+        $post = jaws()->request->fetch(array('pid'), 'post');
+        return $this->gadget->model->load('Posts')->GetPost($post['pid']);
     }
 
     /**
@@ -351,179 +414,6 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         }
 
         return $this->EditPost(true, $reply_to_message);
-    }
-
-    /**
-     * Show edit post form
-     *
-     * @access  public
-     * @param   bool    $reply              Reply mode
-     * @param   string  $reply_to_message   Reply to message content
-     * @return  string  XHTML template content
-     */
-    function EditPost($reply = false, $reply_to_message = '')
-    {
-        if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
-        }
-
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'message', 'update_reason', 'notification'));
-        if (empty($rqst['fid']) || empty($rqst['tid'])) {
-            return false;
-        }
-
-        if (!$this->gadget->GetPermission('ForumPublic', $rqst['fid'])) {
-            return Jaws_HTTPError::Get(403);
-        }
-
-        if ($reply || empty($rqst['pid'])) {
-            $tModel = $this->gadget->model->load('Topics');
-            $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
-            if (Jaws_Error::IsError($topic) || empty($topic)) {
-                return false;
-            }
-
-            $post = array();
-            $post['id']  = 0;
-            $post['fid'] = $topic['fid'];
-            $post['tid'] = $topic['id'];
-            $post['forum_title'] = $topic['forum_title'];
-            $post['subject'] = $topic['subject'];
-            $post['message'] = $reply_to_message;
-            $post['update_reason'] = '';
-            $title = _t('FORUMS_POSTS_NEW_TITLE');
-            $btn_title = _t('FORUMS_POSTS_NEW_BUTTON');
-        } else {
-            $pModel = $this->gadget->model->load('Posts');
-            $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
-            if (Jaws_Error::IsError($post) || empty($post)) {
-                return false;
-            }
-
-            $title = _t('FORUMS_POSTS_EDIT_TITLE');
-            $btn_title = _t('FORUMS_POSTS_EDIT_BUTTON');
-        }
-
-        $this->AjaxMe('index.js');
-        $tpl = $this->gadget->template->load('EditPost.html');
-        $tpl->SetBlock('post');
-
-        $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
-        $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
-        $tpl->SetVariable('forum_title', $post['forum_title']);
-        $tpl->SetVariable(
-            'forum_url',
-            $this->gadget->urlMap('Topics', array('fid'=> $post['fid']))
-        );
-        $tpl->SetVariable('topic_title', $post['subject']);
-        $tpl->SetVariable(
-            'topic_url',
-            $this->gadget->urlMap('Posts', array('fid' => $post['fid'], 'tid' => $post['tid']))
-        );
-        $tpl->SetVariable('title', $title);
-        $tpl->SetVariable('fid', $post['fid']);
-        $tpl->SetVariable('tid', $post['tid']);
-        $tpl->SetVariable('pid', $post['id']);
-
-        // preview
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-            $post['message'] = $rqst['message'];
-            $post['update_reason'] = $rqst['update_reason'];
-            $tpl->SetBlock('post/preview');
-            $tpl->SetVariable('lbl_preview', _t('GLOBAL_PREVIEW'));
-            $tpl->SetVariable('message', $this->gadget->plugin->parse($post['message']));
-            $tpl->ParseBlock('post/preview');
-        }
-
-        if (!empty($post['id'])) {
-            // date format
-            $date_format = $this->gadget->registry->fetch('date_format');
-            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
-            // post meta data
-            $tpl->SetBlock('post/post_meta');
-            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
-            $tpl->SetVariable('username', $post['username']);
-            $tpl->SetVariable('nickname', $post['nickname']);
-            $tpl->SetVariable(
-                'user_url',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
-            );
-            $objDate = Jaws_Date::getInstance();
-            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
-            $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
-            $tpl->ParseBlock('post/post_meta');
-        }
-
-        $rqst['notification'] = true;
-        if ($response = $GLOBALS['app']->Session->PopResponse('UpdatePost')) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-            $post['message'] = $response['data']['message'];
-            $rqst['notification'] = $response['data']['notification'];
-        }
-
-        // message
-        $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', Jaws_XSS::defilter($post['message']), false);
-        $message->setId('message');
-        $message->TextArea->SetRows(8);
-        $tpl->SetVariable('message', $message->Get());
-
-        // attachment
-        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
-            $this->gadget->GetPermission('AddPostAttachment'))
-        {
-            $tpl->SetBlock('post/attachment');
-            $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
-            $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
-            $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
-            if ($post['id'] != 0) {
-                $aModel = $this->gadget->model->load('Attachments');
-                $attachments = $aModel->GetAttachments($post['id']);
-
-                foreach ($attachments as $attachment) {
-                    $tpl->SetBlock('post/attachment/current_attachment');
-                    $tpl->SetVariable('aid', $attachment['id']);
-                    $tpl->SetVariable('lbl_filename', $attachment['title']);
-                    $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
-                    $tpl->ParseBlock('post/attachment/current_attachment');
-                }
-            }
-            $tpl->ParseBlock('post/attachment');
-        }
-
-        // update reason
-        if (!empty($post['id'])) {
-            $tpl->SetBlock('post/update_reason');
-            $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
-            $tpl->SetVariable('update_reason', $post['update_reason']);
-            $tpl->ParseBlock('post/update_reason');
-        }
-
-        // notification
-        if ($this->gadget->GetPermission('ForumManage', $post['fid'])) {
-            $tpl->SetBlock('post/notification');
-            $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
-            if ((bool)$rqst['notification']) {
-                $tpl->SetBlock('post/notification/checked');
-                $tpl->ParseBlock('post/notification/checked');
-            }
-            $tpl->ParseBlock('post/notification');
-        }
-
-        // check captcha only in new post action
-        if (empty($rqst['pid'])) {
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $htmlPolicy->loadCaptcha($tpl, 'post');
-        }
-
-        // buttons
-        $tpl->SetVariable('btn_update_title', $btn_title);
-        $tpl->SetVariable('btn_preview_title', _t('GLOBAL_PREVIEW'));
-        $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
-
-        $tpl->ParseBlock('post');
-        return $tpl->Get();
     }
 
     /**

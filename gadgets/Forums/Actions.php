@@ -69,14 +69,6 @@ $actions['Post'] = array(
     'normal' => true,
     'file'   => 'Posts',
 );
-$actions['NewPost'] = array(
-    'normal' => true,
-    'file'   => 'Posts',
-);
-$actions['EditPost'] = array(
-    'normal' => true,
-    'file'   => 'Posts',
-);
 $actions['ReplyPost'] = array(
     'normal' => true,
     'file'   => 'Posts',
@@ -86,6 +78,10 @@ $actions['DeletePost'] = array(
     'file'   => 'Posts',
 );
 $actions['UpdatePost'] = array(
+    'standalone' => true,
+    'file'   => 'Posts',
+);
+$actions['GetPost'] = array(
     'standalone' => true,
     'file'   => 'Posts',
 );

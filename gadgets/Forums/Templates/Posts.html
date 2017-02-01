@@ -34,6 +34,10 @@
               <!-- BEGIN action -->
               <a href="{{action_url}}" title="{{action_title}}">{{action_lbl}}</a>
               <!-- END action -->
+
+              <!-- BEGIN editPostAction -->
+              <a href="javascript:void(0);" title="{{lbl_edit_post}}" onclick="javascript:editPost({{pid}})">{{lbl_edit_post}}</a>
+              <!-- END editPostAction -->
             </div>
           </div>
         </div>
@@ -66,8 +70,83 @@
     <a class="btn btn-default" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
     <!-- END action -->
 
+    <!-- BEGIN newPostAction -->
+      <button id="btn_newPost" onclick="javascript:newPost();" class="btn btn-default"  title="{{lbl_new_post}}">
+        {{lbl_new_post}}</button>
+    <!-- END newPostAction -->
+
     {{subscription}}
   </div>
+
+  <!-- BEGIN postUI -->
+  <div id="postUIArea" style="display:none">
+    {{post_ui}}
+  </div>
+  <!-- END postUI -->
+
 </div>
 <div class="gadget_footer"></div>
 <!-- END posts -->
+
+<!-- BEGIN post -->
+<div class="forum-post-form">
+  <form name="post_form" id="post_form" action="{{requested_url}}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="gadget" value="Forums" />
+    <input type="hidden" name="action" value="UpdatePost" />
+    <input type="hidden" name="fid" id="fid" value="{{fid}}" />
+    <input type="hidden" name="tid" id="tid" value="{{tid}}" />
+    <input type="hidden" name="pid" id="pid" value="" />
+    <div class="gadget_content content">
+      <!-- BEGIN post_meta -->
+      <div class="post_meta">
+        <label>{{postedby_lbl}}:</label> <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+        &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
+      </div>
+      <!-- END post_meta -->
+      <div>
+        <label for="message">{{lbl_message}}:</label>
+        {{message}}
+      </div>
+      <!-- BEGIN attachment -->
+      <div>
+        <label>{{lbl_attachment}}:</label>
+        <div id="attachments">
+          <div id="attachment_model" style="display: none;">
+            <input class="form-control-file" type="file" name="attachment[]" multiple class="file"/>
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
+          </div>
+          <!-- BEGIN current_attachment -->
+          <div id="p_attach{{aid}}">
+            <input type="hidden" name="current_attachments[]" value="{{aid}}" />
+            <input class="form-control" type="text" name="current_attachments_filename" value="{{lbl_filename}}" disabled="disabled" class="large ltr"/>
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
+          </div>
+          <!-- END current_attachment -->
+          <div id="btn_add_attachment"><a href="javascript:extraAttachment();" >{{lbl_extra_attachment}}</a></div>
+        </div>
+      </div>
+      <!-- END attachment -->
+      <div id="update_reason_container" style="display: none">
+        <label for="update_reason">{{lbl_update_reason}}:</label>
+        <textarea class="form-control" id="update_reason" name="update_reason" rows="2"></textarea>
+      </div>
+
+      <div id="notification_container">
+        <label class="form-check-label" for="notification">
+          <input class="form-check-input" type="checkbox" id="notification" name="notification" value="1" checked />
+          {{lbl_send_notification}}
+        </label>
+      </div>
+
+      <div id="captcha_container" style="display:none">
+      <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+      </div>
+
+    </div>
+    <div class="gadget_actions actions">
+      <button class="btn btn-default" type="button" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      <button class="btn btn-primary" type="submit" name="update">{{lbl_save}}</button>
+    </div>
+  </form>
+</div>
+<!-- END post -->
