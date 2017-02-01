@@ -35,6 +35,8 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
             ->select('province:integer', 'title')
             ->where('country', (int)$country)
             ->and()
+            ->where('province', 0, '<>')
+            ->and()
             ->where('city', 0)
             ->orderBy('province')
             ->fetchAll();
