@@ -17,7 +17,7 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()->table('zones')
             ->select('country:integer', 'title')
-            ->where('province', -1)
+            ->where('province', 0)
             ->orderBy('country')
             ->fetchAll();
     }

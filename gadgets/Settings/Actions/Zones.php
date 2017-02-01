@@ -31,7 +31,7 @@ class Settings_Actions_Zones extends Jaws_Gadget_Action
         $zone = jaws()->request->fetch(array('province', 'country'));
         if (is_null($zone['province'])) {
             $provinces = jaws()->request->fetch('province:array', 'post');
-        } elseif ($zone['province'] === '') {
+        } elseif (empty($zone['province'])) {
             return array();
         } else {
             $provinces = array($zone['province']);
