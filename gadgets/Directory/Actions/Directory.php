@@ -65,6 +65,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('directory');
 
+        $response = $GLOBALS['app']->Session->PopResponse('Directory.SaveFile');
+        if (!empty($response)) {
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+        }
+
         $this->SetTitle(_t('DIRECTORY_ACTIONS_DIRECTORY'));
         $tpl->SetVariable('gadget_title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
 
@@ -89,10 +95,40 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         $tpl->SetVariable('upload', _t('DIRECTORY_UPLOAD_FILE'));
-        if ($id > 0) {
-            $tpl->SetVariable('upload_url', $this->gadget->urlMap('UploadFileUI', array('parent' => $id)));
-        } else {
-            $tpl->SetVariable('upload_url', $this->gadget->urlMap('UploadFileUI'));
+
+        // if user has permission, display upload area
+        if ($GLOBALS['app']->Session->Logged()) {
+            $tpl->SetBlock('directory/uploadUI');
+            $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
+            $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
+            $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
+            $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
+            $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
+            $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC'));
+            $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
+            $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+            $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
+
+            $description = '';
+            $descriptionEditor =& $GLOBALS['app']->LoadEditor('Directory', 'description', Jaws_XSS::defilter($description), false);
+            $descriptionEditor->setId('description');
+            $descriptionEditor->TextArea->SetRows(8);
+            $tpl->SetVariable('description', $descriptionEditor->Get());
+
+            $tpl->SetVariable('parent', $id);
+            if ($this->gadget->GetPermission('PublishFiles')) {
+                $tpl->SetBlock('uploadUI/published');
+                $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+                if (isset($fileInfo['published']) && $fileInfo['published']) {
+                    $tpl->SetVariable('published_checked', 'checked');
+                }
+                $tpl->ParseBlock('uploadUI/published');
+            }
+
+            $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
+            $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
+
+            $tpl->ParseBlock('directory/uploadUI');
         }
 
         $tpl->ParseBlock('directory');
@@ -321,11 +357,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                 $tpl->SetVariable('id', $file['id']);
                 $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-                $tpl->SetVariable('edit_url',
-                    $this->gadget->urlMap('UploadFileUI',
-                        array('id' => $file['id'], 'parent'=>$parent))
-                );
-
+                $tpl->SetVariable('id',  $file['id']);
+                $tpl->SetVariable('parent',  $parent);
                 $tpl->ParseBlock('files/file/action');
             }
 

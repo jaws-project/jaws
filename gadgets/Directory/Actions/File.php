@@ -7,86 +7,7 @@
  */
 class Directory_Actions_File extends Jaws_Gadget_Action
 {
-    /**
-     * Upload File UI
-     *
-     * @access  public
-     * @return  string  HTML content
-     */
-    function UploadFileUI()
-    {
-        if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
-        }
-
-        $get = jaws()->request->fetch(array('id', 'parent'), 'get');
-        $this->AjaxMe('index.js');
-        $this->gadget->layout->setVariable('parentId', $get['parent']);
-        $this->gadget->layout->setVariable('fileId', (int)$get['id']);
-
-        $tpl = $this->gadget->template->load('UploadFile.html');
-        $tpl->SetBlock('uploadUI');
-
-        $this->SetTitle(_t('DIRECTORY_UPLOAD_FILE'));
-        $tpl->SetVariable('title', _t('DIRECTORY_UPLOAD_FILE'));
-
-        $tpl->SetVariable('parentId', $get['parent']);
-
-        // check must edit a file
-        $fileInfo = array();
-        $description = '';
-        if (!empty($get['id'])) {
-            $fileInfo = $this->gadget->model->load('Files')->GetFile($get['id']);
-            if (Jaws_Error::IsError($fileInfo)) {
-                return Jaws_HTTPError::Get(500);
-            }
-            if (empty($fileInfo)) {
-                return Jaws_HTTPError::Get(404);
-            }
-            if ($fileInfo['public']) {
-                return Jaws_HTTPError::Get(403);
-            }
-            $tpl->SetVariable('title', $fileInfo['title']);
-            $tpl->SetVariable('tags', $fileInfo['tags']);
-            $description = $fileInfo['description'];
-            if ($fileInfo['public']) {
-                $tpl->SetVariable('public_checked', 'checked');
-            }
-        }
-
-        $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
-        $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
-        $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
-        $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC'));
-        $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-
-        if ($this->gadget->GetPermission('PublishFiles')) {
-            $tpl->SetBlock('uploadUI/published');
-            $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
-            if (isset($fileInfo['published']) && $fileInfo['published']) {
-                $tpl->SetVariable('published_checked', 'checked');
-            }
-            $tpl->ParseBlock('uploadUI/published');
-        }
-
-        $descriptionEditor =& $GLOBALS['app']->LoadEditor('Directory', 'description', $description);
-        $descriptionEditor->setId('description');
-        $descriptionEditor->TextArea->SetRows(8);
-        $tpl->SetVariable('description', $descriptionEditor->Get());
-
-        $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
-        $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
-        $tpl->SetVariable('path', $this->GetPath($get['parent']));
-
-        $tpl->ParseBlock('uploadUI');
-        return $tpl->Get();
-    }
-
-    /**
+     /**
      * Fetches path of a file/directory
      *
      * @access  public
@@ -107,35 +28,16 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         return $path;
     }
 
-    /**
-     * Uploads file to system temp directory
+     /**
+     * Get a file info
      *
      * @access  public
-     * @return  string  JavaScript snippet
+     * @return  array   Directory hierarchy
      */
-    function UploadFile()
+    function GetFile()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
-        }
-
-        $type = jaws()->request->fetch('type', 'post');
-
-        $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
-        if (Jaws_Error::IsError($res)) {
-            $response = array('type' => 'error',
-                'message' => $res->getMessage());
-        } else {
-            $response = array('type' => 'notice',
-                'user_filename' => $res['file'][0]['user_filename'],
-                'host_filename' => $res['file'][0]['host_filename'],
-                'mime_type' => $res['file'][0]['host_filetype'],
-                'file_size' => $res['file'][0]['host_filesize'],
-                'upload_type' => $type);
-        }
-
-        $response = Jaws_UTF8::json_encode($response);
-        return "<script>parent.onUpload($response);</script>";
+        $id = (int)jaws()->request->fetch('id');
+        return $this->gadget->model->load('Files')->GetFile($id);
     }
 
     /**
@@ -149,11 +51,9 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
-
         try {
             $data = jaws()->request->fetch(
-                array('id', 'parent', 'title', 'description', 'public', 'published',
-                    'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnailPath')
+                array('id', 'parent', 'title', 'description', 'public', 'published')
             );
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
@@ -174,82 +74,87 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             $data['description'] = Jaws_XSS::defilter($data['description']);
             if (!$this->gadget->GetPermission('PublishFiles')) {
                 $data['published'] = false;
+            } else {
+                $data['published'] = is_null($data['published']) ? true : $data['published'];
             }
 
-            if ((!empty($data['id']) && !empty($data['file_size']) || empty($data['id']))) {
-                // Upload file
+            $originalFilename = '';
+            // Upload file
+            if (!empty($_FILES['file']['size'])) {
                 $path = JAWS_DATA . 'directory';
                 if (!is_dir($path)) {
                     if (!Jaws_Utils::mkdir($path)) {
                         throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
                     }
                 }
-                $res = Jaws_Utils::UploadFiles($_FILES, $path, '', null);
+
+                $res = Jaws_Utils::UploadFiles($_FILES['file'], $path, '', null);
                 if (Jaws_Error::IsError($res)) {
                     throw new Exception($res->getMessage());
                 } else if ($res !== false) {
-                    $data['host_filename'] = $res['file'][0]['host_filename'];
-                    $data['user_filename'] = $res['file'][0]['user_filename'];
-                    $data['mime_type'] = $res['file'][0]['host_filetype'];
-                    $data['file_size'] = $res['file'][0]['host_filesize'];
-                } else { // file has been uploaded before
-                    if (empty($data['host_filename'])) {
-                        throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
-                    } else {
-                        // move file from temp to data folder
-                        $filename = Jaws_Utils::upload_tmp_dir() . '/' . $data['host_filename'];
-                        if (file_exists($filename)) {
-                            $target = $path . '/' . $data['host_filename'];
-                            $res = Jaws_Utils::rename($filename, $target, false);
-                            if ($res === false) {
-                                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
-                            }
-                            $data['host_filename'] = basename($res);
-                        } else {
-                            throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
-                        }
-
-                        // move thumbnail file from temp to data folder
-                        $thumbnailTempFilename = Jaws_Utils::upload_tmp_dir() . '/' . $data['thumbnailPath'];
-                        if (!empty($data['thumbnailPath']) && file_exists($thumbnailTempFilename)) {
-
-                            $pathInfo = pathinfo($data['host_filename']);
-                            $originalFilename = $pathInfo['filename'];
-                            $thumbnailFinalFilename = $originalFilename . '.thumbnail.png';
-
-                            // Save resize thumbnail file
-                            $thumbSize = $this->gadget->registry->fetch('thumbnail_size');
-                            $thumbSize = empty($thumbSize) ? '128x128' : $thumbSize;
-                            $thumbSize = explode('x', $thumbSize);
-
-                            $objImage = Jaws_Image::factory();
-                            if (Jaws_Error::IsError($objImage)) {
-                                return Jaws_Error::raiseError($objImage->getMessage());
-                            }
-                            $objImage->load($thumbnailTempFilename);
-                            $objImage->resize($thumbSize[0], $thumbSize[1]);
-                            $res = $objImage->save($path . '/' . $thumbnailFinalFilename, 'png');
-                            $objImage->free();
-                            if (Jaws_Error::IsError($res)) {
-                                return $res;
-                            }
-                            Jaws_Utils::delete($thumbnailTempFilename);
-                        }
-                    }
+                    $data['host_filename'] = $res[0][0]['host_filename'];
+                    $data['user_filename'] = $res[0][0]['user_filename'];
+                    $data['mime_type'] = $res[0][0]['host_filetype'];
+                    $data['file_size'] = $res[0][0]['host_filesize'];
                 }
+                $originalFilename = $data['host_filename'];
             } else {
-                unset($data['user_filename']);
-                unset($data['host_filename']);
-                unset($data['mime_type']);
-                unset($data['file_size']);
+                if (!empty($data['id'])) {
+                    $currentFileInfo = $model->GetFile($data['id']);
+                    $originalFilename = $currentFileInfo['host_filename'];
+                }
             }
-            unset($data['thumbnailPath']);
-            unset($data['filename']);
+
+            // Upload thumbnail
+            if (!empty($_FILES['thumbnail']['size'])) {
+                $res = Jaws_Utils::UploadFiles($_FILES['thumbnail'], Jaws_Utils::upload_tmp_dir(), '', null);
+                if (Jaws_Error::IsError($res)) {
+                    throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                } else {
+                    $thumbnailInfo = array('type' => 'notice',
+                        'user_filename' => $res[0][0]['user_filename'],
+                        'host_filename' => $res[0][0]['host_filename'],
+                        'mime_type' => $res[0][0]['host_filetype'],
+                        'file_size' => $res[0][0]['host_filesize']);
+                }
+
+                // move thumbnail file from temp to data folder
+                $thumbnailTempFilename = Jaws_Utils::upload_tmp_dir() . '/' . $thumbnailInfo['host_filename'];
+                if (!empty($thumbnailInfo['host_filename']) && file_exists($thumbnailTempFilename)) {
+                    $thumbnailFinalFilename = $originalFilename . '.thumbnail.png';
+
+                    // Save resize thumbnail file
+                    $thumbSize = $this->gadget->registry->fetch('thumbnail_size');
+                    $thumbSize = empty($thumbSize) ? '128x128' : $thumbSize;
+                    $thumbSize = explode('x', $thumbSize);
+
+                    $objImage = Jaws_Image::factory();
+                    if (Jaws_Error::IsError($objImage)) {
+                        return Jaws_Error::raiseError($objImage->getMessage());
+                    }
+                    $objImage->load($thumbnailTempFilename);
+                    $objImage->resize($thumbSize[0], $thumbSize[1]);
+                    $res = $objImage->save($path . '/' . $thumbnailFinalFilename, 'png');
+                    $objImage->free();
+                    if (Jaws_Error::IsError($res)) {
+                        return $res;
+                    }
+                    Jaws_Utils::delete($thumbnailTempFilename);
+                }
+            }
+
+//            else {
+//                unset($data['user_filename']);
+//                unset($data['host_filename']);
+//                unset($data['mime_type']);
+//                unset($data['file_size']);
+//            }
+//            unset($data['thumbnailPath']);
+//            unset($data['filename']);
             if(isset($data['user_filename'])) {
                 $data['file_type'] = $this->getFileType($data['user_filename']);
             }
             $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-
 
             // update old file info
             if (!empty($data['id'])) {
@@ -298,14 +203,37 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             $this->gadget->event->shout('Activities', array('action'=>'File'));
 
         } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushResponse(
+                $e->getMessage(),
+                'Directory.SaveFile',
+                RESPONSE_ERROR
+            );
         }
 
         if(empty($data['id'])) {
-            return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_FILE_CREATED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushResponse(
+                _t('DIRECTORY_NOTICE_FILE_CREATED'),
+                'Directory.SaveFile',
+                RESPONSE_NOTICE
+            );
+
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_FILE_UPDATED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushResponse(
+                _t('DIRECTORY_NOTICE_FILE_UPDATED'),
+                'Directory.SaveFile',
+                RESPONSE_NOTICE
+            );
         }
+
+        // shout Activities event
+        $this->gadget->event->shout('Activities', array('action' => 'Pages'));
+
+        Jaws_Header::Location(
+            $this->gadget->urlMap(
+                'Directory',
+                array('id' => $data['parent'])
+            )
+        );
     }
 
     /**

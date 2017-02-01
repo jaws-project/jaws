@@ -19,10 +19,6 @@ $actions['Download'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['UploadFileUI'] = array(
-    'normal' => true,
-    'file' => 'File'
-);
 $actions['UploadFile'] = array(
     'standalone' => true,
     'file' => 'File'
@@ -32,6 +28,10 @@ $actions['SaveFile'] = array(
     'file' => 'File'
 );
 $actions['DeleteFile'] = array(
+    'standalone' => true,
+    'file' => 'File'
+);
+$actions['GetFile'] = array(
     'standalone' => true,
     'file' => 'File'
 );

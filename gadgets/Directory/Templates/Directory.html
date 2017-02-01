@@ -5,20 +5,78 @@
   <div class="gadget_submenubar">{{submenubar}}</div>
 </div>
 <div class="gadget_container directory">
+  <div class="gadget_response">
+    <div id="directory_directory_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
+  </div>
+
   <div>
     <a href="{{root_url}}" title="{{root}}">
       <img src="gadgets/Directory/Resources/images/home.png" alt="root"/>
     </a>
     <span>{{path}}</span>
   </div>
+
   <div>
-    <a href="{{upload_url}}" title="{{upload}}">
-      <img src="gadgets/Directory/Resources/images/new-file.png" alt="upload"/>
-    </a>
+    <button id="active_btn" onclick="javascript:newFile();" class="btn btn-primary" >
+      <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> {{upload}}</button>
   </div>
   <div class="gadget_content content">
     {{content}}
   </div>
+
+  <!-- BEGIN uploadUI -->
+  <div id="fileUIArea" style="display: none">
+    <form id="file_form" action="{{base_script}}"
+          method="post" enctype="multipart/form-data">
+      <input type="hidden" name="gadget" value="Directory"/>
+      <input type="hidden" name="action" value="SaveFile"/>
+      <input type="hidden" name="id" id="id"/>
+      <input type="hidden" name="parent" id="parent" value="{{parent}}"/>
+
+      <table class="table">
+        <tr id="tr_file">
+          <th>{{lbl_file}}:</th>
+          <td><input class="form-control file" type="file" name="file"/></td>
+        </tr>
+        <tr>
+          <th>{{lbl_thumbnail}}:</th>
+          <td><input class="form-control file" type="file" name="thumbnail"/></td>
+        </tr>
+        <tr>
+          <th>{{lbl_title}}:</th>
+          <td><input name="title" id="title" style="width: 100%" value="{{title}}"/></td>
+        </tr>
+        <tr>
+          <th>{{lbl_desc}}:</th>
+          <td>{{description}}</td>
+        </tr>
+        <tr>
+          <th>{{lbl_tags}}:</th>
+          <td><input name="tags" id="tags" placeholder="tag1, tag2, ..."
+                     value="{{tags}}"/></td>
+        </tr>
+        <tr>
+          <th>{{lbl_public}}:</th>
+          <td><input class="form-check-input" type="checkbox" id="public"
+                     name="public" {{public_checked}}/></td>
+        </tr>
+
+        <!-- BEGIN published -->
+        <tr>
+          <th>{{lbl_published}}:</th>
+          <td><input class="form-check-input" type="checkbox" id="published"
+                     name="published" {{published_checked}}/></td>
+        </tr>
+        <!-- END published -->
+      </table>
+      <div class="gadget_actions actions">
+        <button class="btn btn-default" type="button" onclick="stopAction()">{{lbl_cancel}}</button>
+        <button class="btn btn-primary" type="submit">{{lbl_ok}}</button>
+      </div>
+    </form>
+  </div>
+  <!-- END uploadUI -->
+
 </div>
 <div class="gadget_footer"></div>
 <!-- END directory -->
@@ -93,7 +151,7 @@
         <img src="libraries/piwi/piwidata/art/stock/actions/edit-delete.png"
              alt="{{lbl_delete}}" title="{{lbl_delete}}" border="0"></a>
 
-      <a href="{{edit_url}}">
+      <a href="javascript:void(0);" onclick="javascript:editFile({{id}}, {{parent}});">
         <img src="libraries/piwi/piwidata/art/stock/stock_edit.png"
              alt="{{lbl_edit}}" title="{{lbl_edit}}" border="0"></a>
       <!-- END action -->

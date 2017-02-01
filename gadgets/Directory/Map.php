@@ -17,13 +17,6 @@ $maps[] = array(
     )
 );
 $maps[] = array(
-    'UploadFileUI',
-    'directory/manage/[/id/{id}][/parent/{parent}]',
-    array(
-        'parent' => '[[:digit:]]+',
-    )
-);
-$maps[] = array(
     'Download',
     'directory/download[/{id}][/user/{user}][/key/{key}][.{ext}]',
     array('id' => '[[:digit:]]+'),

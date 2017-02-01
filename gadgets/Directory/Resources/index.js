@@ -9,12 +9,6 @@
  * Use async mode, create Callback
  */
 var DirectoryCallback = {
-    SaveFile: function(response) {
-        if (response.type === 'alert-success') {
-            stopAction();
-        }
-        DirectoryAjax.showResponse(response);
-    },
     DeleteFile: function(response) {
         if (response.type === 'alert-success') {
             stopAction();
@@ -28,62 +22,16 @@ var DirectoryCallback = {
  */
 function stopAction()
 {
-    uploadedFileInfo = {};
-    uploadedThumbnailPath = null;
+    $('#fileUIArea').hide();
     setEditorValue('#description', '');
-    $('#frm_upload')[0].reset()
-    $('#frm_thumbnail_upload')[0].reset()
-    $('#frm_upload').show();
-    $('#tr_file').hide();
-    $('#frm_file #file_link').html('');
-    $('#frm_file #title').val('');
-    $('#frm_file #tags').val('');
-    $('#frm_file #published').prop('checked', '');
+    $('#file_form #file_link').html('');
+    $('#file_form #title').val('');
+    $('#file_form #tags').val('');
+    $('#file_form #published').prop('checked', '');
 
-}
+    $('#file_form #id').val(0);
+    $('#file_form #parent').val(0);
 
-/**
- * Uploads file on the server
- */
-function uploadFile() {
-    var iframe = $('<iframe>');
-    iframe.attr('id', 'ifrm_upload');
-    iframe.attr('name', 'ifrm_upload');
-    $('body').append(iframe);
-    $('#btn_ok').attr('disabled', true);
-    $('#frm_upload').submit();
-}
-
-/**
- * Uploads thumbnail file on the server
- */
-function uploadThumbnailFile() {
-    var iframe = $('<iframe>');
-    iframe.attr('id', 'ifrm_upload');
-    iframe.attr('name', 'ifrm_upload');
-    $('body').append(iframe);
-    $('#btn_ok').attr('disabled', true);
-    $('#frm_thumbnail_upload').submit();
-}
-
-/**
- * Submits file data to create or update
- */
-function submitFile()
-{
-    uploadedFileInfo.id = jaws.gadgets.Directory.fileId;
-    uploadedFileInfo.parent = jaws.gadgets.Directory.parentId;
-    uploadedFileInfo.description = getEditorValue('#description');
-    uploadedFileInfo.title = $('#frm_file #title').val();
-    uploadedFileInfo.tags = $('#frm_file #tags').val();
-    uploadedFileInfo.thumbnailPath = uploadedThumbnailPath;
-    uploadedFileInfo.public = $('#frm_file #public').prop('checked');
-    if ($('#frm_file #published').prop('checked') != undefined) {
-        uploadedFileInfo.published = $('#frm_file #published').prop('checked');
-    }
-
-
-    DirectoryAjax.callAsync('SaveFile', uploadedFileInfo);
 }
 
 /**
@@ -96,51 +44,34 @@ function deleteFile(id) {
 }
 
 /**
- * Applies uploaded file into the form
+ * display new file
  */
-function onUpload(response) {
-    if (response.type === 'error') {
-        alert(response.message);
-        if(response.upload_type=='file') {
-            $('#frm_upload').reset();
-        } else {
-            $('#frm_thumbnail_upload').reset();
-        }
-    } else {
-        var hostFilename = encodeURIComponent(response.host_filename);
-        if(response.upload_type == 'file') {
-            setFilename(hostFilename, '');
-            uploadedFileInfo = {};
-            uploadedFileInfo.user_filename = response.user_filename;
-            uploadedFileInfo.host_filename = hostFilename;
-            uploadedFileInfo.mime_type = response.mime_type;
-            uploadedFileInfo.file_size = response.file_size;
-            if ($('#frm_file').find('[name=title]').val() === '') {
-                $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
-            }
-        } else {
-            uploadedThumbnailPath = hostFilename;
-        }
-    }
-    $('#ifrm_upload').remove();
-    $('#btn_ok').attr('disabled', false);
+function newFile()
+{
+    $('#fileUIArea').show();
+    $('html, body').animate({
+        scrollTop: $("#fileUIArea").offset().top
+    }, 1000);
 }
 
 /**
- * Sets download link of the file
+ * display edit file UI
  */
-function setFilename(filename, url)
+function editFile(id, parent)
 {
-    var link = $('<a>');
+    $('#fileUIArea').show();
+    $('#file_form #id').val(id);
+    $('#file_form #parent').val(parent);
+    $('html, body').animate({
+        scrollTop: $("#fileUIArea").offset().top
+    }, 1000);
 
-    link.html(filename);
-    if (url !== '') {
-        link.attr('href', url);
-    }
-    $('#file_link').append(link);
-    //$('#file_link').append(imgDeleteFile);
-    $('#tr_file').show();
-    $('#frm_upload').hide();
+    var fileInfo = DirectoryAjax.callSync('GetFile', {id: id});
+    console.log(fileInfo);
+    $('#file_form #title').val(fileInfo['title']);
+    setEditorValue('#description', fileInfo['description']);
+    $('#file_form #tags').val(fileInfo['tags']);
+    $('#file_form #published').prop('checked', fileInfo['published']? 'checked' : '');
 }
 
 $(document).ready(function() {
@@ -149,16 +80,7 @@ $(document).ready(function() {
             initDatePicker('filter_from_date');
             initDatePicker('filter_to_date');
             break;
-
-        case 'UploadFileUI':
-            $('#tr_file').hide();
-            $('#tr_thumbnail').hide();
-            $('#frm_upload').show();
-            break;
-
     }
 });
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback, 'index.php');
-var uploadedFileInfo = {}, uploadedThumbnailPath = "";
-var fileId = 0;
