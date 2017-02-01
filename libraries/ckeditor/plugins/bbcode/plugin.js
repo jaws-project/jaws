@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -50,7 +50,9 @@
 	}
 
 	// Maintain the map of smiley-to-description.
+	// jscs:disable maximumLineLength
 	var smileyMap = { smiley: ':)', sad: ':(', wink: ';)', laugh: ':D', cheeky: ':P', blush: ':*)', surprise: ':-o', indecision: ':|', angry: '>:(', angel: 'o:)', cool: '8-)', devil: '>:-)', crying: ';(', kiss: ':-*' },
+	// jscs:enable maximumLineLength
 		smileyReverseMap = {},
 		smileyRegExp = [];
 
@@ -68,9 +70,7 @@
 		var regex = [],
 			entities = {
 				nbsp: '\u00A0', // IE | FF
-				shy: '\u00AD', // IE
-				gt: '\u003E', // IE | FF |   --   | Opera
-				lt: '\u003C' // IE | FF | Safari | Opera
+				shy: '\u00AD' // IE
 			};
 
 		for ( var entity in entities )
@@ -148,7 +148,12 @@
 							styles[ stylesMap[ part ] ] = optionPart;
 							attribs.style = serializeStyleText( styles );
 						} else if ( attributesMap[ part ] ) {
-							attribs[ attributesMap[ part ] ] = optionPart;
+							// All the input BBCode is encoded at the beginning so <> characters in the textual part
+							// are later correctly preserved in HTML. However... it affects parts that now become
+							// attributes, so we need to revert that. As a matter of fact, the content should not be
+							// encoded at the beginning, but only later when creating text nodes (encoding should be more precise)
+							// but it's too late not for such changes.
+							attribs[ attributesMap[ part ] ] = CKEDITOR.tools.htmlDecode( optionPart );
 						} else {    // jaws project
 							if ( part == 'indent' ) {
 								optionPart = optionPart.split(" ");
@@ -161,13 +166,13 @@
 					// Two special handling - image and email, protect them
 					// as "span" with an attribute marker.
 					if ( part == 'email' || part == 'img' )
-						attribs[ 'bbcode' ] = part;
+						attribs.bbcode = part;
 
 					this.onTagOpen( tagName, attribs, CKEDITOR.dtd.$empty[ tagName ] );
 				}
 				// Closing tag
 				else if ( parts[ 3 ] )
-					this.onTagClose( bbcodeMap[ part ] );
+					this.onTagClose( bbcodeMap[part] );
 			}
 
 			if ( bbcode.length > lastIndex )
@@ -261,7 +266,7 @@
 			}
 		}
 
-		parser.onTagOpen = function( tagName, attributes, selfClosing ) {
+		parser.onTagOpen = function( tagName, attributes ) {
 			var element = new CKEDITOR.htmlParser.element( tagName, attributes );
 
 			// This is a tag to be removed if empty, so do not add it immediately.
@@ -484,7 +489,7 @@
 				return this._.rules[ tagName ] && this._.rules[ tagName ][ ruleName ];
 			},
 
-			openTag : function( tag ) {
+			openTag: function( tag ) {
 				if ( tag in bbcodeMap ) {
 					if ( this.getRule( tag, 'breakBeforeOpen' ) )
 						this.lineBreak( 1 );
@@ -493,7 +498,7 @@
 				}
 			},
 
-			openTagClose : function( tag ) {
+			openTagClose: function( tag ) {
 				if ( tag == 'br' )
 					this._.output.push( '\n' );
 				else if ( tag in bbcodeMap ) {
@@ -503,12 +508,8 @@
 				}
 			},
 
-			attribute : function( name, val ) {
+			attribute: function( name, val ) {
 				if ( name == 'option' ) {
-					// Force simply ampersand in attributes.
-					if ( typeof val == 'string' )
-						val = val.replace( /&amp;/g, '&' );
-
 					this.write( '=', val );
 				}
 			},
@@ -635,8 +636,9 @@
 						if ( element.attributes.listType ) {
 							if ( element.attributes.listType != 'decimal' )
 								element.attributes.style = 'list-style-type:' + element.attributes.listType;
-						} else
+						} else {
 							element.name = 'ul';
+						}
 
 						delete element.attributes.listType;
 					},
@@ -717,8 +719,9 @@
 										value = 'I';
 										break;
 								}
-							} else if ( tagName == 'ol' )
+							} else if ( tagName == 'ol' ) {
 								value = 1;
+							}
 
 							tagName = 'list';
 						} else if ( tagName == 'blockquote' ) {
