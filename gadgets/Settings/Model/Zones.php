@@ -47,18 +47,13 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $province   Province code
-     * @param   int     $country    Country code
      * @return  mixed   Array of Provinces or Jaws_Error on failure
      */
-    function GetProvince($province, $country = 0)
+    function GetProvince($province)
     {
         return Jaws_ORM::getInstance()->table('zones')
-            ->select('province:integer', 'title')
-            ->where('country', (int)$country)
-            ->and()
-            ->where('province', (int)$province)
-            ->and()
-            ->where('city', 0)
+            ->select('country:integer', 'province:integer', 'title')
+            ->where('location', (int)$province)
             ->fetchRow();
     }
 
@@ -93,20 +88,14 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $city       City code
-     * @param   int     $province   Province code
-     * @param   int     $country    Country code
      * @return mixed Array of Cities or Jaws_Error on failure
      */
-    function GetCity($city, $province, $country = 0)
+    function GetCity($city)
     {
         return Jaws_ORM::getInstance()
             ->table('zones')
-            ->select('province:integer', 'city:integer', 'title')
-            ->where('country', (int)$country)
-            ->and()
-            ->where('province', (int)$province)
-            ->and()
-            ->where('city', (int)$city)
+            ->select('country:integer', 'province:integer', 'city:integer', 'title')
+            ->where('location', (int)$city)
             ->fetchRow();
     }
 
