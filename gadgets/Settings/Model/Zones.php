@@ -58,6 +58,26 @@ class Settings_Model_Zones extends Jaws_Gadget_Model
     }
 
     /**
+     * Get a list of the cities by IDs
+     *
+     * @access  public
+     * @param   int|array   $cities     Cities Id
+     * @return  mixed       Array of Cities or Jaws_Error on failure
+     */
+    function GetCitiesByIDs($cities = array())
+    {
+        if (!is_array($cities)) {
+            $cities = array($cities);
+        }
+
+        return Jaws_ORM::getInstance()
+            ->table('zones')
+            ->select('province:integer', 'city:integer', 'title')
+            ->where('location', $cities, 'in')
+            ->fetchAll();
+    }
+
+    /**
      * Get a list of the Cities
      *
      * @access  public
