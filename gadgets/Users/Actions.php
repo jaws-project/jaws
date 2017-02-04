@@ -266,6 +266,10 @@ $actions['AddUsersToGroup'] = array(
     'file' => 'ManageGroups',
     'loglevel' => JAWS_NOTICE,
 );
+$actions['BookmarkUI'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
 
 
 /**

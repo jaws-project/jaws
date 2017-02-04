@@ -805,6 +805,22 @@ function initiateContactsDG() {
 
 }
 
+/**
+ * Open bookmark windows
+ */
+function openBookmarkWindows(gadget, action, reference, url) {
+    var bookmarkUI = UsersAjax.callSync(
+        'BookmarkUI',
+        {
+            'bookmark_gadget': gadget,
+            'bookmark_action': action,
+            'bookmark_reference': reference
+        }
+    );
+    $("#bookmark-dialog-" + gadget + '-' + action + '-' + reference).html(bookmarkUI);
+    $('#bookmarkModal-'+ gadget + '-' + action + '-' + reference).modal();
+}
+
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Users':

@@ -8,6 +8,29 @@
 class Users_Actions_Bookmarks extends Jaws_Gadget_Action
 {
     /**
+     * Bookmark UI
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function BookmarkUI()
+    {
+        $tpl = $this->gadget->template->load('Bookmark.html');
+        $tpl->SetBlock('Bookmark');
+
+        $post = $this->gadget->request->fetch(array('bookmark_gadget', 'bookmark_action', 'bookmark_reference'), 'post');
+        $tpl->SetVariable('gadget', $post['bookmark_gadget']);
+        $tpl->SetVariable('action', $post['bookmark_action']);
+        $tpl->SetVariable('reference', $post['bookmark_reference']);
+
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+
+        $tpl->ParseBlock('Bookmark');
+        return $tpl->Get();
+    }
+
+    /**
      * Updates bookmark
      *
      * @access  public
