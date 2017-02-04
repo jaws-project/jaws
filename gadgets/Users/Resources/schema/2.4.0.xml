@@ -71,6 +71,7 @@
 
             <field>
                 <name>mobile</name>
+                <was>mobile_number</was>
                 <type>text</type>
                 <length>24</length>
             </field>
@@ -482,75 +483,6 @@
                 <name><variable>table_prefix</variable>users_contacts_owner</name>
                 <field>
                     <name>owner</name>
-                </field>
-            </index>
-
-        </declaration>
-    </table>
-
-    <table>
-        <name><variable>table_prefix</variable>user_bookmarks</name>
-        <declaration>
-
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>user</name>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>url</name>
-                <type>text</type>
-                <length>255</length>
-            </field>
-
-            <field>
-                <name>gadget</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
-                <name>action</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
-                <name>reference</name>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>title</name>
-                <type>text</type>
-                <length>128</length>
-            </field>
-
-            <field>
-                <name>description</name>
-                <type>text</type>
-            </field>
-
-            <field>
-                <name>insert_time</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>user_bookmarks_user</name>
-                <field>
-                    <name>user</name>
                 </field>
             </index>
 
