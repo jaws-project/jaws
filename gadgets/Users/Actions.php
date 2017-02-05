@@ -266,7 +266,27 @@ $actions['AddUsersToGroup'] = array(
     'file' => 'ManageGroups',
     'loglevel' => JAWS_NOTICE,
 );
+$actions['Bookmarks'] = array(
+    'normal' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['GetBookmarks'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['GetBookmark'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
 $actions['BookmarkUI'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['UpdateBookmark'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['DeleteBookmark'] = array(
     'standalone' => true,
     'file'   => 'Bookmarks'
 );

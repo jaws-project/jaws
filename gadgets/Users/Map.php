@@ -16,6 +16,7 @@ $maps[] = array('Logout', 'users/logout');
 $maps[] = array('Account', 'users/account');
 $maps[] = array('Personal', 'users/personal');
 $maps[] = array('Preferences', 'users/preferences');
+$maps[] = array('Bookmarks', 'users/bookmarks');
 $maps[] = array('Contact', 'users/contact');
 $maps[] = array('Contacts', 'users/contacts');
 $maps[] = array('Friends', 'users/{uid}/friends');

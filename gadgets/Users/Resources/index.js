@@ -79,6 +79,24 @@ var UsersCallback = {
         }
         UsersAjax.showResponse(response);
     },
+    UpdateBookmark: function (response) {
+        if (response.type == 'alert-success') {
+            if (currentAction == "Bookmarks") {
+                $('#bookmarkModal').modal('hide');
+                stopAction();
+            } else {
+                $('#bookmarkModal-' + response.data.gadget + '-' + response.data.action + '-' + response.data.reference).modal('hide');
+            }
+        }
+        UsersAjax.showResponse(response);
+    },
+    DeleteBookmark: function (response) {
+        if (response.type == 'alert-success') {
+            stopAction();
+        }
+        UsersAjax.showResponse(response);
+    },
+
 };
 
 /**
@@ -113,6 +131,12 @@ function stopAction() {
             $('#contactModal').modal('hide');
             $('form#contacts-form')[0].reset();
             $('#contractsGrid').repeater('render');
+            break;
+        case 'Bookmarks':
+            selectedBookmark = 0;
+            $('bookmarkModal').modal('hide');
+            $('form#bookmark-form')[0].reset();
+            $('#bookmarksGrid').repeater('render');
             break;
     }
 }
@@ -805,6 +829,154 @@ function initiateContactsDG() {
 
 }
 
+
+/**
+ * Define the data to be displayed in the users datagrid
+ */
+function bookmarksDataSource(options, callback) {
+
+    // define the columns for the grid
+    var columns = [
+        {
+            'label': jaws.gadgets.Users.lbl_gadget,
+            'property': 'gadget',
+            'sortable': true
+        },
+        {
+            'label': jaws.gadgets.Users.lbl_action,
+            'property': 'action',
+            'sortable': true
+        },
+        {
+            'label': jaws.gadgets.Users.lbl_title,
+            'property': 'title',
+            'sortable': true
+        }
+    ];
+
+    // set options
+    var pageIndex = options.pageIndex;
+    var pageSize = options.pageSize;
+    var filters = {
+        gadget: $('#filter_gadget').val(),
+        term: $('#filter_term').val()
+    };
+    var options = {
+        'offset': pageIndex,
+        'limit': pageSize,
+        'sortDirection': options.sortDirection,
+        'sortBy': options.sortProperty,
+        'filters': filters
+    };
+
+    var rows = UsersAjax.callSync('GetBookmarks', options);
+    var items = rows.records;
+    var totalItems = rows.total;
+    var totalPages = Math.ceil(totalItems / pageSize);
+    var startIndex = (pageIndex * pageSize) + 1;
+    var endIndex = (startIndex + pageSize) - 1;
+
+    if(endIndex > items.length) {
+        endIndex = items.length;
+    }
+
+    // configure datasource
+    var dataSource = {
+        'page':    pageIndex,
+        'pages':   totalPages,
+        'count':   totalItems,
+        'start':   startIndex,
+        'end':     endIndex,
+        'columns': columns,
+        'items':   items
+    };
+
+    // pass the datasource back to the repeater
+    callback(dataSource);
+}
+
+/**
+ * initiate users datagrid
+ */
+function initiateBookmarksDG() {
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'edit',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.Users.lbl_edit,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editBookmark(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.Users.lbl_delete,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    deleteBookmark(helpers.rowData.id);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    // initialize the repeater
+    var repeater = $('#bookmarksGrid');
+    repeater.repeater({
+        // setup your custom datasource to handle data retrieval;
+        // responsible for any paging, sorting, filtering, searching logic
+        dataSource: bookmarksDataSource,
+        staticHeight: 600,
+        list_actions: list_actions
+    });
+
+    // monitor required events
+    $( ".datagrid-filters select" ).change(function() {
+        $('#bookmarksGrid').repeater('render');
+    });
+    $( ".datagrid-filters input" ).keypress(function(e) {
+        if (e.which == 13) {
+            $('#bookmarksGrid').repeater('render');
+        }
+    });
+    $('#userModal').on('hidden.bs.modal', function (e) {
+        $('form#bookmarks-form')[0].reset();
+    });
+}
+
+/**
+ * Edit a bookmark
+ */
+function editBookmark(id) {
+    selectedBookmark = id;
+    $('#bookmarkModalLabel').html(jaws.gadgets.Users.lbl_edit);
+    var bInfo = UsersAjax.callSync('GetBookmark', {'id': selectedBookmark});
+    if (bInfo) {
+        $('#bookmark-form input, #bookmark-form select, #bookmark-form textarea').each(
+            function () {
+                console.log(bInfo);
+                $(this).val(bInfo[$(this).attr('name')]);
+            }
+        );
+        $('#bookmark-form #url').prop('href', bInfo['url']);
+        $('#bookmark-form #url').html(bInfo['url']);
+        $('#bookmarkModal').modal('show');
+    }
+}
+
+/**
+ * Delete a bookmark
+ */
+function deleteBookmark(id) {
+    if (confirm(jaws.gadgets.Users.confirmDelete)) {
+        UsersAjax.callAsync('DeleteBookmark', {'id': id});
+    }
+}
+
 /**
  * Open bookmark windows
  */
@@ -821,6 +993,45 @@ function openBookmarkWindows(gadget, action, reference, url) {
     $('#bookmarkModal-'+ gadget + '-' + action + '-' + reference).modal();
 }
 
+/**
+ * Save bookmark
+ */
+function saveBookmark(gadget, action, reference, url) {
+    var formId = "#bookmark-form-" + gadget + '-' + action + '-' + reference;
+    UsersAjax.callAsync(
+        'UpdateBookmark',
+        {
+            'bookmark_gadget': gadget,
+            'bookmark_action': action,
+            'bookmark_reference': reference,
+            'url': url,
+            'title': $(formId + ' #title').val(),
+            'description': $(formId + ' #description').val(),
+            'bookmarked': true
+        }
+    );
+
+}
+
+/**
+ * Update a bookmark
+ */
+function updateBookmark() {
+    UsersAjax.callAsync(
+        'UpdateBookmark',
+        {
+            'bookmark_gadget': $('#bookmark-form #gadget').val(),
+            'bookmark_action': $('#bookmark-form #action').val(),
+            'bookmark_reference': $('#bookmark-form #reference').val(),
+            'url': $('#bookmark-form #url').prop('href'),
+            'title': $('#bookmark-form #title').val(),
+            'description': $('#bookmark-form #description').val(),
+            'bookmarked': true
+        }
+    );
+
+}
+
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Users':
@@ -831,6 +1042,11 @@ $(document).ready(function() {
         case 'ManageGroups':
             currentAction = "Group";
             initiateGroupsDG();
+            break;
+
+        case 'Bookmarks':
+            currentAction = "Bookmarks";
+            initiateBookmarksDG();
             break;
 
         case 'Contact':
@@ -849,4 +1065,4 @@ var UsersAjax = new JawsAjax('Users', UsersCallback);
 var SettingsInUsersAjax = new JawsAjax('Settings');
 
 var currentAction, selectedUser, selectedGroup;
-var selectedContact = 0;
+var selectedContact = 0, selectedBookmark = 0;

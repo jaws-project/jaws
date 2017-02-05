@@ -95,7 +95,8 @@ class Users_Actions_Default extends Jaws_Gadget_Action
     function SubMenuBar($selected, $actions, $params = null)
     {
         $default_actions = array(
-            'Profile', 'Friends', 'EditGroup', 'AddGroup', 'Account', 'Personal', 'Preferences', 'Contact', 'Contacts'
+            'Profile', 'Friends', 'EditGroup', 'AddGroup', 'Account',
+            'Personal', 'Preferences', 'Bookmarks', 'Contact', 'Contacts'
         );
         if (!in_array($selected, $default_actions)) {
             $action_selected = 'Profile';
@@ -172,6 +173,16 @@ class Users_Actions_Default extends Jaws_Gadget_Action
                     'Preferences',
                     _t('USERS_EDIT_PREFERENCES'),
                     $this->gadget->urlMap('Preferences')
+                );
+            }
+        }
+
+        if (in_array('Bookmarks', $actions)) {
+            if ($this->gadget->GetPermission('EditUserBookmarks')) {
+                $menubar->AddOption(
+                    'Bookmarks',
+                    _t('USERS_EDIT_BOOKMARKS'),
+                    $this->gadget->urlMap('Bookmarks')
                 );
             }
         }

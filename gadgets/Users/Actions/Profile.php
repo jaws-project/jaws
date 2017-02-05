@@ -169,7 +169,9 @@ class Users_Actions_Profile extends Users_Actions_Default
             $tpl->SetVariable('menubar', $this->MenuBar('Profile'));
             $tpl->SetVariable(
                 'submenubar',
-                $this->SubMenuBar('Profile', array('Profile', 'Account', 'Personal', 'Preferences', 'Contact', 'Contacts'))
+                $this->SubMenuBar('Profile',
+                    array('Profile', 'Account', 'Personal', 'Preferences', 'Bookmarks', 'Contact', 'Contacts')
+                )
             );
         }
         $tpl->SetVariable('avatar', $user['avatar']);

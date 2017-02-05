@@ -47,6 +47,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         'EditUserPersonal',
         'EditUserContacts',
         'EditUserPreferences',
+        'EditUserBookmarks',
     );
 
     /**
