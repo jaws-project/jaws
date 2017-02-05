@@ -31,7 +31,7 @@ class Bookmark_Plugin extends Jaws_Plugin
         $tpl->SetVariable('content', $html);
 
         $tpl->SetVariable('lbl_title', _t('PLUGINS_BOOKMARK'));
-        $tpl->SetVariable('lbl_report', _t('PLUGINS_BOOKMARK'));
+        $tpl->SetVariable('lbl_bookmark', _t('PLUGINS_BOOKMARK'));
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
 

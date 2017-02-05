@@ -1,7 +1,7 @@
 <!-- BEGIN Bookmark -->{{content}}
 <br>
-<div class="abuse-repeater">
-    <button type="button" class="btn btn-info"  onclick="javascript:openBookmarkWindows('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')"><span class="glyphicon glyphicon-ban-circle"></span> {{lbl_report}}</button>
+<div class="bookmarks">
+    <button type="button" class="btn btn-info"  onclick="javascript:openBookmarkWindows('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')"><span class="glyphicon glyphicon-bookmark"></span> {{lbl_bookmark}}</button>
 </div>
 
 <div class="modal fade" id="bookmarkModal-{{gadget}}-{{action}}-{{reference}}" tabindex="-1" role="dialog" aria-labelledby="bookmarkModal-{{gadget}}-{{action}}-{{reference}}Label">
@@ -14,8 +14,7 @@
             <div class="modal-body bookmark-modal-body" id="bookmark-dialog-{{gadget}}-{{action}}-{{reference}}">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
-                <button type="button" class="btn btn-primary" onclick="javascript:saveBookmark('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')">{{lbl_save}}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button> <button type="button" class="btn btn-primary" onclick="javascript:saveBookmark('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')">{{lbl_save}}</button>
             </div>
         </div>
     </div>
