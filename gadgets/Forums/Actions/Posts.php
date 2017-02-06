@@ -395,33 +395,6 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
     }
 
     /**
-     * Reply a post form
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-/*    function ReplyPost()
-    {
-        $reply_to_message = '';
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'get') {
-            $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'message', 'update_reason'));
-            if (empty($rqst['fid']) || empty($rqst['tid'])) {
-                return false;
-            }
-
-            $pModel = $this->gadget->model->load('Posts');
-            $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
-            if (Jaws_Error::IsError($post) || empty($post)) {
-                return false;
-            }
-
-            $reply_to_message = "[quote={$post['nickname']}]\n".$post['message']."\n[/quote]\n";
-        }
-
-        return $this->EditPost(true, $reply_to_message);
-    }*/
-
-    /**
      * Add/Edit a post
      *
      * @access  public
