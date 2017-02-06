@@ -69,10 +69,6 @@ $actions['Post'] = array(
     'normal' => true,
     'file'   => 'Posts',
 );
-$actions['ReplyPost'] = array(
-    'normal' => true,
-    'file'   => 'Posts',
-);
 $actions['DeletePost'] = array(
     'normal' => true,
     'file'   => 'Posts',

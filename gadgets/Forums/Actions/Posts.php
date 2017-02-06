@@ -169,17 +169,22 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
             // reply: check permission for add post
             if ($this->gadget->GetPermission('AddPost') && (!$topic['locked'] || $forumManage)) {
-                $tpl->SetBlock('posts/post/action');
-                $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_REPLY'));
-                $tpl->SetVariable('action_title',_t('FORUMS_POSTS_REPLY_TITLE'));
-                $tpl->SetVariable(
-                    'action_url',
-                    $this->gadget->urlMap(
-                        'ReplyPost',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
-                    )
-                );
-                $tpl->ParseBlock('posts/post/action');
+                $tpl->SetBlock('posts/post/replyPostAction');
+                $tpl->SetVariable('lbl_reply_post', _t('FORUMS_POSTS_REPLY'));
+                $tpl->SetVariable('pid', $post['id']);
+                $tpl->ParseBlock('posts/post/replyPostAction');
+
+//                $tpl->SetBlock('posts/post/action');
+//                $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_REPLY'));
+//                $tpl->SetVariable('action_title',_t('FORUMS_POSTS_REPLY_TITLE'));
+//                $tpl->SetVariable(
+//                    'action_url',
+//                    $this->gadget->urlMap(
+//                        'ReplyPost',
+//                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
+//                    )
+//                );
+//                $tpl->ParseBlock('posts/post/action');
             }
 
             if ($topic['first_post_id'] == $post['id']) {
@@ -395,7 +400,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML template content
      */
-    function ReplyPost()
+/*    function ReplyPost()
     {
         $reply_to_message = '';
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'get') {
@@ -414,7 +419,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         }
 
         return $this->EditPost(true, $reply_to_message);
-    }
+    }*/
 
     /**
      * Add/Edit a post

@@ -73,16 +73,27 @@ function editPost(pid)
 }
 
 /**
+ * display reply post UI
+ */
+function replyPost(pid)
+{
+    stopAction();
+    $('#captcha_container').show();
+    $('#postUIArea').show();
+    $('html, body').animate({
+        scrollTop: $("#postUIArea").offset().top
+    }, 1000);
+
+    var postInfo = ForumsAjax.callSync('GetPost', {pid: pid});
+    setEditorValue('#message', '[quote=' + postInfo['nickname'] + "]\n"+ postInfo['message'] + "\n[/quote]\n");
+}
+
+/**
  * on document ready
  */
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'NewPost':
-        case 'EditPost':
-            break;
-
-        case 'NewTopic':
-        case 'EditTopic':
             break;
     }
 });
