@@ -20,11 +20,3 @@ $maps[] = array(
         'order' => '[[:digit:]]+',
     )
 );
-
-$maps[] = array(
-    'Form',
-    'forms/{id}',
-    array(
-        'id' => '[\p{L}[:digit:]\-_\.]+',
-    )
-);
