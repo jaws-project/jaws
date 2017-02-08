@@ -124,6 +124,7 @@ function stopAction()
         $('#mobile').val('');
         $('#inform_type').val(0);
         $('#visible').val(1);
+        $('#group').prop('selectedIndex', 0);
         unselectDataGridRow();
         $('#name').focus();
         break;
@@ -318,6 +319,7 @@ function editRecipient(element, id)
     $('#mobile').val(recipient['mobile']);
     $('#inform_type').val(recipient['inform_type']);
     $('#visible').val(recipient['visible']);
+    $('#group').val(recipient['group']);
 }
 
 /**
@@ -341,7 +343,8 @@ function updateRecipient()
                 $('#fax').val(),
                 $('#mobile').val(),
                 $('#inform_type').val(),
-                $('#visible').val()
+                $('#visible').val(),
+                $('#group').val()
             ]
         );
     } else {
@@ -354,7 +357,8 @@ function updateRecipient()
                 $('#fax').val(),
                 $('#mobile').val(),
                 $('#inform_type').val(),
-                $('#visible').val()
+                $('#visible').val(),
+                $('#group').val()
             ]
         );
     }

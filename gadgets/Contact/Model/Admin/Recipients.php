@@ -22,9 +22,10 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
      * @param   string  $mobile         Mobile number of recipient
      * @param   string  $inform_type
      * @param   string  $visible        The visible of the recipient
+     * @param   int     $group          Jaws User's group Id
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible)
+    function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group)
     {
         $data = array();
         $data['name']        = $name;
@@ -34,6 +35,7 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
         $data['mobile']      = $mobile;
         $data['inform_type'] = (int)$inform_type;
         $data['visible']     = (int)$visible;
+        $data['group']       = (int)$group;
 
         $rcptTable = Jaws_ORM::getInstance()->table('contacts_recipients');
         $result = $rcptTable->insert($data)->exec();
@@ -58,9 +60,10 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
      * @param   string  $mobile         Mobile number of recipient
      * @param   string  $inform_type    
      * @param   string  $visible        The visible of the recipient
+     * @param   int     $group          Jaws User's group Id
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible)
+    function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group)
     {
         $data = array();
         $data['name']        = $name;
@@ -70,6 +73,7 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
         $data['mobile']      = $mobile;
         $data['inform_type'] = (int)$inform_type;
         $data['visible']     = (int)$visible;
+        $data['group']     = (int)$group;
 
         $rcptTable = Jaws_ORM::getInstance()->table('contacts_recipients');
         $result = $rcptTable->update($data)->where('id', $id)->exec();

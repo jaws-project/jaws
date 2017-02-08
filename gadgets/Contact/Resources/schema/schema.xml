@@ -148,6 +148,11 @@
         </field>
 
         <field>
+            <name>group</name>
+            <type>integer</type>
+        </field>
+
+        <field>
             <name>email</name>
             <type>text</type>
             <length>128</length>

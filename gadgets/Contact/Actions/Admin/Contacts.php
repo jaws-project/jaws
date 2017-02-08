@@ -120,8 +120,13 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
      */
     function GetContacts($recipient = -1, $offset = null)
     {
+        // check group permission
+        $currentUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $uModel = new Jaws_User();
+        $groups = $uModel->GetGroupsOfUser($currentUser);
+
         $model = $this->gadget->model->loadAdmin('Contacts');
-        $contacts = $model->GetContacts($recipient, 12, $offset);
+        $contacts = $model->GetContacts($recipient, array_keys($groups), 12, $offset);
         if (Jaws_Error::IsError($contacts)) {
             return array();
         }

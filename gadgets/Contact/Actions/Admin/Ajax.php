@@ -167,9 +167,9 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
-        @list($name, $email, $tel, $fax, $mobile, $inform_type, $visible) = jaws()->request->fetchAll('post');
+        @list($name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Recipients');
-        $model->InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible);
+        $model->InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -190,9 +190,9 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
-        @list($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible) = jaws()->request->fetchAll('post');
+        @list($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Recipients');
-        $model->UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible);
+        $model->UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

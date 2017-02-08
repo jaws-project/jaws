@@ -16,21 +16,27 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $recipient  Recipient ID
+     * @param   array   $groups     User groups id
      * @param   int     $limit      Count of contacts to be returned
      * @param   int     $offset     offset of data array
      * @return  mixed   Array of Contacts or Jaws_Error on failure
      */
-    function GetContacts($recipient = -1, $limit = false, $offset = null)
+    function GetContacts($recipient = -1, $groups = array(), $limit = false, $offset = null)
     {
         $cntctTable = Jaws_ORM::getInstance()->table('contacts');
         $cntctTable->select(
-            'id:integer', 'name', 'email', 'subject', 'attachment', 
-            'recipient:integer', 'reply', 'createtime'
+            'contacts.id:integer', 'contacts.name', 'contacts.email', 'contacts.subject', 'contacts.attachment',
+            'contacts.recipient:integer', 'contacts.reply', 'contacts.createtime'
         );
         if ($recipient != -1) {
-            $cntctTable->where('recipient', (int)$recipient);
+            $cntctTable->where('contacts.recipient', (int)$recipient);
         }
-        $cntctTable->orderBy('id desc');
+        if(!empty($groups)) {
+            $cntctTable->join('contacts_recipients', 'contacts.recipient', 'contacts_recipients.id', 'left');
+            $cntctTable->and()->where('contacts_recipients.group', $groups, 'in');
+        }
+
+        $cntctTable->orderBy('contacts.id desc');
         if (is_numeric($limit)) {
             $cntctTable->limit($limit, $offset);
         }
