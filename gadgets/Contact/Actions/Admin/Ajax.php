@@ -24,7 +24,10 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->load('Contacts');
         $contact = $model->GetContact($id);
-        if (Jaws_Error::IsError($contact)) {
+        if (Jaws_Error::IsError($contact) ||
+            empty($contact) ||
+            !$this->gadget->GetPermission('ManageRecipientContacts', $contact['recipient'])
+        ) {
             return false; //we need to handle errors on ajax
         }
 
@@ -35,52 +38,28 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * Update contact information
      *
      * @access  public
-     * @internal param  int     $id Contact ID
-     * @internal param  string  $name Name
-     * @internal param  string  $email Email address
-     * @internal param  string  $company
-     * @internal param  string  $url
-     * @internal param  string  $tel
-     * @internal param  string  $fax
-     * @internal param  string  $mobile
-     * @internal param  string  $address
-     * @internal param  int     $recipient Recipient ID
-     * @internal param  string  $subject Subject of message
-     * @internal param  string  $message Message content
      * @return  array   Response array (notice or error)
      */
     function UpdateContact()
     {
         $this->gadget->CheckPermission('ManageContacts');
-        @list($id, $name, $email, $company, $url, $tel, $fax,
-            $mobile, $address, $recipient, $subject, $message
-        ) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->model->loadAdmin('Contacts');
-        $model->UpdateContact($id, $name, $email, $company, $url, $tel, $fax, $mobile, $address, $recipient, $subject, $message);
-        return $GLOBALS['app']->Session->PopLastResponse();
-    }
+        $data = jaws()->request->fetchAll('post');
+        $id = $data['id'];
+        unset($data['id']);
 
-    /**
-     * Update contact reply
-     *
-     * @access  public
-     * @internal param  int     $id         Contact ID
-     * @internal param  string  $reply      Reply content
-     * @internal param  bool    $send_reply whether to send a reply
-     * @return  array   Response array (notice or error)
-     */
-    function UpdateReply()
-    {
-        $this->gadget->CheckPermission('ManageContacts');
-        @list($id, $reply, $send_reply) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->model->loadAdmin('Contacts');
-        $res = $model->UpdateReply($id, $reply);
-        if (!Jaws_Error::IsError($res) && $send_reply) {
-            $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
-            $gadget = $this->gadget->action->loadAdmin('Contacts');
-            $gadget->SendReply($id);
+        $result = $this->gadget->model->loadAdmin('Contacts')->UpdateContact($id, $data);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $result->getMessage(),
+                RESPONSE_ERROR
+            );
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('CONTACT_CONTACTS_UPDATED'),
+            RESPONSE_NOTICE,
+            $result
+        );
     }
 
     /**
@@ -94,9 +73,19 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageContacts');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->model->loadAdmin('Contacts');
-        $model->DeleteContact($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        $result = $this->gadget->model->loadAdmin('Contacts')->DeleteContact($id);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $result->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('CONTACT_CONTACTS_DELETED'),
+            RESPONSE_NOTICE,
+            $result
+        );
     }
 
     /**
@@ -111,11 +100,16 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Contacts');
         $replyData = $model->GetReply($id);
-        if (Jaws_Error::IsError($replyData)) {
+        if (Jaws_Error::IsError($replyData) ||
+            empty($replyData) ||
+            !$this->gadget->GetPermission('ManageRecipientContacts', $replyData['recipient'])
+        ) {
             return false; //we need to handle errors on ajax
         }
+
         if (isset($replyData['id'])) {
-            $replyData['readonly'] = (bool)$replyData['reply_sent'] && !(bool)$this->gadget->GetPermission('EditSentMessage');
+            $replyData['readonly'] = (bool)$replyData['reply_sent'] &&
+                !(bool)$this->gadget->GetPermission('EditSentMessage');
         }
         return $replyData;
     }
@@ -155,22 +149,26 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * Insert the information of a Recipient
      *
      * @access  public
-     * @internal param  string  $name           Name of the recipient
-     * @internal param  string  $email          Email of recipient
-     * @internal param  string  $tel            Phone number of recipient
-     * @internal param  string  $fax            Fax number of recipient
-     * @internal param  string  $mobile         Mobile number of recipient
-     * @internal param  int     $inform_type    Inform Type
-     * @internal param  string  $visible        The visible of the recipient
      * @return  array   Response array (notice or error)
      */
     function InsertRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
-        @list($name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->model->loadAdmin('Recipients');
-        $model->InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        $data = jaws()->request->fetchAll('post');
+        unset($data['id']);
+        $result = $this->gadget->model->loadAdmin('Recipients')->InsertRecipient($data);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $result->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('CONTACT_RECIPIENT_ADDED'),
+            RESPONSE_NOTICE,
+            $result
+        );
     }
 
     /**
@@ -190,10 +188,22 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
-        @list($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->model->loadAdmin('Recipients');
-        $model->UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        $data = jaws()->request->fetchAll('post');
+        $id = $data['id'];
+        unset($data['id']);
+        $result = $this->gadget->model->loadAdmin('Recipients')->UpdateRecipient($id, $data);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $result->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('CONTACT_RECIPIENT_UPDATED'),
+            RESPONSE_NOTICE,
+            $result
+        );
     }
 
     /**
@@ -207,9 +217,19 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageRecipients');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->model->loadAdmin('Recipients');
-        $model->DeleteRecipient($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        $result = $this->gadget->model->loadAdmin('Recipients')->DeleteRecipient($id);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $result->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('CONTACT_RECIPIENT_DELETED'),
+            RESPONSE_NOTICE,
+            $result
+        );
     }
 
     /**
@@ -247,8 +267,8 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (!is_numeric($offset)) {
             $offset = null;
         }
-        $gadget = $this->gadget->action->loadAdmin('Contacts');
 
+        $gadget = $this->gadget->action->loadAdmin('Contacts');
         return $gadget->GetContacts($recipient, $offset);
     }
 

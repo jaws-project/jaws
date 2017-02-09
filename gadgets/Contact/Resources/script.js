@@ -14,23 +14,15 @@
  */
 var ContactCallback = {
     UpdateContact: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             getDG('contacts_datagrid');
             stopAction();
         }
         ContactAjax.showResponse(response);
     },
 
-    UpdateReply: function(response) {
-        if (response[0]['type'] == 'alert-success') {
-            $(selectedRow).find('label').css('font-weight', 'normal');
-            stopAction();
-        }
-        ContactAjax.showResponse(response);
-    },
-
     DeleteRecipient: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             $('#recipient_datagrid')[0].deleteItem();
             getDG();
             stopAction();
@@ -39,7 +31,7 @@ var ContactCallback = {
     },
 
     InsertRecipient: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             $('#recipient_datagrid')[0].addItem();
             $('#recipient_datagrid')[0].setCurrentPage(0);
             getDG();
@@ -49,7 +41,7 @@ var ContactCallback = {
     },
 
     UpdateRecipient: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             getDG();
             stopAction();
         }
@@ -61,7 +53,7 @@ var ContactCallback = {
     },
 
     DeleteContact: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             $('#contacts_datagrid')[0].deleteItem();
             getDG('contacts_datagrid');
             stopAction();
@@ -70,7 +62,7 @@ var ContactCallback = {
     },
 
     SendEmail: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             newEmail();
         }
         ContactAjax.showResponse(response);
@@ -124,7 +116,6 @@ function stopAction()
         $('#mobile').val('');
         $('#inform_type').val(0);
         $('#visible').val(1);
-        $('#group').prop('selectedIndex', 0);
         unselectDataGridRow();
         $('#name').focus();
         break;
@@ -243,35 +234,13 @@ function editReply(element, id)
  */
 function updateContact(send_reply)
 {
-    switch(currentAction) {
-    case 'Contacts':
-        ContactAjax.callAsync(
-            'UpdateContact', [
-                $('#id').val(),
-                $('#name').val(),
-                $('#email').val(),
-                $('#company').val(),
-                $('#url').val(),
-                $('#tel').val(),
-                $('#fax').val(),
-                $('#mobile').val(),
-                $('#address').val(),
-                $('#rid').val(),
-                $('#subject').val(),
-                $('#message').val()
-            ]
-        );
-        break;
-    case 'Reply':
-        ContactAjax.callAsync(
-            'UpdateReply', [
-                $('#id').val(),
-                $('#reply').val(),
-                send_reply
-            ]
-        );
-        break;
-    }
+    ContactAjax.callAsync(
+        'UpdateContact',
+        Object.assign(
+            $.unserialize($('#contact_ui input,#contact_ui select,#contact_ui textarea').serialize()),
+            send_reply? {'reply_sent': 1} : {}
+        )
+    );
 }
 
 /**
@@ -319,7 +288,6 @@ function editRecipient(element, id)
     $('#mobile').val(recipient['mobile']);
     $('#inform_type').val(recipient['inform_type']);
     $('#visible').val(recipient['visible']);
-    $('#group').val(recipient['group']);
 }
 
 /**
@@ -336,30 +304,13 @@ function updateRecipient()
 
     if ($('#id').val() == 0) {
         ContactAjax.callAsync(
-            'InsertRecipient', [
-                $('#name').val(),
-                $('#email').val(),
-                $('#tel').val(),
-                $('#fax').val(),
-                $('#mobile').val(),
-                $('#inform_type').val(),
-                $('#visible').val(),
-                $('#group').val()
-            ]
+            'InsertRecipient',
+            $.unserialize($('#recipient input,#recipient select,#recipient textarea').serialize())
         );
     } else {
         ContactAjax.callAsync(
-            'UpdateRecipient', [
-                $('#id').val(),
-                $('#name').val(),
-                $('#email').val(),
-                $('#tel').val(),
-                $('#fax').val(),
-                $('#mobile').val(),
-                $('#inform_type').val(),
-                $('#visible').val(),
-                $('#group').val()
-            ]
+            'UpdateRecipient',
+            $.unserialize($('#recipient input,#recipient select,#recipient textarea').serialize())
         );
     }
 }

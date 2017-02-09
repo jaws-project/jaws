@@ -32,16 +32,20 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $recipientCombo =& Piwi::CreateWidget('Combo', 'recipient_filter');
         $recipientCombo->SetID('recipient_filter');
         $recipientCombo->AddEvent(ON_CHANGE, "getContacts('contacts_datagrid', 0, true)");
-        $recipientCombo->AddOption('', -1);
-        $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
+        if ($GLOBALS['app']->Session->IsSuperAdmin()) {
+            $recipientCombo->AddOption('', -1);
+            $recipientCombo->SetDefault(-1);
+            $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
+        }
         $model = $this->gadget->model->load('Recipients');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
             foreach ($recipients as $recipient) {
-                $recipientCombo->AddOption($recipient['name'], $recipient['id']);
+                if ($this->gadget->GetPermission('ManageRecipientContacts', $recipient['id'])) {
+                    $recipientCombo->AddOption($recipient['name'], $recipient['id']);
+                }
             }
         }
-        $recipientCombo->SetDefault(-1);
         $tpl->SetVariable('lbl_recipient_filter', _t('CONTACT_RECIPIENT'));
         $tpl->SetVariable('recipient_filter', $recipientCombo->Get());
         $tpl->SetVariable('lbl_recipient_filter', _t('CONTACT_RECIPIENT'));
@@ -59,7 +63,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $btnSave->SetEnabled($this->gadget->GetPermission('ManageContacts'));
-        $btnSave->AddEvent(ON_CLICK, 'updateContact(false);');
+        $btnSave->AddEvent(ON_CLICK, 'updateContact();');
         $btnSave->SetStyle('display:none;');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
@@ -120,13 +124,18 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
      */
     function GetContacts($recipient = -1, $offset = null)
     {
-        // check group permission
-        $currentUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $uModel = new Jaws_User();
-        $groups = $uModel->GetGroupsOfUser($currentUser);
+        // check current-user is supper-admin
+        if (((int)$recipient <= -1) && !$GLOBALS['app']->Session->IsSuperAdmin()) {
+            return array();
+        }
+
+        // check access permission to manage contacts
+        if (!$this->gadget->GetPermission('ManageRecipientContacts', $recipient)) {
+            return array();
+        }
 
         $model = $this->gadget->model->loadAdmin('Contacts');
-        $contacts = $model->GetContacts($recipient, array_keys($groups), 12, $offset);
+        $contacts = $model->GetContacts($recipient, 12, $offset);
         if (Jaws_Error::IsError($contacts)) {
             return array();
         }
@@ -237,7 +246,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl->SetVariable('address', $nameEntry->Get());
 
         //recipient
-        $recipientCombo =& Piwi::CreateWidget('Combo', 'rid');
+        $recipientCombo =& Piwi::CreateWidget('Combo', 'recipient');
         $recipientCombo->SetID('rid');
         $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
         $model = $this->gadget->model->load('Recipients');
@@ -256,7 +265,8 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl->SetVariable('subject', $subjectEntry->Get());
 
         //message
-        $messageText =& Piwi::CreateWidget('TextArea', 'message','');
+        $messageText =& Piwi::CreateWidget('TextArea', 'msg_txt','');
+        $messageText->SetID('message');
         $messageText->SetRows(8);
         $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
         $tpl->SetVariable('message', $messageText->Get());
@@ -295,7 +305,8 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl->SetVariable('subject', $subjectEntry->Get());
 
         //message
-        $messageText =& Piwi::CreateWidget('TextArea', 'message','');
+        $messageText =& Piwi::CreateWidget('TextArea', 'msg_txt','');
+        $messageText->SetID('message');
         $messageText->SetReadOnly(true);
         $messageText->SetRows(8);
         $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
@@ -412,8 +423,9 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             return false;
         }
 
-        $model->UpdateReplySent($cid, true);
+        $model->UpdateContact($cid, array('reply_sent' => 1));
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_REPLY_SENT'), RESPONSE_NOTICE);
         return true;
     }
+
 }

@@ -69,10 +69,6 @@ $admin_actions['UpdateContact'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['UpdateReply'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
 $admin_actions['DeleteContact'] = array(
     'standalone' => true,
     'file' => 'Ajax',

@@ -66,19 +66,6 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
         $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
         $tpl->SetVariable('visible', $visibleType->Get());
 
-        // group
-        $groupsCombo =& Piwi::CreateWidget('Combo', 'group');
-        $userModel = new Jaws_User();
-        $groups = $userModel->GetGroups();
-        if (!Jaws_Error::IsError($groups)) {
-            foreach ($groups as $group) {
-                $groupsCombo->AddOption($group['title'], $group['id']);
-            }
-        }
-        $groupsCombo->SetDefault(-1);
-        $tpl->SetVariable('group', $groupsCombo->Get());
-        $tpl->SetVariable('lbl_group', _t('CONTACT_RECIPIENT_GROUP'));
-
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());

@@ -15,75 +15,31 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
      * Insert the information of a Recipient
      *
      * @access  public
-     * @param   string  $name           Name of the recipient
-     * @param   string  $email          Email of recipient
-     * @param   string  $tel            Phone number of recipient
-     * @param   string  $fax            Fax number of recipient
-     * @param   string  $mobile         Mobile number of recipient
-     * @param   string  $inform_type
-     * @param   string  $visible        The visible of the recipient
-     * @param   int     $group          Jaws User's group Id
+     * @param   array   $data   Recipient data array
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function InsertRecipient($name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group)
+    function InsertRecipient($data)
     {
-        $data = array();
-        $data['name']        = $name;
-        $data['email']       = $email;
-        $data['tel']         = $tel;
-        $data['fax']         = $fax;
-        $data['mobile']      = $mobile;
-        $data['inform_type'] = (int)$inform_type;
-        $data['visible']     = (int)$visible;
-        $data['group']       = (int)$group;
-
-        $rcptTable = Jaws_ORM::getInstance()->table('contacts_recipients');
-        $result = $rcptTable->insert($data)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_ADDED'));
+        $result = Jaws_ORM::getInstance()->table('contacts_recipients')->insert($data)->exec();
+        if (!Jaws_Error::IsError($result)) {
+            $this->gadget->acl->insert('ManageRecipientContacts', $result, false);
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_RECIPIENT_ADDED'), RESPONSE_NOTICE);
-        return true;
+        return $result;
     }
 
     /**
      * Update the information of a Recipient
      *
      * @access  public
-     * @param   string  $id             ID of the recipient
-     * @param   string  $name           Name of the recipient
-     * @param   string  $email          Email of recipient
-     * @param   string  $tel            Phone number of recipient
-     * @param   string  $fax            Fax number of recipient
-     * @param   string  $mobile         Mobile number of recipient
-     * @param   string  $inform_type    
-     * @param   string  $visible        The visible of the recipient
-     * @param   int     $group          Jaws User's group Id
+     * @param   string  $id     ID of the recipient
+     * @param   array   $data   Recipient data array
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function UpdateRecipient($id, $name, $email, $tel, $fax, $mobile, $inform_type, $visible, $group)
+    function UpdateRecipient($id, $data)
     {
-        $data = array();
-        $data['name']        = $name;
-        $data['email']       = $email;
-        $data['tel']         = $tel;
-        $data['fax']         = $fax;
-        $data['mobile']      = $mobile;
-        $data['inform_type'] = (int)$inform_type;
-        $data['visible']     = (int)$visible;
-        $data['group']     = (int)$group;
-
         $rcptTable = Jaws_ORM::getInstance()->table('contacts_recipients');
-        $result = $rcptTable->update($data)->where('id', $id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_UPDATED'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_RECIPIENT_UPDATED'), RESPONSE_NOTICE);
-        return true;
+        return $rcptTable->update($data)->where('id', (int)$id)->exec();
     }
 
     /**
@@ -95,14 +51,12 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
      */
     function DeleteRecipient($id)
     {
-        $objORM = Jaws_ORM::getInstance();
-        $result = $objORM->delete()->table('contacts_recipients')->where('id', $id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_DELETED'));
+        $result = Jaws_ORM::getInstance()->table('contacts_recipients')->delete()->where('id', (int)$id)->exec();
+        if (!Jaws_Error::IsError($result)) {
+            $this->gadget->acl->delete('ManageRecipientContacts', $id);
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_RECIPIENT_DELETED'), RESPONSE_NOTICE);
-        return true;
+        return $result;
     }
+
 }
