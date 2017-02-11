@@ -23,39 +23,34 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         } else {
             $table->select(
                 'directory.id:integer', 'directory.parent:integer', 'directory.user:integer',
-                'is_dir:boolean', 'directory.public:boolean', 'directory.key:integer',
-                'directory.title', 'directory.description',
+                'users.username', 'users.nickname', 'is_dir:boolean', 'directory.public:boolean',
+                'directory.key:integer', 'directory.title', 'directory.description',
                 'user_filename', 'host_filename', 'mime_type', 'file_type', 'file_size', 'directory.hits',
                 'directory.published:boolean', 'directory.create_time:integer', 'directory.update_time:integer'
             );
         }
 
+        $table->join('users', 'directory.user', 'users.id', 'left');
         if (isset($params['user']) && !empty($params['user'])) {
             if(is_numeric($params['user'])) {
-                $table->where('user', (int)$params['user'])->and();
+                $table->where('directory.user', (int)$params['user'])->and();
             } else {
-                $table->join('users', 'users.id', 'directory.user', 'left');
                 $table->where('users.username', $params['user'])->and();
             }
-        }
-
-        if (isset($params['user_privates']) && !empty($params['user_privates'])) {
-            $table->openWhere('public', true)->or()->CloseWhere('user', $params['user_privates'])->and();
         }
 
         if (isset($params['parent'])) {
             $table->where('parent', $params['parent'])->and();
         }
         if (isset($params['public'])) {
-            $table->where('public', $params['public'])->and();
+            $table->where('directory.public', $params['public'])->and();
         }
         if (isset($params['is_dir'])) {
             $table->where('is_dir', $params['is_dir'])->and();
         }
         if (!empty($params['file_type'])) {
             $types = explode(',', $params['file_type']);
-            $table->openWhere('file_type', $types, 'in')->or()->where('file_type', '', 'is null')
-                ->closeWhere()->and();
+            $table->where('file_type', $types, 'in')->and();
         }
         if (isset($params['file_size'])) {
             if (!empty($params['file_size'][0])) {
@@ -66,7 +61,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             }
         }
         if (isset($params['published'])) {
-            $table->where('published', $params['published'])->and();
+            $table->where('published', (bool)$params['published'])->and();
         }
         if (isset($params['date'])){
             if (!empty($params['date'][0])) {
@@ -77,7 +72,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             }
         }
 
-        if (isset($params['query']) && !empty($params['query'])){
+        if (isset($params['query']) && !empty($params['query'])) {
             $table->openWhere('title', $params['query'], 'like')->or();
             $table->where('description', $params['query'], 'like')->or();
             $table->closeWhere('user_filename', $params['query'], 'like');
@@ -131,93 +126,6 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     }
 
     /**
-     * Inserts a new file/directory
-     *
-     * @access  public
-     * @param   array   $data    File data
-     * @return  mixed   Query result
-     */
-    function InsertFile($data)
-    {
-        $data['public'] = (bool)$data['public'];
-        $data['parent'] = (int)$data['parent'];
-        if (!$data['public']) {
-            $data['key'] = mt_rand(1000, 9999999999);
-        }
-        $data['create_time'] = $data['update_time'] = time();
-        return  Jaws_ORM::getInstance()->table('directory')->insert($data)->exec();
-    }
-
-    /**
-     * Update a file/directory
-     *
-     * @access  public
-     * @param   int     $id      File id
-     * @param   array   $data    File data
-     * @return  mixed   Query result
-     */
-    function UpdateFile($id, $data)
-    {
-        $data['public'] = (bool)$data['public'];
-        $data['parent'] = (int)$data['parent'];
-        if (!$data['public']) {
-            $data['key'] = mt_rand(1000, 9999999999);
-        }
-        $data['create_time'] = $data['update_time'] = time();
-        return Jaws_ORM::getInstance()->table('directory')->update($data)->where('id', $id)->exec();
-    }
-
-
-    /**
-     * Deletes file/directory
-     *
-     * @access  public
-     * @param   array   $data  File data
-     * @return  mixed   Query result
-     */
-    function DeleteFile($data)
-    {
-        if ($data['is_dir']) {
-            $files = $this->GetFiles(array('parent' => $data['id']));
-            if (Jaws_Error::IsError($files)) {
-                return false;
-            }
-            foreach ($files as $file) {
-                $this->Delete($file);
-            }
-        }
-
-        // Delete file/folder and related shortcuts
-        $table = Jaws_ORM::getInstance()->table('directory');
-        $table->delete()->where('id', $data['id']);
-        $res = $table->exec();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-
-        // Delete from disk
-        if (!$data['is_dir']) {
-            $filename = JAWS_DATA . 'directory/' . $data['host_filename'];
-            if (file_exists($filename)) {
-                if (!Jaws_Utils::delete($filename)) {
-                    return false;
-                }
-            }
-
-            // delete thumbnail file
-            $fileInfo = pathinfo($filename);
-            $thumbnailPath = JAWS_DATA . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
-            if (file_exists($thumbnailPath)) {
-                if (!Jaws_Utils::delete($thumbnailPath)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Fetches path of a file/directory
      *
      * @access  public
@@ -245,12 +153,38 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function GetThumbnailURL($filename)
     {
         $thumbnailURL = '';
-        $fileInfo = pathinfo($filename);
-
-        $thumbnailPath = JAWS_DATA . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
-        if (file_exists($thumbnailPath)) {
-            $thumbnailURL = $GLOBALS['app']->getDataURL('directory/' . $fileInfo['filename'] . '.thumbnail.png');
+        $thumbnail = "directory/$filename.thumbnail.png";
+        if (file_exists(JAWS_DATA . $thumbnail)) {
+            $thumbnailURL = $GLOBALS['app']->getDataURL($thumbnail);
         }
+
         return $thumbnailURL;
     }
+
+    /**
+     * Determines file type according to the file extension
+     */
+    function getFileType($filename)
+    {
+        $fileExt = pathinfo($filename, PATHINFO_EXTENSION);
+        if (empty($fileExt)) {
+            return Directory_Info::FILE_TYPE_UNKNOWN;
+        }
+        $FileTypes = array(
+            Directory_Info::FILE_TYPE_TEXT    => array('txt', 'doc', 'xml', 'html', 'htm', 'css', 'js', 'php', 'sh'),
+            Directory_Info::FILE_TYPE_IMAGE   => array('gif', 'png', 'jpg', 'jpeg', 'raw', 'bmp', 'tiff', 'svg'),
+            Directory_Info::FILE_TYPE_AUDIO   => array('wav', 'mp3', 'm4v', 'ogg'),
+            Directory_Info::FILE_TYPE_VIDEO   => array('mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov', 'mp4'),
+            Directory_Info::FILE_TYPE_ARCHIVE => array('zip', 'rar', 'tar', 'gz', 'tgz', 'bz2', '7z', '7zip')
+        );
+        foreach ($FileTypes as $type => $exts) {
+            foreach ($exts as $ext) {
+                if ($fileExt == $ext) {
+                    return $type;
+                }
+            }
+        }
+        return Directory_Info::FILE_TYPE_UNKNOWN;
+    }
+
 }

@@ -161,9 +161,9 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
     function GetFiles()
     {
         $data = jaws()->request->fetch(array('parent'));
-        $model = $this->gadget->model->loadAdmin('Files');
+        $modelFiles = $this->gadget->model->load('Files');
         $data['public'] = true;
-        $files = $model->GetFiles($data);
+        $files = $modelFiles->GetFiles($data);
         if (Jaws_Error::IsError($files)){
             return array();
         }
@@ -183,7 +183,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             $file['published_str'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
-            $file['thumbnail'] = $model->GetThumbnailURL($file['host_filename']);
+            $file['thumbnail'] = $modelFiles->GetThumbnailURL($file['host_filename']);
 
             // Fetch tags
             $file['tags'] = array();
@@ -206,8 +206,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
     function GetFile()
     {
         $id = jaws()->request->fetch('id', 'post');
-        $model = $this->gadget->model->loadAdmin('Files');
-        $file = $model->GetFile($id);
+        $file = $this->gadget->model->load('Files')->GetFile($id);
         if (Jaws_Error::IsError($file)) {
             return array();
         }
@@ -229,8 +228,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $action = jaws()->request->fetch('curr_action');
         $id = jaws()->request->fetch('id');
         $path = array();
-        $model = $this->gadget->model->loadAdmin('Files');
-        $model->GetPath($id, $path);
+        $this->gadget->model->load('Files')->GetPath($id, $path);
         foreach($path as &$p) {
             $p['url'] = BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $p['id'];
         }
@@ -270,9 +268,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function BuildTree($root = 0, $exclude = array(), &$tree)
     {
-        $model = $this->gadget->model->loadAdmin('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $dirs = $model->GetFiles(array('parent' => $root, 'is_dir' => true));
+        $dirs = $this->gadget->model->load('Files')->GetFiles(array('parent' => $root, 'is_dir' => true));
         if (Jaws_Error::IsError($dirs)) {
             return;
         }
@@ -307,19 +304,18 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             );
         }
 
-        $model = $this->gadget->model->loadAdmin('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $fault = false;
         foreach ($id_set as $id) {
             // Validate file
-            $file = $model->GetFile($id);
+            $file = $this->gadget->model->load('Files')->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 $fault = true;
                 continue;
             }
 
             // Delete file/directory
-            $res = $model->Delete($file);
+            $res = $this->gadget->model->loadAdmin('Files')->DeleteFile($file);
             if (Jaws_Error::IsError($res)) {
                 $fault = true;
             }
@@ -362,11 +358,11 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         $id_set = explode(',', $data['id_set']);
         $target = (int)$data['target'];
-        $model = $this->gadget->model->loadAdmin('Files');
+        $modelFiles = $this->gadget->model->load('Files');
 
         // Validate target
         if ($target !== 0) {
-            $dir = $model->GetFile($target);
+            $dir = $modelFiles->GetFile($target);
             if (Jaws_Error::IsError($dir) || !$dir['is_dir']) {
                 return $GLOBALS['app']->Session->GetResponse(
                     _t('DIRECTORY_ERROR_MOVE'),
@@ -384,7 +380,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             }
 
             // Validate file
-            $file = $model->GetFile($id);
+            $file = $modelFiles->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 $fault = true;
                 continue;
@@ -399,7 +395,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             // Prevent moving to it's children
             $path = array();
             $pathArr = array();
-            $model->GetPath($target, $path);
+            $modelFiles->GetPath($target, $path);
             foreach ($path as $dir) {
                 $pathArr[] = $dir['id'];
             }
@@ -410,7 +406,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
             // Let's perform move
             // FIXME: we can move all files at once
-            $res = $model->Move($id, $target);
+            $res = $this->gadget->model->loadAdmin('Files')->Move($id, $target);
             if (Jaws_Error::IsError($res)) {
                 $fault = true;
                 continue;

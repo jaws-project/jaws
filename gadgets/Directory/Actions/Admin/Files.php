@@ -94,18 +94,16 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
     {
         try {
             $data = jaws()->request->fetch(
-                array('title', 'description', 'parent', 'published',
+                array('title', 'description', 'parent', 'public', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnailPath')
             );
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
 
-            $model = $this->gadget->model->loadAdmin('Files');
-
             // Validate parent
             if ($data['parent'] != 0) {
-                $parent = $model->GetFile($data['parent']);
+                $parent = $this->gadget->model->load('Files')->GetFile($data['parent']);
                 if (Jaws_Error::IsError($parent)) {
                     throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                 }
@@ -180,7 +178,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             unset($data['filename']);
             $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $data['file_type'] = $this->getFileType($data['user_filename']);
-            $id = $model->Insert($data);
+            $id = $this->gadget->model->loadAdmin('Files')->InsertFile($data);
             if (Jaws_Error::IsError($id)) {
                 // TODO: delete uploaded file
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_CREATE'));
@@ -216,7 +214,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         try {
             // Validate data
             $data = jaws()->request->fetch(
-                array('id', 'title', 'description', 'parent', 'published',
+                array('id', 'title', 'description', 'parent', 'public', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size')
             );
             if (empty($data['title'])) {
@@ -225,11 +223,9 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
-            $model = $this->gadget->model->loadAdmin('Files');
-
             // Validate file
             $id = (int)$data['id'];
-            $file = $model->GetFile($id);
+            $file = $this->gadget->model->load('Files')->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 throw new Exception($file->getMessage());
             }
@@ -274,8 +270,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $data['update_time'] = time();
             $data['published'] = $data['published']? true : false;
             $data['file_type'] = $this->getFileType($data['user_filename']);
-            $model = $this->gadget->model->loadAdmin('Files');
-            $res = $model->Update($id, $data);
+            $res = $this->gadget->model->loadAdmin('Files')->UpdateFile($id, $data);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
             }
@@ -316,8 +311,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function GetFileContent($id)
     {
-        $model = $this->gadget->model->loadAdmin('Files');
-        $file = $model->GetFile($id);
+        $file = $this->gadget->model->load('Files')->GetFile($id);
         if (Jaws_Error::IsError($file) || empty($file) || empty($file['host_filename'])) {
             return;
         }

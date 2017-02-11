@@ -15,6 +15,14 @@ $actions['Directory'] = array(
     'parametric' => true,
     'file' => 'Directory'
 );
+$actions['DirExplorer'] = array(
+    'standalone' => true,
+    'file' => 'DirExplorer'
+);
+$actions['GetDirectory'] = array(
+    'standalone' => true,
+    'file' => 'DirExplorer'
+);
 $actions['Download'] = array(
     'standalone' => true,
     'file' => 'Directory'

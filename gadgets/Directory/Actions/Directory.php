@@ -116,6 +116,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('description', $descriptionEditor->Get());
 
             $tpl->SetVariable('parent', $id);
+            $tpl->SetVariable('referrer', bin2hex(Jaws_Utils::getRequestURL(true)));
             if ($this->gadget->GetPermission('PublishFiles')) {
                 $tpl->SetBlock('uploadUI/published');
                 $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
@@ -147,17 +148,15 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function ListFiles($parent = 0, $type = null, $orderBy = 0, $limit = 0)
     {
+        $params = array();
         $filters = jaws()->request->fetch(
             array('filter_file_type', 'filter_file_size', 'filter_from_date', 'filter_to_date', 'filter_order'),
             'post');
 
-        $isLayoutAction = false;
         // Layout action
-        if($GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT) {
-            $isLayoutAction = true;
+        $isLayoutAction = $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT;
+        if ($isLayoutAction) {
             $page = 0;
-            $params = array();
-
             if ($type == '-1') {
                 $params['is_dir'] = true;
             } else {
@@ -172,14 +171,18 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             unset($params['type']);
         }
 
-        $params['limit'] = ($limit > 0) ? $limit : (int)$this->gadget->registry->fetch('items_per_page');
+        $params['limit']  = ($limit > 0) ? $limit : (int)$this->gadget->registry->fetch('items_per_page');
         $params['offset'] = ($page == 0)? 0 : $params['limit'] * ($page - 1);
-        $params['parent'] = $parent;
+        $params['parent'] = (int)$parent;
+        $params['public'] = true;
         $params['published'] = true;
 
         $user = jaws()->request->fetch('user', 'get');
         if (!empty($user)) {
-            $params['user'] = $user;
+            $params['user'] = (int)$user;
+            if ($params['user'] == (int)$GLOBALS['app']->Session->GetAttribute('user')) {
+                unset($params['public'], $params['published']);
+            }
         }
 
         // check filters
@@ -306,8 +309,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('order_selected_' . $orderBy, 'selected');
         $tpl->ParseBlock('filters');
 
-
-        $params['user_privates'] = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Files');
         $files = $model->GetFiles($params, false, $orderBy);
         if (Jaws_Error::IsError($files)) {
@@ -364,7 +365,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
             $thumbnailURL = $model->GetThumbnailURL($file['host_filename']);
             if (!empty($thumbnailURL)) {
-                $tpl->SetVariable('icon', $model->GetThumbnailURL($file['host_filename']));
+                $tpl->SetVariable('icon', $thumbnailURL);
             } else {
                 $tpl->SetVariable('icon', $iconUrl . $icons[$file['file_type']] . '.png');
             }
@@ -378,6 +379,19 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             if ($parent > 0) {
                 $args['id'] = $parent;
             }
+            if (!empty($params['user'])) {
+                $args['user'] = (int)$params['user'];
+            }
+            if (!empty($params['public'])) {
+                $args['public'] = (int)$params['public'];
+            }
+            if (!empty($params['file_type'])) {
+                $args['type'] = $params['file_type'];
+            }
+            if (!empty($orderBy)) {
+                $args['order'] = $orderBy;
+            }
+
             $this->gadget->action->load('Navigation')->pagination(
                 $tpl,
                 $page,
@@ -581,4 +595,5 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         return true;
     }
+
 }

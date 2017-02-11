@@ -55,16 +55,17 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
     function CreateDirectory()
     {
         try {
-            $data = jaws()->request->fetch(array('title', 'description', 'parent', 'published'), 'post');
+            $data = jaws()->request->fetch(
+                array('title', 'description', 'parent', 'public', 'published'),
+                'post'
+            );
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
 
-            $model = $this->gadget->model->loadAdmin('Files');
-
             // Validate parent
             if ($data['parent'] != 0) {
-                $parent = $model->GetFile($data['parent']);
+                $parent = $this->gadget->model->load('Files')->GetFile($data['parent']);
                 if (Jaws_Error::IsError($parent)) {
                     throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
                 }
@@ -75,7 +76,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $data['published'] = $data['published']? true : false;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
-            $result = $model->Insert($data);
+            $result = $this->gadget->model->loadAdmin('Files')->InsertFile($data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
             }
@@ -99,7 +100,10 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
     function UpdateDirectory()
     {
         try {
-            $data = jaws()->request->fetch(array('title', 'description', 'parent', 'published'), 'post');
+            $data = jaws()->request->fetch(
+                array('title', 'description', 'parent', 'public', 'published'),
+                'post'
+            );
 
             // Validate data
             if (empty($data['title'])) {
@@ -109,10 +113,9 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
             $id = (int)jaws()->request->fetch('id', 'post');
-            $model = $this->gadget->model->loadAdmin('Files');
 
             // Validate directory
-            $dir = $model->GetFile($id);
+            $dir = $this->gadget->model->load('Files')->GetFile($id);
             if (Jaws_Error::IsError($dir)) {
                 throw new Exception($dir->getMessage());
             }
@@ -120,7 +123,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             // Update directory
             $data['update_time'] = time();
             $data['published'] = $data['published']? true : false;
-            $result = $model->Update($id, $data);
+            $result = $this->gadget->model->loadAdmin('Files')->UpdateFile($id, $data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
             }
