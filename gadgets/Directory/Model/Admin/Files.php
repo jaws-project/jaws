@@ -98,6 +98,8 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $data['user_filename'] = $files['file'][0]['user_filename'];
                 $data['mime_type'] = $files['file'][0]['host_filetype'];
                 $data['file_size'] = $files['file'][0]['host_filesize'];
+            } elseif (isset($data['host_filename'])) {
+                // do nothing
             } elseif (isset($dbFileInfo)) {
                 $data['host_filename'] = $dbFileInfo['host_filename'];
                 $data['user_filename'] = $dbFileInfo['user_filename'];
@@ -108,8 +110,9 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
             }
 
-            if (isset($files['thumbnail'])) {
-                $thumbfile = $files['thumbnail'][0]['host_filename'];
+            if (isset($files['thumbnail']) || isset($data['thumbnail'])) {
+                $thumbfile = isset($data['thumbnail'])? $data['thumbnail'] : $files['thumbnail'][0]['host_filename'];
+                unset($data['thumbnail']);
 
                 // Save resize thumbnail file
                 $thumbSize = $this->gadget->registry->fetch('thumbnail_size');

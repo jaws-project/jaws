@@ -25,15 +25,7 @@ var DirectoryCallback = {
         DirectoryAjax.showResponse(response);
     },
 
-    CreateFile: function(response) {
-        if (response.type === 'alert-success') {
-            cancel();
-            updateFiles(jaws.gadgets.Directory.currentDir);
-        }
-        DirectoryAjax.showResponse(response);
-    },
-
-    UpdateFile: function(response) {
+    SaveFile: function(response) {
         if (response.type === 'alert-success') {
             cancel();
             updateFiles(jaws.gadgets.Directory.currentDir);
@@ -482,6 +474,7 @@ function newFile()
     $('#tr_file').hide();
     $('#tr_thumbnail').hide();
     $('#frm_upload').show();
+    $('#frm_thumbnail_upload').show();
     $('#frm_file').find('[name=parent]').val(jaws.gadgets.Directory.currentDir);
     $('#frm_file').find('[name=title]').focus();
 }
@@ -507,17 +500,22 @@ function editFile(id)
         $('#host_filename').val(':nochange:');
     } else {
         $('#tr_file').hide();
-        $('#tr_thumbnail').hide();
         $('#frm_upload').show();
     }
-    form.action.value = 'UpdateFile';
+    if (file.thumbnail) {
+        setThumbnail(file.user_filename+".thumbnail.png");
+    } else {
+        $('#tr_thumbnail').hide();
+        $('#frm_thumbnail_upload').show();
+    }
+    
+    form.action.value = 'SaveFile';
     form.id.value = id;
     form.title.value = file.title;
     form.tags.value = file.tags;
     form.published.checked = file.published;
     $('#frm_file #thumbnail').prop('src', file.thumbnail);
     setEditorValue('#description', file.description);
-    console.log(file);
 }
 
 /**
@@ -567,7 +565,7 @@ function onUpload(response) {
                 $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
             }
         } else {
-            uploadedThumbnailPath = hostFilename;
+            uploadedThumbnail = hostFilename;
         }
     }
     $('#ifrm_upload').remove();
@@ -589,6 +587,23 @@ function setFilename(filename, url)
     //$('#file_link').append(jaws.gadgets.Directory.imgDeleteFile);
     $('#tr_file').show();
     $('#frm_upload').hide();
+}
+
+/**
+ * Sets thumbnail link of the file
+ */
+function setThumbnail(filename, url)
+{
+    var link = $('<a>');
+
+    link.html(filename);
+    if (url !== '') {
+        link.attr('href', url);
+    }
+
+    $('#thumbnail_link').append(link);
+    $('#tr_thumbnail').show();
+    $('#frm_thumbnail_upload').hide();
 }
 
 /**
@@ -619,12 +634,11 @@ function submitDirectory()
  */
 function submitFile()
 {
-    var action = (idSet.length === 0)? 'CreateFile' : 'UpdateFile',
-        data = $.unserialize($('#frm_file').serialize());
+    var data = $.unserialize($('#frm_file').serialize());
     data.description = getEditorValue('#description');
-    data.thumbnailPath = uploadedThumbnailPath;
+    data.thumbnail = uploadedThumbnail;
 
-    DirectoryAjax.callAsync(action, data);
+    DirectoryAjax.callAsync('SaveFile', data);
 }
 
 /**
@@ -664,7 +678,7 @@ function closeSearch()
 }
 
 /**
- * Formats size in bytes to human readbale
+ * Formats size in bytes to human readable
  */
 function formatSize(size, precision)
 {
@@ -718,7 +732,7 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     fileTemplate = '',
     statusTemplate = '',
     wsClickEvent = null,
-    uploadedThumbnailPath = null,
+    uploadedThumbnail = null,
     idSet = [],
     currentDir,
     currentAction;

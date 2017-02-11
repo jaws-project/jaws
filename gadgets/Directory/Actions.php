@@ -99,11 +99,7 @@ $admin_actions['FileForm'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$admin_actions['CreateFile'] = array(
-    'standalone' => true,
-    'file' => 'Files'
-);
-$admin_actions['UpdateFile'] = array(
+$admin_actions['SaveFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
