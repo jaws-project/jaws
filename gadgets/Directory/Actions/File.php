@@ -59,7 +59,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         if (!empty($data['title'])) {
             $result = $this->gadget->model->loadAdmin('Files')->SaveFile($data);
         } else {
-            $result = Jaws_Error::raiseError(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'), __FUNCTION__);
+            $result = Jaws_Error::raiseError(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'), __FUNCTION__, JAWS_ERROR_NOTICE);
         }
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(

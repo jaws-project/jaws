@@ -27,11 +27,9 @@ function stopAction()
     $('#file_form #file_link').html('');
     $('#file_form #title').val('');
     $('#file_form #tags').val('');
-    $('#file_form #published').prop('checked', '');
-
     $('#file_form #id').val(0);
     $('#file_form #parent').val(0);
-
+    $('#file_form #published').prop('checked', '');
 }
 
 /**
@@ -137,7 +135,7 @@ function initiateDirectoryDG()
         dataSource: directoryDataSource,
         staticHeight: 600,
         thumbnail_selectable: true,
-        list_direction: $('.repeater-canvas').css('direction')
+        list_direction: $('.repeater-canvas').css('direction'),
     });
     $('#dirExplorer').on('selected.fu.repeaterThumbnail', function () {
         var urlParams = $.unserialize(window.location.search);

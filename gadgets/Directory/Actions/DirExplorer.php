@@ -21,10 +21,31 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $browserLayout = new Jaws_Layout();
         $browserLayout->Load('gadgets/Directory/Templates', 'DirExplorer.html');
         $browserLayout->addScript('gadgets/Directory/Resources/index.js');
-        $browserLayout->_Template->SetVariable(
-            'referrer',
-            bin2hex(Jaws_Utils::getRequestURL(true))
-        );
+        $tpl = $browserLayout->_Template;
+        // bookmark default layout
+        $mainLayout = $GLOBALS['app']->Layout;
+        $GLOBALS['app']->Layout = $browserLayout;
+        if ($GLOBALS['app']->Session->Logged()) {
+            $tpl->SetBlock('layout/upload');
+            $tpl->SetVariable('lbl_upload', _t('DIRECTORY_UPLOAD_FILE'));
+            $tpl->ParseBlock('layout/upload');
+        }
+        $tpl->SetVariable('referrer', bin2hex(Jaws_Utils::getRequestURL(true)));
+        $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
+        $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
+        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
+        $tpl->SetVariable('lbl_description', _t('DIRECTORY_FILE_DESC'));
+        $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
+
+        $description =& $GLOBALS['app']->LoadEditor('Directory', 'description', '', false);
+        $description->setId('description');
+        $description->TextArea->SetRows(8);
+        $tpl->SetVariable('description', $description->Get());
+
+        // restore default layout
+        $GLOBALS['app']->Layout = $mainLayout;
         return $browserLayout->Get(true);
     }
 

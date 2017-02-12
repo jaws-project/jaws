@@ -15,39 +15,13 @@
   <div class="repeater" id="dirExplorer">
     <div class="repeater-header">
       <div class="repeater-header-left">
+        <!-- BEGIN upload -->
         <div class="btn-group">
           <a href="#uploadModal" data-toggle="modal" title="Upload file" class="btn">
-            Upload File
+            {{lbl_upload}}
           </a>
         </div>
-        <span class="repeater-title">Awesome Repeater</span>
-        <div class="repeater-search">
-          <div class="search input-group">
-            <input type="search" class="form-control" placeholder="Search"/>
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
-                <span class="glyphicon glyphicon-search"></span>
-                <span class="sr-only">Search</span>
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="repeater-header-right">
-        <div class="btn-group selectlist repeater-filters" data-resize="auto">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <span class="selected-label">&nbsp;</span>
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Filters</span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li data-value="all" data-selected="true"><a href="#">all</a></li>
-            <li data-value="some"><a href="#">some</a></li>
-            <li data-value="others"><a href="#">others</a></li>
-          </ul>
-          <input class="hidden hidden-field" name="filterSelection" readonly="readonly" aria-hidden="true" type="text"/>
-        </div>
-
+        <!-- END upload -->
       </div>
     </div>
     <div class="repeater-viewport">
@@ -62,7 +36,6 @@
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
               <span class="selected-label">&nbsp;</span>
               <span class="caret"></span>
-              <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
               <li data-value="5"><a href="#">5</a></li>
@@ -123,7 +96,7 @@
           <div class="modal-body">
  
             <div class="form-group">
-              <label for="to">{{lbl_file}}:</label>
+              <label for="file">{{lbl_file}}:</label>
               <input class="form-control-file" type="file" name="file" id="file" />
             </div>
 
@@ -139,10 +112,7 @@
 
             <div class="form-group">
               <label for="description">{{lbl_description}}:</label>
-              <textarea class="form-control" rows="8" name="description" id="description"
-                role="editor" data-editor="ckeditor" data-direction="ltr" data-language="en"
-                data-readonly="0" data-resizable="1">
-              </textarea>
+              {{description}}
             </div>
 
             <div class="form-group">
@@ -151,7 +121,9 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-default" type="button" onclick="stopAction()">{{lbl_cancel}}</button>
+            <button class="btn btn-default" type="button" onclick="stopAction()" data-dismiss="modal">
+              {{lbl_cancel}}
+            </button>
             <button class="btn btn-primary" type="submit">{{lbl_ok}}</button>
           </div>
         </form>
