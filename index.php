@@ -55,10 +55,6 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
                 Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
             }
 
-            if (!$GLOBALS['app']->Session->GetPermission($ReqGadget, 'default')) {
-                $ReqError = '403';
-            }
-
             // check referrer host for internal action
             if ($objAction->getAttribute($ReqAction, 'internal') && !$GLOBALS['app']->Session->extraCheck()) {
                 $ReqError = '403';

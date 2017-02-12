@@ -249,6 +249,10 @@ class Jaws_Gadget_Action
             return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
         }
 
+        if (!$GLOBALS['app']->Session->GetPermission($this->gadget->name, 'default')) {
+            return Jaws_HTTPError::Get($GLOBALS['app']->Session->Logged()? 403 : 401);
+        }
+
         if (!$this->IsValidAction($action)) {
             return Jaws_Error::raiseError(
                 'Invalid action '.$this->gadget->name.'::'.$action,
