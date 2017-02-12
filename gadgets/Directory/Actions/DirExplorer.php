@@ -65,7 +65,10 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $modelFiles = $this->gadget->model->load('Files');
         $files = $modelFiles->GetFiles($params);
         foreach($files as $key => $file) {
-            $file['url'] = $this->gadget->urlMap('Download', array('id' => $file['id']));
+            $file['url'] = $this->gadget->urlMap(
+                'Download',
+                array('id' => $file['id'], 'key' => $file['key'])
+            );
             $file['src'] = $modelFiles->GetThumbnailURL($file['host_filename']);
             $files[$key] = $file;
         }

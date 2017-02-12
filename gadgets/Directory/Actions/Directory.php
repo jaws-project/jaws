@@ -555,30 +555,21 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $get = jaws()->request->fetch(array('id', 'user', 'key'), 'get');
         $id = (int)$get['id'];
         if (empty($id)) {
-            return Jaws_HTTPError::Get(500);
+            return Jaws_HTTPError::Get(404);
         }
         $model = $this->gadget->model->load('Files');
 
         // Validate file
         $file = $model->GetFile($id);
-        if (Jaws_Error::IsError($file)) {
-            return Jaws_HTTPError::Get(500);
-        }
-        if (empty($file) || empty($file['user_filename'])) {
+        if (Jaws_Error::IsError($file) || empty($file) || empty($file['user_filename'])) {
             return Jaws_HTTPError::Get(404);
         }
 
         // check private file
         if (!$file['public']) {
-            $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
-            if ($currentUser > 0) {
-                if ($file['user'] != $currentUser) {
-                    return Jaws_HTTPError::Get(403);
-                }
-            } else {
-                if ($get['key'] !== $file['key'] || $get['user'] !== $file['user']) {
-                    return Jaws_HTTPError::Get(403);
-                }
+            $loggedUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($file['user'] != $loggedUser && $get['key'] != $file['key']) {
+                return Jaws_HTTPError::Get(403);
             }
         }
 
