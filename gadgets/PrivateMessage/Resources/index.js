@@ -130,7 +130,7 @@ function addFileEntry() {
 function sendMessage(isDraft) {
 
     // detect pre load users or groups list
-    if (recipient_user == "" || recipient_user.length == 0) {
+    if (jaws.gadgets.PrivateMessage.recipient_user == "" || jaws.gadgets.PrivateMessage.recipient_user.length == 0) {
         var recipient_users_array = new Array();
         var recipient_groups_array = new Array();
 
@@ -156,7 +156,7 @@ function sendMessage(isDraft) {
         var recipient_users = recipient_users_array.join(',');
         var recipient_groups = recipient_groups_array.join(',');
     } else {
-        var recipient_users = recipient_user;
+        var recipient_users = jaws.gadgets.PrivateMessage.recipient_user;
         var recipient_groups = "";
     }
 
@@ -247,6 +247,76 @@ function removeUserFromList() {
 function unselectUserGroup () {
     $("#recipient_groups option:selected").prop("selected", false);
 }
+
+/**
+ *
+ */
+function ChangeToggleIcon(obj)
+{
+    if ($(obj).attr('toggle-status') == 'min') {
+        $(obj).find("img").attr('src', jaws.gadgets.PrivateMessage.toggleMin);
+        $(obj).attr('toggle-status', 'max');
+    } else {
+        $(obj).find("img").attr('src', jaws.gadgets.PrivateMessage.toggleMax);
+        $(obj).attr('toggle-status', 'min');
+    }
+}
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Compose':
+            $('#attachment1').show();
+            $('#attach_loading').hide();
+            $('#btn_attach1').hide();
+            $('#attachment_area').toggle();
+
+            // initiate pillbox
+            $('#recipientUsers').pillbox({
+                onKeyDown: function (inputData, callback) {
+                    var term = inputData.value;
+                    var users = '';
+                    if (term != '') {
+                        var users = PrivateMessageAjax.callSync('GetUsers', {'term': inputData.value});
+                    }
+                    if (users.length > 1) {
+                        var data = [];
+                        var tmpItem;
+                        $.each(users, function (key, user) {
+                            data.push({text: user.nickname, value: user.id});
+                        });
+
+                        callback({
+                            data: data
+                        });
+                    }
+                },
+                // prevent duplicated item
+                onAdd: function (data, callback) {
+                    var items = $('#recipientUsers').pillbox('items');
+                    var duplicated = false;
+
+                    if (items.length > 0) {
+                        $.each(items, function (key, item) {
+                            if (data.value == item.value) {
+                                duplicated = true;
+                                return false;
+                            }
+                        });
+                    }
+                    if (!duplicated) {
+                        callback(data);
+                    }
+                }
+            });
+
+            $('#recipientUsers').pillbox('addItems', 1, recipientUsersInitiate);
+            $( "#legend_attachments" ).click(function() {
+                $('#attachment_area').toggle();
+                ChangeToggleIcon(this);
+            });
+            break;
+    }
+});
 
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
 

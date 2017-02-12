@@ -25,6 +25,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $this->gadget->CheckPermission('SendMessage');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('index.js');
+        // set default value of javascript variables
+        $this->gadget->layout->setVariable('icon_add', STOCK_ADD);
+        $this->gadget->layout->setVariable('icon_remove', STOCK_REMOVE);
+
         $data = jaws()->request->fetch(array('id', 'user', 'reply', 'users:array'));
         $id = $data['id'];
 
@@ -141,7 +145,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
-                $tpl->SetVariable('recipient_user', $message['from']);
+                $this->gadget->layout->setVariable('recipient_user', $message['from']);
                 $recipient_users = array($message['from']);
 
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
@@ -236,9 +240,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $tpl->SetVariable('back_url', $this->gadget->urlMap(
             'Messages',
             array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)));
-
-        $tpl->SetVariable('icon_add', STOCK_ADD);
-        $tpl->SetVariable('icon_remove', STOCK_REMOVE);
 
         $tpl->ParseBlock('compose');
         return $tpl->Get();
