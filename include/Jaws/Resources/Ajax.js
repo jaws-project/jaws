@@ -378,6 +378,7 @@ function initEditor(selector)
         case 'ckeditor':
             $.loadScript('libraries/ckeditor/ckeditor.js', function() {
                 objEditor.ckeditor({
+                    'baseHref': $('base').attr('href'),
                     'contentsLangDirection': objEditor.data('direction') || 'ltr',
                     'language': objEditor.data('language') || 'en',
                     'AutoDetectLanguage': false,
