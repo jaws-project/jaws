@@ -235,30 +235,36 @@
             </field>
 
             <field>
-                <name>mailbox</name>
+                <name>internal_domain</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>internal_email</name>
                 <type>text</type>
                 <length>128</length>
             </field>
 
             <field>
-                <name>maildir</name>
+                <name>internal_maildir</name>
                 <type>text</type>
                 <length>128</length>
             </field>
 
             <field>
-                <name>mailquota</name>
+                <name>internal_mailquota</name>
                 <type>integer</type>
             </field>
 
             <field>
-                <name>ftpdir</name>
+                <name>internal_ftpdir</name>
                 <type>text</type>
                 <length>128</length>
             </field>
 
             <field>
-                <name>ftpquota</name>
+                <name>internal_ftpquota</name>
                 <type>integer</type>
             </field>
 
@@ -295,9 +301,16 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>users_mailbox</name>
+                <name><variable>table_prefix</variable>users_internal_domain</name>
                 <field>
-                    <name>mailbox</name>
+                    <name>internal_domain</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>users_internal_email</name>
+                <field>
+                    <name>internal_email</name>
                 </field>
             </index>
         </declaration>
