@@ -5,42 +5,123 @@
 <div class="gadget_container">
   <div class="gadget_content content">
 
-    <div id="region_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
-      <div rel="body">
-        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
-          <div id="gmap_box">
-            <img id="gmap" onclick="javascript:getGoogleMap(event, this)" src="gadgets/Weather/Resources/images/gmap.png" title="{{map_title}}" />
-            <div id="zoom_box">
-              <a href="javascript:zoomMap(-1)"><img alt="-" src="gadgets/Weather/Resources/images/zoomout.png" /></a>
-              <a href="javascript:zoomMap(+1)"><img alt="+" src="gadgets/Weather/Resources/images/zoomin.png" /></a>
+    <div class="repeater" id="regions-grid" data-staticheight="500">
+      <div class="repeater-header">
+        <div class="repeater-header-left">
+          <div class="repeater-search">
+            <div class="search disabled input-group">
+              <input type="search" class="form-control input-sm" placeholder="Search">
+              <span class="input-group-btn">
+              <button class="btn btn-default btn-sm" type="button">
+                  <span class="glyphicon glyphicon-search"></span>
+                  <span class="sr-only">{{lbl_search}}</span>
+              </button>
+          </span>
             </div>
           </div>
-
-          <form action="#" name="region">
-            <table class="table" id="geo_position" cellpadding="0" cellspacing="2">
-              <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title"></td></tr>
-              <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td><input type="text" id="fast_url" name="fast_url"></td></tr>
-              <tr><td><label for="latitude">{{lbl_latitude}}:</label></td><td><input type="text" id="latitude" name="latitude" class="ltr"></td></tr>
-              <tr><td><label for="longitude">{{lbl_longitude}}:</label></td><td><input type="text" id="longitude" name="longitude" class="ltr"></td></tr>
-              <tr><td><label for="published">{{lbl_published}}:</label></td><td>
-                <select class="form-control" name="published" id="published">
-                  <option value="1">{{lbl_yes}}</option>
-                  <option value="0">{{lbl_no}}</option>
-                </select>
-
-              </td></tr>
-          </table>
-          </form>
+        </div>
+        <div class="repeater-header-right">
+          <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#regionModal">
+            <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
+          </button>
         </div>
       </div>
-      <div rel="buttons">
-        <button class="btn btn-primary" onclick="javascript:updateRegion()">{{lbl_save}}</button>
-        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      <div class="repeater-viewport">
+        <div class="repeater-canvas"></div>
+        <div class="loader repeater-loader"></div>
+      </div>
+      <div class="repeater-footer">
+        <div class="repeater-footer-left">
+          <div class="repeater-itemization">
+            <span><span class="repeater-start"></span> {{lbl_to}} <span class="repeater-end"></span> {{lbl_of}} <span class="repeater-count"></span> {{lbl_items}}</span>
+            <div class="btn-group selectlist dropup" data-resize="auto">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                <span class="selected-label">?</span>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                <li data-value="25"><a href="#">25</a></li>
+                <li data-value="50"><a href="#">50</a></li>
+              </ul>
+              <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+            </div>
+            <span>{{lbl_per_page}}</span>
+          </div>
+        </div>
+        <div class="repeater-footer-right">
+          <div class="repeater-pagination">
+            <button type="button" class="btn btn-default btn-sm repeater-prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous Page</span>
+            </button>
+            <label class="page-label" id="myPageLabel"></label>
+            <div class="repeater-primaryPaging active">
+              <div class="input-group input-append dropdown combobox dropup">
+                <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right"></ul>
+                </div>
+              </div>
+            </div>
+            <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+            <button type="button" class="btn btn-default btn-sm repeater-next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next Page</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
+    <div class="modal fade" id="regionModal" tabindex="-1" role="dialog" aria-labelledby="regionModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="regionModalLabel">{{lbl_add}}</h4>
+          </div>
+          <div class="modal-body">
+            <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+              <div id="gmap_box">
+                <img id="gmap" onclick="javascript:getGoogleMap(event, this)" src="gadgets/Weather/Resources/images/gmap.png" title="{{map_title}}" />
+                <div id="zoom_box">
+                  <a href="javascript:zoomMap(-1)"><img alt="-" src="gadgets/Weather/Resources/images/zoomout.png" /></a>
+                  <a href="javascript:zoomMap(+1)"><img alt="+" src="gadgets/Weather/Resources/images/zoomin.png" /></a>
+                </div>
+              </div>
 
-    <div id="regions-grid" style="width: 100%; height: 400px;"></div>
+              <form action="#" name="region" id="region">
+                <table class="table" id="geo_position" cellpadding="0" cellspacing="2">
+                  <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title" class="form-control"></td></tr>
+                  <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td><input type="text" id="fast_url" name="fast_url" class="form-control"></td></tr>
+                  <tr><td><label for="latitude">{{lbl_latitude}}:</label></td><td><input type="text" id="latitude" name="latitude" class="ltr form-control" value="0"></td></tr>
+                  <tr><td><label for="longitude">{{lbl_longitude}}:</label></td><td><input type="text" id="longitude" name="longitude" class="ltr form-control" value="0"></td></tr>
+                  <tr><td><label for="published">{{lbl_published}}:</label></td><td>
+                    <select class="form-control" name="published" id="published">
+                      <option value="1">{{lbl_yes}}</option>
+                      <option value="0">{{lbl_no}}</option>
+                    </select>
+
+                  </td></tr>
+                </table>
+              </form>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
+            <button type="button" class="btn btn-primary" onclick="javascript:updateRegion()">{{lbl_save}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 <div class="gadget_footer"></div>
@@ -50,13 +131,4 @@
     float: right;
   }
 </style>
-
-<script type="text/javascript">
-  var base_script = "{{base_script}}";
-  var lbl_title = "{{lbl_title}}";
-  var lbl_add = "{{lbl_add}}";
-  var lbl_edit = "{{lbl_edit}}";
-  var lbl_published = "{{lbl_published}}";
-  var lbl_geo_position = "{{lbl_geo_position}}";
-</script>
 <!-- END UserRegions -->

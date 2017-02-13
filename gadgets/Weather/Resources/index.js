@@ -12,22 +12,26 @@
 var WeatherCallback = {
     InsertRegion: function (response) {
         if (response['type'] == 'alert-success') {
-            w2popup.close();
-            w2ui['regions-grid'].reload();
+            $('#regions-grid').repeater('render');
             stopAction();
         }
         WeatherAjax.showResponse(response);
     },
     UpdateRegion: function (response) {
         if (response['type'] == 'alert-success') {
-            w2popup.close();
-            w2ui['regions-grid'].reload();
+            $('#regions-grid').repeater('render');
+            stopAction();
+        }
+        WeatherAjax.showResponse(response);
+    },
+    DeleteUserRegion: function (response) {
+        if (response['type'] == 'alert-success') {
+            $('#regions-grid').repeater('render');
             stopAction();
         }
         WeatherAjax.showResponse(response);
     }
 }
-
 
 /**
  * Edit a region
@@ -35,49 +39,29 @@ var WeatherCallback = {
 function editRegion(id)
 {
     selectedRegion = id;
-    var geoPos = WeatherAjax.callSync('GetRegion', {'id': selectedRegion});
+    WeatherAjax.callSync('GetRegion', {'id': selectedRegion}, function (geoPos) {
+        if (geoPos) {
+            $('form#region #title').val(geoPos['title'].defilter());
+            $('form#region #fast_url').val(geoPos['fast_url']);
+            $('form#region #latitude').val(geoPos['latitude']);
+            $('form#region #longitude').val(geoPos['longitude']);
+            $('form#region #published').val(geoPos['published'] ? 1 : 0);
+            setGoogleMapImage();
 
-    $('#region_workarea').w2popup({
-        title: lbl_edit + ' ' +lbl_geo_position,
-        modal: true,
-        width: 400,
-        height: 550,
-        onOpen: function(event) {
-            event.onComplete = function() {
-                $('#w2ui-popup #title').val(geoPos['title'].defilter());
-                $('#w2ui-popup #fast_url').val(geoPos['fast_url']);
-                $('#w2ui-popup #latitude').val(geoPos['latitude']);
-                $('#w2ui-popup #longitude').val(geoPos['longitude']);
-                $('#w2ui-popup #published').val(geoPos['published']? 1 : 0);
-                setGoogleMapImage();
-                // if (mbox) {
-                //     $('#w2ui-popup form input,#w2ui-popup form select,#w2ui-popup form textarea').each(
-                //         function() {
-                //             $(this).val(mbox[$(this).attr('name')]);
-                //         }
-                //     );
-                // }
-            };
-        },
+            $('#regionModalLabel').html(jaws.gadgets.Weather.lbl_geo_position);
+            $('#regionModal').modal('show');
+        }
     });
 }
 
 /**
- * Add a region
+ * Delete a region
  */
-function addRegion()
+function deleteRegion(id)
 {
-    $('#region_workarea').w2popup({
-        title: lbl_add + ' ' +lbl_geo_position,
-        modal: true,
-        width: 400,
-        height: 550,
-        onOpen: function(event) {
-            event.onComplete = function() {
-                showMyLocation();
-            };
-        },
-    });
+    if (confirm(jaws.gadgets.Weather.confirmDelete)) {
+        WeatherAjax.callAsync('DeleteUserRegion', {'id': id});
+    }
 }
 
 /**
@@ -174,7 +158,7 @@ function getGoogleMap(ev, element)
  * Updates the map with new position
  */
 function setGoogleMapImage() {
-    $('#gmap').prop('src', base_script + '?gadget=Weather&action=GetGoogleMapImage' +
+    $('#gmap').prop('src', jaws.gadgets.Weather.base_script + '?gadget=Weather&action=GetGoogleMapImage' +
         '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
         '&zoom=' + ZoomLevel + '&size=' + ImageSize);
 }
@@ -205,7 +189,7 @@ function updateRegion() {
         WeatherAjax.callAsync(
             'UpdateRegion', {
                 'data': $.unserialize(
-                    $('#w2ui-popup form input,#w2ui-popup form select,#w2ui-popup form textarea').serialize()
+                    $('form#region input,form#region select,form#region textarea').serialize()
                 ),
                 'id': selectedRegion
             }
@@ -214,7 +198,7 @@ function updateRegion() {
         WeatherAjax.callAsync(
             'InsertRegion', {
                 'data': $.unserialize(
-                    $('#did, #w2ui-popup form input,#w2ui-popup form select,#w2ui-popup form textarea').serialize()
+                    $('#did, form#region input,form#region select,form#region textarea').serialize()
                 )
             }
         );
@@ -228,95 +212,126 @@ function updateRegion() {
 function stopAction()
 {
     selectedRegion = null;
-    $('form[name="region"]')[0].reset();
-    w2popup.close();
+    $('#regionModal').modal('hide');
+    $('form#region')[0].reset();
+}
+
+
+// Define the data to be displayed in the repeater.
+function regionsDataSource(options, callback) {
+
+    // define the columns for the grid
+    var columns = [
+        {
+            'label': jaws.gadgets.Weather.lbl_title,
+            'property': 'title',
+            'sortable': true
+        },
+        {
+            'label': jaws.gadgets.Weather.lbl_published,
+            'property': 'published',
+            'sortable': true
+        }
+    ];
+
+    // set options
+    var pageIndex = options.pageIndex;
+    var pageSize = options.pageSize;
+    var options = {
+        'pageIndex': pageIndex,
+        'pageSize': pageSize,
+        'sortDirection': options.sortDirection,
+        'sortBy': options.sortProperty,
+        'filterBy': options.filter.value || '',
+        'searchBy': options.search || ''
+    };
+
+    WeatherAjax.callAsync('GetUserRegions', options, function (response) {
+        if (response.type == 'alert-success') {
+            var items = response.data.records;
+            var totalItems = response.data.total;
+            var totalPages = Math.ceil(totalItems / pageSize);
+            var startIndex = (pageIndex * pageSize) + 1;
+            var endIndex = (startIndex + pageSize) - 1;
+
+            if (endIndex > items.length) {
+                endIndex = items.length;
+            }
+
+            // configure datasource
+            var dataSource = {
+                'page': pageIndex,
+                'pages': totalPages,
+                'count': totalItems,
+                'start': startIndex,
+                'end': endIndex,
+                'columns': columns,
+                'items': items
+            };
+
+            // pass the datasource back to the repeater
+            callback(dataSource);
+        } else {
+            WeatherAjax.showResponse(response);
+        }
+    });
+}
+
+/**
+ * initiate regions datagrid
+ */
+function initiateRegionsDG() {
+
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'edit',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.Weather.lbl_edit,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editRegion(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.Weather.lbl_delete ,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    deleteRegion(helpers.rowData.id);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    $('#regions-grid').repeater({
+        dataSource: regionsDataSource,
+        staticHeight: 600,
+        list_actions: list_actions,
+        list_direction: $('.repeater-canvas').css('direction')
+    });
+
+    $('#regionModal').on('show.bs.modal', function (e) {
+        showMyLocation();
+    });
+
+    $('#regionModal').on('hidden.bs.modal', function (e) {
+        stopAction();
+    });
 }
 
 /**
  * Initiates gadget
  */
 $(document).ready(function() {
-    // set w2ui default configuration
-    w2utils.settings.dataType = 'JSON';
-    // load Persian translation
-    w2utils.locale('libraries/w2ui/fa-pe.json');
-
-    // initial regions datagrid
-    $('#regions-grid').w2grid({
-        name: 'regions-grid',
-        method: 'POST',
-        url: {
-            get    : WeatherAjax.baseURL + 'GetUserRegions',
-            remove : WeatherAjax.baseURL + 'DeleteUserRegions'
-        },
-        show: {
-            toolbar: true,
-            footer: true,
-            selectColumn: true,
-            toolbarAdd: true,
-            toolbarDelete: true,
-            toolbarEdit: true
-        },
-        recid: 'id',
-        columns: [
-            { field: 'title',     caption: lbl_title,  size: '60%' },
-            { field: 'published',     caption: lbl_published,  size: '40%' },
-        ],
-        records: [],
-        onRequest: function(event) {
-            switch (event.postData.cmd) {
-                case 'get':
-                    break;
-
-                case 'delete':
-                    event.postData = {
-                        'ids':  event.postData.selected,
-                    };
-                    break;
-
-                case 'save':
-                    break;
-
-            }
-
-        },
-        onLoad: function(event) {
-            event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-            if (event.xhr.responseText.type != 'alert-success') {
-                event.xhr.responseText.message = event.xhr.responseText.text;
-                event.xhr.responseText.status = "error";
-            } else {
-                event.xhr.responseText = event.xhr.responseText.data;
-            }
-        },
-        onDelete: function(event) {
-            if (event.xhr) {
-                event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-                if (event.xhr.responseText.type != 'alert-success') {
-                    event.xhr.responseText.message = event.xhr.responseText.text;
-                    event.xhr.responseText.status = "error";
-                } else {
-                    event.xhr.responseText = event.xhr.responseText.data;
-                }
-            }
-        },
-        toolbar: {
-            onClick: function (target, data) {
-                if (target == 'w2ui-add') {
-                    addRegion();
-                } else if (target == 'w2ui-edit') {
-                    editRegion(w2ui['regions-grid'].getSelection()[0]);
-                }
-            }
-        },
-        onDblClick: function(event) {
-            editRegion(event.recid)
-        },
-        onSelect: function(event) {
-        },
-        onUnselect: function(event) {
-        },
-    });
+    switch (jaws.core.mainAction) {
+        case 'UserRegionsList':
+            initiateRegionsDG();
+            break;
+    }
 });
 
 /**
