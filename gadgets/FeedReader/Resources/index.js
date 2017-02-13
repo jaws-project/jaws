@@ -12,22 +12,27 @@
 var FeedReaderCallback = {
     InsertFeed: function (response) {
         if (response['type'] == 'alert-success') {
-            w2popup.close();
-            w2ui['feeds-grid'].reload();
+            $('#feeds-grid').repeater('render');
             stopAction();
         }
         FeedReaderAjax.showResponse(response);
     },
     UpdateFeed: function (response) {
         if (response['type'] == 'alert-success') {
-            w2popup.close();
-            w2ui['feeds-grid'].reload();
+            $('#feeds-grid').repeater('render');
             stopAction();
         }
         FeedReaderAjax.showResponse(response);
+    },
+    DeleteUserFeed: function (response) {
+        if (response['type'] == 'alert-success') {
+            $('#feeds-grid').repeater('render');
+            stopAction();
+        }
+        WeatherAjax.showResponse(response);
     }
-}
 
+}
 
 /**
  * Edit a feed
@@ -35,47 +40,30 @@ var FeedReaderCallback = {
 function editFeed(id)
 {
     selectedFeed = id;
-    var feed = FeedReaderAjax.callSync('GetUserFeed', {'id': selectedFeed});
+    FeedReaderAjax.callSync('GetUserFeed', {'id': selectedFeed}, function (feed) {
+        if (feed) {
+            $('form#feed #title').val(feed['title'].defilter());
+            $('form#feed #url').val(feed['url']);
+            $('form#feed #cache_time').val(feed['cache_time']);
+            $('form#feed #view_type').val(feed['view_type']);
+            $('form#feed #title_view').val(feed['title_view']);
+            $('form#feed #count_entry').val(feed['count_entry']);
+            $('form#feed #visible').val(feed['visible']? 1 : 0);
 
-    $('#feed_workarea').w2popup({
-        title: lbl_edit,
-        modal: true,
-        width: 350,
-        height: 300,
-        onOpen: function(event) {
-            event.onComplete = function() {
-                $('#w2ui-popup #title').val(feed['title'].defilter());
-                $('#w2ui-popup #url').val(feed['url']);
-                $('#w2ui-popup #cache_time').val(feed['cache_time']);
-                $('#w2ui-popup #view_type').val(feed['view_type']);
-                $('#w2ui-popup #title_view').val(feed['title_view']);
-                $('#w2ui-popup #count_entry').val(feed['count_entry']);
-                $('#w2ui-popup #visible').val(feed['visible']? 1 : 0);
-                // if (mbox) {
-                //     $('#w2ui-popup form input,#w2ui-popup form select,#w2ui-popup form textarea').each(
-                //         function() {
-                //             $(this).val(mbox[$(this).attr('name')]);
-                //         }
-                //     );
-                // }
-            };
-        },
+            $('#feedModal').modal('show');
+        }
     });
 }
 
 /**
- * Add a feed
+ * Delete a feed
  */
-function addFeed()
+function deleteFeed(id)
 {
-    $('#feed_workarea').w2popup({
-        title: lbl_add,
-        modal: true,
-        width: 350,
-        height: 300,
-    });
+    if (confirm(jaws.gadgets.FeedReader.confirmDelete)) {
+        FeedReaderAjax.callAsync('DeleteUserFeed', {'id': id});
+    }
 }
-
 
 /**
  * Update a feed
@@ -85,7 +73,7 @@ function updateFeed() {
         FeedReaderAjax.callAsync(
             'UpdateFeed', {
                 'data': $.unserialize(
-                    $('#w2ui-popup form input,#w2ui-popup form select,#w2ui-popup form textarea').serialize()
+                    $('form#feed input,form#feed select,form#feed textarea').serialize()
                 ),
                 'id': selectedFeed
             }
@@ -94,13 +82,12 @@ function updateFeed() {
         FeedReaderAjax.callAsync(
             'InsertFeed', {
                 'data': $.unserialize(
-                    $('#did, #w2ui-popup form input,#w2ui-popup form select,#w2ui-popup form textarea').serialize()
+                    $('#did, form#feed input,form#feed select,form#feed textarea').serialize()
                 )
             }
         );
     }
 }
-
 
 /**
  * stop Action
@@ -108,95 +95,119 @@ function updateFeed() {
 function stopAction()
 {
     selectedFeed = null;
-    $('form[name="feed"]')[0].reset();
-    w2popup.close();
+    $('#feedModal').modal('hide');
+    $('form#feed')[0].reset();
+}
+
+// Define the data to be displayed in the repeater.
+function feedsDataSource(options, callback) {
+
+    // define the columns for the grid
+    var columns = [
+        {
+            'label': jaws.gadgets.FeedReader.lbl_title,
+            'property': 'title',
+        },
+        {
+            'label': jaws.gadgets.FeedReader.lbl_visible,
+            'property': 'visible',
+        }
+    ];
+
+    // set options
+    var pageIndex = options.pageIndex;
+    var pageSize = options.pageSize;
+    var options = {
+        'pageIndex': pageIndex,
+        'pageSize': pageSize,
+        'sortDirection': options.sortDirection,
+        'sortBy': options.sortProperty,
+        'filterBy': options.filter.value || '',
+        'searchBy': options.search || ''
+    };
+
+    FeedReaderAjax.callAsync('GetUserFeeds', options, function (response) {
+        if (response.type == 'alert-success') {
+            var items = response.data.records;
+            var totalItems = response.data.total;
+            var totalPages = Math.ceil(totalItems / pageSize);
+            var startIndex = (pageIndex * pageSize) + 1;
+            var endIndex = (startIndex + pageSize) - 1;
+
+            if (endIndex > items.length) {
+                endIndex = items.length;
+            }
+
+            // configure datasource
+            var dataSource = {
+                'page': pageIndex,
+                'pages': totalPages,
+                'count': totalItems,
+                'start': startIndex,
+                'end': endIndex,
+                'columns': columns,
+                'items': items
+            };
+
+            // pass the datasource back to the repeater
+            callback(dataSource);
+        } else {
+            FeedReaderAjax.showResponse(response);
+        }
+    });
+}
+
+/**
+ * initiate feeds datagrid
+ */
+function initiateFeedsDG() {
+
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'edit',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.FeedReader.lbl_edit,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editFeed(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.FeedReader.lbl_delete ,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    deleteFeed(helpers.rowData.id);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    $('#feeds-grid').repeater({
+        dataSource: feedsDataSource,
+        staticHeight: 600,
+        list_actions: list_actions,
+        list_direction: $('.repeater-canvas').css('direction')
+    });
+
+    $('#feedModal').on('hidden.bs.modal', function (e) {
+        stopAction();
+    });
 }
 
 /**
  * Initiates gadget
  */
 $(document).ready(function() {
-    // set w2ui default configuration
-    w2utils.settings.dataType = 'JSON';
-    // load Persian translation
-    w2utils.locale('libraries/w2ui/fa-pe.json');
-
-    // initial feeds datagrid
-    $('#feeds-grid').w2grid({
-        name: 'feeds-grid',
-        method: 'POST',
-        url: {
-            get    : FeedReaderAjax.baseURL + 'GetUserFeeds',
-            remove : FeedReaderAjax.baseURL + 'DeleteUserFeeds'
-        },
-        show: {
-            toolbar: true,
-            footer: true,
-            selectColumn: true,
-            toolbarAdd: true,
-            toolbarDelete: true,
-            toolbarEdit: true
-        },
-        recid: 'id',
-        columns: [
-            { field: 'title',     caption: lbl_title,  size: '60%' },
-            { field: 'visible',     caption: lbl_visible,  size: '40%' },
-        ],
-        records: [],
-        onRequest: function(event) {
-            switch (event.postData.cmd) {
-                case 'get':
-                    break;
-
-                case 'delete':
-                    event.postData = {
-                        'ids':  event.postData.selected,
-                    };
-                    break;
-
-                case 'save':
-                    break;
-
-            }
-
-        },
-        onLoad: function(event) {
-            event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-            if (event.xhr.responseText.type != 'alert-success') {
-                event.xhr.responseText.message = event.xhr.responseText.text;
-                event.xhr.responseText.status = "error";
-            } else {
-                event.xhr.responseText = event.xhr.responseText.data;
-            }
-        },
-        onDelete: function(event) {
-            if (event.xhr) {
-                event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-                if (event.xhr.responseText.type != 'alert-success') {
-                    event.xhr.responseText.message = event.xhr.responseText.text;
-                    event.xhr.responseText.status = "error";
-                } else {
-                    event.xhr.responseText = event.xhr.responseText.data;
-                }
-            }
-        },
-        toolbar: {
-            onClick: function (target, data) {
-                if (target == 'w2ui-add') {
-                    addFeed();
-                } else if (target == 'w2ui-edit') {
-                    editFeed(w2ui['feeds-grid'].getSelection()[0]);
-                }
-            }
-        },
-        onDblClick: function(event) {
-            editFeed(event.recid)
-        },
-        onSelect: function(event) {
-        },
-        onUnselect: function(event) {
-        },
-    });
+    switch (jaws.core.mainAction) {
+        case 'UserFeedsList':
+            initiateFeedsDG();
+            break;
+    }
 });
 
 var selectedFeed = null,
