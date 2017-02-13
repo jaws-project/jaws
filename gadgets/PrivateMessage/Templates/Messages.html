@@ -148,44 +148,4 @@
   </div>
 </div>
 <div class="gadget_footer"></div>
-
-<script type="text/javascript">
-    function toggleCheckboxes(){
-        do_check = !do_check;
-        $('.table-checkbox').each(function(el, data) { data.checked = do_check; });
-    }
-    var do_check = false;
-
-    function messagesDGAction() {
-        var action = $("#messages_actions_combo").val();
-        if (action == '' || $("input[type=checkbox][name='message_checkbox[]']:checked").length < 1) {
-            return false;
-        }
-
-        if(action == 'unarchive') {
-            $("#privatemessage input[type=hidden][name=action]").val('UnArchiveMessage');
-        } else if(action == 'archive') {
-            $("#privatemessage input[type=hidden][name=action]").val('ArchiveMessage');
-        } else if(action == 'read') {
-            $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
-            $("#privatemessage input[type=hidden][name=status]").val('read');
-        } else if(action == 'unread') {
-            $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
-            $("#privatemessage input[type=hidden][name=status]").val('unread');
-        } else if(action == 'trash') {
-            $("#privatemessage input[type=hidden][name=action]").val('TrashMessage');
-        } else if(action == 'restore_trash') {
-            $("#privatemessage input[type=hidden][name=action]").val('RestoreTrashMessage');
-        } else if(action == 'delete') {
-            if (confirm('{{confirmDelete}}')) {
-                $("#privatemessage input[type=hidden][name=action]").val('DeleteMessage');
-            } else {
-                return false;
-            }
-        }
-
-       $("#privatemessage").submit();
-        return true;
-    }
-</script>
 <!-- END messages -->

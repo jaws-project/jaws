@@ -69,6 +69,10 @@ $actions['GetUsers'] = array(
     'standalone' => true,
     'file' => 'Compose'
 );
+$actions['CheckUserExist'] = array(
+    'standalone' => true,
+    'file' => 'Compose'
+);
 $actions['Attachment'] = array(
     'standalone' => true,
     'file'   => 'Attachment',

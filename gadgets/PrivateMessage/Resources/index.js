@@ -262,58 +262,137 @@ function ChangeToggleIcon(obj)
     }
 }
 
+function toggleCheckboxes(){
+    do_check = !do_check;
+    $('.table-checkbox').each(function(el, data) { data.checked = do_check; });
+}
+var do_check = false;
+
+function messagesDGAction() {
+    var action = $("#messages_actions_combo").val();
+    if (action == '' || $("input[type=checkbox][name='message_checkbox[]']:checked").length < 1) {
+        return false;
+    }
+
+    if(action == 'unarchive') {
+        $("#privatemessage input[type=hidden][name=action]").val('UnArchiveMessage');
+    } else if(action == 'archive') {
+        $("#privatemessage input[type=hidden][name=action]").val('ArchiveMessage');
+    } else if(action == 'read') {
+        $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
+        $("#privatemessage input[type=hidden][name=status]").val('read');
+    } else if(action == 'unread') {
+        $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
+        $("#privatemessage input[type=hidden][name=status]").val('unread');
+    } else if(action == 'trash') {
+        $("#privatemessage input[type=hidden][name=action]").val('TrashMessage');
+    } else if(action == 'restore_trash') {
+        $("#privatemessage input[type=hidden][name=action]").val('RestoreTrashMessage');
+    } else if(action == 'delete') {
+        if (confirm(jaws.gadgets.PrivateMessage.confirmDelete)) {
+            $("#privatemessage input[type=hidden][name=action]").val('DeleteMessage');
+        } else {
+            return false;
+        }
+    }
+
+    $("#privatemessage").submit();
+    return true;
+}
+
+/**
+ * Trash Message
+ */
+function trashMessage() {
+    if (confirm(jaws.gadgets.PrivateMessage.confirmDelete)) {
+        window.location.href = "{{trash_url}}";
+    }
+}
+
+/**
+ * Delete Message
+ */
+function deleteMessage() {
+    if (confirm(jaws.gadgets.PrivateMessage.confirmDelete)) {
+        window.location.href = "{{delete_url}}";
+    }
+}
+
+
+/**
+ * initiate Compose action
+ */
+function initiateCompose() {
+    $('#attachment1').show();
+    $('#attach_loading').hide();
+    $('#btn_attach1').hide();
+    $('#attachment_area').toggle();
+
+    // initiate pillbox
+    $('#recipientUsers').pillbox({
+        onKeyDown: function (inputData, callback) {
+            var term = inputData.value;
+            var users = '';
+            if (term != '') {
+                var users = PrivateMessageAjax.callSync('GetUsers', {'term': inputData.value});
+            }
+            var data = [];
+            if (users.length > 1) {
+                var tmpItem;
+                $.each(users, function (key, user) {
+                    data.push({text: user.nickname, value: user.id});
+                });
+            } else {
+                data.push({text: '', value: 0});
+            }
+
+            callback({
+                data: data
+            });
+
+        },
+        // prevent duplicated item
+        onAdd: function (data, callback) {
+            var items = $('#recipientUsers').pillbox('items');
+            var duplicated = false;
+
+            if (items.length > 0) {
+                $.each(items, function (key, item) {
+                    if (data.value == item.value) {
+                        duplicated = true;
+                        return false;
+                    }
+                });
+            }
+
+            var userExist = PrivateMessageAjax.callSync('CheckUserExist', {'user': data.value});
+            if (!duplicated && userExist) {
+                callback(data);
+            }
+        }
+    });
+
+    $('#recipientUsers').pillbox('addItems', 1, recipientUsersInitiate);
+    $( "#legend_attachments" ).click(function() {
+        $('#attachment_area').toggle();
+        ChangeToggleIcon(this);
+    });
+}
+
+/**
+ * initiate Messages action
+ */
+function initiateMessages() {
+}
+
+
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Compose':
-            $('#attachment1').show();
-            $('#attach_loading').hide();
-            $('#btn_attach1').hide();
-            $('#attachment_area').toggle();
-
-            // initiate pillbox
-            $('#recipientUsers').pillbox({
-                onKeyDown: function (inputData, callback) {
-                    var term = inputData.value;
-                    var users = '';
-                    if (term != '') {
-                        var users = PrivateMessageAjax.callSync('GetUsers', {'term': inputData.value});
-                    }
-                    if (users.length > 1) {
-                        var data = [];
-                        var tmpItem;
-                        $.each(users, function (key, user) {
-                            data.push({text: user.nickname, value: user.id});
-                        });
-
-                        callback({
-                            data: data
-                        });
-                    }
-                },
-                // prevent duplicated item
-                onAdd: function (data, callback) {
-                    var items = $('#recipientUsers').pillbox('items');
-                    var duplicated = false;
-
-                    if (items.length > 0) {
-                        $.each(items, function (key, item) {
-                            if (data.value == item.value) {
-                                duplicated = true;
-                                return false;
-                            }
-                        });
-                    }
-                    if (!duplicated) {
-                        callback(data);
-                    }
-                }
-            });
-
-            $('#recipientUsers').pillbox('addItems', 1, recipientUsersInitiate);
-            $( "#legend_attachments" ).click(function() {
-                $('#attachment_area').toggle();
-                ChangeToggleIcon(this);
-            });
+            initiateCompose();
+            break;
+        case 'Messages':
+            initiateMessages();
             break;
     }
 });

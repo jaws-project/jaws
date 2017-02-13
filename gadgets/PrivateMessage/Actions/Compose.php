@@ -28,6 +28,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         // set default value of javascript variables
         $this->gadget->layout->setVariable('icon_add', STOCK_ADD);
         $this->gadget->layout->setVariable('icon_remove', STOCK_REMOVE);
+        $this->gadget->layout->setVariable('recipient_user', '');
 
         $data = jaws()->request->fetch(array('id', 'user', 'reply', 'users:array'));
         $id = $data['id'];
@@ -367,5 +368,23 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $userModel = new Jaws_User();
         $users = $userModel->GetUsers(false, null, null, $term, 'nickname', 5);
         return $users;
+    }
+
+    /**
+     * Check User Exist
+     *
+     * @access  public
+     * @return  void
+     */
+    function CheckUserExist()
+    {
+        $uid = jaws()->request->fetch('user', 'post');
+        $userModel = new Jaws_User();
+        $user = $userModel->GetUser($uid);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
+
+        return true;
     }
 }
