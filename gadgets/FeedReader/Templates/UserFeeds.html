@@ -5,74 +5,153 @@
 <div class="gadget_container">
   <div class="gadget_content content">
 
-    <div id="feed_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
-      <div rel="body">
-        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
-          <form action="#" name="feed">
-            <table class="table" id="geo_position" cellpadding="0" cellspacing="2">
-              <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title"></td></tr>
-              <tr><td><label for="url">{{lbl_url}}:</label></td><td><input type="text" id="url" name="url"></td></tr>
-
-              <tr><td><label for="cache_time">{{lbl_cache_time}}:</label></td><td>
-                <select class="form-control" name="cache_time" id="cache_time">
-                  <option value="0">{{lbl_disable}}</option>
-                  <option value="600">{{lbl_minutes_10}}</option>
-                  <option value="1800">{{lbl_minutes_30}}</option>
-                  <option value="3600">{{lbl_hours_1}}</option>
-                  <option value="18000">{{lbl_hours_5}}</option>
-                  <option value="36000">{{lbl_hours_10}}</option>
-                  <option value="86400">{{lbl_days_1}}</option>
-                  <option value="604800">{{lbl_weeks_1}}</option>
-                </select>
-              </td></tr>
-
-              <tr><td><label for="view_type">{{lbl_view_type}}:</label></td><td>
-                <select class="form-control" name="view_type" id="view_type">
-                  <option value="0">{{lbl_view_type_simple}}</option>
-                  <option value="1">{{lbl_view_type_up}}</option>
-                  <option value="2">{{lbl_view_type_down}}</option>
-                  <option value="3">{{lbl_view_type_left}}</option>
-                  <option value="4">{{lbl_view_type_right}}</option>
-                </select>
-              </td></tr>
-
-              <tr><td><label for="title_view">{{lbl_title_view}}:</label></td><td>
-                <select class="form-control" name="title_view" id="title_view">
-                  <option value="0">{{lbl_title_view_disable}}</option>
-                  <option value="1">{{lbl_title_view_internal}}</option>
-                  <option value="2">{{lbl_title_view_external}}</option>
-                </select>
-              </td></tr>
-
-              <tr><td><label for="count_entry">{{lbl_count_entry}}:</label></td><td><input type="text" id="count_entry" name="count_entry"></td></tr>
-
-              <tr><td><label for="visible">{{lbl_visible}}:</label></td><td>
-                <select class="form-control" name="visible" id="visible">
-                  <option value="1">{{lbl_yes}}</option>
-                  <option value="0">{{lbl_no}}</option>
-                </select>
-              </td></tr>
-
-          </table>
-          </form>
+    <div class="repeater" id="feeds-grid" data-staticheight="500">
+      <div class="repeater-header">
+        <div class="repeater-header-left">
+          <div class="repeater-search">
+            <div class="search disabled input-group">
+              <input type="search" class="form-control input-sm" placeholder="Search">
+              <span class="input-group-btn">
+              <button class="btn btn-default btn-sm" type="button">
+                  <span class="glyphicon glyphicon-search"></span>
+                  <span class="sr-only">{{lbl_search}}</span>
+              </button>
+          </span>
+            </div>
+          </div>
+        </div>
+        <div class="repeater-header-right">
+          <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#feedModal">
+            <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
+          </button>
         </div>
       </div>
-      <div rel="buttons">
-        <button class="btn btn-primary" onclick="javascript:updateFeed()">{{lbl_save}}</button>
-        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      <div class="repeater-viewport">
+        <div class="repeater-canvas"></div>
+        <div class="loader repeater-loader"></div>
+      </div>
+      <div class="repeater-footer">
+        <div class="repeater-footer-left">
+          <div class="repeater-itemization">
+            <span><span class="repeater-start"></span> {{lbl_to}} <span class="repeater-end"></span> {{lbl_of}} <span class="repeater-count"></span> {{lbl_items}}</span>
+            <div class="btn-group selectlist dropup" data-resize="auto">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                <span class="selected-label">?</span>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                <li data-value="25"><a href="#">25</a></li>
+                <li data-value="50"><a href="#">50</a></li>
+              </ul>
+              <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+            </div>
+            <span>{{lbl_per_page}}</span>
+          </div>
+        </div>
+        <div class="repeater-footer-right">
+          <div class="repeater-pagination">
+            <button type="button" class="btn btn-default btn-sm repeater-prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous Page</span>
+            </button>
+            <label class="page-label" id="myPageLabel"></label>
+            <div class="repeater-primaryPaging active">
+              <div class="input-group input-append dropdown combobox dropup">
+                <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right"></ul>
+                </div>
+              </div>
+            </div>
+            <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+            <button type="button" class="btn btn-default btn-sm repeater-next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next Page</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
+    <div class="modal fade" id="feedModal" tabindex="-1" role="dialog" aria-labelledby="feedModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="feedModalLabel">{{lbl_add}}</h4>
+          </div>
 
-    <div id="feeds-grid" style="width: 100%; height: 400px;"></div>
+          <div class="modal-body">
+            <form action="#" name="feed" id="feed">
+              <table class="table" id="geo_position" cellpadding="0" cellspacing="2">
+                <tr><td><label for="title">{{lbl_title}}:</label></td>
+                  <td><input type="text" id="title" name="title" class="form-control"></td>
+                </tr>
+                <tr><td><label for="url">{{lbl_url}}:</label></td>
+                  <td><input type="text" id="url" name="url" class="form-control"></td>
+                </tr>
+
+                <tr><td><label for="cache_time">{{lbl_cache_time}}:</label></td><td>
+                  <select class="form-control" name="cache_time" id="cache_time">
+                    <option value="0">{{lbl_disable}}</option>
+                    <option value="600">{{lbl_minutes_10}}</option>
+                    <option value="1800">{{lbl_minutes_30}}</option>
+                    <option value="3600">{{lbl_hours_1}}</option>
+                    <option value="18000">{{lbl_hours_5}}</option>
+                    <option value="36000">{{lbl_hours_10}}</option>
+                    <option value="86400">{{lbl_days_1}}</option>
+                    <option value="604800">{{lbl_weeks_1}}</option>
+                  </select>
+                </td></tr>
+
+                <tr><td><label for="view_type">{{lbl_view_type}}:</label></td><td>
+                  <select class="form-control" name="view_type" id="view_type">
+                    <option value="0">{{lbl_view_type_simple}}</option>
+                    <option value="1">{{lbl_view_type_up}}</option>
+                    <option value="2">{{lbl_view_type_down}}</option>
+                    <option value="3">{{lbl_view_type_left}}</option>
+                    <option value="4">{{lbl_view_type_right}}</option>
+                  </select>
+                </td></tr>
+
+                <tr><td><label for="title_view">{{lbl_title_view}}:</label></td><td>
+                  <select class="form-control" name="title_view" id="title_view">
+                    <option value="0">{{lbl_title_view_disable}}</option>
+                    <option value="1">{{lbl_title_view_internal}}</option>
+                    <option value="2">{{lbl_title_view_external}}</option>
+                  </select>
+                </td></tr>
+
+                <tr><td><label for="count_entry">{{lbl_count_entry}}:</label></td><td>
+                  <input type="text" id="count_entry" name="count_entry" class="form-control" value="0">
+                </td></tr>
+
+                <tr><td><label for="visible">{{lbl_visible}}:</label></td><td>
+                  <select class="form-control" name="visible" id="visible">
+                    <option value="1">{{lbl_yes}}</option>
+                    <option value="0">{{lbl_no}}</option>
+                  </select>
+                </td></tr>
+
+              </table>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
+            <button type="button" class="btn btn-primary" onclick="javascript:updateFeed()">{{lbl_save}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 <div class="gadget_footer"></div>
-
-<script type="text/javascript">
-  var lbl_title = "{{lbl_title}}";
-  var lbl_add = "{{lbl_add}}";
-  var lbl_edit = "{{lbl_edit}}";
-  var lbl_visible = "{{lbl_visible}}";
-</script>
 <!-- END UserFeeds -->

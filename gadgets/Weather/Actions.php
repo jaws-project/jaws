@@ -39,7 +39,7 @@ $actions['GetUserRegions'] = array(
     'standalone' => true,
     'file' => 'RegionWeather',
 );
-$actions['DeleteUserRegions'] = array(
+$actions['DeleteUserRegion'] = array(
     'standalone' => true,
     'file' => 'RegionWeather',
 );

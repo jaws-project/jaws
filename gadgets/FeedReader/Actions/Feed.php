@@ -304,11 +304,12 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $dir = _t_lang($this->gadget->registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
-        $dir = ($dir == 'rtl') ? '.rtl' : '';
-        $GLOBALS['app']->Layout->addScript('libraries/w2ui/w2ui.js');
-        $GLOBALS['app']->Layout->addLink("libraries/w2ui/w2ui$dir.css");
         $this->AjaxMe('index.js');
+        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->layout->setVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
+        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('UserFeeds.html');
         $tpl->SetBlock('UserFeeds');
@@ -364,10 +365,20 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
+        $post = jaws()->request->fetch(
+            array('limit', 'offset', 'searchBy'),
+            'post'
+        );
+
         $model = $this->gadget->model->load('Feed');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $feeds = $model->GetFeeds(false, $user);
-        $total = $model->GetFeedsCount(false, $user);
+
+        $filters = array();
+        if (!empty($post['searchBy'])) {
+            $filters = array('term' => $post['searchBy']);
+        }
+        $feeds = $model->GetFeeds($filters, $user, $post['limit'], $post['offset']);
+        $total = $model->GetFeedsCount($filters, $user);
 
         foreach ($feeds as $key => $feed) {
             $feed['visible'] = ($feed['visible']) ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
@@ -444,22 +455,22 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
     }
 
     /**
-     * Delete user's feeds
+     * Delete user's feed
      *
      * @access  public
      * @return  string  XHTML content
      */
-    function DeleteUserFeeds()
+    function DeleteUserFeed()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $ids = $this->gadget->request->fetch('ids:array', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
 
         $model = $this->gadget->model->load('Feed');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $res = $model->DeleteUserFeeds($user, $ids);
+        $res = $model->DeleteUserFeed($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
         } else {

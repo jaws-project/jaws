@@ -16,53 +16,63 @@ class FeedReader_Model_Feed extends Jaws_Gadget_Model
      * Gets list of possible feed sites
      *
      * @access  public
-     * @param   bool    $onlyVisible    Visible sites only
+     * @param   array   $filters        Filters
      * @param   int     $user           Return global feeds or custom user's feed
      * @param   int     $limit          Number of data to retrieve (false = returns all)
      * @param   int     $offset         Data offset
      * @return  mixed   Array of feed sites or Jaws_Error on failure
      */
-    function GetFeeds($onlyVisible = false, $user = 0, $limit = 0, $offset = null)
+    function GetFeeds($filters = array(), $user = 0, $limit = 0, $offset = null)
     {
-        $objORM = Jaws_ORM::getInstance()->table('feeds');
-        $objORM->select(
+        $fTable = Jaws_ORM::getInstance()->table('feeds');
+        $fTable->select(
             'id:integer', 'user:integer', 'title', 'url', 'cache_time', 'view_type:integer',
             'count_entry:integer', 'title_view:integer', 'visible:integer'
         );
-        $objORM->limit($limit, $offset);
-        if ($onlyVisible) {
-            $objORM->where('visible', 1);
+
+        if (!empty($filters)) {
+            if (isset($filters['only_visible']) && !is_null($filters['only_visible'])) {
+                $fTable->where('visible', $filters['visible']);
+            }
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $fTable->and()->where('title', $filters['term'], 'like');
+            }
         }
+
         if (empty($user)) {
-            $objORM->and()->where('user', 0);
+            $fTable->and()->where('user', 0);
         } else {
-            $objORM->and()->where('user', (int)$user);
+            $fTable->and()->where('user', (int)$user);
         }
-        $objORM->orderBy('id asc');
-        return $objORM->fetchAll();
+        return $fTable->limit($limit, $offset)->orderBy('id asc')->fetchAll();
     }
 
     /**
      * Gets count of possible feed sites
      *
      * @access  public
-     * @param   bool    $onlyVisible    Visible sites only
+     * @param   array   $filters        Filters
      * @param   int     $user           Return global feeds or custom user's feed
      * @return  mixed   Array of feed sites or Jaws_Error on failure
      */
-    function GetFeedsCount($onlyVisible = false, $user = 0)
+    function GetFeedsCount($filters = array(), $user = 0)
     {
-        $objORM = Jaws_ORM::getInstance()->table('feeds');
-        $objORM->select('count(id):integer');
-        if ($onlyVisible) {
-            $objORM->where('visible', 1);
+        $fTable = Jaws_ORM::getInstance()->table('feeds');
+        $fTable->select('count(id):integer');
+        if (!empty($filters)) {
+            if (isset($filters['only_visible']) && !is_null($filters['only_visible'])) {
+                $fTable->where('visible', $filters['visible']);
+            }
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $fTable->and()->where('title', $filters['term'], 'like');
+            }
         }
         if (empty($user)) {
-            $objORM->and()->where('user', 0);
+            $fTable->and()->where('user', 0);
         } else {
-            $objORM->and()->where('user', (int)$user);
+            $fTable->and()->where('user', (int)$user);
         }
-        return $objORM->fetchOne();
+        return $fTable->fetchOne();
     }
 
     /**
@@ -116,16 +126,16 @@ class FeedReader_Model_Feed extends Jaws_Gadget_Model
     }
 
     /**
-     * Delete user's feeds
+     * Delete user's feed
      *
      * @access  public
      * @param   int     $user       User id
-     * @param   array   $ids        Feed's ids
+     * @param   int     $id         Feed's id
      * @return  mixed   True or Jaws_Error on failure
      */
-    function DeleteUserFeeds($user, $ids)
+    function DeleteUserFeed($user, $id)
     {
         $fTable = Jaws_ORM::getInstance()->table('feeds');
-        return $fTable->delete()->where('user', $user)->and()->where('id', $ids, 'in')->exec();
+        return $fTable->delete()->where('user', $user)->and()->where('id', $id)->exec();
     }
 }

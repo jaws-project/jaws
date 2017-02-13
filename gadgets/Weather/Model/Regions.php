@@ -44,22 +44,26 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
      * Gets list of regions
      *
      * @access  public
-     * @param   bool    $published  Published status
+     * @param   array   $filters    Filters
      * @param   int     $user       User id
      * @param   int     $limit      Data limit
      * @param   int     $offset     Data offset
      * @return  mixed   Array of regions or Jaws_Error on failure
      */
-    function GetRegions($published = null, $user = 0, $limit = false, $offset = null)
+    function GetRegions($filters = array(), $user = 0, $limit = false, $offset = null)
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $weatherTable->select('id:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
             'published:boolean');
 
-        if (!is_null($published)) {
-            $weatherTable->where('published', $published);
+        if (!empty($filters)) {
+            if (isset($filters['published']) && !is_null($filters['published'])) {
+                $weatherTable->where('published', (bool)$filters['published']);
+            }
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $weatherTable->and()->where('title', $filters['term'], 'like');
+            }
         }
-
         $weatherTable->and()->where('user', $user);
 
         $result = $weatherTable->limit($limit, $offset)->orderBy('id asc')->fetchAll();
@@ -74,19 +78,23 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
      * Gets total count of regions
      *
      * @access  public
-     * @param   bool    $published  Published status
+     * @param   array   $filters    Filters
      * @param   int     $user       User id
      * @return  mixed   Total of regions or Jaws_Error on failure
      */
-    function GetRegionsCount($published = null, $user = 0)
+    function GetRegionsCount($filters = array(), $user = 0)
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $weatherTable->select('count(id):integer');
 
-        if (!is_null($published)) {
-            $weatherTable->where('published', $published);
+        if (!empty($filters)) {
+            if (isset($filters['published']) && !is_null($filters['published'])) {
+                $weatherTable->where('published', (bool)$filters['published']);
+            }
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $weatherTable->and()->where('title', $filters['term'], 'like');
+            }
         }
-
         $weatherTable->and()->where('user', $user);
 
         return $weatherTable->fetchOne();
@@ -130,16 +138,16 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
     }
 
     /**
-     * Delete user's regions
+     * Delete user's region
      *
      * @access  public
      * @param   int     $user       User id
-     * @param   array   $ids        Region's ids
+     * @param   array   $id        Region's id
      * @return  mixed   True or Jaws_Error on failure
      */
-    function DeleteUserRegions($user, $ids)
+    function DeleteUserRegion($user, $id)
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
-        return $weatherTable->delete()->where('user', $user)->and()->where('id', $ids, 'in')->exec();
+        return $weatherTable->delete()->where('user', $user)->and()->where('id', $id)->exec();
     }
 }

@@ -41,7 +41,7 @@ $actions['GetUserFeeds'] = array(
     'standalone' => true,
     'file' => 'Feed',
 );
-$actions['DeleteUserFeeds'] = array(
+$actions['DeleteUserFeed'] = array(
     'standalone' => true,
     'file' => 'Feed',
 );

@@ -12,7 +12,6 @@
  */
 class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 {
-
     /**
      * Get RegionWeather action params
      *
@@ -278,20 +277,21 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $dir = _t_lang($this->gadget->registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
-        $dir = ($dir == 'rtl') ? '.rtl' : '';
-        $GLOBALS['app']->Layout->addScript('libraries/w2ui/w2ui.js');
-        $GLOBALS['app']->Layout->addLink("libraries/w2ui/w2ui$dir.css");
         $this->AjaxMe('index.js');
+        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->layout->setVariable('lbl_published', _t('WEATHER_PUBLISHED'));
+        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->layout->setVariable('lbl_geo_position', _t('WEATHER_GEOPOSITION'));
+        $this->gadget->layout->setVariable('lbl_search', _t('GLOBAL_SEARCH'));
+        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('base_script', BASE_SCRIPT);
 
         $tpl = $this->gadget->template->load('UserRegions.html');
         $tpl->SetBlock('UserRegions');
         $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_geo_position', _t('WEATHER_GEOPOSITION'));
         $tpl->SetVariable('lbl_fast_url', _t('WEATHER_FASTURL'));
         $tpl->SetVariable('lbl_latitude', _t('WEATHER_LATITUDE'));
         $tpl->SetVariable('lbl_longitude', _t('WEATHER_LONGITUDE'));
@@ -300,6 +300,11 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+
+        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
+        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
 
         $tpl->ParseBlock('UserRegions');
         return $tpl->Get();
@@ -317,12 +322,21 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
+        $post = jaws()->request->fetch(
+            array('limit', 'offset', 'searchBy'),
+            'post'
+        );
+
         $model = $this->gadget->model->load('Regions');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $regions = $model->GetRegions(null, $user);
-        $total = $model->GetRegionsCount(null, $user);
+        $filters = array();
+        if (!empty($post['searchBy'])) {
+            $filters = array('term' => $post['searchBy']);
+        }
+        $regions = $model->GetRegions($filters, $user, $post['limit'], $post['offset']);
+        $total = $model->GetRegionsCount($filters, $user);
 
-        foreach($regions as $key=>$region) {
+        foreach ($regions as $key => $region) {
             $region['published'] = ($region['published']) ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $regions[$key] = $region;
         }
@@ -330,7 +344,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             '',
             RESPONSE_NOTICE,
             array(
-                'total'   => $total,
+                'total' => $total,
                 'records' => $regions
             )
         );
@@ -401,31 +415,19 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML content
      */
-    function DeleteUserRegions()
+    function DeleteUserRegion()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $ids = $this->gadget->request->fetch('ids:array', 'post');
-
-        $model = $this->gadget->model->load('Regions');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $res = $model->DeleteUserRegions($user, $ids);
+        $res = $this->gadget->model->load('Regions')->DeleteUserRegion($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
         } else {
             return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);
         }
-
-
-//        return $GLOBALS['app']->Session->GetResponse(
-//            '',
-//            RESPONSE_NOTICE,
-//            array(
-//                'total'   => $total,
-//                'records' => $regions
-//            )
-//        );
     }
 }
