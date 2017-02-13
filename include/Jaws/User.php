@@ -26,10 +26,13 @@ class Jaws_User
     {
         $result = '';
         if (is_null($salt)) {
-            $salt = substr(md5(uniqid(mt_rand(), true)), 0, mt_rand(8, 20));
-            $result = '{SSHA512}'. base64_encode(hash('sha512', $password. $salt, true). $salt);
+            $salt = substr(sha1(uniqid(mt_rand(), true)), 0, 16);
+            $result = '{SHA512-CRYPT}' . crypt($password, "$6$$salt");
         } else {
-            if (substr($salt, 0, 9) === '{SSHA512}') {
+            if (substr($salt, 0, 14) === '{SHA512-CRYPT}') {
+                $salt = substr($salt, 17, 16);
+                $result = '{SHA512-CRYPT}' . crypt($password, "$6$$salt");
+           } elseif (substr($salt, 0, 9) === '{SSHA512}') {
                 $salt = substr(base64_decode(substr($salt, 9)), 64);
                 $result = '{SSHA512}'. base64_encode(hash('sha512', $password. $salt, true). $salt);
             } elseif (substr($salt, 0, 7) === '{SSHA1}') {
