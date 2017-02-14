@@ -33,6 +33,8 @@ class Jaws_Auth_Default
             $groups = array();
         }
 
+        // FIXME: we must find better way for use password in extra protocols ex. IMAP
+        $result['password'] = $password;
         $result['groups'] = $groups;
         $result['avatar'] = $userModel->GetAvatar(
             $result['avatar'],
