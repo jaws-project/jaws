@@ -21,6 +21,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('anon_register', 'false'),
         array('anon_activation', 'user'),
         array('anon_group', ''),
+        array('default_domain', '0'),
     );
 
     /**
@@ -204,10 +205,20 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.6.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '2.5.0.xml');
+            $result = $this->installSchema('2.6.0.xml', array(), '2.5.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '2.7.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '2.6.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            // Registry keys
+            $this->gadget->registry->insert('default_domain', '0');
         }
 
         return true;
