@@ -350,6 +350,7 @@ class Jaws_Session
         if (empty($info)) {
             $info['id']          = 0;
             $info['internal']    = false;
+            $info['domain']      = 0;
             $info['username']    = '';
             $info['password']    = '';
             $info['superadmin']  = false;
@@ -370,6 +371,7 @@ class Jaws_Session
         $this->SetAttribute('internal',    $info['internal']);
         $this->SetAttribute('salt',        uniqid(mt_rand(), true));
         $this->SetAttribute('type',        JAWS_APPTYPE);
+        $this->SetAttribute('domain',      $info['domain']);
         $this->SetAttribute('username',    $info['username']);
         $this->SetAttribute('password',    $info['password']);
         $this->SetAttribute('superadmin',  $info['superadmin']);

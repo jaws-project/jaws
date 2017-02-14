@@ -59,8 +59,10 @@ class Jaws_User
     function VerifyUser($user, $password)
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->select('id:integer', 'username', 'password', 'email', 'superadmin:boolean', 'nickname',
-            'concurrents:integer', 'logon_hours', 'expiry_date', 'avatar', 'registered_date', 'last_update',
+        $result = $usersTable->select(
+            'id:integer', 'domain:integer', 'username', 'password', 'email',
+            'superadmin:boolean', 'nickname', 'concurrents:integer',
+            'logon_hours', 'expiry_date', 'avatar', 'registered_date', 'last_update',
             'bad_password_count', 'last_password_update', 'last_access', 'status:integer')
             ->where('lower(username)', Jaws_UTF8::strtolower($user))
             ->or()
