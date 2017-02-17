@@ -11,7 +11,7 @@
 class Jaws_Gadget_Installer
 {
     /**
-     * Default ACL value of frontend gadget access
+     * Default ACL value of front-end gadget access
      *
      * @var     bool
      * @access  public
@@ -91,7 +91,7 @@ class Jaws_Gadget_Installer
     }
 
     /**
-     * Get all ACLs for the gadet
+     * Get all ACLs for the gadget
      *
      * @access  public
      * @return  array   ACLs of the gadget
@@ -174,7 +174,7 @@ class Jaws_Gadget_Installer
         $installed_gadgets.= $this->gadget->name. ',';
         $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
 
-        // adding gadget to autoload gadgets list
+        // adding gadget to auto-load gadgets list
         if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
             $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
             $autoload_gadgets.= $this->gadget->name. ',';
@@ -192,7 +192,7 @@ class Jaws_Gadget_Installer
 
     /**
      * Uninstall a gadget
-     * Does a complete uninstall to the gadget, removing acl keys, registry keys, tables, data, etc..
+     * Does a complete uninstall to the gadget, removing ACL keys, registry keys, tables, data, etc..
      *
      * @access  public
      * @return  mixed    True if success or Jaws_Error on error
@@ -244,7 +244,7 @@ class Jaws_Gadget_Installer
         $installed_gadgets = str_replace(",{$this->gadget->name},", ',', $installed_gadgets);
         $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
 
-        // removing gadget from autoload gadgets list
+        // removing gadget from auto-load gadgets list
         $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
         $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
         $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
@@ -301,19 +301,16 @@ class Jaws_Gadget_Installer
             $this->gadget->registry->update('version', $newVersion);
         }
 
-        // autoload feature
-        $autoload_gadgets = explode(',', $GLOBALS['app']->Registry->fetch('gadgets_autoload_items'));
-        $autoload_gadgets = array_filter(array_map('trim', $autoload_gadgets));
+        // auto-load feature
+        $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
         if (file_exists(JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Autoload.php')) {
-            if (!in_array($this->gadget->name, $autoload_gadgets)) {
-                array_push($autoload_gadgets, $this->gadget->name);
-                $GLOBALS['app']->Registry->update('gadgets_autoload_items', implode(',', $autoload_gadgets));
+            if (false === strpos($autoload_gadgets, ",{$this->gadget->name},")) {
+                $autoload_gadgets.= $this->gadget->name. ',';
+                $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
             }
         } else {
-            if (false !== $indx = array_search($this->gadget->name, $autoload_gadgets)) {
-                unset($autoload_gadgets[$indx]);
-                $GLOBALS['app']->Registry->update('gadgets_autoload_items', implode(',', $autoload_gadgets));
-            }
+            $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
+            $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
         }
 
         // end upgrade gadget event
