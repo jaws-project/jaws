@@ -50,16 +50,16 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
 
         $get = jaws()->request->fetch(array('user', 'album', 'order', 'page'), 'get');
         $user = !empty($get['user'])? (int) $get['user'] : 0;
-        $album  = !empty($get['album'])? $get['album'] : 0;
+        $req_album = !empty($get['album'])? (int)$get['album'] : 0;
         $order = !empty($get['order'])? (int) $get['order'] : 1;
         $page = !empty($get['page'])? (int) $get['page'] : 1;
 
         $pModel = $this->gadget->model->load('Photos');
         $aModel = $this->gadget->model->load('Albums');
-        $album = $pModel->GetAlbumImages($id, $page, null, null, null, $user);
+        $album = $pModel->GetAlbumImages($req_album, $page, null, null, null, $user);
         if (!Jaws_Error::IsError($album) && !empty($album) && $album['published']) {
             // display album info
-            if ($id == '0') {
+            if ($req_album == 0) {
                 $tpl->SetVariable('title', _t('PHOO_UNKNOW_ALBUM'));
                 $this->SetTitle(_t('PHOO_UNKNOW_ALBUM'));
                 $tpl->SetVariable('description', '');
@@ -98,7 +98,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             }
             $tpl->ParseBlock('ViewAlbumPage/photos');
 
-            $total = $aModel->GetAlbumCount($id);
+            $total = $aModel->GetAlbumCount($req_album);
             $limit = $this->gadget->registry->fetch('thumbnail_limit');
             // pagination
             $this->gadget->action->load('Navigation')->pagination(
@@ -107,7 +107,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                 $limit,
                 $total,
                 'ViewAlbumPage',
-                array('id' => $id),
+                array('id' => $req_album),
                 _t('PHOO_PHOTOS_COUNT', $total)
             );
         } else {

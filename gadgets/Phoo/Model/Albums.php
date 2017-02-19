@@ -147,15 +147,14 @@ class Phoo_Model_Albums extends Phoo_Model
     {
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $table->select('count(id)');
-        if ($id == '0') { //UNKNOWN
+        if ($id == 0) { //UNKNOWN
             $join_type = 'left outer';
             $table->where('phoo_album_id', '', 'is null');
         } else {
             $join_type = 'inner';
             $table->where('phoo_album_id', $id);
         }
-        $table->join('phoo_image_album', 'phoo_image_album.phoo_image_id',
-            'phoo_image.id', $join_type);
+        $table->join('phoo_image_album', 'phoo_image_album.phoo_image_id', 'phoo_image.id', $join_type);
         $res = $table->fetchOne();
         if (Jaws_Error::IsError($res)) {
             return 0;

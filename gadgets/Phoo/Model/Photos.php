@@ -83,7 +83,7 @@ class Phoo_Model_Photos extends Phoo_Model
     function GetAlbumImages($id, $page = null, $day = null, $month = null, $year = null, $user = null)
     {
         $table = Jaws_ORM::getInstance()->table('phoo_album');
-        $table->select('id', 'name', 'description', 'createtime', 'published:boolean');
+        $table->select('id:integer', 'name', 'description', 'createtime', 'published:boolean');
         $r = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($r)) {
             return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'));
