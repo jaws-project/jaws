@@ -37,7 +37,7 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
             }
         }
         $gModel = $this->gadget->model->load('Groups');
-        $items = $fModel->GetGroups();
+        $items = $gModel->GetGroups();
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {
                 $this->gadget->translate->insert(
