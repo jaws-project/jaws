@@ -47,6 +47,7 @@ function removeAttachment(element)
 function newPost()
 {
     stopAction();
+    setEditorValue('#message', '');
     $('#captcha_container').show();
     $('#postUIArea').show();
     $('html, body').animate({
