@@ -106,8 +106,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                 $page,
                 $limit,
                 $total,
-                'ViewAlbumPage',
-                array('id' => $req_album),
+                'Photos',
+                array('album' => $req_album),
                 _t('PHOO_PHOTOS_COUNT', $total)
             );
         } else {
