@@ -183,16 +183,12 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                     $tpl->SetVariable('folder', _t('PRIVATEMESSAGE_MESSAGE_FOLDER_' . $message['folder']));
                     $tpl->ParseBlock('messages/message/folder');
                 }
-
-                $subject = $message['subject'];
-                $readStatus = 'read';
                 if (!$message['read']) {
-                    $subject = '<strong>' . $message['subject'] . '</strong>';
-                    $readStatus = 'unread';
+                    $tpl->SetBlock('messages/message/unread');
+                    $tpl->ParseBlock('messages/message/unread');
                 }
-                $tpl->SetVariable('subject', $subject);
-                $tpl->SetVariable('status', $readStatus);
 
+                $tpl->SetVariable('subject', $message['subject']);
                 $msg_url = ($message['folder'] == PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT)?
                     $this->gadget->urlMap('Compose', array('id' => $message['id'])):
                     $this->gadget->urlMap('Message', array('id' => $message['id']));
