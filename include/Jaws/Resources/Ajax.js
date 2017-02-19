@@ -445,28 +445,23 @@ function initEditor(selector)
 /**
  * Set the value of the editor/textarea
  */
-function setEditorValue(name, value)
+function setEditorValue(selector, value)
 {
-    var editor;
-    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
-    if (usingMCE) {
-        editor = $(name).tinymce();
-        if (editor) {
-            editor.setContent(value);
-            return;
-        }
-    }
+    var objEditor = $(selector);
+    var editorType = objEditor.data('editor') || 'textarea';
+    switch(editorType) {
+        case 'ckeditor':
+            objEditor.ckeditorGet().setData(value);
+            break;
 
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
-    if (usingCKE) {
-        editor = $(name).ckeditorGet();
-        if (editor.status != 'unloaded') {
-            editor.setData(value);
-            return;
-        }
-    }
+        case 'tinymce':
+            objEditor.tinymce().setContent(value);
+            break;
 
-    $(name).val(value);
+        default:
+            objEditor.val(value);
+            break;
+    }
 }
 
 /**
