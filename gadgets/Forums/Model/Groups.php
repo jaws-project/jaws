@@ -43,7 +43,18 @@ class Forums_Model_Groups extends Jaws_Gadget_Model
             $table->where('published', true);
         }
         $result = $table->orderBy('order asc')->fetchAll();
-        return $result;
+        if (Jaws_Error::isError($result)) {
+            return $result;
+        }
+
+        $groups = array();
+        foreach ($result as $group) {
+            if ($this->gadget->GetPermission('GroupAccess', $group['id'])) {
+                $groups[] = $group;
+            }
+        }
+
+        return $groups;
     }
 
 }

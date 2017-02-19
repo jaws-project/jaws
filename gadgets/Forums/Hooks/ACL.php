@@ -36,6 +36,16 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
                 );
             }
         }
+        $gModel = $this->gadget->model->load('Groups');
+        $items = $fModel->GetGroups();
+        if (!Jaws_Error::IsError($items)) {
+            foreach ($items as $item) {
+                $this->gadget->translate->insert(
+                    'ACL_GROUPACCESS_'. $item['id'],
+                    _t('FORUMS_ACL_GROUP_ACCESS', $item['title'])
+                );
+            }
+        }
 
     }
 

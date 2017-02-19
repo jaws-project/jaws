@@ -40,6 +40,7 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
             return $res;
         }
 
+        $this->gadget->acl->insert('GroupAccess', $res, true);
         return $res;
     }
 
@@ -93,6 +94,7 @@ class Forums_Model_Admin_Groups extends Jaws_Gadget_Model
             return $res;
         }
 
+        $this->gadget->acl->delete('GroupAccess', $gid);
         return (bool)$res;
     }
 

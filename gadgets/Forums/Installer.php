@@ -60,7 +60,9 @@ class Forums_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', array(), 'schema.xml', true);
+        // insert default group
+        $title, $description, $fast_url, $order, $locked, $published
+        $result = $this->gadget->model->loadAdmin('Groups')->InsertGroup('General', '', '', 1, false, true);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -189,6 +191,16 @@ class Forums_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '1.3.0', '<')) {
             $this->gadget->registry->delete('recent_limit');
+        }
+
+        if (version_compare($old, '1.4.0', '<')) {
+            $groups = Jaws_ORM::getInstance()->table('forums_groups')->select('id:integer')->fetchCol(0);
+            if (Jaws_Error::IsError($groups)) {
+                return $groups;
+            }
+            foreach ($groups as $group) {
+                $this->gadget->acl->insert('GroupAccess', $group, true);
+            }
         }
 
         return true;
