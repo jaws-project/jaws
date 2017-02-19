@@ -21,7 +21,6 @@ function stopAction()
     $('#postUIArea').hide();
     $('#update_reason_container').hide();
     $('#captcha_container').hide();
-    setEditorValue('#message', '');
     $('#post_form #notification').prop('checked', 'checked');
     $('#post_form #pid').val(0);
 }
