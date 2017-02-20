@@ -82,6 +82,10 @@ $admin_actions['UpdateProxySettings'] = array(
     'file' => 'Ajax',
     'loglevel' => JAWS_NOTICE,
 );
+$admin_actions['GetProvinces'] = array(
+    'standalone' => true,
+    'file'   => 'Zones',
+);
 $admin_actions['GetCities'] = array(
     'standalone' => true,
     'file'   => 'Zones',
