@@ -483,13 +483,13 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
 
         // province
-        $model = $this->gadget->model->load('Contacts');
-        $provinces = $model->GetProvinces();
+        $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zones');
+        $provinces = $zModel->GetProvinces(364);
         if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
-            array_unshift($provinces, array('id' => 0, 'title' => ''));
+            array_unshift($provinces, array('province' => 0, 'title' => ''));
             foreach ($provinces as $province) {
                 $tpl->SetBlock('contacts/province_home');
-                $tpl->SetVariable('value', $province['id']);
+                $tpl->SetVariable('value', $province['province']);
                 $tpl->SetVariable('title', $province['title']);
                 $tpl->SetVariable('selected', '');
                 if (isset($contacts['province_home']) && $contacts['province_home'] == $province['id']) {
@@ -498,7 +498,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $tpl->ParseBlock('contacts/province_home');
 
                 $tpl->SetBlock('contacts/province_work');
-                $tpl->SetVariable('value', $province['id']);
+                $tpl->SetVariable('value', $province['province']);
                 $tpl->SetVariable('title', $province['title']);
                 $tpl->SetVariable('selected', '');
                 if (isset($contacts['province_work']) && $contacts['province_work'] == $province['id']) {
@@ -507,7 +507,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $tpl->ParseBlock('contacts/province_work');
 
                 $tpl->SetBlock('contacts/province_other');
-                $tpl->SetVariable('value', $province['id']);
+                $tpl->SetVariable('value', $province['province']);
                 $tpl->SetVariable('title', $province['title']);
                 $tpl->SetVariable('selected', '');
                 if (isset($contacts['province_other']) && $contacts['province_other'] == $province['id']) {

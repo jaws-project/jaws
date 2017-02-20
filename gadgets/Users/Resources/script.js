@@ -587,10 +587,10 @@ function editContacts(rowElement, uid)
  */
 function changeProvince(province, cityElement)
 {
-    var cities = SettingsInUsersAjax.callSync('GetCities', {'province': province});
+    var cities = SettingsInUsersAjax.callSync('GetCities', {'province': province, 'country': 364});
     $('#' + cityElement ).html('');
     $.each(cities, function (index, city) {
-        $("#" + cityElement).append('<option value="' + city.id + '">' + city.title + '</option>');
+        $("#" + cityElement).append('<option value="' + city.city + '">' + city.title + '</option>');
     });
 }
 
