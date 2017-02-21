@@ -786,6 +786,11 @@ class Jaws_User
             }
         }
 
+        // set user's domain to default domain if not set
+        if (!isset($uData['domain'])) {
+            $uData['domain'] = (int)$GLOBALS['app']->Registry->fetch('default_domain', 'Users');
+        }
+
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $result = $usersTable->insert($uData)->exec();
         if (Jaws_Error::IsError($result)) {
