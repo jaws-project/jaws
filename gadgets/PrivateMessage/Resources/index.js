@@ -331,7 +331,7 @@ function initiateCompose() {
     // initiate pillbox
     $('#recipientUsers').pillbox({
         onKeyDown: function (inputData, callback) {
-            var term = inputData.value;
+            var term = inputData.value + inputData.event.key;
             var users = '';
             if (term != '') {
                 var users = PrivateMessageAjax.callSync('GetUsers', {'term': inputData.value});
