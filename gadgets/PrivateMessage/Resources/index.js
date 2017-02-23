@@ -332,25 +332,35 @@ function initiateCompose() {
     $('#recipientUsers').pillbox({
         onKeyDown: function (inputData, callback) {
             var term = inputData.value + inputData.event.key;
-            var users = '';
             if (term != '') {
-                var users = PrivateMessageAjax.callSync('GetUsers', {'term': inputData.value});
-            }
-            var data = [];
-            if (users.length > 1) {
-                var tmpItem;
-                $.each(users, function (key, user) {
-                    data.push({text: user.nickname, value: user.id});
-                });
-            } else {
-                data.push({text: '', value: 0});
+                PrivateMessageAjax.callAsync(
+                    'GetUsers',
+                    {'term': inputData.value},
+                    function(response, status) {
+                        var data = [];
+                        if (response['type'] == 'alert-success' && response['data'].length) {
+                            $.each(response['data'], function (key, user) {
+                                data.push({text: user.nickname, value: user.id});
+                            });
+                        } else {
+                            data.push({text: '', value: 0});
+                        }
+
+                        callback({
+                            data: data
+                        });
+                    }
+                );
             }
 
-            callback({
-                data: data
-            });
-
+            if (inputData.event.keyCode == 8) {
+                if (!$(inputData.event.target).is("input, textarea")) {
+                    inputData.event.preventDefault();
+                    return false;
+                }
+            }
         },
+
         // prevent duplicated item
         onAdd: function (data, callback) {
             var items = $('#recipientUsers').pillbox('items');

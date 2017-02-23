@@ -367,7 +367,18 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $term = jaws()->request->fetch('term', 'post');
         $userModel = new Jaws_User();
         $users = $userModel->GetUsers(false, null, null, $term, 'nickname', 5);
-        return $users;
+        if (Jaws_Error::IsError($users)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $users->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            $users
+        );
     }
 
     /**
