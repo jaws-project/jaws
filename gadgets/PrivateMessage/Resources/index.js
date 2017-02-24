@@ -331,29 +331,36 @@ function initiateCompose() {
     // initiate pillbox
     $('#recipientUsers').pillbox({
         onKeyDown: function (inputData, callback) {
-            var term = inputData.value + inputData.event.key;
-            if (term != '') {
-                PrivateMessageAjax.callAsync(
-                    'GetUsers',
-                    {'term': inputData.value},
-                    function(response, status) {
-                        var data = [];
-                        if (response['type'] == 'alert-success' && response['data'].length) {
-                            $.each(response['data'], function (key, user) {
-                                data.push({text: user.nickname, value: user.id});
-                            });
-                        } else {
-                            data.push({text: '', value: 0});
-                        }
-
-                        callback({
-                            data: data
-                        });
-                    }
-                );
+            var term = inputData.value;
+            var keyCode = inputData.event.keyCode;
+            if (keyCode > 31) {
+                term+= inputData.event.key;
+            } else if(keyCode == 8) {
+                term = term.slice(0, -1);
+            } else {
+                return false;
             }
 
-            if (inputData.event.keyCode == 8) {
+            PrivateMessageAjax.callAsync(
+                'GetUsers',
+                {'term': term},
+                function(response, status) {
+                    var data = [];
+                    if (response['type'] == 'alert-success' && response['data'].length) {
+                        $.each(response['data'], function (key, user) {
+                            data.push({text: user.nickname, value: user.id});
+                        });
+                    } else {
+                        data.push({text: '', value: ''});
+                    }
+
+                    callback({
+                        data: data
+                    });
+                }
+            );
+
+            if (keyCode == 8) {
                 if (!$(inputData.event.target).is("input, textarea")) {
                     inputData.event.preventDefault();
                     return false;
