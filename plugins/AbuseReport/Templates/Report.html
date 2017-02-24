@@ -11,11 +11,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="reportModal-{{gadget}}-{{action}}-{{reference}}Label">{{lbl_title}}</h4>
             </div>
+            <div id="report-response-{{gadget}}-{{action}}-{{reference}}"></div>
             <div class="modal-body report-modal-body" id="report-dialog-{{gadget}}-{{action}}-{{reference}}">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
-                <button type="button" class="btn btn-primary" onclick="javascript:saveReport('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')">{{lbl_send}}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button><button type="button" class="btn btn-primary" onclick="javascript:saveReport('{{gadget}}', '{{action}}', {{reference}}, '{{url}}')">{{lbl_send}}</button>
             </div>
         </div>
     </div>
