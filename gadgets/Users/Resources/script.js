@@ -39,7 +39,6 @@ var UsersCallback = {
     },
 
     UpdateContacts: function(response) {
-        console.log(response);
         if (response[0]['type'] == 'alert-success') {
             stopUserAction();
         }
@@ -814,12 +813,36 @@ function updateMyAccount()
 }
 
 /**
+ * view a acl permissions
+ */
+function viewACL(component, acl) {
+    UsersAjax.callAsync('GetACLGroupsUsers', {component: component, acl:acl}, function (response) {
+
+        $("#groups_permission ul").html('');
+        $.each(response.groups, function (key, group) {
+            var status = '<span class="glyphicon glyphicon-ok"></span>';
+            if(group.key_value==0) {
+                status = '<span class="glyphicon glyphicon-remove"></span>';
+            }
+            $("#groups_permission ul").append('<li>' + group.group_title + ' ' + status +'</li>');
+        });
+
+        $("#users_permission ul").html('');
+        $.each(response.users, function (key, user) {
+            var status = '<span class="glyphicon glyphicon-ok"></span>';
+            if(user.key_value==0) {
+                status = '<span class="glyphicon glyphicon-remove"></span>';
+            }
+            $("#users_permission ul").append('<li>' + user.user_nickname  + ' ' + status +'</li>');
+        });
+    });
+}
+
+/**
  * Categories tree data source
  */
-
 function aclTreeDataSource(openedParentData, callback) {
     var childNodesArray = [];
-    console.info(openedParentData);
 
     var pid = openedParentData.id == undefined ? 0 : openedParentData.id;
     if (pid == 0) {
@@ -848,6 +871,7 @@ function aclTreeDataSource(openedParentData, callback) {
                     {
                         id: acl.key_name,
                         name: acl.key_desc,
+                        component: pid,
                         type: 'item',
                         attr: {
                             id: 'acl_' + acl.key_name,
@@ -860,10 +884,8 @@ function aclTreeDataSource(openedParentData, callback) {
             callback({
                 data: childNodesArray
             });
-
         });
     }
-
 }
 
 /**
@@ -875,7 +897,9 @@ function initiateACLsTree() {
         multiSelect: false,
         folderSelect: true
     }).on('selected.fu.tree', function (event, data) {
-        viewACL(data.selected[0].id);
+        if (data.selected[0].type == 'item') {
+            viewACL(data.selected[0].component, data.selected[0].id);
+        }
     });
 }
 

@@ -298,7 +298,6 @@ function editUserGroups(id)
 
     $('#userGroupsModalLabel').html(jaws.gadgets.Users.editUser_title);
     var uGroups = UsersAjax.callSync('GetUserGroups', {'uid': selectedUser});
-    console.log(uGroups);
     if (uGroups) {
         $.each(uGroups, function(index, gid) {
             if ($('#users-groups-form #group_' + gid).length) {
@@ -974,7 +973,6 @@ function editBookmark(id) {
     if (bInfo) {
         $('#bookmark-form input, #bookmark-form select, #bookmark-form textarea').each(
             function () {
-                console.log(bInfo);
                 $(this).val(bInfo[$(this).attr('name')]);
             }
         );
