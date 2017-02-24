@@ -84,10 +84,21 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
             $post['type'],
             $post['priority']
         );
+
+        $response = array(
+            'gadget' => $post['report_gadget'],
+            'action' => $post['report_action'],
+            'reference' => $post['report_reference'],
+        );
+
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            $error = $result->GetMessage();
+            if ($result->GetCode() == -3) {
+                $error = _t('ABUSEREPORTER_ERROR_REPORT_ALREADY_EXIST');
+            }
+            return $GLOBALS['app']->Session->GetResponse($error, RESPONSE_ERROR, $response);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('ABUSEREPORTER_REPORT_SAVED'), RESPONSE_NOTICE);
+            return $GLOBALS['app']->Session->GetResponse(_t('ABUSEREPORTER_REPORT_SAVED'), RESPONSE_NOTICE, $response);
         }
     }
 
