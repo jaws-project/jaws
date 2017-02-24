@@ -245,6 +245,7 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $uData = jaws()->request->fetch('data:array', 'post');
+        $uData['concurrents'] = (int)$uData['concurrents'];
         $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
@@ -277,8 +278,8 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageUsers');
         $post = jaws()->request->fetch(array('data:array', 'uid'), 'post');
         $uData = $post['data'];
+        $uData['concurrents'] = (int)$uData['concurrents'];
         $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
-//        $uData = jaws()->request->fetchAll('post');
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {

@@ -40,7 +40,7 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function MenuBar($action)
     {
-        $actions = array('Users', 'Groups', 'OnlineUsers', 'Properties');
+        $actions = array('Users', 'Groups', 'ACLs', 'OnlineUsers','Properties');
         if (!in_array($action, $actions)) {
             $action = 'Users';
         }
@@ -58,6 +58,11 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
                                 BASE_SCRIPT . '?gadget=Users&amp;action=Groups',
                                 'gadgets/Users/Resources/images/groups_mini.png');
         }
+        $menubar->AddOption('ACLs',
+            _t('USERS_ACLS'),
+            BASE_SCRIPT . '?gadget=Users&amp;action=ACLs',
+            'gadgets/Users/Resources/images/acls.png');
+
         if ($this->gadget->GetPermission('ManageOnlineUsers')) {
             $menubar->AddOption('OnlineUsers',
                 _t('USERS_ONLINE_USERS'),

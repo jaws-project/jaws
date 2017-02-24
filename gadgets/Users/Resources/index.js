@@ -115,6 +115,11 @@ function stopAction() {
             $('#userGroupsModal').modal('hide');
             $('form#users-groups-form')[0].reset();
             break;
+        case 'UserGroups':
+            selectedUser = null;
+            $('#userGroupsModal').modal('hide');
+            $('form#users-groups-form')[0].reset();
+            break;
         case 'Group':
             selectedGroup = null;
             $('form#groups-form')[0].reset();
@@ -287,10 +292,13 @@ function editGroup(id)
  */
 function editUserGroups(id)
 {
-    currentAction = "UserGroups";
     selectedUser = id;
+
+    $('#users-groups-form input[type=checkbox]').prop('checked', false);
+
     $('#userGroupsModalLabel').html(jaws.gadgets.Users.editUser_title);
     var uGroups = UsersAjax.callSync('GetUserGroups', {'uid': selectedUser});
+    console.log(uGroups);
     if (uGroups) {
         $.each(uGroups, function(index, gid) {
             if ($('#users-groups-form #group_' + gid).length) {
@@ -309,6 +317,9 @@ function editGroupUsers(id)
 {
     currentAction = "GroupUsers";
     selectedGroup = id;
+
+    $('#group-users-form input[type=checkbox]').prop('checked', false);
+
     var gUsers = UsersAjax.callSync('GetGroupUsers', {'gid': selectedGroup});
     if (gUsers) {
         $.each(gUsers, function(index, user) {
@@ -591,7 +602,8 @@ function initiateUsersDG() {
         dataSource: usersDataSource,
         staticHeight: 600,
         list_actions: list_actions,
-        list_selectable: 'multi'
+        list_selectable: 'multi',
+        list_direction: $('.repeater-canvas').css('direction')
     });
 
     // monitor required events
@@ -605,6 +617,7 @@ function initiateUsersDG() {
     });
     $('#userModal').on('hidden.bs.modal', function (e) {
         $('form#users-form')[0].reset();
+        selectedUser = null;
     });
 }
 
@@ -672,7 +685,7 @@ function initiateGroupsDG() {
         items: [
             {
                 name: 'editUser',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.editGroup_title,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.Users.editGroup_title,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editGroup(helpers.rowData.id);
@@ -709,12 +722,14 @@ function initiateGroupsDG() {
         dataSource: groupsDataSource,
         staticHeight: 600,
         list_actions: list_actions,
-        list_selectable: 'multi'
+        list_selectable: 'multi',
+        list_direction: $('.repeater-canvas').css('direction')
     });
 
     // monitor required events
     $('#groupsModal').on('hidden.bs.modal', function (e) {
         $('form#groups-form')[0].reset();
+        selectedGroup = null;
     });
 }
 
@@ -931,7 +946,8 @@ function initiateBookmarksDG() {
         // responsible for any paging, sorting, filtering, searching logic
         dataSource: bookmarksDataSource,
         staticHeight: 600,
-        list_actions: list_actions
+        list_actions: list_actions,
+        list_direction: $('.repeater-canvas').css('direction')
     });
 
     // monitor required events

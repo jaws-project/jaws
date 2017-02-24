@@ -186,3 +186,31 @@ form#contact-form {
 overflow-y: scroll;
 height: 400px;
 }
+
+#aclTree {
+    height: 400px;
+}
+#acl_tree {
+    margin:0px;
+    padding-right:2px;
+    width:348px;
+    height:400px;
+    border:1px solid #d3d7cf;
+    background-color:#f7f7f7;
+    overflow:auto;
+}
+#acl_tree img {
+    width:16px;
+    vertical-align:-4px;
+    margin-right:0.2em;
+}
+#acl_tree a {
+    text-decoration:none;
+}
+#acl_tree a:hover {
+    text-decoration:underline;
+}
+.acl_area .acl_form{
+    padding-left: 10px;
+    height: 400px;
+}

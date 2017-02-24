@@ -813,6 +813,72 @@ function updateMyAccount()
     );
 }
 
+/**
+ * Categories tree data source
+ */
+
+function aclTreeDataSource(openedParentData, callback) {
+    var childNodesArray = [];
+    console.info(openedParentData);
+
+    var pid = openedParentData.id == undefined ? 0 : openedParentData.id;
+    if (pid == 0) {
+        $.each(jaws.gadgets.Users.GADGETS, function (gadget, title) {
+            childNodesArray.push(
+                {
+                    id: gadget,
+                    name: title,
+                    type: 'folder',
+                    attr: {
+                        id: 'gadget_' + gadget,
+                        hasChildren: true,
+                    },
+                }
+            );
+        });
+
+        callback({
+            data: childNodesArray
+        });
+
+    } else {
+        UsersAjax.callAsync('GetACLs', {component: pid}, function (response) {
+            $.each(response, function (key, acl) {
+                childNodesArray.push(
+                    {
+                        id: acl.key_name,
+                        name: acl.key_desc,
+                        type: 'item',
+                        attr: {
+                            id: 'acl_' + acl.key_name,
+                            hasChildren: false,
+                        },
+                    }
+                );
+            });
+
+            callback({
+                data: childNodesArray
+            });
+
+        });
+    }
+
+}
+
+/**
+ * Initiates ACLs tree
+ */
+function initiateACLsTree() {
+    $('#aclTree').tree({
+        dataSource: aclTreeDataSource,
+        multiSelect: false,
+        folderSelect: true
+    }).on('selected.fu.tree', function (event, data) {
+        viewACL(data.selected[0].id);
+    });
+}
+
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Users':
@@ -832,6 +898,11 @@ $(document).ready(function() {
             cachedGroupForm = $('#workarea').html();
             stopGroupAction();
             initDataGrid('groups_datagrid', UsersAjax, getGroups);
+            break;
+
+        case 'ACLs':
+            currentAction   = 'ACLs';
+            initiateACLsTree();
             break;
 
         case 'OnlineUsers':

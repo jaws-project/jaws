@@ -481,3 +481,11 @@ $admin_actions['GetGroupUsers'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['ACLs'] = array(
+    'normal' => true,
+    'file' => 'ACLs',
+);
+$admin_actions['GetACLs'] = array(
+    'standalone' => true,
+    'file' => 'ACLs',
+);

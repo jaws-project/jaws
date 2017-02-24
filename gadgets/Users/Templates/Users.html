@@ -14,7 +14,7 @@
     <div class="repeater" id="usersGrid" data-staticheight="300">
       <div class="repeater-header">
         <div class="repeater-header-left">
-          <table class="datagrid-filters">
+          <table class="datagrid-filters tables">
             <tr>
               <td><label>{{lbl_filter_group}}:</label></td>
               <td>
@@ -126,19 +126,33 @@
               <input type="hidden" name="prev_status" id="prev_status" value="0" />
 
               <table class="table" cellpadding="0" cellspacing="2">
-                <tr><td><label for="username">{{lbl_username}}:</label></td><td><input type="text" id="username" name="username"></td></tr>
-                <tr><td><label for="nickname">{{lbl_nickname}}:</label></td><td><input type="text" id="nickname" name="nickname"></td></tr>
-                <tr><td><label for="email">{{lbl_email}}:</label></td><td><input type="text" id="email" name="email"></td></tr>
+                <tr><td><label for="username">{{lbl_username}}:</label></td><td>
+                  <input type="text" id="username" name="username" class="form-control"></td>
+                </tr>
+                <tr><td><label for="nickname">{{lbl_nickname}}:</label></td><td>
+                  <input type="text" id="nickname" name="nickname" class="form-control"></td>
+                </tr>
+                <tr><td><label for="email">{{lbl_email}}:</label></td><td>
+                  <input type="text" id="email" name="email" class="form-control"></td>
+                </tr>
                 <tr><td><label for="superadmin">{{lbl_superadmin}}:</label></td><td>
                   <select class="form-control" name="superadmin" id="superadmin">
                     <option value="0">{{lbl_no}}</option>
                     <option value="1">{{lbl_yes}}</option>
                   </select>
                 </td></tr>
-                <tr><td><label for="pass1">{{lbl_pass1}}:</label></td><td><input type="password" id="pass1" name="pass1"></td></tr>
-                <tr><td><label for="pass2">{{lbl_pass2}}:</label></td><td><input type="password" id="pass2" name="pass2"></td></tr>
-                <tr><td><label for="concurrents">{{lbl_concurrents}}:</label></td><td><input type="text" id="concurrents" name="concurrents"></td></tr>
-                <tr><td><label for="expiry_date">{{lbl_expiry_date}}:</label></td><td><input type="text" id="expiry_date" name="expiry_date"></td></tr>
+                <tr><td><label for="pass1">{{lbl_pass1}}:</label></td><td>
+                  <input type="password" id="pass1" name="pass1" class="form-control"></td>
+                </tr>
+                <tr><td><label for="pass2">{{lbl_pass2}}:</label></td><td>
+                  <input type="password" id="pass2" name="pass2" class="form-control"></td>
+                </tr>
+                <tr><td><label for="concurrents">{{lbl_concurrents}}:</label></td><td>
+                  <input type="text" id="concurrents" name="concurrents" class="form-control"></td>
+                </tr>
+                <tr><td><label for="expiry_date">{{lbl_expiry_date}}:</label></td><td>
+                  <input type="text" id="expiry_date" name="expiry_date" class="form-control"></td>
+                </tr>
                 <tr><td><label for="superadmin">{{lbl_status}}:</label></td><td>
                   <select class="form-control" name="status" id="status">
                     <!-- BEGIN status -->
