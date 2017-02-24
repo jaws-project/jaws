@@ -489,3 +489,7 @@ $admin_actions['GetACLs'] = array(
     'standalone' => true,
     'file' => 'ACLs',
 );
+$admin_actions['GetACLGroupsUsers'] = array(
+    'standalone' => true,
+    'file' => 'ACLs',
+);
