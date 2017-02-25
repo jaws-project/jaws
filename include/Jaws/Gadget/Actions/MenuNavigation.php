@@ -36,9 +36,8 @@ class Jaws_Gadget_Actions_MenuNavigation
      * Get menu navigation
      *
      * @access  public
-     * @param   object  $tpl        (Optional) Jaws Template object
-     * @param   array   $options    (Optional) Menu options
-     * @param   string  $label      (Optional) Menu label
+     * @param   object  $tpl    (Optional) Jaws Template object
+     * @param   string  $label  (Optional) Menu label
      * @return  string  XHTML template content
      */
     function navigation($tpl, $options = array(), $label = '')
@@ -53,6 +52,41 @@ class Jaws_Gadget_Actions_MenuNavigation
         $tpl->SetBlock("$block/navigation");
         $tpl->SetVariable('label', empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label);
 
+        $gname = $this->gadget->name;
+        if (empty($options)) {
+            // use gadget normal actions if navigation index exist
+            foreach ($this->gadget->actions['index'] as $aname => $action) {
+                if (!isset($action['normal']) || !$action['normal'] || !isset($action['navigation'])) {
+                    continue;
+                }
+
+                $menu = array(
+                    'title' => _t(strtoupper("{$gname}_{$aname}_title")),
+                    'url' => $this->gadget->urlMap(
+                        $aname,
+                        isset($action['navigation']['params'])? $action['navigation']['params'] : array()
+                    ),
+                );
+                // check permissions
+                if (isset($action['acls'])) {
+                    $menu['visible'] = call_user_func_array(
+                        array($this->gadget, 'GetPermission'),
+                        $action['acls']
+                    );
+                }
+                // set order
+                $order = isset($action['navigation']['order'])? $action['navigation']['order'] : null;
+                if (isset($order)) {
+                    $options[$order] = $menu;
+                } else {
+                    $options[] = $menu;
+                }
+            }
+
+            ksort($options);
+        }
+
+        // put menus in template
         foreach ($options as $menu) {
             if (isset($menu['visible']) && !$menu['visible']) {
                 continue;
