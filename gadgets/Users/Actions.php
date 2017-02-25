@@ -117,6 +117,7 @@ $actions['UpdateAccount'] = array(
 $actions['Personal'] = array(
     'normal' => true,
     'file' => 'Personal',
+    'acls' => array('EditUserPersonal'),
     'navigation' => array(
         'order' => 2
     ),
@@ -129,6 +130,7 @@ $actions['UpdatePersonal'] = array(
 $actions['Preferences'] = array(
     'normal' => true,
     'file' => 'Preferences',
+    'acls' => array('EditUserPreferences'),
     'navigation' => array(
         'order' => 3
     ),
@@ -141,6 +143,7 @@ $actions['UpdatePreferences'] = array(
 $actions['Contact'] = array(
     'normal' => true,
     'file' => 'Contacts',
+    'acls' => array('EditUserContact'),
     'navigation' => array(
         'order' => 4
     ),
@@ -168,6 +171,7 @@ $actions['DeleteContacts'] = array(
 $actions['Bookmarks'] = array(
     'normal' => true,
     'file'   => 'Bookmarks',
+    'acls' => array('EditUserBookmarks'),
     'navigation' => array(
         'order' => 5
     ),
@@ -195,6 +199,7 @@ $actions['DeleteBookmark'] = array(
 $actions['Contacts'] = array(
     'normal' => true,
     'file' => 'Contacts',
+    'acls' => array('EditUserContacts'),
     'navigation' => array(
         'order' => 6
     ),
@@ -207,6 +212,7 @@ $actions['GetContacts'] = array(
 $actions['FriendsGroups'] = array(
     'normal' => true,
     'file' => 'Friends',
+    'acls' => array('ManageFriends'),
     'navigation' => array(
         'order' =>7
     ),
