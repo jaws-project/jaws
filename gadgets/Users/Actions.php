@@ -34,6 +34,12 @@ $actions['LatestRegistered'] = array(
 $actions['Profile'] = array(
     'normal' => true,
     'file' => 'Profile',
+    'navigation' => array(
+        'params' => array(
+            'user' => $GLOBALS['app']->Session->GetAttribute('username')
+        ),
+        'order' => 0
+    ),
 );
 $actions['AboutUser'] = array(
     'layout' => true,
@@ -89,6 +95,14 @@ $actions['ReplaceUserEmail'] = array(
 $actions['Account'] = array(
     'normal' => true,
     'file' => 'Account',
+    'acls' => array(
+        'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
+        '',
+        false
+    ),
+    'navigation' => array(
+        'order' => 1
+    ),
 );
 $actions['ChangePassword'] = array(
     'normal' => true,
@@ -103,6 +117,9 @@ $actions['UpdateAccount'] = array(
 $actions['Personal'] = array(
     'normal' => true,
     'file' => 'Personal',
+    'navigation' => array(
+        'order' => 2
+    ),
 );
 $actions['UpdatePersonal'] = array(
     'standalone' => true,
@@ -112,6 +129,9 @@ $actions['UpdatePersonal'] = array(
 $actions['Preferences'] = array(
     'normal' => true,
     'file' => 'Preferences',
+    'navigation' => array(
+        'order' => 3
+    ),
 );
 $actions['UpdatePreferences'] = array(
     'standalone' => true,
@@ -121,6 +141,9 @@ $actions['UpdatePreferences'] = array(
 $actions['Contact'] = array(
     'normal' => true,
     'file' => 'Contacts',
+    'navigation' => array(
+        'order' => 4
+    ),
 );
 $actions['UpdateContact'] = array(
     'standalone' => true,
@@ -142,9 +165,39 @@ $actions['DeleteContacts'] = array(
     'internal' => true,
     'file' => 'Contacts',
 );
+$actions['Bookmarks'] = array(
+    'normal' => true,
+    'file'   => 'Bookmarks',
+    'navigation' => array(
+        'order' => 5
+    ),
+);
+$actions['GetBookmarks'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['GetBookmark'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['BookmarkUI'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['UpdateBookmark'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
+$actions['DeleteBookmark'] = array(
+    'standalone' => true,
+    'file'   => 'Bookmarks'
+);
 $actions['Contacts'] = array(
     'normal' => true,
     'file' => 'Contacts',
+    'navigation' => array(
+        'order' => 6
+    ),
 );
 $actions['GetContacts'] = array(
     'standalone' => true,
@@ -154,6 +207,9 @@ $actions['GetContacts'] = array(
 $actions['FriendsGroups'] = array(
     'normal' => true,
     'file' => 'Friends',
+    'navigation' => array(
+        'order' =>7
+    ),
 );
 $actions['DeleteFriendsGroups'] = array(
     'standalone' => true,
@@ -265,30 +321,6 @@ $actions['AddUsersToGroup'] = array(
     'standalone' => true,
     'file' => 'ManageGroups',
     'loglevel' => JAWS_NOTICE,
-);
-$actions['Bookmarks'] = array(
-    'normal' => true,
-    'file'   => 'Bookmarks'
-);
-$actions['GetBookmarks'] = array(
-    'standalone' => true,
-    'file'   => 'Bookmarks'
-);
-$actions['GetBookmark'] = array(
-    'standalone' => true,
-    'file'   => 'Bookmarks'
-);
-$actions['BookmarkUI'] = array(
-    'standalone' => true,
-    'file'   => 'Bookmarks'
-);
-$actions['UpdateBookmark'] = array(
-    'standalone' => true,
-    'file'   => 'Bookmarks'
-);
-$actions['DeleteBookmark'] = array(
-    'standalone' => true,
-    'file'   => 'Bookmarks'
 );
 
 
