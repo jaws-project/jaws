@@ -130,7 +130,7 @@ class SmartBridge_Plugin extends Jaws_Plugin
                 $mapURL = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $link));
                 break;
             case 'Phoo':
-                $mapURL = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewAlbum', array('id' => $link));
+                $mapURL = $GLOBALS['app']->Map->GetURLFor('Phoo', 'Photos', array('album' => $link));
                 break;
             case 'StaticPage':
                 $mapURL = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'Page', array('id' => $link));

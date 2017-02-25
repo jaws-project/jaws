@@ -187,8 +187,8 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             }
 
             $summary = empty($summary)? $text : $summary;
-            $summary = $this->gadget->plugin->parseAdmin($summary);
-            $text    = $this->gadget->plugin->parseAdmin($text);
+            $summary = $this->gadget->plugin->parse($summary);
+            $text    = $this->gadget->plugin->parse($text);
 
             if (Jaws_UTF8::trim($text) != '') {
                 $tpl->SetBlock('recent_posts/item/read-more');
