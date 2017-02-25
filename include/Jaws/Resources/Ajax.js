@@ -220,7 +220,7 @@ function JawsAjax(gadget, callback, baseScript)
                 } else {
                     loadingMessage = jaws.core.loadingMessage || '...';
                 }
-                $(this.msgBox).html(loadingMessage).attr('class', 'response_loading');
+                $(this.msgBox).html(loadingMessage).attr('class', 'response_loading alert-info');
                 $(this.msgBox).stop(true, true).fadeIn();
             } else {
                 $(this.msgBox).fadeOut(0, function() {$(this).removeClass();});
