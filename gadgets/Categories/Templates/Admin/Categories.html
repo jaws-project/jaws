@@ -6,20 +6,28 @@
       <div class="datagrid-filters">
         <table style="width: 100%;">
           <tr>
+            <td><label for="filter_action">{{lbl_action}}: </label></td>
+            <td><input type="text" id="filter_action" name="filter_action" class="form-control"></td>
+
+            <td><label for="filter_term">{{lbl_term}}: </label></td>
+            <td><input type="text" id="filter_term" name="filter_action" class="form-control"></td>
+          </tr>
+
+          <tr>
+            <!-- BEGIN visible_filters -->
             <td><label for="filter_gadget">{{lbl_gadget}}: </label></td>
             <td><select name="filter_gadget" id="filter_gadget" class="form-control">
               <!-- BEGIN filter_gadget -->
               <option value="{{value}}">{{title}}</option>
               <!-- END filter_gadget -->
             </select></td>
+            <!-- END visible_filters -->
 
-            <td><label for="filter_action">{{lbl_action}}: </label></td>
-            <td><input type="text" id="filter_action" name="filter_action" class="form-control"></td>
-          </tr>
-
-          <tr>
-            <td><label for="filter_term">{{lbl_term}}: </label></td>
-            <td><input type="text" id="filter_term" name="filter_action" class="form-control"></td>
+            <!-- BEGIN hidden_filters -->
+            <td colspan="2">
+              <input type="hidden" name="filter_gadget" id="filter_gadget" value="{{gadget}}">
+            </td>
+            <!-- END hidden_filters -->
 
             <td></td>
             <td>
@@ -103,6 +111,8 @@
 
           <form action="#" id="category-form">
 
+
+            <!-- BEGIN visible_inputs -->
             <div class="form-group"><label for="gadget">{{lbl_gadget}}:</label>
               <select name="gadget" id="gadget" class="form-control">
                 <!-- BEGIN gadget -->
@@ -110,6 +120,11 @@
                 <!-- END gadget -->
               </select>
             </div>
+            <!-- END visible_inputs -->
+
+            <!-- BEGIN hidden_inputs -->
+            <input type="hidden" name="gadget" id="gadget" class="form-control" value="{{gadget}}">
+            <!-- END hidden_inputs -->
 
             <div class="form-group"><label for="action">{{lbl_action}}:</label>
               <input class="form-control" name="action" id="action" value="" type="text"/>

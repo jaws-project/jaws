@@ -100,13 +100,17 @@ function deleteCategory(id)
  * Define the data to be displayed in the users datagrid
  */
 function categoriesDataSource(options, callback) {
-    // define the columns for the grid
-    var columns = [
-        {
-            'label': jaws.gadgets.Categories.lbl_gadget,
-            'property': 'gadget',
-            'sortable': true
-        },
+    var columns = [];
+    if(jaws.gadgets.Categories.req_gadget =='') {
+        columns.push(
+            {
+                'label': jaws.gadgets.Categories.lbl_gadget,
+                'property': 'gadget',
+                'sortable': true
+            }
+        );
+    }
+    columns.push(
         {
             'label': jaws.gadgets.Categories.lbl_action,
             'property': 'action',
@@ -117,7 +121,7 @@ function categoriesDataSource(options, callback) {
             'property': 'title',
             'sortable': true
         }
-    ];
+    );
 
     // set options
     var pageIndex = options.pageIndex;

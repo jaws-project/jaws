@@ -11,9 +11,11 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
      * Builds Categories UI
      *
      * @access  public
+     * @param   string $req_gadget  Gadget name
+     * @param   string $menubar     Menubar
      * @return  string  XHTML UI
      */
-    function Categories()
+    function Categories($req_gadget = '', $menubar = '')
     {
         $this->gadget->CheckPermission('ManageCategories');
         $GLOBALS['app']->Layout->addLink('libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.css');
@@ -21,15 +23,16 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
         $this->gadget->layout->setVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
         $this->gadget->layout->setVariable('lbl_action', _t('CATEGORIES_ACTION'));
-        $this->gadget->layout->setVariable('lbl_title', _t('CATEGORIES_TITLE'));
+        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
         $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->layout->setVariable('req_gadget', $req_gadget);
 
         $tpl = $this->gadget->template->loadAdmin('Categories.html');
         $tpl->SetBlock('Categories');
 
         //Menu bar
-        $tpl->SetVariable('menubar', $this->MenuBar('Categories'));
+        $tpl->SetVariable('menubar', empty($menubar)? $this->MenuBar('Categories') : $menubar);
 
         $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
         $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
@@ -53,28 +56,60 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         // gadgets filter
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList();
-        if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
-            array_unshift($gadgetList, array('name' => 0, 'title' => _t('GLOBAL_ALL')));
-            foreach ($gadgetList as $gadget) {
-                $tpl->SetBlock('Categories/filter_gadget');
-                $tpl->SetVariable('value', $gadget['name']);
-                $tpl->SetVariable('title', $gadget['title']);
-                $tpl->ParseBlock('Categories/filter_gadget');
+//        if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
+//            array_unshift($gadgetList, array('name' => 0, 'title' => _t('GLOBAL_ALL')));
+//            foreach ($gadgetList as $gadget) {
+//                if ($gadget['name'] > 0) {
+//                    $tpl->SetBlock('Categories/gadget');
+//                    $tpl->SetVariable('value', $gadget['name']);
+//                    $tpl->SetVariable('title', $gadget['title']);
+//                    $tpl->ParseBlock('Categories/gadget');
+//                }
+//            }
+//            array_shift($gadgetList);
+//            foreach ($gadgetList as $gadget) {
+//                $tpl->SetBlock('Categories/gadget');
+//                $tpl->SetVariable('value', $gadget['name']);
+//                $tpl->SetVariable('title', $gadget['title']);
+//                $tpl->ParseBlock('Categories/gadget');
+//            }
+//        }
 
-                if ($gadget['name'] > 0) {
-                    $tpl->SetBlock('Categories/gadget');
+        // filters
+        if (empty($req_gadget)) {
+            $tpl->SetBlock('Categories/visible_inputs');
+            $tpl->SetVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
+            if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
+                foreach ($gadgetList as $gadget) {
+                    $tpl->SetBlock('Categories/visible_inputs/gadget');
                     $tpl->SetVariable('value', $gadget['name']);
                     $tpl->SetVariable('title', $gadget['title']);
-                    $tpl->ParseBlock('Categories/gadget');
+                    $tpl->ParseBlock('Categories/visible_inputs/gadget');
                 }
             }
-            array_shift($gadgetList);
-            foreach ($gadgetList as $gadget) {
-                $tpl->SetBlock('Categories/gadget');
-                $tpl->SetVariable('value', $gadget['name']);
-                $tpl->SetVariable('title', $gadget['title']);
-                $tpl->ParseBlock('Categories/gadget');
+            $tpl->ParseBlock('Categories/visible_inputs');
+
+            $tpl->SetBlock('Categories/visible_filters');
+            $tpl->SetVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
+            if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
+                array_unshift($gadgetList, array('name' => 0, 'title' => _t('GLOBAL_ALL')));
+                foreach ($gadgetList as $gadget) {
+                    $tpl->SetBlock('Categories/visible_filters/filter_gadget');
+                    $tpl->SetVariable('value', $gadget['name']);
+                    $tpl->SetVariable('title', $gadget['title']);
+                    $tpl->ParseBlock('Categories/visible_filters/filter_gadget');
+                }
             }
+            $tpl->ParseBlock('Categories/visible_filters');
+
+        } else {
+            $tpl->SetBlock('Categories/hidden_filters');
+            $tpl->SetVariable('gadget', $req_gadget);
+            $tpl->ParseBlock('Categories/hidden_filters');
+
+            $tpl->SetBlock('Categories/hidden_inputs');
+            $tpl->SetVariable('gadget', $req_gadget);
+            $tpl->ParseBlock('Categories/hidden_inputs');
         }
 
         $tpl->ParseBlock('Categories');
