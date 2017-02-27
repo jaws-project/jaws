@@ -91,6 +91,29 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
     }
 
     /**
+     * Check a category exist with custom filters
+     *
+     * @access  public
+     * @param   string   $gadget    Gadget
+     * @param   string   $action    Action
+     * @param   string   $title     Category title
+     * @return  mixed   Array of Categories or Jaws_Error on failure
+     */
+    function CheckCategoryExist($gadget, $action, $title)
+    {
+        $count = Jaws_ORM::getInstance()->table('categories')
+            ->select('count(id):integer')
+            ->where('gadget', $gadget)
+            ->and()->where('action', $action)
+            ->and()->where('title', $title)
+            ->fetchOne();
+        if (Jaws_Error::IsError($count)) {
+            return $count;
+        }
+        return ($count > 0) ? true : false;
+    }
+
+    /**
      * Insert a category
      *
      * @access  public

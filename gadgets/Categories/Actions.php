@@ -17,6 +17,14 @@ $admin_actions['GetCategories'] = array(
     'standalone' => true,
     'file' => 'Categories',
 );
+$admin_actions['GetCategoriesList'] = array(
+    'standalone' => true,
+    'file' => 'Categories',
+);
+$admin_actions['CheckCategoryExist'] = array(
+    'standalone' => true,
+    'file' => 'Categories',
+);
 $admin_actions['GetCategory'] = array(
     'standalone' => true,
     'file' => 'Categories',
