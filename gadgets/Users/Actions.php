@@ -328,7 +328,18 @@ $actions['AddUsersToGroup'] = array(
     'file' => 'ManageGroups',
     'loglevel' => JAWS_NOTICE,
 );
-
+$actions['ExportVCard'] = array(
+    'standalone' => true,
+    'file' => 'VCard',
+);
+$actions['ImportVCardUI'] = array(
+    'normal' => true,
+    'file' => 'VCard',
+);
+$actions['ImportVCard'] = array(
+    'standalone' => true,
+    'file' => 'VCard',
+);
 
 /**
  * Admin actions

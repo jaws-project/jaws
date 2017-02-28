@@ -25,6 +25,12 @@
         </div>
       </div>
       <div class="repeater-header-right">
+        <a href="{{export_url}}" target="_blank" class="btn btn-primary btn-m">
+          <span class="glyphicon glyphicon-save-file"></span> {{lbl_export_vcard}}
+        </a>
+        <a href="{{import_url}}" target="_blank" class="btn btn-primary btn-m">
+          <span class="glyphicon glyphicon-open-file"></span> {{lbl_import_vcard}}
+        </a>
         <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#contactModal">
           <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
         </button>
@@ -37,7 +43,7 @@
     <div class="repeater-footer">
       <div class="repeater-footer-left">
         <div class="repeater-itemization">
-          <span><span class="repeater-start"></span> {{to}} <span class="repeater-end"></span> {{of}} <span class="repeater-count"></span> {{items}}</span>
+          <span><span class="repeater-start"></span> {{lbl_to}} <span class="repeater-end"></span> {{lbl_of}} <span class="repeater-count"></span> {{lbl_items}}</span>
           <div class="btn-group selectlist dropup" data-resize="auto">
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
               <span class="selected-label">?</span>
@@ -51,7 +57,7 @@
             </ul>
             <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
           </div>
-          <span>{{per_page}}</span>
+          <span>{{lbl_per_page}}</span>
         </div>
       </div>
       <div class="repeater-footer-right">

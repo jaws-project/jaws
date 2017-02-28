@@ -213,14 +213,6 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
 
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
-        if (!isset($response['data'])) {
-            $jUser = new Jaws_User;
-            $contacts = $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'));
-        } else {
-            $contacts = $response['data'];
-        }
-
         // Load the template
         $tpl = $this->gadget->template->load('Contacts.html');
         $tpl->SetBlock('contacts');
@@ -228,6 +220,18 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('gadget_title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_export_vcard', _t('USERS_EXPORT_VCARD'));
+        $tpl->SetVariable('lbl_import_vcard', _t('USERS_IMPORT_VCARD'));
+
+        $tpl->SetVariable('export_url', $this->gadget->urlMap('ExportVCard'));
+        $tpl->SetVariable('import_url', $this->gadget->urlMap('ImportVCardUI'));
+
+        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
+        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+
 
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('Account'));
