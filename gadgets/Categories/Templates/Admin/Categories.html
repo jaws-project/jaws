@@ -6,15 +6,10 @@
       <div class="datagrid-filters">
         <table style="width: 100%;">
           <tr>
+            <!-- BEGIN visible_filters -->
             <td><label for="filter_action">{{lbl_action}}: </label></td>
             <td><input type="text" id="filter_action" name="filter_action" class="form-control"></td>
 
-            <td><label for="filter_term">{{lbl_term}}: </label></td>
-            <td><input type="text" id="filter_term" name="filter_action" class="form-control"></td>
-          </tr>
-
-          <tr>
-            <!-- BEGIN visible_filters -->
             <td><label for="filter_gadget">{{lbl_gadget}}: </label></td>
             <td><select name="filter_gadget" id="filter_gadget" class="form-control">
               <!-- BEGIN filter_gadget -->
@@ -24,18 +19,27 @@
             <!-- END visible_filters -->
 
             <!-- BEGIN hidden_filters -->
-            <td colspan="2">
+            <td>
               <input type="hidden" name="filter_gadget" id="filter_gadget" value="{{gadget}}">
             </td>
+            <td>
+              <input type="hidden" name="filter_action" id="filter_action" value="{{action}}">
+            </td>
             <!-- END hidden_filters -->
-
             <td></td>
+          </tr>
+
+          <tr>
+            <td><label for="filter_term">{{lbl_term}}: </label></td>
+            <td><input type="text" id="filter_term" name="filter_action" class="form-control"></td>
+
             <td>
               <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#categoryModal">
                 <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
               </button>
             </td>
           </tr>
+
         </table>
       </div>
       <div class="repeater-header-right">
@@ -111,7 +115,6 @@
 
           <form action="#" id="category-form">
 
-
             <!-- BEGIN visible_inputs -->
             <div class="form-group"><label for="gadget">{{lbl_gadget}}:</label>
               <select name="gadget" id="gadget" class="form-control">
@@ -119,16 +122,17 @@
                 <option value="{{value}}">{{title}}</option>
                 <!-- END gadget -->
               </select>
+
+              <div class="form-group"><label for="action">{{lbl_action}}:</label>
+                <input class="form-control" name="action" id="action" value="" type="text"/>
+              </div>
             </div>
             <!-- END visible_inputs -->
 
             <!-- BEGIN hidden_inputs -->
             <input type="hidden" name="gadget" id="gadget" class="form-control" value="{{gadget}}">
+            <input type="hidden" name="action" id="action" class="form-control" value="{{action}}">
             <!-- END hidden_inputs -->
-
-            <div class="form-group"><label for="action">{{lbl_action}}:</label>
-              <input class="form-control" name="action" id="action" value="" type="text"/>
-            </div>
 
             <div class="form-group"><label for="title">{{lbl_title}}:</label>
               <input class="form-control" name="title" id="title" value="" type="text"/>

@@ -68,6 +68,19 @@
                 </field>
             </index>
 
+            <index>
+                <name><variable>table_prefix</variable>categories_gat</name>
+                <unique>true</unique>
+                <field>
+                    <name>gadget</name>
+                </field>
+                <field>
+                    <name>action</name>
+                </field>
+                <field>
+                    <name>title</name>
+                </field>
+            </index>
         </declaration>
     </table>
 
