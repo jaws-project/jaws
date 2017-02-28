@@ -1,0 +1,27 @@
+<!-- BEGIN vcard -->
+<div class="gadget_header">
+  <div class="gadget_title"><h2>{{gadget_title}}</h2></div>
+  <div class="gadget_menubar">{{menubar}}</div>
+  <div class="gadget_submenubar">{{submenubar}}</div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_response">
+    <div id="users_importvcard_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
+  </div>
+
+  <form name="import_vcard" action="{{base_script}}" method="post" enctype="multipart/form-data" id="import_vcard">
+    <input type="hidden" name="gadget" value="Users" />
+    <input type="hidden" name="action" value="ImportVCard" />
+    <div class="form-group">
+      <p>{{upload_vcard_file_desc}}</p>
+      <input  type="file" name="vcard_file" id="vcard_file">
+    </div>
+    <div class="gadget_actions actions">
+      <button class="btn btn-primary" value="{{lbl_save}}" id="btn_import_vcard" name="btn_import_vcard" type="submit">{{lbl_save}}</button>
+    </div>
+  </form>
+
+</div>
+
+<div class="gadget_footer"></div>
+<!-- END vcard -->
