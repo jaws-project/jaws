@@ -75,6 +75,8 @@ class Users_Actions_Account extends Users_Actions_Default
         $avatar->SetID('avatar');
         $tpl->SetVariable('avatar', $avatar->Get());
 
+        $tpl->SetVariablesArray($account);
+
         $tpl->SetVariable('response_type', $response['type']);
         $tpl->SetVariable('response_text', $response['text']);
 
