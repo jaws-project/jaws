@@ -33,31 +33,36 @@ class Users_Actions_Account extends Users_Actions_Default
             $account = $response['data'];
         }
 
-        // Menu navigation
-        //$this->gadget->action->load('MenuNavigation')->navigation($tpl);
-        $account['menubar'] = $this->MenuBar('Account');
-        $account['submenubar'] = $this->SubMenuBar('Account', array('Account', 'Personal', 'Preferences', 'Contacts'));
+        // Load the template
+        $tpl = $this->gadget->template->load('Account.html');
+        $tpl->SetBlock('account');
+        $tpl->SetVariable('title', _t('USERS_PERSONAL_INFO'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
-        $account['title']  = _t('USERS_ACCOUNT_INFO');
-        $account['update'] = _t('USERS_USERS_ACCOUNT_UPDATE');
-        $account['lbl_username']    = _t('USERS_USERS_USERNAME');
-        $account['lbl_nickname']    = _t('USERS_USERS_NICKNAME');
-        $account['lbl_email']       = _t('GLOBAL_EMAIL');
-        $account['lbl_password']    = _t('USERS_USERS_PASSWORD');
-        $account['emptypassword']   = _t('USERS_NOCHANGE_PASSWORD');
-        $account['lbl_chkpassword'] = _t('USERS_USERS_PASSWORD_VERIFY');
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
+
+        $tpl->SetVariable('title', _t('USERS_ACCOUNT_INFO'));
+        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('emptypassword', _t('USERS_NOCHANGE_PASSWORD'));
+        $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
 
         if (!$this->gadget->GetPermission('EditUserName')) {
-            $account['username_disabled'] = 'disabled="disabled"';
+            $tpl->SetVariable('username_disabled', 'disabled="disabled"');
         }
         if (!$this->gadget->GetPermission('EditUserNickname')) {
-            $account['nickname_disabled'] = 'disabled="disabled"';
+            $tpl->SetVariable('nickname_disabled', 'disabled="disabled"');
         }
         if (!$this->gadget->GetPermission('EditUserEmail')) {
-            $account['email_disabled'] = 'disabled="disabled"';
+            $tpl->SetVariable('email_disabled', 'disabled="disabled"');
         }
         if (!$this->gadget->GetPermission('EditUserPassword')) {
-            $account['password_disabled'] = 'disabled="disabled"';
+            $tpl->SetVariable('password_disabled', 'disabled="disabled"');
         }
 
         if (empty($account['avatar'])) {
@@ -68,14 +73,13 @@ class Users_Actions_Account extends Users_Actions_Default
         }
         $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
         $avatar->SetID('avatar');
-        $account['avatar'] = $avatar->Get();
+        $tpl->SetVariable('avatar', $avatar->Get());
 
-        $account['response_type'] = $response['type'];
-        $account['response_text'] = $response['text'];
+        $tpl->SetVariable('response_type', $response['type']);
+        $tpl->SetVariable('response_text', $response['text']);
 
-        // Load the template
-        $tpl = $this->gadget->template->load('Account.html');
-        return $tpl->fetch($account);
+        $tpl->ParseBlock('account');
+        return $tpl->Get();
     }
 
     /**
