@@ -45,12 +45,8 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Account'));
-        $tpl->SetVariable(
-            'submenubar',
-            $this->SubMenuBar('Contact', array('Account', 'Personal', 'Preferences', 'Contact', 'Contacts'))
-        );
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         if (empty($contact['avatar'])) {
             $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
@@ -233,12 +229,8 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
 
 
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Account'));
-        $tpl->SetVariable(
-            'submenubar',
-            $this->SubMenuBar('Contacts', array('Account', 'Personal', 'Preferences', 'Contact', 'Contacts'))
-        );
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // load contact template
         $this->ContactTemplate($tpl);

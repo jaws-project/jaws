@@ -32,12 +32,8 @@ class Users_Actions_Preferences extends Users_Actions_Default
         $tpl->SetBlock('preferences');
         $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
 
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Account'));
-        $tpl->SetVariable(
-            'submenubar',
-            $this->SubMenuBar('Preferences', array('Account', 'Personal', 'Preferences', 'Contacts'))
-        );
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');

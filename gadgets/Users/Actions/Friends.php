@@ -41,10 +41,10 @@ class Users_Actions_Friends extends Users_Actions_Default
         }
 
         $tpl->SetVariable('title', _t('USERS_FRIENDS'));
-        $tpl->SetVariable('menubar', $this->MenuBar('FriendsGroups'));
-        $tpl->SetVariable('submenubar', $this->SubMenuBar('FriendsGroups', array('FriendsGroups', 'AddFriendsGroup')));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
 

@@ -173,6 +173,7 @@ $actions['Bookmarks'] = array(
     'file'   => 'Bookmarks',
     'acls' => array('EditUserBookmarks'),
     'navigation' => array(
+        'separator' => true,
         'order' => 5
     ),
 );
@@ -214,7 +215,8 @@ $actions['FriendsGroups'] = array(
     'file' => 'Friends',
     'acls' => array('ManageFriends'),
     'navigation' => array(
-        'order' =>7
+        'separator' => true,
+        'order' => 7
     ),
 );
 $actions['DeleteFriendsGroups'] = array(

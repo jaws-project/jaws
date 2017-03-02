@@ -96,12 +96,8 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         $tpl->SetVariable('gadget_title', _t('USERS_ACTIONS_BOOKMARKS'));
         $this->SetTitle(_t('USERS_ACTIONS_BOOKMARKS'));
 
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Account'));
-        $tpl->SetVariable(
-            'submenubar',
-            $this->SubMenuBar('Bookmarks', array('Account', 'Personal', 'Preferences', 'Bookmarks', 'Contact', 'Contacts'))
-        );
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('lbl_gadget', _t('ABUSEREPORTER_GADGET'));

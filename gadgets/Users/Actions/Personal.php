@@ -40,12 +40,8 @@ class Users_Actions_Personal extends Users_Actions_Default
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Account'));
-        $tpl->SetVariable(
-            'submenubar',
-            $this->SubMenuBar('Personal', array('Account', 'Personal', 'Preferences', 'Contacts'))
-        );
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         if (empty($personal['avatar'])) {
             $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
