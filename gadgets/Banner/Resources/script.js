@@ -195,7 +195,7 @@ function saveBanner()
         !$('#template').val() ||
         $('#gid').val() == 0)
     {
-        alert(jaws.gadgets.Banner.incompleteBannerFields);
+        alert(jaws.Banner.Defines.incompleteBannerFields);
         return false;
     }
 
@@ -255,7 +255,7 @@ function saveGroup()
         BannerAjax.callAsync('AddBannersToGroup', [selectedGroup, keys]);
     } else {
         if (!$('#title').val()) {
-            alert(jaws.gadgets.Banner.incompleteGroupFields);
+            alert(jaws.Banner.Defines.incompleteGroupFields);
             return false;
         }
 
@@ -293,7 +293,7 @@ function deleteBanner(element, bid)
 {
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
-    var answer = confirm(jaws.gadgets.Banner.confirmBannerDelete);
+    var answer = confirm(jaws.Banner.Defines.confirmBannerDelete);
     if (answer) {
         BannerAjax.callAsync('DeleteBanner', bid);
     }
@@ -305,7 +305,7 @@ function deleteBanner(element, bid)
  */
 function resetViews(bid)
 {
-    var answer = confirm(jaws.gadgets.Banner.confirmResetBannerViews);
+    var answer = confirm(jaws.Banner.Defines.confirmResetBannerViews);
     if (answer) {
         BannerAjax.callAsync('ResetViews', bid);
     }
@@ -316,7 +316,7 @@ function resetViews(bid)
  */
 function resetClicks(bid)
 {
-    var answer = confirm(jaws.gadgets.Banner.confirmResetBannerClicks);
+    var answer = confirm(jaws.Banner.Defines.confirmResetBannerClicks);
     if (answer) {
         BannerAjax.callAsync('ResetClicks', bid);
     }
@@ -327,7 +327,7 @@ function resetClicks(bid)
  */
 function deleteGroup()
 {
-    var answer = confirm(jaws.gadgets.Banner.confirmGroupDelete);
+    var answer = confirm(jaws.Banner.Defines.confirmGroupDelete);
     if (answer) {
         BannerAjax.callAsync('DeleteGroup', selectedGroup);
     }
@@ -358,7 +358,7 @@ function editBanner(element, bid)
 {
     if (bid == 0) return;
     currentAction = 'Banners';
-    $('#legend_title').html(jaws.gadgets.Banner.editBanner_title);
+    $('#legend_title').html(jaws.Banner.Defines.editBanner_title);
 
     selectDataGridRow(element.parentNode.parentNode);
 
@@ -494,7 +494,7 @@ function stopAction()
 {
     switch(currentAction) {
     case 'Banners':
-        $('#legend_title').html(jaws.gadgets.Banner.addBanner_title);
+        $('#legend_title').html(jaws.Banner.Defines.addBanner_title);
         defaultTemplate = '';
         $('#bid').val(0);
         $('#title').val('');
