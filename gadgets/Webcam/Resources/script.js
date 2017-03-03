@@ -77,7 +77,7 @@ function addWebcam(form)
         webcamRefresh = form.elements['refresh'].value;
 
     if (webcamTitle.blank()) {
-        alert(jaws.gadgets.Webcam.incompleteWebcamFields);
+        alert(jaws.Webcam.Defines.incompleteWebcamFields);
         return false;
     }
 
