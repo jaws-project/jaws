@@ -226,7 +226,7 @@ function SaveSettings()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Comments':
             $('#gadgets_filter').selectedIndex = 0;
             initDataGrid('comments_datagrid', CommentsAjax, getCommentsDataGrid);
