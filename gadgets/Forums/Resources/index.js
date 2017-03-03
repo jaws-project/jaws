@@ -92,7 +92,7 @@ function replyPost(pid)
  * on document ready
  */
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'NewPost':
             break;
     }
