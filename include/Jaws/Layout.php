@@ -498,23 +498,10 @@ class Jaws_Layout
         }
 
         jaws()->http_response_code(200);
-        $goGadget = Jaws_Gadget::getInstance($gadget)->action->load($filename);
-        if (!Jaws_Error::isError($goGadget)) {
-            if (method_exists($goGadget, $action)) {
-                $GLOBALS['app']->requestedGadget  = $gadget;
-                $GLOBALS['app']->requestedAction  = $action;
-                $GLOBALS['app']->requestedSection = $section;
-                $GLOBALS['app']->requestedActionMode = ACTION_MODE_LAYOUT;
-                if (is_null($params)) {
-                    $output = $goGadget->$action();
-                } else {
-                    $output = call_user_func_array(array($goGadget, $action), $params);
-                }
-            } else {
-                $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's Actions dosn't exist.");
-            }
-        }
-
+        $output = Jaws_Gadget::getInstance($gadget)
+            ->action
+            ->load()
+            ->Execute($action, $params, $section, ACTION_MODE_LAYOUT);
         if (Jaws_Error::isError($output)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'In '.$gadget.'::'.$action.','.$output->GetMessage());
             $output = '';
