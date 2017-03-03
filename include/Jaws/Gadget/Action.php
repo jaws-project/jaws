@@ -241,9 +241,12 @@ class Jaws_Gadget_Action
      *
      * @access  public
      * @param   string  $action     Action name
+     * @param   array   $params     Action parameters array
+     * @param   string  $action     Layout section name
+     * @param   string  $action     Action execute mode(normal, layout, standalone)
      * @return  mixed   Actions output on success otherwise Jaws_Error on failure
      */
-    public function Execute(&$action)
+    public function Execute($action, $params = null, $section = '', $mode = ACTION_MODE_NORMAL)
     {
         if (false === $action) {
             return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
@@ -281,18 +284,22 @@ class Jaws_Gadget_Action
             return $objAction;
         }
 
-        if (!method_exists($objAction, $action)) {
-            return Jaws_Error::raiseError(
-                'Action '.$this->gadget->name.'::'.$action. ' does not exist.',
-                __FUNCTION__
-            );
+        if (method_exists($objAction, $action)) {
+            $GLOBALS['app']->requestedGadget  = $this->gadget->name;
+            $GLOBALS['app']->requestedAction  = $action;
+            $GLOBALS['app']->requestedSection = $section;
+            $GLOBALS['app']->requestedActionMode = $mode;
+            if (is_null($params)) {
+                return $objAction->$action();
+            } else {
+                return call_user_func_array(array($objAction, $action), $params);
+            }
         }
 
-        $GLOBALS['app']->requestedGadget  = $this->gadget->name;
-        $GLOBALS['app']->requestedAction  = $action;
-        $GLOBALS['app']->requestedSection = '';
-        $GLOBALS['app']->requestedActionMode = ACTION_MODE_NORMAL;
-        return $objAction->$action();
+        return Jaws_Error::raiseError(
+            'Action '.$this->gadget->name.'::'.$action. ' does not exist.',
+            __FUNCTION__
+        );
     }
 
 
