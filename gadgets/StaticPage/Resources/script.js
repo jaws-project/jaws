@@ -351,7 +351,7 @@ function stopAction()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'ManagePages':
             initDataGrid('pages_datagrid', StaticPageAjax, 'getPages');
             break;
