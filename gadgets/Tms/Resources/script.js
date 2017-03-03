@@ -262,7 +262,7 @@ function saveSettings()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Themes':
             $('#themes_combo').prop('selectedIndex', -1);
             break;
