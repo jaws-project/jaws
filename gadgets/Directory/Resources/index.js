@@ -157,7 +157,7 @@ function initiateDirectoryDG()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Directory':
             initDatePicker('filter_from_date');
             initDatePicker('filter_to_date');

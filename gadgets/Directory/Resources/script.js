@@ -710,7 +710,7 @@ function substitute(str, sub) {
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Directory':
             currentDir = jaws.Directory.Defines.currentDir;
             currentAction = jaws.Directory.Defines.currentAction;
