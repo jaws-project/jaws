@@ -404,7 +404,7 @@ function initiateMessages() {
 
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Compose':
             initiateCompose();
             break;
