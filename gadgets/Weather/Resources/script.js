@@ -103,7 +103,7 @@ function updateRegion()
         !$('#latitude').val() ||
         !$('#longitude').val())
     {
-        alert(jaws.gadgets.Weather.incompleteFields);
+        alert(jaws.Weather.Defines.incompleteFields);
         return;
     }
 
@@ -138,7 +138,7 @@ function deleteRegion(rowElement, id)
 {
     stopAction();
     $('#weather_datagrid')[0].selectRow(rowElement);
-    if (confirm(jaws.gadgets.Weather.confirmDelete)) {
+    if (confirm(jaws.Weather.Defines.confirmDelete)) {
         WeatherAjax.callAsync('DeleteRegion', id);
     } else {
         $('#weather_datagrid')[0].unselectRow(rowElement);
@@ -233,7 +233,7 @@ function getGoogleMap(ev, element)
  */
 function setGoogleMapImage()
 {
-    $('#gmap').prop('src', jaws.gadgets.Weather.base_script + '?gadget=Weather&action=GetGoogleMapImage' +
+    $('#gmap').prop('src', jaws.Weather.Defines.base_script + '?gadget=Weather&action=GetGoogleMapImage' +
                     '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
                     '&zoom=' + ZoomLevel + '&size='  + ImageSize);
 }
