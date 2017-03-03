@@ -24,7 +24,7 @@ var PhooCallback = {
 
 function gotoLocation(album)
 {
-    window.location= jaws.gadgets.Phoo.base_script + '?gadget=Phoo&album=' + album;
+    window.location= jaws.Phoo.Defines.base_script + '?gadget=Phoo&album=' + album;
 }
 
 /**
