@@ -81,7 +81,7 @@ function searchSubscription()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Subscription':
             initDataGrid('subscription_datagrid', SubscriptionAjax, getSubscriptions);
             break;
