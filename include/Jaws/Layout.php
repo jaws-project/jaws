@@ -560,20 +560,20 @@ class Jaws_Layout
      */
     function initializeScript()
     {
-        $result = "\tjaws = {};\n";
-        $result.= "\tjaws.gadgets = {};\n";
+        $result = '';
         foreach ($this->variables as $component => $variables) {
             if (empty($component)) {
-                $jsObj = 'jaws.core';
+                $jsObj = 'jaws';
             } else {
-                $jsObj = "jaws.gadgets.$component";
+                $jsObj = "jaws.$component";
             }
 
             $tmpStr = '';
+            $result.= "\t$jsObj = {};\n";
             foreach ($variables as $name => $value) {
                 $tmpStr.= "\t  '$name': $value,\n";
             }
-            $result.= "\t$jsObj = {\n$tmpStr\t};\n";
+            $result.= "\t$jsObj.Defines = {\n$tmpStr\t};\n";
         }
 
         return $result;
