@@ -58,7 +58,7 @@ var EventsCalendarCallback = {
  * Initiates events calendar
  */
 function initEventsCalendar() {
-    CONST = jQuery.parseJSON(jaws.gadgets.EventsCalendar.CONST);
+    CONST = jQuery.parseJSON(jaws.EventsCalendar.Defines.CONST);
 
     w2utils.settings.dataType = 'JSON';
     if (CONST.calendar === 'Jalali') {
