@@ -60,7 +60,7 @@ function editFeed(id)
  */
 function deleteFeed(id)
 {
-    if (confirm(jaws.gadgets.FeedReader.confirmDelete)) {
+    if (confirm(jaws.FeedReader.Defines.confirmDelete)) {
         FeedReaderAjax.callAsync('DeleteUserFeed', {'id': id});
     }
 }
@@ -105,11 +105,11 @@ function feedsDataSource(options, callback) {
     // define the columns for the grid
     var columns = [
         {
-            'label': jaws.gadgets.FeedReader.lbl_title,
+            'label': jaws.FeedReader.Defines.lbl_title,
             'property': 'title',
         },
         {
-            'label': jaws.gadgets.FeedReader.lbl_visible,
+            'label': jaws.FeedReader.Defines.lbl_visible,
             'property': 'visible',
         }
     ];
@@ -167,7 +167,7 @@ function initiateFeedsDG() {
         items: [
             {
                 name: 'edit',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.FeedReader.lbl_edit,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.FeedReader.Defines.lbl_edit,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editFeed(helpers.rowData.id);
@@ -177,7 +177,7 @@ function initiateFeedsDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.FeedReader.lbl_delete ,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.FeedReader.Defines.lbl_delete ,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteFeed(helpers.rowData.id);

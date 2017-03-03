@@ -119,7 +119,7 @@ function updateFeed()
         !$('#url').val() ||
         !isValidURL($.trim($('#url').val())))
     {
-        alert(jaws.gadgets.FeedReader.incompleteFeedFields);
+        alert(jaws.FeedReader.Defines.incompleteFeedFields);
         return;
     }
 
@@ -158,7 +158,7 @@ function deleteFeed(element, id)
 {
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
-    var answer = confirm(jaws.gadgets.FeedReader.confirmFeedDelete);
+    var answer = confirm(jaws.FeedReader.Defines.confirmFeedDelete);
     if (answer) {
         FeedReaderAjax.callAsync('DeleteFeed', id);
     }
