@@ -138,7 +138,7 @@ function deleteTheme()
     if (selectedTheme == '') {
         return false;
     }
-    if (!confirm(jaws.gadgets.Tms.confirmDeleteTheme)) {
+    if (!confirm(jaws.Tms.Defines.confirmDeleteTheme)) {
         return false;
     }
 
