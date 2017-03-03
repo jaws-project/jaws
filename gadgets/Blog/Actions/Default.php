@@ -141,8 +141,8 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         }
 
         $summary = empty($summary)? $text : $summary;
-        $summary = $this->gadget->plugin->parseAdmin($summary, $entry['id'], 'SingleView', 'Blog');
-        $text = $this->gadget->plugin->parse($text, $entry['id'], 'SingleView', 'Blog');
+        $summary = $this->gadget->plugin->parseAdmin($summary, $entry['id'], 'SingleView');
+        $text    = $this->gadget->plugin->parseAdmin($text, $entry['id'], 'SingleView');
 
         if ($show_summary){
             if (Jaws_UTF8::trim($text) != '') {
