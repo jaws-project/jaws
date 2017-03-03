@@ -218,7 +218,7 @@ function JawsAjax(gadget, callback, baseScript)
                 if (this.loadingMessage) {
                     loadingMessage = this.loadingMessage;
                 } else {
-                    loadingMessage = jaws.core.loadingMessage || '...';
+                    loadingMessage = jaws.Defines.loadingMessage || '...';
                 }
                 $(this.msgBox).html(loadingMessage).attr('class', 'response_loading alert-info');
                 $(this.msgBox).stop(true, true).fadeIn();
@@ -321,13 +321,13 @@ function tinymce_file_picker_callback(callback, value, meta)
     var browser = '';
     switch (meta.filetype) {
         case 'media':
-            browser = jaws.core.editorMediaBrowser || '';
+            browser = jaws.Defines.editorMediaBrowser || '';
             break;
         case 'image':
-            browser = jaws.core.editorImageBrowser || '';
+            browser = jaws.Defines.editorImageBrowser || '';
             break;
         case 'file':
-            browser = jaws.core.editorFileBrowser || '';
+            browser = jaws.Defines.editorFileBrowser || '';
             break;
     }
 
@@ -386,11 +386,11 @@ function initEditor(selector)
                     'theme': 'default',
                     'readOnly': objEditor.data('readonly') == '1',
                     'resize_enabled': objEditor.data('resizable') == '1',
-                    'toolbar': jaws.core.editorToolbar,
-                    'extraPlugins': jaws.core.editorPlugins,
-                    'filebrowserBrowseUrl': jaws.core.editorFileBrowser || '',
-                    'filebrowserImageBrowseUrl': jaws.core.editorImageBrowser || '',
-                    'filebrowserFlashBrowseUrl': jaws.core.editorMediaBrowser || '',
+                    'toolbar': jaws.Defines.editorToolbar,
+                    'extraPlugins': jaws.Defines.editorPlugins,
+                    'filebrowserBrowseUrl': jaws.Defines.editorFileBrowser || '',
+                    'filebrowserImageBrowseUrl': jaws.Defines.editorImageBrowser || '',
+                    'filebrowserFlashBrowseUrl': jaws.Defines.editorMediaBrowser || '',
                     'removePlugins': '',
                     'autoParagraph': false,
                     'indentUnit': 'em',
@@ -406,8 +406,8 @@ function initEditor(selector)
                     'directionality': objEditor.data('direction') || 'ltr',
                     'language': objEditor.data('language') || 'en',
                     'theme': 'modern',
-                    'plugins': jaws.core.editorPlugins,
-                    'toolbar1': jaws.core.editorToolbar,
+                    'plugins': jaws.Defines.editorPlugins,
+                    'toolbar1': jaws.Defines.editorToolbar,
                     'toolbar2': '',
                     'toolbar_items_size': 'small',
                     'template_external_list_url': 'libraries/tinymce/templates.js',
@@ -919,7 +919,7 @@ function hideResponseBox(name, timeout)
 function showWorkingNotification(msg)
 {
     if (!msg) {
-        msg = jaws.core.loadingMessage;
+        msg = jaws.Defines.loadingMessage;
     }
     $('#working_notification').html(msg);
     $('#working_notification').css('visibility', 'visible');
