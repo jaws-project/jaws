@@ -203,7 +203,7 @@ function initiateFeedsDG() {
  * Initiates gadget
  */
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'UserFeedsList':
             initiateFeedsDG();
             break;
