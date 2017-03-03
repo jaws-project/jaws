@@ -904,7 +904,7 @@ function initiateACLsTree() {
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Users':
             cachedUserForm  = $('#workarea').html();
             $('#filter_term').val('');

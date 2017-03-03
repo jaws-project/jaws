@@ -1047,7 +1047,7 @@ function updateBookmark() {
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Users':
             currentAction = "UserAccount";
             initiateUsersDG();
