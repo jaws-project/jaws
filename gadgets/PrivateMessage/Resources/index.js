@@ -130,7 +130,7 @@ function addFileEntry() {
 function sendMessage(isDraft) {
 
     // detect pre load users or groups list
-    if (jaws.gadgets.PrivateMessage.recipient_user == "" || jaws.gadgets.PrivateMessage.recipient_user.length == 0) {
+    if (jaws.PrivateMessage.Defines.recipient_user == "" || jaws.PrivateMessage.Defines.recipient_user.length == 0) {
         var recipient_users_array = new Array();
         var recipient_groups_array = new Array();
 
@@ -156,7 +156,7 @@ function sendMessage(isDraft) {
         var recipient_users = recipient_users_array.join(',');
         var recipient_groups = recipient_groups_array.join(',');
     } else {
-        var recipient_users = jaws.gadgets.PrivateMessage.recipient_user;
+        var recipient_users = jaws.PrivateMessage.Defines.recipient_user;
         var recipient_groups = "";
     }
 
@@ -254,10 +254,10 @@ function unselectUserGroup () {
 function ChangeToggleIcon(obj)
 {
     if ($(obj).attr('toggle-status') == 'min') {
-        $(obj).find("img").attr('src', jaws.gadgets.PrivateMessage.toggleMin);
+        $(obj).find("img").attr('src', jaws.PrivateMessage.Defines.toggleMin);
         $(obj).attr('toggle-status', 'max');
     } else {
-        $(obj).find("img").attr('src', jaws.gadgets.PrivateMessage.toggleMax);
+        $(obj).find("img").attr('src', jaws.PrivateMessage.Defines.toggleMax);
         $(obj).attr('toggle-status', 'min');
     }
 }
@@ -289,7 +289,7 @@ function messagesDGAction() {
     } else if(action == 'restore_trash') {
         $("#privatemessage input[type=hidden][name=action]").val('RestoreTrashMessage');
     } else if(action == 'delete') {
-        if (confirm(jaws.gadgets.PrivateMessage.confirmDelete)) {
+        if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
             $("#privatemessage input[type=hidden][name=action]").val('DeleteMessage');
         } else {
             return false;
@@ -304,7 +304,7 @@ function messagesDGAction() {
  * Trash Message
  */
 function trashMessage() {
-    if (confirm(jaws.gadgets.PrivateMessage.confirmDelete)) {
+    if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
         window.location.href = "{{trash_url}}";
     }
 }
@@ -313,7 +313,7 @@ function trashMessage() {
  * Delete Message
  */
 function deleteMessage() {
-    if (confirm(jaws.gadgets.PrivateMessage.confirmDelete)) {
+    if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
         window.location.href = "{{delete_url}}";
     }
 }
