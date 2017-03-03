@@ -23,7 +23,7 @@ class Blog_Actions_Admin_Default extends Jaws_Gadget_Action
     {
         $actions = array('Summary', 'NewEntry', 'ListEntries',
                          'ManageComments', 'ManageTrackbacks',
-                         'ManageCategories', 'AdditionalSettings');
+                         'ManageCategories', 'Types', 'AdditionalSettings');
         if (!in_array($action_selected, $actions)) {
             $action_selected = 'ListEntries';
         }
@@ -48,6 +48,11 @@ class Blog_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageCategories')) {
             $menubar->AddOption('ManageCategories', _t('BLOG_CATEGORIES'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=ManageCategories', 'images/stock/edit.png');
+        }
+        if ($this->gadget->GetPermission('ManageTypes')) {
+            $menubar->AddOption('Types', _t('BLOG_TYPES'),
+                                BASE_SCRIPT . '?gadget=Blog&amp;action=Types',
+                                'gadgets/Blog/Resources/images/categories.png');
         }
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption('AdditionalSettings', _t('BLOG_SETTINGS'),

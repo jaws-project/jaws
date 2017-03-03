@@ -205,8 +205,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
-            'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
-            'allow_comments:boolean', 'published:boolean', 'categories', 'image'
+            'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'type:integer',
+            'favorite:boolean', 'allow_comments:boolean', 'published:boolean', 'categories', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 
@@ -215,6 +215,44 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $blogTable->where('blog_entrycat.category_id', $cat);
         }
 
+        if (empty($limit)) {
+            $limit = $this->gadget->registry->fetch('last_entries_limit');
+        }
+
+        $blogTable->and()->where('published', true)->and()->where('blog.publishtime', $now, '<=');
+        $entries = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
+
+        // Check dynamic ACL
+        foreach ($entries as $key => $entry) {
+            foreach (array_filter(explode(',', $entry['categories'])) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    unset($entries[$key]);
+                }
+            }
+        }
+
+        return $entries;
+    }
+
+    /**
+     * Get last entries of all categories or just of only one type
+     *
+     * @access  public
+     * @param   int     $type    Type ID
+     * @param   int     $limit
+     * @return  mixed   Returns a list of recent entries and Jaws_Error on error
+     */
+    function GetRecentEntriesByType($type, $limit = 0)
+    {
+        $now = Jaws_DB::getInstance()->date();
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
+            'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'type:integer',
+            'favorite:boolean', 'allow_comments:boolean', 'published:boolean', 'categories', 'image'
+        );
+        $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
+        $blogTable->where('type', $type);
         if (empty($limit)) {
             $limit = $this->gadget->registry->fetch('last_entries_limit');
         }
@@ -299,7 +337,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'summary',
             'text', 'fast_url', 'meta_keywords', 'meta_description', 'trackbacks', 'published:boolean', 'image',
-            'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'allow_comments:boolean'
+            'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'allow_comments:boolean', 'favorite:boolean',
+            'type:integer'
         )->join('users', 'blog.user_id', 'users.id', 'left');
 
         if (is_numeric($id)) {
@@ -540,6 +579,38 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
         $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         $entries = $blogTable->orderBy('clicks desc')->fetchAll();
+
+        // Check dynamic ACL
+        foreach ($entries as $key => $entry) {
+            foreach (array_filter(explode(',', $entry['categories'])) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    unset($entries[$key]);
+                }
+            }
+        }
+
+        return $entries;
+    }
+
+    /**
+     * Get favorite posts
+     *
+     * @access  public
+     * @return  mixed   List of popular posts or Jaws_Error on error
+     */
+    function GetFavoritePosts()
+    {
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->limit($this->gadget->registry->fetch('favorite_limit'), 0);
+        $blogTable->select(
+            'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.fast_url', 'summary',
+            'text', 'clicks:integer', 'allow_comments', 'username', 'nickname', 'type:integer',
+            'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories', 'image'
+        );
+        $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
+        $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
+        $blogTable->and()->where('favorite', true);
+        $entries = $blogTable->orderBy('createtime desc')->fetchAll();
 
         // Check dynamic ACL
         foreach ($entries as $key => $entry) {

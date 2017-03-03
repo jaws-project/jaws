@@ -99,12 +99,14 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $allow_comments If entry should allow commnets
      * @param   bool    $trackbacks
      * @param   bool    $publish        If entry should be published
+     * @param   int     $type           Type
+     * @param   bool    $favorite       Favorite
      * @param   string  $timestamp      Entry timestamp (optional)
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the new post or Jaws_Error on failure
      */
     function NewEntry($user, $categories, $title, $summary, $content, $image, $fast_url, $meta_keywords, $meta_desc, $tags,
-                      $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
+                      $allow_comments, $trackbacks, $publish, $type, $favorite, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', $autoDraft === false);
@@ -119,6 +121,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['image']            = $image;
         $params['trackbacks']       = $trackbacks;
         $params['published']        = $this->gadget->GetPermission('PublishEntries')? (bool)$publish : false;
+        $params['type']             = $type;
+        $params['favorite']         = (bool)$favorite;
         $params['fast_url']         = $fast_url;
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
@@ -226,12 +230,15 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $allow_comments If entry should allow comments
      * @param   bool    $trackbacks
      * @param   bool    $publish        If entry should be published
+     * @param   int     $type           Type
+     * @param   bool    $favorite       Favorite
      * @param   string  $timestamp      Entry timestamp (optional)
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the post or Jaws_Error on failure
      */
     function UpdateEntry($post_id, $categories, $title, $summary, $content, $image, $fast_url, $meta_keywords,
-                         $meta_desc, $tags, $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
+                         $meta_desc, $tags, $allow_comments, $trackbacks, $publish,  $type, $favorite,
+                         $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', false);
@@ -241,6 +248,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['summary']          = $summary;
         $params['trackbacks']       = $trackbacks;
         $params['published']        = $publish;
+        $params['type']             = $type;
+        $params['favorite']         = (bool)$favorite;
         $params['allow_comments']   = $allow_comments;
         $params['categories']       = implode(',', $categories);
         $params['fast_url']         = $fast_url;

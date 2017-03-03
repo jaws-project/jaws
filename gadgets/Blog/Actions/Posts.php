@@ -230,6 +230,128 @@ class Blog_Actions_Posts extends Blog_Actions_Default
     }
 
     /**
+     * Get TypeEntries action params
+     *
+     * @access  private
+     * @return  array    list of TypeEntries action params
+     */
+    function TypeEntriesLayoutParams()
+    {
+        $result = array();
+        $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
+        $types = $cModel->GetCategories('Blog', 'Types');
+
+        if (!Jaws_Error::isError($types)) {
+            $pcats = array();
+            foreach ($types as $type) {
+                $pcats[$type['id']] = $type['title'];
+            }
+
+            $result[] = array(
+                'title' => _t('BLOG_TYPE'),
+                'value' => $pcats
+            );
+
+            $result[] = array(
+                'title' => _t('GLOBAL_COUNT'),
+                'value' => $this->gadget->registry->fetch('last_entries_limit')
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Displays the recent posts of a dynamic type
+     *
+     * @access  public
+     * @param   int $type    Type ID
+     * @param   int $limit
+     * @return  string  XHTML Template content
+     */
+    function TypeEntries($type = null, $limit = 0)
+    {
+        $pModel = $this->gadget->model->load('Posts');
+        $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
+        $typeInfo = $cModel->GetCategory($type);
+        if (Jaws_Error::isError($typeInfo)) {
+            return false;
+        }
+        $cat = $typeInfo['id'];
+        $title = _t('BLOG_RECENT_POSTS_BY_TYPE', $typeInfo['title']);
+        $entries = $pModel->GetRecentEntriesByType($type, (int)$limit);
+        if (Jaws_Error::IsError($entries) || empty($entries)) {
+            return false;
+        }
+
+        $tpl = $this->gadget->template->load('RecentTypePosts.html');
+        $tpl->SetBlock('recent_posts');
+        $tpl->SetVariable('cat',   empty($cat)? '0' : $cat);
+        $tpl->SetVariable('title', $title);
+        $date = Jaws_Date::getInstance();
+        foreach ($entries as $e) {
+            $tpl->SetBlock('recent_posts/item');
+
+            $id = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];
+            $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
+
+            $summary = $e['summary'];
+            $text    = $e['text'];
+
+            // for compatibility with old versions
+            $more_pos = Jaws_UTF8::strpos($text, '[more]');
+            if ($more_pos !== false) {
+                $summary = Jaws_UTF8::substr($text, 0, $more_pos);
+                $text    = Jaws_UTF8::str_replace('[more]', '', $text);
+
+                // Update this entry to split summary and body of post
+                $pModel->SplitEntry($e['id'], $summary, $text);
+            }
+
+            $summary = empty($summary)? $text : $summary;
+            $summary = $this->gadget->plugin->parse($summary);
+            $text    = $this->gadget->plugin->parse($text);
+
+            if (Jaws_UTF8::trim($text) != '') {
+                $tpl->SetBlock('recent_posts/item/read-more');
+                $tpl->SetVariable('url', $perm_url);
+                $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
+                $tpl->ParseBlock('recent_posts/item/read-more');
+            }
+
+            $tpl->SetVariable('url', $perm_url);
+            $tpl->SetVariable('title', $e['title']);
+            $tpl->SetVariable('text', $summary);
+            $tpl->SetVariable('username', $e['username']);
+            $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
+            $tpl->SetVariable('name', $e['nickname']);
+            $tpl->SetVariable(
+                'author-url',
+                $this->gadget->urlMap('ViewAuthorPage', array('id' => $e['username']))
+            );
+            $tpl->SetVariable('createtime', $date->Format($e['publishtime']));
+            $tpl->SetVariable('createtime-monthname', $date->Format($e['publishtime'], 'MN'));
+            $tpl->SetVariable('createtime-month', $date->Format($e['publishtime'], 'm'));
+            $tpl->SetVariable('createtime-day', $date->Format($e['publishtime'], 'd'));
+            $tpl->SetVariable('createtime-year', $date->Format($e['publishtime'], 'Y'));
+            $tpl->SetVariable('createtime-time', $date->Format($e['publishtime'], 'g:ia'));
+
+            if(empty($e['image'])) {
+                $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+                $tpl->SetVariable('url_image', 'data:image/png;base64,');
+            } else {
+                $tpl->SetVariable('image', $e['image']);
+                $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $e['image']);
+            }
+
+            $tpl->ParseBlock('recent_posts/item');
+        }
+
+        $tpl->ParseBlock('recent_posts');
+        return $tpl->Get();
+    }
+
+    /**
      * Get popular posts
      *
      * @access  public
@@ -283,6 +405,63 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         }
 
         $tpl->ParseBlock('popular_posts');
+        return $tpl->Get();
+    }
+
+    /**
+     * Get favorite posts
+     *
+     * @access  public
+     * @return  string  XHTML Template content
+     */
+    function FavoritePosts()
+    {
+        $tpl = $this->gadget->template->load('FavoritePosts.html');
+        $tpl->SetBlock('favorite_posts');
+        $tpl->SetVariable('title', _t('BLOG_FAVORITE_POSTS'));
+
+        $model = $this->gadget->model->load('Posts');
+        $entries = $model->GetFavoritePosts();
+        if (!Jaws_Error::IsError($entries)) {
+            $date = Jaws_Date::getInstance();
+            foreach ($entries as $entry) {
+                $tpl->SetBlock('favorite_posts/item');
+
+                $tpl->SetVariablesArray($entry);
+                $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
+                $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
+                $tpl->SetVariable('url', $perm_url);
+
+                $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
+                $tpl->SetVariable(
+                    'author-url',
+                    $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username']))
+                );
+                $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
+                $tpl->SetVariable('createtime',           $date->Format($entry['publishtime']));
+                $tpl->SetVariable('createtime-monthname', $date->Format($entry['publishtime'], 'MN'));
+                $tpl->SetVariable('createtime-monthabbr', $date->Format($entry['publishtime'], 'M'));
+                $tpl->SetVariable('createtime-month',     $date->Format($entry['publishtime'], 'm'));
+                $tpl->SetVariable('createtime-dayname',   $date->Format($entry['publishtime'], 'DN'));
+                $tpl->SetVariable('createtime-dayabbr',   $date->Format($entry['publishtime'], 'D'));
+                $tpl->SetVariable('createtime-day',       $date->Format($entry['publishtime'], 'd'));
+                $tpl->SetVariable('createtime-year',      $date->Format($entry['publishtime'], 'Y'));
+                $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'g:ia'));
+                $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
+
+                if(empty($entry['image'])) {
+                    $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+                    $tpl->SetVariable('url_image', 'data:image/png;base64,');
+                } else {
+                    $tpl->SetVariable('image', $entry['image']);
+                    $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $entry['image']);
+                }
+
+                $tpl->ParseBlock('favorite_posts/item');
+            }
+        }
+
+        $tpl->ParseBlock('favorite_posts');
         return $tpl->Get();
     }
 

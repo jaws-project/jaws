@@ -50,12 +50,22 @@ $actions['CategoryEntries'] = array(
     'parametric' => true,
     'file'   => 'Posts',
 );
+$actions['TypeEntries'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Posts',
+);
 $actions['CategoriesList'] = array(
     'normal' => true,
     'layout' => true,
     'file'   => 'Categories',
 );
 $actions['PopularPosts'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'Posts',
+);
+$actions['FavoritePosts'] = array(
     'normal' => true,
     'layout' => true,
     'file'   => 'Posts',
@@ -253,4 +263,8 @@ $admin_actions['TrackbackMarkAs'] = array(
 $admin_actions['AutoDraft'] = array(
     'standalone' => true,
     'file' => 'Ajax',
+);
+$admin_actions['Types'] = array(
+    'normal' => true,
+    'file'   => 'Types',
 );
