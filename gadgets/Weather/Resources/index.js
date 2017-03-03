@@ -327,7 +327,7 @@ function initiateRegionsDG() {
  * Initiates gadget
  */
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'UserRegionsList':
             initiateRegionsDG();
             break;

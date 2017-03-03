@@ -279,7 +279,7 @@ function showMyLocation() {
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Regions':
             initWeather();
             break;
