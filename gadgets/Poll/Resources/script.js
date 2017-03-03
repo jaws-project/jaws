@@ -525,7 +525,7 @@ function showResult(pid)
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Polls':
             currentAction = 'Polls';
             initDataGrid('polls_datagrid', PollAjax);
