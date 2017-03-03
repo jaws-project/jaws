@@ -408,7 +408,7 @@ function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
  */
 function trackbackDelete(row_id)
 {
-    var confirmation = confirm(jaws.gadgets.Blog.deleteConfirm);
+    var confirmation = confirm(jaws.Blog.Defines.deleteConfirm);
     if (confirmation) {
         BlogAjax.callAsync('DeleteTrackbacks', row_id);
     }
@@ -427,7 +427,7 @@ function trackbackDGAction(combo)
 
      if (combo.value == 'delete') {
         if (selectedRows) {
-            var confirmation = confirm(jaws.gadgets.Blog.deleteConfirm);
+            var confirmation = confirm(jaws.Blog.Defines.deleteConfirm);
             if (confirmation) {
                 BlogAjax.callAsync('DeleteTrackbacks', rows);
             }
@@ -452,7 +452,7 @@ function entryDGAction(combo)
 
      if (combo.value == 'delete') {
         if (selectedRows) {
-            var confirmation = confirm(jaws.gadgets.Blog.deleteConfirm);
+            var confirmation = confirm(jaws.Blog.Defines.deleteConfirm);
             if (confirmation) {
                 BlogAjax.callAsync('DeleteEntries', rows);
             }
@@ -498,7 +498,7 @@ function editCategory(id)
     if (id == 0) return;
     selectedCategory = id;
 
-    $('#legend_title').html(jaws.gadgets.Blog.editCategory_title);
+    $('#legend_title').html(jaws.Blog.Defines.editCategory_title);
     $('#btn_delete').css('display', 'inline');
     var category = BlogAjax.callSync('GetCategory', id);
 
@@ -544,7 +544,7 @@ function saveCategory(form)
 {
     if (!$('#name').val())
     {
-        alert(jaws.gadgets.Blog.incompleteCategoryFields);
+        alert(jaws.Blog.Defines.incompleteCategoryFields);
         return false;
     }
 
@@ -587,7 +587,7 @@ function fillCatInfoForm(content)
  */
 function deleteCategory()
 {
-    if (confirm(jaws.gadgets.Blog.deleteMessage)) {
+    if (confirm(jaws.Blog.Defines.deleteMessage)) {
         BlogAjax.callAsync('DeleteCategory2', selectedCategory);
     }
 }
@@ -742,7 +742,7 @@ function previewImage(fileElement) {
  * Stops doing a certain action
  */
 function stopAction() {
-    $('#legend_title').html(jaws.gadgets.Blog.addCategory_title);
+    $('#legend_title').html(jaws.Blog.Defines.addCategory_title);
     $('#btn_delete').css('display', 'none');
     selectedCategory = null;
 
@@ -773,7 +773,7 @@ $(document).ready(function() {
             break;
 
         case 'ManageCategories':
-            $('#legend_title').html(jaws.gadgets.Blog.addCategory_title);
+            $('#legend_title').html(jaws.Blog.Defines.addCategory_title);
             break;
     }
 });
