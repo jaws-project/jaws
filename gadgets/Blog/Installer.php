@@ -173,7 +173,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.1.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.0.0.xml');
+            $result = $this->installSchema('1.1.0.xml', array(), '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -186,6 +186,13 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images';
             if (!Jaws_Utils::mkdir($new_dir, 1)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
+            }
+        }
+
+        if (version_compare($old, '1.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
             }
         }
 
