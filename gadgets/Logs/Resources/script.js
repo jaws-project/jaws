@@ -161,7 +161,7 @@ function saveSettings()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Logs':
             $('#gadgets_filter').selectedIndex = 0;
             initDatePicker('from_date');
