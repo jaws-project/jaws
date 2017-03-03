@@ -486,7 +486,7 @@ function unselectDataGridRow()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Maps':
             JawsDataGrid.name = 'maps_datagrid';
             $('#legend_title').html(jaws.UrlMapper.Defines.addMap_title);
