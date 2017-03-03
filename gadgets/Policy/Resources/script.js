@@ -363,7 +363,7 @@ function stopAction()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'IPBlocking':
             currentAction = 'IPBlocking';
             initDataGrid('blocked_ips_datagrid', PolicyAjax);
