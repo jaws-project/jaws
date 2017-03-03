@@ -42,7 +42,7 @@ function stopAction()
 function editReport(id)
 {
     selectedReport = id;
-    $('#reportModalLabel').html(jaws.gadgets.AbuseReporter.lbl_editReport);
+    $('#reportModalLabel').html(jaws.AbuseReporter.Defines.lbl_editReport);
     var reportInfo = AbuseReporterAjax.callSync('GetReport', {'id': selectedReport});
     if (reportInfo) {
         $('#report-form input, #report-form select, #report-form textarea').each(
@@ -76,7 +76,7 @@ function saveReport()
  */
 function deleteReport(id)
 {
-    if (confirm(jaws.gadgets.AbuseReporter.confirmDelete)) {
+    if (confirm(jaws.AbuseReporter.Defines.confirmDelete)) {
         AbuseReporterAjax.callAsync('DeleteReport', {'id': id});
     }
 }
@@ -88,27 +88,27 @@ function reportsDataSource(options, callback) {
     // define the columns for the grid
     var columns = [
         {
-            'label': jaws.gadgets.AbuseReporter.lbl_gadget,
+            'label': jaws.AbuseReporter.Defines.lbl_gadget,
             'property': 'gadget',
             'sortable': true
         },
         {
-            'label': jaws.gadgets.AbuseReporter.lbl_action,
+            'label': jaws.AbuseReporter.Defines.lbl_action,
             'property': 'action',
             'sortable': true
         },
         {
-            'label': jaws.gadgets.AbuseReporter.lbl_type,
+            'label': jaws.AbuseReporter.Defines.lbl_type,
             'property': 'type',
             'sortable': true
         },
         {
-            'label': jaws.gadgets.AbuseReporter.lbl_priority,
+            'label': jaws.AbuseReporter.Defines.lbl_priority,
             'property': 'priority',
             'sortable': true
         },
         {
-            'label': jaws.gadgets.AbuseReporter.lbl_status,
+            'label': jaws.AbuseReporter.Defines.lbl_status,
             'property': 'status',
             'sortable': true
         }
@@ -166,7 +166,7 @@ function initiateReportsDG() {
         items: [
             {
                 name: 'edit',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.AbuseReporter.lbl_edit,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.AbuseReporter.Defines.lbl_edit,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editReport(helpers.rowData.id);
@@ -176,7 +176,7 @@ function initiateReportsDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.AbuseReporter.lbl_delete,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.AbuseReporter.Defines.lbl_delete,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteReport(helpers.rowData.id);
