@@ -209,7 +209,7 @@ class Jaws_Widgets_CKEditor extends Container
             );
             $GLOBALS['app']->Layout->setVariable(
                 'editorMediaBrowser',
-                BASE_SCRIPT. '?gadget=Directory&standalone=1'
+                BASE_SCRIPT. '?gadget=Directory&action=DirExplorer'
             );
         }
 
