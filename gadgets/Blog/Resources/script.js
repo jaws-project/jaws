@@ -756,7 +756,7 @@ function stopAction() {
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'EditEntry':
         case 'NewEntry':
             toggleUpdate(false);
