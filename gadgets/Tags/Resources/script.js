@@ -84,7 +84,7 @@ function stopTagAction()
     $('#meta_description').val('');
     $('#btn_cancel').css('display', 'none');
     $('#name').prop('disabled', false);
-    $('#legend_title').html(jaws.gadgets.Tags.addTagTitle);
+    $('#legend_title').html(jaws.Tags.Defines.addTagTitle);
 
     unselectGridRow('tags_datagrid');
     $('#name').focus();
@@ -105,7 +105,7 @@ function editTag(rowElement, id)
     $('#meta_keywords').val(tag['meta_keywords']);
     $('#meta_description').val(tag['meta_description']);
     $('#btn_cancel').css('display', 'inline');
-    $('#legend_title').html(jaws.gadgets.Tags.editTagTitle);
+    $('#legend_title').html(jaws.Tags.Defines.editTagTitle);
 }
 
 /**
@@ -114,7 +114,7 @@ function editTag(rowElement, id)
 function updateTag()
 {
     if (!$('#name').val()) {
-        alert(jaws.gadgets.Tags.incompleteTagFields);
+        alert(jaws.Tags.Defines.incompleteTagFields);
         return false;
     }
 
@@ -149,7 +149,7 @@ function updateTag()
 function deleteTag(id)
 {
     stopTagAction();
-    if (confirm(jaws.gadgets.Tags.confirmTagDelete)) {
+    if (confirm(jaws.Tags.Defines.confirmTagDelete)) {
         TagsAjax.callAsync('DeleteTags', new Array(id));
     }
     unselectGridRow('tags_datagrid');
@@ -167,13 +167,13 @@ function tagsDGAction(combo)
     }
 
     if (combo.val() == 'delete') {
-        var confirmation = confirm(jaws.gadgets.Tags.confirmTagDelete);
+        var confirmation = confirm(jaws.Tags.Defines.confirmTagDelete);
         if (confirmation) {
             TagsAjax.callAsync('DeleteTags', rows);
         }
     } else if (combo.val() == 'merge') {
         if(rows.length<2) {
-            alert(jaws.gadgets.Tags.selectMoreThanOneTags);
+            alert(jaws.Tags.Defines.selectMoreThanOneTags);
             return;
         }
         var newName = prompt("Please enter new tag name:");

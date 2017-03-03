@@ -236,15 +236,15 @@ function onlineUsersDGAction(combo)
     }
 
     if (combo.val() == 'delete') {
-        if (confirm(jaws.gadgets.Users.confirmThrowOut)) {
+        if (confirm(jaws.Users.Defines.confirmThrowOut)) {
             UsersAjax.callAsync('DeleteSession', rows);
         }
     } else if (combo.val() == 'block_ip') {
-        if (confirm(jaws.gadgets.Users.confirmBlockIP)) {
+        if (confirm(jaws.Users.Defines.confirmBlockIP)) {
             UsersAjax.callAsync('IPBlock', rows);
         }
     } else if (combo.val() == 'block_agent') {
-        if (confirm(jaws.gadgets.Users.confirmBlockAgent)) {
+        if (confirm(jaws.Users.Defines.confirmBlockAgent)) {
             UsersAjax.callAsync('AgentBlock', rows);
         }
     }
@@ -258,7 +258,7 @@ function saveUser()
     switch (currentAction) {
         case 'UserAccount':
             if ($('#pass1').val() != $('#pass2').val()) {
-                alert(jaws.gadgets.Users.wrongPassword);
+                alert(jaws.Users.Defines.wrongPassword);
                 return false;
             }
 
@@ -266,7 +266,7 @@ function saveUser()
                 !$('#nickname').val() ||
                 !$('#email').val())
             {
-                alert(jaws.gadgets.Users.incompleteUserFields);
+                alert(jaws.Users.Defines.incompleteUserFields);
                 return false;
             }
 
@@ -284,7 +284,7 @@ function saveUser()
 
             if ($('#uid').val() == 0) {
                 if (!$('#pass1').val()) {
-                    alert(jaws.gadgets.Users.incompleteUserFields);
+                    alert(jaws.Users.Defines.incompleteUserFields);
                     return false;
                 }
 
@@ -386,7 +386,7 @@ function deleteUser(rowElement, uid)
 {
     stopUserAction();
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
-    if (confirm(jaws.gadgets.Users.confirmUserDelete)) {
+    if (confirm(jaws.Users.Defines.confirmUserDelete)) {
         UsersAjax.callAsync('DeleteUser', uid);
     }
     unselectGridRow('users_datagrid');
@@ -399,7 +399,7 @@ function deleteGroup(rowElement, gid)
 {
     stopGroupAction();
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
-    if (confirm(jaws.gadgets.Users.confirmGroupDelete)) {
+    if (confirm(jaws.Users.Defines.confirmGroupDelete)) {
         UsersAjax.callAsync('DeleteGroup', gid);
     }
     unselectGridRow('groups_datagrid');
@@ -412,7 +412,7 @@ function editUser(rowElement, uid)
 {
     $('#uid').val(uid);
     currentAction = 'UserAccount';
-    $('#legend_title').html(jaws.gadgets.Users.editUser_title);
+    $('#legend_title').html(jaws.Users.Defines.editUser_title);
     $('#workarea').html(cachedUserForm);
     initDatePicker('expiry_date');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
@@ -438,7 +438,7 @@ function editACL(rowElement, id, action)
         cachedACLForm = UsersAjax.callSync('GetACLUI');
     }
     $('#workarea').html(cachedACLForm);
-    $('#legend_title').html(jaws.gadgets.Users.editACL_title);
+    $('#legend_title').html(jaws.Users.Defines.editACL_title);
     selectedId = id;
     currentAction = action;
     chkImages = $('#acl img').map(function() {
@@ -510,7 +510,7 @@ function editUserGroups(rowElement, uid)
 {
     $('#uid').val(uid);
     currentAction = 'UserGroups';
-    $('#legend_title').html(jaws.gadgets.Users.editUserGroups_title);
+    $('#legend_title').html(jaws.Users.Defines.editUserGroups_title);
     if (cachedUserGroupsForm == null) {
         cachedUserGroupsForm = UsersAjax.callSync('UserGroupsUI');
     }
@@ -532,7 +532,7 @@ function editPersonal(rowElement, uid)
 {
     $('#uid').val(uid);
     currentAction = 'UserPersonal';
-    $('#legend_title').html(jaws.gadgets.Users.editPersonal_title);
+    $('#legend_title').html(jaws.Users.Defines.editPersonal_title);
     if (cachedPersonalForm == null) {
         cachedPersonalForm = UsersAjax.callSync('PersonalUI');
     }
@@ -560,7 +560,7 @@ function editContacts(rowElement, uid)
 {
     $('#uid').val(uid);
     currentAction = 'UserContacts';
-    $('#legend_title').html(jaws.gadgets.Users.editContacts_title);
+    $('#legend_title').html(jaws.Users.Defines.editContacts_title);
     if (cachedContactsForm == null) {
         cachedContactsForm = UsersAjax.callSync('ContactsUI');
     }
@@ -634,7 +634,7 @@ function stopUserAction()
     $('#uid').val(0);
     currentAction = 'UserAccount';
     unselectGridRow('users_datagrid');
-    $('#legend_title').html(jaws.gadgets.Users.addUser_title);
+    $('#legend_title').html(jaws.Users.Defines.addUser_title);
     $('#workarea').html(cachedUserForm);
     initDatePicker('expiry_date');
 }
@@ -646,7 +646,7 @@ function editGroup(rowElement, gid)
 {
     selectedId = gid;
     currentAction = 'Group';
-    $('#legend_title').html(jaws.gadgets.Users.editGroup_title);
+    $('#legend_title').html(jaws.Users.Defines.editGroup_title);
     $('#workarea').html(cachedGroupForm);
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
 
@@ -664,7 +664,7 @@ function editGroupUsers(rowElement, gid)
 {
     selectedId = gid;
     currentAction = 'GroupUsers';
-    $('#legend_title').html(jaws.gadgets.Users.editGroupUsers_title);
+    $('#legend_title').html(jaws.Users.Defines.editGroupUsers_title);
     if (cachedGroupUsersForm == null) {
         cachedGroupUsersForm = UsersAjax.callSync('GroupUsersUI');
     }
@@ -687,7 +687,7 @@ function saveGroup()
     switch(currentAction) {
         case 'Group':
             if (!$('#name').val() || !$('#title').val()) {
-                alert(jaws.gadgets.Users.incompleteGroupFields);
+                alert(jaws.Users.Defines.incompleteGroupFields);
                 return false;
             }
 
@@ -755,7 +755,7 @@ function stopGroupAction()
     selectedId = 0;
     currentAction = 'Group';
     unselectGridRow('groups_datagrid');
-    $('#legend_title').html(jaws.gadgets.Users.addGroup_title);
+    $('#legend_title').html(jaws.Users.Defines.addGroup_title);
     $('#workarea').html(cachedGroupForm);
 }
 
@@ -779,7 +779,7 @@ function saveSettings()
 function updateMyAccount()
 {
     if ($('#pass1').val() != $('#pass2').val()) {
-        alert(jaws.gadgets.Users.wrongPassword);
+        alert(jaws.Users.Defines.wrongPassword);
         return false;
     }
 
@@ -787,7 +787,7 @@ function updateMyAccount()
         !$('#nickname').val() ||
         !$('#email').val())
     {
-        alert(jaws.gadgets.Users.incompleteUserFields);
+        alert(jaws.Users.Defines.incompleteUserFields);
         return false;
     }
 
@@ -846,7 +846,7 @@ function aclTreeDataSource(openedParentData, callback) {
 
     var pid = openedParentData.id == undefined ? 0 : openedParentData.id;
     if (pid == 0) {
-        $.each(jaws.gadgets.Users.GADGETS, function (gadget, title) {
+        $.each(jaws.Users.Defines.GADGETS, function (gadget, title) {
             childNodesArray.push(
                 {
                     id: gadget,

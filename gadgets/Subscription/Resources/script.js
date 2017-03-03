@@ -65,7 +65,7 @@ function subscriptionDGAction(combo)
         if (rows.length < 1) {
             return;
         }
-        var confirmation = confirm(jaws.gadgets.Subscription.confirmSubscriptionDelete);
+        var confirmation = confirm(jaws.Subscription.Defines.confirmSubscriptionDelete);
         if (confirmation) {
             SubscriptionAjax.callAsync('DeleteSubscriptions', rows);
         }

@@ -81,7 +81,7 @@ function saveMenus()
 {
     if (currentAction == 'Groups') {
         if (!$('#title').val()) {
-            alert(jaws.gadgets.Menu.incompleteFields);
+            alert(jaws.Menu.Defines.incompleteFields);
             return false;
         }
         cacheMenuForm = null;
@@ -111,7 +111,7 @@ function saveMenus()
         }
     } else {
         if (!$('#title').val() || ($('#references').prop('selectedIndex') == -1)) {
-            alert(jaws.gadgets.Menu.incompleteFields);
+            alert(jaws.Menu.Defines.incompleteFields);
             return false;
         }
         if (selectedMenu == null) {
@@ -217,7 +217,7 @@ function addGroup()
     }
     currentAction = 'Groups';
 
-    $('#edit_area span').first().html(jaws.gadgets.Menu.addGroupTitle);
+    $('#edit_area span').first().html(jaws.Menu.Defines.addGroupTitle);
     selectedGroup = null;
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'none');
@@ -261,11 +261,11 @@ function addMenu(gid, pid)
 
     if (pid == 0) {
         $('#edit_area').find('span').first().html(
-            jaws.gadgets.Menu.addMenuTitle + ' - ' + $('#group_'+gid).find('a').first().html()
+            jaws.Menu.Defines.addMenuTitle + ' - ' + $('#group_'+gid).find('a').first().html()
         );
     } else {
         $('#edit_area').find('span').first().html(
-            jaws.gadgets.Menu.addMenuTitle + ' - ' + $('#group_'+gid).find('a').first().html() +
+            jaws.Menu.Defines.addMenuTitle + ' - ' + $('#group_'+gid).find('a').first().html() +
             ' - ' + $('#menu_'+pid).find('a').first().html()
         );
     }
@@ -298,7 +298,7 @@ function editGroup(gid)
     currentAction = 'Groups';
     selectedGroup = gid;
 
-    $('#edit_area span').first().html(jaws.gadgets.Menu.editGroupTitle + ' - ' + $('#group_'+gid + ' a').first().html());
+    $('#edit_area span').first().html(jaws.Menu.Defines.editGroupTitle + ' - ' + $('#group_'+gid + ' a').first().html());
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
@@ -324,7 +324,7 @@ function editMenu(mid)
     }
     currentAction = 'Menus';
 
-    $('#edit_area span').first().html(jaws.gadgets.Menu.editMenuTitle + ' - ' + $('#menu_'+mid + ' a').first().html());
+    $('#edit_area span').first().html(jaws.Menu.Defines.editMenuTitle + ' - ' + $('#menu_'+mid + ' a').first().html());
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
@@ -368,7 +368,7 @@ function editMenu(mid)
     if (!menuInfo['image']) {
         $('#image').attr('src', 'gadgets/Menu/Resources/images/no-image.png?' + $.now());
     } else {
-        $('#image').attr('src', jaws.gadgets.Menu.base_script + '?gadget=Menu&action=LoadImage&id=' + menuInfo['id'] + '&' + $.now());
+        $('#image').attr('src', jaws.Menu.Defines.base_script + '?gadget=Menu&action=LoadImage&id=' + menuInfo['id'] + '&' + $.now());
     }
 }
 
@@ -379,7 +379,7 @@ function delMenus()
 {
     if (currentAction == 'Groups') {
         var gid = selectedGroup;
-        var msg = jaws.gadgets.Menu.confirmGroupDelete;
+        var msg = jaws.Menu.Defines.confirmGroupDelete;
         msg = msg.substr(0, msg.indexOf('%s%')) +
               $('#group_'+gid).find('a').first().html() +
               msg.substr(msg.indexOf('%s%') + 3);
@@ -394,7 +394,7 @@ function delMenus()
         }
     } else {
         var mid = selectedMenu;
-        var msg = jaws.gadgets.Menu.confirmMenuDelete;
+        var msg = jaws.Menu.Defines.confirmMenuDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('#menu_'+mid).find('a').first().html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             var response = MenuAjax.callSync('DeleteMenu', mid);

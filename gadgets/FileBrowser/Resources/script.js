@@ -169,7 +169,7 @@ function saveFile()
     if (!$('#uploadfile').val() &&
         !$('#filename').val())
     {
-        alert(jaws.gadgets.FileBrowser.incompleteFields);
+        alert(jaws.FileBrowser.Defines.incompleteFields);
         return false;
     }
     if ($('#upload_switch').prop('checked') &&
@@ -195,7 +195,7 @@ function saveFile()
  */
 function delFile(element, file)
 {
-    if (confirm(jaws.gadgets.FileBrowser.confirmFileDelete)) {
+    if (confirm(jaws.FileBrowser.Defines.confirmFileDelete)) {
         FileBrowserAjax.callAsync('DeleteFile2', [$('#path').val(), file]);
     }
 }
@@ -227,7 +227,7 @@ function editDir(element, dirname)
 function saveDir()
 {
     if (!$('#dirname').val()) {
-        alert(jaws.gadgets.FileBrowser.incompleteFields);
+        alert(jaws.FileBrowser.Defines.incompleteFields);
         return false;
     }
 
@@ -248,7 +248,7 @@ function saveDir()
  */
 function delDir(element, dir)
 {
-    if (confirm(jaws.gadgets.FileBrowser.confirmDirDelete)) {
+    if (confirm(jaws.FileBrowser.Defines.confirmDirDelete)) {
         FileBrowserAjax.callAsync('DeleteDir2', [$('#path').val(), dir]);
     }
     
@@ -296,7 +296,7 @@ function stopAction(tab)
 }
 
 $(document).ready(function () {
-    $('#path').val(jaws.gadgets.FileBrowser.path);
+    $('#path').val(jaws.FileBrowser.Defines.path);
     stopAction('file');
     initDataGrid('fb_datagrid', FileBrowserAjax, 'getFiles');
 });

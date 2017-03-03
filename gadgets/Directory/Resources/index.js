@@ -36,7 +36,7 @@ function stopAction()
  * Submits file data to create or update
  */
 function deleteFile(id) {
-    if (confirm(jaws.gadgets.Directory.confirmDelete)) {
+    if (confirm(jaws.Directory.Defines.confirmDelete)) {
         DirectoryAjax.callAsync('DeleteFile', {fileId: id});
     }
 }

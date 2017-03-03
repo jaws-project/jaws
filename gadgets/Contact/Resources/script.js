@@ -162,7 +162,7 @@ function stopAction()
 function editContact(element, id)
 {
     currentAction = 'Contacts';
-    $('#legend_title').html(jaws.gadgets.Contact.messageDetail_title);
+    $('#legend_title').html(jaws.Contact.Defines.messageDetail_title);
     if (cacheContactForm != null) {
         $('#c_work_area').html(cacheContactForm);
     }
@@ -188,7 +188,7 @@ function editContact(element, id)
     $('#btn_cancel').css('display', 'inline');
 
     if (contact['attachment']) {
-        $('#attachment').attr('href', jaws.gadgets.Contact.dataURL + contact['attachment']);
+        $('#attachment').attr('href', jaws.Contact.Defines.dataURL + contact['attachment']);
         $('#attachment').html(contact['attachment']);
         $('#tr_attachment').show();
     } else {
@@ -213,7 +213,7 @@ function editReply(element, id)
     currentAction = 'Reply';
 
     selectedContact = id;
-    $('#legend_title').html(jaws.gadgets.Contact.contactReply_title);
+    $('#legend_title').html(jaws.Contact.Defines.contactReply_title);
     $('#c_work_area').html(cacheReplyForm);
     var replyData = ContactAjax.callSync('GetReply', selectedContact);
     $('#id').val(replyData['id']);
@@ -251,7 +251,7 @@ function deleteContact(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent());
-    if (confirm(jaws.gadgets.Contact.confirmContactDelete)) {
+    if (confirm(jaws.Contact.Defines.confirmContactDelete)) {
         ContactAjax.callAsync('DeleteContact', id);
     }
     unselectDataGridRow();
@@ -298,7 +298,7 @@ function updateRecipient()
     if (!$('#name').val() ||
         !$('#email').val() ||
         !isValidEmail($('#email')[0].value.trim())) {
-        alert(jaws.gadgets.Contact.incompleteRecipientFields);
+        alert(jaws.Contact.Defines.incompleteRecipientFields);
         return;
     }
 
@@ -322,7 +322,7 @@ function deleteRecipient(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent());
-    if (confirm(jaws.gadgets.Contact.confirmRecipientDelete)) {
+    if (confirm(jaws.Contact.Defines.confirmRecipientDelete)) {
         ContactAjax.callAsync('DeleteRecipient', id);
     }
     unselectDataGridRow();
@@ -377,7 +377,7 @@ function updateUsers(group)
         group = false;
     }
     var users = ContactAjax.callSync('GetUsers', group);
-    $('#users').empty().append($('<option>').html(jaws.gadgets.Contact.lblAllGroupUsers).val(0));
+    $('#users').empty().append($('<option>').html(jaws.Contact.Defines.lblAllGroupUsers).val(0));
     $.each(users, function(i, user) {
         $('#users').append($('<option>').html(user['nickname']).val(user['id']));
     });
@@ -496,7 +496,7 @@ function sendEmail()
 {
     if ($('#options_1').prop('checked')) {
         if ($('#users')[0].options.length <= 1) {
-            alert(jaws.gadgets.Contact.groupHasNoUser);
+            alert(jaws.Contact.Defines.groupHasNoUser);
             $('#groups')[0].focus();
             return;
         }
@@ -509,7 +509,7 @@ function sendEmail()
             !$('#cc').val() &&
             !$('#bcc').val())
         {
-            alert(jaws.gadgets.Contact.incompleteMailerFields);
+            alert(jaws.Contact.Defines.incompleteMailerFields);
             $('#to').focus();
             return;
         }
@@ -519,14 +519,14 @@ function sendEmail()
     }
 
     if (!$('#subject').val()) {
-        alert(jaws.gadgets.Contact.incompleteMailerFields);
+        alert(jaws.Contact.Defines.incompleteMailerFields);
         $('#subject')[0].focus();
         return;
     }
 
     var body = getEditorValue('#message');
     if (body == '') {
-        alert(jaws.gadgets.Contact.incompleteMailerFields);
+        alert(jaws.Contact.Defines.incompleteMailerFields);
         $('#message')[0].focus();
         return;
     }

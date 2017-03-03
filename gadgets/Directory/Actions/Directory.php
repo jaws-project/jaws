@@ -581,7 +581,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         // Stream file
         if (!Jaws_Utils::Download($filename, $file['user_filename'], $file['mime_type'])) {
-            return Jaws_HTTPError::Get(500);
+            return Jaws_HTTPError::Get(404);
         }
 
         return true;

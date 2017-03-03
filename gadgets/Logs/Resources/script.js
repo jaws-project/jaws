@@ -91,17 +91,17 @@ function logsDGAction(combo)
             return;
         }
 
-        var confirmation = confirm(jaws.gadgets.Logs.confirmLogsDelete);
+        var confirmation = confirm(jaws.Logs.Defines.confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogs', rows);
         }
     } else if (combo.val() == 'deleteAll') {
-        var confirmation = confirm(jaws.gadgets.Logs.confirmLogsDelete);
+        var confirmation = confirm(jaws.Logs.Defines.confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':null});
         }
     } else if (combo.val() == 'deleteFiltered') {
-        var confirmation = confirm(jaws.gadgets.Logs.confirmLogsDelete);
+        var confirmation = confirm(jaws.Logs.Defines.confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':filters});
         }

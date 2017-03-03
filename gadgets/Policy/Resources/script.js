@@ -127,7 +127,7 @@ function toggleCaptcha(field)
 function saveIPRange()
 {
     if (!$('#from_ipaddress').val()) {
-        alert(jaws.gadgets.Policy.incompleteFields);
+        alert(jaws.Policy.Defines.incompleteFields);
         return false;
     }
 
@@ -174,7 +174,7 @@ function deleteIPRange(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent()[0]);
-    var answer = confirm(jaws.gadgets.Policy.confirmIPRangeDelete);
+    var answer = confirm(jaws.Policy.Defines.confirmIPRangeDelete);
     if (answer) {
         PolicyAjax.callAsync('DeleteIPRange', id);
     }
@@ -187,7 +187,7 @@ function deleteIPRange(element, id)
 function saveAgent()
 {
     if (!$('#agent').val()) {
-        alert(jaws.gadgets.Policy.incompleteFields);
+        alert(jaws.Policy.Defines.incompleteFields);
         return false;
     }
 
@@ -223,7 +223,7 @@ function deleteAgent(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent()[0]);
-    var answer = confirm(jaws.gadgets.Policy.confirmAgentDelete);
+    var answer = confirm(jaws.Policy.Defines.confirmAgentDelete);
     if (answer) {
         PolicyAjax.callAsync('DeleteAgent', id);
     }

@@ -95,7 +95,7 @@ function setButtonTitle(title)
 function change_lang_option()
 {
     if (LangDataChanged) {
-        var answer = confirm(jaws.gadgets.Languages.confirmSaveData);
+        var answer = confirm(jaws.Languages.Defines.confirmSaveData);
         if (answer) {
             save_lang_data();
         }
@@ -109,7 +109,7 @@ function change_lang_option()
         $('#lang_code').val('');
         $('#lang_name').val('');
         if ($('#btn_lang')) {
-            setButtonTitle(jaws.gadgets.Languages.add_language_title);
+            setButtonTitle(jaws.Languages.Defines.add_language_title);
         } else {
             $('#lang_name').prop('disabled', true);
         }
@@ -123,7 +123,7 @@ function change_lang_option()
         $('#lang_code').val($('#lang :selected').val());
         $('#lang_name').val($('#lang :selected').text());
         if ($('#btn_lang')) {
-            setButtonTitle(jaws.gadgets.Languages.save_language_title);
+            setButtonTitle(jaws.Languages.Defines.save_language_title);
         } else {
             $('#lang_name').prop('disabled', true);
         }

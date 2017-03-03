@@ -49,7 +49,7 @@ function stopAction()
 function editCategory(id)
 {
     selectedCategory = id;
-    $('#categoryModalLabel').html(jaws.gadgets.Categories.lbl_edit);
+    $('#categoryModalLabel').html(jaws.Categories.Defines.lbl_edit);
     CategoriesAjax.callAsync('GetCategory', {'id': selectedCategory}, function (response) {
         if (response) {
             $('#category-form input, #category-form select, #category-form textarea').each(
@@ -91,7 +91,7 @@ function saveCategory()
  */
 function deleteCategory(id)
 {
-    if (confirm(jaws.gadgets.Categories.confirmDelete)) {
+    if (confirm(jaws.Categories.Defines.confirmDelete)) {
         CategoriesAjax.callAsync('DeleteCategory', {'id': id});
     }
 }
@@ -101,10 +101,10 @@ function deleteCategory(id)
  */
 function categoriesDataSource(options, callback) {
     var columns = [];
-    if(jaws.gadgets.Categories.req_gadget =='') {
+    if(jaws.Categories.Defines.req_gadget =='') {
         columns.push(
             {
-                'label': jaws.gadgets.Categories.lbl_gadget,
+                'label': jaws.Categories.Defines.lbl_gadget,
                 'property': 'gadget',
                 'sortable': true
             }
@@ -112,12 +112,12 @@ function categoriesDataSource(options, callback) {
     }
     columns.push(
         {
-            'label': jaws.gadgets.Categories.lbl_action,
+            'label': jaws.Categories.Defines.lbl_action,
             'property': 'action',
             'sortable': true
         },
         {
-            'label': jaws.gadgets.Categories.lbl_title,
+            'label': jaws.Categories.Defines.lbl_title,
             'property': 'title',
             'sortable': true
         }
@@ -175,7 +175,7 @@ function initiateCategoriesDG() {
         items: [
             {
                 name: 'edit',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.gadgets.Categories.lbl_edit,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.Categories.Defines.lbl_edit,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editCategory(helpers.rowData.id);
@@ -185,7 +185,7 @@ function initiateCategoriesDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.gadgets.Categories.lbl_delete,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.Categories.Defines.lbl_delete,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteCategory(helpers.rowData.id);

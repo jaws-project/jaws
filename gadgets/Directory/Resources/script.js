@@ -12,7 +12,7 @@ var DirectoryCallback = {
     CreateDirectory: function(response) {
         if (response.type === 'alert-success') {
             cancel();
-            updateFiles(jaws.gadgets.Directory.currentDir);
+            updateFiles(jaws.Directory.Defines.currentDir);
         }
         DirectoryAjax.showResponse(response);
     },
@@ -20,7 +20,7 @@ var DirectoryCallback = {
     UpdateDirectory: function(response) {
         if (response.type === 'alert-success') {
             cancel();
-            updateFiles(jaws.gadgets.Directory.currentDir);
+            updateFiles(jaws.Directory.Defines.currentDir);
         }
         DirectoryAjax.showResponse(response);
     },
@@ -28,7 +28,7 @@ var DirectoryCallback = {
     SaveFile: function(response) {
         if (response.type === 'alert-success') {
             cancel();
-            updateFiles(jaws.gadgets.Directory.currentDir);
+            updateFiles(jaws.Directory.Defines.currentDir);
         }
         DirectoryAjax.showResponse(response);
     },
@@ -36,7 +36,7 @@ var DirectoryCallback = {
     Delete: function(response) {
         if (response.type === 'alert-success') {
             cancel();
-            updateFiles(jaws.gadgets.Directory.currentDir);
+            updateFiles(jaws.Directory.Defines.currentDir);
         }
         DirectoryAjax.showResponse(response);
     },
@@ -44,7 +44,7 @@ var DirectoryCallback = {
     Move: function(response) {
         if (response.type === 'alert-success') {
             cancel();
-            updateFiles(jaws.gadgets.Directory.currentDir);
+            updateFiles(jaws.Directory.Defines.currentDir);
         }
         DirectoryAjax.showResponse(response);
     },
@@ -68,7 +68,7 @@ var DirectoryCallback = {
 function initDirectory()
 {
     var imgDeleteFileObj = $('<img>');
-    imgDeleteFileObj.attr('src', jaws.gadgets.Directory.imgDeleteFile);
+    imgDeleteFileObj.attr('src', jaws.Directory.Defines.imgDeleteFile);
     imgDeleteFileObj.on('click', removeFile);
 
     imgDeleteFile = imgDeleteFileObj;
@@ -77,7 +77,7 @@ function initDirectory()
     $('#frm_search select, #file_search').change(performSearch);
     $('#start_date, #end_date').on('keypress', performSearch);
 
-    updateFiles(jaws.gadgets.Directory.currentDir);
+    updateFiles(jaws.Directory.Defines.currentDir);
     updateActions();
 }
 
@@ -87,7 +87,7 @@ function initDirectory()
 function updateFiles(parent)
 {
     if (parent === undefined) {
-        parent = jaws.gadgets.Directory.currentDir;
+        parent = jaws.Directory.Defines.currentDir;
     }
     DirectoryAjax.callAsync('GetFiles', {'curr_action':currentAction, 'parent':parent}, displayFiles);
 
@@ -120,10 +120,10 @@ function displayFiles(files)
         if (file.thumbnail != "" && file.thumbnail != undefined) {
             file.icon = '<img src="' + file.thumbnail + '"/>';
         } else {
-            file.icon = '<img src="' + jaws.gadgets.Directory.icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
+            file.icon = '<img src="' + jaws.Directory.Defines.icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
         }
 
-        // file.icon = '<img src="' + jaws.gadgets.Directory.icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
+        // file.icon = '<img src="' + jaws.Directory.Defines.icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
         // file.thumbnail = '<img src="' + file.thumbnail + '"/>';
         file.size = formatSize(file.file_size, 0);
         if (!file.is_dir) {
@@ -258,7 +258,7 @@ function openMedia(id, type)
             top.tinymce.activeEditor.windowManager.getParams().oninsert(response);
             top.tinyMCE.activeEditor.windowManager.close();
         } else if (opener.CKEDITOR) {
-            window.opener.CKEDITOR.tools.callFunction(jaws.gadgets.Directory.ckFuncIndex, response);
+            window.opener.CKEDITOR.tools.callFunction(jaws.Directory.Defines.ckFuncIndex, response);
             close();
         } else if (opener.the_textarea) {
             opener.insertTags(opener.the_textarea, response, '', '');
@@ -300,7 +300,7 @@ function updatePath()
     var path = $('#dir_path').html('');
     DirectoryAjax.callAsync(
         'GetPath',
-        {'curr_action':currentAction, 'id':jaws.gadgets.Directory.currentDir},
+        {'curr_action':currentAction, 'id':jaws.Directory.Defines.currentDir},
         function(pathArr) {
             pathArr.reverse().forEach(function (dir, i) {
                 path.append(' > ');
@@ -388,7 +388,7 @@ function edit()
 function del()
 {
     if (idSet.length === 0) return;
-    if (confirm(jaws.gadgets.Directory.confirmDelete)) {
+    if (confirm(jaws.Directory.Defines.confirmDelete)) {
         DirectoryAjax.callAsync('Delete', {'id_set':idSet.join(',')});
     }
 }
@@ -440,7 +440,7 @@ function newDirectory()
     }
     $('#form').html(cachedForms.editDir);
     $('#frm_dir').find('input[name=title]').focus();
-    $('#frm_dir').find('[name=parent]').val(jaws.gadgets.Directory.currentDir);
+    $('#frm_dir').find('[name=parent]').val(jaws.Directory.Defines.currentDir);
 }
 
 /**
@@ -475,7 +475,7 @@ function newFile()
     $('#tr_thumbnail').hide();
     $('#frm_upload').show();
     $('#frm_thumbnail_upload').show();
-    $('#frm_file').find('[name=parent]').val(jaws.gadgets.Directory.currentDir);
+    $('#frm_file').find('[name=parent]').val(jaws.Directory.Defines.currentDir);
     $('#frm_file').find('[name=title]').focus();
 }
 
@@ -584,7 +584,7 @@ function setFilename(filename, url)
         link.attr('href', url);
     }
     $('#file_link').append(link);
-    //$('#file_link').append(jaws.gadgets.Directory.imgDeleteFile);
+    //$('#file_link').append(jaws.Directory.Defines.imgDeleteFile);
     $('#tr_file').show();
     $('#frm_upload').hide();
 }
@@ -655,7 +655,7 @@ function onSearchChange(input)
 function performSearch()
 {
     var query = $.unserialize($('#frm_search').serialize());
-    query.id = jaws.gadgets.Directory.currentDir;
+    query.id = jaws.Directory.Defines.currentDir;
     DirectoryAjax.callAsync('Search', query);
 }
 
@@ -712,8 +712,8 @@ function substitute(str, sub) {
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Directory':
-            currentDir = jaws.gadgets.Directory.currentDir;
-            currentAction = jaws.gadgets.Directory.currentAction;
+            currentDir = jaws.Directory.Defines.currentDir;
+            currentAction = jaws.Directory.Defines.currentAction;
             initDatePicker('start_date');
             initDatePicker('end_date');
             initDirectory();

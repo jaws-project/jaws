@@ -173,7 +173,7 @@ function updateComment(sendEmail) {
 function commentDelete(id)
 {
     stopCommentAction();
-    if (confirm(jaws.gadgets.Comments.confirmCommentDelete)) {
+    if (confirm(jaws.Comments.Defines.confirmCommentDelete)) {
         CommentsAjax.callAsync('DeleteComments', new Array(id));
     }
     unselectGridRow('comments_datagrid');
@@ -191,7 +191,7 @@ function commentDGAction(combo)
     }
 
     if (combo.val() == 'delete') {
-        var confirmation = confirm(jaws.gadgets.Comments.confirmCommentDelete);
+        var confirmation = confirm(jaws.Comments.Defines.confirmCommentDelete);
         if (confirmation) {
             CommentsAjax.callAsync('DeleteComments', rows);
         }

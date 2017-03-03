@@ -81,7 +81,7 @@ function saveQuote()
         getEditorValue('#quotation').blank() ||
         $('#gid').val() == 0)
     {
-        alert(jaws.gadgets.Quotes.incompleteQuoteFields);
+        alert(jaws.Quotes.Defines.incompleteQuoteFields);
         return;
     }
 
@@ -133,7 +133,7 @@ function saveQuote()
  */
 function deleteQuote()
 {
-    var answer = confirm(jaws.gadgets.Quotes.confirmQuoteDelete);
+    var answer = confirm(jaws.Quotes.Defines.confirmQuoteDelete);
     if (answer) {
         var box = $('#quotes_combo')[0];
         var quoteIndex = box.selectedIndex;
@@ -203,7 +203,7 @@ function saveGroup()
 {
     if (currentAction == 'Groups') {
         if (!$('#title').val()) {
-            alert(jaws.gadgets.Quotes.incompleteGroupFields);
+            alert(jaws.Quotes.Defines.incompleteGroupFields);
             return false;
         }
 
@@ -269,7 +269,7 @@ function saveGroup()
  */
 function deleteGroup()
 {
-    var answer = confirm(jaws.gadgets.Quotes.confirmGroupDelete);
+    var answer = confirm(jaws.Quotes.Defines.confirmGroupDelete);
     if (answer) {
         var box = $('#groups_combo')[0];
         var quoteIndex = box.selectedIndex;

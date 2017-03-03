@@ -102,7 +102,7 @@ function editNotificationDriver(rowElement, id) {
  */
 function updateNotificationDriver() {
     if ($('#title').val().blank() || selectedDriver == null) {
-        alert(jaws.gadgets.Notification.incompleteFields);
+        alert(jaws.Notification.Defines.incompleteFields);
         return;
     }
 
