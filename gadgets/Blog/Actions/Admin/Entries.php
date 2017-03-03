@@ -136,6 +136,24 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
         $tpl->SetVariable('status_field', $statCombo->Get());
 
+        // Type
+        $tpl->SetVariable('type', _t('BLOG_TYPE'));
+        $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
+        $types = $cModel->GetCategories('Blog', 'Types');
+        $typeCombo =& Piwi::CreateWidget('Combo', 'type');
+        $typeCombo->setId('type');
+        if (!Jaws_Error::IsError($types) && count($types) > 0) {
+            foreach ($types as $type) {
+                $typeCombo->AddOption($type['title'], $type['id']);
+            }
+        }
+        $tpl->SetVariable('type_field', $typeCombo->Get());
+
+        // Favorite
+        $favorite =& Piwi::CreateWidget('CheckButtons', 'favorite');
+        $favorite->AddOption(_t('BLOG_FAVORITE'), 'favorite', 'favorite');
+        $tpl->SetVariable('favorite_field', $favorite->Get());
+
         // Save
         $tpl->SetVariable('missing_title', _t('BLOG_MISSING_TITLE'));
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
@@ -230,7 +248,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tModel = $this->gadget->model->loadAdmin('Trackbacks');
 
         $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title',
-                         'fasturl', 'allow_comments:array', 'published',
+                         'fasturl', 'allow_comments:array', 'published', 'favorite:array', 'type',
                          'trackback_to', 'meta_keywords', 'meta_desc', 'tags');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
@@ -269,7 +287,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                            $post['title'], $content['summary_block'], $content['text_block'], $image,
                            $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                            $post['tags'], isset($post['allow_comments'][0]), $post['trackback_to'],
-                           $post['published'], $pubdate);
+                           $post['published'], $post['type'], isset($post['favorite'][0]), $pubdate);
 
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->registry->fetch('trackback') == 'true') {
@@ -449,6 +467,25 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
         $tpl->SetVariable('status_field', $statCombo->Get());
 
+        // Type
+        $tpl->SetVariable('type', _t('BLOG_TYPE'));
+        $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
+        $types = $cModel->GetCategories('Blog', 'Types');
+        $typeCombo =& Piwi::CreateWidget('Combo', 'type');
+        $typeCombo->setId('type');
+        if (!Jaws_Error::IsError($types) && count($types) > 0) {
+            foreach ($types as $type) {
+                $typeCombo->AddOption($type['title'], $type['id']);
+            }
+        }
+        $typeCombo->SetDefault($entry['type']);
+        $tpl->SetVariable('type_field', $typeCombo->Get());
+
+        // Favorite
+        $favorite =& Piwi::CreateWidget('CheckButtons', 'favorite');
+        $favorite->AddOption(_t('BLOG_FAVORITE'), 'favorite', 'favorite', $entry['favorite']);
+        $tpl->SetVariable('favorite_field', $favorite->Get());
+
         // Save
         $tpl->SetVariable('missing_title', _t('BLOG_MISSING_TITLE'));
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('BLOG_UPDATE'), STOCK_SAVE);
@@ -558,7 +595,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
     function SaveEditEntry()
     {
         $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title',
-                         'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'deleteImage',
+                         'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'deleteImage', 'favorite:array', 'type',
                          'allow_comments:array', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
@@ -620,7 +657,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $pModel->UpdateEntry($id, $post['categories'], $post['title'], $content['summary_block'], $content['text_block'],
                             $image, $post['fasturl'], $post['meta_keywords'], $post['meta_desc'], $post['tags'],
-                            isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
+                            isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'],
+                            $post['type'], isset($post['favorite'][0]), $pubdate);
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->registry->fetch('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);

@@ -87,6 +87,17 @@
    </field>
 
    <field>
+    <name>type</name>
+    <type>integer</type>
+   </field>
+
+   <field>
+    <name>favorite</name>
+    <type>boolean</type>
+    <default>false</default>
+   </field>
+
+   <field>
     <name>published</name>
     <type>boolean</type>
     <notnull>true</notnull>

@@ -21,6 +21,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
         array('default_view', 'last_entries'),
         array('last_entries_limit', '20'),
         array('popular_limit', '10'),
+        array('favorite_limit', '10'),
         array('xml_limit', '10'),
         array('default_category', '1'),
         array('allow_comments', 'true'),
@@ -50,6 +51,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
         'ManageComments',
         'ManageTrackbacks',
         'ManageCategories',
+        'ManageTypes',
         'Settings',
     );
 
