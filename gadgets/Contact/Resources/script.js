@@ -538,7 +538,7 @@ function sendEmail()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Contacts':
             currentAction = 'Contacts';
             $('#recipient_filter')[0].selectedIndex = 0;
