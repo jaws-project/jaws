@@ -568,7 +568,7 @@ function editGroupBanners()
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Banners':
             currentAction = 'Banners';
             $('#bgroup_filter').prop('selectedIndex', 0);
