@@ -608,7 +608,7 @@ function usageCheckAll(el)
 }
 
 $(document).ready(function() {
-    switch (jaws.core.mainAction) {
+    switch (jaws.Defines.mainAction) {
         case 'Gadgets':
             actions = {
                 outdated: jaws.Components.Defines.lbl_update,
