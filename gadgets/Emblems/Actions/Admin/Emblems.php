@@ -216,6 +216,6 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
             }
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Emblems');
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Emblems');
     }
 }
