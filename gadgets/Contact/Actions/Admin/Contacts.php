@@ -73,12 +73,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $btnSaveSend->SetStyle('display:none;');
         $tpl->SetVariable('btn_save_send', $btnSaveSend->Get());
 
-        $this->gadget->layout->setVariable('incompleteContactFields', _t('CONTACT_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('confirmContactDelete',    _t('CONTACT_CONTACTS_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('legend_title',            _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
-        $this->gadget->layout->setVariable('messageDetail_title',     _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
-        $this->gadget->layout->setVariable('contactReply_title',      _t('CONTACT_CONTACTS_MESSAGE_REPLY'));
-        $this->gadget->layout->setVariable('dataURL',                 $GLOBALS['app']->getDataURL() . 'contact/');
+        $this->gadget->define('incompleteContactFields', _t('CONTACT_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmContactDelete',    _t('CONTACT_CONTACTS_CONFIRM_DELETE'));
+        $this->gadget->define('legend_title',            _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
+        $this->gadget->define('messageDetail_title',     _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
+        $this->gadget->define('contactReply_title',      _t('CONTACT_CONTACTS_MESSAGE_REPLY'));
+        $this->gadget->define('dataURL',                 $GLOBALS['app']->getDataURL() . 'contact/');
 
         $tpl->ParseBlock('Contacts');
         return $tpl->Get();
