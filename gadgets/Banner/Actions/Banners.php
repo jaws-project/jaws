@@ -132,7 +132,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             $click = $model->ClickBanner($banner[0]['id']);
             if (!Jaws_Error::IsError($click)) {
                 $link = implode('/', array_map('rawurlencode', explode('/', $banner[0]['url'])));
-                Jaws_Header::Location($link);
+                return Jaws_Header::Location($link);
             }
         } else {
             return Jaws_HTTPError::Get(404);
