@@ -30,8 +30,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('confirmQuoteDelete', _t('QUOTES_CONFIRM_DELETE_QUOTE'));
+        $this->gadget->define('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmQuoteDelete', _t('QUOTES_CONFIRM_DELETE_QUOTE'));
 
         $tpl = $this->gadget->template->loadAdmin('Quotes.html');
         $tpl->SetBlock('quotes');
