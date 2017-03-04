@@ -569,7 +569,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->PushResponse(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
         }
 
-        Jaws_Header::Location($reference['url']);
+        return Jaws_Header::Location($reference['url']);
     }
 
     /**
