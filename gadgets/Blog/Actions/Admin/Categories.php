@@ -82,10 +82,10 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('addCategory_title',_t('BLOG_NEW_CATEGORY'));
-        $this->gadget->layout->setVariable('addCategory_title',_t('BLOG_NEW_CATEGORY'));
-        $this->gadget->layout->setVariable('deleteMessage',_t('BLOG_DELETE_CONFIRM_CATEGORY'));
-        $this->gadget->layout->setVariable('incompleteCategoryFields',_t('BLOG_CATEGORY_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('editCategory_title',_t('BLOG_EDIT_CATEGORY'));
+        $this->gadget->define('addCategory_title',_t('BLOG_NEW_CATEGORY'));
+        $this->gadget->define('deleteMessage',_t('BLOG_DELETE_CONFIRM_CATEGORY'));
+        $this->gadget->define('incompleteCategoryFields',_t('BLOG_CATEGORY_INCOMPLETE_FIELDS'));
+        $this->gadget->define('editCategory_title',_t('BLOG_EDIT_CATEGORY'));
 
         $tpl->ParseBlock('categories');
         return $tpl->Get();

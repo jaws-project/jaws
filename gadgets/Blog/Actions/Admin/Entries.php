@@ -765,7 +765,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetBlock('list_entries');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $this->gadget->layout->setVariable('deleteConfirm', _t('BLOG_DELETE_MASSIVE_ENTRIES'));
+        $this->gadget->define('deleteConfirm', _t('BLOG_DELETE_MASSIVE_ENTRIES'));
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar('ListEntries'));
 
