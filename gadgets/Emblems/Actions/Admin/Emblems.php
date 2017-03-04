@@ -69,7 +69,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $tpl->SetVariable('form', $addform->Get());
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $this->gadget->layout->setVariable('confirmDelete', _t('EMBLEMS_CONFIRM_DELETE'));
+        $this->gadget->define('confirmDelete', _t('EMBLEMS_CONFIRM_DELETE'));
         $tpl->SetVariable('grid', $this->Datagrid());
         $tpl->ParseBlock('emblems');
 
