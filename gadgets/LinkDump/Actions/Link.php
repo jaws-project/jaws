@@ -26,7 +26,7 @@ class LinkDump_Actions_Link extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($link) && !empty($link)) {
             $click = $model->Click($link['id']);
             if (!Jaws_Error::IsError($click)) {
-                Jaws_Header::Location($link['url'], null, 301);
+                return Jaws_Header::Location($link['url'], null, 301);
             }
         }
 
