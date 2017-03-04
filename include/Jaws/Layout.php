@@ -521,51 +521,6 @@ class Jaws_Layout
     }
 
     /**
-     * Set a layout variable
-     *
-     * @access  public
-     * @param   string  $name       Variable name
-     * @param   string  $value      Variable value
-     * @param   string  $component  Component name
-     * @return  void
-     */
-    function SetVariable($name, $value, $component = '', $segment = '')
-    {
-        switch (gettype($value)) {
-            case 'boolean':
-                $value = $value? 'true' : 'false';
-                break;
-
-            case 'integer':
-            case 'double':
-                // do nothing
-                break;
-
-            case 'string':
-                $value = "\"$value\"";
-                break;
-
-            case 'array':
-                $value =  '$.parseJSON(\''.json_encode($value).'\')';
-                break;
-
-            case 'NULL':
-                $value = 'null';
-                break;
-
-            default:
-                return;
-        }
-
-        $segment = $segment?: 'defines';
-        if ($name === '') {
-            $this->variables[$component][$segment][] = $value;
-        } else {
-            $this->variables[$component][$segment][$name] = $value;
-        }
-    }
-
-    /**
      * Preparing initialize script
      *
      * @access  public
@@ -590,36 +545,11 @@ class Jaws_Layout
                 $actions = array_keys($objGadget->loaded_actions);
             }
 
-            if (empty($defines)) {
-                continue;
-            }
-
-            $tmpStr = '';
             $result.= "\t$jsObj = {};\n";
-            foreach ($defines as $name => $value) {
-                $tmpStr.= "\t  '$name': ".$value.",\n";
-            }
-            $result.= "\t$jsObj.Defines = {\n$tmpStr\t};\n";
+            $result.= "\t$jsObj.Actions = ".'$.parseJSON(\''.json_encode($actions).'\')'.";\n";
+            $result.= "\t$jsObj.Defines = ".'$.parseJSON(\''.json_encode($defines).'\')'.";\n";
         }
-/*
-        foreach ($this->variables as $component => $variables) {
-            if (empty($component)) {
-                $jsObj = 'jaws';
-            } else {
-                $jsObj = "jaws.$component";
-            }
 
-            $tmpStr = '';
-            $result.= "\t$jsObj = {};\n";
-            _log_var_dump($variables['actions']);
-            if (isset($variables['defines'])) {
-                foreach ($variables['defines'] as $name => $value) {
-                    $tmpStr.= "\t  '$name': $value,\n";
-                }
-            }
-            $result.= "\t$jsObj.Defines = {\n$tmpStr\t};\n";
-        }
-*/
         return $result;
     }
 
