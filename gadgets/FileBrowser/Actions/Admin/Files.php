@@ -217,9 +217,9 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         }
 
         if (empty($post['extra_params'])) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=Files&path=' . $post['path']);
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=Files&path=' . $post['path']);
         } else {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
         }
     }
 
@@ -390,7 +390,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
             $model->DeleteDBFileInfo($post['path'], $post['selected_item']);
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
     }
 
 }
