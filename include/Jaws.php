@@ -70,6 +70,14 @@ class Jaws
     var $requestedActionMode = '';
 
     /**
+     * Defines of the Jaws
+     *
+     * @var     array
+     * @access  private
+     */
+    private $defines = array();
+
+    /**
      * Default preferences
      * @var     array
      * @access  private
@@ -699,6 +707,36 @@ class Jaws
     static function classExists($classname)
     {
         return class_exists($classname, false);
+    }
+
+    /**
+     * Sets a define
+     *
+     * @access  public
+     * @param   string  $component  Component name
+     * @param   string  $key        Define name
+     * @param   string  $value      Define value
+     * @return  void
+     */
+    function define($component, $key, $value)
+    {
+        $this->defines[$component][$key] = $value;
+    }
+
+    /**
+     * Get all defines of the gadget
+     *
+     * @access  public
+     * @param   string  $component  (Optional) Component name
+     * @return  array   Defines of the gadget
+     */
+    function defines($component = null)
+    {
+        if (is_null($component)) {
+            return $this->defines;
+        } else {
+            return $this->defines[$component];
+        }
     }
 
     /**

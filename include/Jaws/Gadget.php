@@ -92,14 +92,6 @@ class Jaws_Gadget
     private $attributes = array();
 
     /**
-     * Defines of the gadget
-     *
-     * @var     array
-     * @access  private
-     */
-    private $defines = array();
-
-    /**
      * Name of the gadget
      *
      * @var     string
@@ -262,7 +254,7 @@ class Jaws_Gadget
      */
     function define($key, $value)
     {
-        $this->defines[$key] = $value;
+        $GLOBALS['app']->define($this->name, $key, $value);
     }
 
     /**
@@ -273,7 +265,7 @@ class Jaws_Gadget
      */
     function defines()
     {
-        return $this->defines;
+        return $GLOBALS['app']->defines($this->name);
     }
 
     /**
