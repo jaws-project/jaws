@@ -80,7 +80,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                         $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
+        $this->gadget->define('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
 
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('pageform');
