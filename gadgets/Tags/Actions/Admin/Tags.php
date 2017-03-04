@@ -18,11 +18,11 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
     function Tags($gadget='', $url='')
     {
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('incompleteTagFields',   _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('confirmTagDelete',      _t('TAGS_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('selectMoreThanOneTags', _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
-        $this->gadget->layout->setVariable('addTagTitle',           _t('TAGS_ADD_TAG'));
-        $this->gadget->layout->setVariable('editTagTitle',          _t('TAGS_EDIT_TAG'));
+        $this->gadget->define('incompleteTagFields',   _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmTagDelete',      _t('TAGS_CONFIRM_DELETE'));
+        $this->gadget->define('selectMoreThanOneTags', _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
+        $this->gadget->define('addTagTitle',           _t('TAGS_ADD_TAG'));
+        $this->gadget->define('editTagTitle',          _t('TAGS_EDIT_TAG'));
 
         $tpl = $this->gadget->template->loadAdmin('Tags.html');
         $tpl->SetBlock('tags');
