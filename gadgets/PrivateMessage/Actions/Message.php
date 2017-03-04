@@ -23,7 +23,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->template->load('Messages.html');

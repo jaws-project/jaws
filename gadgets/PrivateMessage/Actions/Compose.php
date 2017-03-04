@@ -26,9 +26,9 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('index.js');
         // set default value of javascript variables
-        $this->gadget->layout->setVariable('icon_add', STOCK_ADD);
-        $this->gadget->layout->setVariable('icon_remove', STOCK_REMOVE);
-        $this->gadget->layout->setVariable('recipient_user', '');
+        $this->gadget->define('icon_add', STOCK_ADD);
+        $this->gadget->define('icon_remove', STOCK_REMOVE);
+        $this->gadget->define('recipient_user', '');
 
         $data = jaws()->request->fetch(array('id', 'user', 'reply', 'users:array'));
         $id = $data['id'];
@@ -146,7 +146,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
-                $this->gadget->layout->setVariable('recipient_user', $message['from']);
+                $this->gadget->define('recipient_user', $message['from']);
                 $recipient_users = array($message['from']);
 
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
