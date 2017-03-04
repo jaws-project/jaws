@@ -105,7 +105,7 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
-        $this->loaded_layout_gadgets[''] = true;
+        $GLOBALS['app']->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
     }
 
     /**
@@ -529,22 +529,14 @@ class Jaws_Layout
     function initializeScript()
     {
         $result = '';
-        // added main gadget to loaded in layout
-        $this->loaded_layout_gadgets[$GLOBALS['app']->mainGadget] = true;
-
-        foreach (array_keys($this->loaded_layout_gadgets) as $component) {
+        $allDefines = $GLOBALS['app']->defines();
+        foreach ($allDefines as $component => $defines) {
             if (empty($component)) {
                 $jsObj = 'jaws';
-                $defines = array(
-                    'mainGadget' => $GLOBALS['app']->mainGadget,
-                    'mainAction' => $GLOBALS['app']->mainAction,
-                    'loadingMessage' => _t('GLOBAL_LOADING')
-                );
                 $actions = array();
             } else {
                 $jsObj = "jaws.$component";
                 $objGadget = Jaws_Gadget::getInstance($component);
-                $defines = $objGadget->defines();
                 $actions = array_keys($objGadget->loaded_actions);
             }
 
