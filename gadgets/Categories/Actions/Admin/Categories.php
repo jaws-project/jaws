@@ -21,14 +21,14 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $this->gadget->CheckPermission('ManageCategories');
         $GLOBALS['app']->Layout->addLink('libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.css');
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
-        $this->gadget->layout->setVariable('lbl_action', _t('CATEGORIES_ACTION'));
-        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $this->gadget->layout->setVariable('req_gadget', $req_gadget);
-        $this->gadget->layout->setVariable('req_action', $req_action);
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_gadget', _t('CATEGORIES_GADGET'));
+        $this->gadget->define('lbl_action', _t('CATEGORIES_ACTION'));
+        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('req_gadget', $req_gadget);
+        $this->gadget->define('req_action', $req_action);
 
         $tpl = $this->gadget->template->loadAdmin('Categories.html');
         $tpl->SetBlock('Categories');
