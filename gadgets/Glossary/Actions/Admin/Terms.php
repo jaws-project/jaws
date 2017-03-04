@@ -104,17 +104,17 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
         $tpl->SetVariable('edit_button', $edit->Get());
 
         // Messages
-        $this->gadget->layout->setVariable('incompleteGlossaryFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('retrieving_message',       _t('GLOSSARY_MSGRETRIEVING'));
-        $this->gadget->layout->setVariable('updating_message',         _t('GLOSSARY_MSGUPDATING'));
-        $this->gadget->layout->setVariable('deleting_message',         _t('GLOSSARY_MSGDELETING'));
-        $this->gadget->layout->setVariable('saving_message',           _t('GLOSSARY_MSGSAVING'));
-        $this->gadget->layout->setVariable('sending_message',          _t('GLOSSARY_MSGSENDING'));
+        $this->gadget->define('incompleteGlossaryFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('retrieving_message',       _t('GLOSSARY_MSGRETRIEVING'));
+        $this->gadget->define('updating_message',         _t('GLOSSARY_MSGUPDATING'));
+        $this->gadget->define('deleting_message',         _t('GLOSSARY_MSGDELETING'));
+        $this->gadget->define('saving_message',           _t('GLOSSARY_MSGSAVING'));
+        $this->gadget->define('sending_message',          _t('GLOSSARY_MSGSENDING'));
 
         // Acl
-        $this->gadget->layout->setVariable('aclAddTerm', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');
-        $this->gadget->layout->setVariable('aclEditTerm', $this->gadget->GetPermission('EditTerm') ? 'true' : 'false');
-        $this->gadget->layout->setVariable('aclDeleteTerm', $this->gadget->GetPermission('DeleteTerm') ? 'true' : 'false');
+        $this->gadget->define('aclAddTerm', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');
+        $this->gadget->define('aclEditTerm', $this->gadget->GetPermission('EditTerm') ? 'true' : 'false');
+        $this->gadget->define('aclDeleteTerm', $this->gadget->GetPermission('DeleteTerm') ? 'true' : 'false');
 
         $tpl->ParseBlock('Glossary');
         return $tpl->Get();
