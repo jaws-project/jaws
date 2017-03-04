@@ -22,12 +22,12 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
-        $this->gadget->layout->setVariable('lbl_update', _t('COMPONENTS_UPDATE'));
-        $this->gadget->layout->setVariable('lbl_enable', _t('COMPONENTS_ENABLE'));
-        $this->gadget->layout->setVariable('lbl_install', _t('COMPONENTS_INSTALL'));
-        $this->gadget->layout->setVariable('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
-        $this->gadget->layout->setVariable('confirmUninstallGadget', _t('COMPONENTS_GADGETS_CONFIRM_UNINSTALL'));
-        $this->gadget->layout->setVariable('confirmDisableGadget', _t('COMPONENTS_GADGETS_CONFIRM_DISABLE'));
+        $this->gadget->define('lbl_update', _t('COMPONENTS_UPDATE'));
+        $this->gadget->define('lbl_enable', _t('COMPONENTS_ENABLE'));
+        $this->gadget->define('lbl_install', _t('COMPONENTS_INSTALL'));
+        $this->gadget->define('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
+        $this->gadget->define('confirmUninstallGadget', _t('COMPONENTS_GADGETS_CONFIRM_UNINSTALL'));
+        $this->gadget->define('confirmDisableGadget', _t('COMPONENTS_GADGETS_CONFIRM_DISABLE'));
 
         $tpl = $this->gadget->template->loadAdmin('Gadgets.html');
         $tpl->SetBlock('components');
