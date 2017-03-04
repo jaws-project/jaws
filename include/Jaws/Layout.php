@@ -428,6 +428,7 @@ class Jaws_Layout
                 $content = '';
                 $this->_Template->SetBlock($block);
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
+                    $this->loaded_layout_gadgets[$GLOBALS['app']->mainGadget] = true;
                     $item['gadget'] = $GLOBALS['app']->mainGadget;
                     $item['action'] = $GLOBALS['app']->mainAction;
                     $item['params'] = array();
