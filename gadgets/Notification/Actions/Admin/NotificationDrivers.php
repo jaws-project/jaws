@@ -17,7 +17,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
     {
         $this->gadget->CheckPermission('NotificationDrivers');
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('incompleteFields', _t('NOTIFICATION_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incompleteFields', _t('NOTIFICATION_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('NotificationDrivers.html');
         $tpl->SetBlock('drivers');
