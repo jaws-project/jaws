@@ -19,9 +19,9 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
     function Languages()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('confirmSaveData',     _t('LANGUAGES_SAVEDATA'));
-        $this->gadget->layout->setVariable('add_language_title',  _t('LANGUAGES_LANGUAGE_ADD'));
-        $this->gadget->layout->setVariable('save_language_title', _t('LANGUAGES_LANGUAGE_SAVE'));
+        $this->gadget->define('confirmSaveData',     _t('LANGUAGES_SAVEDATA'));
+        $this->gadget->define('add_language_title',  _t('LANGUAGES_LANGUAGE_ADD'));
+        $this->gadget->define('save_language_title', _t('LANGUAGES_LANGUAGE_SAVE'));
 
         $tpl = $this->gadget->template->loadAdmin('Languages.html');
         $tpl->SetBlock('Languages');
