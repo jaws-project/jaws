@@ -23,7 +23,7 @@ class Blog_Actions_Admin_Comments extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageComments');
         if (!Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
         }
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');

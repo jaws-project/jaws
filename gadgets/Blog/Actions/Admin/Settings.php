@@ -207,7 +207,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
                              $post['comments'], $post['comment_status'],
                              $post['trackback'], $post['trackback_status']);
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=AdditionalSettings');
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=AdditionalSettings');
     }
 
 }

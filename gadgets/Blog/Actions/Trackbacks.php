@@ -32,7 +32,7 @@ class Blog_Actions_Trackbacks extends Blog_Actions_Default
         $post = jaws()->request->fetch(array('title', 'url', 'blog_name', 'excerpt'), 'post');
         if (is_null($post['title']) || is_null($post['url']) ||
             is_null($post['blog_name']) || is_null($post['excerpt'])) {
-            Jaws_Header::Location('');
+            return Jaws_Header::Location('');
         }
 
         $id = jaws()->request->fetch('id', 'get');
@@ -49,10 +49,10 @@ class Blog_Actions_Trackbacks extends Blog_Actions_Default
         $excerpt  = urldecode($post['excerpt']);
 
         if (trim($id) == '') {
-            Jaws_Header::Location('');
+            return Jaws_Header::Location('');
         } elseif (empty($title) && empty($url) && empty($blogname)) {
             $url = $this->gadget->urlMap('SingleView', array('id' => $id), true);
-            Jaws_Header::Location($url);
+            return Jaws_Header::Location($url);
         } elseif ($this->gadget->registry->fetch('trackback') == 'true') {
             header('Content-Type: text/xml');
             $model = $this->gadget->model->load('Trackbacks');
