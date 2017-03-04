@@ -143,16 +143,16 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->layout->setVariable('addUser_title', _t('USERS_USERS_ADD'));
-        $this->gadget->layout->setVariable('editUser_title', _t('USERS_USERS_EDIT'));
-        $this->gadget->layout->setVariable('editACL_title', _t('USERS_ACLS'));
-        $this->gadget->layout->setVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
-        $this->gadget->layout->setVariable('editPersonal_title', _t('USERS_PERSONAL'));
-        $this->gadget->layout->setVariable('editContacts_title', _t('USERS_CONTACTS'));
-        $this->gadget->layout->setVariable('noGroup', _t('USERS_GROUPS_NOGROUP'));
-        $this->gadget->layout->setVariable('confirmUserDelete', _t('USERS_USER_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
-        $this->gadget->layout->setVariable('incompleteUserFields', _t('USERS_USERS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('addUser_title', _t('USERS_USERS_ADD'));
+        $this->gadget->define('editUser_title', _t('USERS_USERS_EDIT'));
+        $this->gadget->define('editACL_title', _t('USERS_ACLS'));
+        $this->gadget->define('editUserGroups_title', _t('USERS_USERS_GROUPS'));
+        $this->gadget->define('editPersonal_title', _t('USERS_PERSONAL'));
+        $this->gadget->define('editContacts_title', _t('USERS_CONTACTS'));
+        $this->gadget->define('noGroup', _t('USERS_GROUPS_NOGROUP'));
+        $this->gadget->define('confirmUserDelete', _t('USERS_USER_CONFIRM_DELETE'));
+        $this->gadget->define('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
+        $this->gadget->define('incompleteUserFields', _t('USERS_USERS_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Users.html');
         $tpl->SetBlock('Users');

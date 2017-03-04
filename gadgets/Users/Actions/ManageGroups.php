@@ -17,15 +17,15 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('index.js');
-        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->layout->setVariable('lbl_name', _t('GLOBAL_NAME'));
-        $this->gadget->layout->setVariable('lbl_add', _t('GLOBAL_ADD'));
-        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $this->gadget->layout->setVariable('addGroup_title', _t('USERS_GROUPS_ADD'));
-        $this->gadget->layout->setVariable('editGroup_title', _t('USERS_GROUPS_EDIT'));
-        $this->gadget->layout->setVariable('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
-        $this->gadget->layout->setVariable('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('lbl_name', _t('GLOBAL_NAME'));
+        $this->gadget->define('lbl_add', _t('GLOBAL_ADD'));
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('addGroup_title', _t('USERS_GROUPS_ADD'));
+        $this->gadget->define('editGroup_title', _t('USERS_GROUPS_EDIT'));
+        $this->gadget->define('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
+        $this->gadget->define('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('ManageGroups.html');
         $tpl->SetBlock('Groups');

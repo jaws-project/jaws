@@ -17,7 +17,7 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
         $gadgets = Jaws_Gadget::getInstance('Components')->model->load('Gadgets')->GetGadgetsList(null, true, true);
-        $this->gadget->layout->setVariable('GADGETS', array_column($gadgets, 'title', 'name'));
+        $this->gadget->define('GADGETS', array_column($gadgets, 'title', 'name'));
 
         $tpl = $this->gadget->template->loadAdmin('ACLs.html');
         $tpl->SetBlock('ACLs');

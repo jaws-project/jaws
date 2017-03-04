@@ -108,12 +108,12 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->layout->setVariable('addGroup_title', _t('USERS_GROUPS_ADD'));
-        $this->gadget->layout->setVariable('editGroup_title', _t('USERS_GROUPS_EDIT'));
-        $this->gadget->layout->setVariable('editACL_title', _t('USERS_ACLS'));
-        $this->gadget->layout->setVariable('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
-        $this->gadget->layout->setVariable('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
+        $this->gadget->define('addGroup_title', _t('USERS_GROUPS_ADD'));
+        $this->gadget->define('editGroup_title', _t('USERS_GROUPS_EDIT'));
+        $this->gadget->define('editACL_title', _t('USERS_ACLS'));
+        $this->gadget->define('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
+        $this->gadget->define('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');

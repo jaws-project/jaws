@@ -17,15 +17,15 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $this->AjaxMe('index.js');
-        $this->gadget->layout->setVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
-        $this->gadget->layout->setVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-        $this->gadget->layout->setVariable('addUser_title', _t('USERS_USERS_ADD'));
-        $this->gadget->layout->setVariable('editUser_title', _t('USERS_USERS_EDIT'));
-        $this->gadget->layout->setVariable('deleteUser_title', _t('USERS_USERS_DELETE'));
-        $this->gadget->layout->setVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
-        $this->gadget->layout->setVariable('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('wrongPassword', _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
-        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+        $this->gadget->define('lbl_username', _t('USERS_USERS_USERNAME'));
+        $this->gadget->define('addUser_title', _t('USERS_USERS_ADD'));
+        $this->gadget->define('editUser_title', _t('USERS_USERS_EDIT'));
+        $this->gadget->define('deleteUser_title', _t('USERS_USERS_DELETE'));
+        $this->gadget->define('editUserGroups_title', _t('USERS_USERS_GROUPS'));
+        $this->gadget->define('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
+        $this->gadget->define('wrongPassword', _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Users.html');
         $tpl->SetBlock('Users');

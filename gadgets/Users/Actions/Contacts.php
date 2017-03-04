@@ -60,7 +60,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         // load contact template
         $this->ContactTemplate($tpl);
-        $this->gadget->layout->setVariable('contact', $contact);
+        $this->gadget->define('contact', $contact);
 
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
@@ -202,12 +202,12 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
-        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('lbl_addContact', _t('USERS_CONTACTS_ADD'));
-        $this->gadget->layout->setVariable('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
-        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_addContact', _t('USERS_CONTACTS_ADD'));
+        $this->gadget->define('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
+        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
 
         // Load the template
         $tpl = $this->gadget->template->load('Contacts.html');
