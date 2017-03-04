@@ -55,7 +55,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     function Directory($type = null, $orderBy = 0, $limit = 0)
     {
         $this->AjaxMe('index.js');
-        $this->gadget->layout->setVariable('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
+        $this->gadget->define('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
 
         $standalone = (bool)jaws()->request->fetch('standalone');
         if ($standalone) {
