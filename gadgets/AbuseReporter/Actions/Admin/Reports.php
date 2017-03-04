@@ -18,15 +18,15 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $this->gadget->CheckPermission('ManageReports');
         $GLOBALS['app']->Layout->addLink('libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.css');
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
-        $this->gadget->layout->setVariable('lbl_action', _t('ABUSEREPORTER_ACTION'));
-        $this->gadget->layout->setVariable('lbl_type', _t('ABUSEREPORTER_TYPE'));
-        $this->gadget->layout->setVariable('lbl_priority', _t('ABUSEREPORTER_PRIORITY'));
-        $this->gadget->layout->setVariable('lbl_status', _t('GLOBAL_STATUS'));
-        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $this->gadget->layout->setVariable('lbl_editReport', _t('ABUSEREPORTER_REPORT_EDIT'));
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
+        $this->gadget->define('lbl_action', _t('ABUSEREPORTER_ACTION'));
+        $this->gadget->define('lbl_type', _t('ABUSEREPORTER_TYPE'));
+        $this->gadget->define('lbl_priority', _t('ABUSEREPORTER_PRIORITY'));
+        $this->gadget->define('lbl_status', _t('GLOBAL_STATUS'));
+        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_editReport', _t('ABUSEREPORTER_REPORT_EDIT'));
 
         $tpl = $this->gadget->template->loadAdmin('Reports.html');
         $tpl->SetBlock('Reports');
