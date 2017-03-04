@@ -84,23 +84,23 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $fakeLayout->Load('', "$layout.html");
         $fakeLayout->addScript('gadgets/Layout/Resources/script.js');
         // set default value of javascript variables
-        $fakeLayout->SetVariable(
+        $this->gadget->define(
             'layout_layout_url',
             $this->gadget->urlMap('Layout', array('layout' => '~layout~')),
             'Layout'
         );
-        $fakeLayout->SetVariable(
+        $this->gadget->define(
             'layout_theme_url',
             $this->gadget->urlMap('Layout', array('theme' => '~theme~')),
             'Layout'
         );
-        $fakeLayout->SetVariable('noActionsMsg', _t('LAYOUT_NO_GADGET_ACTIONS'), 'Layout');
-        $fakeLayout->SetVariable('noItemsMsg', _t('LAYOUT_SECTION_EMPTY'), 'Layout');
-        $fakeLayout->SetVariable('displayAlways', _t('LAYOUT_ALWAYS'), 'Layout');
-        $fakeLayout->SetVariable('displayNever', _t('LAYOUT_NEVER'), 'Layout');
-        $fakeLayout->SetVariable('actionsTitle', _t('LAYOUT_ACTIONS'), 'Layout');
-        $fakeLayout->SetVariable('displayWhenTitle', _t('LAYOUT_CHANGE_DW'), 'Layout');
-        $fakeLayout->SetVariable('confirmDelete', _t('LAYOUT_CONFIRM_DELETE'), 'Layout');
+        $this->gadget->define('noActionsMsg', _t('LAYOUT_NO_GADGET_ACTIONS'), 'Layout');
+        $this->gadget->define('noItemsMsg', _t('LAYOUT_SECTION_EMPTY'), 'Layout');
+        $this->gadget->define('displayAlways', _t('LAYOUT_ALWAYS'), 'Layout');
+        $this->gadget->define('displayNever', _t('LAYOUT_NEVER'), 'Layout');
+        $this->gadget->define('actionsTitle', _t('LAYOUT_ACTIONS'), 'Layout');
+        $this->gadget->define('displayWhenTitle', _t('LAYOUT_CHANGE_DW'), 'Layout');
+        $this->gadget->define('confirmDelete', _t('LAYOUT_CONFIRM_DELETE'), 'Layout');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         // remove script tag
