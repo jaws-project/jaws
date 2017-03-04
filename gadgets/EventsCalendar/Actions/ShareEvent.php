@@ -20,7 +20,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             $userGadget = Jaws_Gadget::getInstance('Users');
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $userGadget->urlMap(
                     'LoginBox',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))

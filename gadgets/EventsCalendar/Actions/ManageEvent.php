@@ -295,7 +295,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             _t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'),
             'Events.Response'
         );
-        Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $event['user'])));
+        return Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $event['user'])));
     }
 
     /**
@@ -367,7 +367,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             _t('EVENTSCALENDAR_NOTICE_EVENT_UPDATED'),
             'Events.Response'
         );
-        Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $data['user'])));
+        return Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $data['user'])));
     }
 
     /**

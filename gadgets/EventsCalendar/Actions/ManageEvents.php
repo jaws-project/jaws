@@ -20,7 +20,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             $userGadget = Jaws_Gadget::getInstance('Users');
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $userGadget->urlMap(
                     'LoginBox',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -246,6 +246,6 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         );
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $url = $this->gadget->urlMap('ManageEvents', array('user' => $user));
-        Jaws_Header::Location($url);
+        return Jaws_Header::Location($url);
     }
 }
