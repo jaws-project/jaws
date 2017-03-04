@@ -169,7 +169,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Tms&action=Themes');
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Tms&action=Themes');
     }
 
     /**
