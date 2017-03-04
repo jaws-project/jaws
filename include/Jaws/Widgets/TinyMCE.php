@@ -136,29 +136,20 @@ class Jaws_Widgets_TinyMCE extends Container
             $this->_Container->PackStart($this->_Label);
         }
 
-        $GLOBALS['app']->Layout->setVariable('editorPlugins', $plugins);
-        $GLOBALS['app']->Layout->setVariable('editorToolbar', $toolbars);
+        $GLOBALS['app']->define('', 'editorPlugins', $plugins);
+        $GLOBALS['app']->define('', 'editorToolbar', $toolbars);
 
         $this->_Container->PackStart($this->TextArea);
         $this->_XHTML .= $this->_Container->Get();
 
         // Phoo
         if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-            $GLOBALS['app']->Layout->setVariable(
-                'editorImageBrowser',
-                BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo'
-            );
+            $GLOBALS['app']->define('', 'editorImageBrowser', BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo');
         }
         // Directory
         if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-            $GLOBALS['app']->Layout->setVariable(
-                'editorFileBrowser',
-                BASE_SCRIPT. '?gadget=Directory&action=Browse'
-            );
-            $GLOBALS['app']->Layout->setVariable(
-                'editorMediaBrowser',
-                BASE_SCRIPT. '?gadget=Directory&action=DirExplorer'
-            );
+            $GLOBALS['app']->define('', 'editorFileBrowser', BASE_SCRIPT. '?gadget=Directory&action=Browse');
+            $GLOBALS['app']->define('', 'editorMediaBrowser', BASE_SCRIPT. '?gadget=Directory&action=DirExplorer');
         }
 
     }

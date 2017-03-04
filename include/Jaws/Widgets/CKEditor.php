@@ -188,29 +188,20 @@ class Jaws_Widgets_CKEditor extends Container
             $plugins = str_replace('bbcode,', '', $plugins);
         }
 
-        $GLOBALS['app']->Layout->setVariable('editorPlugins', $plugins);
-        $GLOBALS['app']->Layout->setVariable('editorToolbar', $this->toolbars);
+        $GLOBALS['app']->define('', 'editorPlugins', $plugins);
+        $GLOBALS['app']->define('', 'editorToolbar', $this->toolbars);
 
         $this->_Container->PackStart($this->TextArea);
         $this->_XHTML .= $this->_Container->Get();
 
         // Phoo
         if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-            $GLOBALS['app']->Layout->setVariable(
-                'editorImageBrowser',
-                BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo'
-            );
+            $GLOBALS['app']->define('', 'editorImageBrowser', BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo');
         }
         // Directory
         if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-            $GLOBALS['app']->Layout->setVariable(
-                'editorFileBrowser',
-                BASE_SCRIPT. '?gadget=Directory&action=Browse'
-            );
-            $GLOBALS['app']->Layout->setVariable(
-                'editorMediaBrowser',
-                BASE_SCRIPT. '?gadget=Directory&action=DirExplorer'
-            );
+            $GLOBALS['app']->define('', 'editorFileBrowser', BASE_SCRIPT. '?gadget=Directory&action=Browse');
+            $GLOBALS['app']->define('', 'editorMediaBrowser', BASE_SCRIPT. '?gadget=Directory&action=DirExplorer');
         }
 
     }
@@ -287,7 +278,7 @@ class Jaws_Widgets_CKEditor extends Container
     }
 
     /**
-     * Set editor edabled or disabled
+     * Set editor enabled or disabled
      *
      * @access  public
      * @param   bool    $IsEnabled
