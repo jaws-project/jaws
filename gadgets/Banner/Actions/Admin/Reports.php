@@ -126,8 +126,8 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
         $tpl->SetVariable('bgroup_filter', $bGroup->Get());
         $tpl->SetVariable('lbl_bgroup', _t('BANNER_GROUPS_GROUP'));
 
-        $this->gadget->layout->setVariable('confirmResetBannerViews',  _t('BANNER_BANNERS_CONFIRM_RESET_VIEWS'));
-        $this->gadget->layout->setVariable('confirmResetBannerClicks', _t('BANNER_BANNERS_CONFIRM_RESET_CLICKS'));
+        $this->gadget->define('confirmResetBannerViews',  _t('BANNER_BANNERS_CONFIRM_RESET_VIEWS'));
+        $this->gadget->define('confirmResetBannerClicks', _t('BANNER_BANNERS_CONFIRM_RESET_CLICKS'));
 
         $tpl->ParseBlock('Reports');
         return $tpl->Get();

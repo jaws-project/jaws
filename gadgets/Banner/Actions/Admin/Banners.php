@@ -87,14 +87,14 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $this->gadget->layout->setVariable('incompleteBannerFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
-        $this->gadget->layout->setVariable('confirmBannerDelete',    _t('BANNER_BANNERS_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('addBanner_title',        _t('BANNER_BANNERS_ADD'));
-        $this->gadget->layout->setVariable('editBanner_title',       _t('BANNER_BANNERS_EDIT'));
+        $this->gadget->define('incompleteBannerFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmBannerDelete',    _t('BANNER_BANNERS_CONFIRM_DELETE'));
+        $this->gadget->define('addBanner_title',        _t('BANNER_BANNERS_ADD'));
+        $this->gadget->define('editBanner_title',       _t('BANNER_BANNERS_EDIT'));
 
-        $this->gadget->layout->setVariable('textTemplate',  $text_banner);
-        $this->gadget->layout->setVariable('imageTemplate', $image_banner);
-        $this->gadget->layout->setVariable('flashTemplate', $flash_banner);
+        $this->gadget->define('textTemplate',  $text_banner);
+        $this->gadget->define('imageTemplate', $image_banner);
+        $this->gadget->define('flashTemplate', $flash_banner);
 
         $tpl->ParseBlock('Banners');
         return $tpl->Get();
