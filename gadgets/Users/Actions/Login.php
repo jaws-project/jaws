@@ -31,7 +31,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 'Users.ForgotLogin',
                 RESPONSE_ERROR
             );
-            Jaws_Header::Location($this->gadget->urlMap('ForgotLogin'));
+            return Jaws_Header::Location($this->gadget->urlMap('ForgotLogin'));
         }
 
         $uModel = $this->gadget->model->load('Registration');
@@ -49,7 +49,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('ForgotLogin'));
+        return Jaws_Header::Location($this->gadget->urlMap('ForgotLogin'));
     }
 
     /**
@@ -380,14 +380,14 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $post
             );
             $login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $post['referrer']));
-            Jaws_Header::Location($login_url);
+            return Jaws_Header::Location($login_url);
         }
 
         $referrer = parse_url(hex2bin($post['referrer']));
         $referrer = (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
                     (array_key_exists('query', $referrer)? "?{$referrer['query']}" : '') . 
                     (array_key_exists('fragment', $referrer)? "#{$referrer['fragment']}" : '');
-        Jaws_Header::Location($referrer);
+        return Jaws_Header::Location($referrer);
     }
 
     /**
@@ -399,7 +399,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Logout()
     {
         $GLOBALS['app']->Session->Logout();
-        Jaws_Header::Location();
+        return Jaws_Header::Location();
     }
 
 }

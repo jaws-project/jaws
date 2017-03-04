@@ -16,7 +16,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function Groups()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -80,7 +80,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function UserGroupUI($gid = null)
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -180,7 +180,7 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_NOTICE
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Groups'));
+        return Jaws_Header::Location($this->gadget->urlMap('Groups'));
     }
 
     /**
@@ -220,7 +220,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             }
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Groups'));
+        return Jaws_Header::Location($this->gadget->urlMap('Groups'));
     }
 
 
@@ -253,7 +253,7 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
+        return Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
     }
 
     /**
@@ -292,7 +292,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             }
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
+        return Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
     }
 
     /**
@@ -304,7 +304,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function ManageGroup()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -439,7 +439,7 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_NOTICE
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Groups'));
+        return Jaws_Header::Location($this->gadget->urlMap('Groups'));
     }
 
 }

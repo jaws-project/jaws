@@ -140,7 +140,7 @@ class Users_Actions_VCard extends Users_Actions_Default
 
         if (empty($_FILES) || !is_array($_FILES)) {
             $GLOBALS['app']->Session->PushResponse(_t('GLOBAL_ERROR_UPLOAD'), 'Users.ImportVCard', RESPONSE_ERROR);
-            Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
+            return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
         }
 
         try {
@@ -148,7 +148,7 @@ class Users_Actions_VCard extends Users_Actions_Default
 
             if (count($vCard) == 0) {
                 $GLOBALS['app']->Session->PushResponse(_t('USERS_ERROR_VCARD_DATA_NOT_FOUND'), 'Users.ImportVCard', RESPONSE_ERROR);
-                Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
+                return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
             } elseif (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {
@@ -164,7 +164,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             }
         } catch (Exception $e) {
             $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'Users.ImportVCard', RESPONSE_ERROR);
-            Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
+            return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
         }
 
         if(Jaws_Error::IsError($contactId)) {
@@ -172,7 +172,7 @@ class Users_Actions_VCard extends Users_Actions_Default
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('USERS_VCARD_IMPORT_COMPLETED'), 'Users.ImportVCard', RESPONSE_NOTICE);
         }
-        Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
+        return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
     }
 
     /**

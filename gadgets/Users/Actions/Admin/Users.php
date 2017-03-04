@@ -531,7 +531,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     {
         $GLOBALS['app']->Session->Logout();
         $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
-        Jaws_Header::Location($admin_script?: 'admin.php');
+        return Jaws_Header::Location($admin_script?: 'admin.php');
     }
 
 }

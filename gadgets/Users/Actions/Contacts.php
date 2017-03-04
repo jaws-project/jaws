@@ -16,7 +16,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
     function Contact()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -140,7 +140,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
     function UpdateContact()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -181,7 +181,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Contact'), 'Users.Contact');
+        return Jaws_Header::Location($this->gadget->urlMap('Contact'), 'Users.Contact');
     }
 
     /**
@@ -193,7 +193,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
     function Contacts()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))

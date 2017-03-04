@@ -16,7 +16,7 @@ class Users_Actions_Personal extends Users_Actions_Default
     function Personal()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -119,7 +119,7 @@ class Users_Actions_Personal extends Users_Actions_Default
     function UpdatePersonal()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -160,7 +160,7 @@ class Users_Actions_Personal extends Users_Actions_Default
                     $post
                 );
 
-                Jaws_Header::Location($this->gadget->urlMap('Personal'));
+                return Jaws_Header::Location($this->gadget->urlMap('Personal'));
             } elseif (!empty($res)) {
                 $post['avatar'] = $res['avatar'][0]['host_filename'];
             }
@@ -187,7 +187,7 @@ class Users_Actions_Personal extends Users_Actions_Default
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Personal'));
+        return Jaws_Header::Location($this->gadget->urlMap('Personal'));
     }
 
 }

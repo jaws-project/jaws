@@ -16,7 +16,7 @@ class Users_Actions_Account extends Users_Actions_Default
     function Account()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -93,7 +93,7 @@ class Users_Actions_Account extends Users_Actions_Default
     function UpdateAccount()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
                     array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -187,7 +187,7 @@ class Users_Actions_Account extends Users_Actions_Default
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Account'));
+        return Jaws_Header::Location($this->gadget->urlMap('Account'));
     }
 
     /**

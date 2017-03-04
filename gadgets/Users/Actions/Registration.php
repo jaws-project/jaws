@@ -94,7 +94,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                     $this->gadget->registry->fetch('anon_group')
                 );
                 if ($result === true) {
-                    Jaws_Header::Location($this->gadget->urlMap('Registered'));
+                    return Jaws_Header::Location($this->gadget->urlMap('Registered'));
                 }
             }
         }
@@ -107,7 +107,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             RESPONSE_ERROR,
             $post
         );
-        Jaws_Header::Location($this->gadget->urlMap('Registration'));
+        return Jaws_Header::Location($this->gadget->urlMap('Registration'));
     }
 
     /**
@@ -119,7 +119,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     function Registration()
     {
         if ($GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location('');
+            return Jaws_Header::Location('');
         }
 
         if ($this->gadget->registry->fetch('anon_register') !== 'true') {
@@ -194,7 +194,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     function ActivateUser()
     {
         if ($GLOBALS['app']->Session->Logged() && !$GLOBALS['app']->Session->IsSuperAdmin()) {
-            Jaws_Header::Location('');
+            return Jaws_Header::Location('');
         }
 
         if ($this->gadget->registry->fetch('anon_register') !== 'true') {
