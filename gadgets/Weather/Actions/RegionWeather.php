@@ -278,14 +278,14 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->layout->setVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->layout->setVariable('lbl_published', _t('WEATHER_PUBLISHED'));
-        $this->gadget->layout->setVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->layout->setVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $this->gadget->layout->setVariable('lbl_geo_position', _t('WEATHER_GEOPOSITION'));
-        $this->gadget->layout->setVariable('lbl_search', _t('GLOBAL_SEARCH'));
-        $this->gadget->layout->setVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
-        $this->gadget->layout->setVariable('base_script', BASE_SCRIPT);
+        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('lbl_published', _t('WEATHER_PUBLISHED'));
+        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_geo_position', _t('WEATHER_GEOPOSITION'));
+        $this->gadget->define('lbl_search', _t('GLOBAL_SEARCH'));
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('base_script', BASE_SCRIPT);
 
         $tpl = $this->gadget->template->load('UserRegions.html');
         $tpl->SetBlock('UserRegions');
