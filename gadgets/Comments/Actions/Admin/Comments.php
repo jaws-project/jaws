@@ -21,7 +21,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
     function Comments($req_gadget = '', $menubar = '')
     {
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('confirmCommentDelete', _t('COMMENTS_CONFIRM_DELETE'));
+        $this->gadget->define('confirmCommentDelete', _t('COMMENTS_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Comments.html');
         $tpl->SetBlock('Comments');
