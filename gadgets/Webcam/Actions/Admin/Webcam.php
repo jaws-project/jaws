@@ -97,7 +97,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
     function ManageWebcams()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('incompleteWebcamFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incompleteWebcamFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Webcam.html');
         $tpl->SetBlock('webcam');
