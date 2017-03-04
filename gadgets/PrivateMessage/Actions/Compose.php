@@ -353,7 +353,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             }
         }
 
-        Jaws_Header::Location($url, 'PrivateMessage.Compose');
+        return Jaws_Header::Location($url, 'PrivateMessage.Compose');
     }
 
     /**
