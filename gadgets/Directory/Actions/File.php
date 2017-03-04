@@ -81,7 +81,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
             (array_key_exists('query', $referrer)? "?{$referrer['query']}" : '') . 
             (array_key_exists('fragment', $referrer)? "#{$referrer['fragment']}" : '');
-        Jaws_Header::Location($redirectURL);
+        return Jaws_Header::Location($redirectURL);
     }
 
     /**

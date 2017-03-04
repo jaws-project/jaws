@@ -17,7 +17,7 @@ class Directory_Actions_Admin_Comments extends Directory_Actions_Admin_Common
     {
         $this->gadget->CheckPermission('ManageComments');
         if (!Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
         }
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');
