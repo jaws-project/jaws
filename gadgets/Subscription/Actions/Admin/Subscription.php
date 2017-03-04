@@ -15,7 +15,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
     function Subscription()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('confirmSubscriptionDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('confirmSubscriptionDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Subscription.html');
         $tpl->SetBlock('Subscription');
