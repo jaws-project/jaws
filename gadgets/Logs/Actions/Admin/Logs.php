@@ -29,7 +29,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
-        $this->gadget->layout->setVariable('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
+        $this->gadget->define('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('Logs');
