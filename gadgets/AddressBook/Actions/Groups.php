@@ -253,7 +253,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_NEW_GROUP_SAVED'), 'AddressBook.Groups');
             $link = $this->gadget->urlMap('ManageGroups');
-            Jaws_Header::Location($link);
+            return Jaws_Header::Location($link);
         }
     }
 
@@ -297,7 +297,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED'), 'AddressBook.AdrGroups');
             $link = $this->gadget->urlMap('GroupMembers', array('id' => $gid));
-            Jaws_Header::Location($link);
+            return Jaws_Header::Location($link);
         }
     }
 
@@ -322,6 +322,6 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_DELETE_GROUP_COMPLETE'), 'AddressBook.Groups');
         }
-        Jaws_Header::Location($this->gadget->urlMap('ManageGroups'), 'AddressBook.Groups');
+        return Jaws_Header::Location($this->gadget->urlMap('ManageGroups'), 'AddressBook.Groups');
      }
 }

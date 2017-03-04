@@ -559,7 +559,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
                 _t('ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED'),
                 'AddressBook.InsertAddress'
             );
-            Jaws_Header::Location($this->gadget->urlMap('AddressBook'));
+            return Jaws_Header::Location($this->gadget->urlMap('AddressBook'));
         }
     }
 
@@ -706,7 +706,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
                 'AddressBook.UpdateAddress'
             );
             $link = $this->gadget->urlMap('AddressBook');
-            Jaws_Header::Location($link);
+            return Jaws_Header::Location($link);
         }
     }
 
@@ -787,7 +787,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $link = $this->gadget->urlMap('AddressBook');
 
         if (empty($ids)) {
-            Jaws_Header::Location($link);
+            return Jaws_Header::Location($link);
             return false;
         }
 
@@ -799,7 +799,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_DELETE_ADDRESS_COMPLETE'), 'AddressBook');
         }
-        Jaws_Header::Location($link, 'AddressBook');
+        return Jaws_Header::Location($link, 'AddressBook');
     }
 
     /**

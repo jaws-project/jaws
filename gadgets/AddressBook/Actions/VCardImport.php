@@ -62,7 +62,7 @@ class AddressBook_Actions_VCardImport extends AddressBook_Actions_Default
 
         if (empty($_FILES) || !is_array($_FILES)) {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_ERROR_IMPORT_PLEASE_SELECT_FILE'), 'AddressBook.Import', RESPONSE_ERROR);
-            Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
+            return Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
         }
 
         try {
@@ -71,7 +71,7 @@ class AddressBook_Actions_VCardImport extends AddressBook_Actions_Default
             $model = $this->gadget->model->load('AddressBook');
             if (count($vCard) == 0) {
                 $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_ERROR_VCARD_DATA_NOT_FOUND'), 'AddressBook.Import', RESPONSE_ERROR);
-                Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
+                return Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
             } elseif (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {
@@ -87,11 +87,11 @@ class AddressBook_Actions_VCardImport extends AddressBook_Actions_Default
             }
         } catch (Exception $e) {
             $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'AddressBook.Import', RESPONSE_ERROR); // TODO: Translate Messages
-            Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
+            return Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
         }
 
         $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_IMPORT_COMPLETED'), 'AddressBook');
-        Jaws_Header::Location($this->gadget->urlMap('AddressBook'));
+        return Jaws_Header::Location($this->gadget->urlMap('AddressBook'));
     }
 
 

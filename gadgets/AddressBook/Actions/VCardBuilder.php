@@ -29,7 +29,7 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_Actions_Default
 
         $link = $this->gadget->urlMap('AddressBook', array(), true);
         if (empty($ids)) {
-            Jaws_Header::Location($link);
+            return Jaws_Header::Location($link);
             return false;
         }
 

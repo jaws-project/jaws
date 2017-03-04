@@ -104,7 +104,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
             } else {
                 $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_ADD_ADDRESS_RELATION_COMPLETE'), 'AddressBook.AdrGroups');
             }
-            Jaws_Header::Location($link);
+            return Jaws_Header::Location($link);
         }
     }
 
@@ -133,6 +133,6 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_DELETE_ADDRESS_RELATION_COMPLETE'), 'AddressBook.AdrGroups');
         }
-        Jaws_Header::Location($link);
+        return Jaws_Header::Location($link);
     }
 }
