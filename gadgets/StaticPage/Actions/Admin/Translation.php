@@ -29,7 +29,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $page = $model->GetPage($page_id);
         if (Jaws_Error::IsError($page)) {
             $GLOBALS['app']->Session->PushLastResponse($page->GetMessage(), RESPONSE_ERROR);
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         }
         return $this->CreateForm($page['title'], '', '', '', '', $page['content'], true, true, '', $page_id, '',
             'AddTranslation', 'translation');
@@ -53,13 +53,13 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $result = $model->AddTranslation($page, $post['title'], $post['content'], $post['language'],
             $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
         if (Jaws_Error::isError($result)) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         } else {
             $translation = $model->GetPageTranslationByPage($page, $post['language']);
             if (Jaws_Error::isError($translation)) {
-                Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
+                return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
             } else {
-                Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditTranslation&id=' .
+                return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditTranslation&id=' .
                     $translation['translation_id']);
             }
         }
@@ -81,7 +81,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $translation = $model->GetPageTranslation($trans_id);
         if (Jaws_Error::IsError($translation)) {
             $GLOBALS['app']->Session->PushLastResponse($translation->GetMessage(), RESPONSE_ERROR);
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         }
         return $this->CreateForm($translation['title'], '', $translation['meta_keywords'], $translation['meta_description'],
             $translation['tags'], $translation['content'], $translation['published'], true,
@@ -105,7 +105,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $result = $model->UpdateTranslation($trans, $post['title'], $post['content'], $post['language'],
             $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditTranslation&id=' . $trans);
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditTranslation&id=' . $trans);
     }
 
 
