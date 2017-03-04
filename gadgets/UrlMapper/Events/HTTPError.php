@@ -20,7 +20,7 @@ class UrlMapper_Events_HTTPError extends Jaws_Gadget_Event
         $uModel = $this->gadget->model->loadAdmin('ErrorMaps');
         $res = $uModel->GetHTTPError($reqURL, $code);
         if (!Jaws_Error::IsError($res) && !empty($res) && ($res['code'] == 301 || $res['code'] == 302)) {
-            Jaws_Header::Location($res['url'], $res['code']);
+            return Jaws_Header::Location($res['url'], $res['code']);
         }
 
         return $res;
