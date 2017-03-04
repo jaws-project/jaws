@@ -26,7 +26,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
         $model = $this->gadget->model->load('Photos');
         $image = $model->GetImageEntry($post['image']);
         if (Jaws_Error::IsError($image))  {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
             '&album='.$post['fromalbum']);
         }
 
@@ -65,7 +65,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
             }
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
         '&album='.$post['fromalbum']);
     }
 
@@ -83,7 +83,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
         $model = $this->gadget->model->load('Photos');
         $image = $model->GetImageEntry($post['image']);
         if (Jaws_Error::IsError($image)) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
             '&album='.$post['fromalbum']);
         }
 
@@ -122,7 +122,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
             }
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
         '&album='.$post['fromalbum']);
     }
 }

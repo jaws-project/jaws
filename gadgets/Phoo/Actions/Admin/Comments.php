@@ -22,7 +22,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageComments');
         if (!Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');

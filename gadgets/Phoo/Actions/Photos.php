@@ -301,7 +301,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             $userGadget = Jaws_Gadget::getInstance('Users');
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $userGadget->urlMap(
                     'LoginBox',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -377,7 +377,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('UploadPhotoUI'));
+        return Jaws_Header::Location($this->gadget->urlMap('UploadPhotoUI'));
     }
 
 }

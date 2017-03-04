@@ -249,7 +249,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $image = $pModel->GetImageEntry((int)$get['image']);
         if (Jaws_Error::IsError($image)) {
             $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
         $id                 = $image['id'];
@@ -420,7 +420,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $rs2 = $model->SetEntryAlbums($post['image'], $post['album']);
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image=' . $post['image'] . '&album='.$post['fromalbum']);
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image=' . $post['image'] . '&album='.$post['fromalbum']);
     }
 
     /**
@@ -433,6 +433,6 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $post = jaws()->request->fetch(array('image', 'fromalbum'), 'post');
         $model = $this->gadget->model->loadAdmin('Photos');
         $model->DeletePhoto($post['image']);
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$post['fromalbum']);
+        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$post['fromalbum']);
     }
 }

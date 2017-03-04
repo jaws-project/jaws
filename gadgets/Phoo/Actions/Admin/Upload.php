@@ -107,7 +107,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $album_data = $aModel->getAlbumInfo($album);
         if (Jaws_Error::IsError($album_data) || empty($album_data)) {
             $GLOBALS['app']->Session->PushLastResponse($album_data->getMessage());
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
         for ($i = 1; $i <= count($files); $i++) {
             if (!isset($files['photo'.$i])) {
@@ -134,16 +134,16 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
                 $res = $pModel->AddEntryToAlbum($img, $album);
                 if (Jaws_Error::IsError($res)) {
                     ///FIXME: This is a unacceptable solution
-                    Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+                    return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
                 }
             }
         }
 
         $GLOBALS['app']->Session->SetAttribute('failures', $failures);
         if (empty($extra_params)) {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album=' . $album);
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album=' . $album);
         } else {
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
+            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
         }
 
     }
