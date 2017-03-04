@@ -41,7 +41,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         }
 
         if ($redirect) {
-            Jaws_Header::Location(BASE_SCRIPT);
+            return Jaws_Header::Location(BASE_SCRIPT);
         }
     }
 
@@ -75,7 +75,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         }
 
         if ($redirect) {
-            Jaws_Header::Location(BASE_SCRIPT);
+            return Jaws_Header::Location(BASE_SCRIPT);
         }
     }
 
@@ -109,7 +109,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         }
 
         if ($redirect) {
-            Jaws_Header::Location(BASE_SCRIPT);
+            return Jaws_Header::Location(BASE_SCRIPT);
         }
     }
 
@@ -143,7 +143,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         }
 
         if ($redirect) {
-            Jaws_Header::Location(BASE_SCRIPT);
+            return Jaws_Header::Location(BASE_SCRIPT);
         }
     }
 
@@ -177,7 +177,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         }
 
         if ($redirect) {
-            Jaws_Header::Location(BASE_SCRIPT);
+            return Jaws_Header::Location(BASE_SCRIPT);
         }
     }
 
