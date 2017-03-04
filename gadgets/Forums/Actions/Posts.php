@@ -582,7 +582,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         }
 
         // redirect to topic posts page
-        Jaws_Header::Location($post_link);
+        return Jaws_Header::Location($post_link);
     }
 
     /**
@@ -658,7 +658,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             }
 
             // redirect to topic posts list
-            Jaws_Header::Location($topic_link);
+            return Jaws_Header::Location($topic_link);
         } else {
             $tpl = $this->gadget->template->load('DeletePost.html');
             $tpl->SetBlock('post');

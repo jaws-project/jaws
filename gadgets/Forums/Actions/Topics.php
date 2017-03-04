@@ -576,7 +576,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         }
 
         // redirect to topic posts page
-        Jaws_Header::Location($topic_link);
+        return Jaws_Header::Location($topic_link);
     }
 
     /**
@@ -646,11 +646,11 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 }
 
                 // redirect to topics list
-                Jaws_Header::Location($forum_link);
+                return Jaws_Header::Location($forum_link);
             }
 
             // redirect to topic posts list
-            Jaws_Header::Location(
+            return Jaws_Header::Location(
                 $this->gadget->urlMap('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id']))
             );
         } else {
