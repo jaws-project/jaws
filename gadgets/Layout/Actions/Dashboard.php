@@ -24,7 +24,7 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
 
         $layoutModel = $this->gadget->model->load('Layout');
         $layoutModel->InitialLayout('Index.Dashboard');
-        Jaws_Header::Location('');
+        return Jaws_Header::Location('');
     }
 
 }

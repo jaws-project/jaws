@@ -41,7 +41,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         } else {
             $this->gadget->CheckPermission('ManageThemes');
             $this->UpdateTheme($rqst['theme'], $rqst['locality']);
-            Jaws_Header::Location($this->gadget->urlMap('Layout'));
+            return Jaws_Header::Location($this->gadget->urlMap('Layout'));
         }
         $GLOBALS['app']->SetTheme($theme, $theme_locality);
 

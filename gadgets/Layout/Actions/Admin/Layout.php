@@ -18,7 +18,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
      */
     function Layout()
     {
-        Jaws_Header::Location($this->gadget->urlMap('Layout', array()));
+        return Jaws_Header::Location($this->gadget->urlMap('Layout', array()));
     }
 
 }
