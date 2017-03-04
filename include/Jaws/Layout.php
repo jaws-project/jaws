@@ -428,7 +428,6 @@ class Jaws_Layout
                 $content = '';
                 $this->_Template->SetBlock($block);
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
-                    $this->loaded_layout_gadgets[$GLOBALS['app']->mainGadget] = true;
                     $item['gadget'] = $GLOBALS['app']->mainGadget;
                     $item['action'] = $GLOBALS['app']->mainAction;
                     $item['params'] = array();
@@ -530,6 +529,9 @@ class Jaws_Layout
     function initializeScript()
     {
         $result = '';
+        // added main gadget to loaded in layout
+        $this->loaded_layout_gadgets[$GLOBALS['app']->mainGadget] = true;
+
         foreach (array_keys($this->loaded_layout_gadgets) as $component) {
             if (empty($component)) {
                 $jsObj = 'jaws';
