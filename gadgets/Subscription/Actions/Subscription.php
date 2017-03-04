@@ -163,7 +163,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                     RESPONSE_ERROR,
                     $post
                 );
-                Jaws_Header::Location($this->gadget->urlMap('Subscription'), 'Subscription.Subscription');
+                return Jaws_Header::Location($this->gadget->urlMap('Subscription'), 'Subscription.Subscription');
             }
         }
 
@@ -188,7 +188,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Subscription'), 'Subscription.Subscription');
+        return Jaws_Header::Location($this->gadget->urlMap('Subscription'), 'Subscription.Subscription');
     }
 
 
