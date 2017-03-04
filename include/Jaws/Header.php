@@ -21,7 +21,7 @@ class Jaws_Header
      * @param   string  $url            URL to move the location
      * @param   mixed   $resource       Returning data
      * @param   int     $status_code    HTTP return status code
-     * @return  void
+     * @return  mixed   False if not redirected otherwise void
      */
     static function Location($url = '', $resource = '', $status_code = 302)
     {
@@ -29,7 +29,13 @@ class Jaws_Header
             $url = $GLOBALS['app']->getSiteURL('/'). $url;
         }
 
-        terminate($resource, $status_code, $url);
+        if (!isset($GLOBALS['app']) ||
+            $GLOBALS['app']->requestedActionMode != ACTION_MODE_LAYOUT
+        ) {
+            terminate($resource, $status_code, $url);
+        }
+
+        return false;
     }
 
     /**
