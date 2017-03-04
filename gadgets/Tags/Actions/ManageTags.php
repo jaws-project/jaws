@@ -211,7 +211,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('ManageTags'));
+        return Jaws_Header::Location($this->gadget->urlMap('ManageTags'));
     }
 
     /**
@@ -244,7 +244,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('ManageTags'));
+        return Jaws_Header::Location($this->gadget->urlMap('ManageTags'));
     }
 
     /**
@@ -292,7 +292,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('ManageTags'));
+        return Jaws_Header::Location($this->gadget->urlMap('ManageTags'));
     }
 
 }
