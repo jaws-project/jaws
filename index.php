@@ -64,6 +64,8 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
             // set requested gadget/action
             $GLOBALS['app']->mainGadget = $ReqGadget;
             $GLOBALS['app']->mainAction = $ReqAction;
+            $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
+            $GLOBALS['app']->define('', 'mainAction', $ReqAction);
         } else {
             $ReqError = '404';
             $ReqGadget = null;
@@ -85,7 +87,8 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
         // set requested gadget
         $GLOBALS['app']->mainGadget = $ReqGadget;
         $GLOBALS['app']->mainAction = $ReqAction;
-
+        $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
+        $GLOBALS['app']->define('', 'mainAction', $ReqAction);
     }
 } else {
     $ReqError = empty($ReqError)? '404' : $ReqError;

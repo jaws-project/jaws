@@ -118,6 +118,8 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     // set requested gadget/action
     $GLOBALS['app']->mainGadget = $ReqGadget;
     $GLOBALS['app']->mainAction = $ReqAction;
+    $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
+    $GLOBALS['app']->define('', 'mainAction', $ReqAction);
 
     // Init layout
     $GLOBALS['app']->InstanceLayout();
