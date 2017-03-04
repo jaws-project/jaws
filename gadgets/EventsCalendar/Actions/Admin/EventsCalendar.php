@@ -84,7 +84,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         for ($i = 0; $i <= 2; $i++) {
             $const['priorities'][$i] = _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i);
         }
-        $this->gadget->layout->setVariable('CONST', $const);
+        $this->gadget->define('CONST', $const);
 
         $tpl->ParseBlock('ec');
         return $tpl->Get();
