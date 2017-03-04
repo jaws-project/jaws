@@ -80,6 +80,14 @@ class Jaws_Layout
     private $variables = array();
 
     /**
+     * Loaded gadgets in layout
+     *
+     * @access  private
+     * @var     array
+     */
+    private $loaded_layout_gadgets = array();
+
+    /**
      * Initializes the Layout
      *
      * @access  public
@@ -97,9 +105,7 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
-        $this->SetVariable('mainGadget', $GLOBALS['app']->mainGadget);
-        $this->SetVariable('mainAction', $GLOBALS['app']->mainAction);
-        $this->SetVariable('loadingMessage', _t('GLOBAL_LOADING'));
+        $this->loaded_layout_gadgets[''] = true;
     }
 
     /**
@@ -507,6 +513,8 @@ class Jaws_Layout
             $output = '';
         } elseif (jaws()->http_response_code() !== 200) {
             $output = '';
+        } else {
+            $this->loaded_layout_gadgets[$gadget] = true;
         }
 
         return $output;
@@ -521,7 +529,7 @@ class Jaws_Layout
      * @param   string  $component  Component name
      * @return  void
      */
-    function SetVariable($name, $value, $component = '')
+    function SetVariable($name, $value, $component = '', $segment = '')
     {
         switch (gettype($value)) {
             case 'boolean':
@@ -549,7 +557,12 @@ class Jaws_Layout
                 return;
         }
 
-        $this->variables[$component][$name] = $value;
+        $segment = $segment?: 'defines';
+        if ($name === '') {
+            $this->variables[$component][$segment][] = $value;
+        } else {
+            $this->variables[$component][$segment][$name] = $value;
+        }
     }
 
     /**
@@ -561,6 +574,34 @@ class Jaws_Layout
     function initializeScript()
     {
         $result = '';
+        foreach (array_keys($this->loaded_layout_gadgets) as $component) {
+            if (empty($component)) {
+                $jsObj = 'jaws';
+                $defines = array(
+                    'mainGadget' => $GLOBALS['app']->mainGadget,
+                    'mainAction' => $GLOBALS['app']->mainAction,
+                    'loadingMessage' => _t('GLOBAL_LOADING')
+                );
+                $actions = array();
+            } else {
+                $jsObj = "jaws.$component";
+                $objGadget = Jaws_Gadget::getInstance($component);
+                $defines = $objGadget->defines();
+                $actions = array_keys($objGadget->loaded_actions);
+            }
+
+            if (empty($defines)) {
+                continue;
+            }
+
+            $tmpStr = '';
+            $result.= "\t$jsObj = {};\n";
+            foreach ($defines as $name => $value) {
+                $tmpStr.= "\t  '$name': ".$value.",\n";
+            }
+            $result.= "\t$jsObj.Defines = {\n$tmpStr\t};\n";
+        }
+/*
         foreach ($this->variables as $component => $variables) {
             if (empty($component)) {
                 $jsObj = 'jaws';
@@ -570,12 +611,15 @@ class Jaws_Layout
 
             $tmpStr = '';
             $result.= "\t$jsObj = {};\n";
-            foreach ($variables as $name => $value) {
-                $tmpStr.= "\t  '$name': $value,\n";
+            _log_var_dump($variables['actions']);
+            if (isset($variables['defines'])) {
+                foreach ($variables['defines'] as $name => $value) {
+                    $tmpStr.= "\t  '$name': $value,\n";
+                }
             }
             $result.= "\t$jsObj.Defines = {\n$tmpStr\t};\n";
         }
-
+*/
         return $result;
     }
 

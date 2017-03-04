@@ -89,7 +89,15 @@ class Jaws_Gadget
      * @var     array
      * @access  private
      */
-    var $attributes = array();
+    private $attributes = array();
+
+    /**
+     * Defines of the gadget
+     *
+     * @var     array
+     * @access  private
+     */
+    private $defines = array();
 
     /**
      * Name of the gadget
@@ -128,6 +136,13 @@ class Jaws_Gadget
      * @access  public
      */
     public $actions = array();
+
+    /**
+     * Loaded actions
+     * @var     array
+     * @access  public
+     */
+    public $loaded_actions = array();
 
 
     /**
@@ -235,6 +250,30 @@ class Jaws_Gadget
     function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Sets a define
+     *
+     * @access  public
+     * @param   string $key     Define name
+     * @param   string $value   Define value
+     * @return  void
+     */
+    function define($key, $value)
+    {
+        $this->defines[$key] = $value;
+    }
+
+    /**
+     * Get all defines of the gadget
+     *
+     * @access  public
+     * @return  array   Defines of the gadget
+     */
+    function defines()
+    {
+        return $this->defines;
     }
 
     /**

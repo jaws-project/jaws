@@ -276,15 +276,16 @@ class Jaws_Gadget_Action
 
         $file = $this->gadget->actions[JAWS_SCRIPT][$action]['file'];
         if (JAWS_SCRIPT == 'index') {
-            $objAction = Jaws_Gadget::getInstance($this->gadget->name)->action->load($file);
+            $objAction = $this->gadget->action->load($file);
         } else {
-            $objAction = Jaws_Gadget::getInstance($this->gadget->name)->action->loadAdmin($file);
+            $objAction = $this->gadget->action->loadAdmin($file);
         }
         if (Jaws_Error::isError($objAction)) {
             return $objAction;
         }
 
         if (method_exists($objAction, $action)) {
+            $this->gadget->loaded_actions[$action] = true;
             $GLOBALS['app']->requestedGadget  = $this->gadget->name;
             $GLOBALS['app']->requestedAction  = $action;
             $GLOBALS['app']->requestedSection = $section;
