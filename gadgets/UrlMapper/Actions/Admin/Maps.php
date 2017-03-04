@@ -142,9 +142,9 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, "javascript:saveMap();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $this->gadget->layout->setVariable('addMap_title', _t('URLMAPPER_MAPS_ADD_TITLE'));
-        $this->gadget->layout->setVariable('editMap_title', _t('URLMAPPER_MAPS_EDIT_TITLE'));
-        $this->gadget->layout->setVariable('confirmMapDelete', _t('URLMAPPER_MAPS_CONFIRM_DELETE'));
+        $this->gadget->define('addMap_title', _t('URLMAPPER_MAPS_ADD_TITLE'));
+        $this->gadget->define('editMap_title', _t('URLMAPPER_MAPS_EDIT_TITLE'));
+        $this->gadget->define('confirmMapDelete', _t('URLMAPPER_MAPS_CONFIRM_DELETE'));
 
         $tpl->ParseBlock('UrlMapper');
         return $tpl->Get();
