@@ -94,6 +94,6 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
             _t('NOTEPAD_NOTICE_NOTE_CREATED'),
             'Notepad.Response'
         );
-        Jaws_Header::Location($this->gadget->urlMap('Notepad'));
+        return Jaws_Header::Location($this->gadget->urlMap('Notepad'));
     }
 }

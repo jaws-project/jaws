@@ -144,7 +144,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
             }
         }
         $url = $this->gadget->urlMap('Notepad', $post);
-        Jaws_Header::Location($url);
+        return Jaws_Header::Location($url);
 
         /*if (strlen($search['query']) < 2) {
             $GLOBALS['app']->Session->PushResponse(

@@ -126,6 +126,6 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
             _t('NOTEPAD_NOTICE_NOTE_UPDATED'),
             'Notepad.Response'
         );
-        Jaws_Header::Location($this->gadget->urlMap('Notepad'));
+        return Jaws_Header::Location($this->gadget->urlMap('Notepad'));
     }
 }
