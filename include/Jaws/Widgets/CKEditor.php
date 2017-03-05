@@ -196,9 +196,21 @@ class Jaws_Widgets_CKEditor extends Container
 
         if (JAWS_SCRIPT == 'index') {
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                $GLOBALS['app']->define('', 'editorImageBrowser', BASE_SCRIPT. 'gadget=Directory&action=DirExplorer');
-                $GLOBALS['app']->define('', 'editorFileBrowser',  BASE_SCRIPT. 'gadget=Directory&action=DirExplorer');
-                $GLOBALS['app']->define('', 'editorMediaBrowser', BASE_SCRIPT. '?gadget=Directory&action=DirExplorer');
+                $GLOBALS['app']->define(
+                    '',
+                    'editorImageBrowser',
+                    BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=3'
+                );
+                $GLOBALS['app']->define(
+                    '',
+                    'editorFileBrowser',
+                    BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=1,6'
+                );
+                $GLOBALS['app']->define(
+                    '',
+                    'editorMediaBrowser',
+                    BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=4,5'
+                );
             }
         } else {
             // Phoo
