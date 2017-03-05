@@ -170,6 +170,7 @@ class Jaws
         $this->loadObject('Jaws_ACL', 'ACL');
         $this->loadObject('Jaws_Listener', 'Listener');
         $this->loadObject('Jaws_URLMapping', 'Map');
+        $this->define('', 'script', JAWS_SCRIPT);
     }
 
     /**
