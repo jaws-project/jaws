@@ -10,17 +10,15 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
     /**
      * Builds directory and file navigation UI
      *
-     * @param   int     $type       File type (for normal action = null)
-     * @param   int     $orderBy    Order by
-     * @param   int     $limit      Forms limit
      * @access  public
      * @return  string  XHTML UI
      */
-    function DirExplorer($type = null, $orderBy = 0, $limit = 0)
+    function DirExplorer()
     {
         $browserLayout = new Jaws_Layout();
         $browserLayout->Load('gadgets/Directory/Templates', 'DirExplorer.html');
         $browserLayout->addScript('gadgets/Directory/Resources/index.js');
+        $this->gadget->define('type', jaws()->request->fetch('type', 'get'));
         $tpl = $browserLayout->_Template;
         // bookmark default layout
         $mainLayout = $GLOBALS['app']->Layout;
@@ -59,7 +57,8 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
     {
         $params = array(
             'user' => (int)$GLOBALS['app']->Session->GetAttribute('user'),
-            'public' => false
+            'file_type' => jaws()->request->fetch('type'),
+            'public' => false,
         );
 
         $modelFiles = $this->gadget->model->load('Files');

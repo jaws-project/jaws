@@ -86,7 +86,7 @@ function directoryDataSource(options, callback)
     ];
 
     DirectoryAjax.callAsync(
-        'GetDirectory', {},
+        'GetDirectory', {type: jaws.Directory.Defines.type},
         function(response, status) {
             var dataSource = {};
             if (response['type'] == 'alert-success') {
