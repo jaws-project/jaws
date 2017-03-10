@@ -541,8 +541,8 @@ class Jaws_Layout
             }
 
             $result.= "\t$jsObj = {};\n";
-            $result.= "\t$jsObj.Actions = ".'$.parseJSON(\''.json_encode($actions).'\')'.";\n";
-            $result.= "\t$jsObj.Defines = ".'$.parseJSON(\''.json_encode($defines).'\')'.";\n";
+            $result.= "\t$jsObj.Actions = ".'$.parseJSON(\''.json_encode($actions, JSON_HEX_APOS).'\')'.";\n";
+            $result.= "\t$jsObj.Defines = ".'$.parseJSON(\''.json_encode($defines, JSON_HEX_APOS).'\')'.";\n";
         }
 
         return $result;
