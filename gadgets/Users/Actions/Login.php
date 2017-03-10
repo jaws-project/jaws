@@ -357,6 +357,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             if (!Jaws_Error::IsError($JCrypt)) {
                 $post['password'] = $JCrypt->decrypt($post['password']);
             }
+        } else {
+            $post['password'] = Jaws_XSS::defilter($post['password']);
         }
 
         // check captcha

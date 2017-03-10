@@ -60,6 +60,8 @@ if (!$GLOBALS['app']->Session->Logged())
                 if (!Jaws_Error::IsError($JCrypt)) {
                     $passwd = $JCrypt->decrypt($passwd);
                 }
+            } else {
+                $passwd = Jaws_XSS::defilter($passwd);
             }
         }
 
