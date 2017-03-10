@@ -21,9 +21,11 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
      * @param   string  $fast_url       Category fast url
      * @param   string  $meta_keywords  Meta keywords of the category
      * @param   string  $meta_desc      Meta description of the category
+     * @param   array   $image_info     Image info
+     * @param   array   $delete_image   Delete old image
      * @return  mixed   True on success, Jaws_Error on failure
      */
-    function NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc)
+    function NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc, $image_info, $delete_image)
     {
         $fast_url = empty($fast_url) ? $name : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog_category');
@@ -37,16 +39,65 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $params['createtime']       = $now;
         $params['updatetime']       = $now;
 
-        $catTable = Jaws_ORM::getInstance()->table('blog_category');
-        $result = $catTable->insert($params)->exec();
-        if (Jaws_Error::IsError($result)) {
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+        $catTable = $objORM->table('blog_category');
+        $categoryId = $catTable->insert($params)->exec();
+        if (Jaws_Error::IsError($categoryId)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'));
         }
 
-        $this->gadget->acl->insert('CategoryAccess', $result, true);
-        $this->gadget->acl->insert('CategoryManage', $result, false);
+        // move uploaded image file
+        if ($delete_image) {
+            Jaws_Utils::delete($this->GetCategoryLogoPath($categoryId));
+        } else if (!empty($image_info)) {
+            $tmpLogo = Jaws_Utils::upload_tmp_dir() . DIRECTORY_SEPARATOR . $image_info['host_filename'];
+
+            // Save original Logo
+            $objImage = Jaws_Image::factory();
+            if (Jaws_Error::IsError($objImage)) {
+                return Jaws_Error::raiseError($objImage->getMessage());
+            }
+            $objImage->load($tmpLogo);
+            $res = $objImage->save($this->GetCategoryLogoPath($categoryId) , 'jpg');
+            $objImage->free();
+            if (Jaws_Error::IsError($res)) {
+                //Rollback Transaction
+                $objORM->rollback();
+
+                // Return an error if image can't be resized
+                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+            }
+
+            // Save resize logo
+            $imgSize = explode('x', $this->gadget->registry->fetch('category_image_size'));
+            if (empty($imgSize)) {
+                $imgSize = array(128, 128);
+            }
+            $objImage = Jaws_Image::factory();
+            if (Jaws_Error::IsError($objImage)) {
+                return Jaws_Error::raiseError($objImage->getMessage());
+            }
+            $objImage->load($tmpLogo);
+            $objImage->resize($imgSize[0], $imgSize[1]);
+            $res = $objImage->save($this->GetCategoryLogoPath($categoryId), 'jpg');
+            $objImage->free();
+            if (Jaws_Error::IsError($res)) {
+                //Rollback Transaction
+                $objORM->rollback();
+
+                // Return an error if image can't be resized
+                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+            }
+            Jaws_Utils::delete($tmpLogo);
+        }
+
+        $this->gadget->acl->insert('CategoryAccess', $categoryId, true);
+        $this->gadget->acl->insert('CategoryManage', $categoryId, false);
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
+
+        //commit transaction
+        $objORM->commit();
         return true;
     }
 
@@ -60,9 +111,11 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
      * @param   string  $fast_url       Category fast url
      * @param   string  $meta_keywords  Meta keywords of the category
      * @param   string  $meta_desc      Meta description of the category
+     * @param   array   $image_info     Image info
+     * @param   array   $delete_image   Delete old image
      * @return  mixed   True on success, Jaws_Error on failure
      */
-    function UpdateCategory($cid, $name, $description, $fast_url, $meta_keywords, $meta_desc)
+    function UpdateCategory($cid, $name, $description, $fast_url, $meta_keywords, $meta_desc, $image_info, $delete_image)
     {
         if(!$this->gadget->GetPermission('CategoryManage', $cid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
@@ -91,6 +144,45 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             $catAtom = $model->GetCategoryAtomStruct($cid);
             $model->MakeCategoryAtom($cid, $catAtom, true);
             $model->MakeCategoryRSS($cid, $catAtom, true);
+        }
+
+        // move uploaded image file
+        if ($delete_image) {
+            Jaws_Utils::delete($this->GetCategoryLogoPath($cid));
+        } else if (!empty($image_info)) {
+            $tmpLogo = Jaws_Utils::upload_tmp_dir() . DIRECTORY_SEPARATOR . $image_info['host_filename'];
+
+            // Save original Logo
+            $objImage = Jaws_Image::factory();
+            if (Jaws_Error::IsError($objImage)) {
+                return Jaws_Error::raiseError($objImage->getMessage());
+            }
+            $objImage->load($tmpLogo);
+            $res = $objImage->save($this->GetCategoryLogoPath($cid) , 'jpg');
+            $objImage->free();
+            if (Jaws_Error::IsError($res)) {
+                // Return an error if image can't be resized
+                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+            }
+
+            // Save resize logo
+            $imgSize = explode('x', $this->gadget->registry->fetch('category_image_size'));
+            if (empty($imgSize)) {
+                $imgSize = array(128, 128);
+            }
+            $objImage = Jaws_Image::factory();
+            if (Jaws_Error::IsError($objImage)) {
+                return Jaws_Error::raiseError($objImage->getMessage());
+            }
+            $objImage->load($tmpLogo);
+            $objImage->resize($imgSize[0], $imgSize[1]);
+            $res = $objImage->save($this->GetCategoryLogoPath($cid), 'jpg');
+            $objImage->free();
+            if (Jaws_Error::IsError($res)) {
+                // Return an error if image can't be resized
+                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+            }
+            Jaws_Utils::delete($tmpLogo);
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_UPDATED'), RESPONSE_NOTICE);
@@ -139,6 +231,19 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $this->gadget->acl->delete('CategoryManage', $id);
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_DELETED'), RESPONSE_NOTICE);
         return true;
+    }
+
+    /**
+     * Get category logo path
+     *
+     * @access  public
+     * @param   int     $id     Category id
+     * @return  bool True or error
+     */
+    function GetCategoryLogoPath($id)
+    {
+        return JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'categories' . DIRECTORY_SEPARATOR
+            . $id . '.jpg';
     }
 
 }

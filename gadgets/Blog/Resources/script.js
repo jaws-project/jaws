@@ -507,6 +507,7 @@ function editCategory(id)
     $('#meta_keywords').val(category['meta_keywords']);
     $('#meta_desc').val(category['meta_description']);
     $('#description').val(category['description']);
+    $('#image_preview').prop('src', category['image_url']);
 }
 
 /**
@@ -540,7 +541,7 @@ function resetCategoryCombo()
 /**
  * Save the info of a category, updating or adding.
  */
-function saveCategory(form)
+function saveCategory()
 {
     if (!$('#name').val())
     {
@@ -550,24 +551,28 @@ function saveCategory(form)
 
     if (selectedCategory == null) {
         BlogAjax.callAsync(
-            'AddCategory2', [
-                $('#name').val(),
-                $('#description').val(),
-                $('#fast_url').val(),
-                $('#meta_keywords').val(),
-                $('#meta_desc').val()
-            ]
+            'AddCategory2', {
+                'name': $('#name').val(),
+                'description': $('#description').val(),
+                'fast_url': $('#fast_url').val(),
+                'meta_keywords': $('#meta_keywords').val(),
+                'meta_desc': $('#meta_desc').val(),
+                'image': categoryImageInfo,
+                'delete_image': deleteCategoryImage
+            }
         );
     } else {
         BlogAjax.callAsync(
-            'UpdateCategory2', [
-                selectedCategory,
-                $('#name').val(),
-                $('#description').val(),
-                $('#fast_url').val(),
-                $('#meta_keywords').val(),
-                $('#meta_desc').val()
-            ]
+            'UpdateCategory2', {
+                'id': selectedCategory,
+                'name': $('#name').val(),
+                'description': $('#description').val(),
+                'fast_url': $('#fast_url').val(),
+                'meta_keywords': $('#meta_keywords').val(),
+                'meta_desc': $('#meta_desc').val(),
+                'image': categoryImageInfo,
+                'delete_image': deleteCategoryImage
+            }
         );
     }
 }
@@ -739,12 +744,83 @@ function previewImage(fileElement) {
 }
 
 /**
+ * Uploads a single file using Ajax
+ */
+function uploadCategoryImage(fileElem) {
+    var file = $('#image_file').get(0).files[0];
+
+    var uploadCanceled = false,
+        $col1 = $('<td>'),
+        $col2 = $('<td>'),
+        $row = $('<tr>').append($col1, $col2),
+        $icon = $('<i>', {'class': 'fa fa-paperclip'}),
+        $progressBar = $('<div>', {'class': 'progress-bar'}).css('width', '0'),
+        $progress = $('<div>', {'class': 'progress'}).append($progressBar),
+        $cancel = $('<i>', {'class': 'fa fa-times', title: 'LABELS.abort'});
+    $cancel.click(function () {
+        uploadCanceled = true;
+    });
+    $col2.append($progress, ' ', $cancel);
+    $('#category_image').append($row);
+
+    var xhr = BlogAjax.uploadFile('UploadImage', file,
+        function (response, code) {
+            if (code != 200) {
+                if (code == 0) {
+                    // abort
+                }
+                return;
+            }
+            if (response.type !== 'alert-success') {
+                BlogAjax.showResponse(response);
+                return;
+            }
+            categoryImageInfo = response.data;
+            previewCategoryImage(fileElem);
+            deleteCategoryImage = false;
+            $progress.remove();
+            $cancel.remove();
+        },
+        function (e) {
+            if (uploadCanceled) {
+                xhr.abort();
+                $row.remove();
+                uploadCanceled = false;
+                return;
+            }
+            var percentage = Math.round((e.loaded * 100) / e.total) + '%';
+            $progressBar.html(percentage).css('width', percentage);
+        }
+    );
+}
+
+/**
+ * Removes the category image
+ */
+function removeCategoryImage() {
+    $('#image_file').val('');
+    deleteCategoryImage = true;
+    $('#image_preview').prop('src', jaws.Blog.Defines.noImageURL + '?' + (new Date()).getTime());
+}
+
+function previewCategoryImage(fileElement) {
+    $('deleteImage').value = 'false';
+    var fReader = new FileReader();
+    fReader.readAsDataURL(fileElement.files[0]);
+    fReader.onload = function (event) {
+        document.getElementById('image_preview').src = event.target.result;
+    }
+}
+
+/**
  * Stops doing a certain action
  */
 function stopAction() {
     $('#legend_title').html(jaws.Blog.Defines.addCategory_title);
     $('#btn_delete').css('display', 'none');
     selectedCategory = null;
+    categoryImageInfo = null;
+    deleteCategoryImage = false;
 
     $('#category_id').prop('selectedIndex', -1);
 
@@ -753,6 +829,7 @@ function stopAction() {
     $('#meta_keywords').val('');
     $('#meta_desc').val('');
     $('#description').val('');
+    $('#image_preview').prop('src', jaws.Blog.Defines.noImageURL);
 }
 
 $(document).ready(function() {
@@ -785,3 +862,6 @@ var autoDraftDone = false;
 
 //current group
 var selectedCategory = null;
+
+var categoryImageInfo = null;
+var deleteCategoryImage = false;

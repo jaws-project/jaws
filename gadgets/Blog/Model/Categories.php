@@ -59,7 +59,17 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
             $catTable->where('fast_url', $id);
         }
 
-        return $catTable->fetchRow();
+        $cat = $catTable->fetchRow();
+        if(!Jaws_Error::IsError($cat)) {
+            $image_path = $this->GetCategoryLogoPath($id);
+            if(file_exists($image_path)) {
+                $cat['image_url'] = $this->GetCategoryLogoURL($id);
+            } else {
+                $cat['image_url'] = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+            }
+        }
+
+        return $cat;
     }
 
     /**
@@ -147,5 +157,31 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
 
         $howmany = $blogTable->fetchOne();
         return Jaws_Error::IsError($howmany)? 0 : $howmany;
+    }
+
+    /**
+     * Get category logo path
+     *
+     * @access  public
+     * @param   int     $id     Category id
+     * @return  bool True or error
+     */
+    function GetCategoryLogoPath($id)
+    {
+        return JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'categories' . DIRECTORY_SEPARATOR
+            . $id . '.jpg';
+    }
+
+    /**
+     * Get category logo path
+     *
+     * @access  public
+     * @param   int     $id         Category id
+     * @param   bool    $rel_url    Relative URL
+     * @return  bool True or error
+     */
+    function GetCategoryLogoURL($id, $rel_url = true)
+    {
+        return $GLOBALS['app']->getDataURL('blog/categories/' . $id . '.jpg', $rel_url);
     }
 }

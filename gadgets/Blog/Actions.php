@@ -268,3 +268,7 @@ $admin_actions['Types'] = array(
     'normal' => true,
     'file'   => 'Types',
 );
+$admin_actions['UploadImage'] = array(
+    'standalone' => true,
+    'file'   => 'Categories',
+);

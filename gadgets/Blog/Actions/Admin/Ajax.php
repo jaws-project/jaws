@@ -137,9 +137,13 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function AddCategory2()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        @list($name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->fetchAll('post');
+        $post = jaws()->request->fetch(
+            array('name', 'description', 'fast_url', 'meta_keywords', 'meta_desc', 'image:array', 'delete_image')
+            , 'post'
+        );
         $model = $this->gadget->model->loadAdmin('Categories');
-        $model->NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc);
+        $model->NewCategory($post['name'], $post['description'], $post['fast_url'],
+            $post['meta_keywords'], $post['meta_desc'], $post['image'], $post['delete_image']);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -158,9 +162,14 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateCategory2()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        @list($id, $name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->fetchAll('post');
+        $post = jaws()->request->fetch(
+            array('id', 'name', 'description', 'fast_url', 'meta_keywords', 'meta_desc', 'image:array', 'delete_image')
+            , 'post'
+        );
+
         $model = $this->gadget->model->loadAdmin('Categories');
-        $model->UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc);
+        $model->UpdateCategory($post['id'], $post['name'], $post['description'], $post['fast_url'],
+            $post['meta_keywords'], $post['meta_desc'], $post['image'], $post['delete_image']);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

@@ -23,6 +23,8 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
+        $this->gadget->define('noImageURL', $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif'));
+
         $tpl = $this->gadget->template->loadAdmin('Categories.html');
         $tpl->SetBlock('categories');
 
@@ -41,6 +43,27 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
             $combo->AddOption($cat['name'], $cat['id']);
         }
         $tpl->SetVariable('combo', $combo->Get());
+
+        // Logo
+        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        $logo =& Piwi::CreateWidget('Image', $imageUrl);
+        $logo->SetID('image_preview');
+        $tpl->SetVariable('image_preview', $logo->Get());
+
+        $imageFile =& Piwi::CreateWidget('FileEntry', 'image_file', '');
+        $imageFile->SetID('image_file');
+        $imageFile->SetSize(1);
+        $imageFile->SetStyle('width:110px; padding:0;');
+        $imageFile->AddEvent(ON_CHANGE, 'uploadCategoryImage(this);');
+        $tpl->SetVariable('image_file', $imageFile->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_upload', '', STOCK_ADD);
+        $tpl->SetVariable('btn_upload', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_remove', '', STOCK_DELETE);
+        $button->AddEvent(ON_CLICK, 'removeCategoryImage()');
+        $tpl->SetVariable('btn_remove', $button->Get());
+
 
         // Category form
         $catName =& Piwi::CreateWidget('Entry', 'name', '');
@@ -133,6 +156,29 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         $model->DeleteCategory(jaws()->request->fetch('catid', 'post'));
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageCategories');
+    }
+
+    /**
+     * Uploads the attachment file
+     *
+     * @access  public
+     * @return  array   File info
+     */
+    function UploadImage()
+    {
+        if (!isset($_FILES['file'])) {
+            return $GLOBALS['app']->Session->GetResponse(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
+        }
+        $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
+        if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
+            return $GLOBALS['app']->Session->GetResponse(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('BLOG_IMAGE_UPLOADED'),
+            RESPONSE_NOTICE,
+            $res['file'][0]
+        );
     }
 
 }
