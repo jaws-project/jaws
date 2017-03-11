@@ -34,7 +34,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
         array('plugabble', 'true'),
         array('use_antispam', 'true'),
         array('pingback', 'false'),
-        array('category_image_size', '120x120'),
+        array('category_image_size', '128x128'),
     );
 
     /**
@@ -199,6 +199,16 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $result = $this->installSchema('schema.xml', array(), '1.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
+            }
+        }
+
+        if (version_compare($old, '1.4.0', '<')) {
+            // registry keys
+            $this->gadget->registry->insert('category_image_size', '128x128');
+            // make directories
+            $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'categories';
+            if (!Jaws_Utils::mkdir($new_dir, 1)) {
+                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
             }
         }
 
