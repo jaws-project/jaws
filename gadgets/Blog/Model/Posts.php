@@ -565,9 +565,10 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      * Get popular posts
      *
      * @access  public
+     * @param   int     $from   From time(0: all time, 1: today)
      * @return  mixed   List of popular posts or Jaws_Error on error
      */
-    function GetPopularPosts()
+    function GetPopularPosts($from = 0)
     {
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->limit($this->gadget->registry->fetch('popular_limit'), 0);
@@ -578,6 +579,14 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
         $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
+        // from today
+        if ($from == 1) {
+            $today = $GLOBALS['app']->UserTime2UTC(
+                $GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'),
+                'Y-m-d H:i:s'
+            );
+            $blogTable->and()->where('publishtime', $today, '>=');
+        }
         $entries = $blogTable->orderBy('clicks desc')->fetchAll();
 
         // Check dynamic ACL

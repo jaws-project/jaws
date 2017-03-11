@@ -210,6 +210,12 @@ class Blog_Installer extends Jaws_Gadget_Installer
             if (!Jaws_Utils::mkdir($new_dir, 1)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
             }
+
+            // Update layout actions
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('Blog', 'PopularPosts', 'PopularPosts', 'PopularPosts');
+            }
         }
 
         return true;

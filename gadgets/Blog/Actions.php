@@ -50,10 +50,10 @@ $actions['CategoryEntries'] = array(
     'parametric' => true,
     'file'   => 'Posts',
 );
-$actions['TypeEntries'] = array(
+$actions['TypePosts'] = array(
     'layout' => true,
     'parametric' => true,
-    'file'   => 'Posts',
+    'file'   => 'TypePosts',
 );
 $actions['CategoriesList'] = array(
     'normal' => true,
@@ -63,7 +63,8 @@ $actions['CategoriesList'] = array(
 $actions['PopularPosts'] = array(
     'normal' => true,
     'layout' => true,
-    'file'   => 'Posts',
+    'parametric' => true,
+    'file'   => 'PopularPosts',
 );
 $actions['FavoritePosts'] = array(
     'normal' => true,
