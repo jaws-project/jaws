@@ -133,8 +133,8 @@ class Blog_Actions_Categories extends Blog_Actions_Default
                 $cid = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];
                 $tpl->SetVariable('url', $this->gadget->urlMap('ShowCategory', array('id' => $cid)));
 
-                if (file_exists(JAWS_DATA . "blog/categories/{$e['id']}.jpg")) {
-                    $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL("blog/categories/{$e['id']}.jpg"));
+                if (file_exists(JAWS_DATA . "blog/categories/{$e['id']}.png")) {
+                    $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL("blog/categories/{$e['id']}.png"));
                 } else {
                     $tpl->SetVariable('url_image', 'data:image/png;base64,');
                 }

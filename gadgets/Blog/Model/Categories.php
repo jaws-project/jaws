@@ -168,8 +168,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      */
     function GetCategoryLogoPath($id)
     {
-        return JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'categories' . DIRECTORY_SEPARATOR
-            . $id . '.jpg';
+        return JAWS_DATA . "blog/categories/$id.png";
     }
 
     /**
@@ -182,6 +181,6 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      */
     function GetCategoryLogoURL($id, $rel_url = true)
     {
-        return $GLOBALS['app']->getDataURL('blog/categories/' . $id . '.jpg', $rel_url);
+        return $GLOBALS['app']->getDataURL("blog/categories/$id.png", $rel_url);
     }
 }

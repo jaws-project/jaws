@@ -50,7 +50,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         // move uploaded image file
         if ($delete_image) {
             Jaws_Utils::delete($this->GetCategoryLogoPath($categoryId));
-        } else if (!empty($image_info)) {
+        } elseif (!empty($image_info)) {
             $tmpLogo = Jaws_Utils::upload_tmp_dir() . DIRECTORY_SEPARATOR . $image_info['host_filename'];
 
             // Save original Logo
@@ -59,7 +59,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
                 return Jaws_Error::raiseError($objImage->getMessage());
             }
             $objImage->load($tmpLogo);
-            $res = $objImage->save($this->GetCategoryLogoPath($categoryId) , 'jpg');
+            $res = $objImage->save($this->GetCategoryLogoPath($categoryId) , 'png');
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 //Rollback Transaction
@@ -80,7 +80,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             }
             $objImage->load($tmpLogo);
             $objImage->resize($imgSize[0], $imgSize[1]);
-            $res = $objImage->save($this->GetCategoryLogoPath($categoryId), 'jpg');
+            $res = $objImage->save($this->GetCategoryLogoPath($categoryId), 'png');
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 //Rollback Transaction
@@ -158,7 +158,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
                 return Jaws_Error::raiseError($objImage->getMessage());
             }
             $objImage->load($tmpLogo);
-            $res = $objImage->save($this->GetCategoryLogoPath($cid) , 'jpg');
+            $res = $objImage->save($this->GetCategoryLogoPath($cid) , 'png');
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 // Return an error if image can't be resized
@@ -176,7 +176,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             }
             $objImage->load($tmpLogo);
             $objImage->resize($imgSize[0], $imgSize[1]);
-            $res = $objImage->save($this->GetCategoryLogoPath($cid), 'jpg');
+            $res = $objImage->save($this->GetCategoryLogoPath($cid), 'png');
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 // Return an error if image can't be resized
@@ -242,8 +242,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
      */
     function GetCategoryLogoPath($id)
     {
-        return JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'categories' . DIRECTORY_SEPARATOR
-            . $id . '.jpg';
+        return JAWS_DATA . "blog/categories/$id.png";
     }
 
 }
