@@ -6,9 +6,15 @@
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN item -->
-      <li><a href="{{url}}">{{category}}</a>
-          <span class="blog-addinfo">({{howmany}})&nbsp;[<a href="{{atomfeed}}">atom</a> | <a href="{{rssfeed}}">rss</a>]</span>
-          <span>{{subscription}}</span>
+      <li>
+        <a href="{{url}}">
+          <img class="category_image" src="{{url_image}}" height="128" width="128" alt="{{category}}" />
+          {{category}}
+        </a>
+        <span class="blog-addinfo">
+          ({{howmany}})&nbsp;[<a href="{{atomfeed}}">atom</a> | <a href="{{rssfeed}}">rss</a>]
+        </span>
+        <span>{{subscription}}</span>
       </li>
     <!-- END item -->
     </ul>
