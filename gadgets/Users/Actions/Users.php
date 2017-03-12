@@ -38,6 +38,8 @@ class Users_Actions_Users extends Users_Actions_Default
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
+            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
+
             $tpl->SetBlock('Users/encryption');
             // key length
             $length =& Piwi::CreateWidget('HiddenEntry', 'length', $JCrypt->length());
