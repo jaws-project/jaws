@@ -260,6 +260,11 @@ $actions['UpdateFriendsGroup'] = array(
 $actions['Users'] = array(
     'normal' => true,
     'file' => 'Users',
+    'acls' => array('ManageUsers'),
+    'navigation' => array(
+        'separator' => true,
+        'order' => 8
+    ),
 );
 $actions['GetUsers'] = array(
     'standalone' => true,
@@ -297,6 +302,10 @@ $actions['AddUserToGroups'] = array(
 $actions['ManageGroups'] = array(
     'normal' => true,
     'file' => 'ManageGroups',
+    'acls' => array('ManageGroups'),
+    'navigation' => array(
+        'order' => 9
+    ),
 );
 $actions['GetGroups'] = array(
     'standalone' => true,

@@ -31,8 +31,10 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetBlock('Users');
 
         $this->SetTitle(_t('USERS_USERS'));
-        $tpl->SetVariable('gadget_title', _t('USERS_USERS'));
-        $tpl->SetVariable('menubar', $this->AdminMenuBar('Users'));
+        $tpl->SetVariable('title', _t('USERS_USERS'));
+
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {

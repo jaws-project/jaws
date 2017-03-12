@@ -31,8 +31,10 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
         $tpl->SetBlock('Groups');
 
         $this->SetTitle(_t('USERS_GROUPS'));
-        $tpl->SetVariable('gadget_title', _t('USERS_GROUPS'));
-        $tpl->SetVariable('menubar', $this->AdminMenuBar('ManageGroups'));
+        $tpl->SetVariable('title', _t('USERS_GROUPS'));
+
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $tpl->SetVariable('grid_header', _t('USERS_GROUPS'));
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));

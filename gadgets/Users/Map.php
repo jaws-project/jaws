@@ -33,3 +33,5 @@ $maps[] = array(
     'users/{user}',
     array('user' => '[[:alnum:]\-_.@]+')
 );
+$maps[] = array('Users', 'users');
+$maps[] = array('ManageGroups', 'groups');
