@@ -94,11 +94,15 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('path', $this->GetPath($id));
         }
 
-        $tpl->SetVariable('upload', _t('DIRECTORY_UPLOAD_FILE'));
+        if ($this->gadget->GetPermission('UploadFiles')) {
+            $tpl->SetBlock('directory/upload_files');
+            $tpl->SetVariable('upload', _t('DIRECTORY_UPLOAD_FILE'));
+            $tpl->ParseBlock('directory/upload_files');
+        }
 
         // if user has permission, display upload area
         if ($GLOBALS['app']->Session->Logged()) {
-            $tpl->SetBlock('directory/uploadUI');
+            $tpl->SetBlock('directory/upload_form');
             $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
             $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
             $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
@@ -118,18 +122,18 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('parent', $id);
             $tpl->SetVariable('referrer', bin2hex(Jaws_Utils::getRequestURL(true)));
             if ($this->gadget->GetPermission('PublishFiles')) {
-                $tpl->SetBlock('uploadUI/published');
+                $tpl->SetBlock('directory/upload_form/published');
                 $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
                 if (isset($fileInfo['published']) && $fileInfo['published']) {
                     $tpl->SetVariable('published_checked', 'checked');
                 }
-                $tpl->ParseBlock('uploadUI/published');
+                $tpl->ParseBlock('directory/upload_form/published');
             }
 
             $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
             $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
 
-            $tpl->ParseBlock('directory/uploadUI');
+            $tpl->ParseBlock('directory/upload_form');
         }
 
         $tpl->ParseBlock('directory');
@@ -137,7 +141,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     }
 
     /**
-     * Fetches and displays list of dirs/files
+     * Fetches and displays list of directories/files
      *
      * @access  public
      * @param   int     $parent

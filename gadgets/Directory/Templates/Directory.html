@@ -16,15 +16,18 @@
     <span>{{path}}</span>
   </div>
 
-  <div>
-    <button id="active_btn" onclick="javascript:newFile();" class="btn btn-primary" >
-      <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> {{upload}}</button>
-  </div>
   <div class="gadget_content content">
     {{content}}
   </div>
-
-  <!-- BEGIN uploadUI -->
+  <!-- BEGIN upload_files -->
+  <div class="gadget_actions actions">
+    <button id="active_btn" onclick="javascript:newFile();" class="btn btn-primary" >
+      <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+      {{upload}}
+    </button>
+  </div>
+  <!-- END upload_files -->
+  <!-- BEGIN upload_form -->
   <div id="fileUIArea" style="display: none">
     <form id="file_form" action="{{base_script}}"
           method="post" enctype="multipart/form-data">
@@ -76,7 +79,7 @@
       </div>
     </form>
   </div>
-  <!-- END uploadUI -->
+  <!-- END upload_form -->
 
 </div>
 <div class="gadget_footer"></div>

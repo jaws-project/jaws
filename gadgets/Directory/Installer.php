@@ -28,6 +28,7 @@ class Directory_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'ManageComments',
+        array('UploadFiles', '', false),
         'PublishFiles',
     );
 
@@ -115,6 +116,11 @@ class Directory_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '1.6.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('UploadFiles', '', false);
         }
 
         return true;
