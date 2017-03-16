@@ -6,7 +6,7 @@
  * @package    Blog
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author     Helgi ï¿½ormar ï¿½orbjï¿½rnsson <dufuz@php.net>
  * @author     Jorge A Gallegos <kad@gulags.org.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2015 Jaws Development Group
@@ -102,6 +102,11 @@ $maps[] = array(
     'blog/page/{page}'
 );
 $maps[] = array(
+    'TypePosts',
+    'blog/type/{type}',
+    array('type'   => '[\p{L}[:digit:]\-_\.]+')
+);
+$maps[] = array(
     'ShowCategory',
     'blog/category/{id}/page/{page}',
     array('id'   => '[\p{L}[:digit:]\-_\.]+',
@@ -128,7 +133,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'PopularPosts',
-    'blog/popular'
+    'blog/popular[/page/{page}]'
 );
 $maps[] = array(
     'Authors',

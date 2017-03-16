@@ -565,13 +565,14 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      * Get popular posts
      *
      * @access  public
-     * @param   int     $from   From time(0: all time, 1: today)
+     * @param   int     $from       From time(0: all time, 1: today)
+     * @param   int     $limit      Count of posts to be returned
+     * @param   int     $offset     Offset of data array
      * @return  mixed   List of popular posts or Jaws_Error on error
      */
-    function GetPopularPosts($from = 0)
+    function GetPopularPosts($from = 0, $limit = 0, $offset = null)
     {
         $blogTable = Jaws_ORM::getInstance()->table('blog');
-        $blogTable->limit($this->gadget->registry->fetch('popular_limit'), 0);
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.fast_url', 'summary',
             'text', 'clicks:integer', 'allow_comments', 'username', 'nickname',
@@ -587,7 +588,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             );
             $blogTable->and()->where('publishtime', $today, '>=');
         }
-        $entries = $blogTable->orderBy('clicks desc')->fetchAll();
+        $entries = $blogTable->limit((int)$limit, $offset)->orderBy('clicks desc')->fetchAll();
 
         // Check dynamic ACL
         foreach ($entries as $key => $entry) {
@@ -599,6 +600,40 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         }
 
         return $entries;
+    }
+
+    /**
+     * Get popular posts count
+     *
+     * @access  public
+     * @param   int     $from       From time(0: all time, 1: today)
+     * @return  mixed   List of popular posts or Jaws_Error on error
+     */
+    function GetPopularPostsCount($from = 0)
+    {
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select('categories');
+        $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
+        // from today
+        if ($from == 1) {
+            $today = $GLOBALS['app']->UserTime2UTC(
+                $GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'),
+                'Y-m-d H:i:s'
+            );
+            $blogTable->and()->where('publishtime', $today, '>=');
+        }
+        $entries = $blogTable->fetchColumn();
+
+        // Check dynamic ACL
+        foreach ($entries as $key => $categories) {
+            foreach (array_filter(explode(',', $categories)) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    unset($entries[$key]);
+                }
+            }
+        }
+
+        return count($entries);
     }
 
     /**

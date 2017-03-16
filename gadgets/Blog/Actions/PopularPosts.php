@@ -18,15 +18,21 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
      */
     function PopularPostsLayoutParams()
     {
-        return array(
-            array(
-                'title' => _t('GLOBAL_TIME'),
-                'value' => array(
-                    0 => _t('BLOG_POPULAR_POSTS_ALLTIME'),
-                    1 => _t('BLOG_POPULAR_POSTS_TODAY'),
-                ),
+        $result = array();
+
+        $result[] = array(
+            'title' => _t('GLOBAL_TIME'),
+            'value' => array(
+                0 => _t('BLOG_POPULAR_POSTS_ALLTIME'),
+                1 => _t('BLOG_POPULAR_POSTS_TODAY'),
             ),
         );
+
+        $result[] = array(
+            'title' => _t('GLOBAL_COUNT'),
+            'value' => $this->gadget->registry->fetch('popular_limit')
+        );
+        return $result;
     }
 
     /**
@@ -34,20 +40,32 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   int     $from   From time(0: all time, 1: today)
+     * @param   int     $limit
      * @return  string  XHTML Template content
      */
-    function PopularPosts($from = 0)
+    function PopularPosts($from = 0, $limit = 0)
     {
         $tpl = $this->gadget->template->load('PopularPosts.html');
-        $tpl->SetBlock('popular_posts');
+
+        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+            $baseBlock = 'popular_posts_normal';
+            $page = (int)jaws()->request->fetch('page', 'get');
+        } else {
+            $page = 1;
+            $baseBlock = 'popular_posts_layout';
+        }
+        $limit = empty($limit)? $this->gadget->registry->fetch('popular_limit') : $limit;
+
+        $tpl->SetBlock($baseBlock);
         $tpl->SetVariable('title', _t('BLOG_POPULAR_POSTS'));
 
         $model = $this->gadget->model->load('Posts');
-        $entries = $model->GetPopularPosts($from);
+        $entries = $model->GetPopularPosts($from, $limit, ($page - 1) * $limit);
+        $entriesCount = $model->GetPopularPostsCount($from);
         if (!Jaws_Error::IsError($entries)) {
             $date = Jaws_Date::getInstance();
             foreach ($entries as $entry) {
-                $tpl->SetBlock('popular_posts/item');
+                $tpl->SetBlock("$baseBlock/item");
 
                 $tpl->SetVariablesArray($entry);
                 $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
@@ -79,11 +97,24 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
                     $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $entry['image']);
                 }
 
-                $tpl->ParseBlock('popular_posts/item');
+                $tpl->ParseBlock("$baseBlock/item");
             }
         }
 
-        $tpl->ParseBlock('popular_posts');
+        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+            // Pagination
+            $this->gadget->action->load('Navigation')->pagination(
+                $tpl,
+                $page,
+                $limit,
+                $entriesCount,
+                'PopularPosts',
+                array(),
+                _t('BLOG_PAGES_COUNT', $entriesCount)
+            );
+        }
+
+        $tpl->ParseBlock($baseBlock);
         return $tpl->Get();
     }
 

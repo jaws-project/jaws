@@ -52,6 +52,7 @@ $actions['CategoryEntries'] = array(
 );
 $actions['TypePosts'] = array(
     'layout' => true,
+    'normal' => true,
     'parametric' => true,
     'file'   => 'TypePosts',
 );

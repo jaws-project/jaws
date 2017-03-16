@@ -51,6 +51,17 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
      */
     function TypePosts($type = null, $limit = 0)
     {
+        $tpl = $this->gadget->template->load('RecentTypePosts.html');
+
+        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+            $baseBlock = 'recent_posts_normal';
+            $type = (int)jaws()->request->fetch('type', 'get');
+        } else {
+            $baseBlock = 'recent_posts_layout';
+        }
+
+        $limit = empty($limit) ? $this->gadget->registry->fetch('last_entries_limit') : $limit;
+
         $pModel = $this->gadget->model->load('Posts');
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
         $typeInfo = $cModel->GetCategory($type);
@@ -64,13 +75,12 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
             return false;
         }
 
-        $tpl = $this->gadget->template->load('RecentTypePosts.html');
-        $tpl->SetBlock('recent_posts');
+        $tpl->SetBlock($baseBlock);
         $tpl->SetVariable('cat',   empty($cat)? '0' : $cat);
         $tpl->SetVariable('title', $title);
         $date = Jaws_Date::getInstance();
         foreach ($entries as $e) {
-            $tpl->SetBlock('recent_posts/item');
+            $tpl->SetBlock("$baseBlock/item");
 
             $id = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];
             $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
@@ -93,10 +103,10 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
             $text    = $this->gadget->plugin->parse($text);
 
             if (Jaws_UTF8::trim($text) != '') {
-                $tpl->SetBlock('recent_posts/item/read-more');
+                $tpl->SetBlock("$baseBlock/item/read-more");
                 $tpl->SetVariable('url', $perm_url);
                 $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
-                $tpl->ParseBlock('recent_posts/item/read-more');
+                $tpl->ParseBlock("$baseBlock/item/read-more");
             }
 
             $tpl->SetVariable('url', $perm_url);
@@ -124,10 +134,10 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
                 $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $e['image']);
             }
 
-            $tpl->ParseBlock('recent_posts/item');
+            $tpl->ParseBlock("$baseBlock/item");
         }
 
-        $tpl->ParseBlock('recent_posts');
+        $tpl->ParseBlock($baseBlock);
         return $tpl->Get();
     }
 
