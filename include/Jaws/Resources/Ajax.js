@@ -451,7 +451,8 @@ function setEditorValue(selector, value)
     var editorType = objEditor.data('editor') || 'textarea';
     switch(editorType) {
         case 'ckeditor':
-            objEditor.ckeditorGet().setData(value);
+            objEditor.val(value);
+            //objEditor.ckeditorGet().setData(value);
             break;
 
         case 'tinymce':
