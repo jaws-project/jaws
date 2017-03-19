@@ -323,11 +323,11 @@ $(document).ready(function() {
         case 'Quotes':
             currentAction = 'Quotes';
             $('#group_filter').prop('selectedIndex', 0);
-            stopAction();
+            initDatePicker('start_time');
+            initDatePicker('stop_time');
             break;
         case 'QuoteGroups':
             currentAction = 'Groups';
-            stopAction();
             break;
     }
 });
