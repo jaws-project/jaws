@@ -66,7 +66,7 @@ function fillEditorEntries(block_data)
     $('#block_id').prop('disabled', false);
     $('#hidden_id').val(block_data['id']);
     $('#block_title').val(block_data['title'].defilter());
-    setEditorValue('#block_contents', block_data['contents']);
+    $('#block_contents').val(block_data['contents']);
     document.getElementsByName('display_title[]').item(0).checked = block_data['display_title'] == '1';
     currentMode = 'edit';
 }
@@ -82,7 +82,7 @@ function updateBlock()
         $('#block_id').prop('disabled', true);
         id       = $('#hidden_id').val();
         title    = $('#block_title').val();
-        contents = getEditorValue('#block_contents');
+        contents = $('#block_contents').val();
         if (!title || !contents)
         {
             alert(jaws.Blocks.Defines.incompleteBlockFields);
@@ -179,7 +179,7 @@ function edit(id)
 function preview()
 {
     switchTab('preview');
-    var block_contents = getEditorValue('#block_contents');
+    var block_contents = $('#block_contents').val();
     $('#preview_title').html($('#block_title').val());
 
     // Use this if you want to use plugins
@@ -200,7 +200,7 @@ function createNewBlock(title)
     blockTitle = $('#block_title')[0];
     blockTitle.value = '';
     blockTitle.focus();
-    setEditorValue('#block_contents', '');
+    $('#block_contents').val('');
 }
 
 /**
@@ -208,7 +208,7 @@ function createNewBlock(title)
  */
 function newBlock()
 {
-    contents = getEditorValue('#block_contents');
+    contents = $('#block_contents').val();
     if (!$('#block_title').val() || !contents)
     {
         alert(jaws.Blocks.Defines.incompleteBlockFields);
@@ -247,7 +247,7 @@ function returnToEdit()
         if (previousID == 'NEW') {
             blockTitle.value = '';
             blockTitle.focus();
-            setEditorValue('#block_contents', '');
+            $('#block_contents').val('');
             b.disabled = true;
             combo.disabled = true;
         } else {
