@@ -23,7 +23,7 @@ var DirectoryCallback = {
 function stopAction()
 {
     $('#fileUIArea').hide();
-    setEditorValue('#description', '');
+    $('#description').val('');
     $('#file_form #file_link').html('');
     $('#file_form #title').val('');
     $('#file_form #tags').val('');
@@ -67,7 +67,7 @@ function editFile(id, parent)
     var fileInfo = DirectoryAjax.callSync('GetFile', {id: id});
     console.log(fileInfo);
     $('#file_form #title').val(fileInfo['title']);
-    setEditorValue('#description', fileInfo['description']);
+    $('#description').val(fileInfo['description']);
     $('#file_form #tags').val(fileInfo['tags']);
     $('#file_form #published').prop('checked', fileInfo['published']? 'checked' : '');
 }

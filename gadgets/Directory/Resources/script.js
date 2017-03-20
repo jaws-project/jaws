@@ -458,7 +458,7 @@ function editDirectory(id)
     form.find('[name=title]').val(data.title);
     form.find('[name=parent]').val(data.parent);
     form.find('[name=published]').prop('checked', data.published);
-    setEditorValue('#description', data.description);
+    $('#description').val(data.description);
 }
 
 /**
@@ -515,7 +515,7 @@ function editFile(id)
     form.tags.value = file.tags;
     form.published.checked = file.published;
     $('#frm_file #thumbnail').prop('src', file.thumbnail);
-    setEditorValue('#description', file.description);
+    $('#description').val(file.description);
 }
 
 /**
