@@ -401,93 +401,57 @@ function initEditor(selector)
 
         case 'tinymce':
             $.loadScript('libraries/tinymce/tinymce.min.js', function() {
-                objEditor.tinymce({
-                    'document_base_url': '',
-                    'directionality': objEditor.data('direction') || 'ltr',
-                    'language': objEditor.data('language') || 'en',
-                    'theme': 'modern',
-                    'plugins': jaws.Defines.editorPlugins,
-                    'toolbar1': jaws.Defines.editorToolbar,
-                    'toolbar2': '',
-                    'toolbar_items_size': 'small',
-                    'template_external_list_url': 'libraries/tinymce/templates.js',
-                    'theme_modern_toolbar_location': 'top',
-                    'theme_modern_toolbar_align': 'center',
-                    'theme_modern_path_location': 'bottom',
-                    'theme_modern_resizing': true,
-                    'theme_modern_resize_horizontal': false,
-                    'tab_focus': ':prev,:next',
-                    'dialog_type': 'window',
-                    'entity_encoding':    'raw',
-                    'relative_urls':      true,
-                    'remove_script_host': false,
-                    'force_p_newlines':   true,
-                    'force_br_newlines':  false,
-                    'remove_linebreaks':  true,
-                    'nowrap':             false,
-                    'automatic_uploads':  false,
-                    'convert_newlines_to_brs': false,
-                    'apply_source_formatting': true,
-                    'file_picker_types': 'file image media',
-                    'file_picker_callback': tinymce_file_picker_callback,
-                    'extended_valid_elements': 'iframe[class|id|marginheight|marginwidth|align|frameborder=0|scrolling|align|name|src|height|width]',
-                    'invalid_elements': '',
-                    'menubar': false // must enabled for admin side
+                // find and remove old tinymce editor instance
+                tinyMCE.editors.forEach(function(editor, index) {
+                    if ($(editor.targetElm).is(selector)) {
+                        editor.remove();
+                    }
                 });
+
+                setTimeout(
+                    function() {
+                        objEditor.tinymce({
+                            'document_base_url': '',
+                            'directionality': objEditor.data('direction') || 'ltr',
+                            'language': objEditor.data('language') || 'en',
+                            'theme': 'modern',
+                            'plugins': jaws.Defines.editorPlugins,
+                            'toolbar1': jaws.Defines.editorToolbar,
+                            'toolbar2': '',
+                            'toolbar_items_size': 'small',
+                            'template_external_list_url': 'libraries/tinymce/templates.js',
+                            'theme_modern_toolbar_location': 'top',
+                            'theme_modern_toolbar_align': 'center',
+                            'theme_modern_path_location': 'bottom',
+                            'theme_modern_resizing': true,
+                            'theme_modern_resize_horizontal': false,
+                            'tab_focus': ':prev,:next',
+                            'dialog_type': 'window',
+                            'entity_encoding':    'raw',
+                            'relative_urls':      true,
+                            'remove_script_host': false,
+                            'force_p_newlines':   true,
+                            'force_br_newlines':  false,
+                            'remove_linebreaks':  true,
+                            'nowrap':             false,
+                            'automatic_uploads':  false,
+                            'convert_newlines_to_brs': false,
+                            'apply_source_formatting': true,
+                            'file_picker_types': 'file image media',
+                            'file_picker_callback': tinymce_file_picker_callback,
+                            'extended_valid_elements': 'iframe[class|id|marginheight|marginwidth|align|frameborder=0|scrolling|align|name|src|height|width]',
+                            'invalid_elements': '',
+                            'menubar': false // must enabled for admin side
+                        });
+                    },
+                    1000
+                );
             });
             break;
 
         default:
             break;
     }
-}
-
-/**
- * Set the value of the editor/textarea
- */
-function setEditorValue(selector, value)
-{
-    var objEditor = $(selector);
-    var editorType = objEditor.data('editor') || 'textarea';
-    switch(editorType) {
-        case 'ckeditor':
-            objEditor.val(value);
-            //objEditor.ckeditorGet().setData(value);
-            break;
-
-        case 'tinymce':
-            objEditor.tinymce().setContent(value);
-            break;
-
-        default:
-            objEditor.val(value);
-            break;
-    }
-}
-
-/**
- * Get the value of the editor/textarea
- */
-function getEditorValue(name)
-{
-    var editor;
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
-    if (usingMCE) {
-        editor = $(name).tinymce();
-        if (editor) {
-            return editor.getContent();
-        }
-    }
-
-    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
-    if (usingCKE) {
-        editor = $(name).ckeditorGet();
-        if (editor.status != 'unloaded') {
-            return editor.getData();
-        }
-    }
-
-    return $(name).val();
 }
 
 /**
