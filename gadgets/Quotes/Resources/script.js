@@ -63,7 +63,7 @@ function stopAction()
         $('#gid').prop('selectedIndex', $('#group_filter').prop('selectedIndex') - 1);
         $('#start_time').val('');
         $('#stop_time').val('');
-        setEditorValue('#quotation', '');
+        $('#quotation').val('');
         $('#quotes_combo').prop('selectedIndex', -1);
         $('#btn_del').css('display', 'none');
         initDatePicker('start_time');
@@ -157,7 +157,7 @@ function editQuote(id)
     currentAction = 'Quotes';
     $('#id').val(quoteInfo['id']);
     $('#title').val(quoteInfo['title'].defilter());
-    setEditorValue('#quotation', quoteInfo['quotation']);
+    $('#quotation').val(quoteInfo['quotation']);
     $('#gid').val(quoteInfo['gid']);
     if (quoteInfo['gid'] == 0) {
         $('#gid').prop('selectedIndex', -1);
