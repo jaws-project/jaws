@@ -61,7 +61,7 @@ function updatePhoto()
     var meta_description    = $('#meta_description').val();
     var allow_comments      = $('#allow_comments').prop('checked');
     var published           = $('#published').val();
-    var description         = getEditorValue('#description');
+    var description         = $('#description').val();
     var tags                = $('#tags').val();
 
     var albumsNode  = $('#album-checkboxes input');
