@@ -107,7 +107,7 @@ function AutoDraft()
             id = document.forms[0]['id'].value;
             break;
     }
-    var content = getEditorValue('#content');
+    var content = $('#content').val();
 
     StaticPageAjax.callAsync(
         'AutoDraft',
@@ -136,7 +136,7 @@ function startAutoDrafting()
 function parseText(form)
 {
     var title   = form['title'].value;
-    var content = getEditorValue('#content');
+    var content = $('#content').val();
 
     content = StaticPageAjax.callSync('ParseText', content);
     $('#preview').css('display', 'table');
