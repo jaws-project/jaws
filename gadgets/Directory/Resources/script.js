@@ -625,7 +625,7 @@ function submitDirectory()
 {
     var action = (idSet.length === 0)? 'CreateDirectory' : 'UpdateDirectory',
         data = $.unserialize($('#frm_dir').serialize());
-    data.description = getEditorValue('#description');
+    data.description = $('#description').val();
     DirectoryAjax.callAsync(action, data);
 }
 
@@ -635,7 +635,7 @@ function submitDirectory()
 function submitFile()
 {
     var data = $.unserialize($('#frm_file').serialize());
-    data.description = getEditorValue('#description');
+    data.description = $('#description').val();
     data.thumbnail = uploadedThumbnail;
 
     DirectoryAjax.callAsync('SaveFile', data);
