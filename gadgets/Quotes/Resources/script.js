@@ -78,7 +78,7 @@ function stopAction()
 function saveQuote()
 {
     if (!$('#title').val() ||
-        getEditorValue('#quotation').blank() ||
+        $('#quotation').val().blank() ||
         $('#gid').val() == 0)
     {
         alert(jaws.Quotes.Defines.incompleteQuoteFields);
@@ -89,7 +89,7 @@ function saveQuote()
         var response = QuotesAjax.callSync(
             'InsertQuote', [
                 $('#title').val(),
-                getEditorValue('#quotation'),
+                $('#quotation').val(),
                 $('#gid').val(),
                 $('#start_time').val(),
                 $('#stop_time').val(),
@@ -112,7 +112,7 @@ function saveQuote()
             'UpdateQuote', [
                 $('#id').val(),
                 $('#title').val(),
-                getEditorValue('#quotation'),
+                $('#quotation').val(),
                 $('#gid').val(),
                 $('#start_time').val(),
                 $('#stop_time').val(),
