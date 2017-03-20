@@ -47,7 +47,7 @@ function removeAttachment(element)
 function newPost()
 {
     stopAction();
-    setEditorValue('#message', '');
+    $('#message').val('');
     $('#captcha_container').show();
     $('#postUIArea').show();
     $('html, body').animate({
@@ -68,7 +68,7 @@ function editPost(pid)
     }, 1000);
 
     var postInfo = ForumsAjax.callSync('GetPost', {pid: pid});
-    setEditorValue('#message', postInfo['message']);
+    $('#message').val(postInfo['message']);
     $('#post_form #update_reason').val(postInfo['update_reason']);
 }
 
@@ -85,7 +85,7 @@ function replyPost(pid)
     }, 1000);
 
     var postInfo = ForumsAjax.callSync('GetPost', {pid: pid});
-    setEditorValue('#message', '[quote=' + postInfo['nickname'] + "]\n"+ postInfo['message'] + "\n[/quote]\n");
+    $('#message').val('[quote=' + postInfo['nickname'] + "]\n"+ postInfo['message'] + "\n[/quote]\n");
 }
 
 /**
