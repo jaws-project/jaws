@@ -74,7 +74,7 @@ function submitNote(form)
         form.title.focus();
         return;
     }
-    form.content.value = getEditorValue('#content');
+    form.content.value = $('#content').val();
     if (form.content.value === '') {
         alert(errorIncompleteData);
         form.content.focus();
