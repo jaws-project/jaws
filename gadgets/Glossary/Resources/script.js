@@ -80,7 +80,7 @@ function updateTerm()
         id       = $('#hidden_id').val();
         term     = $('#term_title').val();
         fast_url = $('#fast_url').val();
-        contents = getEditorValue('#term_contents');
+        contents = $('#term_contents').val();
         if (term.blank() || contents.blank())
         {
             alert(jaws.Glossary.Defines.incompleteGlossaryFields);
@@ -188,7 +188,7 @@ function edit(id)
 function preview()
 {
     switchTab('preview');
-    var term_contents = getEditorValue('#term_contents');
+    var term_contents = $('#term_contents').val();
     $('#preview_title').html($('#term_title').val());
 
     // Use this if you want to use plugins
@@ -217,7 +217,7 @@ function newTerm()
 {
     term     = $('#term_title').val();
     fast_url = $('#fast_url').val();
-    contents = getEditorValue('#term_contents');
+    contents = $('#term_contents').val();
     if (term.blank() || contents.blank())
     {
         alert(jaws.Glossary.Defines.incompleteGlossaryFields);
