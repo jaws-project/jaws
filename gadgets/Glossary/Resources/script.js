@@ -65,7 +65,7 @@ function fillEditorEntries(term_data)
     $('#hidden_id').val(term_data['id']);
     $('#term_title').val(term_data['term'].defilter());
     $('#fast_url').val(term_data['fast_url']);
-    setEditorValue('#term_contents', term_data['description']);
+    $('#term_contents').val(term_data['description']);
     currentMode = 'edit';
 }
 
@@ -207,7 +207,7 @@ function createNewTerm(title)
     $('#term_title').val('');
     $('#term_title').focus();
     $('#fast_url').val('');
-    setEditorValue('#term_contents', '');   
+    $('#term_contents').val('');   
 }
 
 /**
@@ -253,7 +253,7 @@ function returnToEdit()
         if (previousID == 'NEW') {
             termTitle.val('');
             termTitle.focus();
-            setEditorValue('#term_contents', '');
+            $('#term_contents').val('');
             b.disabled = true;
             combo.disabled = true;
         } else {
