@@ -211,42 +211,4 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         return $menubar->Get();
     }
 
-    /**
-     * Displays menu bar according to selected action
-     *
-     * @access  public
-     * @param   string  $selected   selected action
-     * @return  string  XHTML template content
-     */
-    function AdminMenuBar($selected)
-    {
-        $actions = array('Users', 'ManageGroups');
-        if (!in_array($selected, $actions)) {
-            $selected = 'Users';
-        }
-
-        $menubar = new Jaws_Widgets_Menubar();
-        if ($this->gadget->GetPermission('ManageUsers')) {
-            $menubar->AddOption(
-                'Users',
-                _t('USERS_USERS'),
-                $this->gadget->urlMap('Users'),
-                'gadgets/Users/Resources/images/users_mini.png'
-            );
-        }
-
-        if ($this->gadget->GetPermission('ManageGroups')) {
-            $menubar->AddOption(
-                'ManageGroups',
-                _t('USERS_USERS_GROUPS'),
-                $this->gadget->urlMap('ManageGroups'),
-                'gadgets/Users/Resources/images/groups_mini.png'
-            );
-        }
-
-        $menubar->Activate($selected);
-        return $menubar->Get();
-    }
-
-
 }
