@@ -1053,7 +1053,7 @@ $(document).ready(function() {
             initiateUsersDG();
             break;
 
-        case 'ManageGroups':
+        case 'Groups':
             currentAction = "Group";
             initiateGroupsDG();
             break;
