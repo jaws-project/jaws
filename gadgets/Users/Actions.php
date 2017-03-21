@@ -299,9 +299,9 @@ $actions['AddUserToGroups'] = array(
     'loglevel' => JAWS_NOTICE,
 );
 
-$actions['ManageGroups'] = array(
+$actions['Groups'] = array(
     'normal' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
     'acls' => array('ManageGroups'),
     'navigation' => array(
         'order' => 9
@@ -309,34 +309,34 @@ $actions['ManageGroups'] = array(
 );
 $actions['GetGroups'] = array(
     'standalone' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
 );
 $actions['GetGroup'] = array(
     'standalone' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
 );
 $actions['AddGlobalGroup'] = array(
     'standalone' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['UpdateGlobalGroup'] = array(
     'standalone' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['DeleteGlobalGroup'] = array(
     'standalone' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['GetGroupUsers'] = array(
     'standalone' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
 );
 $actions['AddUsersToGroup'] = array(
     'standalone' => true,
-    'file' => 'ManageGroups',
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['ExportVCard'] = array(

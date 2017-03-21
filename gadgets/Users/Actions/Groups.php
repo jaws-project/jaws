@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    Users
  */
-class Users_Actions_ManageGroups extends Users_Actions_Default
+class Users_Actions_Groups extends Users_Actions_Default
 {
     /**
      * Show GatewayManager interface
