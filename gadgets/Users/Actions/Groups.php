@@ -13,7 +13,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      * @access  public
      * @return  string  XHTML template content
      */
-    function ManageGroups()
+    function Groups()
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('index.js');
