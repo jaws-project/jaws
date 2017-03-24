@@ -714,6 +714,16 @@ class Jaws_User
         }
         $uData['username'] = strtolower($uData['username']);
 
+        // check reserved users
+        $reservedUsers = preg_split("/\n|\r|\n\r/", $GLOBALS['app']->Registry->fetch('reserved_users', 'Users'));
+        if (in_array($uData['username'], $reservedUsers)) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
         // nickname
         $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
         if (empty($uData['nickname'])) {
@@ -949,13 +959,26 @@ class Jaws_User
             }
         }
 
-        // set new avatar name if username changed
-        if (($uData['username'] !== $user['username']) && !empty($user['avatar'])) {
-            $fileinfo = pathinfo($user['avatar']);
-            if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                $uData['avatar'] = $uData['username']. '.'. $fileinfo['extension'];
+        if (($uData['username'] !== $user['username'])) {
+            // check reserved users
+            $reservedUsers = preg_split("/\n|\r|\n\r/", $GLOBALS['app']->Registry->fetch('reserved_users', 'Users'));
+            if (in_array($uData['username'], $reservedUsers)) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+
+            // set new avatar name if username changed
+            if (!empty($user['avatar'])) {
+                $fileinfo = pathinfo($user['avatar']);
+                if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                    $uData['avatar'] = $uData['username']. '.'. $fileinfo['extension'];
+                }
             }
         }
+
         $uData['last_update'] = time();
         if (isset($uData['status'])) {
             $uData['status'] = (int)$uData['status'];
