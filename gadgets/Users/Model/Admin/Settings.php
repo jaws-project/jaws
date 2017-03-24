@@ -11,31 +11,33 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
      * Updates the User gadget settings
      *
      * @access  public
-     * @param   string  $method     Authentication method
-     * @param   string  $anon       Anonymous users can auto-register
-     * @param   string  $act        Activation type
-     * @param   int     $group      Default group of anonymous registered user
-     * @param   string  $recover    Users can recover their passwords
+     * @param   array   $settings   Users gadget settings array
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function SaveSettings($method, $anon, $act, $group, $recover)
+    function SaveSettings($settings)
     {
-        $res = true;
         if ($this->gadget->GetPermission('ManageAuthenticationMethod')) {
             $methods = $GLOBALS['app']->getAuthTypes();
-            if ($methods !== false && in_array($method, $methods)) {
-                $res = $this->gadget->registry->update('authtype', $method);
+            if ($methods == false || !in_array($settings['authtype'], $methods)) {
+                unset($settings['authtype']);
             }
-        }
-        $res = $res && $this->gadget->registry->update('anon_register', $anon);
-        $res = $res && $this->gadget->registry->update('anon_activation', $act);
-        $res = $res && $this->gadget->registry->update('anon_group', (int)$group);
-        $res = $res && $this->gadget->registry->update('password_recovery', $recover);
-        if ($res) {
-            return true;
+        } else {
+            unset($settings['authtype']);
         }
 
-        return new Jaws_Error(_t('USERS_PROPERTIES_CANT_UPDATE'));
+        $keys = array(
+            'authtype', 'anon_register', 'anon_activation', 'anon_group', 'password_recovery', 'reserved_users'
+        );
+
+        $res = true;
+        foreach ($settings as $key => $value) {
+            if (!in_array($key, $keys)) {
+                continue;
+            }
+            $res = $res && $this->gadget->registry->update($key, $value);
+        }
+
+        return $res?: Jaws_Error::raiseError(_t('USERS_PROPERTIES_CANT_UPDATE'), __FUNCTION__);
     }
 
 }

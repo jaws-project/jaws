@@ -441,15 +441,16 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SaveSettings()
     {
         $this->gadget->CheckPermission('ManageProperties');
-        @list($method, $anon, $act, $group, $recover) = jaws()->request->fetchAll('post');
-        $uModel = $this->gadget->model->loadAdmin('Settings');
-        $res = $uModel->SaveSettings($method, $anon, $act, $group, $recover);
+        $settings = jaws()->request->fetchAll('post');
+        $res = $this->gadget->model->loadAdmin('Settings')->SaveSettings($settings);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('USERS_PROPERTIES_UPDATED'),
+            RESPONSE_NOTICE
+        );
     }
 
     /**

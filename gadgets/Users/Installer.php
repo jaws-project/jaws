@@ -21,6 +21,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('anon_register', 'false'),
         array('anon_activation', 'user'),
         array('anon_group', ''),
+        array('reserved_users', ''),
         array('default_domain', '0'),
     );
 
@@ -219,6 +220,11 @@ class Users_Installer extends Jaws_Gadget_Installer
 
             // Registry keys
             $this->gadget->registry->insert('default_domain', '0');
+        }
+
+        if (version_compare($old, '2.8.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert('reserved_users', '');
         }
 
         return true;

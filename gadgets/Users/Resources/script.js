@@ -764,13 +764,10 @@ function stopGroupAction()
  */
 function saveSettings()
 {
-    var method     = $('#authtype').val();
-    var anon       = $('#anon_register').val();
-    var act        = $('#anon_activation').val();
-    var group      = $('#anon_group').val();
-    var recover    = $('#password_recovery').val();
-
-    UsersAjax.callAsync('SaveSettings', [method, anon, act, group, recover]);
+    UsersAjax.callAsync(
+        'SaveSettings',
+        $.unserialize($('#users_settings input,select,textarea').serialize())
+    );
 }
 
 /**
