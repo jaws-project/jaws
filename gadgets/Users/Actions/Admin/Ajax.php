@@ -442,6 +442,10 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageProperties');
         $settings = jaws()->request->fetchAll('post');
+        $settings['reserved_users'] = implode(
+            "\n",
+            array_filter(preg_split("/\n|\r|\n\r/", strtolower($settings['reserved_users'])))
+        );
         $res = $this->gadget->model->loadAdmin('Settings')->SaveSettings($settings);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
