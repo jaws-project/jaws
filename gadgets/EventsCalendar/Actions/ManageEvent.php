@@ -57,9 +57,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('EventForm.html');
         $tpl->SetBlock('form');
 
-        // Menubar
-        $action = $this->gadget->action->load('Menubar');
-        $tpl->SetVariable('menubar', $action->Menubar('Events'));
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // Response
         $response = $GLOBALS['app']->Session->PopResponse('Events.Response');

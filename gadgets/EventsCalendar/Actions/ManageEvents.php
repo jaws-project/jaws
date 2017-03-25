@@ -58,9 +58,8 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
         $tpl->SetVariable('lbl_owner', _t('EVENTSCALENDAR_EVENT_OWNER'));
 
-        // Menubar
-        $action = $this->gadget->action->load('Menubar');
-        $tpl->SetVariable('menubar', $action->Menubar('ManageEvents'));
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // Check for response
         $response = $GLOBALS['app']->Session->PopResponse('Events.Response');

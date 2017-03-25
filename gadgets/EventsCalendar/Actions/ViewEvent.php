@@ -43,9 +43,8 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ViewEvent.html');
         $tpl->SetBlock('event');
 
-        // Menubar
-        $action = $this->gadget->action->load('Menubar');
-        $tpl->SetVariable('menubar', $action->Menubar('Events'));
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // Subject
         $tpl->SetVariable('title', $event['subject']);

@@ -46,7 +46,13 @@ $admin_actions['DeleteEvent'] = array(
  */
 $actions['ManageEvents'] = array(
     'normal' => true,
-    'file' => 'ManageEvents'
+    'file' => 'ManageEvents',
+    'navigation' => array(
+        'params' => array(
+            'user' => (int)$GLOBALS['app']->Session->GetAttribute('user')
+        ),
+        'order' => 1
+    ),
 );
 $actions['Search'] = array(
     'standalone' => true,
@@ -98,7 +104,13 @@ $actions['ViewEvent'] = array(
 );
 $actions['ViewYear'] = array(
     'normal' => true,
-    'file' => 'ViewYear'
+    'file' => 'ViewYear',
+    'navigation' => array(
+        'params' => array(
+            'user' => (int)$GLOBALS['app']->Session->GetAttribute('user')
+        ),
+        'order' => 0
+    ),
 );
 $actions['ViewMonth'] = array(
     'normal' => true,

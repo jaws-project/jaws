@@ -50,9 +50,8 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
-        // Menubar
-        $action = $this->gadget->action->load('Menubar');
-        $tpl->SetVariable('menubar', $action->Menubar());
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // Today
         $jDate = Jaws_Date::getInstance();

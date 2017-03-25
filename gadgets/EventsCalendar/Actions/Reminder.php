@@ -53,9 +53,8 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             $tpl->SetVariable('title', _t('EVENTSCALENDAR_USER_EVENTS') . ' - ' . _t('EVENTSCALENDAR_ACTIONS_REMINDER'));
         }
 
-        // Menubar
-        $action = $this->gadget->action->load('Menubar');
-        $tpl->SetVariable('menubar', $action->Menubar());
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
