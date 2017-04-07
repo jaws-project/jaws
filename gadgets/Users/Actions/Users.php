@@ -335,21 +335,32 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $uid = $this->gadget->request->fetch('id', 'post');
+        if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('USERS_USERS_CANT_DELETE_SELF'),
+                RESPONSE_ERROR
+            );
+        }
 
         $uModel = new Jaws_User();
         $profile = $uModel->GetUser((int)$uid);
         if (!$GLOBALS['app']->Session->IsSuperAdmin() && $profile['superadmin']) {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CANT_DELETE', $profile['username']),
-                RESPONSE_ERROR);
-            return $GLOBALS['app']->Session->PopLastResponse();
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('USERS_USERS_CANT_DELETE', $profile['username']),
+                RESPONSE_ERROR
+            );
         }
 
         if (!$uModel->DeleteUser($uid)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CANT_DELETE', $profile['username']),
-                RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('USERS_USERS_CANT_DELETE', $profile['username']),
+                RESPONSE_ERROR
+            );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USER_DELETED', $profile['username']),
-                RESPONSE_NOTICE);
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('USERS_USER_DELETED', $profile['username']),
+                RESPONSE_NOTICE
+            );
         }
     }
 
