@@ -496,8 +496,9 @@ function deleteGroup(id)
 /**
  * Define the data to be displayed in the users datagrid
  */
-function usersDataSource(options, callback) {
-
+function usersDataSource(options, callback)
+{
+    options.offset = options.pageIndex*options.pageSize;
     // define the columns for the grid
     var columns = [
         {
@@ -511,48 +512,52 @@ function usersDataSource(options, callback) {
             'sortable': true
         }
     ];
-
-    // set options
-    var pageIndex = options.pageIndex;
-    var pageSize = options.pageSize;
-    var filters = {
-        group: $('#filter_group').val(),
-        type: $('#filter_type').val(),
-        status: $('#filter_status').val(),
-        term: $('#filter_term').val()
-    };
-    var options = {
-        'offset': pageIndex,
-        'limit': pageSize,
-        'sortDirection': options.sortDirection,
-        'sortBy': options.sortProperty,
-        'filters': filters
-    };
-
-    var rows = UsersAjax.callSync('GetUsers', options);
-    var items = rows.records;
-    var totalItems = rows.total;
-    var totalPages = Math.ceil(totalItems / pageSize);
-    var startIndex = (pageIndex * pageSize) + 1;
-    var endIndex = (startIndex + pageSize) - 1;
-
-    if(endIndex > items.length) {
-        endIndex = items.length;
-    }
-
-    // configure datasource
-    var dataSource = {
-        'page':    pageIndex,
-        'pages':   totalPages,
-        'count':   totalItems,
-        'start':   startIndex,
-        'end':     endIndex,
-        'columns': columns,
-        'items':   items
-    };
-
-    // pass the datasource back to the repeater
-    callback(dataSource);
+//------------------------------------------------------------------------------
+    UsersAjax.callAsync(
+        'GetUsers', {
+            'offset': options.offset,
+            'limit': options.pageSize,
+            'sortDirection': options.sortDirection,
+            'sortBy': options.sortProperty,
+            'filters': {
+                'group': $('#filter_group').val(),
+                'type': $('#filter_type').val(),
+                'status': $('#filter_status').val(),
+                'term': $('#filter_term').val()
+            }
+        },
+        function(response, status) {
+            var dataSource = {};
+            if (response['type'] == 'alert-success') {
+                // processing end item index of page
+                options.end = options.offset + options.pageSize;
+                options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                dataSource = {
+                    'page': options.pageIndex,
+                    'pages': Math.ceil(response['data'].total/options.pageSize),
+                    'count': response['data'].total,
+                    'start': options.offset + 1,
+                    'end':   options.end,
+                    'columns': columns,
+                    'items': response['data'].records
+                };
+            } else {
+                dataSource = {
+                    'page': 0,
+                    'pages': 0,
+                    'count': 0,
+                    'start': 0,
+                    'end':   0,
+                    'columns': columns,
+                    'items': {}
+                };
+            }
+            // pass the datasource back to the repeater
+            callback(dataSource);
+            UsersAjax.showResponse(response);
+        }
+    );
+//------------------------------------------------------------------------------
 }
 
 /**

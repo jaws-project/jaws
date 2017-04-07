@@ -185,14 +185,26 @@ class Users_Actions_Users extends Users_Actions_Default
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers($group, $superadmin, $status, $term, $orderBy, $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($users)) {
-            return array();
+            return $GLOBALS['app']->Session->GetResponse(
+                $users->getMessage(),
+                RESPONSE_ERROR
+            );
         }
         $total = $uModel->GetUsersCount($group, $superadmin, $status, $term);
+        if (Jaws_Error::IsError($total)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $total->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
 
-        return array(
-            'status' => 'success',
-            'total' => $total,
-            'records' => $users
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total'   => $total,
+                'records' => $users
+            )
         );
     }
 
