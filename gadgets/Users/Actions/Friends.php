@@ -26,10 +26,15 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         $this->gadget->CheckPermission('ManageFriends');
         $this->AjaxMe('index.js');
+        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('lbl_name', _t('GLOBAL_NAME'));
+        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+//        $this->gadget->define('lbl_addContact', _t('USERS_CONTACTS_ADD'));
+//        $this->gadget->define('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
+        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+
         $response = $GLOBALS['app']->Session->PopResponse('Users.Groups');
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $jUser = new Jaws_User;
-        $groups = $jUser->GetGroups($user);
 
         // Load the template
         $tpl = $this->gadget->template->load('Friends.html');
@@ -41,22 +46,22 @@ class Users_Actions_Friends extends Users_Actions_Default
         }
 
         $tpl->SetVariable('title', _t('USERS_FRIENDS'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+
+        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
+        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-
-        foreach ($groups as $group) {
-            $tpl->SetBlock('groups/group');
-            $tpl->SetVariable('id', $group['id']);
-            $tpl->SetVariable('url', $this->gadget->urlMap('ManageFriendsGroup', array('gid' => $group['id'])));
-            $tpl->SetVariable('name', $group['name']);
-            $tpl->SetVariable('title', $group['title']);
-            $tpl->ParseBlock('groups/group');
-        }
-
+        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
 
@@ -68,6 +73,67 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         $tpl->ParseBlock('groups');
         return $tpl->Get();
+    }
+
+    /**
+     * Get friends groups list
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function GetFriendGroups()
+    {
+        $this->gadget->CheckPermission('ManageFriends');
+        $post = jaws()->request->fetch(
+            array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
+            'post'
+        );
+
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $jUser = new Jaws_User;
+        $groups = $jUser->GetGroups($user, $post['limit'], $post['offset']);
+
+        foreach($groups as $key=>$group) {
+            $group['recid'] = $group['id'];
+            $groups[$key] = $group;
+        }
+        $groupsCount = $jUser->GetUserContactsCount($user);
+
+        return array(
+            'status' => 'success',
+            'total' => $groupsCount,
+            'records' => $groups
+        );
+    }
+
+    /**
+     * Add or Update a friend group
+     *
+     * @access  public
+     * @return  void
+     */
+    function SaveFriendGroup()
+    {
+        $this->gadget->CheckPermission('ManageFriends');
+
+        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $jUser = new Jaws_User;
+
+        // Update group
+        if(!empty($post['id'])) {
+            $res = $jUser->UpdateGroup($post['id'], $post['data'], $user);
+            // Add new group
+        } else {
+            unset($post['id']);
+            $res = $jUser->AddGroup($post['data'], $user);
+        }
+
+        if (Jaws_Error::isError($res)) {
+            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_CREATED', $post['title']), RESPONSE_NOTICE);
+        }
     }
 
     /**
@@ -142,45 +208,6 @@ class Users_Actions_Friends extends Users_Actions_Default
     {
         $gid = jaws()->request->fetch('gid', 'get');
         return $this->FriendsGroupUI($gid);
-    }
-
-    /**
-     * Add an new group
-     *
-     * @access  public
-     * @return  void
-     */
-    function AddFriendsGroup()
-    {
-        $this->gadget->CheckPermission('ManageFriends');
-
-        $post = jaws()->request->fetch(array('gid', 'name', 'title', 'description'), 'post');
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
-
-        $jUser = new Jaws_User;
-        // Update group
-        if(!empty($post['gid'])) {
-            $res = $jUser->UpdateGroup($post['gid'], $post, $user);
-        // Add new group
-        } else {
-            unset($post['gid']);
-            $res = $jUser->AddGroup($post, $user);
-        }
-
-        if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
-                $res->getMessage(),
-                'Users.Groups',
-                RESPONSE_ERROR
-            );
-        } elseif ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_GROUPS_CREATED', $post['title']),
-                'Users.Groups',
-                RESPONSE_NOTICE
-            );
-        }
-        return Jaws_Header::Location($this->gadget->urlMap('FriendsGroups'));
     }
 
     /**

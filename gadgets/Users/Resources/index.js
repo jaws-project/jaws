@@ -143,6 +143,12 @@ function stopAction() {
             $('form#bookmark-form')[0].reset();
             $('#bookmarksGrid').repeater('render');
             break;
+        case 'FriendsGroups':
+            selectedFriend = 0;
+            $('#friendModal').modal('hide');
+            $('form#friends-form')[0].reset();
+            $('#friendsGrid').repeater('render');
+            break;
     }
 }
 
@@ -557,7 +563,6 @@ function usersDataSource(options, callback)
             UsersAjax.showResponse(response);
         }
     );
-
 }
 
 /**
@@ -848,6 +853,133 @@ function initiateContactsDG() {
 
 }
 
+// Define the data to be displayed in the repeater.
+function friendsDataSource(options, callback) {
+
+    // define the columns for the grid
+    var columns = [
+        {
+            'label': jaws.Users.Defines.lbl_name,
+            'property': 'name',
+            'sortable': true
+        },
+        {
+            'label': jaws.Users.Defines.lbl_title,
+            'property': 'title',
+            'sortable': true
+        }
+    ];
+
+    // set options
+    var pageIndex = options.pageIndex;
+    var pageSize = options.pageSize;
+    var options = {
+        'pageIndex': pageIndex,
+        'pageSize': pageSize,
+        'sortDirection': options.sortDirection,
+        'sortBy': options.sortProperty,
+        'filterBy': options.filter.value || '',
+        'searchBy': options.search || ''
+    };
+
+    var rows = UsersAjax.callSync('GetFriendGroups', options);
+
+    var items = rows.records;
+    var totalItems = rows.total;
+    var totalPages = Math.ceil(totalItems / pageSize);
+    var startIndex = (pageIndex * pageSize) + 1;
+    var endIndex = (startIndex + pageSize) - 1;
+
+    if(endIndex > items.length) {
+        endIndex = items.length;
+    }
+
+    // configure datasource
+    var dataSource = {
+        'page':    pageIndex,
+        'pages':   totalPages,
+        'count':   totalItems,
+        'start':   startIndex,
+        'end':     endIndex,
+        'columns': columns,
+        'items':   items
+    };
+
+    // pass the datasource back to the repeater
+    callback(dataSource);
+}
+
+/**
+ * initiate friends datagrid
+ */
+function initiateFriendsDG() {
+
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'edit',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.Users.Defines.lbl_edit,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editContact(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.Users.Defines.lbl_delete ,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+
+                    // detect multi select
+                    var ids = new Array();
+                    if (helpers.length > 1) {
+                        helpers.forEach(function(entry) {
+                            ids.push(entry.rowData.id);
+                        });
+
+                    } else {
+                        ids.push(helpers.rowData.id);
+                    }
+
+                    deleteContacts(ids);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    $('#friendsGrid').repeater({
+        // setup your custom datasource to handle data retrieval;
+        // responsible for any paging, sorting, filtering, searching logic
+        dataSource: friendsDataSource,
+        staticHeight: 600,
+        list_actions: list_actions,
+        list_selectable: 'multi',
+        list_direction: $('.repeater-canvas').css('direction')
+    });
+
+    $('#friendModal').on('hidden.bs.modal', function (e) {
+        stopAction();
+    })
+}
+
+/**
+ * Add or update the friend
+ */
+function saveFriendGroup()
+{
+    UsersAjax.callAsync(
+        'SaveFriendGroup', {
+            id: selectedFriend,
+            data: $.unserialize($('form#friends-form').serialize())
+        }
+    );
+}
+
+
 
 /**
  * Define the data to be displayed in the users datagrid
@@ -1077,6 +1209,11 @@ $(document).ready(function() {
             currentAction = "UserContacts";
             initiateContactsDG();
             break;
+
+        case 'FriendsGroups':
+            currentAction = "FriendsGroups";
+            initiateFriendsDG();
+            break;
     }
 });
 
@@ -1084,4 +1221,4 @@ var UsersAjax = new JawsAjax('Users', UsersCallback);
 var SettingsInUsersAjax = new JawsAjax('Settings');
 
 var currentAction, selectedUser, selectedGroup;
-var selectedContact = 0, selectedBookmark = 0;
+var selectedContact = 0, selectedBookmark = 0, selectedFriend = 0;
