@@ -1348,9 +1348,12 @@ class Jaws_User
         }
 
         if (JAWS_GODUSER == $user['id']) {
-            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
-                return false;
-            }
+            return false;
+        }
+
+        // users can't delete himself
+        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $user['id']) {
+            return false;
         }
 
         //Start Transaction
