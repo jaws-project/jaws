@@ -107,6 +107,10 @@ $maps[] = array(
     array('type'   => '[\p{L}[:digit:]\-_\.]+')
 );
 $maps[] = array(
+    'Types',
+    'blog/types'
+);
+$maps[] = array(
     'ShowCategory',
     'blog/category/{id}/page/{page}',
     array('id'   => '[\p{L}[:digit:]\-_\.]+',

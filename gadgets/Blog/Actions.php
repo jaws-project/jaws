@@ -56,6 +56,11 @@ $actions['TypePosts'] = array(
     'parametric' => true,
     'file'   => 'TypePosts',
 );
+$actions['Types'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'TypePosts',
+);
 $actions['CategoriesList'] = array(
     'normal' => true,
     'layout' => true,

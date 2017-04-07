@@ -191,6 +191,17 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             $tpl->ParseBlock("$tpl_base_block/entry/category");
         }
 
+        if(!empty($entry['type'])) {
+            $tpl->SetBlock("$tpl_base_block/entry/type");
+            $tpl->SetVariable('title', $entry['type']['title']);
+            $tpl->SetVariable(
+                'url',
+                $this->gadget->urlMap('TypePosts', array('type' => $entry['type']['id']))
+            );
+
+            $tpl->ParseBlock("$tpl_base_block/entry/type");
+        }
+
         $commentsCount = 0;
         $comments = _t('BLOG_NO_COMMENT');
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {

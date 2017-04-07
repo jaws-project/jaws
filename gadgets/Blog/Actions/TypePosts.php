@@ -141,4 +141,39 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
         return $tpl->Get();
     }
 
+    /**
+     * Displays list of types
+     *
+     * @access  public
+     * @return  string  XHTML Template content
+     */
+    function Types()
+    {
+        $tpl = $this->gadget->template->load('Types.html');
+        $tpl->SetBlock("types");
+        $tpl->SetVariable('gadget_title', _t('BLOG_ACTIONS_TYPES'));
+        $this->SetTitle(_t('BLOG_ACTIONS_TYPES'));
+
+
+        $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
+        $types = $cModel->GetCategories('Blog', 'Types');
+        if (Jaws_Error::isError($types)) {
+            return false;
+        }
+        foreach ($types as $type) {
+            $tpl->SetBlock("types/type");
+
+            $tpl->SetVariable('title', $type['title']);
+            $tpl->SetVariable(
+                'url',
+                $this->gadget->urlMap('TypePosts', array('type' => $type['id']))
+            );
+
+            $tpl->ParseBlock("types/type");
+        }
+
+        $tpl->ParseBlock("types");
+        return $tpl->Get();
+    }
+
 }
