@@ -512,7 +512,7 @@ function usersDataSource(options, callback)
             'sortable': true
         }
     ];
-//------------------------------------------------------------------------------
+
     UsersAjax.callAsync(
         'GetUsers', {
             'offset': options.offset,
@@ -557,7 +557,7 @@ function usersDataSource(options, callback)
             UsersAjax.showResponse(response);
         }
     );
-//------------------------------------------------------------------------------
+
 }
 
 /**
