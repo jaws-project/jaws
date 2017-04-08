@@ -94,7 +94,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form name="groups" id="friends-form" action="#">
+                    <form name="friends" id="friends-form" action="#">
                         <div class="gadget_content content">
                             <fieldset>
                                 <div><label for="name">{{lbl_name}}:</label>
@@ -112,213 +112,54 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{lbl_cancel}}</button>
                     <button type="button" class="btn btn-primary" onclick="javascript:saveFriendGroup()">{{lbl_save}}</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="gadget_footer"></div>
 
-<!--  <form name="groups" id="groups" action="{{requested_url}}" method="post">
-    <input type="hidden" name="gadget" value="Users"/>
-    <input type="hidden" name="action" value="FriendsGroups"/>
-    <input type="hidden" name="status" value=""/>
-  <div class="gadget_content content">
-      <table class="table table-hover table-bordered">
-        <colgroup>
-          <col class="xx-small" />
-          <col class="small" />
-          <col class="large" />
-        </colgroup>
-        <thead>
-        <tr>
-          <th><input class="form-check-input" type="checkbox" onclick="toggleCheckboxes();"></th>
-          <th>{{lbl_name}}</th>
-          <th>{{lbl_title}}</th>
-        </tr>
-        </thead>
+    <!-- Friend Members Modal -->
+    <div class="modal fade" id="friendMembersModal" tabindex="-1" role="dialog" aria-labelledby="friendMembersModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="friendMembersModalLabel">{{addUser_title}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="padding: 10px; font-size: 11px; line-height: 150%;">
 
-        <tbody>
-        &lt;!&ndash; BEGIN group &ndash;&gt;
-        <tr>
-          <td><input class="form-check-input" type="checkbox" name="group_checkbox[]" value="{{id}}"></td>
-          <td><a href="{{url}}" title="{{name}}">{{name}}</a></td>
-          <td>{{title}}</td>
-        </tr>
-        &lt;!&ndash; END group &ndash;&gt;
-        </tbody>
-      </table>
-  </div>
-  <div class="gadget_actions actions">
-      <label for="groups_actions_combo">{{lbl_actions}}:&nbsp;</label>
-      <select class="form-control" title="{{lbl_actions}}" id="groups_actions_combo" name="groups_actions_combo">
-          <option value="">{{lbl_no_action}}</option>
-          <option value="delete">{{lbl_delete}}</option>
-      </select>
+                        <form action="#" name="friends-users-form" id="friends-users-form">
+                            <table class="table">
+                                <tbody>
+                                <!-- BEGIN user -->
+                                <tr>
+                                    <td>
+                                        <label class="form-check-label" for="user_{{id}}">
+                                            <input class="form-check-input" name="group_users[]" id="user_{{id}}" value="{{id}}" type="checkbox">
+                                            {{title}}
+                                        </label>
+                                    </td>
+                                </tr>
+                                <!-- END user -->
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+                        {{lbl_cancel}}
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="javascript:saveFriendMembers()">{{lbl_save}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      <button class="btn" value="{{lbl_actions}}" id="action_button" name="action_button"
-              onclick="javascript: return doDGAction();"><img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
-      </button>
-      <a href="{{url_add_group}}" class="btn btn-success">{{lbl_add_group}}</a>
-  </div>
-
-  </form>
-  -->
 </div>
+
 <div class="gadget_footer"></div>
-
-<!--<script type="text/javascript">
-    function toggleCheckboxes() {
-        do_check = !do_check;
-        $('.table-checkbox').each(function () {
-            $(this).prop('checked', do_check);
-        });
-    }
-    var do_check = false;
-
-    function doDGAction() {
-        var action = document.getElementById("groups_actions_combo").value;
-        if(action == "") {
-            return false;
-        }
-
-        if(action == 'delete') {
-            document.groups.action.value = 'DeleteGroups';
-        } else if(action == 'disable') {
-            document.groups.action.value = 'EnableGroups';
-            document.groups.status.value = 'no';
-        } else if(action == 'enable') {
-            document.groups.action.value = 'EnableGroups';
-            document.groups.status.value = 'yes';
-        }
-        document.getElementById("groups").submit();
-        return true;
-    }
-</script>-->
 <!-- END groups -->
-
-<!-- BEGIN add_group -->
-<div class="gadget_header">
-  <div class="gadget_title"><h2>{{title}}</h2></div>
-  <div class="gadget_menubar">{{menubar}}</div>
-  <div class="gadget_submenubar">{{submenubar}}</div>
-</div>
-<div class="gadget_container">
-  <form name="groups" id="groups" action="{{base_script}}" method="post">
-      <input type="hidden" name="gadget" value="Users"/>
-      <input type="hidden" name="action" value="AddFriendsGroup"/>
-      <input type="hidden" name="gid" value="{{gid}}"/>
-
-      <div class="gadget_content content">
-          <fieldset>
-              <div><label for="name">{{lbl_name}}:</label>
-                  <input class="form-control" name="name" id="name" value="{{name}}" type="text"/>
-              </div>
-              <div><label for="title">{{lbl_title}}:</label>
-                  <input class="form-control" name="title" id="title" value="{{group_title}}" type="text"/>
-              </div>
-              <div><label for="description">{{lbl_description}}:</label>
-                  <textarea class="form-control" name="description" id="description" cols="45" rows="4">{{description}}</textarea>
-              </div>
-          </fieldset>
-      </div>
-      <div class="gadget_actions actions">
-          <button class="btn btn-primary" type="submit" value="{{save}}">{{save}}</button>
-      </div>
-  </form>
-</div>
-<div class="gadget_footer"></div>
-<!-- END add_group -->
-
-<!-- BEGIN manage_group -->
-<div class="gadget_header">
-  <div class="gadget_title"><h2>{{title}}</h2></div>
-  <div class="gadget_menubar">{{menubar}}</div>
-  <div class="gadget_submenubar">{{submenubar}}</div>
-</div>
-<div class="gadget_container">
-  <div class="gadget_response">
-      <div id="users_managegroup_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
-  <form name="group_members" id="group_members" action="{{base_script}}" method="post">
-      <input type="hidden" name="gadget" value="Users"/>
-      <input type="hidden" name="action" value="AddFriend"/>
-      <input type="hidden" name="gid" value="{{gid}}"/>
-
-      <div class="gadget_content content">
-          <table class="table table-hover table-bordered">
-            <colgroup>
-              <col class="xx-small" />
-              <col class="small" />
-              <col class="large" />
-            </colgroup>
-              <thead>
-              <tr>
-                  <th><input class="form-check-input" type="checkbox" onclick="toggleCheckboxes();"></th>
-                  <th>{{lbl_username}}</th>
-                  <th>{{lbl_nickname}}</th>
-              </tr>
-              </thead>
-
-              <tbody>
-              <!-- BEGIN member -->
-              <tr>
-                  <td><input class="form-check-input" type="checkbox" name="member_checkbox[]" value="{{id}}"></td>
-                  <td><a href="{{user_url}}">{{username}}</a></td>
-                  <td>{{nickname}}</td>
-              </tr>
-              <!-- END member -->
-              </tbody>
-          </table>
-
-          <div class="gadget_actions actions">
-              <div>
-                <label for="member_actions_combo">{{lbl_actions}}:&nbsp;</label>
-                <select class="form-control" title="{{lbl_actions}}" id="member_actions_combo" name="inbox_actions_combo">
-                  <option value="">{{lbl_no_action}}</option>
-                  <option value="delete">{{lbl_delete}}</option>
-                </select>
-
-                <button class="btn" value="{{lbl_actions}}" id="action_button" name="action_button" onclick="javascript: return doDGAction();" >
-                <img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
-                </button>
-                <a href="{{url_edit_group}}" class="btn btn-success">{{lbl_edit_group}}</a>
-              </div>
-              <!-- BEGIN all_users -->
-              <div><label for="users">{{lbl_users}}:</label>
-                  <select class="form-control" name="users" id="users">
-                      <!-- BEGIN user -->
-                      <option value="{{user}}">{{username}} - {{nickname}}</option>
-                      <!-- END user -->
-                  </select>
-                  <button class="btn btn-primary" type="submit" value="{{lbl_add_user_to_group}}">{{lbl_add_user_to_group}}</button>
-
-              </div>
-              <!-- END all_users -->
-          </div>
-
-      </div>
-  </form>
-</div>
-<div class="gadget_footer"></div>
-
-<script type="text/javascript">
-    function toggleCheckboxes(){
-        do_check = !do_check;
-        $("input[name='member_checkbox[]']").each(function() { $(this).prop('checked', do_check); });
-    }
-    var do_check = false;
-
-    function doDGAction() {
-        var action = document.getElementById("member_actions_combo").value;
-        if(action == 'delete') {
-            document.group_members.action.value = 'DeleteFriend';
-        } else {
-            return false;
-        }
-        document.getElementById("group_members").submit();
-        return true;
-    }
-</script>
-<!-- END manage_group -->

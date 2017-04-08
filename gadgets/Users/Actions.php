@@ -228,17 +228,21 @@ $actions['SaveFriendGroup'] = array(
     'internal' => true,
     'file' => 'Friends',
 );
-
-$actions['DeleteFriendsGroups'] = array(
+$actions['AddUsersToFriendGroup'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'Friends',
 );
-//$actions['AddFriend'] = array(
-//    'standalone' => true,
-//    'internal' => true,
-//    'file' => 'Friends',
-//);
+$actions['GetFriendGroup'] = array(
+    'standalone' => true,
+    'file' => 'Friends',
+);
+
+$actions['DeleteFriendGroups'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Friends',
+);
 $actions['DeleteFriend'] = array(
     'standalone' => true,
     'internal' => true,
@@ -257,10 +261,7 @@ $actions['AddFriendsGroup'] = array(
     'internal' => true,
     'file' => 'Friends',
 );
-$actions['ManageFriendsGroup'] = array(
-    'normal' => true,
-    'file' => 'Friends',
-);
+
 $actions['UpdateFriendsGroup'] = array(
     'normal' => true,
     'internal' => true,

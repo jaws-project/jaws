@@ -25,7 +25,6 @@ var UsersCallback = {
         }
         UsersAjax.showResponse(response);
     },
-
     UpdatePreferences: function (response) {
         UsersAjax.showResponse(response);
     },
@@ -97,6 +96,26 @@ var UsersCallback = {
         UsersAjax.showResponse(response);
     },
 
+    SaveFriendGroup: function (response) {
+        if (response.type == 'alert-success') {
+            stopAction();
+            $('#friendModal').modal('hide');
+        }
+        UsersAjax.showResponse(response);
+    },
+    DeleteFriendGroups: function (response) {
+        if (response.type == 'alert-success') {
+            stopAction();
+        }
+        UsersAjax.showResponse(response);
+    },
+    AddUsersToFriendGroup: function (response) {
+        if (response.type == 'alert-success') {
+            $('#friendMembersModal').modal('hide');
+        }
+        UsersAjax.showResponse(response);
+    },
+
 };
 
 /**
@@ -144,9 +163,9 @@ function stopAction() {
             $('#bookmarksGrid').repeater('render');
             break;
         case 'FriendsGroups':
-            selectedFriend = 0;
-            $('#friendModal').modal('hide');
+            selectedFriendGroup = 0;
             $('form#friends-form')[0].reset();
+            $('#friendModalLabel').html(jaws.Users.Defines.lbl_addFriend);
             $('#friendsGrid').repeater('render');
             break;
     }
@@ -922,7 +941,7 @@ function initiateFriendsDG() {
                 html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.Users.Defines.lbl_edit,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
-                    editContact(helpers.rowData.id);
+                    editFriendGroup(helpers.rowData.id);
                     callback();
                 }
 
@@ -944,9 +963,19 @@ function initiateFriendsDG() {
                         ids.push(helpers.rowData.id);
                     }
 
-                    deleteContacts(ids);
+                    deleteFriendGroups(ids);
                     callback();
                 }
+            },
+            {
+                name: 'editFriendMembers',
+                html: '<span class="glyphicon glyphicon-user"></span> ' + jaws.Users.Defines.lbl_manageFriends,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editFriendMembers(helpers.rowData.id);
+                    callback();
+                }
+
             }
         ]
     };
@@ -973,12 +1002,78 @@ function saveFriendGroup()
 {
     UsersAjax.callAsync(
         'SaveFriendGroup', {
-            id: selectedFriend,
+            id: selectedFriendGroup,
             data: $.unserialize($('form#friends-form').serialize())
         }
     );
 }
 
+/**
+ * Edit a friend group info
+ */
+function editFriendGroup(id)
+{
+    selectedFriendGroup = id;
+    $('#friendModalLabel').html(jaws.Users.Defines.lbl_editFriend);
+    var gInfo = UsersAjax.callSync('GetFriendGroup', {'id': selectedFriendGroup});
+    if (gInfo) {
+        $('#friends-form #name').val(gInfo.name);
+        $('#friends-form #title').val(gInfo.title);
+        $('#friends-form #description').val(gInfo.description);
+        $('#friendModal').modal('show');
+    }
+}
+
+/**
+ * Delete friend groups
+ */
+function deleteFriendGroups(ids)
+{
+    if (confirm(jaws.Users.Defines.confirmDelete)) {
+        UsersAjax.callAsync('DeleteFriendGroups', {'ids': ids});
+    }
+}
+
+/**
+ * Edit a friend group info
+ */
+function editFriendMembers(id)
+{
+    selectedFriendGroup = id;
+
+    $('#friends-users-form input[type=checkbox]').prop('checked', false);
+
+    var gUsers = UsersAjax.callSync('GetGroupUsers', {'gid': selectedFriendGroup});
+    if (gUsers) {
+        $.each(gUsers, function(index, user) {
+            if ($('#friends-users-form #user_' + user['id']).length) {
+                $('#friends-users-form #user_' + user['id']).prop('checked', true);
+            }
+        });
+        $('#friendMembersModal').modal('show');
+    }
+}
+
+/**
+ * save friend members
+ */
+function saveFriendMembers()
+{
+    var inputs = $('#friends-users-form input');
+    var keys = new Array();
+    var counter = 0;
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].name.indexOf('group_users') == -1) {
+            continue;
+        }
+        if (inputs[i].checked) {
+            keys[counter] = inputs[i].value;
+            counter++;
+        }
+    }
+
+    UsersAjax.callAsync('AddUsersToFriendGroup', {'gid': selectedFriendGroup, 'users': keys});
+}
 
 
 /**
@@ -1221,4 +1316,4 @@ var UsersAjax = new JawsAjax('Users', UsersCallback);
 var SettingsInUsersAjax = new JawsAjax('Settings');
 
 var currentAction, selectedUser, selectedGroup;
-var selectedContact = 0, selectedBookmark = 0, selectedFriend = 0;
+var selectedContact = 0, selectedBookmark = 0, selectedFriendGroup = 0;
