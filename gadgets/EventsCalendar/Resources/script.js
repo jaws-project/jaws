@@ -54,12 +54,138 @@ var EventsCalendarCallback = {
     }
 };
 
+// Define the data to be displayed in the repeater.
+function eventsDataSource(options, callback) {
+
+    // define the columns for the grid
+    var columns = [
+        {
+            'label': CONST.subject,
+            'property': 'subject',
+            'sortable': true
+        },
+        {
+            'label': CONST.from,
+            'property': 'start_time',
+            'sortable': true
+        },
+        {
+            'label': CONST.to,
+            'property': 'stop_time',
+            'sortable': true
+        },
+        {
+            'label': CONST.shared,
+            'property': 'shared',
+            'sortable': true
+        }
+    ];
+
+    // set options
+    var pageIndex = options.pageIndex;
+    var pageSize = options.pageSize;
+    var options = {
+        'pageIndex': pageIndex,
+        'pageSize': pageSize,
+        'sortDirection': options.sortDirection,
+        'sortBy': options.sortProperty,
+        'filterBy': options.filter.value || '',
+        'searchBy': options.search || ''
+    };
+
+    var rows = EventsCalendarAjax.callSync('GetEvents', options);
+
+    var items = rows.records;
+    var totalItems = rows.total;
+    var totalPages = Math.ceil(totalItems / pageSize);
+    var startIndex = (pageIndex * pageSize) + 1;
+    var endIndex = (startIndex + pageSize) - 1;
+
+    if(endIndex > items.length) {
+        endIndex = items.length;
+    }
+
+    // configure datasource
+    var dataSource = {
+        'page':    pageIndex,
+        'pages':   totalPages,
+        'count':   totalItems,
+        'start':   startIndex,
+        'end':     endIndex,
+        'columns': columns,
+        'items':   items
+    };
+
+    // pass the datasource back to the repeater
+    callback(dataSource);
+}
+
+/**
+ * initiate friends datagrid
+ */
+function initiateEventsDG() {
+
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'edit',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + CONST.edit,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editEvent(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + CONST.delete ,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+
+                    // detect multi select
+                    var ids = new Array();
+                    if (helpers.length > 1) {
+                        helpers.forEach(function(entry) {
+                            ids.push(entry.rowData.id);
+                        });
+
+                    } else {
+                        ids.push(helpers.rowData.id);
+                    }
+
+                    deleteEvents(ids);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    $('#eventsGrid').repeater({
+        // setup your custom datasource to handle data retrieval;
+        // responsible for any paging, sorting, filtering, searching logic
+        dataSource: eventsDataSource,
+        staticHeight: 600,
+        list_actions: list_actions,
+        list_selectable: 'multi',
+        list_direction: $('.repeater-canvas').css('direction')
+    });
+
+    $('#eventModal').on('hidden.bs.modal', function (e) {
+        stopAction();
+    })
+}
+
 /**
  * Initiates events calendar
  */
 function initEventsCalendar() {
-    CONST = jQuery.parseJSON(jaws.EventsCalendar.Defines.CONST);
+    // CONST = jQuery.parseJSON(jaws.EventsCalendar.Defines.CONST);
+    CONST = jaws.EventsCalendar.Defines.CONST;
+    initiateEventsDG();
 
+/*
     w2utils.settings.dataType = 'JSON';
     if (CONST.calendar === 'Jalali') {
         w2utils.locale('libraries/w2ui/fa-pe.json');
@@ -67,11 +193,13 @@ function initEventsCalendar() {
     w2utils.settings.dateFormat = 'yyyy-m-d';
 
     initDatagrid('#events_datagrid');
+*/
 }
 
 /**
  * Prepares events datagrid
  */
+/*
 function initDatagrid(targetEl) {
     var components = {
         toolbar: true,
@@ -152,6 +280,7 @@ function initDatagrid(targetEl) {
         }
     });
 }
+*/
 
 function initForm($form) {
     if (w2ui['frm_event']) {

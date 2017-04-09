@@ -42,8 +42,8 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
     function EventsCalendar($mode = 'public')
     {
         $this->AjaxMe('script.js');
-        $GLOBALS['app']->Layout->addLink('libraries/w2ui/w2ui.css');
-        $GLOBALS['app']->Layout->addScript('libraries/w2ui/w2ui.js');
+//        $GLOBALS['app']->Layout->addLink('libraries/w2ui/w2ui.css');
+//        $GLOBALS['app']->Layout->addScript('libraries/w2ui/w2ui.js');
         $tpl = $this->gadget->template->loadAdmin('Events.html');
         $tpl->SetBlock('ec');
 
@@ -76,6 +76,8 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['editEvent'] = _t('EVENTSCALENDAR_EDIT_EVENT');
         $const['yes'] = _t('GLOBAL_YES');
         $const['no'] = _t('GLOBAL_NO');
+        $const['edit'] = _t('GLOBAL_EDIT');
+        $const['delete'] = _t('GLOBAL_DELETE');
         $const['types'] = array();
         for ($i = 1; $i <= 5; $i++) {
             $const['types'][$i] = _t('EVENTSCALENDAR_EVENT_TYPE_' . $i);
@@ -85,6 +87,78 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
             $const['priorities'][$i] = _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i);
         }
         $this->gadget->define('CONST', $const);
+
+        $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+        $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
+        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
+        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_addEvent', _t('EVENTSCALENDAR_NEW_EVENT'));
+
+        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
+        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+
+        // Start/Stop date
+        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
+        $tpl->SetVariable('lbl_from', _t('EVENTSCALENDAR_FROM'));
+        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
+
+        // Start/Stop time
+        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
+
+        // Type
+        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+        for ($i = 1; $i <= 5; $i++) {
+            $tpl->SetBlock('ec/type');
+            $tpl->SetVariable('value', $i);
+            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_TYPE_' . $i));
+            $tpl->ParseBlock('ec/type');
+        }
+
+        // Public
+        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
+        $tpl->SetBlock('ec/public');
+        $tpl->SetVariable('value', 0);
+        $tpl->SetVariable('title', _t('GLOBAL_NO'));
+        $tpl->ParseBlock('ec/public');
+        $tpl->SetBlock('ec/public');
+        $tpl->SetVariable('value', 1);
+        $tpl->SetVariable('title', _t('GLOBAL_YES'));
+        $tpl->ParseBlock('ec/public');
+
+        // Priority
+        $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+        for ($i = 0; $i <= 2; $i++) {
+            $tpl->SetBlock('ec/priority');
+            $tpl->SetVariable('value', $i);
+            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i));
+            $tpl->ParseBlock('ec/priority');
+        }
+
+        // Reminder
+        $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
+        $intervals = array(0, 1, 5, 10, 15, 30, 60, 120, 180, 240, 300,
+            360, 420, 480, 540, 600, 660, 720, 1440, 2880, 10080, 43200);
+        foreach ($intervals as $i) {
+            $tpl->SetBlock('ec/reminder');
+            $tpl->SetVariable('value', $i);
+            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_REMINDER_' . $i));
+            $tpl->ParseBlock('ec/reminder');
+        }
+
+        // Recurrence
+        $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
+        for ($i = 0; $i <= 4; $i++) {
+            $tpl->SetBlock('ec/recurrence');
+            $tpl->SetVariable('value', $i);
+            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_RECURRENCE_' . $i));
+            $tpl->ParseBlock('ec/recurrence');
+        }
+
 
         $tpl->ParseBlock('ec');
         return $tpl->Get();
@@ -234,7 +308,8 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         // Fetch events
         $model = $this->gadget->model->loadAdmin('Events');
         $events = $model->GetEvents($post);
-        if (Jaws_Error::IsError($events)){
+        $eventsCount = $model->GetEvents($post, true);
+        if (Jaws_Error::IsError($events)) {
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
 
@@ -246,7 +321,11 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
             $event['stop_time'] = $jDate->Format($event['stop_time'], 'Y/m/d H:i');
         }
 
-        return $events;
+        return array(
+            'status' => 'success',
+            'total' =>  $eventsCount,
+            'records' => $events
+        );
     }
 
     /**

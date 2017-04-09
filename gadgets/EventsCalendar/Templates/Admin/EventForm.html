@@ -1,9 +1,20 @@
 <!-- BEGIN form -->
-<div class="gadget_response popup_response">
-  <div></div>
-</div>
 <form action="{{base_script}}" method="post">
   <input type="hidden" name="id" value="{{id}}" />
+
+  <div><label for="subject">{{lbl_subject}}:</label>
+    <input class="form-control" name="subject" id="subject" type="text" size="60" maxlength="100"/>
+  </div>
+
+  <div><label for="location">{{lbl_location}}:</label>
+    <input class="form-control" name="location" id="location" type="text" size="60" maxlength="100"/>
+  </div>
+
+  <div><label for="description">{{lbl_desc}}:</label>
+    <textarea name="description" id="description" cols="30" rows="10"></textarea>
+  </div>
+
+
   <div class="w2ui-page page-0">
     <div class="w2ui-field w2ui-span6">
       <label>{{lbl_subject}}:</label>

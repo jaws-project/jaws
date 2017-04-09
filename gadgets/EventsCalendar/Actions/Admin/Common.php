@@ -34,11 +34,6 @@ class EventsCalendar_Actions_Admin_Common extends Jaws_Gadget_Action
         $menubar->AddOption('UserEvents',_t('EVENTSCALENDAR_USER_EVENTS'),
             $baseUrl . 'UserEvents', $menuImage);
 
-//        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
-//            $menubar->AddOption('Comments', _t('DIRECTORY_FILE_COMMENTS'),
-//                BASE_SCRIPT . '?gadget=EventsCalendar&amp;action=ManageComments', 'images/stock/stock-comments.png');
-//        }
-//
         $menubar->Activate($action);
 
         return $menubar->Get();

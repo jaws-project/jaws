@@ -1,7 +1,164 @@
 <!-- BEGIN ec -->
 <div class="gadget_menubar">{{menubar}}</div>
 <div class="gadget_container events">
-  <div id="events_datagrid"></div>
+
+  <div class="repeater" id="eventsGrid" data-staticheight="500">
+    <div class="repeater-header">
+      <div class="repeater-header-left">
+        <div class="repeater-search">
+          <div class="search disabled input-group">
+            <input type="search" class="form-control input-sm" placeholder="Search">
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-sm" type="button">
+                  <span class="glyphicon glyphicon-search"></span>
+                  <span class="sr-only">Search</span>
+              </button>
+          </span>
+          </div>
+        </div>
+      </div>
+      <div class="repeater-header-right">
+        <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#eventModal">
+          <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
+        </button>
+      </div>
+    </div>
+    <div class="repeater-viewport">
+      <div class="repeater-canvas"></div>
+      <div class="loader repeater-loader"></div>
+    </div>
+    <div class="repeater-footer">
+      <div class="repeater-footer-left">
+        <div class="repeater-itemization">
+          <span><span class="repeater-start"></span> {{lbl_to}} <span class="repeater-end"></span> {{lbl_of}} <span class="repeater-count"></span> {{lbl_items}}</span>
+          <div class="btn-group selectlist dropup" data-resize="auto">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+              <span class="selected-label">?</span>
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li data-value="10" data-selected="true"><a href="#">10</a></li>
+              <li data-value="25"><a href="#">25</a></li>
+              <li data-value="50"><a href="#">50</a></li>
+            </ul>
+            <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+          </div>
+          <span>{{lbl_per_page}}</span>
+        </div>
+      </div>
+      <div class="repeater-footer-right">
+        <div class="repeater-pagination">
+          <button type="button" class="btn btn-default btn-sm repeater-prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous Page</span>
+          </button>
+          <label class="page-label" id="myPageLabel"></label>
+          <div class="repeater-primaryPaging active">
+            <div class="input-group input-append dropdown combobox dropup">
+              <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right"></ul>
+              </div>
+            </div>
+          </div>
+          <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+          <button type="button" class="btn btn-default btn-sm repeater-next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next Page</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="w2ui-reset w2ui-form" style="width:600px; height: 530px;">{{form}}</div>
+
+<!-- Event Modal -->
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="eventModalLabel">{{lbl_addEvent}}</h4>
+      </div>
+      <div class="modal-body">
+        <form action="#" id="events-form">
+            <div><label for="subject">{{lbl_subject}}:</label>
+              <input class="form-control" name="subject" id="subject" type="text" size="60" maxlength="100"/>
+            </div>
+
+            <div><label for="location">{{lbl_location}}:</label>
+              <input class="form-control" name="location" id="location" type="text" size="60" maxlength="100"/>
+            </div>
+
+            <div><label for="description">{{lbl_desc}}:</label>
+              <textarea name="description" id="description" rows="4" class="form-control"></textarea>
+            </div>
+
+          <div><label for="start_date">{{lbl_date}}:</label>
+            <input class="form-control" name="start_date" id="start_date" type="text"/>
+            {{lbl_to}}
+            <input class="form-control" name="stop_date" id="stop_date" type="text"/>
+          </div>
+
+          <div><label for="start_time">{{lbl_time}}:</label>
+            <input class="form-control" name="start_time" id="start_time" type="text"/>
+            {{lbl_to}}
+            <input class="form-control" name="stop_time" id="stop_time" type="text"/>
+          </div>
+
+          <div><label for="type">{{lbl_type}}:</label>
+            <select name="type" id="type" class="form-control">
+              <!-- BEGIN type -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END type -->
+            </select>
+          </div>
+
+          <div><label for="public">{{lbl_public}}:</label>
+            <select name="public" id="public" class="form-control">
+              <!-- BEGIN public -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END public -->
+            </select>
+          </div>
+
+          <div><label for="priority">{{lbl_priority}}:</label>
+            <select name="priority" id="priority" class="form-control">
+              <!-- BEGIN priority -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END priority -->
+            </select>
+          </div>
+
+          <div><label for="reminder">{{lbl_reminder}}:</label>
+            <select name="reminder" id="reminder" class="form-control">
+              <!-- BEGIN reminder -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END reminder -->
+            </select>
+          </div>
+
+          <div><label for="recurrence">{{lbl_recurrence}}:</label>
+            <select name="recurrence" id="recurrence" class="form-control" onchange="updateRepeatUI(this.value)">
+              <!-- BEGIN recurrence -->
+              <option value="{{value}}">{{title}}</option>
+              <!-- END recurrence -->
+            </select>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
+        <button type="button" class="btn btn-primary" onclick="javascript:saveEvent()">{{lbl_save}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- END ec -->
