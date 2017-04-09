@@ -2,7 +2,7 @@
 <div class="gadget_menubar">{{menubar}}</div>
 <div class="gadget_container events">
 
-  <div class="repeater" id="eventsGrid" data-staticheight="500">
+  <div class="repeater" id="eventsGrid" data-staticheight="400">
     <div class="repeater-header">
       <div class="repeater-header-left">
         <div class="repeater-search">
@@ -99,16 +99,26 @@
               <textarea name="description" id="description" rows="4" class="form-control"></textarea>
             </div>
 
-          <div><label for="start_date">{{lbl_date}}:</label>
-            <input class="form-control" name="start_date" id="start_date" type="text"/>
-            {{lbl_to}}
-            <input class="form-control" name="stop_date" id="stop_date" type="text"/>
-          </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="start_date">{{lbl_date}}:</label>
+                <input class="form-control" name="start_date" id="start_date" type="text"/>
+              </div>
+              <label for="start_date">{{lbl_to}}</label>
+              <div class="form-group col-md-6">
+                <input class="form-control" name="stop_date" id="stop_date" type="text"/>
+              </div>
+            </div>
 
-          <div><label for="start_time">{{lbl_time}}:</label>
-            <input class="form-control" name="start_time" id="start_time" type="text"/>
-            {{lbl_to}}
-            <input class="form-control" name="stop_time" id="stop_time" type="text"/>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="start_time">{{lbl_time}}:</label>
+              <input class="form-control" name="start_time" id="start_time" type="text"/>
+            </div>
+            <label for="start_date">{{lbl_to}}</label>
+            <div class="form-group col-md-6">
+              <input class="form-control" name="stop_time" id="stop_time" type="text"/>
+            </div>
           </div>
 
           <div><label for="type">{{lbl_type}}:</label>
@@ -149,6 +159,8 @@
               <option value="{{value}}">{{title}}</option>
               <!-- END recurrence -->
             </select>
+
+            {{month}} {{day}} {{wday}}
           </div>
 
         </form>

@@ -28,8 +28,8 @@ var EventsCalendarCallback = {
     },
     CreateEvent: function(response) {
         if (response.type && response.type === 'alert-success') {
-            w2popup.close();
-            w2ui['datagrid'].reload();
+            $('#eventModal').modal('hide');
+            $('#eventsGrid').repeater('render');
             EventsCalendarAjax.showResponse(response);
         } else {
             EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
@@ -37,8 +37,8 @@ var EventsCalendarCallback = {
     },
     UpdateEvent: function(response) {
         if (response.type && response.type === 'alert-success') {
-            w2popup.close();
-            w2ui['datagrid'].reload();
+            $('#eventModal').modal('hide');
+            $('#eventsGrid').repeater('render');
             EventsCalendarAjax.showResponse(response);
         } else {
             EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
@@ -46,7 +46,7 @@ var EventsCalendarCallback = {
     },
     DeleteEvent: function(response) {
         if (response.type && response.type === 'alert-success') {
-            w2ui['datagrid'].reload();
+            $('#eventsGrid').repeater('render');
             EventsCalendarAjax.showResponse(response);
         } else {
             EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
@@ -166,7 +166,7 @@ function initiateEventsDG() {
         // setup your custom datasource to handle data retrieval;
         // responsible for any paging, sorting, filtering, searching logic
         dataSource: eventsDataSource,
-        staticHeight: 600,
+        staticHeight: 400,
         list_actions: list_actions,
         list_selectable: 'multi',
         list_direction: $('.repeater-canvas').css('direction')
@@ -175,6 +175,21 @@ function initiateEventsDG() {
     $('#eventModal').on('hidden.bs.modal', function (e) {
         stopAction();
     })
+}
+
+/**
+ * Add or update an event
+ */
+function saveEvent() {
+    if (selectedEvent == 0) {
+        EventsCalendarAjax.callAsync(
+            'CreateEvent', $.unserialize($('form#events-form').serialize())
+        );
+    } else {
+        EventsCalendarAjax.callAsync(
+            'UpdateEvent', $.unserialize($('form#events-form').serialize())
+        );
+    }
 }
 
 /**
@@ -340,7 +355,7 @@ function editEvent(data) {
 function fromAction(button) {
     switch (button) {
         case 'cancel':
-            w2popup.close();
+            $('#eventModal').modal('hide');
             break;
 
         case 'save':
@@ -358,7 +373,7 @@ function fromAction(button) {
  */
 function updateRepeatUI(type)
 {
-    var $form = $('#w2ui-popup').find('form'),
+    var $form = $('#events-form'),
         $day = $('select[name=day]').hide(),
         $wday = $('select[name=wday]').hide(),
         $month = $('select[name=month]').hide();
@@ -389,8 +404,9 @@ function updateRepeatUI(type)
 
 $(document).ready(function () {
     initEventsCalendar();
+    updateRepeatUI();
 });
 
 var EventsCalendarAjax = new JawsAjax('EventsCalendar', EventsCalendarCallback);
 var Datagrid = null;
-var SelectedEvent = null;
+var selectedEvent = 0;

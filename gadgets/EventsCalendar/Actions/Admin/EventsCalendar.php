@@ -159,6 +159,35 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
             $tpl->ParseBlock('ec/recurrence');
         }
 
+        // Day
+        $combo =& Piwi::createWidget('Combo', 'day');
+        $combo->SetId('');
+        for ($i = 1; $i <= 31; $i++) {
+            $combo->AddOption($i, $i);
+        }
+        $tpl->SetVariable('day', $combo->Get());
+        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
+
+        // Week Day
+        $jDate = Jaws_Date::getInstance();
+        $combo =& Piwi::createWidget('Combo', 'wday');
+        $combo->SetId('');
+        for ($i = 1; $i <= 7; $i++) {
+            $combo->AddOption($jDate->DayString($i-1), $i);
+        }
+        $combo->setDefault(1);
+        $tpl->SetVariable('wday', $combo->Get());
+        $tpl->SetVariable('lbl_wday', _t('EVENTSCALENDAR_WEEK_DAY'));
+
+        // Month
+        $combo =& Piwi::createWidget('Combo', 'month');
+        $combo->SetId('');
+        for ($i = 1; $i <= 12; $i++) {
+            $combo->AddOption($jDate->MonthString($i), $i);
+        }
+        $combo->setDefault(1);
+        $tpl->SetVariable('month', $combo->Get());
+        $tpl->SetVariable('lbl_month', _t('EVENTSCALENDAR_MONTH'));
 
         $tpl->ParseBlock('ec');
         return $tpl->Get();
