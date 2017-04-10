@@ -12,20 +12,6 @@
  * Use async mode, create Callback
  */
 var EventsCalendarCallback = {
-    GetEvents: function(response) {
-        if (response.type && response.type !== 'alert-success') {
-            EventsCalendarAjax.showResponse(response);
-        } else {
-        }
-    },
-    GetEvent: function(response) {
-        if (response.id) {
-            w2ui['datagrid'].unlock();
-            editEvent(response);
-        } else {
-            EventsCalendarAjax.showResponse(response);
-        }
-    },
     CreateEvent: function(response) {
         if (response.type && response.type === 'alert-success') {
             $('#eventModal').modal('hide');
@@ -44,7 +30,7 @@ var EventsCalendarCallback = {
             EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
         }
     },
-    DeleteEvent: function(response) {
+    DeleteEvents: function(response) {
         if (response.type && response.type === 'alert-success') {
             $('#eventsGrid').repeater('render');
             EventsCalendarAjax.showResponse(response);
@@ -85,6 +71,7 @@ function eventsDataSource(options, callback) {
     var pageIndex = options.pageIndex;
     var pageSize = options.pageSize;
     var options = {
+        'user': (CONST.mode === 'public')? 0 : CONST.user,
         'pageIndex': pageIndex,
         'pageSize': pageSize,
         'sortDirection': options.sortDirection,
@@ -125,9 +112,8 @@ function eventsDataSource(options, callback) {
  */
 function initiateEventsDG() {
 
-    var list_actions = {
-        width: 50,
-        items: [
+    if (CONST.mode == 'public') {
+        var actionItems = [
             {
                 name: 'edit',
                 html: '<span class="glyphicon glyphicon-pencil"></span> ' + CONST.edit,
@@ -140,14 +126,14 @@ function initiateEventsDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + CONST.delete ,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + CONST.delete,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
 
                     // detect multi select
                     var ids = new Array();
                     if (helpers.length > 1) {
-                        helpers.forEach(function(entry) {
+                        helpers.forEach(function (entry) {
                             ids.push(entry.rowData.id);
                         });
 
@@ -159,7 +145,25 @@ function initiateEventsDG() {
                     callback();
                 }
             }
-        ]
+        ];
+    } else {
+        var actionItems = [
+            {
+                name: 'view',
+                html: '<span class="glyphicon glyphicon-eye-open"></span> ' + CONST.viewEvent,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editEvent(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+        ];
+    }
+
+    var list_actions = {
+        width: 50,
+        items: actionItems
     };
 
     $('#eventsGrid').repeater({
@@ -181,191 +185,76 @@ function initiateEventsDG() {
  * Add or update an event
  */
 function saveEvent() {
+    if (!$('#events-form #subject').val() || !$('#events-form #location').val() ||
+         !$('#events-form #start_date').val() || !$('#events-form #stop_date').val()) {
+        alert(CONST.incompleteFields);
+        return;
+    }
+
+    var data = $.unserialize($('form#events-form').serialize());
     if (selectedEvent == 0) {
         EventsCalendarAjax.callAsync(
-            'CreateEvent', $.unserialize($('form#events-form').serialize())
+            'CreateEvent', data
         );
     } else {
+        data.id = selectedEvent;
         EventsCalendarAjax.callAsync(
-            'UpdateEvent', $.unserialize($('form#events-form').serialize())
+            'UpdateEvent', data
         );
     }
 }
 
 /**
- * Initiates events calendar
+ * Delete events
  */
-function initEventsCalendar() {
-    // CONST = jQuery.parseJSON(jaws.EventsCalendar.Defines.CONST);
-    CONST = jaws.EventsCalendar.Defines.CONST;
-    initiateEventsDG();
-
-/*
-    w2utils.settings.dataType = 'JSON';
-    if (CONST.calendar === 'Jalali') {
-        w2utils.locale('libraries/w2ui/fa-pe.json');
+function deleteEvents(ids)
+{
+    if (confirm(CONST.confirmDelete)) {
+        EventsCalendarAjax.callAsync('DeleteEvents', {'ids': ids});
     }
-    w2utils.settings.dateFormat = 'yyyy-m-d';
-
-    initDatagrid('#events_datagrid');
-*/
 }
+
 
 /**
- * Prepares events datagrid
+ * Edit a event
  */
-/*
-function initDatagrid(targetEl) {
-    var components = {
-        toolbar: true,
-        footer: true,
-        selectColumn: (CONST['mode'] === 'public')
-    };
-    if (CONST['mode'] === 'public') {
-        components.toolbarAdd = true;
-        components.toolbarEdit = true;
-        components.toolbarDelete = true;
-    }
-    $(targetEl).w2grid({
-        name: 'datagrid',
-        recid: 'id',
-        method: 'POST',
-        limit: CONST.eventsLimit,
-        multiSelect: true,
-        multiSearch: true,
-        url: {get: EventsCalendarAjax.baseURL + 'GetEvents'},
-        show: components,
-        columns: [
-            {field: 'subject', caption: CONST.subject, size: '40%', sortable: true},
-            {field: 'start_time', caption: CONST.from, size: '15%', sortable: true},
-            {field: 'stop_time', caption: CONST.to, size: '15%', sortable: true},
-            {field: 'shared', caption: CONST.shared, size: '15%', sortable: true}
-        ],
-        searches: [
-            {field: 'subject', caption: CONST.subject, type: 'text'},
-            {field: 'location', caption: CONST.location, type: 'text'},
-            {field: 'description', caption: CONST.description, type: 'text'},
-            {field: 'shared', caption: CONST.shared, type: 'list', options: {items: {1: CONST.yes, 0: CONST.no}}},
-            {field: 'type', caption: CONST.type, type: 'list', options: {items: CONST.types}},
-            {field: 'priority', caption: CONST.priority, type: 'list', options: {items: CONST.priorities}},
-            {field: 'date', caption: CONST.date, type: 'date'}
-        ],
-        records: [],
-        onRequest: function (event) {
-            switch (event.postData.cmd) {
-                case 'get':
-                    event.postData.user = (CONST['mode'] === 'public')? 0 : CONST['user'];
-                    break;
-            }
-        },
-        onLoad: function (event) {
-            event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-            if (event.xhr.responseText.type) {
-                event.xhr.responseText.message = event.xhr.responseText.text;
-                event.xhr.responseText.status = 'error';
-            }
-        },
-        onToolbar: function (event) {
-            if (event.target === 'w2ui-search-advanced') {
-                // set date operator to 'between'
-                setTimeout(function() {
-                    $('#grid_datagrid_operator_6').val('between');
-                    $('#grid_datagrid_range_6').css('display', '');
-                }, 100);
-            }
-        },
-        onSearch: function (event) {
-            if (event.searchField === 'all') {
-                event.searchData = [{term: event.searchValue}];
-            }
-        },
-        onDblClick: function (event) {
-            getEvent(event.recid);
-        },
-        onAdd: function (event) {
-            newEvent();
-        },
-        onEdit: function (event) {
-            getEvent(event.recid);
-        },
-        onDelete: function (event) {
-            if (event.force) {
-                EventsCalendarAjax.callAsync('DeleteEvent', {events: w2ui['datagrid'].getSelection()});
+function editEvent(id)
+{
+    selectedEvent = id;
+    $('#friendModalLabel').html(CONST.editEvent);
+    var eInfo = EventsCalendarAjax.callSync('GetEvent', {'id': selectedEvent});
+    if (eInfo) {
+        var $form = $('form#events-form'),
+            form = $form.get(0);
+        for (var field in eInfo) {
+            if (eInfo.hasOwnProperty(field) && form[field]) {
+                form[field].value = eInfo[field];
             }
         }
-    });
-}
-*/
+        form['public'].value = eInfo['public']? 1 : 0;
+        $form.find('select[name=recurrence]').trigger('change');
 
-function initForm($form) {
-    if (w2ui['frm_event']) {
-        w2ui['frm_event'].destroy();
-    }
-    $form.w2form({
-        name: 'frm_event',
-        fields: [
-            {name: 'subject', type: 'text', required: true},
-            {name: 'location', type: 'text', required: true},
-            {name: 'start_date', type: 'date', format: 'yyyy-m-d', required: true},
-            {name: 'stop_date', type: 'date', format: 'yyyy-m-d', required: true},
-            {name: 'description', type: 'text'}
-        ]
-    });
-}
-
-function getEvent(id) {
-    SelectedEvent = id;
-    w2ui['datagrid'].lock('', true);
-    EventsCalendarAjax.callAsync('GetEvent', {event_id: id});
-}
-
-function newEvent() {
-    SelectedEvent = null;
-    $('.w2ui-form').w2popup({
-        title: CONST.newEvent
-    });
-    initForm($('#w2ui-popup').find('form'));
-    w2ui['frm_event'].clear();
-    updateRepeatUI();
-}
-
-function editEvent(data) {
-    $('.w2ui-form').w2popup({
-        title: (CONST['mode'] === 'public')? CONST['editEvent'] : CONST['viewEvent'],
-        modal: true
-    });
-    var $form = $('#w2ui-popup').find('form'),
-        form = $form.get(0);
-    initForm($form);
-    for (var field in data) {
-        if (data.hasOwnProperty(field) && form[field]) {
-            form[field].value = data[field];
+        // disable form for user events
+        if (CONST.mode === 'user') {
+            $form.find('input, select, textarea').attr('disabled', true);
+            $('#eventModal .modal-footer').hide();
+        } else {
+            $('#eventModal .modal-footer').show();
         }
-    }
-    form['public'].value = data['public']? 1 : 0;
-    $form.find('select[name=recurrence]').trigger('change');
 
-    // disable form for user events
-    if (CONST['mode'] === 'user') {
-        $form.find('input, select, textarea').attr('disabled', true);
-        $form.find('.w2ui-buttons').hide();
+        $('#eventModal').modal('show');
     }
 }
 
-function fromAction(button) {
-    switch (button) {
-        case 'cancel':
-            $('#eventModal').modal('hide');
-            break;
+$('#eventModal').on('hidden.bs.modal', function (e) {
+    stopAction();
+})
 
-        case 'save':
-            var $form = $('#w2ui-popup').find('form'),
-                data = $.unserialize($form.serialize()),
-                action = (data.id === '')? 'CreateEvent' : 'UpdateEvent';
-            // console.log($form, data);
-            EventsCalendarAjax.callAsync(action, data);
-            break;
-    }
+
+function stopAction() {
+    selectedEvent = 0;
+    $('form#events-form')[0].reset();
+    $('#eventModalLabel').val(CONST.newEvent);
 }
 
 /**
@@ -403,7 +292,8 @@ function updateRepeatUI(type)
 }
 
 $(document).ready(function () {
-    initEventsCalendar();
+    CONST = jaws.EventsCalendar.Defines.CONST;
+    initiateEventsDG();
     updateRepeatUI();
 });
 

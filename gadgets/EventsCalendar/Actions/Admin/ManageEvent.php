@@ -95,9 +95,9 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
      * @access  public
      * @return  mixed   Response array
      */
-    function DeleteEvent()
+    function DeleteEvents()
     {
-        $events = $this->gadget->request->fetch('events:array');
+        $events = $this->gadget->request->fetch('ids:array');
         if (empty($events)) {
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_EVENT_DELETE'), RESPONSE_ERROR);
         }

@@ -36,7 +36,7 @@ $admin_actions['UpdateEvent'] = array(
     'standalone' => true,
     'file' => 'ManageEvent'
 );
-$admin_actions['DeleteEvent'] = array(
+$admin_actions['DeleteEvents'] = array(
     'standalone' => true,
     'file' => 'ManageEvent'
 );
