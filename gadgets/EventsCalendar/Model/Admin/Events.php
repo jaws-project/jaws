@@ -45,50 +45,42 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
             $table->where('event.user', $params['user'])->and();
         }
 
-        $jDate = Jaws_Date::getInstance();
-        $search = $params['search'];
-        if (!empty($search)){
-            foreach ($search as $s) {
-                if (isset($s['term'])) {
-                    $table->openWhere('subject', $s['term'], 'like')->or();
-                    $table->where('location', $s['term'], 'like')->or();
-                    $table->closeWhere('description', $s['term'], 'like')->and();
-                    break;
-                } else {
-                    switch ($s['field']) {
-                        case 'subject':
-                        case 'location':
-                        case 'description':
-                            $table->where($s['field'], $s['value'], 'like')->and();
-                            break;
-
-                        case 'public':
-                            $table->where($s['field'], $s['value'])->and();
-                            break;
-
-                        case 'shared':
-                            $table->where($s['field'], $s['value'])->and();
-                            break;
-
-                        case 'type':
-                        case 'priority':
-                            $table->where($s['field'], $s['value'])->and();
-                            break;
-
-                        case 'date':
-                            if (!empty($s['value'][0])) {
-                                $start = $jDate->ToBaseDate(preg_split('/[- :]/', $s['value'][0]), 'Y-m-d');
-                                $start = $GLOBALS['app']->UserTime2UTC($start);
-                                $table->where('stop_time', $start, '>')->and();
-                            }
-                            if (!empty($s['value'][1])) {
-                                $stop = $jDate->ToBaseDate(preg_split('/[- :]/', $s['value'][1]), 'Y-m-d');
-                                $stop = $GLOBALS['app']->UserTime2UTC($stop);
-                                $table->where('start_time', $stop, '<');
-                            }
-                            break;
-                    }
+        $objDate = Jaws_Date::getInstance();
+        $filters = $params['search'];
+        if (!empty($filters) && count($filters) > 0) {
+            if (isset($filters['start_time']) && !empty($filters['start_time'])) {
+                if (!is_numeric($filters['start_time'])) {
+                    $filters['start_time'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['start_time']), 'U')
+                    );
                 }
+                $table->and()->where('start_time', $filters['start_time'], '>=');
+            }
+            if (isset($filters['stop_time']) && !empty($filters['stop_time'])) {
+                if (!is_numeric($filters['stop_time'])) {
+                    $filters['stop_time'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['stop_time']), 'U')
+                    );
+                }
+                $table->and()->where('stop_time', $filters['stop_time'], '<=');
+            }
+            if (isset($filters['subject']) && !empty($filters['subject'])) {
+                $table->and()->where('subject', $filters['subject'], 'like');
+            }
+            if (isset($filters['location']) && !empty($filters['location'])) {
+                $table->and()->where('location', $filters['location'], 'like');
+            }
+            if (isset($filters['description']) && !empty($filters['description'])) {
+                $table->and()->where('description', $filters['description'], 'like');
+            }
+            if (isset($filters['shared']) && $filters['shared'] >= 0) {
+                $table->and()->where('shared', $filters['shared']);
+            }
+            if (isset($filters['type']) && !empty($filters['type'])) {
+                $table->and()->where('type', $filters['type']);
+            }
+            if (isset($filters['priority']) && !empty($filters['priority'])) {
+                $table->and()->where('priority', $filters['priority']);
             }
         }
 

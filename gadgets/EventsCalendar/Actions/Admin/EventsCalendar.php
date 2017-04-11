@@ -51,6 +51,9 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         // Event Form
         $tpl->SetVariable('form', $this->EventForm());
 
+        // Filters
+        $tpl->SetVariable('filters', $this->EventFilters());
+
         // Constants
         $const = array();
         $const['mode'] = $mode;
@@ -68,7 +71,6 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['time'] = _t('EVENTSCALENDAR_TIME');
         $const['from'] = _t('EVENTSCALENDAR_FROM');
         $const['to'] = _t('EVENTSCALENDAR_TO');
-        $const['shared'] = _t('EVENTSCALENDAR_SHARED');
         $const['newEvent'] = _t('EVENTSCALENDAR_NEW_EVENT');
         $const['viewEvent'] = _t('EVENTSCALENDAR_VIEW_EVENT');
         $const['editEvent'] = _t('EVENTSCALENDAR_EDIT_EVENT');
@@ -108,6 +110,101 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
 
         $tpl->ParseBlock('ec');
+        return $tpl->Get();
+    }
+
+    /**
+     * Generate filters for events
+     *
+     * @access  public
+     * @return  string XHTML form
+     */
+    function EventFilters()
+    {
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+
+        $tpl = $this->gadget->template->loadAdmin('Events.html');
+        $tpl->SetBlock('filters');
+
+        // Subject
+        $subject =& Piwi::CreateWidget('Entry', 'filter_subject');
+        $subject->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $tpl->SetVariable('filter_subject', $subject->Get());
+        $tpl->SetVariable('lbl_filter_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+
+        // Location
+        $location =& Piwi::CreateWidget('Entry', 'filter_location');
+        $location->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $tpl->SetVariable('filter_location', $location->Get());
+        $tpl->SetVariable('lbl_filter_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+
+        // Description
+        $description =& Piwi::CreateWidget('Entry', 'filter_description');
+        $description->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $tpl->SetVariable('filter_description', $description->Get());
+        $tpl->SetVariable('lbl_filter_description', _t('EVENTSCALENDAR_EVENT_DESC'));
+
+        // Shared
+        $sharedCombo =& Piwi::CreateWidget('Combo', 'filter_shared');
+        $sharedCombo->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $sharedCombo->AddOption(_t('GLOBAL_YES'), 1);
+        $sharedCombo->AddOption(_t('GLOBAL_NO'), 0);
+        $sharedCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $sharedCombo->SetDefault(-1);
+        $tpl->SetVariable('filter_shared', $sharedCombo->Get());
+        $tpl->SetVariable('lbl_filter_shared', _t('EVENTSCALENDAR_SHARED'));
+
+        // Type
+        $typeCombo =& Piwi::CreateWidget('Combo', 'filter_type');
+        $typeCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
+        for ($i = 1; $i <= 5; $i++) {
+            $typeCombo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_' . $i), $i, false);
+        }
+        $typeCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $typeCombo->SetDefault(0);
+        $tpl->SetVariable('filter_type', $typeCombo->Get());
+        $tpl->SetVariable('lbl_filter_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+
+        // Priority
+        $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
+        for ($i = 0; $i <= 2; $i++) {
+            $priorityCombo->AddOption(_t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i), $i, false);
+        }
+        $priorityCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $priorityCombo->SetDefault(0);
+        $tpl->SetVariable('filter_priority', $priorityCombo->Get());
+        $tpl->SetVariable('lbl_filter_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+
+        // Date
+        $tpl->SetVariable('lbl_filter_date', _t('EVENTSCALENDAR_DATE'));
+
+        // From Date Filter
+        $fromDate =& Piwi::CreateWidget('DatePicker', 'filter_start_date', '');
+        $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
+        $fromDate->setDateFormat('%Y-%m-%d');
+        $fromDate->showTimePicker(false);
+        $fromDate->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $tpl->SetVariable('filter_start_date', $fromDate->Get());
+
+        // To Date Filter
+        $toDate =& Piwi::CreateWidget('DatePicker', 'filter_stop_date', '');
+        $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
+        $toDate->setDateFormat('%Y-%m-%d');
+        $toDate->showTimePicker(false);
+        $toDate->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $tpl->SetVariable('filter_stop_date', $toDate->Get());
+
+        $tpl->ParseBlock('filters');
         return $tpl->Get();
     }
 
@@ -227,14 +324,14 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
     function GetEvents()
     {
         $post = $this->gadget->request->fetch(
-            array('user', 'pageIndex', 'pageSize', 'sortDirection', 'sortBy', 'filterBy', 'searchBy'), 'post');
+            array('user', 'pageIndex', 'pageSize', 'sortDirection', 'sortBy', 'search:array'), 'post');
 
         // Fetch events
         $model = $this->gadget->model->loadAdmin('Events');
 
         $params = array();
         $params['user'] = $post['user'];
-        $params['search'] = '';
+        $params['search'] = $post['search'];
         $params['limit'] = $post['pageSize'];
         $params['offset'] = $post['pageIndex'];
         if (!empty($post['sortBy'])) {

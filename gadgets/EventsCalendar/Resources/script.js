@@ -67,6 +67,17 @@ function eventsDataSource(options, callback) {
         }
     ];
 
+    var filters = {
+        'subject'       : $('#filter_subject').val(),
+        'location'      : $('#filter_location').val(),
+        'description'   : $('#filter_description').val(),
+        'shared'        : $('#filter_shared').val(),
+        'type'          : $('#filter_type').val(),
+        'priority'      : $('#filter_priority').val(),
+        'start_time'    : $('#filter_start_date').val(),
+        'stop_time'     : $('#filter_stop_date').val(),
+    };
+
     // set options
     var pageIndex = options.pageIndex;
     var pageSize = options.pageSize;
@@ -76,8 +87,7 @@ function eventsDataSource(options, callback) {
         'pageSize': pageSize,
         'sortDirection': options.sortDirection,
         'sortBy': options.sortProperty,
-        'filterBy': options.filter.value || '',
-        'searchBy': options.search || ''
+        'search': filters
     };
 
     var rows = EventsCalendarAjax.callSync('GetEvents', options);
@@ -179,6 +189,13 @@ function initiateEventsDG() {
     $('#eventModal').on('hidden.bs.modal', function (e) {
         stopAction();
     })
+}
+
+/**
+ * Search events
+ */
+function searchEvents() {
+    $('#eventsGrid').repeater('render');
 }
 
 /**
@@ -295,6 +312,9 @@ $(document).ready(function () {
     CONST = jaws.EventsCalendar.Defines.CONST;
     initiateEventsDG();
     updateRepeatUI();
+    initDatePicker('filter_start_date');
+    initDatePicker('filter_stop_date');
+
 });
 
 var EventsCalendarAjax = new JawsAjax('EventsCalendar', EventsCalendarCallback);

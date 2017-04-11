@@ -1,6 +1,7 @@
 <!-- BEGIN ec -->
 <div class="gadget_menubar">{{menubar}}</div>
 <div class="gadget_container events">
+{{filters}}
 
   <div class="repeater" id="eventsGrid" data-staticheight="400">
     <div class="repeater-header">
@@ -178,3 +179,26 @@
   </div>
 </form>
 <!-- END eventForm -->
+
+<!-- BEGIN filters -->
+<table id="events_filter">
+  <tr>
+    <td class="filter_label"><label for="filter_subject">{{lbl_filter_subject}}:</label></td><td>{{filter_subject}}</td>
+    <td class="filter_label"><label for="filter_location">{{lbl_filter_location}}:</label></td><td>{{filter_location}}</td>
+    <td class="filter_label"><label for="filter_description">{{lbl_filter_description}}:</label></td><td>{{filter_description}}</td>
+  </tr>
+  <tr>
+    <td class="filter_label"><label for="filter_shared">{{lbl_filter_shared}}:</label></td><td>{{filter_shared}}</td>
+    <td class="filter_label"><label for="filter_type">{{lbl_filter_type}}:</label></td><td>{{filter_type}}</td>
+    <td class="filter_label"><label for="filter_priority">{{lbl_filter_priority}}:</label></td><td>{{filter_priority}}</td>
+  </tr>
+
+  <tr>
+    <td class="filter_label"><label for="filter_date">{{lbl_filter_date}}:</label></td>
+    <td>{{filter_start_date}}</td>
+    <td>-</td>
+    <td>{{filter_stop_date}}</td>
+  </tr>
+
+</table>
+<!-- END filters -->
