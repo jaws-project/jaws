@@ -35,6 +35,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
      */
     function UpdateFile($id, $data)
     {
+        unset($data['id']);
         $data['public'] = (bool)$data['public'];
         $data['parent'] = (int)$data['parent'];
         $data['update_time'] = time();
@@ -81,9 +82,12 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 if (Jaws_Error::IsError($dbFileInfo) || empty($dbFileInfo)) {
                     return Jaws_HTTPError::Get(404);
                 }
-                if (($dbFileInfo['user'] != $loggedUser) ||
-                    ($dbFileInfo['public'] && !$this->gadget->GetPermission('PublishFiles'))
-                ) {
+                // check permission
+                if ($dbFileInfo['public']) {
+                    if (!$this->gadget->GetPermission('PublishFiles')) {
+                        return Jaws_HTTPError::Get(403);
+                    }
+                } elseif ($dbFileInfo['user'] != $loggedUser) {
                     return Jaws_HTTPError::Get(403);
                 }
             }
@@ -99,6 +103,12 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $data['mime_type'] = $files['file'][0]['host_filetype'];
                 $data['file_size'] = $files['file'][0]['host_filesize'];
             } elseif (isset($data['host_filename'])) {
+                if ($data['host_filename'] == ':nochange:') {
+                    unset($data['host_filename']);
+                    unset($data['user_filename']);
+                    unset($data['mime_type']);
+                    unset($data['file_size']);
+                }
                 // do nothing
             } elseif (isset($dbFileInfo)) {
                 $data['host_filename'] = $dbFileInfo['host_filename'];
@@ -112,8 +122,6 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
             if (isset($files['thumbnail']) || isset($data['thumbnail'])) {
                 $thumbfile = isset($data['thumbnail'])? $data['thumbnail'] : $files['thumbnail'][0]['host_filename'];
-                unset($data['thumbnail']);
-
                 // Save resize thumbnail file
                 $thumbSize = $this->gadget->registry->fetch('thumbnail_size');
                 $thumbSize = empty($thumbSize) ? '128x128' : $thumbSize;
@@ -136,6 +144,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
                 Jaws_Utils::delete($dirPath. '/'. $thumbfile);
             }
+            unset($data['thumbnail']);
 
             if(isset($data['user_filename'])) {
                 $data['file_type'] = $this->gadget->model->load('Files')->getFileType($data['user_filename']);
