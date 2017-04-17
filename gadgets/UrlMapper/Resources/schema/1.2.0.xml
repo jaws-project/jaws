@@ -31,14 +31,14 @@
         <field>
             <name>map</name>
             <type>text</type>
-            <length>255</length>
+            <length>120</length>
             <notnull>true</notnull>
         </field>
 
         <field>
             <name>regexp</name>
             <type>text</type>
-            <length>512</length>
+            <length>255</length>
             <notnull>true</notnull>
         </field>
    
@@ -56,13 +56,13 @@
         <field>
             <name>custom_map</name>
             <type>text</type>
-            <length>255</length>
+            <length>120</length>
         </field>
 
         <field>
             <name>custom_regexp</name>
             <type>text</type>
-            <length>512</length>
+            <length>255</length>
         </field>
    
         <field>
