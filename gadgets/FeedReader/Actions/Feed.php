@@ -205,8 +205,12 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         if (isset($parser->feed['items'])) {
             foreach($parser->feed['items'] as $index => $item) {
                 $tpl->SetBlock("feedreader/$block/item");
-                $tpl->SetVariable('title', Jaws_XSS::refilter($item['title']));
+                $tpl->SetVariable('title', strip_tags($item['title']));
                 $tpl->SetVariable('href', isset($item['link'])? Jaws_XSS::refilter($item['link']) : '');
+                $tpl->SetVariable(
+                    'summary',
+                    isset($item['summary'])? strip_tags($item['summary']) : ''
+                );
                 $tpl->ParseBlock("feedreader/$block/item");
                 if (($site['count_entry'] > 0) && ($site['count_entry'] <= ($index + 1))) {
                     break;

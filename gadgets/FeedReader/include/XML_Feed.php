@@ -242,6 +242,10 @@ class XML_Feed extends XML_Parser
                         $this->_add('item', 'link', $attrs['XMLURL']);
                     }
 
+                    if (array_key_exists('SUMMARY', $attrs)) {
+                        $this->_add('item', 'summary', $attrs['SUMMARY']);
+                    }
+
                     if (array_key_exists('DESCRIPTION', $attrs)) {
                         $this->_add('item', 'description', $attrs['DESCRIPTION']);
                     }
@@ -321,6 +325,7 @@ class XML_Feed extends XML_Parser
         switch ($this->activeTag) {
             case 'TITLE':
             case 'LINK':
+            case 'SUMMARY':
             case 'DESCRIPTION':
                 if (in_array($this->level_2_tag, $this->level_2_valid_tags)) {
                     $this->_add('item', strtolower($this->activeTag), $cdata);
