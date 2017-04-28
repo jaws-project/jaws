@@ -19,7 +19,6 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     function Categories($req_gadget = '', $req_action = '', $menubar = '')
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $GLOBALS['app']->Layout->addLink('libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.css');
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
         $this->gadget->define('lbl_gadget', _t('CATEGORIES_GADGET'));
@@ -52,6 +51,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $tpl->SetVariable('lbl_meta_title', _t('GLOBAL_META_TITLE'));
         $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
         $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('lbl_meta_info', _t('GLOBAL_META_INFO'));
 
         $tpl->SetVariable('lbl_insert_time', _t('CATEGORIES_INSERT_TIME'));
 
@@ -114,23 +114,42 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     {
         $this->gadget->CheckPermission('ManageCategories');
         $post = jaws()->request->fetch(
-            array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
 
+        $orderBy = 'nickname';
+        if (isset($post['sort'])) {
+            $orderBy = trim($post['sort'][0]['field'] . ' ' . $post['sort'][0]['direction']);
+        }
+
         $model = $this->gadget->model->loadAdmin('Categories');
         $categories = $model->GetCategories($post['filters'], $post['limit'], $post['offset']);
-
+        if (Jaws_Error::IsError($categories)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $categories->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
         foreach ($categories as $key => $category) {
             $category['recid'] = $category['id'];
             $categories[$key] = $category;
         }
-        $categoriesCount = $model->GetCategoriesCount($post['filters']);
+        $total = $model->GetCategoriesCount($post['filters']);
+        if (Jaws_Error::IsError($total)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $total->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
 
-        return array(
-            'status' => 'success',
-            'total' => $categoriesCount,
-            'records' => $categories
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total'   => $total,
+                'records' => $categories
+            )
         );
     }
 

@@ -107,15 +107,15 @@ function categoriesDataSource(options, callback) {
                 'label': jaws.Categories.Defines.lbl_gadget,
                 'property': 'gadget',
                 'sortable': true
+            },
+            {
+                'label': jaws.Categories.Defines.lbl_action,
+                'property': 'action',
+                'sortable': true
             }
         );
     }
     columns.push(
-        {
-            'label': jaws.Categories.Defines.lbl_action,
-            'property': 'action',
-            'sortable': true
-        },
         {
             'label': jaws.Categories.Defines.lbl_title,
             'property': 'title',
@@ -123,47 +123,51 @@ function categoriesDataSource(options, callback) {
         }
     );
 
-    // set options
-    var pageIndex = options.pageIndex;
-    var pageSize = options.pageSize;
-    var filters = {
-        gadget: $('#filter_gadget').val(),
-        action: $('#filter_action').val(),
-        priority: $('#filter_priority').val(),
-        status: $('#filter_status').val()
-    };
-    var options = {
-        'offset': pageIndex,
-        'limit': pageSize,
-        'sortDirection': options.sortDirection,
-        'sortBy': options.sortProperty,
-        'filters': filters
-    };
 
-    var rows = CategoriesAjax.callSync('GetCategories', options);
-    var items = rows.records;
-    var totalItems = rows.total;
-    var totalPages = Math.ceil(totalItems / pageSize);
-    var startIndex = (pageIndex * pageSize) + 1;
-    var endIndex = (startIndex + pageSize) - 1;
-
-    if(endIndex > items.length) {
-        endIndex = items.length;
-    }
-
-    // configure datasource
-    var dataSource = {
-        'page':    pageIndex,
-        'pages':   totalPages,
-        'count':   totalItems,
-        'start':   startIndex,
-        'end':     endIndex,
-        'columns': columns,
-        'items':   items
-    };
-
-    // pass the datasource back to the repeater
-    callback(dataSource);
+    CategoriesAjax.callAsync(
+        'GetCategories', {
+            'offset': options.offset,
+            'limit': options.pageSize,
+            'sortDirection': options.sortDirection,
+            'sortBy': options.sortProperty,
+            'filters': {
+                gadget: $('#filter_gadget').val(),
+                action: $('#filter_action').val(),
+                priority: $('#filter_priority').val(),
+                status: $('#filter_status').val()
+            }
+        },
+        function(response, status) {
+            var dataSource = {};
+            if (response['type'] == 'alert-success') {
+                // processing end item index of page
+                options.end = options.offset + options.pageSize;
+                options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                dataSource = {
+                    'page': options.pageIndex,
+                    'pages': Math.ceil(response['data'].total/options.pageSize),
+                    'count': response['data'].total,
+                    'start': options.offset + 1,
+                    'end':   options.end,
+                    'columns': columns,
+                    'items': response['data'].records
+                };
+            } else {
+                dataSource = {
+                    'page': 0,
+                    'pages': 0,
+                    'count': 0,
+                    'start': 0,
+                    'end':   0,
+                    'columns': columns,
+                    'items': {}
+                };
+            }
+            // pass the datasource back to the repeater
+            callback(dataSource);
+            CategoriesAjax.showResponse(response);
+        }
+    );
 }
 
 /**
