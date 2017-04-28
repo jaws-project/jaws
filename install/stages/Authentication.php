@@ -24,7 +24,7 @@ class Installer_Authentication extends JawsInstallerStage
             $_SESSION['secure'] = false;
             $_SESSION['customize'] = false;
             $_SESSION['install']['Authentication'] = array(
-                'key' => md5(uniqid('installer')) . time() . floor(microtime()*1000)
+                'key' => md5(uniqid('installer')) . time() . floor(microtime(true)*1000)
             );
         }
     }

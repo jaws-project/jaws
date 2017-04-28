@@ -20,7 +20,9 @@ class Upgrader_Authentication extends JawsUpgraderStage
     {
         if (!isset($_SESSION['upgrade']['Authentication'])) {
             $_SESSION['secure']= false;
-            $_SESSION['upgrade']['Authentication'] = array('key' => md5(uniqid('ugprader')) . time() . floor(microtime()*1000));
+            $_SESSION['upgrade']['Authentication'] = array(
+                'key' => md5(uniqid('ugprader')) . time() . floor(microtime(true)*1000)
+            );
         }
     }
 
