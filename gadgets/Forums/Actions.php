@@ -18,7 +18,9 @@ $actions['Forums'] = array(
 );
 $actions['Group'] = array(
     'normal' => true,
+    'layout' => true,
     'file'   => 'Forums',
+    'parametric' => true,
 );
 $actions['Topics'] = array(
     'normal' => true,

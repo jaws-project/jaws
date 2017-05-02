@@ -11,6 +11,33 @@
 class Forums_Actions_Forums extends Jaws_Gadget_Action
 {
     /**
+     * Get RecentTopics action params
+     *
+     * @access  public
+     * @return  array list of RecentTopics action params
+     */
+    function GroupLayoutParams()
+    {
+        $result = array();
+        $gModel = $this->gadget->model->load('Groups');
+        $groups = $gModel->GetGroups(true);
+        if (!Jaws_Error::IsError($groups)) {
+            $pgroups = array();
+            foreach ($groups as $group) {
+                $pgroups[$group['id']] = $group['title'];
+            }
+
+            $pgroups  = array('0' => _t('FORUMS_GROUPS_ALL')) + $pgroups;
+            $result[] = array(
+                'title' => _t('FORUMS_GROUPS'),
+                'value' => $pgroups
+            );
+        }
+
+        return $result;
+    }
+
+    /**
      * Display groups and forums
      *
      * @access  public
@@ -47,13 +74,11 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
      */
     function Group($group = null, $tpl = null)
     {
-        if (!is_array($group)) {
-            $group = jaws()->request->fetch('gid', 'get');
-            $gModel = $this->gadget->model->load('Groups');
-            $group  = $gModel->GetGroup($group);
-            if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
-                return Jaws_HTTPError::Get(404);
-            }
+        $group = isset($group)? $group : $this->gadget->request->fetch('gid', 'get');
+        $gModel = $this->gadget->model->load('Groups');
+        $group  = $gModel->GetGroup($group);
+        if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
+            return Jaws_HTTPError::Get(404);
         }
 
         $objDate = Jaws_Date::getInstance();
