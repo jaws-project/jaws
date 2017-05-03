@@ -26,11 +26,13 @@ class Jaws_User
     {
         $result = '';
         if (is_null($salt)) {
-            $salt = substr(sha1(uniqid(mt_rand(), true)), 0, 16);
-            $result = '{SHA512-CRYPT}' . crypt($password, "$6$$salt");
+            $result = '{CRAM-MD5}' . Jaws_Hash_CRAMMD5::hash($password);
         } else {
-            if (substr($salt, 0, 14) === '{SHA512-CRYPT}') {
+            if (substr($salt, 0, 10) === '{CRAM-MD5}') {
+                $result = '{CRAM-MD5}' . Jaws_Hash_CRAMMD5::hash($password);
+            } elseif (substr($salt, 0, 14) === '{SHA512-CRYPT}') {
                 $salt = substr($salt, 17, 16);
+                //$salt = substr(sha1(uniqid(mt_rand(), true)), 0, 16);
                 $result = '{SHA512-CRYPT}' . crypt($password, "$6$$salt");
            } elseif (substr($salt, 0, 9) === '{SSHA512}') {
                 $salt = substr(base64_decode(substr($salt, 9)), 64);
