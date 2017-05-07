@@ -86,14 +86,15 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $fast_url
      * @internal param  string  $order
      * @internal param  bool    $locked         is locked
+     * @internal param  bool    $private        is private
      * @internal param  bool    $published      is published
      * @return   array  Response array (notice or error)
      */
     function InsertForum()
     {
-        @list($gid, $title, $description, $fast_url, $order, $locked, $published) = jaws()->request->fetchAll('post');
+        @list($gid, $title, $description, $fast_url, $order, $locked, $private, $published) = jaws()->request->fetchAll('post');
         $fModel = $this->gadget->model->loadAdmin('Forums');
-        $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published);
+        $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $private, $published);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }
@@ -116,18 +117,19 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $fast_url
      * @internal param  string  $order
      * @internal param  bool    $locked
+     * @internal param  bool    $private
      * @internal param  bool    $published
      * @return   array  Response array (notice or error)
      */
     function UpdateForum()
     {
         @list($fid, $gid, $title, $description,
-            $fast_url, $order, $locked, $published
+            $fast_url, $order, $locked, $private, $published
         ) = jaws()->request->fetchAll('post');
         $this->gadget->CheckPermission('ForumManage', $fid);
 
         $fModel = $this->gadget->model->loadAdmin('Forums');
-        $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published);
+        $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $private, $published);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         }

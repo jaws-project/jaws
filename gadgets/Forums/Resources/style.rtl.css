@@ -103,6 +103,6 @@ width:258px;
 #title, #description, #fast_url{
 width:480px;
 }
-#order, #locked, #published{
+#order, #locked, #private, #published{
 width:120px;
 }

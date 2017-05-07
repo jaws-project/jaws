@@ -134,6 +134,7 @@ function saveForums()
                     $('#fast_url').val(),
                     $('#order').val(),
                     $('#locked').val(),
+                    $('#private').val(),
                     $('#published').val()
                 ]
             );
@@ -152,6 +153,7 @@ function saveForums()
                     $('#fast_url').val(),
                     $('#order').val(),
                     $('#locked').val(),
+                    $('#private').val(),
                     $('#published').val()
                 ]
             );
@@ -293,6 +295,7 @@ function editForum(element, fid)
     $('#description').val(forum['description']);
     $('#fast_url').val(forum['fast_url']);
     $('#locked').val(Number(forum['locked']));
+    $('#private').val(Number(forum['private']));
     $('#published').val(Number(forum['published']));
     forumsOrders(forum['gid'], forum['order']);
 }

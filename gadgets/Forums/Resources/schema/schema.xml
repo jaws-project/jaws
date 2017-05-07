@@ -131,6 +131,12 @@
             <default>true</default>
         </field>
 
+        <field>
+            <name>private</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
         <index>
             <name><variable>table_prefix</variable>forums_fast_url</name>
             <field>

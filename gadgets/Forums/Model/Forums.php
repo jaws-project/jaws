@@ -30,7 +30,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
 
         $table = Jaws_ORM::getInstance()->table('forums');
         $table->select('id:integer', 'gid:integer', 'title', 'description', 'fast_url', 'topics:integer',
-                       'posts:integer', 'order:integer', 'locked:boolean', 'published:boolean');
+                       'posts:integer', 'order:integer', 'locked:boolean', 'private:boolean', 'published:boolean');
         if (is_numeric($fid)) {
             $table->where('id', $fid);
         } else {

@@ -20,10 +20,11 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
     * @param    string  $fast_url
     * @param    string  $order
     * @param    bool    $locked
+    * @param    bool    $private
     * @param    bool    $published
     * @return   bool    True on Success and False on Failure
     */
-    function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $published)
+    function InsertForum($gid, $title, $description, $fast_url, $order, $locked, $private, $published)
     {
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'forums');
@@ -34,6 +35,7 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
         $data['fast_url']    = $fast_url;
         $data['order']       = (int) $order;
         $data['locked']      = (bool) $locked;
+        $data['private']     = (bool) $private;
         $data['published']   = (bool) $published;
 
         $table = Jaws_ORM::getInstance()->table('forums');
@@ -60,9 +62,10 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
     * @param    string  $order
     * @param    bool    $locked
     * @param    bool    $published
+    * @param    bool    $private
     * @return   mixed   True on Success and Jaws_Error on Failure
     */
-    function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $published)
+    function UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $private, $published)
     {
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'forums', false);
@@ -73,6 +76,7 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
         $data['fast_url']    = $fast_url;
         $data['order']       = (int) $order;
         $data['locked']      = (bool) $locked;
+        $data['private']     = (bool) $private;
         $data['published']   = (bool) $published;
 
         $table = Jaws_ORM::getInstance()->table('forums');

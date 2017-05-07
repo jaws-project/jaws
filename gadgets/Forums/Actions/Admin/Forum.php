@@ -60,6 +60,14 @@ class Forums_Actions_Admin_Forum extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_locked', _t('FORUMS_LOCKED'));
         $tpl->SetVariable('locked', $locked->Get());
 
+        $private =& Piwi::CreateWidget('Combo', 'private');
+        $private->SetID('private');
+        $private->AddOption(_t('GLOBAL_NO'), 0);
+        $private->AddOption(_t('GLOBAL_YES'), 1);
+        $private->SetDefault(0);
+        $tpl->SetVariable('lbl_private', _t('FORUMS_PRIVATE'));
+        $tpl->SetVariable('private', $private->Get());
+
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->AddOption(_t('GLOBAL_NO'),  0);
