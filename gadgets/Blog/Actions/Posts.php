@@ -230,19 +230,37 @@ class Blog_Actions_Posts extends Blog_Actions_Default
     }
 
     /**
+     * Get FavoritePosts action params
+     *
+     * @access  private
+     * @return  array    list of FavoritePosts action params
+     */
+    function FavoritePostsLayoutParams()
+    {
+        $result = array();
+        $result[] = array(
+            'title' => _t('GLOBAL_COUNT'),
+            'value' => 5
+        );
+
+        return $result;
+    }
+
+    /**
      * Get favorite posts
      *
      * @access  public
+     * @param   int     $limit
      * @return  string  XHTML Template content
      */
-    function FavoritePosts()
+    function FavoritePosts($limit = 0)
     {
         $tpl = $this->gadget->template->load('FavoritePosts.html');
         $tpl->SetBlock('favorite_posts');
         $tpl->SetVariable('title', _t('BLOG_FAVORITE_POSTS'));
 
         $model = $this->gadget->model->load('Posts');
-        $entries = $model->GetFavoritePosts();
+        $entries = $model->GetFavoritePosts((int)$limit);
         if (!Jaws_Error::IsError($entries)) {
             $date = Jaws_Date::getInstance();
             foreach ($entries as $entry) {

@@ -644,7 +644,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      * @access  public
      * @return  mixed   List of popular posts or Jaws_Error on error
      */
-    function GetFavoritePosts()
+    function GetFavoritePosts($limit = 0, $offset = null)
     {
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->limit($this->gadget->registry->fetch('favorite_limit'), 0);
@@ -656,7 +656,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
         $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         $blogTable->and()->where('favorite', true);
-        $entries = $blogTable->orderBy('createtime desc')->fetchAll();
+        $entries = $blogTable->limit((int)$limit, $offset)->orderBy('blog.createtime desc')->fetchAll();
 
         // Check dynamic ACL
         foreach ($entries as $key => $entry) {

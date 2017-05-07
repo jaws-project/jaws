@@ -76,6 +76,7 @@ $actions['FavoritePosts'] = array(
     'normal' => true,
     'layout' => true,
     'file'   => 'Posts',
+    'parametric' => true,
 );
 $actions['PostsAuthors'] = array(
     'normal' => true,
