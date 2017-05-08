@@ -26,13 +26,11 @@ class Jaws_User
     {
         $result = '';
         if (is_null($salt)) {
-            $result = '{CRAM-MD5}' . Jaws_Hash_CRAMMD5::hash($password);
+            $salt = substr(sha1(uniqid(mt_rand(), true)), 0, 16);
+            $result = '{SHA512-CRYPT}' . crypt($password, "$6$$salt");
         } else {
-            if (substr($salt, 0, 10) === '{CRAM-MD5}') {
-                $result = '{CRAM-MD5}' . Jaws_Hash_CRAMMD5::hash($password);
-            } elseif (substr($salt, 0, 14) === '{SHA512-CRYPT}') {
+            if (substr($salt, 0, 14) === '{SHA512-CRYPT}') {
                 $salt = substr($salt, 17, 16);
-                //$salt = substr(sha1(uniqid(mt_rand(), true)), 0, 16);
                 $result = '{SHA512-CRYPT}' . crypt($password, "$6$$salt");
            } elseif (substr($salt, 0, 9) === '{SSHA512}') {
                 $salt = substr(base64_decode(substr($salt, 9)), 64);
@@ -265,51 +263,53 @@ class Jaws_User
 
         if (!empty($contact) && !Jaws_Error::IsError($contact)) {
             $tel = json_decode($contact['tel'], true);
-            $contact['tel_home'] = $tel['home'];
-            $contact['tel_work'] = $tel['work'];
-            $contact['tel_other'] = $tel['other'];
+            $contact['tel_home'] = isset($tel['home']) ? $tel['home'] : '';
+            $contact['tel_work'] = isset($tel['work']) ? $tel['work'] : '';
+            $contact['tel_other'] = isset($tel['other']) ? $tel['other'] : '';
             unset($contact['tel']);
 
             $fax = json_decode($contact['fax'], true);
-            $contact['fax_home'] = $fax['home'];
-            $contact['fax_work'] = $fax['work'];
-            $contact['fax_other'] = $fax['other'];
+            $contact['fax_home'] = isset($fax['home']) ? $fax['home'] : '';
+            $contact['fax_work'] = isset($fax['work']) ? $fax['work'] : '';
+            $contact['fax_other'] = isset($fax['other']) ? $fax['other'] : '';
             unset($contact['fax']);
 
             $mobile = json_decode($contact['mobile'], true);
-            $contact['mobile_home'] = $mobile['home'];
-            $contact['mobile_work'] = $mobile['work'];
-            $contact['mobile_other'] = $mobile['other'];
+            $contact['mobile_home'] = isset($mobile['home']) ? $mobile['home'] : '';
+            $contact['mobile_work'] = isset($mobile['work']) ? $mobile['work'] : '';
+            $contact['mobile_other'] = isset($mobile['other']) ? $mobile['other'] : '';
             unset($contact['mobile']);
 
             $url = json_decode($contact['url'], true);
-            $contact['url_home'] = $url['home'];
-            $contact['url_work'] = $url['work'];
-            $contact['url_other'] = $url['other'];
+            $contact['url_home'] = isset($url['home']) ? $url['home'] : '';
+            $contact['url_work'] = isset($url['work']) ? $url['work'] : '';
+            $contact['url_other'] = isset($url['other']) ? $url['other'] : '';
             unset($contact['url']);
 
             $email = json_decode($contact['email'], true);
-            $contact['email_home'] = $email['home'];
-            $contact['email_work'] = $email['work'];
-            $contact['email_other'] = $email['other'];
+            $contact['email_home'] = isset($email['home']) ? $email['home'] : '';
+            $contact['email_work'] = isset($email['work']) ? $email['work'] : '';
+            $contact['email_other'] = isset($email['other']) ? $email['other'] : '';
             unset($contact['email']);
 
             $address = json_decode($contact['address'], true);
-            $contact['country_home'] = $address['home']['country'];
-            $contact['province_home'] = $address['home']['province'];
-            $contact['city_home'] = $address['home']['city'];
-            $contact['address_home'] = $address['home']['address'];
-            $contact['postal_code_home'] = $address['home']['postal_code'];
-            $contact['country_work'] = $address['work']['country'];
-            $contact['province_work'] = $address['work']['province'];
-            $contact['city_work'] = $address['work']['city'];
-            $contact['address_work'] = $address['work']['address'];
-            $contact['postal_code_work'] = $address['work']['postal_code'];
-            $contact['country_other'] = $address['other']['country'];
-            $contact['province_other'] = $address['other']['province'];
-            $contact['city_other'] = $address['other']['city'];
-            $contact['address_other'] = $address['other']['address'];
-            $contact['postal_code_other'] = $address['other']['postal_code'];
+            $contact['country_home'] = isset($address['home']['country']) ? $address['home']['country'] : '';
+            $contact['province_home'] = isset($address['home']['province']) ? $address['home']['province'] : '';
+            $contact['city_home'] = isset($address['home']['city']) ? $address['home']['city'] : '';
+            $contact['address_home'] = isset($address['home']['address']) ? $address['home']['address'] : '';
+            $contact['postal_code_home'] = isset($address['home']['postal_code']) ? $address['home']['postal_code'] : '';
+
+            $contact['country_work'] = isset($address['work']['country']) ? $address['work']['country'] : '';
+            $contact['province_work'] = isset($address['work']['province']) ? $address['work']['province'] : '';
+            $contact['city_work'] = isset($address['work']['city']) ? $address['work']['city'] : '';
+            $contact['address_work'] = isset($address['work']['address']) ? $address['work']['address'] : '';
+            $contact['postal_code_work'] = isset($address['work']['postal_code']) ? $address['work']['postal_code'] : '';
+
+            $contact['country_other'] = isset($address['other']['country']) ? $address['other']['country'] : '';
+            $contact['province_other'] = isset($address['other']['province']) ? $address['other']['province'] : '';
+            $contact['city_other'] = isset($address['other']['city']) ? $address['other']['city'] : '';
+            $contact['address_other'] = isset($address['other']['address']) ? $address['other']['address'] : '';
+            $contact['postal_code_other'] = isset($address['other']['postal_code']) ? $address['other']['postal_code'] : '';
             unset($contact['address']);
         }
 
