@@ -36,16 +36,25 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
         $tModel = $this->gadget->model->load('Topics');
 
-        $published = is_null($rqst['status'])? null : ($rqst['status'] == 'published');
+        $published = is_null($rqst['status']) ? null : ($rqst['status'] == 'published');
         if ($this->gadget->GetPermission('ForumManage', $forum['id'])) {
             $uid = null;
+            $private = null;
         } else {
             $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
             // anonymous users
-            $published = empty($uid)? true : $published;
+            $published = empty($uid) ? true : $published;
+
+            // forum is private
+            if ($forum['private']) {
+                $private = true;
+                if (empty($uid)) {
+                    return Jaws_HTTPError::Get(403);
+                }
+            }
         }
 
-        $topics = $tModel->GetTopics($forum['id'], $published, $uid, $limit, ($page - 1) * $limit);
+        $topics = $tModel->GetTopics($forum['id'], $published, $private, $uid, $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($topics)) {
             return false;
         }

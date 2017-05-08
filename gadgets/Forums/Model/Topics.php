@@ -32,7 +32,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 'first_post_id:integer', 'first_post_uid:integer', 'first_post_time:integer', 'last_post_id:integer',
                 'last_post_time:integer','forums_topics.published:boolean', 'forums_topics.locked:boolean',
                 'forums.title as forum_title', 'forums.fast_url as forum_fast_url',
-                'forums.last_topic_id as forum_last_topic_id:integer',
+                'forums.last_topic_id as forum_last_topic_id:integer', 'forums.private:boolean',
                 'forums_posts.message', 'update_reason',
                 'users.username', 'users.nickname', 'users.email'
         );
@@ -55,12 +55,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $fid        Forum ID
      * @param   int     $published  Is Published ?
+     * @param   int     $private    Is Private ?
      * @param   int     $uid        User id
      * @param   int     $limit      Count of topics to be returned
      * @param   int     $offset     Offset of data array
      * @return  mixed   Array of topics or Jaws_Error on failure
      */
-    function GetTopics($fid, $published = null, $uid = null, $limit = 0, $offset = null)
+    function GetTopics($fid, $published = null, $private = false, $uid = null, $limit = 0, $offset = null)
     {
         $perm = $this->gadget->GetPermission('ForumPublic', $fid);
         if(is_null($perm)) {
@@ -88,8 +89,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 $table->and()->where('published', (bool)$published);
             }
         } else {
-            $published = is_null($published)? true : (bool)$published;
-            $table->and()->openWhere('first_post_uid', (int)$uid)->or()->closeWhere('published', $published);
+            if($private == true) {
+                $table->and()->where('first_post_uid', (int)$uid);
+            } else {
+                $published = is_null($published) ? true : (bool)$published;
+                $table->and()->openWhere('first_post_uid', (int)$uid)->or()->closeWhere('published', $published);
+            }
         }
 
         return $table->fetchAll();

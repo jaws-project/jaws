@@ -28,8 +28,11 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($topic)) {
             return Jaws_HTTPError::Get($topic->getCode());
         }
+        if (empty($topic)) {
+            return Jaws_HTTPError::Get(404);
+        }
 
-        if (!$topic['published']) {
+        if (!$topic['published'] || $topic['private']) {
             $logged_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             if ($logged_user != $topic['first_post_uid'] &&
                 !$this->gadget->GetPermission('ForumManage', $rqst['fid'])
