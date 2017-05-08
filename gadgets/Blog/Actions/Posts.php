@@ -263,7 +263,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $entries = $model->GetFavoritePosts((int)$limit);
         if (!Jaws_Error::IsError($entries)) {
             $date = Jaws_Date::getInstance();
-            foreach ($entries as $entry) {
+            foreach ($entries as $index => $entry) {
                 $tpl->SetBlock('favorite_posts/item');
 
                 $tpl->SetVariablesArray($entry);
@@ -276,6 +276,8 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                     'author-url',
                     $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username']))
                 );
+                $tpl->SetVariable('post_id', $entry['id']);
+                $tpl->SetVariable('post_index', $index);
                 $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
                 $tpl->SetVariable('createtime',           $date->Format($entry['publishtime']));
                 $tpl->SetVariable('createtime-monthname', $date->Format($entry['publishtime'], 'MN'));
