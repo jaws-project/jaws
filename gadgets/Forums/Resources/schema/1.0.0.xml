@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>forums_groups</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>title</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>description</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>fast_url</name>
+            <type>text</type>
+            <length>90</length>
+        </field>
+
+        <field>
+            <name>order</name>
+            <type>integer</type>
+            <length>2</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>locked</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
+        <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>forums_groups_fast_url</name>
+            <field>
+                <name>fast_url</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>forums</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>title</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>description</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>gid</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>fast_url</name>
+            <type>text</type>
+            <length>90</length>
+        </field>
+
+        <field>
+            <name>topics</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>posts</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>last_topic_id</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>order</name>
+            <type>integer</type>
+            <length>2</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>locked</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
+        <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>forums_fast_url</name>
+            <field>
+                <name>fast_url</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>forums_topics</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>fid</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>subject</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>first_post_id</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>first_post_uid</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>first_post_time</name>
+            <type>integer</type>
+            <length>16</length>
+        </field>
+
+        <field>
+            <name>last_post_id</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>last_post_uid</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>last_post_time</name>
+            <type>integer</type>
+            <length>16</length>
+        </field>
+
+        <field>
+            <name>views</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>replies</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>locked</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
+        <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>forums_topics</name>
+            <field>
+                <name>fid</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>forums_posts</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>tid</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>uid</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>message</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>attachments</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>ip</name>
+            <type>text</type>
+            <length>24</length>
+        </field>
+
+        <field>
+            <name>insert_time</name>
+            <type>integer</type>
+            <length>16</length>
+        </field>
+
+        <field>
+            <name>update_uid</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>update_reason</name>
+            <type>text</type>
+            <length>256</length>
+            <default></default>
+        </field>
+
+        <field>
+            <name>update_time</name>
+            <type>integer</type>
+            <length>16</length>
+        </field>
+
+        <field>
+            <name>status</name>
+            <type>integer</type>
+            <length>2</length>
+            <default>0</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>forums_posts_topic</name>
+            <field>
+                <name>tid</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>forums_posts_user</name>
+            <field>
+                <name>uid</name>
+            </field>
+        </index>
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>forums_attachments</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>post</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>title</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>filename</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>filesize</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>filetype</name>
+            <type>text</type>
+            <length>64</length>
+        </field>
+
+        <field>
+            <name>hitcount</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>forums_attachments_post</name>
+            <field>
+                <name>post</name>
+            </field>
+        </index>
+    </declaration>
+ </table>
+</database>
