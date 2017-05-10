@@ -2377,8 +2377,8 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /*!
- * Fuel UX v3.15.10 
- * Copyright 2012-2016 ExactTarget
+ * Fuel UX v3.16.0 
+ * Copyright 2012-2017 ExactTarget
  * Licensed under the BSD-3-Clause license (https://github.com/ExactTarget/fuelux/blob/master/LICENSE)
  */
 
@@ -5208,11 +5208,11 @@ if (typeof jQuery === 'undefined') {
 			},
 
 			render: function render() {
-				this.setValue( this.getDisplayValue() );
+				this._setValue( this.getDisplayValue() );
 			},
 
 			change: function change() {
-				this.setValue( this.getDisplayValue() );
+				this._setValue( this.getDisplayValue() );
 
 				this.triggerChangedEvent();
 			},
@@ -5263,7 +5263,7 @@ if (typeof jQuery === 'undefined') {
 
 			step: function step( isIncrease ) {
 				//refresh value from display before trying to increment in case they have just been typing before clicking the nubbins
-				this.setValue( this.getDisplayValue() );
+				this._setValue( this.getDisplayValue() );
 				var newVal;
 
 				if ( isIncrease ) {
@@ -5274,7 +5274,7 @@ if (typeof jQuery === 'undefined') {
 
 				newVal = newVal.toFixed( 5 );
 
-				this.setValue( newVal + this.unit );
+				this._setValue( newVal + this.unit );
 			},
 
 			getDisplayValue: function getDisplayValue() {
@@ -5296,6 +5296,10 @@ if (typeof jQuery === 'undefined') {
 			},
 
 			setValue: function setValue( val ) {
+				return this._setValue( val, true );
+			},
+
+			_setValue: function _setValue( val, shouldSetLastValue ) {
 				//remove any i18n on the number
 				if ( this.options.decimalMark !== '.' ) {
 					val = this.parseInput( val );
@@ -5312,7 +5316,7 @@ if (typeof jQuery === 'undefined') {
 
 				//make sure we are dealing with a number
 				if ( isNaN( intVal ) && !isFinite( intVal ) ) {
-					return this.setValue( this.options.value );
+					return this._setValue( this.options.value, shouldSetLastValue );
 				}
 
 				//conform
@@ -5330,6 +5334,10 @@ if (typeof jQuery === 'undefined') {
 
 				//display number
 				this.setDisplayValue( val );
+
+				if ( shouldSetLastValue ) {
+					this.lastValue = val;
+				}
 
 				return this;
 			},
@@ -5608,7 +5616,7 @@ if (typeof jQuery === 'undefined') {
 						}
 
 						// Decorate $entity with data or other attributes making the
-						// element easily accessable with libraries like jQuery.
+						// element easily accessible with libraries like jQuery.
 						//
 						// Values are contained within the object returned
 						// for folders and items as attr:
@@ -8204,6 +8212,23 @@ if (typeof jQuery === 'undefined') {
 				var viewTypeObj = {};
 				var height;
 				var viewportMargins;
+				var scrubbedElements = [];
+				var previousProperties = [];
+				var $hiddenElements = this.$element.parentsUntil( ':visible' ).addBack();
+				var currentHiddenElement;
+				var currentElementIndex = 0;
+
+				// Set parents to 'display:block' until repeater is visible again
+				while ( currentElementIndex < $hiddenElements.length && this.$element.is( ':hidden' ) ) {
+					currentHiddenElement = $hiddenElements[ currentElementIndex ];
+					// Only set display property on elements that are explicitly hidden (i.e. do not inherit it from their parent)
+					if ( $( currentHiddenElement ).is( ':hidden' ) ) {
+						previousProperties.push( currentHiddenElement.style[ 'display' ] );
+						currentHiddenElement.style[ 'display' ] = 'block';
+						scrubbedElements.push( currentHiddenElement );
+					}
+					currentElementIndex++;
+				}
 
 				if ( this.viewType ) {
 					viewTypeObj = $.fn.repeater.viewTypes[ this.viewType ] || {};
@@ -8234,6 +8259,10 @@ if (typeof jQuery === 'undefined') {
 						width: this.$element.outerWidth()
 					} );
 				}
+
+				scrubbedElements.forEach( function( element, i ) {
+					element.style[ 'display' ] = previousProperties[ i ];
+				} );
 			},
 
 			// e.g. "Rows" or "Thumbnails"
