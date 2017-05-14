@@ -3028,6 +3028,146 @@ if (typeof jQuery === 'undefined') {
 			runStack();
 		}
 
+		function dateGregorian(args) {
+			this.gdate;
+			var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			if (args.length) {
+				if (args.length == 1) {
+					this.gdate = new Date(NaN);
+				} else {
+					this.gdate = new Date(args[0], args[1], args[2]);
+				}
+			} else {
+				this.gdate = new Date();
+			}
+			// check is given date in a leap year
+			var year = parseInt(this.gdate.getFullYear());
+			this.isLeapYear = ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0));
+
+			this.getFullYear = function() {
+				return this.gdate.getFullYear();
+			}
+
+			this.getMonth = function() {
+				return this.gdate.getMonth();
+			}
+
+			this.getDate = function() {
+				return this.gdate.getDate();
+			}
+
+			this.getDay = function() {
+				return this.gdate.getDay()
+			}
+
+			this.getMonthDays = function(month) {
+				return (this.isLeapYear && month == 2)? 29 : gMonthDays[month-1];
+			}
+		}
+
+		function dateJalali(args) {
+			var leapYears = [1, 5, 9, 13, 17, 22, 26, 30];
+			var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			var jMonthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+
+			var year = 0,
+				month = 0,
+				day = 0,
+				wday = 0,
+				days = 0;
+
+			if (args.length) {
+				if (isNaN(args[0])) {
+					return new Date(NaN);
+				}
+				year  = parseInt(args[0]);
+				month = parseInt(args[1]) + 1;
+				day   = parseInt(args[2]);
+
+				// calculating Jalali calendar total days
+				var ym = Math.floor((month-1)/12);
+				month = month - ym*12;
+				year  = year + ym - 1;
+				days =  365*year + Math.floor(year/33)*8 + Math.floor(((year%33)+3)/4);
+				for (var i=0; i < (month-1); ++i) {
+					days += jMonthDays[i];
+				}
+				days = days + day;
+			} else {
+				var date = new Date();
+				year  = parseInt(date.getFullYear());
+				month = parseInt(Number(date.getMonth()) + 1);
+				day   = parseInt(date.getDate());
+
+				year--;
+				days = 365*year + Math.floor(year/4) - Math.floor(year/100) + Math.floor(year/400);
+				year++;
+				for (var i=0; i < (month-1); ++i) {
+					days += gMonthDays[i];
+				}
+				// is leap year
+				if (month > 2 && ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0))) {
+					days++;
+				}
+
+				days = days + day - 226894;
+			}
+
+			wday = (days + 4) % 7;
+			year = Math.floor(days/12053)*33; // 12053 = 33*365 + 8
+			days %= 12053;
+			days--;
+			year = year + Math.floor(days / 1461)*4; // 1461 = 4*365 + 1
+			days  = (days % 1461) + 1;
+
+			year++;
+			var isLeap = leapYears.indexOf((year % 33)) > -1;
+			while (days > (365 + isLeap)) {
+				days = days - (365 + isLeap);
+				year++;
+				isLeap = leapYears.indexOf((year % 33)) > -1;
+			}
+
+			month = 0;
+			while (days > (jMonthDays[month] + ((month==11)? isLeap : 0)))
+			{
+				days -= jMonthDays[month];
+				month++;
+			}
+
+			this.jYear  = year;
+			this.jMonth = month;
+			this.jDay   = days;
+			this.jWeekDay = wday;
+
+			// check is given date in a leap year
+			this.isLeapYear = leapYears.indexOf((this.jYear % 33)) > -1;
+
+			this.getFullYear = function() {
+				return this.jYear;
+			}
+
+			this.getMonth = function() {
+				return this.jMonth;
+			}
+
+			this.getDate = function() {
+				return this.jDay;
+			}
+
+			this.getDay = function() {
+				return this.jWeekDay;
+			}
+
+			this.getMonthDays = function(month) {
+				return (this.isLeapYear && month == 12)? 30 : jMonthDays[month-1];
+			}
+
+			this.toString = function() {
+				return this.jYear + '/' + (this.jMonth) + '/' + this.jDay;
+			}
+		}
+
 		// DATEPICKER CONSTRUCTOR AND PROTOTYPE
 
 		var Datepicker = function( element, options ) {
@@ -3045,6 +3185,7 @@ if (typeof jQuery === 'undefined') {
 			this.$wheelsYear = this.$element.find( '.datepicker-wheels-year' );
 
 			this.artificialScrolling = false;
+			this.options.date = this.dateCalendar();
 			this.formatDate = this.options.formatDate || this.formatDate;
 			this.inputValue = null;
 			this.moment = false;
@@ -3091,7 +3232,7 @@ if (typeof jQuery === 'undefined') {
 				}
 
 				if ( this.sameYearOnly ) {
-					this.yearRestriction = ( this.selectedDate ) ? this.selectedDate.getFullYear() : new Date().getFullYear();
+					this.yearRestriction = ( this.selectedDate ) ? this.selectedDate.getFullYear() : this.dateCalendar().getFullYear();
 				}
 			};
 
@@ -3108,6 +3249,22 @@ if (typeof jQuery === 'undefined') {
 		Datepicker.prototype = {
 
 			constructor: Datepicker,
+
+			dateCalendar: function() {
+				if (arguments.length == 1 && typeof arguments[0] === 'object') {
+					return arguments[0];
+				}
+
+				switch (this.options.calendar) {
+					case 'jalali':
+						return new dateJalali(arguments);
+						break;
+
+					default:
+						// gregorian
+						return new dateGregorian(arguments);
+				}
+			},
 
 			backClicked: function() {
 				this.changeView( 'calendar' );
@@ -3153,8 +3310,7 @@ if (typeof jQuery === 'undefined') {
 
 				this.$days.find( 'td.selected' ).removeClass( 'selected' );
 				$td.addClass( 'selected' );
-
-				date = new Date( $td.attr( 'data-year' ), $td.attr( 'data-month' ), $td.attr( 'data-date' ) );
+				date = this.dateCalendar( $td.attr( 'data-year' ), $td.attr( 'data-month' ), $td.attr( 'data-date' ) );
 				this.selectedDate = date;
 				this.$input.val( this.formatDate( date ) );
 				this.inputValue = this.$input.val();
@@ -3195,7 +3351,7 @@ if (typeof jQuery === 'undefined') {
 				if ( this.moment ) {
 					return moment( date ).format( this.momentFormat );
 				} else {
-					return padTwo( date.getMonth() + 1 ) + '/' + padTwo( date.getDate() ) + '/' + date.getFullYear();
+					return date.getFullYear()  + '/' + padTwo( date.getMonth() +1) + '/' + padTwo( date.getDate() );
 				}
 			},
 
@@ -3208,7 +3364,7 @@ if (typeof jQuery === 'undefined') {
 			},
 
 			getDate: function() {
-				return ( !this.selectedDate ) ? new Date( NaN ) : this.selectedDate;
+				return ( !this.selectedDate ) ? this.dateCalendar( NaN ) : this.selectedDate;
 			},
 
 			getFormat: function() {
@@ -3244,7 +3400,7 @@ if (typeof jQuery === 'undefined') {
 			},
 
 			show: function() {
-				var date = ( this.selectedDate ) ? this.selectedDate : new Date();
+				var date = ( this.selectedDate ) ? this.selectedDate : this.dateCalendar();
 				this.changeView( 'calendar', date );
 				this.$inputGroupBtn.addClass( 'open' );
 				this.$element.trigger( 'shown.fu.datepicker' );
@@ -3315,7 +3471,7 @@ if (typeof jQuery === 'undefined') {
 					year++;
 				}
 
-				this.renderMonth( new Date( year, month, 1 ) );
+				this.renderMonth( this.dateCalendar( year, month, 1 ) );
 			},
 
 			onYearScroll: function( e ) {
@@ -3350,7 +3506,7 @@ if (typeof jQuery === 'undefined') {
 			//some code ripped from http://stackoverflow.com/questions/2182246/javascript-dates-in-ie-nan-firefox-chrome-ok
 			parseDate: function( date ) {
 				var self = this;
-				var BAD_DATE = new Date( NaN );
+				var BAD_DATE = this.dateCalendar( NaN );
 				var dt, isoExp, momentParse, momentParseWithFormat, tryMomentParseAll, month, parts, use;
 
 				if ( date ) {
@@ -3360,7 +3516,7 @@ if (typeof jQuery === 'undefined') {
 							return ( true === md.isValid() ) ? md.toDate() : BAD_DATE;
 						};
 						momentParse = function( d ) {
-							var md = moment( new Date( d ) );
+							var md = moment( this.dateCalendar( d ) );
 							return ( true === md.isValid() ) ? md.toDate() : BAD_DATE;
 						};
 
@@ -3388,26 +3544,15 @@ if (typeof jQuery === 'undefined') {
 
 					} else { //if moment isn't present, use previous date parsing strategy
 						if ( typeof( date ) === 'string' ) {
-							dt = new Date( Date.parse( date ) );
-							if ( !this.isInvalidDate( dt ) ) {
-								return dt;
-							} else {
-								date = date.split( 'T' )[ 0 ];
-								isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/;
-								parts = isoExp.exec( date );
-								if ( parts ) {
-									month = parseInt( parts[ 2 ], 10 );
-									dt = new Date( parts[ 1 ], month - 1, parts[ 3 ] );
-									if ( month === ( dt.getMonth() + 1 ) ) {
-										return dt;
-									}
-
-								}
-
+							date = date.split( 'T' )[ 0 ];
+							isoExp = /^\s*(\d{4})[\-|\/](\d\d)[\-|\/](\d\d)\s*$/;
+							parts = isoExp.exec( date );
+							if ( parts ) {
+								month = parseInt( parts[ 2 ], 10 );
+								return this.dateCalendar( parts[ 1 ], month - 1, parts[ 3 ] );
 							}
-
 						} else {
-							dt = new Date( date );
+							dt = this.dateCalendar( date );
 							if ( !this.isInvalidDate( dt ) ) {
 								return dt;
 							}
@@ -3417,8 +3562,7 @@ if (typeof jQuery === 'undefined') {
 					}
 
 				}
-
-				return new Date( NaN );
+				return this.dateCalendar( NaN );
 			},
 
 			prev: function() {
@@ -3434,18 +3578,20 @@ if (typeof jQuery === 'undefined') {
 					year--;
 				}
 
-				this.renderMonth( new Date( year, month, 1 ) );
+				this.renderMonth( this.dateCalendar( year, month, 1 ) );
 			},
 
 			renderMonth: function( date ) {
-				date = date || new Date();
+				date = date || this.dateCalendar();
 
-				var firstDay = new Date( date.getFullYear(), date.getMonth(), 1 ).getDay();
-				var lastDate = new Date( date.getFullYear(), date.getMonth() + 1, 0 ).getDate();
-				var lastMonthDate = new Date( date.getFullYear(), date.getMonth(), 0 ).getDate();
+				var firstDay = this.dateCalendar( date.getFullYear(), date.getMonth(), 1 ).getDay();
+				var lastDate = this.dateCalendar( date.getFullYear(), date.getMonth() + 1, 0 ).getDate();
+				var lastMonthDate = this.dateCalendar( date.getFullYear(), date.getMonth(), 0 ).getDate();
+
 				var $month = this.$headerTitle.find( '.month' );
 				var month = date.getMonth();
-				var now = new Date();
+
+				var now = this.dateCalendar();
 				var nowDate = now.getDate();
 				var nowMonth = now.getMonth();
 				var nowYear = now.getFullYear();
@@ -3598,7 +3744,7 @@ if (typeof jQuery === 'undefined') {
 			selectClicked: function() {
 				var month = this.$wheelsMonth.find( '.selected' ).attr( 'data-month' );
 				var year = this.$wheelsYear.find( '.selected' ).attr( 'data-year' );
-				this.changeView( 'calendar', new Date( year, month, 1 ) );
+				this.changeView( 'calendar', this.dateCalendar( year, month, 1 ) );
 			},
 
 			setCulture: function( cultureCode ) {
@@ -3685,11 +3831,11 @@ if (typeof jQuery === 'undefined') {
 			},
 
 			titleClicked: function( e ) {
-				this.changeView( 'wheels', new Date( this.$headerTitle.attr( 'data-year' ), this.$headerTitle.attr( 'data-month' ), 1 ) );
+				this.changeView( 'wheels', this.dateCalendar( this.$headerTitle.attr( 'data-year' ), this.$headerTitle.attr( 'data-month' ), 1 ) );
 			},
 
 			todayClicked: function( e ) {
-				var date = new Date();
+				var date = this.dateCalendar();
 
 				if ( ( date.getMonth() + '' ) !== this.$headerTitle.attr( 'data-month' ) || ( date.getFullYear() + '' ) !== this.$headerTitle.attr( 'data-year' ) ) {
 					this.renderMonth( date );
@@ -3728,8 +3874,9 @@ if (typeof jQuery === 'undefined') {
 		};
 
 		$.fn.datepicker.defaults = {
-			allowPastDates: false,
-			date: new Date(),
+			allowPastDates: true,
+			date: null,
+			calendar: 'gregorian',
 			formatDate: null,
 			momentConfig: {
 				culture: 'en',
@@ -10686,7 +10833,7 @@ if (typeof jQuery === 'undefined') {
 
 				this.$element.trigger( 'shown.fu.picker' );
 
-				this.clickStamp = new Date().getTime() + ( Math.floor( Math.random() * 100 ) + 1 );
+                this.clickStamp = new Date().getTime() + ( Math.floor( Math.random() * 100 ) + 1 );
 				if ( !this.options.explicit ) {
 					$( document ).on( 'click.fu.picker.externalClick.' + this.clickStamp, $.proxy( this.externalClickListener, this ) );
 				}
