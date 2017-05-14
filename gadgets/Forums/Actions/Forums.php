@@ -59,7 +59,7 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
         $tpl->SetVariable('url', $this->gadget->urlMap('Forums'));
 
         foreach ($groups as $group) {
-            $this->Group($group, $tpl);
+            $this->Group($group['id'], $tpl);
         }
 
         $tpl->ParseBlock('forums');
@@ -127,8 +127,16 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
             $tpl->SetVariable('topics', (int)$forum['topics']);
             $tpl->SetVariable('posts',  (int)$forum['posts']);
 
+            //check access to private forum
+            $accessToLastTopic = true;
+            if ($forum['private']) {
+                if (!$this->gadget->GetPermission('ForumManage', $forum['id'])) {
+                    $accessToLastTopic = false;
+                }
+            }
+
             // last post
-            if (!empty($forum['last_topic_id'])) {
+            if ($accessToLastTopic && !empty($forum['last_topic_id'])) {
                 $tpl->SetBlock("$block/group/forum/lastpost");
                 $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
                 $tpl->SetVariable('username', $forum['username']);

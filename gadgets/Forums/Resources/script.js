@@ -54,13 +54,12 @@ function unselectTreeRow()
  */
 function AddNewForumGroup(gid) {
     $('#forums_tree').append(
-        $('<div>').attr({'id': "group_"+gid, 'class': 'forums_group_area'}).append(
+        $('<div>').attr({'id': "group_" + gid, 'class': 'forums_group_area'}).append(
             $('#group_1').find('div').first().clone(true)
         )
     );
-    $("#group_"+gid).find('a')
-        .first().attr('href', 'javascript: editGroup('+gid+');').html($('#title').val())
-        .next().attr('href', 'javascript: addForum('+gid+', 0);');
+    $("#group_" + gid).find('div.title a').attr('href', 'javascript: editGroup(' + gid + ');').html($('#title').val())
+        .end().find('div.forum_actions a').attr('href', 'javascript: addForum(' + gid + ');');
 }
 
 /**

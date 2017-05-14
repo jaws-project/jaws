@@ -68,7 +68,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
 
             $table->select('forums.id:integer', 'forums.title', 'forums.description',
                     'forums.fast_url', 'topics:integer', 'posts:integer', 'last_topic_id:integer',
-                    'forums_topics.last_post_time', 'forums_topics.replies:integer',
+                    'forums_topics.last_post_time', 'forums_topics.replies:integer', 'forums.private:boolean',
                     'users.username', 'users.nickname', 'forums.locked:boolean', 'forums.published:boolean');
             $table->join('forums_topics', 'forums.last_topic_id', 'forums_topics.id', 'left');
             $table->join('users', 'forums_topics.last_post_uid', 'users.id', 'left');
