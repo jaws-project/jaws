@@ -1,0 +1,64 @@
+<!-- BEGIN datepicker -->
+<div class="datepicker" data-initialize="datepicker" data-calendar="{{calendar}}" id="Datepicker_{{id}}">
+  <div class="input-group">
+    <input class="form-control" name="{{name}}" id="{{id}}" type="text"/>
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-calendar"></span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right datepicker-calendar-wrapper" role="menu">
+        <div class="datepicker-calendar">
+          <div class="datepicker-calendar-header">
+            <button type="button" class="prev"><span class="glyphicon glyphicon-chevron-left"></span></button>
+            <button type="button" class="next"><span class="glyphicon glyphicon-chevron-right"></span></button>
+            <button type="button" class="title">
+                <span class="month">
+                <!-- BEGIN months -->
+                  <!-- BEGIN month -->
+                  <span data-month="{{i}}">{{name}}</span>
+                  <!-- END month -->
+                <!-- END months -->
+                </span> <span class="year"></span>
+            </button>
+          </div>
+          <table class="datepicker-calendar-days">
+            <thead>
+            <tr>
+            <!-- BEGIN week_days -->
+              <!-- BEGIN day -->
+              <th>{{name}}</th>
+              <!-- END day -->
+            <!-- END week_days -->
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="datepicker-calendar-footer">
+            <button type="button" class="datepicker-today">Today</button>
+          </div>
+        </div>
+        <div class="datepicker-wheels" aria-hidden="true">
+          <div class="datepicker-wheels-month">
+            <h2 class="header">Month</h2>
+            <ul>
+            <!-- BEGIN short_months -->
+              <!-- BEGIN month -->
+              <li data-month="{{i}}"><button type="button">{{name}}</button></li>
+              <!-- END month -->
+            <!-- END short_months -->
+            </ul>
+          </div>
+          <div class="datepicker-wheels-year">
+            <h2 class="header">Year</h2>
+            <ul></ul>
+          </div>
+          <div class="datepicker-wheels-footer clearfix">
+            <button type="button" class="btn datepicker-wheels-back"><span class="glyphicon glyphicon-arrow-left"></span></button>
+            <button type="button" class="btn datepicker-wheels-select">Select Month and Year</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END datepicker -->
