@@ -532,16 +532,17 @@ class Jaws_User
      * @param   int     $offset
      * @return  array   Returns an array of the available users and false on error
      */
-    function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = 'nickname',
+    function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = 'id asc',
         $limit = 0, $offset = null)
     {
         $fields = array(
-            'id', 'id desc',
-            'username', 'username desc',
-            'nickname', 'nickname desc', 'email'
+            'id', 'id asc', 'id desc',
+            'username', 'username asc', 'username desc',
+            'nickname', 'nickname asc', 'nickname desc',
+            'email'
         );
         if (!in_array($orderBy, $fields)) {
-            $orderBy = 'username';
+            $orderBy = 'id asc';
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
