@@ -165,9 +165,9 @@ class Users_Actions_Users extends Users_Actions_Default
             'post'
         );
 
-        $orderBy = 'nickname';
-        if (isset($post['sort'])) {
-            $orderBy = trim($post['sort'][0]['field'] . ' ' . $post['sort'][0]['direction']);
+        $orderBy = 'id asc';
+        if (isset($post['sortBy'])) {
+            $orderBy = trim($post['sortBy'] . ' ' . $post['sortDirection']);
         }
 
         $group = !empty($post['filters']['group']) ? $post['filters']['group'] : false;

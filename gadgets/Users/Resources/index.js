@@ -524,19 +524,24 @@ function deleteGroup(id)
 function usersDataSource(options, callback)
 {
     options.offset = options.pageIndex*options.pageSize;
-    // define the columns for the grid
-    var columns = [
-        {
+    var columns = {
+        'nickname': {
             'label': jaws.Users.Defines.lbl_nickname,
             'property': 'nickname',
             'sortable': true
         },
-        {
+        'username': {
             'label': jaws.Users.Defines.lbl_username,
             'property': 'username',
             'sortable': true
         }
-    ];
+    };
+
+    // set sort property & direction
+    if (options.sortProperty) {
+        columns[options.sortProperty].sortDirection = options.sortDirection;
+    }
+    columns = Object.values(columns);
 
     UsersAjax.callAsync(
         'GetUsers', {
@@ -631,7 +636,8 @@ function initiateUsersDG() {
         staticHeight: 600,
         list_actions: list_actions,
         list_selectable: 'multi',
-        list_direction: $('.repeater-canvas').css('direction')
+        list_direction: $('.repeater-canvas').css('direction'),
+        list_highlightSortedColumn: true
     });
 
     // monitor required events
