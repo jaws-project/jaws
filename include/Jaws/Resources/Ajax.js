@@ -518,6 +518,17 @@ String.prototype.defilter = function(quote_style) {
 };
 
 /**
+ * Implement Object.values for older browsers
+ */
+if (!Object.values) {
+    Object.values = function(obj) {
+        return $.map(obj, function(value, index) {
+            return value;
+        });
+    }
+}
+
+/**
  * Reset a (piwi)datagrid:
  *  - Clean all data
  *  - Set the new data
