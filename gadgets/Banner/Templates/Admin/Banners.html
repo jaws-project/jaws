@@ -47,8 +47,18 @@
           </tr></table>
       </td>
   </tr>
-  <tr><td><label for="start_time">{{lbl_start_time}}:</label></td><td>{{start_time}}</td></tr>
-  <tr><td><label for="stop_time">{{lbl_stop_time}}:</label></td><td>{{stop_time}}</td></tr>
+  <tr>
+    <td><label for="start_time">{{lbl_start_time}}:</label></td>
+    <!-- BEGIN start_time -->
+    <td><!-- INCLUDE DatePicker.html include/Jaws/Resources --></td>
+    <!-- END start_time -->
+  </tr>
+  <tr>
+    <td><label for="stop_time">{{lbl_stop_time}}:</label></td>
+    <!-- BEGIN stop_time -->
+    <td><!-- INCLUDE DatePicker.html include/Jaws/Resources --></td>
+    <!-- END stop_time -->
+  </tr>
   <tr><td><label>{{lbl_status}}:</label></td>
       <td><table><tr>
             <td><label for="random">{{lbl_random}}:</label><br />{{random}}</td>

@@ -187,21 +187,15 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $tpl->SetVariable('lbl_clicks_limit', _t('BANNER_BANNERS_CLICKS'));
         $tpl->SetVariable('clicks_limit', $clicksLimitEntry->Get());
 
-        $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
-        $startTime->SetId('start_time');
-        $startTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
-        $startTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
-        $tpl->SetVariable('start_time', $startTime->Get());
+        $tpl->SetBlock('BannerInfo/start_time');
+        $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'start_time'));
+        $tpl->ParseBlock('BannerInfo/start_time');
 
-        $stopTime =& Piwi::CreateWidget('DatePicker', 'stop_time', '');
-        $stopTime->SetId('stop_time');
-        $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $stopTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
-        $stopTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
-        $tpl->SetVariable('stop_time', $stopTime->Get());
+        $tpl->SetBlock('BannerInfo/stop_time');
+        $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'stop_time'));
+        $tpl->ParseBlock('BannerInfo/stop_time');
 
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $randomType =& Piwi::CreateWidget('Combo', 'random');

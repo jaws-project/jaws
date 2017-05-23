@@ -572,8 +572,6 @@ $(document).ready(function() {
         case 'Banners':
             currentAction = 'Banners';
             $('#bgroup_filter').prop('selectedIndex', 0);
-            initDatePicker('start_time');
-            initDatePicker('stop_time');
             initDataGrid('banners_datagrid', BannerAjax, getBannersDataGrid);
             break;
 
