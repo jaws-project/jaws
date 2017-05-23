@@ -49,17 +49,27 @@ class Jaws_Gadget_Actions_DatePicker
         } else {
             $block = $tpl->GetCurrentBlockPath();
         }
+        // set default calendar if not set
+        if (!isset($options['calendar'])) {
+            $options['calendar'] = $this->gadget->registry->fetch('calendar', 'Settings');
+        }
+        $calendar = strtoupper($options['calendar']);
+
         $tpl->SetBlock("$block/datepicker");
-        $tpl->SetVariable('name', 'start_time');
-        $tpl->SetVariable('id', 'start_time');
-        $tpl->SetVariable('calendar', 'jalali');
+        $tpl->SetVariable('id', isset($options['id'])? $options['id'] : $options['name']);
+        $tpl->SetVariable('name', $options['name']);
+        $tpl->SetVariable('calendar', strtolower($calendar));
+        $tpl->SetVariable('lbl_today', _t('GLOBAL_TODAY'));
+        $tpl->SetVariable('lbl_month', _t('GLOBAL_MONTH'));
+        $tpl->SetVariable('lbl_year', _t('GLOBAL_YEAR'));
+        $tpl->SetVariable('lbl_select_month_year', _t('GLOBAL_SELECT_MONTH_YEAR'));
 
         // fill months name
         $tpl->SetBlock("$block/datepicker/months");
         for ($i = 0; $i < 12; $i++) {
             $tpl->SetBlock("$block/datepicker/months/month");
             $tpl->SetVariable('i', $i);
-            $tpl->SetVariable('name', _t("GLOBAL_JALALI_MONTH_$i"));
+            $tpl->SetVariable('name', _t("GLOBAL_{$calendar}_MONTH_$i"));
             $tpl->ParseBlock("$block/datepicker/months/month");
         }
         $tpl->ParseBlock("$block/datepicker/months");
@@ -69,7 +79,7 @@ class Jaws_Gadget_Actions_DatePicker
         for ($i = 0; $i < 12; $i++) {
             $tpl->SetBlock("$block/datepicker/short_months/month");
             $tpl->SetVariable('i', $i);
-            $tpl->SetVariable('name', _t("GLOBAL_JALALI_MONTH_SHORT_$i"));
+        $tpl->SetVariable('name', _t("GLOBAL_{$calendar}_MONTH_SHORT_$i"));
             $tpl->ParseBlock("$block/datepicker/short_months/month");
         }
         $tpl->ParseBlock("$block/datepicker/short_months");
@@ -79,7 +89,7 @@ class Jaws_Gadget_Actions_DatePicker
         for ($i = 0; $i < 7; $i++) {
             $tpl->SetBlock("$block/datepicker/week_days/day");
             $tpl->SetVariable('i', $i);
-            $tpl->SetVariable('name', _t("GLOBAL_DAY_SHORT_$i"));
+            $tpl->SetVariable('name', _t("GLOBAL_{$calendar}_DAY_SHORT_$i"));
             $tpl->ParseBlock("$block/datepicker/week_days/day");
         }
         $tpl->ParseBlock("$block/datepicker/week_days");
