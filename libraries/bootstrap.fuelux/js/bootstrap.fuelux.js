@@ -3032,11 +3032,10 @@ if (typeof jQuery === 'undefined') {
 			this.gdate;
 			var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 			if (args.length) {
-				if (args.length == 1) {
-					this.gdate = new Date(NaN);
-				} else {
-					this.gdate = new Date(args[0], args[1], args[2]);
+				if (isNaN(args[0])) {
+					return new Date(NaN);
 				}
+				this.gdate = new Date(args[0], args[1], args[2]);
 			} else {
 				this.gdate = new Date();
 			}
@@ -3185,7 +3184,7 @@ if (typeof jQuery === 'undefined') {
 			this.$wheelsYear = this.$element.find( '.datepicker-wheels-year' );
 
 			this.artificialScrolling = false;
-			this.options.date = this.dateCalendar();
+			this.options.date = this.dateCalendar(NaN);
 			this.formatDate = this.options.formatDate || this.formatDate;
 			this.inputValue = null;
 			this.moment = false;
