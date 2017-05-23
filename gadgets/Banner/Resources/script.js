@@ -214,8 +214,8 @@ function saveBanner()
                     $('#template').val(),
                     $('#views_limit').val(),
                     $('#clicks_limit').val(),
-                    $('#start_time').val(),
-                    $('#stop_time').val(),
+                    $('#datepicker_start_time_input').val(),
+                    $('#datepicker_stop_time_input').val(),
                     $('#random').val(),
                     $('#published').val()
                 ]
@@ -231,8 +231,8 @@ function saveBanner()
                     $('#template').val(),
                     $('#views_limit').val(),
                     $('#clicks_limit').val(),
-                    $('#start_time').val(),
-                    $('#stop_time').val(),
+                    $('#datepicker_start_time_input').val(),
+                    $('#datepicker_stop_time_input').val(),
                     $('#random').val(),
                     $('#published').val()
                 ]
@@ -376,8 +376,8 @@ function editBanner(element, bid)
     $('#clicks_limit').val(banner['clicks_limitation']);
     if (banner['start_time'] == null) banner['start_time'] = '';
     if (banner['stop_time']  == null) banner['stop_time']  = '';
-    $('#start_time').val(banner['start_time']);
-    $('#stop_time').val(banner['stop_time']);
+    $('#datepicker_start_time_input').val(banner['start_time']);
+    $('#datepicker_stop_time_input').val(banner['stop_time']);
     $('#random').prop('selectedIndex', banner['random']);
     $('#published').prop('selectedIndex', banner['published']? 1 : 0);
 }
@@ -504,8 +504,8 @@ function stopAction()
         $('#template').val('');
         $('#views_limit').val('');
         $('#clicks_limit').val('');
-        $('#start_time').val('');
-        $('#stop_time').val('');
+        $('#datepicker_start_time_input').val('');
+        $('#datepicker_stop_time_input').val('');
         $('#random').val(0);
         $('#published').val(1);
         unselectDataGridRow();
