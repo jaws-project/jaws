@@ -50,34 +50,37 @@ class Jaws_Gadget_Actions_DatePicker
             $block = $tpl->GetCurrentBlockPath();
         }
         $tpl->SetBlock("$block/datepicker");
+        $tpl->SetVariable('name', 'start_time');
+        $tpl->SetVariable('id', 'start_time');
+        $tpl->SetVariable('calendar', 'jalali');
 
         // fill months name
         $tpl->SetBlock("$block/datepicker/months");
-        for ($i = 0, $i < 12, $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $tpl->SetBlock("$block/datepicker/months/month");
             $tpl->SetVariable('i', $i);
             $tpl->SetVariable('name', _t("GLOBAL_JALALI_MONTH_$i"));
-            tpl->ParseBlock("$block/datepicker/months/month");
+            $tpl->ParseBlock("$block/datepicker/months/month");
         }
         $tpl->ParseBlock("$block/datepicker/months");
 
         // fill months short name
         $tpl->SetBlock("$block/datepicker/short_months");
-        for ($i = 0, $i < 12, $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $tpl->SetBlock("$block/datepicker/short_months/month");
             $tpl->SetVariable('i', $i);
             $tpl->SetVariable('name', _t("GLOBAL_JALALI_MONTH_SHORT_$i"));
-            tpl->ParseBlock("$block/datepicker/short_months/month");
+            $tpl->ParseBlock("$block/datepicker/short_months/month");
         }
         $tpl->ParseBlock("$block/datepicker/short_months");
 
         // fill week days name
         $tpl->SetBlock("$block/datepicker/week_days");
-        for ($i = 0, $i < 6, $i++) {
+        for ($i = 0; $i < 7; $i++) {
             $tpl->SetBlock("$block/datepicker/week_days/day");
             $tpl->SetVariable('i', $i);
             $tpl->SetVariable('name', _t("GLOBAL_DAY_SHORT_$i"));
-            tpl->ParseBlock("$block/datepicker/week_days/day");
+            $tpl->ParseBlock("$block/datepicker/week_days/day");
         }
         $tpl->ParseBlock("$block/datepicker/week_days");
 
