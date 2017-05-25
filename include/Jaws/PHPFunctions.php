@@ -336,47 +336,26 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
         $sync = false;
     }
 
-    switch ($resType) {
-        case 'json':
-            header('Content-Type: application/json; charset=utf-8');
-            header('Cache-Control: no-cache, must-revalidate');
-            header('Pragma: no-cache');
-            if (in_array($status_code, array(301, 302))) {
-                $data = $GLOBALS['app']->Session->PopResponse($data);
-            }
-            // Sync session
-            if ($sync) {
-                $GLOBALS['app']->Session->update();
-            }
-
-            echo json_encode($data);
-            break;
-
-        case 'gzip':
-        case 'x-gzip':
-            $data = gzencode($data, COMPRESS_LEVEL, FORCE_GZIP);
-            header('Content-Length: '.strlen($data));
-            header('Content-Encoding: '. $resType);
-        default:
-            // Sync session
-            if ($sync) {
-                $GLOBALS['app']->Session->update();
-            }
-
-            switch ($status_code) {
-                case 301:
-                    http_response_code(301);
-                    header('Location: '.$next_location);
-                    break;
-                case 302:
-                    http_response_code(302);
-                    header('Location: '.$next_location);
-                    break;
-                default:
-            }
-
-            echo $data;
+    if (in_array($status_code, array(301, 302))) {
+        // prevent redirect if request is sent via ajax
+        $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+        if ($XMLHttpRequest) {
+            $data = $GLOBALS['app']->Session->PopResponse($data);
+        } else {
+            http_response_code($status_code);
+            header('Location: '.$next_location);
+        }
     }
+
+    // encode data based on response type
+    $data = Jaws_Response::get($resType, $data);
+    // Sync session
+    if ($sync) {
+        $GLOBALS['app']->Session->update();
+    }
+
+    // return data
+    echo $data;
 
     if (isset($GLOBALS['log'])) {
         $GLOBALS['log']->End();
