@@ -639,11 +639,7 @@ class Jaws_Layout
         } else {
             $content = $this->_Template->Get();
             if ($GLOBALS['app']->GZipEnabled()) {
-                if (false == strpos($GLOBALS['app']->GetBrowserEncoding(), 'x-gzip')) {
-                    jaws()->request->update('restype', 'gzip');
-                } else {
-                    jaws()->request->update('restype', 'x-gzip');
-                }
+                jaws()->request->update('restype', 'gzip');
             }
             return $content;
         }
