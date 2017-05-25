@@ -106,10 +106,10 @@ class Exchange_Plugin extends Jaws_Plugin
         $lang = $GLOBALS['app']->GetLanguage();
         foreach ($this->_ExchangeList as $exchange) {
             if (false !== strpos($exchange['language'], $lang)) {
-                $text = $this->Preparing($text, $exchange['pattern'], $exchange['replacement']);
+                $html = $this->Preparing($html, $exchange['pattern'], $exchange['replacement']);
             }
         }
-        return $text;
+        return $html;
     }
 
 }
