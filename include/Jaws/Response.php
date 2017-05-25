@@ -20,18 +20,13 @@ class Jaws_Response
      */
     static function get($resType, $data)
     {
-        switch ($resType) {
-            case 'gzip':
-            case 'x-gzip':
-                $resType = 'GZip';
-                break;
-
-            case 'json':
-                $resType = 'JSON';
-                break;
+        $resType = preg_replace('/[^[:alnum:]_-]/', '', $resType);
+        $drivers = array_map('basename', glob(JAWS_PATH . 'include/Jaws/Response/*.php'));
+        if (false === $driver = array_search(strtolower("$resType.php"), array_map('strtolower', $drivers))) {
+            return $data;
         }
 
-        $resType = preg_replace('/[^[:alnum:]_-]/', '', $resType);
+        $resType = basename($drivers[$driver], '.php');
         $resTypeFile = JAWS_PATH . "include/Jaws/Response/$resType.php";
         if (!file_exists($resTypeFile)) {
             return $data;
