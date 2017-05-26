@@ -770,17 +770,20 @@ background:#ace url("../../../images/loading.svg");
 .alert-success{
 border:1px solid #9db029;
 display:inline-block !important;
-background:#e6f0a5 url("../../../images/stock/info-small.png");
+background:#e6f0a5 url("../../../images/stock/info-small.png") no-repeat center left;
+padding: 10px 20px;
 }
 .alert-warning{
 border:1px solid #fce94f;
 display:inline-block !important;
-background:#fdf4a7 url("../../../images/stock/warning-small.png");
+background:#fdf4a7 url("../../../images/stock/warning-small.png") no-repeat center left;
+padding: 10px 20px;
 }
 .alert-danger{
 border:1px solid #cc0000;
 display:inline-block !important;
-background:#fabfbf url("../../../images/stock/error-small.png");
+background:#fabfbf url("../../../images/stock/error-small.png") no-repeat center left;
+padding: 10px 20px;
 }
 .working-message{
 color:#888a85;
