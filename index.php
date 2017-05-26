@@ -117,7 +117,8 @@ if (empty($ReqError)) {
         $GLOBALS['app']->inMainRequest = false;
 
         // we must check type of action after execute, because gadget can change it at runtime
-        $IsReqActionStandAlone = $objAction->IsStandAlone($ReqAction);
+        $ReqMode = Jaws_Gadget::filter(jaws()->request->fetch('mode'));
+        $IsReqActionStandAlone = ($ReqMode == 'standalone') || $objAction->IsStandAlone($ReqAction);
     }
 } else {
     $ReqResult = Jaws_HTTPError::Get($ReqError);
