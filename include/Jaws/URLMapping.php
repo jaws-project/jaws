@@ -217,6 +217,13 @@ class Jaws_URLMapping
 
         $params = explode('/', $this->_request_uri);
         $matched_but_ignored = false;
+        $reqOptions = explode('.',  $this->_request_uri);
+        $reqURL = array_shift($reqOptions);
+        if (count($reqOptions) % 2) {
+            //array_splice($reqOptions, -1, 0, 'restype');
+            array_pop($reqOptions);
+        }
+
         foreach ($this->_maps as $gadget => $maps) {
             foreach ($maps as $map) {
                 $use_custom = !$this->_custom_precedence;
@@ -237,14 +244,7 @@ class Jaws_URLMapping
                         $custom = false;
                     }
 
-                    $url = $this->_request_uri;
-                    $ext = $map['extension'];
-                    $ext = ($ext == '.')? $this->_extension : $ext;
-                    if (substr($url, - strlen($ext)) == $ext) {
-                        $url = substr($url, 0, - strlen($ext));
-                    }
-
-                    if (preg_match($regexp, $url, $matches) == 1) {
+                    if (preg_match($regexp, $reqURL, $matches) == 1) {
                         if ($this->_restrict_multimap) {
                             if ($this->_custom_precedence && $has_custom && !$custom) {
                                 $matched_but_ignored = true;
@@ -259,6 +259,9 @@ class Jaws_URLMapping
                         // Gadget/Action
                         $request->update('gadget', $gadget, 'get');
                         $request->update('action', $map['action'], 'get');
+                        for ($i = 0; $i < count($reqOptions); $i=$i+2) {
+                            $request->update($reqOptions[$i], $reqOptions[$i+1]);
+                        }
 
                         // Params
                         if (isset($map['params']) && is_array($map['params'])) {
