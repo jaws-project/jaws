@@ -260,7 +260,7 @@ class Jaws_URLMapping
                         $request->update('gadget', $gadget, 'get');
                         $request->update('action', $map['action'], 'get');
                         for ($i = 0; $i < count($reqOptions); $i=$i+2) {
-                            $request->update($reqOptions[$i], $reqOptions[$i+1]);
+                            $request->update(rawurldecode($reqOptions[$i]), rawurldecode($reqOptions[$i+1]));
                         }
 
                         // Params
@@ -391,7 +391,7 @@ class Jaws_URLMapping
 
                     // preparing options
                     foreach ($options as $opKey => $opValue) {
-                        $url.= $opKey. '.'. $opValue;
+                        $url.= rawurlencode($opKey). '.'. rawurlencode($opValue);
                     }
 
                     break;
@@ -411,6 +411,10 @@ class Jaws_URLMapping
         } else {
             $url = 'index.php/' .$gadget . '/'. $action;
         }
+
+        // // merging options and params
+        $params = array_merge($params, $options);
+
         if (is_array($params)) {
             //Params should be in pairs
             foreach ($params as $key => $value) {
