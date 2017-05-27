@@ -167,8 +167,10 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         if ($this->gadget->registry->fetch('pingback') == 'true') {
             $pback = Jaws_Pingback::getInstance();
-            $pback->sendFromString($this->gadget->urlMap('SingleView', array('id' => $max), true),
-                $params['text']);
+            $pback->sendFromString(
+                $this->gadget->urlMap('SingleView', array('id' => $max), array('absolute' => true)),
+                $params['text']
+            );
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
@@ -201,7 +203,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                     'summary' => $title,
                     'publish_time' => strtotime($params['publishtime']),
                     'description' => $content,
-                    'url' => $this->gadget->urlMap('SingleView', array('id' => $max), true)
+                    'url' => $this->gadget->urlMap('SingleView', array('id' => $max), array('absolute' => true))
                 );
                 $this->gadget->event->shout('Subscription', $subscriptionParams);
             }
@@ -363,8 +365,14 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         if ($this->gadget->registry->fetch('pingback') == 'true') {
             $pback = Jaws_Pingback::getInstance();
-            $pback->sendFromString($this->gadget->urlMap('SingleView', array('id' => $post_id),
-                true), $params['text']);
+            $pback->sendFromString(
+                $this->gadget->urlMap(
+                    'SingleView',
+                    array('id' => $post_id),
+                    array('absolute' => true)
+                ),
+                $params['text']
+            );
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
@@ -397,7 +405,11 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                     'summary' => $title,
                     'publish_time' => isset($params['publishtime'])? strtotime($params['publishtime']) : time(),
                     'description' => $content,
-                    'url' => $this->gadget->urlMap('SingleView', array('id' => $post_id), true)
+                    'url' => $this->gadget->urlMap(
+                        'SingleView',
+                        array('id' => $post_id),
+                        array('absolute' => true)
+                    )
                 );
                 $this->gadget->event->shout('Subscription', $subscriptionParams);
             }
