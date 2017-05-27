@@ -23,7 +23,7 @@ class Directory_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('DIRECTORY_TITLE'),
-                'url'    => $this->gadget->urlMap('Directory', array(), true)
+                'url'    => $this->gadget->urlMap('Directory', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -32,32 +32,56 @@ class Directory_Hooks_Sitemap extends Jaws_Gadget_Hook
             $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_TEXT,
                 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'),
-                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_TEXT), true)
+                'url' => $this->gadget->urlMap(
+                    'Directory',
+                    array('type' => Directory_Info::FILE_TYPE_TEXT),
+                    array('absolute' => true)
+                )
             );
             $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_IMAGE,
                 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'),
-                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_IMAGE), true)
+                'url' => $this->gadget->urlMap(
+                    'Directory',
+                    array('type' => Directory_Info::FILE_TYPE_IMAGE),
+                    array('absolute' => true)
+                )
             );
             $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_AUDIO,
                 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'),
-                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_AUDIO), true)
+                'url' => $this->gadget->urlMap(
+                    'Directory',
+                    array('type' => Directory_Info::FILE_TYPE_AUDIO),
+                    array('absolute' => true)
+                )
             );
             $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_VIDEO,
                 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'),
-                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_VIDEO), true)
+                'url' => $this->gadget->urlMap(
+                    'Directory',
+                    array('type' => Directory_Info::FILE_TYPE_VIDEO),
+                    array('absolute' => true)
+                )
             );
             $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_ARCHIVE,
                 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
-                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_ARCHIVE), true)
+                'url' => $this->gadget->urlMap(
+                    'Directory',
+                    array('type' => Directory_Info::FILE_TYPE_ARCHIVE),
+                    array('absolute' => true)
+                )
             );
             $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_UNKNOWN,
                 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'),
-                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_UNKNOWN), true)
+                'url' => $this->gadget->urlMap(
+                    'Directory',
+                    array('type' => Directory_Info::FILE_TYPE_UNKNOWN),
+                    array('absolute' => true)
+                )
             );
         }
 
@@ -73,10 +97,15 @@ class Directory_Hooks_Sitemap extends Jaws_Gadget_Hook
                     'parent' => $file['file_type'],
                     'title' => $file['title'],
                     'lastmod' => $file['update_time'],
-                    'url' => $this->gadget->urlMap('Directory', array('type' => $file['file_type']), true),
+                    'url' => $this->gadget->urlMap(
+                        'Directory',
+                        array('type' => $file['file_type']),
+                        array('absolute' => true)
+                    ),
                 );
             }
         }
+
         return $result;
     }
 

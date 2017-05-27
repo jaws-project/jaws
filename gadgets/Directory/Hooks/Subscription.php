@@ -21,42 +21,66 @@ class Directory_Hooks_Subscription extends Jaws_Gadget_Hook
             'action'=>'type',
             'reference' => Directory_Info::FILE_TYPE_TEXT,
             'title' => _t('DIRECTORY_FILE_TYPE_TEXT'),
-            'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_TEXT), true),
+            'url' => $this->gadget->urlMap(
+                'Directory',
+                array('type' => Directory_Info::FILE_TYPE_TEXT),
+                array('absolute' => true)
+            ),
         );
 
         $items[] = array(
             'action'=>'type',
             'reference' => Directory_Info::FILE_TYPE_IMAGE,
             'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'),
-            'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_IMAGE), true),
+            'url' => $this->gadget->urlMap(
+                'Directory',
+                array('type' => Directory_Info::FILE_TYPE_IMAGE),
+                array('absolute' => true)
+            ),
         );
 
         $items[] = array(
             'action'=>'type',
             'reference' => Directory_Info::FILE_TYPE_AUDIO,
             'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'),
-            'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_AUDIO), true),
+            'url' => $this->gadget->urlMap(
+                'Directory',
+                array('type' => Directory_Info::FILE_TYPE_AUDIO),
+                array('absolute' => true)
+            ),
         );
 
         $items[] = array(
             'action'=>'type',
             'reference' => Directory_Info::FILE_TYPE_VIDEO,
             'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'),
-            'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_VIDEO), true),
+            'url' => $this->gadget->urlMap(
+                'Directory',
+                array('type' => Directory_Info::FILE_TYPE_VIDEO),
+                array('absolute' => true)
+            ),
         );
 
         $items[] = array(
             'action'=>'type',
             'reference' => Directory_Info::FILE_TYPE_ARCHIVE,
             'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
-            'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_ARCHIVE), true),
+            'url' => $this->gadget->urlMap(
+                'Directory',
+                array('type' => Directory_Info::FILE_TYPE_ARCHIVE),
+                array('absolute' => true)
+            ),
         );
 
         $items[] = array(
             'action'=>'type',
             'reference' => Directory_Info::FILE_TYPE_UNKNOWN,
             'title' => _t('DIRECTORY_FILE_TYPE_OTHER'),
-            'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_UNKNOWN), true),
+            'url' => $this->gadget->urlMap(
+                'Directory',
+                array('type' => Directory_Info::FILE_TYPE_UNKNOWN),
+                array('absolute' => true)
+            ),
         );
 
         return $items;
