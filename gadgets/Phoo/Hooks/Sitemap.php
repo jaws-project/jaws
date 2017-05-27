@@ -26,7 +26,7 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('PHOO_TITLE'),
-                'url'    => $this->gadget->urlMap('Albums', array(), true)
+                'url'    => $this->gadget->urlMap('Albums', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -47,7 +47,11 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'parent'    => null,
                         'title'     => $album['name'],
                         'lastmod'   => $album['createtime'],
-                        'url'       => $this->gadget->urlMap('Photos', array('album' => $entry), true),
+                        'url'       => $this->gadget->urlMap(
+                            'Photos',
+                            array('album' => $entry),
+                            array('absolute' => true)
+                        ),
                     );
                 }
             }
