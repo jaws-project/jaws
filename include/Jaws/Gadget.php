@@ -465,6 +465,11 @@ class Jaws_Gadget
      */
     function urlMap($action='', $params = array(), $options = array(), $gadget = '')
     {
+        if (!is_array($options)) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'use options["absolute"] = true|false for set absolute url', 1);
+            $options['absolute'] = (bool)$options;
+        }
+
         return $GLOBALS['app']->Map->GetURLFor(
             empty($gadget)? $this->name : $gadget,
             $action,
