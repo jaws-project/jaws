@@ -179,19 +179,34 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
             switch ($gadget) {
                 case 'Blog':
                     // So we can use the UrlMapping feature.
-                    $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $entry_id), true);
+                    $url = $this->gadget->urlMap(
+                        'SingleView',
+                        array('id' => $entry_id),
+                        array('absolute' => true),
+                        'Blog'
+                    );
                     $url = $url . htmlentities('#comment' . $c['id']);
                     $entry->SetLink($url);
                     break;
 
                 case 'Phoo':
-                    $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage', array('id' => $entry_id), true);
+                    $url = $this->gadget->urlMap(
+                        'ViewImage',
+                        array('id' => $entry_id),
+                        array('absolute' => true),
+                        'Phoo'
+                    );
                     $url = $url . htmlentities('#comment' . $c['id']);
                     $entry->SetLink($url);
                     break;
 
                 case 'Shoutbox':
-                    $url = $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'Comments', array(), true);
+                    $url = $this->gadget->urlMap(
+                        'Comments',
+                        array(),
+                        array('absolute' => true),
+                        'Shoutbox'
+                    );
                     $url = $url . htmlentities('#comment' . $c['id']);
                     $entry->SetLink($url);
                     break;
