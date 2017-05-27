@@ -26,7 +26,7 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('QUOTES_TITLE'),
-                'url'    => $this->gadget->urlMap('RecentQuotes', array(), true)
+                'url'    => $this->gadget->urlMap('RecentQuotes', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -57,7 +57,11 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
                     'parent' => $category['id'],
                     'title'  => $category['title'],
                     'lastmod'=> null,
-                    'url'    => $this->gadget->urlMap('ViewGroupQuotes', array('id' => $cat), true),
+                    'url'    => $this->gadget->urlMap(
+                        'ViewGroupQuotes',
+                        array('id' => $cat),
+                        array('absolute' => true)
+                    ),
                 );
             }
 
@@ -74,7 +78,11 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'parent'  => $page['gid'],
                         'title'   => $page['title'],
                         'lastmod' => $page['updatetime'],
-                        'url'     => $this->gadget->urlMap('ViewQuote', array('id' => $entry), true),
+                        'url'     => $this->gadget->urlMap(
+                            'ViewQuote',
+                            array('id' => $entry),
+                            array('absolute' => true)
+                        ),
                     );
                 }
             }
