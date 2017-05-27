@@ -218,10 +218,10 @@ class Jaws_URLMapping
         $params = explode('/', $this->_request_uri);
         $matched_but_ignored = false;
         $reqOptions = explode('.',  $this->_request_uri);
-        $reqURL = array_shift($reqOptions);
+        $requestedURL = array_shift($reqOptions);
         if (count($reqOptions) % 2) {
-            //array_splice($reqOptions, -1, 0, 'restype');
-            array_pop($reqOptions);
+            // adding real extension to request url
+            $requestedURL = $requestedURL. '.' . array_pop($reqOptions);
         }
 
         foreach ($this->_maps as $gadget => $maps) {
@@ -244,7 +244,13 @@ class Jaws_URLMapping
                         $custom = false;
                     }
 
-                    if (preg_match($regexp, $reqURL, $matches) == 1) {
+                    $url = $requestedURL;
+                    $ext = ($map['extension'] == '.')? $this->_extension : $map['extension'];
+                    if (substr($url, - strlen($ext)) == $ext) {
+                        $url = substr($url, 0, - strlen($ext));
+                    }
+
+                    if (preg_match($regexp, $url, $matches) == 1) {
                         if ($this->_restrict_multimap) {
                             if ($this->_custom_precedence && $has_custom && !$custom) {
                                 $matched_but_ignored = true;
