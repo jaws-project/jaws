@@ -467,7 +467,9 @@ class Jaws_Gadget
     {
         if (!is_array($options)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'use options["absolute"] = true|false for set absolute url', 1);
-            $options['absolute'] = (bool)$options;
+            $absolute = (bool)$options;
+            $options = array();
+            $options['absolute'] = $absolute;
         }
 
         return $GLOBALS['app']->Map->GetURLFor(
