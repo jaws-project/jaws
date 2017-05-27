@@ -459,13 +459,18 @@ class Jaws_Gadget
      * @access  public
      * @param   string  $action    Action name
      * @param   array   $params    Parameters of action
-     * @param   bool    $abs_url   Absolute or relative URL
+     * @param   array   $options    URL options(restype, mode, ...)
      * @param   string  $gadget    Gadget name
      * @return  string  The mapped URL
      */
-    function urlMap($action='', $params = array(), $abs_url = false, $gadget = '')
+    function urlMap($action='', $params = array(), $options = array(), $gadget = '')
     {
-        return $GLOBALS['app']->Map->GetURLFor(empty($gadget)? $this->name : $gadget, $action, $params, $abs_url);
+        return $GLOBALS['app']->Map->GetURLFor(
+            empty($gadget)? $this->name : $gadget,
+            $action,
+            $params,
+            $options
+        );
     }
 
     /**
