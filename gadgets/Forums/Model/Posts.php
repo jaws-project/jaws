@@ -342,11 +342,11 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $lnkProfile =& Piwi::CreateWidget(
             'Link',
             $GLOBALS['app']->Session->GetAttribute('nickname'),
-            $GLOBALS['app']->Map->GetURLFor(
-                'Users',
+            $this->gadget->urlMap(
                 'Profile',
                 array('user' => $GLOBALS['app']->Session->GetAttribute('username')),
-                true
+                array('absolute' => true),
+                'Users'
             )
         );
 
