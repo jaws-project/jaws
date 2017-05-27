@@ -336,11 +336,17 @@ class Jaws_URLMapping
      * @param   string  $gadget     Gadget name
      * @param   string  $action     Action name
      * @param   array   $params     Parameters of action
-     * @param   bool    $abs_url    Absolute or relative URL
+     * @param   array   $options    URL options(restype, mode, ...)
      * @return  string  The real URL map (aka jaws permalink)
      */
-    function GetURLFor($gadget, $action='', $params = array(), $abs_url = false)
+    function GetURLFor($gadget, $action='', $params = array(), $options = array())
     {
+        // absolute or relative URL
+        $abs_url = isset($options['absolute'])? (bool)$options['absolute'] : false;
+        // URL extension(true: default extension, false: disable extension, custom extension)
+        $extension = isset($options['extension'])? $options['extension'] : true;
+        unset($options['absolute'], $options['extension']);
+
         $params_vars = array_keys($params);
         if ($this->_enabled && isset($this->_actions_maps[$gadget][$action])) {
             foreach ($this->_actions_maps[$gadget][$action] as $map) {
@@ -379,8 +385,15 @@ class Jaws_URLMapping
                         $url = 'index.php/' . $url;
                     }
 
-                    $ext = $map['extension'];
-                    $url.= ($ext == '.')? $this->_extension : $ext;
+                    if ($extension) {
+                        $url.= ($extension === true)? $this->_extension : $extension;
+                    }
+
+                    // preparing options
+                    foreach ($options as $opKey => $opValue) {
+                        $url.= $opKey. '.'. $opValue;
+                    }
+
                     break;
                 }
                 $url = '';
