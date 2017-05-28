@@ -56,7 +56,15 @@ class Jaws_Plugin
     var $_AccessKey;
 
     /**
-     * Frontend available by default
+     * Only effect on normal actions
+     *
+     * @var     bool
+     * @access  protected
+     */
+    var $_OnlyNormalActions = false;
+
+    /**
+     * Front-end available by default
      *
      * @var     bool
      * @access  protected
@@ -64,7 +72,7 @@ class Jaws_Plugin
     var $_DefaultFrontendEnabled = false;
 
     /**
-     * Backend available by default
+     * Back-end available by default
      *
      * @var     bool
      * @access  protected
