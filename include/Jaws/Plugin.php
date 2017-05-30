@@ -13,6 +13,12 @@
 class Jaws_Plugin
 {
     /**
+     *  definition plugin types
+     */
+    const PLUGIN_TYPE_MODIFIER = 1;
+    const PLUGIN_TYPE_ATTACHER = 2;
+
+    /**
      * @access  public
      * @var     string
      */
@@ -78,6 +84,14 @@ class Jaws_Plugin
      * @access  protected
      */
     var $_DefaultBackendEnabled = false;
+
+    /**
+     * plugin type
+     *
+     * @var     int
+     * @access  protected
+     */
+    var $_PluginType = Jaws_Plugin::PLUGIN_TYPE_MODIFIER;
 
     /**
      * Constructor
