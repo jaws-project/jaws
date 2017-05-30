@@ -63,7 +63,7 @@ class Jaws_Gadget_Plugin
             }
         }
 
-        return Jaws_String::AutoParagraph($text);
+        return $text;
     }
 
 
@@ -99,7 +99,7 @@ class Jaws_Gadget_Plugin
             }
         }
 
-        return Jaws_String::AutoParagraph($text);
+        return $text;
     }
 
 }
