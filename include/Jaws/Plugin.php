@@ -77,13 +77,13 @@ class Jaws_Plugin
      * @var     bool
      * @access  protected
      */
-    var $_DefaultBackendEnabled = true;
+    var $_DefaultBackendEnabled = false;
 
     /**
      * Constructor
      *
      * @access  protected
-     * @param   string $plugin Plugin name(same as the filesystem name)
+     * @param   string $plugin Plugin name(same as the file-system name)
      * @return  void
      */
     function __construct($plugin)
