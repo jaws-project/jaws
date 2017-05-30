@@ -25,7 +25,7 @@ class Paragraph_Plugin extends Jaws_Plugin
      * @param   string  $gadget     Gadget name
      * @return  string  Parsed content
      */
-    function ParseText(&$text, $reference = 0, $action = '', $gadget = '')
+    function ParseText($text, $reference = 0, $action = '', $gadget = '')
     {
         // cross-platform newlines
         $text = preg_replace("/(\r\n|\r)/", "\n", $text);
