@@ -142,7 +142,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                         $this->gadget->urlMap(
                             'ActivateUser',
                             array('key' => $verifyKey),
-                            true
+                            array('absolute' => true)
                         )
                     );
                     $tpl->ParseBlock('Notification/Activation');
@@ -200,7 +200,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                         $this->gadget->urlMap(
                             'ActivateUser',
                             array('key' => $verifyKey),
-                            true
+                            array('absolute' => true)
                         )
                     );
                     $tpl->ParseBlock('Notification/Activation');
@@ -282,7 +282,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 $this->gadget->urlMap(
                     'ChangePassword',
                     array('key' => $verifyKey),
-                    true
+                    array('absolute' => true)
                 )
             );
             $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));

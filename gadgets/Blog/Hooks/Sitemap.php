@@ -26,7 +26,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('BLOG_TITLE'),
-                'url'    => $this->gadget->urlMap('DefaultAction', array(), true)
+                'url'    => $this->gadget->urlMap('DefaultAction', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -58,7 +58,11 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                     'parent' => $category['id'],
                     'title'  => $category['name'],
                     'lastmod'  => $category['updatetime'],
-                    'url'    => $this->gadget->urlMap('ShowCategory', array('id' => $cat), true),
+                    'url'    => $this->gadget->urlMap(
+                        'ShowCategory',
+                        array('id' => $cat),
+                        array('absolute' => true)
+                    ),
                 );
             }
 
@@ -77,7 +81,11 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'parent' => $categories[0],
                         'title' => $post['title'],
                         'lastmod'  => $post['updatetime'],
-                        'url'   => $this->gadget->urlMap('SingleView', array('id' => $entry), true),
+                        'url'   => $this->gadget->urlMap(
+                            'SingleView',
+                            array('id' => $entry),
+                            array('absolute' => true)
+                        ),
                     );
                 }
             }

@@ -50,7 +50,9 @@ class Jaws_Gadget_Plugin
             foreach ($plugins as $plugin) {
                 $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
                 if (!Jaws_Error::IsError($objPlugin)) {
-                    $use_in = '*';
+                    if ($objPlugin->_OnlyNormalActions && $GLOBALS['app']->requestedActionMode != 'normal') {
+                        continue;
+                    }
                     $use_in = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
                     if (!Jaws_Error::isError($use_in) &&
                        ($use_in == '*' || in_array($gadget, explode(',', $use_in)))
@@ -84,7 +86,9 @@ class Jaws_Gadget_Plugin
             foreach ($plugins as $plugin) {
                 $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
                 if (!Jaws_Error::IsError($objPlugin)) {
-                    $use_in = '*';
+                    if ($objPlugin->_OnlyNormalActions && $GLOBALS['app']->requestedActionMode != 'normal') {
+                        continue;
+                    }
                     $use_in = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
                     if (!Jaws_Error::isError($use_in) &&
                        ($use_in == '*' || in_array($gadget, explode(',', $use_in)))

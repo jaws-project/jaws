@@ -26,7 +26,7 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('FAQ_TITLE'),
-                'url'    => $this->gadget->urlMap('View', array(), true)
+                'url'    => $this->gadget->urlMap('View', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -57,7 +57,11 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
                     'parent' => $category['id'],
                     'title'  => $category['category'],
                     'lastmod'=> $category['updatetime'],
-                    'url'    => $this->gadget->urlMap('ViewCategory', array('id' => $cat), true),
+                    'url'    => $this->gadget->urlMap(
+                        'ViewCategory',
+                        array('id' => $cat),
+                        array('absolute' => true)
+                    ),
                 );
             }
 
@@ -74,7 +78,11 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'parent'    => $question['category'],
                         'title'     => $question['question'],
                         'lastmod'   => $question['updatetime'],
-                        'url'       => $this->gadget->urlMap('ViewQuestion', array('id' => $entry), true),
+                        'url'       => $this->gadget->urlMap(
+                            'ViewQuestion',
+                            array('id' => $entry),
+                            array('absolute' => true)
+                        ),
                     );
                 }
             }

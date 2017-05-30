@@ -246,41 +246,40 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
                     switch ($entry['gadget']) {
                         case 'Blog':
-                            $url = $GLOBALS['app']->Map->GetURLFor(
-                                'Blog',
+                            $url = $this->gadget->urlMap(
                                 'SingleView',
                                 array('id' => $entry['reference']),
-                                true
+                                array('absolute' => true),
+                                'Blog'
                             );
                             $url = $url. '#comment'. $entry['id'];
                             break;
 
                         case 'Phoo':
-                            $url = $GLOBALS['app']->Map->GetURLFor(
-                                'Phoo',
+                            $url = $this->gadget->urlMap(
                                 'ViewImage',
                                 array('id' => $entry['reference']),
-                                true
+                                array('absolute' => true),
+                                'Phoo'
                             );
                             $url = $url. '#comment'. $entry['id'];
                             break;
 
                         case 'Shoutbox':
-                            $url = $GLOBALS['app']->Map->GetURLFor(
-                                'Shoutbox',
+                            $url = $this->gadget->urlMap(
                                 'Comments',
                                 array(),
-                                true
+                                array('absolute' => true),
+                                'Shoutbox'
                             );
                             $url = $url. '#comment'. $entry['id'];
                             break;
 
                         case 'Comments':
-                            $url = $GLOBALS['app']->Map->GetURLFor(
-                                'Comments',
+                            $url = $this->gadget->urlMap(
                                 'Guestbook',
                                 array(),
-                                true
+                                array('absolute' => true)
                             );
                             $url = $url. '#comment'. $entry['id'];
                             break;

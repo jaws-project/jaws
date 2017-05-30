@@ -568,7 +568,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         $topic_link = $this->gadget->urlMap(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['tid']),
-            true
+            array('absolute' => true)
         );
 
         if ($send_notification) {
@@ -634,7 +634,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 $forum_link = $this->gadget->urlMap(
                     'Topics',
                     array('fid' => $topic['fid']),
-                    true
+                    array('absolute' => true)
                 );
 
                 $send_notification =
@@ -752,7 +752,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         $topic_link = $this->gadget->urlMap(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
-            true
+            array('absolute' => true)
         );
         $result = $tModel->TopicNotification(
             $event_type,
@@ -805,7 +805,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         $topic_link = $this->gadget->urlMap(
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
-            true
+            array('absolute' => true)
         );
         $result = $tModel->TopicNotification(
             $event_type,

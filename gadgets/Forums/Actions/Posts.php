@@ -610,7 +610,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $topic_link = $this->gadget->urlMap(
                 'Posts',
                 array('fid' => $post['fid'], 'tid' => $post['tid']),
-                true
+                array('absolute' => true)
             );
 
             if (!is_null($rqst['confirm'])) {

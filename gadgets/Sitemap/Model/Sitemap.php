@@ -97,9 +97,14 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
             $gadget_xml_file = JAWS_DATA. 'sitemap/'. strtolower($gadget['name']). '/sitemap.xml';
             if (file_exists($gadget_xml_file)) {
                 $tpl->SetBlock('xml/item');
-                $tpl->SetVariable('loc', $this->gadget->urlMap(
-                                    'SitemapXML',
-                                    array('gname' => strtolower($gadget['name'])), true));
+                $tpl->SetVariable(
+                    'loc',
+                    $this->gadget->urlMap(
+                        'SitemapXML',
+                        array('gname' => strtolower($gadget['name'])),
+                        array('absolute' => true)
+                    )
+                );
                 $tpl->SetVariable('lastmod', $date->ToISO(filemtime($gadget_xml_file)));
                 $tpl->ParseBlock('xml/item');
             }

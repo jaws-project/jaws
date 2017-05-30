@@ -26,7 +26,7 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('FORUMS_TITLE'),
-                'url'    => $this->gadget->urlMap('Forums', array(), true)
+                'url'    => $this->gadget->urlMap('Forums', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -56,7 +56,11 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                     'parent' => $group['id'],
                     'title'  => $group['title'],
                     'lastmod'=> null,
-                    'url'    => $this->gadget->urlMap('Group', array('gid' => $group['id']), true),
+                    'url'    => $this->gadget->urlMap(
+                        'Group',
+                        array('gid' => $group['id']),
+                        array('absolute' => true)
+                    ),
                 );
             }
 
@@ -73,7 +77,11 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'parent'    => $forum['gid'],
                         'title'     => $forum['title'],
                         'lastmod'   => null,
-                        'url'       => $this->gadget->urlMap('Topics', array('fid' => $forum['id']), true),
+                        'url'       => $this->gadget->urlMap(
+                            'Topics',
+                            array('fid' => $forum['id']),
+                            array('absolute' => true)
+                        ),
                     );
 
                     // Get all published topics
@@ -84,7 +92,11 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                             'parent'    => $forum['gid'],
                             'title'     => $topic['subject'],
                             'lastmod'   => null,
-                            'url'       => $this->gadget->urlMap('Posts', array('fid' => $forum['id'], 'tid' => $topic['id']), true),
+                            'url'       => $this->gadget->urlMap(
+                                'Posts',
+                                array('fid' => $forum['id'], 'tid' => $topic['id']),
+                                array('absolute' => true)
+                            ),
                         );
                     }
                 }

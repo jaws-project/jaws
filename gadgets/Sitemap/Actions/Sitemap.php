@@ -61,6 +61,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
                 }
             }
 
+            $finalCategory = array();
             $gadgetCategory = $model->GetGadgetCategoryProperties($gadget['name']);
             // Detect all gadget's categories status
             foreach($items['levels'] as $cat) {

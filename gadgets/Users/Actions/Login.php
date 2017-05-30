@@ -251,7 +251,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
                     $tpl->SetVariable(
                         'layout_url',
-                        $this->gadget->urlMap('Layout', array(), false, 'Layout')
+                        $this->gadget->urlMap('Layout', array(), array(), 'Layout')
                     );
                     $tpl->ParseBlock('UserLinks/layout');
                 }
@@ -262,7 +262,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
                     $tpl->SetVariable(
                         'layout_url',
-                        $this->gadget->urlMap('Layout', array('layout' => 'Index.Dashboard'), false, 'Layout')
+                        $this->gadget->urlMap('Layout', array('layout' => 'Index.Dashboard'), array(), 'Layout')
                     );
                     $tpl->ParseBlock('UserLinks/layout');
                 }
@@ -275,20 +275,20 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_USER'));
                     $tpl->SetVariable(
                         'dashboard_url',
-                        $this->gadget->urlMap('Dashboard', array('user' => $logged_user), false, 'Layout')
+                        $this->gadget->urlMap('Dashboard', array('user' => $logged_user), array(), 'Layout')
                     );
                 } else {
                     $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_GLOBAL'));
                     $tpl->SetVariable(
                         'dashboard_url',
-                        $this->gadget->urlMap('Dashboard', array('user' => 0), false, 'Layout')
+                        $this->gadget->urlMap('Dashboard', array('user' => 0), array(), 'Layout')
                     );
                 }
                 $tpl->ParseBlock('UserLinks/dashboard');
             }
 
             // ControlPanel
-            if ($this->gadget->GetPermission('default_admin', '', false, 'ControlPanel')) {
+            if ($this->gadget->GetPermission('default_admin', '', array(), 'ControlPanel')) {
                 $tpl->SetBlock('UserLinks/cpanel');
                 $tpl->SetVariable('cpanel', _t('USERS_CONTROLPANEL'));
                 $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');

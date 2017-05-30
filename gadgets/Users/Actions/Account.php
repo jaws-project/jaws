@@ -255,7 +255,7 @@ class Users_Actions_Account extends Users_Actions_Default
                 $this->gadget->urlMap(
                     'ReplaceUserEmail',
                     array('key' => $verifyKey),
-                    true
+                    array('absolute' => true)
                 )
             );
             $tpl->ParseBlock('Notification/Activation');

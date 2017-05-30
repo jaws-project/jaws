@@ -218,10 +218,10 @@ class Jaws_URLMapping
         $params = explode('/', $this->_request_uri);
         $matched_but_ignored = false;
         $reqOptions = explode('.',  $this->_request_uri);
-        $reqURL = array_shift($reqOptions);
+        $requestedURL = array_shift($reqOptions);
         if (count($reqOptions) % 2) {
-            //array_splice($reqOptions, -1, 0, 'restype');
-            array_pop($reqOptions);
+            // adding real extension to request url
+            $requestedURL = $requestedURL. '.' . array_pop($reqOptions);
         }
 
         foreach ($this->_maps as $gadget => $maps) {
@@ -244,7 +244,13 @@ class Jaws_URLMapping
                         $custom = false;
                     }
 
-                    if (preg_match($regexp, $reqURL, $matches) == 1) {
+                    $url = $requestedURL;
+                    $ext = ($map['extension'] == '.')? $this->_extension : $map['extension'];
+                    if (substr($url, - strlen($ext)) == $ext) {
+                        $url = substr($url, 0, - strlen($ext));
+                    }
+
+                    if (preg_match($regexp, $url, $matches) == 1) {
                         if ($this->_restrict_multimap) {
                             if ($this->_custom_precedence && $has_custom && !$custom) {
                                 $matched_but_ignored = true;
@@ -260,7 +266,7 @@ class Jaws_URLMapping
                         $request->update('gadget', $gadget, 'get');
                         $request->update('action', $map['action'], 'get');
                         for ($i = 0; $i < count($reqOptions); $i=$i+2) {
-                            $request->update($reqOptions[$i], $reqOptions[$i+1]);
+                            $request->update(rawurldecode($reqOptions[$i]), rawurldecode($reqOptions[$i+1]));
                         }
 
                         // Params
@@ -336,11 +342,17 @@ class Jaws_URLMapping
      * @param   string  $gadget     Gadget name
      * @param   string  $action     Action name
      * @param   array   $params     Parameters of action
-     * @param   bool    $abs_url    Absolute or relative URL
+     * @param   array   $options    URL options(restype, mode, ...)
      * @return  string  The real URL map (aka jaws permalink)
      */
-    function GetURLFor($gadget, $action='', $params = array(), $abs_url = false)
+    function GetURLFor($gadget, $action='', $params = array(), $options = array())
     {
+        // absolute or relative URL
+        $abs_url = isset($options['absolute'])? (bool)$options['absolute'] : false;
+        // URL extension(true: default extension, false: disable extension, custom extension)
+        $extension = isset($options['extension'])? $options['extension'] : true;
+        unset($options['absolute'], $options['extension']);
+
         $params_vars = array_keys($params);
         if ($this->_enabled && isset($this->_actions_maps[$gadget][$action])) {
             foreach ($this->_actions_maps[$gadget][$action] as $map) {
@@ -379,8 +391,15 @@ class Jaws_URLMapping
                         $url = 'index.php/' . $url;
                     }
 
-                    $ext = $map['extension'];
-                    $url.= ($ext == '.')? $this->_extension : $ext;
+                    if ($extension) {
+                        $url.= ($extension === true)? $this->_extension : $extension;
+                    }
+
+                    // preparing options
+                    foreach ($options as $opKey => $opValue) {
+                        $url.= rawurlencode($opKey). '.'. rawurlencode($opValue);
+                    }
+
                     break;
                 }
                 $url = '';
@@ -398,6 +417,10 @@ class Jaws_URLMapping
         } else {
             $url = 'index.php/' .$gadget . '/'. $action;
         }
+
+        // // merging options and params
+        $params = array_merge($params, $options);
+
         if (is_array($params)) {
             //Params should be in pairs
             foreach ($params as $key => $value) {

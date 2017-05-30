@@ -26,7 +26,7 @@ class StaticPage_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('STATICPAGE_TITLE'),
-                'url'    => $this->gadget->urlMap('GroupsList', array(), true)
+                'url'    => $this->gadget->urlMap('GroupsList', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -57,7 +57,11 @@ class StaticPage_Hooks_Sitemap extends Jaws_Gadget_Hook
                     'parent' => $category['id'],
                     'title'  => $category['title'],
                     'lastmod'=> null,
-                    'url'    => $this->gadget->urlMap('GroupPages', array('gid' => $cat), true),
+                    'url'    => $this->gadget->urlMap(
+                        'GroupPages',
+                        array('gid' => $cat),
+                        array('absolute' => true)
+                    ),
                 );
             }
 
@@ -74,7 +78,11 @@ class StaticPage_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'parent'    => $page['group_id'],
                         'title'     => $page['title'],
                         'lastmod'   => $page['updated'],
-                        'url'       => $this->gadget->urlMap('Page', array('pid' => $entry), true),
+                        'url'       => $this->gadget->urlMap(
+                            'Page',
+                            array('pid' => $entry),
+                            array('absolute' => true)
+                        ),
                     );
                 }
             }

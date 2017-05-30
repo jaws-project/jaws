@@ -181,7 +181,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             'key' => $key,
             'summary' => $subject,
             'description' => $message,
-            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), true)
+            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), array('absolute' => true))
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
@@ -192,7 +192,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             'key' => $key,
             'summary' => $subject,
             'description' => $message,
-            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), true)
+            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), array('absolute' => true))
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
@@ -204,7 +204,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             'key' => $key,
             'summary' => $subject,
             'description' => $message,
-            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), true)
+            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), array('absolute' => true))
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
@@ -342,11 +342,11 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $lnkProfile =& Piwi::CreateWidget(
             'Link',
             $GLOBALS['app']->Session->GetAttribute('nickname'),
-            $GLOBALS['app']->Map->GetURLFor(
-                'Users',
+            $this->gadget->urlMap(
                 'Profile',
                 array('user' => $GLOBALS['app']->Session->GetAttribute('username')),
-                true
+                array('absolute' => true),
+                'Users'
             )
         );
 

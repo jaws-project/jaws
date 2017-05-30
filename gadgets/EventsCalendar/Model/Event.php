@@ -310,8 +310,16 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                 'description' => $event['description'],
                 'time' => $rec['start_time'] - $event['reminder'],
                 'url' => $event['user'] ?
-                    $this->gadget->urlMap('ViewEvent', array('event' => $eventId, 'user' => $event['user']), true) :
-                    $this->gadget->urlMap('ViewEvent', array('event' => $eventId), true)
+                    $this->gadget->urlMap(
+                        'ViewEvent',
+                        array('event' => $eventId, 'user' => $event['user']),
+                        array('absolute' => true)
+                    ) :
+                    $this->gadget->urlMap(
+                        'ViewEvent',
+                        array('event' => $eventId),
+                        array('absolute' => true)
+                    )
             );
             $this->Notify($notify);
         }

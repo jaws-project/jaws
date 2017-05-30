@@ -22,7 +22,7 @@ class EventsCalendar_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => _t('EVENTSCALENDAR_TITLE'),
-                'url'    => $this->gadget->urlMap('ViewYear', array(), true)
+                'url'    => $this->gadget->urlMap('ViewYear', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
@@ -30,7 +30,7 @@ class EventsCalendar_Hooks_Sitemap extends Jaws_Gadget_Hook
         $result['levels'][] = array(
             'id' => Directory_Info::FILE_TYPE_TEXT,
             'title' => _t('EVENTSCALENDAR_EVENTS'),
-            'url' => $this->gadget->urlMap('ViewYear', array(), true)
+            'url' => $this->gadget->urlMap('ViewYear', array(), array('absolute' => true))
         );
         return $result;
     }
