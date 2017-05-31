@@ -76,7 +76,7 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
      */
     function PluginInfo($plugin)
     {
-        $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+        $objPlugin = Jaws_Plugin::getInstance($plugin, false);
         if (Jaws_Error::IsError($objPlugin)) {
             return $objPlugin->getMessage();
         }
@@ -90,7 +90,7 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $tpl->SetVariable('lbl_friendly',  _t('COMPONENTS_PLUGINS_FRIENDLY').':');
         $tpl->SetVariable(
             'accesskey',
-            $objPlugin->GetAccessKey()? $objPlugin->GetAccessKey() : _t('COMPONENTS_PLUGINS_NO_ACCESSKEY')
+            method_exists($objPlugin, 'GetAccessKey')? $objPlugin->GetAccessKey() : _t('COMPONENTS_PLUGINS_NO_ACCESSKEY')
         );
         $tpl->SetVariable(
             'friendly',

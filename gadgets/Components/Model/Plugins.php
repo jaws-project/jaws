@@ -37,7 +37,7 @@ class Components_Model_Plugins extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+                $objPlugin = Jaws_Plugin::getInstance($plugin, false);
                 if (Jaws_Error::IsError($objPlugin)) {
                     continue;
                 }

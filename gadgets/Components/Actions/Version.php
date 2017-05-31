@@ -35,7 +35,7 @@ class Components_Actions_Version extends Jaws_Gadget_Action
                 break;
 
             case 2:
-                $objPlugin = $GLOBALS['app']->LoadPlugin($get['componente']);
+                $objPlugin = Jaws_Plugin::getInstance($get['component'], false);
                 $version = Jaws_Error::isError($objPlugin)? Jaws_HTTPError::Get(404) : $objPlugin->version;
                 break;
         }
