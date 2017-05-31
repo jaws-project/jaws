@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SmartBridge_Plugin extends Jaws_Plugin
+class SmartBridge_Plugin
 {
     var $friendly = true;
     var $version  = '0.2';
