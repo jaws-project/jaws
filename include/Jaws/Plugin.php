@@ -19,73 +19,6 @@ class Jaws_Plugin
     const PLUGIN_TYPE_ATTACHER = 2;
 
     /**
-     * @access  public
-     * @var     string
-     */
-    var $name;
-
-    /**
-     * @access  public
-     * @var     string
-     */
-    var $title;
-
-    /**
-     * @access  public
-     * @var     string
-     */
-    var $description;
-
-    /**
-     * @access  public
-     * @var     string
-     */
-    var $example;
-
-    /**
-     * @access  public
-     * @var     bool
-     */
-    var $friendly;
-
-    /**
-     * @access  public
-     * @var     string
-     */
-    var $version;
-
-    /**
-     * @access  private
-     * @var     string
-     * @see     function  GetAccessKey
-     */
-    var $_AccessKey;
-
-    /**
-     * Only effect on normal actions
-     *
-     * @var     bool
-     * @access  protected
-     */
-    var $_OnlyNormalActions = false;
-
-    /**
-     * Front-end available by default
-     *
-     * @var     bool
-     * @access  protected
-     */
-    var $_DefaultFrontendEnabled = false;
-
-    /**
-     * Back-end available by default
-     *
-     * @var     bool
-     * @access  protected
-     */
-    var $_DefaultBackendEnabled = false;
-
-    /**
      * plugin type
      *
      * @var     int
@@ -97,26 +30,21 @@ class Jaws_Plugin
      * Constructor
      *
      * @access  protected
-     * @param   string $plugin Plugin name(same as the file-system name)
      * @return  void
      */
-    function __construct($plugin)
+    function __construct()
     {
-        $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
-        $this->name        = $plugin;
-        $this->title       = $plugin;
-        $this->example     = _t('PLUGINS_'. strtoupper($plugin). '_EXAMPLE');
-        $this->description = _t('PLUGINS_'. strtoupper($plugin). '_DESCRIPTION');
     }
 
     /**
      * Creates the Jaws_Plugin instance
      *
      * @access  public
-     * @param   string  $plugin Plugin name
+     * @param   string  $plugin         Plugin name
+     * @param   bool    $onlyInstalled  get instance if plugin installed
      * @return  object returns the instance
      */
-    static function getInstance($plugin)
+    static function getInstance($plugin, $onlyInstalled = true)
     {
         static $instances = array();
         $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
@@ -136,59 +64,47 @@ class Jaws_Plugin
                 );
             }
 
-            if (!self::IsPluginInstalled($plugin)) {
-                return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_PLUGIN_NOT_INSTALLED', $plugin),
-                    __FUNCTION__
-                );
+            // is plugin available?
+            if (defined('JAWS_AVAILABLE_PLUGINS')) {
+                static $available_plugins;
+                if (!isset($available_plugins)) {
+                    $available_plugins = array_filter(array_map('trim', explode(',', JAWS_AVAILABLE_PLUGINS)));
+                }
+
+                if (!in_array($plugin, $available_plugins)) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', $plugin),
+                        'Plugin availability check'
+                    );
+                }
             }
 
             require_once $file;
             $classname = $plugin. '_Plugin';
-            $instances[$plugin] = new $classname($plugin);
+            $instances[$plugin] = new $classname();
+            $instances[$plugin]->name        = $plugin;
+            $instances[$plugin]->title       = $plugin;
+            $instances[$plugin]->example     = _t('PLUGINS_'. strtoupper($plugin). '_EXAMPLE');
+            $instances[$plugin]->description = _t('PLUGINS_'. strtoupper($plugin). '_DESCRIPTION');
+            // only normal mode actions
+            if (!isset($instances[$plugin]->onlyNormalMode)) {
+                $instances[$plugin]->onlyNormalMode = false;
+            }
+            // plugin type
+            if (!isset($instances[$plugin]->pluginType)) {
+                $instances[$plugin]->pluginType = self::PLUGIN_TYPE_MODIFIER;
+            }
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded plugin: $plugin");
         }
 
+        if ($onlyInstalled && !self::IsPluginInstalled($plugin)) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_PLUGIN_NOT_INSTALLED', $plugin),
+                __FUNCTION__
+            );
+        }
+
         return $instances[$plugin];
-    }
-
-    /**
-     * Get the access-key of the plugin
-     *
-     * @access  public
-     * @return  string Value of $_Accesskey
-     */
-    function GetAccesskey()
-    {
-        return $this->_AccessKey;
-    }
-
-    /**
-     * Parse the text.
-     *
-     * @access  public
-     * @param   string  $html       Html to Parse
-     * @param   int     $reference  Action reference entity
-     * @param   string  $action     Gadget action name
-     * @param   string  $gadget     Gadget name
-     * @return  string  The parsed Html
-     */
-    function ParseText($html, $reference = 0, $action = '', $gadget = '')
-    {
-        //This method does nothing
-        return $html;
-    }
-
-    /**
-     *
-     * Get the web-control of the plugin, useful for the JawsEditor
-     * @access  public
-     * @return  string
-     */
-    function GetWebControl($textarea)
-    {
-        //Returns an empty text by default
-        return '';
     }
 
     /**
@@ -213,7 +129,7 @@ class Jaws_Plugin
      */
     static function InstallPlugin($plugin)
     {
-        $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+        $objPlugin = Jaws_Plugin::getInstance($plugin, false);
         if (Jaws_Error::IsError($result)) {
             return $objPlugin;
         }
@@ -226,21 +142,23 @@ class Jaws_Plugin
         $installed_plugins.= $plugin. ',';
         $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
 
-        // load plugin install method
-        $result = $objPlugin->Install();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        // load plugin install method if exists
+        if (method_exists($objPlugin, 'Install')) {
+            $result = $objPlugin->Install();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         $GLOBALS['app']->Registry->insert(
             'backend_gadgets',
-            $objPlugin->_DefaultBackendEnabled? '*' : ',',
+            (isset($objPlugin->backendEnabled) && $objPlugin->backendEnabled)? '*' : ',',
             false,
             $plugin
         );
         $GLOBALS['app']->Registry->insert(
             'frontend_gadgets',
-            $objPlugin->_DefaultFrontendEnabled? '*' : ',',
+            (isset($objPlugin->frontendEnabled) && $objPlugin->frontendEnabled)? '*' : ',',
             false,
             $plugin
         );
@@ -263,23 +181,25 @@ class Jaws_Plugin
      */
     static function UninstallPlugin($plugin)
     {
-        $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+        $objPlugin = Jaws_Plugin::getInstance($plugin);
         if (Jaws_Error::IsError($result)) {
             return $objPlugin;
         }
         
-        // removeing plugin from installed plugins list
+        // removing plugin from installed plugins list
         $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
         $installed_plugins = str_replace(",$plugin,", ',', $installed_plugins);
         $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
 
-        // removeing plugin registry keys
+        // removing plugin registry keys
         $GLOBALS['app']->Registry->Delete($plugin);
 
         // load plugin uninstall method
-        $result = $objPlugin->Uninstall();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        if (method_exists($objPlugin, 'Uninstall')) {
+            $result = $objPlugin->Uninstall();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         // Everything is done
@@ -288,30 +208,6 @@ class Jaws_Plugin
             return $res;
         }
 
-        return true;
-    }
-
-    /**
-     * Install a plugin
-     * Plugins should override this method only if they need to perform actions to install
-     *
-     * @access  public
-     * @return  bool    True on successful install and Jaws_Error on failure
-     */
-    function Install()
-    {
-        return true;
-    }
-
-    /**
-     * Uninstall a plugin
-     * Plugins should override this method only if they need to perform actions to uninstall
-     *
-     * @access  public
-     * @return  mixed    True on a successful uninstall and Jaws_Error otherwise
-     */
-    function Uninstall()
-    {
         return true;
     }
 
