@@ -8,7 +8,7 @@
  * @copyright  2008-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ActionImport_Plugin extends Jaws_Plugin
+class ActionImport_Plugin
 {
     var $friendly = false;
     var $version = '0.1';
