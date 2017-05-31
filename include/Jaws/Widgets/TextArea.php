@@ -207,9 +207,9 @@ class Jaws_Widgets_TextArea extends Container
 
         foreach ($installed_plugins as $plugin) {
             $gadgets = $GLOBALS['app']->Registry->fetch($pluginKey, $plugin);
-            if (($gadgets == '*') || (strpos($gadgets, ",{$this->_Gadget},") !== false)) {
-                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
-                if (!Jaws_Error::IsError($objPlugin)) {
+            if (($gadgets == '*') || in_array($this->_Gadget, explode(',', $gadgets))) {
+                $objPlugin = Jaws_Plugin::getInstance($plugin);
+                if (!Jaws_Error::IsError($objPlugin) && method_exists($objPlugin, 'GetWebControl')) {
                     $plugincontrol = $objPlugin->GetWebControl($this->_Name);
                     if (is_object($plugincontrol)) {
                         $plugincontrolValue = $plugincontrol->Get();
