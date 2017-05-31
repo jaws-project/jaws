@@ -8,12 +8,11 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emoticons_Plugin extends Jaws_Plugin
+class Emoticons_Plugin
 {
     var $friendly = true;
     var $version = '0.5.1';
     var $_ImagePath = 'plugins/Emoticons/images';
-    var $_DefaultFrontendEnabled = true;
 
     /**
      * Overrides, Gets the WebControl of this plugin
