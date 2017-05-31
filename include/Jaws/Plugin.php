@@ -142,6 +142,21 @@ class Jaws_Plugin
         $installed_plugins.= $plugin. ',';
         $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
 
+        // backend_gadgets
+        $GLOBALS['app']->Registry->insert(
+            'backend_gadgets',
+            (isset($objPlugin->backendEnabled) && $objPlugin->backendEnabled)? '*' : ',',
+            false,
+            $plugin
+        );
+        // frontend_gadgets
+        $GLOBALS['app']->Registry->insert(
+            'frontend_gadgets',
+            (isset($objPlugin->frontendEnabled) && $objPlugin->frontendEnabled)? '*' : ',',
+            false,
+            $plugin
+        );
+
         // load plugin install method if exists
         if (method_exists($objPlugin, 'Install')) {
             $result = $objPlugin->Install();
@@ -150,23 +165,10 @@ class Jaws_Plugin
             }
         }
 
-        $GLOBALS['app']->Registry->insert(
-            'backend_gadgets',
-            (isset($objPlugin->backendEnabled) && $objPlugin->backendEnabled)? '*' : ',',
-            false,
-            $plugin
-        );
-        $GLOBALS['app']->Registry->insert(
-            'frontend_gadgets',
-            (isset($objPlugin->frontendEnabled) && $objPlugin->frontendEnabled)? '*' : ',',
-            false,
-            $plugin
-        );
-
         // Everything is done
         $res = $GLOBALS['app']->Listener->Shout('Plugin', 'InstallPlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
-            return $res;
+            //do nothing
         }
 
         return true;
