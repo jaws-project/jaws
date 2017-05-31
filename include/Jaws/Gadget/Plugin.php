@@ -44,21 +44,15 @@ class Jaws_Gadget_Plugin
     function parse($text, $reference = 0, $action = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
-        if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
-            $plugins = array_filter(explode(',', $plugins));
-            foreach ($plugins as $plugin) {
-                $objPlugin = Jaws_Plugin::getInstance($plugin);
-                if (!Jaws_Error::IsError($objPlugin)) {
-                    if ($objPlugin->onlyNormalMode && $GLOBALS['app']->requestedActionMode != 'normal') {
-                        continue;
-                    }
-                    $use_in = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
-                    if (!Jaws_Error::isError($use_in) &&
-                       ($use_in == '*' || in_array($gadget, explode(',', $use_in)))
-                    ) {
-                        $text = $objPlugin->ParseText($text, $reference, $action, $gadget);
-                    }
+        $installedPlugins = Jaws_Plugin::getinstalledPlugins();
+        foreach ($installedPlugins as $pluginType => $plugins) {
+            foreach ($plugins as $plugin => $properties) {
+                if ($properties['onlyNormalMode'] && $GLOBALS['app']->requestedActionMode != 'normal') {
+                    continue;
+                }
+                // check is plugin enabled on this gadget
+                if ($properties['frontend_gadgets'] == '*' || in_array($gadget, $properties['frontend_gadgets'])) {
+                    $text = Jaws_Plugin::getInstance($plugin, false)->ParseText($text, $reference, $action, $gadget);
                 }
             }
         }
@@ -80,21 +74,15 @@ class Jaws_Gadget_Plugin
     function parseAdmin($text, $reference = 0, $action = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
-        if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
-            $plugins = array_filter(explode(',', $plugins));
-            foreach ($plugins as $plugin) {
-                $objPlugin = Jaws_Plugin::getInstance($plugin);
-                if (!Jaws_Error::IsError($objPlugin)) {
-                    if ($objPlugin->onlyNormalMode && $GLOBALS['app']->requestedActionMode != 'normal') {
-                        continue;
-                    }
-                    $use_in = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
-                    if (!Jaws_Error::isError($use_in) &&
-                       ($use_in == '*' || in_array($gadget, explode(',', $use_in)))
-                    ) {
-                        $text = $objPlugin->ParseText($text, $reference, $action, $gadget);
-                    }
+        $installedPlugins = Jaws_Plugin::getinstalledPlugins();
+        foreach ($installedPlugins as $pluginType => $plugins) {
+            foreach ($plugins as $plugin => $properties) {
+                if ($properties['onlyNormalMode'] && $GLOBALS['app']->requestedActionMode != 'normal') {
+                    continue;
+                }
+                // check is plugin enabled on this gadget
+                if ($properties['backend_gadgets'] == '*' || in_array($gadget, $properties['backend_gadgets'])) {
+                    $text = Jaws_Plugin::getInstance($plugin, false)->ParseText($text, $reference, $action, $gadget);
                 }
             }
         }
