@@ -8,12 +8,12 @@
  * @copyright  2017 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Paragraph_Plugin extends Jaws_Plugin
+class Paragraph_Plugin
 {
     var $friendly = false;
     var $version  = '1.0';
-    var $_DefaultBackendEnabled  = true;
-    var $_DefaultFrontendEnabled = true;
+    var $backendEnabled  = true;
+    var $frontendEnabled = true;
 
     /**
      * Overrides, Parses the text
