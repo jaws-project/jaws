@@ -5,12 +5,10 @@
  * @category   Plugin
  * @package    AbuseReport
  */
-class AbuseReport_Plugin extends Jaws_Plugin
+class AbuseReport_Plugin
 {
     var $friendly = false;
     var $version  = '0.1';
-    var $_DefaultFrontendEnabled = false;
-    var $_DefaultBackendEnabled  = false;
 
     /**
      * Overrides, Parses the text
