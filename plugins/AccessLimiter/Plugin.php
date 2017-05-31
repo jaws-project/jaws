@@ -8,7 +8,7 @@
  * @copyright  2009-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class AccessLimiter_Plugin extends Jaws_Plugin
+class AccessLimiter_Plugin
 {
     var $friendly = false;
     var $version = '0.1';
