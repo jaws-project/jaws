@@ -27,13 +27,38 @@ class Jaws_Plugin
     var $_PluginType = Jaws_Plugin::PLUGIN_TYPE_MODIFIER;
 
     /**
-     * Constructor
+     * Get installed plugins
      *
-     * @access  protected
-     * @return  void
+     * @access  public
+     * @return  array   installed plugins in separated groups
      */
-    function __construct()
+    static function getinstalledPlugins()
     {
+        static $installedPlugins;
+        if (!isset($installedPlugins)) {
+            $installedPlugins = array();
+            $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+            if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
+                $plugins = array_filter(explode(',', $plugins));
+                foreach ($plugins as $plugin) {
+                    $objPlugin = Jaws_Plugin::getInstance($plugin, false);
+                    if (!Jaws_Error::IsError($objPlugin)) {
+                        $fgadgets = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
+                        $fgadgets = $GLOBALS['app']->Registry->fetch('backend_gadgets',  $plugin);
+                        $installedPlugins[$objPlugin->pluginType][$plugin] = array (
+                            'pluginType'       => $objPlugin->pluginType,
+                            'onlyNormalMode'   => $objPlugin->onlyNormalMode,
+                            'frontend_gadgets' => $fgadgets == '*'? '*' : explode(',', $fgadgets),
+                            'backend_gadgets'  => $fgadgets == '*'? '*' : explode(',', $fgadgets),
+                        );
+                    }
+                }
+            }
+
+            ksort($installedPlugins);
+        }
+
+        return $installedPlugins;
     }
 
     /**
@@ -82,10 +107,6 @@ class Jaws_Plugin
             require_once $file;
             $classname = $plugin. '_Plugin';
             $instances[$plugin] = new $classname();
-            $instances[$plugin]->name        = $plugin;
-            $instances[$plugin]->title       = $plugin;
-            $instances[$plugin]->example     = _t('PLUGINS_'. strtoupper($plugin). '_EXAMPLE');
-            $instances[$plugin]->description = _t('PLUGINS_'. strtoupper($plugin). '_DESCRIPTION');
             // only normal mode actions
             if (!isset($instances[$plugin]->onlyNormalMode)) {
                 $instances[$plugin]->onlyNormalMode = false;
