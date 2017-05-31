@@ -48,9 +48,9 @@ class Jaws_Gadget_Plugin
         if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
             $plugins = array_filter(explode(',', $plugins));
             foreach ($plugins as $plugin) {
-                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+                $objPlugin = Jaws_Plugin::getInstance($plugin);
                 if (!Jaws_Error::IsError($objPlugin)) {
-                    if ($objPlugin->_OnlyNormalActions && $GLOBALS['app']->requestedActionMode != 'normal') {
+                    if ($objPlugin->onlyNormalMode && $GLOBALS['app']->requestedActionMode != 'normal') {
                         continue;
                     }
                     $use_in = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
@@ -84,9 +84,9 @@ class Jaws_Gadget_Plugin
         if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
             $plugins = array_filter(explode(',', $plugins));
             foreach ($plugins as $plugin) {
-                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+                $objPlugin = Jaws_Plugin::getInstance($plugin);
                 if (!Jaws_Error::IsError($objPlugin)) {
-                    if ($objPlugin->_OnlyNormalActions && $GLOBALS['app']->requestedActionMode != 'normal') {
+                    if ($objPlugin->onlyNormalMode && $GLOBALS['app']->requestedActionMode != 'normal') {
                         continue;
                     }
                     $use_in = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
