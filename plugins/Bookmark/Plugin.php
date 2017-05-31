@@ -5,12 +5,10 @@
  * @category   Plugin
  * @package    Bookmark
  */
-class Bookmark_Plugin extends Jaws_Plugin
+class Bookmark_Plugin
 {
     var $friendly = false;
     var $version  = '0.1';
-    var $_DefaultFrontendEnabled = false;
-    var $_DefaultBackendEnabled  = false;
 
     /**
      * Overrides, Parses the text
