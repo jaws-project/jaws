@@ -173,24 +173,8 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $id = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];
             $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
 
-            $summary = $e['summary'];
-            $text    = $e['text'];
-
-            // for compatibility with old versions
-            $more_pos = Jaws_UTF8::strpos($text, '[more]');
-            if ($more_pos !== false) {
-                $summary = Jaws_UTF8::substr($text, 0, $more_pos);
-                $text    = Jaws_UTF8::str_replace('[more]', '', $text);
-
-                // Update this entry to split summary and body of post
-                $pModel->SplitEntry($e['id'], $summary, $text);
-            }
-
-            $summary = empty($summary)? $text : $summary;
-            $summary = $this->gadget->plugin->parseAdmin($summary);
-            $text    = $this->gadget->plugin->parseAdmin($text);
-
-            if (Jaws_UTF8::trim($text) != '') {
+            $summary = $this->gadget->plugin->parse(empty($e['summary'])? $e['text'] : $e['summary']);
+            if (Jaws_UTF8::trim($e['text']) != '') {
                 $tpl->SetBlock('recent_posts/item/read-more');
                 $tpl->SetVariable('url', $perm_url);
                 $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
