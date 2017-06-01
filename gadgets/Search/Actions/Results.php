@@ -100,8 +100,9 @@ class Search_Actions_Results extends Jaws_Gadget_Action
                     $tpl->SetVariable('image',  $item['image']);
 
                     if (!isset($item['parse_text']) || $item['parse_text']) {
-                        $item['snippet'] = $this->gadget->plugin->parseAdmin(
+                        $item['snippet'] = $this->gadget->plugin->parse(
                             $item['snippet'],
+                            Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
                             0,
                             '',
                             $gadget
