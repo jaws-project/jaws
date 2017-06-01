@@ -106,8 +106,9 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
             $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
             $tpl->SetVariable('image',  $reference['image']);
             if (!isset($reference['parse_text']) || $reference['parse_text']) {
-                $reference['snippet'] = $this->gadget->plugin->parseAdmin(
+                $reference['snippet'] = $this->gadget->plugin->parse(
                     $reference['snippet'],
+                    Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
                     0,
                     '',
                     $gadget
