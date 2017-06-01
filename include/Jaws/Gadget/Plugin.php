@@ -35,17 +35,24 @@ class Jaws_Gadget_Plugin
      * Parses the input text
      *
      * @access  public
-     * @param   string  $text       Text to parse
-     * @param   int     $reference  Action reference entity
-     * @param   string  $action     Gadget action name
-     * @param   string  $gadget     Gadget name
+     * @param   string  $text           Text to parse
+     * @param   int     $pluginsType    Plugins type(PLUGIN_TYPE_ALLTYPES, PLUGIN_TYPE_MODIFIER, PLUGIN_TYPE_ATTACHER)
+     * @param   int     $reference      Action reference entity
+     * @param   string  $action         Gadget action name
+     * @param   string  $gadget         Gadget name
      * @return  string  Returns the parsed text
      */
-    function parse($text, $reference = 0, $action = '', $gadget = '')
+    function parse($text, $pluginsType = Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
+        $reference = 0, $action = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         $installedPlugins = Jaws_Plugin::getinstalledPlugins();
         foreach ($installedPlugins as $pluginType => $plugins) {
+            // only parse via requested plugins type
+            if ($pluginsType && $pluginsType != $pluginType) {
+                continue;
+            }
+
             foreach ($plugins as $plugin => $properties) {
                 if ($properties['onlyNormalMode'] && $GLOBALS['app']->requestedActionMode != 'normal') {
                     continue;
@@ -65,17 +72,24 @@ class Jaws_Gadget_Plugin
      * Parses the input text
      *
      * @access  public
-     * @param   string  $text       Text to parse
-     * @param   int     $reference  Action reference entity
-     * @param   string  $action     Gadget action name
-     * @param   string  $gadget     Gadget name
+     * @param   string  $text           Text to parse
+     * @param   int     $pluginsType    Plugins type(PLUGIN_TYPE_ALLTYPES, PLUGIN_TYPE_MODIFIER, PLUGIN_TYPE_ATTACHER)
+     * @param   int     $reference      Action reference entity
+     * @param   string  $action         Gadget action name
+     * @param   string  $gadget         Gadget name
      * @return  string  Returns the parsed text
      */
-    function parseAdmin($text, $reference = 0, $action = '', $gadget = '')
+    function parseAdmin($text, $pluginsType = Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
+        $reference = 0, $action = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         $installedPlugins = Jaws_Plugin::getinstalledPlugins();
         foreach ($installedPlugins as $pluginType => $plugins) {
+            // only parse via requested plugins type
+            if ($pluginsType && $pluginsType != $pluginType) {
+                continue;
+            }
+
             foreach ($plugins as $plugin => $properties) {
                 if ($properties['onlyNormalMode'] && $GLOBALS['app']->requestedActionMode != 'normal') {
                     continue;

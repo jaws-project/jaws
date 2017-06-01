@@ -15,6 +15,7 @@ class Jaws_Plugin
     /**
      *  definition plugin types
      */
+    const PLUGIN_TYPE_ALLTYPES = 0;
     const PLUGIN_TYPE_MODIFIER = 1;
     const PLUGIN_TYPE_ATTACHER = 2;
 
