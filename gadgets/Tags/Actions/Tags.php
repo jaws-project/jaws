@@ -286,8 +286,9 @@ class Tags_Actions_Tags extends Tags_Actions_Default
                         $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
                         $tpl->SetVariable('image',  $reference['image']);
                         if (!isset($reference['parse_text']) || $reference['parse_text']) {
-                            $reference['snippet'] = $this->gadget->plugin->parseAdmin(
+                            $reference['snippet'] = $this->gadget->plugin->parse(
                                 $reference['snippet'],
+                                Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
                                 0,
                                 '',
                                 $gadget
@@ -431,8 +432,9 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
             $tpl->SetVariable('image',  $reference['image']);
             if (!isset($reference['parse_text']) || $reference['parse_text']) {
-                $reference['snippet'] = $this->gadget->plugin->parseAdmin(
+                $reference['snippet'] = $this->gadget->plugin->parse(
                     $reference['snippet'],
+                    Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
                     0,
                     '',
                     $gadget
