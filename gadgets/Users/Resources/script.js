@@ -788,7 +788,7 @@ function updateMyAccount()
         return false;
     }
 
-    if ($('#exponent')) {
+    if ($('#exponent').length) {
         encryptedElement(
             $('#pass1')[0],
             $('#exponent').val(),
@@ -798,6 +798,7 @@ function updateMyAccount()
         );
         $('#pass2').val($('#pass1').val());
     }
+
     UsersAjax.callAsync(
         'UpdateMyAccount',
         {'uid': $('#uid').val(),
