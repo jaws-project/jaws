@@ -469,6 +469,7 @@ border:1px solid #d3d7cf;
 legend{
 font-size:1.2em;
 margin-right:-8px;
+margin-bottom:0px;
 }
 legend span{
 top:-20px;
