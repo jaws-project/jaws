@@ -9,6 +9,8 @@ class AbuseReport_Plugin
 {
     var $friendly = false;
     var $version  = '0.1';
+    var $onlyNormalMode = true;
+    var $pluginType = JAWS_PLUGIN::PLUGIN_TYPE_ATTACHER;
 
     /**
      * Overrides, Parses the text
@@ -43,7 +45,7 @@ class AbuseReport_Plugin
         $tpl->SetVariable('url', Jaws_Utils::getRequestURL(true));
 
         $tpl->ParseBlock('Report');
-        return $html . $tpl->Get();
+        return $tpl->Get();
     }
 
 }
