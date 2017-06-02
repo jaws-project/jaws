@@ -20,11 +20,12 @@ class AbuseReporter_Info extends Jaws_Gadget
     const STATUS_NOT_CHECKED = 1;
     const STATUS_CHECKED = 2;
 
-    const TYPE_ABUSE = 1;
-    const TYPE_FRAUD = 2;
-    const TYPE_VIRUS = 3;
-    const TYPE_SPAM = 4;
-    const TYPE_OTHER = 5;
+    const TYPE_ABUSE_0 = 0;
+    const TYPE_ABUSE_1 = 1;
+    const TYPE_ABUSE_2 = 2;
+    const TYPE_ABUSE_3 = 3;
+    const TYPE_ABUSE_4 = 4;
+    const TYPE_ABUSE_5 = 5;
 
     /**
      * Gadget version
