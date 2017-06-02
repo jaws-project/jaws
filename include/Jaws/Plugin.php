@@ -45,12 +45,12 @@ class Jaws_Plugin
                     $objPlugin = Jaws_Plugin::getInstance($plugin, false);
                     if (!Jaws_Error::IsError($objPlugin)) {
                         $fgadgets = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
-                        $fgadgets = $GLOBALS['app']->Registry->fetch('backend_gadgets',  $plugin);
+                        $bgadgets = $GLOBALS['app']->Registry->fetch('backend_gadgets',  $plugin);
                         $installedPlugins[$objPlugin->pluginType][$plugin] = array (
                             'pluginType'       => $objPlugin->pluginType,
                             'onlyNormalMode'   => $objPlugin->onlyNormalMode,
-                            'frontend_gadgets' => $fgadgets == '*'? '*' : explode(',', $fgadgets),
-                            'backend_gadgets'  => $fgadgets == '*'? '*' : explode(',', $fgadgets),
+                            'frontend_gadgets' => $fgadgets == '*'? '*' : array_filter(explode(',', $fgadgets)),
+                            'backend_gadgets'  => $bgadgets == '*'? '*' : array_filter(explode(',', $bgadgets)),
                         );
                     }
                 }
