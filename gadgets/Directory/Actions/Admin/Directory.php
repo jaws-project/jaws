@@ -173,7 +173,11 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             if ($file['is_dir']) {
                 $file['url'] = BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $file['id'];
             } else {
-                $file['link'] = $this->gadget->urlMap('Directory', array('id' => $file['id']), true);
+                $file['link'] = $this->gadget->urlMap(
+                    'Directory',
+                    array('id' => $file['id']),
+                    array('absolute' => true)
+                );
             }
             $file['userlink'] = $GLOBALS['app']->Map->GetURLFor(
                 'Users',
