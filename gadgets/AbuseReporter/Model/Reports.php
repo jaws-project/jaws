@@ -33,6 +33,7 @@ class AbuseReporter_Model_Reports extends Jaws_Gadget_Model
                 'comment'       => $comment,
                 'type'          => (int)$type,
                 'priority'      => (int)$priority,
+                'status'        => AbuseReporter_Info::STATUS_NOT_CHECKED,
                 'insert_time'   => time(),
             )
         );

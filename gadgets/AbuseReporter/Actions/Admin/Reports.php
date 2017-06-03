@@ -107,7 +107,11 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
             $tpl->SetVariable('title', $title);
             $tpl->ParseBlock('Reports/filter_status');
         }
-        array_shift($statuses);
+
+        $statuses = array(
+            AbuseReporter_Info::STATUS_NOT_CHECKED => _t('ABUSEREPORTER_STATUS_NOT_CHECKED'),
+            AbuseReporter_Info::PRIORITY_HIGH => _t('ABUSEREPORTER_STATUS_CHECKED'),
+        );
         foreach ($statuses as $status => $title) {
             $tpl->SetBlock('Reports/status');
             $tpl->SetVariable('value', $status);
@@ -145,23 +149,60 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     {
         $this->gadget->CheckPermission('ManageReports');
         $post = jaws()->request->fetch(
-            array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
 
-        $model = $this->gadget->model->loadAdmin('Reports');
-        $reports = $model->GetReports($post['filters'], $post['limit'], $post['offset']);
-
-        foreach ($reports as $key => $report) {
-            $report['recid'] = $report['id'];
-            $reports[$key] = $report;
+        $orderBy = 'id asc';
+        if (isset($post['sortBy'])) {
+            $orderBy = trim($post['sortBy'] . ' ' . $post['sortDirection']);
         }
+
+        $model = $this->gadget->model->loadAdmin('Reports');
+        $reports = $model->GetReports($post['filters'], $post['limit'], $post['offset'], $orderBy);
+
+        foreach ($reports as $key => &$report) {
+            switch($report['priority']) {
+                case AbuseReporter_Info::PRIORITY_VERY_HIGH:
+                    $priority = _t('ABUSEREPORTER_PRIORITY_VERY_HIGH');
+                    break;
+                case AbuseReporter_Info::PRIORITY_HIGH:
+                    $priority = _t('ABUSEREPORTER_PRIORITY_HIGH');
+                    break;
+                case AbuseReporter_Info::PRIORITY_NORMAL:
+                    $priority = _t('ABUSEREPORTER_PRIORITY_NORMAL');
+                    break;
+                case AbuseReporter_Info::PRIORITY_LOW:
+                    $priority = _t('ABUSEREPORTER_PRIORITY_LOW');
+                    break;
+                case AbuseReporter_Info::PRIORITY_VERY_LOW:
+                    $priority = _t('ABUSEREPORTER_PRIORITY_VERY_LOW');
+                    break;
+            }
+            $report['priority'] = $priority;
+
+            switch($report['status']) {
+                case AbuseReporter_Info::STATUS_NOT_CHECKED:
+                    $status = _t('ABUSEREPORTER_STATUS_NOT_CHECKED');
+                    break;
+                case AbuseReporter_Info::STATUS_CHECKED:
+                    $status = _t('ABUSEREPORTER_STATUS_CHECKED');
+                    break;
+            }
+            $report['status'] = $status;
+
+            $report['type'] = _t('ABUSEREPORTER_TYPE_ABUSE_' . $report['type']);
+        }
+
         $reportsCount = $model->GetReportsCount($post['filters']);
 
-        return array(
-            'status' => 'success',
-            'total' => $reportsCount,
-            'records' => $reports
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total'   => $reportsCount,
+                'records' => $reports
+            )
         );
     }
 

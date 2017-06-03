@@ -73,9 +73,10 @@ class AbuseReporter_Model_Admin_Reports extends Jaws_Gadget_Model
      * @param   array    $filters   report filters
      * @param   bool|int $limit     Count of reports to be returned
      * @param   int      $offset    Offset of data array
+     * @param   string   $orderBy   Order by?
      * @return  mixed   Array of Reports or Jaws_Error on failure
      */
-    function GetReports($filters = null, $limit = false, $offset = null)
+    function GetReports($filters = null, $limit = false, $offset = null, $orderBy = 'id desc')
     {
         $reportsTable = Jaws_ORM::getInstance()->table('abuse_reports');
         $reportsTable->select(
@@ -130,7 +131,8 @@ class AbuseReporter_Model_Admin_Reports extends Jaws_Gadget_Model
             }
         }
 
-        return $reportsTable->fetchAll();
+
+        return $reportsTable->orderBy('abuse_reports.' . $orderBy)->fetchAll();
     }
 
     /**

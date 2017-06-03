@@ -51,8 +51,7 @@ function editReport(id)
             }
         );
 
-        $('#url').prop('href', reportInfo['url']);
-        $('#url').html(reportInfo['url']);
+        $('#url').prop('href', reportInfo['url']).html(reportInfo['url']);
         $('#reportModal').modal('show');
     }
 }
@@ -85,76 +84,86 @@ function deleteReport(id)
  * Define the data to be displayed in the users datagrid
  */
 function reportsDataSource(options, callback) {
-    // define the columns for the grid
-    var columns = [
-        {
+    options.offset = options.pageIndex*options.pageSize;
+
+    var columns = {
+        'gadget': {
             'label': jaws.AbuseReporter.Defines.lbl_gadget,
             'property': 'gadget',
             'sortable': true
         },
-        {
+        'action': {
             'label': jaws.AbuseReporter.Defines.lbl_action,
             'property': 'action',
             'sortable': true
         },
-        {
+        'type': {
             'label': jaws.AbuseReporter.Defines.lbl_type,
             'property': 'type',
             'sortable': true
         },
-        {
+        'priority': {
             'label': jaws.AbuseReporter.Defines.lbl_priority,
             'property': 'priority',
             'sortable': true
         },
-        {
+        'status': {
             'label': jaws.AbuseReporter.Defines.lbl_status,
             'property': 'status',
             'sortable': true
         }
-    ];
-
-    // set options
-    var pageIndex = options.pageIndex;
-    var pageSize = options.pageSize;
-    var filters = {
-        gadget: $('#filter_gadget').val(),
-        action: $('#filter_action').val(),
-        priority: $('#filter_priority').val(),
-        status: $('#filter_status').val()
-    };
-    var options = {
-        'offset': pageIndex,
-        'limit': pageSize,
-        'sortDirection': options.sortDirection,
-        'sortBy': options.sortProperty,
-        'filters': filters
     };
 
-    var rows = AbuseReporterAjax.callSync('GetReports', options);
-    var items = rows.records;
-    var totalItems = rows.total;
-    var totalPages = Math.ceil(totalItems / pageSize);
-    var startIndex = (pageIndex * pageSize) + 1;
-    var endIndex = (startIndex + pageSize) - 1;
-
-    if(endIndex > items.length) {
-        endIndex = items.length;
+    // set sort property & direction
+    if (options.sortProperty) {
+        columns[options.sortProperty].sortDirection = options.sortDirection;
     }
+    columns = Object.values(columns);
 
-    // configure datasource
-    var dataSource = {
-        'page':    pageIndex,
-        'pages':   totalPages,
-        'count':   totalItems,
-        'start':   startIndex,
-        'end':     endIndex,
-        'columns': columns,
-        'items':   items
-    };
-
-    // pass the datasource back to the repeater
-    callback(dataSource);
+    AbuseReporterAjax.callAsync(
+        'GetReports', {
+            'offset': options.offset,
+            'limit': options.pageSize,
+            'sortDirection': options.sortDirection,
+            'sortBy': options.sortProperty,
+            'filters': {
+                gadget: $('#filter_gadget').val(),
+                action: $('#filter_action').val(),
+                priority: $('#filter_priority').val(),
+                status: $('#filter_status').val()
+            }
+        },
+        function(response, status) {
+            var dataSource = {};
+            if (response['type'] == 'alert-success') {
+                // processing end item index of page
+                options.end = options.offset + options.pageSize;
+                options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                dataSource = {
+                    'page': options.pageIndex,
+                    'pages': Math.ceil(response['data'].total/options.pageSize),
+                    'count': response['data'].total,
+                    'start': options.offset + 1,
+                    'end':   options.end,
+                    'columns': columns,
+                    'items': response['data'].records
+                };
+            } else {
+                dataSource = {
+                    'page': 0,
+                    'pages': 0,
+                    'count': 0,
+                    'start': 0,
+                    'end':   0,
+                    'columns': columns,
+                    'items': {}
+                };
+            }
+            // pass the datasource back to the repeater
+            callback(dataSource);
+            AbuseReporterAjax.showResponse(response);
+        }
+    );
 }
 
 /**
@@ -172,7 +181,6 @@ function initiateReportsDG() {
                     editReport(helpers.rowData.id);
                     callback();
                 }
-
             },
             {
                 name: 'delete',
@@ -187,13 +195,11 @@ function initiateReportsDG() {
     };
 
     // initialize the repeater
-    var repeater = $('#reportsGrid');
-    repeater.repeater({
-        // setup your custom datasource to handle data retrieval;
-        // responsible for any paging, sorting, filtering, searching logic
+    $('#reportsGrid').repeater({
         dataSource: reportsDataSource,
         staticHeight: 500,
-        list_actions: list_actions
+        list_actions: list_actions,
+        list_direction: $('.repeater-canvas').css('direction')
     });
 
     // monitor required events
