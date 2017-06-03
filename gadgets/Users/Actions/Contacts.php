@@ -223,6 +223,8 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('export_url', $this->gadget->urlMap('ExportVCard'));
         $tpl->SetVariable('import_url', $this->gadget->urlMap('ImportVCardUI'));
 
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
         $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
         $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
