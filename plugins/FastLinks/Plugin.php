@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FastLinks_Plugin extends Jaws_Plugin
+class FastLinks_Plugin
 {
     var $friendly = true;
     var $version = '0.3';

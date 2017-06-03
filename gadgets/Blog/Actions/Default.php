@@ -129,21 +129,6 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         $summary = $entry['summary'];
         $text    = $entry['text'];
 
-        // for compatibility with old versions
-        $more_pos = Jaws_UTF8::strpos($text, '[more]');
-        if ($more_pos !== false) {
-            $summary = Jaws_UTF8::substr($text, 0, $more_pos);
-            $text    = Jaws_UTF8::str_replace('[more]', '', $text);
-
-            // Update this entry to split summary and body of post
-            $model = $this->gadget->model->load('Posts');
-            $model->SplitEntry($entry['id'], $summary, $text);
-        }
-
-        $summary = empty($summary)? $text : $summary;
-        $summary = $this->gadget->plugin->parseAdmin($summary, $entry['id'], 'SingleView');
-        $text    = $this->gadget->plugin->parseAdmin($text, $entry['id'], 'SingleView');
-
         if ($show_summary){
             if (Jaws_UTF8::trim($text) != '') {
                 $tpl->SetBlock("$tpl_base_block/entry/read-more");
@@ -151,6 +136,13 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
                 $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
                 $tpl->ParseBlock("$tpl_base_block/entry/read-more");
             }
+            // parse via plugins
+            $summary = $this->gadget->plugin->parse(
+                empty($summary)? $text : $summary,
+                Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
+                $entry['id'],
+                'SingleView'
+            );
             $tpl->SetVariable('text', $summary);
         } else {
             $GLOBALS['app']->Layout->addLink(
@@ -169,7 +161,14 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
                     'title' => 'RSS 2.0 - All'
                 )
             );
-            $tpl->SetVariable('text', empty($text)? $summary : $text);
+            // parse via plugins
+            $text = $this->gadget->plugin->parse(
+                empty($text)? $summary : $text,
+                Jaws_Plugin::PLUGIN_TYPE_ALLTYPES,
+                $entry['id'],
+                'SingleView'
+            );
+            $tpl->SetVariable('text', $text);
         }
 
         $tpl->SetVariable('permanent-link', $perm_url);

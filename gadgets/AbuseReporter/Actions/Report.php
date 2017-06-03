@@ -29,11 +29,12 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
 
         // types
         $types = array(
-            AbuseReporter_Info::TYPE_ABUSE => _t('ABUSEREPORTER_TYPE_ABUSE'),
-            AbuseReporter_Info::TYPE_FRAUD => _t('ABUSEREPORTER_TYPE_FRAUD'),
-            AbuseReporter_Info::TYPE_VIRUS => _t('ABUSEREPORTER_TYPE_VIRUS'),
-            AbuseReporter_Info::TYPE_SPAM => _t('ABUSEREPORTER_TYPE_SPAM'),
-            AbuseReporter_Info::TYPE_OTHER => _t('ABUSEREPORTER_TYPE_OTHER'),
+            AbuseReporter_Info::TYPE_ABUSE_0 => _t('ABUSEREPORTER_TYPE_ABUSE_0'),
+            AbuseReporter_Info::TYPE_ABUSE_1 => _t('ABUSEREPORTER_TYPE_ABUSE_1'),
+            AbuseReporter_Info::TYPE_ABUSE_2 => _t('ABUSEREPORTER_TYPE_ABUSE_2'),
+            AbuseReporter_Info::TYPE_ABUSE_3 => _t('ABUSEREPORTER_TYPE_ABUSE_3'),
+            AbuseReporter_Info::TYPE_ABUSE_4 => _t('ABUSEREPORTER_TYPE_ABUSE_4'),
+            AbuseReporter_Info::TYPE_ABUSE_5 => _t('ABUSEREPORTER_TYPE_ABUSE_5'),
         );
         foreach ($types as $type => $title) {
             $tpl->SetBlock('Report/type');

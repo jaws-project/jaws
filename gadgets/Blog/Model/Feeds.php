@@ -99,8 +99,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             }
 
             $summary = empty($summary)? $text : $summary;
-            $summary = $this->gadget->plugin->parseAdmin($summary);
-            $text    = $this->gadget->plugin->parseAdmin($text);
+            $summary = $this->gadget->plugin->parse($summary);
+            $text    = $this->gadget->plugin->parse($text);
 
             $entry->SetSummary($summary, 'html');
             //$entry->SetContent($text, 'html');
@@ -260,8 +260,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             }
 
             $summary = empty($summary)? $text : $summary;
-            $summary = $this->gadget->plugin->parseAdmin($summary);
-            $text    = $this->gadget->plugin->parseAdmin($text);
+            $summary = $this->gadget->plugin->parse($summary);
+            $text    = $this->gadget->plugin->parse($text);
 
             $entry->SetSummary($summary, 'html');
             $entry->SetContent($text, 'html');

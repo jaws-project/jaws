@@ -1,7 +1,4 @@
 *{
-margin:0;
-padding:0;
-border:0 none;
 font-family:tahoma,verdana,arial,helvetica,sans-serif;
 font-size:1em;
 line-height:1.25em;
@@ -464,13 +461,13 @@ text-align:left;
 border:1px solid #d3d7cf;
 }
 legend{
-font-size:0.75em;
+font-size:1.2em;
 margin-left:-8px;
+margin-bottom:0px;
 }
 legend span{
 top:-20px;
 display:block;
-font-size:0.75em;
 font-weight:bold;
 padding:.2em .5em;
 border:1px solid #d3d7cf;

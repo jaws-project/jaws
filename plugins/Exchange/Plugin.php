@@ -8,7 +8,7 @@
  * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Exchange_Plugin extends Jaws_Plugin
+class Exchange_Plugin
 {
     var $friendly = false;
     var $version = '0.1.0';

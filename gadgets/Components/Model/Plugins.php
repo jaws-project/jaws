@@ -37,15 +37,15 @@ class Components_Model_Plugins extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
+                $objPlugin = Jaws_Plugin::getInstance($plugin, false);
                 if (Jaws_Error::IsError($objPlugin)) {
                     continue;
                 }
 
                 $pluginsList[$plugin] = array(
-                    'name' => $objPlugin->name,
-                    'title' => $objPlugin->title,
-                    'description' => $objPlugin->description,
+                    'name' => $plugin,
+                    'title' => $plugin,
+                    'description' => _t('PLUGINS_'. strtoupper($plugin). '_DESCRIPTION'),
                     'installed' => strpos($installed_plugins, ",$plugin,") !==false,
                 );
             }

@@ -1,17 +1,11 @@
 body{
 background:#fff;
 font-size:small;
-padding:0;
-margin:0;
 text-align:right;
 font-family:"Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
 }
 label, p, select{
 font-size:10pt;
-}
-form, table{
-margin:0;
-padding:0;
 }
 #controls{
 margin:0 4px;

@@ -414,68 +414,6 @@ class Jaws
     }
 
     /**
-     * Loads the plugin file in question, makes a instance and
-     * stores it globally for later use so we do not have duplicates
-     * of the same instance around in our code.
-     *
-     * @access  public
-     * @param   string $plugin Name of the plugin
-     * @return  mixed Plugin class object on successful, Jaws_Error otherwise
-     */
-    function LoadPlugin($plugin)
-    {
-        // filter non validate character
-        $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
-
-        if (!isset($this->_Plugins[$plugin])) {
-            if (!is_dir(JAWS_PATH . 'plugins/' . $plugin)) {
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
-                                        'Plugin directory check');
-                return $error;
-            }
-
-            // is plugin available?
-            if (defined('JAWS_AVAILABLE_PLUGINS')) {
-                static $available_plugins;
-                if (!isset($available_plugins)) {
-                    $available_plugins = array_filter(array_map('trim', explode(',', JAWS_AVAILABLE_PLUGINS)));
-                }
-
-                if (!in_array($plugin, $available_plugins)) {
-                    $error = new Jaws_Error(_t('GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', $plugin),
-                                            'Plugin availability check');
-                    return $error;
-                }
-            }
-
-            $file = JAWS_PATH. 'plugins/'. $plugin. '/Plugin.php';
-            if (file_exists($file)) {
-                include_once $file;
-            }
-
-            $plugin_class = $plugin. '_Plugin';
-            if (!Jaws::classExists($plugin_class)) {
-                // return a error
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_CLASS_DOES_NOT_EXIST', $plugin_class),
-                                        'Plugin class check');
-                return $error;
-            }
-
-            $objPlugin = new $plugin_class($plugin);
-            if (Jaws_Error::IsError($objPlugin)) {
-                $error = new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_INSTANCE', $file, $plugin_class),
-                                        'Plugin file loading');
-                return $error;
-            }
-
-            $this->_Plugins[$plugin] = $objPlugin;
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded plugin: ' . $plugin);
-        }
-
-        return $this->_Plugins[$plugin];
-    }
-
-    /**
      * Prepares the jaws Editor
      *
      * @access  public
@@ -547,8 +485,12 @@ class Jaws
         } else {
             $file = JAWS_PATH. "gadgets/$classname.php";
         }
-        require_once $file;
-        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded class file: ' . $file);
+        if (!file_exists($file)) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Loaded class file: ' . $file);
+        } else {
+            require_once $file;
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded class file: ' . $file);
+        }
     }
 
     /**

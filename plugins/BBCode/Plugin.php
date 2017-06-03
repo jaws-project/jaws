@@ -8,11 +8,11 @@
  * @copyright  2012-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BBCode_Plugin extends Jaws_Plugin
+class BBCode_Plugin
 {
     var $friendly = true;
     var $version  = '0.1';
-    var $_DefaultFrontendEnabled = true;
+    var $frontendEnabled = true;
 
     /**
      * Overrides, Gets the WebControl of this plugin

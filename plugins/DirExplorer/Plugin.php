@@ -8,7 +8,7 @@
  * @copyright   2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class DirExplorer_Plugin extends Jaws_Plugin
+class DirExplorer_Plugin
 {
     var $friendly = true;
     var $version = "0.1.0";

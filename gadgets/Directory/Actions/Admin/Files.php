@@ -129,7 +129,11 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if ($id === null) {
             $id = (int)jaws()->request->fetch('id');
         }
-        return $this->gadget->urlMap('Download', array('id' => $id), true);
+        return $this->gadget->urlMap(
+            'Download',
+            array('id' => $id),
+            array('absolute' => true)
+        );
     }
 
     /**

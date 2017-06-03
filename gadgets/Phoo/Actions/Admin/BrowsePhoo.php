@@ -24,8 +24,6 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
         $aModel = $this->gadget->model->load('Albums');
         $tpl = $this->gadget->template->loadAdmin('PhooBrowse.html');
         $tpl->SetBlock('phoo_browse');
-
-        $GLOBALS['app']->LoadPlugin('PhooInsert');
         $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_GALLERY'));
 
         $dir = _t('GLOBAL_LANG_DIRECTION');

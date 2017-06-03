@@ -8,7 +8,7 @@
  * @copyright  2008-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BlockImport_Plugin extends Jaws_Plugin
+class BlockImport_Plugin
 {
     var $friendly = false;
     var $version = '0.1';

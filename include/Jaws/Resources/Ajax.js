@@ -204,6 +204,10 @@ function JawsAjax(gadget, callback, baseScript)
             response = response[0];
         }
 
+        if (!response.trim()) {
+            return;
+        }
+
         element = element || $(this.msgBox);
         element.html(response.text).attr('class', response.type);
         element.stop(true, true).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});

@@ -28,8 +28,6 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
         $model = $this->gadget->model->load('Photos');
         $tpl = $this->gadget->template->loadAdmin('SelectImage.html');
         $tpl->SetBlock('ImageSelect');
-
-        $GLOBALS['app']->LoadPlugin('PhooInsert');
         $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_SELECT'));
 
         $dir = _t('GLOBAL_LANG_DIRECTION');

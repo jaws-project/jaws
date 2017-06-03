@@ -10,7 +10,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooInsert_Plugin extends Jaws_Plugin
+class PhooInsert_Plugin
 {
     var $friendly = true;
     var $version = "0.6.3";
@@ -46,7 +46,7 @@ class PhooInsert_Plugin extends Jaws_Plugin
      */
     function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
-        if (file_exists (JAWS_PATH.'gadgets/Phoo/Model.php') && Jaws_Gadget::IsGadgetInstalled ('Phoo')) {
+        if (Jaws_Gadget::IsGadgetInstalled ('Phoo')) {
             $howMany = preg_match_all("#\[phoo album=\"(.*?)\" picture=\"(.*?)\" title=\"(.*?)\" class=\"(.*?)\" size=\"(.*?)\" linked=\"(.*?)\"\]#si", $html, $matches);
             $new_html = $html;
             $url = $GLOBALS['app']->getSiteURL();

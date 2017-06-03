@@ -8,43 +8,18 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SmartBridge_Plugin extends Jaws_Plugin
+class SmartBridge_Plugin
 {
     var $friendly = true;
     var $version  = '0.2';
 
     /**
-     * Approved gadgest for links
+     * Approved gadgets for links
      *
      * @var     array
      * @access  private
      */
     var $_ApprovedGadgets = array('Blog', 'StaticPage', 'Phoo');
-
-    /**
-     * Jaws gadgets that are enabled
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_EnabledGadgets  = array();
-
-    /**
-     * Main Constructor
-     *
-     * @access  public
-     * @return  void
-     */
-    function __construct($plugin)
-    {
-        parent::__construct($plugin);
-        $eg = $GLOBALS['app']->Registry->fetch('gadgets_enabled_items');
-        if (Jaws_Error::isError($eg)) {
-            $eg = array();
-        }
-
-        $this->_EnabledGadgets = explode(',', $eg);
-    }
 
     /**
      * Overrides, Gets the WebControl of this plugin
@@ -93,6 +68,11 @@ class SmartBridge_Plugin extends Jaws_Plugin
      */
     function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
+        // only approved gadgets
+        if (!in_array($gadget, $this->_ApprovedGadgets)) {
+            return $html;
+        }
+
         if (!$this->NeedParsing($html)) {
             return $html;
         }

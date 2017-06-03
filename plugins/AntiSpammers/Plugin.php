@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class AntiSpammers_Plugin extends Jaws_Plugin
+class AntiSpammers_Plugin
 {
     var $friendly = false; //no bbcode
     var $version = '0.3';
