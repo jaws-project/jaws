@@ -85,7 +85,6 @@ class AbuseReporter_Model_Admin_Reports extends Jaws_Gadget_Model
             'response', 'abuse_reports.insert_time:integer', 'abuse_reports.update_time:integer'
         );
         $reportsTable->join('users', 'users.id', 'abuse_reports.user', 'left');
-        $reportsTable->orderBy('abuse_reports.insert_time desc');
         $reportsTable->limit((int)$limit, $offset);
 
         if (!empty($filters) && count($filters) > 0) {

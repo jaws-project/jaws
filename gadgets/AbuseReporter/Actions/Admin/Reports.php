@@ -16,7 +16,6 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     function Reports()
     {
         $this->gadget->CheckPermission('ManageReports');
-        $GLOBALS['app']->Layout->addLink('libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.css');
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
         $this->gadget->define('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
