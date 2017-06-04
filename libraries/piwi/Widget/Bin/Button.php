@@ -155,13 +155,12 @@ class Button extends Bin
      */
     function buildXHTML()
     {
-        $this->_XHTML = '<button class="btn"';
         if ($this->_isSubmit) {
-            $this->_XHTML .= " type=\"submit\"";
+            $this->_XHTML = '<button class="btn btn-primary" type="submit"';
         } elseif ($this->_isReset) {
-            $this->_XHTML .= " type=\"reset\"";
+            $this->_XHTML = '<button class="btn" type="reset"';
         } else {
-            $this->_XHTML .= " type=\"button\"";
+            $this->_XHTML = '<button class="btn" type="button"';
         }
 
         $this->_XHTML .= $this->buildBasicXHTML();
