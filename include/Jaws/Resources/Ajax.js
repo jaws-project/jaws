@@ -204,7 +204,7 @@ function JawsAjax(gadget, callback, baseScript)
             response = response[0];
         }
 
-        if (!response.trim()) {
+        if (!response.text.trim()) {
             return;
         }
 
