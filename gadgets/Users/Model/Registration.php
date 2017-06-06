@@ -11,20 +11,21 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      * Creates a valid(registered) n user for an anonymous user
      *
      * @access  public
-     * @param   string  $username   Username
-     * @param   string  $user_email User's email
-     * @param   string  $nickname   User's display name
-     * @param   string  $fname      First name
-     * @param   string  $lname      Last name
-     * @param   string  $gender     User gender
-     * @param   string  $ssn        Social Security number
-     * @param   string  $dob        Birth date
-     * @param   string  $url        User's URL
-     * @param   string  $password   Password
-     * @param   string  $group      Default user group
+     * @param   string  $username       Username
+     * @param   string  $user_email     User's email
+     * @param   string  $user_mobile    User's mobile
+     * @param   string  $nickname       User's display name
+     * @param   string  $fname          First name
+     * @param   string  $lname          Last name
+     * @param   string  $gender         User gender
+     * @param   string  $ssn            Social Security number
+     * @param   string  $dob            Birth date
+     * @param   string  $url            User's URL
+     * @param   string  $password       Password
+     * @param   string  $group          Default user group
      * @return  mixed   True on success or message string
      */
-    function CreateUser($username, $user_email, $nickname, $fname, $lname, $gender, $ssn,
+    function CreateUser($username, $user_email, $user_mobile, $nickname, $fname, $lname, $gender, $ssn,
                         $dob, $url, $password, $group = null)
     {
         if (empty($username) || empty($nickname) || empty($user_email))
@@ -49,12 +50,17 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             return _t('USERS_EMAIL_ALREADY_EXISTS', $user_email);
         }
 
+        if ($jUser->UserMobileExists($user_mobile)) {
+            return _t('USERS_MOBILE_ALREADY_EXISTS', $user_mobile);
+        }
+
         $user_enabled = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
         $user_id = $jUser->AddUser(
             array(
                 'username' => $username,
                 'nickname' => $nickname,
                 'email'    => $user_email,
+                'mobile'   => $user_mobile,
                 'password' => $password,
                 'status'   => $user_enabled,
             )

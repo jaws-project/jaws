@@ -295,13 +295,6 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>users_mobile</name>
-                <field>
-                    <name>mobile</name>
-                </field>
-            </index>
-
-            <index>
                 <name><variable>table_prefix</variable>users_mailbox</name>
                 <field>
                     <name>mailbox</name>

@@ -51,7 +51,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $result  = '';
         $post = jaws()->request->fetch(
             array(
-                'username', 'email', 'nickname', 'password', 'password_check',
+                'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
                 'fname', 'lname', 'gender', 'ssn', 'dob', 'url'
             ),
             'post'
@@ -83,6 +83,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                 $result = $uModel->CreateUser(
                     $post['username'],
                     $post['email'],
+                    $post['mobile'],
                     $post['nickname'],
                     $post['fname'],
                     $post['lname'],
@@ -136,8 +137,9 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_username',      _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('validusernames',    _t('USERS_REGISTER_VALID_USERNAMES'));
         $tpl->SetVariable('lbl_email',         _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_mobile',         _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_url',           _t('GLOBAL_URL'));
-        $tpl->SetVariable('lbl_nickname',         _t('USERS_USERS_NICKNAME'));
+        $tpl->SetVariable('lbl_nickname',       _t('USERS_USERS_NICKNAME'));
         $tpl->SetVariable('lbl_password',      _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('sendpassword',      _t('USERS_USERS_SEND_AUTO_PASSWORD'));
         $tpl->SetVariable('lbl_checkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
@@ -158,6 +160,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $post_data = $response['data'];
             $tpl->SetVariable('username',  $post_data['username']);
             $tpl->SetVariable('email',     $post_data['email']);
+            $tpl->SetVariable('mobile',    $post_data['mobile']);
             $tpl->SetVariable('url',       $post_data['url']);
             $tpl->SetVariable('nickname',  $post_data['nickname']);
             $tpl->SetVariable('fname',     $post_data['fname']);
