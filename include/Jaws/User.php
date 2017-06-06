@@ -458,18 +458,36 @@ class Jaws_User
     }
 
     /**
-     * Check and email address already exists
+     * Check email address already exists
      *
      * @access  public
      * @param   string  $email      The email address
      * @param   int     $exclude    Excluded user ID
-     * @return  mixed   Returns an array with the info of the user and false on error
+     * @return  mixed   Returns email address exists or not
      */
     function UserEmailExists($email, $exclude = 0)
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('count(id)');
         $usersTable->where('email', Jaws_UTF8::strtolower($email));
+        $usersTable->and()->where('id', $exclude, '<>');
+        $howmany = $usersTable->fetchOne();
+        return !empty($howmany);
+    }
+
+    /**
+     * Check mobile number already exists
+     *
+     * @access  public
+     * @param   string  $mobile     The mobile number
+     * @param   int     $exclude    Excluded user ID
+     * @return  bool    Returns mobile number exists or not
+     */
+    function UserMobileExists($mobile, $exclude = 0)
+    {
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select('count(id)');
+        $usersTable->where('mobile', $mobile);
         $usersTable->and()->where('id', $exclude, '<>');
         $howmany = $usersTable->fetchOne();
         return !empty($howmany);
@@ -758,6 +776,20 @@ class Jaws_User
             );
         }
 
+        // mobile
+        if (array_key_exists('mobile', $uData)) {
+            $uData['mobile'] = trim($uData['mobile']);
+            if (!empty($uData['mobile'])) {
+                if (!preg_match("/^[00]\d{10,16}$/", $uData['mobile'])) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
+            }
+        }
+
         // password & complexity
         $min = (int)$GLOBALS['app']->Registry->fetch('password_min_length', 'Policy');
         $min = ($min == 0)? 1 : $min;
@@ -902,6 +934,20 @@ class Jaws_User
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
+            }
+        }
+
+        // mobile
+        if (array_key_exists('mobile', $uData)) {
+            $uData['mobile'] = trim($uData['mobile']);
+            if (!empty($uData['mobile'])) {
+                if (!preg_match("/^[00]\d{10,16}$/", $uData['mobile'])) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
             }
         }
 
