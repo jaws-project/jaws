@@ -62,7 +62,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $url = $this->gadget->urlMap(
             $feed_type == 'atom'? 'Atom' : 'RSS',
             array(),
-            true
+            array('absolute', true)
         );
 
         $this->_Atom->SetTitle($this->gadget->registry->fetch('site_name', 'Settings'));
@@ -80,7 +80,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $entry = new AtomEntry();
             $entry->SetTitle($r['title']);
             $post_id = empty($r['fast_url']) ? $r['id'] : $r['fast_url'];
-            $url = $this->gadget->urlMap('SingleView', array('id' => $post_id), true);
+            $url = $this->gadget->urlMap('SingleView', array('id' => $post_id), array('absolute', true));
             $entry->SetLink($url);
             $entry->SetId($url);
 
@@ -112,7 +112,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $model = $this->gadget->model->load('Categories');
             $cats = $model->GetCategoriesInEntry($r['id']);
             foreach ($cats as $c) {
-                $schema = $this->gadget->urlMap('ShowCategory', array('id' => $c['id']), true);
+                $schema = $this->gadget->urlMap('ShowCategory', array('id' => $c['id']), array('absolute', true));
                 $entry->AddCategory($c['id'], $c['name'], $schema );
             }
             $this->_Atom->AddEntry($entry);
@@ -223,7 +223,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $url = $this->gadget->urlMap(
             $feed_type == 'atom'? 'ShowAtomCategory' : 'ShowRSSCategory',
             array('id' => $cid),
-            true
+            array('absolute', true)
         );
 
         $categoryAtom->SetTitle($this->gadget->registry->fetch('site_name', 'Settings'));
@@ -241,7 +241,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $entry = new AtomEntry();
             $entry->SetTitle($r['title']);
             $post_id = empty($r['fast_url']) ? $r['id'] : $r['fast_url'];
-            $url = $this->gadget->urlMap('SingleView', array('id' => $post_id), true);
+            $url = $this->gadget->urlMap('SingleView', array('id' => $post_id), array('absolute', true));
             $entry->SetLink($url);
             $entry->SetId($url);
 
