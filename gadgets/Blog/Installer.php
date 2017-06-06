@@ -196,7 +196,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.1.0.xml');
+            $result = $this->installSchema('1.3.0.xml', array(), '1.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -215,6 +215,13 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->EditGadgetLayoutAction('Blog', 'PopularPosts', 'PopularPosts', 'PopularPosts');
+            }
+        }
+
+        if (version_compare($old, '1.5.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.3.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
             }
         }
 

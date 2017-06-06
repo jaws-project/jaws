@@ -314,7 +314,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function AutoDraft()
     {
         $this->gadget->CheckPermission('AddEntries');
-        @list($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc, $tags,
+        @list($id, $categories, $title, $subtitle, $summary, $text, $fasturl, $meta_keywords, $meta_desc, $tags,
             $allow_comments, $trackbacks, $published, $timestamp
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Posts');
@@ -328,6 +328,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                $GLOBALS['app']->Session->GetAttribute('user'),
                $categories,
                $title,
+               $subtitle,
                $summary,
                $text,
                '',
@@ -355,6 +356,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                 $id,
                $categories,
                $title,
+               $subtitle,
                $summary,
                $text,
                null,

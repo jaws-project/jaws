@@ -28,12 +28,6 @@
    </field>
 
    <field>
-    <name>subtitle</name>
-    <type>text</type>
-    <length>240</length>
-   </field>
-
-   <field>
     <name>summary</name>
     <type>text</type>
    </field>

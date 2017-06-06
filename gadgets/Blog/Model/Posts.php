@@ -28,7 +28,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url',
+            'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.subtitle', 'blog.fast_url',
             'summary', 'text', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
             'allow_comments:boolean', 'image'
         );
@@ -204,7 +204,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
+            'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'subtitle', 'summary',
             'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'type:integer',
             'favorite:boolean', 'allow_comments:boolean', 'published:boolean', 'categories', 'image'
         );
@@ -247,7 +247,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
+            'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'subtitle', 'summary',
             'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'type:integer',
             'favorite:boolean', 'allow_comments:boolean', 'published:boolean', 'categories', 'image'
         );
@@ -335,10 +335,10 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $published = (bool)$published && !$GLOBALS['app']->Session->IsSuperAdmin();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'summary',
-            'text', 'fast_url', 'meta_keywords', 'meta_description', 'trackbacks', 'published:boolean', 'image',
-            'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'allow_comments:boolean', 'favorite:boolean',
-            'type:integer'
+            'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'subtitle',
+            'summary', 'text', 'fast_url', 'meta_keywords', 'meta_description', 'trackbacks', 'published:boolean',
+            'image', 'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'allow_comments:boolean',
+            'favorite:boolean', 'type:integer'
         )->join('users', 'blog.user_id', 'users.id', 'left');
 
         if (is_numeric($id)) {
@@ -417,8 +417,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
     {
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url', 'summary',
-            'text', 'users.nickname as name', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
+            'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.subtitle', 'blog.fast_url',
+            'summary', 'text', 'users.nickname as name', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
             'allow_comments:boolean', 'blog.user_id:integer'
         )->join('users', 'blog.user_id', 'users.id', 'left');
 
@@ -576,7 +576,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
     {
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.fast_url', 'summary',
+            'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.subtitle', 'blog.fast_url', 'summary',
             'text', 'clicks:integer', 'allow_comments', 'username', 'nickname',
             'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories', 'image'
         );
@@ -649,7 +649,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->limit($this->gadget->registry->fetch('favorite_limit'), 0);
         $blogTable->select(
-            'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.fast_url', 'summary',
+            'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.subtitle', 'blog.fast_url', 'summary',
             'text', 'clicks:integer', 'allow_comments', 'username', 'nickname', 'type:integer',
             'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories', 'image'
         );
@@ -725,7 +725,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'blog.user_id:integer', 'username', 'title', 'summary', 'text',
+            'blog.id:integer', 'blog.user_id:integer', 'username', 'title', 'subtitle', 'summary', 'text',
             'fast_url', 'blog.publishtime', 'blog.updatetime', 'published:boolean', 'categories'
         )->join('users', 'blog.user_id', 'users.id');
 
@@ -739,8 +739,16 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
              * like rest of the param stuff.
              */
             foreach ($searchdata as $v) {
-                $blogTable->and()->openWhere()->where('blog.title', $str, 'like')->or();
-                $blogTable->where('summary', $str, 'like')->or()->where('text', $str, 'like')->closeWhere();
+                $blogTable->and()
+                    ->openWhere()
+                    ->where('blog.title', $str, 'like')
+                    ->or()
+                    ->where('blog.subtitle', $str, 'like')
+                    ->or()
+                    ->where('summary', $str, 'like')
+                    ->or()
+                    ->where('text', $str, 'like')
+                    ->closeWhere();
             }
         }
 
@@ -789,7 +797,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
     {
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'id:integer', 'title', 'fast_url', 'summary', 'text',
+            'id:integer', 'title', 'subtitle', 'fast_url', 'summary', 'text',
             'publishtime', 'updatetime', 'clicks:integer',
             'allow_comments:boolean', 'user_id', 'categories', 'published'
         );

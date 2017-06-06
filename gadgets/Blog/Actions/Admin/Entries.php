@@ -40,14 +40,22 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar('NewEntry'));
 
-        // Title
-        $tpl->SetVariable('title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('action', 'NewEntry');
         $tpl->SetVariable('id', 0);
+
+        // title
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleEntry->SetStyle('width: 750px');
         $titleEntry->setId('title');
+        $tpl->SetVariable('title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title_field', $titleEntry->Get());
+
+        // sub-title
+        $subtitleEntry =& Piwi::CreateWidget('Entry', 'subtitle', '');
+        $subtitleEntry->SetStyle('width: 750px');
+        $subtitleEntry->setId('subtitle');
+        $tpl->SetVariable('subtitle', _t('BLOG_SUBTITLE'));
+        $tpl->SetVariable('subtitle_field', $subtitleEntry->Get());
 
         // Image
         $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
@@ -247,7 +255,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $pModel = $this->gadget->model->loadAdmin('Posts');
         $tModel = $this->gadget->model->loadAdmin('Trackbacks');
 
-        $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title',
+        $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title', 'subtitle',
                          'fasturl', 'allow_comments:array', 'published', 'favorite:array', 'type',
                          'trackback_to', 'meta_keywords', 'meta_desc', 'tags');
         $post    = jaws()->request->fetch($names, 'post');
@@ -284,8 +292,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
 
         $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user') , $post['categories'],
-                           $post['title'], $content['summary_block'], $content['text_block'], $image,
-                           $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
+                           $post['title'], $post['subtitle'], $content['summary_block'], $content['text_block'],
+                           $image, $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                            $post['tags'], isset($post['allow_comments'][0]), $post['trackback_to'],
                            $post['published'], $post['type'], isset($post['favorite'][0]), $pubdate);
 
@@ -361,14 +369,20 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Header
         $action = isset($get['action']) ? $get['action'] : null;
         $tpl->SetVariable('menubar', $this->MenuBar($action));
-        // Title
-        $tpl->SetVariable('title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('action', 'EditEntry');
         $tpl->SetVariable('id', $id);
 
+        // Title
+        $tpl->SetVariable('title', _t('GLOBAL_TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', $entry['title']);
         $titleEntry->SetStyle('width: 750px');
         $tpl->SetVariable('title_field', $titleEntry->Get());
+
+        // Sub-Title
+        $tpl->SetVariable('subtitle', _t('BLOG_SUBTITLE'));
+        $subtitleEntry =& Piwi::CreateWidget('Entry', 'subtitle', $entry['subtitle']);
+        $subtitleEntry->SetStyle('width: 750px');
+        $tpl->SetVariable('subtitle_field', $subtitleEntry->Get());
 
         // Image
         $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
@@ -594,7 +608,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
      */
     function SaveEditEntry()
     {
-        $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title',
+        $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title', 'subtitle',
                          'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'deleteImage', 'favorite:array', 'type',
                          'allow_comments:array', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
@@ -655,10 +669,12 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
-        $pModel->UpdateEntry($id, $post['categories'], $post['title'], $content['summary_block'], $content['text_block'],
-                            $image, $post['fasturl'], $post['meta_keywords'], $post['meta_desc'], $post['tags'],
-                            isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'],
-                            $post['type'], isset($post['favorite'][0]), $pubdate);
+        $pModel->UpdateEntry(
+            $id, $post['categories'], $post['title'], $post['subtitle'], $content['summary_block'],
+            $content['text_block'], $image, $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
+            $post['tags'], isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'],
+            $post['type'], isset($post['favorite'][0]), $pubdate
+        );
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->registry->fetch('trackback') == 'true') {
                 $to = explode("\n", $post['trackback_to']);

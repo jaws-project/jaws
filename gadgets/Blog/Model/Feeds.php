@@ -39,7 +39,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
-            'blog.id:integer', 'user_id:integer', 'username', 'email', 'nickname', 'title', 'summary',
+            'blog.id:integer', 'user_id:integer', 'username', 'email', 'nickname', 'title', 'subtitle', 'summary',
             'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
             'allow_comments:boolean', 'published:boolean', 'categories'
         )->join('users', 'blog.user_id', 'users.id');
@@ -206,7 +206,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'blog_entrycat.category_id:integer', 'username', 'email',
-            'nickname', 'title', 'fast_url', 'summary', 'text',  'blog.publishtime', 'blog.updatetime',
+            'nickname', 'title', 'subtitle', 'fast_url', 'summary', 'text',  'blog.publishtime', 'blog.updatetime',
             'clicks:integer', 'allow_comments:boolean', 'published:boolean'
         )->join('users', 'blog.user_id', 'users.id')->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
         $blogTable->where('published', true)->and()->where('blog.publishtime', $now, '<=');

@@ -89,6 +89,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   int     $user           User ID
      * @param   array   $categories     Array with categories id's
      * @param   string  $title          Title of the entry
+     * @param   string  $subtitle       Sub-Title of the entry
      * @param   string  $summary        post summary
      * @param   string  $content        Content of the entry
      * @param   string  $image          Image file name
@@ -105,7 +106,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the new post or Jaws_Error on failure
      */
-    function NewEntry($user, $categories, $title, $summary, $content, $image, $fast_url, $meta_keywords, $meta_desc, $tags,
+    function NewEntry($user, $categories, $title, $subtitle, $summary, $content, $image, $fast_url, $meta_keywords, $meta_desc, $tags,
                       $allow_comments, $trackbacks, $publish, $type, $favorite, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
@@ -116,6 +117,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         $params['user_id']          = $user;
         $params['title']            = $title;
+        $params['subtitle']         = $subtitle;
         $params['text']             = $content;
         $params['summary']          = $summary;
         $params['image']            = $image;
@@ -222,6 +224,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   int     $post_id        Post ID
      * @param   int     $categories     Categories array
      * @param   string  $title          Title of the Entry
+     * @param   string  $subtitle       Sub-Title of the entry
      * @param   string  $summary        entry summary
      * @param   string  $content        Content of the Entry
      * @param   string  $image          Image file name
@@ -238,7 +241,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the post or Jaws_Error on failure
      */
-    function UpdateEntry($post_id, $categories, $title, $summary, $content, $image, $fast_url, $meta_keywords,
+    function UpdateEntry($post_id, $categories, $title, $subtitle, $summary, $content, $image, $fast_url, $meta_keywords,
                          $meta_desc, $tags, $allow_comments, $trackbacks, $publish,  $type, $favorite,
                          $timestamp = null, $autoDraft = false)
     {
@@ -246,6 +249,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', false);
 
         $params['title']            = $title;
+        $params['subtitle']         = $subtitle;
         $params['text']             = $content;
         $params['summary']          = $summary;
         $params['trackbacks']       = $trackbacks;
