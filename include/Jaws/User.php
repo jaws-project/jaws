@@ -869,7 +869,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($uData),
-            array('username', 'nickname', 'email', 'new_email', 'password',
+            array('username', 'nickname', 'email', 'new_email', 'mobile', 'password',
                 'superadmin', 'status', 'concurrents', 'logon_hours', 'expiry_date',
             )
         );
