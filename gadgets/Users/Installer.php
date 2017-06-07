@@ -44,6 +44,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         'ManageDashboard',
         'EditUserName',
         'EditUserEmail',
+        'EditUserMobile',
         'EditUserNickname',
         'EditUserPassword',
         'EditUserPersonal',
@@ -233,6 +234,8 @@ class Users_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
+            // ACL keys
+            $this->gadget->acl->insert('EditUserMobile');
         }
 
         return true;

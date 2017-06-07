@@ -76,6 +76,18 @@
             </field>
 
             <field>
+                <name>new_mobile</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
+                <name>mobile_verify_key</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
                 <name>avatar</name>
                 <type>text</type>
                 <length>128</length>

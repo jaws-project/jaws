@@ -48,6 +48,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
         $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('emptypassword', _t('USERS_NOCHANGE_PASSWORD'));
         $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
@@ -60,6 +61,9 @@ class Users_Actions_Account extends Users_Actions_Default
         }
         if (!$this->gadget->GetPermission('EditUserEmail')) {
             $tpl->SetVariable('email_disabled', 'disabled="disabled"');
+        }
+        if (!$this->gadget->GetPermission('EditUserMobile')) {
+            $tpl->SetVariable('mobile_disabled', 'disabled="disabled"');
         }
         if (!$this->gadget->GetPermission('EditUserPassword')) {
             $tpl->SetVariable('password_disabled', 'disabled="disabled"');
@@ -101,8 +105,15 @@ class Users_Actions_Account extends Users_Actions_Default
             );
         }
 
-        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
-        $post = jaws()->request->fetch(array('username', 'nickname', 'email', 'password', 'chkpassword'), 'post');
+        $this->gadget->CheckPermission(
+            'EditUserName,EditUserNickname,EditUserEmail,EditUserMobile,EditUserPassword',
+            '',
+            false
+        );
+        $post = jaws()->request->fetch(
+            array('username', 'nickname', 'email', 'mobile', 'password', 'chkpassword'),
+            'post'
+        );
         if ($post['password'] === $post['chkpassword']) {
             // check edit username permission
             if (empty($post['username']) ||
@@ -130,6 +141,13 @@ class Users_Actions_Account extends Users_Actions_Default
                 $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
             }
 
+            // check edit mobile permission
+            if (empty($post['mobile']) ||
+                !$this->gadget->GetPermission('EditUserMobile'))
+            {
+                $post['mobile'] = $GLOBALS['app']->Session->GetAttribute('mobile');
+            }
+
             // check edit password permission
             if (empty($post['password']) ||
                 !$this->gadget->GetPermission('EditUserPassword'))
@@ -144,6 +162,7 @@ class Users_Actions_Account extends Users_Actions_Default
                 $post['nickname'],
                 $post['email'],
                 $post['new_email'],
+                $post['mobile'],
                 $post['password']
             );
             // unset unnecessary account data
@@ -156,7 +175,8 @@ class Users_Actions_Account extends Users_Actions_Default
                         $post['username'],
                         $post['nickname'],
                         $post['new_email'],
-                        $post['email']
+                        $post['email'],
+                        $post['mobile']
                     );
                     if (Jaws_Error::IsError($mResult)) {
                         $message = $message. "\n" . $mResult->getMessage();
@@ -222,9 +242,10 @@ class Users_Actions_Account extends Users_Actions_Default
      * @param   string  $nickname   User's nickname
      * @param   string  $new_email  User's new email
      * @param   string  $old_email  User's old email
+     * @param   string  $mobile     User's mobile number
      * @return  mixed   True on success otherwise Jaws_Error on failure
      */
-    function ReplaceEmailNotification($user_id, $username, $nickname, $new_email, $old_email)
+    function ReplaceEmailNotification($user_id, $username, $nickname, $new_email, $old_email, $mobile)
     {
         $tpl = $this->gadget->template->load('NewEmail.txt');
         $tpl->SetBlock('Notification');
