@@ -62,13 +62,15 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $result = $usersTable->select(
-            'id:integer', 'domain:integer', 'username', 'password', 'email',
+            'id:integer', 'domain:integer', 'username', 'password', 'email', 'mobile',
             'superadmin:boolean', 'nickname', 'concurrents:integer',
             'logon_hours', 'expiry_date', 'avatar', 'registered_date', 'last_update',
             'bad_password_count', 'last_password_update', 'last_access', 'status:integer')
             ->where('lower(username)', Jaws_UTF8::strtolower($user))
             ->or()
             ->where('lower(email)', Jaws_UTF8::strtolower($user))
+            ->or()
+            ->where('mobile', $user)
             ->fetchRow();
         if (Jaws_Error::IsError($result) || empty($result)) {
             return Jaws_Error::raiseError(
@@ -388,7 +390,7 @@ class Jaws_User
         $columns = array('users.id:integer', 'avatar');
         // account information
         if ($account) {
-            $columns = array_merge($columns, array('username', 'nickname', 'email', 'superadmin:boolean',
+            $columns = array_merge($columns, array('username', 'nickname', 'email', 'mobile', 'superadmin:boolean',
                 'concurrents', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
                 'last_update', 'bad_password_count', 'last_access',)
             );
@@ -458,6 +460,30 @@ class Jaws_User
     }
 
     /**
+     * Check username already exists
+     *
+     * @access  public
+     * @param   string  $username   The username
+     * @param   int     $exclude    Excluded user ID
+     * @return  mixed   Returns email address exists or not
+     */
+    function UsernameExists($username, $exclude = 0)
+    {
+        $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
+            ->openWhere()
+            ->where('lower(username)', Jaws_UTF8::strtolower($username))
+            ->or()
+            ->where('lower(email)', Jaws_UTF8::strtolower($username))
+            ->or()
+            ->where('mobile', $username)
+            ->closeWhere()
+            ->and()
+            ->where('id', $exclude, '<>')
+            ->fetchOne();
+        return !empty($howmany);
+    }
+
+    /**
      * Check email address already exists
      *
      * @access  public
@@ -467,11 +493,15 @@ class Jaws_User
      */
     function UserEmailExists($email, $exclude = 0)
     {
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select('count(id)');
-        $usersTable->where('email', Jaws_UTF8::strtolower($email));
-        $usersTable->and()->where('id', $exclude, '<>');
-        $howmany = $usersTable->fetchOne();
+        $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
+            ->openWhere()
+            ->where('lower(email)', Jaws_UTF8::strtolower($email))
+            ->or()
+            ->where('lower(username)', Jaws_UTF8::strtolower($email))
+            ->closeWhere()
+            ->and()
+            ->where('id', $exclude, '<>')
+            ->fetchOne();
         return !empty($howmany);
     }
 
@@ -485,11 +515,15 @@ class Jaws_User
      */
     function UserMobileExists($mobile, $exclude = 0)
     {
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select('count(id)');
-        $usersTable->where('mobile', $mobile);
-        $usersTable->and()->where('id', $exclude, '<>');
-        $howmany = $usersTable->fetchOne();
+        $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
+            ->openWhere()
+            ->where('mobile', $mobile)
+            ->or()
+            ->where('lower(username)', Jaws_UTF8::strtolower($mobile))
+            ->closeWhere()
+            ->and()
+            ->where('id', $exclude, '<>')
+            ->fetchOne();
         return !empty($howmany);
     }
 
@@ -557,7 +591,8 @@ class Jaws_User
             'id', 'id asc', 'id desc',
             'username', 'username asc', 'username desc',
             'nickname', 'nickname asc', 'nickname desc',
-            'email'
+            'email',
+            'mobile'
         );
         if (!in_array($orderBy, $fields)) {
             $orderBy = 'id asc';
@@ -565,7 +600,7 @@ class Jaws_User
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select(
-            'users.id:integer', 'username', 'email', 'nickname', 'fname', 'lname',
+            'users.id:integer', 'username', 'email', 'mobile', 'nickname', 'fname', 'lname',
             'superadmin:boolean', 'users.status:integer'
         );
         if ($group !== false) {
@@ -585,6 +620,7 @@ class Jaws_User
             $term = Jaws_UTF8::strtolower($term);
             $usersTable->and()->openWhere('lower(username)', $term, 'like');
             $usersTable->or()->where('lower(nickname)',      $term, 'like');
+            $usersTable->or()->where('mobile',               $term, 'like');
             $usersTable->or()->closeWhere('lower(email)',    $term, 'like');
         }
 
@@ -624,6 +660,7 @@ class Jaws_User
             $term = Jaws_UTF8::strtolower($term);
             $usersTable->and()->openWhere('lower(username)', $term, 'like');
             $usersTable->or()->where('lower(nickname)',      $term, 'like');
+            $usersTable->or()->where('mobile',               $term, 'like');
             $usersTable->or()->closeWhere('lower(email)',    $term, 'like');
         }
 
