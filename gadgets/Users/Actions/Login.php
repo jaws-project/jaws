@@ -44,12 +44,33 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     $post
                 );
             } else {
+                $post['step'] = 1;
                 $GLOBALS['app']->Session->PushResponse(
                     _t('USERS_FORGOT_MAIL_SENT'),
-                    'Users.LoginForgot'
+                    'Users.LoginForgot',
+                    RESPONSE_NOTICE,
+                    $post
                 );
             }
         } else {
+            $uModel = $this->gadget->model->load('Account');
+            $result = $uModel->ChangePassword($post['key']);
+            if (Jaws_Error::IsError($result)) {
+                $GLOBALS['app']->Session->PushResponse(
+                    $result->getMessage(),
+                    'Users.LoginForgot',
+                    RESPONSE_ERROR,
+                    $post
+                );
+            } else {
+                $post['step'] = 2;
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('USERS_FORGOT_PASSWORD_CHANGED'),
+                    'Users.LoginForgot',
+                    RESPONSE_NOTICE,
+                    $post
+                );
+            }
         }
 
         return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
@@ -81,19 +102,31 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         // Load the template
         $tpl = $this->gadget->template->load('LoginForgot.html');
         $tpl->SetBlock('forgot');
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('step', (int)$post['step']);
         $tpl->SetVariable('title', _t('USERS_FORGOT_REMEMBER'));
-        $tpl->SetVariable('info', _t('USERS_FORGOT_REMEMBER_INFO'));
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email', $post['email']);
         $tpl->SetVariable('remember', _t('GLOBAL_SUBMIT'));
-        // if login recovery in step 1
-        if (!empty($post['step'])) {
-            $tpl->SetBlock('forgot/key');
-            $tpl->SetVariable('info', _t('USERS_FORGOT_REMEMBER_INFO'));
-            $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_KEY'));
-            $tpl->SetVariable('key', $post['key']);
-            $tpl->ParseBlock('forgot/key');
+
+        switch ((int)$post['step']) {
+            case 2:
+                $tpl->SetBlock('forgot/success');
+                $tpl->SetVariable('info', _t('USERS_FORGOT_RECOVERY_SUCCESS'));
+                $tpl->ParseBlock('forgot/success');
+                break;
+
+            case 1:
+                $tpl->SetBlock('forgot/key');
+                $tpl->SetVariable('info', _t('USERS_FORGOT_REMEMBER_INFO'));
+                $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_KEY'));
+                $tpl->SetVariable('key', $post['key']);
+                $tpl->ParseBlock('forgot/key');
+                // without break
+
+            default:
+                $tpl->SetBlock('forgot/email');
+                $tpl->SetVariable('info', _t('USERS_FORGOT_REMEMBER_INFO'));
+                $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+                $tpl->SetVariable('email', $post['email']);
+                $tpl->ParseBlock('forgot/email');
         }
 
         //captcha
