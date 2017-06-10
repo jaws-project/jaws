@@ -14,7 +14,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      * @access  public
      * @return  void
      */
-    function SendRecoverKey()
+    function LoginRecovery()
     {
         if ($this->gadget->registry->fetch('password_recovery') !== 'true') {
             return Jaws_HTTPError::Get(404);
@@ -28,10 +28,10 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushResponse(
                 $resCheck->GetMessage(),
-                'Users.ForgotLogin',
+                'Users.LoginForgot',
                 RESPONSE_ERROR
             );
-            return Jaws_Header::Location($this->gadget->urlMap('ForgotLogin'));
+            return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
         }
 
         $uModel = $this->gadget->model->load('Registration');
@@ -39,17 +39,17 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
                 $result->GetMessage(),
-                'Users.ForgotLogin',
+                'Users.LoginForgot',
                 RESPONSE_ERROR
             );
         } else {
             $GLOBALS['app']->Session->PushResponse(
                 _t('USERS_FORGOT_MAIL_SENT'),
-                'Users.ForgotLogin'
+                'Users.LoginForgot'
             );
         }
 
-        return Jaws_Header::Location($this->gadget->urlMap('ForgotLogin'));
+        return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
     }
 
     /**
@@ -58,26 +58,42 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML content
      */
-    function ForgotLogin()
+    function LoginForgot()
     {
         if ($this->gadget->registry->fetch('password_recovery') !== 'true') {
             return Jaws_HTTPError::Get(404);
         }
 
+        $response = $GLOBALS['app']->Session->PopResponse('Users.LoginForgot');
+        if (!isset($response['data'])) {
+            $post  = jaws()->request->fetch(array('email', 'step', 'key'), 'post');
+        } else {
+            $post = $response['data'];
+        }
+
         // Load the template
-        $tpl = $this->gadget->template->load('ForgotLogin.html');
+        $tpl = $this->gadget->template->load('LoginForgot.html');
         $tpl->SetBlock('forgot');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', _t('USERS_FORGOT_REMEMBER'));
         $tpl->SetVariable('info', _t('USERS_FORGOT_REMEMBER_INFO'));
-        $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email', $post['email']);
         $tpl->SetVariable('remember', _t('GLOBAL_SUBMIT'));
+        // if login recovery in step 1
+        if (!empty($post['step'])) {
+            $tpl->SetBlock('forgot/key');
+            $tpl->SetVariable('info', _t('USERS_FORGOT_REMEMBER_INFO'));
+            $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_KEY'));
+            $tpl->SetVariable('key', $post['key']);
+            $tpl->ParseBlock('forgot/key');
+        }
 
         //captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $mPolicy->loadCaptcha($tpl, 'forgot');
 
-        if ($response = $GLOBALS['app']->Session->PopResponse('Users.ForgotLogin')) {
+        if ($response = $GLOBALS['app']->Session->PopResponse('Users.LoginForgot')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -185,7 +201,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $link =& Piwi::CreateWidget(
                 'Link',
                 _t('USERS_FORGOT_LOGIN'),
-                $this->gadget->urlMap('ForgotLogin')
+                $this->gadget->urlMap('LoginForgot')
             );
             $tpl->SetVariable('forgot-password', $link->Get());
         }
@@ -328,7 +344,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             if ($this->gadget->registry->fetch('password_recovery') == 'true') {
                 $tpl->SetBlock('LoginLinks/forgot');
                 $tpl->SetVariable('user_forgot', _t('USERS_FORGOT_LOGIN'));
-                $tpl->SetVariable('forgot_url',  $this->gadget->urlMap('ForgotLogin'));
+                $tpl->SetVariable('forgot_url',  $this->gadget->urlMap('LoginForgot'));
                 $tpl->ParseBlock('LoginLinks/forgot');
             }
 

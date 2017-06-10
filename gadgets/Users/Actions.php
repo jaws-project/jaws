@@ -56,13 +56,13 @@ $actions['Logout'] = array(
     'internal' => true,
     'file' => 'Login',
 );
-$actions['ForgotLogin'] = array(
+$actions['LoginForgot'] = array(
     'normal' => true,
     'global' => true,
     'file' => 'Login',
 );
-$actions['SendRecoverKey'] = array(
-    'normal' => true,
+$actions['LoginRecovery'] = array(
+    'standalone' => true,
     'global' => true,
     'file' => 'Login',
 );
