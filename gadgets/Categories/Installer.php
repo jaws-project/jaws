@@ -41,6 +41,9 @@ class Categories_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Add listener for remove category items related to given gadget
+        $this->gadget->event->insert('UninstallGadget');
+
         return true;
     }
 

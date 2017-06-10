@@ -150,4 +150,16 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()->table('categories')->delete()->where('id', $id)->exec();
     }
+
+    /**
+     * Delete a gadget's categories
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget name
+     * @return  mixed   Array of Categories or Jaws_Error on failure
+     */
+    function DeleteGadgetCategories($gadget)
+    {
+        return Jaws_ORM::getInstance()->table('categories')->delete()->where('gadget', $gadget)->exec();
+    }
 }
