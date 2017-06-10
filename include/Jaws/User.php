@@ -440,7 +440,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'new_email', 'status:integer');
-        $usersTable->where('email_verify_key', trim($key));
+        $usersTable->where('password_recovery_key', trim($key));
         return $usersTable->fetchRow();
     }
 
@@ -455,7 +455,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
-        $usersTable->where('password_verify_key', trim($key));
+        $usersTable->where('password_recovery_key', trim($key));
         return $usersTable->fetchRow();
     }
 
@@ -1013,7 +1013,7 @@ class Jaws_User
 
             // password hash
             $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
-            $uData['password_verify_key'] = '';
+            $uData['password_recovery_key'] = '';
             $uData['last_password_update'] = time();
         } else {
             unset($uData['password']);
@@ -1071,7 +1071,7 @@ class Jaws_User
         if (isset($uData['status'])) {
             $uData['status'] = (int)$uData['status'];
             if ($uData['status'] == 1) {
-                $uData['email_verify_key'] = '';
+                $uData['password_recovery_key'] = '';
             }
         }
         if (isset($uData['expiry_date'])) {
@@ -1614,9 +1614,9 @@ class Jaws_User
      */
     function UpdateEmailVerifyKey($uid)
     {
-        $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
+        $key = Jaws_Utils::RandomText(5, false, false, true);
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('email_verify_key' => $key))->where('id', (int)$uid)->exec();
+        $result = $usersTable->update(array('email_recovery_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -1633,9 +1633,9 @@ class Jaws_User
      */
     function UpdatePasswordVerifyKey($uid)
     {
-        $key = md5(uniqid(rand(), true)) . time() . floor(microtime()*1000);
+        $key = Jaws_Utils::RandomText(5, false, false, true);
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('password_verify_key' => $key))->where('id', (int)$uid)->exec();
+        $result = $usersTable->update(array('password_recovery_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
