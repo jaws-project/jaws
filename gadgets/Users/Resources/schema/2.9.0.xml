@@ -34,9 +34,9 @@
             </field>
 
             <field>
-                <name>password_recovery_key</name>
+                <name>password_verify_key</name>
                 <type>text</type>
-                <length>5</length>
+                <length>48</length>
             </field>
 
             <field>
@@ -64,9 +64,9 @@
             </field>
 
             <field>
-                <name>email_recovery_key</name>
+                <name>email_verify_key</name>
                 <type>text</type>
-                <length>5</length>
+                <length>48</length>
             </field>
 
             <field>
@@ -82,9 +82,9 @@
             </field>
 
             <field>
-                <name>mobile_recovery_key</name>
+                <name>mobile_verify_key</name>
                 <type>text</type>
-                <length>5</length>
+                <length>16</length>
             </field>
 
             <field>

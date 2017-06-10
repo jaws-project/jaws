@@ -20,8 +20,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
-        $post  = jaws()->request->fetch(array('email'), 'post');
-        $error = '';
+        $post = $this->gadget->request->fetch(array('step', 'email', 'key'), 'post');
 
         $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
@@ -34,19 +33,23 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
         }
 
-        $uModel = $this->gadget->model->load('Registration');
-        $result = $uModel->SendRecoveryKey($post['email']);
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
-                $result->GetMessage(),
-                'Users.LoginForgot',
-                RESPONSE_ERROR
-            );
+        if (empty($post['step'])) {
+            $uModel = $this->gadget->model->load('Registration');
+            $result = $uModel->SendRecoveryKey($post['email']);
+            if (Jaws_Error::IsError($result)) {
+                $GLOBALS['app']->Session->PushResponse(
+                    $result->GetMessage(),
+                    'Users.LoginForgot',
+                    RESPONSE_ERROR,
+                    $post
+                );
+            } else {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('USERS_FORGOT_MAIL_SENT'),
+                    'Users.LoginForgot'
+                );
+            }
         } else {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_FORGOT_MAIL_SENT'),
-                'Users.LoginForgot'
-            );
         }
 
         return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
@@ -66,7 +69,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         $response = $GLOBALS['app']->Session->PopResponse('Users.LoginForgot');
         if (!isset($response['data'])) {
-            $post  = jaws()->request->fetch(array('email', 'step', 'key'), 'post');
+            $post = array(
+                'step'  => 0,
+                'email' => '',
+                'key'   => '',
+            );
         } else {
             $post = $response['data'];
         }
