@@ -104,10 +104,6 @@ $actions['Account'] = array(
         'order' => 1
     ),
 );
-$actions['ChangePassword'] = array(
-    'normal' => true,
-    'file' => 'Account',
-);
 $actions['UpdateAccount'] = array(
     'standalone' => true,
     'internal' => true,

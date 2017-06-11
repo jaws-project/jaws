@@ -61,7 +61,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
      * @param   string  $key    Recovery key
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function ChangePassword($user, $key)
+    function UpdatePassword($user, $key)
     {
         $jUser = new Jaws_User;
         $user = $jUser->VerifyPasswordRecoveryKey($user, $key);
@@ -112,6 +112,25 @@ class Users_Model_Account extends Jaws_Gadget_Model
 
         $message = $tpl->Get();            
         $subject = _t('USERS_FORGOT_PASSWORD_CHANGED_SUBJECT');
+
+        // Notify
+        $params = array();
+        $params['key']     = crc32('Users.UpdatePassword.User' . $user['id']);
+        $params['title']   = $subject;
+        $params['summary'] = _t(
+            'USERS_FORGOT_LOGIN_PASSWORD_SUMMARY',
+            $user['nickname'],
+            $site_url,
+            $user['username'],
+            $user['email'],
+            $user['mobile'],
+            $password
+        );
+        $params['description'] = $message;
+        $params['emails']      = array($user['email']);
+        $params['mobiles']     = array($user['mobile']);
+        $this->gadget->event->shout('Notify', $params);
+        return true;
 
         $mail = Jaws_Mail::getInstance();
         $mail->SetFrom();

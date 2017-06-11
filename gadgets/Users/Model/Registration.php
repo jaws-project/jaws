@@ -273,10 +273,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             );
         }
 
-        $verifyKey = $userModel->UpdatePasswordVerifyKey($user['id']);
-        if (Jaws_Error::IsError($verifyKey)) {
-            $verifyKey->SetMessage(_t('GLOBAL_ERROR_QUERY_FAILED'));
-            return $verifyKey;
+        $recoveryKey = $userModel->UpdatePasswordRecoveryKey($user['id']);
+        if (Jaws_Error::IsError($RecoveryKey)) {
+            return $RecoveryKey;
         }
 
         $site_url  = $GLOBALS['app']->getSiteURL('/');
@@ -289,15 +288,8 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $tpl->SetVariable('nickname', $user['nickname']);
         $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $user['nickname']));
         $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-        $tpl->SetVariable(
-            'url',
-            $this->gadget->urlMap(
-                'ChangePassword',
-                array('key' => $verifyKey),
-                array('absolute' => true)
-            )
-        );
+        $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
+        $tpl->SetVariable('key',      $RecoveryKey);
         $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
         $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
         $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
@@ -308,17 +300,23 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $message = $tpl->Get();
         $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
 
-        $mail = Jaws_Mail::getInstance();
-        $mail->SetFrom();
-        $mail->AddRecipient($user['email']);
-        $mail->SetSubject($subject);
-        $mail->SetBody($this->gadget->plugin->parseAdmin($message));
-        $mresult = $mail->send();
-        if (Jaws_Error::IsError($mresult)) {
-            $mresult->SetMessage(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
-            return $mresult;
-        }
-
+        // Notify
+        $params = array();
+        $params['key']     = crc32('Users.SendLoginRecoveryKey.User' . $user['id']);
+        $params['title']   = $subject;
+        $params['summary'] = _t(
+            'USERS_FORGOT_LOGIN_SUMMARY',
+            $user['nickname'],
+            $site_url,
+            $user['username'],
+            $user['email'],
+            $user['mobile'],
+            $recoveryKey
+        );
+        $params['description'] = $message;
+        $params['emails']      = array($user['email']);
+        $params['mobiles']     = array($user['mobile']);
+        $this->gadget->event->shout('Notify', $params);
         return true;
     }
 

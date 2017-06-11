@@ -54,7 +54,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
         } else {
             $uModel = $this->gadget->model->load('Account');
-            $result = $uModel->ChangePassword($post['email'], $post['key']);
+            $result = $uModel->UpdatePassword($post['email'], $post['key']);
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushResponse(
                     $result->getMessage(),

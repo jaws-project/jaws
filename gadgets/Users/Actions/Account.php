@@ -211,30 +211,6 @@ class Users_Actions_Account extends Users_Actions_Default
     }
 
     /**
-     * Checks if given recovery key really exists, it it does then generates
-     * a new password(pronounceable) and sends it to the user mailbox
-     *
-     * @access  public
-     * @return  string  XHTML template
-     */
-    function ChangePassword()
-    {
-        if ($this->gadget->registry->fetch('password_recovery') !== 'true') {
-            return Jaws_HTTPError::Get(404);
-        }
-
-        $key = jaws()->request->fetch('key', 'get');
-
-        $uModel  = $this->gadget->model->load('Account');
-        $result = $uModel->ChangePassword($key);
-        if (Jaws_Error::IsError($result)) {
-            return $result->GetMessage();
-        }
-
-        return _t($result? 'USERS_FORGOT_PASSWORD_CHANGED' : 'USERS_FORGOT_KEY_NOT_VALID');
-    }
-
-    /**
      * Sends replace email notification to user
      *
      * @access  public
