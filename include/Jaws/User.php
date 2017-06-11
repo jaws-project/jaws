@@ -54,7 +54,7 @@ class Jaws_User
      * Verify a user
      *
      * @access  public
-     * @param   string  $user      User name/email
+     * @param   string  $user      User name/email/mobile
      * @param   string  $password  Password of the user
      * @return  boolean Returns true if the user is valid and false if not
      */
@@ -418,15 +418,19 @@ class Jaws_User
      * Get the info of an user(s) by the email address
      *
      * @access  public
-     * @param   int     $email  The email address
+     * @param   string  $term   User name/email/mobile
      * @return  mixed   Returns an array with the info of the user(s) and false on error
      */
-    function GetUserInfoByEmail($email)
+    function FindUserByTerm($term)
     {
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'superadmin:boolean', 'status:integer');
-        $usersTable->where('lower(email)', strtolower($email));
-        return $usersTable->fetchAll();
+        return Jaws_ORM::getInstance()->table('users')
+            ->select('id:integer', 'username', 'nickname', 'email', 'mobile', 'superadmin:boolean', 'status:integer')
+            ->openWhere('lower(username)', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->where('lower(email)', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->closeWhere('mobile', $term)
+            ->fetchRow();
     }
 
     /**
@@ -445,18 +449,25 @@ class Jaws_User
     }
 
     /**
-     * Get the info of an user(s) by the password verification key
+     * Get the info of an user(s) by the password recovery key
      *
      * @access  public
-     * @param   string  $key  Verification key
+     * @param   string  $user   User name/email/mobile
+     * @param   string  $key    Recovery key
      * @return  mixed   Returns an array with the info of the user(s) and false on error
      */
-    function GetUserByPasswordVerifyKey($key)
+    function VerifyPasswordRecoveryKey($user, $key)
     {
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
-        $usersTable->where('password_recovery_key', trim($key));
-        return $usersTable->fetchRow();
+        return Jaws_ORM::getInstance()->table('users')
+            ->select('id:integer', 'username', 'nickname', 'email', 'mobile', 'status:integer')
+            ->openWhere('lower(username)', Jaws_UTF8::strtolower($user))
+            ->or()
+            ->where('lower(email)', Jaws_UTF8::strtolower($user))
+            ->or()
+            ->closeWhere('mobile', $user)
+            -> and()
+            ->where('password_recovery_key', trim($key))
+            ->fetchRow();
     }
 
     /**
@@ -1025,25 +1036,28 @@ class Jaws_User
             return false;
         }
 
-        if (JAWS_GODUSER == $user['id']) {
-            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+        // if currently a user logged
+        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->Logged()) {
+            // other users can't modify the god user
+            if (JAWS_GODUSER == $user['id'] && $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
             }
-        }
 
-        if (isset($GLOBALS['app']->Session) && !$GLOBALS['app']->Session->IsSuperAdmin()) {
-            unset($uData['superadmin']);
-            // non-superadmin user can't change properties of superadmin users
-            if ($user['superadmin']) {
-                return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
-                    __FUNCTION__,
-                    JAWS_ERROR_NOTICE
-                );
+            // not superadmin cant set/modify superadmin users 
+            if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
+                unset($uData['superadmin']);
+                // non-superadmin user can't change properties of superadmin users
+                if ($user['superadmin']) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
             }
         }
 
