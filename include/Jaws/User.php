@@ -1639,13 +1639,13 @@ class Jaws_User
     }
 
     /**
-     * Update the change password verification key of a certain user
+     * Update password recovery key of a certain user
      *
      * @access  public
      * @param   int     $uid  User's ID
      * @return  mixed   Generated key if success or Jaws_Error on failure
      */
-    function UpdatePasswordVerifyKey($uid)
+    function UpdatePasswordRecoveryKey($uid)
     {
         $key = Jaws_Utils::RandomText(5, false, false, true);
         $usersTable = Jaws_ORM::getInstance()->table('users');
