@@ -249,69 +249,77 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      * @param   string  $user_email User email
      * @return  bool    True on success or Jaws_Error on failure
      */
-    function SendRecoveryKey($user_email)
+    function SendLoginRecoveryKey($term)
     {
-        if (empty($user_email)) {
-            return new Jaws_Error(_t('USERS_REGISTER_EMAIL_NOT_VALID'), $user_email);
+        if (empty($term)) {
+            return Jaws_Error::raiseError(
+                _t('USERS_USER_NOT_EXIST'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         $userModel = new Jaws_User;
-        $uInfos = $userModel->GetUserInfoByEmail($user_email);
-        if (Jaws_Error::IsError($uInfos)) {
+        $user = $userModel->FindUserByTerm($term);
+        if (Jaws_Error::IsError($user)) {
             return $uInfos;
         }
 
-        if (empty($uInfos)) {
-            return new Jaws_Error(_t('USERS_USER_NOT_EXIST'));
-        }
-
-        foreach($uInfos as $info) {
-            $verifyKey = $userModel->UpdatePasswordVerifyKey($info['id']);
-            if (Jaws_Error::IsError($verifyKey)) {
-                $verifyKey->SetMessage(_t('GLOBAL_ERROR_QUERY_FAILED'));
-                return $verifyKey;
-            }
-
-            $site_url  = $GLOBALS['app']->getSiteURL('/');
-            $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
-
-            $tpl = $this->gadget->template->load('RecoverPassword.txt');
-            $tpl->SetBlock('RecoverPassword');
-            $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-            $tpl->SetVariable('username', $info['username']);
-            $tpl->SetVariable('nickname', $info['nickname']);
-            $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $info['nickname']));
-            $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
-            $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-            $tpl->SetVariable(
-                'url',
-                $this->gadget->urlMap(
-                    'ChangePassword',
-                    array('key' => $verifyKey),
-                    array('absolute' => true)
-                )
+        if (empty($user)) {
+            return Jaws_Error::raiseError(
+                _t('USERS_USER_NOT_EXIST'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
             );
-            $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-            $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-            $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
-            $tpl->SetVariable('site-name', $site_name);
-            $tpl->SetVariable('site-url', $site_url);
-            $tpl->ParseBlock('RecoverPassword');
-
-            $message = $tpl->Get();
-            $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
-
-            $mail = Jaws_Mail::getInstance();
-            $mail->SetFrom();
-            $mail->AddRecipient($user_email);
-            $mail->SetSubject($subject);
-            $mail->SetBody($this->gadget->plugin->parseAdmin($message));
-            $mresult = $mail->send();
-            if (Jaws_Error::IsError($mresult)) {
-                $mresult->SetMessage(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
-                return $mresult;
-            }
         }
+
+        $verifyKey = $userModel->UpdatePasswordVerifyKey($user['id']);
+        if (Jaws_Error::IsError($verifyKey)) {
+            $verifyKey->SetMessage(_t('GLOBAL_ERROR_QUERY_FAILED'));
+            return $verifyKey;
+        }
+
+        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
+
+        $tpl = $this->gadget->template->load('RecoverPassword.txt');
+        $tpl->SetBlock('RecoverPassword');
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username', $user['username']);
+        $tpl->SetVariable('nickname', $user['nickname']);
+        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $user['nickname']));
+        $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable(
+            'url',
+            $this->gadget->urlMap(
+                'ChangePassword',
+                array('key' => $verifyKey),
+                array('absolute' => true)
+            )
+        );
+        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
+        $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name', $site_name);
+        $tpl->SetVariable('site-url', $site_url);
+        $tpl->ParseBlock('RecoverPassword');
+
+        $message = $tpl->Get();
+        $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
+
+        $mail = Jaws_Mail::getInstance();
+        $mail->SetFrom();
+        $mail->AddRecipient($user['email']);
+        $mail->SetSubject($subject);
+        $mail->SetBody($this->gadget->plugin->parseAdmin($message));
+        $mresult = $mail->send();
+        if (Jaws_Error::IsError($mresult)) {
+            $mresult->SetMessage(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
+            return $mresult;
+        }
+
+        return true;
     }
 
 }

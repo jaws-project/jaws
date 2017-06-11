@@ -57,15 +57,24 @@ class Users_Model_Account extends Jaws_Gadget_Model
      * Changes a password from a given key
      *
      * @access  public
-     * @param   string   $key   Recovery key
-     * @return  mixed    True on success or Jaws_Error on failure
+     * @param   string  $user   User name/email/mobile
+     * @param   string  $key    Recovery key
+     * @return  mixed   True on success or Jaws_Error on failure
      */
-    function ChangePassword($key)
+    function ChangePassword($user, $key)
     {
         $jUser = new Jaws_User;
-        $user = $jUser->GetUserByPasswordVerifyKey($key);
-        if (Jaws_Error::IsError($user) || empty($user)) {
-            return false;
+        $user = $jUser->VerifyPasswordRecoveryKey($user, $key);
+        if (Jaws_Error::IsError($user)) {
+            return $user;
+        }
+
+        if (empty($user)) {
+            return Jaws_Error::raiseError(
+                _t('USERS_FORGOT_KEY_NOT_VALID'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         // generate new password
@@ -76,6 +85,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
                 'username' => $user['username'],
                 'nickname' => $user['nickname'],
                 'email'    => $user['email'],
+                'mobile'   => $user['mobile'],
                 'password' => $password,
             )
         );
@@ -110,7 +120,10 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $mail->SetBody($this->gadget->plugin->parseAdmin($message));
         $mresult = $mail->send();
         if (Jaws_Error::IsError($mresult)) {
-            return new Jaws_Error(_t('USERS_FORGOT_ERROR_SENDING_MAIL'));
+            return Jaws_Error::raiseError(
+                _t('USERS_FORGOT_ERROR_SENDING_MAIL'),
+                __FUNCTION__
+            );
         }
 
         return true;

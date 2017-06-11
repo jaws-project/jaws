@@ -35,7 +35,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         if (empty($post['step'])) {
             $uModel = $this->gadget->model->load('Registration');
-            $result = $uModel->SendRecoveryKey($post['email']);
+            $result = $uModel->SendLoginRecoveryKey($post['email']);
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushResponse(
                     $result->GetMessage(),
@@ -54,7 +54,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
         } else {
             $uModel = $this->gadget->model->load('Account');
-            $result = $uModel->ChangePassword($post['key']);
+            $result = $uModel->ChangePassword($post['email'], $post['key']);
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushResponse(
                     $result->getMessage(),
@@ -116,7 +116,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             case 1:
                 $tpl->SetBlock('forgot/key');
                 $tpl->SetVariable('info', _t('USERS_FORGOT_REMEMBER_INFO'));
-                $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_KEY'));
+                $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
                 $tpl->SetVariable('key', $post['key']);
                 $tpl->ParseBlock('forgot/key');
                 // without break
