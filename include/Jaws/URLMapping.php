@@ -392,7 +392,11 @@ class Jaws_URLMapping
                     }
 
                     if ($extension) {
-                        $url.= ($extension === true)? $this->_extension : $extension;
+                        if ($extension === true) {
+                            $url.= ($map['extension'] == '.')? $this->_extension : $map['extension'];
+                        } else {
+                            $url.= $extension;
+                        }
                     }
 
                     // preparing options
