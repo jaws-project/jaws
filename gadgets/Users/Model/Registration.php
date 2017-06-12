@@ -281,21 +281,23 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $tpl = $this->gadget->template->load('RecoverPassword.txt');
-        $tpl->SetBlock('RecoverPassword');
+        $tpl = $this->gadget->template->load('LoginRecoveryNotification.html');
+        $tpl->SetBlock('NotificationRecovery');
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username', $user['username']);
         $tpl->SetVariable('nickname', $user['nickname']);
         $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $user['nickname']));
         $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile',     $user['mobile']);
         $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
-        $tpl->SetVariable('key',      $RecoveryKey);
+        $tpl->SetVariable('key',      $recoveryKey);
         $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
         $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
         $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);
-        $tpl->ParseBlock('RecoverPassword');
+        $tpl->ParseBlock('NotificationRecovery');
 
         $message = $tpl->Get();
         $subject = _t('USERS_FORGOT_REMEMBER', $site_name);

@@ -28,7 +28,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->PushResponse(
                 $resCheck->GetMessage(),
                 'Users.LoginForgot',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                $post
             );
             return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
         }
@@ -111,8 +112,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $tpl->SetBlock('forgot/success');
                 $tpl->SetVariable(
                     'message',
-                    _t('USERS_FORGOT_RECOVERY_SUCCESS'),
-                    $this->gadget->urlmap('Login')
+                    _t('USERS_FORGOT_RECOVERY_SUCCESS', $this->gadget->urlMap('LoginBox'))
                 );
                 $tpl->ParseBlock('forgot/success');
                 break;
