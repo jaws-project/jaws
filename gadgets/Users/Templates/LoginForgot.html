@@ -13,25 +13,29 @@
     <div class="gadget_content content">
       <fieldset>
         <!-- BEGIN email -->
-        <p>{{info}}</p>
-        <div><label for="forgot_email">{{lbl_email}}:</label>
-           <input class="form-control" name="email" class="large email ltr" id="forgot_email" type="text" value="{{email}}" {{disabled}} required />
+        <div><label for="forgot_email">{{lbl_term}}:</label>
+           <input class="form-control" name="email" class="large email ltr" id="forgot_email" type="text" value="{{email}}"
+           <!-- BEGIN readonly -->readonly = "readonly"<!-- END readonly -->
+             required
+           />
         </div>
-        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
         <!-- END email -->
         <!-- BEGIN key -->
-        <p>{{info}}</p>
         <div><label for="forgot_key">{{lbl_key}}:</label>
            <input class="form-control" name="key" class="large ltr" id="forgot_key" type="text" value="{{key}}" required />
         </div>
-        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
         <!-- END key -->
         <!-- BEGIN success -->
-        <p>{{info}}</p>
+        <p>{{message}}</p>
         <!-- END success -->
+        <!-- BEGIN captcha -->
+        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+        <!-- END captcha -->
       </fieldset>
     </div>
+    <!-- BEGIN action -->
     <div class="gadget_actions actions"><button class="btn btn-primary" type="submit" value="{{remember}}">{{remember}}</button></div>
+    <!-- END action -->
   </form>
 </div>
 <div class="gadget_footer"></div>
