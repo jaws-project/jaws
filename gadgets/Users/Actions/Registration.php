@@ -8,35 +8,6 @@
 class Users_Actions_Registration extends Jaws_Gadget_Action
 {
     /**
-     * Tells the user the registration process is done
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function Registered()
-    {
-        // Load the template
-        $tpl = $this->gadget->template->load('Registered.html');
-        $tpl->SetBlock('registered');
-        $tpl->SetVariable('title', _t('USERS_REGISTER_REGISTERED'));
-
-        switch ($this->gadget->registry->fetch('anon_activation')) {
-            case 'admin':
-                $message = _t('USERS_ACTIVATE_ACTIVATION_BY_ADMIN_MSG');
-                break;
-            case 'user':
-                $message = _t('USERS_ACTIVATE_ACTIVATION_BY_USER_MSG');
-                break;
-            default:
-                $message = _t('USERS_REGISTER_REGISTERED_MSG', $this->gadget->urlMap('LoginBox'));
-        }
-
-        $tpl->SetVariable('registered_msg', $message);
-        $tpl->ParseBlock('registered');
-        return $tpl->Get();
-    }
-
-    /**
      * Registers the user
      *
      * @access  public
@@ -64,23 +35,14 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
 
         $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
-        if (Jaws_Error::IsError($resCheck)) {
-            $result = $resCheck->getMessage();
-        }
-
-        if (empty($result)) {
-            if ($post['password'] !== $post['password_check']) {
-                $result = _t('USERS_USERS_PASSWORDS_DONT_MATCH');
-            } else {
+        if (!Jaws_Error::IsError($resCheck)) {
+            if ($post['password'] === $post['password_check']) {
+                $dob = null;
                 if (!empty($post['dob'])) {
                     $dob = Jaws_Date::getInstance()->ToBaseDate(explode('-', $post['dob']), 'Y-m-d');
                     $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d');
-                } else {
-                    $dob = null;
                 }
-
-                $uModel = $this->gadget->model->load('Registration');
-                $result = $uModel->CreateUser(
+                $result = $this->gadget->model->load('Registration')->CreateUser(
                     $post['username'],
                     $post['email'],
                     $post['mobile'],
@@ -95,9 +57,19 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                     $this->gadget->registry->fetch('anon_group')
                 );
                 if ($result === true) {
-                    return Jaws_Header::Location($this->gadget->urlMap('Registered'));
+                    $GLOBALS['app']->Session->PushResponse(
+                        _t('USERS_REGISTER_REGISTERED'),
+                        'Users.Registration',
+                        RESPONSE_NOTICE
+                    );
+                    return Jaws_Header::Location($this->gadget->urlMap('Registration'));
                 }
+            } else {
+                $result = _t('USERS_USERS_PASSWORDS_DONT_MATCH');
             }
+            
+        } else {
+            $result = $resCheck->getMessage();
         }
 
         // unset unnecessary registration data
@@ -108,6 +80,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             RESPONSE_ERROR,
             $post
         );
+
         return Jaws_Header::Location($this->gadget->urlMap('Registration'));
     }
 
@@ -128,63 +101,96 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // Load the template
-        $tpl = $this->gadget->template->load('Register.html');
-        $tpl->SetBlock('register');
+        $tpl = $this->gadget->template->load('Registration.html');
+        $tpl->SetBlock('registration');
         $tpl->SetVariable('title', _t('USERS_REGISTER'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-
-        $tpl->SetVariable('lbl_account_info',  _t('USERS_ACCOUNT_INFO'));
-        $tpl->SetVariable('lbl_username',      _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('validusernames',    _t('USERS_REGISTER_VALID_USERNAMES'));
-        $tpl->SetVariable('lbl_email',         _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_mobile',         _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_url',           _t('GLOBAL_URL'));
-        $tpl->SetVariable('lbl_nickname',       _t('USERS_USERS_NICKNAME'));
-        $tpl->SetVariable('lbl_password',      _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('sendpassword',      _t('USERS_USERS_SEND_AUTO_PASSWORD'));
-        $tpl->SetVariable('lbl_checkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
-
-        $tpl->SetVariable('lbl_personal_info', _t('USERS_PERSONAL_INFO'));
-        $tpl->SetVariable('lbl_fname',         _t('USERS_USERS_FIRSTNAME'));
-        $tpl->SetVariable('lbl_lname',         _t('USERS_USERS_LASTNAME'));
-        $tpl->SetVariable('lbl_gender',        _t('USERS_USERS_GENDER'));
-        $tpl->SetVariable('lbl_ssn',           _t('USERS_USERS_SSN'));
-        $tpl->SetVariable('gender_0',          _t('USERS_USERS_GENDER_0'));
-        $tpl->SetVariable('gender_1',          _t('USERS_USERS_GENDER_1'));
-        $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
-        $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
-        $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
         $response = $GLOBALS['app']->Session->PopResponse('Users.Registration');
-        if (isset($response['data'])) {
-            $post_data = $response['data'];
-            $tpl->SetVariable('username',  $post_data['username']);
-            $tpl->SetVariable('email',     $post_data['email']);
-            $tpl->SetVariable('mobile',    $post_data['mobile']);
-            $tpl->SetVariable('url',       $post_data['url']);
-            $tpl->SetVariable('nickname',  $post_data['nickname']);
-            $tpl->SetVariable('fname',     $post_data['fname']);
-            $tpl->SetVariable('lname',     $post_data['lname']);
-            $tpl->SetVariable('ssn',       $post_data['ssn']);
-            $tpl->SetVariable('dob',       $post_data['dob']);
-            $tpl->SetVariable("selected_gender_{$post_data['gender']}", 'selected="selected"');
-        } else {
-            $tpl->SetVariable('url', 'http://');
-            $tpl->SetVariable("selected_gender_0", 'selected="selected"');
-        }
-
-        $tpl->SetVariable('register', _t('USERS_REGISTER'));
-
-        //captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $mPolicy->loadCaptcha($tpl, 'register');
-
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $tpl->ParseBlock('register');
+        // if registration successfully
+        if (!empty($response) && isset($response['type']) && $response['type'] == RESPONSE_NOTICE) {
+            $tpl->SetBlock('registration/result');
+            // select suitable message
+            switch ($this->gadget->registry->fetch('anon_activation')) {
+                case 'admin':
+                    $message = _t('USERS_ACTIVATE_ACTIVATION_BY_ADMIN_MSG');
+                    break;
+                case 'user':
+                    $message = _t('USERS_ACTIVATE_ACTIVATION_BY_USER_MSG');
+                    break;
+                default:
+                    $message = _t('USERS_REGISTER_REGISTERED_MSG', $this->gadget->urlMap('LoginBox'));
+            }
+
+            $tpl->SetVariable('message', $message);
+            $tpl->ParseBlock('registration/result');
+        } else {
+            // registration request form
+            if (isset($response['data'])) {
+                $post = $response['data'];
+            } else {
+                $post = array(
+                    'username' => '',
+                    'email' => '',
+                    'mobile' => '',
+                    'url' => '',
+                    'nickname' => '',
+                    'fname' => '',
+                    'lname' => '',
+                    'ssn' => '',
+                    'dob' => '',
+                    'gender' => 0
+                );
+            }
+
+            $tpl->SetBlock('registration/request');
+            $tpl->SetVariable('username',  $post['username']);
+            $tpl->SetVariable('email',     $post['email']);
+            $tpl->SetVariable('mobile',    $post['mobile']);
+            $tpl->SetVariable('url',       $post['url']);
+            $tpl->SetVariable('nickname',  $post['nickname']);
+            $tpl->SetVariable('fname',     $post['fname']);
+            $tpl->SetVariable('lname',     $post['lname']);
+            $tpl->SetVariable('ssn',       $post['ssn']);
+            $tpl->SetVariable('dob',       $post['dob']);
+            $tpl->SetVariable("selected_gender_{$post['gender']}", 'selected="selected"');
+
+            $tpl->SetVariable('lbl_account_info',  _t('USERS_ACCOUNT_INFO'));
+            $tpl->SetVariable('lbl_username',      _t('USERS_USERS_USERNAME'));
+            $tpl->SetVariable('validusernames',    _t('USERS_REGISTER_VALID_USERNAMES'));
+            $tpl->SetVariable('lbl_email',         _t('GLOBAL_EMAIL'));
+            $tpl->SetVariable('lbl_mobile',         _t('USERS_CONTACTS_MOBILE_NUMBER'));
+            $tpl->SetVariable('lbl_url',           _t('GLOBAL_URL'));
+            $tpl->SetVariable('lbl_nickname',       _t('USERS_USERS_NICKNAME'));
+            $tpl->SetVariable('lbl_password',      _t('USERS_USERS_PASSWORD'));
+            $tpl->SetVariable('sendpassword',      _t('USERS_USERS_SEND_AUTO_PASSWORD'));
+            $tpl->SetVariable('lbl_checkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
+            $tpl->SetVariable('lbl_personal_info', _t('USERS_PERSONAL_INFO'));
+            $tpl->SetVariable('lbl_fname',         _t('USERS_USERS_FIRSTNAME'));
+            $tpl->SetVariable('lbl_lname',         _t('USERS_USERS_LASTNAME'));
+            $tpl->SetVariable('lbl_gender',        _t('USERS_USERS_GENDER'));
+            $tpl->SetVariable('lbl_ssn',           _t('USERS_USERS_SSN'));
+            $tpl->SetVariable('gender_0',          _t('USERS_USERS_GENDER_0'));
+            $tpl->SetVariable('gender_1',          _t('USERS_USERS_GENDER_1'));
+            $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
+            $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
+            $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
+
+            //captcha
+            $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+            $mPolicy->loadCaptcha($tpl, 'registration/request');
+
+            $tpl->ParseBlock('registration/request');
+            $tpl->SetBlock('registration/action');
+            $tpl->SetVariable('register', _t('USERS_REGISTER'));
+            $tpl->ParseBlock('registration/action');
+        }
+
+        $tpl->ParseBlock('registration');
         return $tpl->Get();
     }
 

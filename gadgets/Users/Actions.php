@@ -76,11 +76,6 @@ $actions['DoRegister'] = array(
     'global' => true,
     'file' => 'Registration',
 );
-$actions['Registered'] = array(
-    'normal' => true,
-    'global' => true,
-    'file' => 'Registration',
-);
 $actions['ActivateUser'] = array(
     'normal' => true,
     'global' => true,
