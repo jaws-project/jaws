@@ -102,7 +102,11 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             } else {
                 $tpl_template->SetVariable(
                     'link',
-                    $this->gadget->urlMap('Click', array('id' => $banner['id']), $abs_url)
+                    $this->gadget->urlMap(
+                        'Click',
+                        array('id' => $banner['id']),
+                        array('absolute' => $abs_url)
+                    )
                 );
                 $tpl_template->SetVariable('target', '_blank');
             }
