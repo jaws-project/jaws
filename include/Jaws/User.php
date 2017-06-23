@@ -444,7 +444,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'new_email', 'status:integer');
-        $usersTable->where('password_recovery_key', trim($key));
+        $usersTable->where('recovery_key', trim($key));
         return $usersTable->fetchRow();
     }
 
@@ -466,7 +466,7 @@ class Jaws_User
             ->or()
             ->closeWhere('mobile', $user)
             -> and()
-            ->where('password_recovery_key', trim($key))
+            ->where('recovery_key', trim($key))
             ->fetchRow();
     }
 
@@ -807,26 +807,28 @@ class Jaws_User
 
         // email
         $uData['email'] = trim($uData['email']);
-        if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-        $uData['email'] = strtolower($uData['email']);
-        $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
-        if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
+        if (!empty($uData['email'])) {
+            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $uData['email'] = strtolower($uData['email']);
+            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+            if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
         }
 
         // mobile
-        if (array_key_exists('mobile', $uData)) {
-            $uData['mobile'] = trim($uData['mobile']);
+        $uData['mobile'] = trim($uData['mobile']);
+        if (!empty($uData['mobile'])) {
             if (!empty($uData['mobile'])) {
                 if (!preg_match("/^[00]\d{10,16}$/", $uData['mobile'])) {
                     return Jaws_Error::raiseError(
@@ -836,6 +838,14 @@ class Jaws_User
                     );
                 }
             }
+        }
+
+        if (empty($uData['email']) && empty($uData['mobile'])) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         // password & complexity
@@ -948,21 +958,23 @@ class Jaws_User
 
         // email
         $uData['email'] = trim($uData['email']);
-        if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-        $uData['email'] = strtolower($uData['email']);
-        $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
-        if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
+        if (!empty($uData['email'])) {
+            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $uData['email'] = strtolower($uData['email']);
+            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+            if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
         }
 
         // new email
@@ -986,8 +998,8 @@ class Jaws_User
         }
 
         // mobile
-        if (array_key_exists('mobile', $uData)) {
-            $uData['mobile'] = trim($uData['mobile']);
+        $uData['mobile'] = trim($uData['mobile']);
+        if (!empty($uData['mobile'])) {
             if (!empty($uData['mobile'])) {
                 if (!preg_match("/^[00]\d{10,16}$/", $uData['mobile'])) {
                     return Jaws_Error::raiseError(
@@ -997,6 +1009,14 @@ class Jaws_User
                     );
                 }
             }
+        }
+
+        if (empty($uData['email']) && empty($uData['mobile'])) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         // password & complexity
@@ -1024,7 +1044,7 @@ class Jaws_User
 
             // password hash
             $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
-            $uData['password_recovery_key'] = '';
+            $uData['recovery_key'] = '';
             $uData['last_password_update'] = time();
         } else {
             unset($uData['password']);
@@ -1085,7 +1105,7 @@ class Jaws_User
         if (isset($uData['status'])) {
             $uData['status'] = (int)$uData['status'];
             if ($uData['status'] == 1) {
-                $uData['password_recovery_key'] = '';
+                $uData['recovery_key'] = '';
             }
         }
         if (isset($uData['expiry_date'])) {
@@ -1620,17 +1640,17 @@ class Jaws_User
     }
 
     /**
-     * Update the email verification key of a certain user
+     * Update the user verification key
      *
      * @access  public
      * @param   int     $uid  User's ID
      * @return  mixed   Generated key if success or Jaws_Error on failure
      */
-    function UpdateEmailVerifyKey($uid)
+    function UpdateUserVerifyKey($uid)
     {
         $key = Jaws_Utils::RandomText(5, false, false, true);
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('email_recovery_key' => $key))->where('id', (int)$uid)->exec();
+        $result = $usersTable->update(array('verify_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -1649,7 +1669,7 @@ class Jaws_User
     {
         $key = Jaws_Utils::RandomText(5, false, false, true);
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('password_recovery_key' => $key))->where('id', (int)$uid)->exec();
+        $result = $usersTable->update(array('recovery_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
