@@ -88,4 +88,34 @@ class Jaws_Gadget_Session
         return $GLOBALS['app']->Session->DeleteAttribute("$gadget.Attributes.$name", $trashed);
     }
 
+    /**
+     * Push response data
+     *
+     * @access  public
+     * @param   string  $text       Response text
+     * @param   string  $resource   Response name
+     * @param   string  $type       Response type
+     * @param   mixed   $data       Response data
+     * @return  void
+     */
+    function push($text, $resource = 'Resource', $type = RESPONSE_NOTICE, $data = null)
+    {
+        $gadget = $this->gadget->name;
+        return $GLOBALS['app']->Session->PushResponse($text, "$gadget.Response.$resource", $type, $data);
+    }
+
+    /**
+     * Returns the response data
+     *
+     * @access  public
+     * @param   string  $resource   Resource's name
+     * @param   bool    $remove     Optional remove popped response
+     * @return  mixed   Response data, or Null if resource not found
+     */
+    function pop($resource = 'Resource', $remove = true)
+    {
+        $gadget = $this->gadget->name;
+        return $GLOBALS['app']->Session->PopResponse("$gadget.Response.$resource", $remove);
+    }
+
 }
