@@ -35,8 +35,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         if (empty($post['step'])) {
-            $uModel = $this->gadget->model->load('Registration');
-            $result = $uModel->SendLoginRecoveryKey($post['email']);
+            $result = $this->gadget->model->load('Registration')->SendLoginRecoveryKey($post['email']);
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushResponse(
                     $result->GetMessage(),
@@ -54,8 +53,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 );
             }
         } else {
-            $uModel = $this->gadget->model->load('Account');
-            $result = $uModel->UpdatePassword($post['email'], $post['key']);
+            $result = $this->gadget->model->load('Account')->UpdatePassword($post['email'], $post['key']);
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushResponse(
                     $result->getMessage(),

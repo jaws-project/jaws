@@ -9,6 +9,8 @@
   <form name="registerBox" action="{{base_script}}" method="post">
     <input type="hidden" name="gadget" value="Users" />
     <input type="hidden" name="action" value="DoRegister" />
+    <input type="hidden" name="user" value="{{user}}" />
+    <input type="hidden" name="step" value="{{step}}" />
     <div class="gadget_content content">
       <!-- BEGIN request -->
       <fieldset>
@@ -18,7 +20,7 @@
           <span><small>{{validusernames}}</small></span>
         </div>
         <div><label for="register_email">{{lbl_email}}:</label>
-          <input class="form-control" name="email" class="large email ltr" id="register_email" value="{{email}}" type="text" required />
+          <input class="form-control" name="email" class="large email ltr" id="register_email" value="{{email}}" type="text" />
         </div>
         <div><label for="register_mobile">{{lbl_mobile}}:</label>
           <input class="form-control" name="mobile" class="large mobile ltr" id="register_mobile" value="{{mobile}}" type="text" />
@@ -58,12 +60,22 @@
         <div><label for="register_url">{{lbl_url}}:</label>
           <input class="form-control" name="url" class="large url ltr" id="register_url" value="{{url}}" type="text" />
         </div>
-        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
       </fieldset>
       <!-- END request -->
-      <!-- BEGIN result -->
+
+      <!-- BEGIN key -->
+      <p>{{message}}</p>
+      <div><label for="activate_key">{{lbl_key}}:</label>
+        <input class="form-control" name="key" class="large ltr" id="activate_key" type="text" value="{{key}}" required />
+      </div>
+      <!-- END key -->
+      <!-- BEGIN success -->
       {{message}}
-      <!-- END result -->
+      <!-- END success -->
+      <!-- BEGIN captcha -->
+      <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+      <!-- END captcha -->
+
     </div>
     <!-- BEGIN action -->
     <div class="gadget_actions actions"><button class="btn btn-primary" type="submit">{{register}}</button></div>

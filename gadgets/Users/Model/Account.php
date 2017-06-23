@@ -135,21 +135,6 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $params['mobiles']     = array($user['mobile']);
         $this->gadget->event->shout('Notify', $params);
         return true;
-
-        $mail = Jaws_Mail::getInstance();
-        $mail->SetFrom();
-        $mail->AddRecipient($user['email']);
-        $mail->SetSubject($subject);
-        $mail->SetBody($this->gadget->plugin->parseAdmin($message));
-        $mresult = $mail->send();
-        if (Jaws_Error::IsError($mresult)) {
-            return Jaws_Error::raiseError(
-                _t('USERS_FORGOT_ERROR_SENDING_MAIL'),
-                __FUNCTION__
-            );
-        }
-
-        return true;
     }
 
 }

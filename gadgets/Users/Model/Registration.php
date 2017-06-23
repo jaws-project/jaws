@@ -23,37 +23,51 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      * @param   string  $url            User's URL
      * @param   string  $password       Password
      * @param   string  $group          Default user group
-     * @return  mixed   True on success or message string
+     * @return  mixed   User ID on success or Jaws_Error on failure
      */
     function CreateUser($username, $user_email, $user_mobile, $nickname, $fname, $lname, $gender, $ssn,
                         $dob, $url, $password, $group = null)
     {
-        if (empty($username) || empty($nickname) || empty($user_email))
+        if (empty($username) || empty($nickname) || (empty($user_email) && empty($user_mobile)))
         {
-            return _t('USERS_USERS_INCOMPLETE_FIELDS');
+            return Jaws_Error::raiseError(
+                _t('USERS_USERS_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
-        $random = false;
         if (trim($password) == '') {
-            $random = true;
             $password = Jaws_Utils::RandomText(8);
         }
 
         $jUser = new Jaws_User;
-        //We already have a $username in the DB?
-        $info = $jUser->GetUser($username);
-        if (Jaws_Error::IsError($info) || isset($info['username'])) {
-            return _t('USERS_USERS_ALREADY_EXISTS', $username);
+        // this username already exists in the DB?
+        if ($jUser->UsernameExists($username)) {
+            return Jaws_Error::raiseError(
+                _t('USERS_USERS_ALREADY_EXISTS', $username),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
-
+        // this email address already exists in the DB?
         if ($jUser->UserEmailExists($user_email)) {
-            return _t('USERS_EMAIL_ALREADY_EXISTS', $user_email);
+            return Jaws_Error::raiseError(
+                _t('USERS_EMAIL_ALREADY_EXISTS', $user_email),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
-
+        // this mobile number already exists in the DB?
         if ($jUser->UserMobileExists($user_mobile)) {
-            return _t('USERS_MOBILE_ALREADY_EXISTS', $user_mobile);
+            return Jaws_Error::raiseError(
+                _t('USERS_MOBILE_ALREADY_EXISTS', $user_mobile),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
+        $verifyKey = Jaws_Utils::RandomText(5, false, false, true);
         $user_enabled = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
         $user_id = $jUser->AddUser(
             array(
@@ -62,11 +76,12 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 'email'    => $user_email,
                 'mobile'   => $user_mobile,
                 'password' => $password,
+                'verify_key' => $verifyKey,
                 'status'   => $user_enabled,
             )
         );
         if (Jaws_Error::IsError($user_id)) {
-            return $user_id->getMessage();
+            return $user_id;
         }
 
         $result = $jUser->UpdatePersonal(
@@ -88,157 +103,133 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $jUser->AddUserToGroup($user_id, $group);
         }
 
-        $mail = Jaws_Mail::getInstance();
-        $site_url     = $GLOBALS['app']->getSiteURL('/');
-        $site_name    = $this->gadget->registry->fetch('site_name', 'Settings');
-        $site_author  = $this->gadget->registry->fetch('site_author', 'Settings');
-        $activation   = $this->gadget->registry->fetch('anon_activation');
-        $notification = $this->gadget->registry->fetch('register_notification');
-        $delete_user  = false;
-        $message      = '';
+        $site_url   = $GLOBALS['app']->getSiteURL('/');
+        $settings   = $GLOBALS['app']->Registry->fetchAll('Settings');
+        $activation = $this->gadget->registry->fetch('anon_activation');
+        $message    = '';
 
-        if ($random === true || $activation != 'admin') {
-            $tpl = $this->gadget->template->load('UserNotification.txt');
-            $tpl->SetBlock('Notification');
-            $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $nickname));
+        //Send notification to the user
+        $tpl = $this->gadget->template->load('RegistrationNotification.html');
+        $tpl->SetBlock('UserNotification');
+        $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $nickname));
 
-            if ($random === true) {
-                switch ($activation) {
-                    case 'admin':
-                        $tpl->SetVariable('message', _t('USERS_REGISTER_BY_ADMIN_RANDOM_MAIL_MSG'));
-                        break;
+        switch ($activation) {
+            case 'admin':
+                $tpl->SetVariable('message', _t('USERS_REGISTRATION_BY_ADMIN_RANDOM_MAIL_MSG'));
+                break;
 
-                    case 'user':
-                        $tpl->SetVariable('message', _t('USERS_REGISTER_BY_USER_RANDOM_MAIL_MSG'));
-                        break;
+            case 'user':
+                $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_MAIL_MSG'));
+                // verify key
+                $tpl->SetBlock('UserNotification/Activation');
+                $tpl->SetVariable('lbl_key', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
+                $tpl->SetVariable('key', $verifyKey);
+                $tpl->ParseBlock('UserNotification/Activation');
+                break;
 
-                    default:
-                        $tpl->SetVariable('message', _t('USERS_REGISTER_RANDOM_MAIL_MSG'));
+            default:
+                $tpl->SetVariable('message', _t('USERS_REGISTRATION_MAIL_MSG'));
 
-                }
-
-                $tpl->SetBlock('Notification/Password');
-                $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
-                $tpl->SetVariable('password', $password);
-                $tpl->ParseBlock('Notification/Password');
-            } elseif ($activation == 'user') {
-                $tpl->SetVariable('message', _t('USERS_REGISTER_ACTIVATION_MAIL_MSG'));
-            } else {
-                $tpl->SetVariable('message', _t('USERS_REGISTER_MAIL_MSG'));
-            }
-
-            $tpl->SetBlock('Notification/IP');
-            $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-            $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-            $tpl->ParseBlock('Notification/IP');
-
-            $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-            $tpl->SetVariable('username', $username);
-
-            if ($activation == 'user') {
-                $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
-                if (Jaws_Error::IsError($verifyKey)) {
-                    $delete_user = true;
-                    $message = _t('GLOBAL_ERROR_QUERY_FAILED');
-                } else {
-                    $tpl->SetBlock('Notification/Activation');
-                    $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
-                    $tpl->SetVariable(
-                        'activation_link',
-                        $this->gadget->urlMap(
-                            'ActivateUser',
-                            array('key' => $verifyKey),
-                            array('absolute' => true)
-                        )
-                    );
-                    $tpl->ParseBlock('Notification/Activation');
-                }
-            }
-
-            $tpl->SetVariable('thanks',    _t('GLOBAL_THANKS'));
-            $tpl->SetVariable('site-name', $site_name);
-            $tpl->SetVariable('site-url',  $site_url);
-
-            $tpl->ParseBlock('Notification');
-            $body = $tpl->Get();
-
-            if (!$delete_user) {
-                $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
-                $mail->SetFrom();
-                $mail->AddRecipient($user_email);
-                $mail->SetSubject($subject);
-                $mail->SetBody($this->gadget->plugin->parseAdmin($body));
-                $mresult = $mail->send();
-                if (Jaws_Error::IsError($mresult)) {
-                    if ($activation == 'user') {
-                        $delete_user = true;
-                        $message = _t('USERS_REGISTER_ACTIVATION_SENDMAIL_FAILED', $user_email);
-                    } elseif ($random === true) {
-                        $delete_user = true;
-                        $message = _t('USERS_REGISTER_RANDOM_SENDMAIL_FAILED', $user_email);
-                    }
-                }
-            }
         }
 
+        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username', $username);
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile',      $user_mobile);
+        // password
+        $tpl->SetBlock('UserNotification/Password');
+        $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('password', $password);
+        $tpl->ParseBlock('UserNotification/Password');
+        $tpl->SetVariable('thanks',    _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name', $settings['site_name']);
+        $tpl->SetVariable('site-url',  $site_url);
+        $tpl->ParseBlock('UserNotification');
+        $message = $tpl->Get();
+        $subject = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
+
+        // Notify
+        $params = array();
+        $params['key']     = crc32('Users.Registration.User' . $user_id);
+        $params['title']   = $subject;
+        $params['summary'] = _t(
+            'USERS_REGISTRATION_USER_SUMMARY',
+            $nickname,
+            $site_url,
+            $username,
+            $user_mobile,
+            $user_email
+        );
+        $params['description'] = $this->gadget->plugin->parse($message);
+        $params['emails']      = array($user_email);
+        $params['mobiles']     = array($user_mobile);
+        $this->gadget->event->shout('Notify', $params);
+
         //Send an email to website owner
-        $mail->reset();
-        if (!$delete_user && ($notification == 'true' || $activation == 'admin')) {
-            $tpl = $this->gadget->template->load('AdminNotification.txt');
-            $tpl->SetBlock('Notification');
-            $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $site_author));
-            $tpl->SetVariable('message', _t('USERS_REGISTER_ADMIN_MAIL_MSG'));
+        if ($this->gadget->registry->fetch('register_notification') == 'true') {
+            $tpl = $this->gadget->template->load('RegistrationNotification.html');
+            $tpl->SetBlock('OwnerNotification');
+            $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $settings['site_author']));
+            $tpl->SetVariable('message', _t('USERS_REGISTRATION_ADMIN_MAIL_MSG'));
             $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
             $tpl->SetVariable('username', $username);
             $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
             $tpl->SetVariable('nickname', $nickname);
             $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
             $tpl->SetVariable('email', $user_email);
+            $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+            $tpl->SetVariable('mobile',      $user_mobile);
             $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
             $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-            if ($activation == 'admin') {
-                $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
-                if (!Jaws_Error::IsError($verifyKey)) {
-                    $tpl->SetBlock('Notification/Activation');
-                    $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
-                    $tpl->SetVariable(
-                        'activation_link',
-                        $this->gadget->urlMap(
-                            'ActivateUser',
-                            array('key' => $verifyKey),
-                            array('absolute' => true)
-                        )
-                    );
-                    $tpl->ParseBlock('Notification/Activation');
-                }
-            }
+
             $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
-            $tpl->SetVariable('site-name', $site_name);
+            $tpl->SetVariable('site-name', $settings['site_name']);
             $tpl->SetVariable('site-url', $site_url);
-            $tpl->ParseBlock('Notification');
-            $body = $tpl->Get();
+            $tpl->ParseBlock('OwnerNotification');
+            $message = $tpl->Get();
+            $subject = _t('USERS_REGISTRATION_OWNER_SUBJECT', $settings['site_name']);
 
-            if (!$delete_user) {
-                $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
-                $mail->SetFrom();
-                $mail->AddRecipient();
-                $mail->SetSubject($subject);
-                $mail->SetBody($this->gadget->plugin->parseAdmin($body));
-                $mresult = $mail->send();
-                if (Jaws_Error::IsError($mresult) && $activation == 'admin') {
-                    // do nothing
-                    //$delete_user = true;
-                    //$message = _t('USERS_ACTIVATE_NOT_ACTIVATED_SENDMAIL', $user_email);
-                }
-            }
+            // Notify
+            $params = array();
+            $params['key']     = crc32('Users.Registration.Owner' . $user_id);
+            $params['title']   = $subject;
+            $params['summary'] = _t(
+                'USERS_REGISTRATION_OWNER_SUMMARY',
+                $nickname,
+                $site_url,
+                $username,
+                $user_email,
+                $user_mobile
+            );
+            $params['description'] = $this->gadget->plugin->parse($message);
+            $params['emails']      = array($settings['site_email']);
+            $params['mobiles']     = array($settings['site_mobile']);
+            $this->gadget->event->shout('Notify', $params);
         }
 
-        if ($delete_user) {
-            $jUser->DeleteUser($user_id);
-            return $message;
-        }
+        return $user_id;
+    }
 
-        return true;
+    /**
+     * Checks the user verification key
+     *
+     * @access  public
+     * @param   int     $user   User ID
+     * @param   string  $key    Verification key
+     * @return  bool    True on success or False on failure
+     */
+    function verifyKey($user, $key)
+    {
+        $result = Jaws_ORM::getInstance()
+            ->table('users')
+            ->select('id')
+            ->where('id', (int)$user)
+            ->and()
+            ->where('verify_key', $key)
+            ->fetchOne();
+        return Jaws_Error::IsError($result)? false : !empty($result);
     }
 
     /**
