@@ -56,6 +56,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('site_language', 'en', true),
         array('admin_language', 'en', true),
         array('site_email', ''),
+        array('site_mobile', ''),
         array('cookie_domain', ''),
         array('cookie_path', '/'),
         array('cookie_version', '0.4'),
@@ -290,6 +291,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '1.5.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('site_mobile', '');
         }
 
         return true;
