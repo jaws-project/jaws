@@ -504,15 +504,19 @@ class Jaws_User
      */
     function UserEmailExists($email, $exclude = 0)
     {
-        $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
-            ->openWhere()
-            ->where('lower(email)', Jaws_UTF8::strtolower($email))
-            ->or()
-            ->where('lower(username)', Jaws_UTF8::strtolower($email))
-            ->closeWhere()
-            ->and()
-            ->where('id', $exclude, '<>')
-            ->fetchOne();
+        $howmany = 0;
+        $email = trim($email);
+        if (!empty($email)) {
+            $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
+                ->openWhere()
+                ->where('lower(email)', Jaws_UTF8::strtolower($email))
+                ->or()
+                ->where('lower(username)', Jaws_UTF8::strtolower($email))
+                ->closeWhere()
+                ->and()
+                ->where('id', $exclude, '<>')
+                ->fetchOne();
+        }
         return !empty($howmany);
     }
 
@@ -526,15 +530,19 @@ class Jaws_User
      */
     function UserMobileExists($mobile, $exclude = 0)
     {
-        $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
-            ->openWhere()
-            ->where('mobile', $mobile)
-            ->or()
-            ->where('lower(username)', Jaws_UTF8::strtolower($mobile))
-            ->closeWhere()
-            ->and()
-            ->where('id', $exclude, '<>')
-            ->fetchOne();
+        $howmany = 0;
+        $mobile = trim($mobile);
+        if (!empty($mobile)) {
+            $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
+                ->openWhere()
+                ->where('mobile', $mobile)
+                ->or()
+                ->where('lower(username)', Jaws_UTF8::strtolower($mobile))
+                ->closeWhere()
+                ->and()
+                ->where('id', $exclude, '<>')
+                ->fetchOne();
+        }
         return !empty($howmany);
     }
 
