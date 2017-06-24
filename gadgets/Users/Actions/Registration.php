@@ -105,7 +105,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                         'step' => 1,
                         'key'  => $post['key'],
                     );
-                    throw new Exception( _t('USERS_ACTIVATION_KEY_NOT_VALID'));
+                    throw new Exception( _t('USERS_REGISTRATION_INVALID_KEY'));
                 }
             }
         } catch (Exception $e) {
@@ -177,8 +177,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                 if ($anon_activation == 'user') {
                     // key
                     $tpl->SetBlock('registration/key');
-                    $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_MSG'));
-                    $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
+                    $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
+                    $tpl->SetVariable('lbl_key', _t('USERS_REGISTRATION_KEY'));
                     $tpl->SetVariable('key', $post['key']);
                     $tpl->ParseBlock('registration/key');
                     //captcha
@@ -201,13 +201,13 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                 // select suitable message
                 switch ($anon_activation) {
                     case 'admin':
-                        $message = _t('USERS_ACTIVATE_ACTIVATION_BY_ADMIN_MSG');
+                        $message = _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
                         break;
                     case 'user':
-                        $message = _t('USERS_ACTIVATE_ACTIVATION_BY_USER_MSG');
+                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_USER', $this->gadget->urlMap('LoginBox'));
                         break;
                     default:
-                        $message = _t('USERS_REGISTRATION_REGISTERED_MSG', $this->gadget->urlMap('LoginBox'));
+                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap('LoginBox'));
                 }
                 $tpl->SetVariable('message', $message);
                 $tpl->ParseBlock('registration/success');

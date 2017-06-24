@@ -28,6 +28,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
     function CreateUser($username, $user_email, $user_mobile, $nickname, $fname, $lname, $gender, $ssn,
                         $dob, $url, $password, $group = null)
     {
+        $username = trim($username);
+        $user_email = trim($user_email);
+        $user_mobile = trim($user_mobile);
         if (empty($username) || empty($nickname) || (empty($user_email) && empty($user_mobile)))
         {
             return Jaws_Error::raiseError(
@@ -159,8 +162,10 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $nickname,
             $site_url,
             $username,
+            $password,
+            $user_email,
             $user_mobile,
-            $user_email
+            $verifyKey
         );
         $params['description'] = $this->gadget->plugin->parse($message);
         $params['emails']      = array($user_email);
@@ -197,9 +202,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $params['title']   = $subject;
             $params['summary'] = _t(
                 'USERS_REGISTRATION_OWNER_SUMMARY',
-                $nickname,
                 $site_url,
                 $username,
+                $nickname,
                 $user_email,
                 $user_mobile
             );
