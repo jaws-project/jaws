@@ -118,34 +118,39 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         switch ($activation) {
             case 'admin':
-                $tpl->SetVariable('message', _t('USERS_REGISTRATION_BY_ADMIN_RANDOM_MAIL_MSG'));
+                $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN'));
                 break;
 
             case 'user':
-                $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_MAIL_MSG'));
+                $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
                 // verify key
                 $tpl->SetBlock('UserNotification/Activation');
-                $tpl->SetVariable('lbl_key', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
+                $tpl->SetVariable('lbl_key', _t('USERS_REGISTRATION_KEY'));
                 $tpl->SetVariable('key', $verifyKey);
                 $tpl->ParseBlock('UserNotification/Activation');
                 break;
 
             default:
-                $tpl->SetVariable('message', _t('USERS_REGISTRATION_MAIL_MSG'));
-
+                $tpl->SetVariable(
+                    'message',
+                    _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap(
+                        'LoginBox',
+                        array(),
+                        array('absolute'=>true)
+                    ))
+                );
         }
 
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-        $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username', $username);
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('mobile',      $user_mobile);
-        // password
-        $tpl->SetBlock('UserNotification/Password');
         $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('password', $password);
-        $tpl->ParseBlock('UserNotification/Password');
+        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email', $user_email);
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile',      $user_mobile);
+        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
         $tpl->SetVariable('thanks',    _t('GLOBAL_THANKS'));
         $tpl->SetVariable('site-name', $settings['site_name']);
         $tpl->SetVariable('site-url',  $site_url);
