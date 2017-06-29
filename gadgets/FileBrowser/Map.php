@@ -9,18 +9,13 @@
  * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('Display', 'files');
 $maps[] = array(
     'Display',
-    'files/{path}/page/{page}',
-    array('path' => '.*',
-    'page' => '[[:digit:]]+'),
-    '',
-);
-$maps[] = array(
-    'Display',
-    'files/{path}',
-    array('path' => '.*'),
+    'files[/{path}][/page/{page}]',
+    array(
+        'path' => '.*',
+        'page' => '[[:digit:]]+'
+    ),
     '',
 );
 $maps[] = array(

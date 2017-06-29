@@ -17,7 +17,7 @@ class FileBrowser_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.0.0';
+    var $version = '1.1.0';
 
     /**
      * Default front-end action name
