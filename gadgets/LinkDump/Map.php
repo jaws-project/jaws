@@ -9,7 +9,7 @@
  * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('Categories', 'links');
+$maps[] = array('Links', 'links');
 $maps[] = array('Categories', 'links/groups');
 $maps[] = array(
     'Category',

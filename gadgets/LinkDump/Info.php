@@ -17,7 +17,7 @@ class LinkDump_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.0.0';
+    var $version = '1.1.0';
 
     /**
      * Recommended gadgets
@@ -33,7 +33,7 @@ class LinkDump_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'Categories';
+    var $default_action = 'Links';
 
     /**
      * Default back-end action name

@@ -112,6 +112,10 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('recommended', ',Tags,');
         }
 
+        if (version_compare($old, '1.1.0', '<')) {
+            // do nothing
+        }
+
         return true;
     }
 

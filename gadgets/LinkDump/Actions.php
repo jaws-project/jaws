@@ -13,6 +13,10 @@
 /**
  * Index actions
  */
+$actions['Links'] = array(
+    'normal' => true,
+    'file' => 'Link'
+);
 $actions['Link'] = array(
     'normal' => true,
     'file' => 'Link'

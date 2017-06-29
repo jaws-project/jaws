@@ -12,6 +12,16 @@
 class LinkDump_Actions_Link extends Jaws_Gadget_Action
 {
     /**
+     * Default action
+     * 
+     * @access  public
+     */
+    function Links()
+    {
+        return $this->gadget->action->load('Groups')->Categories();
+    }
+
+    /**
      * Redirect to the URL and increase the clicks by one
      * 
      * @access  public
