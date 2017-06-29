@@ -17,7 +17,7 @@ class Blog_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.5.0';
+    var $version = '1.6.0';
 
     /**
      * Recommended gadgets

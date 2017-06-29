@@ -225,6 +225,10 @@ class Blog_Installer extends Jaws_Gadget_Installer
             }
         }
 
+        if (version_compare($old, '1.6.0', '<')) {
+            // do nothing
+        }
+
         return true;
     }
 

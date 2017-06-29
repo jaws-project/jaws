@@ -22,42 +22,11 @@ $maps[] = array(
 );
 $maps[] = array(
     'ViewDatePage',
-    'blog/{year}/{month}/{day}/page/{page}',
+    'blog/{year}[/{month}][/{day}][/page/{page}]',
     array('year'  => '\d{4}',
           'month' => '[01]?\d',
           'day'   => '[0-3]?\d',
           'page'  => '[[:digit:]]+')
-);
-$maps[] = array(
-    'ViewDatePage',
-    'blog/{year}/{month}/{day}',
-    array('year'  => '\d{4}',
-          'month' => '[01]?\d',
-          'day'   => '[0-3]?\d')
-);
-$maps[] = array(
-    'ViewDatePage',
-    'blog/{year}/{month}/page/{page}',
-    array('year' => '\d{4}',
-          'month' => '[01]?\d',
-          'page'  => '[[:digit:]]+')
-);
-$maps[] = array(
-    'ViewDatePage',
-    'blog/{year}/{month}',
-    array('year' => '\d{4}',
-          'month' => '[01]?\d')
-);
-$maps[] = array(
-    'ViewDatePage',
-    'blog/{year}/page/{page}',
-    array('year' => '\d{4}',
-          'page'  => '[[:digit:]]+')
-);
-$maps[] = array(
-    'ViewDatePage',
-    'blog/{year}',
-    array('year' => '\d{4}')
 );
 $maps[] = array(
     'RSS',
@@ -88,14 +57,9 @@ $maps[] = array(
 );
 $maps[] = array(
     'ViewAuthorPage',
-    'blog/author/{id}/page/{page}',
+    'blog/author/{id}[/page/{page}]',
     array('id'   => '[\p{L}[:digit:]\-_\.]+',
           'page' => '[[:digit:]]+',)
-);
-$maps[] = array(
-    'ViewAuthorPage',
-    'blog/author/{id}',
-    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'ViewPage',
@@ -112,14 +76,9 @@ $maps[] = array(
 );
 $maps[] = array(
     'ShowCategory',
-    'blog/category/{id}/page/{page}',
+    'blog/category/{id}[/page/{page}]',
     array('id'   => '[\p{L}[:digit:]\-_\.]+',
           'page' => '[[:digit:]]+',)
-);
-$maps[] = array(
-    'ShowCategory',
-    'blog/category/{id}',
-    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'CategoriesList',
