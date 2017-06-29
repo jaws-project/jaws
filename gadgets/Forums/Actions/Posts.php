@@ -102,7 +102,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 'message', 
                 $this->gadget->plugin->parse(
                     $post['message'],
-                    Jaws_Plugin::PLUGIN_TYPE_MODIFIER,
+                    Jaws_Plugin::PLUGIN_TYPE_ALLTYPES,
                     $post['id'],
                     'Post'
                 )
