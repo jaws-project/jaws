@@ -116,6 +116,10 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('group_pages_limit', 10);
         }
 
+        if (version_compare($old, '1.3.0', '<')) {
+            // do nothing
+        }
+
         return true;
     }
 

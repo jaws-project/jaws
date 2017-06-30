@@ -9,12 +9,11 @@
  * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('GroupsList', 'pages');
-$maps[] = array('Page', 'page/default');
-$maps[] = array('PagesTree', 'page/index');
+$maps[] = array('PagesTree', 'pages');
+$maps[] = array('GroupsList', 'pages/groups');
 $maps[] = array(
     'Page', 
-    'page/{pid}[/{language}]',
+    'pages/page[/{pid}][/{language}]',
      array(
         'pid'      => '[\p{L}[:digit:]\-_\.]+',
         'language' => '[[:lower:]\-]+',
@@ -22,7 +21,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'GroupPages',
-    'pages/{gid}[/order/{order}]',
+    'pages/groups/{gid}[/order/{order}]',
     array(
         'gid' => '[\p{L}[:digit:]\-_\.]+',
         'order' => '[[:digit:]]+',
@@ -30,7 +29,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'Pages', 
-    'pages/{gid}/{pid}[/{language}]',
+    'pages/groups/{gid}/{pid}[/{language}]',
     array(
         'gid'      => '[\p{L}[:digit:]\-_\.]+',
         'pid'      => '[\p{L}[:digit:]\-_\.]+',
