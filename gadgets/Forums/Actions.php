@@ -16,6 +16,10 @@ $actions['Forums'] = array(
     'normal' => true,
     'file'   => 'Forums',
 );
+$actions['Groups'] = array(
+    'normal' => true,
+    'file'   => 'Forums',
+);
 $actions['Group'] = array(
     'normal' => true,
     'layout' => true,

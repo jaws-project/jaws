@@ -67,6 +67,17 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
     }
 
     /**
+     * Display forums groups
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function Groups()
+    {
+        return $this->Forums();
+    }
+
+    /**
      * Display forums of a group
      *
      * @access  public

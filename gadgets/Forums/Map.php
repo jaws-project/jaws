@@ -13,7 +13,7 @@ $maps[] = array(
     'forums'
 );
 $maps[] = array(
-    'Forums',
+    'Groups',
     'forums/groups'
 );
 $maps[] = array(
