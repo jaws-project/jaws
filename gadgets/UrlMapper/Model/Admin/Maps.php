@@ -262,9 +262,9 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $params['regexp']    = $regexp;
         $params['extension'] = $extension;
         $params['vars_regexps'] = serialize($vars_regexps);
-        $params['order']      = $order;
-        $params['createtime'] = empty($time)? Jaws_DB::getInstance()->date() : $time;
-        $params['updatetime'] = $params['createtime'];
+        $params['order']     = $order;
+        $params['insert_time'] = empty($time)? time() : $time;
+        $params['update_time'] = $params['update_time'];
 
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $result = $mapsTable->insert($params)->exec();
@@ -318,7 +318,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $params['custom_regexp'] = $this->GetMapRegExp($custom_map, $vars_regexps);
         $params['vars_regexps']  = serialize($vars_regexps);
         $params['order']         = $order;
-        $params['updatetime']    = empty($time)? Jaws_DB::getInstance()->date() : $time;
+        $params['update_time']    = empty($time)? time() : $time;
 
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         return $mapsTable->update($params)->where('id', (int)$id)->exec();
@@ -332,12 +332,12 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
      * @param   string  $time   Time condition
      * @return  mixed   True on success, Jaws_Error otherwise
      */
-    function DeleteGadgetMaps($gadget, $time = '')
+    function DeleteGadgetMaps($gadget, $time = 0)
     {
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $mapsTable->delete()->where('gadget', $gadget);
         if (!empty($time)) {
-            $mapsTable->and()->where('updatetime', $time, '<');
+            $mapsTable->and()->where('update_time', $time, '<');
         }
         $result = $mapsTable->exec();
         if (Jaws_Error::IsError($result)) {
