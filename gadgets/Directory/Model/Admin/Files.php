@@ -60,6 +60,10 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 }
             }
 
+            // extract tags
+            $tags = $data['tags'];
+            unset($data['tags']);
+
             $data['is_dir'] = false;
             $data['public'] = (bool)$data['public'];
             $data['title'] = Jaws_XSS::defilter($data['title']);
@@ -159,19 +163,16 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 }
 
                 // Update Tags
-                if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-                    $tags = jaws()->request->fetch('tags');
-                    if (!empty($tags)) {
-                        $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-                        $tModel->UpdateReferenceTags(
-                            'Directory',
-                            'file',
-                            $data['id'],
-                            $data['published'],
-                            time(),
-                            $tags
-                        );
-                    }
+                if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
+                    $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                    $tModel->UpdateReferenceTags(
+                        'Directory',
+                        'file',
+                        $data['id'],
+                        $data['published'],
+                        time(),
+                        $tags
+                    );
                 }
 
                 return _t('DIRECTORY_NOTICE_FILE_UPDATED');
@@ -186,19 +187,16 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 }
 
                 // Insert Tags
-                if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-                    $tags = jaws()->request->fetch('tags');
-                    if (!empty($tags)) {
-                        $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-                        $tModel->InsertReferenceTags(
-                            'Directory',
-                            'file',
-                            $id,
-                            $data['published'],
-                            time(),
-                            $tags
-                        );
-                    }
+                if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
+                    $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                    $tModel->InsertReferenceTags(
+                        'Directory',
+                        'file',
+                        $id,
+                        $data['published'],
+                        time(),
+                        $tags
+                    );
                 }
 
                 // shout Activities event

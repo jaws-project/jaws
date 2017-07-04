@@ -53,7 +53,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         }
 
         $data = jaws()->request->fetch(
-            array('id', 'parent', 'title', 'description', 'public', 'published')
+            array('id', 'parent', 'title', 'description', 'public', 'published', 'tags')
         );
 
         if (!empty($data['title'])) {

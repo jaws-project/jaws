@@ -95,7 +95,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $data = jaws()->request->fetch(
             array(
                 'id', 'parent', 'title', 'description', 'public', 'published',
-                'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnail'
+                'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnail',
+                'tags'
             )
         );
 
