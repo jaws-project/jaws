@@ -56,7 +56,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetGroups()
     {
-        @list($gid) = jaws()->request->fetchAll('post');
+        @list($gid) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Group');
         $groupInfo = $model->GetGroups($gid);
         if (Jaws_Error::IsError($groupInfo)) {
@@ -74,7 +74,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetMenu()
     {
-        @list($mid) = jaws()->request->fetchAll('post');
+        @list($mid) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Menu');
         $menu = $model->GetMenu($mid);
         if (Jaws_Error::IsError($menu)) {
@@ -97,7 +97,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($title, $title_view, $published) = jaws()->request->fetchAll('post');
+        @list($title, $title_view, $published) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Group');
         $model->InsertGroup($title, $title_view, (bool)$published);
 
@@ -115,10 +115,10 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageMenus');
         @list($pid, $gid, $type, $permission, $title, $url, $variables, $target,
             $order, $status, $image
-        ) = jaws()->request->fetchAll('post');
+        ) = $this->gadget->request->fetchAll('post');
 
         if (is_null($url)) {
-            $url = serialize(jaws()->request->fetch('5:array', 'post'));
+            $url = serialize($this->gadget->request->fetch('5:array', 'post'));
         } else {
             $url = implode('/', array_map('rawurlencode', explode('/', $url)));
             // prevent encode comma
@@ -126,10 +126,10 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         if (is_null($permission)) {
-            $permission = serialize(jaws()->request->fetch('3:array', 'post'));
+            $permission = serialize($this->gadget->request->fetch('3:array', 'post'));
         }
         if (is_null($variables)) {
-            $variables = serialize(jaws()->request->fetch('6:array', 'post'));
+            $variables = serialize($this->gadget->request->fetch('6:array', 'post'));
         }
 
         $mData = array(
@@ -160,7 +160,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid, $title, $title_view, $published) = jaws()->request->fetchAll('post');
+        @list($gid, $title, $title_view, $published) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Group');
         $model->UpdateGroup($gid, $title, $title_view, (bool)$published);
 
@@ -178,10 +178,10 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageMenus');
         @list($mid, $pid, $gid, $type, $permission, $title, $url, $variables, $target,
             $order, $status, $image
-        ) = jaws()->request->fetchAll('post');
+        ) = $this->gadget->request->fetchAll('post');
 
         if (is_null($url)) {
-            $url = serialize(jaws()->request->fetch('6:array', 'post'));
+            $url = serialize($this->gadget->request->fetch('6:array', 'post'));
         } else {
             $url = implode('/', array_map('rawurlencode', explode('/', $url)));
             // prevent encode comma
@@ -189,10 +189,10 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         if (is_null($permission)) {
-            $permission = serialize(jaws()->request->fetch('4:array', 'post'));
+            $permission = serialize($this->gadget->request->fetch('4:array', 'post'));
         }
         if (is_null($variables)) {
-            $variables  = serialize(jaws()->request->fetch('7:array', 'post'));
+            $variables  = serialize($this->gadget->request->fetch('7:array', 'post'));
         }
 
         $mData = array(
@@ -223,7 +223,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid) = jaws()->request->fetchAll('post');
+        @list($gid) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Group');
         $model->DeleteGroup($gid);
 
@@ -239,7 +239,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid) = jaws()->request->fetchAll('post');
+        @list($mid) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Menu');
         $result = $model->DeleteMenu($mid);
         if ($result) {
@@ -257,7 +257,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetParentMenus()
     {
-        @list($gid, $mid) = jaws()->request->fetchAll('post');
+        @list($gid, $mid) = $this->gadget->request->fetchAll('post');
         $result[] = array('pid'=> 0,
                           'title'=>'\\');
         $model = $this->gadget->model->loadAdmin('Menu');
@@ -277,7 +277,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageMenus');
         @list($mid, $new_gid, $old_gid, $new_pid, $old_pid,
             $new_order, $old_order
-        ) = jaws()->request->fetchAll('post');
+        ) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Menu');
         $model->MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_order, $old_order);
 
@@ -292,7 +292,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetPublicURList()
     {
-        @list($request) = jaws()->request->fetchAll('post');
+        @list($request) = $this->gadget->request->fetchAll('post');
         if ($request == 'url') {
             $urls[] = array('url'   => '/',
                             'title' => _t('MENU_REFERENCES_FREE_LINK'));

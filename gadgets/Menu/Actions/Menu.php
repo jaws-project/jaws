@@ -228,7 +228,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
      */
     function LoadImage()
     {
-        $id = (int)jaws()->request->fetch('id', 'get');
+        $id = (int)$this->gadget->request->fetch('id', 'get');
         $model = $this->gadget->model->load('Menu');
         $image = $model->GetMenuImage($id);
         if (!Jaws_Error::IsError($image)) {
