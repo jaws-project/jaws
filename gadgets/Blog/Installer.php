@@ -106,7 +106,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
         }
 
         $this->gadget->acl->insert('CategoryAccess', 1, true);
-        $this->gadget->acl->insert('CategoryManage', 1, true);
+        $this->gadget->acl->insert('CategoryManage', 1, false);
         return true;
     }
 
