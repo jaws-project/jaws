@@ -15,7 +15,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
      */
     function DirectoryForm()
     {
-        $mode = jaws()->request->fetch('mode');
+        $mode = $this->gadget->request->fetch('mode');
         if ($mode === null) $mode = 'view';
 
         $tpl = $this->gadget->template->loadAdmin('Directory.html');
@@ -55,7 +55,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
     function CreateDirectory()
     {
         try {
-            $data = jaws()->request->fetch(
+            $data = $this->gadget->request->fetch(
                 array('title', 'description', 'parent', 'public', 'published'),
                 'post'
             );
@@ -100,7 +100,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
     function UpdateDirectory()
     {
         try {
-            $data = jaws()->request->fetch(
+            $data = $this->gadget->request->fetch(
                 array('title', 'description', 'parent', 'public', 'published'),
                 'post'
             );
@@ -112,7 +112,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
-            $id = (int)jaws()->request->fetch('id', 'post');
+            $id = (int)$this->gadget->request->fetch('id', 'post');
 
             // Validate directory
             $dir = $this->gadget->model->load('Files')->GetFile($id);

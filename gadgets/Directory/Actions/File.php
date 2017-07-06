@@ -36,7 +36,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      */
     function GetFile()
     {
-        $id = (int)jaws()->request->fetch('id');
+        $id = (int)$this->gadget->request->fetch('id');
         return $this->gadget->model->load('Files')->GetFile($id);
     }
 
@@ -52,7 +52,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $data = jaws()->request->fetch(
+        $data = $this->gadget->request->fetch(
             array('id', 'parent', 'title', 'description', 'public', 'published', 'tags')
         );
 
@@ -75,7 +75,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             );
         }
 
-        $referrer = jaws()->request->fetch('referrer');
+        $referrer = $this->gadget->request->fetch('referrer');
         $referrer = parse_url(hex2bin($referrer));
         $redirectURL =
             (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
@@ -96,7 +96,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $id = (int)jaws()->request->fetch('fileId', 'post');
+        $id = (int)$this->gadget->request->fetch('fileId', 'post');
 
         $model = $this->gadget->model->load('Files');
         $fileInfo = $this->gadget->model->load('Files')->GetFile($id);

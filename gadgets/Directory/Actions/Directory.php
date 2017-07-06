@@ -57,7 +57,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $this->AjaxMe('index.js');
         $this->gadget->define('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
 
-        $standalone = (bool)jaws()->request->fetch('standalone');
+        $standalone = (bool)$this->gadget->request->fetch('standalone');
         if ($standalone) {
             $this->SetActionMode('Directory', 'standalone', 'normal');
         }
@@ -74,7 +74,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $this->SetTitle(_t('DIRECTORY_ACTIONS_DIRECTORY'));
         $tpl->SetVariable('gadget_title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
 
-        $id = ($type == null)? (int)jaws()->request->fetch('id') : 0;
+        $id = ($type == null)? (int)$this->gadget->request->fetch('id') : 0;
         if ($id == 0) {
             $tpl->SetVariable('content', $this->ListFiles(0, $type, $orderBy, $limit));
         } else {
@@ -153,7 +153,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     function ListFiles($parent = 0, $type = null, $orderBy = 0, $limit = 0)
     {
         $params = array();
-        $filters = jaws()->request->fetch(
+        $filters = $this->gadget->request->fetch(
             array('filter_file_type', 'filter_file_size', 'filter_from_date', 'filter_to_date', 'filter_order'),
             'post');
 
@@ -167,7 +167,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $params['file_type'] = $type;
             }
         } else {
-            $params = jaws()->request->fetch(array('type', 'page'), 'get');
+            $params = $this->gadget->request->fetch(array('type', 'page'), 'get');
             $page = (int)$params['page'];
             if ($params['type'] !== null) {
                 $params['file_type'] = $params['type'];
@@ -181,7 +181,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $params['public'] = true;
         $params['published'] = true;
 
-        $user = jaws()->request->fetch('user', 'get');
+        $user = $this->gadget->request->fetch('user', 'get');
         if (!empty($user)) {
             $params['user'] = (int)$user;
             if ($params['user'] == (int)$GLOBALS['app']->Session->GetAttribute('user')) {
@@ -556,7 +556,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function Download()
     {
-        $get = jaws()->request->fetch(array('id', 'user', 'key'), 'get');
+        $get = $this->gadget->request->fetch(array('id', 'user', 'key'), 'get');
         $id = (int)$get['id'];
         if (empty($id)) {
             return Jaws_HTTPError::Get(404);

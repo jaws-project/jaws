@@ -15,7 +15,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function Directory()
     {
-        $standalone = (bool)jaws()->request->fetch('standalone', 'get');
+        $standalone = (bool)$this->gadget->request->fetch('standalone', 'get');
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
@@ -41,12 +41,12 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             $editor = $GLOBALS['app']->GetEditor();
             if ($editor === 'TinyMCE') {
             } elseif ($editor === 'CKEditor') {
-                $getParams = jaws()->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
+                $getParams = $this->gadget->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
                 $extraParams = '&amp;CKEditor=' . $getParams['CKEditor'] .
                                '&amp;CKEditorFuncNum=' . $getParams['CKEditorFuncNum'] .
                                '&amp;langCode=' . $getParams['langCode'];
 
-                $ckFuncIndex = jaws()->request->fetch('CKEditorFuncNum', 'get');
+                $ckFuncIndex = $this->gadget->request->fetch('CKEditorFuncNum', 'get');
                 $this->gadget->define('ckFuncIndex', $ckFuncIndex);
             }
         } else {
@@ -89,7 +89,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('img_dl', STOCK_SAVE);
         $tpl->SetVariable('img_search', STOCK_SEARCH);
 
-        $dir_id = (int)jaws()->request->fetch('id');
+        $dir_id = (int)$this->gadget->request->fetch('id');
         $this->gadget->define('currentDir', $dir_id);
         $tpl->SetVariable('home_title', _t('DIRECTORY_HOME'));
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
@@ -160,7 +160,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function GetFiles()
     {
-        $data = jaws()->request->fetch(array('parent'));
+        $data = $this->gadget->request->fetch(array('parent'));
         $modelFiles = $this->gadget->model->load('Files');
         $data['public'] = true;
         $files = $modelFiles->GetFiles($data);
@@ -168,7 +168,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             return array();
         }
         $objDate = Jaws_Date::getInstance();
-        $action = jaws()->request->fetch('curr_action');
+        $action = $this->gadget->request->fetch('curr_action');
         foreach ($files as &$file) {
             if ($file['is_dir']) {
                 $file['url'] = BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $file['id'];
@@ -209,7 +209,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function GetFile()
     {
-        $id = jaws()->request->fetch('id', 'post');
+        $id = $this->gadget->request->fetch('id', 'post');
         $file = $this->gadget->model->load('Files')->GetFile($id);
         if (Jaws_Error::IsError($file)) {
             return array();
@@ -229,8 +229,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function GetPath()
     {
-        $action = jaws()->request->fetch('curr_action');
-        $id = jaws()->request->fetch('id');
+        $action = $this->gadget->request->fetch('curr_action');
+        $id = $this->gadget->request->fetch('id');
         $path = array();
         $this->gadget->model->load('Files')->GetPath($id, $path);
         foreach($path as &$p) {
@@ -248,7 +248,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
     function GetTree()
     {
         $tree = '';
-        $exclude = jaws()->request->fetch('id_set');
+        $exclude = $this->gadget->request->fetch('id_set');
         $exclude = empty($exclude)? array() : explode(',', $exclude);
         $this->BuildTree(0, $exclude, $tree);
 
@@ -299,7 +299,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function Delete()
     {
-        $id_set = jaws()->request->fetch('id_set');
+        $id_set = $this->gadget->request->fetch('id_set');
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
             return $GLOBALS['app']->Session->GetResponse(
@@ -352,7 +352,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function Move()
     {
-        $data = jaws()->request->fetch(array('id_set', 'target'));
+        $data = $this->gadget->request->fetch(array('id_set', 'target'));
         if (empty($data['id_set']) || is_null($data['target'])) {
             return $GLOBALS['app']->Session->GetResponse(
                 _t('DIRECTORY_ERROR_MOVE'),
@@ -438,7 +438,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function Search()
     {
-        $data = jaws()->request->fetch(array('id', 'file_filter', 'file_search', 'file_published',
+        $data = $this->gadget->request->fetch(array('id', 'file_filter', 'file_search', 'file_published',
             'file_type', 'file_size', 'start_date', 'end_date'));
 
         $jdate = Jaws_Date::getInstance();

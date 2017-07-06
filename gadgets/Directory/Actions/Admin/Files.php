@@ -41,7 +41,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function FileForm()
     {
-        $mode = jaws()->request->fetch('mode');
+        $mode = $this->gadget->request->fetch('mode');
         if ($mode === null) $mode = 'view';
         $tpl = $this->gadget->template->loadAdmin('File.html');
         $tpl->SetBlock($mode);
@@ -92,7 +92,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function SaveFile()
     {
-        $data = jaws()->request->fetch(
+        $data = $this->gadget->request->fetch(
             array(
                 'id', 'parent', 'title', 'description', 'public', 'published',
                 'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnail',
@@ -128,7 +128,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
     function GetDownloadURL($id = null)
     {
         if ($id === null) {
-            $id = (int)jaws()->request->fetch('id');
+            $id = (int)$this->gadget->request->fetch('id');
         }
         return $this->gadget->urlMap(
             'Download',
@@ -164,8 +164,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function PlayMedia()
     {
-        $id = (int)jaws()->request->fetch('id');
-        $type = jaws()->request->fetch('type');
+        $id = (int)$this->gadget->request->fetch('id');
+        $type = $this->gadget->request->fetch('type');
 
         $tpl = $this->gadget->template->loadAdmin('Media.html');
         $tpl->SetBlock($type);
@@ -188,7 +188,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
     function UploadFile()
     {
         $response = array();
-        $type = jaws()->request->fetch('type', 'post');
+        $type = $this->gadget->request->fetch('type', 'post');
         $dirPath = JAWS_DATA . 'directory';
         if (!is_dir($dirPath)) {
             if (!Jaws_Utils::mkdir($dirPath)) {

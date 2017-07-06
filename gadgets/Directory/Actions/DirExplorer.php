@@ -18,7 +18,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $browserLayout = new Jaws_Layout();
         $browserLayout->Load('gadgets/Directory/Templates', 'DirExplorer.html');
         $browserLayout->addScript('gadgets/Directory/Resources/index.js');
-        $this->gadget->define('type', jaws()->request->fetch('type', 'get'));
+        $this->gadget->define('type', $this->gadget->request->fetch('type', 'get'));
         $tpl = $browserLayout->_Template;
         // bookmark default layout
         $mainLayout = $GLOBALS['app']->Layout;
@@ -57,7 +57,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
     {
         $params = array(
             'user' => (int)$GLOBALS['app']->Session->GetAttribute('user'),
-            'file_type' => jaws()->request->fetch('type'),
+            'file_type' => $this->gadget->request->fetch('type'),
             'public' => false,
         );
 
