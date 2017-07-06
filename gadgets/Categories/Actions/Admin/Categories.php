@@ -113,7 +113,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     function GetCategories()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
@@ -154,25 +154,6 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     }
 
     /**
-     * Get categories list for pillbox
-     *
-     * @access  public
-     * @return  JSON
-     */
-    function GetCategoriesList()
-    {
-        $this->gadget->CheckPermission('ManageCategories');
-        $filters = jaws()->request->fetch('filters:array', 'post');
-        $model = $this->gadget->model->loadAdmin('Categories');
-        $categories = $model->GetCategories($filters);
-        if(Jaws_Error::IsError($categories)) {
-            return $GLOBALS['app']->Session->GetResponse($categories->GetMessage(), RESPONSE_ERROR);
-        } else {
-            return $GLOBALS['app']->Session->GetResponse('', RESPONSE_NOTICE, $categories);
-        }
-    }
-
-    /**
      * Check a category exist
      *
      * @access  public
@@ -181,7 +162,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     function CheckCategoryExist()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $filters = jaws()->request->fetch('filters:array', 'post');
+        $filters = $this->gadget->request->fetch('filters:array', 'post');
         $exist = $this->gadget->model->loadAdmin('Categories')
             ->CheckCategoryExist($filters['gadget'], $filters['action'], $filters['title'] );
         if (Jaws_Error::IsError($exist)) {
@@ -199,7 +180,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     function GetCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $categoryInfo = $this->gadget->model->loadAdmin('Categories')->GetCategory($id);
         if (Jaws_Error::IsError($categoryInfo)) {
             return $categoryInfo;;
@@ -221,7 +202,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     {
         $this->gadget->CheckPermission('ManageCategories');
 
-        $data = jaws()->request->fetch('data:array', 'post');
+        $data = $this->gadget->request->fetch('data:array', 'post');
         $result = $this->gadget->model->loadAdmin('Categories')->InsertCategory($data);
         if (Jaws_Error::isError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
@@ -240,7 +221,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     {
         $this->gadget->CheckPermission('ManageCategories');
 
-        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $result = $this->gadget->model->loadAdmin('Categories')->UpdateCategory($post['id'], $post['data']);
         if (Jaws_Error::isError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
@@ -259,7 +240,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     {
         $this->gadget->CheckPermission('ManageCategories');
 
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $result =  $this->gadget->model->loadAdmin('Categories')->DeleteCategory($id);
         if (Jaws_Error::isError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
