@@ -147,7 +147,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     function GetReports()
     {
         $this->gadget->CheckPermission('ManageReports');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
@@ -214,7 +214,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     function GetReport()
     {
         $this->gadget->CheckPermission('ManageReports');
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $reportInfo = $this->gadget->model->loadAdmin('Reports')->GetReport($id);
         if (Jaws_Error::IsError($reportInfo)) {
             return $reportInfo;;
@@ -236,7 +236,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     {
         $this->gadget->CheckPermission('ManageReports');
 
-        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $result = $this->gadget->model->loadAdmin('Reports')->UpdateReport($post['id'], $post['data']);
         if (Jaws_Error::isError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
@@ -255,7 +255,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     {
         $this->gadget->CheckPermission('ManageReports');
 
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $result =  $this->gadget->model->loadAdmin('Reports')->DeleteReport($id);
         if (Jaws_Error::isError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);

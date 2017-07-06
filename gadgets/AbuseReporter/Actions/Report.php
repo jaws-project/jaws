@@ -70,7 +70,7 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
      */
     function SaveReport()
     {
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('report_gadget', 'report_action', 'report_reference', 'url', 'comment', 'type', 'priority'),
             'post'
         );
