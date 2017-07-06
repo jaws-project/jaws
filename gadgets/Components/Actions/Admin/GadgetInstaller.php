@@ -24,7 +24,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->fetch('comp', 'get');
+            $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
         $objGadget = Jaws_Gadget::getInstance($gadget);
@@ -58,7 +58,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->fetch('comp', 'get');
+            $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
@@ -92,7 +92,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->fetch('comp', 'get');
+            $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
         $objGadget = Jaws_Gadget::getInstance($gadget);
@@ -126,7 +126,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->fetch('comp', 'get');
+            $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
         $objGadget = Jaws_Gadget::getInstance($gadget);
@@ -160,7 +160,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGadgets');
         if (empty($gadget)) {
             $redirect = true;
-            $gadget = jaws()->request->fetch('comp', 'get');
+            $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
         $objGadget = Jaws_Gadget::getInstance($gadget);
