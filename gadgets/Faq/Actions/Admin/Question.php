@@ -160,7 +160,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
      */
     function GetQuestions()
     {
-        $post = jaws()->request->fetch(array('offset', 'category'), 'post');
+        $post = $this->gadget->request->fetch(array('offset', 'category'), 'post');
         $filters = array('category' => $post['category']);
         $model = $this->gadget->model->load('Question');
         $questions = $model->GetAllQuestions($filters, 15, $post['offset']);
@@ -209,7 +209,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
      */
     function GetQuestionsCount()
     {
-        $category = jaws()->request->fetch('category', 'post');
+        $category = $this->gadget->request->fetch('category', 'post');
         $model = $this->gadget->model->loadAdmin('Question');
         return $model->GetQuestionsCount($category);
     }
@@ -224,7 +224,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     function GetQuestion()
     {
         $this->gadget->CheckPermission('EditQuestion');
-        $id = jaws()->request->fetch('id', 'post');
+        $id = $this->gadget->request->fetch('id', 'post');
         $model = $this->gadget->model->load('Question');
         return $model->GetQuestion($id);
     }
@@ -238,7 +238,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     function InsertQuestion()
     {
         $this->gadget->CheckPermission('AddQuestion');
-        $data = jaws()->request->fetch('data:array', 'post');
+        $data = $this->gadget->request->fetch('data:array', 'post');
         $model = $this->gadget->model->loadAdmin('Question');
         $res = $model->InsertQuestion($data);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -257,7 +257,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     function UpdateQuestion()
     {
         $this->gadget->CheckPermission('EditQuestion');
-        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Question');
         $res = $model->UpdateQuestion($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -277,7 +277,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $this->gadget->CheckPermission('DeleteQuestion');
         $model = $this->gadget->model->loadAdmin('Question');
 
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $res = $model->DeleteQuestion($id);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
@@ -294,7 +294,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
      */
     function MoveQuestion()
     {
-        $post = jaws()->request->fetch(array('category', 'id', 'position', 'direction'), 'post');
+        $post = $this->gadget->request->fetch(array('category', 'id', 'position', 'direction'), 'post');
         $model = $this->gadget->model->loadAdmin('Question');
         $result = $model->MoveQuestion($post['category'], $post['id'], $post['position'], $post['direction']);
         if (Jaws_Error::IsError($result)) {

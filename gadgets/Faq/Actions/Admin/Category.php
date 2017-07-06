@@ -159,7 +159,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
      */
     function GetCategory()
     {
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $model = $this->gadget->model->load('Category');
         $category = $model->GetCategory($id);
         if (Jaws_Error::IsError($category)) {
@@ -178,7 +178,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
     function GetCategoriesGrid()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        @list($offset) = jaws()->request->fetchAll('post');
+        @list($offset) = $this->gadget->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Category');
 
         return $gadget->GetCategoriesGrid($offset);
@@ -193,7 +193,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
     function InsertCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $data = jaws()->request->fetch('data:array', 'post');
+        $data = $this->gadget->request->fetch('data:array', 'post');
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->InsertCategory($data);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -212,7 +212,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
     function UpdateCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->UpdateCategory($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -231,7 +231,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
     function DeleteCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->DeleteCategory($id);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -249,7 +249,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
      */
     function MoveCategory()
     {
-        $post = jaws()->request->fetch(array('id', 'old_pos', 'new_pos'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'old_pos', 'new_pos'), 'post');
         $model = $this->gadget->model->loadAdmin('Category');
         $result = $model->MoveCategory($post['id'], $post['old_pos'], $post['new_pos']);
         if (Jaws_Error::IsError($result)) {

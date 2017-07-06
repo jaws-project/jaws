@@ -19,7 +19,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
      */
     function ViewQuestion()
     {
-        $qid = jaws()->request->fetch('id', 'get');
+        $qid = $this->gadget->request->fetch('id', 'get');
         $qid = Jaws_XSS::defilter($qid);
 
         $tpl = $this->gadget->template->load('Question.html');

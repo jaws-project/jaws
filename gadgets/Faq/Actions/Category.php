@@ -49,7 +49,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
     {
         $model = $this->gadget->model->load('Question');
 
-        $cat_id = jaws()->request->fetch('id', 'get');
+        $cat_id = $this->gadget->request->fetch('id', 'get');
         $cat_id = Jaws_XSS::defilter($cat_id);
 
         $this->SetTitle($this->gadget->title . ' - ' . _t('FAQ_CATEGORIES'));
