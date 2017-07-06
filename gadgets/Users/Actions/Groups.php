@@ -78,7 +78,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             return Jaws_HTTPError::Get(401);
         }
         $this->gadget->CheckPermission('ManageGroups');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
@@ -106,7 +106,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function GetGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $id = (int)jaws()->request->fetch('id' , 'post');
+        $id = (int)$this->gadget->request->fetch('id' , 'post');
 
         $uModel = new Jaws_User();
         $gInfo = $uModel->GetGroup($id);
@@ -126,7 +126,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function AddGlobalGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $gData = jaws()->request->fetch('data:array', 'post');
+        $gData = $this->gadget->request->fetch('data:array', 'post');
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
         $uModel = new Jaws_User();
@@ -148,7 +148,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function UpdateGlobalGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $post = jaws()->request->fetch(array('data:array', 'id'), 'post');
+        $post = $this->gadget->request->fetch(array('data:array', 'id'), 'post');
         $gData = $post['data'];
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
@@ -170,7 +170,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function DeleteGlobalGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $gid = (int)jaws()->request->fetch('id', 'post');
+        $gid = (int)$this->gadget->request->fetch('id', 'post');
         $uModel = new Jaws_User();
         $groupinfo = $uModel->GetGroup((int)$gid);
         if (!$uModel->DeleteGroup($gid)) {
@@ -190,7 +190,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      */
     function GetGroupUsers()
     {
-        $gid = jaws()->request->fetch('gid', 'post');
+        $gid = $this->gadget->request->fetch('gid', 'post');
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers((int)$gid);
         if (Jaws_Error::IsError($users)) {
@@ -209,7 +209,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function AddUsersToGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $post = jaws()->request->fetch(array('gid', 'users:array'), 'post');
+        $post = $this->gadget->request->fetch(array('gid', 'users:array'), 'post');
         $uModel = $this->gadget->model->loadAdmin('UsersGroup');
         $res = $uModel->AddUsersToGroup((int)$post['gid'], $post['users']);
         if (Jaws_Error::IsError($res)) {

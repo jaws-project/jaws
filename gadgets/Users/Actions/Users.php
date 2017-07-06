@@ -160,7 +160,7 @@ class Users_Actions_Users extends Users_Actions_Default
         }
         $this->gadget->CheckPermission('ManageUsers');
 
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
@@ -217,7 +217,7 @@ class Users_Actions_Users extends Users_Actions_Default
     function GetUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $post = jaws()->request->fetch(array('id', 'account', 'personal', 'contacts') , 'post');
+        $post = $this->gadget->request->fetch(array('id', 'account', 'personal', 'contacts') , 'post');
 
         $uModel = new Jaws_User();
         $profile = $uModel->GetUser((int)$post['id'], $post['account'], $post['personal'], $post['contacts']);
@@ -260,7 +260,7 @@ class Users_Actions_Users extends Users_Actions_Default
     function AddUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $uData = jaws()->request->fetch('data:array', 'post');
+        $uData = $this->gadget->request->fetch('data:array', 'post');
         $uData['concurrents'] = (int)$uData['concurrents'];
         $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
         $JCrypt = Jaws_Crypt::getInstance();
@@ -292,7 +292,7 @@ class Users_Actions_Users extends Users_Actions_Default
     function UpdateUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $post = jaws()->request->fetch(array('data:array', 'uid'), 'post');
+        $post = $this->gadget->request->fetch(array('data:array', 'uid'), 'post');
         $uData = $post['data'];
         $uData['concurrents'] = (int)$uData['concurrents'];
         $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
@@ -374,7 +374,7 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
 
-        $uid = jaws()->request->fetch('uid', 'post');
+        $uid = $this->gadget->request->fetch('uid', 'post');
         $uModel = new Jaws_User();
         $groups = $uModel->GetGroupsOfUser((int)$uid);
         if (Jaws_Error::IsError($groups)) {
@@ -393,7 +393,7 @@ class Users_Actions_Users extends Users_Actions_Default
     function AddUserToGroups()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $post = jaws()->request->fetch(array('uid', 'groups:array'), 'post');
+        $post = $this->gadget->request->fetch(array('uid', 'groups:array'), 'post');
         $uModel = new Jaws_User();
         $oldGroups = $uModel->GetGroupsOfUser((int)$post['uid']);
         if (!Jaws_Error::IsError($oldGroups)) {

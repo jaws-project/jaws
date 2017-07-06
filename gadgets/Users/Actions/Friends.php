@@ -95,7 +95,7 @@ class Users_Actions_Friends extends Users_Actions_Default
     function GetFriendGroups()
     {
         $this->gadget->CheckPermission('ManageFriends');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
             'post'
         );
@@ -126,7 +126,7 @@ class Users_Actions_Friends extends Users_Actions_Default
     function GetFriendGroup()
     {
         $this->gadget->CheckPermission('ManageFriends');
-        $id = jaws()->request->fetch('id', 'post');
+        $id = $this->gadget->request->fetch('id', 'post');
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $jUser = new Jaws_User;
@@ -143,7 +143,7 @@ class Users_Actions_Friends extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageFriends');
 
-        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $jUser = new Jaws_User;
 
@@ -173,7 +173,7 @@ class Users_Actions_Friends extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageFriends');
 
-        $ids = jaws()->request->fetch('ids:array', 'post');
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         if (!empty($ids)) {
@@ -208,7 +208,7 @@ class Users_Actions_Friends extends Users_Actions_Default
     function AddUsersToFriendGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $post = jaws()->request->fetch(array('gid', 'users:array'), 'post');
+        $post = $this->gadget->request->fetch(array('gid', 'users:array'), 'post');
 
         $uModel = $this->gadget->model->load('Friends');
         $user = $GLOBALS['app']->Session->GetAttribute('user');

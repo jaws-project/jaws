@@ -39,7 +39,7 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
      */
     function GetACLs()
     {
-        $component = jaws()->request->fetch('component', 'post');
+        $component = $this->gadget->request->fetch('component', 'post');
         // fetch default ACLs
         $default_acls = array();
         $result = $GLOBALS['app']->ACL->fetchAll($component);
@@ -68,7 +68,7 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
      */
     function GetACLGroupsUsers()
     {
-        $post = jaws()->request->fetch(array('component', 'acl'), 'post');
+        $post = $this->gadget->request->fetch(array('component', 'acl'), 'post');
         return array(
             'groups' => $GLOBALS['app']->ACL->fetchGroupsByACL($post['component'], $post['acl']),
             'users' => $GLOBALS['app']->ACL->fetchUsersByACL($post['component'], $post['acl'])

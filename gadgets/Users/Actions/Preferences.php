@@ -134,7 +134,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
 
         // check permission
         $this->gadget->CheckPermission('EditUserPreferences');
-        $post = jaws()->request->fetchAll('post');
+        $post = $this->gadget->request->fetchAll('post');
         $gadget = $post['component'];
         unset($post['gadget'], $post['action'], $post['component']);
         // filter defined options

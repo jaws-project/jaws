@@ -149,7 +149,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission('EditUserContacts');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array(
                 'title', 'name', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
                 'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
@@ -251,7 +251,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
     function GetContact()
     {
         $this->gadget->CheckPermission('EditUserContacts');
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
 
         $jUser = new Jaws_User;
         return $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'), $id);
@@ -266,7 +266,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
     function GetContacts()
     {
         $this->gadget->CheckPermission('EditUserContacts');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
             'post'
         );
@@ -298,7 +298,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('EditUserContacts');
 
-        $post = jaws()->request->fetch(array('cid', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('cid', 'data:array'), 'post');
         // unset invalid keys
         $invalids = array_diff(
             array_keys($post['data']),
@@ -339,7 +339,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('EditUserContacts');
 
-        $ids = jaws()->request->fetch('ids:array', 'post');
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
         $jUser = new Jaws_User;
         $result = $jUser->DeleteUserContacts(
             $GLOBALS['app']->Session->GetAttribute('user'),

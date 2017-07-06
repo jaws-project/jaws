@@ -110,7 +110,7 @@ class Users_Actions_Account extends Users_Actions_Default
             '',
             false
         );
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('username', 'nickname', 'email', 'mobile', 'password', 'chkpassword'),
             'post'
         );

@@ -40,7 +40,7 @@ class Users_Actions_Admin_Avatar extends Users_Actions_Admin_Default
      */
     function LoadAvatar()
     {
-        $file = jaws()->request->fetch('file', 'get');
+        $file = $this->gadget->request->fetch('file', 'get');
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {
             if (!empty($file)) {

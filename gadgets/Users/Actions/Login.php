@@ -169,7 +169,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         $response = $GLOBALS['app']->Session->PopResponse('Users.Login.Response');
         if (!isset($response['data'])) {
-            $referrer  = jaws()->request->fetch('referrer', 'get');
+            $referrer  = $this->gadget->request->fetch('referrer', 'get');
             $reqpost['username'] = '';
             $reqpost['authtype'] = '';
             $reqpost['remember'] = '';
@@ -367,7 +367,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
             $tpl->ParseBlock('UserLinks');
         } else {
-            $referrer  = jaws()->request->fetch('referrer', 'get');
+            $referrer  = $this->gadget->request->fetch('referrer', 'get');
             $referrer  = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
             $login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $referrer));
 
@@ -412,7 +412,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Login()
     {
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('username', 'password', 'authtype', 'remember', 'usecrypt', 'referrer'),
             'post'
         );

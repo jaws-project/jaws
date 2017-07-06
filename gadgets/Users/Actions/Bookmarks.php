@@ -44,7 +44,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('bookmark_gadget', 'bookmark_action', 'bookmark_reference', 'url', 'title', 'description', 'bookmarked'),
             'post'
         );
@@ -138,7 +138,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     function GetBookmarks()
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
             'post'
         );
@@ -164,7 +164,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     function GetBookmark()
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
         $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
         return $this->gadget->model->load('Bookmarks')->GetBookmark($id, $currentUser);
     }
@@ -178,7 +178,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     function DeleteBookmark()
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
-        $id = (int)jaws()->request->fetch('id', 'post');
+        $id = (int)$this->gadget->request->fetch('id', 'post');
 
         $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
         $result = $this->gadget->model->load('Bookmarks')->DeleteBookmark($id, $currentUser);

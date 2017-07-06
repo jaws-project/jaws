@@ -128,7 +128,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission('EditUserPersonal');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'signature',
                   'about', 'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
             'post'

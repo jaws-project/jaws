@@ -20,7 +20,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         $result  = '';
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array(
                 'user', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
                 'fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'step', 'key'
@@ -274,7 +274,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         $this->gadget->CheckPermission('EditUserEmail');
-        $key = jaws()->request->fetch('key', 'get');
+        $key = $this->gadget->request->fetch('key', 'get');
 
         $jUser = new Jaws_User;
         $user = $jUser->GetUserByEmailVerifyKey($key);

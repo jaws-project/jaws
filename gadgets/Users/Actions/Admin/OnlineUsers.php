@@ -49,7 +49,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
      */
     function GetOnlineUsers()
     {
-        $filters = jaws()->request->fetch(array('active', 'logged', 'session_type', 'offset'), 'post');
+        $filters = $this->gadget->request->fetch(array('active', 'logged', 'session_type', 'offset'), 'post');
         $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
         $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
         $filters['type'] = ($filters['session_type'] == '-1')? null : $filters['session_type'];
@@ -102,7 +102,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
      */
     function GetOnlineUsersCount()
     {
-        $filters = jaws()->request->fetchAll('post');
+        $filters = $this->gadget->request->fetchAll('post');
         $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
         $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
         $filters['type'] = ($filters['session_type'] == '-1')? null : $filters['session_type'];

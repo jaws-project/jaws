@@ -129,7 +129,7 @@ class Users_Actions_Profile extends Users_Actions_Default
      */
     function Profile()
     {
-        $user = jaws()->request->fetch('user', 'get');
+        $user = $this->gadget->request->fetch('user', 'get');
         if (empty($user)) {
             return Jaws_HTTPError::Get(404);
         }
