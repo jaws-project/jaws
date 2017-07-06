@@ -26,9 +26,9 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         $ltpl->SetVariable('admin-script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
 
-        $reqpost = jaws()->request->fetch(array('username', 'authtype', 'remember', 'usecrypt', 'redirect_to'), 'post');
+        $reqpost = $this->gadget->request->fetch(array('username', 'authtype', 'remember', 'usecrypt', 'redirect_to'), 'post');
         if (is_null($reqpost['authtype'])) {
-            $reqpost['authtype'] = jaws()->request->fetch('authtype', 'get');
+            $reqpost['authtype'] = $this->gadget->request->fetch('authtype', 'get');
         }
 
         // referrer page link
@@ -97,7 +97,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
         $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
 
-        $message = is_null(jaws()->request->fetch('checksess'))? $message : _t('GLOBAL_ERROR_SESSION_NOTFOUND');
+        $message = is_null($this->gadget->request->fetch('checksess'))? $message : _t('GLOBAL_ERROR_SESSION_NOTFOUND');
         if (!empty($message)) {
             $ltpl->SetBlock('layout/message');
             $ltpl->SetVariable('message', $message);
