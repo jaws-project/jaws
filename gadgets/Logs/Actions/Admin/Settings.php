@@ -62,7 +62,7 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
     function SaveSettings()
     {
         $this->gadget->CheckPermission('ManageSettings');
-        $settings = jaws()->request->fetchAll('post');
+        $settings = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Settings');
         $res = $model->SaveSettings($settings);
         if (Jaws_Error::IsError($res)) {

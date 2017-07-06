@@ -213,7 +213,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function GetLogs()
     {
-        $post = jaws()->request->fetch(array('offset', 'filters:array'), 'post');
+        $post = $this->gadget->request->fetch(array('offset', 'filters:array'), 'post');
         $filters = $post['filters'];
 
         $model = $this->gadget->model->load('Logs');
@@ -260,7 +260,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function GetLogsCount()
     {
-        $filters = jaws()->request->fetch('filters:array', 'post');
+        $filters = $this->gadget->request->fetch('filters:array', 'post');
         $model = $this->gadget->model->loadAdmin('Logs');
         return $model->GetLogsCount($filters);
     }
@@ -273,7 +273,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function GetLog()
     {
-        $id = jaws()->request->fetch('id');
+        $id = $this->gadget->request->fetch('id');
         $logModel = $this->gadget->model->loadAdmin('Logs');
         $log = $logModel->GetLog($id);
         if (Jaws_Error::IsError($log)) {
@@ -306,7 +306,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function DeleteLogs()
     {
         $this->gadget->CheckPermission('DeleteLogs');
-        $logsID = jaws()->request->fetchAll();
+        $logsID = $this->gadget->request->fetchAll();
         $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogs($logsID);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -329,7 +329,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function DeleteLogsUseFilters()
     {
         $this->gadget->CheckPermission('DeleteLogs');
-        $filters = jaws()->request->fetch('filters:array', 'post');
+        $filters = $this->gadget->request->fetch('filters:array', 'post');
 
         $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogsUseFilters($filters);
@@ -354,7 +354,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ExportLogs');
 
-        $filters = jaws()->request->fetch(array('from_date', 'to_date', 'gname', 'user', 'priority', 'status'), 'get');
+        $filters = $this->gadget->request->fetch(array('from_date', 'to_date', 'gname', 'user', 'priority', 'status'), 'get');
         $filters['gadget'] = $filters['gname'];
         unset( $filters['gname']);
 
