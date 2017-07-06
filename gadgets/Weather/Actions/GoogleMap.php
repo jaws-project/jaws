@@ -21,7 +21,7 @@ class Weather_Actions_GoogleMap extends Jaws_Gadget_Action
      */
     function GetGoogleMapImage()
     {
-        $gMapParams = jaws()->request->fetch(array('latitude', 'longitude', 'zoom', 'size'), 'get');
+        $gMapParams = $this->gadget->request->fetch(array('latitude', 'longitude', 'zoom', 'size'), 'get');
 
         $gMapURL = 'http://maps.google.com/maps/api/staticmap?center='.
             $gMapParams['latitude']. ',' . $gMapParams['longitude'].

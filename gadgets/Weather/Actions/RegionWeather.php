@@ -322,7 +322,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('limit', 'offset', 'searchBy'),
             'post'
         );
