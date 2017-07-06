@@ -18,7 +18,7 @@ class Search_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function SaveChanges()
     {
-        $gadgets = jaws()->request->fetchAll('post');
+        $gadgets = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Settings');
         $model->SetSearchableGadgets($gadgets);
         return $GLOBALS['app']->Session->PopLastResponse();

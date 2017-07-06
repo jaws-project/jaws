@@ -23,8 +23,8 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         $tpl->SetBlock('results');
         $tpl->SetVariable('title', _t('SEARCH_RESULTS'));
 
-        $post = jaws()->request->fetch(array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'), 'get');
-        $page = jaws()->request->fetch('page', 'get');
+        $post = $this->gadget->request->fetch(array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'), 'get');
+        $page = $this->gadget->request->fetch('page', 'get');
         if (is_null($page) || !is_numeric($page) || $page <= 0 ) {
             $page = 1;
         }
