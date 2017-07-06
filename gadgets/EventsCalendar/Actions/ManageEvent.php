@@ -29,7 +29,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function EditEvent()
     {
-        $id = (int)jaws()->request->fetch('event', 'get');
+        $id = (int)$this->gadget->request->fetch('event', 'get');
         return $this->EventForm($id);
     }
 
@@ -253,7 +253,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function CreateEvent()
     {
-        $event = jaws()->request->fetch(array('subject', 'location',
+        $event = $this->gadget->request->fetch(array('subject', 'location',
             'description', 'public', 'type', 'priority', 'reminder',
             'recurrence', 'month', 'day', 'wday',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
@@ -305,7 +305,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function UpdateEvent()
     {
-        $data = jaws()->request->fetch(array('id', 'subject', 'location',
+        $data = $this->gadget->request->fetch(array('id', 'subject', 'location',
             'description', 'public', 'type', 'priority', 'reminder',
             'recurrence', 'month', 'day', 'wday',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
@@ -377,7 +377,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function DeleteEvent()
     {
-        $id_set = jaws()->request->fetch('id_set');
+        $id_set = $this->gadget->request->fetch('id_set');
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
             return $GLOBALS['app']->Session->GetResponse(

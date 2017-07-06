@@ -29,7 +29,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         }
 
         // Validate user
-        $user = (int)jaws()->request->fetch('user:int', 'get');
+        $user = (int)$this->gadget->request->fetch('user:int', 'get');
         if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
@@ -74,7 +74,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $params['search'] = $GLOBALS['app']->Session->PopSimpleResponse('Events.Search', false);
 
         // Fetch page
-        $page = (int)jaws()->request->fetch('page:int', 'get');
+        $page = (int)$this->gadget->request->fetch('page:int', 'get');
         $page = ($page === 0)? 1: $page;
         $params['limit'] = (int)$this->gadget->registry->fetch('events_limit');
         $params['offset'] = ($page - 1) * $params['limit'];
@@ -230,7 +230,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
     function Search()
     {
         $fields = array('term', 'public', 'shared', 'type', 'priority', 'start', 'stop');
-        $post = jaws()->request->fetch($fields, 'post');
+        $post = $this->gadget->request->fetch($fields, 'post');
         foreach ($post as $key => $value) {
             if ($value === '' || $value === null) {
                 unset($post[$key]);

@@ -21,7 +21,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
     {
         // Validate user
         if ($user === null) {
-            $user = (int)jaws()->request->fetch('user:int', 'get');
+            $user = (int)$this->gadget->request->fetch('user:int', 'get');
         }
         if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
@@ -31,7 +31,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
         $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $jDate = Jaws_Date::getInstance();
-        $year = (int)jaws()->request->fetch('year:int', 'get');
+        $year = (int)$this->gadget->request->fetch('year:int', 'get');
         $year = empty($year)? (int)$jDate->Format(time(), 'Y') : $year;
 
         $this->AjaxMe('index.js');

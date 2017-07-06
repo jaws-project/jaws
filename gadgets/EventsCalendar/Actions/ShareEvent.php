@@ -29,7 +29,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         }
 
         // Validate user
-        $userId = (int)jaws()->request->fetch('user:int', 'get');
+        $userId = (int)$this->gadget->request->fetch('user:int', 'get');
         if ($userId > 0 && $userId !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
@@ -37,7 +37,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
 
 
         // Fetch event
-        $id = (int)jaws()->request->fetch('event', 'get');
+        $id = (int)$this->gadget->request->fetch('event', 'get');
         $model = $this->gadget->model->load('Event');
         $event = $model->GetEvent($id, $userId);
         if (Jaws_Error::IsError($event)) {
@@ -110,7 +110,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
      */
     function GetUsers()
     {
-        $gid = (int)jaws()->request->fetch('gid');
+        $gid = (int)$this->gadget->request->fetch('gid');
         if ($gid === 0) {
             $gid = false;
         }
@@ -130,7 +130,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
      */
     function UpdateShare()
     {
-        $id = (int)jaws()->request->fetch('id');
+        $id = (int)$this->gadget->request->fetch('id');
         $model = $this->gadget->model->load('Event');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
@@ -151,7 +151,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             );
         }
 
-        $users = jaws()->request->fetch('users');
+        $users = $this->gadget->request->fetch('users');
         $users = empty($users)? array() : explode(',', $users);
         $model = $this->gadget->model->load('Share');
         $res = $model->UpdateEventUsers($id, $users);

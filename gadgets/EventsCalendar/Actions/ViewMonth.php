@@ -19,7 +19,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
     function ViewMonth()
     {
         // Validate user
-        $user = (int)jaws()->request->fetch('user:int', 'get');
+        $user = (int)$this->gadget->request->fetch('user:int', 'get');
         if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
@@ -27,7 +27,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
 
         $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
-        $get = jaws()->request->fetch(array('year', 'month'), 'get');
+        $get = $this->gadget->request->fetch(array('year', 'month'), 'get');
         $year = (int)$get['year'];
         $month = (int)$get['month'];
 

@@ -19,7 +19,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
     function ViewWeek()
     {
         // Validate user
-        $user = (int)jaws()->request->fetch('user:int', 'get');
+        $user = (int)$this->gadget->request->fetch('user:int', 'get');
         if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
@@ -27,7 +27,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
 
         $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
-        $data = jaws()->request->fetch(array('year', 'month', 'day'), 'get');
+        $data = $this->gadget->request->fetch(array('year', 'month', 'day'), 'get');
         $year = (int)$data['year'];
         $month = (int)$data['month'];
         $day = (int)$data['day'];
