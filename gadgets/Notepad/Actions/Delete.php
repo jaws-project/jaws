@@ -19,7 +19,7 @@ class Notepad_Actions_Delete extends Jaws_Gadget_Action
      */
     function DeleteNote()
     {
-        $id_set = jaws()->request->fetch('id_set');
+        $id_set = $this->gadget->request->fetch('id_set');
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
             return $GLOBALS['app']->Session->GetResponse(

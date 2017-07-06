@@ -37,7 +37,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         }
 
         // Fetch url params
-        $get = jaws()->request->fetch(array('filter', 'query', 'page'), 'get');
+        $get = $this->gadget->request->fetch(array('filter', 'query', 'page'), 'get');
         foreach ($get as $k => $v) {
             if ($v === null) {
                 unset($get[$k]);
@@ -137,7 +137,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
      */
     function Search()
     {
-        $post = jaws()->request->fetch(array('filter', 'query', 'page'), 'post');
+        $post = $this->gadget->request->fetch(array('filter', 'query', 'page'), 'post');
         foreach ($post as $k => $v) {
             if ($v === null) {
                 unset($post[$k]);

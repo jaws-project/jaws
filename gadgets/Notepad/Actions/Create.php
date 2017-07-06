@@ -64,7 +64,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
      */
     function CreateNote()
     {
-        $data = jaws()->request->fetch(array('title', 'content'), 'post');
+        $data = $this->gadget->request->fetch(array('title', 'content'), 'post');
         if (empty($data['title']) || empty($data['content'])) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),

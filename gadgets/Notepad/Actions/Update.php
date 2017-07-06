@@ -26,7 +26,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         }
 
         if (!isset($note) || empty($note)) {
-            $id = (int)jaws()->request->fetch('id', 'get');
+            $id = (int)$this->gadget->request->fetch('id', 'get');
             $model = $this->gadget->model->load('Notepad');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $note = $model->GetNote($id, $user);
@@ -74,7 +74,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
      */
     function UpdateNote()
     {
-        $data = jaws()->request->fetch(array('id', 'title', 'content'), 'post');
+        $data = $this->gadget->request->fetch(array('id', 'title', 'content'), 'post');
         if (empty($data['id']) || empty($data['title']) || empty($data['content'])) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),

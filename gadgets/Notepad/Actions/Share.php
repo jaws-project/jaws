@@ -21,7 +21,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
     {
 
         // Fetch note
-        $id = (int)jaws()->request->fetch('id', 'get');
+        $id = (int)$this->gadget->request->fetch('id', 'get');
         $model = $this->gadget->model->load('Notepad');
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $note = $model->GetNote($id, $uid);
@@ -88,7 +88,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
      */
     function GetUsers()
     {
-        $gid = (int)jaws()->request->fetch('gid');
+        $gid = (int)$this->gadget->request->fetch('gid');
         if ($gid === 0) {
             $gid = false;
         }
@@ -108,7 +108,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
      */
     function UpdateShare()
     {
-        $id = (int)jaws()->request->fetch('id');
+        $id = (int)$this->gadget->request->fetch('id');
         $model = $this->gadget->model->load('Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
@@ -129,7 +129,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
             );
         }
 
-        $users = jaws()->request->fetch('users');
+        $users = $this->gadget->request->fetch('users');
         $users = empty($users)? array() : explode(',', $users);
         $model = $this->gadget->model->load('Share');
         $res = $model->UpdateNoteUsers($id, $users);

@@ -23,7 +23,7 @@ class Notepad_Actions_View extends Jaws_Gadget_Action
         $tpl->SetBlock('note');
 
         if ($id === null) {
-            $id = (int)jaws()->request->fetch('id', 'get');
+            $id = (int)$this->gadget->request->fetch('id', 'get');
         }
         $model = $this->gadget->model->load('Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
