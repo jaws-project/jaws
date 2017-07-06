@@ -137,7 +137,7 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
      */
     function PostRating()
     {
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('requested_gadget', 'requested_action', 'reference', 'item', 'rate'),
             'post'
         );
