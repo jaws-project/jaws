@@ -25,7 +25,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
 
         $model = $this->gadget->model->load('Page');
         //Get Id
-        $page_id = (int)jaws()->request->fetch('page', 'get');
+        $page_id = (int)$this->gadget->request->fetch('page', 'get');
         $page = $model->GetPage($page_id);
         if (Jaws_Error::IsError($page)) {
             $GLOBALS['app']->Session->PushLastResponse($page->GetMessage(), RESPONSE_ERROR);
@@ -46,8 +46,8 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $this->gadget->CheckPermission('EditPage');
         $model = $this->gadget->model->loadAdmin('Translation');
         $fetch   = array('page', 'title', 'content', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
-        $post    = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
+        $post    = $this->gadget->request->fetch($fetch, 'post');
+        $post['content'] = $this->gadget->request->fetch('content', 'post', 'strip_crlf');
         $page    = (int)$post['page'];
 
         $result = $model->AddTranslation($page, $post['title'], $post['content'], $post['language'],
@@ -77,7 +77,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
 
         $model = $this->gadget->model->load('Translation');
         //Get Id
-        $trans_id = (int)jaws()->request->fetch('id', 'get');
+        $trans_id = (int)$this->gadget->request->fetch('id', 'get');
         $translation = $model->GetPageTranslation($trans_id);
         if (Jaws_Error::IsError($translation)) {
             $GLOBALS['app']->Session->PushLastResponse($translation->GetMessage(), RESPONSE_ERROR);
@@ -99,8 +99,8 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $this->gadget->CheckPermission('EditPage');
         $model = $this->gadget->model->loadAdmin('Translation');
         $fetch   = array('trans_id', 'title', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
-        $post    = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
+        $post    = $this->gadget->request->fetch($fetch, 'post');
+        $post['content'] = $this->gadget->request->fetch('content', 'post', 'strip_crlf');
         $trans   = (int)$post['trans_id'];
         $result = $model->UpdateTranslation($trans, $post['title'], $post['content'], $post['language'],
             $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);

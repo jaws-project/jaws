@@ -138,7 +138,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $tpl->SetBlock('static_page');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $action = jaws()->request->fetch('action', 'get');
+        $action = $this->gadget->request->fetch('action', 'get');
         $tpl->SetVariable('menubar', $this->MenuBar($action));
 
         $tpl->SetVariable('grid', $this->DataGrid());
@@ -247,8 +247,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
 
         $fetch = array('title', 'fast_url', 'meta_keys', 'meta_desc', 'tags',
                        'group_id', 'language', 'published', 'show_title');
-        $post  = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
+        $post  = $this->gadget->request->fetch($fetch, 'post');
+        $post['content'] = $this->gadget->request->fetch('content', 'post', 'strip_crlf');
 
         $model->AddPage($post['title'], $post['group_id'], $post['show_title'], $post['content'], $post['language'],
             $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
@@ -267,7 +267,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $this->gadget->CheckPermission('EditPage');
         $model = $this->gadget->model->load('Page');
 
-        $id = (int)jaws()->request->fetch('id', 'get');
+        $id = (int)$this->gadget->request->fetch('id', 'get');
 
         $page = $model->GetPage($id);
         if (Jaws_Error::IsError($page)) {
@@ -292,8 +292,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Page');
         $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys',
                          'meta_desc', 'tags', 'published', 'show_title');
-        $post    = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
+        $post    = $this->gadget->request->fetch($fetch, 'post');
+        $post['content'] = $this->gadget->request->fetch('content', 'post', 'strip_crlf');
         $id      = (int)$post['page'];
 
         $model->UpdatePage($id, $post['group_id'], $post['show_title'], $post['title'],
