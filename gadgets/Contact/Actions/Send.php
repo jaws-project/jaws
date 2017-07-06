@@ -18,7 +18,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
      */
     function Send()
     {
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array(
                 'name', 'email', 'company', 'url', 'tel', 'fax',
                 'mobile', 'address', 'recipient', 'subject', 'message'

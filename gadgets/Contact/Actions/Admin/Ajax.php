@@ -21,7 +21,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetContact()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Contacts');
         $contact = $model->GetContact($id);
         if (Jaws_Error::IsError($contact) ||
@@ -43,7 +43,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateContact()
     {
         $this->gadget->CheckPermission('ManageContacts');
-        $data = jaws()->request->fetchAll('post');
+        $data = $this->gadget->request->fetchAll('post');
         $id = $data['id'];
         unset($data['id']);
 
@@ -72,7 +72,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteContact()
     {
         $this->gadget->CheckPermission('ManageContacts');
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $result = $this->gadget->model->loadAdmin('Contacts')->DeleteContact($id);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse(
@@ -97,7 +97,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetReply()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Contacts');
         $replyData = $model->GetReply($id);
         if (Jaws_Error::IsError($replyData) ||
@@ -135,7 +135,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetRecipient()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Recipients');
         $RecipientInfo = $model->GetRecipient($id);
         if (Jaws_Error::IsError($RecipientInfo)) {
@@ -154,7 +154,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
-        $data = jaws()->request->fetchAll('post');
+        $data = $this->gadget->request->fetchAll('post');
         unset($data['id']);
         $result = $this->gadget->model->loadAdmin('Recipients')->InsertRecipient($data);
         if (Jaws_Error::IsError($result)) {
@@ -188,7 +188,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
-        $data = jaws()->request->fetchAll('post');
+        $data = $this->gadget->request->fetchAll('post');
         $id = $data['id'];
         unset($data['id']);
         $result = $this->gadget->model->loadAdmin('Recipients')->UpdateRecipient($id, $data);
@@ -216,7 +216,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteRecipient()
     {
         $this->gadget->CheckPermission('ManageRecipients');
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $result = $this->gadget->model->loadAdmin('Recipients')->DeleteRecipient($id);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse(
@@ -245,8 +245,8 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateProperties()
     {
         $this->gadget->CheckPermission('UpdateProperties');
-        @list($use_antispam, $email_format, $enable_attachment, $comments) = jaws()->request->fetchAll('post');
-        $comments = jaws()->request->fetch(3, 'post', 'strip_crlf');
+        @list($use_antispam, $email_format, $enable_attachment, $comments) = $this->gadget->request->fetchAll('post');
+        $comments = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
 
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments);
@@ -263,7 +263,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetContacts()
     {
-        @list($recipient, $offset) = jaws()->request->fetchAll('post');
+        @list($recipient, $offset) = $this->gadget->request->fetchAll('post');
         if (!is_numeric($offset)) {
             $offset = null;
         }
@@ -281,7 +281,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetContactsCount()
     {
-        @list($recipient) = jaws()->request->fetchAll('post');
+        @list($recipient) = $this->gadget->request->fetchAll('post');
         if(empty($recipient)) {
             $recipient = -1;
         }
@@ -303,7 +303,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetUsers()
     {
-        @list($group) = jaws()->request->fetchAll('post');
+        @list($group) = $this->gadget->request->fetchAll('post');
         $userModel = new Jaws_User();
         return $userModel->GetUsers($group, null, true);
     }
@@ -318,7 +318,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function GetMessagePreview()
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        $message = jaws()->request->fetch(0, 'post', 'strip_crlf');
+        $message = $this->gadget->request->fetch(0, 'post', 'strip_crlf');
 
         $gadget = $this->gadget->action->loadAdmin('Mailer');
         return $gadget->PrepareMessage($message);
@@ -337,9 +337,9 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SendEmail()
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        @list($target, $subject, $message, $attachment) = jaws()->request->fetchAll('post');
-        $message = jaws()->request->fetch(2, 'post', 'strip_crlf');
-        $target = jaws()->request->fetch('0:array', 'post');
+        @list($target, $subject, $message, $attachment) = $this->gadget->request->fetchAll('post');
+        $message = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
+        $target = $this->gadget->request->fetch('0:array', 'post');
 
         $gadget = $this->gadget->action->loadAdmin('Mailer');
         $gadget->SendEmail($target, $subject, $message, $attachment);
@@ -356,7 +356,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function getData()
     {
-        @list($offset, $grid) = jaws()->request->fetchAll('post');
+        @list($offset, $grid) = $this->gadget->request->fetchAll('post');
         if (!is_numeric($offset)) {
             $offset = null;
         }
