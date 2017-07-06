@@ -35,9 +35,9 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
             }
         }
 
-        $path = jaws()->request->fetch('path');
+        $path = $this->gadget->request->fetch('path');
         $path = trim((string)$path, '/');
-        $page = jaws()->request->fetch('page', 'get');
+        $page = $this->gadget->request->fetch('page', 'get');
         if (is_null($page) || $page <= 0 ) {
             $page = 1;
         }
@@ -216,7 +216,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
      */
     function FileInfo()
     {
-        $id = jaws()->request->fetch('id', 'get');
+        $id = $this->gadget->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id);
 
         $fModel = $this->gadget->model->load('Files');
@@ -283,7 +283,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
      */
     function Download()
     {
-        $id = jaws()->request->fetch('id', 'get');
+        $id = $this->gadget->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id);
 
         $fModel = $this->gadget->model->load('Files');

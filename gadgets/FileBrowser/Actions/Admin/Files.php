@@ -28,7 +28,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetBlock('filebrowser');
         $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=FileBrowser&action=Files');
 
-        $path = jaws()->request->fetch('path', 'get');
+        $path = $this->gadget->request->fetch('path', 'get');
         $path = empty($path)? '/' : $path;
         $tpl->SetVariable('path', $path);
         $this->gadget->define('path', $path);
@@ -183,7 +183,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
         $fModel = $this->gadget->model->load('Files');
         $fModelAdmin = $this->gadget->model->loadAdmin('Files');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname', 'extra_params'),
             'post'
         );
@@ -232,7 +232,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function BrowseFile()
     {
-        $path = jaws()->request->fetch('path', 'get');
+        $path = $this->gadget->request->fetch('path', 'get');
         $path = empty($path)? '/' : $path;
 
         $tpl = $this->gadget->template->loadAdmin('BrowseFile.html');
@@ -253,7 +253,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetBlock('browse/script');
             $tpl->ParseBlock('browse/script');
         } elseif ($editor === 'CKEditor') {
-            $getParams = jaws()->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
+            $getParams = $this->gadget->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
             $extraParams = '&amp;CKEditor='.$getParams['CKEditor'].
                 '&amp;CKEditorFuncNum='.$getParams['CKEditorFuncNum'].
                 '&amp;langCode='.$getParams['langCode'];
@@ -384,7 +384,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageFiles');
 
         $model = $this->gadget->model->loadAdmin('Files');
-        $post = jaws()->request->fetch(array('path', 'selected_item', 'extra_params'), 'post');
+        $post = $this->gadget->request->fetch(array('path', 'selected_item', 'extra_params'), 'post');
 
         if ($model->Delete($post['path'], $post['selected_item'])) {
             $model->DeleteDBFileInfo($post['path'], $post['selected_item']);

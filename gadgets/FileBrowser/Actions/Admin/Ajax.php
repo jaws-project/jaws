@@ -20,7 +20,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DBFileInfo()
     {
-        @list($path, $file) = jaws()->request->fetchAll('post');
+        @list($path, $file) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Files');
         return $model->DBFileInfo($path, $file);
     }
@@ -34,7 +34,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetDirContentsCount()
     {
-        @list($path) = jaws()->request->fetchAll('post');
+        @list($path) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Directory');
         return $model->GetDirContentsCount($path);
     }
@@ -48,7 +48,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetLocation()
     {
-        @list($path) = jaws()->request->fetchAll('post');
+        @list($path) = $this->gadget->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Files');
         return $gadget->GetLocation($path);
     }
@@ -64,7 +64,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetDirectory()
     {
-        @list($dir, $offset, $order) = jaws()->request->fetchAll('post');
+        @list($dir, $offset, $order) = $this->gadget->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Directory');
         if (!is_numeric($offset)) {
             $offset = null;
@@ -88,7 +88,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateDBFileInfo()
     {
         $this->gadget->CheckPermission('ManageFiles');
-        @list($path, $file, $title, $description, $fast_url, $oldname) = jaws()->request->fetchAll('post');
+        @list($path, $file, $title, $description, $fast_url, $oldname) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Files');
         $res = true;
         $file = preg_replace('/[^[:alnum:]_\.\-\s]*/', '', $file);
@@ -119,7 +119,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateDBDirInfo()
     {
         $this->gadget->CheckPermission('ManageDirectories');
-        @list($path, $dir, $title, $description, $fast_url, $oldname) = jaws()->request->fetchAll('post');
+        @list($path, $dir, $title, $description, $fast_url, $oldname) = $this->gadget->request->fetchAll('post');
 
         $fModel = $this->gadget->model->loadAdmin('Files');
         $dModel = $this->gadget->model->loadAdmin('Directory');
@@ -150,7 +150,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteFile2()
     {
         $this->gadget->CheckPermission('ManageFiles');
-        @list($path, $file) = jaws()->request->fetchAll('post');
+        @list($path, $file) = $this->gadget->request->fetchAll('post');
         $fModel = $this->gadget->model->loadAdmin('Files');
         $file = preg_replace('/[^[:alnum:]_\.\-\s]*/', '', $file);
         if ($fModel->Delete($path, $file)) {
@@ -171,7 +171,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteDir2()
     {
         $this->gadget->CheckPermission('ManageDirectories');
-        @list($path, $dir) = jaws()->request->fetchAll('post');
+        @list($path, $dir) = $this->gadget->request->fetchAll('post');
         $fModel = $this->gadget->model->loadAdmin('Files');
         $dir = preg_replace('/[^[:alnum:]_\.\-\s]*/', '', $dir);
         if ($fModel->Delete($path, $dir)) {
