@@ -180,7 +180,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
      */
     function DownloadTheme()
     {
-        $theme = jaws()->request->fetch('theme', 'get');
+        $theme = $this->gadget->request->fetch('theme', 'get');
         @list($theme, $locality) = explode(',', $theme);
 
         $tInfo = Jaws_Utils::GetThemesInfo($locality, $theme);

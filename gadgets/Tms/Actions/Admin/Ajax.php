@@ -19,7 +19,7 @@ class Tms_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetThemeInfo()
     {
-        @list($theme) = jaws()->request->fetchAll('post');
+        @list($theme) = $this->gadget->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Themes');
         return $gadget->GetThemeInfo($theme);
     }
@@ -33,7 +33,7 @@ class Tms_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteTheme()
     {
-        @list($theme) = jaws()->request->fetchAll('post');
+        @list($theme) = $this->gadget->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Themes');
         $res = $gadget->DeleteTheme($theme);
         if (Jaws_Error::IsError($res) || !$res) {
