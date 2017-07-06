@@ -15,7 +15,7 @@ class Settings_Actions_Zones extends Jaws_Gadget_Action
      */
     function GetProvinces()
     {
-        $country = jaws()->request->fetch('country');
+        $country = $this->gadget->request->fetch('country');
         $provinces = $this->gadget->model->load('Zones')->GetProvinces($country);
         return Jaws_Error::IsError($provinces)? array() : $provinces;
     }
@@ -28,9 +28,9 @@ class Settings_Actions_Zones extends Jaws_Gadget_Action
      */
     function GetCities()
     {
-        $zone = jaws()->request->fetch(array('province', 'country'));
+        $zone = $this->gadget->request->fetch(array('province', 'country'));
         if (is_null($zone['province'])) {
-            $provinces = jaws()->request->fetch('province:array', 'post');
+            $provinces = $this->gadget->request->fetch('province:array', 'post');
         } elseif (empty($zone['province'])) {
             return array();
         } else {

@@ -166,7 +166,7 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
     function UpdateSettings()
     {
         $this->gadget->CheckPermission('BasicSettings');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array(
                 'site_status', 'site_name', 'site_slogan', 'site_language', 'main_gadget',
                 'site_email', 'site_comment', 'date_format', 'calendar', 'editor', 'timezone'
