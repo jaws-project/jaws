@@ -18,7 +18,7 @@ class ServerTime_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateProperties()
     {
-        @list($format) = jaws()->request->fetchAll('post');
+        @list($format) = $this->gadget->request->fetchAll('post');
         $modelServerTime = $this->gadget->model->loadAdmin('Properties');
         $modelServerTime->UpdateProperties($format);
         return $GLOBALS['app']->Session->PopLastResponse();
