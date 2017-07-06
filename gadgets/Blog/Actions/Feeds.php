@@ -59,7 +59,7 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
     function ShowRSSCategory()
     {
         header('Content-type: application/rss+xml; charset=utf-8');
-        $id = jaws()->request->fetch('id', 'get');
+        $id = $this->gadget->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id);
 
         $model = $this->gadget->model->load('Feeds');
@@ -80,7 +80,7 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
     function ShowAtomCategory()
     {
         header('Content-type: application/atom+xml; charset=utf-8');
-        $id = jaws()->request->fetch('id', 'get');
+        $id = $this->gadget->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id);
 
         $model = $this->gadget->model->load('Feeds');

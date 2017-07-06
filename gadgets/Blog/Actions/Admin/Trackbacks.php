@@ -149,7 +149,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $tModel = $this->gadget->model->loadAdmin('Trackbacks');
         $pModel = $this->gadget->model->loadAdmin('Posts');
         // Fetch the trackback
-        $trackback = $tModel->GetTrackback(jaws()->request->fetch('id', 'get'));
+        $trackback = $tModel->GetTrackback($this->gadget->request->fetch('id', 'get'));
         if (Jaws_Error::IsError($trackback)) {
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageTrackbacks');
         }

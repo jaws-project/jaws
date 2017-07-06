@@ -198,7 +198,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
             'default_view', 'last_entries_limit', 'last_comments_limit',
             'last_recentcomments_limit', 'default_category', 'xml_limit',
             'comments', 'comment_status', 'trackback', 'trackback_status');
-        $post = jaws()->request->fetch($names, 'post');
+        $post = $this->gadget->request->fetch($names, 'post');
 
         $model = $this->gadget->model->loadAdmin('Settings');
         $model->SaveSettings($post['default_view'], $post['last_entries_limit'],

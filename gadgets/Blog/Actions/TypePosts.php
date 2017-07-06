@@ -55,7 +55,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
 
         if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'recent_posts_normal';
-            $type = (int)jaws()->request->fetch('type', 'get');
+            $type = (int)$this->gadget->request->fetch('type', 'get');
         } else {
             $baseBlock = 'recent_posts_layout';
         }

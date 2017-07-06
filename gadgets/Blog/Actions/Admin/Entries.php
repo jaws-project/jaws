@@ -258,8 +258,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title', 'subtitle',
                          'fasturl', 'allow_comments:array', 'published', 'favorite:array', 'type',
                          'trackback_to', 'meta_keywords', 'meta_desc', 'tags');
-        $post    = jaws()->request->fetch($names, 'post');
-        $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
+        $post    = $this->gadget->request->fetch($names, 'post');
+        $content = $this->gadget->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 
         $pubdate = null;
@@ -336,9 +336,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
     function EditEntry($action = '', $id = null)
     {
         $names   = array('id', 'action');
-        $get     = jaws()->request->fetch($names, 'get');
+        $get     = $this->gadget->request->fetch($names, 'get');
         $names   = array('allow_comments', 'edit_advanced');
-        $post    = jaws()->request->fetch($names, 'post');
+        $post    = $this->gadget->request->fetch($names, 'post');
 
         $id = !is_null($id) ? $id : $get['id'];
         $pModel = $this->gadget->model->load('Posts');
@@ -598,7 +598,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
      */
     function PreviewEditEntry()
     {
-        return $this->EditEntry('preview', jaws()->request->fetch('id', 'post'));
+        return $this->EditEntry('preview', $this->gadget->request->fetch('id', 'post'));
     }
 
     /**
@@ -611,8 +611,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title', 'subtitle',
                          'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'deleteImage', 'favorite:array', 'type',
                          'allow_comments:array', 'published', 'trackback_to');
-        $post    = jaws()->request->fetch($names, 'post');
-        $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
+        $post    = $this->gadget->request->fetch($names, 'post');
+        $content = $this->gadget->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
 
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 
@@ -703,7 +703,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Posts');
         $bModel = $this->gadget->model->load('Posts');
 
-        $post = jaws()->request->fetch(array('id', 'step'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'step'), 'post');
         if (!is_null($post['step']) && $post['step'] == 'delete') {
             // Delete Post
             $res = $model->DeleteEntry($post['id']);
@@ -716,7 +716,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
         }
 
-        $get = jaws()->request->fetch(array('id', 'action'), 'get');
+        $get = $this->gadget->request->fetch(array('id', 'action'), 'get');
 
         // Ask for confirmation...
         $entry = $bModel->GetEntry($get['id']);

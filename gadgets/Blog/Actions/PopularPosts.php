@@ -49,7 +49,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
 
         if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'popular_posts_normal';
-            $page = (int)jaws()->request->fetch('page', 'get');
+            $page = (int)$this->gadget->request->fetch('page', 'get');
         } else {
             $page = 1;
             $baseBlock = 'popular_posts_layout';

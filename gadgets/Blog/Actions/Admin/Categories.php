@@ -123,7 +123,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageCategories');
         $model = $this->gadget->model->loadAdmin('Categories');
-        $model->NewCategory(jaws()->request->fetch('catname', 'post'));
+        $model->NewCategory($this->gadget->request->fetch('catname', 'post'));
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageCategories');
     }
@@ -135,7 +135,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
      */
     function UpdateCategory()
     {
-        $post = jaws()->request->fetch(array('catid', 'catname'), 'post');
+        $post = $this->gadget->request->fetch(array('catid', 'catname'), 'post');
 
         $this->gadget->CheckPermission('ManageCategories');
         $model = $this->gadget->model->loadAdmin('Categories');
@@ -153,7 +153,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageCategories');
         $model = $this->gadget->model->loadAdmin('Categories');
-        $model->DeleteCategory(jaws()->request->fetch('catid', 'post'));
+        $model->DeleteCategory($this->gadget->request->fetch('catid', 'post'));
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageCategories');
     }

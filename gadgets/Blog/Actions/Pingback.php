@@ -30,7 +30,7 @@ class Blog_Actions_Pingback extends Blog_Actions_Default
                 $GLOBALS['app']->Map->Parse($response['targetURI']);
 
                 //pingbacks come from POST but JawsURL maps everything on get (that how Maps work)
-                $postID = jaws()->request->fetch('id', 'get');
+                $postID = $this->gadget->request->fetch('id', 'get');
                 if (empty($postID)) {
                     return;
                 }

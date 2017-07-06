@@ -24,7 +24,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $cModel = $this->gadget->model->load('Categories');
         $pModel = $this->gadget->model->load('Posts');
 
-        $rqst = jaws()->request->fetch(array('id', 'page'), 'get');
+        $rqst = $this->gadget->request->fetch(array('id', 'page'), 'get');
         $page = $rqst['page'];
         if (is_null($page) || $page <= 0 ) {
             $page = 1;

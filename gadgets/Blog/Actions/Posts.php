@@ -21,7 +21,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function ViewPage($cat = null)
     {
-        $page = jaws()->request->fetch('page', 'get');
+        $page = $this->gadget->request->fetch('page', 'get');
         if (is_null($page) || $page <= 0 ) {
             $page = 1;
         }
