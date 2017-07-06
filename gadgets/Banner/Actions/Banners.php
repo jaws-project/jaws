@@ -130,7 +130,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
     function Click()
     {
         $model = $this->gadget->model->load('Banners');
-        $id = (int)jaws()->request->fetch('id', 'get');
+        $id = (int)$this->gadget->request->fetch('id', 'get');
         $banner = $model->GetBanners($id);
         if (!Jaws_Error::IsError($banner) && !empty($banner)) {
             $click = $model->ClickBanner($banner[0]['id']);
