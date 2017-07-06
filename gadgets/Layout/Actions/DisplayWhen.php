@@ -19,7 +19,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
      */
     function DisplayWhen()
     {
-        $rqst = jaws()->request->fetch(array('id', 'layout'), 'get');
+        $rqst = $this->gadget->request->fetch(array('id', 'layout'), 'get');
         $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
 
         // check permissions
@@ -95,7 +95,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
      */
     function UpdateDisplayWhen() 
     {
-        @list($item, $layout, $dw) = jaws()->request->fetchAll('post');
+        @list($item, $layout, $dw) = $this->gadget->request->fetchAll('post');
         // check permissions
         if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');

@@ -18,7 +18,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function Layout()
     {
-        $rqst = jaws()->request->fetch(array('theme', 'layout'));
+        $rqst = $this->gadget->request->fetch(array('theme', 'layout'));
         $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
 
         // check permissions

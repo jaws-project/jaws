@@ -19,7 +19,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      */
     function AddLayoutElement()
     {
-        $layout = jaws()->request->fetch('layout', 'get');
+        $layout = $this->gadget->request->fetch('layout', 'get');
         $layout = empty($layout)? 'Layout' : $layout;
 
         // check permissions
@@ -49,9 +49,9 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $addButton->AddEvent(ON_CLICK, "parent.parent.addGetAction(document);");
         $tpl->SetVariable('add_button', $addButton->Get());
 
-        $section = jaws()->request->fetch('section', 'post');
+        $section = $this->gadget->request->fetch('section', 'post');
         if (is_null($section)) {
-            $section = jaws()->request->fetch('section', 'get');
+            $section = $this->gadget->request->fetch('section', 'get');
             $section = !is_null($section) ? $section : '';
         }
 
@@ -92,7 +92,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      */
     function ElementAction()
     {
-        $rqst = jaws()->request->fetch(array('id', 'layout'), 'get');
+        $rqst = $this->gadget->request->fetch(array('id', 'layout'), 'get');
         $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
 
         // check permissions
@@ -217,8 +217,8 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
     function UpdateElementAction() 
     {
         $res = false;
-        @list($item, $layout, $gadget, $action, $params) = jaws()->request->fetchAll('post');
-        $params = jaws()->request->fetch('4:array', 'post');
+        @list($item, $layout, $gadget, $action, $params) = $this->gadget->request->fetchAll('post');
+        $params = $this->gadget->request->fetch('4:array', 'post');
         // check permissions
         if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
