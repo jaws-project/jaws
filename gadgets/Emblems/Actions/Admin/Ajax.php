@@ -19,7 +19,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateEmblem()
     {
-        @list($id, $data) = jaws()->request->fetch(array('0', '1:array'), 'post');
+        @list($id, $data) = $this->gadget->request->fetch(array('0', '1:array'), 'post');
         $data['url'] = Jaws_XSS::defilter($data['url']);
         $model = $this->gadget->model->loadAdmin('Emblems');
         $res = $model->UpdateEmblem($id, $data);
@@ -40,7 +40,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteEmblem()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Emblems');
         $emblem = $model->GetEmblem($id);
 
@@ -68,7 +68,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function getData()
     {
-        @list($limit) = jaws()->request->fetchAll('post');
+        @list($limit) = $this->gadget->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Emblems');
         return $gadget->GetEmblems($limit);
     }
