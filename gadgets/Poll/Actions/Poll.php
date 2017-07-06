@@ -49,7 +49,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
     {
         $model = $this->gadget->model->load('Poll');
         if(empty($pid)) {
-            $pid = (int)jaws()->request->fetch('id', 'get');
+            $pid = (int)$this->gadget->request->fetch('id', 'get');
         }
 
         if (empty($pid)) {
@@ -219,7 +219,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
      */
     function Vote()
     {
-        $post = jaws()->request->fetch(array('pid', 'answers:array'), 'post');
+        $post = $this->gadget->request->fetch(array('pid', 'answers:array'), 'post');
         $model = $this->gadget->model->load('Poll');
         $poll = $model->GetPoll((int)$post['pid']);
         if (!Jaws_Error::IsError($poll) && !empty($poll)) {
@@ -272,7 +272,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
      */
     function ViewResult()
     {
-        $pid = jaws()->request->fetch('id', 'get');
+        $pid = $this->gadget->request->fetch('id', 'get');
 
         $model = $this->gadget->model->load('Poll');
         $poll = $model->GetPoll($pid);
