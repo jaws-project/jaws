@@ -19,7 +19,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetBlock()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Block');
         $block = $model->GetBlock($id);
         if (Jaws_Error::IsError($block)) {
@@ -42,9 +42,9 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('AddBlock');
 
-        @list($title, $contents, $displayTitle) = jaws()->request->fetchAll('post');
+        @list($title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $contents = jaws()->request->fetch(1, 'post', 'strip_crlf');
+        $contents = $this->gadget->request->fetch(1, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
         $res = $model->NewBlock($title, $contents, $displayTitle, $user);
         if (Jaws_Error::IsError($res)) {
@@ -71,9 +71,9 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('EditBlock');
 
-        @list($id, $title, $contents, $displayTitle) = jaws()->request->fetchAll('post');
+        @list($id, $title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $contents = jaws()->request->fetch(2, 'post', 'strip_crlf');
+        $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
         $model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -89,7 +89,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteBlock()
     {
         $this->gadget->CheckPermission('DeleteBlock');
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Block');
         $model->DeleteBlock($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -104,7 +104,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = jaws()->request->fetch(0, 'post', 'strip_crlf');
+        $text = $this->gadget->request->fetch(0, 'post', 'strip_crlf');
         return $this->gadget->plugin->parseAdmin($text);
     }
 }
