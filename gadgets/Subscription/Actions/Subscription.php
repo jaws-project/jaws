@@ -150,10 +150,10 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
      */
     function UpdateSubscription()
     {
-        $post = jaws()->request->fetch(array('email', 'mobile', 'subscriptionItems:array'), 'post');
+        $post = $this->gadget->request->fetch(array('email', 'mobile', 'subscriptionItems:array'), 'post');
         $selectedItems = $post['subscriptionItems'];
         if(empty($selectedItems)) {
-            $subscriptionItems = jaws()->request->fetch('subscriptionItems', 'post');
+            $subscriptionItems = $this->gadget->request->fetch('subscriptionItems', 'post');
             $selectedItems = empty($subscriptionItems) ? null : array($subscriptionItems) ;
 
             if(empty($selectedItems)) {
@@ -246,7 +246,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
      */
     function UpdateGadgetSubscription()
     {
-        $post  = jaws()->request->fetch(
+        $post  = $this->gadget->request->fetch(
             array(
                 'email', 'mobile', 'subscription_gadget', 'subscription_action',
                 'subscription_reference', 'is_subscribe'

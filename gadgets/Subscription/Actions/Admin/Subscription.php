@@ -139,7 +139,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
      */
     function GetSubscriptions()
     {
-        $post = jaws()->request->fetch(array('offset', 'order', 'filters:array'), 'post');
+        $post = $this->gadget->request->fetch(array('offset', 'order', 'filters:array'), 'post');
         $filters = $post['filters'];
 
         $model = $this->gadget->model->loadAdmin('Subscription');
@@ -185,7 +185,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
      */
     function GetSubscriptionsCount()
     {
-        $filters = jaws()->request->fetch('filters:array', 'post');
+        $filters = $this->gadget->request->fetch('filters:array', 'post');
         $model = $this->gadget->model->loadAdmin('Subscription');
         return $model->GetSubscriptionsCount($filters);
     }
@@ -199,7 +199,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
     function DeleteSubscriptions()
     {
         $this->gadget->CheckPermission('DeleteSubscription');
-        $subscriptionsID = jaws()->request->fetchAll();
+        $subscriptionsID = $this->gadget->request->fetchAll();
         $model = $this->gadget->model->loadAdmin('Subscription');
         $res = $model->DeleteSubscriptions($subscriptionsID);
         if (Jaws_Error::IsError($res) || $res === false) {
