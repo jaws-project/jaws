@@ -121,7 +121,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
      */
     function Captcha()
     {
-        $get = jaws()->request->fetch(array('field', 'key'), 'get');
+        $get = $this->gadget->request->fetch(array('field', 'key'), 'get');
         $dCaptcha = $this->gadget->registry->fetch($get['field']. '_captcha_driver');
         $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
         return $objCaptcha->image($get['key']);
