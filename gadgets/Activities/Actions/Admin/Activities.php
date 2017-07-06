@@ -165,7 +165,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
      */
     function GetActivities()
     {
-        $post = jaws()->request->fetch(array('offset', 'order', 'filters:array'), 'post');
+        $post = $this->gadget->request->fetch(array('offset', 'order', 'filters:array'), 'post');
         $filters = $post['filters'];
 
         $model = $this->gadget->model->load('Activities');
@@ -207,7 +207,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
      */
     function GetActivitiesCount()
     {
-        $filters = jaws()->request->fetch('filters:array', 'post');
+        $filters = $this->gadget->request->fetch('filters:array', 'post');
         $model = $this->gadget->model->load('Activities');
         return $model->GetActivitiesCount($filters);
     }
@@ -221,7 +221,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
     function DeleteActivities()
     {
         $this->gadget->CheckPermission('DeleteActivities');
-        $activity = jaws()->request->fetchAll();
+        $activity = $this->gadget->request->fetchAll();
         $model = $this->gadget->model->loadAdmin('Activities');
         $res = $model->DeleteActivities($activity);
         if (Jaws_Error::IsError($res) || $res === false) {

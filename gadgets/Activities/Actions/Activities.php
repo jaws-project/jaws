@@ -143,7 +143,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
      */
     function GetData()
     {
-        $data = jaws()->request->fetch(array('domain', 'activities:array'), 'post');
+        $data = $this->gadget->request->fetch(array('domain', 'activities:array'), 'post');
         $clientDomain = $data['domain'];
 
         $saData = array();
