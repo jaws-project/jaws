@@ -155,7 +155,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
      */
     function ViewQuote()
     {
-        $qid = jaws()->request->fetch('id', 'get');
+        $qid = $this->gadget->request->fetch('id', 'get');
         $qModel = $this->gadget->model->load('Quotes');
         $gModel = $this->gadget->model->load('Groups');
         $quote = $qModel->GetQuote($qid);
