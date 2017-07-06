@@ -51,7 +51,7 @@ class Sitemap_Actions_Admin_Robots extends Sitemap_Actions_Admin_Default
      */
     function UpdateRobots()
     {
-        $robots = jaws()->request->fetch('robots', 'post');
+        $robots = $this->gadget->request->fetch('robots', 'post');
         $result = $this->gadget->registry->update('robots.txt', $robots);
         if (!$result || Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_ROBOTS_NOT_SAVED'), RESPONSE_ERROR);

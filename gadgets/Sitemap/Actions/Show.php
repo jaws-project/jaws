@@ -87,7 +87,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Sitemap');
 
         if ($GLOBALS['app']->Layout->mainGadget == 'Sitemap') {
-            $items = $model->GetItems(jaws()->request->fetch('path', 'get'));
+            $items = $model->GetItems($this->gadget->request->fetch('path', 'get'));
         } else {
             $items = $model->GetItems(1);
         }
@@ -138,7 +138,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
                 $tpl->SetVariable('title', $item['title']);
                 $active = '';
                 if (($GLOBALS['app']->mainGadget == 'Sitemap') &&
-                    (jaws()->request->fetch('path', 'get') == $item['path'])) {
+                    ($this->gadget->request->fetch('path', 'get') == $item['path'])) {
                     $active = 'active';
                 }
                 $tpl->SetVariable('active', $active);
@@ -165,7 +165,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
     function DisplayLevel($depth = 1)
     {
         $model = $this->gadget->model->load('Sitemap');
-        $path = jaws()->request->fetch('path', 'get');
+        $path = $this->gadget->request->fetch('path', 'get');
         $aux = explode('/',$path);
         if (count($aux) > 1) array_pop($aux);
         $find = implode('/',$aux);

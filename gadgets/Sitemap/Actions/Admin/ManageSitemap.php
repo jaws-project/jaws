@@ -95,7 +95,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      */
     function GetCategoriesList()
     {
-        @list($gadget) = jaws()->request->fetchAll('post');
+        @list($gadget) = $this->gadget->request->fetchAll('post');
 
         $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
         $tpl->SetBlock('sitemap');
@@ -267,7 +267,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      */
     function GetCategory()
     {
-        $post = jaws()->request->fetch(array('gname', 'cid'), 'post');
+        $post = $this->gadget->request->fetch(array('gname', 'cid'), 'post');
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $category = $model->GetCategoryProperties($post['gname'], $post['cid']);
         return $category;
@@ -281,7 +281,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      */
     function GetGadget()
     {
-        $gadget = jaws()->request->fetch('gname', 'post');
+        $gadget = $this->gadget->request->fetch('gname', 'post');
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $properties = $model->GetGadgetProperties($gadget);
         $date = Jaws_Date::getInstance();
@@ -301,7 +301,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      */
     function UpdateCategory()
     {
-        $post = jaws()->request->fetch(array('gname', 'category', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('gname', 'category', 'data:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->UpdateCategory($post['gname'], $post['category'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -323,7 +323,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      */
     function UpdateGadgetProperties()
     {
-        $post = jaws()->request->fetch(array('gname', 'data:array'), 'post');
+        $post = $this->gadget->request->fetch(array('gname', 'data:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $data = $post['data'];
         $data['update_time'] = '';
@@ -347,7 +347,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      */
     function SyncSitemapXML()
     {
-        $gadget = jaws()->request->fetch('gname', 'post');
+        $gadget = $this->gadget->request->fetch('gname', 'post');
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->SyncSitemapXML($gadget);
         if (Jaws_Error::IsError($res) || $res === false) {
@@ -369,7 +369,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      */
     function SyncSitemapData()
     {
-        $gadget = jaws()->request->fetch('gname', 'post');
+        $gadget = $this->gadget->request->fetch('gname', 'post');
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->SyncSitemapData($gadget);
         if (Jaws_Error::IsError($res) || $res === false) {

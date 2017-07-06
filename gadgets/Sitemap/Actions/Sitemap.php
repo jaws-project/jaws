@@ -21,7 +21,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
         header('Content-Type: text/xml; charset=utf-8');
         $model = $this->gadget->model->load('Sitemap');
 
-        $gadget = jaws()->request->fetch('gname', 'get');
+        $gadget = $this->gadget->request->fetch('gname', 'get');
         $gadget = Jaws_Gadget::filter($gadget);
         if (empty($gadget)) {
             return $model->GetSitemapXML();
