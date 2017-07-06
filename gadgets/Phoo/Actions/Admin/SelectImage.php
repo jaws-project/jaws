@@ -20,7 +20,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
      */
     function SelectImage()
     {
-        $iGet = jaws()->request->fetch(array('image', 'album'), 'get');
+        $iGet = $this->gadget->request->fetch(array('image', 'album'), 'get');
         if (empty($iGet['image']) || empty($iGet['album'])) {
             return false;
         }
@@ -39,12 +39,12 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
             $tpl->SetBlock('ImageSelect/script');
             $tpl->ParseBlock('ImageSelect/script');
         } elseif ($editor === 'CKEditor') {
-            $getParams = jaws()->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
+            $getParams = $this->gadget->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
             $extraParams = '&amp;CKEditor=' . $getParams['CKEditor'] .
                            '&amp;CKEditorFuncNum=' . $getParams['CKEditorFuncNum'] .
                            '&amp;langCode=' . $getParams['langCode'];
 
-            $ckFuncIndex = jaws()->request->fetch('CKEditorFuncNum', 'get');
+            $ckFuncIndex = $this->gadget->request->fetch('CKEditorFuncNum', 'get');
             $tpl->SetVariable('ckFuncIndex', $ckFuncIndex);
         }
 
@@ -53,8 +53,8 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
             $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
             JawsHeader::Location ("admin.php?gadget=Phoo");
         }
-        $album = jaws()->request->fetch('album', 'get');
-        $post  = jaws()->request->fetch(array('date', 'album'), 'post');
+        $album = $this->gadget->request->fetch('album', 'get');
+        $post  = $this->gadget->request->fetch(array('date', 'album'), 'post');
         if (isset($post['album'])) {
             $r_album = $post['album'];
         } else {

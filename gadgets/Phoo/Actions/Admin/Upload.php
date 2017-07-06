@@ -23,7 +23,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('AddPhotos');
         $this->AjaxMe('script.js');
 
-        $album = jaws()->request->fetch('album', 'get');
+        $album = $this->gadget->request->fetch('album', 'get');
 
         $model = $this->gadget->model->load('Albums');
         $tpl = $this->gadget->template->loadAdmin('UploadPhotos.html');
@@ -99,8 +99,8 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $aModel = $this->gadget->model->load('Albums');
         $files = $uModel->UnpackFiles($_FILES);
 
-        $album   = (int)jaws()->request->fetch('album', 'post');
-        $extra_params = jaws()->request->fetch('extra_params', 'post');
+        $album   = (int)$this->gadget->request->fetch('album', 'post');
+        $extra_params = $this->gadget->request->fetch('extra_params', 'post');
 
         $failures = array();
         $uploadedImages = array();

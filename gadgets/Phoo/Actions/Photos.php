@@ -48,7 +48,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ViewAlbumPage.html');
         $tpl->SetBlock('ViewAlbumPage');
 
-        $get = jaws()->request->fetch(array('user', 'album', 'order', 'page'), 'get');
+        $get = $this->gadget->request->fetch(array('user', 'album', 'order', 'page'), 'get');
         $user = !empty($get['user'])? (int) $get['user'] : 0;
         $req_album = !empty($get['album'])? (int)$get['album'] : 0;
         $order = !empty($get['order'])? (int) $get['order'] : 1;
@@ -130,7 +130,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('ViewImage.html');
 
-        $get = jaws()->request->fetch(array('id', 'albumid'), 'get');
+        $get = $this->gadget->request->fetch(array('id', 'albumid'), 'get');
         $id  = !is_null($id)? $id : (!empty($get['id'])? $get['id'] : '0');
         $albumid = !is_null($albumid)? $albumid : (!empty($get['albumid'])? $get['albumid'] : '0');
 
@@ -359,7 +359,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
-        $post  = jaws()->request->fetch(array('title', 'description'), 'post');
+        $post  = $this->gadget->request->fetch(array('title', 'description'), 'post');
 
         $model = $this->gadget->model->load('Photos');
         $res = $model->SavePhoto($_FILES['photo'], $post['title'], $post['description']);

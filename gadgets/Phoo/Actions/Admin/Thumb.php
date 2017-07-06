@@ -21,7 +21,7 @@ class Phoo_Actions_Admin_Thumb extends Phoo_Actions_Admin_Default
      */
     function Thumb()
     {
-        $image = jaws()->request->fetch('image', 'get');
+        $image = $this->gadget->request->fetch('image', 'get');
 
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {

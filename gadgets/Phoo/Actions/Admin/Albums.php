@@ -29,8 +29,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
 
         $this->gadget->CheckPermission('ManageAlbums');
 
-        $action      = jaws()->request->fetch('action', 'get');
-        $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
+        $action      = $this->gadget->request->fetch('action', 'get');
+        $description = $this->gadget->request->fetch('description', 'post', 'strip_crlf');
 
         $tpl = $this->gadget->template->loadAdmin('EditAlbum.html');
         $tpl->SetBlock('edit_album');
@@ -111,12 +111,12 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     function SaveNewAlbum()
     {
         $this->gadget->CheckPermission('ManageAlbums');
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('name', 'allow_comments:array', 'meta_keywords', 'meta_description',
                  'published'), 'post');
 
         if (!empty($post['name'])) {
-            $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
+            $description = $this->gadget->request->fetch('description', 'post', 'strip_crlf');
             $model = $this->gadget->model->loadAdmin('Albums');
             $album = $model->NewAlbum(
                 $post['name'],
@@ -151,7 +151,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->define('base_script', BASE_SCRIPT);
         $model = $this->gadget->model->load('Albums');
 
-        $get = jaws()->request->fetch(array('action', 'album'), 'get');
+        $get = $this->gadget->request->fetch(array('action', 'album'), 'get');
         $id  = (int)$get['album'];
         $album = $model->GetAlbumInfo($id);
         if (Jaws_Error::IsError($album) || empty($album)) {
@@ -241,12 +241,12 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageAlbums');
 
-        $post= jaws()->request->fetch(
+        $post= $this->gadget->request->fetch(
             array('name', 'album', 'meta_keywords', 'meta_description', 'allow_comments:array', 'published'),
             'post'
         );
         if (!empty($post['name'])) {
-            $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
+            $description = $this->gadget->request->fetch('description', 'post', 'strip_crlf');
             $id = (int)$post['album'];
             $model = $this->gadget->model->loadAdmin('Albums');
             $result = $model->UpdateAlbum(
@@ -273,7 +273,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     function DeleteAlbum()
     {
         $this->gadget->CheckPermission('ManageAlbums');
-        $album = (int)jaws()->request->fetch('album', 'get');
+        $album = (int)$this->gadget->request->fetch('album', 'get');
         $this->gadget->model->loadAdmin('Albums')->DeleteAlbum($album);
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
     }

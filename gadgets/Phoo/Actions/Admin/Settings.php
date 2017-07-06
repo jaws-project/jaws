@@ -199,7 +199,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('Settings');
 
-        $post    = jaws()->request->fetch(array('default_action', 'published', 'allow_comments', 'moblog_album',
+        $post    = $this->gadget->request->fetch(array('default_action', 'published', 'allow_comments', 'moblog_album',
             'moblog_limit', 'photoblog_album',  'photoblog_limit',
             'show_exif_info', 'keep_original', 'thumbnail_limit',
             'comment_status', 'albums_order_type', 'photos_order_type'), 'post');
