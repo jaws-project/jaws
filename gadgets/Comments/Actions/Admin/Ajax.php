@@ -20,7 +20,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SearchComments()
     {
         $this->gadget->CheckPermission('ManageComments');
-        @list($requester, $gadget, $search, $status, $offset, $orderBy) = jaws()->request->fetchAll('post');
+        @list($requester, $gadget, $search, $status, $offset, $orderBy) = $this->gadget->request->fetchAll('post');
         $cHTML = $this->gadget->action->loadAdmin('Comments');
         return $cHTML->GetDataAsArray($requester, $gadget, $search, $status, $offset, $orderBy);
     }
@@ -33,7 +33,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function SizeOfCommentsSearch()
     {
-        @list($gadget, $search, $status) = jaws()->request->fetchAll('post');
+        @list($gadget, $search, $status) = $this->gadget->request->fetchAll('post');
         $cModel = $this->gadget->model->load('Comments');
         return $cModel->GetCommentsCount($gadget, '', '', $search, $status);
     }
@@ -46,7 +46,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetComment()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $cModel = $this->gadget->model->load('Comments');
         $comment = $cModel->GetComment($id);
         if (Jaws_Error::IsError($comment)) {
@@ -80,7 +80,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateComment()
     {
         $this->gadget->CheckPermission('ManageComments');
-        @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = jaws()->request->fetchAll('post');
+        @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = $this->gadget->request->fetchAll('post');
         // TODO: Fill permalink In New Versions, Please!!
         $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->UpdateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
@@ -114,7 +114,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteComments()
     {
         $this->gadget->CheckPermission('ManageComments');
-        $ids = jaws()->request->fetchAll('post');
+        $ids = $this->gadget->request->fetchAll('post');
         $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->DeleteMassiveComment($ids);
         if (Jaws_Error::IsError($res)) {
@@ -135,7 +135,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function MarkAs()
     {
         $this->gadget->CheckPermission('ManageComments');
-        $post = jaws()->request->fetch(array('ids:array', 'status'), 'post');
+        $post = $this->gadget->request->fetch(array('ids:array', 'status'), 'post');
         $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->MarkAs($post['ids'], $post['status']);
         if (Jaws_Error::IsError($res)) {
@@ -156,7 +156,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SaveSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        @list($allowComments, $defaultStatus, $orderType) = jaws()->request->fetchAll('post');
+        @list($allowComments, $defaultStatus, $orderType) = $this->gadget->request->fetchAll('post');
         $cModel = $this->gadget->model->loadAdmin('Settings');
         $res = $cModel->SaveSettings($allowComments, $defaultStatus, $orderType);
         if (Jaws_Error::IsError($res)) {

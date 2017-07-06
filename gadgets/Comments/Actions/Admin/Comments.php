@@ -66,7 +66,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetVariable('status', $status->Get());
 
         // filter
-        $filterData = jaws()->request->fetch('filter', 'get');
+        $filterData = $this->gadget->request->fetch('filter', 'get');
         $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
         $filterEntry->setSize(20);
         $tpl->SetVariable('filter', $filterEntry->Get());

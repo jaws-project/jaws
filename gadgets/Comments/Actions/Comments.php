@@ -146,7 +146,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
     {
         $max_size = 52;
         $compactView = $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT;
-        $rqst = jaws()->request->fetch(array('order', 'page'), 'get');
+        $rqst = $this->gadget->request->fetch(array('order', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL && !empty($rqst['order'])) {
@@ -362,7 +362,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
      */
     function GetMessages()
     {
-        $rqst = jaws()->request->fetch(array('order','perpage', 'page'), 'get');
+        $rqst = $this->gadget->request->fetch(array('order','perpage', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         if(!empty($rqst['perpage'])) {
@@ -472,7 +472,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
      */
     function PostMessage()
     {
-        $post  = jaws()->request->fetch(
+        $post  = $this->gadget->request->fetch(
             array(
                 'message', 'name', 'email', 'url', 'url2', 'requested_gadget',
                 'requested_action', 'reference', 'is_private'

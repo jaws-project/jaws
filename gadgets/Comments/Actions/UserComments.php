@@ -18,7 +18,7 @@ class Comments_Actions_UserComments extends Jaws_Gadget_Action
      */
     function UserComments()
     {
-        $user = (int) jaws()->request->fetch('user', 'get');
+        $user = (int) $this->gadget->request->fetch('user', 'get');
         if(empty($user)) {
             return '';
         }
