@@ -20,7 +20,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
     function Posts()
     {
         $this->AjaxMe('index.js');
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'page'), 'get');
+        $rqst = $this->gadget->request->fetch(array('fid', 'tid', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         $tModel = $this->gadget->model->load('Topics');
@@ -401,7 +401,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
      */
     function GetPost()
     {
-        $post = jaws()->request->fetch(array('pid'), 'post');
+        $post = $this->gadget->request->fetch(array('pid'), 'post');
         return $this->gadget->model->load('Posts')->GetPost($post['pid']);
     }
 
@@ -416,7 +416,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason', 'notification'),
             'post'
         );
@@ -532,7 +532,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             }
 
             // Update Attachments
-            $remainAttachments = jaws()->request->fetch('current_attachments:array');
+            $remainAttachments = $this->gadget->request->fetch('current_attachments:array');
             $aModel = $this->gadget->model->load('Attachments');
             $oldAttachments = $aModel->GetAttachments($oldPost['id']);
             if (count($remainAttachments) == 0) {
@@ -607,7 +607,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'delete_reason', 'notification', 'confirm'));
+        $rqst = $this->gadget->request->fetch(array('fid', 'tid', 'pid', 'delete_reason', 'notification', 'confirm'));
         $pModel = $this->gadget->model->load('Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($post) || empty($post) || $post['id'] == $post['topic_first_post_id']) {

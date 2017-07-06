@@ -20,7 +20,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function Topics()
     {
-        $rqst = jaws()->request->fetch(array('fid', 'page', 'status'), 'get');
+        $rqst = $this->gadget->request->fetch(array('fid', 'page', 'status'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         $fModel = $this->gadget->model->load('Forums');
@@ -178,7 +178,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(
+        $rqst = $this->gadget->request->fetch(
             array('fid', 'tid', 'target', 'subject', 'message', 'update_reason', 'notification')
         );
         if (empty($rqst['fid'])) {
@@ -389,7 +389,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $topic = jaws()->request->fetch(
+        $topic = $this->gadget->request->fetch(
             array('fid', 'tid', 'target', 'subject', 'message', 'update_reason', 'notification', 'status'),
             'post'
         );
@@ -514,7 +514,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             }
 
             // Update Attachments
-            $remainAttachments = jaws()->request->fetch('current_attachments:array');
+            $remainAttachments = $this->gadget->request->fetch('current_attachments:array');
             $aModel = $this->gadget->model->load('Attachments');
             $oldAttachments = $aModel->GetAttachments($oldTopic['first_post_id']);
             if (count($remainAttachments) == 0) {
@@ -599,7 +599,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'delete_reason', 'notification', 'confirm'));
+        $rqst = $this->gadget->request->fetch(array('fid', 'tid', 'delete_reason', 'notification', 'confirm'));
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
@@ -731,7 +731,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'notification'), 'get');
+        $rqst = $this->gadget->request->fetch(array('fid', 'tid', 'notification'), 'get');
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
@@ -782,7 +782,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
         $this->gadget->CheckPermission('PublishTopic');
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'notification'), 'get');
+        $rqst = $this->gadget->request->fetch(array('fid', 'tid', 'notification'), 'get');
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {

@@ -20,7 +20,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function GetGroup()
     {
         $this->gadget->CheckPermission('default');
-        @list($gid) = jaws()->request->fetchAll('post');
+        @list($gid) = $this->gadget->request->fetchAll('post');
         $gModel = $this->gadget->model->load('Groups');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
@@ -40,7 +40,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function GetForum()
     {
         $this->gadget->CheckPermission('default');
-        @list($fid) = jaws()->request->fetchAll('post');
+        @list($fid) = $this->gadget->request->fetchAll('post');
         $fModel = $this->gadget->model->load('Forums');
         $forum = $fModel->GetForum($fid);
         if (Jaws_Error::IsError($forum)) {
@@ -92,7 +92,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function InsertForum()
     {
-        @list($gid, $title, $description, $fast_url, $order, $locked, $private, $published) = jaws()->request->fetchAll('post');
+        @list($gid, $title, $description, $fast_url, $order, $locked, $private, $published) = $this->gadget->request->fetchAll('post');
         $fModel = $this->gadget->model->loadAdmin('Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $private, $published);
         if (Jaws_Error::IsError($res)) {
@@ -125,7 +125,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($fid, $gid, $title, $description,
             $fast_url, $order, $locked, $private, $published
-        ) = jaws()->request->fetchAll('post');
+        ) = $this->gadget->request->fetchAll('post');
         $this->gadget->CheckPermission('ForumManage', $fid);
 
         $fModel = $this->gadget->model->loadAdmin('Forums');
@@ -149,7 +149,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteForum()
     {
-        @list($fid) = jaws()->request->fetchAll('post');
+        @list($fid) = $this->gadget->request->fetchAll('post');
         $this->gadget->CheckPermission('ForumManage', $fid);
         $fModel = $this->gadget->model->loadAdmin('Forums');
         $res = $fModel->DeleteForum($fid);
@@ -182,7 +182,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function InsertGroup()
     {
-        @list($title, $description, $fast_url, $order, $locked, $published) = jaws()->request->fetchAll('post');
+        @list($title, $description, $fast_url, $order, $locked, $published) = $this->gadget->request->fetchAll('post');
         $gModel = $this->gadget->model->loadAdmin('Groups');
         $gid = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($gid)) {
@@ -211,7 +211,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateGroup()
     {
-        @list($gid, $title, $description, $fast_url, $order, $locked, $published) = jaws()->request->fetchAll('post');
+        @list($gid, $title, $description, $fast_url, $order, $locked, $published) = $this->gadget->request->fetchAll('post');
         $gModel = $this->gadget->model->loadAdmin('Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
@@ -233,7 +233,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteGroup()
     {
-        @list($gid) = jaws()->request->fetchAll('post');
+        @list($gid) = $this->gadget->request->fetchAll('post');
         $gModel = $this->gadget->model->loadAdmin('Groups');
         $res = $gModel->DeleteGroup($gid);
         if (Jaws_Error::IsError($res)) {

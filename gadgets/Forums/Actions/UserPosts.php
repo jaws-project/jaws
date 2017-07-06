@@ -18,7 +18,7 @@ class Forums_Actions_UserPosts extends Jaws_Gadget_Action
      */
     function UserPosts()
     {
-        $rqst = jaws()->request->fetch(array('user', 'page'), 'get');
+        $rqst = $this->gadget->request->fetch(array('user', 'page'), 'get');
         $user = $rqst['user'];
         if (empty($user)) {
             return false;
