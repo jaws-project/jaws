@@ -75,7 +75,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
     function SaveSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        $configuration = jaws()->request->fetch('gadgets_drivers:array', 'post');
+        $configuration = $this->gadget->request->fetch('gadgets_drivers:array', 'post');
         $res = $this->gadget->registry->update('configuration', serialize($configuration));
         if (Jaws_Error::isError($res)) {
             return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
