@@ -21,7 +21,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
 
         $this->AjaxMe();
-        $post = jaws()->request->fetch(array('gadgets_filter', 'term', 'page', 'page_item'));
+        $post = $this->gadget->request->fetch(array('gadgets_filter', 'term', 'page', 'page_item'));
         $page = $post['page'];
 
         $filters = array();
@@ -143,7 +143,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
 
         $this->AjaxMe('index.js');
 
-        $tag_id = jaws()->request->fetch('tag', 'get');
+        $tag_id = $this->gadget->request->fetch('tag', 'get');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($tag_id);
@@ -187,7 +187,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('tid', 'name', 'title', 'description'), 'post');
+        $post = $this->gadget->request->fetch(array('tid', 'name', 'title', 'description'), 'post');
         $id = $post['tid'];
         unset($post['tid']);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
@@ -226,7 +226,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $ids = jaws()->request->fetch('tags_checkbox:array', 'post');
+        $ids = $this->gadget->request->fetch('tags_checkbox:array', 'post');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Tags');
         $res = $model->DeleteTags($ids, $user);
@@ -259,7 +259,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('tags_checkbox:array', 'new_tag_name'), 'post');
+        $post = $this->gadget->request->fetch(array('tags_checkbox:array', 'new_tag_name'), 'post');
         $ids = $post['tags_checkbox'];
         if (count($ids) < 3) {
             $GLOBALS['app']->Session->PushResponse(

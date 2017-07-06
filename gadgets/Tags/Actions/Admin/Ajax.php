@@ -15,7 +15,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function SearchTags()
     {
-        $filters = jaws()->request->fetchAll('post');
+        $filters = $this->gadget->request->fetchAll('post');
         $filters['gadget'] = $filters['gadgets_filter'];
         unset($filters['gadgets_filter']);
         $offset = $filters['offset'];
@@ -32,7 +32,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function SizeOfTagsSearch()
     {
-        $filters = jaws()->request->fetchAll('post');
+        $filters = $this->gadget->request->fetchAll('post');
         $filters['gadget'] = $filters['gadgets_filter'];
         unset($filters['gadgets_filter']);
         $tModel = $this->gadget->model->loadAdmin('Tags');
@@ -48,7 +48,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetGadgetActions()
     {
-        $gadget = jaws()->request->fetchAll('post');
+        $gadget = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Tags');
         $actions = $model->GetGadgetActions($gadget);
         if (Jaws_Error::IsError($actions)) {
@@ -66,7 +66,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetTag()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($id);
         if (Jaws_Error::IsError($tag)) {
@@ -85,7 +85,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function AddTag()
     {
         $this->gadget->CheckPermission('AddTags');
-        $data = jaws()->request->fetchAll('post');
+        $data = $this->gadget->request->fetchAll('post');
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->AddTag($data);
         if (Jaws_Error::IsError($res)) {
@@ -106,7 +106,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateTag()
     {
         $this->gadget->CheckPermission('ManageTags');
-        $data = jaws()->request->fetchAll('post');
+        $data = $this->gadget->request->fetchAll('post');
         $id = $data['id'];
         unset($data['id']);
         $tModel = $this->gadget->model->loadAdmin('Tags');
@@ -129,7 +129,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteTags()
     {
         $this->gadget->CheckPermission('ManageTags');
-        $ids = jaws()->request->fetchAll('post');
+        $ids = $this->gadget->request->fetchAll('post');
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->DeleteTags($ids);
         if (Jaws_Error::IsError($res)) {
@@ -150,8 +150,8 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function MergeTags()
     {
         $this->gadget->CheckPermission('MergeTags');
-        @list($ids, $newName) = jaws()->request->fetchAll('post');
-        $ids = jaws()->request->fetch('0:array', 'post');
+        @list($ids, $newName) = $this->gadget->request->fetchAll('post');
+        $ids = $this->gadget->request->fetch('0:array', 'post');
 
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->MergeTags($ids, $newName);
@@ -173,7 +173,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SaveSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        @list($tagResultLimit) = jaws()->request->fetchAll('post');
+        @list($tagResultLimit) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Settings');
         $res = $model->SaveSettings($tagResultLimit);
         if (Jaws_Error::IsError($res)) {

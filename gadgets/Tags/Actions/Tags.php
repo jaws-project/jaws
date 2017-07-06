@@ -187,7 +187,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      */
     function ViewTag()
     {
-        $get = jaws()->request->fetch(array('tag', 'tagged_gadget', 'page', 'user'), 'get');
+        $get = $this->gadget->request->fetch(array('tag', 'tagged_gadget', 'page', 'user'), 'get');
         $tag = $get['tag'];
         $gadget = $get['tagged_gadget'];
         $user = (int)$get['user'];
