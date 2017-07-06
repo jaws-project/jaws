@@ -19,7 +19,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetTerm()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Term');
         $term = $model->GetTerm($id);
         if (Jaws_Error::IsError($term)) {
@@ -41,10 +41,10 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function NewTerm()
     {
         $this->gadget->CheckPermission('AddTerm');
-        @list($term, $fast_url, $contents) = jaws()->request->fetchAll('post');
+        @list($term, $fast_url, $contents) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Term');
 
-        $contents = jaws()->request->fetch(2, 'post', 'strip_crlf');
+        $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $id = $model->NewTerm($term, $fast_url, $contents);
         $response = $GLOBALS['app']->Session->PopLastResponse();
         $response['id'] = $id;
@@ -64,10 +64,10 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateTerm()
     {
         $this->gadget->CheckPermission('UpdateTerm');
-        @list($id, $term, $fast_url, $contents) = jaws()->request->fetchAll('post');
+        @list($id, $term, $fast_url, $contents) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Term');
 
-        $contents = jaws()->request->fetch(3, 'post', 'strip_crlf');
+        $contents = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
         $model->UpdateTerm($id, $term, $fast_url, $contents);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -82,7 +82,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function DeleteTerm()
     {
         $this->gadget->CheckPermission('DeleteTerm');
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Term');
         $model->DeleteTerm($id);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -97,7 +97,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = jaws()->request->fetch(0, 'post', 'strip_crlf');
+        $text = $this->gadget->request->fetch(0, 'post', 'strip_crlf');
         return $this->gadget->plugin->parseAdmin($text);
     }
 
