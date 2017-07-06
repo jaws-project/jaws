@@ -290,7 +290,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function GetFeed()
     {
-        $id = jaws()->request->fetch('id', 'get');
+        $id = $this->gadget->request->fetch('id', 'get');
 
         $layoutGadget = $this->gadget->action->load('Feed');
         return $layoutGadget->DisplayFeed($id);
@@ -369,7 +369,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array('limit', 'offset', 'searchBy'),
             'post'
         );

@@ -32,7 +32,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetFeed()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $feed = $this->_Model->GetFeed($id);
         if (Jaws_Error::IsError($feed)) {
             return false; //we need to handle errors on ajax
@@ -51,7 +51,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($title, $url, $cache_time, $view_type, $count_entry,
             $title_view, $visible
-        ) = jaws()->request->fetchAll('post');
+        ) = $this->gadget->request->fetchAll('post');
         $result = $this->_Model->InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
@@ -73,7 +73,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($id, $title, $url, $cache_time, $view_type,
             $count_entry, $title_view, $visible
-        ) = jaws()->request->fetchAll('post');
+        ) = $this->gadget->request->fetchAll('post');
         $result = $this->_Model->UpdateFeed(
             $id, $title, $url, $cache_time,
             $view_type, $count_entry, $title_view, $visible
@@ -96,7 +96,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteFeed()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        @list($id) = $this->gadget->request->fetchAll('post');
         $result = $this->_Model->DeleteFeed($id);
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
@@ -116,7 +116,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function getData()
     {
-        @list($offset) = jaws()->request->fetchAll('post');
+        @list($offset) = $this->gadget->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Feed');
         if (!is_numeric($offset)) {
             $offset = null;
