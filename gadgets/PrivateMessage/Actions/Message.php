@@ -29,7 +29,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl = $this->gadget->template->load('Messages.html');
         $tpl->SetBlock('messages');
 
-        $post = jaws()->request->fetch(array('folder', 'page', 'read', 'term', 'page_item'));
+        $post = $this->gadget->request->fetch(array('folder', 'page', 'read', 'term', 'page_item'));
         $page = $post['page'];
         $folder = (int)$post['folder'];
 
@@ -285,7 +285,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             return Jaws_HTTPError::Get(401);
         }
 
-        $id = jaws()->request->fetch('id', 'get');
+        $id = $this->gadget->request->fetch('id', 'get');
         $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -459,8 +459,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
      */
     function ChangeMessageRead()
     {
-        $get = jaws()->request->fetch(array('id', 'status'), 'get');
-        $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
+        $get = $this->gadget->request->fetch(array('id', 'status'), 'get');
+        $post = $this->gadget->request->fetch(array('message_checkbox:array', 'status'), 'post');
         $status = $post['status'];
         if ($status == 'read') {
             $status = true;
@@ -505,8 +505,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     {
         $this->gadget->CheckPermission('ArchiveMessage');
 
-        $ids = jaws()->request->fetch('id', 'get');
-        $messagesSelected = jaws()->request->fetch('message_checkbox:array', 'post');
+        $ids = $this->gadget->request->fetch('id', 'get');
+        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
         if (!empty($messagesSelected) && count($messagesSelected) > 0) {
             $ids = $messagesSelected;
         }
@@ -555,8 +555,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     {
         $this->gadget->CheckPermission('ArchiveMessage');
 
-        $ids = jaws()->request->fetch('id', 'get');
-        $messagesSelected = jaws()->request->fetch('message_checkbox:array', 'post');
+        $ids = $this->gadget->request->fetch('id', 'get');
+        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
         if (!empty($messagesSelected) && count($messagesSelected) > 0) {
             $ids = $messagesSelected;
         }
@@ -598,8 +598,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     {
         $this->gadget->CheckPermission('DeleteMessage');
 
-        $ids = jaws()->request->fetch('id', 'get');
-        $messagesSelected = jaws()->request->fetch('message_checkbox:array', 'post');
+        $ids = $this->gadget->request->fetch('id', 'get');
+        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
         if (!empty($messagesSelected) && count($messagesSelected) > 0) {
             $ids = $messagesSelected;
         }
@@ -647,8 +647,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     {
         $this->gadget->CheckPermission('DeleteMessage');
 
-        $ids = jaws()->request->fetch('id', 'get');
-        $messagesSelected = jaws()->request->fetch('message_checkbox:array', 'post');
+        $ids = $this->gadget->request->fetch('id', 'get');
+        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
         if (!empty($messagesSelected) && count($messagesSelected) > 0) {
             $ids = $messagesSelected;
         }
@@ -690,8 +690,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     {
         $this->gadget->CheckPermission('DeleteMessage');
 
-        $ids = jaws()->request->fetch('id', 'get');
-        $messagesSelected = jaws()->request->fetch('message_checkbox:array', 'post');
+        $ids = $this->gadget->request->fetch('id', 'get');
+        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
         if (!empty($messagesSelected) && count($messagesSelected) > 0) {
             $ids = $messagesSelected;
         }

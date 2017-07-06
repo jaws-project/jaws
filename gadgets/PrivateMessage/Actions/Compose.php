@@ -30,7 +30,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $this->gadget->define('icon_remove', STOCK_REMOVE);
         $this->gadget->define('recipient_user', '');
 
-        $data = jaws()->request->fetch(array('id', 'user', 'reply', 'users:array'));
+        $data = $this->gadget->request->fetch(array('id', 'user', 'reply', 'users:array'));
         $id = $data['id'];
 
         $userModel = new Jaws_User();
@@ -259,7 +259,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $this->gadget->CheckPermission('SendMessage');
 
         if(empty($message_id)) {
-            $message_id = jaws()->request->fetch('id', 'post');
+            $message_id = $this->gadget->request->fetch('id', 'post');
         }
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -309,14 +309,14 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         }
         $this->gadget->CheckPermission('SendMessage');
 
-        $post = jaws()->request->fetch(
+        $post = $this->gadget->request->fetch(
             array(
                 'id', 'recipient_users', 'recipient_groups', 'folder',
                 'subject', 'body', 'attachments:array', 'is_draft:bool'
             ),
             'post'
         );
-        $post['body'] = jaws()->request->strip_crlf($post['body']);
+        $post['body'] = $this->gadget->request->strip_crlf($post['body']);
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Message');
@@ -364,7 +364,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
      */
     function GetUsers()
     {
-        $term = jaws()->request->fetch('term', 'post');
+        $term = $this->gadget->request->fetch('term', 'post');
         $userModel = new Jaws_User();
         $users = $userModel->GetUsers(false, null, null, $term, 'nickname', 5);
         if (Jaws_Error::IsError($users)) {
@@ -389,7 +389,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
      */
     function CheckUserExist()
     {
-        $uid = jaws()->request->fetch('user', 'post');
+        $uid = $this->gadget->request->fetch('user', 'post');
         $userModel = new Jaws_User();
         $user = $userModel->GetUser($uid);
         if (Jaws_Error::IsError($user) || empty($user)) {

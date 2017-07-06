@@ -22,7 +22,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(401);
         }
 
-        $rqst = jaws()->request->fetch(array('uid', 'mid', 'aid'), 'get');
+        $rqst = $this->gadget->request->fetch(array('uid', 'mid', 'aid'), 'get');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $mModel = $this->gadget->model->load('Message');
@@ -62,7 +62,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
      */
     function UploadFile()
     {
-        $file_num = jaws()->request->fetch('attachment_number', 'post');
+        $file_num = $this->gadget->request->fetch('attachment_number', 'post');
 
         $file = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
         if (Jaws_Error::IsError($file)) {
