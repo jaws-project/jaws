@@ -206,23 +206,26 @@ class Jaws_URLMapping
         }
 
         $request = Jaws_Request::getInstance();
+
+        // check request uri is based of jaws maps?
+        $ReqGadget = $request->fetch('gadget', 'get');
+        if (!empty($ReqGadget)) {
+            return true;
+        }
+
         //If no path info is given but request method is post
         if (empty($this->_request_uri) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             return true;
         }
 
-        if (strpos($this->_request_uri, '=') !== false) {
-            return true;
-        }
-
-        $params = explode('/', $this->_request_uri);
+        $reqOptions = array();
         $matched_but_ignored = false;
-        $reqOptions = explode('.',  $this->_request_uri);
-        $requestedURL = array_shift($reqOptions);
-        if (count($reqOptions) % 2) {
-            // adding real extension to request url
-            $requestedURL = $requestedURL. '.' . array_pop($reqOptions);
+        if (false !== $requestedURL = strstr($this->_request_uri, '?', true)) {
+            parse_str(substr($this->_request_uri, strlen($requestedURL) + 1), $reqOptions);
+        } else {
+            $requestedURL = $this->_request_uri;
         }
+        $params = explode('/', $requestedURL);
 
         foreach ($this->_maps as $gadget => $maps) {
             foreach ($maps as $map) {
@@ -265,8 +268,8 @@ class Jaws_URLMapping
                         // Gadget/Action
                         $request->update('gadget', $gadget, 'get');
                         $request->update('action', $map['action'], 'get');
-                        for ($i = 0; $i < count($reqOptions); $i=$i+2) {
-                            $request->update(rawurldecode($reqOptions[$i]), rawurldecode($reqOptions[$i+1]));
+                        foreach ($reqOptions as $key => $value) {
+                            $request->update(rawurldecode($key), rawurldecode($value));
                         }
 
                         // Params
@@ -400,8 +403,8 @@ class Jaws_URLMapping
                     }
 
                     // preparing options
-                    foreach ($options as $opKey => $opValue) {
-                        $url.= rawurlencode($opKey). '.'. rawurlencode($opValue);
+                    if (!empty($options)) {
+                        $url.= '?'. http_build_query($options);
                     }
 
                     break;
