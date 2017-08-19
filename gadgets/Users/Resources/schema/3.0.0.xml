@@ -422,12 +422,6 @@
             </field>
 
             <field>
-                <name>manager</name>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
                 <name>name</name>
                 <type>text</type>
                 <length>64</length>
