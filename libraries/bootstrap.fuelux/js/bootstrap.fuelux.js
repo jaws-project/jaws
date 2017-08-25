@@ -3236,8 +3236,10 @@ if (typeof jQuery === 'undefined') {
 
 				this.setRestrictedDates( this.restricted );
 				if ( !this.setDate( this.options.date ) ) {
-					this.$input.val( '' );
-					this.inputValue = this.$input.val();
+					if ( !this.setDate( this.$input.val() ) ) {
+						this.$input.val( '' );
+						this.inputValue = this.$input.val();
+					}
 				}
 
 				if ( this.sameYearOnly ) {
