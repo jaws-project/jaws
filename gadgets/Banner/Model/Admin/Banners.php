@@ -42,11 +42,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bData['start_time']        = null;
         $bData['stop_time']         = null;
         if (!empty($start_time)) {
-            $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
+            $start_time = $date->ToBaseDate(preg_split('/[\/\- \:]/', $start_time), 'Y-m-d H:i:s');
             $bData['start_time']    = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
-            $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
+            $stop_time  = $date->ToBaseDate(preg_split('/[\/\- \:]/', $stop_time), 'Y-m-d H:i:s');
             $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
@@ -100,11 +100,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bData['start_time']        = null;
         $bData['stop_time']         = null;
         if (!empty($start_time)) {
-            $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
+            $start_time = $date->ToBaseDate(preg_split('/[\/\- \:]/', $start_time), 'Y-m-d H:i:s');
             $bData['start_time']    = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
-            $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
+            $stop_time  = $date->ToBaseDate(preg_split('/[\/\- \:]/', $stop_time), 'Y-m-d H:i:s');
             $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
