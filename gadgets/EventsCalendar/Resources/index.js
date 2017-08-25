@@ -3,9 +3,6 @@
  *
  * @category    Ajax
  * @package     EventsCalendar
- * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
  */
 /**
  * Use async mode, create Callback
@@ -15,7 +12,7 @@ var ECCallback = {
         if (response.type === 'alert-danger') {
             ECAjax.showResponse(response);
         } else {
-            location.assign(events_url);
+            location.assign(jaws.EventsCalendar.Defines.events_url);
         }
     },
 
@@ -23,17 +20,10 @@ var ECCallback = {
         if (response.type === 'alert-danger') {
             ECAjax.showResponse(response);
         } else {
-            location.assign(events_url);
+            location.assign(jaws.EventsCalendar.Defines.events_url);
         }
     }
 };
-
-/**
- * Initiates Events
- */
-function initEvents()
-{
-}
 
 /**
  * Updates event repeat UI
@@ -120,7 +110,7 @@ function submitEvent(form)
  */
 function deleteEvent(id)
 {
-    if (confirm(confirmDelete)) {
+    if (confirm(jaws.EventsCalendar.Defines.confirmDelete)) {
         ECAjax.callAsync('DeleteEvent', {id_set:id});
     }
 }
@@ -137,7 +127,7 @@ function deleteEvents()
     idSet = $.map(idSet, function(input) {
         return input.value;
     });
-    if (confirm(confirmDelete)) {
+    if (confirm(jaws.EventsCalendar.Defines.confirmDelete)) {
         ECAjax.callAsync('DeleteEvent', {id_set:idSet.join(',')});
     }
 }

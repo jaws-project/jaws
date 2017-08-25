@@ -37,6 +37,13 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
 
         $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
+        $siteUrl = $GLOBALS['app']->GetSiteURL('/');
+        $eventsUrl = $siteUrl . $this->gadget->urlMap('ManageEvents', array('user' => $user));
+
+        $this->gadget->define('events_url', $eventsUrl);
+        $this->gadget->define('confirmDelete', _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS'));
+        $this->gadget->define('errorShortQuery', _t('EVENTSCALENDAR_ERROR_SHORT_QUERY'));
+
         $tpl = $this->gadget->template->load('ManageEvents.html');
         $tpl->SetBlock('events');
 
@@ -186,15 +193,11 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         }
 
         // Actions
-        $siteUrl = $GLOBALS['app']->GetSiteURL('/');
-        $eventsUrl = $siteUrl . $this->gadget->urlMap('ManageEvents', array('user' => $user));
         $tpl->SetVariable('lbl_new_event', _t('EVENTSCALENDAR_NEW_EVENT'));
         $tpl->SetVariable('lbl_del_event', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('confirmDelete', _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS'));
-        $tpl->SetVariable('errorShortQuery', _t('EVENTSCALENDAR_ERROR_SHORT_QUERY'));
         $tpl->SetVariable('url_new', $siteUrl . $this->gadget->urlMap('EditEvent',
-            array('user' => $user, 'event' => 0)));
-        $tpl->SetVariable('events_url', $eventsUrl);
+            array('user' => $user, 'event' => 0))
+        );
 
         // Pagination
         $this->gadget->action->load('Navigation')->pagination(
