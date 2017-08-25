@@ -132,13 +132,13 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $jDate = Jaws_Date::getInstance();
 
         $start_time = $jDate->ToBaseDate(
-            preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time'])
+            preg_split('/[\/\- \:]/', $event['start_date'] . ' ' . $event['start_time'])
         );
         $event['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time['timestamp']);
         unset($event['start_date']);
 
         $stop_time = $jDate->ToBaseDate(
-            preg_split('/[- :]/', $event['stop_date'] . ' ' . $event['stop_time'])
+            preg_split('/[\/\- \:]/', $event['stop_date'] . ' ' . $event['stop_time'])
         );
         $event['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time['timestamp']);
         unset($event['stop_date']);
