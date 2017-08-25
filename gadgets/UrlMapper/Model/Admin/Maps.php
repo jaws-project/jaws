@@ -264,6 +264,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $params['vars_regexps'] = serialize($vars_regexps);
         $params['order']     = $order;
         $params['insert_time'] = empty($time)? time() : $time;
+        $params['update_time'] = $params['insert_time'];
 
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $result = $mapsTable->insert($params)->exec();
