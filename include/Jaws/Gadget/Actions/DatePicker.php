@@ -58,6 +58,7 @@ class Jaws_Gadget_Actions_DatePicker
         $tpl->SetBlock("$block/datepicker");
         $tpl->SetVariable('id', isset($options['id'])? $options['id'] : $options['name']);
         $tpl->SetVariable('name', $options['name']);
+        $tpl->SetVariable('value', isset($options['value'])? $options['value'] : '');
         $tpl->SetVariable('calendar', strtolower($calendar));
         $tpl->SetVariable('lbl_today', _t('GLOBAL_TODAY'));
         $tpl->SetVariable('lbl_month', _t('GLOBAL_MONTH'));
