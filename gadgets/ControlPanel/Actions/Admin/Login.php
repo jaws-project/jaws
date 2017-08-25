@@ -34,7 +34,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         // referrer page link
         $reqURL = Jaws_Utils::getRequestURL();
         $reqURL = (empty($reqURL) || $reqURL == BASE_SCRIPT)? (BASE_SCRIPT. '?checksess') : "$reqURL&checksess";
-        $redirect_to = is_null($reqpost['redirect_to'])? bin2hex($reqURL) : $reqpost['redirect_to'];
+        $redirect_to = !isset($reqpost['redirect_to'])? bin2hex($reqURL) : $reqpost['redirect_to'];
         $ltpl->SetVariable('redirect_to', $redirect_to);
 
         $JCrypt = Jaws_Crypt::getInstance();
@@ -60,7 +60,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
 
         $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
         $ltpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $ltpl->SetVariable('username', $reqpost['username']);
+        $ltpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
         $ltpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
         $authtype = $this->gadget->registry->fetch('authtype', 'Users');
