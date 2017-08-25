@@ -35,16 +35,6 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
-        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
-        if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
-        }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
-
         $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ManageEvents.html');
@@ -168,21 +158,21 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl->SetVariable('term', $entry->Get());
         $tpl->SetVariable('lbl_term', _t('EVENTSCALENDAR_TERM'));
 
-        $calType = $this->gadget->registry->fetch('calendar', 'Settings');
-        $calLang = $this->gadget->registry->fetch('site_language', 'Settings');
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'start', @$params['search']['start']);
-        $datePicker->SetId('event_start_date');
-        $datePicker->setCalType($calType);
-        $datePicker->setLanguageCode($calLang);
-        $datePicker->setDateFormat('%Y-%m-%d');
-        $tpl->SetVariable('start', $datePicker->Get());
+        // stat time
+        $tpl->SetBlock('events/start_time');
+        $this->gadget->action->load('DatePicker')->calendar(
+            $tpl,
+            array('name' => 'start', 'value'=>@$params['search']['start'])
+        );
+        $tpl->ParseBlock('events/start_time');
 
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'stop', @$params['search']['stop']);
-        $datePicker->SetId('event_stop_date');
-        $datePicker->setDateFormat('%Y-%m-%d');
-        $datePicker->setCalType($calType);
-        $datePicker->setLanguageCode($calLang);
-        $tpl->SetVariable('stop', $datePicker->Get());
+        // stop time
+        $tpl->SetBlock('events/stop_time');
+        $this->gadget->action->load('DatePicker')->calendar(
+            $tpl,
+            array('name' => 'stop', 'value'=>@$params['search']['stop'])
+        );
+        $tpl->ParseBlock('events/stop_time');
 
         $button =& Piwi::CreateWidget('Button', '', _t('EVENTSCALENDAR_SEARCH'), STOCK_SEARCH);
         $button->SetSubmit(true);

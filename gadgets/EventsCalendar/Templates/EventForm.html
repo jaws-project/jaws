@@ -21,9 +21,20 @@
           <td><input class="form-control" id="event_location" name="location" value="{{location}}" /></td></tr>
         <tr><th><label for="event_desc">{{lbl_desc}}:</label></th>
           <td><textarea class="form-control" id="event_desc" name="description">{{description}}</textarea></td></tr>
-        <tr><th><label for="event_start_date">{{lbl_date}}:</label></th>
-          <td>{{start_date}} {{lbl_to}} {{stop_date}}</td></tr>
-        <tr><th><label for="event_start_time">{{lbl_time}}:</label></th>
+        <tr>
+          <th><label for="event_start_date">{{lbl_date}}:</label></th>
+          <td>
+          <!-- BEGIN start_time -->
+          <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
+          <!-- END start_time -->
+          {{lbl_to}}
+          <!-- BEGIN stop_time -->
+          <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
+          <!-- END stop_time -->
+          </td>
+        </tr>
+        <tr>
+          <th><label for="event_start_time">{{lbl_time}}:</label></th>
           <td>
             <input class="form-control" type="time" name="start_time" id="event_start_time" value="{{start_time}}"
               pattern="(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])" placeholder="00:00"
@@ -34,7 +45,8 @@
               pattern="(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])" placeholder="00:00"
               oninvalid="setCustomValidity('{{error_time_value}}')"
               onchange="try{{setCustomValidity('')}}catch(e){{}}" />
-          </td></tr>
+          </td>
+        </tr>
         <tr><th><label for="event_public">{{lbl_public}}:</label></th>
           <td>{{public}}</td></tr>
         <tr><th><label for="event_type">{{lbl_type}}:</label></th>

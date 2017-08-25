@@ -19,7 +19,18 @@
         <tr><th>{{lbl_type}}</th><td>{{type}}</td></tr>
         <tr><th>{{lbl_priority}}</th><td>{{priority}}</td></tr>
         <tr><th>{{lbl_term}}</th><td>{{term}}</td></tr>
-        <tr><th>{{lbl_date}}</th><td>{{start}} - {{stop}}</td></tr>
+        <tr>
+          <th>{{lbl_date}}</th>
+          <td>
+          <!-- BEGIN start_time -->
+          <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
+          <!-- END start_time -->
+          -
+          <!-- BEGIN stop_time -->
+          <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
+          <!-- END stop_time -->
+          </td>
+        </tr>
       </table>
       <div>{{btn_search}} {{btn_reset}}</div>
     </form><br>
