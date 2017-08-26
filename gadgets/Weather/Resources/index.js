@@ -76,14 +76,19 @@ function showMyLocation() {
     function success(position) {
         $('#latitude').val(position.coords.latitude);
         $('#longitude').val(position.coords.longitude);
-        ZoomLevel = 10;
+        ZoomLevel = 5;
         setGoogleMapImage();
     };
 
     function error() {
+        $('#latitude').val(0);
+        $('#longitude').val(0);
+        ZoomLevel = 1;
+        setGoogleMapImage();
         return false;
     };
 
+    ImageSize = $('#gmap_box').width() + 'x' + $('#gmap_box').height();
     navigator.geolocation.getCurrentPosition(success, error);
 }
 
@@ -124,31 +129,18 @@ function GetGeoPosition(mx, my, iw, ih, clat, clng)
  */
 function getGoogleMap(ev, element)
 {
-    var geoPos,
-        posX = 0,
-        posY = 0,
-        imgPos = findElementPosition(element);
-
     if (!ev) {
         var ev = window.event;
     }
-    if (ev.pageX || ev.pageY) {
-        posX = ev.pageX;
-        posY = ev.pageY;
-    } else if (ev.clientX || ev.clientY) {
-        posX = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        posY = ev.clientY + document.body.scrollTop  + document.documentElement.scrollTop;
-    }
-    posX = posX - imgPos[0];
-    posY = posY - imgPos[1];
 
-    //---------------------
-    geoPos = GetGeoPosition(posX,
-        posY,
+    var geoPos = GetGeoPosition(
+        ev.offsetX,
+        ev.offsetY,
         element.width,
         element.height,
         parseFloat($('#latitude').val()),
-        parseFloat($('#longitude').val()));
+        parseFloat($('#longitude').val())
+    );
     $('#latitude').val(geoPos[0]);
     $('#longitude').val(geoPos[1]);
     setGoogleMapImage();
@@ -158,9 +150,12 @@ function getGoogleMap(ev, element)
  * Updates the map with new position
  */
 function setGoogleMapImage() {
-    $('#gmap').prop('src', jaws.Weather.Defines.base_script + '?gadget=Weather&action=GetGoogleMapImage' +
+    $('#gmap').prop(
+        'src',
+        jaws.Weather.Defines.base_script + '?gadget=Weather&action=GetGoogleMapImage' +
         '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
-        '&zoom=' + ZoomLevel + '&size=' + ImageSize);
+        '&zoom=' + ZoomLevel + '&size=' + ImageSize
+    );
 }
 
 /**
@@ -337,8 +332,7 @@ $(document).ready(function() {
 /**
  * const list taken from google api
  */
-const ImageSize = '352x288',
-    ZoomPixelsPerLonDegree = [
+const ZoomPixelsPerLonDegree = [
         0.7111111111111111,
         1.4222222222222223,
         2.8444444444444446,
@@ -359,6 +353,7 @@ const ImageSize = '352x288',
         93206.75555555556,
         186413.51111111112];
 
-var ZoomLevel = 1,
+var ImageSize,
+    ZoomLevel = 1,
     selectedRegion = null,
     WeatherAjax = new JawsAjax('Weather', WeatherCallback);

@@ -88,8 +88,8 @@
           </div>
           <div class="modal-body">
             <div style="padding: 10px; font-size: 11px; line-height: 150%;">
-              <div id="gmap_box">
-                <img id="gmap" onclick="javascript:getGoogleMap(event, this)" src="gadgets/Weather/Resources/images/gmap.png" title="{{map_title}}" />
+              <div id="gmap_box" style="width:512px; height:288px; margin:auto;">
+                <img id="gmap" onclick="getGoogleMap(event, this)" src="gadgets/Weather/Resources/images/gmap.png" title="{{map_title}}" />
                 <div id="zoom_box">
                   <a href="javascript:zoomMap(-1)"><img alt="-" src="gadgets/Weather/Resources/images/zoomout.png" /></a>
                   <a href="javascript:zoomMap(+1)"><img alt="+" src="gadgets/Weather/Resources/images/zoomin.png" /></a>
@@ -97,19 +97,36 @@
               </div>
 
               <form action="#" name="region" id="region">
-                <table class="table" id="geo_position" cellpadding="0" cellspacing="2">
-                  <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title" class="form-control"></td></tr>
-                  <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td><input type="text" id="fast_url" name="fast_url" class="form-control"></td></tr>
-                  <tr><td><label for="latitude">{{lbl_latitude}}:</label></td><td><input type="text" id="latitude" name="latitude" class="ltr form-control" value="0"></td></tr>
-                  <tr><td><label for="longitude">{{lbl_longitude}}:</label></td><td><input type="text" id="longitude" name="longitude" class="ltr form-control" value="0"></td></tr>
-                  <tr><td><label for="published">{{lbl_published}}:</label></td><td>
-                    <select class="form-control" name="published" id="published">
-                      <option value="1">{{lbl_yes}}</option>
-                      <option value="0">{{lbl_no}}</option>
-                    </select>
+                <div id="geo_position">
+                  <div class="form-group">
+                    <label for="title">{{lbl_title}}:</label>
+                    <input type="text" id="title" name="title" class="form-control">
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="latitude">{{lbl_latitude}}:</label>
+                      <input type="text" id="latitude" name="latitude" class="ltr form-control" value="0">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="longitude">{{lbl_longitude}}:</label>
+                      <input type="text" id="longitude" name="longitude" class="ltr form-control" value="0">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="fast_url">{{lbl_fast_url}}:</label>
+                      <input type="text" id="fast_url" name="fast_url" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="published">{{lbl_published}}:</label>
+                      <select class="form-control" name="published" id="published">
+                        <option value="1">{{lbl_yes}}</option>
+                        <option value="0">{{lbl_no}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
-                  </td></tr>
-                </table>
               </form>
             </div>
 
