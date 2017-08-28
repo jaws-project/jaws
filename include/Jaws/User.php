@@ -894,7 +894,7 @@ class Jaws_User
             } else {
                 $objDate = Jaws_Date::getInstance();
                 $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
-                    (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
+                    (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
                 );
             }
         }
@@ -1122,7 +1122,7 @@ class Jaws_User
             } else {
                 $objDate = Jaws_Date::getInstance();
                 $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
-                    (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
+                    (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
                 );
             }
         }
