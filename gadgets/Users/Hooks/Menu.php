@@ -50,7 +50,7 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
         );
 */
         $urls[] = array(
-            'url'        => $this->gadget->urlMap('Dashboard', array('user' => 0), false, 'Layout'),
+            'url'        => $this->gadget->urlMap('Dashboard', array('user' => 0), array(), 'Layout'),
             'title'      => _t('USERS_DASHBOARD_GLOBAL'),
             'permission' => array(
                 'key'    => 'AccessDashboard',
