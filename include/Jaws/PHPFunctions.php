@@ -126,6 +126,29 @@ if (!function_exists('strristr')) {
 }
 
 /**
+ * Converts MIME-encoded text to UTF-8
+ *
+ * @param   string  $text   MIME encoded string
+ * @return  string  Returns an UTF-8 encoded string
+ * @see     http://php.net/imap-utf8
+ */
+function mime_decode($text) {
+    if (function_exists('mb_detect_encoding')) {
+        if (($src_enc = mb_detect_encoding($text)) && (strcasecmp($src_enc, 'ASCII') !== 0)) {
+            return imap_utf8($text);
+        }
+    }
+
+    $str = '';
+    $parts = imap_mime_header_decode($text);
+    foreach ($parts as $part) {
+        $str.= imap_utf8($part->text);
+    }
+
+    return $str? $str : imap_utf8($text);
+}
+
+/**
  * Get or Set the HTTP response code
  * @see http://www.php.net/http_response_code
  */
