@@ -59,6 +59,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_superadmin', _t('USERS_USERS_TYPE_SUPERADMIN'));
         $tpl->SetVariable('lbl_pass1', _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('lbl_pass2', _t('USERS_USERS_PASSWORD_VERIFY'));
@@ -129,6 +130,11 @@ class Users_Actions_Users extends Users_Actions_Default
             $tpl->SetVariable('title', $type);
             $tpl->ParseBlock('Users/filterType');
         }
+
+        $this->gadget->action->load('DatePicker')->calendar(
+            $tpl,
+            array('name' => 'expiry_date')
+        );
 
         $filterTypes = array(
             -1 => _t('GLOBAL_ALL'),
@@ -228,7 +234,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $objDate = Jaws_Date::getInstance();
         if ($post['account']) {
             if (!empty($profile['expiry_date'])) {
-                $profile['expiry_date'] = $objDate->Format($profile['expiry_date'], 'Y-m-d H:i:s');
+                $profile['expiry_date'] = $objDate->Format($profile['expiry_date'], 'Y/m/d');
             } else {
                 $profile['expiry_date'] = '';
             }

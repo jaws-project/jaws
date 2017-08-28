@@ -136,6 +136,9 @@
                 <tr><td><label for="email">{{lbl_email}}:</label></td><td>
                   <input type="text" id="email" name="email" class="form-control"></td>
                 </tr>
+                <tr><td><label for="mobile">{{lbl_mobile}}:</label></td><td>
+                  <input type="text" id="mobile" name="mobile" class="form-control"></td>
+                </tr>
                 <tr><td><label for="superadmin">{{lbl_superadmin}}:</label></td><td>
                   <select class="form-control" name="superadmin" id="superadmin">
                     <option value="0">{{lbl_no}}</option>
@@ -151,8 +154,11 @@
                 <tr><td><label for="concurrents">{{lbl_concurrents}}:</label></td><td>
                   <input type="text" id="concurrents" name="concurrents" class="form-control"></td>
                 </tr>
-                <tr><td><label for="expiry_date">{{lbl_expiry_date}}:</label></td><td>
-                  <input type="text" id="expiry_date" name="expiry_date" class="form-control"></td>
+                <tr>
+                  <td><label for="expiry_date">{{lbl_expiry_date}}:</label></td>
+                  <td>
+                  <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
+                  </td>
                 </tr>
                 <tr><td><label for="superadmin">{{lbl_status}}:</label></td><td>
                   <select class="form-control" name="status" id="status">

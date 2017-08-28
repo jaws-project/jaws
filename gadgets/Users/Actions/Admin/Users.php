@@ -319,7 +319,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $dExpiry->SetId('expiry_date');
         $dExpiry->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $dExpiry->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $dExpiry->setDateFormat('%Y-%m-%d %H:%M:%S');
+        $dExpiry->setDateFormat('%Y/%m/%d');
         $tpl->SetVariable('lbl_expiry_date', _t('USERS_USERS_EXPIRY_DATE'));
         $tpl->SetVariable('expiry_date', $dExpiry->Get());
 

@@ -45,7 +45,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $objDate = Jaws_Date::getInstance();
         if ($account) {
             if (!empty($profile['expiry_date'])) {
-                $profile['expiry_date'] = $objDate->Format($profile['expiry_date'], 'Y-m-d H:i:s');
+                $profile['expiry_date'] = $objDate->Format($profile['expiry_date'], 'Y/m/d');
             } else {
                 $profile['expiry_date'] = '';
             }
