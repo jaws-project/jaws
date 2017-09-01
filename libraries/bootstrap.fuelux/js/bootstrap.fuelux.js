@@ -9847,7 +9847,7 @@ if (typeof jQuery === 'undefined') {
 
 				// list_noItems is set in `before` method
 
-				if ( this.viewOptions.list_selectable === 'multi' && !this.list_noItems ) {
+				if ( this.viewOptions.list_selectable === 'multi' ) {
 					var checkboxColumn = {
 						label: 'c',
 						property: '@_CHECKBOX_@',
@@ -9879,7 +9879,7 @@ if (typeof jQuery === 'undefined') {
 				}
 				$table.prepend( $thead );
 
-				if ( this.viewOptions.list_selectable === 'multi' && !this.list_noItems ) {
+				if ( this.viewOptions.list_selectable === 'multi' ) {
 					// after checkbox column is created need to get width of checkbox column from
 					// its css class
 					var checkboxWidth = this.$element.find( '.repeater-list-wrapper .header-checkbox' ).outerWidth();
