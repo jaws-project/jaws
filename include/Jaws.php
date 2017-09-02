@@ -421,10 +421,9 @@ class Jaws
      * @param   string  $name    Name of the editor
      * @param   string  $value   Value of the editor/content (optional)
      * @param   bool    $filter  Convert special characters to HTML entities
-     * @param   string  $label   Label that the editor will have (optional)
      * @return  object  The editor in /gadgets/Settings/editor
      */
-    function &LoadEditor($gadget, $name, $value = '', $filter = true, $label = '')
+    function &LoadEditor($gadget, $name, $value = '', $filter = true)
     {
         if ($filter && !empty($value)) {
             $value = Jaws_XSS::filter($value);
@@ -439,7 +438,7 @@ class Jaws
         $editorClass = "Jaws_Widgets_$editor";
 
         require_once $file;
-        $editor = new $editorClass($gadget, $name, $value, $label);
+        $editor = new $editorClass($gadget, $name, $value);
 
         return $editor;
     }

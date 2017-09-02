@@ -46,13 +46,6 @@ class Jaws_Widgets_TinyMCE extends Container
 
     /**
      * @access  private
-     * @var     object
-     * @see     GetLabel(), SetLabel()
-     */
-    var $_Label;
-
-    /**
-     * @access  private
      * @var     string
      */
     var $_Gadget;
@@ -79,10 +72,9 @@ class Jaws_Widgets_TinyMCE extends Container
      * @param   string  $gadget
      * @param   string  $name
      * @param   string  $value
-     * @param   string  $label
      * @return  void
      */
-    function __construct($gadget, $name, $value = '', $label = '')
+    function __construct($gadget, $name, $value = '')
     {
         require_once JAWS_PATH . 'include/Jaws/String.php';
         //$value = Jaws_String::AutoParagraph($value);
@@ -96,7 +88,6 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $this->_Value, '', '14');
         $this->TextArea->setRole('editor');
         $this->TextArea->setData('editor', 'tinymce');
-        $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
         $this->setClass($name);
 
         $this->_Container =& Piwi::CreateWidget('Division');
@@ -129,11 +120,6 @@ class Jaws_Widgets_TinyMCE extends Container
             $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_backend_toolbar', 'Settings');
         } else {
             $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_frontend_toolbar', 'Settings');
-        }
-
-        $label = $this->_Label->GetValue();
-        if (!empty($label)) {
-            $this->_Container->PackStart($this->_Label);
         }
 
         $GLOBALS['app']->define('', 'editorPlugins', $plugins);
@@ -198,18 +184,6 @@ class Jaws_Widgets_TinyMCE extends Container
     {
         $this->_Class = $class;
         $this->TextArea->setClass($class);
-    }
-
-    /**
-     * Sets the label displayed with the textarea
-     *
-     * @access  public
-     * @param   string $label The label to display.
-     * @return  void
-     */
-    function SetLabel($label)
-    {
-        $this->_Label->SetValue($label);
     }
 
 }

@@ -56,14 +56,6 @@ class Jaws_Widgets_CKEditor extends Container
     var $_Gadget;
 
     /**
-     * @access  private
-     * @var     Label
-     * @see     function  GetLabel
-     * @see     function  SetLabel
-     */
-    var $_Label;
-
-    /**
      * This is where additional configuration can be passed.
      * Example:
      * $oCKEditor->Config['EnterMode'] = 'br';
@@ -120,10 +112,9 @@ class Jaws_Widgets_CKEditor extends Container
      * @param   string  $gadget Gadget name
      * @param   string  $name   Name of editor
      * @param   string  $value  Default content of editor
-     * @param   string  $label  Label/Title of editor
      * @return  void
      */
-    function __construct($gadget, $name, $value = '', $label = '')
+    function __construct($gadget, $name, $value = '')
     {
         $value = str_replace('&lt;', '&amp;lt;', $value);
         $value = str_replace('&gt;', '&amp;gt;', $value);
@@ -152,7 +143,6 @@ class Jaws_Widgets_CKEditor extends Container
         $this->TextArea->setName($this->_Name);
         $this->TextArea->setRole('editor');
         $this->TextArea->setData('editor', 'ckeditor');
-        $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
         $this->_Language = $GLOBALS['app']->GetLanguage();
         $this->_Direction = _t('GLOBAL_LANG_DIRECTION');
@@ -170,10 +160,6 @@ class Jaws_Widgets_CKEditor extends Container
      */
     function buildXHTML()
     {
-        $label = $this->_Label->GetValue();
-        if (!empty($label)) {
-            $this->_Container->PackStart($this->_Label);
-        }
         // set editor configuration
         $this->TextArea->setData('direction', $this->_Direction);
         $this->TextArea->setData('language',  $this->_Language);
@@ -260,29 +246,6 @@ class Jaws_Widgets_CKEditor extends Container
     {
         $this->_Class = $class;
         $this->TextArea->setClass($class);
-    }
-
-    /**
-     * Gets the label of the textarea
-     *
-     * @access  public
-     * @return  string  The label to be displayed with the box.
-     */
-    function getLabel()
-    {
-        return $this->_Label->GetValue();
-    }
-
-    /**
-     * Sets the label displayed with the textarea
-     *
-     * @access  public
-     * @param   string  $label  The label to display.
-     * @return  void
-     */
-    function setLabel($label)
-    {
-        $this->_Label->SetValue($label);
     }
 
     /**

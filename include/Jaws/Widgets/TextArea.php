@@ -61,24 +61,15 @@ class Jaws_Widgets_TextArea extends Container
     var $_Gadget;
 
     /**
-     * @access  private
-     * @var     Label
-     * @see     function  GetLabel
-     * @see     function  SetLabel
-     */
-    var $_Label;
-
-    /**
      * Main Constructor
      *
      * @access  public
      * @param   $gadget
      * @param   $name
      * @param   string  $value
-     * @param   string  $label
      * @return  void
      */
-    function __construct($gadget, $name, $value = '', $label = '')
+    function __construct($gadget, $name, $value = '')
     {
         $this->_Name   = $name;
         $this->_Value  = $value;
@@ -88,7 +79,6 @@ class Jaws_Widgets_TextArea extends Container
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $value);
         $this->TextArea->SetClass('xx-large');
-        $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
         $this->_Container =& Piwi::CreateWidget('Division');
         $this->_Container->SetClass('jaws_editor');
@@ -118,10 +108,6 @@ class Jaws_Widgets_TextArea extends Container
      */
     function buildXHTML()
     {
-        $label = $this->_Label->GetValue();
-        if (!empty($label)) {
-            $this->_Container->PackStart($this->_Label);
-        }
         $this->_Container->PackStart($this->_ToolbarControl);
         $this->_Container->PackStart($this->TextArea);
         $this->_Container->SetWidth($this->_Width);
@@ -153,29 +139,6 @@ class Jaws_Widgets_TextArea extends Container
     function GetValue()
     {
         return $this->_Value;
-    }
-
-    /**
-     * Gets the label of the textarea
-     *
-     * @access  public
-     * @return  string  The label to be displayed with the box.
-     */
-    function GetLabel()
-    {
-        return $this->_Label->GetValue();
-    }
-
-    /**
-     * Sets the label displayed with the textarea
-     *
-     * @access  public
-     * @param   string  $label The label to display.
-     * @return  void
-     */
-    function SetLabel($label)
-    {
-        $this->_Label->SetValue($label);
     }
 
     /**
