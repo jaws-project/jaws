@@ -306,7 +306,12 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', Jaws_XSS::defilter($topic['message']), false);
+        $message = $this->gadget->action->load('Editor')->load(
+            'message',
+            Jaws_XSS::defilter($topic['message']),
+            JAWS_MARKUP_BBCODE,
+            false
+        );
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());

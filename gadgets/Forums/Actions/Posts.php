@@ -362,7 +362,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', '', false);
+        $message = $this->gadget->action->load('Editor')->load('message', '', JAWS_MARKUP_BBCODE, false);
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());
@@ -575,7 +575,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         if ($last_post_page > 1) {
             $url_params['page'] = $last_post_page;
         }
-        $post_link = $this->gadget->urlMap('Posts', $url_params, true);
+        $post_link = $this->gadget->urlMap('Posts', $url_params, array('absolute' => true));
 
         // send email notification
         if ($send_notification) {

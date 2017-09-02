@@ -16,7 +16,7 @@ var ForumsCallback = {
 /**
  * stop Action
  */
-function stopAction()
+function stopFroumsAction()
 {
     $('#postUIArea').hide();
     $('#update_reason_container').hide();
@@ -68,8 +68,8 @@ function editPost(pid)
     }, 1000);
 
     var postInfo = ForumsAjax.callSync('GetPost', {pid: pid});
-    $('#message').val(postInfo['message']);
-    $('#post_form #update_reason').val(postInfo['update_reason']);
+    $('#message').val(postInfo['message'].defilter());
+    $('#post_form #update_reason').val(postInfo['update_reason'].defilter());
 }
 
 /**
