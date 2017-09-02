@@ -37,15 +37,10 @@ class Jaws_Gadget_Actions_Editor
      * @param   string  $name   Name of the editor
      * @param   string  $value  Content of the editor
      * @param   int     $markup Markup language type
-     * @param   bool    $filter  Convert special characters to HTML entities
      * @return  object  The editor in /gadgets/Settings/editor
      */
-    function load($name, $value = '', $markup = JAWS_MARKUP_BBCODE, $filter = true)
+    function load($name, $value = '', $markup = JAWS_MARKUP_BBCODE)
     {
-        if ($filter && !empty($value)) {
-            $value = Jaws_XSS::filter($value);
-        }
-
         $editor = $GLOBALS['app']->GetEditor();
         if (!file_exists(JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
             $editor = 'TextArea';
@@ -65,12 +60,8 @@ class Jaws_Gadget_Actions_Editor
      * @param   bool    $filter  Convert special characters to HTML entities
      * @return  object  The editor in /gadgets/Settings/editor
      */
-    function loadAdmin($name, $value = '', $markup = JAWS_MARKUP_HTML, $filter = false)
+    function loadAdmin($name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
-        if ($filter && !empty($value)) {
-            $value = Jaws_XSS::filter($value);
-        }
-
         $editor = $GLOBALS['app']->GetEditor();
         if (!file_exists(JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
             $editor = 'TextArea';
