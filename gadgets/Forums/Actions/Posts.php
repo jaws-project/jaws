@@ -362,7 +362,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message = $this->gadget->action->load('Editor')->load('message', '', JAWS_MARKUP_BBCODE, false);
+        $message = $this->gadget->action->load('Editor')->load('message', '', JAWS_MARKUP_BBCODE);
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());

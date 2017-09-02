@@ -309,8 +309,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         $message = $this->gadget->action->load('Editor')->load(
             'message',
             Jaws_XSS::defilter($topic['message']),
-            JAWS_MARKUP_BBCODE,
-            false
+            JAWS_MARKUP_BBCODE
         );
         $message->setId('message');
         $message->TextArea->SetRows(8);
