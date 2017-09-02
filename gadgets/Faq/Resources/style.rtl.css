@@ -37,3 +37,34 @@ padding:10px;
 text-align:right;
 width:95%;
 }
+#q_datagrid{
+width:450px;
+vertical-align:top;
+}
+.top-align{
+vertical-align:top;
+}
+.main {
+width:100%;
+}
+#q_work_area{
+width:500px;
+padding:4px;
+}
+#q_work_area input, #q_work_area select {
+width : 220px
+}
+#q_work_area #question {
+width: 100%;
+}
+#categories_datagrid {
+vertical-align: top;
+width:650px;
+}
+#category_ui {
+padding:4px;
+width:400px;
+}
+#category_ui input, #category_ui select , #category_ui textarea {
+width : 220px
+}

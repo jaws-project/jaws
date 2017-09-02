@@ -80,7 +80,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $tpl->SetVariable('question', $questionEntry->Get());
 
         //answer
-        $answer =& $GLOBALS['app']->LoadEditor('Faq', 'answer', '', false, _t('FAQ_ANSWER'));
+        $answer =& $GLOBALS['app']->LoadEditor('Faq', 'answer', '', false);
         $answer->TextArea->SetStyle('width: 100%;');
         $answer->TextArea->SetRows(8);
         $answer->setID('answer');
