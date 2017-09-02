@@ -35,6 +35,12 @@ class Jaws_Widgets_TextArea extends Container
 
     /**
      * @access  private
+     * @var     int
+     */
+    var $_Markup = JAWS_MARKUP_HTML;
+
+    /**
+     * @access  private
      * @var     object
      */
     var $_Container;
@@ -64,16 +70,19 @@ class Jaws_Widgets_TextArea extends Container
      * Main Constructor
      *
      * @access  public
-     * @param   $gadget
-     * @param   $name
-     * @param   string  $value
+     * @param   string  $gadget Gadget name
+     * @param   string  $name   Name of editor
+     * @param   string  $value  Default content of editor
+     * @param   int     $markup Markup language type
      * @return  void
      */
-    function __construct($gadget, $name, $value = '')
+    function __construct($gadget, $name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
         $this->_Name   = $name;
         $this->_Value  = $value;
         $this->_Gadget = $gadget;
+        $this->_Markup = $markup;
+
         $this->_ToolbarControl =& Piwi::CreateWidget('Toolbar');
         $this->_ToolbarControl->SetID('toolbar_'.$name);
 

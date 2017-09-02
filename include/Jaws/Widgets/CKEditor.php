@@ -79,6 +79,12 @@ class Jaws_Widgets_CKEditor extends Container
 
     /**
      * @access  private
+     * @var     int
+     */
+    var $_Markup = JAWS_MARKUP_HTML;
+
+    /**
+     * @access  private
      * @var     string
      */
     var $_Language;
@@ -112,9 +118,10 @@ class Jaws_Widgets_CKEditor extends Container
      * @param   string  $gadget Gadget name
      * @param   string  $name   Name of editor
      * @param   string  $value  Default content of editor
+     * @param   int     $markup Markup language type
      * @return  void
      */
-    function __construct($gadget, $name, $value = '')
+    function __construct($gadget, $name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
         $value = str_replace('&lt;', '&amp;lt;', $value);
         $value = str_replace('&gt;', '&amp;gt;', $value);
@@ -122,6 +129,7 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Name = $name;
         $this->_Value = $value;
         $this->_Gadget = $gadget;
+        $this->_Markup = $markup;
 
         // set toolbar options
         if (JAWS_SCRIPT == 'admin') {
@@ -170,8 +178,15 @@ class Jaws_Widgets_CKEditor extends Container
             ',',
             array_map('basename', glob(JAWS_PATH.'libraries/ckeditor/plugins/*', GLOB_ONLYDIR))
         );
-        if (JAWS_SCRIPT == 'admin') {
-            $plugins = str_replace('bbcode,', '', $plugins);
+        
+        // load plugins related to markup language
+        switch ($this->_Markup) {
+            case JAWS_MARKUP_HTML:
+                $plugins = str_replace('bbcode,', '', $plugins);
+                break;
+
+            default:
+                break;
         }
 
         $GLOBALS['app']->define('', 'editorPlugins', $plugins);

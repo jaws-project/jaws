@@ -40,6 +40,12 @@ class Jaws_Widgets_TinyMCE extends Container
 
     /**
      * @access  private
+     * @var     int
+     */
+    var $_Markup = JAWS_MARKUP_HTML;
+
+    /**
+     * @access  private
      * @var     object
      */
     var $_Container;
@@ -69,12 +75,13 @@ class Jaws_Widgets_TinyMCE extends Container
      * Main Constructor
      *
      * @access  public
-     * @param   string  $gadget
-     * @param   string  $name
-     * @param   string  $value
+     * @param   string  $gadget Gadget name
+     * @param   string  $name   Name of editor
+     * @param   string  $value  Default content of editor
+     * @param   int     $markup Markup language type
      * @return  void
      */
-    function __construct($gadget, $name, $value = '')
+    function __construct($gadget, $name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
         require_once JAWS_PATH . 'include/Jaws/String.php';
         //$value = Jaws_String::AutoParagraph($value);
@@ -84,6 +91,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Name   = $name;
         $this->_Value  = $value;
         $this->_Gadget = $gadget;
+        $this->_Markup = $markup;
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $this->_Value, '', '14');
         $this->TextArea->setRole('editor');
@@ -115,8 +123,18 @@ class Jaws_Widgets_TinyMCE extends Container
             ',',
             array_map('basename', glob(JAWS_PATH.'libraries/tinymce/plugins/*', GLOB_ONLYDIR))
         );
+
+        // load plugins related to markup language
+        switch ($this->_Markup) {
+            case JAWS_MARKUP_HTML:
+                $plugins = str_replace('bbcode,', '', $plugins);
+                break;
+
+            default:
+                break;
+        }
+
         if (JAWS_SCRIPT == 'admin') {
-            $plugins = str_replace('bbcode,', '', $plugins);
             $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_backend_toolbar', 'Settings');
         } else {
             $toolbars = $GLOBALS['app']->Registry->fetch('editor_tinymce_frontend_toolbar', 'Settings');
