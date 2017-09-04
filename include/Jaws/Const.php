@@ -34,3 +34,8 @@ define('JAWS_DEBUG',   8);  // debug-level messages
 define('ACTION_MODE_NORMAL', 'normal');         // Normal action
 define('ACTION_MODE_LAYOUT', 'layout');         // Layout action
 define('ACTION_MODE_STANDALONE', 'standalone'); // Standalone action
+
+define('JAWS_MARKUP_HTML',     0);  // HTML markup
+define('JAWS_MARKUP_BBCODE',   1);  // BBCode markup
+define('JAWS_MARKUP_MARKDOWN', 2);  // Markdown markup
+define('JAWS_MARKUP_WIKI',     3);  // Wiki markup
