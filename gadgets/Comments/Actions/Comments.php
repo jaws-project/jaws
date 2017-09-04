@@ -606,7 +606,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         }
 
         $ObjMail->SetSubject(_t('COMMENTS_COMMENT_NOTIFICATION', $reference['title']));
-        $ObjMail->SetBody($template, 'html');
+        $ObjMail->SetBody($template, array('format' => 'html'));
         return $ObjMail->send();
     }
 
@@ -651,7 +651,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $ObjMail->AddRecipient('', 'cc');
         }
         $ObjMail->SetSubject(_t_lang($site_language, 'COMMENTS_YOU_GET_REPLY'));
-        $ObjMail->SetBody($template, 'html');
+        $ObjMail->SetBody($template, array('format' => 'html'));
         return $ObjMail->send();
     }
 
