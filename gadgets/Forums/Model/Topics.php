@@ -493,7 +493,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $ObjMail->SetFrom();
         $ObjMail->AddRecipient('', 'to');
         $ObjMail->SetSubject($event_subject);
-        $ObjMail->SetBody($template, 'html');
+        $ObjMail->SetBody($template, array('format' => 'html'));
         return $ObjMail->send();
     }
 
