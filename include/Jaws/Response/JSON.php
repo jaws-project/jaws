@@ -22,7 +22,7 @@ class Jaws_Response_JSON
         header('Content-Type: application/json; charset=utf-8');
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
-        return json_encode($data);
+        return json_encode($data, JSON_PARTIAL_OUTPUT_ON_ERROR);
     }
 
 }
