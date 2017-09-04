@@ -251,35 +251,49 @@ class Jaws_Mail
      * This function sets the body, the structure
      * of the email, what's in it..
      *
-     * @param   string $body   The body of the email
-     * @param   string $format The format to use.
-     * @access  protected
-     * @return  string $body
+     * @access  public
+     * @param   string  $body       The body of the email
+     * @param   array   $options    Associated options array(format, filename, ...)
+     * @return  mixed   True on success or Jaws_Error on failure
      */
-    function SetBody($body, $format = 'html')
+    function SetBody($body, $options = array())
     {
-        if (!isset($body) && empty($body)) {
-            return false;
+        if (!is_array($options)) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'use options["format"] = html|text|... for set date format', 1);
+            $format = (string)$options;
+            $options = array();
+            $options['format'] = $format;
         }
 
-        switch ($format) {
+        if (!isset($options['format'])) {
+            $options['format'] = 'html';
+        }
+
+        switch ($options['format']) {
+            case 'html':
+                $res = $this->mail_mime->setHTMLBody($body);
+                break;
             case 'file':
                 $res = $this->mail_mime->addAttachment($body);
+                break;
+            case 'data':
+                $res = $this->mail_mime->addAttachment(
+                    $body,
+                    isset($options['type'])? $options['type'] : 'application/octet-stream',
+                    $options['filename'],
+                    false
+                );
                 break;
             case 'image':
                 $res = $this->mail_mime->addHTMLImage($body);
                 break;
-            case 'html':
-                $res = $this->mail_mime->setHTMLBody($body);
-                break;
-            case 'text':
-                $res = $this->mail_mime->setTXTBody($body);
-                break;
             default:
-                $res = false;
+                // text|other formats will be added as text
+                $res = $this->mail_mime->setTXTBody($body);
         }
 
-        return $res;
+        return PEAR::isError($res)?
+            Jaws_Error::raiseError($res->getMessage(), __FUNCTION__, JAWS_ERROR_NOTICE) : $res;
     }
 
     /**
