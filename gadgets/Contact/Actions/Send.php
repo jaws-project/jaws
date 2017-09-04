@@ -202,7 +202,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         $mail->SetFrom($from_email, $from_name);
         $mail->AddRecipient($to);
         $mail->SetSubject(Jaws_XSS::defilter($contact['subject']));
-        $mail->SetBody($template, $format);
+        $mail->SetBody($template, array('format' => $format));
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
             return $result;

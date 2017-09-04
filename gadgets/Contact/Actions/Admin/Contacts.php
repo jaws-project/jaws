@@ -416,7 +416,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $mail->AddRecipient($to);
         $mail->AddRecipient('', 'cc');
         $mail->SetSubject($subject);
-        $mail->SetBody($template, $format);
+        $mail->SetBody($template, array('format' => $format));
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);

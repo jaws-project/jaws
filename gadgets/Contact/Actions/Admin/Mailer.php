@@ -279,11 +279,11 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
 
         $message = $this->PrepareMessage($message);
         $format = $this->gadget->registry->fetch('email_format');
-        $mail->SetBody($message, $format);
+        $mail->SetBody($message, array('format' => $format));
         if (!empty($attachment)) {
             $attachment = Jaws_Utils::upload_tmp_dir() . '/' . $attachment;
             if (file_exists($attachment)) {
-                $mail->SetBody($attachment, 'file');
+                $mail->SetBody($attachment, array('format' => 'file'));
                 Jaws_Utils::Delete($attachment);
             }
         }
