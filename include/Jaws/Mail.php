@@ -333,13 +333,24 @@ class Jaws_Mail
             $this->AddRecipient();
         }
 
-        $headers  = $this->mail_mime->headers($this->headers);
+        $headers = $this->mail_mime->headers($this->headers);
         $res = $mail->send($this->recipient, $headers, $realbody);
         if (PEAR::isError($res)) {
             return Jaws_Error::raiseError($res->getMessage(), __FUNCTION__, JAWS_ERROR_NOTICE);
         }
 
         return true;
+    }
+
+    /**
+     * Gets raw full mail message
+     *
+     * @access  public
+     * @return  mixed
+     */
+    function getMessage()
+    {
+        return $this->mail_mime->getMessage("\r\n", array('eol' => "\r\n"));
     }
 
     /**
