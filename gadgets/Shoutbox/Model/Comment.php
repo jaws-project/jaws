@@ -30,7 +30,7 @@ class Shoutbox_Model_Comment extends Jaws_Gadget_Model
         $mail->SetFrom($from_email);
         $mail->AddRecipient('');
         $mail->SetSubject($subject);
-        $mail->SetBody($comment, 'html');
+        $mail->SetBody($comment, array('format' => 'html'));
         $mail->send();
     }
 }
