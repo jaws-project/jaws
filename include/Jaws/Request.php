@@ -28,7 +28,17 @@ class Jaws_Request
      * @var array
      * @access  private
      */
-    private $allowed_attributes = array('href', 'src', 'alt', 'title');
+    private $allowed_attributes = array('href', 'src', 'alt', 'title', 'style');
+
+    /**
+     * Allowed HTML entities
+     *
+     * @var array
+     * @access  private
+     */
+    private $allowed_entities = array(
+        '/&nbsp;/', '/&cent;/', '/&pound;/', '/&yen;/', '/&euro;/', '/&copy;/', '/&reg;/'
+    );
 
     /**
      *  URL based HTML tag attributes
@@ -45,6 +55,15 @@ class Jaws_Request
      * @access  private
      */
     private $allowed_url_pattern = "@(^[(http|https|ftp)://]?)(?!javascript:)([^\\\\[:space:]\"]+)$@iu";
+
+    /**
+     * Allowed style pattern
+     *
+     * @var     string
+     * @access  private
+     */
+    private $allowed_style_pattern = 
+        '/^((\s*(background\-)?color\s*:\s*#[0-9A-Fa-f]+[\s|;]*)|((\s*(width)|(height))\s*:\s*\d+(px)?[\s|;]*))+$/';
 
     /**
      * Request filters
@@ -255,6 +274,9 @@ class Jaws_Request
         $result = '';
         // strip not allowed tags
         $text = strip_tags($text, $this->allowed_tags);
+        // escape common html entities
+        $text = preg_replace($this->allowed_entities, '<![CDATA[\\0]]>', $text);
+
         $hxml = simplexml_load_string(
             '<?xml version="1.0" encoding="UTF-8"?><html>'. $text .'</html>',
             'SimpleXMLElement',
@@ -276,6 +298,13 @@ class Jaws_Request
                             continue;
                         }
                     }
+                    // style attribute
+                    if (strtolower($attrname) == 'style') {
+                        if (!preg_match($this->allowed_style_pattern, $attrvalue)) {
+                            unset($tag->attributes()->{$attrname});
+                            continue;
+                        }
+                    }
                 }
             }
 
@@ -283,7 +312,7 @@ class Jaws_Request
             $result = substr($hxml->asXML(), 45, -8);
         }
 
-        return $result;
+        return preg_replace('/\<\!\[CDATA\[(.*?)\]\]\>/msu', '\\1', $result);
     }
 
     /**
