@@ -6,11 +6,103 @@
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     David Coallier <david@echolibre.com>
- * @copyright  2005-2015 Jaws Development Group
+ * @author     Ali Fazelzadeh <afz@php.net>
+ * @copyright  2005-2017 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_XSS
 {
+    /**
+     * Allowed HTML tags
+     *
+     * @var     array
+     * @access  private
+     */
+    private $allowed_tags = '<a><img><ol><ul><li><blockquote><cite><code><div><p><pre><span><del><ins>
+        <strong><b><mark><i><s><u><em><table><th><tr><td>';
+
+    /**
+     * Allowed HTML tag attributes
+     *
+     * @var array
+     * @access  private
+     */
+    private $allowed_attributes = array(
+        'href', 'src', 'alt', 'title', 'style', 'class', 'dir',
+        'height', 'width', 'rowspan', 'colspan', 'align', 'valign',
+        'rows', 'cols'
+    );
+
+    /**
+     * Allowed HTML entities
+     *
+     * @var array
+     * @access  private
+     */
+    private $allowed_entities = array(
+        '/&nbsp;/', '/&cent;/', '/&pound;/', '/&yen;/', '/&euro;/', '/&copy;/', '/&reg;/'
+    );
+
+    /**
+     *  URL based HTML tag attributes
+     *
+     * @var     array
+     * @access  private
+     */
+    private $urlbased_attributes = array('href', 'src');
+
+    /**
+     * Allowed URL pattern
+     *
+     * @var     string
+     * @access  private
+     */
+    private $allowed_url_pattern = "@(^[(http|https|ftp)://]?)(?!javascript:)([^\\\\[:space:]\"]+)$@iu";
+
+    /**
+     * Allowed style pattern
+     *
+     * @var     string
+     * @access  private
+     */
+    private $allowed_style_pattern = array(
+        '/^(',
+        '(\s*(background\-)?color\s*:\s*#[0-9A-Fa-f]+[\s|;]*)',
+        '|',
+        '((\s*(width)|(height)|(margin\-left)|(margin\-right)|(font\-size))\s*:\s*\d+((px)|(em)|(pt))?[\s|;]*)',
+        '|',
+        '((\s*(text\-align))\s*:\s*((left)|(right)|(center)|(justify))?[\s|;]*)',
+        ')+$/',
+    );
+
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @return  void
+     */
+    private function __construct()
+    {
+        // join pattern parts together
+        $this->allowed_style_pattern = implode('', $this->allowed_style_pattern);
+    }
+
+    /**
+     * Creates the Jaws_Request instance if it doesn't exist else it returns the already created one
+     *
+     * @access  public
+     * @return  object returns the instance
+     */
+    static function getInstance()
+    {
+        static $objRequest;
+        if (!isset($objRequest)) {
+            $objRequest = new Jaws_XSS();
+        }
+
+        return $objRequest;
+    }
+
     /**
      * Parses the text
      *
@@ -39,6 +131,61 @@ class Jaws_XSS
         $string = $safe_xss->parse($string, $strict);
         $safe_xss->clear();
         return $string;
+    }
+
+    /**
+     * Parses the text
+     *
+     * @access  public
+     * @param   string $string String to parse
+     * @param   bool   $strict How strict we can be. True will be very strict (default), false
+     *                         will allow some attributes (id) and tags (object, applet, embed)
+     * @return  string The safe string
+     */
+    function strip($text)
+    {
+        $result = '';
+        // strip not allowed tags
+        $text = strip_tags($text, $this->allowed_tags);
+        // escape common html entities
+        $text = preg_replace($this->allowed_entities, '<![CDATA[\\0]]>', $text);
+
+        $hxml = simplexml_load_string(
+            '<?xml version="1.0" encoding="UTF-8"?><html>'. $text .'</html>',
+            'SimpleXMLElement',
+            LIBXML_NOERROR
+        );
+        if ($hxml) {
+            foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
+                $attributes = (array)$tag->attributes();
+                foreach ($attributes['@attributes'] as $attrname => $attrvalue) {
+                    // strip not allowed attributes
+                    if (!in_array(strtolower($attrname), $this->allowed_attributes)) {
+                        unset($tag->attributes()->{$attrname});
+                        continue;
+                    }
+                    // url based attributes
+                    if (in_array(strtolower($attrname), $this->urlbased_attributes)) {
+                        if (!preg_match($this->allowed_url_pattern, $attrvalue)) {
+                            unset($tag->attributes()->{$attrname});
+                            continue;
+                        }
+                    }
+                    // style attribute
+                    if (strtolower($attrname) == 'style') {
+                        if (!preg_match($this->allowed_style_pattern, $attrvalue)) {
+                            unset($tag->attributes()->{$attrname});
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            // remove xml/html tags
+            $result = substr($hxml->asXML(), 45, -8);
+        }
+
+        return preg_replace('/\<\!\[CDATA\[(.*?)\]\]\>/msu', '\\1', $result);
     }
 
 
@@ -79,7 +226,7 @@ class Jaws_XSS
      */
     static function refilter($string, $noquotes = false)
     {
-        return self::filter(self::defilter($string, $noquotes), $noquotes);
+        return $this->filter($this->defilter($string, $noquotes), $noquotes);
     }
 
 }
