@@ -18,8 +18,8 @@ class Jaws_XSS
      * @var     array
      * @access  private
      */
-    private $allowed_tags = '<a><img><ol><ul><li><blockquote><cite><code><div><p><pre><span><del><ins>
-        <strong><b><mark><i><s><u><em><table><th><tr><td>';
+    private $allowed_tags = '<body><br><a><img><ol><ul><li><blockquote><cite><code><div><p><pre><span><del><ins>
+        <strong><b><mark><i><s><u><em><strike><table><tbody><thead><tfoot><th><tr><td><font><center>';
 
     /**
      * Allowed HTML tag attributes
@@ -30,7 +30,7 @@ class Jaws_XSS
     private $allowed_attributes = array(
         'href', 'src', 'alt', 'title', 'style', 'class', 'dir',
         'height', 'width', 'rowspan', 'colspan', 'align', 'valign',
-        'rows', 'cols'
+        'rows', 'cols', 'color', 'bgcolor', 'border'
     );
 
     /**
@@ -145,15 +145,27 @@ class Jaws_XSS
     function strip($text)
     {
         $result = '';
+        // eliminate DOCTYPE|head|style|script tags
+        $text = preg_replace(
+            array(
+                '@<\!DOCTYPE\s.*?>@sim',
+                '@<head[^>]*>.*?</head>@sim',
+                '@<style[^>]*>.*?</style>@sim',
+                '@<script[^>]*>.*?</script>@sim'
+            ),
+            '',
+            $text
+        );
         // strip not allowed tags
         $text = strip_tags($text, $this->allowed_tags);
-        // escape common html entities
-        $text = preg_replace($this->allowed_entities, '<![CDATA[\\0]]>', $text);
+        // escape special characters
+        $text = htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8');
+        $text = Jaws_UTF8::str_replace(array('&lt;', '&gt;'), array('<', '>'), $text);
 
         $hxml = simplexml_load_string(
             '<?xml version="1.0" encoding="UTF-8"?><html>'. $text .'</html>',
             'SimpleXMLElement',
-            LIBXML_NOERROR
+            LIBXML_COMPACT | LIBXML_NOERROR
         );
         if ($hxml) {
             foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
@@ -185,7 +197,7 @@ class Jaws_XSS
             $result = substr($hxml->asXML(), 45, -8);
         }
 
-        return preg_replace('/\<\!\[CDATA\[(.*?)\]\]\>/msu', '\\1', $result);
+        return htmlspecialchars_decode($result, ENT_NOQUOTES);
     }
 
 
