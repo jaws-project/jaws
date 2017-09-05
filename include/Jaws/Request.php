@@ -20,7 +20,7 @@ class Jaws_Request
      * @access  private
      */
     private $allowed_tags = '<a><img><ol><ul><li><blockquote><cite><code><div><p><pre><span><del><ins>
-        <strong><b><mark><i><s><u><em>';
+        <strong><b><mark><i><s><u><em><table><th><tr><td>';
 
     /**
      * Allowed HTML tag attributes
@@ -28,7 +28,11 @@ class Jaws_Request
      * @var array
      * @access  private
      */
-    private $allowed_attributes = array('href', 'src', 'alt', 'title', 'style');
+    private $allowed_attributes = array(
+        'href', 'src', 'alt', 'title', 'style', 'class', 'dir',
+        'height', 'width', 'rowspan', 'colspan', 'align', 'valign',
+        'rows', 'cols'
+    );
 
     /**
      * Allowed HTML entities
@@ -62,8 +66,15 @@ class Jaws_Request
      * @var     string
      * @access  private
      */
-    private $allowed_style_pattern = 
-        '/^((\s*(background\-)?color\s*:\s*#[0-9A-Fa-f]+[\s|;]*)|((\s*(width)|(height))\s*:\s*\d+(px)?[\s|;]*))+$/';
+    private $allowed_style_pattern = array(
+        '/^(',
+        '(\s*(background\-)?color\s*:\s*#[0-9A-Fa-f]+[\s|;]*)',
+        '|',
+        '((\s*(width)|(height)|(margin\-left)|(margin\-right)|(font\-size))\s*:\s*\d+((px)|(em)|(pt))?[\s|;]*)',
+        '|',
+        '((\s*(text\-align))\s*:\s*((left)|(right)|(center)|(justify))?[\s|;]*)',
+        ')+$/',
+    );
 
     /**
      * Request filters
@@ -182,6 +193,9 @@ class Jaws_Request
         $this->addFilter('htmlclean',  'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
         $this->addFilter('ambiguous',  array($this, 'strip_ambiguous'));
         $this->addFilter('strip_crlf', array($this, 'strip_crlf'));
+
+        // join pattern parts together
+        $this->allowed_style_pattern = implode('', $this->allowed_style_pattern);
 
         // Strict mode
         unset($_GET);
