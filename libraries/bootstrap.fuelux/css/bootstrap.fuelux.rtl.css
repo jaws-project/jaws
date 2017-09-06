@@ -6523,6 +6523,12 @@ button.close {
   margin-left: auto;
   margin-right: auto;
 }
+.rtl {
+  direction: rtl !important;
+}
+.ltr {
+  direction: ltr !important;
+}
 .pull-right {
   float: left !important;
 }
