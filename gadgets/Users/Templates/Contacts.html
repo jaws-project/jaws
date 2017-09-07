@@ -26,10 +26,10 @@
         </div>
       </div>
       <div class="repeater-header-right">
-        <a href="{{export_url}}" target="_blank" class="btn btn-primary btn-m">
+        <a href="{{export_url}}" class="btn btn-primary btn-m">
           <span class="glyphicon glyphicon-save-file"></span> {{lbl_export_vcard}}
         </a>
-        <a href="{{import_url}}" target="_blank" class="btn btn-primary btn-m">
+        <a href="javascript:void(0)" onclick="uploadVCardFile();" class="btn btn-primary btn-m">
           <span class="glyphicon glyphicon-open-file"></span> {{lbl_import_vcard}}
         </a>
         <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#contactModal">

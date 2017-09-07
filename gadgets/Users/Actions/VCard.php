@@ -79,48 +79,6 @@ class Users_Actions_VCard extends Users_Actions_Default
     }
 
     /**
-     * UI for Importing vCard file to user's contacts
-     *
-     * @access  public
-     * @return  string  XHTML template of a form
-     */
-    function ImportVCardUI()
-    {
-        if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
-        }
-
-        $this->gadget->CheckPermission('EditUserContacts');
-//        $this->AjaxMe('index.js');
-
-        // Load the template
-        $tpl = $this->gadget->template->load('ImportVCard.html');
-        $tpl->SetBlock('vcard');
-
-        $response = $GLOBALS['app']->Session->PopResponse('Users.ImportVCard');
-        if (!empty($response)) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-        }
-
-        $tpl->SetVariable('gadget_title', _t('USERS_IMPORT_VCARD'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Account'));
-        $tpl->SetVariable(
-            'submenubar',
-            $this->SubMenuBar('Contact', array('Account', 'Personal', 'Preferences', 'Contact', 'Contacts'))
-        );
-
-        $tpl->SetVariable('upload_vcard_file_desc', _t('USERS_IMPORT_VCART_DESC'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
-
-        $tpl->ParseBlock('vcard');
-        return $tpl->Get();
-    }
-
-    /**
      * Importing vCard file to user's contacts
      *
      * @access  public
@@ -132,24 +90,31 @@ class Users_Actions_VCard extends Users_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        require_once JAWS_PATH . 'gadgets/Users/include/vCard.php';
-
-        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
-        $jUser = new Jaws_User;
-
-
-        if (empty($_FILES) || !is_array($_FILES)) {
-            $GLOBALS['app']->Session->PushResponse(_t('GLOBAL_ERROR_UPLOAD'), 'Users.ImportVCard', RESPONSE_ERROR);
-            return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
+        $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
+        if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('GLOBAL_ERROR_UPLOAD'),
+                RESPONSE_ERROR
+            );
         }
 
         try {
-            $vCard = new vCard($_FILES['vcard_file']['tmp_name'], false, array('Collapse' => false));
-
+            require_once JAWS_PATH . 'gadgets/Users/include/vCard.php';
+            $vCard = new vCard(
+                Jaws_Utils::upload_tmp_dir() . '/' . $res['file'][0]['host_filename'],
+                false,
+                array('Collapse' => false)
+            );
             if (count($vCard) == 0) {
-                $GLOBALS['app']->Session->PushResponse(_t('USERS_ERROR_VCARD_DATA_NOT_FOUND'), 'Users.ImportVCard', RESPONSE_ERROR);
-                return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
-            } elseif (count($vCard) == 1) {
+                return $GLOBALS['app']->Session->GetResponse(
+                    _t('USERS_ERROR_VCARD_DATA_NOT_FOUND'),
+                    RESPONSE_ERROR
+                );
+            }
+
+            $jUser = new Jaws_User;
+            $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+            if (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {
                     $contactId = $jUser->UpdateContacts($currentUser, 0, $result);
@@ -163,20 +128,27 @@ class Users_Actions_VCard extends Users_Actions_Default
                 }
             }
         } catch (Exception $e) {
-            $GLOBALS['app']->Session->PushResponse($e->getMessage(), 'Users.ImportVCard', RESPONSE_ERROR);
-            return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
+            return $GLOBALS['app']->Session->GetResponse(
+                $e->getMessage(),
+                RESPONSE_ERROR
+            );
         }
 
         if(Jaws_Error::IsError($contactId)) {
-            $GLOBALS['app']->Session->PushResponse($contactId->getMessage(), 'Users.ImportVCard', RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushResponse(_t('USERS_VCARD_IMPORT_COMPLETED'), 'Users.ImportVCard', RESPONSE_NOTICE);
+            return $GLOBALS['app']->Session->GetResponse(
+                $contactId->getMessage(),
+                RESPONSE_ERROR
+            );
         }
-        return Jaws_Header::Location($this->gadget->urlMap('ImportVCardUI'));
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('USERS_VCARD_IMPORT_COMPLETED'),
+            RESPONSE_NOTICE
+        );
     }
 
     /**
-     * Prepare data to insert in databse
+     * Prepare data to insert in database
      *
      * @access  public
      * @return  string HTML content with menu and menu items

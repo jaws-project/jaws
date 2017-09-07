@@ -767,18 +767,87 @@ function initiateGroupsDG() {
     });
 }
 
+/**
+ * Upload VCard file
+ */
+function uploadVCardFile() {
+    var $file = $('<input>', {type: 'file', name: 'file', 'multiple': false});
+    $file.change(function () {
+        var xhr = UsersAjax.uploadFile(
+            'ImportVCard',
+            this.files[0],
+            function (response, code) {
+                if (response.type == 'alert-success' && code == 200) {
+                }
+                UsersAjax.showResponse(response);
+            },
+            function (e) {
+            }
+        );
+    }).trigger('click');
+}
+
 
 // Define the data to be displayed in the repeater.
-function contactsDataSource(options, callback) {
-
-    // define the columns for the grid
-    var columns = [
-        {
+function contactsDataSource(options, callback)
+{
+    options.offset = options.pageIndex*options.pageSize;
+    var columns = {
+        'title': {
             'label': jaws.Users.Defines.lbl_title,
             'property': 'title',
-            'sortable': true
+            'sortable': false
+        },
+        'name': {
+            'label': jaws.Users.Defines.lbl_name,
+            'property': 'title',
+            'sortable': false
         }
-    ];
+    };
+
+    // set sort property & direction
+    if (options.sortProperty) {
+        columns[options.sortProperty].sortDirection = options.sortDirection;
+    }
+    columns = Object.values(columns);
+
+    UsersAjax.callAsync(
+        'GetContacts', {
+            'search': options.search || '',
+            'limit': options.pageSize,
+            'offset': options.offset
+        },
+        function (response, status) {
+            var dataSource = {};
+            if (response['type'] == 'alert-success') {
+                // processing end item index of page
+                options.end = options.offset + options.pageSize;
+                options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                dataSource = {
+                    'page': options.pageIndex,
+                    'pages': Math.ceil(response['data'].total/options.pageSize),
+                    'count': response['data'].total,
+                    'start': options.offset + 1,
+                    'end':   options.end,
+                    'columns': columns,
+                    'items': response['data'].records
+                };
+            } else {
+                dataSource = {
+                    'page': 0,
+                    'pages': 0,
+                    'count': 0,
+                    'start': 0,
+                    'end':   0,
+                    'columns': columns,
+                    'items': {}
+                };
+            }
+            // pass the datasource back to the repeater
+            callback(dataSource);
+            UsersAjax.showResponse(response);
+        }
+    );
 
     // set options
     var pageIndex = options.pageIndex;
@@ -791,32 +860,6 @@ function contactsDataSource(options, callback) {
         'filterBy': options.filter.value || '',
         'searchBy': options.search || ''
     };
-
-    var rows = UsersAjax.callSync('GetContacts', options);
-
-    var items = rows.records;
-    var totalItems = rows.total;
-    var totalPages = Math.ceil(totalItems / pageSize);
-    var startIndex = (pageIndex * pageSize) + 1;
-    var endIndex = (startIndex + pageSize) - 1;
-
-    if(endIndex > items.length) {
-        endIndex = items.length;
-    }
-
-    // configure datasource
-    var dataSource = {
-        'page':    pageIndex,
-        'pages':   totalPages,
-        'count':   totalItems,
-        'start':   startIndex,
-        'end':     endIndex,
-        'columns': columns,
-        'items':   items
-    };
-
-    // pass the datasource back to the repeater
-    callback(dataSource);
 }
 
 /**

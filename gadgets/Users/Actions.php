@@ -339,10 +339,6 @@ $actions['ExportVCard'] = array(
     'standalone' => true,
     'file' => 'VCard',
 );
-$actions['ImportVCardUI'] = array(
-    'normal' => true,
-    'file' => 'VCard',
-);
 $actions['ImportVCard'] = array(
     'standalone' => true,
     'file' => 'VCard',

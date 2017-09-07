@@ -219,17 +219,13 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
         $tpl->SetVariable('lbl_export_vcard', _t('USERS_EXPORT_VCARD'));
         $tpl->SetVariable('lbl_import_vcard', _t('USERS_IMPORT_VCARD'));
-
-        $tpl->SetVariable('export_url', $this->gadget->urlMap('ExportVCard'));
-        $tpl->SetVariable('import_url', $this->gadget->urlMap('ImportVCardUI'));
-
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
         $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
         $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
         $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
-
+        $tpl->SetVariable('export_url', $this->gadget->urlMap('ExportVCard'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -267,24 +263,40 @@ class Users_Actions_Contacts extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('EditUserContacts');
         $post = $this->gadget->request->fetch(
-            array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
+            array('search', 'limit', 'offset'),
             'post'
         );
 
+        $objUser = jaws()->loadObject('Jaws_User', 'Users');
         $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
-        $jUser = new Jaws_User;
-        $contacts = $jUser->GetUserContacts($currentUser, $post['limit'], $post['offset']);
-
-        foreach($contacts as $key=>$contact) {
-            $contact['recid'] = $contact['id'];
-            $contacts[$key] = $contact;
+        $contacts = $objUser->GetUserContacts(
+            $currentUser,
+            $post['search'],
+            $post['limit'],
+            $post['offset']
+        );
+        if (Jaws_Error::isError($contacts)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $contacts->getMessage(),
+                RESPONSE_ERROR
+            );
         }
-        $contactsCount = $jUser->GetUserContactsCount($currentUser);
 
-        return array(
-            'status' => 'success',
-            'total' => $contactsCount,
-            'records' => $contacts
+        $total = $objUser->GetUserContactsCount($currentUser, $post['search']);
+        if (Jaws_Error::IsError($total)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                $total->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total'   => $total,
+                'records' => $contacts
+            )
         );
     }
 
