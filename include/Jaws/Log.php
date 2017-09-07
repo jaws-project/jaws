@@ -170,9 +170,7 @@ class Jaws_Log
      */
     function ExecTime()
     {
-        $mtime = microtime();
-        $mtime = explode(' ', $mtime);
-        return (double)($mtime[0] + $mtime[1] - $this->_StartTime);
+        return microtime(true) - $this->_StartTime;
     }
 
     /**
@@ -198,7 +196,7 @@ class Jaws_Log
      */
     function Start()
     {
-        $this->_StartTime = $this->ExecTime();
+        $this->_StartTime = microtime(true);
         $this->Log(JAWS_LOG_INFO, '[Jaws Log Start]');
     }
 
