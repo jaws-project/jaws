@@ -800,7 +800,7 @@ function contactsDataSource(options, callback)
         },
         'name': {
             'label': jaws.Users.Defines.lbl_name,
-            'property': 'title',
+            'property': 'name',
             'sortable': false
         }
     };
