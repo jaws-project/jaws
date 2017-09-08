@@ -10077,7 +10077,12 @@ jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( 
 			}
 
 			if ( val === undefined ) {
-				return win ? win[ prop ] : elem[ method ];
+				val = Math.trunc(Math.abs(win ? win[ prop ] : elem[ method ]));
+				if ($(elem).css('direction') && /webkit/.test(navigator.userAgent.toLowerCase())) {
+					val = elem.scrollWidth - elem.clientWidth - val;
+				}
+
+				return val;
 			}
 
 			if ( win ) {
