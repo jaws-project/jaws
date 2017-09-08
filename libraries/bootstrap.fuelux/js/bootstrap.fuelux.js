@@ -9168,14 +9168,13 @@ if (typeof jQuery === 'undefined') {
 
 				var shouldScroll = ( tableWidth - ( canvasWidth - actionsWidth ) ) >= scrollLeft;
 
-
 				if ( scrollTop > 0 ) {
 					$wrapper.find( '.repeater-list-heading' ).css( 'top', scrollTop );
 				} else {
 					$wrapper.find( '.repeater-list-heading' ).css( 'top', '0' );
 				}
 
-				if ( scrollLeft > 0 ) {
+				if ( ltrDirection ) {
 					if ( frozenEnabled ) {
 						$wrapper.find( '.frozen-thead-wrapper' ).css( 'left', scrollLeft );
 						$wrapper.find( '.frozen-column-wrapper' ).css( 'left', scrollLeft );
@@ -9184,23 +9183,14 @@ if (typeof jQuery === 'undefined') {
 						$wrapper.find( '.actions-thead-wrapper' ).css( 'right', -scrollLeft );
 						$wrapper.find( '.actions-column-wrapper' ).css( 'right', -scrollLeft );
 					}
-                } else if ( scrollLeft < 0 ) {
-					if ( frozenEnabled ) {
-						$wrapper.find( '.frozen-thead-wrapper' ).css( 'right', -scrollLeft );
-						$wrapper.find( '.frozen-column-wrapper' ).css( 'right', -scrollLeft );
-					}
-					if ( actionsEnabled && shouldScroll ) {
-						$wrapper.find( '.actions-thead-wrapper' ).css( 'left', scrollLeft );
-						$wrapper.find( '.actions-column-wrapper' ).css( 'left', scrollLeft );
-					}
 				} else {
 					if ( frozenEnabled ) {
-						$wrapper.find( '.frozen-thead-wrapper' ).css( ltrDirection ? 'left' : 'right', '0' );
-						$wrapper.find( '.frozen-column-wrapper' ).css( ltrDirection ? 'left' : 'right', '0' );
+						$wrapper.find( '.frozen-thead-wrapper' ).css( 'right', scrollLeft );
+						$wrapper.find( '.frozen-column-wrapper' ).css( 'right', scrollLeft );
 					}
-					if ( actionsEnabled ) {
-						$wrapper.find( '.actions-thead-wrapper' ).css( ltrDirection ? 'right' : 'left', '0' );
-						$wrapper.find( '.actions-column-wrapper' ).css( ltrDirection ? 'right' : 'left', '0' );
+					if ( actionsEnabled && shouldScroll ) {
+						$wrapper.find( '.actions-thead-wrapper' ).css( 'left', -scrollLeft );
+						$wrapper.find( '.actions-column-wrapper' ).css( 'left', -scrollLeft );
 					}
 				}
 			};
