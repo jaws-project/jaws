@@ -904,12 +904,8 @@ function initiateContactsDG() {
         ]
     };
 
-    var repeater = $('#contractsGrid');
-    repeater.repeater({
-        // setup your custom datasource to handle data retrieval;
-        // responsible for any paging, sorting, filtering, searching logic
+    $('#contractsGrid').repeater({
         dataSource: contactsDataSource,
-        staticHeight: 600,
         list_actions: list_actions,
         list_selectable: 'multi',
         list_direction: $('.repeater-canvas').css('direction')

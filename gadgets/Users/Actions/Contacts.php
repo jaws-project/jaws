@@ -202,6 +202,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
+        $this->gadget->define('lbl_name', _t('GLOBAL_NAME'));
         $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
         $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
         $this->gadget->define('lbl_addContact', _t('USERS_CONTACTS_ADD'));
