@@ -578,7 +578,7 @@ class Jaws_Layout
         array_unshift(
             $this->extraTags['scripts']['elements'],
             array(
-                'src'  => 'libraries/jquery/jquery.js?'. JAWS_VERSION,
+                'src'  => 'libraries/jquery/jquery.min.js?'. JAWS_VERSION,
                 'type' => 'text/javascript'
             ),
             array(
