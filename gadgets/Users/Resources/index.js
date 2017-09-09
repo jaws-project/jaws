@@ -905,6 +905,7 @@ function initiateContactsDG() {
     };
 
     $('#contractsGrid').repeater({
+        staticHeight: 560,
         dataSource: contactsDataSource,
         list_actions: list_actions,
         list_selectable: 'multi',
