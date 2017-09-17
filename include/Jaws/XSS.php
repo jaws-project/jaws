@@ -238,7 +238,7 @@ class Jaws_XSS
      */
     static function refilter($string, $noquotes = false)
     {
-        return $this->filter($this->defilter($string, $noquotes), $noquotes);
+        return self::filter(self::defilter($string, $noquotes), $noquotes);
     }
 
 }
