@@ -8,7 +8,7 @@
  * @copyright   2017 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Actions_Navigation
+class Jaws_Gadget_Actions_PageNavigation
 {
     /**
      * Jaws_Gadget object
