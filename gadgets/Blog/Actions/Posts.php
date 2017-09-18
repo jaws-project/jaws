@@ -94,7 +94,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
 
         $total = $model->GetNumberOfPages($cat);
         $limit = $this->gadget->registry->fetch('last_entries_limit');
-        $this->gadget->action->load('Navigation')->pagination($tpl, $page, $limit, $total, 'ViewPage');
+        $this->gadget->action->load('PageNavigation')->pagination($tpl, $page, $limit, $total, 'ViewPage');
         $tpl->ParseBlock('view');
         return $tpl->Get();
     }

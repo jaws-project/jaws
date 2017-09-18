@@ -83,7 +83,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                 unset($params[$e]);
             }
             // pagination
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $limit,

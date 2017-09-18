@@ -103,7 +103,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
 
         if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
             // Pagination
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $limit,

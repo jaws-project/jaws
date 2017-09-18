@@ -83,7 +83,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $total  = $cModel->GetCategoryNumberOfPages($catInfo['id']);
         $limit  = $this->gadget->registry->fetch('last_entries_limit');
         $params = array('id'  => $cat);
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $limit,

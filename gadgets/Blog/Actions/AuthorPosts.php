@@ -58,7 +58,7 @@ class Blog_Actions_AuthorPosts extends Blog_Actions_Default
             $total  = $aModel->GetAuthorNumberOfPages($user);
             $limit  = $this->gadget->registry->fetch('last_entries_limit');
             $params = array('id'  => $user);
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $limit,
