@@ -320,7 +320,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if (!$compactView) {
             $pagination_data['params']['order'] = $orderBy;
             // pagination
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $perPage,
@@ -450,7 +450,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         }
 
         // pagination
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $perPage,
