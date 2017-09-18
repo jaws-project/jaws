@@ -233,7 +233,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $this->SetDescription($tagInfo['meta_description']);
 
         // pagination
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $limit,

@@ -115,7 +115,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             $params['term'] = $post['term'];
         }
         // pagination
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $limit,
