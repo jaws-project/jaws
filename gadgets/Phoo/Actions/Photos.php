@@ -101,7 +101,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $total = $aModel->GetAlbumCount($req_album);
             $limit = $this->gadget->registry->fetch('thumbnail_limit');
             // pagination
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $limit,
