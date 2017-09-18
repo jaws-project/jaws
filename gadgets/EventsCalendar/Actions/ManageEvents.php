@@ -200,7 +200,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         );
 
         // Pagination
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $params['limit'],
