@@ -85,7 +85,7 @@ class Forums_Actions_UserPosts extends Jaws_Gadget_Action
 
             $post_counts = $pModel->GetUserPostsCount($user['id']);
             // Pagination
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $posts_limit,

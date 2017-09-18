@@ -107,7 +107,7 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
 
             $topicCounts = $tModel->GetUserTopicCount($user['id']);
             // Pagination
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $limit,

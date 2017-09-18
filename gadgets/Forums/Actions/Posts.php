@@ -272,7 +272,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         } // foreach posts
 
         // Pagination
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $limit,

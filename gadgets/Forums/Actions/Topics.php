@@ -134,7 +134,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         }
 
         // Pagination
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $limit,
