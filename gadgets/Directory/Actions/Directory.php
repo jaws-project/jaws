@@ -396,7 +396,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $args['order'] = $orderBy;
             }
 
-            $this->gadget->action->load('Navigation')->pagination(
+            $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,
                 $page,
                 $params['limit'],
