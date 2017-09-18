@@ -258,7 +258,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         // Pagination
-        $this->gadget->action->load('Navigation')->pagination(
+        $this->gadget->action->load('PageNavigation')->pagination(
             $tpl,
             $page,
             $limit,
