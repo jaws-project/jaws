@@ -71,12 +71,12 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
 
         $desc = isset($description) ? $description : '';
         $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $desc, false);
-        $editor->setLabel(_t('PHOO_ALBUM_DESC'));
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
+        $tpl->SetVariable('lbl_description', _t('PHOO_ALBUM_DESC'));
 
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
@@ -199,12 +199,12 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('status_field', $statCombo->get());
 
         $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $album['description'], false);
-        $editor->setLabel(_t('PHOO_ALBUM_DESC'));
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
+        $tpl->SetVariable('lbl_description', _t('PHOO_ALBUM_DESC'));
 
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $album['meta_keywords']);

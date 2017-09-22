@@ -290,7 +290,6 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         // Include the editor
         $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $desc, false);
-        $editor->setLabel(_t('PHOO_PHOTO_DESCRIPTION'));
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 99%;');
 
@@ -299,6 +298,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         $editor->setId('description');
         $tpl->SetVariable('description', $editor->Get());
+        $tpl->SetVariable('lbl_description', _t('PHOO_PHOTO_DESCRIPTION'));
 
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $meta_keywords);
