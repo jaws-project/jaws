@@ -37,17 +37,16 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
      * @access  public
      * @param   string  $gadget Gadget name
      * @param   string  $action Action name
-     * @param   string  $map    Action map
      * @return  mixed   Map route or Jaws_Error on error
      */
-    function GetMapByParams($gadget, $action, $map)
+    function GetMapByParams($gadget, $action)
     {
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $mapsTable->select(
             'id:integer', 'gadget', 'map', 'regexp', 'extension', 'vars_regexps',
             'custom_map', 'custom_regexp');
-        $mapsTable->where('gadget', $gadget)->and()->where('action', $action)->and()->where('action', $action);
-        $result = $mapsTable->and()->where('map', $map)->fetchRow();
+        $mapsTable->where('gadget', $gadget)->and()->where('action', $action);
+        $result = $mapsTable->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -144,9 +143,9 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $file = JAWS_PATH. "gadgets/$gadget/Map.php";
         $maps = array();
         if (@include($file)) {
-            $now = Jaws_DB::getInstance()->date();
+            $now = time();
             foreach ($maps as $order => $map) {
-                $eMap = $this->GetMapByParams($gadget, $map[0], $map[1]);
+                $eMap = $this->GetMapByParams($gadget, $map[0]);
                 if (Jaws_Error::IsError($eMap)) {
                     return $eMap;
                 }
@@ -168,7 +167,8 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
                         isset($map[3])? $map[3] : '.',
                         $vars_regexps,
                         $order + 1,
-                        $now);
+                        $now
+                    );
                     if (Jaws_Error::IsError($res)) {
                         return $res;
                     }
@@ -179,7 +179,8 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
                         $order + 1,
                         $map[1],
                         isset($map[3])? $map[3] : '.',
-                        $now);
+                        $now
+                    );
                     if (Jaws_Error::IsError($res)) {
                         return $res;
                     }
