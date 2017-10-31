@@ -45,6 +45,15 @@ class Jaws_Error
     private $_Level;
 
     /**
+     * Log trace back level
+     *
+     * @access  private
+     * @var     int
+     * @see     SetBacktrace()
+     */
+    private $_Backtrace = 0;
+
+    /**
      * Constructor
      *
      * @access  public
@@ -61,8 +70,18 @@ class Jaws_Error
         $this->_Level   = $level;
         if ($backtrace >= 0) {
             $backtrace++;
-            $GLOBALS['log']->Log($level, '[' . $code . ']: ' . $message, $backtrace);
+            $this->_Backtrace = $backtrace;
         }
+    }
+
+    /**
+     * Destructor
+     *
+     * @access  public
+     * @return  void
+     */
+    function __destruct() {
+        $GLOBALS['log']->Log($this->_Level, '[' . $this->_Code . ']: ' . $this->_Message, $this->_Backtrace);
     }
 
     /**
@@ -127,6 +146,18 @@ class Jaws_Error
     function GetLevel()
     {
         return $this->_Level;
+    }
+
+    /**
+     * Sets the error level
+     *
+     * @access  public
+     * @param   int     $level  Error level
+     * @return  void
+     */
+    function SetLevel($level = JAWS_ERROR_ERROR)
+    {
+        $this->_Level = $level;
     }
 
     /**
