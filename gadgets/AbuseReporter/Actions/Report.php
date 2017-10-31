@@ -29,12 +29,12 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
 
         // types
         $types = array(
-            AbuseReporter_Info::TYPE_ABUSE_0 => _t('ABUSEREPORTER_TYPE_ABUSE_0'),
-            AbuseReporter_Info::TYPE_ABUSE_1 => _t('ABUSEREPORTER_TYPE_ABUSE_1'),
-            AbuseReporter_Info::TYPE_ABUSE_2 => _t('ABUSEREPORTER_TYPE_ABUSE_2'),
-            AbuseReporter_Info::TYPE_ABUSE_3 => _t('ABUSEREPORTER_TYPE_ABUSE_3'),
-            AbuseReporter_Info::TYPE_ABUSE_4 => _t('ABUSEREPORTER_TYPE_ABUSE_4'),
-            AbuseReporter_Info::TYPE_ABUSE_5 => _t('ABUSEREPORTER_TYPE_ABUSE_5'),
+            0 => _t('ABUSEREPORTER_TYPE_ABUSE_0'),
+            1 => _t('ABUSEREPORTER_TYPE_ABUSE_1'),
+            2 => _t('ABUSEREPORTER_TYPE_ABUSE_2'),
+            3 => _t('ABUSEREPORTER_TYPE_ABUSE_3'),
+            4 => _t('ABUSEREPORTER_TYPE_ABUSE_4'),
+            5 => _t('ABUSEREPORTER_TYPE_ABUSE_5'),
         );
         foreach ($types as $type => $title) {
             $tpl->SetBlock('Report/type');
@@ -45,11 +45,11 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
 
         // priority
         $priorities = array(
-            AbuseReporter_Info::PRIORITY_VERY_HIGH => _t('ABUSEREPORTER_PRIORITY_VERY_HIGH'),
-            AbuseReporter_Info::PRIORITY_HIGH => _t('ABUSEREPORTER_PRIORITY_HIGH'),
-            AbuseReporter_Info::PRIORITY_NORMAL => _t('ABUSEREPORTER_PRIORITY_NORMAL'),
-            AbuseReporter_Info::PRIORITY_LOW => _t('ABUSEREPORTER_PRIORITY_LOW'),
-            AbuseReporter_Info::PRIORITY_VERY_LOW => _t('ABUSEREPORTER_PRIORITY_VERY_LOW'),
+            0 => _t('ABUSEREPORTER_PRIORITY_0'),
+            1 => _t('ABUSEREPORTER_PRIORITY_1'),
+            2 => _t('ABUSEREPORTER_PRIORITY_2'),
+            3 => _t('ABUSEREPORTER_PRIORITY_3'),
+            4 => _t('ABUSEREPORTER_PRIORITY_4'),
         );
         foreach ($priorities as $priority => $title) {
             $tpl->SetBlock('Report/priority');
@@ -93,13 +93,17 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
         );
 
         if (Jaws_Error::isError($result)) {
-            $error = $result->GetMessage();
-            if ($result->GetCode() == -3) {
-                $error = _t('ABUSEREPORTER_ERROR_REPORT_ALREADY_EXIST');
-            }
-            return $GLOBALS['app']->Session->GetResponse($error, RESPONSE_ERROR, $response);
+            return $GLOBALS['app']->Session->GetResponse(
+                $result->GetMessage(),
+                RESPONSE_ERROR,
+                $response
+            );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('ABUSEREPORTER_REPORT_SAVED'), RESPONSE_NOTICE, $response);
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('ABUSEREPORTER_REPORT_SAVED'),
+                RESPONSE_NOTICE,
+                $response
+            );
         }
     }
 

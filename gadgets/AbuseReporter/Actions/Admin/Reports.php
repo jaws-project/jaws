@@ -55,7 +55,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList();
         if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
-            array_unshift($gadgetList, array('name' => 0, 'title' => _t('GLOBAL_ALL')));
+            array_unshift($gadgetList, array('name' => -1, 'title' => _t('GLOBAL_ALL')));
             foreach ($gadgetList as $gadget) {
                 $tpl->SetBlock('Reports/filter_gadget');
                 $tpl->SetVariable('value', $gadget['name']);
@@ -73,12 +73,12 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
 
         // priority filter
         $priorities = array(
-            0 => _t('GLOBAL_ALL'),
-            AbuseReporter_Info::PRIORITY_VERY_HIGH => _t('ABUSEREPORTER_PRIORITY_VERY_HIGH'),
-            AbuseReporter_Info::PRIORITY_HIGH => _t('ABUSEREPORTER_PRIORITY_HIGH'),
-            AbuseReporter_Info::PRIORITY_NORMAL => _t('ABUSEREPORTER_PRIORITY_NORMAL'),
-            AbuseReporter_Info::PRIORITY_LOW => _t('ABUSEREPORTER_PRIORITY_LOW'),
-            AbuseReporter_Info::PRIORITY_VERY_LOW => _t('ABUSEREPORTER_PRIORITY_VERY_LOW'),
+            -1 => _t('GLOBAL_ALL'),
+            0  => _t('ABUSEREPORTER_PRIORITY_0'),
+            1  => _t('ABUSEREPORTER_PRIORITY_1'),
+            2  => _t('ABUSEREPORTER_PRIORITY_2'),
+            3  => _t('ABUSEREPORTER_PRIORITY_3'),
+            4  => _t('ABUSEREPORTER_PRIORITY_4'),
         );
         foreach ($priorities as $priority => $title) {
             $tpl->SetBlock('Reports/filter_priority');
@@ -96,9 +96,9 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
 
         // status filter
         $statuses = array(
-            0 => _t('GLOBAL_ALL'),
-            AbuseReporter_Info::STATUS_NOT_CHECKED => _t('ABUSEREPORTER_STATUS_NOT_CHECKED'),
-            AbuseReporter_Info::PRIORITY_HIGH => _t('ABUSEREPORTER_STATUS_CHECKED'),
+            -1 => _t('GLOBAL_ALL'),
+            0  => _t('ABUSEREPORTER_STATUS_0'),
+            1  => _t('ABUSEREPORTER_STATUS_1'),
         );
         foreach ($statuses as $status => $title) {
             $tpl->SetBlock('Reports/filter_status');
@@ -106,11 +106,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
             $tpl->SetVariable('title', $title);
             $tpl->ParseBlock('Reports/filter_status');
         }
-
-        $statuses = array(
-            AbuseReporter_Info::STATUS_NOT_CHECKED => _t('ABUSEREPORTER_STATUS_NOT_CHECKED'),
-            AbuseReporter_Info::PRIORITY_HIGH => _t('ABUSEREPORTER_STATUS_CHECKED'),
-        );
+        array_shift($statuses);
         foreach ($statuses as $status => $title) {
             $tpl->SetBlock('Reports/status');
             $tpl->SetVariable('value', $status);
@@ -120,13 +116,15 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
 
         // types
         $types = array(
-            AbuseReporter_Info::TYPE_ABUSE_0 => _t('ABUSEREPORTER_TYPE_ABUSE_0'),
-            AbuseReporter_Info::TYPE_ABUSE_1 => _t('ABUSEREPORTER_TYPE_ABUSE_1'),
-            AbuseReporter_Info::TYPE_ABUSE_2 => _t('ABUSEREPORTER_TYPE_ABUSE_2'),
-            AbuseReporter_Info::TYPE_ABUSE_3 => _t('ABUSEREPORTER_TYPE_ABUSE_3'),
-            AbuseReporter_Info::TYPE_ABUSE_4 => _t('ABUSEREPORTER_TYPE_ABUSE_4'),
-            AbuseReporter_Info::TYPE_ABUSE_5 => _t('ABUSEREPORTER_TYPE_ABUSE_5'),
+           -1 => _t('GLOBAL_ALL'),
+            0 => _t('ABUSEREPORTER_TYPE_ABUSE_0'),
+            1 => _t('ABUSEREPORTER_TYPE_ABUSE_1'),
+            2 => _t('ABUSEREPORTER_TYPE_ABUSE_2'),
+            3 => _t('ABUSEREPORTER_TYPE_ABUSE_3'),
+            4 => _t('ABUSEREPORTER_TYPE_ABUSE_4'),
+            5 => _t('ABUSEREPORTER_TYPE_ABUSE_5'),
         );
+        array_shift($types);
         foreach ($types as $type => $title) {
             $tpl->SetBlock('Reports/type');
             $tpl->SetVariable('value', $type);
@@ -161,40 +159,12 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $reports = $model->GetReports($post['filters'], $post['limit'], $post['offset'], $orderBy);
 
         foreach ($reports as $key => &$report) {
-            switch($report['priority']) {
-                case AbuseReporter_Info::PRIORITY_VERY_HIGH:
-                    $priority = _t('ABUSEREPORTER_PRIORITY_VERY_HIGH');
-                    break;
-                case AbuseReporter_Info::PRIORITY_HIGH:
-                    $priority = _t('ABUSEREPORTER_PRIORITY_HIGH');
-                    break;
-                case AbuseReporter_Info::PRIORITY_NORMAL:
-                    $priority = _t('ABUSEREPORTER_PRIORITY_NORMAL');
-                    break;
-                case AbuseReporter_Info::PRIORITY_LOW:
-                    $priority = _t('ABUSEREPORTER_PRIORITY_LOW');
-                    break;
-                case AbuseReporter_Info::PRIORITY_VERY_LOW:
-                    $priority = _t('ABUSEREPORTER_PRIORITY_VERY_LOW');
-                    break;
-            }
-            $report['priority'] = $priority;
-
-            switch($report['status']) {
-                case AbuseReporter_Info::STATUS_NOT_CHECKED:
-                    $status = _t('ABUSEREPORTER_STATUS_NOT_CHECKED');
-                    break;
-                case AbuseReporter_Info::STATUS_CHECKED:
-                    $status = _t('ABUSEREPORTER_STATUS_CHECKED');
-                    break;
-            }
-            $report['status'] = $status;
-
+            $report['priority'] = _t('ABUSEREPORTER_PRIORITY_'. $report['priority']);
+            $report['status'] = _t('ABUSEREPORTER_STATUS_'. $report['status']);
             $report['type'] = _t('ABUSEREPORTER_TYPE_ABUSE_' . $report['type']);
         }
 
         $reportsCount = $model->GetReportsCount($post['filters']);
-
         return $GLOBALS['app']->Session->GetResponse(
             '',
             RESPONSE_NOTICE,

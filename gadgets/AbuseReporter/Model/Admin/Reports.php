@@ -41,11 +41,11 @@ class AbuseReporter_Model_Admin_Reports extends Jaws_Gadget_Model
                 $reportsTable->and()->where('abuse_reports.insert_time', $filters['to_date'], '<=');
             }
             // gadget
-            if (isset($filters['gadget']) && !empty($filters['gadget'])) {
+            if ($filters['gadget'] != -1) {
                 $reportsTable->and()->where('abuse_reports.gadget', $filters['gadget']);
             }
             // action
-            if (isset($filters['action']) && !empty($filters['action'])) {
+            if ($filters['action'] != -1) {
                 $reportsTable->and()->where('abuse_reports.action', $filters['action'], 'like');
             }
             // user
@@ -53,11 +53,11 @@ class AbuseReporter_Model_Admin_Reports extends Jaws_Gadget_Model
                 $reportsTable->and()->where('user', (int)$filters['user']);
             }
             // priority
-            if (isset($filters['priority']) && !empty($filters['priority'])) {
+            if ($filters['priority'] != -1) {
                 $reportsTable->and()->where('abuse_reports.priority', $filters['priority']);
             }
             // status
-            if (isset($filters['status']) && !empty($filters['status'])) {
+            if ($filters['status'] != -1) {
                 $reportsTable->and()->where('abuse_reports.status', $filters['status']);
             }
         }
@@ -109,11 +109,11 @@ class AbuseReporter_Model_Admin_Reports extends Jaws_Gadget_Model
                 $reportsTable->and()->where('abuse_reports.insert_time', $filters['to_date'], '<=');
             }
             // gadget
-            if (isset($filters['gadget']) && !empty($filters['gadget'])) {
+            if ($filters['gadget'] != -1) {
                 $reportsTable->and()->where('abuse_reports.gadget', $filters['gadget']);
             }
             // action
-            if (isset($filters['action']) && !empty($filters['action'])) {
+            if ($filters['action'] != -1) {
                 $reportsTable->and()->where('abuse_reports.action', $filters['action'], 'like');
             }
             // user
@@ -121,15 +121,14 @@ class AbuseReporter_Model_Admin_Reports extends Jaws_Gadget_Model
                 $reportsTable->and()->where('user', (int)$filters['user']);
             }
             // priority
-            if (isset($filters['priority']) && !empty($filters['priority'])) {
+            if ($filters['priority'] != -1) {
                 $reportsTable->and()->where('abuse_reports.priority', $filters['priority']);
             }
             // status
-            if (isset($filters['status']) && !empty($filters['status'])) {
+            if ($filters['status'] != -1) {
                 $reportsTable->and()->where('abuse_reports.status', $filters['status']);
             }
         }
-
 
         return $reportsTable->orderBy('abuse_reports.' . $orderBy)->fetchAll();
     }

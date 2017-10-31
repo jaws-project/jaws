@@ -33,11 +33,20 @@ class AbuseReporter_Model_Reports extends Jaws_Gadget_Model
                 'comment'       => $comment,
                 'type'          => (int)$type,
                 'priority'      => (int)$priority,
-                'status'        => AbuseReporter_Info::STATUS_NOT_CHECKED,
+                'status'        => 0,
                 'insert_time'   => time(),
             )
         );
 
-        return $reportsTable->exec();
+        $result = $reportsTable->exec(JAWS_ERROR_INFO);
+        if (Jaws_Error::isError($result)) {
+            if ($result->GetCode() == -3) {
+                $result->setMessage(_t('ABUSEREPORTER_ERROR_REPORT_ALREADY_EXIST'));
+            } else {
+                $result->setLevel(JAWS_ERROR_ERROR);
+            }
+        }
+
+        return $result;
     }
 }
