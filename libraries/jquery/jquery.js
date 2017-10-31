@@ -6116,6 +6116,24 @@ var getStyles = function( elem ) {
 		div.style.marginRight = "50%";
 		pixelMarginRightVal = divStyle.marginRight === "4px";
 
+		// browser scroll left behavior in RTL mode
+		div.style.cssText =
+			"font-size:14px;" +
+			"width:4px;height:1px;" +
+			"position:absolute;top:-1000px;" +
+			"overflow:scroll";
+		div.innerHTML = "ABCD";
+
+		rtlScrollTypeVal = 1;
+		if (div.scrollLeft > 0) {
+			rtlScrollTypeVal = 0;
+		} else {
+			div.scrollLeft = 1;
+			if (div.scrollLeft === 0) {
+				rtlScrollTypeVal = -1;
+			}
+		}
+
 		documentElement.removeChild( container );
 
 		// Nullify the div so it wouldn't be stored in the memory and
@@ -6123,7 +6141,7 @@ var getStyles = function( elem ) {
 		div = null;
 	}
 
-	var pixelPositionVal, boxSizingReliableVal, pixelMarginRightVal, reliableMarginLeftVal,
+	var pixelPositionVal, boxSizingReliableVal, pixelMarginRightVal, reliableMarginLeftVal, rtlScrollTypeVal,
 		container = document.createElement( "div" ),
 		div = document.createElement( "div" );
 
@@ -6158,6 +6176,10 @@ var getStyles = function( elem ) {
 		reliableMarginLeft: function() {
 			computeStyleTests();
 			return reliableMarginLeftVal;
+		},
+		rtlScrollType: function() {
+			computeStyleTests();
+			return rtlScrollTypeVal;
 		}
 	} );
 } )();
@@ -10077,7 +10099,15 @@ jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( 
 			}
 
 			if ( val === undefined ) {
-				return win ? win[ prop ] : elem[ method ];
+				val = win ? win[ prop ] : elem[ method ];
+				if ( !top ) {
+					if ($(elem).css('direction') === 'rtl' && support.rtlScrollType() === 0 ) {
+						val = elem.scrollWidth - elem.clientWidth - val;
+					}
+					val = Math.trunc(Math.abs(val));
+				}
+
+				return val;
 			}
 
 			if ( win ) {
@@ -10087,6 +10117,18 @@ jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( 
 				);
 
 			} else {
+				if ( !top ) {
+					if ($(elem).css('direction') === 'rtl' ) {
+						switch ( support.rtlScrollType() ) {
+							case 0:
+								val = elem.scrollWidth - elem.clientWidth - val;
+								break;
+							case -1:
+								val = -1 * val;
+								break;
+						}
+					}
+				}
 				elem[ method ] = val;
 			}
 		}, method, val, arguments.length );
