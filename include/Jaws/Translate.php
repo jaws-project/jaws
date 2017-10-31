@@ -159,6 +159,10 @@ class Jaws_Translate
                 break;
 
             default:
+                if (!array_key_exists($type, self::$real_gadgets_module)) {
+                    return $string;
+                }
+
                 $module = self::$real_gadgets_module[$type];
                 $type = 1;
         }
