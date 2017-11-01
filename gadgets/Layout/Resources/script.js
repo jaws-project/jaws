@@ -108,7 +108,6 @@ function deleteElement(itemId)
                 position + 1
             ]
         );
-        $(".layout-section").sortable('refresh');
     }
 }
 
@@ -117,38 +116,33 @@ function deleteElement(itemId)
  */
 function initUI()
 {
-    $.loadScript('libraries/jquery/jquery-ui.js', function() {
-        $(".layout-section").sortable({
-            revert: true,
-            opacity: 0.75,
-            helper: "original",
-            connectWith: ".layout-section",
+    $(".layout-section").sortable({
+        connectWith: ".layout-section",
+    }).on('start', function(e, item) {
+        var item = $( item );
+        item.data('old_section',  item.parent().attr('id').replace('layout_', ''));
+        item.data('old_position', item.parent().children('div').index(item) + 1);
+    }).on('stop', function(e, item) {
+        var item = $( item );
+        var new_section  = item.parent().attr('id').replace('layout_', '');
+            new_position = item.parent().children('div').index(item) + 1;
 
-            start: function(event, ui) {
-                $.data(ui.item[0], 'old_section',  ui.item.parent().attr('id').replace('layout_', ''));
-                $.data(ui.item[0], 'old_position', ui.item.parent().children('div').index(ui.item) + 1);
-            },
+        if ((new_section  != item.data('old_section')) ||
+            (new_position != item.data('old_position'))
+        ) {
+            LayoutAjax.callAsync(
+                'MoveElement', [
+                    item.attr('id').replace('item_', ''),      // item id
+                    $('#layout').val(),                        // layout name
+                    item.data('old_section'),                  // old section name
+                    parseInt(item.data('old_position')),       // position in old section
+                    new_section,                               // new section name
+                    new_position                               // position in new section
+                ]
+            );
+        }
 
-            stop: function(event, ui) {
-                var new_section  = ui.item.parent().attr('id').replace('layout_', '');
-                    new_position = ui.item.parent().children('div').index(ui.item) + 1;
-                if ((new_section  != $.data(ui.item[0], 'old_section')) ||
-                    (new_position != $.data(ui.item[0], 'old_position'))
-                ) {
-                    LayoutAjax.callAsync(
-                        'MoveElement', [
-                            ui.item.attr('id').replace('item_', ''),      // item id
-                            $('#layout').val(),                           // layout name
-                            $.data(ui.item[0], 'old_section'),            // old section name
-                            parseInt($.data(ui.item[0], 'old_position')), // position in old section
-                            new_section,                                  // new section name
-                            new_position                                  // position in new section
-                        ]
-                    );
-                }
-                $.removeData(ui.item[0]);
-            }
-        });
+        item.removeData();
     });
 }
 
