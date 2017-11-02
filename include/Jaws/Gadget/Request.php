@@ -45,7 +45,7 @@ class Jaws_Gadget_Request
         if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
             return jaws()->request->fetch($key, $types, $filter, $json_decode);
         } else {
-            return null;
+            return is_scalar($key)? null : array_fill_keys($key, null);
         }
     }
 
@@ -62,7 +62,7 @@ class Jaws_Gadget_Request
         if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
             return jaws()->request->fetchAll($type, $filter);
         } else {
-            return null;
+            return array();
         }
     }
 
