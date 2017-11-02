@@ -20,7 +20,11 @@ class Search_Actions_Search extends Jaws_Gadget_Action
      */
     function Box($gadgets_combo = true)
     {
-        $post = $this->gadget->request->fetch(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
+        $post = $this->gadget->request->fetch(
+            array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'),
+            'get'
+        );
+
         $tpl = $this->gadget->template->load('Search.html');
         if ($gadgets_combo) {
             $block = 'Box';
