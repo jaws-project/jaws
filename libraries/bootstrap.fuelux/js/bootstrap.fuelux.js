@@ -2377,7 +2377,8 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /*!
- * Fuel UX v3.16.1 
+ * Fuel UX EDGE - Built 2017/10/25, 12:50:00 PM 
+ * Previous release: v3.16.3 
  * Copyright 2012-2017 ExactTarget
  * Licensed under the BSD-3-Clause license (https://github.com/ExactTarget/fuelux/blob/master/LICENSE)
  */
@@ -7635,7 +7636,7 @@ if (typeof jQuery === 'undefined') {
 					// ignore comma and make sure text that has been entered (protects against " ,". https://github.com/ExactTarget/fuelux/issues/593), unless allowEmptyPills is true.
 					if ( text.replace( /[ ]*\,[ ]*/, '' ).match( /\S/ ) || ( this.options.allowEmptyPills && text.length ) ) {
 						this._closeSuggestions();
-						this.$addItem.hide().val( '' );
+						this.$addItem.val( '' ).hide();
 
 						if ( attr ) {
 							this.addItems( {
