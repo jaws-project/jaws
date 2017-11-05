@@ -195,7 +195,14 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                     'params' => array('albumid' => $albumid, 'id' => $image['id']))));
 
             if ($allow_comments) {
-                $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Phoo', 'Image', $image['id'], $redirect_to));
+                $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm(
+                    'Phoo',
+                    'Image',
+                    $image['id'],
+                    $image['name'],
+                    $redirect_to,
+                    $redirect_to
+                ));
             } elseif ($restricted) {
                 $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
                 $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');

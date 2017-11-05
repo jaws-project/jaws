@@ -25,7 +25,7 @@ class Phoo_Hooks_Comments extends Jaws_Gadget_Hook
             $model = $this->gadget->model->load('Photos');
             $image = $model->GetImageEntry($reference);
             if (!Jaws_Error::IsError($image) && !empty($image)) {
-                $url = $this->gadget->urlMap('ViewImage', array('id' => $image['id']));
+                $url = $this->gadget->urlMap('Photo', array('photo' => $image['id']));
                 $result = array(
                     'title' => $image['title'],
                     'url' => $url,
