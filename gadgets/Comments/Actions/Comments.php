@@ -27,7 +27,14 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $this->ShowComments('Comments', 'Guestbook', 0, array('action' => 'Guestbook'))
         );
         $redirect_to = $this->gadget->urlMap('Guestbook');
-        $tpl->SetVariable('comment-form', $this->ShowCommentsForm('Comments', 'Guestbook', 0, $redirect_to));
+        $tpl->SetVariable('comment-form', $this->ShowCommentsForm(
+            'Comments',
+            'Guestbook',
+            0,
+            _t('COMMENTS_GUESTBOOK'),
+            $redirect_to,
+            $redirect_to
+        ));
 
         $tpl->ParseBlock('guestbook');
         return $tpl->Get();
@@ -44,7 +51,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
      * @param   string  $redirect_to
      * @return  string  XHTML content
      */
-    function ShowCommentsForm($gadget, $action, $reference, $redirect_to)
+    function ShowCommentsForm($gadget, $action, $reference, $reference_title, $reference_link, $redirect_to)
     {
         $tpl = $this->gadget->template->load('CommentForm.html');
         $tpl->SetBlock('comment_form');
@@ -66,6 +73,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
+        $tpl->SetVariable('reference_title', $reference_title);
+        $tpl->SetVariable('reference_link', $reference_link);
         $tpl->SetVariable('redirect_to', $redirect_to. '#'. $gadget. '_'. $action);
         $tpl->SetVariable('private', _t('COMMENTS_PRIVATE'));
 
@@ -240,57 +249,11 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     $ratingHTML->loadReferenceLike('Comments', 'comment', $entry['id'], 0, $tpl, 'comments/entry');
                 }
 
-                if (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size) {
-                    $tpl->SetBlock($block . '/entry/read_more');
-                    $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
+                $tpl->SetBlock($block . '/entry/read_more');
+                $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
 
-                    switch ($entry['gadget']) {
-                        case 'Blog':
-                            $url = $this->gadget->urlMap(
-                                'SingleView',
-                                array('id' => $entry['reference']),
-                                array('absolute' => true),
-                                'Blog'
-                            );
-                            $url = $url. '#comment'. $entry['id'];
-                            break;
-
-                        case 'Phoo':
-                            $url = $this->gadget->urlMap(
-                                'ViewImage',
-                                array('id' => $entry['reference']),
-                                array('absolute' => true),
-                                'Phoo'
-                            );
-                            $url = $url. '#comment'. $entry['id'];
-                            break;
-
-                        case 'Shoutbox':
-                            $url = $this->gadget->urlMap(
-                                'Comments',
-                                array(),
-                                array('absolute' => true),
-                                'Shoutbox'
-                            );
-                            $url = $url. '#comment'. $entry['id'];
-                            break;
-
-                        case 'Comments':
-                            $url = $this->gadget->urlMap(
-                                'Guestbook',
-                                array(),
-                                array('absolute' => true)
-                            );
-                            $url = $url. '#comment'. $entry['id'];
-                            break;
-
-                        default:
-                            $url = '';
-                    }
-
-                    $tpl->SetVariable('read_more_url', $url);
-                    $tpl->ParseBlock($block . '/entry/read_more');
-                }
+                $tpl->SetVariable('read_more_url', $entry['reference_link']);
+                $tpl->ParseBlock($block . '/entry/read_more');
 
                 if (!empty($entry['reply'])) {
                     $tpl->SetBlock($block . '/entry/reply');
@@ -475,7 +438,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $post  = $this->gadget->request->fetch(
             array(
                 'message', 'name', 'email', 'url', 'url2', 'requested_gadget',
-                'requested_action', 'reference', 'is_private'
+                'requested_action', 'reference', 'reference_title', 'reference_link', 'is_private'
             ),
             'post'
         );
@@ -553,7 +516,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         }
 
         $res = $this->gadget->model->loadAdmin('Comments')->InsertComment(
-            $post['requested_gadget'], $post['requested_action'], $post['reference'], $post['name'],
+            $post['requested_gadget'], $post['requested_action'], $post['reference'], 
+            $post['reference_title'], $post['reference_link'], $post['name'],
             $post['email'], $post['url'], $post['message'], $permalink, $status, $post['is_private']
         );
         if (Jaws_Error::isError($res)) {

@@ -139,7 +139,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetVariable('lbl_date', _t('GLOBAL_DATE'));
 
         //Reference Date
-        $tpl->SetVariable('lbl_reference_url', _t('COMMENTS_REFERENCE_URL'));
+        $tpl->SetVariable('lbl_reference_link', _t('COMMENTS_REFERENCE_LINK'));
 
         //name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');

@@ -86,7 +86,7 @@ function stopCommentAction()
     $('#gadget').val('');
     $('#comment_ip').html('');
     $('#insert_time').html('');
-    $('#reference_url').html('');
+    $('#reference_link').html('');
     $('#name').val('');
     $('#email').val('');
     $('#url').val('');
@@ -129,10 +129,10 @@ function editComment(rowElement, id)
     $('#url').val(comment['url']);
     $('#message').val(comment['msg_txt'].defilter());
     $('#comment_status').val(comment['status']);
-    if (comment['reference_url'] != '') {
-        $('#reference_url').html(
+    if (comment['reference_link'] != '') {
+        $('#reference_link').html(
             '<a href="'
-            + comment['reference_url']
+            + comment['reference_link']
             + '">'
             + comment['reference_title']
             + '</a>'
@@ -226,14 +226,9 @@ function SaveSettings()
 }
 
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
-        case 'Comments':
-            $('#gadgets_filter').selectedIndex = 0;
-            initDataGrid('comments_datagrid', CommentsAjax, getCommentsDataGrid);
-            break;
-
-        case 'Settings':
-            break;
+    if (jaws.Defines.mainGadget !== 'Comments' || jaws.Defines.mainAction === 'Comments') {
+        $('#gadgets_filter').selectedIndex = 0;
+        initDataGrid('comments_datagrid', CommentsAjax, getCommentsDataGrid);
     }
 });
 

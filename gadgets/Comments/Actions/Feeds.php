@@ -11,7 +11,7 @@
 class Comments_Actions_Feeds extends Jaws_Gadget_Action
 {
     /**
-     * Displays an Atom feed for blog most recent comments
+     * Displays an Atom feed for most recent comments
      *
      * @access  public
      * @return  string  xml with Atom feed
@@ -33,7 +33,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
     }
 
     /**
-     * Displays a RSS feed for blog most recent comments
+     * Displays a RSS feed for most recent comments
      *
      * @access  public
      * @return  string  xml with RSS feed
@@ -92,7 +92,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
     }
 
     /**
-     * Displays a link to blog feed
+     * Displays a link to commnets feed
      *
      * @access  public
      * @param   string  $gadget gadget name
@@ -134,7 +134,13 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
     {
         $max_title_size = 80;
         $cModel = $this->gadget->model->load('Comments');
-        $comments = $cModel->GetComments($gadget, $action, $reference, '', array(Comments_Info::COMMENTS_STATUS_APPROVED));
+        $comments = $cModel->GetComments(
+            $gadget,
+            $action,
+            $reference,
+            '',
+            array(Comments_Info::COMMENTS_STATUS_APPROVED)
+        );
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
         }
@@ -168,6 +174,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
 
         $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
+        $permalink = $GLOBALS['app']->GetSiteURL();
         foreach ($comments as $c) {
             $entry_id = $c['reference'];
             $entry = new AtomEntry();
@@ -175,42 +182,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
                 Jaws_UTF8::substr($c['msg_txt'], 0, $max_title_size).'...' :
                 $c['msg_txt']);
             $entry->SetId("urn:gadget:$gadget:action:$action:reference:$reference:comment:{$c['id']}");
-
-            switch ($gadget) {
-                case 'Blog':
-                    // So we can use the UrlMapping feature.
-                    $url = $this->gadget->urlMap(
-                        'SingleView',
-                        array('id' => $entry_id),
-                        array('absolute' => true),
-                        'Blog'
-                    );
-                    $url = $url . htmlentities('#comment' . $c['id']);
-                    $entry->SetLink($url);
-                    break;
-
-                case 'Phoo':
-                    $url = $this->gadget->urlMap(
-                        'ViewImage',
-                        array('id' => $entry_id),
-                        array('absolute' => true),
-                        'Phoo'
-                    );
-                    $url = $url . htmlentities('#comment' . $c['id']);
-                    $entry->SetLink($url);
-                    break;
-
-                case 'Shoutbox':
-                    $url = $this->gadget->urlMap(
-                        'Comments',
-                        array(),
-                        array('absolute' => true),
-                        'Shoutbox'
-                    );
-                    $url = $url . htmlentities('#comment' . $c['id']);
-                    $entry->SetLink($url);
-                    break;
-            }
+            $entry->SetLink($permalink . $c['reference_link'] . htmlentities('#comment' . $c['id']));
 
             $content = Jaws_String::AutoParagraph($c['msg_txt']);
             $entry->SetSummary($content, 'html');

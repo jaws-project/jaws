@@ -171,13 +171,49 @@ class Comments_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.2.0.xml');
+            $result = $this->installSchema('1.3.0.xml', array(), '1.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
 
             // Registry
             $this->gadget->registry->delete('allow_duplicate');
+        }
+
+        if (version_compare($old, '1.4.0', '<')) {
+            /*
+            $result = $this->installSchema('schema.xml', array(), '1.3.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+            */
+
+            $objORM = Jaws_ORM::getInstance()->table('comments');
+            $entries = $objORM->select('id:integer', 'gadget', 'action', 'reference:integer')->fetchAll();
+            if (!Jaws_Error::IsError($entries) || !empty($entries)) {
+                foreach ($entries as $entry) {
+                    $objHook = Jaws_Gadget::getInstance($entry['gadget'])->hook->load('Comments');
+                    if (Jaws_Error::IsError($objHook)) {
+                        continue;
+                    }
+
+                    $reference = $objHook->Execute($entry['action'], $entry['reference']);
+                    if (empty($reference)) {
+                        continue;
+                    }
+
+                    $result = $objORM->update(
+                        array(
+                            'reference_title' => $reference['title'],
+                            'reference_link'   => $reference['url'],
+                        ))->where('id', $entry['id'])
+                        ->exec();
+                    if (Jaws_Error::IsError($result)) {
+                        //do nothing
+                    }
+                }
+            }
+
         }
 
         return true;

@@ -40,11 +40,9 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
      *
      * @param   string  $gadget     Gadget's name
      * @param   string  $action     Gadget's action name
-     * @param   int     $reference  Gadget's reference id.
-     *                              It can be the ID of a blog entry, the ID of a
-     *                              photo in Phoo, etc. This needs to be a reference
-     *                              to find the comments related to a specific record
-     *                              in a gadget.
+     * @param   int     $reference  Gadget's reference id
+     * @param   string  $reference_title
+     * @param   string  $reference_link
      * @param   string  $name       Author's name
      * @param   string  $email      Author's email
      * @param   string  $url        Author's url
@@ -55,9 +53,10 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
      * @return  int     Comment status or Jaws_Error on any error
      * @access  public
      */
-    function InsertComment($gadget, $action, $reference, $name, $email, $url, $message,
-                          $permalink, $status = Comments_Info::COMMENTS_STATUS_APPROVED, $private = null)
-    {
+    function InsertComment($gadget, $action, $reference, $reference_title, $reference_link,
+        $name, $email, $url, $message, $permalink, $status = Comments_Info::COMMENTS_STATUS_APPROVED,
+        $private = null
+    ) {
         if (!in_array($status, array(Comments_Info::COMMENTS_STATUS_APPROVED, Comments_Info::COMMENTS_STATUS_WAITING,
             Comments_Info::COMMENTS_STATUS_SPAM, Comments_Info::COMMENTS_STATUS_PRIVATE))) {
             $status = Comments_Info::COMMENTS_STATUS_SPAM;
@@ -134,6 +133,8 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
         // update comments count
         $res = $objORM->table('comments')->update(
             array(
+                'reference_title' => $reference_title,
+                'reference_link'  => $reference_link,
                 'comments_count' => Jaws_ORM::getInstance()->table('comments_details')
                     ->select('count(id)')->where('cid', $commentReference),
                 'last_update' => time()

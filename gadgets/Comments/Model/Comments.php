@@ -22,7 +22,8 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments_details');
         $commentsTable->select(
-            'comments_details.id:integer', 'gadget', 'action', 'reference:integer', 'reply', 'replier',
+            'comments_details.id:integer', 'gadget', 'action', 'reference:integer',
+            'reference_title', 'reference_link', 'reply', 'replier',
             'name', 'email', 'url', 'uip', 'msg_txt', 'status', 'comments_details.insert_time'
         );
         $commentsTable->join('comments', 'comments.id', 'comments_details.cid');
@@ -40,7 +41,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
      * @param   string  $term       Data that will be used in the filter
      * @param   int     $status     Comment status (approved=1, waiting=2, spam=3)
      * @param   int     $limit      How many comments
-     * @param   mixed   $offset     Offset of data
+     * @param   int     $offset     Offset of data
      * @param   int     $orderBy    The column index which the result must be sorted by
      * @param   int     $user       User Id
      * @return  array   Returns an array with of filtered comments or Jaws_Error on error
@@ -50,12 +51,13 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
-            'comments_details.id:integer', 'gadget', 'action', 'reference:integer', 'user', 'reply', 'replier',
-            'comments_details.name', 'comments_details.email', 'comments_details.url', 'uip', 'msg_txt',
-            'comments_details.status:integer', 'comments_details.insert_time', 'users.username', 'users.nickname',
-            'users.email as user_email', 'users.avatar', 'users.registered_date as user_registered_date',
-            'replier.nickname as replier_nickname','replier.username as replier_username',
-            'comments.comments_count'
+            'comments_details.id:integer', 'gadget', 'action', 'reference:integer',
+            'reference_title', 'reference_link', 'user', 'reply', 'replier',
+            'comments_details.name', 'comments_details.email', 'comments_details.url',
+            'uip', 'msg_txt', 'comments_details.status:integer', 'comments_details.insert_time',
+            'users.username', 'users.nickname', 'users.email as user_email', 'users.avatar',
+            'users.registered_date as user_registered_date', 'replier.nickname as replier_nickname',
+            'replier.username as replier_username', 'comments.comments_count'
         );
 
         $commentsTable->join('comments_details', 'comments_details.cid', 'comments.id');
@@ -84,7 +86,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         }
 
         if (!empty($term)) {
-            $commentsTable->and()->openWhere('comments.reference', $term);
+            $commentsTable->and()->openWhere('comments.reference_title', $term);
             $commentsTable->or()->where('comments_details.name', $term, 'like');
             $commentsTable->or()->where('comments_details.email', $term, 'like');
             $commentsTable->or()->where('comments_details.url', $term, 'like');
@@ -140,7 +142,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         }
 
         if (!empty($term)) {
-            $commentsTable->and()->openWhere('reference', $term);
+            $commentsTable->and()->openWhere('reference_title', $term);
             $commentsTable->or()->where('name', $term, 'like');
             $commentsTable->or()->where('email', $term, 'like');
             $commentsTable->or()->where('url', $term, 'like');
@@ -148,6 +150,28 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         }
 
         return $commentsTable->fetchOne();
+    }
+
+    /**
+     * Gets list of most commented entries by users
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget name
+     * @param   int     $limit      How many entries
+     * @param   int     $offset     Offset of data
+     * @return  array   Returns an array of most commented entries or Jaws_Error on error
+     */
+    function MostCommented($gadget = '', $limit = 10, $offset = 0)
+    {
+        $objORM = Jaws_ORM::getInstance()->table('comments')->select(
+            'gadget', 'action', 'reference:integer',
+            'reference_title', 'reference_link', 'comments_count:integer'
+        );
+        if (!empty($gadget)) {
+            $objORM->where('gadget', $gadget);
+        }
+
+        return $objORM->limit($limit, $offset)->orderBy('comments_count desc')->fetchAll();
     }
 
 }

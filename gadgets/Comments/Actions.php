@@ -26,6 +26,12 @@ $actions['RecentComments'] = array(
     'file'   => 'RecentComments',
     'parametric' => true,
 );
+$actions['MostCommented'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file'   => 'MostCommented',
+    'parametric' => true,
+);
 $actions['UserComments'] = array(
     'normal' => true,
     'file'   => 'UserComments',

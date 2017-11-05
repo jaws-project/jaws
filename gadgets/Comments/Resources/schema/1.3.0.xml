@@ -5,6 +5,7 @@
 
     <table>
         <name><variable>table_prefix</variable>comments</name>
+        <was><variable>table_prefix</variable>comments2</was>
         <declaration>
 
             <field>
@@ -30,18 +31,6 @@
                 <name>reference</name>
                 <type>integer</type>
                 <default>0</default>
-            </field>
-
-            <field>
-                <name>reference_title</name>
-                <type>text</type>
-                <length>255</length>
-            </field>
-
-            <field>
-                <name>reference_link</name>
-                <type>text</type>
-                <length>512</length>
             </field>
 
             <field>
@@ -81,25 +70,6 @@
                     <name>reference</name>
                 </field>
             </index>
-
-            <index>
-                <name><variable>table_prefix</variable>comments_gc</name>
-                <field>
-                    <name>gadget</name>
-                </field>
-
-                <field>
-                    <name>comments_count</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>comments_count</name>
-                <field>
-                    <name>comments_count</name>
-                </field>
-            </index>
-
         </declaration>
     </table>
 

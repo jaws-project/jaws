@@ -33,11 +33,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
      *
      * @param   string  $gadget     Gadget's name
      * @param   string  $action     Gadget's action name
-     * @param   int     $reference  Gadget's reference id.
-     *                              It can be the ID of a blog entry, the ID of a
-     *                              photo in Phoo, etc. This needs to be a reference
-     *                              to find the comments related to a specific record
-     *                              in a gadget.
+     * @param   int     $reference  Gadget's reference id
      * @param   string  $name       Author's name
      * @param   string  $email      Author's email
      * @param   string  $url        Author's url
