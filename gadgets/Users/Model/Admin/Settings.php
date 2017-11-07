@@ -14,7 +14,7 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
      * @param   array   $settings   Users gadget settings array
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function SaveSettings($settings)
+    function UpdateSettings($settings)
     {
         if ($this->gadget->GetPermission('ManageAuthenticationMethod')) {
             $methods = $GLOBALS['app']->getAuthTypes();
@@ -37,7 +37,7 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
             $res = $res && $this->gadget->registry->update($key, $value);
         }
 
-        return $res?: Jaws_Error::raiseError(_t('USERS_PROPERTIES_CANT_UPDATE'), __FUNCTION__);
+        return $res;
     }
 
 }

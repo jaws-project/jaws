@@ -26,9 +26,9 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
             return $onlineHTML->OnlineUsers();
         }
 
-        $this->gadget->CheckPermission('ManageProperties');
-        $propHTML = $this->gadget->action->loadAdmin('Properties');
-        return $propHTML->Properties();
+        $this->gadget->CheckPermission('ManageSettings');
+        $propHTML = $this->gadget->action->loadAdmin('Settings');
+        return $propHTML->Settings();
     }
 
     /**
@@ -40,7 +40,7 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function MenuBar($action)
     {
-        $actions = array('Users', 'Groups', 'ACLs', 'OnlineUsers','Properties');
+        $actions = array('Users', 'Groups', 'ACLs', 'OnlineUsers', 'Settings');
         if (!in_array($action, $actions)) {
             $action = 'Users';
         }
@@ -69,10 +69,10 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
                 BASE_SCRIPT . '?gadget=Users&amp;action=OnlineUsers',
                 STOCK_PREFERENCES);
         }
-        if ($this->gadget->GetPermission('ManageProperties')) {
-            $menubar->AddOption('Properties',
-                                _t('GLOBAL_PROPERTIES'),
-                                BASE_SCRIPT . '?gadget=Users&amp;action=Properties',
+        if ($this->gadget->GetPermission('ManageSettings')) {
+            $menubar->AddOption('Settings',
+                                _t('GLOBAL_SETTINGS'),
+                                BASE_SCRIPT . '?gadget=Users&amp;action=Settings',
                                 STOCK_PREFERENCES);
         }
         $menubar->Activate($action);

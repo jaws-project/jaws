@@ -367,9 +367,9 @@ $admin_actions['OnlineUsers'] = array(
     'normal' => true,
     'file' => 'OnlineUsers',
 );
-$admin_actions['Properties'] = array(
+$admin_actions['Settings'] = array(
     'normal' => true,
-    'file' => 'Properties',
+    'file' => 'Settings',
 );
 $admin_actions['LoadAvatar'] = array(
     'standalone' => true,
@@ -452,9 +452,9 @@ $admin_actions['AddUsersToGroup'] = array(
     'file' => 'Ajax',
     'loglevel' => JAWS_NOTICE,
 );
-$admin_actions['SaveSettings'] = array(
+$admin_actions['UpdateSettings'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Settings',
     'loglevel' => JAWS_WARNING,
 );
 $admin_actions['GetACLUI'] = array(

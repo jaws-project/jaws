@@ -22,6 +22,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('anon_activation', 'user'),
         array('anon_group', ''),
         array('reserved_users', ''),
+        array('multi_domain', 'false'),
         array('default_domain', '0'),
     );
 
@@ -35,7 +36,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         'ManageUsers',
         'ManageGroups',
         'ManageOnlineUsers',
-        'ManageProperties',
+        'ManageSettings',
         'ManageUserACLs',
         'ManageGroupACLs',
         'ManageAuthenticationMethod',
@@ -250,6 +251,14 @@ class Users_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '3.2.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert('multi_domain', 'false');
+            // ACL keys
+            $this->gadget->acl->rename('ManageProperties', 'ManageSettings');
+            
         }
 
         return true;

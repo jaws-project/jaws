@@ -433,31 +433,6 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     }
 
     /**
-     * Updates User gadget settings
-     *
-     * @access  public
-     * @return  array   Response array (notice or error)
-     */
-    function SaveSettings()
-    {
-        $this->gadget->CheckPermission('ManageProperties');
-        $settings = $this->gadget->request->fetchAll('post');
-        $settings['reserved_users'] = implode(
-            "\n",
-            array_filter(preg_split("/\n|\r|\n\r/", strtolower($settings['reserved_users'])))
-        );
-        $res = $this->gadget->model->loadAdmin('Settings')->SaveSettings($settings);
-        if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
-        }
-
-        return $GLOBALS['app']->Session->GetResponse(
-            _t('USERS_PROPERTIES_UPDATED'),
-            RESPONSE_NOTICE
-        );
-    }
-
-    /**
      * Returns ACL UI
      *
      * @access  public

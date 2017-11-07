@@ -234,11 +234,11 @@ class Users_Model_Registration extends Jaws_Gadget_Model
     {
         $result = Jaws_ORM::getInstance()
             ->table('users')
-            ->select('id')
+            ->update(array('status' => 1))
             ->where('id', (int)$user)
             ->and()
             ->where('verify_key', $key)
-            ->fetchOne();
+            ->exec();
         return Jaws_Error::IsError($result)? false : !empty($result);
     }
 

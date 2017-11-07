@@ -121,7 +121,7 @@ var UsersCallback = {
         UsersAjax.showResponse(response);
     },
 
-    SaveSettings: function(response) {
+    UpdateSettings: function(response) {
         UsersAjax.showResponse(response);
     }
 };
@@ -762,10 +762,10 @@ function stopGroupAction()
 /**
  * Save settings
  */
-function saveSettings()
+function updateSettings()
 {
     UsersAjax.callAsync(
-        'SaveSettings',
+        'UpdateSettings',
         $.unserialize($('#users_settings input,select,textarea').serialize())
     );
 }
