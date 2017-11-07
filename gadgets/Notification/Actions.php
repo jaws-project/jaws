@@ -10,6 +10,7 @@
  * Index actions
  */
 $actions['SendNotifications'] = array(
+    'global' => true,
     'standalone' => true,
     'file' => 'Notification',
 );

@@ -5,22 +5,22 @@
  * @category   GadgetAdmin
  * @package    Users
  */
-class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
+class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
 {
     /**
-     * Builds admin properties UI
+     * Builds admin settings UI
      *
      * @access  public
      * @return  string  XHTML form
      */
-    function Properties()
+    function Settings()
     {
-        $this->gadget->CheckPermission('ManageProperties');
+        $this->gadget->CheckPermission('ManageSettings');
         $this->AjaxMe('script.js');
 
         $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('settings');
-        $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
+        $tpl->SetVariable('menubar', $this->MenuBar('Settings'));
 
         // authentication method
         $authtype =& Piwi::CreateWidget('Combo', 'authtype');
@@ -79,11 +79,39 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $tpl->SetVariable('reserved_users', $reservedUsers->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript:saveSettings();');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:updateSettings();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->ParseBlock('settings');
         return $tpl->Get();
+    }
+
+    /**
+     * Updates settings
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateSettings()
+    {
+        $this->gadget->CheckPermission('ManageSettings');
+        $settings = jaws()->request->fetchAll('post');
+        $settings['reserved_users'] = implode(
+            "\n",
+            array_filter(preg_split("/\n|\r|\n\r/", strtolower($settings['reserved_users'])))
+        );
+
+        if ($this->gadget->model->loadAdmin('Settings')->UpdateSettings($settings)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('USERS_PROPERTIES_UPDATED'),
+                RESPONSE_NOTICE
+            );
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('USERS_PROPERTIES_CANT_UPDATE'),
+            RESPONSE_ERROR
+        );
     }
 
 }
