@@ -19,7 +19,7 @@ class Jaws_XSS
      * @access  private
      */
     private $allowed_tags = array(
-        'body', 'br', 'a', 'img', 'ol', 'ul', 'li', 'blockquote', 'cite', 'code', 'div', 'p',
+        'html', 'body', 'br', 'a', 'img', 'ol', 'ul', 'li', 'blockquote', 'cite', 'code', 'div', 'p',
         'pre', 'span', 'del', 'ins', 'strong', 'b', 'mark', 'i', 's', 'u', 'em', 'strike', 'table',
         'tbody', 'thead', 'tfoot', 'th', 'tr', 'td', 'font', 'center'
     );
@@ -138,7 +138,6 @@ class Jaws_XSS
         $i = 0;
         do {
             $node = $hDoc->childNodes->item($i);
-            //XML_DOCUMENT_TYPE_NODE
             if ($node->hasChildNodes()) {
                 $this->stripXSS($node);
             }
