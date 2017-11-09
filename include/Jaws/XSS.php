@@ -18,8 +18,11 @@ class Jaws_XSS
      * @var     array
      * @access  private
      */
-    private $allowed_tags = '<body><br><a><img><ol><ul><li><blockquote><cite><code><div><p><pre><span><del><ins>
-        <strong><b><mark><i><s><u><em><strike><table><tbody><thead><tfoot><th><tr><td><font><center>';
+    private $allowed_tags = array(
+        'body', 'br', 'a', 'img', 'ol', 'ul', 'li', 'blockquote', 'cite', 'code', 'div', 'p',
+        'pre', 'span', 'del', 'ins', 'strong', 'b', 'mark', 'i', 's', 'u', 'em', 'strike', 'table',
+        'tbody', 'thead', 'tfoot', 'th', 'tr', 'td', 'font', 'center'
+    );
 
     /**
      * Allowed HTML tag attributes
@@ -31,16 +34,6 @@ class Jaws_XSS
         'href', 'src', 'alt', 'title', 'style', 'class', 'dir',
         'height', 'width', 'rowspan', 'colspan', 'align', 'valign',
         'rows', 'cols', 'color', 'bgcolor', 'border'
-    );
-
-    /**
-     * Allowed HTML entities
-     *
-     * @var array
-     * @access  private
-     */
-    private $allowed_entities = array(
-        '/&nbsp;/', '/&cent;/', '/&pound;/', '/&yen;/', '/&euro;/', '/&copy;/', '/&reg;/'
     );
 
     /**
@@ -134,6 +127,59 @@ class Jaws_XSS
     }
 
     /**
+     * striping XSS
+     *
+     * @access  private
+     * @param   object  DOMDocument object
+     * @return  void
+     */
+    private function stripXSS(&$hDoc)
+    {
+        $i = 0;
+        do {
+            $node = $hDoc->childNodes->item($i);
+            //XML_DOCUMENT_TYPE_NODE
+            if ($node->hasChildNodes()) {
+                $this->stripXSS($node);
+            }
+
+            // removing XML node
+            if ($node->nodeType === XML_PI_NODE) {
+                $hDoc->removeChild($node);
+                continue;
+            }
+
+            if ($node->nodeType === XML_ELEMENT_NODE) {
+                if (!in_array($node->tagName, $this->allowed_tags)) {
+                    $hDoc->removeChild($node);
+                    continue;
+                }
+                // parsing tag attributes
+                if ($node->hasAttributes()) {
+                    foreach ($node->attributes as $attr) {
+                        // removing not allowed attributes
+                        if (!in_array($attr->name, $this->allowed_attributes)) {
+                            $node->removeAttributeNode($attr);
+                        } elseif (in_array($attr->name, $this->urlbased_attributes)) {
+                            // removing dangerous url based attributes
+                            if (!preg_match($this->allowed_url_pattern, $attr->value)) {
+                                $node->removeAttributeNode($attr);
+                            }
+                        } elseif ($attr->name === 'style') {
+                            // removing dangerous style attribute
+                            if (!preg_match($this->allowed_style_pattern, $attr->value)) {
+                                $node->removeAttributeNode($attr);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $i++;
+        } while ($i < $hDoc->childNodes->length);
+    }
+
+    /**
      * Parses the text
      *
      * @access  public
@@ -145,61 +191,14 @@ class Jaws_XSS
     function strip($text)
     {
         $result = '';
-        // eliminate DOCTYPE|head|style|script tags
-        $text = preg_replace(
-            array(
-                '@<\!DOCTYPE\s.*?>@sim',
-                '@<head[^>]*>.*?</head>@sim',
-                '@<style[^>]*>.*?</style>@sim',
-                '@<script[^>]*>.*?</script>@sim'
-            ),
-            '',
-            $text
-        );
-        // strip not allowed tags
-        $text = strip_tags($text, $this->allowed_tags);
-        // escape special characters
-        $text = htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8');
-        $text = Jaws_UTF8::str_replace(array('&lt;', '&gt;'), array('<', '>'), $text);
-
-        $hxml = simplexml_load_string(
-            '<?xml version="1.0" encoding="UTF-8"?><html>'. $text .'</html>',
-            'SimpleXMLElement',
-            LIBXML_COMPACT | LIBXML_NOERROR
-        );
-        if ($hxml) {
-            foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
-                $attributes = (array)$tag->attributes();
-                foreach ($attributes['@attributes'] as $attrname => $attrvalue) {
-                    // strip not allowed attributes
-                    if (!in_array(strtolower($attrname), $this->allowed_attributes)) {
-                        unset($tag->attributes()->{$attrname});
-                        continue;
-                    }
-                    // url based attributes
-                    if (in_array(strtolower($attrname), $this->urlbased_attributes)) {
-                        if (!preg_match($this->allowed_url_pattern, $attrvalue)) {
-                            unset($tag->attributes()->{$attrname});
-                            continue;
-                        }
-                    }
-                    // style attribute
-                    if (strtolower($attrname) == 'style') {
-                        if (!preg_match($this->allowed_style_pattern, $attrvalue)) {
-                            unset($tag->attributes()->{$attrname});
-                            continue;
-                        }
-                    }
-                }
-            }
-
-            // remove xml/html tags
-            $result = substr($hxml->asXML(), 45, -8);
+        $hDoc = new DOMDocument();
+        if ($hDoc->loadHTML('<?xml encoding="UTF-8">' . $text, LIBXML_COMPACT | LIBXML_NOERROR)) {
+            $this->stripXSS($hDoc);
+            $result = $hDoc->saveHTML($hDoc->documentElement);
         }
 
-        return htmlspecialchars_decode($result, ENT_NOQUOTES);
+        return $result;
     }
-
 
     /**
      * Convert special characters to HTML entities
