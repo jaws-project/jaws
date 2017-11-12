@@ -129,7 +129,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
         $params['allow_comments']   = (bool)$allow_comments;
-        $params['categories']       = implode(',', $categories);
+        $params['categories']       = ','. implode(',', $categories). ',';
         $params['createtime']       = $now;
         $params['updatetime']       = $now;
 
@@ -257,7 +257,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['type']             = $type;
         $params['favorite']         = (bool)$favorite;
         $params['allow_comments']   = $allow_comments;
-        $params['categories']       = implode(',', $categories);
+        $params['categories']       = ','. implode(',', $categories). ',';
         $params['fast_url']         = $fast_url;
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;

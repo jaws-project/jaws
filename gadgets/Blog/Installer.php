@@ -229,6 +229,26 @@ class Blog_Installer extends Jaws_Gadget_Installer
             // do nothing
         }
 
+        if (version_compare($old, '1.7.0', '<')) {
+            // filling categories filed
+            $objORM = Jaws_ORM::getInstance()->table('blog');
+            $entries = $objORM->select('id:integer', 'categories')->fetchAll();
+            if (Jaws_Error::IsError($entries)) {
+                return $entries;
+            }
+
+            foreach ($entries as $entry) {
+                $result = $objORM->update(
+                    array(
+                        'categories' => ',' . $entry['categories'] . ','
+                    ))->where('id', $entry['id'])
+                    ->exec();
+                if (Jaws_Error::IsError($result)) {
+                    //do nothing
+                }
+            }
+        }
+
         return true;
     }
 
