@@ -181,12 +181,10 @@ class Comments_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.4.0', '<')) {
-            /*
             $result = $this->installSchema('schema.xml', array(), '1.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
-            */
 
             $objORM = Jaws_ORM::getInstance()->table('comments');
             $entries = $objORM->select('id:integer', 'gadget', 'action', 'reference:integer')->fetchAll();
