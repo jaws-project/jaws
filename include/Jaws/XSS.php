@@ -191,11 +191,14 @@ class Jaws_XSS
     {
         $result = '';
         $hDoc = new DOMDocument();
-        if ($hDoc->loadHTML('<?xml encoding="UTF-8">' . $text, LIBXML_COMPACT | LIBXML_NOERROR)) {
+        libxml_use_internal_errors(true);
+        if ($hDoc->loadHTML('<?xml encoding="UTF-8">' . $text, LIBXML_COMPACT | LIBXML_NOERROR | LIBXML_NOWARNING))
+        {
             $this->stripXSS($hDoc);
             $result = $hDoc->saveHTML($hDoc->documentElement);
         }
 
+        libxml_clear_errors();
         return $result;
     }
 
