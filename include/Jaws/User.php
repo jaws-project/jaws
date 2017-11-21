@@ -204,7 +204,7 @@ class Jaws_User
      */
     function GetUser($user, $account = true, $personal = false, $contacts = false, $password = false)
     {
-        $columns = array('users.id:integer', 'contact:integer', 'avatar');
+        $columns = array('users.id:integer', 'domain:integer', 'contact:integer', 'avatar');
         // account information
         if ($account) {
             $columns = array_merge($columns, array('username', 'nickname', 'users.email', 'users.mobile',
@@ -387,7 +387,7 @@ class Jaws_User
      */
     function GetGroupUsers($group, $account = true, $personal = false, $contacts = false, $password = false)
     {
-        $columns = array('users.id:integer', 'avatar');
+        $columns = array('users.id:integer', 'domain:integer', 'avatar');
         // account information
         if ($account) {
             $columns = array_merge($columns, array('username', 'nickname', 'email', 'mobile', 'superadmin:boolean',
@@ -424,8 +424,9 @@ class Jaws_User
     function FindUserByTerm($term)
     {
         return Jaws_ORM::getInstance()->table('users')
-            ->select('id:integer', 'username', 'nickname', 'email', 'mobile', 'superadmin:boolean', 'status:integer')
-            ->openWhere('lower(username)', Jaws_UTF8::strtolower($term))
+            ->select('id:integer', 'domain:integer', 'username', 'nickname', 'email',
+                'mobile', 'superadmin:boolean', 'status:integer'
+            )->openWhere('lower(username)', Jaws_UTF8::strtolower($term))
             ->or()
             ->where('lower(email)', Jaws_UTF8::strtolower($term))
             ->or()
@@ -443,7 +444,9 @@ class Jaws_User
     function GetUserByEmailVerifyKey($key)
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'new_email', 'status:integer');
+        $usersTable->select(
+            'id:integer', 'domain:integer', 'username', 'nickname', 'email', 'new_email', 'status:integer'
+        );
         $usersTable->where('recovery_key', trim($key));
         return $usersTable->fetchRow();
     }
@@ -459,7 +462,7 @@ class Jaws_User
     function VerifyPasswordRecoveryKey($user, $key)
     {
         return Jaws_ORM::getInstance()->table('users')
-            ->select('id:integer', 'username', 'nickname', 'email', 'mobile', 'status:integer')
+            ->select('id:integer', 'domain:integer', 'username', 'nickname', 'email', 'mobile', 'status:integer')
             ->openWhere('lower(username)', Jaws_UTF8::strtolower($user))
             ->or()
             ->where('lower(email)', Jaws_UTF8::strtolower($user))
@@ -619,8 +622,8 @@ class Jaws_User
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select(
-            'users.id:integer', 'username', 'email', 'mobile', 'nickname', 'fname', 'lname',
-            'superadmin:boolean', 'users.status:integer'
+            'users.id:integer', 'domain:integer', 'username', 'email', 'mobile', 'nickname',
+            'fname', 'lname', 'superadmin:boolean', 'users.status:integer'
         );
         if ($group !== false) {
             $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
@@ -935,7 +938,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($uData),
-            array('username', 'nickname', 'email', 'new_email', 'mobile', 'password',
+            array('domain', 'username', 'nickname', 'email', 'new_email', 'mobile', 'password',
                 'superadmin', 'status', 'concurrents', 'logon_hours', 'expiry_date',
             )
         );
