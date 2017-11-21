@@ -209,7 +209,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &uarr;', 'username desc');
         $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &darr;', 'nickname');
         $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &uarr;', 'nickname desc');
-        $orderType->AddEvent(ON_CHANGE, "javascript:searchUser();");
+        $orderType->AddEvent(ON_CHANGE, "searchUser();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
         $tpl->SetVariable('lbl_order_type', _t('USERS_USERS_ORDER_TYPE'));
@@ -222,14 +222,14 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                                     'save',
                                     _t('GLOBAL_SAVE'),
                                     STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, "javascript:saveUser();");
+        $save->AddEvent(ON_CLICK, "saveUser();");
         $tpl->SetVariable('save', $save->Get());
 
         $cancel =& Piwi::CreateWidget('Button',
                                       'cancel',
                                       _t('GLOBAL_CANCEL'),
                                       STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, "javascript:stopUserAction();");
+        $cancel->AddEvent(ON_CLICK, "stopUserAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
         $tpl->SetVariable('selectUser', _t('USERS_USERS_SELECT_A_USER'));
         $tpl->SetVariable('confirmResetACL', _t('USERS_RESET_ACL_CONFIRM'));
@@ -267,6 +267,23 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $tpl->ParseBlock('user/encryption');
         }
 
+        // domains
+        if ($this->gadget->registry->fetch('multi_domain') == 'true') {
+            $domains = $this->gadget->model->load('Domains')->getDomains();
+            if (!Jaws_Error::IsError($domains) && !empty($domains)) {
+                array_unshift($domains, array('id' => 0, 'title' => _t('USERS_NODOMAIN')));
+                $domainCombo =& Piwi::CreateWidget('Combo', 'domain');
+                $tpl->SetBlock('user/domain');
+                foreach ($domains as $domain) {
+                    $domainCombo->AddOption($domain['title'], $domain['id']);
+                }
+                $domainCombo->SetDefault(0);
+                $tpl->SetVariable('domain', $domainCombo->Get());
+                $tpl->SetVariable('lbl_domain', _t('USERS_DOMAIN'));
+                $tpl->ParseBlock('user/domain');
+            }
+        }
+
         // username
         $username =& Piwi::CreateWidget('Entry', 'username');
         $username->SetID('username');
@@ -284,6 +301,12 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $email->SetID('email');
         $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
         $tpl->SetVariable('email', $email->Get());
+
+        // mobile
+        $mobile =& Piwi::CreateWidget('Entry', 'mobile');
+        $mobile->SetID('mobile');
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile', $mobile->Get());
 
         // superadmin
         $superadmin =& Piwi::CreateWidget('Combo', 'superadmin');

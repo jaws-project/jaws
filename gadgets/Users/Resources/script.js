@@ -288,33 +288,24 @@ function saveUser()
                     return false;
                 }
 
-                UsersAjax.callAsync(
-                    'AddUser', {
-                        'username': $('#username').val(),
-                        'password': password,
-                        'nickname': $('#nickname').val(),
-                        'email'   : $('#email').val(),
-                        'status'  : $('#status').val(),
-                        'superadmin' : $('#superadmin').val(),
-                        'concurrents': $('#concurrents').val(),
-                        'expiry_date': $('#expiry_date').val()
-                    }
-                );
+                var formData = $.unserialize($('#users-form input, #users-form select,#users-form textarea').serialize());
+                formData['password'] = password;
+                delete formData['prev_status'];
+                delete formData['pass1'];
+                delete formData['pass2'];
+                delete formData['length'];
+                delete formData['modulus'];
+                delete formData['exponent'];
+                UsersAjax.callAsync('AddUser', {'data': formData});
             } else {
-                UsersAjax.callAsync(
-                    'UpdateUser', {
-                        'uid': $('#uid').val(),
-                        'username': $('#username').val(),
-                        'password': password,
-                        'nickname': $('#nickname').val(),
-                        'email'   : $('#email').val(),
-                        'status'  : $('#status').val(),
-                        'prev_status': $('#prev_status').val(),
-                        'superadmin' : $('#superadmin').val(),
-                        'concurrents': $('#concurrents').val(),
-                        'expiry_date': $('#expiry_date').val()
-                    }
-                );
+                var formData = $.unserialize($('#users-form input, #users-form select, #users-form textarea').serialize());
+                formData['password'] = password;
+                delete formData['pass1'];
+                delete formData['pass2'];
+                delete formData['length'];
+                delete formData['modulus'];
+                delete formData['exponent'];
+                UsersAjax.callAsync('UpdateUser', {'uid':  $('#uid').val(), 'data': formData});
             }
 
             break;
@@ -417,15 +408,23 @@ function editUser(rowElement, uid)
     initDatePicker('expiry_date');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('GetUser', [uid, true]);
-    $('#username').val(uInfo['username']);
-    $('#nickname').val(uInfo['nickname'].defilter());
-    $('#email').val(uInfo['email']);
-    $('#superadmin').val(Number(uInfo['superadmin']));
-    $('#concurrents').val(uInfo['concurrents']);
-    $('#expiry_date').val(uInfo['expiry_date']);
-    $('#status').val(uInfo['status']);
-    $('#prev_status').val(uInfo['status']);
+    var userInfo = UsersAjax.callSync('GetUser', [uid, true]);
+    $('#users-form input, #users-form select, #users-form textarea').each(
+        function () {
+            if ($(this).is('select')) {
+                if (userInfo[$(this).attr('name')] === true) {
+                    $(this).val('1');
+                } else if (userInfo[$(this).attr('name')] === false) {
+                    $(this).val('0');
+                } else {
+                    $(this).val(userInfo[$(this).attr('name')]);
+                }
+            } else {
+                $(this).val(userInfo[$(this).attr('name')]);
+            }
+        }
+    );
+    $('#prev_status').val(userInfo['status']);
 }
 
 /**

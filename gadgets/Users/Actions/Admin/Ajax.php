@@ -134,7 +134,10 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function AddUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $uData = $this->gadget->request->fetchAll('post');
+        $uData = $this->gadget->request->fetch('data:array', 'post');
+        $uData['concurrents'] = (int)$uData['concurrents'];
+        $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
+
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
             $uData['password'] = $JCrypt->decrypt($uData['password']);
@@ -167,8 +170,9 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $uData = $this->gadget->request->fetchAll('post');
-        $uid = $uData['uid'];
+        $post = $this->gadget->request->fetch(array('data:array', 'uid'), 'post');
+        $uid = $post['uid'];
+        $uData = $post['data'];
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
