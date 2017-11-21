@@ -57,9 +57,15 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
      */
     function MostCommented($gadget = '', $limit = 0)
     {
+        $rqst = $this->gadget->request->fetch(array('page'), 'get');
+        //$rqst = $this->gadget->request->fetch(array('gadget', 'page'), 'get');
+        //$gadget = is_null($rqst['gadget'])? $gadget : $rqst['gadget'];
+        $limit = empty($limit) ? 10 : $limit;
+        $offset = is_null($rqst['page'])? 0 : (int)$page * 10;
+
         $entries = Jaws_Gadget::getInstance('Comments')
             ->model->load('Comments')
-            ->MostCommented($gadget, $limit);
+            ->MostCommented($gadget, $limit, $offset);
         if (Jaws_Error::IsError($entries) || empty($entries)) {
             return false;
         }

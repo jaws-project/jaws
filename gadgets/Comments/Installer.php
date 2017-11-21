@@ -214,6 +214,10 @@ class Comments_Installer extends Jaws_Gadget_Installer
 
         }
 
+        if (version_compare($old, '1.5.0', '<')) {
+            // do nothing;
+        }
+
         return true;
     }
 

@@ -18,6 +18,15 @@ $maps[] = array(
     )
 );
 $maps[] = array(
+    'MostCommented',
+//    'comments/mostest[/gadget/{gadget}][/page/{page}]',
+    'comments/mostest[/page/{page}]',
+    array(
+        'gadget' => '[[:alnum:]_]+',
+        'page'  => '[[:digit:]]+',
+    )
+);
+$maps[] = array(
     'RecentCommentsRSS',
     'comments[/gadget/{gadgetname}][/action/{actionname}][/reference/{reference}]/rss'
 );
