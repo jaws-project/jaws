@@ -81,6 +81,10 @@ class Users_Actions_Personal extends Users_Actions_Default
         $tpl->SetVariable('lbl_upload_avatar', _t('USERS_USERS_AVATAR_UPLOAD'));
         $tpl->SetVariable('lbl_delete_avatar', _t('USERS_USERS_AVATAR_DELETE'));
 
+        // pgpkey
+        $tpl->SetVariable('lbl_pgpkey', _t('USERS_USERS_PGPKEY'));
+        $tpl->SetVariable('pgpkey',     $personal['pgpkey']);
+
         // signature
         $tpl->SetVariable('lbl_signature', _t('USERS_USERS_SIGNATURE'));
         $tpl->SetVariable('signature',     $personal['signature']);
@@ -129,7 +133,7 @@ class Users_Actions_Personal extends Users_Actions_Default
 
         $this->gadget->CheckPermission('EditUserPersonal');
         $post = $this->gadget->request->fetch(
-            array('fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'signature',
+            array('fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'pgpkey', 'signature',
                   'about', 'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
             'post'
         );
