@@ -218,9 +218,12 @@ class Jaws_User
         }
 
         if ($personal) {
-            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob',
-                'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
-                'interests',)
+            $columns = array_merge(
+                $columns,
+                array(
+                    'fname', 'lname', 'gender', 'ssn', 'dob', 'public:boolean', 'privacy:boolean',
+                    'pgpkey', 'signature', 'about', 'experiences', 'occupations', 'interests'
+                )
             );
         }
 
@@ -1186,7 +1189,7 @@ class Jaws_User
         $invalids = array_diff(
             array_keys($pData),
             array('fname', 'lname', 'gender', 'ssn', 'dob',
-                'signature', 'about', 'experiences',
+                'pgpkey', 'signature', 'about', 'experiences',
                 'occupations', 'interests', 'avatar', 'privacy',
             )
         );
