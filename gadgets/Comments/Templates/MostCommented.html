@@ -1,4 +1,4 @@
-<!-- BEGIN comments -->
+<!-- BEGIN comments_layout -->
 <div class="gadget_header">
   <div class="gadget_title"><h2>{{title}}</h2></div>
 </div>
@@ -10,6 +10,28 @@
     <!-- END entry -->
     </ul>
   </div>
+  <!-- BEGIN more -->
+  <div class="gadget_actions"><a href="{{url_more}}">{{lbl_more}}</a></div>
+  <!-- END more -->
 </div>
 <div class="gadget_footer"></div>
-<!-- END comments -->
+<!-- END comments_layout -->
+
+<!-- BEGIN comments_normal -->
+<div class="gadget_header">
+  <div class="gadget_title"><h2>{{title}}</h2></div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_content content">
+    <ul>
+    <!-- BEGIN entry -->
+      <li><a href="{{link}}">{{title}}</a></li>
+    <!-- END entry -->
+    </ul>
+
+    <!-- INCLUDE Navigation.html include/Jaws/Resources -->
+
+  </div>
+</div>
+<div class="gadget_footer"></div>
+<!-- END comments_normal -->

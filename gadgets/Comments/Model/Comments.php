@@ -174,4 +174,21 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         return $objORM->limit($limit, $offset)->orderBy('comments_count desc')->fetchAll();
     }
 
+    /**
+     * Gets count of most commented entries by users
+     *
+     * @access  public
+     * @param   string  $gadget Gadget name
+     * @return  mixed   Returns count of most commented entries or Jaws_Error on error
+     */
+    function GetMostCommentedCount($gadget = '')
+    {
+        $objORM = Jaws_ORM::getInstance()->table('comments')->select('count(id)');
+        if (!empty($gadget)) {
+            $objORM->where('gadget', $gadget);
+        }
+
+        return $objORM->fetchOne();
+    }
+
 }
