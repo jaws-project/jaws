@@ -66,7 +66,7 @@ class Jaws_Gadget_Actions_PageNavigation
         foreach ($pager as $k => $v) {
             $tpl->SetBlock("$block/pagination/page");
             $params['page'] = $v;
-            $pageURL = $this->gadget->urlMap($action, $params, false, $gadget);
+            $pageURL = $this->gadget->urlMap($action, $params, array(), $gadget);
             if ($k == 'next') {
                 if ($v) {
                     $tpl->SetBlock("$block/pagination/page/next");
