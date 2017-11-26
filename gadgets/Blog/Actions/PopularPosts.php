@@ -50,8 +50,9 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
         if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'popular_posts_normal';
             $page = (int)$this->gadget->request->fetch('page', 'get');
+            $page = empty($page)? 1 : (int)$page;
         } else {
-            $page = 0;
+            $page = 1;
             $baseBlock = 'popular_posts_layout';
         }
         $limit = empty($limit)? $this->gadget->registry->fetch('popular_limit') : $limit;
@@ -60,7 +61,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('BLOG_POPULAR_POSTS'));
 
         $model = $this->gadget->model->load('Posts');
-        $entries = $model->GetPopularPosts($from, $limit, $page * $limit);
+        $entries = $model->GetPopularPosts($from, $limit, ($page - 1) * $limit);
         $entriesCount = $model->GetPopularPostsCount($from);
         if (!Jaws_Error::IsError($entries)) {
             $date = Jaws_Date::getInstance();
