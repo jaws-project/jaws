@@ -113,6 +113,13 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
                 array(),
                 _t('BLOG_PAGES_COUNT', $entriesCount)
             );
+        } else {
+            if ($entriesCount > $limit) {
+                $tpl->SetBlock("$baseBlock/more");
+                $tpl->SetVariable('lbl_more', _t('GLOBAL_MORE'));
+                $tpl->SetVariable('url_more', $this->gadget->urlMap('PopularPosts'));
+                $tpl->ParseBlock("$baseBlock/more");
+            }
         }
 
         $tpl->ParseBlock($baseBlock);
