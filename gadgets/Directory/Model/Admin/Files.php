@@ -108,10 +108,14 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $data['file_size'] = $files['file'][0]['host_filesize'];
             } elseif (isset($data['host_filename'])) {
                 if ($data['host_filename'] == ':nochange:') {
-                    unset($data['host_filename']);
-                    unset($data['user_filename']);
-                    unset($data['mime_type']);
-                    unset($data['file_size']);
+                    if (isset($dbFileInfo)) {
+                        $data['host_filename'] = $dbFileInfo['host_filename'];
+                    } else {
+                        unset($data['host_filename']);
+                        unset($data['user_filename']);
+                        unset($data['mime_type']);
+                        unset($data['file_size']);
+                    }
                 }
                 // do nothing
             } elseif (isset($dbFileInfo)) {

@@ -153,9 +153,11 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function GetThumbnailURL($filename)
     {
         $thumbnailURL = '';
-        $thumbnail = "directory/$filename.thumbnail.png";
-        if (file_exists(JAWS_DATA . $thumbnail)) {
-            $thumbnailURL = $GLOBALS['app']->getDataURL($thumbnail);
+        if (!is_null($filename) && $filename !== '') {
+            $thumbnail = "directory/$filename.thumbnail.png";
+            if (file_exists(JAWS_DATA . $thumbnail)) {
+                $thumbnailURL = $GLOBALS['app']->getDataURL($thumbnail);
+            }
         }
 
         return $thumbnailURL;
