@@ -173,7 +173,8 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
                         return $res;
                     }
                 } else {
-                    $res = $this->UpdateMap($eMap['id'],
+                    $res = $this->UpdateMap(
+                        $eMap['id'],
                         $eMap['custom_map'],
                         $vars_regexps,
                         $order + 1,
@@ -290,8 +291,8 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
      * @return  mixed   True on success, Jaws_Error otherwise
      */
     function UpdateMap($id, $custom_map, $vars_regexps, $order,
-                       $map = '', $map_extension = '.', $time = '')
-    {
+                       $map, $map_extension = '.', $time = ''
+    ) {
         if (!empty($map_extension) && $map_extension{0} != '.') {
             $map_extension = '.'.$map_extension;
         }
@@ -310,11 +311,9 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         }
 
         $params = array();
-        if (!empty($map)) {
-            $params['regexp'] = $this->GetMapRegExp($map, $vars_regexps);
-            $params['extension'] = $map_extension;
-        }
-
+        $params['map'] = $map;
+        $params['regexp'] = $this->GetMapRegExp($map, $vars_regexps);
+        $params['extension'] = $map_extension;
         $params['custom_map']    = $custom_map;
         $params['custom_regexp'] = $this->GetMapRegExp($custom_map, $vars_regexps);
         $params['vars_regexps']  = serialize($vars_regexps);
