@@ -841,7 +841,7 @@ class Jaws_User
         }
 
         // mobile
-        $uData['mobile'] = trim($uData['mobile']);
+        $uData['mobile'] = isset($uData['mobile']) ? trim($uData['mobile']) : '';
         if (!empty($uData['mobile'])) {
             if (!empty($uData['mobile'])) {
                 if (!preg_match("/^[00]\d{10,16}$/", $uData['mobile'])) {
