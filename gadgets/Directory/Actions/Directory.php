@@ -62,7 +62,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $this->SetActionMode('Directory', 'standalone', 'normal');
         }
 
-        $tpl = $this->gadget->template->load('Directory.html');
+        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+            $showPreview = false;
+            $tpl = $this->gadget->template->load('Directory.html');
+        } else {
+            $showPreview = true;
+            $tpl = $this->gadget->template->load('DirBox.html');
+        }
         $tpl->SetBlock('directory');
 
         $response = $GLOBALS['app']->Session->PopResponse('Directory.SaveFile');
@@ -76,7 +82,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $id = ($type == null)? (int)$this->gadget->request->fetch('id') : 0;
         if ($id == 0) {
-            $tpl->SetVariable('content', $this->ListFiles(0, $type, $orderBy, $limit));
+            $tpl->SetVariable('content', $this->ListFiles($tpl, 0, $type, $showPreview, $orderBy, $limit));
         } else {
             $model = $this->gadget->model->load('Files');
             $file = $model->GetFile($id);
@@ -84,11 +90,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
                 return Jaws_HTTPError::Get(404);
             }
-            if ($file['is_dir']) {
-                $tpl->SetVariable('content', $this->ListFiles($id, $type));
-            } else {
-                $tpl->SetVariable('content', $this->gadget->action->load('File')->file($file));
+            if (!$file['is_dir']) {
+                return Jaws_HTTPError::Get(404);
             }
+            // parse files, filters, pagination
+            $this->ListFiles($tpl, $id, $type, $showPreview);
+
             $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
             $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
             $tpl->SetVariable('path', $this->GetPath($id));
@@ -150,7 +157,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      * @param   int     $limit      Forms limit
      * @return string HTML content
      */
-    function ListFiles($parent = 0, $type = null, $orderBy = 0, $limit = 0)
+    function ListFiles(&$tpl, $parent = 0, $type = null, $preview = false, $orderBy = 0, $limit = 0)
     {
         $params = array();
         $filters = $this->gadget->request->fetch(
@@ -228,8 +235,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
         $this->AjaxMe('index.js');
 
-        $tpl = $this->gadget->template->load('Directory.html');
-        $tpl->SetBlock('filters');
+        $block = $tpl->GetCurrentBlockPath();
+        $tpl->SetBlock("$block/filters");
 
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
@@ -258,7 +265,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'));
         foreach ($fileTypes as $fileType) {
-            $tpl->SetBlock('filters/file_type');
+            $tpl->SetBlock("$block/filters/file_type");
             $tpl->SetVariable('value', $fileType['id']);
             $tpl->SetVariable('title', $fileType['title']);
 
@@ -268,7 +275,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             } else if (isset($params['file_type']) && $params['file_type'] == $fileType['id']) {
                 $tpl->SetVariable('selected', 'selected');
             }
-            $tpl->ParseBlock('filters/file_type');
+            $tpl->ParseBlock("$block/filters/file_type");
         }
 
         // file size
@@ -281,7 +288,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $fileSizes[] = array('id' => '16384,131072', 'title' => '16 MB - 128 MB');
         $fileSizes[] = array('id' => '131072,', 'title' => '>> 128 MB');
         foreach($fileSizes as $fileSize) {
-            $tpl->SetBlock('filters/file_size');
+            $tpl->SetBlock("$block/filters/file_size");
             $tpl->SetVariable('value', $fileSize['id']);
             $tpl->SetVariable('title', $fileSize['title']);
 
@@ -289,7 +296,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             if ($filters['filter_file_size'] == $fileSize['id']) {
                 $tpl->SetVariable('selected', 'selected');
             }
-            $tpl->ParseBlock('filters/file_size');
+            $tpl->ParseBlock("$block/filters/file_size");
         }
 
         // Start date
@@ -311,22 +318,22 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('to_date', $datePicker->Get());
 
         $tpl->SetVariable('order_selected_' . $orderBy, 'selected');
-        $tpl->ParseBlock('filters');
+        $tpl->ParseBlock("$block/filters");
 
+        $tpl->SetBlock("$block/files");
         $model = $this->gadget->model->load('Files');
         $files = $model->GetFiles($params, false, $orderBy);
         if (Jaws_Error::IsError($files)) {
-            return '';
+            return;
         }
         if (empty($files)) {
-            $tpl->SetBlock('message');
+            $tpl->SetBlock("$block/files/message");
             $tpl->SetVariable('msg', _t('DIRECTORY_INFO_NO_FILES'));
-            $tpl->ParseBlock('message');
-            return $tpl->Get();
+            $tpl->ParseBlock("$block/files/message");
+            return;
         }
         $count = $model->GetFiles($params, true, $orderBy);
 
-        $tpl->SetBlock('files');
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
@@ -349,22 +356,28 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $objDate = Jaws_Date::getInstance();
         foreach ($files as $file) {
             $url = $this->gadget->urlMap('Directory', array('id' => $file['id']));
-            $tpl->SetBlock('files/file');
+            $tpl->SetBlock("$block/files/file");
             $tpl->SetVariable('url', $url);
             $tpl->SetVariable('title', $file['title']);
+            $tpl->SetVariable('description', $file['description']);
             $tpl->SetVariable('type', empty($file['mime_type'])? '-' : $file['mime_type']);
             $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['file_size']));
             $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
             $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
+            if ($preview) {
+                $tpl->SetBlock("$block/files/file/preview");
+                $tpl->SetVariable('preview', $this->gadget->action->load('File')->play($file));
+                $tpl->ParseBlock("$block/files/file/preview");
+            }
 
             if (!$file['public']) {
-                $tpl->SetBlock('files/file/action');
+                $tpl->SetBlock("$block/files/file/action");
                 $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                 $tpl->SetVariable('id', $file['id']);
                 $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
                 $tpl->SetVariable('id',  $file['id']);
                 $tpl->SetVariable('parent',  $parent);
-                $tpl->ParseBlock('files/file/action');
+                $tpl->ParseBlock("$block/files/file/action");
             }
 
             $thumbnailURL = $model->GetThumbnailURL($file['host_filename']);
@@ -374,7 +387,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $tpl->SetVariable('icon', $iconUrl . $icons[$file['file_type']] . '.png');
             }
 
-            $tpl->ParseBlock('files/file');
+            $tpl->ParseBlock("$block/files/file");
         }
 
         // Pagination
@@ -406,8 +419,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             );
         }
 
-        $tpl->ParseBlock('files');
-        return $tpl->Get();
+        $tpl->ParseBlock("$block/files");
+        return;
     }
 
     /**

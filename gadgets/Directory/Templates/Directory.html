@@ -17,7 +17,8 @@
   </div>
 
   <div class="gadget_content content">
-    {{content}}
+    <!-- INCLUDE FileFilters.html -->
+    <!-- INCLUDE Files.html -->
   </div>
   <!-- BEGIN upload_files -->
   <div class="gadget_actions actions">
@@ -84,89 +85,3 @@
 </div>
 <div class="gadget_footer"></div>
 <!-- END directory -->
-
-<!-- BEGIN filters -->
-<form name="search-file" method="post" action="{{requested_url}}">
-  <input type="hidden" name="gadget" value="Directory" />
-  <input type="hidden" name="action" value="Directory" />
-  <table id="table logs_filter">
-    <tr>
-      <td class="filter_label"><label for="filter_file_type">{{lbl_type}}:</label></td>
-      <td>
-        <select class="form-control" name="filter_file_type" id="filter_file_type">
-          <!-- BEGIN file_type -->
-          <option value="{{value}}" {{selected}}>{{title}}</option>
-          <!-- END file_type -->
-        </select>
-      </td>
-
-      <td class="filter_label"><label for="filter_file_size">{{lbl_size}}:</label></td>
-      <td>
-        <select class="form-control" name="filter_file_size" id="filter_file_size">
-          <!-- BEGIN file_size -->
-          <option value="{{value}}" {{selected}}>{{title}}</option>
-          <!-- END file_size -->
-        </select>
-      </td>
-
-    </tr>
-    <tr>
-      <td class="filter_label"><label for="filter_from_date">{{lbl_from_date}}:</label></td><td>{{from_date}}</td>
-      <td class="filter_label"><label for="filter_to_date">{{lbl_to_date}}:</label></td><td>{{to_date}}</td>
-    </tr>
-
-    <tr>
-      <td class="filter_label"><label for="filter_order">{{lbl_order}}:</label></td>
-      <td>
-        <select class="form-control" name="filter_order" id="filter_order">
-          <option value="2" {{order_selected_2}}>{{lbl_create_time}} &darr;</option>
-          <option value="1" {{order_selected_1}}>{{lbl_create_time}} &uarr;</option>
-        </select>
-      </td>
-
-      <td colspan="2"><button name="search" class="btn">{{lbl_search}}</button></td>
-    </tr>
-  </table>
-</form>
-<!-- END filters -->
-
-<!-- BEGIN files -->
-<table class="table file-list">
-  <thead><tr>
-    <th colspan="2">{{lbl_title}}</th>
-    <th>{{lbl_created}}</th>
-    <th>{{lbl_modified}}</th>
-    <th>{{lbl_type}}</th>
-    <th>{{lbl_size}}</th>
-    <th>{{lbl_action}}</th>
-  </tr></thead>
-  <tbody class="file">
-  <!-- BEGIN file -->
-  <tr id="file_{{id}}" title="{{description}}">
-    <td class="file-title"><a href="{{url}}"><img src="{{icon}}" alt="{{title}}" /></a></td>
-    <td class="file-title"><a href="{{url}}">{{title}}</a></td>
-    <td class="file-created">{{created}}</td>
-    <td class="file-modified">{{modified}}</td>
-    <td class="file-type">{{type}}</td>
-    <td class="file-size">{{size}}</td>
-    <td class="file-action">
-      <!-- BEGIN action -->
-      <a href="javascript:void(0);" onclick="javascript:deleteFile({{id}});">
-        <img src="libraries/piwi/piwidata/art/stock/actions/edit-delete.png"
-             alt="{{lbl_delete}}" title="{{lbl_delete}}" border="0"></a>
-
-      <a href="javascript:void(0);" onclick="javascript:editFile({{id}}, {{parent}});">
-        <img src="libraries/piwi/piwidata/art/stock/stock_edit.png"
-             alt="{{lbl_edit}}" title="{{lbl_edit}}" border="0"></a>
-      <!-- END action -->
-    </td>
-  </tr>
-  <!-- END file -->
-  </tbody>
-</table>
-<!-- INCLUDE Navigation.html include/Jaws/Resources -->
-<!-- END files -->
-
-<!-- BEGIN message -->
-<p>{{msg}}</p>
-<!-- END message -->

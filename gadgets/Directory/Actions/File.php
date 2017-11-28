@@ -45,23 +45,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         }
 
         // display file
-        $fileInfo = pathinfo($file['host_filename']);
-        if (isset($fileInfo['extension'])) {
-            $ext = $fileInfo['extension'];
-            $type = '';
-            if ($ext === 'txt') {
-                $type = 'text';
-            } else if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif', 'svg'))) {
-                $type = 'image';
-            } else if (in_array($ext, array('wav', 'mp3'))) {
-                $type = 'audio';
-            } else if (in_array($ext, array('webm', 'mp4', 'ogg'))) {
-                $type = 'video';
-            }
-            if ($type != '') {
-                $tpl->SetVariable('preview', $this->play($file, $type));
-            }
-        }
+        $tpl->SetVariable('preview', $this->play($file));
 
         // display thumbnail
         $model = $this->gadget->model->load('Files');
@@ -114,8 +98,28 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array
      */
-    function play($file, $type)
+    function play($file)
     {
+        $type = '';
+        // display file
+        $fileInfo = pathinfo($file['host_filename']);
+        if (isset($fileInfo['extension'])) {
+            $ext = $fileInfo['extension'];
+            if ($ext === 'txt') {
+                $type = 'text';
+            } else if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif', 'svg'))) {
+                $type = 'image';
+            } else if (in_array($ext, array('wav', 'mp3'))) {
+                $type = 'audio';
+            } else if (in_array($ext, array('webm', 'mp4', 'ogg'))) {
+                $type = 'video';
+            }
+        }
+
+        if (empty($type)) {
+            return false;
+        }
+
         $tpl = $this->gadget->template->loadAdmin('Media.html');
         $tpl->SetBlock($type);
         if ($type === 'text') {
