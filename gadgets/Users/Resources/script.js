@@ -813,26 +813,29 @@ function updateMyAccount()
  * view a acl permissions
  */
 function viewACL(component, acl) {
-    UsersAjax.callAsync('GetACLGroupsUsers', {component: component, acl:acl}, function (response) {
+    UsersAjax.callAsync(
+        'GetACLGroupsUsers',
+        {component: component, acl:acl},
+        function (response) {
+            $("#groups_permission ul").html('');
+            $.each(response.groups, function (key, group) {
+                var status = '<span class="glyphicon glyphicon-ok"></span>';
+                if(group.key_value==0) {
+                    status = '<span class="glyphicon glyphicon-remove"></span>';
+                }
+                $("#groups_permission ul").append('<li>' + group.title + ' ' + status +'</li>');
+            });
 
-        $("#groups_permission ul").html('');
-        $.each(response.groups, function (key, group) {
-            var status = '<span class="glyphicon glyphicon-ok"></span>';
-            if(group.key_value==0) {
-                status = '<span class="glyphicon glyphicon-remove"></span>';
-            }
-            $("#groups_permission ul").append('<li>' + group.group_title + ' ' + status +'</li>');
-        });
-
-        $("#users_permission ul").html('');
-        $.each(response.users, function (key, user) {
-            var status = '<span class="glyphicon glyphicon-ok"></span>';
-            if(user.key_value==0) {
-                status = '<span class="glyphicon glyphicon-remove"></span>';
-            }
-            $("#users_permission ul").append('<li>' + user.user_nickname  + ' ' + status +'</li>');
-        });
-    });
+            $("#users_permission ul").html('');
+            $.each(response.users, function (key, user) {
+                var status = '<span class="glyphicon glyphicon-ok"></span>';
+                if(user.key_value==0) {
+                    status = '<span class="glyphicon glyphicon-remove"></span>';
+                }
+                $("#users_permission ul").append('<li>' + user.nickname  + ' ' + status +'</li>');
+            });
+        }
+    );
 }
 
 /**
