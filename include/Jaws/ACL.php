@@ -281,6 +281,44 @@ class Jaws_ACL
     }
 
     /**
+     * Fetch all Groups access to custom ACL keys in a gadget
+     *
+     * @access  public
+     * @param   string  $component   Component name
+     * @param   string  $key_name    Key name
+     * @return  mixed   Array of ACLs if success otherwise Null
+     */
+    function fetchGroupsByACL($component, $key_name)
+    {
+        return Jaws_ORM::getInstance()->table('acl')
+            ->select('group:integer', 'groups.title', 'key_value:integer')
+            ->join('groups', 'acl.group', 'groups.id')
+            ->where('component', $component)
+            ->and()->where('key_name', $key_name)
+            ->and()->where('group', 0, '>')
+            ->fetchAll();
+    }
+
+    /**
+     * Fetch all Users access to custom ACL keys in a gadget
+     *
+     * @access  public
+     * @param   string  $component   Component name
+     * @param   string  $key_name    Key name
+     * @return  mixed   Array of ACLs if success otherwise Null
+     */
+    function fetchUsersByACL($component, $key_name)
+    {
+        return Jaws_ORM::getInstance()->table('acl')
+            ->select('user:integer', 'users.nickname', 'users.username', 'key_value:integer')
+            ->join('users', 'acl.user', 'users.id')
+            ->where('component', $component)
+            ->and()->where('key_name', $key_name)
+            ->and()->where('user', 0, '>')
+            ->fetchAll();
+    }
+
+    /**
      * Insert a new key
      *
      * @access  public
