@@ -149,6 +149,22 @@ class Jaws_Crypt
 
 
     /**
+     * Get Public key in PAM format
+     *
+     * @access  public
+     * @return  mixed   RSA public key or False on failure
+     */
+    function getPublic()
+    {
+        if (false !== $pub_details = openssl_pkey_get_details($this->pub_key)) {
+            return $pub_details['key'];
+        }
+
+        return false;
+    }
+
+
+    /**
      * Get RSA key length
      *
      * @access  public
