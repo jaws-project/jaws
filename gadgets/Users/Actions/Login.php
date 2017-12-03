@@ -162,6 +162,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return $this->LoginLinks();
         }
 
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('LoginBox.html');
         $tpl->SetBlock('LoginBox');
         $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
@@ -181,13 +182,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
-            $tpl->SetBlock('LoginBox/onsubmit');
-            $tpl->ParseBlock('LoginBox/onsubmit');
             $tpl->SetBlock('LoginBox/encryption');
-            $tpl->SetVariable('length',  $JCrypt->length());
-            $tpl->SetVariable('modulus',  $JCrypt->modulus());
-            $tpl->SetVariable('exponent', $JCrypt->exponent());
+            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
             $tpl->ParseBlock('LoginBox/encryption');
 
             // usecrypt

@@ -6,22 +6,12 @@
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <form name="loginBox"
-        action="{{base_script}}"
-        <!-- BEGIN onsubmit --> onsubmit="return encryptedElement(this.password,
-                                                                 this.exponent.value,
-                                                                 this.modulus.value,
-                                                                 this.elements['usecrypt'].checked,
-                                                                 this.length.value);"
-        <!-- END onsubmit -->
-        method="post">
+  <form name="loginBox" action="{{base_script}}" onsubmit="return encryptPassword(this);" method="post">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="Login" />
   <input type="hidden" name="referrer" value="{{referrer}}" />
   <!-- BEGIN encryption -->
-  <input type="hidden" name="length" value="{{length}}" />
-  <input type="hidden" name="modulus" value="{{modulus}}" />
-  <input type="hidden" name="exponent" value="{{exponent}}" />
+  <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
   <!-- END encryption -->
   <div class="gadget_content content">
     <div><label for="login_username">{{lbl_username}}:</label>
