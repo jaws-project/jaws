@@ -20,6 +20,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
      */
     function LoginBox($message = '')
     {
+        $this->AjaxMe('script.js');
         // Init layout
         $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/Templates', 'LoginBox.html');
         $ltpl =& $GLOBALS['app']->Layout->_Template;
@@ -39,13 +40,8 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
-            $ltpl->SetBlock('layout/onsubmit');
-            $ltpl->ParseBlock('layout/onsubmit');
             $ltpl->SetBlock('layout/encryption');
-            $ltpl->SetVariable('length',   $JCrypt->length());
-            $ltpl->SetVariable('modulus',  $JCrypt->modulus());
-            $ltpl->SetVariable('exponent', $JCrypt->exponent());
+            $ltpl->SetVariable('pubkey', $JCrypt->getPublic());
             $ltpl->ParseBlock('layout/encryption');
 
             // usecrypt

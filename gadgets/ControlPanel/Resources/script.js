@@ -51,6 +51,24 @@ function init()
     }
 }
 
+/**
+ *
+ */
+function encryptPassword(form)
+{
+    if ($('#login_usecrypt').prop('checked')) {
+        $.loadScript('libraries/js/jsencrypt.min.js', function() {
+            var objRSACrypt = new JSEncrypt();
+            objRSACrypt.setPublicKey(form.pubkey.value);
+            form.password.value = objRSACrypt.encrypt(form.password.value);
+            form.submit();
+        });
+        return false;
+    }
+
+    return true;
+}
+
 $(document).ready(function() {
     init();
 });
