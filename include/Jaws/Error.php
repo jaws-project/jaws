@@ -81,7 +81,9 @@ class Jaws_Error
      * @return  void
      */
     function __destruct() {
-        $GLOBALS['log']->Log($this->_Level, '[' . $this->_Code . ']: ' . $this->_Message, $this->_Backtrace);
+        if (isset($GLOBALS['log'])) {
+            $GLOBALS['log']->Log($this->_Level, '[' . $this->_Code . ']: ' . $this->_Message, $this->_Backtrace);
+        }
     }
 
     /**
