@@ -31,21 +31,8 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
-
             $tpl->SetBlock('MyAccount/encryption');
-            // key length
-            $length =& Piwi::CreateWidget('HiddenEntry', 'length', $JCrypt->length());
-            $length->SetID('length');
-            $tpl->SetVariable('length', $length->Get());
-            // modulus
-            $modulus =& Piwi::CreateWidget('HiddenEntry', 'modulus', $JCrypt->modulus());
-            $modulus->SetID('modulus');
-            $tpl->SetVariable('modulus', $modulus->Get());
-            //exponent
-            $exponent =& Piwi::CreateWidget('HiddenEntry', 'exponent', $JCrypt->exponent());
-            $modulus->SetID('exponent');
-            $tpl->SetVariable('exponent', $exponent->Get());
+            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
             $tpl->ParseBlock('MyAccount/encryption');
         }
 

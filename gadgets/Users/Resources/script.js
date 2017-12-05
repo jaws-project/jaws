@@ -787,27 +787,26 @@ function updateMyAccount()
         return false;
     }
 
-    if ($('#exponent').length) {
-        encryptedElement(
-            $('#pass1')[0],
-            $('#exponent').val(),
-            $('#modulus').val(),
-            true,
-            $('#length').val()
-        );
-        $('#pass2').val($('#pass1').val());
-    }
-
-    UsersAjax.callAsync(
-        'UpdateMyAccount',
-        {'uid': $('#uid').val(),
-         'username': $('#username').val(),
-         'password': $('#pass1').val(),
-         'nickname': $('#nickname').val(),
-         'email'   : $('#email').val(),
-         'mobile'  : $('#mobile').val()
+    $.loadScript('libraries/js/jsencrypt.min.js', function() {
+        if ($('#pubkey').length) {
+            var objRSACrypt = new JSEncrypt();
+            objRSACrypt.setPublicKey($('#pubkey').val());
+            $('#pass1').val(objRSACrypt.encrypt($('#pass1').val()));
+            $('#pass2').val($('#pass1').val());
         }
-    );
+
+        UsersAjax.callAsync(
+            'UpdateMyAccount',
+            {'uid': $('#uid').val(),
+             'username': $('#username').val(),
+             'password': $('#pass1').val(),
+             'nickname': $('#nickname').val(),
+             'email'   : $('#email').val(),
+             'mobile'  : $('#mobile').val()
+            }
+        );
+    });
+
 }
 
 /**
