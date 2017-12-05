@@ -126,6 +126,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     function Users()
     {
         $this->gadget->CheckPermission('ManageUsers');
+        $this->AjaxMe('script.js');
         // DatePicker
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
@@ -136,12 +137,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
         $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
         $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
-        // RSA encryption
-        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
-        }
 
-        $this->AjaxMe('script.js');
         // set default value of javascript variables
         $this->gadget->define('addUser_title', _t('USERS_USERS_ADD'));
         $this->gadget->define('editUser_title', _t('USERS_USERS_EDIT'));
@@ -156,6 +152,14 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $tpl = $this->gadget->template->loadAdmin('Users.html');
         $tpl->SetBlock('Users');
+
+        // RSA encryption
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $tpl->SetBlock('Users/encryption');
+            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
+            $tpl->ParseBlock('Users/encryption');
+        }
 
         // Group Filter
         $filterGroup =& Piwi::CreateWidget('Combo', 'filter_group');
@@ -248,24 +252,6 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     {
         $tpl = $this->gadget->template->loadAdmin('User.html');
         $tpl->SetBlock('user');
-
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock('user/encryption');
-            // key length
-            $length =& Piwi::CreateWidget('HiddenEntry', 'length', $JCrypt->length());
-            $length->SetID('length');
-            $tpl->SetVariable('length', $length->Get());
-            // modulus
-            $modulus =& Piwi::CreateWidget('HiddenEntry', 'modulus', $JCrypt->modulus());
-            $modulus->SetID('modulus');
-            $tpl->SetVariable('modulus', $modulus->Get());
-            //exponent
-            $exponent =& Piwi::CreateWidget('HiddenEntry', 'exponent', $JCrypt->exponent());
-            $modulus->SetID('exponent');
-            $tpl->SetVariable('exponent', $exponent->Get());
-            $tpl->ParseBlock('user/encryption');
-        }
 
         // domains
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {
