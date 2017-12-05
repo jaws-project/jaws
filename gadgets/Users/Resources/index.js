@@ -375,37 +375,34 @@ function saveUser()
                 return false;
             }
 
-            if ($('#users-form #exponent').length) {
-                setMaxDigits(256);
-                var pub_key = new RSAKeyPair(
-                    $('#users-form #exponent').val(),
-                    '10001', $('#users-form #modulus').val(),
-                    parseInt($('#users-form #length').val())
-                );
-                var password = encryptedString(pub_key, $('#users-form #pass1').val(), RSAAPP.PKCS1Padding);
-            } else {
-                var password = $('#users-form #pass1').val();
-            }
-
-            if (selectedUser == null) {
-                if (!$('#users-form #pass1').val()) {
-                    alert(jaws.Users.Defines.incompleteUserFields);
-                    return false;
+            var password = $('#users-form #pass1').val();
+            $.loadScript('libraries/js/jsencrypt.min.js', function() {
+                if ($('#pubkey').length) {
+                    var objRSACrypt = new JSEncrypt();
+                    objRSACrypt.setPublicKey($('#pubkey').val());
+                    password = objRSACrypt.encrypt($('#users-form #pass1').val());
                 }
 
-                var formData = $.unserialize($('#users-form input, #users-form select,#users-form textarea').serialize());
-                formData['password'] = password;
-                delete formData['prev_status'];
-                delete formData['pass1'];
-                delete formData['pass2'];
-                UsersAjax.callAsync('AddUser', {'data': formData});
-            } else {
-                var formData = $.unserialize($('#users-form input, #users-form select, #users-form textarea').serialize());
-                formData['password'] = password;
-                delete formData['pass1'];
-                delete formData['pass2'];
-                UsersAjax.callAsync('UpdateUser', {'uid': selectedUser, 'data': formData});
-            }
+                if (selectedUser == null) {
+                    if (!$('#users-form #pass1').val()) {
+                        alert(jaws.Users.Defines.incompleteUserFields);
+                        return false;
+                    }
+
+                    var formData = $.unserialize($('#users-form input, #users-form select,#users-form textarea').serialize());
+                    formData['password'] = password;
+                    delete formData['prev_status'];
+                    delete formData['pass1'];
+                    delete formData['pass2'];
+                    UsersAjax.callAsync('AddUser', {'data': formData});
+                } else {
+                    var formData = $.unserialize($('#users-form input, #users-form select, #users-form textarea').serialize());
+                    formData['password'] = password;
+                    delete formData['pass1'];
+                    delete formData['pass2'];
+                    UsersAjax.callAsync('UpdateUser', {'uid': selectedUser, 'data': formData});
+                }
+            });
 
             break;
 

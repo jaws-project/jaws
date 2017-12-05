@@ -11,7 +11,9 @@
   </div>
 
   <div class="gadget_content content">
-
+  <!-- BEGIN encryption -->
+  <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
+  <!-- END encryption -->
     <div class="repeater" id="usersGrid" data-staticheight="300">
       <div class="repeater-header">
         <div class="repeater-header-left">
@@ -123,7 +125,6 @@
           </div>
           <div class="modal-body">
             <form action="#" name="users-form" id="users-form">
-              <!-- BEGIN encryption -->{{length}}{{modulus}}{{exponent}}<!-- END encryption -->
               <input type="hidden" name="prev_status" id="prev_status" value="0" />
 
               <table class="table" cellpadding="0" cellspacing="2">
