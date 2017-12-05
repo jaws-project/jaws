@@ -804,7 +804,8 @@ function updateMyAccount()
          'username': $('#username').val(),
          'password': $('#pass1').val(),
          'nickname': $('#nickname').val(),
-         'email'   : $('#email').val()
+         'email'   : $('#email').val(),
+         'mobile'  : $('#mobile').val()
         }
     );
 }

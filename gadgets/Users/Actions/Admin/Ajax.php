@@ -509,7 +509,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $uData = $this->gadget->request->fetchAll('post');
         $uid   = $uData['uid'];
         // unset invalid keys
-        $invalids = array_diff(array_keys($uData), array('username', 'nickname', 'email', 'password'));
+        $invalids = array_diff(array_keys($uData), array('username', 'nickname', 'email', 'mobile', 'password'));
         foreach ($invalids as $invalid) {
             unset($uData[$invalid]);
         }

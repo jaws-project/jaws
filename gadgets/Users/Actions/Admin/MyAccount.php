@@ -67,6 +67,12 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
         $tpl->SetVariable('email', $email->Get());
 
+        // mobile
+        $mobile =& Piwi::CreateWidget('Entry', 'mobile', $uInfo['mobile']);
+        $mobile->SetID('mobile');
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile', $mobile->Get());
+
         // pass1
         $pass1 =& Piwi::CreateWidget('PasswordEntry', 'pass1', '');
         $pass1->SetID('pass1');
