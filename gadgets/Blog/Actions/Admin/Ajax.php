@@ -315,13 +315,13 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('AddEntries');
         @list($id, $categories, $title, $subtitle, $summary, $text, $fasturl, $meta_keywords, $meta_desc, $tags,
-            $allow_comments, $trackbacks, $published, $timestamp
+            $allow_comments, $trackbacks, $published, $type, $favorite, $timestamp
         ) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Posts');
 
         $categories = $this->gadget->request->fetch('1:array', 'post');
-        $summary = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
-        $text    = $this->gadget->request->fetch(4, 'post', 'strip_crlf');
+        $summary = $this->gadget->request->fetch(4, 'post', 'strip_crlf');
+        $text    = $this->gadget->request->fetch(5, 'post', 'strip_crlf');
 
         if ($id == 'NEW') {
             $res = $model->NewEntry(
@@ -339,6 +339,8 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                $allow_comments,
                $trackbacks,
                false,
+               $type,
+               $favorite,
                $timestamp,
                true
             );
@@ -353,7 +355,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
             }
         } else {
             $model->UpdateEntry(
-                $id,
+               $id,
                $categories,
                $title,
                $subtitle,
@@ -367,6 +369,8 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                $allow_comments,
                $trackbacks,
                $published,
+               $type,
+               $favorite,
                $timestamp,
                true
             );

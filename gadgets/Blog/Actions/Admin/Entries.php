@@ -492,7 +492,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 $typeCombo->AddOption($type['title'], $type['id']);
             }
         }
-        $typeCombo->SetDefault($entry['type']);
+        $typeCombo->SetDefault($entry['type']['id']);
         $tpl->SetVariable('type_field', $typeCombo->Get());
 
         // Favorite

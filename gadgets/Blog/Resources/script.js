@@ -661,9 +661,11 @@ function startAutoDrafting()
 
         BlogAjax.callAsync(
             'AutoDraft', [
-                id, categories, title, summary,
+                id, categories, title, $('#subtitle').val(), summary,
                 content, fasturl, meta_keywords, meta_desc,
-                tags, allow_comments, trackbacks, published, timestamp
+                tags, allow_comments, trackbacks, published,
+                $('#type').val(), $('#favorite').prop('checked'),
+                timestamp
             ]
         );
     }

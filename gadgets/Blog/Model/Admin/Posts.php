@@ -106,9 +106,10 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the new post or Jaws_Error on failure
      */
-    function NewEntry($user, $categories, $title, $subtitle, $summary, $content, $image, $fast_url, $meta_keywords, $meta_desc, $tags,
-                      $allow_comments, $trackbacks, $publish, $type, $favorite, $timestamp = null, $autoDraft = false)
-    {
+    function NewEntry($user, $categories, $title, $subtitle, $summary, $content, $image, $fast_url,
+        $meta_keywords, $meta_desc, $tags, $allow_comments, $trackbacks, $publish, $type, $favorite,
+        $timestamp = null, $autoDraft = false
+    ) {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', $autoDraft === false);
 
