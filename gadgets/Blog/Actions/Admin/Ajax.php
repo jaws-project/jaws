@@ -251,6 +251,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('PublishEntries');
         @list($ids, $status) = $this->gadget->request->fetchAll('post');
+        $ids = $this->gadget->request->fetch('0:array', 'post');
         $model = $this->gadget->model->loadAdmin('Posts');
         $model->ChangeEntryStatus($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();

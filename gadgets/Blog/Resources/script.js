@@ -124,7 +124,6 @@ var BlogCallback = {
 function resetLEForm()
 {
     var form = document.forms['ListEntries'];
-    form.elements['show'].value     = '';
     form.elements['category'].value = '';
     form.elements['status'].value   = '';
     form.elements['search'].value   = '';
