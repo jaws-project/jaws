@@ -1371,7 +1371,7 @@ function byte2Hex(b) {
 
 // PKCS#1 (type 2, random) pad input string s to n bytes, and return a bigint
 function pkcs1pad2(s,n) {
-  if(n < s.length + 11) { // TODO: fix for utf-8
+  if(n < s.length + 11) {
     console.error("Message too long for RSA");
     return null;
   }
@@ -1434,12 +1434,20 @@ function RSADoPublic(x) {
 
 // Return the PKCS#1 RSA encryption of "text" as an even-length hex string
 function RSAEncrypt(text) {
-  var m = pkcs1pad2(text,(this.n.bitLength()+7)>>3);
-  if(m == null) return null;
-  var c = this.doPublic(m);
-  if(c == null) return null;
-  var h = c.toString(16);
-  if((h.length & 1) == 0) return h; else return "0" + h;
+  var ctext = '', m = 0, c = 0, h = '';
+  var n = (this.n.bitLength()+7)>>3;
+  var rgxp = new RegExp('.{1,' + (n-11) + '}', 'g');
+  text = text.match(rgxp);
+  for(i = 0; i < text.length; i++) {
+    m = pkcs1pad2(text[i],n);
+    if(m == null) return null;
+    c = this.doPublic(m);
+    if(c == null) return null;
+    h = c.toString(16);
+    ctext += ("00000000" + h).slice(-n*2);
+  }
+
+  return ctext;
 }
 
 // Return the PKCS#1 RSA encryption of "text" as a Base64-encoded string
@@ -1566,10 +1574,18 @@ function RSADoPrivate(x) {
 // Return the PKCS#1 RSA decryption of "ctext".
 // "ctext" is an even-length hex string and the output is a plain string.
 function RSADecrypt(ctext) {
-  var c = parseBigInt(ctext, 16);
-  var m = this.doPrivate(c);
-  if(m == null) return null;
-  return pkcs1unpad2(m, (this.n.bitLength()+7)>>3);
+  var text = '';
+  var n = (this.n.bitLength()+7)>>3;
+  var rgxp = new RegExp('.{1,' + (n*2) + '}', 'g');
+  ctext = ctext.match(rgxp);
+  for(i = 0; i < ctext.length; i++) {
+    var c = parseBigInt(ctext[i], 16);
+    var m = this.doPrivate(c);
+    if(m == null) return null;
+    text += pkcs1unpad2(m, n);
+  }
+
+  return text;
 }
 
 // Return the PKCS#1 RSA decryption of "ctext".
@@ -4252,7 +4268,7 @@ JSEncrypt.prototype.setPublicKey = function (pubkey) {
 JSEncrypt.prototype.decrypt = function (string) {
   // Return the decrypted string.
   try {
-    return this.getKey().decrypt(string);
+    return decodeURIComponent(this.getKey().decrypt(b64tohex(string)));
   }
   catch (ex) {
     return false;
@@ -4270,7 +4286,7 @@ JSEncrypt.prototype.decrypt = function (string) {
 JSEncrypt.prototype.encrypt = function (string) {
   // Return the encrypted string.
   try {
-    return this.getKey().encrypt(string);
+    return hex2b64(this.getKey().encrypt(encodeURIComponent(string)));
   }
   catch (ex) {
     return false;
