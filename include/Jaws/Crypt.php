@@ -168,12 +168,13 @@ class Jaws_Crypt
      * Get RSA key length
      *
      * @access  public
+     * @param   mixed   $key    RSA public|private key
      * @return  mixed   RSA key length or False on failure
      */
-    function length()
+    function length($key = null)
     {
-        if (false !== $pub_details = openssl_pkey_get_details($this->pub_key)) {
-            return $pub_details['bits'];
+        if (false !== $key_details = openssl_pkey_get_details(empty($key)? $this->pub_key : $key)) {
+            return $key_details['bits'];
         }
 
         return false;
@@ -184,12 +185,13 @@ class Jaws_Crypt
      * Get RSA key modulus
      *
      * @access  public
+     * @param   mixed   $key    RSA public|private key
      * @return  mixed   RSA key modulus or False on failure
      */
-    function modulus()
+    function modulus($key = null)
     {
-        if (false !== $pub_details = openssl_pkey_get_details($this->pub_key)) {
-            return bin2hex($pub_details['rsa']['n']);
+        if (false !== $key_details = openssl_pkey_get_details(empty($key)? $this->pub_key : $key)) {
+            return bin2hex($key_details['rsa']['n']);
         }
 
         return false;
@@ -200,12 +202,13 @@ class Jaws_Crypt
      * Get RSA key exponent
      *
      * @access  public
+     * @param   mixed   $key    RSA public|private key
      * @return  mixed   RSA key exponent or False on failure
      */
-    function exponent()
+    function exponent($key = null)
     {
-        if (false !== $pub_details = openssl_pkey_get_details($this->pub_key)) {
-            return bin2hex($pub_details['rsa']['e']);
+        if (false !== $key_details = openssl_pkey_get_details(empty($key)? $this->pub_key : $key)) {
+            return bin2hex($key_details['rsa']['e']);
         }
 
         return false;
@@ -220,8 +223,15 @@ class Jaws_Crypt
      */
     function encrypt($text)
     {
-        openssl_public_encrypt($text, $result, $this->pub_key, OPENSSL_PKCS1_PADDING);
-        return bin2hex($result);
+        $result = '';
+        $n = $this->length($this->pub_key)/8;
+        $text = str_split(rawurlencode($text), n-11);
+        foreach ($text as $chunk) {
+            openssl_public_encrypt($chunk, $ctext, $this->pub_key, OPENSSL_PKCS1_PADDING);
+            $result .= $ctext;
+        }
+
+        return base64_encode($result);
     }
 
 
@@ -229,13 +239,21 @@ class Jaws_Crypt
      * Decrypt text by RSA algorithm
      *
      * @access  public
-     * @param   string  $text   Encrypted text
+     * @param   string  $ctext  Encrypted text
      * @return  string  Plain text
      */
-    function decrypt($text)
+    function decrypt($ctext)
     {
-        openssl_private_decrypt(hex2bin($text), $result, $this->pvt_key, OPENSSL_PKCS1_PADDING);
-        return $result;
+        $result = '';
+        $ctext = base64_decode($ctext);
+        $n = $this->length($this->pvt_key)/8;
+        $ctext = str_split($ctext, $n*2);
+        foreach ($ctext as $chunk) {
+            openssl_private_decrypt($chunk, $text, $this->pvt_key, OPENSSL_PKCS1_PADDING);
+            $result .= $text;
+        }
+
+        return rawurldecode($result);
     }
 
 }
