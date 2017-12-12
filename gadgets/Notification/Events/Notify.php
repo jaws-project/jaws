@@ -85,22 +85,35 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $notificationsMobiles = array();
 
         // notification for this gadget was disabled
-        if (isset($configuration[$gadget]) && $configuration[$gadget] == 0) {
+        if (empty($configuration[$gadget])) {
             return false;
         }
 
-        // generate email array
-        if (!isset($configuration[$gadget]) ||
-            $configuration[$gadget] == 1 ||
-            $configuration[$gadget] == 'Mail') {
+        if ($configuration[$gadget] == 1) {
             $notificationsEmails = array_filter(array_column($users, 'email'));
-        }
-
-        // generate mobile array
-        if (!isset($configuration[$gadget]) ||
-            $configuration[$gadget] == 1 ||
-            $configuration[$gadget] == 'Mobile') {
             $notificationsMobiles = array_filter(array_column($users, 'mobile_number'));
+        } else {
+            $objDModel = $this->gadget->model->load('Drivers');
+            $objDriver = $objDModel->LoadNotificationDriver($configuration[$gadget]);
+            if (Jaws_Error::IsError($objDriver)) {
+                return false;
+            }
+
+            switch ($objDriver->getType()) {
+                case Jaws_Notification::EML_DRIVER:
+                    // generate email array
+                    $notificationsEmails = array_filter(array_column($users, 'email'));
+                    break;
+
+                case Jaws_Notification::SMS_DRIVER:
+                    // generate mobile array
+                    $notificationsMobiles = array_filter(array_column($users, 'mobile_number'));
+                    break;
+
+                default:
+                    return false;
+            }
+            
         }
 
         if (!empty($notificationsEmails) || !empty($notificationsMobiles)) {
