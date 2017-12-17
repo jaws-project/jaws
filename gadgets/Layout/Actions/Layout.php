@@ -32,7 +32,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // theme
         @list($rqst['theme'], $rqst['locality']) = explode(',', $rqst['theme']);
-        $default_theme = unserialize($this->gadget->registry->fetch('theme', 'Settings'));
+        $default_theme = (array)$this->gadget->registry->fetch('theme', 'Settings');
         if (empty($rqst['theme']) ||
             ($rqst['locality'] == $default_theme['locality'] && $rqst['theme'] == $default_theme['name'])
         ) {
@@ -363,7 +363,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $this->gadget->registry->update(
             'theme',
-            serialize(array('name' => $theme, 'locality' => $theme_locality)),
+            array('name' => $theme, 'locality' => $theme_locality),
             null,
             'Settings'
         );

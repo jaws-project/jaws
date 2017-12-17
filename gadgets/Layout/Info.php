@@ -79,7 +79,7 @@ class Layout_Info extends Jaws_Gadget
         parent::__construct($gadget);
         if (isset($GLOBALS['app']) && isset($GLOBALS['app']->Session)) {
             $this->user     = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            $default_theme  = unserialize($GLOBALS['app']->Registry->fetch('theme', 'Settings'));
+            $default_theme  = (array)$GLOBALS['app']->Registry->fetch('theme', 'Settings');
             $this->theme    =  $default_theme['name'];
             $this->locality = (int)$default_theme['locality'];
         } else {
