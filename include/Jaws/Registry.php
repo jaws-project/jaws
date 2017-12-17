@@ -54,21 +54,15 @@ class Jaws_Registry
             Jaws_Error::Fatal($result->getMessage());
         }
 
-        if (defined('JAWS_REGISTRY_JSON_ENCODED')) {
-            foreach ($result as $regrec) {
-                $key_value = json_decode($regrec['key_value']);
-                $this->regkeys[$regrec['component']][$regrec['key_name']] = $key_value;
-                if ($regrec['custom']) {
-                    $this->customs[$regrec['component']][$regrec['key_name']] = $key_value;
-                }
+        foreach ($result as $regrec) {
+            $key_value = json_decode($regrec['key_value']);
+            if ($regrec['component'] == '' && $regrec['key_name'] == 'version') {
+                // for backend compatibility
+                $key_value = is_null($key_value)? $regrec['key_value'] : $key_value;
             }
-        } else {
-            // temporary patch, will be removed in next major version
-            foreach ($result as $regrec) {
-                $this->regkeys[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
-                if ($regrec['custom']) {
-                    $this->customs[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
-                }
+            $this->regkeys[$regrec['component']][$regrec['key_name']] = $key_value;
+            if ($regrec['custom']) {
+                $this->customs[$regrec['component']][$regrec['key_name']] = $key_value;
             }
         }
 
