@@ -322,6 +322,7 @@ class Upgrader_Database extends JawsUpgraderStage
         }
 
         _log(JAWS_LOG_DEBUG,"Checking current database");
+        /*
         $sql = "SELECT * FROM [[registry]]";
         $result = Jaws_DB::getInstance()->queryRow($sql);
         if (Jaws_Error::isError($result)) {
@@ -329,8 +330,27 @@ class Upgrader_Database extends JawsUpgraderStage
             _log(JAWS_LOG_DEBUG,$result->getMessage());
             return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
         }
-        _log(JAWS_LOG_DEBUG,"Connected to ".$_SESSION['upgrade']['Database']['driver']." database driver successfully.");
+        */
 
+        // json encode all registry key value
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $regData = $tblReg->select('id:integer', 'key_value')->fetchAll();
+        if (Jaws_Error::isError($result)) {
+            return $result;
+        }
+        if (json_encode(json_decode($regData[0]['key_value'])) !== $regData[0]['key_value']) {
+            foreach ($regData as $reg) {
+                $result = $tblReg->update(array('key_value' => json_encode($reg['key_value'])))
+                    ->where('id', $reg['id'])
+                    ->exec();
+                if (Jaws_Error::isError($result)) {
+                    _log(JAWS_LOG_ERROR, $result->getMessage());
+                    return $result;
+                }
+            }
+        }
+
+        _log(JAWS_LOG_DEBUG,"Connected to ".$_SESSION['upgrade']['Database']['driver']." database driver successfully.");
         return true;
     }
 }

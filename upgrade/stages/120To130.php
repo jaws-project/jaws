@@ -67,24 +67,6 @@ class Upgrader_120To130 extends JawsUpgraderStage
             }
         }
 
-        // json encode all registry key value
-        $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $regData = $tblReg->select('id:integer', 'key_value')->fetchAll();
-        if (Jaws_Error::isError($result)) {
-            return $result;
-        }
-        foreach ($regData as $reg) {
-            $result = $tblReg->update(array('key_value' => json_encode($reg['key_value'])))
-                ->where('id', $reg['id'])
-                ->exec();
-            if (Jaws_Error::isError($result)) {
-                _log(JAWS_LOG_ERROR, $result->getMessage());
-                return $result;
-            }
-        }
-
-        define('JAWS_REGISTRY_JSON_ENCODED', 1);
-
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = jaws();
