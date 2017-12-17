@@ -218,7 +218,7 @@ $layout->SetVariable('site-slogan', JAWS_VERSION_CODENAME);
 
 // Load js files
 $layout->SetBlock('layout/head');
-$layout->SetVariable('ELEMENT', '<script type="text/javascript" src="../libraries/js/rsa.lib.js"></script>');
+$layout->SetVariable('ELEMENT', '<script type="text/javascript" src="../libraries/js/jsencrypt.min.js"></script>');
 $layout->ParseBlock('layout/head');
 
 // Display the stage
