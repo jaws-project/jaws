@@ -3,31 +3,15 @@
 <p>{{lbl_notice}}</p>
 <script type="text/javascript">
 function EncryptPassword() {
-    setMaxDigits(256);
-    var pub_key = new RSAKeyPair(
-        document.getElementById('exponent').value,
-        '10001',
-        document.getElementById('modulus').value,
-        parseInt(document.getElementById('length').value)
-    );
-
-    document.getElementById('password').value = encryptedString(
-        pub_key,
-        document.getElementById('password').value,
-        RSAAPP.PKCS1Padding
-    );
-    document.getElementById('repeat').value = encryptedString(
-        pub_key,
-        document.getElementById('repeat').value,
-        RSAAPP.PKCS1Padding
-    );
-    return true;
+  var objRSACrypt = new JSEncrypt();
+  objRSACrypt.setPublicKey(document.getElementById('pubkey').value);
+  document.getElementById('password').value = objRSACrypt.encrypt(document.getElementById('password').value);
+  document.getElementById('repeat').value   = objRSACrypt.encrypt(document.getElementById('repeat').value);
+  return true;
 }
 </script>
 <form method="post" onsubmit="return {{func_onsubmit}};">
- <input type="hidden" name="length" id="length" value="{{length}}" />
- <input type="hidden" name="modulus" id="modulus" value="{{modulus}}" />
- <input type="hidden" name="exponent" id="exponent" value="{{exponent}}" />
+ <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
  <table>
   <tr>
    <td><label for="username">{{lbl_user}}:</label></td>

@@ -73,9 +73,7 @@ class Installer_Database extends JawsInstallerStage
                 )
             );
             if (!Jaws_Error::IsError($JCrypt)) {
-                $tpl->SetVariable('length',   $JCrypt->length());
-                $tpl->SetVariable('modulus',  $JCrypt->modulus());
-                $tpl->SetVariable('exponent', $JCrypt->exponent());
+                $tpl->SetVariable('pubkey', $JCrypt->getPublic());
                 $tpl->SetVariable('func_onsubmit', 'EncryptPassword(this)');
             } else {
                 $_SESSION['secure'] = false;
