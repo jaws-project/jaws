@@ -258,7 +258,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
 
             foreach ($result as $rec) {
                 $result = $tblReg->update(
-                    array('key_value' => serialize(array('name' => $rec['key_value'], 'locality' => 0)))
+                    array(
+                        'key_value' => json_encode(
+                            serialize(array('name' => json_decode($rec['key_value']), 'locality' => 0))
+                        )
+                    )
                 )->where('id', (int)$rec['id'])
                 ->exec();
                 if (Jaws_Error::IsError($result)) {
@@ -310,7 +314,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
 
             foreach ($result as $rec) {
                 $result = $tblReg->update(
-                    array('key_value' => unserialize(json_decode($rec['key_value'])))
+                    array('key_value' => json_encode(unserialize(json_decode($rec['key_value']))))
                 )->where('id', (int)$rec['id'])
                 ->exec();
                 if (Jaws_Error::IsError($result)) {
