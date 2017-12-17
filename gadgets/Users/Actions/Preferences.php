@@ -60,7 +60,6 @@ class Users_Actions_Preferences extends Users_Actions_Default
 
             $keys = $GLOBALS['app']->Registry->fetchAll($gadget, true);
             $customized = $this->gadget->registry->fetchAllByUser($gadget);
-            $customized = array_column($customized, 'key_value', 'key_name');
 
             $tpl->SetBlock('preferences/gadget');
             $tpl->SetVariable('component', $gadget);
