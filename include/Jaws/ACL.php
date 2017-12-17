@@ -428,8 +428,11 @@ class Jaws_ACL
             return false;
         }
 
-        $this->default_acls[$component][$new_name] = $this->default_acls[$component][$old_name];
-        unset($this->default_acls[$component][$old_name]);
+        if (array_key_exists($old_name, $this->default_acls[$component])) {
+            $this->default_acls[$component][$new_name] = $this->default_acls[$component][$old_name];
+            unset($this->default_acls[$component][$old_name]);
+        }
+
         return true;
     }
 
