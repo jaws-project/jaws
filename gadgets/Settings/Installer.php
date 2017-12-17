@@ -21,7 +21,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('http_auth', 'false'),
         array('realm', 'Jaws Control Panel'),
         array('key', ''),
-        array('theme', 'N;'),
+        array('theme', array('name' => 'jaws', 'locality' => 0)),
         array('theme_variables', '', true),
         array('date_format', 'd MN Y', true),
         array('calendar', 'Gregorian', true),
@@ -130,8 +130,6 @@ class Settings_Installer extends Jaws_Gadget_Installer
                               mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ) );
         $uniqueKey = md5($uniqueKey);
 
-        // theme
-        $this->gadget->registry->update('theme', serialize(array('name' => 'jaws', 'locality' => 0)));
         // Registry keys
         $this->gadget->registry->update('key', $uniqueKey);
         $this->gadget->registry->update('robots', implode(',', $robots));
@@ -260,7 +258,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
 
             foreach ($result as $rec) {
                 $result = $tblReg->update(
-                    array('key_value' => serialize(array('name' => $rec['key_value'], 'locality' => 0)))
+                    array('key_value' => array('name' => $rec['key_value'], 'locality' => 0))
                 )->where('id', (int)$rec['id'])
                 ->exec();
                 if (Jaws_Error::IsError($result)) {
