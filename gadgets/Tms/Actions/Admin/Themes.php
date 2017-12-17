@@ -113,7 +113,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $tpl->SetVariable('theme_name', $tInfo['name']);
             $tpl->SetVariable('download', (bool)$tInfo['download']? 'true' : 'false');
             // get default theme
-            $defaultTheme = unserialize($GLOBALS['app']->Registry->fetch('theme', 'Settings'));
+            $defaultTheme = (array)$GLOBALS['app']->Registry->fetch('theme', 'Settings');
 
             $tpl->SetVariable(
                 'delete',
@@ -221,7 +221,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         $tInfo = Jaws_Utils::GetThemesInfo($locality, $theme);
         if (!empty($tInfo) && $locality == 0) {
             // get default theme
-            $defaultTheme = unserialize($GLOBALS['app']->Registry->fetch('theme', 'Settings'));
+            $defaultTheme = (array)$GLOBALS['app']->Registry->fetch('theme', 'Settings');
             // Check is default theme?
             if (($defaultTheme['locality'] != 0) || ($theme != $defaultTheme['name'])) {
                 return Jaws_Utils::delete(JAWS_THEMES . $theme);
