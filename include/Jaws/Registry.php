@@ -54,10 +54,21 @@ class Jaws_Registry
             Jaws_Error::Fatal($result->getMessage());
         }
 
-        foreach ($result as $regrec) {
-            $this->regkeys[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
-            if ($regrec['custom']) {
-                $this->customs[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+        if (defined('JAWS_REGISTRY_JSON_ENCODED')) {
+            foreach ($result as $regrec) {
+                $key_value = json_decode($regrec['key_value']);
+                $this->regkeys[$regrec['component']][$regrec['key_name']] = $key_value;
+                if ($regrec['custom']) {
+                    $this->customs[$regrec['component']][$regrec['key_name']] = $key_value;
+                }
+            }
+        } else {
+            // temporary patch, will be removed in next major version
+            foreach ($result as $regrec) {
+                $this->regkeys[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+                if ($regrec['custom']) {
+                    $this->customs[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+                }
             }
         }
 
@@ -112,7 +123,7 @@ class Jaws_Registry
                 ->where('key_name', $key_name)
                 ->fetchOne();
             if (!Jaws_Error::IsError($uvalue) && !is_null($uvalue)) {
-                return $uvalue;
+                return json_decode($uvalue);
             }
         }
 
@@ -140,6 +151,8 @@ class Jaws_Registry
             return null;
         }
 
+        $result = array_column($result, 'key_value', 'key_name');
+        array_walk($result, 'json_decode');
         return $result;
     }
 
@@ -161,7 +174,7 @@ class Jaws_Registry
             'user'       => (int)$user,
             'component'  => $component,
             'key_name'   => $key_name,
-            'key_value'  => $key_value,
+            'key_value'  => json_encode($key_value),
             'custom'     => (bool)$custom,
             'updatetime' => Jaws_DB::getInstance()->date(),
         ));
@@ -203,7 +216,7 @@ class Jaws_Registry
             if ($custom) {
                 $tmp_customs[$component][$key_name] = $key_value;
             }
-            $data[] = array($user, $component, $key_name, $key_value, (bool)$custom, $time);
+            $data[] = array($user, $component, $key_name, json_encode($key_value), (bool)$custom, $time);
         }
 
         $tblReg = Jaws_ORM::getInstance()->table('registry');
@@ -230,15 +243,18 @@ class Jaws_Registry
     function update($key_name, $key_value, $custom = null, $component = '', $user = 0)
     {
         $data = array();
+        $data['user']      = (int)$user;
+        $data['component'] = $component;
+        $data['key_name']  = $key_name;
         if (!is_null($key_value)) {
-            $data['key_value'] = $key_value;
+            $data['key_value'] = json_encode($key_value);
         }
         if (!is_null($custom)) {
             $data['custom'] = (bool)$custom;
         }
 
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $tblReg->update($data)
+        $tblReg->upsert($data)
             ->where('user', (int)$user)
             ->and()
             ->where('component', $component)
@@ -249,18 +265,18 @@ class Jaws_Registry
             return false;
         }
 
-        // if nothing updated then try to insert a new record
-        if (!empty($user) && empty($result)) {
-            return $this->insert($key_name, $key_value, (bool)$custom, $component, $user);
-        }
-
         // update registry cache array
         if (empty($user)) {
-            $this->regkeys[$component][$key_name] = $key_value;
-            if ($custom) {
-                $this->customs[$component][$key_name] = $key_value;
-            } else {
-                unset($this->customs[$component][$key_name]);
+            if (array_key_exists('key_value', $data)) {
+                $this->regkeys[$component][$key_name] = $key_value;
+            }
+
+            if (array_key_exists('custom', $data)) {
+                if ($custom) {
+                    $this->customs[$component][$key_name] = $key_value;
+                } else {
+                    unset($this->customs[$component][$key_name]);
+                }
             }
         }
 
