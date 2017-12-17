@@ -310,7 +310,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
 
             foreach ($result as $rec) {
                 $result = $tblReg->update(
-                    array('key_value' => unserialize($rec['key_value']))
+                    array('key_value' => unserialize(json_decode($rec['key_value'])))
                 )->where('id', (int)$rec['id'])
                 ->exec();
                 if (Jaws_Error::IsError($result)) {
