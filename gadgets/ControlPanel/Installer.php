@@ -52,6 +52,14 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->delete('Backup');
         }
 
+        if (version_compare($old, '1.1.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->update(
+                'update_last_checking',
+                array('version' => '', 'time' => 0)
+            );
+        }
+
         return true;
     }
 
