@@ -24,6 +24,9 @@ define('JAWS_BASE_THEMES', '{{jaws_base_themes}}');
 define('JAWS_CACHE', '{{jaws_cache}}');
 <!-- END jaws_cache -->
 
+// temporary definition
+define('JAWS_REGISTRY_JSON_ENCODED', 1);
+
 $db = array(); //DONT RENAME/DELETE THIS VARIABLE!!
 /**
  * DB Configuration

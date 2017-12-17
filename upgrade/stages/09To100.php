@@ -59,7 +59,7 @@ class Upgrader_09To100 extends JawsUpgraderStage
         }
 
         _log(JAWS_LOG_DEBUG,"Upgrading core schema");
-        $result = Jaws_DB::getInstance()->installSchema($new_schema, '', $old_schema);
+        $result = Jaws_DB::getInstance()->installSchema($new_schema, array(), $old_schema);
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_ERROR, $result->getMessage());
             if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {

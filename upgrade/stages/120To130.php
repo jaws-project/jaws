@@ -1,14 +1,14 @@
 <?php
 /**
- * Jaws Upgrade Stage - From 1.1.1 to 1.2.0
+ * Jaws Upgrade Stage - From 1.2.0 to 1.3.0
  *
  * @category    Application
  * @package     UpgradeStage
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2014-2015 Jaws Development Group
+ * @copyright   2017 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_111To120 extends JawsUpgraderStage
+class Upgrader_120To130 extends JawsUpgraderStage
 {
     /**
      * Builds the upgrader page.
@@ -19,14 +19,14 @@ class Upgrader_111To120 extends JawsUpgraderStage
     function Display()
     {
         $tpl = new Jaws_Template(false, false);
-        $tpl->Load('display.html', 'stages/111To120/templates');
-        $tpl->SetBlock('111To120');
+        $tpl->Load('display.html', 'stages/120To130/templates');
+        $tpl->SetBlock('120To130');
 
-        $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.1.1', '1.2.0'));
+        $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.2.0', '1.3.0'));
         $tpl->setVariable('lbl_notes', _t('UPGRADE_VER_NOTES'));
         $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
 
-        $tpl->ParseBlock('111To120');
+        $tpl->ParseBlock('120To130');
         return $tpl->Get();
     }
 
@@ -48,14 +48,14 @@ class Upgrader_111To120 extends JawsUpgraderStage
         }
 
         // upgrade core database schema
-        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.0.0.xml';
-        $new_schema = JAWS_PATH . 'upgrade/Resources/schema/1.2.0.xml';
+        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.2.0.xml';
+        $new_schema = JAWS_PATH . 'upgrade/Resources/schema/schema.xml';
         if (!file_exists($old_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.0.0.xml'),0 , JAWS_ERROR_ERROR);
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.2.0.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         if (!file_exists($new_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.2.0.xml'),0 , JAWS_ERROR_ERROR);
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', 'schema.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         _log(JAWS_LOG_DEBUG,"Upgrading core schema");
@@ -67,13 +67,23 @@ class Upgrader_111To120 extends JawsUpgraderStage
             }
         }
 
-        // replace requires key name with requirement key name
+        // json encode all registry key value
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $result = $tblReg->update(array('key_name' => 'requirement'))->where('key_name', 'requires')->exec();
+        $regData = $tblReg->select('id:integer', 'key_value')->fetchAll();
         if (Jaws_Error::isError($result)) {
-            _log(JAWS_LOG_ERROR, $result->getMessage());
             return $result;
         }
+        foreach ($regData as $reg) {
+            $result = $tblReg->update(array('key_value' => json_encode($reg['key_value'])))
+                ->where('id', $reg['id'])
+                ->exec();
+            if (Jaws_Error::isError($result)) {
+                _log(JAWS_LOG_ERROR, $result->getMessage());
+                return $result;
+            }
+        }
+
+        define('JAWS_REGISTRY_JSON_ENCODED', 1);
 
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
