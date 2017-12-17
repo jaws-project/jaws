@@ -103,7 +103,7 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>comments_gas</name>
+                <name><variable>table_prefix</variable>old_comments_gas</name>
                 <was><variable>table_prefix</variable>comments_gas</was>
                 <field>
                     <name>gadget</name>
@@ -117,7 +117,7 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>comments_gar</name>
+                <name><variable>table_prefix</variable>old_comments_gar</name>
                 <was><variable>table_prefix</variable>comments_gar</was>
                 <field>
                     <name>gadget</name>
@@ -131,7 +131,7 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>comments_mk</name>
+                <name><variable>table_prefix</variable>old_comments_mk</name>
                 <was><variable>table_prefix</variable>comments_mk</was>
                 <field>
                     <name>msg_key</name>
@@ -195,7 +195,7 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>comments_gar</name>
+                <name><variable>table_prefix</variable>comments2_gar</name>
                 <unique>true</unique>
                 <field>
                     <name>gadget</name>

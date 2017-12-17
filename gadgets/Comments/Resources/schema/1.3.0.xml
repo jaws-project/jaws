@@ -59,6 +59,7 @@
 
             <index>
                 <name><variable>table_prefix</variable>comments_gar</name>
+                <was><variable>table_prefix</variable>comments2_gar</was>
                 <unique>true</unique>
                 <field>
                     <name>gadget</name>
@@ -70,6 +71,7 @@
                     <name>reference</name>
                 </field>
             </index>
+
         </declaration>
     </table>
 
