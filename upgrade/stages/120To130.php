@@ -73,7 +73,7 @@ class Upgrader_120To130 extends JawsUpgraderStage
         $GLOBALS['app']->Registry->Init();
 
         // Upgrading core gadgets
-        $gadgets = array('UrlMapper', 'Settings', 'Policy', 'Users', 'Layout');
+        $gadgets = array('UrlMapper', 'Settings', 'Policy', 'Users', 'Layout', 'ControlPanel');
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
