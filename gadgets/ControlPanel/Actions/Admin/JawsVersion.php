@@ -27,7 +27,7 @@ class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_Action
                 $jaws_version = $data;
                 $this->gadget->registry->update(
                     'update_last_checking',
-                    serialize(array('version' => $jaws_version, 'time' => time()))
+                    array('version' => $jaws_version, 'time' => time())
                 );
             }
         }

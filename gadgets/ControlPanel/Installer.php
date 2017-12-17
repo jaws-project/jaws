@@ -11,6 +11,16 @@
 class ControlPanel_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        array('update_last_checking', array('version' => '', 'time' => 0)),
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
@@ -18,12 +28,6 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        // Registry keys
-        $this->gadget->registry->insert(
-            'update_last_checking',
-            serialize(array('version' => '', 'time' => 0))
-        );
-
         return true;
     }
 
@@ -38,6 +42,12 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '1.0.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert(
+                'update_last_checking',
+                array('version' => '', 'time' => 0)
+            );
+
             // ACLs keys
             $this->gadget->acl->delete('Backup');
         }
