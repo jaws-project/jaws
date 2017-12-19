@@ -48,39 +48,24 @@ if (!$GLOBALS['app']->Session->Logged())
     {
         if ($httpAuthEnabled) {
             $httpAuth->AssignData();
-            $user   = $httpAuth->getUsername();
-            $passwd = $httpAuth->getPassword();
-        } else {
-            $user    = jaws()->request->fetch('username', 'post');
-            $passwd  = jaws()->request->fetch('password', 'post');
-            $crypted = jaws()->request->fetch('usecrypt', 'post');
-
-            if (isset($crypted)) {
-                $JCrypt = Jaws_Crypt::getInstance();
-                if (!Jaws_Error::IsError($JCrypt)) {
-                    $passwd = $JCrypt->decrypt($passwd);
-                }
-            } else {
-                $passwd = Jaws_XSS::defilter($passwd);
-            }
+            jaws()->request->update('username', $httpAuth->getUsername(), 'post');
+            jaws()->request->update('password', $httpAuth->getPassword(), 'post');
         }
 
         // check captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $mPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
-            $param = jaws()->request->fetch(array('redirect_to', 'remember', 'authtype'), 'post');
-            $resCheck = $GLOBALS['app']->Session->Login(
-                $user,
-                $passwd, 
-                isset($param['remember']),
-                $param['authtype']
+            $loginData = jaws()->request->fetch(
+                array('username', 'password', 'usecrypt', 'loginkey', 'redirect_to', 'remember', 'authtype'),
+                'post'
             );
+            $resCheck = $GLOBALS['app']->Session->Login($loginData);
         }
         if (!Jaws_Error::IsError($resCheck)) {
             // Can enter to Control Panel?
             if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
-                $redirectTo = isset($param['redirect_to'])? $param['redirect_to'] : '';
+                $redirectTo = isset($loginData['redirect_to'])? $loginData['redirect_to'] : '';
                 Jaws_Header::Location(hex2bin($redirectTo));
             } else {
                 $GLOBALS['app']->Session->Logout();
