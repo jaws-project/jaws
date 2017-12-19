@@ -247,7 +247,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '3.1.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '3.0.0.xml');
+            $result = $this->installSchema('3.1.0.xml', array(), '3.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -258,7 +258,13 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('multi_domain', 'false');
             // ACL keys
             $this->gadget->acl->rename('ManageProperties', 'ManageSettings');
-            
+        }
+
+        if (version_compare($old, '3.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '3.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
