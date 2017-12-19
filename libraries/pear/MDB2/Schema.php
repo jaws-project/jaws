@@ -1958,6 +1958,21 @@ class MDB2_Schema
         }
         if (!empty($changes['change']) && is_array($changes['change'])) {
             foreach ($changes['change'] as $index_name => $index) {
+                if (isset($index['was'])) {
+                    // Drop existing old name of index/constraint
+                    if (in_array($index['was'], $this->db->manager->listTableIndexes($table_name))) {
+                        $result = $this->db->manager->dropIndex($table_name, $index['was']);
+                        if (!empty($result) && MDB2::isError($result)) {
+                            return $result;
+                        }
+                    }
+                    if (in_array($index['was'], $this->db->manager->listTableConstraints($table_name))) {
+                        $result = $this->db->manager->dropConstraint($table_name, $index['was']);
+                        if (!empty($result) && MDB2::isError($result)) {
+                            return $result;
+                        }
+                    }
+                }
                 /**
                  * Drop existing index/constraint first.
                  * Since $changes doesn't tell us whether it's an index or a constraint before the change,
@@ -1973,22 +1988,6 @@ class MDB2_Schema
                     $result = $this->db->manager->dropConstraint($table_name, $index_name);
                     if (!empty($result) && MDB2::isError($result)) {
                         return $result;
-                    }
-                }
-                // Drop existing old name of index/constraint
-                if (isset($index['was'])) {
-                    $index_name = $index['was'];
-                    if (in_array($index_name, $this->db->manager->listTableIndexes($table_name))) {
-                        $result = $this->db->manager->dropIndex($table_name, $index_name);
-                        if (!empty($result) && MDB2::isError($result)) {
-                            return $result;
-                        }
-                    }
-                    if (in_array($index_name, $this->db->manager->listTableConstraints($table_name))) {
-                        $result = $this->db->manager->dropConstraint($table_name, $index_name);
-                        if (!empty($result) && MDB2::isError($result)) {
-                            return $result;
-                        }
                     }
                 }
 
