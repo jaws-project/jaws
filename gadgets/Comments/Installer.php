@@ -176,6 +176,11 @@ class Comments_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
+            $result = Jaws_DB::getInstance()->dropTable('old_comments');
+            if (Jaws_Error::IsError($result)) {
+                // do noting
+            }
+
             // Registry
             $this->gadget->registry->delete('allow_duplicate');
         }
