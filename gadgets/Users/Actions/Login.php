@@ -408,45 +408,31 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Login()
     {
-        $post = $this->gadget->request->fetch(
-            array('username', 'password', 'authtype', 'remember', 'usecrypt', 'referrer'),
+        $loginData = $this->gadget->request->fetch(
+            array('username', 'password', 'loginkey', 'authtype', 'remember', 'usecrypt', 'referrer'),
             'post'
         );
-
-        if (isset($post['usecrypt'])) {
-            $JCrypt = Jaws_Crypt::getInstance();
-            if (!Jaws_Error::IsError($JCrypt)) {
-                $post['password'] = $JCrypt->decrypt($post['password']);
-            }
-        } else {
-            $post['password'] = Jaws_XSS::defilter($post['password']);
-        }
 
         // check captcha
         $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $htmlPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             // try to login
-            $resCheck = $GLOBALS['app']->Session->Login(
-                $post['username'],
-                $post['password'],
-                $post['remember'],
-                $post['authtype']
-            );
+            $resCheck = $GLOBALS['app']->Session->Login($loginData);
         }
         if (Jaws_Error::isError($resCheck)) {
-            unset($post['password']);
+            unset($loginData['password']);
             $GLOBALS['app']->Session->PushResponse(
                 $resCheck->GetMessage(),
                 'Users.Login.Response',
                 RESPONSE_ERROR,
-                $post
+                $loginData
             );
-            $login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $post['referrer']));
+            $login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $loginData['referrer']));
             return Jaws_Header::Location($login_url);
         }
 
-        $referrer = parse_url(hex2bin($post['referrer']));
+        $referrer = parse_url(hex2bin($loginData['referrer']));
         $referrer = (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
                     (array_key_exists('query', $referrer)? "?{$referrer['query']}" : '') . 
                     (array_key_exists('fragment', $referrer)? "#{$referrer['fragment']}" : '');
