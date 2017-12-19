@@ -129,24 +129,30 @@ class Jaws_Session
     /**
      * Login
      *
-     * @param   string  $username   Username
-     * @param   string  $password   Password
-     * @param   bool    $remember   Remember me
-     * @param   string  $authtype   Authentication type
+     * @param   array   $loginData  Associated array of login required data(username, password, ...)
      * @return  mixed   An Array of user's attributes if success, otherwise Jaws_Error
      */
-    function Login($username, $password, $remember, $authtype = '')
+    function Login($loginData)
     {
+        if ($loginData['usecrypt']) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+            }
+        } else {
+            $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+        }
+
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'LOGGIN IN');
-        if ($username === '' && $password === '') {
+        if ($loginData['username'] === '' && $loginData['password'] === '') {
             $result = Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_WRONG'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
         } else {
-            if (!empty($authtype)) {
-                $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
+            if (!empty($loginData['authtype'])) {
+                $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $loginData['authtype']);
             } else {
                 $authtype = $this->_AuthType;
             }
@@ -154,8 +160,12 @@ class Jaws_Session
             require_once JAWS_PATH . 'include/Jaws/Auth/' . $authtype . '.php';
             $className = 'Jaws_Auth_' . $authtype;
             $this->_AuthModel = new $className();
-            $result = $this->_AuthModel->Auth($username, $password);
+            $result = $this->_AuthModel->Auth($loginData['username'], $loginData['password']);
             if (!Jaws_Error::isError($result)) {
+                // check verification key
+                if ($result['loginkey'] != $loginData['loginkey']) {
+                }
+
                 $existSessions = 0;
                 if (!empty($result['concurrents'])) {
                     $existSessions = $this->GetUserSessions($result['id'], true);
@@ -165,7 +175,7 @@ class Jaws_Session
                     // remove login trying count from session
                     $this->DeleteAttribute('bad_login_count');
                     // create session & cookie
-                    $this->Create($result, $remember);
+                    $this->Create($result, (bool)$loginData['remember']);
                     // login event logging
                     $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
                     // let everyone know a user has been logged
