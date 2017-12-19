@@ -1975,6 +1975,22 @@ class MDB2_Schema
                         return $result;
                     }
                 }
+                // Drop existing old name of index/constraint
+                if (isset($index['was'])) {
+                    $index_name = $index['was'];
+                    if (in_array($index_name, $this->db->manager->listTableIndexes($table_name))) {
+                        $result = $this->db->manager->dropIndex($table_name, $index_name);
+                        if (!empty($result) && MDB2::isError($result)) {
+                            return $result;
+                        }
+                    }
+                    if (in_array($index_name, $this->db->manager->listTableConstraints($table_name))) {
+                        $result = $this->db->manager->dropConstraint($table_name, $index_name);
+                        if (!empty($result) && MDB2::isError($result)) {
+                            return $result;
+                        }
+                    }
+                }
 
                 if (!empty($index['primary']) || !empty($index['unique'])) {
                     $result = $this->db->manager->createConstraint($table_name, $index_name, $index);
