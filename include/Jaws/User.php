@@ -63,7 +63,7 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $result = $usersTable->select(
             'id:integer', 'domain:integer', 'username', 'password', 'email', 'mobile',
-            'superadmin:boolean', 'nickname', 'concurrents:integer',
+            'superadmin:boolean', 'nickname', 'concurrents:integer', 'loginkey',
             'logon_hours', 'expiry_date', 'avatar', 'registered_date', 'last_update',
             'bad_password_count', 'last_password_update', 'last_access', 'status:integer')
             ->where('lower(username)', Jaws_UTF8::strtolower($user))
