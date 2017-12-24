@@ -27,16 +27,26 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         $ltpl->SetVariable('admin-script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
 
-        $reqpost = $this->gadget->request->fetch(array('username', 'authtype', 'remember', 'usecrypt', 'redirect_to'), 'post');
+        $response = $this->gadget->session->pop('Login.Response');
+        if (!isset($response['data'])) {
+            $referrer  = $this->gadget->request->fetch('referrer', 'get');
+            $reqpost['username'] = '';
+            $reqpost['password'] = '';
+            $reqpost['authtype'] = '';
+            $reqpost['remember'] = '';
+            $reqpost['usecrypt'] = '';
+            $reqpost['referrer'] = bin2hex(Jaws_Utils::getRequestURL(true));
+            $this->gadget->session->insert('checksess', 1);
+        } else {
+            $reqpost = $response['data'];
+        }
+
         if (is_null($reqpost['authtype'])) {
             $reqpost['authtype'] = $this->gadget->request->fetch('authtype', 'get');
         }
 
         // referrer page link
-        $reqURL = Jaws_Utils::getRequestURL();
-        $reqURL = (empty($reqURL) || $reqURL == BASE_SCRIPT)? (BASE_SCRIPT. '?checksess') : "$reqURL&checksess";
-        $redirect_to = !isset($reqpost['redirect_to'])? bin2hex($reqURL) : $reqpost['redirect_to'];
-        $ltpl->SetVariable('redirect_to', $redirect_to);
+        $ltpl->SetVariable('referrer', $reqpost['referrer']);
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
@@ -60,7 +70,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         $ltpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
         $authtype = $this->gadget->registry->fetch('authtype', 'Users');
-        if (!is_null($reqpost['authtype']) || $authtype !== 'Default') {
+        if (!empty($reqpost['authtype']) || $authtype !== 'Default') {
             $authtype = is_null($reqpost['authtype'])? $authtype : $reqpost['authtype'];
             $ltpl->SetBlock('layout/authtype');
             $ltpl->SetVariable('lbl_authtype', _t('GLOBAL_AUTHTYPE'));
@@ -93,11 +103,9 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
         $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
 
-        $message = is_null($this->gadget->request->fetch('checksess'))? $message : _t('GLOBAL_ERROR_SESSION_NOTFOUND');
-        if (!empty($message)) {
-            $ltpl->SetBlock('layout/message');
-            $ltpl->SetVariable('message', $message);
-            $ltpl->ParseBlock('layout/message');
+        if (!empty($response)) {
+            $ltpl->SetVariable('response_type', $response['type']);
+            $ltpl->SetVariable('response_text', $response['text']);
         }
 
         return $GLOBALS['app']->Layout->Get();
