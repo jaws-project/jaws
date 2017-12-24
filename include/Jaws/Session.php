@@ -358,6 +358,7 @@ class Jaws_Session
     function Create($info = array(), $remember = false)
     {
         if (empty($info)) {
+            $this->_Attributes = array();
             $info['id']          = 0;
             $info['internal']    = false;
             $info['domain']      = 0;
@@ -375,7 +376,6 @@ class Jaws_Session
             $info['last_password_update'] = 0;
         }
 
-        $this->_Attributes = array();
         $this->SetAttribute('sid',         $this->_SessionID, true);
         $this->SetAttribute('user',        $info['id']);
         $this->SetAttribute('internal',    $info['internal']);
