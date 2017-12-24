@@ -42,7 +42,14 @@ if ($httpAuthEnabled) {
 // Check for login action is requested
 if (!$GLOBALS['app']->Session->Logged())
 {
-    $loginMsg = '';
+    // Init layout
+    $GLOBALS['app']->InstanceLayout();
+
+    $cplGadget = Jaws_Gadget::getInstance('ControlPanel');
+    if (Jaws_Error::IsError($cplGadget)) {
+        Jaws_Error::Fatal($cplGadget->getMessage());
+    }
+
     if (($ReqGadget == 'ControlPanel' && $ReqAction == 'Login') ||
         ($httpAuthEnabled && isset($_SERVER['PHP_AUTH_USER'])))
     {
@@ -52,43 +59,56 @@ if (!$GLOBALS['app']->Session->Logged())
             jaws()->request->update('password', $httpAuth->getPassword(), 'post');
         }
 
+        $loginData = jaws()->request->fetch(
+            array('username', 'password', 'usecrypt', 'loginkey', 'referrer', 'remember', 'authtype'),
+            'post'
+        );
         // check captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $mPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
-            $loginData = jaws()->request->fetch(
-                array('username', 'password', 'usecrypt', 'loginkey', 'redirect_to', 'remember', 'authtype'),
-                'post'
-            );
             $resCheck = $GLOBALS['app']->Session->Login($loginData);
         }
         if (!Jaws_Error::IsError($resCheck)) {
             // Can enter to Control Panel?
-            if ($GLOBALS['app']->Session->GetPermission('ControlPanel', 'default_admin')) {
-                $redirectTo = isset($loginData['redirect_to'])? $loginData['redirect_to'] : '';
-                Jaws_Header::Location(hex2bin($redirectTo));
+            if ($cplGadget->GetPermission('default_admin')) {
+                if (!$cplGadget->session->fetch('checksess')) {
+                    $cplGadget->session->push(
+                        _t('GLOBAL_ERROR_SESSION_NOTFOUND'),
+                        'Login.Response',
+                        RESPONSE_WARNING
+                    );
+                } else {
+                    $referrer = parse_url(hex2bin($loginData['referrer']));
+                    $referrer = (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
+                                (array_key_exists('query', $referrer)? "?{$referrer['query']}" : '') . 
+                                (array_key_exists('fragment', $referrer)? "#{$referrer['fragment']}" : '');
+                    Jaws_Header::Location($referrer);
+                }
             } else {
                 $GLOBALS['app']->Session->Logout();
-                $loginMsg = _t('GLOBAL_ERROR_LOGIN_NOTCP');
+                $cplGadget->session->push(
+                    _t('GLOBAL_ERROR_LOGIN_NOTCP'),
+                    'Login.Response',
+                    RESPONSE_ERROR
+                );
             }
         } else {
-            $loginMsg = $resCheck->GetMessage();
+            $cplGadget->session->push(
+                $resCheck->GetMessage(),
+                'Login.Response',
+                RESPONSE_ERROR,
+                $loginData
+            );
         }
     }
 
     if ($httpAuthEnabled) {
         $httpAuth->showLoginBox();
     }
-    // Init layout
-    $GLOBALS['app']->InstanceLayout();
-    $cpl = Jaws_Gadget::getInstance('ControlPanel')->action->loadAdmin('Login');
-    $data = $cpl->LoginBox($loginMsg);
-    terminate($data, 401);
-}
 
-// remove checksess(check session) parameter from requested url
-if (!is_null(jaws()->request->fetch('checksess', 'get'))) {
-    Jaws_Header::Location(substr(Jaws_Utils::getRequestURL(false), 0, -10));
+    $data = $cplGadget->action->loadAdmin('Login')->LoginBox();
+    terminate($data, 401);
 }
 
 // Can use Control Panel?
