@@ -146,8 +146,7 @@ class Jaws_Registry
         }
 
         $result = array_column($result, 'key_value', 'key_name');
-        array_walk($result, 'json_decode');
-        return $result;
+        return array_map('json_decode', $result);
     }
 
     /**
