@@ -98,7 +98,8 @@ if (!$GLOBALS['app']->Session->Logged())
                 $resCheck->GetMessage(),
                 'Login.Response',
                 RESPONSE_ERROR,
-                $loginData
+                $loginData,
+                $resCheck->GetCode()
             );
         }
     }
