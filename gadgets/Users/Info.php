@@ -13,7 +13,7 @@ class Users_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '3.3.0';
+    var $version = '3.4.0';
 
     /**
      * Is this gadget core gadget?
