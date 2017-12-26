@@ -166,21 +166,21 @@ class Jaws_Session
 
             // two step verification?
             if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users')) {
-                $verification_key = $this->GetAttribute('verification_key');
-                if (!isset($verification_key['text']) || ($verification_key['time'] < (time() - 300))) {
-                    $verification_key = array(
+                $loginkey = $this->GetAttribute('loginkey');
+                if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
+                    $loginkey = array(
                         'text' => Jaws_Utils::RandomText(5, true, false, true),
                         'time' => time()
                     );
-                    $this->SetAttribute('verification_key', $verification_key);
-                    _log_var_dump($verification_key);
+                    $this->SetAttribute('loginkey', $loginkey);
+                    _log_var_dump($loginkey);
                     // notify
                     $params = array();
-                    $params['key']     = crc32('Session.Verification.User' . $this->_SessionID);
-                    $params['title']   = _t('GLOBAL_VERIFICATION_USER');
+                    $params['key']     = crc32('Session.Loginkey.' . $this->_SessionID);
+                    $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
                     $params['summary'] = _t(
-                        'GLOBAL_VERIFICATION_USER_SUMMARY',
-                        $verification_key['text']
+                        'GLOBAL_LOGINKEY_SUMMARY',
+                        $loginkey['text']
                     );
                     $params['description'] = $params['summary'];
                     $params['emails']  = array($user['email']);
@@ -188,8 +188,8 @@ class Jaws_Session
                     $GLOBALS['app']->Listener->Shout('Users', 'Notify', $params);
                 }
                 // check verification key
-                if ($verification_key['text'] != $loginData['loginkey']) {
-                    throw new Exception(_t('GLOBAL_ERROR_LOGIN_KEY000'), 461);
+                if ($loginkey['text'] != $loginData['loginkey']) {
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 461);
                 }
             }
 
