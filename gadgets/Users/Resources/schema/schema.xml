@@ -34,12 +34,6 @@
             </field>
 
             <field>
-                <name>loginkey</name>
-                <type>text</type>
-                <length>5</length>
-            </field>
-
-            <field>
                 <name>verify_key</name>
                 <type>text</type>
                 <length>5</length>
