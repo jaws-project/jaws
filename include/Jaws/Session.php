@@ -164,7 +164,7 @@ class Jaws_Session
                 throw new Exception($user->getMessage());
             }
 
-            // check verification key
+            // two step verification?
             if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users')) {
                 $verification_key = $this->GetAttribute('verification_key');
                 if (!isset($verification_key['text']) || ($verification_key['time'] < (time() - 300))) {
@@ -174,9 +174,20 @@ class Jaws_Session
                     );
                     $this->SetAttribute('verification_key', $verification_key);
                     _log_var_dump($verification_key);
-                    // notify ................
-                    //-------------------------
+                    // notify
+                    $params = array();
+                    $params['key']     = crc32('Session.Verification.User' . $this->_SessionID);
+                    $params['title']   = _t('GLOBAL_VERIFICATION_USER');
+                    $params['summary'] = _t(
+                        'GLOBAL_VERIFICATION_USER_SUMMARY',
+                        $verification_key['text']
+                    );
+                    $params['description'] = $params['summary'];
+                    $params['emails']  = array($user['email']);
+                    $params['mobiles'] = array($user['mobile']);
+                    $GLOBALS['app']->Listener->Shout('Users', 'Notify', $params);
                 }
+                // check verification key
                 if ($verification_key['text'] != $loginData['loginkey']) {
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_KEY000'), 461);
                 }
