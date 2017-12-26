@@ -96,12 +96,13 @@ class Jaws_Gadget_Session
      * @param   string  $resource   Response name
      * @param   string  $type       Response type
      * @param   mixed   $data       Response data
+     * @param   int     $code       Response code
      * @return  void
      */
-    function push($text, $resource = 'Resource', $type = RESPONSE_NOTICE, $data = null)
+    function push($text, $resource = 'Resource', $type = RESPONSE_NOTICE, $data = null, $code = 0)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->PushResponse($text, "$gadget.Response.$resource", $type, $data);
+        return $GLOBALS['app']->Session->PushResponse($text, "$gadget.Response.$resource", $type, $data, $code);
     }
 
     /**
