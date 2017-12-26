@@ -72,7 +72,22 @@ function submitLoginForm(form)
 }
 
 $(document).ready(function() {
-    init();
+    switch (jaws.Defines.mainAction) {
+        case 'DefaultAction':
+            init();
+            break;
+
+        default:
+            if ($('#loginkey').length) {
+                $('#loginkey').focus();
+            } else {
+                $('#username').focus();
+                $('#username').select();
+            }
+
+            break;
+    }
+    
 });
 
 var ControlPanelAjax = new JawsAjax('ControlPanel', ControlPanelCallback);

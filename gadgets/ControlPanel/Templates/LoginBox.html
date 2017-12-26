@@ -10,7 +10,7 @@
   <link href="gadgets/ControlPanel/Resources/style{{.dir}}.css?{{cpanel_version}}" type="text/css" rel="stylesheet" >
   <!-- BEGIN links -->{{elements}}<!-- END links -->
  </head>
- <body onload="javascript:focusOnLoad()">
+ <body>
   <div id="header">
    <h1><a href="{{admin-script}}">{{site-name}}: {{control-panel}}</a></h1>
    <p>{{site-slogan}}</p>
@@ -143,12 +143,6 @@
   <!-- BEGIN scripts -->
   {{elements}}
   <!-- END scripts -->
-  <script type="text/javascript">
-    function focusOnLoad(focusObject) {
-      document.getElementById('username').focus();
-      document.getElementById('username').select();
-    }
-  </script>
  </body>
 </html>
 <!-- END layout -->
