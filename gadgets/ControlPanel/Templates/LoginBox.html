@@ -31,6 +31,7 @@
         <fieldset id="loginbox">
           <legend><span>{{legend_title}}</span></legend>
 <!-- BEGIN login_step_1 -->
+          <input type="hidden" name="authstep" value="0" />
           <!-- BEGIN encryption -->
           <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
           <!-- END encryption -->
@@ -103,6 +104,7 @@
 <!-- BEGIN login_step_2 -->
           <input type="hidden" name="password" value="{{password}}" />
           <input type="hidden" name="usecrypt" value="{{usecrypt}}" />
+          <input type="hidden" name="authstep" value="1" />
           <input type="hidden" name="authtype" value="{{authtype}}" />
           <input type="hidden" name="remember" value="{{remember}}" />
           <div>

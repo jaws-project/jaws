@@ -31,6 +31,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
             $referrer  = $this->gadget->request->fetch('referrer', 'get');
             $reqpost['username'] = '';
             $reqpost['password'] = '';
+            $reqpost['authstep'] = 0;
             $reqpost['authtype'] = '';
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
@@ -49,7 +50,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         //
         $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
 
-        if ($response['code'] == 461) {
+        if (!empty($reqpost['authstep'])) {
             $this->LoginBoxStep2($ltpl, $reqpost);
         } else {
             $this->LoginBoxStep1($ltpl, $reqpost);
