@@ -132,17 +132,8 @@ class Jaws_Session
      * @param   array   $loginData  Associated array of login required data(username, password, ...)
      * @return  mixed   An Array of user's attributes if success, otherwise Jaws_Error
      */
-    function Login($loginData)
+    function Login(&$loginData)
     {
-        if ($loginData['usecrypt']) {
-            $JCrypt = Jaws_Crypt::getInstance();
-            if (!Jaws_Error::IsError($JCrypt)) {
-                $loginData['password'] = $JCrypt->decrypt($loginData['password']);
-            }
-        } else {
-            $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
-        }
-
         try {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'LOGGIN IN');
             if ($loginData['username'] === '' && $loginData['password'] === '') {
@@ -159,10 +150,12 @@ class Jaws_Session
             $this->_AuthModel = new $className();
 
             // try authenticate user
-            $user = $this->_AuthModel->Auth($loginData['username'], $loginData['password']);
+            $user = $this->_AuthModel->Auth($loginData);
             if (Jaws_Error::isError($user)) {
                 throw new Exception($user->getMessage());
             }
+            // going to next authentication/verification step
+            $loginData['authstep'] = 1;
 
             // two step verification?
             if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users')) {
@@ -189,7 +182,7 @@ class Jaws_Session
                 }
                 // check verification key
                 if ($loginkey['text'] != $loginData['loginkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 461);
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'));
                 }
             }
 
