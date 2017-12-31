@@ -60,11 +60,10 @@ class Jaws_Auth_LDAP
      * Authenticate user/password
      *
      * @access  public
-     * @param   string  $user       User's name or email
-     * @param   string  $password   User's password
+     * @param   array   $loginData  Login data(username, password, ...)
      * @return  mixed   Array of user's information otherwise Jaws_Error
      */
-    function Auth($user, $password)
+    function Auth($loginData)
     {
         if (!function_exists('ldap_connect')) {
             return Jaws_Error::raiseError(
@@ -73,19 +72,28 @@ class Jaws_Auth_LDAP
             );
         }
 
+        if ($loginData['usecrypt']) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+            }
+        } else {
+            $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+        }
+
         $this->_LdapConnection = @ldap_connect($this->_Server, $this->_Port);
         if ($this->_LdapConnection) {
-            $rdn = "uid=" . $user . "," . $this->_DN;
-            $bind = @ldap_bind($this->_LdapConnection, $rdn, $password);
+            $rdn = "uid=" . $loginData['username'] . "," . $this->_DN;
+            $bind = @ldap_bind($this->_LdapConnection, $rdn, $loginData['password']);
             if ($bind) {
                 $resulat = array();
-                $result['id']         = strtolower('ldap:'.$user);
+                $result['id']         = strtolower('ldap:'.$loginData['username']);
                 $result['internal']   = false;
-                $result['username']   = $user;
+                $result['username']   = $loginData['username'];
                 $result['superadmin'] = false;
                 $result['internal']   = false;
                 $result['groups']     = array();
-                $result['nickname']   = $user;
+                $result['nickname']   = $loginData['username'];
                 $result['concurrents'] = 0;
                 $result['email']      = '';
                 $result['url']        = '';
