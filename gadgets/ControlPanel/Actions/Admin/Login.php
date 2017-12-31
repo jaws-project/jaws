@@ -28,7 +28,6 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
 
         $response = $this->gadget->session->pop('Login.Response');
         if (!isset($response['data'])) {
-            $referrer  = $this->gadget->request->fetch('referrer', 'get');
             $reqpost['username'] = '';
             $reqpost['password'] = '';
             $reqpost['authstep'] = 0;

@@ -56,7 +56,7 @@ function init()
  */
 function submitLoginForm(form)
 {
-    if ($('#login_usecrypt').prop('checked')) {
+    if ($('#usecrypt').prop('checked')) {
         $.loadScript('libraries/js/jsencrypt.min.js', function() {
             if (!$('#loginkey').length) {
                 var objRSACrypt = new JSEncrypt();

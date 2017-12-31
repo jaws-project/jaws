@@ -52,17 +52,6 @@
                    required
             />
           </div>
-          <!-- BEGIN loginkey -->
-          <div>
-            <label for="loginkey">{{lbl_loginkey}}:</label>
-            <input class="form-control ltr" name="loginkey" id="loginkey"
-                   type="text"
-                   autocomplete="off"
-                   value=""
-            />
-          </div>
-          <!-- END loginkey -->
-          <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
           <!-- BEGIN authtype -->
           <div><label for="authtype">{{lbl_authtype}}:</label>
             <select class="form-control" name="authtype" id="authtype">
@@ -74,10 +63,10 @@
           <!-- END authtype -->
           <!-- BEGIN remember -->
           <div>
-            <label class="form-check-label" for="login_remember">
+            <label class="form-check-label" for="remember">
               <input class="form-check-input" type="checkbox"
                     name="remember"
-                    id="login_remember"
+                    id="remember"
                     <!-- BEGIN selected -->
                     checked="checked"
                     <!-- END selected -->
@@ -88,10 +77,10 @@
           <!-- END remember -->
           <!-- BEGIN usecrypt -->
           <div>
-            <label class="form-check-label" for="login_usecrypt">
+            <label class="form-check-label" for="usecrypt">
               <input class="form-check-input" type="checkbox"
                      name="usecrypt"
-                     id="login_usecrypt"
+                     id="usecrypt"
                      <!-- BEGIN selected -->
                      checked="checked"
                      <!-- END selected -->
