@@ -60,7 +60,7 @@ if (!$GLOBALS['app']->Session->Logged())
         }
 
         $loginData = jaws()->request->fetch(
-            array('username', 'password', 'usecrypt', 'loginkey', 'referrer', 'remember', 'authtype'),
+            array('username', 'password', 'usecrypt', 'loginkey', 'authstep', 'referrer', 'remember', 'authtype'),
             'post'
         );
         // check captcha
@@ -98,8 +98,7 @@ if (!$GLOBALS['app']->Session->Logged())
                 $resCheck->GetMessage(),
                 'Login.Response',
                 RESPONSE_ERROR,
-                $loginData,
-                $resCheck->GetCode()
+                $loginData
             );
         }
     }
