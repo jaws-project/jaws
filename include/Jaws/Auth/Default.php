@@ -15,14 +15,22 @@ class Jaws_Auth_Default
      * Authenticate user|email/password
      *
      * @access  public
-     * @param   string  $user       User's name or email
-     * @param   string  $password   User's password
+     * @param   array   $loginData  Login data(username, password, ...)
      * @return  mixed   Array of user's information otherwise Jaws_Error
      */
-    function Auth($user, $password)
+    function Auth($loginData)
     {
+        if ($loginData['usecrypt']) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+            }
+        } else {
+            $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+        }
+
         $userModel = $GLOBALS['app']->loadObject('Jaws_User');
-        $result = $userModel->VerifyUser($user, $password);
+        $result = $userModel->VerifyUser($loginData['username'], $loginData['password']);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -34,7 +42,7 @@ class Jaws_Auth_Default
         }
 
         // FIXME: we must find better way for use password in extra protocols ex. IMAP
-        $result['password'] = $password;
+        $result['password'] = $loginData['password'];
         $result['groups'] = $groups;
         $result['avatar'] = $userModel->GetAvatar(
             $result['avatar'],
