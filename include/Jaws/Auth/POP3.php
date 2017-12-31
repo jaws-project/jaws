@@ -39,11 +39,10 @@ class Jaws_Auth_POP3
      * Authenticate user/password
      *
      * @access  public
-     * @param   string  $user       User's name or email
-     * @param   string  $password   User's password
+     * @param   array   $loginData  Login data(username, password, ...)
      * @return  mixed   Array of user's information otherwise Jaws_Error
      */
-    function Auth($user, $password)
+    function Auth($loginData)
     {
         if (!function_exists('imap_open')) {
             return Jaws_Error::raiseError(
@@ -52,21 +51,30 @@ class Jaws_Auth_POP3
             );
         }
 
+        if ($loginData['usecrypt']) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+            }
+        } else {
+            $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+        }
+
         $mbox = @imap_open(
             '{'.$this->_Server.'/pop3:'.$this->_Port.'/notls}INBOX',
-            $user,
-            $password
+            $loginData['username'],
+            $loginData['password']
         );
         if ($mbox) {
             @imap_close($mbox);
             $result = array();
-            $result['id']         = strtolower('pop3:'.$user);
+            $result['id']         = strtolower('pop3:'.$loginData['username']);
             $result['internal']   = false;
-            $result['username']   = $user;
+            $result['username']   = $loginData['username'];
             $result['superadmin'] = false;
             $result['internal']   = false;
             $result['groups']     = array();
-            $result['nickname']   = $user;
+            $result['nickname']   = $loginData['username'];
             $result['concurrents'] = 0;
             $result['email']      = '';
             $result['url']        = '';
