@@ -10,39 +10,29 @@
     <input type="hidden" name="gadget" value="Users" />
     <input type="hidden" name="action" value="Login" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
-    <!-- BEGIN encryption -->
-    <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
-    <!-- END encryption -->
     <div class="gadget_content content">
+<!-- BEGIN login_step_1 -->
+      <input type="hidden" name="authstep" value="0" />
+      <!-- BEGIN encryption -->
+      <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
+      <!-- END encryption -->
       <div>
-        <label for="login_username">{{lbl_username}}:</label>
-        <input class="form-control username ltr" name="username" id="login_username"
+        <label for="username">{{lbl_username}}:</label>
+        <input class="form-control ltr" name="username" id="username"
                type="text"
                value="{{username}}"
                required
-               <!-- BEGIN username_readonly -->readonly<!-- END username_readonly -->
         />
       </div>
       <div>
-        <label for="login_password">{{lbl_password}}:</label>
-        <input class="form-control password ltr" name="password" id="login_password"
+        <label for="password">{{lbl_password}}:</label>
+        <input class="form-control ltr" name="password" id="password"
                type="password"
                autocomplete="off"
                value="{{password}}"
                required
-               <!-- BEGIN password_readonly -->readonly<!-- END password_readonly -->
         />
       </div>
-      <!-- BEGIN loginkey -->
-      <div>
-        <label for="login_loginkey">{{lbl_loginkey}}:</label>
-        <input class="form-control ltr" name="loginkey" id="login_loginkey"
-               type="text"
-               autocomplete="off"
-               value="{{loginkey}}"
-        />
-      </div>
-      <!-- END loginkey -->
       <!-- BEGIN authtype -->
       <div>
         <label for="authtype">{{lbl_authtype}}:</label>
@@ -53,13 +43,12 @@
         </select>
       </div>
       <!-- END authtype -->
-      <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
       <!-- BEGIN remember -->
       <div>
-        <label class="form-check-label" for="login_remember">
+        <label class="form-check-label" for="remember">
         <input class="form-check-input" type="checkbox"
                name="remember"
-               id="login_remember"
+               id="remember"
                <!-- BEGIN selected -->checked="checked"<!-- END selected -->
                value="true" />
           {{lbl_remember}}
@@ -68,16 +57,42 @@
       <!-- END remember -->
       <!-- BEGIN usecrypt -->
       <div>
-        <label class="form-check-label" for="login_usecrypt">
+        <label class="form-check-label" for="usecrypt">
         <input class="form-check-input" type="checkbox"
                name="usecrypt"
-               id="login_usecrypt"
+               id="usecrypt"
                <!-- BEGIN selected --> checked="checked"<!-- END selected -->
                value="true" />
           {{lbl_usecrypt}}
         </label>
       </div>
       <!-- END usecrypt -->
+<!-- END login_step_1 -->
+<!-- BEGIN login_step_2 -->
+      <input type="hidden" name="password" value="{{password}}" />
+      <input type="hidden" name="usecrypt" value="{{usecrypt}}" />
+      <input type="hidden" name="authstep" value="1" />
+      <input type="hidden" name="authtype" value="{{authtype}}" />
+      <input type="hidden" name="remember" value="{{remember}}" />
+      <div>
+        <label for="login_username">{{lbl_username}}:</label>
+        <input class="form-control ltr" name="username" id="username"
+               type="text"
+               value="{{username}}"
+               required
+               readonly
+        />
+      </div>
+      <div>
+        <label for="loginkey">{{lbl_loginkey}}:</label>
+        <input class="form-control ltr" name="loginkey" id="loginkey"
+               type="text"
+               autocomplete="off"
+               value=""
+        />
+      </div>
+<!-- END login_step_2 -->
+      <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
     <div class="gadget_actions actions">
       <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>

@@ -1326,7 +1326,7 @@ function updateBookmark() {
  */
 function encryptPassword(form)
 {
-    if ($('#login_usecrypt').prop('checked')) {
+    if ($('#usecrypt').prop('checked')) {
         $.loadScript('libraries/js/jsencrypt.min.js', function() {
             var objRSACrypt = new JSEncrypt();
             objRSACrypt.setPublicKey(form.pubkey.value);

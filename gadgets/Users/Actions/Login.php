@@ -168,70 +168,39 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Login.Response');
+        $response = $this->gadget->session->pop('Login.Response');
         if (!isset($response['data'])) {
-            $referrer  = $this->gadget->request->fetch('referrer', 'get');
+            //$referrer  = $this->gadget->request->fetch('referrer', 'get');
             $reqpost['username'] = '';
+            $reqpost['password'] = '';
+            $reqpost['authstep'] = 0;
             $reqpost['authtype'] = '';
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
-            $reqpost['referrer'] = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
+            //$reqpost['referrer'] = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
+            $reqpost['referrer'] = bin2hex(Jaws_Utils::getRequestURL(true));
+            $this->gadget->session->insert('checksess', 1);
         } else {
             $reqpost = $response['data'];
         }
 
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock('LoginBox/encryption');
-            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
-            $tpl->ParseBlock('LoginBox/encryption');
-
-            // usecrypt
-            $tpl->SetBlock('LoginBox/usecrypt');
-            $tpl->SetVariable('lbl_usecrypt', _t('GLOBAL_LOGIN_SECURE'));
-            if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
-                $tpl->SetBlock('LoginBox/usecrypt/selected');
-                $tpl->ParseBlock('LoginBox/usecrypt/selected');
-            }
-            $tpl->ParseBlock('LoginBox/usecrypt');
+        if (is_null($reqpost['authtype'])) {
+            $reqpost['authtype'] = $this->gadget->request->fetch('authtype', 'get');
         }
 
-        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        // global variables
         $tpl->SetVariable('referrer', $reqpost['referrer']);
-        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('username', $reqpost['username']);
-        $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
+        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
 
-        $authtype = $this->gadget->registry->fetch('authtype');
-        if ($authtype !== 'Default') {
-            $authtype = empty($reqpost['authtype'])? $authtype : $reqpost['authtype'];
-            $tpl->SetBlock('LoginBox/authtype');
-            $tpl->SetVariable('lbl_authtype', _t('GLOBAL_AUTHTYPE'));
-            foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
-                $tpl->SetBlock('LoginBox/authtype/item');
-                $tpl->SetVariable('method', $method);
-                if ($method == $authtype) {
-                    $tpl->SetVariable('selected', 'selected="selected"');
-                } else {
-                    $tpl->SetVariable('selected', '');
-                }
-                $tpl->ParseBlock('LoginBox/authtype/item');
-            }
-            $tpl->ParseBlock('LoginBox/authtype');
+        if (!empty($reqpost['authstep'])) {
+            $this->LoginBoxStep2($tpl, $reqpost);
+        } else {
+            $this->LoginBoxStep1($tpl, $reqpost);
         }
 
         //captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
-
-        // remember
-        $tpl->SetBlock('LoginBox/remember');
-        $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
-        if (!empty($reqpost['remember'])) {
-            $tpl->SetBlock('LoginBox/remember/selected');
-            $tpl->ParseBlock('LoginBox/remember/selected');
-        }
-        $tpl->ParseBlock('LoginBox/remember');
 
         if ($this->gadget->registry->fetch('anon_register') == 'true') {
             $link =& Piwi::CreateWidget(
@@ -258,6 +227,88 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('LoginBox');
         return $tpl->Get();
+    }
+
+    /**
+     * Get HTML login form
+     *
+     * @access  public
+     * @return  string  XHTML template of the login form
+     */
+    private function LoginBoxStep1(&$tpl, $reqpost)
+    {
+        $tpl->SetBlock('LoginBox/login_step_1');
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $tpl->SetBlock('LoginBox/login_step_1/encryption');
+            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
+            $tpl->ParseBlock('LoginBox/login_step_1/encryption');
+
+            // usecrypt
+            $tpl->SetBlock('LoginBox/login_step_1/usecrypt');
+            $tpl->SetVariable('lbl_usecrypt', _t('GLOBAL_LOGIN_SECURE'));
+            if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
+                $tpl->SetBlock('LoginBox/login_step_1/usecrypt/selected');
+                $tpl->ParseBlock('LoginBox/login_step_1/usecrypt/selected');
+            }
+            $tpl->ParseBlock('LoginBox/login_step_1/usecrypt');
+        }
+
+        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
+        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
+        $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
+
+        $authtype = $this->gadget->registry->fetch('authtype', 'Users');
+        if (!empty($reqpost['authtype']) || $authtype !== 'Default') {
+            $authtype = is_null($reqpost['authtype'])? $authtype : $reqpost['authtype'];
+            $tpl->SetBlock('LoginBox/login_step_1/authtype');
+            $tpl->SetVariable('lbl_authtype', _t('GLOBAL_AUTHTYPE'));
+            foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
+                $tpl->SetBlock('LoginBox/login_step_1/authtype/item');
+                $tpl->SetVariable('method', $method);
+                if ($method == $authtype) {
+                    $tpl->SetVariable('selected', 'selected="selected"');
+                } else {
+                    $tpl->SetVariable('selected', '');
+                }
+                $tpl->ParseBlock('LoginBox/login_step_1/authtype/item');
+            }
+            $tpl->ParseBlock('LoginBox/login_step_1/authtype');
+        }
+
+        // remember
+        $tpl->SetBlock('LoginBox/login_step_1/remember');
+        $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
+        if (!empty($reqpost['remember'])) {
+            $tpl->SetBlock('LoginBox/login_step_1/remember/selected');
+            $tpl->ParseBlock('LoginBox/login_step_1/remember/selected');
+        }
+        $tpl->ParseBlock('LoginBox/login_step_1/remember');
+
+        $tpl->ParseBlock('LoginBox/login_step_1');
+    }
+
+    /**
+     * Get HTML login form
+     *
+     * @access  public
+     * @return  string  XHTML template of the login form
+     */
+    private function LoginBoxStep2(&$tpl, $reqpost)
+    {
+        $tpl->SetBlock('LoginBox/login_step_2');
+
+        $tpl->SetVariable('usecrypt', $reqpost['usecrypt']);
+        $tpl->SetVariable('authtype', $reqpost['authtype']);
+        $tpl->SetVariable('remember', $reqpost['remember']);
+        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
+        $tpl->SetVariable('password', isset($reqpost['password'])? $reqpost['password'] : '');
+
+        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
+        $tpl->SetVariable('lbl_loginkey', _t('GLOBAL_LOGINKEY'));
+
+        $tpl->ParseBlock('LoginBox/login_step_2');
     }
 
     /**
@@ -409,7 +460,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Login()
     {
         $loginData = $this->gadget->request->fetch(
-            array('username', 'password', 'loginkey', 'authtype', 'remember', 'usecrypt', 'referrer'),
+            array('username', 'password', 'usecrypt', 'loginkey', 'authstep', 'referrer', 'remember', 'authtype'),
             'post'
         );
 
@@ -421,15 +472,22 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $resCheck = $GLOBALS['app']->Session->Login($loginData);
         }
         if (Jaws_Error::isError($resCheck)) {
-            unset($loginData['password']);
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $resCheck->GetMessage(),
-                'Users.Login.Response',
+                'Login.Response',
                 RESPONSE_ERROR,
                 $loginData
             );
-            $login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $loginData['referrer']));
-            return Jaws_Header::Location($login_url);
+            //$login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $loginData['referrer']));
+            //return Jaws_Header::Location($login_url);
+        } else {
+            if (!$this->gadget->session->fetch('checksess')) {
+                $this->gadget->session->push(
+                    _t('GLOBAL_ERROR_SESSION_NOTFOUND'),
+                    'Login.Response',
+                    RESPONSE_WARNING
+                );
+            }
         }
 
         $referrer = parse_url(hex2bin($loginData['referrer']));
