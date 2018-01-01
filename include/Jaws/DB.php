@@ -660,6 +660,26 @@ class Jaws_DB
     }
 
     /**
+     * truncate a table via MDB2 management module
+     *
+     * @access  public
+     * @param   string  $table  name of table
+     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     */
+    function truncateTable($table)
+    {
+        $this->dbc->loadModule('Manager');
+        $result = $this->dbc->manager->truncateTable($this->getPrefix() . $table);
+        if (MDB2::isError($result)) {
+            if ($result->getCode() !== MDB2_ERROR_NOSUCHTABLE) {
+                return Jaws_Error::raiseError($result->getMessage(), $result->getCode(), JAWS_ERROR_ERROR, 1);
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Quote a string so it can be safely used as a table or column name
      *
      * @access  public
