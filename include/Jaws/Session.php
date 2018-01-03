@@ -134,8 +134,9 @@ class Jaws_Session
      */
     function Login(&$loginData)
     {
+        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'LOGGIN IN');
         try {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'LOGGIN IN');
+            $loginData['authstep'] = 0;
             if ($loginData['username'] === '' && $loginData['password'] === '') {
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'));
             }
@@ -154,11 +155,12 @@ class Jaws_Session
             if (Jaws_Error::isError($user)) {
                 throw new Exception($user->getMessage());
             }
-            // going to next authentication/verification step
-            $loginData['authstep'] = 1;
 
             // two step verification?
             if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users')) {
+                // going to next authentication/verification step
+                $loginData['authstep'] = 1;
+                // check login key
                 $loginkey = $this->GetAttribute('loginkey');
                 if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
                     $loginkey = array(
