@@ -28,10 +28,6 @@ require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 
 $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget', array('post', 'get')));
 $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action', array('post', 'get')));
-if (empty($ReqGadget)) {
-    $ReqGadget = 'ControlPanel';
-    $ReqAction = '';
-}
 
 $httpAuthEnabled = $GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true';
 if ($httpAuthEnabled) {
@@ -40,75 +36,39 @@ if ($httpAuthEnabled) {
 }
 
 // Check for login action is requested
-if (!$GLOBALS['app']->Session->Logged())
-{
+if (!$GLOBALS['app']->Session->Logged()) {
     // Init layout
     $GLOBALS['app']->InstanceLayout();
 
-    $cplGadget = Jaws_Gadget::getInstance('ControlPanel');
-    if (Jaws_Error::IsError($cplGadget)) {
-        Jaws_Error::Fatal($cplGadget->getMessage());
+    $gdgtUsers = Jaws_Gadget::getInstance('Users');
+    if (Jaws_Error::IsError($gdgtUsers)) {
+        Jaws_Error::Fatal($gdgtUsers->getMessage());
     }
 
-    if (($ReqGadget == 'ControlPanel' && $ReqAction == 'Login') ||
-        ($httpAuthEnabled && isset($_SERVER['PHP_AUTH_USER'])))
-    {
-        if ($httpAuthEnabled) {
-            $httpAuth->AssignData();
-            jaws()->request->update('username', $httpAuth->getUsername(), 'post');
-            jaws()->request->update('password', $httpAuth->getPassword(), 'post');
-        }
-
-        $loginData = jaws()->request->fetch(
-            array('username', 'password', 'usecrypt', 'loginkey', 'authstep', 'referrer', 'remember', 'authtype'),
-            'post'
-        );
-        // check captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $resCheck = $mPolicy->checkCaptcha('login');
-        if (!Jaws_Error::IsError($resCheck)) {
-            $resCheck = $GLOBALS['app']->Session->Login($loginData);
-        }
-        if (!Jaws_Error::IsError($resCheck)) {
-            // Can enter to Control Panel?
-            if ($cplGadget->GetPermission('default_admin')) {
-                if (!$cplGadget->session->fetch('checksess')) {
-                    $cplGadget->session->push(
-                        _t('GLOBAL_ERROR_SESSION_NOTFOUND'),
-                        'Login.Response',
-                        RESPONSE_WARNING
-                    );
-                } else {
-                    $referrer = parse_url(hex2bin($loginData['referrer']));
-                    $referrer = (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
-                                (array_key_exists('query', $referrer)? "?{$referrer['query']}" : '') . 
-                                (array_key_exists('fragment', $referrer)? "#{$referrer['fragment']}" : '');
-                    Jaws_Header::Location($referrer);
-                }
-            } else {
-                $GLOBALS['app']->Session->Logout();
-                $cplGadget->session->push(
-                    _t('GLOBAL_ERROR_LOGIN_NOTCP'),
-                    'Login.Response',
-                    RESPONSE_ERROR
-                );
-            }
-        } else {
-            $cplGadget->session->push(
-                $resCheck->GetMessage(),
-                'Login.Response',
-                RESPONSE_ERROR,
-                $loginData
-            );
-        }
+    $ReqGadget = 'Users';
+    if (($ReqAction != 'Login') &&
+        (!$httpAuthEnabled || !isset($_SERVER['PHP_AUTH_USER']))
+    ) {
+        $ReqAction = 'LoginBox';
+    } else {
+        $ReqAction = 'Login';
     }
 
-    if ($httpAuthEnabled) {
-        $httpAuth->showLoginBox();
+    $GLOBALS['app']->mainGadget = $ReqGadget;
+    $GLOBALS['app']->mainAction = $ReqAction;
+    $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
+    $GLOBALS['app']->define('', 'mainAction', $ReqAction);
+    $ReqResult = $gdgtUsers->action->loadAdmin()->Execute($ReqAction);
+    if (Jaws_Error::IsError($ReqResult)) {
+        Jaws_Error::Fatal($ReqResult->getMessage());
     }
 
-    $data = $cplGadget->action->loadAdmin('Login')->LoginBox();
-    terminate($data, 401);
+    terminate($ReqResult, 401);
+}
+
+if (empty($ReqGadget)) {
+    $ReqGadget = 'ControlPanel';
+    $ReqAction = '';
 }
 
 // Can use Control Panel?
