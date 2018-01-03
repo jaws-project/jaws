@@ -20,10 +20,6 @@ $admin_actions['DefaultAction'] = array(
     'normal' => true,
     'file' => 'ControlPanel',
 );
-$admin_actions['LoginBox'] = array(
-    'standalone' => true,
-    'file' => 'Login',
-);
 $admin_actions['Backup'] = array(
     'standalone' => true,
     'file' => 'Backup',
