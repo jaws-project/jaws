@@ -900,8 +900,37 @@ function initiateACLsTree() {
     });
 }
 
+/**
+ *
+ */
+function submitLoginForm(form)
+{
+    if ($('#usecrypt').prop('checked')) {
+        $.loadScript('libraries/js/jsencrypt.min.js', function() {
+            if (!$('#loginkey').length) {
+                var objRSACrypt = new JSEncrypt();
+                objRSACrypt.setPublicKey(form.pubkey.value);
+                form.password.value = objRSACrypt.encrypt(form.password.value);
+            }
+            form.submit();
+        });
+        return false;
+    }
+
+    return true;
+}
+
 $(document).ready(function() {
     switch (jaws.Defines.mainAction) {
+        case 'LoginBox':
+            if ($('#loginkey').length) {
+                $('#loginkey').focus();
+            } else {
+                $('#username').focus();
+                $('#username').select();
+            }
+            break;
+
         case 'Users':
             cachedUserForm  = $('#workarea').html();
             $('#filter_term').val('');

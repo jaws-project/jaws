@@ -459,34 +459,55 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Login()
     {
+        $httpAuthEnabled = false;
+        if (isset($_SERVER['PHP_AUTH_USER']) &&
+            (jaws()->request->method() != 'post') &&
+            $GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true'
+        ) {
+            $httpAuthEnabled = true;
+            $httpAuth = new Jaws_HTTPAuth();
+            $httpAuth->AssignData();
+            jaws()->request->update('username', $httpAuth->getUsername(), 'post');
+            jaws()->request->update('password', $httpAuth->getPassword(), 'post');
+            jaws()->request->update('referrer', bin2hex(Jaws_Utils::getRequestURL(true)), 'post');
+            jaws()->request->update('usecrypt', 0, 'post');
+        }
+
         $loginData = $this->gadget->request->fetch(
             array('username', 'password', 'usecrypt', 'loginkey', 'authstep', 'referrer', 'remember', 'authtype'),
             'post'
         );
 
-        // check captcha
-        $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $resCheck = $htmlPolicy->checkCaptcha('login');
-        if (!Jaws_Error::IsError($resCheck)) {
-            // try to login
+        try {
+            // check captcha
+            if (!$httpAuthEnabled) {
+                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                $resCheck = $htmlPolicy->checkCaptcha('login');
+                if (Jaws_Error::IsError($resCheck)) {
+                    throw new Exception($resCheck->getMessage());
+                }
+            }
+
             $resCheck = $GLOBALS['app']->Session->Login($loginData);
-        }
-        if (Jaws_Error::isError($resCheck)) {
+            if (Jaws_Error::isError($resCheck)) {
+                throw new Exception($resCheck->getMessage());
+            }
+
+            if (!$this->gadget->session->fetch('checksess')) {
+                // do logout
+                $GLOBALS['app']->Session->Logout();
+                throw new Exception(_t('GLOBAL_ERROR_SESSION_NOTFOUND'));
+            }
+
+        } catch (Exception $error) {
             $this->gadget->session->push(
-                $resCheck->GetMessage(),
+                $error->getMessage(),
                 'Login.Response',
                 RESPONSE_ERROR,
                 $loginData
             );
-            //$login_url = $this->gadget->urlMap('LoginBox', array('referrer'  => $loginData['referrer']));
-            //return Jaws_Header::Location($login_url);
-        } else {
-            if (!$this->gadget->session->fetch('checksess')) {
-                $this->gadget->session->push(
-                    _t('GLOBAL_ERROR_SESSION_NOTFOUND'),
-                    'Login.Response',
-                    RESPONSE_WARNING
-                );
+            if ($httpAuthEnabled) {
+                return $this->gadget->action->loadAdmin('Login')->LoginBox();
             }
         }
 

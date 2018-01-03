@@ -347,6 +347,15 @@ $actions['ImportVCard'] = array(
 /**
  * Admin actions
  */
+$admin_actions['LoginBox'] = array(
+    'standalone' => true,
+    'file' => 'Login',
+);
+$admin_actions['Login'] = array(
+    'standalone' => true,
+    'global' => true,
+    'file' => 'Login',
+);
 $admin_actions['Users'] = array(
     'normal' => true,
     'file' => 'Users',
