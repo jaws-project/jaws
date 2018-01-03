@@ -359,17 +359,18 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
         $sync = false;
     }
 
-    if (in_array($status_code, array(301, 302))) {
+    if (!empty($next_location)) {
         // prevent redirect if request is sent via ajax
         $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
         if ($XMLHttpRequest) {
             $data = $GLOBALS['app']->Session->PopResponse($data);
         } else {
-            http_response_code($status_code);
             header('Location: '.$next_location);
         }
     }
 
+    // set response status code
+    http_response_code($status_code);
     // encode data based on response type
     $data = Jaws_Response::get($resType, $data);
     // Sync session
