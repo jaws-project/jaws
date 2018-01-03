@@ -179,10 +179,12 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $reqpost['usecrypt'] = '';
             //$reqpost['referrer'] = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
             $reqpost['referrer'] = bin2hex(Jaws_Utils::getRequestURL(true));
-            $this->gadget->session->insert('checksess', 1);
         } else {
             $reqpost = $response['data'];
         }
+
+        // set session key/value for check through login process
+        $this->gadget->session->insert('checksess', 1);
 
         if (is_null($reqpost['authtype'])) {
             $reqpost['authtype'] = $this->gadget->request->fetch('authtype', 'get');
