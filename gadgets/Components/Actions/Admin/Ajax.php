@@ -277,7 +277,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($comp, $data) = $this->gadget->request->fetchAll('post');
         $data = $this->gadget->request->fetch('1:array', 'post');
         foreach ($data as $key => $value) {
-            $res = $GLOBALS['app']->Registry->update($key, $value, false, $comp);
+            $res = $GLOBALS['app']->Registry->update($key, $value, null, $comp);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_REGISTRY_NOT_UPDATED'), RESPONSE_ERROR);
             }
