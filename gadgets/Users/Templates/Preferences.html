@@ -22,7 +22,31 @@
         <div>
           <!-- BEGIN key -->
           <div>
-            <label>{{key_title}}:</label>{{input_value}}
+            <label>{{key_title}}:</label>
+            <!-- BEGIN select -->
+            <select class="{{class}}" name="{{key_name}}" >
+              <!-- BEGIN option -->
+              <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+              <!-- END option -->
+            </select>
+            <!-- END select -->
+
+            <!-- BEGIN number -->
+            <input class="{{class}}" type="number" name="{{key_name}}" value="{{value}}" />
+            <!-- END number -->
+
+            <!-- BEGIN checkbox -->
+            <input class="{{class}}"
+              type="checkbox"
+              name="{{key_name}}"
+              value="1"
+              <!-- BEGIN checked --> checked<!-- END checked -->
+            />
+            <!-- END checkbox -->
+
+            <!-- BEGIN text -->
+            <input class="{{class}}" type="text" name="{{key_name}}" value="{{value}}" />
+            <!-- END text -->
           </div>
           <!-- END key -->
           <div class="gadget_actions actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>

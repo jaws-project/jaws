@@ -20,6 +20,7 @@ class Users_Hooks_Preferences extends Jaws_Gadget_Hook
     {
         $result = array();
         $result['two_step_verification'] = array(
+            'type'  => 'checkbox',
             'title' => _t('USERS_SETTINGS_TWO_STEP_VERIFICATION'),
         );
 

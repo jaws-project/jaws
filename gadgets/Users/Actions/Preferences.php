@@ -71,25 +71,65 @@ class Users_Actions_Preferences extends Users_Actions_Default
                 if (!array_key_exists($key_name, $options)) {
                     continue;
                 }
+
+                $options[$key_name]['type']  = @$options[$key_name]['type']?: 'text';
+                $options[$key_name]['class'] = @$options[$key_name]['class']?: 'x-large';
+                $customized[$key_name] = isset($customized[$key_name])? $customized[$key_name] : '';
+
                 $tpl->SetBlock('preferences/gadget/key');
                 $tpl->SetVariable('gadget', $gadget);
                 $tpl->SetVariable('key_name', $key_name);
                 $tpl->SetVariable('key_title', $options[$key_name]['title']);
-                if (@isset($options[$key_name]['values'])) {
-                    $element =& Piwi::CreateWidget('Combo', $key_name);
-                    $element->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '');
-                    foreach ($options[$key_name]['values'] as $value => $title) {
-                        $element->AddOption($title, $value);
-                    }
-                } else {
-                    $element =& Piwi::CreateWidget('Entry', $key_name);
-                }
+                switch ($options[$key_name]['type']) {
+                    case 'select':
+                        $tpl->SetBlock('preferences/gadget/key/select');
+                        $tpl->SetVariable('key_name', $key_name);
+                        $tpl->SetVariable('class', $options[$key_name]['class']);
 
-                $element->SetID('');
-                $options[$key_name]['size'] = @$options[$key_name]['size']?: 'x-large';
-                $element->SetClass($options[$key_name]['size']. (isset($options[$key_name]['ltr'])? ' ltr' : ''));
-                $element->SetValue(isset($customized[$key_name])? $customized[$key_name] : '');
-                $tpl->SetVariable('input_value', $element->Get());
+                        $options[$key_name]['values'] =
+                            array('' => _t('USERS_ADVANCED_OPTS_NOT_YET')) +
+                            $options[$key_name]['values'];
+                        foreach ($options[$key_name]['values'] as $value => $text) {
+                            $tpl->SetBlock('preferences/gadget/key/select/option');
+                            $tpl->SetVariable('value', $value);
+                            $tpl->SetVariable('text', $text);
+                            if ($customized[$key_name] == $value) {
+                                $tpl->SetBlock('preferences/gadget/key/select/option/selected');
+                                $tpl->ParseBlock('preferences/gadget/key/select/option/selected');
+                            }
+                            $tpl->ParseBlock('preferences/gadget/key/select/option');
+                        }
+
+                        $tpl->ParseBlock('preferences/gadget/key/select');
+                        break;
+
+                    case 'checkbox':
+                        $tpl->SetBlock('preferences/gadget/key/checkbox');
+                        $tpl->SetVariable('key_name', $key_name);
+                        $tpl->SetVariable('class', $options[$key_name]['class']);
+                        if ($customized[$key_name]) {
+                            $tpl->SetBlock('preferences/gadget/key/checkbox/checked');
+                            $tpl->ParseBlock('preferences/gadget/key/checkbox/checked');
+                        }
+                        $tpl->ParseBlock('preferences/gadget/key/checkbox');
+                        break;
+
+                    case 'number':
+                        $tpl->SetBlock('preferences/gadget/key/number');
+                        $tpl->SetVariable('key_name', $key_name);
+                        $tpl->SetVariable('value', $customized[$key_name]);
+                        $tpl->SetVariable('class', $options[$key_name]['class']);
+                        $tpl->ParseBlock('preferences/gadget/key/number');
+                        break;
+
+                    default:
+                        $tpl->SetBlock('preferences/gadget/key/text');
+                        $tpl->SetVariable('key_name', $key_name);
+                        $tpl->SetVariable('value', $customized[$key_name]);
+                        $tpl->SetVariable('class', $options[$key_name]['class']);
+                        $tpl->ParseBlock('preferences/gadget/key/text');
+                        break;
+                }
 
                 $tpl->ParseBlock('preferences/gadget/key');
             }
