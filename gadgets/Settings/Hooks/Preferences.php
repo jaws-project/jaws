@@ -44,6 +44,7 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
             'values' => $objSettings->GetCalendarList(),
         );
         $result['date_format'] = array(
+            'type'  => 'select',
             'title' => _t('SETTINGS_DATE_FORMAT'),
             'values' => $objSettings->GetDateFormatList(),
         );
