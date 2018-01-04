@@ -59,6 +59,9 @@ class Users_Actions_Preferences extends Users_Actions_Default
             }
 
             $keys = $GLOBALS['app']->Registry->fetchAll($gadget, true);
+            if (empty($keys)) {
+                continue;
+            }
             $customized = $this->gadget->registry->fetchAllByUser($gadget);
 
             $tpl->SetBlock('preferences/gadget');
