@@ -24,19 +24,22 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $objComponents = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $objComponents->GetGadgetsList(null, true, true, null, true);
         $gadgets = array_column(array_values($gadgets), 'title', 'name');
-        array_unshift($gadgets, _t('GLOBAL_NOGADGET'));
+        $gadgets = array('-' => _t('GLOBAL_NOGADGET')) + $gadgets;
 
         $result['admin_language'] = array(
+            'type'  => 'select',
             'title' => _t('SETTINGS_ADMIN_LANGUAGE'),
             'values' => $languages,
             'ltr' => true,
         );
         $result['site_language'] = array(
+            'type'  => 'select',
             'title' => _t('SETTINGS_DEFAULT_SITE_LANGUAGE'),
             'values' => $languages,
             'ltr' => true,
         );
         $result['calendar'] = array(
+            'type'  => 'select',
             'title' => _t('SETTINGS_CALENDAR'),
             'values' => $objSettings->GetCalendarList(),
         );
@@ -45,14 +48,17 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
             'values' => $objSettings->GetDateFormatList(),
         );
         $result['main_gadget'] = array(
+            'type'  => 'select',
             'title' => _t('SETTINGS_MAIN_GADGET'),
             'values' => $gadgets,
         );
         $result['editor'] = array(
+            'type'  => 'select',
             'title' => _t('SETTINGS_EDITOR'),
             'values' => $objSettings->GetEditorList(),
         );
         $result['timezone'] = array(
+            'type'  => 'select',
             'title' => _t('GLOBAL_TIMEZONE'),
             'values' => $objSettings->GetTimeZonesList(),
             'ltr' => true,
