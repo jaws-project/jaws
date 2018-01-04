@@ -21,6 +21,7 @@ class Weather_Hooks_Preferences extends Jaws_Gadget_Hook
         $result = array();
 
         $result['unit'] = array(
+            'type' => 'select',
             'title' => _t('WEATHER_UNIT'),
             'values' => array(
                 'metric'   => _t('WEATHER_UNIT_METRIC'),
@@ -31,6 +32,7 @@ class Weather_Hooks_Preferences extends Jaws_Gadget_Hook
         $now = time();
         $objDate = Jaws_Date::getInstance();
         $result['date_format'] = array(
+            'type' => 'select',
             'title' => _t('WEATHER_DATE_FORMAT'),
             'values' => array(
                 'DN'      => $objDate->Format($now, 'DN'),
