@@ -17,7 +17,7 @@ class Components_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.3.0';
+    var $version = '0.3.1';
 
     /**
      * Is this gadget core gadget?

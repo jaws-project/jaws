@@ -396,8 +396,18 @@ function componentRegistry(reset)
         $.each(res.data, function(name, value) {
             var label = $('<label>').html(name).attr('for', name),
                 th = $('<th>').append(label),
-                input = $('<input>').attr('id', name).val(value),
-                td = $('<td>').append(input),
+                input = $('<input>').attr('id', name);
+            switch (typeof value) {
+                case 'boolean':
+                    input.attr('type', 'checkbox').prop('checked', value);
+                    break;
+                case 'number':
+                    input.attr('type', 'number').val(value);
+                    break;
+                default:
+                    input.attr('type', 'text').val(value);
+            }
+            var td = $('<td>').append(input),
                 tr = $('<tr>').append(th, td);
             input.on('change', onValueChange);
             table.append(tr);
@@ -514,7 +524,17 @@ function onValueChange()
 {
     switch ($('#tabs').find('li.active').attr('id')) {
         case 'tab_registry':
-            regChanges[this.id] = this.value;
+            switch (this.type) {
+                case 'checkbox':
+                    regChanges[this.id] = this.checked;
+                    break;
+                case 'number':
+                    regChanges[this.id] = parseFloat(this.value);
+                    break;
+                default:
+                    regChanges[this.id] = this.value;
+                    break;
+            }
             break;
         case 'tab_acl':
             aclChanges[this.id] = this.checked;
