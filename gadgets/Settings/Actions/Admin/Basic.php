@@ -101,7 +101,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $gdt->setID('main_gadget');
 
         $tpl->SetBlock('settings/item');
-        $gdt->AddOption(_t('GLOBAL_NOGADGET'),'');
+        $gdt->AddOption(_t('GLOBAL_NOGADGET'), '-');
         foreach ($installedgadgets as $g => $tg) {
             $gdt->AddOption($tg['title'], $g);
         }
