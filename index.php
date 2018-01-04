@@ -48,7 +48,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
         );
     }
 
-    if (!empty($ReqGadget)) {
+    if (!empty($ReqGadget) && $ReqGadget != '-') {
         if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
             $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->load();
             if (Jaws_Error::IsError($objAction)) {
