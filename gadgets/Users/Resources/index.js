@@ -248,10 +248,23 @@ function initContactForm(contact)
  */
 function updatePreferences(form)
 {
-    var result = UsersAjax.callAsync(
-        'UpdatePreferences',
-        $.unserialize($(form).serialize())
-    );
+    var postData = $.unserialize($(form).serialize());
+    delete postData.gadget;
+    delete postData.action;
+
+    $.each(postData, function (key, val) {
+        switch (form.elements[key].type) {
+            case 'checkbox':
+                val = form.elements[key].checked;
+                break;
+            case 'number':
+                val = parseFloat(val);
+                break;
+        }
+        postData[key] = val;
+    });
+
+    UsersAjax.callAsync('UpdatePreferences', postData);
     return false;
 }
 

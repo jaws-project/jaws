@@ -178,7 +178,8 @@ class Users_Actions_Preferences extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserPreferences');
         $post = $this->gadget->request->fetchAll('post');
         $gadget = $post['component'];
-        unset($post['gadget'], $post['action'], $post['component']);
+        unset($post['component']);
+
         // filter defined options
         $post = array_filter($post, 'definedFilter');
         $this->gadget->registry->deleteByUser($gadget);
