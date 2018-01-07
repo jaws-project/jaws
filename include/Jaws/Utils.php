@@ -714,7 +714,11 @@ class Jaws_Utils
     {
         $referrer = @parse_url($_SERVER['HTTP_REFERER']);
         if ($referrer && isset($referrer['host']) && ($referrer['host'] != $_SERVER['HTTP_HOST'])) {
-            $referrer = $referrer['host'];
+            if (array_key_exists('port', $referrer)) {
+                $referrer = $referrer['host'] . ':' . $referrer['port'];
+            } else {
+                $referrer = $referrer['host'];
+            }
         } else {
             $referrer = '';
         }
