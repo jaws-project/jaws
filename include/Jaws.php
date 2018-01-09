@@ -660,9 +660,15 @@ class Jaws
      * @param   string  $value      Define value
      * @return  void
      */
-    function define($component, $key, $value)
+    function define($component, $key, $value = '')
     {
-        $this->defines[$component][$key] = $value;
+        if (empty($key)) {
+            if (!array_key_exists($component, $this->defines)) {
+                $this->defines[$component] = array();
+            }
+        } else {
+            $this->defines[$component][$key] = $value;
+        }
     }
 
     /**

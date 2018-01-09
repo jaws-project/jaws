@@ -285,6 +285,7 @@ class Jaws_Gadget_Action
         }
 
         if (method_exists($objAction, $action)) {
+            $GLOBALS['app']->define($this->gadget->name, false);
             $this->gadget->loaded_actions[$action] = true;
             $GLOBALS['app']->requestedGadget  = $this->gadget->name;
             $GLOBALS['app']->requestedAction  = $action;

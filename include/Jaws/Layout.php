@@ -541,10 +541,12 @@ class Jaws_Layout
             }
 
             $result.= "\t$jsObj = {};\n";
-            $result.= "\t$jsObj.Actions = ".'$.parseJSON(\''.json_encode($actions, JSON_HEX_APOS).'\')'.";\n";
-            $result.= "\t$jsObj.Defines = ".'$.parseJSON(\''.json_encode($defines, JSON_HEX_APOS).'\')'.";\n";
+            $result.= "\t$jsObj.Actions = ". '$.parseJSON(\''. json_encode($actions, JSON_HEX_APOS). '\');'. "\n";
+            $result.= "\t$jsObj.Defines = ". '$.parseJSON(\''. json_encode($defines, JSON_HEX_APOS). '\');'. "\n";
         }
 
+        unset($allDefines['']);
+        $result.= "\tjaws.Gadgets = ". '$.parseJSON(\''. json_encode(array_keys($allDefines)). '\');';
         return $result;
     }
 
@@ -579,6 +581,10 @@ class Jaws_Layout
             $this->extraTags['scripts']['elements'],
             array(
                 'src'  => 'libraries/jquery/jquery.min.js?'. JAWS_VERSION,
+                'type' => 'text/javascript'
+            ),
+            array(
+                'src'  => 'libraries/js/stapes.js?'. JAWS_VERSION,
                 'type' => 'text/javascript'
             ),
             array(

@@ -252,7 +252,7 @@ class Jaws_Gadget
      * @param   string $value   Define value
      * @return  void
      */
-    function define($key, $value)
+    function define($key, $value = '')
     {
         $GLOBALS['app']->define($this->name, $key, $value);
     }
