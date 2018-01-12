@@ -6,160 +6,151 @@
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2015 Jaws Development Group
+ * @copyright  2004-2017 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-/**
- * Use async mode, create Callback
- */
-var SettingsCallback = {
-    UpdateBasicSettings: function(response) {
-        SettingsAjax.showResponse(response);
-    },
+function Jaws_Gadget_Settings() { return {
+    // ASync callback method
+    AjaxCallback : {
+        UpdateBasicSettings: function(response) {
+            this.ajax.showResponse(response);
+        },
 
-    UpdateAdvancedSettings: function(response) {
-        SettingsAjax.showResponse(response);
-    },
+        UpdateAdvancedSettings: function(response) {
+            this.ajax.showResponse(response);
+        },
 
-    UpdateMetaSettings: function(response) {
-        SettingsAjax.showResponse(response);
-    },
+        UpdateMetaSettings: function(response) {
+            this.ajax.showResponse(response);
+        },
 
-    UpdateMailSettings: function(response) {
-        SettingsAjax.showResponse(response);
-    },
+        UpdateMailSettings: function(response) {
+            this.ajax.showResponse(response);
+        },
 
-    UpdateFTPSettings: function(response) {
-        SettingsAjax.showResponse(response);
-    },
+        UpdateFTPSettings: function(response) {
+            this.ajax.showResponse(response);
+        },
 
-    UpdateProxySettings: function(response) {
-        SettingsAjax.showResponse(response);
-    }
-}
-
-/**
- * Update basic settings
- */
-function submitBasicForm()
-{
-    SettingsAjax.callAsync(
-        'UpdateBasicSettings',
-        $.unserialize($('#settingsForm input,select,textarea').serialize())
-    );
-}
-
-/**
- * Update advanced settings
- */
-function submitAdvancedForm()
-{
-    SettingsAjax.callAsync(
-        'UpdateAdvancedSettings',
-        $.unserialize($('#settingsForm input,select,textarea').serialize())
-    );
-}
-
-/**
- * Adds new custom meta
- */
-function addCustomMeta()
-{
-    var div = $('<div>', {'class': 'fields'}),
-        label = $('<label>').html(custom_meta),
-        inputName  = $('<input>', {type:'text', title:'Meta Name', 'class':'meta-name'}),
-        inputValue = $('<input>', {type:'text', title:'Meta Content', 'class':'meta-value'});
-
-    div.append(label);
-    div.append(inputName);
-    div.append(inputValue);
-    $('#customMeta').append(div);
-}
-
-/**
- * Update meta
- */
-function submitMetaForm()
-{
-    var customMeta   = [],
-        customInputs = $('#customMeta input.meta-name');
-
-    customInputs.each(function(index, input) {
-        if (!$(input).val()) {
-            $(input).parent().empty();
-            return;
+        UpdateProxySettings: function(response) {
+            this.ajax.showResponse(response);
         }
-        customMeta[index] = [$(input).val(), $(input).next().val()];
-    });
+    },
 
-    var settings = $.unserialize($('#settingsForm input,select,textarea').serialize());
-    settings["site_custom_meta"] = customMeta;
-    SettingsAjax.callAsync('UpdateMetaSettings', settings);
-}
+    /**
+     * Update basic settings
+     */
+    submitBasicForm: function() {
+        this.ajax.callAsync(
+            'UpdateBasicSettings',
+            $.unserialize($('#settingsForm input,select,textarea').serialize())
+        );
+    },
 
-/**
- * Update mail-server settings
- */
-function submitMailSettingsForm()
-{
-    SettingsAjax.callAsync(
-        'UpdateMailSettings',
-        $.unserialize($('#settingsForm input,select,textarea').serialize())
-    );
-}
+    /**
+     * Update advanced settings
+     */
+    submitAdvancedForm: function() {
+        this.ajax.callAsync(
+            'UpdateAdvancedSettings',
+            $.unserialize($('#settingsForm input,select,textarea').serialize())
+        );
+    },
 
-/**
- * Update ftp-server settings
- */
-function submitFTPSettingsForm()
-{
-    SettingsAjax.callAsync(
-        'UpdateFTPSettings',
-        $.unserialize($('#settingsForm input,select,textarea').serialize())
-    );
-}
+    /**
+     * Adds new custom meta
+     */
+    addCustomMeta: function() {
+        var div = $('<div>', {'class': 'fields'}),
+            label = $('<label>').html(custom_meta),
+            inputName  = $('<input>', {type:'text', title:'Meta Name', 'class':'meta-name'}),
+            inputValue = $('<input>', {type:'text', title:'Meta Content', 'class':'meta-value'});
 
-/**
- * Update proxy settings
- */
-function submitProxySettingsForm()
-{
-    SettingsAjax.callAsync(
-        'UpdateProxySettings',
-        $.unserialize($('#settingsForm input,select,textarea').serialize())
-    );
-}
+        div.append(label);
+        div.append(inputName);
+        div.append(inputValue);
+        $('#customMeta').append(div);
+    },
 
-function toggleGR() 
-{
-    if ($('#use_gravatar').val() == 'yes') {
-        $('#gravatar_rating').prop('disabled', false);
-    } else {
-        $('#gravatar_rating').prop('disabled', true);
-    }
-}
+    /**
+     * Update meta
+     */
+    submitMetaForm: function() {
+        var customMeta   = [],
+            customInputs = $('#customMeta input.meta-name');
 
-function changeMailer()
-{
-    $('#settingsForm input,select,textarea').not('#mailer').prop("disabled", true);
-    switch($('#mailer').val()) {
-        case 'phpmail':
-            $('#settingsForm #gate_email,#gate_title').prop("disabled", false);
-            break;
-        case 'sendmail':
-            $('#settingsForm #gate_email,#gate_title,#sendmail_path').prop("disabled", false);
-            break;
-        case 'smtp':
-            $('#settingsForm input,select,textarea').not('#mailer').prop("disabled", false);
-            $('#settingsForm #sendmail_path').prop("disabled", true);
-            break;
-    }
-}
+        customInputs.each(function(index, input) {
+            if (!$(input).val()) {
+                $(input).parent().empty();
+                return;
+            }
+            customMeta[index] = [$(input).val(), $(input).next().val()];
+        });
 
-$(document).ready(function() {
-  if ($('#mailer').length) {
-    changeMailer();
-  }
-});
+        var settings = $.unserialize($('#settingsForm input,select,textarea').serialize());
+        settings["site_custom_meta"] = customMeta;
+        this.ajax.callAsync('UpdateMetaSettings', settings);
+    },
 
-var SettingsAjax = new JawsAjax('Settings', SettingsCallback);
+    /**
+     * Update mail-server settings
+     */
+    submitMailSettingsForm: function() {
+        this.ajax.callAsync(
+            'UpdateMailSettings',
+            $.unserialize($('#settingsForm input,select,textarea').serialize())
+        );
+    },
+
+    /**
+     * Update proxy settings
+     */
+    submitProxySettingsForm: function() {
+        this.ajax.callAsync(
+            'UpdateProxySettings',
+            $.unserialize($('#settingsForm input,select,textarea').serialize())
+        );
+    },
+
+    toggleGR: function() {
+        if ($('#use_gravatar').val() == 'yes') {
+            $('#gravatar_rating').prop('disabled', false);
+        } else {
+            $('#gravatar_rating').prop('disabled', true);
+        }
+    },
+
+    changeMailer: function() {
+        $('#settingsForm input,select,textarea').not('#mailer').prop("disabled", true);
+        switch($('#mailer').val()) {
+            case 'phpmail':
+                $('#settingsForm #gate_email,#gate_title').prop("disabled", false);
+                break;
+            case 'sendmail':
+                $('#settingsForm #gate_email,#gate_title,#sendmail_path').prop("disabled", false);
+                break;
+            case 'smtp':
+                $('#settingsForm input,select,textarea').not('#mailer').prop("disabled", false);
+                $('#settingsForm #sendmail_path').prop("disabled", true);
+                break;
+        }
+    },
+
+    /**
+     * Update ftp-server settings
+     */
+    submitFTPSettingsForm: function() {
+        this.ajax.callAsync(
+            'UpdateFTPSettings',
+            $.unserialize($('#settingsForm input,select,textarea').serialize())
+        );
+    },
+
+    init: function() {
+        if ($('#mailer').length) {
+            this.changeMailer();
+        }
+    },
+
+}};
+

@@ -31,12 +31,12 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
 
         // Add Button
         $addButton =& Piwi::CreateWidget('Button', 'add', _t('SETTINGS_META_ADD_CUSTOM'), STOCK_ADD);
-        $addButton->AddEvent(ON_CLICK, 'javascript:addCustomMeta();');
+        $addButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').addCustomMeta();");
         $tpl->SetVariable('addButton', $addButton->Get());
 
         // Save Button
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, 'javascript:submitMetaForm();');
+        $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitMetaForm();");
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // Site description

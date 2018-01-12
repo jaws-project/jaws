@@ -29,7 +29,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $tpl->SetVariable('legend', _t('SETTINGS_BASIC_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, 'javascript:submitBasicForm();');
+        $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitBasicForm();");
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // site status
