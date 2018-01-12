@@ -193,8 +193,10 @@ function JawsAjax(gadget, callback, baseScript)
         options.data = $.encodeJSON((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
-        options.complete = this.onComplete.bind(this, options);
+        //options.complete = this.onComplete.bind(this, options);
         var result = $.ajax(options);
+        // hide loading
+        this.showLoading(false);
         return eval('(' + result.responseText + ')');
     };
 
@@ -262,9 +264,15 @@ function JawsAjax(gadget, callback, baseScript)
         }
 
         if (this.callback) {
-            var reqMethod = this.callback[reqOptions.action];
+            var reqMethod;
+            if (this.callback[reqOptions.action]) {
+                reqMethod = this.callback[reqOptions.action];
+            } else if (this.callback.AjaxCallback[reqOptions.action]) {
+                reqMethod = this.callback.AjaxCallback[reqOptions.action];
+            }
+
             if (reqMethod) {
-                reqMethod(response, jqXHR.status);
+                reqMethod.call(this.callback, response, jqXHR.status);
             }
         }
     };
@@ -1065,6 +1073,44 @@ $.encodeJSON = function(v) {
     return null;
 }
 
+var Jaws_Gadget = (function () {
+    var instances = {};
+
+    function newInstance(gadget) {
+        var objGadget = new (window['Jaws_Gadget_'+gadget] || Object.constructor);
+        objGadget.name = gadget;
+        objGadget.ajax = new JawsAjax(gadget, objGadget || {});
+        return objGadget;
+    }
+ 
+    return {
+        getInstance: function(gadget) {
+            if (!instances[gadget]) {
+                instances[gadget] = newInstance(gadget);
+            }
+
+            return instances[gadget];
+        },
+
+        init: function() {
+            $.each(instances, function(index, instance) {
+                if (instance.init) {
+                    instance.init();
+                }
+            });
+        },
+
+        shout: function(event, data) {
+            $.each(instances, function(index, instance) {
+                if (instance.listen && instance.listen[event]) {
+                    instance.listen[event](data);
+                }
+            });
+        }
+    };
+
+})();
+
 /**
  * on document ready
  */
@@ -1072,4 +1118,10 @@ $(document).ready(function() {
     $('textarea[role="editor"]').each(function(index) {
         initEditor(this)
     });
+
+    $.each(jaws.Gadgets, function(index, gadget) {
+        Jaws_Gadget.getInstance(gadget);
+    });
+
+    Jaws_Gadget.init();
 });
