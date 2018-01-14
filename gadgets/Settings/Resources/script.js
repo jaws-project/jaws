@@ -13,27 +13,27 @@ function Jaws_Gadget_Settings() { return {
     // ASync callback method
     AjaxCallback : {
         UpdateBasicSettings: function(response) {
-            this.ajax.showResponse(response);
+            this.gadget.ajax.showResponse(response);
         },
 
         UpdateAdvancedSettings: function(response) {
-            this.ajax.showResponse(response);
+            this.gadget.ajax.showResponse(response);
         },
 
         UpdateMetaSettings: function(response) {
-            this.ajax.showResponse(response);
+            this.gadget.ajax.showResponse(response);
         },
 
         UpdateMailSettings: function(response) {
-            this.ajax.showResponse(response);
+            this.gadget.ajax.showResponse(response);
         },
 
         UpdateFTPSettings: function(response) {
-            this.ajax.showResponse(response);
+            this.gadget.ajax.showResponse(response);
         },
 
         UpdateProxySettings: function(response) {
-            this.ajax.showResponse(response);
+            this.gadget.ajax.showResponse(response);
         }
     },
 
@@ -41,7 +41,7 @@ function Jaws_Gadget_Settings() { return {
      * Update basic settings
      */
     submitBasicForm: function() {
-        this.ajax.callAsync(
+        this.gadget.ajax.callAsync(
             'UpdateBasicSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -51,7 +51,7 @@ function Jaws_Gadget_Settings() { return {
      * Update advanced settings
      */
     submitAdvancedForm: function() {
-        this.ajax.callAsync(
+        this.gadget.ajax.callAsync(
             'UpdateAdvancedSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -89,14 +89,14 @@ function Jaws_Gadget_Settings() { return {
 
         var settings = $.unserialize($('#settingsForm input,select,textarea').serialize());
         settings["site_custom_meta"] = customMeta;
-        this.ajax.callAsync('UpdateMetaSettings', settings);
+        this.gadget.ajax.callAsync('UpdateMetaSettings', settings);
     },
 
     /**
      * Update mail-server settings
      */
     submitMailSettingsForm: function() {
-        this.ajax.callAsync(
+        this.gadget.ajax.callAsync(
             'UpdateMailSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -106,7 +106,7 @@ function Jaws_Gadget_Settings() { return {
      * Update proxy settings
      */
     submitProxySettingsForm: function() {
-        this.ajax.callAsync(
+        this.gadget.ajax.callAsync(
             'UpdateProxySettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -140,14 +140,18 @@ function Jaws_Gadget_Settings() { return {
      * Update ftp-server settings
      */
     submitFTPSettingsForm: function() {
-        this.ajax.callAsync(
+        this.gadget.ajax.callAsync(
             'UpdateFTPSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
     },
 
-    init: function() {
-        if ($('#mailer').length) {
+    /**
+     * initialize gadget actions
+     */
+    init: function(mainGadget, mainAction) {
+        // init mail settings action
+        if (this.gadget.actions.indexOf('MailSettings') >= 0) {
             this.changeMailer();
         }
     },
