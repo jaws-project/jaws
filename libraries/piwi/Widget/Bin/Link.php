@@ -146,7 +146,9 @@ class Link extends Bin
      */
     function buildXHTML()
     {
-        if (strpos($this->_link, 'javascript') === false) {
+        if (empty($this->_link)) {
+            $this->_XHTML = '<a href="javascript:void(0);" ';
+        } else if (strpos($this->_link, 'javascript') === false) {
             $this->_XHTML = '<a href="' . $this->_link . '"';
         } else {
             $this->_XHTML = '<a href="javascript:void(0);" onclick="' . $this->_link . '"';
