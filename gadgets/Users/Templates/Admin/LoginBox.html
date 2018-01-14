@@ -24,7 +24,10 @@
           {{response_text}}
         </div>
       </div>
-      <form name="loginbox" action="{{base_script}}" onsubmit="return submitLoginForm(this);" method="post">
+      <form name="loginbox" action="{{base_script}}"
+        onsubmit="return Jaws_Gadget.getInstance('Users').submitLoginForm(this);"
+        method="post"
+      >
         <input type="hidden" name="gadget" value="Users" />
         <input type="hidden" name="action" value="Login" />
         <input type="hidden" name="referrer" value="{{referrer}}" />
