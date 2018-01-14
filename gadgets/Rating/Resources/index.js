@@ -29,4 +29,4 @@ $(document).ready(function() {
     });
 });
 
-var RatingAjax = new JawsAjax('Rating', false, 'index.php');
+var RatingAjax = new JawsAjax('Rating', false, {}, 'index.php');
