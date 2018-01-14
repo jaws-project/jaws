@@ -98,4 +98,4 @@ $(document).ready(function() {
     }
 });
 
-var ForumsAjax = new JawsAjax('Forums', ForumsCallback, 'index.php');
+var ForumsAjax = new JawsAjax('Forums', ForumsCallback, {}, 'index.php');
