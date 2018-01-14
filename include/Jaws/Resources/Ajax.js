@@ -109,23 +109,26 @@ jQuery.extend({
         });
     };
 
+    /*
+     * runtime load script
+    */
     var loadedScripts = {};
-    jQuery.loadScript = function(path, fn) {
+    jQuery.loadScript = function(path, fn, obj) {
         if (loadedScripts[path]) {
-            fn();
+            fn.call(obj);
             return;
         }
 
         loadingScript = $('head script[src="'+path+'"]');
         if (loadingScript.length) {
             loadingScript.on('load readystatechange', function() {
-                fn();
+                fn.call(obj);
             });
         } else {
             $('<script>').appendTo('head').on('load readystatechange', function() {
                 $(this).off('load readystatechange');
                 loadedScripts[path] = true;
-                fn();
+                fn.call(obj);
             }).on('error', function() {
                 //on error
             }).prop('async', true).attr('src', path);
@@ -142,10 +145,11 @@ jQuery.extend({
  * @param   string  baseScript  Base URL
  * @return  void
  */
-function JawsAjax(gadget, callback, baseScript)
+function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
 {
     this.gadget = gadget;
-    this.callback = callback;
+    this.callbackObject = callbackObject;
+    this.callbackFunctions = callbackFunctions;
     this.loadingMessage = '';
     var reqValues = $('meta[name=application-name]').attr('content').split(':');
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
@@ -263,17 +267,12 @@ function JawsAjax(gadget, callback, baseScript)
             reqOptions.done(response, jqXHR.status);
         }
 
-        if (this.callback) {
-            var reqMethod;
-            if (this.callback[reqOptions.action]) {
-                reqMethod = this.callback[reqOptions.action];
-            } else if (this.callback.AjaxCallback[reqOptions.action]) {
-                reqMethod = this.callback.AjaxCallback[reqOptions.action];
-            }
-
-            if (reqMethod) {
-                reqMethod.call(this.callback, response, jqXHR.status);
-            }
+        if (this.callbackFunctions && this.callbackFunctions[reqOptions.action]) {
+            this.callbackFunctions[reqOptions.action].call(
+                this.callbackObject,
+                response,
+                jqXHR.status
+            );
         }
     };
 
@@ -686,9 +685,14 @@ var JawsDataGrid = {
      * Get the first Values and prepares the datagrid
      */
     getFirstValues: function() {
+        var result;
         var firstValues = $('#' + this.name)[0].getFirstPagerValues();
-        var ajaxObject  = $('#' + this.name)[0].objectName;
-        var result      = ajaxObject.callSync('getData', [firstValues, $('#' + this.name)[0].id]);
+        var objGadget  = $('#' + this.name)[0].objectName;
+        if (objGadget instanceof JawsAjax) {
+            result = objGadget.callSync('getData', [firstValues, $('#' + this.name)[0].id]);
+        } else {
+            result = objGadget.ajax.callSync('getData', [firstValues, $('#' + this.name)[0].id]);
+        }
         resetGrid(this.name, result);
         $('#' + this.name)[0].firstPage();
     },
@@ -697,9 +701,15 @@ var JawsDataGrid = {
      * Get the previous Values and prepares the datagrid
      */
     getPreviousValues: function() {
+        var result;
         var previousValues = $('#' + this.name)[0].getPreviousPagerValues();
-        var ajaxObject     = $('#' + this.name)[0].objectName;
-        var result         = ajaxObject.callSync('getData', [previousValues, $('#' + this.name)[0].id]);
+        var objGadget  = $('#' + this.name)[0].objectName;
+        if (objGadget instanceof JawsAjax) {
+            result = objGadget.callSync('getData', [previousValues, $('#' + this.name)[0].id]);
+        } else {
+            result = objGadget.ajax.callSync('getData', [previousValues, $('#' + this.name)[0].id]);
+        }
+
         resetGrid(this.name, result);
         $('#' + this.name)[0].previousPage();
     },
@@ -708,9 +718,15 @@ var JawsDataGrid = {
      * Get the next Values and prepares the datagrid
      */
     getNextValues: function() {
+        var result;
         var nextValues     = $('#' + this.name)[0].getNextPagerValues();
-        var ajaxObject     = $('#' + this.name)[0].objectName;
-        var result         = ajaxObject.callSync('getData', [nextValues, $('#' + this.name)[0].id]);
+        var objGadget  = $('#' + this.name)[0].objectName;
+        if (objGadget instanceof JawsAjax) {
+            result = objGadget.callSync('getData', [nextValues, $('#' + this.name)[0].id]);
+        } else {
+            result = objGadget.ajax.callSync('getData', [nextValues, $('#' + this.name)[0].id]);
+        }
+        
         resetGrid(this.name, result);
         $('#' + this.name)[0].nextPage();
     },
@@ -719,9 +735,15 @@ var JawsDataGrid = {
      * Get the last Values and prepares the datagrid
      */
     getLastValues: function() {
+        var result;
         var lastValues = $('#' + this.name)[0].getLastPagerValues();
-        var ajaxObject = $('#' + this.name)[0].objectName;
-        var result     = ajaxObject.callSync('getData', [lastValues, $('#' + this.name)[0].id]);
+        var objGadget  = $('#' + this.name)[0].objectName;
+        if (objGadget instanceof JawsAjax) {
+            result = objGadget.callSync('getData', [lastValues, $('#' + this.name)[0].id]);
+        } else {
+            result = objGadget.ajax.callSync('getData', [lastValues, $('#' + this.name)[0].id]);
+        }
+
         resetGrid(this.name, result);
         $('#' + this.name)[0].lastPage();
     },
@@ -730,9 +752,15 @@ var JawsDataGrid = {
      * Only retrieves information with the current page the pager has and prepares the datagrid
      */
     getData: function() {
+        var result;
         var currentPage = $('#' + this.name)[0].getCurrentPage();
-        var ajaxObject  = $('#' + this.name)[0].objectName;
-        var result      = ajaxObject.callSync('getData', [currentPage, $('#' + this.name)[0].id]);
+        var objGadget  = $('#' + this.name)[0].objectName;
+        if (objGadget instanceof JawsAjax) {
+            result = objGadget.callSync('getData', [currentPage, $('#' + this.name)[0].id]);
+        } else {
+            result = objGadget.ajax.callSync('getData', [currentPage, $('#' + this.name)[0].id]);
+        }
+
         resetGrid(this.name, result);
     }
 };
@@ -816,7 +844,13 @@ function getDG(name, offset, reset)
         }
 
         reset = (reset == true) || ($('#'+name)[0].rowsSize == 0);
-        dataFunc(name, offset, reset);
+        var objGadget  = $('#'+name)[0].objectName;
+        if (objGadget instanceof JawsAjax) {
+            dataFunc(name, offset, reset);
+        } else {
+            dataFunc.call(objGadget, name, offset, reset);
+        }
+
         if (reset && offset == undefined) {
             $('#'+name)[0].setCurrentPage(0);
         }
@@ -1078,12 +1112,24 @@ var Jaws_Gadget = (function () {
 
     function newInstance(gadget) {
         var objGadget = new (window['Jaws_Gadget_'+gadget] || Object.constructor);
-        objGadget.name = gadget;
-        objGadget.ajax = new JawsAjax(gadget, objGadget || {});
+        objGadget.gadget = objGadget;
+        objGadget.gadget.name = gadget;
+        objGadget.gadget.defines = jaws[gadget].Defines;
+        objGadget.gadget.actions = jaws[gadget].Actions;
+        // ajax interface method
+        objGadget.gadget.ajax = new JawsAjax(gadget, objGadget.AjaxCallback, objGadget);
+        // shout interface method
+        objGadget.gadget.shout = function(event, data, destGadget, broadcast) {
+            dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
+            broadcast = typeof broadcast !== 'undefined'? broadcast : true;
+            return Jaws_Gadget.shout(objGadget, event, data, dstGadget, broadcast);
+        }
+
         return objGadget;
     }
  
     return {
+        // return gadget js object instance
         getInstance: function(gadget) {
             if (!instances[gadget]) {
                 instances[gadget] = newInstance(gadget);
@@ -1092,20 +1138,36 @@ var Jaws_Gadget = (function () {
             return instances[gadget];
         },
 
+        // call gadget initialize method
         init: function() {
             $.each(instances, function(index, instance) {
                 if (instance.init) {
-                    instance.init();
+                    instance.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
                 }
             });
         },
 
-        shout: function(event, data) {
+        // call methods that listening the shouted event
+        shout: function(shouter, event, data, dstGadget, broadcast) {
+            dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
+            broadcast = typeof broadcast !== 'undefined'? broadcast : true;
+
+            var result = null;
             $.each(instances, function(index, instance) {
                 if (instance.listen && instance.listen[event]) {
-                    instance.listen[event](data);
+                    // check event broadcasting
+                    if (!broadcast && instance.gadget.name !== dstGadget) {
+                        return true; //continue;
+                    }
+
+                    var ret = instance.listen[event](shouter, data);
+                    if (dstGadget === instance.gadget.name) {
+                        result = ret;
+                    }
                 }
             });
+
+            return result;
         }
     };
 
