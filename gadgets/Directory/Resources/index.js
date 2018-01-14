@@ -169,4 +169,4 @@ $(document).ready(function() {
     }
 });
 
-var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback, 'index.php');
+var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback, {}, 'index.php');
