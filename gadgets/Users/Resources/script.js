@@ -490,17 +490,12 @@ function Jaws_Gadget_Users() { return {
     getACL: function() {
         function getValue(key, subkey) {
             var res = -1;
-            try {
-                $.each(acls.custom_acls, function (index, acl) {
-                    if (acl.key_name === key && acl.key_subkey == subkey) {
-                        res = acl.key_value;
-                        //there is no way to break each() in MooTools
-                        throw 'break';
-                    }
-                });
-            } catch (e) {
-                if(e != 'break') throw e;
-            }
+            $.each(acls.custom_acls, function (index, acl) {
+                if (acl.key_name === key && acl.key_subkey == subkey) {
+                    res = acl.key_value;
+                    return false; 
+                }
+            });
 
             return res;
         }
@@ -515,27 +510,29 @@ function Jaws_Gadget_Users() { return {
                 'GetACLKeys',
                 [this.selectedId, $('#components').val(), this.currentAction]
             );
-        $.each(acls.default_acls, function(index, acl) {
+
+        $.each(acls.default_acls, $.proxy(function(index, acl) {
             var key_unique = acl.key_name + ':' + acl.key_subkey;
             var check = $('<img/>').attr('id', key_unique),
                 label = $('<label></label>').attr('for', key_unique),
                 div = $('<div></div>').append(check, label),
                 value = getValue(acl.key_name, acl.key_subkey);
+
             label.html(acl.key_desc);
             check.attr('alt', value);
-            check.attr('src', chkImages[value]);
-            label.on('click', function () {
-                var check = $(this).prev('img'),
+            check.attr('src', this.chkImages[value]);
+            label.on('click', $.proxy(function (event) {
+                var check = $(event.target).prev('img'),
                     value = parseInt(check.attr('alt'));
                 check.attr('alt', (value == -1)? 1 : value - 1);
-                check.attr('src', chkImages[check.attr('alt')]);
-            });
-            check.on('click', function () {
-                $(this).attr('alt', (this.alt == -1)? 1 : parseInt($(this).attr('alt')) - 1);
-                $(this).attr('src', chkImages[$(this).attr('alt')]);
-            });
+                check.attr('src', this.chkImages[check.attr('alt')]);
+            }, this));
+            check.on('click', $.proxy(function () {
+                $(event.target).attr('alt', (event.target.alt == -1)? 1 : parseInt($(event.target).attr('alt')) - 1);
+                $(event.target).attr('src', this.chkImages[$(event.target).attr('alt')]);
+            }, this));
             form.append(div);
-        });
+        }, this));
     },
 
     /**
@@ -918,14 +915,14 @@ function Jaws_Gadget_Users() { return {
      */
     initiateACLsTree: function() {
         $('#aclTree').tree({
-            dataSource: aclTreeDataSource,
+            dataSource: $.proxy(this.aclTreeDataSource, this),
             multiSelect: false,
             folderSelect: true
-        }).on('selected.fu.tree', function (event, data) {
+        }).on('selected.fu.tree', $.proxy(function (event, data) {
             if (data.selected[0].type == 'item') {
-                viewACL(data.selected[0].component, data.selected[0].id);
+                this.viewACL(data.selected[0].component, data.selected[0].id);
             }
-        });
+        }, this));
     },
 
     /**

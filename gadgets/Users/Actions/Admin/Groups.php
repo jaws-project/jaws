@@ -59,34 +59,42 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
 
             $actions = '';
             if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget('Link',
-                                            _t('GLOBAL_EDIT'),
-                                            "javascript:editGroup(this, '".$group['id']."');",
-                                            STOCK_EDIT);
+                $link =& Piwi::CreateWidget(
+                    'Link',
+                    _t('GLOBAL_EDIT'),
+                    "javascript:Jaws_Gadget.getInstance('Users').editGroup(this, '".$group['id']."');",
+                    STOCK_EDIT
+                );
                 $actions.= $link->Get().'&nbsp;';
             }
 
             if ($this->gadget->GetPermission('ManageGroupACLs')) {
-                $link =& Piwi::CreateWidget('Link',
-                                            _t('USERS_ACLS'),
-                                            "javascript:editACL(this, '".$group['id']."', 'GroupACL');",
-                                            'gadgets/Users/Resources/images/acls.png');
+                $link =& Piwi::CreateWidget(
+                    'Link',
+                    _t('USERS_ACLS'),
+                    "javascript:Jaws_Gadget.getInstance('Users').editACL(this, '".$group['id']."', 'GroupACL');",
+                    'gadgets/Users/Resources/images/acls.png'
+                );
                 $actions.= $link->Get().'&nbsp;';
             }
 
             if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget('Link',
-                                            _t('USERS_GROUPS_MEMBERS'),
-                                            "javascript:editGroupUsers(this, '".$group['id']."');",
-                                            'gadgets/Users/Resources/images/groups_mini.png');
+                $link =& Piwi::CreateWidget(
+                    'Link',
+                    _t('USERS_GROUPS_MEMBERS'),
+                    "javascript:Jaws_Gadget.getInstance('Users').editGroupUsers(this, '".$group['id']."');",
+                    'gadgets/Users/Resources/images/groups_mini.png'
+                );
                 $actions.= $link->Get().'&nbsp;';
             }
 
             if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget('Link',
-                                            _t('USERS_GROUPS_DELETE'),
-                                            "javascript:deleteGroup(this, '".$group['id']."');",
-                                            STOCK_DELETE);
+                $link =& Piwi::CreateWidget(
+                    'Link',
+                    _t('USERS_GROUPS_DELETE'),
+                    "javascript:Jaws_Gadget.getInstance('Users').deleteGroup(this, '".$group['id']."');",
+                    STOCK_DELETE
+                );
                 $actions.= $link->Get().'&nbsp;';
             }
 
@@ -126,14 +134,14 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
                                     'save',
                                     _t('GLOBAL_SAVE'),
                                     STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, "javascript:saveGroup();");
+        $save->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').saveGroup();");
         $tpl->SetVariable('save', $save->Get());
 
         $cancel =& Piwi::CreateWidget('Button',
                                       'cancel',
                                       _t('GLOBAL_CANCEL'),
                                       STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, "javascript:stopGroupAction();");
+        $cancel->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').stopGroupAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
         $tpl->ParseBlock('Groups');
 

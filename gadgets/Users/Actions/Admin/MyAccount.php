@@ -86,7 +86,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
                                        'SubmitButton',
                                        _t('GLOBAL_UPDATE'),
                                        STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, "javascript:updateMyAccount();");
+        $btnSave->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').updateMyAccount();");
         $tpl->SetVariable('save', $btnSave->Get());
 
         $tpl->SetVariable('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));

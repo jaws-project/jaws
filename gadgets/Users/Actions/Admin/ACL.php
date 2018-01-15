@@ -32,7 +32,7 @@ class Users_Actions_Admin_ACL extends Users_Actions_Admin_Default
         foreach ($gadgets as $gadget) {
             $combo->AddOption($gadget['title'], $gadget['name']);
         }
-        $combo->AddEvent(ON_CHANGE, 'getACL();');
+        $combo->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').getACL();");
         $tpl->SetVariable('components', $combo->Get());
 
         $tpl->ParseBlock('acl');

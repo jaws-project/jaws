@@ -79,7 +79,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         $tpl->SetVariable('reserved_users', $reservedUsers->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript:updateSettings();');
+        $btnSave->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').updateSettings();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->ParseBlock('settings');
