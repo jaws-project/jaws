@@ -8750,8 +8750,8 @@ if (typeof jQuery === 'undefined') {
 					};
 
 					var staticHeightValue = ( staticHeight === 'true' || staticHeight === true ) ? this.$element.height() : parseInt( staticHeight, 10 );
-					var headerHeight = this.$element.find( '.repeater-header' ).outerHeight();
-					var footerHeight = this.$element.find( '.repeater-footer' ).outerHeight();
+					var headerHeight = this.$element.find( '.repeater-header' ).outerHeight() || 0;
+					var footerHeight = this.$element.find( '.repeater-footer' ).outerHeight() || 0;
 					var bottomMargin = ( viewportMargins.bottom === 'auto' ) ? 0 : parseInt( viewportMargins.bottom, 10 );
 					var topMargin = ( viewportMargins.top === 'auto' ) ? 0 : parseInt( viewportMargins.top, 10 );
 
