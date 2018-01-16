@@ -255,7 +255,6 @@
             <field>
                 <name>mailquota</name>
                 <type>integer</type>
-                <default>0</default>
             </field>
 
             <field>
@@ -267,7 +266,6 @@
             <field>
                 <name>ftpquota</name>
                 <type>integer</type>
-                <default>0</default>
             </field>
 
             <field>
