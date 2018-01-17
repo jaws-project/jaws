@@ -584,10 +584,6 @@ class Jaws_Layout
                 'type' => 'text/javascript'
             ),
             array(
-                'src'  => 'libraries/js/stapes.js?'. JAWS_VERSION,
-                'type' => 'text/javascript'
-            ),
-            array(
                 'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION,
                 'type' => 'text/javascript'
             ),
