@@ -57,6 +57,13 @@ function Jaws_Gadget_Users() { return {
             this.gadget.ajax.showResponse(response);
         },
 
+        UpdatePersonal: function(response) {
+            if (response[0]['type'] == 'alert-success') {
+                this.stopUserAction();
+            }
+            this.gadget.ajax.showResponse(response);
+        },
+
         UpdateContacts: function(response) {
             if (response[0]['type'] == 'alert-success') {
                 this.stopUserAction();
@@ -64,7 +71,7 @@ function Jaws_Gadget_Users() { return {
             this.gadget.ajax.showResponse(response);
         },
 
-        UpdatePersonal: function(response) {
+        UpdateExtra: function(response) {
             if (response[0]['type'] == 'alert-success') {
                 this.stopUserAction();
             }
@@ -407,6 +414,16 @@ function Jaws_Gadget_Users() { return {
                     }
                 );
                 break;
+
+            case 'UserExtra':
+                this.gadget.ajax.callAsync(
+                    'UpdateExtra',
+                    {
+                        'uid': $('#uid').val(),
+                        'data': $.unserialize($('form[name=extra]').serialize())
+                    }
+                );
+                break;
         }
 
     },
@@ -605,6 +622,29 @@ function Jaws_Gadget_Users() { return {
             $('#contact-form input, #contact-form select, #contact-form textarea').each(
                 function () {
                     $(this).val(cInfo[$(this).attr('name')]);
+                }
+            );
+        }
+    },
+
+    /**
+     * Edit user's extra attributes
+     */
+    editExtra: function(rowElement, uid) {
+        $('#uid').val(uid);
+        this.currentAction = 'UserExtra';
+        $('#legend_title').html(this.gadget.defines.editExtra_title);
+        if (this.cachedExtraForm == null) {
+            this.cachedExtraForm = this.gadget.ajax.callSync('ExtraUI');
+        }
+        $('#workarea').html(this.cachedExtraForm);
+        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
+
+        var exInfo = this.gadget.ajax.callSync('GetUserExtra', {'uid': uid});
+        if (exInfo) {
+            $('#extra-form input, #extra-form select, #extra-form textarea').each(
+                function () {
+                    $(this).val(exInfo[$(this).attr('name')]);
                 }
             );
         }

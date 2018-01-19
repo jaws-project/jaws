@@ -25,10 +25,10 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $col = Piwi::CreateWidget('Column', _t('USERS_USERS_NICKNAME'), null, false);
         $datagrid->AddColumn($col);
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
-        $column1->SetStyle('width: 120px;');
+        $column1->SetStyle('width: 180px;');
         $datagrid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column2->SetStyle('width: 140px;');
+        $column2->SetStyle('width: 160px;');
         $datagrid->AddColumn($column2);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
 
@@ -115,6 +115,16 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
+                    _t('USERS_EXTRA'),
+                    "javascript:Jaws_Gadget.getInstance('Users').editExtra(this, '".$user['id']."');",
+                    'gadgets/Users/Resources/images/extra.png'
+                );
+                $actions.= $link->Get().'&nbsp;';
+            }
+
+            if ($this->gadget->GetPermission('ManageUsers')) {
+                $link =& Piwi::CreateWidget(
+                    'Link',
                     _t('USERS_ACCOUNT_DELETE'),
                     "javascript:Jaws_Gadget.getInstance('Users').deleteUser(this, '".$user['id']."');",
                     STOCK_DELETE
@@ -157,6 +167,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $this->gadget->define('editUserGroups_title', _t('USERS_USERS_GROUPS'));
         $this->gadget->define('editPersonal_title', _t('USERS_PERSONAL'));
         $this->gadget->define('editContacts_title', _t('USERS_CONTACTS'));
+        $this->gadget->define('editExtra_title', _t('USERS_EXTRA'));
         $this->gadget->define('noGroup', _t('USERS_GROUPS_NOGROUP'));
         $this->gadget->define('confirmUserDelete', _t('USERS_USER_CONFIRM_DELETE'));
         $this->gadget->define('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
@@ -539,6 +550,24 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         }
 
         $tpl->ParseBlock('contacts');
+        return $tpl->Get();
+    }
+
+    /**
+     * Builds a form to edit user's extra
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function ExtraUI()
+    {
+        $tpl = $this->gadget->template->loadAdmin('Extra.html');
+        $tpl->SetBlock('extra');
+
+        $tpl->SetVariable('lbl_mailquota', _t('USERS_EXTRA_MAILQUOTA'));
+        $tpl->SetVariable('lbl_ftpquota', _t('USERS_EXTRA_FTPQUOTA'));
+
+        $tpl->ParseBlock('extra');
         return $tpl->Get();
     }
 

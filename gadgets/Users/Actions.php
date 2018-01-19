@@ -396,6 +396,10 @@ $admin_actions['GetUserContact'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['GetUserExtra'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
 $admin_actions['GetUsers'] = array(
     'standalone' => true,
     'file' => 'Ajax',
@@ -499,6 +503,10 @@ $admin_actions['ContactsUI'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['ExtraUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
 $admin_actions['UpdatePersonal'] = array(
     'standalone' => true,
     'file' => 'Ajax',
@@ -508,6 +516,10 @@ $admin_actions['UpdatePreferences'] = array(
     'file' => 'Ajax',
 );
 $admin_actions['UpdateContacts'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateExtra'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );

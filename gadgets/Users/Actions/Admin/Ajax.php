@@ -82,6 +82,18 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     }
 
     /**
+     * Gets a user extra info
+     *
+     * @access  public
+     * @return  array   extra attributes
+     */
+    function GetUserExtra()
+    {
+        $uid = (int)$this->gadget->request->fetch('uid', 'post');
+        return $this->gadget->model->load('Extra')->GetUserExtra($uid);
+    }
+
+    /**
      * Gets list of users according to the given criteria
      *
      * @access  public
@@ -597,6 +609,18 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     }
 
     /**
+     * Returns the UI of the extra options
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function ExtraUI()
+    {
+        $gadget = $this->gadget->action->loadAdmin('Users');
+        return $gadget->ExtraUI();
+    }
+
+    /**
      * Updates personal information of selected user
      *
      * @access  public
@@ -724,6 +748,40 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
                                                        RESPONSE_ERROR);
         } else {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CONTACTINFO_UPDATED'),
+                                                       RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Updates extra information of the user
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateExtra()
+    {
+        $post = $this->gadget->request->fetch(array('uid', 'data:array'), 'post');
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($post['data']),
+            array('mailquota', 'ftpquota')
+        );
+        foreach ($invalids as $invalid) {
+            unset($post['data'][$invalid]);
+        }
+
+        $uModel = $this->gadget->model->load('Extra');
+        $res = $uModel->UpdateExtra(
+            (int)$post['uid'],
+            $post['data']
+        );
+        if ($res === false) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_NOT_EXTRAINFO_UPDATED'),
+                                                       RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_EXTRAINFO_UPDATED'),
                                                        RESPONSE_NOTICE);
         }
 
