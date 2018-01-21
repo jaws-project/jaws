@@ -311,8 +311,8 @@ function Jaws_Gadget_Users() { return {
 
                 if (!$('#username').val() ||
                     !$('#nickname').val() ||
-                    !$('#email').val())
-                {
+                    (!$('#email').val() && !$('#mobile').val())
+                ) {
                     alert(this.gadget.defines.incompleteUserFields);
                     return false;
                 }

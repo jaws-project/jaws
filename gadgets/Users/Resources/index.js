@@ -382,8 +382,8 @@ function saveUser()
 
             if (!$('#users-form #username').val() ||
                 !$('#users-form #nickname').val() ||
-                !$('#users-form #email').val())
-            {
+                (!$('#users-form #email').val() && !$('#users-form #mobile').val())
+            ) {
                 alert(jaws.Users.Defines.incompleteUserFields);
                 return false;
             }
