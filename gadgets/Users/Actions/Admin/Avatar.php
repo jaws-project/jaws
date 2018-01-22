@@ -29,7 +29,7 @@ class Users_Actions_Admin_Avatar extends Users_Actions_Admin_Default
         }
 
         $response = Jaws_UTF8::json_encode($response);
-        return "<script type='text/javascript'>parent.onUpload($response);</script>";
+        return "<script type='text/javascript'>parent.Jaws_Gadget.getInstance('Users').onUpload($response);</script>";
     }
 
     /**

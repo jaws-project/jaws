@@ -690,7 +690,7 @@ function Jaws_Gadget_Users() { return {
      */
     removeAvatar: function() {
         $('#avatar').val('');
-        $('#frm_avatar').reset();
+        $('#frm_avatar')[0].reset();
         $('#image').attr('src', 'gadgets/Users/Resources/images/photo128px.png');
     },
 
