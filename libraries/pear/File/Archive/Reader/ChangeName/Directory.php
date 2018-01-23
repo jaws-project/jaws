@@ -49,7 +49,7 @@ class File_Archive_Reader_ChangeName_Directory extends File_Archive_Reader_Chang
 
     function __construct($oldBaseName, $newBaseName, &$source)
     {
-        parent::File_Archive_Reader_ChangeName($source);
+        parent::__construct($source);
         $this->oldBaseName = $this->getStandardURL($oldBaseName);
         if (substr($this->oldBaseName, -1) == '/') {
             $this->oldBaseName = substr($this->oldBaseName, 0, -1);

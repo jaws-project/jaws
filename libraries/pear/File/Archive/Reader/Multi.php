@@ -49,7 +49,7 @@ class File_Archive_Reader_Multi extends File_Archive_Reader_Relay
 
     function __construct()
     {
-        parent::File_Archive_Reader_Relay($tmp = null);
+        parent::__construct($tmp = null);
     }
 
     /**

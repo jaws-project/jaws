@@ -91,7 +91,7 @@ class File_Archive_Reader_Uncompress extends File_Archive_Reader_Relay
 
     function __construct(&$innerReader, $uncompressionLevel = -1)
     {
-        parent::File_Archive_Reader_Relay($innerReader);
+        parent::__construct($innerReader);
         $this->startReader =& $innerReader;
         $this->uncompressionLevel = $uncompressionLevel;
     }

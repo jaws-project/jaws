@@ -50,7 +50,7 @@ class File_Archive_Reader_ChangeName extends File_Archive_Reader_Relay
      */
     function __construct(&$source)
     {
-        parent::File_Archive_Reader_Relay($source);
+        parent::__construct($source);
     }
 
     /**

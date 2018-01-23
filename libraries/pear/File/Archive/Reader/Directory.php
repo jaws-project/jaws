@@ -64,7 +64,7 @@ class File_Archive_Reader_Directory extends File_Archive_Reader_Relay
     function __construct($directory, $symbolic='', $maxRecurs=-1)
     {
         $tmp = null;
-        parent::File_Archive_Reader_Relay($tmp);
+        parent::__construct($tmp);
         $this->directory = empty($directory) ? '.' : $directory;
         $this->symbolic = $this->getStandardURL($symbolic);
         $this->maxRecurs = $maxRecurs;

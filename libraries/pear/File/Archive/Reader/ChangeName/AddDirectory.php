@@ -47,7 +47,7 @@ class File_Archive_Reader_ChangeName_AddDirectory extends File_Archive_Reader_Ch
     var $baseName;
     function __construct($baseName, &$source)
     {
-        parent::File_Archive_Reader_ChangeName($source);
+        parent::__construct($source);
         $this->baseName = $this->getStandardURL($baseName);
     }
 
