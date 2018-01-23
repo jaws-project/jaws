@@ -18,6 +18,9 @@ class Blog_Actions_Admin_Types extends Blog_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageTypes');
 
         $cHTML = Jaws_Gadget::getInstance('Categories')->action->loadAdmin('Categories');
-        return $cHTML->Categories($this->gadget->name, 'Types', $this->MenuBar('Types'));
+        return $cHTML->Execute(
+            'Categories',
+            array($this->gadget->name, 'Types', $this->MenuBar('Types'))
+        );
     }
 }
