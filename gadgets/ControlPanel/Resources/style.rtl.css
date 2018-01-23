@@ -752,27 +752,26 @@ height:auto;
 border:1px solid transparent;
 }
 /* ----- NOTIFICATIONS ----- */
-.gadget_response{
-left:0;
-right:0;
-width:100%;
-margin-top:-26px;
-position:absolute;
-text-align:center;
+.gadget_response {
+top: 0;
+left: 0;
+right: 0;
+z-index: 999;
+position: fixed;
+text-align: center;
 }
-.gadget_response div{
-display:none;
+.gadget_response div {
+margin: auto;
+display: none;
 font-weight:bold;
 line-height:150%;
-border-radius:2px;
 padding:2px 22px;
-background-repeat:no-repeat;
-background-position:right center;
+border-radius:2px;
 }
 .response_loading{
 border:1px solid #579;
 display:inline-block !important;
-background:#ace url("../../../images/loading.svg");
+background:#ace url("../../../images/loading.svg") center right no-repeat;
 }
 .alert-success{
 border:1px solid #9db029;
