@@ -27,6 +27,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', $ReqGadget);
         $tpl->SetVariable('gadget_version', $ReqGadgetVersion);
         $tpl->SetVariable('requested_gadget', strtolower($ReqGadget));
+        $tpl->SetVariable('control-panel', _t('CONTROLPANEL_TITLE'));
         $tpl->SetBlock('layout/login-info', false);
         $tpl->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
         $uInfo = $GLOBALS['app']->Session->GetAttributes('username', 'nickname', 'avatar', 'email');
