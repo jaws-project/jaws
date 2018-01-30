@@ -87,7 +87,6 @@
 
         <index>
             <name><variable>table_prefix</variable>url_maps_ga</name>
-            <unique>true</unique>
             <field>
                 <name>gadget</name>
             </field>

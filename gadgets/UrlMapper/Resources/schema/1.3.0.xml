@@ -82,23 +82,6 @@
         </field>
 
         <index>
-            <name><variable>table_prefix</variable>url_maps_game</name>
-            <unique>true</unique>
-            <field>
-                <name>gadget</name>
-            </field>
-            <field>
-                <name>action</name>
-            </field>
-            <field>
-                <name>map</name>
-            </field>
-            <field>
-                <name>extension</name>
-            </field>
-        </index>
-
-        <index>
             <name><variable>table_prefix</variable>url_maps_go</name>
             <field>
                 <name>gadget</name>
