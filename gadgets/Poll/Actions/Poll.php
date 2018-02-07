@@ -287,7 +287,12 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
         $answers = $model->GetPollAnswers($poll['id']);
         if (!Jaws_Error::IsError($answers)) {
-            $total_votes = array_sum(array_map(create_function('$row','return $row["votes"];'), $answers));
+            $total_votes = array_sum(array_map(
+                function($row) {
+                    return $row['votes'];
+                },
+                $answers
+            ));
             $tpl->SetVariable('total_votes', $total_votes);
             $tpl->SetVariable('lbl_total_votes', _t('POLL_REPORTS_TOTAL_VOTES'));
 
