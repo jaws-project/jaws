@@ -169,8 +169,9 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                 $menu['url'] = $objGadget->urlMap(
                     $url['action'],
                     $params,
-                    false,
-                    isset($url['gadget'])? $url['gadget'] : ''
+                    array(
+                        'gadget' => isset($url['gadget'])? $url['gadget'] : ''
+                    )
                 );
             }
 
