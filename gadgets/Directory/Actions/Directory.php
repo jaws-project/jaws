@@ -54,6 +54,14 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function Directory($type = null, $orderBy = 0, $limit = 0)
     {
+        $id = ($type == null)? (int)$this->gadget->request->fetch('id') : 0;
+        if (!empty($id)) {
+            $file = $this->gadget->model->load('Files')->GetFile($id);
+            if (Jaws_Error::IsError($file) || empty($file) || !$file['is_dir']) {
+                return Jaws_HTTPError::Get(404);
+            }
+        }
+
         $this->AjaxMe('index.js');
         $this->gadget->define('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
 
@@ -80,26 +88,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $this->SetTitle(_t('DIRECTORY_ACTIONS_DIRECTORY'));
         $tpl->SetVariable('gadget_title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
 
-        $id = ($type == null)? (int)$this->gadget->request->fetch('id') : 0;
-        if ($id == 0) {
-            $tpl->SetVariable('content', $this->ListFiles($tpl, 0, $type, $showPreview, $orderBy, $limit));
-        } else {
-            $model = $this->gadget->model->load('Files');
-            $file = $model->GetFile($id);
-            if (Jaws_Error::IsError($file) || empty($file)) {
-                require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-                return Jaws_HTTPError::Get(404);
-            }
-            if (!$file['is_dir']) {
-                return Jaws_HTTPError::Get(404);
-            }
-            // parse files, filters, pagination
-            $this->ListFiles($tpl, $id, $type, $showPreview);
+        // parse files, filters, pagination
+        $this->ListFiles($tpl, $id, $type, $showPreview, $orderBy, $limit);
 
-            $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
-            $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
-            $tpl->SetVariable('path', $this->GetPath($id));
-        }
+        $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
+        $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
+        $tpl->SetVariable('path', $this->GetPath($id));
 
         if ($this->gadget->GetPermission('UploadFiles')) {
             $tpl->SetBlock('directory/upload_files');
@@ -355,7 +349,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         );
         $objDate = Jaws_Date::getInstance();
         foreach ($files as $file) {
-            $url = $this->gadget->urlMap('Directory', array('id' => $file['id']));
+            if ($file['is_dir']) {
+                $url = $this->gadget->urlMap('Directory', array('id' => $file['id']));
+            } else {
+                $url = $this->gadget->urlMap('File', array('id' => $file['id']));
+            }
             $tpl->SetBlock("$block/files/file");
             $tpl->SetVariable('url', $url);
             $tpl->SetVariable('title', $file['title']);

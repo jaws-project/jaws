@@ -6,8 +6,15 @@
  * @package     Directory
  */
 $maps[] = array(
+    'File',
+    'directory/file[/{id}]',
+    array(
+        'id' => '[[:digit:]]+',
+    )
+);
+$maps[] = array(
     'Directory',
-    'directory[/user/{user}][/public/{public}][/{id}][/type/{type}][/page/{page}][/order/{order}]',
+    'directory/directory/[/user/{user}][/public/{public}][/{id}][/type/{type}][/page/{page}][/order/{order}]',
     array(
         'id' => '[[:digit:]]+',
         'user' => '[[:alnum:]\-_.@]+',

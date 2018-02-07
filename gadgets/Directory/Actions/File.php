@@ -13,8 +13,14 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      * @access  public
      * @return  string  HTML content
      */
-    function file($file)
+    function file()
     {
+        $id = (int)$this->gadget->request->fetch('id');
+        $file = $this->gadget->model->load('Files')->GetFile($id);
+        if (Jaws_Error::IsError($file) || empty($file) || $file['is_dir']) {
+            return Jaws_HTTPError::Get(404);
+        }
+
         $tpl = $this->gadget->template->load('File.html');
         $tpl->SetBlock('file');
 

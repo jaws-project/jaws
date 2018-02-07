@@ -9,6 +9,10 @@
 /**
  * Index actions
  */
+$actions['File'] = array(
+    'normal' => true,
+    'file' => 'File'
+);
 $actions['Directory'] = array(
     'normal' => true,
     'layout' => true,

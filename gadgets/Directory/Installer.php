@@ -123,6 +123,10 @@ class Directory_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->insert('UploadFiles', '', false);
         }
 
+        if (version_compare($old, '1.7.0', '<')) {
+            // nothing
+        }
+
         return true;
     }
 
