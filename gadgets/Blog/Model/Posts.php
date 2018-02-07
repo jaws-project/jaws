@@ -175,20 +175,23 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             'blog_category.id:integer', 'name', 'blog_category.fast_url',
             'count(blog_entrycat.entry_id) as howmany:integer'
         );
-        $catTable->join('blog_entrycat', 'blog_category.id', 'blog_entrycat.category_id');
-        $catTable->join('blog', 'blog.id', 'entry_id');
-        $catTable->where('published', true)->and()->where('blog.publishtime', $now, '<=');
+        $catTable->join('blog_entrycat', 'blog_category.id', 'blog_entrycat.category_id', 'left');
+        $catTable->join('blog', 'blog.id', 'blog_entrycat.entry_id', 'left');
+        $catTable->openWhere('published', true)
+            ->and()
+            ->closeWhere('blog.publishtime', $now, '<=')
+            ->or()
+            ->where('blog.id', null, 'is null');
         $result = $catTable->groupBy('blog_category.id', 'name', 'blog_category.fast_url')->orderBy('name')->fetchAll();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCATEGORIES'));
-        }
-
-        // Check dynamic ACL
-        foreach ($result as $key => $cat) {
-            if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
-                unset($result[$key]);
+        if (!Jaws_Error::IsError($result)) {
+            // Check dynamic ACL
+            foreach ($result as $key => $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
+                    unset($result[$key]);
+                }
             }
         }
+
         return $result;
     }
 
