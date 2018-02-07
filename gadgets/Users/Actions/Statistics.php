@@ -63,7 +63,12 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_guests_users', _t('USERS_ONLINE_GUESTS_COUNT'));
 
         $sessions = $GLOBALS['app']->Session->GetSessions();
-        $registered = count(array_filter(array_map(create_function('$sess','return $sess["username"];'), $sessions)));
+        $registered = count(array_filter(array_map(
+            function ($sess) {
+                return $sess['username'];
+            },
+            $sessions
+        )));
         $tpl->SetVariable('registered_users', $registered);
         $tpl->SetVariable('guest_users', count($sessions) - $registered);
 
