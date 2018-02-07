@@ -508,7 +508,12 @@ class Jaws_Utils
         $allow_formats = array_filter(explode(',', $allow_formats));
         foreach($files as $key => $listFiles) {
             if (!is_array($listFiles['tmp_name'])) {
-                $listFiles = array_map(create_function('$item','return array($item);'), $listFiles);
+                $listFiles = array_map(
+                    function($item) {
+                        return array($item);
+                    },
+                    $listFiles
+                );
             }
 
             for($i=0; $i < count($listFiles['name']); ++$i) {
