@@ -139,14 +139,6 @@ class Jaws_ORM
     private $_joins = array();
 
     /**
-     * Using statement
-     *
-     * @var     string
-     * @access  private
-     */
-    private $_using = '';
-
-    /**
      * Group By columns list
      *
      * @var     array
@@ -358,28 +350,6 @@ class Jaws_ORM
     }
 
     /**
-     * Using SQL command
-     *
-     * @access  public
-     * @param   mixed   $table      Table name
-     * @param   string  $alias      Table alias in query
-     * @return  object  Jaws_ORM object
-     */
-    function using($table, $alias = '')
-    {
-        $alias = empty($alias)? '': $this->quoteIdentifier($alias);
-        $alias_str = empty($alias)? '': (' as '. $alias);
-        if (is_object($table)) {
-            $table_quoted = '('. $table->get(). ')';
-        } else {
-            $table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table, true);
-        }
-
-        $this->_using = $table_quoted. $alias_str;
-        return $this;
-    }
-
-    /**
      * Quote a string so it can be safely used as a table or column name
      *
      * @access  private
@@ -388,6 +358,10 @@ class Jaws_ORM
      */
     function quoteIdentifier($column, $prefix_aliased = false)
     {
+        if (empty($column)) {
+            return $column;
+        }
+
         $prev_is_as = false;
         $parts = preg_split($this->regexp_separators, $column, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         foreach ($parts as $idx => $column) {
@@ -608,6 +582,12 @@ class Jaws_ORM
                 $value  = '';
                 break;
 
+            case 'exists':
+            case 'not exists':
+                $column = '';
+                $value = '('. $value->get(). ')';
+                break;
+
             default:
                 if ($this->_dbDriver == 'oci8' && $value === '') {
                     // oracle automatically convert empty string to null !!!
@@ -822,17 +802,6 @@ class Jaws_ORM
     }
 
     /**
-     * Builds using string
-     *
-     * @access  private
-     * @return  string  Using string
-     */
-    private function _build_using()
-    {
-        return empty($this->_using)? '' : "using {$this->_using}\n";
-    }
-
-    /**
      * Builds where string
      *
      * @access  private
@@ -985,7 +954,6 @@ class Jaws_ORM
             case 'delete':
                 $sql = "delete\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
-                $sql.= $this->_build_using();
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
@@ -1269,7 +1237,6 @@ class Jaws_ORM
         $this->_where      = array();
         $this->_savedWhere = array();
         $this->_joins      = array();
-        $this->_using      = '';
         $this->_groupBy    = array();
         $this->_having     = array();
         $this->_orderBy    = array();
