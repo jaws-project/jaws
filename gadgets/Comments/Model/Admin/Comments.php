@@ -315,40 +315,37 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
      */
     function DeleteGadgetComments($gadget, $reference = '')
     {
-        $objORM = Jaws_ORM::getInstance();
+        $tblCDetails = Jaws_ORM::getInstance()->table('comments_details');
+        $tblComments = Jaws_ORM::getInstance()->table('comments');
         // begin transaction
-        $objORM->beginTransaction();
+        $tblCDetails->beginTransaction();
 
         // delete comments in slave table
-        $objORM->table('comments_details')
-            ->delete()
-            ->using('comments')
-            ->where('comments_details.cid', $objORM->expr('comments.id'))
+        $tblComments->select('comments.id')
+            ->where('comments_details.cid', $tblComments->expr('comments.id'))
             ->and()
             ->where('comments.gadget', $gadget);
         if (!empty($reference)) {
-            $objORM->and()->where('comments.reference', (int)$reference);
+            $tblComments->and()->where('comments.reference', (int)$reference);
         }
-        $ret = $objORM->exec();
+
+        $ret = $tblCDetails->delete()->where('', $tblComments, 'exists')->exec();
         if (Jaws_Error::IsError($ret)) {
             return $ret;
         }
 
         // delete comments references in master table
-        $objORM->table('comments')
-            ->delete()
-            ->where('gadget', $gadget);
+        $tblComments->delete()->where('gadget', $gadget);
         if (!empty($reference)) {
-            $objORM->and()->where('reference', (int)$reference);
+            $tblComments->and()->where('reference', (int)$reference);
         }
-        $res = $objORM->exec();
+        $res = $tblComments->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
         //commit transaction
-        $objORM->commit();
-
+        $tblCDetails->commit();
         return $ret;
     }
 
