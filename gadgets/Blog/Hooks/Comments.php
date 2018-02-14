@@ -39,8 +39,8 @@ class Blog_Hooks_Comments extends Jaws_Gadget_Hook
                     array('id' => empty($post['fast_url']) ? $post['id'] : $post['fast_url'])
                 );
                 $result = array(
-                    'title' => $post['title'],
-                    'url'   => $url,
+                    'reference_title' => $post['title'],
+                    'reference_link'  => $url,
                     'author_name'     => $author['username'],
                     'author_nickname' => $author['nickname'],
                     'author_email'    => $author['email'],
