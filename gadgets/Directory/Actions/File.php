@@ -66,14 +66,10 @@ class Directory_Actions_File extends Jaws_Gadget_Action
                 array('action' => 'Directory', 'params' => array('id' => $file['id']))));
 
             if ($allow_comments == 'true') {
-                $redirect_to = $this->gadget->urlMap('Directory', array('id' => $file['id']));
                 $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm(
                     'Directory',
                     'File',
-                    $file['id'],
-                    $file['title'],
-                    $redirect_to,
-                    $redirect_to
+                    $file['id']
                 ));
             } elseif ($allow_comments == 'restricted') {
                 $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');

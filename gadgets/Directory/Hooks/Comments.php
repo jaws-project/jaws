@@ -24,8 +24,8 @@ class Directory_Hooks_Comments extends Jaws_Gadget_Hook
             if (!Jaws_Error::IsError($file) && !empty($file)) {
                 $url = $this->gadget->urlMap('Directory', array('id' => $file['id']));
                 $result = array(
-                    'title' => $file['title'],
-                    'url'   => $url,
+                    'reference_title' => $file['title'],
+                    'reference_link'  => $url,
                     'author_name'     => '',
                     'author_nickname' => '',
                     'author_email'    => '',
