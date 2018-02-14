@@ -89,7 +89,7 @@ class Mail_mimePart
     * @var array
     * @access private
     */
-    var $_subparts;
+    var $_subparts = array();
 
     /**
     * The output of this part after being built
@@ -304,7 +304,7 @@ class Mail_mimePart
     {
         $encoded =& $this->_encoded;
 
-        if (count($this->_subparts)) {
+        if (!empty($this->_subparts)) {
             $boundary = $boundary ? $boundary : '=_' . md5(rand() . microtime());
             $eol = $this->_eol;
 
