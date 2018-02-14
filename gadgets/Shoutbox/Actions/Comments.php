@@ -38,14 +38,10 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
             )
         );
 
-        $redirect_to = $this->gadget->urlMap('Comments', array());
         $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm(
             'Shoutbox',
             '',
-            0,
-            _t('SHOUTBOX_SHOUTBOX'),
-            $redirect_to,
-            $redirect_to
+            0
         ));
 
         $tpl->ParseBlock('shoutbox');

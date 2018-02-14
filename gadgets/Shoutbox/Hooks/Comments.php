@@ -21,8 +21,8 @@ class Shoutbox_Hooks_Comments extends Jaws_Gadget_Hook
     function Execute($action, $reference)
     {
         return array(
-            'title' => '',
-            'url' => '',
+            'reference_title' => '',
+            'reference_link'  => '',
             'author_name'     => '',
             'author_nickname' => '',
             'author_email'    => '',
