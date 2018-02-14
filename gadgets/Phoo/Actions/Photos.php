@@ -198,10 +198,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                 $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm(
                     'Phoo',
                     'Image',
-                    $image['id'],
-                    $image['name'],
-                    $redirect_to,
-                    $redirect_to
+                    $image['id']
                 ));
             } elseif ($restricted) {
                 $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');

@@ -27,8 +27,8 @@ class Phoo_Hooks_Comments extends Jaws_Gadget_Hook
             if (!Jaws_Error::IsError($image) && !empty($image)) {
                 $url = $this->gadget->urlMap('Photo', array('photo' => $image['id']));
                 $result = array(
-                    'title' => $image['title'],
-                    'url' => $url,
+                    'reference_title' => $image['title'],
+                    'reference_link'  => $url,
                     'author_name'     => '',
                     'author_nickname' => '',
                     'author_email'    => '',
