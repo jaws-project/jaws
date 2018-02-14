@@ -26,7 +26,6 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             'comments',
             $this->ShowComments('Comments', 'Guestbook', 0, array('action' => 'Guestbook'))
         );
-        $redirect_to = $this->gadget->urlMap('Guestbook');
         $tpl->SetVariable('comment-form', $this->ShowCommentsForm(
             'Comments',
             'Guestbook',

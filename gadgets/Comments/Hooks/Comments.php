@@ -21,8 +21,8 @@ class Comments_Hooks_Comments extends Jaws_Gadget_Hook
     function Execute($action, $reference)
     {
         $result = array(
-            'title' => _t('COMMENTS_GUESTBOOK'),
-            'url' => $this->gadget->urlMap('Guestbook'),
+            'reference_title' => _t('COMMENTS_GUESTBOOK'),
+            'reference_link'  => $this->gadget->urlMap('Guestbook'),
             'author_name'     => '',
             'author_nickname' => '',
             'author_email'    => '',
