@@ -30,10 +30,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('comment-form', $this->ShowCommentsForm(
             'Comments',
             'Guestbook',
-            0,
-            _t('COMMENTS_GUESTBOOK'),
-            $redirect_to,
-            $redirect_to
+            0
         ));
 
         $tpl->ParseBlock('guestbook');
@@ -48,10 +45,9 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
      * @param   string  $gadget
      * @param   string  $action
      * @param   int     $reference
-     * @param   string  $redirect_to
      * @return  string  XHTML content
      */
-    function ShowCommentsForm($gadget, $action, $reference, $reference_title, $reference_link, $redirect_to)
+    function ShowCommentsForm($gadget, $action, $reference)
     {
         $tpl = $this->gadget->template->load('CommentForm.html');
         $tpl->SetBlock('comment_form');
@@ -73,9 +69,6 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
-        $tpl->SetVariable('reference_title', $reference_title);
-        $tpl->SetVariable('reference_link', $reference_link);
-        $tpl->SetVariable('redirect_to', $redirect_to. '#'. $gadget. '_'. $action);
         $tpl->SetVariable('private', _t('COMMENTS_PRIVATE'));
 
         $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
@@ -438,7 +431,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $post  = $this->gadget->request->fetch(
             array(
                 'message', 'name', 'email', 'url', 'url2', 'requested_gadget',
-                'requested_action', 'reference', 'reference_title', 'reference_link', 'is_private'
+                'requested_action', 'reference', 'is_private'
             ),
             'post'
         );
@@ -517,7 +510,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         $res = $this->gadget->model->loadAdmin('Comments')->InsertComment(
             $post['requested_gadget'], $post['requested_action'], $post['reference'], 
-            $post['reference_title'], $post['reference_link'], $post['name'],
+            $reference['reference_title'], $reference['reference_link'], $post['name'],
             $post['email'], $post['url'], $post['message'], $permalink, $status, $post['is_private']
         );
         if (Jaws_Error::isError($res)) {
@@ -532,7 +525,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->PushResponse(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
         }
 
-        return Jaws_Header::Location($reference['url']);
+        return Jaws_Header::Location($reference['reference_link']);
     }
 
     /**
@@ -553,8 +546,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('comment', $message);
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
 
-        $tpl->SetVariable('url',   $reference['url']);
-        $tpl->SetVariable('title', $reference['title']);
+        $tpl->SetVariable('url',   $reference['reference_link']);
+        $tpl->SetVariable('title', $reference['reference_title']);
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url',  $site_url);
         $tpl->ParseBlock('notification');
@@ -569,7 +562,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $ObjMail->AddRecipient('', 'cc');
         }
 
-        $ObjMail->SetSubject(_t('COMMENTS_COMMENT_NOTIFICATION', $reference['title']));
+        $ObjMail->SetSubject(_t('COMMENTS_COMMENT_NOTIFICATION', $reference['reference_title']));
         $ObjMail->SetBody($template, array('format' => 'html'));
         return $ObjMail->send();
     }
