@@ -117,17 +117,11 @@ class Blog_Actions_Post extends Blog_Actions_Default
 
 
                 if ($allow_comments) {
-                    $redirect_to = $this->gadget->urlMap('SingleView', array('id' =>
-                                          empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']));
                     $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm(
                         'Blog',
                         'Post',
-                        $entry['id'],
-                        $entry['title'],
-                        $redirect_to,
-                        $redirect_to
+                        $entry['id']
                     ));
-
                 } elseif ($restricted) {
                     $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
                     $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
