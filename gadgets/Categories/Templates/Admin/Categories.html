@@ -113,14 +113,18 @@
           <form action="#" id="category-form">
 
             <!-- BEGIN visible_inputs -->
-            <div class="form-group"><label for="gadget">{{lbl_gadget}}:</label>
-              <select name="gadget" id="gadget" class="form-control">
-                <!-- BEGIN gadget -->
-                <option value="{{value}}">{{title}}</option>
-                <!-- END gadget -->
-              </select>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="gadget">{{lbl_gadget}}:</label>
+                <select name="gadget" id="gadget" class="form-control">
+                  <!-- BEGIN gadget -->
+                  <option value="{{value}}">{{title}}</option>
+                  <!-- END gadget -->
+                </select>
+              </div>
 
-              <div class="form-group"><label for="action">{{lbl_action}}:</label>
+              <div class="form-group col-md-6">
+                <label for="action">{{lbl_action}}:</label>
                 <input class="form-control" name="action" id="action" value="" type="text"/>
               </div>
             </div>
@@ -131,8 +135,19 @@
             <input type="hidden" name="action" id="action" class="form-control" value="{{action}}">
             <!-- END hidden_inputs -->
 
-            <div class="form-group"><label for="title">{{lbl_title}}:</label>
-              <input class="form-control" name="title" id="title" value="" type="text"/>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="title">{{lbl_title}}:</label>
+                <input class="form-control" name="title" id="title" value="" type="text"/>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="title">{{lbl_published}}:</label>
+                <select name="published" id="published" class="form-control">
+                  <option value="0">{{lbl_no}}</option>
+                  <option value="1" selected>{{lbl_yes}}</option>
+                </select>
+              </div>
             </div>
 
             <div class="form-group"><label for="description">{{lbl_description}}:</label>

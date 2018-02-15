@@ -21,7 +21,7 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()->table('categories')->select(
             'id:integer', 'title', 'description', 'meta_title', 'meta_keywords',
-            'meta_description', 'insert_time:integer'
+            'meta_description', 'insert_time:integer', 'published:boolean'
         )->where('gadget', $gadget)
             ->and()->where('action', $action)
             ->orderBy('insert_time desc')
@@ -57,7 +57,7 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()->table('categories')->select(
             'id:integer', 'title', 'description', 'meta_title', 'meta_keywords',
-            'meta_description', 'insert_time:integer'
+            'meta_description', 'insert_time:integer', 'published:boolean'
         )->where('id', (int) $id)->fetchRow();
     }
 

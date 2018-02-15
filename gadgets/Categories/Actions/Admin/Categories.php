@@ -43,13 +43,16 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
         $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
 
-        $tpl->SetVariable('lbl_term', _t('GLOBAL_TERM'));
+        $tpl->SetVariable('lbl_term',   _t('GLOBAL_TERM'));
         $tpl->SetVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
         $tpl->SetVariable('lbl_action', _t('CATEGORIES_ACTION'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title',  _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_no',  _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_meta_title', _t('GLOBAL_META_TITLE'));
-        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('lbl_meta_title',  _t('GLOBAL_META_TITLE'));
+        $tpl->SetVariable('lbl_meta_keywords',    _t('GLOBAL_META_KEYWORDS'));
         $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
         $tpl->SetVariable('lbl_meta_info', _t('GLOBAL_META_INFO'));
 
@@ -181,15 +184,20 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     {
         $this->gadget->CheckPermission('ManageCategories');
         $id = (int)$this->gadget->request->fetch('id', 'post');
-        $categoryInfo = $this->gadget->model->loadAdmin('Categories')->GetCategory($id);
-        if (Jaws_Error::IsError($categoryInfo)) {
-            return $categoryInfo;;
+        $category = $this->gadget->model->loadAdmin('Categories')->GetCategory($id);
+        if (Jaws_Error::IsError($category) || empty($category)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                 empty($category)? _t('CATEGORIES_CATEGORY_NOTFOUND') : $category->getMessage(),
+                RESPONSE_ERROR
+            );
         }
-        if (!empty($categoryInfo)) {
-            $objDate = Jaws_Date::getInstance();
-            $categoryInfo['insert_time'] = $objDate->Format($categoryInfo['insert_time']);
-        }
-        return $categoryInfo;
+
+        $category['insert_time'] = Jaws_Date::getInstance()->Format($category['insert_time']);
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            $category
+        );
     }
 
     /**
@@ -205,9 +213,16 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $data = $this->gadget->request->fetch('data:array', 'post');
         $result = $this->gadget->model->loadAdmin('Categories')->InsertCategory($data);
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse(
+                $result->GetMessage(),
+                RESPONSE_ERROR
+            );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('CATEGORIES_CATEGORY_INSERTED'), RESPONSE_NOTICE, $result);
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('CATEGORIES_CATEGORY_INSERTED'),
+                RESPONSE_NOTICE,
+                $result
+            );
         }
     }
 

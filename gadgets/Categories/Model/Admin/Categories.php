@@ -21,7 +21,7 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
         $categoriesTable = Jaws_ORM::getInstance()->table('categories');
         $categoriesTable->select(
             'id:integer', 'gadget', 'action', 'title', 'description',
-            'meta_title', 'meta_keywords', 'meta_description', 'insert_time:integer'
+            'meta_title', 'meta_keywords', 'meta_description', 'insert_time:integer', 'published:boolean'
         );
         $categoriesTable->orderBy('categories.insert_time desc');
         $categoriesTable->limit((int)$limit, $offset);
@@ -86,7 +86,7 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()->table('categories')
             ->select(
                 'id:integer', 'gadget', 'action', 'title', 'description',
-                'meta_title', 'meta_keywords', 'meta_description', 'insert_time:integer'
+                'meta_title', 'meta_keywords', 'meta_description', 'insert_time:integer', 'published:boolean'
             )->where('id', (int)$id)->fetchRow();
     }
 
@@ -123,6 +123,7 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
     function InsertCategory($data)
     {
         $data['insert_time'] = time();
+        $data['published'] = (bool)$data['published'];
         return Jaws_ORM::getInstance()->table('categories')->insert($data)->exec();
     }
 
@@ -136,6 +137,7 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
      */
     function UpdateCategory($id, $data)
     {
+        $data['published'] = (bool)$data['published'];
         return Jaws_ORM::getInstance()->table('categories')->update($data)->where('id', $id)->exec();
     }
 

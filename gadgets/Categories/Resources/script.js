@@ -51,20 +51,29 @@ function Jaws_Gadget_Categories() { return {
     editCategory: function(id) {
         this.selectedCategory = id;
         $('#categoryModalLabel').html(this.gadget.defines.lbl_edit);
-        this.gadget.ajax.callAsync('GetCategory', {'id': this.selectedCategory}, $.proxy(
-            function (response) {
-                if (response) {
+        this.gadget.ajax.callAsync('GetCategory', {'id': this.selectedCategory}, 
+            function (response, status) {
+                if (response['type'] == 'alert-success') {
+                    var value;
                     $('#category-form input, #category-form select, #category-form textarea').each(
                         function (i, el) {
-                            $(el).val(response[$(el).attr('name')]);
+                            value = response['data'][$(el).attr('name')];
+                            switch (typeof(value)) {
+                                case 'boolean':
+                                    value = value? '1' : '0'
+                                    break;
+
+                                default:
+                                    // do nothing
+                            }
+
+                            $(el).val(value);
                         }
                     );
 
                     $('#categoryModal').modal('show');
                 }
-            },
-            this
-        ));
+            });
     },
 
     /**
@@ -137,7 +146,7 @@ function Jaws_Gadget_Categories() { return {
                     status: $('#filter_status').val()
                 }
             },
-            $.proxy(function(response, status) {
+            function(response, status) {
                 var dataSource = {};
                 if (response['type'] == 'alert-success') {
                     // processing end item index of page
@@ -163,15 +172,15 @@ function Jaws_Gadget_Categories() { return {
                         'items': {}
                     };
                 }
-                // pass the datasource back to the repeater
+                // pass the dataSource back to the repeater
                 callback(dataSource);
                 this.gadget.ajax.showResponse(response);
-            }, this)
+            }
         );
     },
 
     /**
-     * initiate categories datagrid
+     * initiate categories dataGrid
      */
     initiateCategoriesDG: function() {
         var list_actions = {

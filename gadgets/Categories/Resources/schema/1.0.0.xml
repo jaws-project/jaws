@@ -61,19 +61,24 @@
                 <default>0</default>
             </field>
 
-            <field>
-                <name>published</name>
-                <type>boolean</type>
-                <default>true</default>
-            </field>
+            <index>
+                <name><variable>table_prefix</variable>categories_title</name>
+                <field>
+                    <name>title</name>
+                </field>
+            </index>
 
             <index>
-                <name><variable>table_prefix</variable>categories_ga</name>
+                <name><variable>table_prefix</variable>categories_gat</name>
+                <unique>true</unique>
                 <field>
                     <name>gadget</name>
                 </field>
                 <field>
                     <name>action</name>
+                </field>
+                <field>
+                    <name>title</name>
                 </field>
             </index>
         </declaration>

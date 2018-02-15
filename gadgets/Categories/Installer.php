@@ -79,6 +79,13 @@ class Categories_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        if (version_compare($old, '1.1.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 
