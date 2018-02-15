@@ -166,7 +166,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
      */
     this.callAsync = function (action, data, done) {
         var options  = {};
-        options.done = done;
+        options.done = done? $.proxy(done, this.callbackObject) : undefined;
         options.url  = this.baseURL + action;
         options.type = 'POST';
         options.async  = true;
@@ -189,7 +189,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
      */
     this.callSync = function (action, data, done) {
         var options = {};
-        options.done = done;
+        options.done = done? $.proxy(done, this.callbackObject) : undefined;
         options.url = this.baseURL + action;
         options.type = 'POST';
         options.async = false;
@@ -227,7 +227,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
             contentType: false,
             processData: false,
             cache: false,
-            done: done,
+            options.done = done? $.proxy(done, this.callbackObject) : undefined,
             xhr: function() {
                 // handle the upload progress
                 var xhr = $.ajaxSettings.xhr();
