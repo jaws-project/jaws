@@ -227,7 +227,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
             contentType: false,
             processData: false,
             cache: false,
-            options.done = done? $.proxy(done, this.callbackObject) : undefined,
+            done: done? $.proxy(done, this.callbackObject) : undefined,
             xhr: function() {
                 // handle the upload progress
                 var xhr = $.ajaxSettings.xhr();
