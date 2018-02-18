@@ -7,14 +7,14 @@
  */
 $maps[] = array(
     'File',
-    'directory/file[/{id}]',
+    'directory/file/{id}',
     array(
         'id' => '[[:digit:]]+',
     )
 );
 $maps[] = array(
     'Directory',
-    'directory/directory/[/user/{user}][/public/{public}][/{id}][/type/{type}][/page/{page}][/order/{order}]',
+    'directory[/directory/{id}][/user/{user}][/public/{public}][/type/{type}][/page/{page}][/order/{order}]',
     array(
         'id' => '[[:digit:]]+',
         'user' => '[[:alnum:]\-_.@]+',
@@ -25,7 +25,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'Download',
-    'directory/download[/{id}][/user/{user}][/key/{key}][.{ext}]',
+    'directory/download/{id}[/user/{user}][/key/{key}][.{ext}]',
     array('id' => '[[:digit:]]+'),
     ''
 );
