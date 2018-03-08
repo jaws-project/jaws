@@ -101,9 +101,10 @@ class Jaws_Captcha
      * Check if a captcha key is valid
      *
      * @access  public
+     * @param   bool    $cleanup    Delete captcha key after check
      * @return  bool    Valid/Not Valid
      */
-    function check()
+    function check($cleanup = true)
     {
         $post = jaws()->request->fetch(array('captcha_key', 'entry_value'), 'post');
         list($key, $value) = array_values($post);
@@ -114,7 +115,10 @@ class Jaws_Captcha
             $matched = !empty($value) && (strtolower($result) === strtolower($value));
         }
 
-        $this->delete((int)$key);
+        if ($cleanup) {
+            $this->delete((int)$key);
+        }
+
         return $matched;
     }
 
