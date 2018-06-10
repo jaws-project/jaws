@@ -2992,88 +2992,12 @@ if (typeof jQuery === 'undefined') {
 
 
 	( function( $ ) {
-
 		/* global jQuery:true */
 
 		/*
-		 * Fuel UX Datepicker
-		 * https://github.com/ExactTarget/fuelux
+		 * Jaws Date calendar converter
 		 *
-		 * Copyright (c) 2014 ExactTarget
-		 * Licensed under the BSD New license.
 		 */
-
-
-
-		// -- BEGIN MODULE CODE HERE --
-
-		var INVALID_DATE = 'Invalid Date';
-		var MOMENT_NOT_AVAILABLE = 'moment.js is not available so you cannot use this function';
-
-		var datepickerStack = [];
-		var moment = false;
-		var old = $.fn.datepicker;
-		var requestedMoment = false;
-
-		var runStack = function() {
-			var i, l;
-			requestedMoment = true;
-			for ( i = 0, l = datepickerStack.length; i < l; i++ ) {
-				datepickerStack[ i ].init.call( datepickerStack[ i ].scope );
-			}
-			datepickerStack = [];
-		};
-
-		//only load moment if it's there. otherwise we'll look for it in window.moment
-		if ( typeof define === 'function' && define.amd ) { //check if AMD is available
-			require( [ 'moment' ], function( amdMoment ) {
-				moment = amdMoment;
-				runStack();
-			}, function( err ) {
-				var failedId = err.requireModules && err.requireModules[ 0 ];
-				if ( failedId === 'moment' ) {
-					runStack();
-				}
-			} );
-		} else {
-			runStack();
-		}
-
-		function dateGregorian(args) {
-			this.gdate;
-			var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-			if (args.length) {
-				if (isNaN(args[0])) {
-					return new Date(NaN);
-				}
-				this.gdate = new Date(args[0], args[1], args[2]);
-			} else {
-				this.gdate = new Date();
-			}
-			// check is given date in a leap year
-			var year = parseInt(this.gdate.getFullYear());
-			this.isLeapYear = ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0));
-
-			this.getFullYear = function() {
-				return this.gdate.getFullYear();
-			}
-
-			this.getMonth = function() {
-				return this.gdate.getMonth();
-			}
-
-			this.getDate = function() {
-				return this.gdate.getDate();
-			}
-
-			this.getDay = function() {
-				return this.gdate.getDay()
-			}
-
-			this.getMonthDays = function(month) {
-				return (this.isLeapYear && month == 2)? 29 : gMonthDays[month-1];
-			}
-		}
 
 		function dateJalali(args) {
 			var leapYears = [1, 5, 9, 13, 17, 22, 26, 30];
@@ -3086,7 +3010,7 @@ if (typeof jQuery === 'undefined') {
 				wday = 0,
 				days = 0;
 
-			if (args.length) {
+			if (args && args.length) {
 				if (isNaN(args[0])) {
 					return new Date(NaN);
 				}
@@ -3178,6 +3102,105 @@ if (typeof jQuery === 'undefined') {
 			}
 		}
 
+		function dateGregorian(args) {
+			this.gdate;
+			var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			if (args && args.length) {
+				if (isNaN(args[0])) {
+					return new Date(NaN);
+				}
+				this.gdate = new Date(args[0], args[1], args[2]);
+			} else {
+				this.gdate = new Date();
+			}
+			// check is given date in a leap year
+			var year = parseInt(this.gdate.getFullYear());
+			this.isLeapYear = ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0));
+
+			this.getFullYear = function() {
+				return this.gdate.getFullYear();
+			}
+
+			this.getMonth = function() {
+				return this.gdate.getMonth();
+			}
+
+			this.getDate = function() {
+				return this.gdate.getDate();
+			}
+
+			this.getDay = function() {
+				return this.gdate.getDay()
+			}
+
+			this.getMonthDays = function(month) {
+				return (this.isLeapYear && month == 2)? 29 : gMonthDays[month-1];
+			}
+		}
+
+		$.dateCalendar = function(calendar, args) {
+			switch (calendar) {
+				case 'jalali':
+				case 'Jalali':
+					return new dateJalali(args);
+					break;
+
+				default:
+					// Gregorian
+					return new dateGregorian(args);
+			}
+		}
+	} )( jQuery );
+
+
+	( function( $ ) {
+
+		/* global jQuery:true */
+
+		/*
+		 * Fuel UX Datepicker
+		 * https://github.com/ExactTarget/fuelux
+		 *
+		 * Copyright (c) 2014 ExactTarget
+		 * Licensed under the BSD New license.
+		 */
+
+
+
+		// -- BEGIN MODULE CODE HERE --
+
+		var INVALID_DATE = 'Invalid Date';
+		var MOMENT_NOT_AVAILABLE = 'moment.js is not available so you cannot use this function';
+
+		var datepickerStack = [];
+		var moment = false;
+		var old = $.fn.datepicker;
+		var requestedMoment = false;
+
+		var runStack = function() {
+			var i, l;
+			requestedMoment = true;
+			for ( i = 0, l = datepickerStack.length; i < l; i++ ) {
+				datepickerStack[ i ].init.call( datepickerStack[ i ].scope );
+			}
+			datepickerStack = [];
+		};
+
+		//only load moment if it's there. otherwise we'll look for it in window.moment
+		if ( typeof define === 'function' && define.amd ) { //check if AMD is available
+			require( [ 'moment' ], function( amdMoment ) {
+				moment = amdMoment;
+				runStack();
+			}, function( err ) {
+				var failedId = err.requireModules && err.requireModules[ 0 ];
+				if ( failedId === 'moment' ) {
+					runStack();
+				}
+			} );
+		} else {
+			runStack();
+		}
+
 		// DATEPICKER CONSTRUCTOR AND PROTOTYPE
 
 		var Datepicker = function( element, options ) {
@@ -3267,15 +3290,7 @@ if (typeof jQuery === 'undefined') {
 					return arguments[0];
 				}
 
-				switch (this.options.calendar) {
-					case 'jalali':
-						return new dateJalali(arguments);
-						break;
-
-					default:
-						// gregorian
-						return new dateGregorian(arguments);
-				}
+				return $.dateCalendar(this.options.calendar, arguments);
 			},
 
 			backClicked: function() {
