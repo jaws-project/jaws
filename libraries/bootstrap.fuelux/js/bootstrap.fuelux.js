@@ -3097,8 +3097,58 @@ if (typeof jQuery === 'undefined') {
 				return (this.isLeapYear && month == 12)? 30 : jMonthDays[month-1];
 			}
 
+			this.format = function(format) {
+				format = format? format : 'yyyy-mm-dd';
+				var i = 0;
+				var result = '';
+				while (i < format.length) {
+					switch (format.charAt(i)) {
+						case 'd':
+							if (format.substr(i, 2) == 'dd') {
+								i++;
+								result += this.jDay;
+							} else {
+								result += this.jDay;
+							}
+
+							break;
+
+						case 'm':
+							if (format.substr(i, 2) == 'mm') {
+								i++;
+								result += this.jMonth + 1;
+							} else {
+								result += this.jMonth + 1;
+							}
+							break;
+
+						case 'y':
+							if (format.substr(i, 4) == 'yyyy') {
+								i+= 3;
+								result += this.jYear;
+							} else if(format.substr(i, 3) == 'yyy') {
+								i+= 2;
+								result += this.jYear;
+							} else if(format.substr(i, 2) == 'yy') {
+								i++;
+								result += this.jYear;
+							} else {
+								result += this.jYear;
+							}
+							break;
+
+						default:
+							result += format.charAt(i);
+							break;
+					}
+
+					i++;
+				}
+				return result;
+			}
+
 			this.toString = function() {
-				return this.jYear + '/' + (this.jMonth) + '/' + this.jDay;
+				return this.jYear + '/' + (this.jMonth + 1) + '/' + this.jDay;
 			}
 		}
 
@@ -3113,28 +3163,82 @@ if (typeof jQuery === 'undefined') {
 			} else {
 				this.gdate = new Date();
 			}
+
+			this.gYear  = parseInt(this.gdate.getFullYear());
+			this.gMonth = parseInt(this.gdate.getMonth());
+			this.gDay   = parseInt(this.gdate.getDate());
+			this.gWeekDay = parseInt(this.gdate.getDay());
 			// check is given date in a leap year
-			var year = parseInt(this.gdate.getFullYear());
-			this.isLeapYear = ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0));
+			this.isLeapYear = ((this.gYear%4) == 0 && ((this.gYear%100) != 0 || (this.gYear%400) == 0));
 
 			this.getFullYear = function() {
-				return this.gdate.getFullYear();
+				return this.gYear;
 			}
 
 			this.getMonth = function() {
-				return this.gdate.getMonth();
+				return this.gMonth;
 			}
 
 			this.getDate = function() {
-				return this.gdate.getDate();
+				return this.gDay;
 			}
 
 			this.getDay = function() {
-				return this.gdate.getDay()
+				return this.gWeekDay;
 			}
 
 			this.getMonthDays = function(month) {
 				return (this.isLeapYear && month == 2)? 29 : gMonthDays[month-1];
+			}
+
+			this.format = function(format) {
+				var i = 0;
+				var result = '';
+				while (i < format.length) {
+					switch (format.charAt(i)) {
+						case 'd':
+							if (format.substr(i, 2) == 'dd') {
+								i++;
+								result += this.gDay;
+							} else {
+								result += this.gDay;
+							}
+
+							break;
+
+						case 'm':
+							if (format.substr(i, 2) == 'mm') {
+								i++;
+								result += this.gMonth + 1;
+							} else {
+								result += this.gMonth + 1;
+							}
+							break;
+
+						case 'y':
+							if (format.substr(i, 4) == 'yyyy') {
+								i+= 3;
+								result += this.gYear;
+							} else if(format.substr(i, 3) == 'yyy') {
+								i+= 2;
+								result += this.gYear;
+							} else if(format.substr(i, 2) == 'yy') {
+								i++;
+								result += this.gYear;
+		    				} else {
+								result += this.gYear;
+							}
+							break;
+
+						default:
+							result += format.charAt(i);
+							break;
+					}
+
+					i++;
+				}
+
+				return result;
 			}
 		}
 
