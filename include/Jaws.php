@@ -87,46 +87,9 @@ class Jaws
         'language' => 'en',
         'editor'   => null,
         'timezone' => null,
+        'site_timezone' => null,
         'calendar' => 'Gregorian',
     );
-
-    /**
-     * The application's theme.
-     * @var     string
-     * @access  protected
-     */
-    var $theme = array(
-        'name' => 'jaws',
-        'locality' => 0,
-    );
-
-    /**
-     * The language the application is running in.
-     * @var     string
-     * @access  protected
-     */
-    var $_Language = 'en';
-
-    /**
-     * The calendar
-     * @var     string
-     * @access  protected
-     */
-    var $_Calendar = 'Gregorian';
-
-    /**
-     * The editor application is using
-     * @var     string
-     * @access  protected
-     */
-    var $_Editor = null;
-
-    /**
-     * The timezone
-     * @var     string
-     * @access  protected
-     */
-    var $_Timezone = null;
 
     /**
      * Browser flag
@@ -218,10 +181,11 @@ class Jaws
             $user   = $this->Session->GetAttribute('user');
             $layout = $this->Session->GetAttribute('layout');
             $this->_Preferences = array(
-                'theme'    => (array)$this->Registry->fetch('theme', 'Settings'),
-                'editor'   => $this->Registry->fetchByUser($user,   'editor',   'Settings'),
-                'timezone' => $this->Registry->fetchByUser($user,   'timezone', 'Settings'),
-                'calendar' => $this->Registry->fetchByUser($layout, 'calendar', 'Settings'),
+                'theme'         => (array)$this->Registry->fetch('theme', 'Settings'),
+                'editor'        => $this->Registry->fetchByUser($user,   'editor',   'Settings'),
+                'timezone'      => $this->Registry->fetchByUser($user,   'timezone', 'Settings'),
+                'site_timezone' => $this->Registry->fetch('timezone', 'Settings'),
+                'calendar'      => $this->Registry->fetchByUser($layout, 'calendar', 'Settings'),
             );
 
             if (JAWS_SCRIPT == 'index') {
@@ -233,17 +197,20 @@ class Jaws
 
         // merge default with passed preferences
         $this->_Preferences = array_merge($this->_Preferences, $preferences);
-
         // filter non validate character
-        $this->theme['name']     = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['theme']['name']);
-        $this->theme['locality'] = (int)$this->_Preferences['theme']['locality'];
-        $this->_Language = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['language']);
-        $this->_Editor   = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['editor']);
-        $this->_Timezone = $this->_Preferences['timezone'];
-        $this->_Calendar = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar']);
+        $this->_Preferences['theme']['name'] = preg_replace(
+            '/[^[:alnum:]_\-]/', '', $this->_Preferences['theme']['name']
+        );
+        $this->_Preferences['theme']['locality'] = (int)$this->_Preferences['theme']['locality'];
+        $this->_Preferences['language'] = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['language']);
+        $this->_Preferences['editor'] = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['editor']);
+        $this->_Preferences['calendar'] = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar']);
 
         // load the language translates
-        Jaws_Translate::getInstance()->Init($this->_Language);
+        Jaws_Translate::getInstance()->Init($this->_Preferences['language']);
+
+        // pass preferences to client
+        $this->define('', 'preferences', $this->_Preferences);
     }
 
     /**
@@ -291,25 +258,26 @@ class Jaws
     function GetTheme($rel_url = true)
     {
         static $theme;
+        $currentTheme = $this->_Preferences['theme'];
         if (!isset($theme) ||
-            $theme['locality'] != $this->theme['locality'] ||
-            $theme['name'] != $this->theme['name']
+            $theme['locality'] != $currentTheme['locality'] ||
+            $theme['name'] != $currentTheme['name']
         ) {
             // Check if valid theme name
-            if (!preg_match('/^[[:alnum:]_\.-]+$/', $this->theme['name'])) {
+            if (!preg_match('/^[[:alnum:]_\.-]+$/', $currentTheme['name'])) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_NAME', 'Theme'));
             }
 
             $theme = array();
-            $theme['name'] = $this->theme['name'];
-            $theme['locality'] = $this->theme['locality'];
-            $theme['path'] = JAWS_THEMES. $this->theme['name'] . '/';
+            $theme['name'] = $currentTheme['name'];
+            $theme['locality'] = $currentTheme['locality'];
+            $theme['path'] = JAWS_THEMES. $currentTheme['name'] . '/';
             if (!is_file($theme['path']. 'Layout.html')) {
-                $theme['url']    = $this->getThemeURL($this->theme['name'] . '/', $rel_url, true);
-                $theme['path']   = JAWS_BASE_THEMES. $this->theme['name'] . '/';
+                $theme['url']    = $this->getThemeURL($currentTheme['name'] . '/', $rel_url, true);
+                $theme['path']   = JAWS_BASE_THEMES. $currentTheme['name'] . '/';
                 $theme['exists'] = @is_file($theme['path']. 'Layout.html');
             } else {
-                $theme['url']    = $this->getThemeURL($this->theme['name'] . '/', $rel_url);
+                $theme['url']    = $this->getThemeURL($currentTheme['name'] . '/', $rel_url);
                 $theme['exists'] = true;
             }
         }
@@ -327,7 +295,7 @@ class Jaws
      */
     function SetTheme($theme, $locality = 0)
     {
-        $this->theme = array('name' => $theme, 'locality' => (int)$locality);
+        $this->_Preferences['theme'] = array('name' => $theme, 'locality' => (int)$locality);
     }
 
     /**
@@ -338,15 +306,16 @@ class Jaws
      */
     function GetLanguage()
     {
+        $language = $this->_Preferences['language'];
         // Check if valid language name
-        if (strpos($this->_Language, '..') !== false ||
-            strpos($this->_Language, '%') !== false ||
-            strpos($this->_Language, '\\') !== false ||
-            strpos($this->_Language, '/') !== false) {
+        if (strpos($language, '..') !== false ||
+            strpos($language, '%') !== false ||
+            strpos($language, '\\') !== false ||
+            strpos($language, '/') !== false) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_INVALID_NAME', 'GetLanguage'),
                                       'Getting language name');
         }
-        return $this->_Language;
+        return $language;
     }
 
     /**
@@ -357,7 +326,7 @@ class Jaws
      */
     function GetEditor()
     {
-        return $this->_Editor;
+        return $this->_Preferences['editor'];
     }
 
     /**
@@ -385,7 +354,7 @@ class Jaws
      */
     function GetCalendar()
     {
-        return $this->_Calendar;
+        return $this->_Preferences['calendar'];
     }
 
     /**
@@ -429,7 +398,7 @@ class Jaws
             $value = Jaws_XSS::filter($value);
         }
 
-        $editor = $this->_Editor;
+        $editor = $this->_Preferences['editor'];
         $file   = JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php';
         if (!file_exists($file)) {
             $editor = 'TextArea';
@@ -775,7 +744,7 @@ class Jaws
         $time = is_numeric($time)? $time : strtotime($time);
 
         // GMT offset
-        $timezone = $default_timezone? $this->_Preferences['timezone'] : $this->_Timezone;
+        $timezone = $default_timezone? $this->_Preferences['timezone'] : $this->_Preferences['site_timezone'];
         if (is_numeric($timezone)) {
             $gmt_offset = $timezone * 3600;
         } else {
