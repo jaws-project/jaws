@@ -3010,41 +3010,64 @@ if (typeof jQuery === 'undefined') {
 				wday = 0,
 				days = 0;
 
-			if (args && args.length) {
-				if (isNaN(args[0])) {
+			switch ($.type(args)) {
+				case 'string':
+					args = args.split(/\/|\-/);
+					args[1]--;
+					// without break - goto array
+
+				case 'array':
+					if (args.length) {
+						year  = parseInt(args[0]);
+						month = parseInt(args[1]) + 1;
+						day   = parseInt(args[2]);
+
+						// calculating Jalali calendar total days
+						var ym = Math.floor((month-1)/12);
+						month = month - ym*12;
+						year  = year + ym - 1;
+						days =  365*year + Math.floor(year/33)*8 + Math.floor(((year%33)+3)/4);
+						for (var i=0; i < (month-1); ++i) {
+							days += jMonthDays[i];
+						}
+						days = days + day;
+
+						break;
+					}
+
+					args = null;
+					// without break - goto number
+
+				case 'number':
+					if (isNaN(args)) {
+						return new Date(NaN);
+					}
+
+					var gdate = new Date();
+					if (args != null) {
+						gdate.setTime(args*1000);
+					}
+
+					year  = parseInt(gdate.getFullYear());
+					month = parseInt(Number(gdate.getMonth()) + 1);
+					day   = parseInt(gdate.getDate());
+
+					year--;
+					days = 365*year + Math.floor(year/4) - Math.floor(year/100) + Math.floor(year/400);
+					year++;
+					for (var i=0; i < (month-1); ++i) {
+						days += gMonthDays[i];
+					}
+					// is leap year
+					if (month > 2 && ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0))) {
+						days++;
+					}
+					days = days + day - 226894;
+
+					break;
+
+				default:
 					return new Date(NaN);
-				}
-				year  = parseInt(args[0]);
-				month = parseInt(args[1]) + 1;
-				day   = parseInt(args[2]);
-
-				// calculating Jalali calendar total days
-				var ym = Math.floor((month-1)/12);
-				month = month - ym*12;
-				year  = year + ym - 1;
-				days =  365*year + Math.floor(year/33)*8 + Math.floor(((year%33)+3)/4);
-				for (var i=0; i < (month-1); ++i) {
-					days += jMonthDays[i];
-				}
-				days = days + day;
-			} else {
-				var date = new Date();
-				year  = parseInt(date.getFullYear());
-				month = parseInt(Number(date.getMonth()) + 1);
-				day   = parseInt(date.getDate());
-
-				year--;
-				days = 365*year + Math.floor(year/4) - Math.floor(year/100) + Math.floor(year/400);
-				year++;
-				for (var i=0; i < (month-1); ++i) {
-					days += gMonthDays[i];
-				}
-				// is leap year
-				if (month > 2 && ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0))) {
-					days++;
-				}
-
-				days = days + day - 226894;
 			}
 
 			wday = (days + 4) % 7;
@@ -3098,9 +3121,9 @@ if (typeof jQuery === 'undefined') {
 			}
 
 			this.format = function(format) {
-				format = format? format : 'yyyy-mm-dd';
 				var i = 0;
 				var result = '';
+				format = format? format : 'yyyy-mm-dd';
 				while (i < format.length) {
 					switch (format.charAt(i)) {
 						case 'd':
@@ -3155,13 +3178,32 @@ if (typeof jQuery === 'undefined') {
 		function dateGregorian(args) {
 			this.gdate;
 			var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-			if (args && args.length) {
-				if (isNaN(args[0])) {
+
+			switch ($.type(args)) {
+				case 'number':
+					if (isNaN(args)) {
+						return new Date(NaN);
+					}
+
+					this.gdate = new Date();
+					this.gdate.setTime(args*1000);
+					break;
+
+				case 'string':
+					args = args.split(/\/|\-/);
+					args[1]--;
+					// without break - goto array
+
+				case 'array':
+					if (args.length) {
+						this.gdate = new Date(args[0], args[1], args[2]);
+					} else {
+						this.gdate = new Date();
+					}
+					break;
+
+				default:
 					return new Date(NaN);
-				}
-				this.gdate = new Date(args[0], args[1], args[2]);
-			} else {
-				this.gdate = new Date();
 			}
 
 			this.gYear  = parseInt(this.gdate.getFullYear());
@@ -3194,6 +3236,7 @@ if (typeof jQuery === 'undefined') {
 			this.format = function(format) {
 				var i = 0;
 				var result = '';
+				format = format? format : 'yyyy-mm-dd';
 				while (i < format.length) {
 					switch (format.charAt(i)) {
 						case 'd':
@@ -3225,7 +3268,7 @@ if (typeof jQuery === 'undefined') {
 							} else if(format.substr(i, 2) == 'yy') {
 								i++;
 								result += this.gYear;
-		    				} else {
+							} else {
 								result += this.gYear;
 							}
 							break;
@@ -3389,12 +3432,13 @@ if (typeof jQuery === 'undefined') {
 
 			constructor: Datepicker,
 
-			dateCalendar: function() {
-				if (arguments.length == 1 && typeof arguments[0] === 'object') {
-					return arguments[0];
+			dateCalendar: function(args) {
+				args = (arguments.length == 1)? args : Array.from(arguments);
+				if ($.type(args) === 'date') {
+					return args;
 				}
 
-				return $.dateCalendar(this.options.calendar, arguments);
+				return $.dateCalendar(this.options.calendar, args);
 			},
 
 			backClicked: function() {
