@@ -2377,9 +2377,8 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /*!
- * Fuel UX EDGE - Built 2017/10/25, 12:50:00 PM 
- * Previous release: v3.16.3 
- * Copyright 2012-2017 ExactTarget
+ * Fuel UX v3.16.7 
+ * Copyright 2012-2018 ExactTarget
  * Licensed under the BSD-3-Clause license (https://github.com/ExactTarget/fuelux/blob/master/LICENSE)
  */
 
@@ -3485,6 +3484,7 @@ if (typeof jQuery === 'undefined') {
 
 				this.$days.find( 'td.selected' ).removeClass( 'selected' );
 				$td.addClass( 'selected' );
+
 				date = this.dateCalendar( $td.attr( 'data-year' ), $td.attr( 'data-month' ), $td.attr( 'data-date' ) );
 				this.selectedDate = date;
 				this.$input.val( this.formatDate( date ) );
@@ -7334,7 +7334,12 @@ if (typeof jQuery === 'undefined') {
 			getPercentage: function() {
 				var height = ( this.$element.css( 'box-sizing' ) === 'border-box' ) ? this.$element.outerHeight() : this.$element.height();
 				var scrollHeight = this.$element.get( 0 ).scrollHeight;
-				return ( scrollHeight > height ) ? ( ( height / ( scrollHeight - this.curScrollTop ) ) * 100 ) : 0;
+				// If we cannot compute the height, then we end up fetching all pages (ends up #/0 = Infinity).
+				// This can happen if the repeater is loaded, but is not in the dom
+				if ( scrollHeight === 0 || scrollHeight - this.curScrollTop === 0 ) {
+					return 0;
+				}
+				return ( height / ( scrollHeight - this.curScrollTop ) ) * 100;
 			},
 
 			fetchData: function( force ) {
@@ -8669,8 +8674,12 @@ if (typeof jQuery === 'undefined') {
 
 				this.currentPage = ( page !== undefined ) ? page : NaN;
 
-				if ( data.end === true || ( this.currentPage + 1 ) >= pages ) {
-					this.infiniteScrollingCont.infinitescroll( 'end', end );
+				if ( this.infiniteScrollingCont ) {
+					if ( data.end === true || ( this.currentPage + 1 ) >= pages ) {
+						this.infiniteScrollingCont.infinitescroll( 'end', end );
+					} else {
+						this.infiniteScrollingCont.infinitescroll( 'onScroll' );
+					}
 				}
 			},
 
