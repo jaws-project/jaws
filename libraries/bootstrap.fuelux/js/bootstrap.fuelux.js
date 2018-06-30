@@ -6039,8 +6039,9 @@ if (typeof jQuery === 'undefined') {
 				} );
 			},
 
-			selectTreeNode: function selectItem( clickedElement, nodeType ) {
+			selectTreeNode: function selectItem( clickedElement, nodeType , selectType) {
 				var clicked = {}; // object for clicked element
+				selectType = selectType || (this.options.toggleSelect? 'toggle' : 'select');
 				clicked.$element = $( clickedElement );
 
 				var selected = {}; // object for selected elements
@@ -6063,22 +6064,24 @@ if (typeof jQuery === 'undefined') {
 				if ( this.options.multiSelect ) {
 					selected = multiSelectSyncNodes( this, clicked, selected );
 				} else {
-					selected = singleSelectSyncNodes( this, clicked, selected );
+					selected = singleSelectSyncNodes( this, clicked, selected, selectType );
 				}
 
 				setFocus( this.$element, clicked.$element );
 
-				// all done with the DOM, now fire events
-				this.$element.trigger( selected.eventType + '.fu.tree', {
-					target: clicked.elementData,
-					selected: selected.dataForEvent
-				} );
+				if (selected.eventType) {
+					// all done with the DOM, now fire events
+					this.$element.trigger( selected.eventType + '.fu.tree', {
+						target: clicked.elementData,
+						selected: selected.dataForEvent
+					} );
 
-				clicked.$element.trigger( 'updated.fu.tree', {
-					selected: selected.dataForEvent,
-					item: clicked.$element,
-					eventType: selected.eventType
-				} );
+					clicked.$element.trigger( 'updated.fu.tree', {
+						selected: selected.dataForEvent,
+						item: clicked.$element,
+						eventType: selected.eventType
+					} );
+				}
 			},
 
 			discloseFolder: function discloseFolder( folder ) {
@@ -6124,7 +6127,7 @@ if (typeof jQuery === 'undefined') {
 					.removeClass( 'glyphicon-folder-open' )
 					.addClass( 'glyphicon-folder-close' );
 
-				// remove chidren if no cache
+				// remove childes if no cache
 				if ( !this.options.cacheItems ) {
 					$treeFolderContentFirstChild.empty();
 				}
@@ -6142,15 +6145,15 @@ if (typeof jQuery === 'undefined') {
 				}
 			},
 
-			selectFolder: function selectFolder( el ) {
+			selectFolder: function selectFolder( el, selectType) {
 				if ( this.options.folderSelect ) {
-					this.selectTreeNode( el, 'folder' );
+					this.selectTreeNode( el, 'folder', selectType );
 				}
 			},
 
-			selectItem: function selectItem( el ) {
+			selectItem: function selectItem( el, selectType ) {
 				if ( this.options.itemSelect ) {
-					this.selectTreeNode( el, 'item' );
+					this.selectTreeNode( el, 'item', selectType );
 				}
 			},
 
@@ -6573,19 +6576,33 @@ if (typeof jQuery === 'undefined') {
 			return selected;
 		}
 
-		function singleSelectSyncNodes( self, clicked, selected ) {
+		function singleSelectSyncNodes( self, clicked, selected , selectType) {
 			// element is not currently selected
 			if ( selected.$elements[ 0 ] !== clicked.$element[ 0 ] ) {
-				self.deselectAll( self.$element );
-				styleNodeSelected( clicked.$element, clicked.$icon );
-				// set event data
-				selected.eventType = 'selected';
-				selected.dataForEvent = [ clicked.elementData ];
+				switch (selectType) {
+					case 'toggle':
+					case 'select':
+						self.deselectAll( self.$element );
+						styleNodeSelected( clicked.$element, clicked.$icon );
+						// set event data
+						selected.eventType = 'selected';
+						selected.dataForEvent = [ clicked.elementData ];
+						break;
+					default:
+						//nothing
+				}
 			} else {
-				styleNodeDeselected( clicked.$element, clicked.$icon );
-				// set event data
-				selected.eventType = 'deselected';
-				selected.dataForEvent = [];
+				switch (selectType) {
+					case 'toggle':
+					case 'deselect':
+						styleNodeDeselected( clicked.$element, clicked.$icon );
+						// set event data
+						selected.eventType = 'deselected';
+						selected.dataForEvent = [];
+						break;
+					default:
+						//nothing
+				}
 			}
 
 			return selected;
@@ -6705,6 +6722,7 @@ if (typeof jQuery === 'undefined') {
 			cacheItems: true,
 			folderSelect: true,
 			itemSelect: true,
+			toggleSelect: true,
 			/*
 			 * How many times `discloseAll` should be called before a stopping and firing
 			 * an `exceededDisclosuresLimit` event. You can force it to continue by
