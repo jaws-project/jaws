@@ -6301,7 +6301,12 @@ if (typeof jQuery === 'undefined') {
 				}
 			},
 
-			// This refreshes the children of a folder. Please destroy and re-initilize for "root level" refresh.
+			// This refreshes the "root level".
+			refresh: function refresh() {
+				this.$element.find( 'li:not([data-template])' ).remove();
+				this.render();
+			},
+
 			// The data of the refreshed folder is not updated. This control's architecture only allows updating of children.
 			// Folder renames should probably be handled directly on the node.
 			refreshFolder: function refreshFolder( $el ) {
