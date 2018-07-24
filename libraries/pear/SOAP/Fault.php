@@ -60,7 +60,7 @@ class SOAP_Fault extends PEAR_Error
                          $faultactor = null, $detail = null, $mode = null,
                          $options = null)
     {
-        parent::PEAR_Error($faultstring, $faultcode, $mode, $options, $detail);
+        parent::__construct($faultstring, $faultcode, $mode, $options, $detail);
         if ($faultactor) {
             $this->error_message_prefix = $faultactor;
         }

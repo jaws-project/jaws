@@ -778,7 +778,7 @@ if (HTML_AJAX_class_exists('pear_error', false)) {
         function HTML_AJAX_JSON_Error($message = 'unknown error', $code = null,
                                      $mode = null, $options = null, $userinfo = null)
         {
-            parent::PEAR_Error($message, $code, $mode, $options, $userinfo);
+            parent::__construct($message, $code, $mode, $options, $userinfo);
         }
     }
 

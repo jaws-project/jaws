@@ -741,8 +741,7 @@ class XML_Parser_Error extends PEAR_Error
                 xml_get_current_line_number($msgorparser),
                 xml_get_current_column_number($msgorparser));
         }
-        $this->PEAR_Error($msgorparser, $code, $mode, $level);
+        parent::__construct($msgorparser, $code, $mode, $level);
     }
     // }}}
 }
-?>
