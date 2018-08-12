@@ -172,9 +172,9 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI());
         }
 
-        $body =& $GLOBALS['app']->LoadEditor('PrivateMessage', 'body', $body_value);
+        $body = $this->gadget->action->load('Editor')->load('body', $body_value);
+        $body->setId('body');
         $body->TextArea->SetRows(8);
-        $body->setID('body');
         $tpl->SetVariable('body', $body->Get());
 
         if ($show_recipient) {
