@@ -316,7 +316,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             ),
             'post'
         );
-        $post['body'] = $this->gadget->request->strip_crlf($post['body']);
+        $post['body'] = Jaws_Request::getInstance()->strip_crlf($post['body']);
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Message');
