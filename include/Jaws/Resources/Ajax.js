@@ -171,7 +171,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
         options.type = 'POST';
         options.async  = true;
         options.action = action;
-        options.data = $.encodeJSON((/boolean|number|string/).test(typeof data)? [data] : data);
+        options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
@@ -194,7 +194,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
         options.type = 'POST';
         options.async = false;
         options.action = action;
-        options.data = $.encodeJSON((/boolean|number|string/).test(typeof data)? [data] : data);
+        options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         //options.complete = this.onComplete.bind(this, options);
@@ -340,9 +340,9 @@ function JawsStorage(gadget)
     this.update = function (key, value, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
-            this.storage.setItem(key, $.encodeJSON(value));
+            this.storage.setItem(key, JSON.stringify(value));
         } else {
-            this.storage.write(key, $.encodeJSON(value));
+            this.storage.write(key, JSON.stringify(value));
         }
     },
 
@@ -1027,84 +1027,6 @@ function showWorkingNotification(msg)
 function hideWorkingNotification()
 {
     $('#working_notification').css('visibility', 'hidden');
-}
-
-/* Copyright (c) 2005 JSON.org */
-$.encodeJSON = function(v) {
-    var m = {
-            '\b': '\\b',
-            '\t': '\\t',
-            '\n': '\\n',
-            '\f': '\\f',
-            '\r': '\\r',
-            '"' : '\\"',
-            '\\': '\\\\'
-        },
-        s = {
-            'boolean': function (x) {
-                return String(x);
-            },
-            number: function (x) {
-                return isFinite(x) ? String(x) : 'null';
-            },
-            string: function (x) {
-                if (new RegExp("[\x00-\x1f\\\"]").test(x)) {
-                    x = x.replace(new RegExp("([\x00-\x1f\\\"])", 'g'), function(a, b) {
-                        var c = m[b];
-                        if (c) {
-                            return c;
-                        }
-                        c = b.charCodeAt();
-                        return '\\u00' +
-                            Math.floor(c / 16).toString(16) +
-                            (c % 16).toString(16);
-                    });
-                }
-                return '"' + x + '"';
-            },
-            object: function (x) {
-                if (x) {
-                    var a = [], b, f, i, l, v;
-                    if ((x instanceof Object) || ((typeof x) == 'object') || (x instanceof Array)) {
-                        a[0] = '{';
-                        for (i in x) {
-                            if (!x.hasOwnProperty(i)) {
-                                continue;
-                            }
-                            v = x[i];
-                            f = s[typeof v];
-                            if (f) {
-                                v = f(v);
-                                if (typeof v == 'string') {
-                                    if (b) {
-                                        a[a.length] = ',';
-                                    }
-                                    a.push(s.string(i), ':', v);
-                                    b = true;
-                                }
-                            }
-                        }
-                        a[a.length] = '}';
-                    } else {
-                        return;
-                    }
-                    return a.join('');
-                }
-                return 'null';
-            },
-            'undefined': function (x) {
-                return 'null';
-            }
-        };
-
-    var f = s[typeof v];
-    if (f) {
-        v = f(v);
-        if (typeof v == 'string') {
-            return v;
-        }
-    }
-    return null;
 }
 
 var Jaws_Gadget = (function () {
