@@ -28,6 +28,9 @@ class Jaws_Response_Print
         $theme = $GLOBALS['app']->GetTheme();
         $site_name = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
         if (file_exists($theme['path'] . 'Print.html')) {
+            // change mode to standalone
+            jaws()->request->update('mode', 'standalone');
+
             // fetch all registry keys related to site attributes
             $siteAttributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);
 

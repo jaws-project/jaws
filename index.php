@@ -115,15 +115,20 @@ if (empty($ReqError)) {
             $ReqResult = $ReqResult->GetMessage();
         }
         $GLOBALS['app']->inMainRequest = false;
-
-        // we must check type of action after execute, because gadget can change it at runtime
-        $ReqMode = Jaws_Gadget::filter(jaws()->request->fetch('mode'));
-        $IsReqActionStandAlone = ($ReqMode == 'standalone') || $objAction->IsStandAlone($ReqAction);
+        $IsReqActionStandAlone = $objAction->IsStandAlone($ReqAction);
     }
 } else {
     $ReqResult = Jaws_HTTPError::Get($ReqError);
 }
 
+// Send content to client
+$resType = jaws()->request->fetch('restype');
+// encode data based on response type
+$ReqResult = Jaws_Response::get($resType, $ReqResult);
+
+// we must check type of action after execute, because gadget can change it at runtime
+$ReqMode = Jaws_Gadget::filter(jaws()->request->fetch('mode'));
+$IsReqActionStandAlone = ($ReqMode == 'standalone')? true : $IsReqActionStandAlone;
 if (!$IsReqActionStandAlone) {
     $GLOBALS['app']->Layout->Populate($ReqResult, $AccessToWebsiteDenied);
     $ReqResult = $GLOBALS['app']->Layout->Get();
