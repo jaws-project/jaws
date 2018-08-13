@@ -30,7 +30,7 @@ class Directory_Hooks_Search extends Jaws_Gadget_Hook
     function Execute($table, &$objORM)
     {
         $objORM->table('directory');
-        $objORM->select('id', 'title', 'description', 'user_filename', 'update_time:integer');
+        $objORM->select('id', 'is_dir:boolean', 'title', 'description', 'user_filename', 'update_time:integer');
         $objORM->loadWhere('search.terms');
         $result = $objORM->orderBy('id desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
@@ -41,11 +41,17 @@ class Directory_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $p) {
             $file = array();
             $file['title']   = $p['title'];
-            $file['url']     = $this->gadget->urlMap('Directory', array('id'  => $p['id']));
-            $file['image']   = 'gadgets/Directory/Resources/images/logo.png';
             $file['snippet'] = $p['description'];
             $file['date']    = $p['update_time'];
             $stamp           = $p['update_time'];
+
+            if ($p['is_dir']) {
+                $file['url'] = $this->gadget->urlMap('Directory', array('id'  => $p['id']));
+            } else {
+                $file['url'] = $this->gadget->urlMap('File', array('id'  => $p['id']));
+            }
+
+            $file['image']   = 'gadgets/Directory/Resources/images/logo.png';
             $files[$stamp]   = $file;
         }
 
