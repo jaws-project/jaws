@@ -111,10 +111,18 @@ class Blog_Actions_Post extends Blog_Actions_Default
                                   $allow_comments_config;
 
                 $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
-                $tpl->SetVariable('comments', $cHTML->ShowComments('Blog', 'Post', $entry['id'],
-                    array('action' => 'SingleView',
-                          'params' => array('id' => empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']))));
-
+                $tpl->SetVariable(
+                    'comments',
+                    $cHTML->ShowComments(
+                        'Blog', 'Post', $entry['id'],
+                        array(
+                            'action' => 'SingleView',
+                            'params' => array(
+                                'id' => empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']
+                            )
+                        )
+                    )
+                );
 
                 if ($allow_comments) {
                     $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm(
