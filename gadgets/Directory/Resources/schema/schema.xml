@@ -58,7 +58,7 @@
         <name>file_type</name>
         <type>integer</type>
         <length>1</length>
-        <description>0:unknown 1:text 2:image 3:audio 4:video 5:archive</description>
+        <description>1:folder 2:text 3:image 4:audio 5:video 6:archive 99:unknown</description>
       </field>
 
       <field>

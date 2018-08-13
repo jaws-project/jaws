@@ -7,12 +7,13 @@
  */
 class Directory_Info extends Jaws_Gadget
 {
-    const FILE_TYPE_UNKNOWN = 1;
+    const FILE_TYPE_FOLDER  = 1;
     const FILE_TYPE_TEXT    = 2;
     const FILE_TYPE_IMAGE   = 3;
     const FILE_TYPE_AUDIO   = 4;
     const FILE_TYPE_VIDEO   = 5;
     const FILE_TYPE_ARCHIVE = 6;
+    const FILE_TYPE_UNKNOWN = 99;
 
     /**
      * Default ACL value of front-end gadget access
@@ -28,7 +29,7 @@ class Directory_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.7.0';
+    var $version = '1.8.0';
 
     /**
      * Recommended gadgets
@@ -53,4 +54,5 @@ class Directory_Info extends Jaws_Gadget
      * @access  protected
      */
     var $default_admin_action = 'Directory';
+
 }

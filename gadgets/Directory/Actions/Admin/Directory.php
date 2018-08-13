@@ -72,7 +72,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_archive', _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
         $tpl->SetVariable('lbl_other', _t('DIRECTORY_FILE_TYPE_OTHER'));
 
-        $tpl->SetVariable('type_folder', -1);
+        $tpl->SetVariable('type_folder', Directory_Info::FILE_TYPE_FOLDER);
         $tpl->SetVariable('type_text', Directory_Info::FILE_TYPE_TEXT);
         $tpl->SetVariable('type_image', Directory_Info::FILE_TYPE_IMAGE);
         $tpl->SetVariable('type_audio', Directory_Info::FILE_TYPE_AUDIO);
@@ -458,10 +458,9 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $params['parent'] = $data['id'];
         $params['query'] = $data['file_search'];
         if ($data['file_type'] !== '') {
-            if ($data['file_type'] == '-1') {
+            $params['file_type'] = $data['file_type'];
+            if ($data['file_type'] == 1) {
                 $params['is_dir'] = true;
-            } else {
-                $params['file_type'] = $data['file_type'];
             }
         }
         $params['file_size'] = ($data['file_size'] == '0') ? null : explode(',', $data['file_size']);

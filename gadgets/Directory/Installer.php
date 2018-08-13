@@ -127,6 +127,30 @@ class Directory_Installer extends Jaws_Gadget_Installer
             // nothing
         }
 
+        if (version_compare($old, '1.8.0', '<')) {
+            $objORM = Jaws_ORM::getInstance()->beginTransaction();
+            $objORM->table('directory');
+            // change unknown type to 99
+            $result = $objORM->update(array('file_type' => 99))->where('file_type', 1)->exec();
+            if (Jaws_Error::IsError($result)) {
+                return Jaws_Error::raiseError(
+                    $result->getMessage(),
+                    __FUNCTION__
+                );
+            }
+            // set file type 1 for folders
+            $result = $objORM->update(array('file_type' => 1))->where('is_dir', true)->exec();
+            if (Jaws_Error::IsError($result)) {
+                return Jaws_Error::raiseError(
+                    $result->getMessage(),
+                    __FUNCTION__
+                );
+            }
+
+            //commit transaction
+            $objORM->commit();
+        }
+
         return true;
     }
 

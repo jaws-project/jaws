@@ -18,7 +18,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $result[] = array('title' => _t('DIRECTORY_FILE_TYPE'), 'value' =>
             array(
                 0 => _t('GLOBAL_ALL'),
-                -1 => _t('DIRECTORY_FILE_TYPE_FOLDER'),
+                Directory_Info::FILE_TYPE_FOLDER  => _t('DIRECTORY_FILE_TYPE_FOLDER'),
                 Directory_Info::FILE_TYPE_TEXT    => _t('DIRECTORY_FILE_TYPE_TEXT'),
                 Directory_Info::FILE_TYPE_IMAGE   => _t('DIRECTORY_FILE_TYPE_IMAGE'),
                 Directory_Info::FILE_TYPE_AUDIO   => _t('DIRECTORY_FILE_TYPE_AUDIO'),
@@ -115,7 +115,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
 
             $description = '';
-            $descriptionEditor =& $GLOBALS['app']->LoadEditor('Directory', 'description', Jaws_XSS::defilter($description), false);
+            $descriptionEditor =& $GLOBALS['app']->LoadEditor(
+                'Directory', 'description', Jaws_XSS::defilter($description), false
+            );
             $descriptionEditor->setId('description');
             $descriptionEditor->TextArea->SetRows(8);
             $tpl->SetVariable('description', $descriptionEditor->Get());
@@ -156,24 +158,24 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $params = array();
         $filters = $this->gadget->request->fetch(
             array('filter_file_type', 'filter_file_size', 'filter_from_date', 'filter_to_date', 'filter_order'),
-            'post');
+            'post'
+        );
 
         // Layout action
         $isLayoutAction = $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT;
         if ($isLayoutAction) {
             $page = 0;
-            if ($type == '-1') {
+            $params['file_type'] = (int)$type;
+            if ($params['file_type'] == 1) {
                 $params['is_dir'] = true;
-            } else {
-                $params['file_type'] = $type;
             }
         } else {
-            $params = $this->gadget->request->fetch(array('type', 'page'), 'get');
-            $page = (int)$params['page'];
-            if ($params['type'] !== null) {
-                $params['file_type'] = $params['type'];
+            $get = $this->gadget->request->fetch(array('type', 'order', 'page'), 'get');
+            $page = (int)$get['page'];
+            $params['file_type'] = (int)$get['type'];
+            if (!empty($get['order'])) {
+                $orderBy = (int)$get['order'];
             }
-            unset($params['type']);
         }
 
         $params['limit']  = ($limit > 0) ? $limit : (int)$this->gadget->registry->fetch('items_per_page');
@@ -191,11 +193,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         // check filters
-        if (!empty($filters['filter_file_type']) && empty($type)) {
-            if ($filters['filter_file_type'] == '-1') {
+        if (!is_null($filters['filter_file_type'])) {
+            $params['file_type'] = $filters['filter_file_type'];
+            if ($filters['filter_file_type'] == 1) {
                 $params['is_dir'] = true;
-            } else {
-                $params['file_type'] = $filters['filter_file_type'];
             }
         }
         if (!empty($filters['filter_file_size'])) {
@@ -251,7 +252,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         // file type
         $fileTypes = array();
         $fileTypes[] = array('id' => 0, 'title' => _t('GLOBAL_ALL'));
-        $fileTypes[] = array('id' => -1, 'title' => _t('DIRECTORY_FILE_TYPE_FOLDER'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_FOLDER, 'title' => _t('DIRECTORY_FILE_TYPE_FOLDER'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
@@ -264,9 +265,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('title', $fileType['title']);
 
             $tpl->SetVariable('selected', '');
-            if ($fileType['id'] == -1 && isset($params['is_dir']) && $params['is_dir'] == true) {
-                $tpl->SetVariable('selected', 'selected');
-            } else if (isset($params['file_type']) && $params['file_type'] == $fileType['id']) {
+            if (isset($params['file_type']) && $params['file_type'] == $fileType['id']) {
                 $tpl->SetVariable('selected', 'selected');
             }
             $tpl->ParseBlock("$block/filters/file_type");
@@ -339,13 +338,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $theme = $GLOBALS['app']->GetTheme();
         $iconUrl = is_dir($theme['url'] . 'mimetypes')? $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
         $icons = array(
-            null => 'folder',
-            0 => 'file-generic',
-            1 => 'text-generic',
-            2 => 'image-generic',
-            3 => 'audio-generic',
-            4 => 'video-generic',
-            5 => 'package-generic'
+            1 => 'folder',
+            2 => 'text-generic',
+            3 => 'image-generic',
+            4 => 'audio-generic',
+            5 => 'video-generic',
+            6 => 'package-generic',
+            99 => 'file-generic',
         );
         $objDate = Jaws_Date::getInstance();
         foreach ($files as $file) {

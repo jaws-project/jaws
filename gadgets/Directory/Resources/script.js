@@ -738,11 +738,11 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     currentAction;
 
 var FileIcons = {
-    null : 'folder',
-    0 : 'file-generic',
-    1 : 'text-generic',
-    2 : 'image-generic',
-    3 : 'audio-generic',
-    4 : 'video-generic',
-    5 : 'package-generic'
+    1 : 'folder',
+    2 : 'text-generic',
+    3 : 'image-generic',
+    4 : 'audio-generic',
+    5 : 'video-generic',
+    6 : 'package-generic',
+    99 : 'file-generic',
 }
