@@ -71,10 +71,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
-            $showPreview = false;
             $tpl = $this->gadget->template->load('Directory.html');
         } else {
-            $showPreview = true;
             $tpl = $this->gadget->template->load('DirBox.html');
         }
         $tpl->SetBlock('directory');
@@ -89,7 +87,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget_title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
 
         // parse files, filters, pagination
-        $this->ListFiles($tpl, $id, $type, $showPreview, $orderBy, $limit);
+        $this->ListFiles($tpl, $id, $type, $orderBy, $limit);
 
         $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
         $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
@@ -153,7 +151,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      * @param   int     $limit      Forms limit
      * @return string HTML content
      */
-    function ListFiles(&$tpl, $parent = 0, $type = null, $preview = false, $orderBy = 0, $limit = 0)
+    function ListFiles(&$tpl, $parent = 0, $type = null, $orderBy = 0, $limit = 0)
     {
         $params = array();
         $filters = $this->gadget->request->fetch(
@@ -355,17 +353,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             }
             $tpl->SetBlock("$block/files/file");
             $tpl->SetVariable('url', $url);
+            $tpl->SetVariable('id', $file['id']);
             $tpl->SetVariable('title', $file['title']);
             $tpl->SetVariable('description', $file['description']);
             $tpl->SetVariable('type', empty($file['mime_type'])? '-' : $file['mime_type']);
             $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['file_size']));
             $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
             $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
-            if ($preview) {
-                $tpl->SetBlock("$block/files/file/preview");
-                $tpl->SetVariable('preview', $this->gadget->action->load('File')->play($file));
-                $tpl->ParseBlock("$block/files/file/preview");
-            }
 
             if (!$file['public']) {
                 $tpl->SetBlock("$block/files/file/action");

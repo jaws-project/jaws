@@ -51,7 +51,10 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         }
 
         // display file
-        $tpl->SetVariable('preview', $this->play($file));
+        $tpl->SetVariable(
+            'preview',
+            $this->gadget->action->loadAdmin('Files')->PlayMedia($file)
+        );
 
         // display thumbnail
         $model = $this->gadget->model->load('Files');
@@ -100,41 +103,21 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array
      */
-    function play($file)
+    function PlayMedia($file = null)
     {
-        $type = '';
-        // display file
-        $fileInfo = pathinfo($file['host_filename']);
-        if (isset($fileInfo['extension'])) {
-            $ext = $fileInfo['extension'];
-            if ($ext === 'txt') {
-                $type = 'text';
-            } else if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif', 'svg'))) {
-                $type = 'image';
-            } else if (in_array($ext, array('wav', 'mp3'))) {
-                $type = 'audio';
-            } else if (in_array($ext, array('webm', 'mp4', 'ogg'))) {
-                $type = 'video';
-            }
+        $result = $this->gadget->action->loadAdmin('Files')->PlayMedia($file);
+        if ($result) {
+            return $GLOBALS['app']->Session->GetResponse(
+                '',
+                RESPONSE_NOTICE,
+                $result
+            );
         }
 
-        if (empty($type)) {
-            return false;
-        }
-
-        $tpl = $this->gadget->template->loadAdmin('Media.html');
-        $tpl->SetBlock($type);
-        if ($type === 'text') {
-            $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
-            if (file_exists($filename)) {
-                $tpl->SetVariable('text', file_get_contents($filename));
-            }
-        } else {
-            $tpl->SetVariable('url', $this->gadget->urlMap('Download', array('id' => $file['id'])));
-        }
-        $tpl->ParseBlock($type);
-
-        return $this->gadget->plugin->parse($tpl->get());
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('GLOBAL_ERROR_FILE_DOES_NOT_EXIST'),
+            RESPONSE_ERROR
+        );
     }
 
     /**

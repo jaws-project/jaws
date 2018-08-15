@@ -47,6 +47,10 @@ $actions['GetFile'] = array(
     'standalone' => true,
     'file' => 'File'
 );
+$actions['PlayMedia'] = array(
+    'standalone' => true,
+    'file' => 'File'
+);
 
 /**
  * Admin actions

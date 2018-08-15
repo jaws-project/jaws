@@ -162,20 +162,48 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array
      */
-    function PlayMedia()
+    function PlayMedia($file = null)
     {
-        $id = (int)$this->gadget->request->fetch('id');
-        $type = $this->gadget->request->fetch('type');
+        if (empty($file) || !isset($file['host_filename'])) {
+            $id = (int)$this->gadget->request->fetch('id');
+            $file = $this->gadget->model->load('Files')->GetFile($id);
+            if (Jaws_Error::IsError($file) || empty($file) || empty($file['host_filename'])) {
+                return false;
+            }
+        }
+
+        $type = '';
+        // display file
+        $fileInfo = pathinfo($file['host_filename']);
+        if (isset($fileInfo['extension'])) {
+            $ext = $fileInfo['extension'];
+            if ($ext === 'txt') {
+                $type = 'text';
+            } else if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif', 'svg'))) {
+                $type = 'image';
+            } else if (in_array($ext, array('wav', 'mp3'))) {
+                $type = 'audio';
+            } else if (in_array($ext, array('webm', 'mp4', 'ogg'))) {
+                $type = 'video';
+            }
+        }
+
+        if (empty($type)) {
+            return false;
+        }
 
         $tpl = $this->gadget->template->loadAdmin('Media.html');
         $tpl->SetBlock($type);
         if ($type === 'text') {
-            $tpl->SetVariable('text', $this->GetFileContent($id));
+            $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
+            if (file_exists($filename)) {
+                $tpl->SetVariable('text', file_get_contents($filename));
+            }
         } else {
-            $tpl->SetVariable('url', $this->GetDownloadURL($id));
+            $tpl->SetVariable('url', $this->gadget->urlMap('Download', array('id' => $file['id'])));
         }
-        $tpl->ParseBlock($type);
 
+        $tpl->ParseBlock($type);
         return $this->gadget->plugin->parse($tpl->get());
     }
 
