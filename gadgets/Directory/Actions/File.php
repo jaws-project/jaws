@@ -224,7 +224,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $res = $model->DeleteFile($fileInfo);
+        $res = $this->gadget->model->loadAdmin('Files')->DeleteFile($fileInfo);
         if (Jaws_Error::isError($res)) {
             return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         } else {

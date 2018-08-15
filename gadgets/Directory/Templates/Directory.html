@@ -22,7 +22,7 @@
   </div>
   <!-- BEGIN upload_files -->
   <div class="gadget_actions actions">
-    <button id="active_btn" onclick="javascript:newFile();" class="btn btn-primary" >
+    <button id="active_btn" onclick="Jaws_Gadget.getInstance('Directory').newFile()" class="btn btn-primary" >
       <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
       {{upload}}
     </button>
@@ -75,7 +75,9 @@
         <!-- END published -->
       </table>
       <div class="gadget_actions actions">
-        <button class="btn btn-default" type="button" onclick="stopAction()">{{lbl_cancel}}</button>
+        <button class="btn btn-default" type="button" onclick="Jaws_Gadget.getInstance('Directory').stopAction()">
+          {{lbl_cancel}}
+        </button>
         <button class="btn btn-primary" type="submit">{{lbl_ok}}</button>
       </div>
     </form>

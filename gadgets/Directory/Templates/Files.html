@@ -20,12 +20,12 @@
     <td class="file-preview"></td>
     <td class="file-action">
     <!-- BEGIN action -->
-    <a href="javascript:void(0);" onclick="deleteFile({{id}});">
+    <a href="javascript:void(0);" onclick="Jaws_Gadget.getInstance('Directory').deleteFile({{id}});">
       <img src="libraries/piwi/piwidata/art/stock/actions/edit-delete.png"
            alt="{{lbl_delete}}" title="{{lbl_delete}}" border="0" />
     </a>
 
-    <a href="javascript:void(0);" onclick="editFile({{id}}, {{parent}});">
+    <a href="javascript:void(0);" onclick="Jaws_Gadget.getInstance('Directory').editFile({{id}}, {{parent}});">
       <img src="libraries/piwi/piwidata/art/stock/stock_edit.png"
            alt="{{lbl_edit}}" title="{{lbl_edit}}" border="0" />
     </a>

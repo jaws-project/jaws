@@ -185,7 +185,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $user = $this->gadget->request->fetch('user', 'get');
         if (!empty($user)) {
             $params['user'] = (int)$user;
-            if ($params['user'] == (int)$GLOBALS['app']->Session->GetAttribute('user')) {
+            if ($params['user'] == (int)$GLOBALS['app']->Session->GetAttribute('username')) {
                 unset($params['public'], $params['published']);
             }
         }

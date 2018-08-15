@@ -8,32 +8,6 @@
 class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
 {
     /**
-     * Determines file type according to the file extension
-     */
-    function getFileType($filename)
-    {
-        $fileExt = pathinfo($filename, PATHINFO_EXTENSION);
-        if (empty($fileExt)) {
-            return Directory_Info::FILE_TYPE_UNKNOWN;
-        }
-        $FileTypes = array(
-            Directory_Info::FILE_TYPE_TEXT    => array('txt', 'doc', 'xml', 'html', 'htm', 'css', 'js', 'php', 'sh'),
-            Directory_Info::FILE_TYPE_IMAGE   => array('gif', 'png', 'jpg', 'jpeg', 'raw', 'bmp', 'tiff', 'svg'),
-            Directory_Info::FILE_TYPE_AUDIO   => array('wav', 'mp3', 'm4v', 'ogg'),
-            Directory_Info::FILE_TYPE_VIDEO   => array('mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov', 'mp4'),
-            Directory_Info::FILE_TYPE_ARCHIVE => array('zip', 'rar', 'tar', 'gz', 'tgz', 'bz2', '7z', '7zip')
-        );
-        foreach ($FileTypes as $type => $exts) {
-            foreach ($exts as $ext) {
-                if ($fileExt == $ext) {
-                    return $type;
-                }
-            }
-        }
-        return Directory_Info::FILE_TYPE_UNKNOWN;
-    }
-
-    /**
      * Builds the file management form
      *
      * @access  public
