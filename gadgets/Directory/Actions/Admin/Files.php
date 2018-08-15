@@ -146,29 +146,28 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             }
         }
 
-        $type = '';
-        // display file
-        $fileInfo = pathinfo($file['host_filename']);
-        if (isset($fileInfo['extension'])) {
-            $ext = $fileInfo['extension'];
-            if ($ext === 'txt') {
-                $type = 'text';
-            } else if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif', 'svg'))) {
-                $type = 'image';
-            } else if (in_array($ext, array('wav', 'mp3'))) {
-                $type = 'audio';
-            } else if (in_array($ext, array('webm', 'mp4', 'ogg'))) {
-                $type = 'video';
-            }
-        }
-
-        if (empty($type)) {
-            return false;
+        $block = '';
+        $type = $this->gadget->model->load('Files')->getFileType($file['host_filename']);
+        switch ($type) {
+            case Directory_Info::FILE_TYPE_TEXT:
+                $block = 'text';
+                break;
+            case Directory_Info::FILE_TYPE_IMAGE:
+                $block = 'image';
+                break;
+            case Directory_Info::FILE_TYPE_AUDIO:
+                $block = 'audio';
+                break;
+            case Directory_Info::FILE_TYPE_VIDEO:
+                $block = 'video';
+                break;
+            default:
+                return false;
         }
 
         $tpl = $this->gadget->template->loadAdmin('Media.html');
-        $tpl->SetBlock($type);
-        if ($type === 'text') {
+        $tpl->SetBlock($block);
+        if ($type === Directory_Info::FILE_TYPE_TEXT) {
             $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
             if (file_exists($filename)) {
                 $tpl->SetVariable('text', file_get_contents($filename));
@@ -177,7 +176,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('url', $this->gadget->urlMap('Download', array('id' => $file['id'])));
         }
 
-        $tpl->ParseBlock($type);
+        $tpl->ParseBlock($block);
         return $this->gadget->plugin->parse($tpl->get());
     }
 
