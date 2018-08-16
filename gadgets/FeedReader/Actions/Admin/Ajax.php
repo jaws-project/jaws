@@ -50,9 +50,11 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertFeed()
     {
         @list($title, $url, $cache_time, $view_type, $count_entry,
-            $title_view, $visible
+            $title_view, $alias, $published
         ) = $this->gadget->request->fetchAll('post');
-        $result = $this->_Model->InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible);
+        $result = $this->_Model->InsertFeed(
+            $title, $url, $cache_time, $view_type, $count_entry, $title_view, $alias, $published
+        );
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
         }
@@ -72,11 +74,11 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateFeed()
     {
         @list($id, $title, $url, $cache_time, $view_type,
-            $count_entry, $title_view, $visible
+            $count_entry, $title_view, $alias, $published
         ) = $this->gadget->request->fetchAll('post');
         $result = $this->_Model->UpdateFeed(
             $id, $title, $url, $cache_time,
-            $view_type, $count_entry, $title_view, $visible
+            $view_type, $count_entry, $title_view, $alias, $published
         );
         if (Jaws_Error::IsError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);

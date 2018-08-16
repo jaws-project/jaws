@@ -27,12 +27,12 @@ class FeedReader_Model_Feed extends Jaws_Gadget_Model
         $fTable = Jaws_ORM::getInstance()->table('feeds');
         $fTable->select(
             'id:integer', 'user:integer', 'title', 'url', 'cache_time', 'view_type:integer',
-            'count_entry:integer', 'title_view:integer', 'visible:integer'
+            'count_entry:integer', 'title_view:integer', 'alias', 'published:boolean'
         );
 
         if (!empty($filters)) {
-            if (isset($filters['only_visible']) && !is_null($filters['only_visible'])) {
-                $fTable->where('visible', $filters['visible']);
+            if (isset($filters['only_published']) && !is_null($filters['only_published'])) {
+                $fTable->where('published', (bool)$filters['published']);
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
                 $fTable->and()->where('title', $filters['term'], 'like');
@@ -60,8 +60,8 @@ class FeedReader_Model_Feed extends Jaws_Gadget_Model
         $fTable = Jaws_ORM::getInstance()->table('feeds');
         $fTable->select('count(id):integer');
         if (!empty($filters)) {
-            if (isset($filters['only_visible']) && !is_null($filters['only_visible'])) {
-                $fTable->where('visible', $filters['visible']);
+            if (isset($filters['only_published']) && !is_null($filters['only_published'])) {
+                $fTable->where('published', (bool)$filters['published']);
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
                 $fTable->and()->where('title', $filters['term'], 'like');
@@ -88,7 +88,7 @@ class FeedReader_Model_Feed extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->table('feeds');
         $objORM->select(
             'id:integer', 'user:integer', 'title', 'url', 'cache_time', 'view_type:integer',
-            'count_entry:integer', 'title_view:integer', 'visible:integer'
+            'count_entry:integer', 'title_view:integer', 'alias', 'published:boolean'
         );
          $objORM->where('id', (int)$id);
         if (!is_null($user)) {

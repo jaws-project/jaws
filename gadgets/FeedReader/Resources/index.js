@@ -40,7 +40,7 @@ var FeedReaderCallback = {
 function editFeed(id)
 {
     selectedFeed = id;
-    FeedReaderAjax.callSync('GetUserFeed', {'id': selectedFeed}, function (feed) {
+    FeedReaderAjax.callAsync('GetUserFeed', {'id': selectedFeed}, function (feed) {
         if (feed) {
             $('form#feed #title').val(feed['title'].defilter());
             $('form#feed #url').val(feed['url']);
@@ -48,8 +48,8 @@ function editFeed(id)
             $('form#feed #view_type').val(feed['view_type']);
             $('form#feed #title_view').val(feed['title_view']);
             $('form#feed #count_entry').val(feed['count_entry']);
-            $('form#feed #visible').val(feed['visible']? 1 : 0);
-
+            $('form#feed #alias').val(feed['alias']);
+            $('form#feed #published').val(feed['published']? 1 : 0);
             $('#feedModal').modal('show');
         }
     });
@@ -109,8 +109,8 @@ function feedsDataSource(options, callback) {
             'property': 'title',
         },
         {
-            'label': jaws.FeedReader.Defines.lbl_visible,
-            'property': 'visible',
+            'label': jaws.FeedReader.Defines.lbl_published,
+            'property': 'published',
         }
     ];
 

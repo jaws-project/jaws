@@ -5,6 +5,7 @@
 
  <table>
     <name><variable>table_prefix</variable>feeds</name>
+    <was><variable>table_prefix</variable>rss_sites</was>
     <declaration>
 
         <field>
@@ -30,12 +31,6 @@
             <name>url</name>
             <type>text</type>
             <length>255</length>
-        </field>
-
-        <field>
-            <name>alias</name>
-            <type>text</type>
-            <length>32</length>
         </field>
 
         <field>
@@ -67,9 +62,10 @@
         </field>
 
         <field>
-            <name>published</name>
-            <type>boolean</type>
-            <default>true</default>
+            <name>visible</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
         </field>
 
     </declaration>

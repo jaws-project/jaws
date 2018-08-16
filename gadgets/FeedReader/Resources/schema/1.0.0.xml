@@ -33,12 +33,6 @@
         </field>
 
         <field>
-            <name>alias</name>
-            <type>text</type>
-            <length>32</length>
-        </field>
-
-        <field>
             <name>cache_time</name>
             <type>integer</type>
             <notnull>true</notnull>
@@ -61,6 +55,13 @@
 
         <field>
             <name>title_view</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>visible</name>
             <type>integer</type>
             <length>1</length>
             <default>0</default>

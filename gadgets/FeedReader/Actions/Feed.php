@@ -108,6 +108,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             foreach ($feeds as $feed) {
                 $tpl->SetBlock("feedreaders/feed");
                 $tpl->SetVariable('url', $this->gadget->urlMap('GetFeed', array('id' => $feed['id'])));
+                $tpl->SetVariable('alias', $feed['alias']);
                 $tpl->SetVariable('title', $feed['title']);
                 $tpl->ParseBlock('feedreaders/feed');
             }
@@ -132,7 +133,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Feed');
         $site = $model->GetFeed($id);
-        if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {
+        if (Jaws_Error::IsError($site) || empty($site) || !$site['published']) {
             return false;
         }
 
@@ -178,6 +179,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         $block = ($site['view_type']==0)? 'simple' : 'marquee';
         $tpl->SetBlock("feedreader/$block");
+        $tpl->SetVariable('alias', $site['alias']);
         $tpl->SetVariable('title', _t('FEEDREADER_ACTION_TITLE'));
 
         switch ($site['title_view']) {
@@ -310,7 +312,8 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         $this->AjaxMe('index.js');
         $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->define('lbl_visible', _t('GLOBAL_VISIBLE'));
+        $this->gadget->define('lbl_alias', _t('GLOBAL_ALIAS'));
+        $this->gadget->define('lbl_published', _t('GLOBAL_PUBLISHED'));
         $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
         $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
         $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
@@ -346,7 +349,8 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title_view_external', _t('FEEDREADER_TITLE_VIEW_EXTERNAL'));
 
         $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
-        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
+        $tpl->SetVariable('lbl_alias', _t('GLOBAL_ALIAS'));
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
 
@@ -385,7 +389,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $total = $model->GetFeedsCount($filters, $user);
 
         foreach ($feeds as $key => $feed) {
-            $feed['visible'] = ($feed['visible']) ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
+            $feed['published'] = ($feed['published'])? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $feeds[$key] = $feed;
         }
         return $GLOBALS['app']->Session->GetResponse(

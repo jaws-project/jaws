@@ -73,7 +73,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '0.9.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '0.8.0.xml');
+            $result = $this->installSchema('0.9.0.xml', array(), '0.8.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -93,6 +93,27 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
             $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->EditGadgetLayoutAction('FeedReader', 'Display', 'DisplayFeeds', 'Feed');
+            }
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            $result = $this->installSchema('1.0.0.xml', array(), '0.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $result = Jaws_ORM::getInstance()
+                ->table('feeds')
+                ->update(array('published' => false))
+                ->where('visible', 0)
+                ->exec();
+            if (Jaws_Error::IsError($result)) {
+                // do nothing
+            }
+
+            $result = $this->installSchema('schema.xml', array(), '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
             }
         }
 

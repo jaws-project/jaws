@@ -128,14 +128,20 @@
                   </select>
                 </td></tr>
 
-                <tr><td><label for="count_entry">{{lbl_count_entry}}:</label></td><td>
-                  <input type="text" id="count_entry" name="count_entry" class="form-control" value="0">
-                </td></tr>
+                <tr>
+                  <td><label for="count_entry">{{lbl_count_entry}}:</label></td>
+                  <td><input type="text" id="count_entry" name="count_entry" class="form-control" value="0"></td>
+                </tr>
 
-                <tr><td><label for="visible">{{lbl_visible}}:</label></td><td>
-                  <select class="form-control" name="visible" id="visible">
-                    <option value="1">{{lbl_yes}}</option>
+                <tr>
+                  <td><label for="alias">{{lbl_alias}}:</label></td>
+                  <td><input type="text" id="alias" name="alias" class="form-control" value=""></td>
+                </tr>
+
+                <tr><td><label for="published">{{lbl_published}}:</label></td><td>
+                  <select class="form-control" name="published" id="published">
                     <option value="0">{{lbl_no}}</option>
+                    <option value="1">{{lbl_yes}}</option>
                   </select>
                 </td></tr>
 
@@ -144,8 +150,8 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
-            <button type="button" class="btn btn-primary" onclick="javascript:updateFeed()">{{lbl_save}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="stopAction()">{{lbl_cancel}}</button>
+            <button type="button" class="btn btn-primary" onclick="updateFeed()">{{lbl_save}}</button>
           </div>
         </div>
       </div>

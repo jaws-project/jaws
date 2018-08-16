@@ -22,10 +22,11 @@ class FeedReader_Model_Admin_Feed extends FeedReader_Model_Feed
      * @param   int     $view_type      Display type (0-4)
      * @param   int     $count_entry    Number of viewable feed title
      * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the feed Site
+     * @param   string  $alias          Alias
+     * @param   bool    $published      The visibility status of the feed Site
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function InsertFeed($title, $url, $cache_time, $view_type, $count_entry, $title_view, $alias, $published)
     {
         $fData = array();
         $fData['title']       = $title;
@@ -34,7 +35,8 @@ class FeedReader_Model_Admin_Feed extends FeedReader_Model_Feed
         $fData['view_type']   = (int)$view_type;
         $fData['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
         $fData['title_view']  = (int)$title_view;
-        $fData['visible']     = (int)$visible;
+        $fData['alias']       = $alias;
+        $fData['published']   = (bool)$published;
 
         $objORM = Jaws_ORM::getInstance()->table('feeds');
         return $objORM->insert($fData)->exec();
@@ -51,10 +53,11 @@ class FeedReader_Model_Admin_Feed extends FeedReader_Model_Feed
      * @param   int     $view_type      Display type (0-4)
      * @param   int     $count_entry    Number of viewable feed title
      * @param   int     $title_view     Display title or not
-     * @param   int     $visible        The visibility status of the feed site
+     * @param   string  $alias          Alias
+     * @param   bool    $published      The visibility status of the feed site
      * @return  mixed   True on success and Jaws_Error on failure
      */
-    function UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $visible)
+    function UpdateFeed($id, $title, $url, $cache_time, $view_type, $count_entry, $title_view, $alias, $published)
     {
         $fData = array();
         $fData['title']       = $title;
@@ -63,7 +66,8 @@ class FeedReader_Model_Admin_Feed extends FeedReader_Model_Feed
         $fData['view_type']   = (int)$view_type;
         $fData['count_entry'] = ((empty($count_entry) || !is_numeric($count_entry)) ? 0: $count_entry);
         $fData['title_view']  = (int)$title_view;
-        $fData['visible']     = (int)$visible;
+        $fData['alias']       = $alias;
+        $fData['published']   = (bool)$published;
 
         $objORM = Jaws_ORM::getInstance()->table('feeds');
         return $objORM->update($fData)->where('id', (int)$id)->exec();

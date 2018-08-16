@@ -88,7 +88,8 @@ function stopAction()
     $('#view_type').val('0');
     $('#count_entry').val('');
     $('#title_view').val('0');
-    $('#visible').val('1');
+    $('#alias').val('');
+    $('#published').val(1);
     unselectDataGridRow();
     $('#btn_cancel').css('visibility', 'hidden');
 }
@@ -106,7 +107,8 @@ function updateForm(feed)
     $('#view_type').val(feed['view_type']);
     $('#count_entry').val(feed['count_entry']);
     $('#title_view').val(feed['title_view']);
-    $('#visible').val(feed['visible']);
+    $('#alias').val(feed['alias']);
+    $('#published').val(feed['published']? 1 : 0);
     $('#btn_cancel').css('visibility', 'visible');
 }
 
@@ -132,7 +134,8 @@ function updateFeed()
                     $('#view_type').val(),
                     $('#count_entry').val(),
                     $('#title_view').val(),
-                    $('#visible').val()
+                    $('#alias').val(),
+                    $('#published').val()
                 ]
             );
     } else {
@@ -145,7 +148,8 @@ function updateFeed()
                 $('#view_type').val(),
                 $('#count_entry').val(),
                 $('#title_view').val(),
-                $('#visible').val()
+                $('#alias').val(),
+                $('#published').val()
             ]
         );
     }

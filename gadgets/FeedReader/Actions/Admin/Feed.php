@@ -34,7 +34,7 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
             $siteData['id']    = $site['id'];
             $siteData['title'] = '<span style="white-space: nowrap;"><a href="'.$site['url'].'" title="'.$site['url'];
             $siteData['title'].= '" target="_blank" style="text-decoration: none;">'.$site['title'].'</a></span>';
-            $siteData['visible'] = ($site['visible']?_t('GLOBAL_YES') : _t('GLOBAL_NO'));
+            $siteData['published'] = ($site['published']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
 
             $actions = '';
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
@@ -72,7 +72,7 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $column1->SetStyle('width: 32px; white-space:nowrap;');
         $datagrid->AddColumn($column1);
         $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_TITLE')));
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_VISIBLE'), null, false);
+        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'), null, false);
         $column3->SetStyle('width: 56px; white-space:nowrap;');
         $datagrid->AddColumn($column3);
         $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
@@ -153,14 +153,19 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
         $tpl->SetVariable('count_entry', $countentry->Get());
 
-        $visibleType =& Piwi::CreateWidget('Combo', 'visible');
-        $visibleType->SetID('visible');
-        $visibleType->setStyle('width: 128px;');
-        $visibleType->AddOption(_t('GLOBAL_NO'),  '0');
-        $visibleType->AddOption(_t('GLOBAL_YES'), '1');
-        $visibleType->SetDefault('1');
-        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
-        $tpl->SetVariable('visible', $visibleType->Get());
+        $alias =& Piwi::CreateWidget('Entry', 'alias', '');
+        $alias->setStyle('width: 120px;');
+        $tpl->SetVariable('lbl_alias', _t('GLOBAL_ALIAS'));
+        $tpl->SetVariable('alias', $alias->Get());
+
+        $published =& Piwi::CreateWidget('Combo', 'published');
+        $published->SetID('published');
+        $published->setStyle('width: 128px;');
+        $published->AddOption(_t('GLOBAL_NO'),  0);
+        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->SetDefault(1);
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('published', $published->Get());
 
         $btncancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btncancel->SetStyle('visibility: hidden;');
