@@ -26,8 +26,6 @@ class XML_Feed extends XML_Parser
     var $channel   = array();
     var $item      = array();
 
-    var $_params   = array();
-
     /**
      * Valid encodings
      *
@@ -56,31 +54,19 @@ class XML_Feed extends XML_Parser
      */
     function setInputFile($file)
     {
-        require_once PEAR_PATH. 'HTTP/Request.php';
-        $httpRequest = new HTTP_Request($file, $this->_params);
-        $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
-        $resRequest  = $httpRequest->sendRequest();
-        if (PEAR::isError($resRequest)) {
-            return $resRequest;
-        } elseif ($httpRequest->getResponseCode() <> 200) {
-            return $this->raiseError('HTTP response error', HTTP_REQUEST_ERROR_RESPONSE);
+        $httpRequest = new Jaws_HTTPRequest();
+        //$httpRequest->default_error_level = JAWS_ERROR_NOTICE;
+        $result = $httpRequest->get($file, $retData);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        } elseif ($result != 200) {
+            return Jaws_Error::raiseError(
+                'HTTP response error',
+                HTTP_REQUEST_ERROR_RESPONSE
+            );
         }
-
-        $data = trim($httpRequest->getResponseBody());
-        if (version_compare(PHP_VERSION, '5.0.0', '<')) {
-            if (preg_match('/<?xml.*encoding=[\'"](.*?)[\'"].*?>/m', $data, $matches)) {
-                $srcenc = strtoupper($matches[1]);
-                if (!in_array($srcenc, $this->_validEncodings)) {
-                    if (function_exists('iconv')) {
-                        $data = @iconv($srcenc,'UTF-8', $data);
-                    } elseif (function_exists('mb_list_encodings') && in_array($srcenc, array_map('strtoupper', mb_list_encodings()))) {
-                        $data = @mb_convert_encoding($data, 'UTF-8', $srcenc);
-                    }
-                }
-            }
-        }
-
-        $this->setInputString($data);
+        
+        $this->setInputString($retData);
         return true;
     }
 
@@ -101,17 +87,23 @@ class XML_Feed extends XML_Parser
                 $this->loadFile($cache_file);
             } else {
                 $res = $this->setInputFile($feed_url);
-                if (PEAR::isError($res) || PEAR::isError($res = $this->Parse())) {
+                if (Jaws_Error::IsError($res) || PEAR::isError($res = $this->parse())) {
                     $this->feedFree();
-                    return $res;
+                    return Jaws_Error::raiseError(
+                        $res->getMessage(),
+                        $res->getCode()
+                    );
                 }
                 $this->saveFile($cache_file);
             }
         } else {
             $res = $this->setInputFile($feed_url);
-            if (PEAR::isError($res) || PEAR::isError($res = $this->Parse())) {
+            if (Jaws_Error::IsError($res) || PEAR::isError($res = $this->parse())) {
                 $this->feedFree();
-                return $res;
+                return Jaws_Error::raiseError(
+                    $res->getMessage(),
+                    $res->getCode()
+                );
             }
         }
 
@@ -397,19 +389,6 @@ class XML_Feed extends XML_Parser
         unset($this->channel);
         unset($this->item);
         $this->free();
-    }
-
-    /**
-     * Set HTTP_Request params
-     *
-     * @access  public
-     * @param   array  $params
-     * @return  bool   true
-     */
-    function setParams($params = array())
-    {
-        $this->_params = $params;
-        return true;
     }
 
 }

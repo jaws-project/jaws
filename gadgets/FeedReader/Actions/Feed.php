@@ -150,25 +150,13 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         require_once JAWS_PATH . 'gadgets/FeedReader/include/XML_Feed.php';
         $parser = new XML_Feed();
         $parser->cache_time = $site['cache_time'];
-        $options = array();
-        $timeout = (int)$this->gadget->registry->fetch('connection_timeout', 'Settings');
-        $options['timeout'] = $timeout;
-        if ($this->gadget->registry->fetch('proxy_enabled', 'Settings') == 'true') {
-            if ($this->gadget->registry->fetch('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->gadget->registry->fetch('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->gadget->registry->fetch('proxy_pass', 'Settings');
-            }
-            $options['proxy_host'] = $this->gadget->registry->fetch('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
-        }
-        $parser->setParams($options);
 
         if (Jaws_Utils::is_writable(JAWS_DATA.'feedcache')) {
             $parser->cache_dir = JAWS_DATA . 'feedcache';
         }
 
         $res = $parser->fetch(Jaws_XSS::defilter($site['url']));
-        if (PEAR::isError($res)) {
+        if (Jaws_Error::IsError($res)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['.$this->gadget->title.']: ',
                 _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::refilter($site['url'])), '');
         }
