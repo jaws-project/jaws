@@ -490,24 +490,6 @@
             </field>
 
             <field>
-                <name>mailquota</name>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>ftpquota</name>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>users_limit</name>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
                 <name>status</name>
                 <type>integer</type>
                 <length>1</length>

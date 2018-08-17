@@ -8,7 +8,7 @@
 class Users_Actions_Users extends Users_Actions_Default
 {
     /**
-     * Show GatewayManager istration interface
+     * Show users management interface
      *
      * @access  public
      * @return  string  XHTML template content
