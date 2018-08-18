@@ -601,6 +601,7 @@ class Jaws_User
      *
      * @access  public
      * @param   mixed   $group      Group ID of users
+     * @param   mixed   $domain     Domain ID of users
      * @param   mixed   $superadmin Type of user(null = all types, true = superadmin, false = normal)
      * @param   int     $status     User's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
      * @param   string  $term       Search term(searched in username, nickname and email)
@@ -609,7 +610,7 @@ class Jaws_User
      * @param   int     $offset
      * @return  array   Returns an array of the available users and false on error
      */
-    function GetUsers($group = false, $superadmin = null, $status = null, $term = '', $orderBy = 'id asc',
+    function GetUsers($group = false, $domain = false, $superadmin = null, $status = null, $term = '', $orderBy = 'id asc',
         $limit = 0, $offset = null)
     {
         $fields = array(
@@ -631,6 +632,10 @@ class Jaws_User
         if ($group !== false) {
             $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
             $usersTable->where('group_id', (int)$group);
+        }
+
+        if ($domain !== false) {
+            $usersTable->and()->where('domain', (int)$domain);
         }
 
         if (!is_null($superadmin)) {
@@ -659,18 +664,23 @@ class Jaws_User
      *
      * @access  public
      * @param   mixed   $group      Group ID of users
+     * @param   mixed   $domain     Domain ID of users
      * @param   mixed   $superadmin Type of user(null = all types, true = superadmin, false = normal)
      * @param   int     $status     user's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
      * @param   string  $term       Search term(searched in username, nickname and email)
      * @return  int     Returns users count
      */
-    function GetUsersCount($group = false, $superadmin = null, $status = null, $term = '')
+    function GetUsersCount($group = false, $domain = false, $superadmin = null, $status = null, $term = '')
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('count(users.id):integer');
         if ($group !== false) {
             $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
             $usersTable->where('group_id', (int)$group);
+        }
+
+        if ($domain !== false) {
+            $usersTable->and()->where('domain', (int)$domain);
         }
 
         if (!is_null($superadmin)) {
