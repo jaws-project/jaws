@@ -366,7 +366,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     {
         $term = $this->gadget->request->fetch('term', 'post');
         $userModel = new Jaws_User();
-        $users = $userModel->GetUsers(false, null, null, $term, 'nickname', 5);
+        $users = $userModel->GetUsers(false, false, null, null, $term, 'nickname', 5);
         if (Jaws_Error::IsError($users)) {
             return $GLOBALS['app']->Session->GetResponse(
                 $users->getMessage(),
