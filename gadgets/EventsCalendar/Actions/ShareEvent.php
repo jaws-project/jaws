@@ -115,7 +115,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             $gid = false;
         }
         $uModel = new Jaws_User();
-        $users = $uModel->GetUsers($gid, null, 1);
+        $users = $uModel->GetUsers($gid, false, null, 1);
         if (Jaws_Error::IsError($users)) {
             return array();
         }
