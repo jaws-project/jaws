@@ -184,10 +184,18 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $user = $this->gadget->request->fetch('user', 'get');
         if (!empty($user)) {
-            $params['user'] = (int)$user;
-            if ($params['user'] == (int)$GLOBALS['app']->Session->GetAttribute('username')) {
-                unset($params['public'], $params['published']);
+            if (is_numeric($user)) {
+                $params['user'] = (int)$user;
+                if ($params['user'] == (int)$GLOBALS['app']->Session->GetAttribute('user')) {
+                    unset($params['public'], $params['published']);
+                }
+            } else {
+                $params['user'] = $user;
+                if ($params['user'] == $GLOBALS['app']->Session->GetAttribute('username')) {
+                    unset($params['public'], $params['published']);
+                }
             }
+
         }
 
         // check filters
@@ -388,7 +396,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $args['id'] = $parent;
             }
             if (!empty($params['user'])) {
-                $args['user'] = (int)$params['user'];
+                $args['user'] = $params['user'];
             }
             if (!empty($params['public'])) {
                 $args['public'] = (int)$params['public'];

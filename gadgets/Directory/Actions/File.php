@@ -15,10 +15,18 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      */
     function file()
     {
-        $id = (int)$this->gadget->request->fetch('id');
-        $file = $this->gadget->model->load('Files')->GetFile($id);
+        $get = $this->gadget->request->fetch(array('id', 'user', 'key'),  'get');
+        $file = $this->gadget->model->load('Files')->GetFile((int)$get['id']);
         if (Jaws_Error::IsError($file) || empty($file) || $file['is_dir']) {
             return Jaws_HTTPError::Get(404);
+        }
+
+        // check private file
+        if (!$file['public']) {
+            $loggedUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($file['user'] != $loggedUser && $get['key'] != $file['key']) {
+                return Jaws_HTTPError::Get(403);
+            }
         }
 
         $tpl = $this->gadget->template->load('File.html');
