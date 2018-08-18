@@ -305,7 +305,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($group) = $this->gadget->request->fetchAll('post');
         $userModel = new Jaws_User();
-        return $userModel->GetUsers($group, null, true);
+        return $userModel->GetUsers($group, false, null, true);
     }
 
     /**

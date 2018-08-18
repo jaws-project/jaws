@@ -270,7 +270,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
                 }
             } else {
                 if ($target['group'] == 0) {$target['group'] = false;}
-                $users = $userModel->GetUsers($target['group'], null, true);
+                $users = $userModel->GetUsers($target['group'], false, null, true);
                 foreach ($users as $user) {
                     $mail->AddRecipient($user['nickname'] . ' <' . $user['email'] . '>', 'Bcc');
                 }
