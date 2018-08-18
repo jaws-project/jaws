@@ -171,6 +171,7 @@ function Jaws_Gadget_Users() { return {
             var total = this.gadget.ajax.callSync(
                 'GetUsersCount', [
                     $('#filter_group').val(),
+                    $('#filter_domain').val(),
                     $('#filter_type').val(),
                     $('#filter_status').val(),
                     $('#filter_term').val()
@@ -204,6 +205,7 @@ function Jaws_Gadget_Users() { return {
         var result = this.gadget.ajax.callSync(
             'GetUsers', [
                 $('#filter_group').val(),
+                $('#filter_domain').val(),
                 $('#filter_type').val(),
                 $('#filter_status').val(),
                 $('#filter_term').val(),
@@ -216,6 +218,7 @@ function Jaws_Gadget_Users() { return {
             var total = this.gadget.ajax.callSync(
                 'GetUsersCount', [
                     $('#filter_group').val(),
+                    $('#filter_domain').val(),
                     $('#filter_type').val(),
                     $('#filter_status').val(),
                     $('#filter_term').val()

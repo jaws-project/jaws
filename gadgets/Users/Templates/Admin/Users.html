@@ -6,7 +6,12 @@
       <table id="users_filter">
         <tr>
           <td class="filter_label"><label>{{lbl_filter_group}}:</label></td><td>{{filter_group}}</td>
-          <td class="filter_label"></td><td></td>
+          <!-- BEGIN single-domain -->
+          <td class="filter_label"></td><td><input type="hidden" name="filter_domain" id="filter_domain" value="" /></td>
+          <!-- END single-domain -->
+          <!-- BEGIN multi-domain -->
+          <td class="filter_label"><label>{{lbl_filter_domain}}:</label></td><td>{{filter_domain}}</td>
+          <!-- END multi-domain -->
         </tr>
         <tr>
           <td class="filter_label"><label>{{lbl_filter_type}}:</label></td><td>{{filter_type}}</td>

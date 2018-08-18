@@ -101,7 +101,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetUsers()
     {
-        @list($group, $superadmin, $status, $term, $orderBy, $offset) = $this->gadget->request->fetchAll('post');
+        @list($group, $domain, $superadmin, $status, $term, $orderBy, $offset) = $this->gadget->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
         if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
             $superadmin = false;
@@ -114,7 +114,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         $usrHTML = $this->gadget->action->loadAdmin('Users');
-        return $usrHTML->GetUsers($group, $superadmin, $status, $term, $orderBy, $offset);
+        return $usrHTML->GetUsers($group, $domain, $superadmin, $status, $term, $orderBy, $offset);
     }
 
     /**
@@ -125,7 +125,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetUsersCount()
     {
-        @list($group, $superadmin, $status, $term) = $this->gadget->request->fetchAll('post');
+        @list($group, $domain, $superadmin, $status, $term) = $this->gadget->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
         if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
             $superadmin = false;
@@ -134,7 +134,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $group  = ($group  == -1)? false : (int)$group;
         $status = ($status == -1)? null  : (int)$status;
 
-        return $this->_UserModel->GetUsersCount($group, $superadmin, $status, $term);
+        return $this->_UserModel->GetUsersCount($group, $domain, $superadmin, $status, $term);
     }
 
     /**

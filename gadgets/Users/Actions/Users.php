@@ -164,6 +164,7 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $group = !empty($post['filters']['group']) ? $post['filters']['group'] : false;
+        $domain = !empty($post['filters']['domain']) ? $post['filters']['domain'] : false;
         $status = isset($post['filters']['status']) && $post['filters']['status'] >= 0 ? $post['filters']['status'] : null;
         $term = !empty($post['filters']['term']) ? $post['filters']['term'] : null;
         $superadmin = null;
@@ -176,14 +177,14 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $uModel = new Jaws_User();
-        $users = $uModel->GetUsers($group, $superadmin, $status, $term, $orderBy, $post['limit'], $post['offset']);
+        $users = $uModel->GetUsers($group, $domain, $superadmin, $status, $term, $orderBy, $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($users)) {
             return $GLOBALS['app']->Session->GetResponse(
                 $users->getMessage(),
                 RESPONSE_ERROR
             );
         }
-        $total = $uModel->GetUsersCount($group, $superadmin, $status, $term);
+        $total = $uModel->GetUsersCount($group, $domain, $superadmin, $status, $term);
         if (Jaws_Error::IsError($total)) {
             return $GLOBALS['app']->Session->GetResponse(
                 $total->getMessage(),

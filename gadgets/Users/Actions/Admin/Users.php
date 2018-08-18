@@ -40,6 +40,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      *
      * @access  public
      * @param   int    $group       User default group
+     * @param   int    $domain      User domain
      * @param   bool   $superadmin  Is created user superadmin or not
      * @param   int    $status      Status of created user
      * @param   string $term        Search term
@@ -47,10 +48,10 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      * @param   int    $offset      Offset of data array
      * @return  array  Grid data
      */
-    function GetUsers($group, $superadmin, $status, $term, $orderBy, $offset = null)
+    function GetUsers($group, $domain, $superadmin, $status, $term, $orderBy, $offset = null)
     {
         $uModel = new Jaws_User();
-        $users = $uModel->GetUsers($group, $superadmin, $status, $term, $orderBy, 10, $offset);
+        $users = $uModel->GetUsers($group, $domain, $superadmin, $status, $term, $orderBy, 10, $offset);
         if (Jaws_Error::IsError($users)) {
             return array();
         }
@@ -198,6 +199,27 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $filterGroup->SetDefault(-1);
         $tpl->SetVariable('filter_group', $filterGroup->Get());
         $tpl->SetVariable('lbl_filter_group', _t('USERS_GROUPS_GROUP'));
+
+        // domains
+        if ($this->gadget->registry->fetch('multi_domain') == 'true') {
+            $tpl->SetBlock('Users/multi-domain');
+            $domains = $this->gadget->model->load('Domains')->getDomains();
+            if (!Jaws_Error::IsError($domains) && !empty($domains)) {
+                array_unshift($domains, array('id' => 0, 'title' => _t('USERS_ALLDOMAIN')));
+                $domainCombo =& Piwi::CreateWidget('Combo', 'filter_domain');
+                foreach ($domains as $domain) {
+                    $domainCombo->AddOption($domain['title'], $domain['id']);
+                }
+                $domainCombo->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchUser();");
+                $domainCombo->SetDefault(0);
+                $tpl->SetVariable('filter_domain', $domainCombo->Get());
+                $tpl->SetVariable('lbl_filter_domain', _t('USERS_DOMAIN'));
+            }
+            $tpl->ParseBlock('Users/multi-domain');
+        } else {
+            $tpl->SetBlock('Users/single-domain');
+            $tpl->ParseBlock('Users/single-domain');
+        }
 
         // Type Filter
         $filterType =& Piwi::CreateWidget('Combo', 'filter_type');

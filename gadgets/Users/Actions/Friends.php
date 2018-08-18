@@ -52,7 +52,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         // Users
         $uModel = new Jaws_User();
         $superadmin = $GLOBALS['app']->Session->IsSuperAdmin() ? null : false;
-        $users = $uModel->GetUsers(false, $superadmin);
+        $users = $uModel->GetUsers(false, false, $superadmin);
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
                 $tpl->SetBlock('groups/user');

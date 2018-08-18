@@ -207,7 +207,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $group_users =& Piwi::CreateWidget('CheckButtons', 'group_users');
         $group_users->setColumns(1);
         $superadmin = $GLOBALS['app']->Session->IsSuperAdmin() ? null : false;
-        $users = $model->GetUsers(false, $superadmin);
+        $users = $model->GetUsers(false, false, $superadmin);
         foreach ($users as $user) {
             $group_users->AddOption($user['nickname']. ' ('. $user['username']. ')',
                                     $user['id'],

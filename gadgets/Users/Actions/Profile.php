@@ -17,7 +17,7 @@ class Users_Actions_Profile extends Users_Actions_Default
     {
         $result = array();
         $usrModel = new Jaws_User;
-        $users = $usrModel->GetUsers(false, true);
+        $users = $usrModel->GetUsers(false, false, true);
         if (!Jaws_Error::IsError($users)) {
             $pusers = array();
             $pusers[0] = _t('USERS_LOGGED_USER');
