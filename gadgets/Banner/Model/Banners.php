@@ -19,7 +19,7 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
     {
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $bannersTable->select(
-            'id:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
+            'id:integer', 'domain:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
             'views_limitation:integer', 'clicks:integer', 'clicks_limitation:integer', 'start_time',
             'stop_time', 'rank:integer', 'random:integer', 'published:boolean'
         );
@@ -33,16 +33,17 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $bid     banner ID
      * @param   int     $gid     group ID
+     * @param   int     $domain  Domain ID
      * @param   int     $limit
      * @param   int     $offset
      * @param   int     $columns
      * @return  mixed   An array of available banners or Jaws_Error on error
      */
-    function GetBanners($bid = -1, $gid = -1, $limit = 0, $offset = null, $columns = null)
+    function GetBanners($bid = -1, $gid = -1, $domain = -1, $limit = 0, $offset = null, $columns = null)
     {
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         if (empty($columns)) {
-            $columns = array('id:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
+            $columns = array('id:integer', 'domain:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
                 'views_limitation:integer', 'clicks:integer', 'clicks_limitation:integer', 'start_time',
                 'stop_time', 'createtime', 'updatetime', 'random:integer', 'published:boolean');
         }
@@ -61,6 +62,10 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
             $bannersTable->orderBy('id asc');
         }
 
+        if ($domain != -1) {
+            $bannersTable->and()->where('domain', (int)$domain);
+        }
+
         return $bannersTable->limit($limit, $offset)->fetchAll();
     }
 
@@ -68,14 +73,15 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
      * Retrieve banners that can be visible
      *
      * @access  public
-     * @param   int     $gid   group ID
+     * @param   int     $gid        group ID
+     * @param   int     $domain     Domain ID
      * @param   int     $random
      * @return  mixed   An array of available banners or False on error
      */
-    function GetEnableBanners($gid = 0, $random = 0)
+    function GetEnableBanners($gid = 0, $domain = -1, $random = 0)
     {
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
-        $bannersTable->select('id:integer', 'title', 'url', 'banner', 'template');
+        $bannersTable->select('id:integer', 'domain:integer', 'title', 'url', 'banner', 'template');
 
         $bannersTable->where('published', true)->and()->where('random', $random)->and();
         $bannersTable->openWhere('views_limitation', 0)->or();
@@ -86,6 +92,10 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
         $bannersTable->closeWhere('start_time', Jaws_DB::getInstance()->date(), '<=')->and();
         $bannersTable->openWhere('stop_time', '', 'is null')->or();
         $bannersTable->closeWhere('stop_time', Jaws_DB::getInstance()->date(), '>=');
+
+        if ($domain != -1) {
+            $bannersTable->and()->where('domain', (int)$domain);
+        }
 
         if ($gid == 0) {
             $bannersTable->orderBy('id asc');
@@ -105,18 +115,19 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
      * Retrieve visible banners
      *
      * @access  public
-     * @param   int     $gid         group ID
+     * @param   int     $gid        group ID
+     * @param   int     $domain     Domain ID
      * @param   int     $limit_count
      * @return  array   An array of available banners
      */
-    function GetVisibleBanners($gid, $limit_count)
+    function GetVisibleBanners($gid, $domain = -1, $limit_count)
     {
         $limit_count = empty($limit_count)? 256 : $limit_count;
-        if (($always_array = $this->GetEnableBanners($gid, 0)) == false) {
+        if (($always_array = $this->GetEnableBanners($gid, $domain, 0)) == false) {
             $always_array = array();
         }
 
-        if (($random_array = $this->GetEnableBanners($gid, 1)) == false) {
+        if (($random_array = $this->GetEnableBanners($gid, $domain, 1)) == false) {
             $random_array = array();
         }
 

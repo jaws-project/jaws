@@ -16,17 +16,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
     function Banners()
     {
         $this->gadget->CheckPermission('ManageBanners');
-
-        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
-        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
-        if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
-        }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
-
         $this->AjaxMe('script.js');
 
         $tpl = $this->gadget->template->loadAdmin('Banners.html');
@@ -75,6 +64,25 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $tpl->SetVariable('bgroup_filter', $bGroup->Get());
         $tpl->SetVariable('lbl_bgroup', _t('BANNER_GROUPS_GROUP'));
 
+        // domains
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') == 'true') {
+            $tpl->SetBlock('Banners/domain');
+            $domains = Jaws_Gadget::getInstance('Users')->model->load('Domains')->getDomains();
+            if (!Jaws_Error::IsError($domains) && !empty($domains)) {
+                array_unshift($domains, array('id' =>  0, 'title' => _t('USERS_NODOMAIN')));
+                array_unshift($domains, array('id' => -1, 'title' => _t('USERS_ALLDOMAIN')));
+                $domainCombo =& Piwi::CreateWidget('Combo', 'domain_filter');
+                foreach ($domains as $domain) {
+                    $domainCombo->AddOption($domain['title'], $domain['id']);
+                }
+                $domainCombo->SetDefault(-1);
+                $domainCombo->AddEvent(ON_CHANGE, "getBannersDataGrid('banners_datagrid', 0, true)");
+                $tpl->SetVariable('domain_filter', $domainCombo->Get());
+                $tpl->SetVariable('lbl_domain', _t('USERS_DOMAIN'));
+            }
+            $tpl->ParseBlock('Banners/domain');
+        }
+
         $tpl->SetVariable('grid', $this->BannersDatagrid());
         $tpl->SetVariable('banner_ui', $this->BannerUI());
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -111,19 +119,33 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Banners.html');
         $tpl->SetBlock('BannerInfo');
 
+        // domains
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') == 'true') {
+            $tpl->SetBlock('BannerInfo/domain');
+            $domains = Jaws_Gadget::getInstance('Users')->model->load('Domains')->getDomains();
+            if (!Jaws_Error::IsError($domains) && !empty($domains)) {
+                array_unshift($domains, array('id' => 0, 'title' => _t('USERS_NODOMAIN')));
+                $domainCombo =& Piwi::CreateWidget('Combo', 'domain');
+                foreach ($domains as $domain) {
+                    $domainCombo->AddOption($domain['title'], $domain['id']);
+                }
+                $domainCombo->SetDefault(0);
+                $tpl->SetVariable('domain', $domainCombo->Get());
+                $tpl->SetVariable('lbl_domain', _t('USERS_DOMAIN'));
+            }
+            $tpl->ParseBlock('BannerInfo/domain');
+        }
+
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
-        $titleEntry->SetStyle('width: 344px;');
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $titleEntry->Get());
 
         $urlEntry =& Piwi::CreateWidget('Entry', 'url', 'http://');
-        $urlEntry->SetStyle('width: 344px;');
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('url', $urlEntry->Get());
 
         $group_combo =& Piwi::CreateWidget('Combo', 'gid');
         $group_combo->SetID('gid');
-        $group_combo->setStyle('width: 352px;');
         $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
@@ -139,7 +161,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
 
         $bannerEntry =& Piwi::CreateWidget('Entry', 'banner', '');
         $bannerEntry->SetID('banner');
-        $bannerEntry->SetStyle('width: 344px;');
         $tpl->SetVariable('lbl_banner', _t('BANNER_BANNERS_BANNER'));
         $tpl->SetVariable('banner', $bannerEntry->Get());
 
@@ -151,7 +172,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $template =& Piwi::CreateWidget('TextArea', 'template', '');
         $template->SetID('template');
         $template->SetRows(6);
-        $template->SetStyle('width: 310px;');
         $tpl->SetVariable('lbl_template', _t('BANNER_BANNERS_TEMPLATE'));
         $tpl->SetVariable('template', $template->Get());
 
@@ -228,10 +248,10 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
      * @param   int     $offset Offset of data
      * @return  array   Data
      */
-    function GetBanners($gid, $offset = null)
+    function GetBanners($gid, $domain = -1, $offset = null)
     {
         $model = $this->gadget->model->load('Banners');
-        $banners = $model->GetBanners(-1, $gid, 18, $offset);
+        $banners = $model->GetBanners(-1, $gid, $domain, 18, $offset);
         if (Jaws_Error::IsError($banners)) {
             return array();
         }
@@ -291,9 +311,13 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageBanners');
 
-        $post = $this->gadget->request->fetch(array('bid', 'title', 'url', 'gid', 'type', 'banner',
-            'views_limit', 'clicks_limit', 'start_time',
-            'stop_time', 'random', 'published'), 'post');
+        $post = $this->gadget->request->fetch(
+            array(
+                'bid', 'domain', 'title', 'url', 'gid', 'type', 'banner',
+                'views_limit', 'clicks_limit', 'start_time',
+                'stop_time', 'random', 'published'
+            ), 'post'
+        );
         $post['template'] = $this->gadget->request->fetch('template', 'post', 'strip_crlf');
 
         $model = $this->gadget->model->loadAdmin('Banners');
@@ -308,9 +332,13 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         } elseif (empty($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
         } else {
+            if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
+                $post['domain'] = 0;
+            }
             $filename = $res['upload_banner'][0]['host_filename'];
             if ($post['bid']!=0) {
                 $model->UpdateBanner($post['bid'],
+                    $post['domain'],
                     $post['title'],
                     $post['url'],
                     $post['gid'],
@@ -323,7 +351,9 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
                     $post['random'],
                     $post['published']);
             } else {
-                $model->InsertBanner($post['title'],
+                $model->InsertBanner(
+                    $post['domain'],
+                    $post['title'],
                     $post['url'],
                     $post['gid'],
                     $filename,

@@ -3,8 +3,11 @@
 <table class="main">
   <tr>
     <td id="b_datagrid" rowspan="2">
-      <div style="text-align: right; padding-bottom: 5px;">
+      <div style="padding-bottom: 5px;">
         <label for="bgroup_filter">{{lbl_bgroup}}:</label>{{bgroup_filter}}
+        <!-- BEGIN domain -->
+        <label for="domain_filter">{{lbl_domain}}:</label>{{domain_filter}}
+        <!-- END domain -->
       </div>
       {{grid}}
     </td>
@@ -28,6 +31,9 @@
 <!-- END Banners -->
 <!-- BEGIN BannerInfo -->
 <table id="banner_box">
+  <!-- BEGIN domain -->
+  <tr><td><label for="domain">{{lbl_domain}}:</label></td><td>{{domain}}</td></tr>
+  <!-- END domain -->
   <tr><td><label for="title">{{lbl_title}}:</label></td><td>{{title}}</td></tr>
   <tr><td><label for="url">{{lbl_url}}:</label></td><td dir="ltr">{{url}}</td></tr>
   <tr><td><label for="gid">{{lbl_gid}}:</label></td><td>{{gid}}</td></tr>

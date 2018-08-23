@@ -30,6 +30,24 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             );
         }
 
+        // domains
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') == 'true') {
+            $domains = Jaws_Gadget::getInstance('Users')->model->load('Domains')->getDomains();
+            if (!Jaws_Error::IsError($domains) && !empty($domains)) {
+                $pdomains = array();
+                $pdomains[-1] = _t('USERS_ALLDOMAIN');
+                $pdomains[0]  = _t('USERS_NODOMAIN');
+                foreach ($domains as $domain) {
+                    $pdomains[$domain['id']] = $domain['title'];
+                }
+
+                $result[] = array(
+                    'title' => _t('GLOBAL_DOMAIN'),
+                    'value' => $pdomains
+                );
+            }
+        }
+
         return $result;
     }
 
@@ -37,18 +55,27 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
      * Displays banners(all-time visibles and random ones)
      *
      * @access  public
-     * @param   int     $gid    Group ID
+     * @param   int     $gid        Group ID
+     * @param   int     $domain     Domain ID
      * @return  string  XHTML template content
      */
-    function Banners($gid = 0)
+    function Banners($gid = 0, $domain = -1)
     {
-        $id = (int)$this->gadget->request->fetch('id', 'get');
+        $get = $this->gadget->request->fetch(array('group', 'domain'), 'get');
         $abs_url = false;
 
-        if(!empty($id)) {
-            $gid = $id;
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
+            $get['domain'] = 0;
+        }
+
+        if(!empty($get['group'])) {
+            $gid = (int)$get['group'];
             header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
             $abs_url = true;
+        }
+
+        if(!is_null($get['domain'])) {
+            $domain = (int)$get['domain'];
         }
 
         $groupModel = $this->gadget->model->load('Groups');
@@ -58,7 +85,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
         }
 
         $bannerModel = $this->gadget->model->load('Banners');
-        $banners = $bannerModel->GetVisibleBanners($gid, $group['limit_count']);
+        $banners = $bannerModel->GetVisibleBanners($gid, $domain, $group['limit_count']);
         if (Jaws_Error::IsError($banners) || empty($banners)) {
             return false;
         }

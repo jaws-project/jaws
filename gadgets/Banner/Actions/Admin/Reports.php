@@ -15,10 +15,10 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
      * @param   int     $offset
      * @return  array   Data array
      */
-    function GetReportBanners($gid, $offset = null)
+    function GetReportBanners($gid, $domain = -1, $offset = null)
     {
         $model = $this->gadget->model->load('Banners');
-        $banners = $model->GetBanners(-1, $gid, 18, $offset);
+        $banners = $model->GetBanners(-1, $gid, $domain, 18, $offset);
         if (Jaws_Error::IsError($banners)) {
             return array();
         }

@@ -45,11 +45,14 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function GetBanners()
     {
         $this->gadget->CheckPermission('ManageBanners');
-        @list($bid, $gid) = $this->gadget->request->fetchAll('post');
+        @list($bid, $gid, $domain) = $this->gadget->request->fetchAll('post');
         $bid = empty($bid)? -1 : $bid;
         $gid = empty($gid)? -1 : $gid;
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
+            $domain = 0;
+        }
         $model = $this->gadget->model->load('Banners');
-        $res = $model->GetBanners($bid, $gid);
+        $res = $model->GetBanners($bid, $gid, $domain);
         if (Jaws_Error::IsError($res)) {
             return false; //we need to handle errors on ajax
         }
@@ -106,12 +109,15 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertBanner()
     {
         $this->gadget->CheckPermission('ManageBanners');
-        @list($title, $url, $gid, $banner, $template, $views_limit,
+        @list($domain, $title, $url, $gid, $banner, $template, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = $this->gadget->request->fetchAll('post');
         $template = $this->gadget->request->fetch(4, 'post', 'strip_crlf');
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
+            $domain = 0;
+        }
         $model = $this->gadget->model->loadAdmin('Banners');
-        $model->InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
+        $model->InsertBanner($domain, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -126,12 +132,15 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateBanner()
     {
         $this->gadget->CheckPermission('ManageBanners');
-        @list($bid, $title, $url, $gid, $banner, $template, $views_limit,
+        @list($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = $this->gadget->request->fetchAll('post');
         $template = $this->gadget->request->fetch(5, 'post', 'strip_crlf');
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
+            $domain = 0;
+        }
         $model = $this->gadget->model->loadAdmin('Banners');
-        $model->UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
+        $model->UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -281,17 +290,22 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function getBannersDataGrid()
     {
         $this->gadget->CheckPermission('ViewReports');
-        @list($name, $offset, $gid) = $this->gadget->request->fetchAll('post');
+        @list($name, $offset, $gid, $domain) = $this->gadget->request->fetchAll('post');
         $gid = empty($gid)? -1 : $gid;
         if (!is_numeric($offset)) {
             $offset = null;
         }
+
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
+            $domain = 0;
+        }
+
         if ($name == 'banners_datagrid') {
             $gadget = $this->gadget->action->loadAdmin('Banners');
-            $dataGrid = $gadget->GetBanners($gid, $offset);
+            $dataGrid = $gadget->GetBanners($gid, $domain, $offset);
         } else {
             $gadget = $this->gadget->action->loadAdmin('Reports');
-            $dataGrid = $gadget->GetReportBanners($gid, $offset);
+            $dataGrid = $gadget->GetReportBanners($gid, $domain, $offset);
         }
 
         return $dataGrid;
@@ -306,10 +320,14 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function GetBannersCount()
     {
         $this->gadget->CheckPermission('ManageBanners');
-        @list($gid) = $this->gadget->request->fetchAll('post');
+        @list($gid, $domain) = $this->gadget->request->fetchAll('post');
         $gid = empty($gid)? -1 : $gid;
+        if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
+            $domain = 0;
+        }
+
         $model = $this->gadget->model->loadAdmin('Banners');
-        $res = $model->GetBannersCount($gid);
+        $res = $model->GetBannersCount($gid, $domain);
         if (Jaws_Error::IsError($res)) {
             return false;
         }

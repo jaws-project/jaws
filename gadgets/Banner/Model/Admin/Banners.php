@@ -25,10 +25,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      * @param    bool    $published
      * @return   bool    True on Success, False on Failure
      */
-    function InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
+    function InsertBanner($domain, $title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
         $date = Jaws_Date::getInstance();
+        $bData['domain']            = (int)$domain;
         $bData['title']             = $title;
         $bData['url']               = $url;
         $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
@@ -85,10 +86,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      * @param    bool    $published
      * @return   bool    True on Success, False on Failure
      */
-    function UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
+    function UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
         $date = Jaws_Date::getInstance();
+        $bData['domain']            = (int)$domain;
         $bData['title']             = $title;
         $bData['url']               = $url;
         $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
@@ -130,13 +132,16 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      * @param   int     $gid    group ID
      * @return  mixed   Banners count and Jaws_Error on error
      */
-    function GetBannersCount($gid = -1)
+    function GetBannersCount($gid = -1, $domain = -1)
     {
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $bannersTable->select('count([id]):integer');
 
         if ($gid != -1) {
             $bannersTable->where('gid', $gid);
+        }
+        if ($domain != -1) {
+            $bannersTable->and()->where('domain', (int)$domain);
         }
 
         return $bannersTable->fetchOne();

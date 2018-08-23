@@ -114,11 +114,14 @@ function unselectDataGridRow()
  */
 function getBannersDataGrid(name, offset, reset)
 {
-    var banners = BannerAjax.callSync('getBannersDataGrid', [name, offset, $('#bgroup_filter').val()]);
+    var banners = BannerAjax.callSync(
+        'getBannersDataGrid',
+        [name, offset, $('#bgroup_filter').val(), $('#domain_filter').val()]
+    );
     if (reset) {
         stopAction();
         $('#'+name)[0].setCurrentPage(0);
-        var total = BannerAjax.callSync('GetBannersCount', $('#bgroup_filter').val());
+        var total = BannerAjax.callSync('GetBannersCount', [$('#bgroup_filter').val(), $('#domain_filter').val()]);
     }
 
     resetGrid(name, banners, total);
@@ -207,6 +210,7 @@ function saveBanner()
         if ($('#bid').val() == 0) {
             BannerAjax.callAsync(
                 'InsertBanner', [
+                    $('#domain').val(),
                     $('#title').val(),
                     $('#url').val(),
                     $('#gid').val(),
@@ -224,6 +228,7 @@ function saveBanner()
             BannerAjax.callAsync(
                 'UpdateBanner', [
                     $('#bid').val(),
+                    $('#domain').val(),
                     $('#title').val(),
                     $('#url').val(),
                     $('#gid').val(),
@@ -364,6 +369,7 @@ function editBanner(element, bid)
 
     var banner = BannerAjax.callSync('GetBanner', bid);
     $('#bid').val(banner['id']);
+    $('#domain').val(banner['domain']);
     $('#title').val(banner['title'].defilter());
     $('#url').val(banner['url']);
     $('#gid').val(banner['gid']);
