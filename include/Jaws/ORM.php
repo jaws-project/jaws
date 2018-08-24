@@ -1204,6 +1204,7 @@ class Jaws_ORM
             case 'get':
                 return $this->fetch('raw');
 
+            case 'quote':
             case 'now':
             case 'expr':
             case 'lower':
@@ -1212,6 +1213,7 @@ class Jaws_ORM
             case 'random':
             case 'concat':
             case 'replace':
+            case 'coalesce':
             case 'substring':
                 return new Jaws_ORM_Function($this, $method, $params);
                 break;
@@ -1373,6 +1375,10 @@ class Jaws_ORM_Function
 
         $func_str = '';
         switch ($method) {
+            case 'quote':
+                $func_str = $this->orm->quoteValue($params[0]);
+                break;
+
             case 'lower':
             case 'upper':
             case 'length':
@@ -1383,6 +1389,18 @@ class Jaws_ORM_Function
             case 'now':
             case 'random':
                 $func_str = $this->orm->jawsdb->dbc->function->$method();
+                break;
+
+            case 'coalesce':
+                foreach ($params as &$param) {
+                    if (is_object($param)) {
+                        $param = '('. $param->get(). ')';
+                    } else {
+                        $param = $this->orm->quoteIdentifier($param);
+                    }
+                }
+
+                $func_str = 'coalesce(' . implode(', ', $params) . ')';
                 break;
 
             case 'concat':
@@ -1407,7 +1425,13 @@ class Jaws_ORM_Function
                 $func_str = array_shift($params);
                 $func_str = $this->orm->quoteIdentifier($func_str);
                 foreach ($params as $param) {
-                    $func_str = preg_replace('/\?/', $this->orm->quoteValue($param), $func_str, 1);
+                    if (is_object($param)) {
+                        $param = '('. $param->get(). ')';
+                    } else {
+                        $param = $this->orm->quoteValue($param);
+                    }
+
+                    $func_str = preg_replace('/\?/', $param, $func_str, 1);
                 }
 
                 break;
