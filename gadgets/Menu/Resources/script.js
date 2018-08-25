@@ -60,7 +60,7 @@ function AddNewMenuItem(gid, pid, mid, order)
 
     //set order
     var menu_elements = parentNode.children('.menu_levels');
-    var oldOrder = parentNode.children('.menu_levels').size();
+    var oldOrder = parentNode.children('.menu_levels').length;
     if (order < oldOrder) {
         mainDiv.insertBefore(menu_elements.eq(order - 1));
     } else {
