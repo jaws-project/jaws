@@ -303,7 +303,7 @@ class Jaws_Gadget_Installer
 
         // auto-load feature
         $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
-        if (file_exists(JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Autoload.php')) {
+        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
             if (false === strpos($autoload_gadgets, ",{$this->gadget->name},")) {
                 $autoload_gadgets.= $this->gadget->name. ',';
                 $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
