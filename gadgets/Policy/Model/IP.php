@@ -15,10 +15,11 @@ class Policy_Model_IP extends Jaws_Gadget_Model
      * Checks wheter the IP is blocked or not
      *
      * @access  public
-     * @param   string  $ip IP Address
+     * @param   string  $ip     IP Address
+     * @param   string  $script JAWS_SCRIPT
      * @return  bool    True if the IP is blocked
      */
-    function IsIPBlocked($ip)
+    function IsIPBlocked($ip, $script)
     {
         $ip_pattern = '/\b(?:\d{1,3}\.){3}\d{1,3}\b/';
         if (preg_match($ip_pattern, $ip)) {
@@ -29,13 +30,17 @@ class Policy_Model_IP extends Jaws_Gadget_Model
 
             $table = Jaws_ORM::getInstance()->table('policy_ipblock');
             $table->select('blocked:boolean');
-            $table->where(
-                array($ip, 'integer'),
-                array($table->expr('from_ip'),
-                    $table->expr('to_ip')),
-                'between'
-            );
-            $blocked = $table->fetchOne();
+            $blocked = $table->where(
+                    array($ip, 'integer'),
+                    array($table->expr('from_ip'),
+                        $table->expr('to_ip')),
+                    'between'
+                )
+                ->and()
+                ->openWhere('script', $script)
+                ->or()
+                ->closeWhere('script', null, 'is null')
+                ->fetchOne();
             if (!Jaws_Error::IsError($blocked) && !is_null($blocked)) {
                 return $blocked;
             }

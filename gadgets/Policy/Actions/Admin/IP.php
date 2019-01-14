@@ -118,6 +118,16 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $tpl->SetVariable('lbl_to_ipaddress', _t('GLOBAL_TO'));
         $tpl->SetVariable('to_ipaddress', $toIPAddress->Get());
 
+        $script =& Piwi::CreateWidget('Combo', 'script');
+        $script->SetID('script');
+        $script->setStyle('width: 120px;');
+        $script->AddOption(_t('POLICY_SCRIPT_INDEX'), 'index');
+        $script->AddOption(_t('POLICY_SCRIPT_ADMIN'), 'admin');
+        $script->AddOption(_t('POLICY_SCRIPT_BOTH'),  '');
+        $script->SetDefault('index');
+        $tpl->SetVariable('lbl_script', _t('POLICY_SCRIPT'));
+        $tpl->SetVariable('script', $script->Get());
+
         $blocked =& Piwi::CreateWidget('Combo', 'blocked');
         $blocked->SetID('blocked');
         $blocked->setStyle('width: 120px;');

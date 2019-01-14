@@ -21,7 +21,7 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
     function GetIPRange($id)
     {
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
-        $table->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
+        $table->select('id', 'from_ip', 'to_ip', 'script', 'blocked:boolean');
         return $table->where('id', (int)$id)->fetchRow();
     }
 
@@ -48,7 +48,7 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
     function GetBlockedIPs($limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
-        $table->select('id', 'from_ip', 'to_ip', 'blocked:boolean');
+        $table->select('id', 'from_ip', 'to_ip', 'script', 'blocked:boolean');
         $table->limit($limit, $offset);
         $table->orderBy('id desc');
         return $table->fetchAll();
@@ -61,7 +61,7 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
      * @param   string  $ip the to be blocked IP address
      * @return  bool    True on success and Jaws_Error on errors
      */
-    function AddIPRange($from_ip, $to_ip = null, $blocked = true)
+    function AddIPRange($from_ip, $to_ip = null, $script = 'index', $blocked = true)
     {
         $from_ip = ip2long($from_ip);
         if ($from_ip < 0) {
@@ -77,7 +77,8 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
 
         $data = array();
         $data['from_ip'] = $from_ip;
-        $data['to_ip'] = $to_ip;
+        $data['to_ip']   = $to_ip;
+        $data['script']  = $script;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
@@ -100,7 +101,7 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
      * @param   string  $to_ip    The to-be-blocked to IP
      * @return  bool    True on success and Jaws_Error on errors
      */
-    function EditIPRange($id, $from_ip, $to_ip = null, $blocked = true)
+    function EditIPRange($id, $from_ip, $to_ip = null, $script = 'index', $blocked = true)
     {
         $from_ip = ip2long($from_ip);
         if ($from_ip < 0) {
@@ -116,7 +117,8 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
 
         $data = array();
         $data['from_ip'] = $from_ip;
-        $data['to_ip'] = $to_ip;
+        $data['to_ip']   = $to_ip;
+        $data['script']  = $script;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');

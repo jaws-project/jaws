@@ -116,6 +116,25 @@ class Policy_Installer extends Jaws_Gadget_Installer
             );
         }
 
+        if (version_compare($old, '1.2.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $objTable = Jaws_ORM::getInstance()->table('policy_ipblock');
+            $result = $objTable->update(array('script' => 'index'))->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $objTable = Jaws_ORM::getInstance()->table('policy_agentblock');
+            $result = $objTable->update(array('script' => 'index'))->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 

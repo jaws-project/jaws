@@ -17,14 +17,19 @@ class Policy_Model_Agent extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $agent  Agent
+     * @param   string  $script JAWS_SCRIPT
      * @return  bool    True if the Agent is blocked
      */
-    function IsAgentBlocked($agent)
+    function IsAgentBlocked($agent, $script)
     {
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $table->select('blocked:boolean');
-        $table->where('agent', Jaws_XSS::filter($agent));
-        $blocked = $table->fetchOne();
+        $blocked = $table->where('agent', Jaws_XSS::filter($agent))
+            ->and()
+            ->openWhere('script', $script)
+            ->or()
+            ->closeWhere('script', null, 'is null')
+            ->fetchOne();
         if (!Jaws_Error::IsError($blocked) && !is_null($blocked)) {
             return $blocked;
         }

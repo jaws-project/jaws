@@ -136,6 +136,7 @@ function saveIPRange()
             'AddIPRange', [
                 $('#from_ipaddress').val(),
                 $('#to_ipaddress').val(),
+                $('#script').val(),
                 $('#blocked').val()
             ]
         );
@@ -145,6 +146,7 @@ function saveIPRange()
                 $('#id').val(),
                 $('#from_ipaddress').val(),
                 $('#to_ipaddress').val(),
+                $('#script').val(),
                 $('#blocked').val()
             ]
         );
@@ -164,6 +166,7 @@ function editIPRange(element, id)
     $('#id').val(ipRange['id']);
     $('#from_ipaddress').val(ipRange['from_ip']);
     $('#to_ipaddress').val(ipRange['to_ip']);
+    $('#script').val(ipRange['script']);
     $('#blocked').prop('selectedIndex', ipRange['blocked']? 1 : 0);
 }
 
@@ -192,11 +195,11 @@ function saveAgent()
     }
 
     if ($('#id').val() == 0) {
-        PolicyAjax.callAsync('AddAgent', [$('#agent').val(), $('#blocked').val()]);
+        PolicyAjax.callAsync('AddAgent', [$('#agent').val(), $('#script').val(), $('#blocked').val()]);
     } else {
         PolicyAjax.callAsync(
             'EditAgent',
-            [$('#id').val(), $('#agent').val(), $('#blocked').val()]
+            [$('#id').val(), $('#agent').val(), $('#script').val(), $('#blocked').val()]
         );
     }
 }
@@ -213,6 +216,7 @@ function editAgent(element, id)
 
     $('#id').val(agent['id']);
     $('#agent').val(agent['agent'].defilter());
+    $('#script').val(agent['script'].defilter());
     $('#blocked').prop('selectedIndex', agent['blocked']? 1 : 0);
 }
 
@@ -350,11 +354,13 @@ function stopAction()
             $('#id').val(0);
             $('#from_ipaddress').val('');
             $('#to_ipaddress').val('');
+            $('#script').val('index');
             unselectDataGridRow();
             break;
         case 'AgentBlocking':
             $('#id').val(0);
             $('#agent').val('');
+            $('#script').val('index');
             unselectDataGridRow();
             break;
         default:

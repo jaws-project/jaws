@@ -44,9 +44,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function AddIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($from_ip, $to_ip, $blocked) = $this->gadget->request->fetchAll('post');
+        @list($from_ip, $to_ip, $script, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('IP');
-        $model->AddIPRange($from_ip, $to_ip, $blocked);
+        $model->AddIPRange($from_ip, $to_ip, $script, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -59,9 +59,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function EditIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($id, $from_ip, $to_ip, $blocked) = $this->gadget->request->fetchAll('post');
+        @list($id, $from_ip, $to_ip, $script, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('IP');
-        $model->EditIPRange($id, $from_ip, $to_ip, $blocked);
+        $model->EditIPRange($id, $from_ip, $to_ip, $script, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -108,9 +108,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function AddAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
-        @list($agent, $blocked) = $this->gadget->request->fetchAll('post');
+        @list($agent, $script, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Agent');
-        $model->AddAgent($agent, $blocked);
+        $model->AddAgent($agent, $script, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -123,9 +123,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function EditAgent()
     {
         $this->gadget->CheckPermission('ManageAgents');
-        @list($id, $agent, $blocked) = $this->gadget->request->fetchAll('post');
+        @list($id, $agent, $script, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Agent');
-        $model->EditAgent($id, $agent, $blocked);
+        $model->EditAgent($id, $agent, $script, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

@@ -21,7 +21,7 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
     function GetAgent($id)
     {
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
-        $table->select('id', 'agent', 'blocked:boolean');
+        $table->select('id', 'agent', 'script', 'blocked:boolean');
         return $table->where('id', (int)$id)->fetchRow();
     }
 
@@ -48,7 +48,7 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
     function GetBlockedAgents($limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
-        $table->select('id', 'agent', 'blocked:boolean');
+        $table->select('id', 'agent', 'script', 'blocked:boolean');
         $table->limit($limit, $offset);
         $table->orderBy('id desc');
         return $table->fetchAll();
@@ -61,10 +61,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
      * @param   string  The to-be-blocked Agent string
      * @return  True on success and Jaws error on failures
      */
-    function AddAgent($agent, $blocked = true)
+    function AddAgent($agent, $script = 'index', $blocked = true)
     {
         $data = array();
-        $data['agent'] = $agent;
+        $data['agent']   = $agent;
+        $data['script']  = $script;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
@@ -86,10 +87,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
      * @param   string  $agent  The to-be-blocked Agent string
      * @return  True on success and Jaws error on failures
      */
-    function EditAgent($id, $agent, $blocked = true)
+    function EditAgent($id, $agent, $script = 'index', $blocked = true)
     {
         $data = array();
-        $data['agent'] = $agent;
+        $data['agent']   = $agent;
+        $data['script']  = $script;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');

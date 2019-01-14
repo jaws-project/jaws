@@ -29,13 +29,6 @@
             </field>
 
             <field>
-                <name>script</name>
-                <type>text</type>
-                <length>16</length>
-                <default>index</default>
-            </field>
-
-            <field>
                 <name>blocked</name>
                 <type>boolean</type>
                 <default>true</default>
@@ -61,13 +54,6 @@
                 <length>252</length>
                 <notnull>true</notnull>
                 <unique>true</unique>
-            </field>
-
-            <field>
-                <name>script</name>
-                <type>text</type>
-                <length>16</length>
-                <default>index</default>
             </field>
 
             <field>
