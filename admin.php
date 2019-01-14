@@ -35,11 +35,13 @@ if ($httpAuthEnabled) {
     $httpAuth = new Jaws_HTTPAuth();
 }
 
+// Init layout
+$GLOBALS['app']->InstanceLayout();
+// Run auto-load methods before standalone actions too
+$GLOBALS['app']->RunAutoload();
+
 // Check for login action is requested
 if (!$GLOBALS['app']->Session->Logged()) {
-    // Init layout
-    $GLOBALS['app']->InstanceLayout();
-
     $gdgtUsers = Jaws_Gadget::getInstance('Users');
     if (Jaws_Error::IsError($gdgtUsers)) {
         Jaws_Error::Fatal($gdgtUsers->getMessage());
@@ -87,9 +89,6 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     $GLOBALS['app']->mainAction = $ReqAction;
     $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
     $GLOBALS['app']->define('', 'mainAction', $ReqAction);
-
-    // Init layout
-    $GLOBALS['app']->InstanceLayout();
 
     // check referrer host
     if (!$GLOBALS['app']->Session->extraCheck()) {
