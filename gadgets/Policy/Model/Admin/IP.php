@@ -58,7 +58,10 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
      * Block a new IP range
      *
      * @access  public
-     * @param   string  $ip the to be blocked IP address
+     * @param   string  $from_ip    The to-be-blocked from IP
+     * @param   string  $to_ip      The to-be-blocked to IP
+     * @param   string  $script     JAWS_SCRIPT
+     * @param   bool    $blocked    Blocked?
      * @return  bool    True on success and Jaws_Error on errors
      */
     function AddIPRange($from_ip, $to_ip = null, $script = 'index', $blocked = true)
@@ -78,7 +81,7 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
         $data = array();
         $data['from_ip'] = $from_ip;
         $data['to_ip']   = $to_ip;
-        $data['script']  = $script;
+        $data['script']  = empty($script)? null : $script;;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
@@ -96,9 +99,11 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
      * Edit blocked IP range
      *
      * @access  public
-     * @param   int     $id ID of the to-be-blocked IP range addresses
-     * @param   string  $from_ip  The to-be-blocked from IP
-     * @param   string  $to_ip    The to-be-blocked to IP
+     * @param   int     $id         ID of the to-be-blocked IP range addresses
+     * @param   string  $from_ip    The to-be-blocked from IP
+     * @param   string  $to_ip      The to-be-blocked to IP
+     * @param   string  $script     JAWS_SCRIPT
+     * @param   bool    $blocked    Blocked?
      * @return  bool    True on success and Jaws_Error on errors
      */
     function EditIPRange($id, $from_ip, $to_ip = null, $script = 'index', $blocked = true)
@@ -118,7 +123,7 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
         $data = array();
         $data['from_ip'] = $from_ip;
         $data['to_ip']   = $to_ip;
-        $data['script']  = $script;
+        $data['script']  = empty($script)? null : $script;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');

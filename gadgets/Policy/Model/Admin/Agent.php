@@ -58,14 +58,16 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
      * Block a new Agent
      *
      * @access  public
-     * @param   string  The to-be-blocked Agent string
+     * @param   string  $agent      The to-be-blocked Agent string
+     * @param   string  $script     JAWS_SCRIPT
+     * @param   bool    $blocked    Blocked?
      * @return  True on success and Jaws error on failures
      */
     function AddAgent($agent, $script = 'index', $blocked = true)
     {
         $data = array();
         $data['agent']   = $agent;
-        $data['script']  = $script;
+        $data['script']  = empty($script)? null : $script;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
@@ -83,15 +85,17 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
      * Edit Blocked Agent
      *
      * @access  public
-     * @param   int     $id     ID of the agent
-     * @param   string  $agent  The to-be-blocked Agent string
+     * @param   int     $id         ID of the agent
+     * @param   string  $agent      The to-be-blocked Agent string
+     * @param   string  $script     JAWS_SCRIPT
+     * @param   bool    $blocked    Blocked?
      * @return  True on success and Jaws error on failures
      */
     function EditAgent($id, $agent, $script = 'index', $blocked = true)
     {
         $data = array();
         $data['agent']   = $agent;
-        $data['script']  = $script;
+        $data['script']  = empty($script)? null : $script;
         $data['blocked'] = (bool)$blocked;
 
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
