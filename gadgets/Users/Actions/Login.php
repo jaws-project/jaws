@@ -517,13 +517,13 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 // going to next authentication/verification step
                 $loginData['authstep'] = 1;
                 // check login key
-                $loginkey = $GLOBALS['app']->Session->GetAttribute('loginkey');
+                $loginkey = $this->gadget->session->fetch('loginkey');
                 if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
                     $loginkey = array(
                         'text' => Jaws_Utils::RandomText(5, true, false, true),
                         'time' => time()
                     );
-                    $GLOBALS['app']->Session->SetAttribute('loginkey', $loginkey);
+                    $this->gadget->session->update('loginkey', $loginkey);
                     // notify
                     $params = array();
                     $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->GetAttribute('sid'));
@@ -560,9 +560,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
 
             // remove login trying count from session
-            $GLOBALS['app']->Session->DeleteAttribute('bad_login_count');
-            // remove login verification key
-            $GLOBALS['app']->Session->DeleteAttribute('verification_key');
+            $this->gadget->session->delete('bad_login_count');
+            // remove login key
+            $this->gadget->session->delete('loginkey');
 
             // create session & cookie
              $GLOBALS['app']->Session->Create($user, (bool)$loginData['remember']);
@@ -594,9 +594,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         } catch (Exception $error) {
             // increment login trying count in session
-            $GLOBALS['app']->Session->SetAttribute(
+            $this->gadget->session->update(
                 'bad_login_count',
-                (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count') + 1
+                (int)$this->gadget->session->fetch('bad_login_count') + 1
             );
 
             $this->gadget->session->push(
