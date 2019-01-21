@@ -127,122 +127,6 @@ class Jaws_Session
     }
 
     /**
-     * Login
-     *
-     * @param   array   $loginData  Associated array of login required data(username, password, ...)
-     * @return  mixed   An Array of user's attributes if success, otherwise Jaws_Error
-     */
-    function Login(&$loginData)
-    {
-        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'LOGGIN IN');
-        try {
-            $loginData['authstep'] = 0;
-            if ($loginData['username'] === '' && $loginData['password'] === '') {
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'));
-            }
-
-            // load authentication method driver
-            if (!empty($loginData['authtype'])) {
-                $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $loginData['authtype']);
-            } else {
-                $authtype = $this->_AuthType;
-            }
-            $className = 'Jaws_Auth_' . $authtype;
-            $this->_AuthModel = new $className();
-
-            // try authenticate user
-            $user = $this->_AuthModel->Auth($loginData);
-            if (Jaws_Error::isError($user)) {
-                throw new Exception($user->getMessage());
-            }
-
-            // two step verification?
-            if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users')) {
-                // going to next authentication/verification step
-                $loginData['authstep'] = 1;
-                // check login key
-                $loginkey = $this->GetAttribute('loginkey');
-                if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
-                    $loginkey = array(
-                        'text' => Jaws_Utils::RandomText(5, true, false, true),
-                        'time' => time()
-                    );
-                    $this->SetAttribute('loginkey', $loginkey);
-                    _log_var_dump($loginkey);
-                    // notify
-                    $params = array();
-                    $params['key']     = crc32('Session.Loginkey.' . $this->_SessionID);
-                    $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
-                    $params['summary'] = _t(
-                        'GLOBAL_LOGINKEY_SUMMARY',
-                        $loginkey['text']
-                    );
-                    $params['description'] = $params['summary'];
-                    $params['emails']  = array($user['email']);
-                    $params['mobiles'] = array($user['mobile']);
-                    $GLOBALS['app']->Listener->Shout('Users', 'Notify', $params);
-                }
-                // check verification key
-                if ($loginkey['text'] != $loginData['loginkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'));
-                }
-            }
-
-            // check user concurrents logins
-            $existSessions = 0;
-            if (!empty($user['concurrents'])) {
-                $existSessions = $this->GetUserSessions($user['id'], true);
-            }
-            if (!empty($existSessions) && $existSessions >= $user['concurrents']) {
-                // login conflict event logging
-                $GLOBALS['app']->Listener->Shout(
-                    'Session',
-                    'Log',
-                    array('Users', 'Login', JAWS_WARNING, null, 403, $user['id'])
-                );
-
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'));
-            }
-
-            // remove login trying count from session
-            $this->DeleteAttribute('bad_login_count');
-            // remove login verification key
-            $this->DeleteAttribute('verification_key');
-            // create session & cookie
-            $this->Create($user, (bool)$loginData['remember']);
-            // login event logging
-            $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
-            // let everyone know a user has been logged
-            $GLOBALS['app']->Listener->Shout('Session', 'LoginUser', $this->_Attributes);
-            // check password age
-            $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-            if ($password_max_age > 0) {
-                $expPasswordTime = time() - 3600 * $password_max_age;
-                if ((int)$user['last_password_update'] <= $expPasswordTime) {
-                    $this->PushResponse(
-                        _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
-                        'Users.Account.Response',
-                        RESPONSE_WARNING
-                    );
-                    Jaws_Header::Location(jaws()->Map->GetURLFor('Users', 'Account'));
-                }
-            }
-
-            // return user data array
-            return $user;
-        } catch (Exception $error) {
-            // increment login trying count in session
-            $this->SetAttribute('bad_login_count', (int)$this->GetAttribute('bad_login_count') + 1);
-            return Jaws_Error::raiseError(
-                $error->getMessage(),
-                $error->getCode(),
-                JAWS_ERROR_NOTICE
-            );
-        }
-
-    }
-
-    /**
      * Return session login status
      *
      * @access  public
@@ -260,18 +144,18 @@ class Jaws_Session
      * @param   bool    $prepare_new_session Preparing new session for incoming request
      * @return  void
      */
-    function Logout($prepare_new_session)
+    function Logout($prepare_new_session = false)
     {
         // logout event logging
         $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Logout', JAWS_NOTICE));
         // let everyone know a user has been logout
         $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->_Attributes);
         if ($prepare_new_session) {
-            $this->Reset($this->_SessionID);
-            $this->update();
-        } else {
             $this->delete($this->_SessionID);
             $this->Reset();
+        } else {
+            $this->Reset($this->_SessionID);
+            $this->update();
         }
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
     }
@@ -545,10 +429,9 @@ class Jaws_Session
      * Get value of given session's attributes
      *
      * @access  public
-     * @param   mixed   $argv Optional variable list of attributes name
      * @return  array   Value of the attributes
      */
-    function GetAttributes($argv)
+    function GetAttributes()
     {
         $names = func_get_args();
         // for support array of keys array
@@ -697,14 +580,14 @@ class Jaws_Session
             ));
             $result = $sessTable->where('sid', $this->_SessionID)->exec();
             if (!Jaws_Error::IsError($result)) {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized succesfully');
+                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully');
                 return $this->_SessionID;
             }
         } else {
             $sessTable->update(array('updatetime' => time()));
             $result = $sessTable->where('sid', $this->_SessionID)->exec();
             if (!Jaws_Error::IsError($result)) {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized succesfully(only modification time)');
+                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully(only modification time)');
                 return $this->_SessionID;
             }
         }
