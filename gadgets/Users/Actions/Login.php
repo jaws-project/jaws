@@ -490,9 +490,100 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 }
             }
 
-            $resCheck = $GLOBALS['app']->Session->Login($loginData);
-            if (Jaws_Error::isError($resCheck)) {
-                throw new Exception($resCheck->getMessage());
+            $loginData['authstep'] = 0;
+            if ($loginData['username'] === '' && $loginData['password'] === '') {
+                throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'));
+            }
+
+            // load authentication method driver
+            if (!empty($loginData['authtype'])) {
+                $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $loginData['authtype']);
+            } else {
+                //$authtype = $GLOBALS['app']->Session->_AuthType;
+                $authtype = 'Default';
+            }
+            $className = 'Jaws_Auth_' . $authtype;
+            $modelAuth = new $className();
+
+            // try authenticate user
+            $user = $modelAuth->Auth($loginData);
+            if (Jaws_Error::isError($user)) {
+                throw new Exception($user->getMessage());
+            }
+
+            // two step verification?
+            if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users'))
+            {
+                // going to next authentication/verification step
+                $loginData['authstep'] = 1;
+                // check login key
+                $loginkey = $GLOBALS['app']->Session->GetAttribute('loginkey');
+                if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
+                    $loginkey = array(
+                        'text' => Jaws_Utils::RandomText(5, true, false, true),
+                        'time' => time()
+                    );
+                    $GLOBALS['app']->Session->SetAttribute('loginkey', $loginkey);
+                    // notify
+                    $params = array();
+                    $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->GetAttribute('sid'));
+                    $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
+                    $params['summary'] = _t(
+                        'GLOBAL_LOGINKEY_SUMMARY',
+                        $loginkey['text']
+                    );
+                    $params['description'] = $params['summary'];
+                    $params['emails']  = array($user['email']);
+                    $params['mobiles'] = array($user['mobile']);
+                    $GLOBALS['app']->Listener->Shout('Users', 'Notify', $params);
+                }
+                // check verification key
+                if ($loginkey['text'] != $loginData['loginkey']) {
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'));
+                }
+            }
+
+            // check user concurrents logins
+            $existSessions = 0;
+            if (!empty($user['concurrents'])) {
+                $existSessions = $GLOBALS['app']->Session->GetUserSessions($user['id'], true);
+            }
+            if (!empty($existSessions) && $existSessions >= $user['concurrents']) {
+                // login conflict event logging
+                $GLOBALS['app']->Listener->Shout(
+                    'Session',
+                    'Log',
+                    array('Users', 'Login', JAWS_WARNING, null, 403, $user['id'])
+                );
+
+                throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'));
+            }
+
+            // remove login trying count from session
+            $GLOBALS['app']->Session->DeleteAttribute('bad_login_count');
+            // remove login verification key
+            $GLOBALS['app']->Session->DeleteAttribute('verification_key');
+
+            // create session & cookie
+             $GLOBALS['app']->Session->Create($user, (bool)$loginData['remember']);
+            // login event logging
+            $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
+            // let everyone know a user has been logged
+            $GLOBALS['app']->Listener->Shout('Session', 'LoginUser', $GLOBALS['app']->Session->GetAttributes());
+
+            // check password age
+            $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
+            if ($password_max_age > 0) {
+                $expPasswordTime = time() - 3600 * $password_max_age;
+                if ((int)$user['last_password_update'] <= $expPasswordTime) {
+                    $this->gadget->session->push(
+                        _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
+                        'Account.Response',
+                        RESPONSE_WARNING,
+                        $loginData
+                    );
+                    return Jaws_Header::Location($this->gadget->urlMap('Account'));
+                }
             }
 
             if (!$this->gadget->session->fetch('checksess')) {
@@ -502,6 +593,12 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
 
         } catch (Exception $error) {
+            // increment login trying count in session
+            $GLOBALS['app']->Session->SetAttribute(
+                'bad_login_count',
+                (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count') + 1
+            );
+
             $this->gadget->session->push(
                 $error->getMessage(),
                 'Login.Response',
