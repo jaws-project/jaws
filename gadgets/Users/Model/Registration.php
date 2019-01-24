@@ -11,6 +11,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      * Creates a valid(registered) n user for an anonymous user
      *
      * @access  public
+     * @param   int     $domain         Domain ID
      * @param   string  $username       Username
      * @param   string  $user_email     User's email
      * @param   string  $user_mobile    User's mobile
@@ -25,9 +26,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      * @param   string  $group          Default user group
      * @return  mixed   User ID on success or Jaws_Error on failure
      */
-    function CreateUser($username, $user_email, $user_mobile, $nickname, $fname, $lname, $gender, $ssn,
-                        $dob, $url, $password, $group = null)
-    {
+    function CreateUser($domain, $username, $user_email, $user_mobile, $nickname, $fname, $lname,
+        $gender, $ssn, $dob, $url, $password, $group = null
+    ) {
         $username = trim($username);
         $user_email = trim($user_email);
         $user_mobile = trim($user_mobile);
@@ -74,6 +75,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $user_enabled = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
         $user_id = $jUser->AddUser(
             array(
+                'domain' =>   $domain,
                 'username' => $username,
                 'nickname' => $nickname,
                 'email'    => $user_email,

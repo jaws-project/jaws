@@ -22,7 +22,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $result  = '';
         $post = $this->gadget->request->fetch(
             array(
-                'user', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
+                'domain', 'user', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
                 'fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'step', 'key'
             ),
             'post'
@@ -56,6 +56,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                 }
 
                 $result = $this->gadget->model->load('Registration')->CreateUser(
+                    $post['domain'],
                     $post['username'],
                     $post['email'],
                     $post['mobile'],
@@ -139,9 +140,10 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $response = $this->gadget->session->pop('Registration');
         if (!isset($response['data'])) {
             $post = array(
-                'user'  => 0,
-                'step'  => 0,
-                'key'   => '',
+                'domain' => 0,
+                'user'   => 0,
+                'step'   => 0,
+                'key'    => '',
                 'username' => '',
                 'email' => '',
                 'mobile' => '',
@@ -215,6 +217,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
 
             default:
                 $tpl->SetBlock('registration/request');
+                $tpl->SetVariable('domain',    $post['domain']);
                 $tpl->SetVariable('username',  $post['username']);
                 $tpl->SetVariable('email',     $post['email']);
                 $tpl->SetVariable('mobile',    $post['mobile']);
