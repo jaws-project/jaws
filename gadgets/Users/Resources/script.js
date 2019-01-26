@@ -995,7 +995,7 @@ function Jaws_Gadget_Users() { return {
         this.SettingsInUsersAjax = new JawsAjax('Settings');
 
         // init login box action
-        if (this.gadget.actions.indexOf('LoginBox') >= 0) {
+        if (this.gadget.actions.indexOf('Login') >= 0) {
             if ($('#loginkey').length) {
                 $('#loginkey').focus();
             } else {

@@ -17,7 +17,7 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls = array();
         $urls[] = array(
-            'url'   => $this->gadget->urlMap('LoginBox'),
+            'url'   => $this->gadget->urlMap('Login'),
             'title' => _t('USERS_LOGIN_TITLE'),
             'status' => Menu_Info::STATUS_ANONYMOUS
         );

@@ -17,7 +17,7 @@ class Users_Actions_Admin_Login extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    function LoginBox()
+    function Login()
     {
         if ($GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true') {
             $this->gadget->session->insert('checksess', 1);
@@ -167,9 +167,20 @@ class Users_Actions_Admin_Login extends Jaws_Gadget_Action
      * @access  public
      * @return  void
      */
-    function Login()
+    function Authenticate()
     {
-        return $this->gadget->action->load('Login')->Login();
+        return $this->gadget->action->load('Login')->Authenticate();
+    }
+
+    /**
+     * Logout user
+     *
+     * @access  public
+     * @return  void
+     */
+    function Logout()
+    {
+        return $this->gadget->action->load('Login')->Logout();
     }
 
 }

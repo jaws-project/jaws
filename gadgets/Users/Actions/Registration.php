@@ -206,10 +206,10 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                         $message = _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
                         break;
                     case 'user':
-                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_USER', $this->gadget->urlMap('LoginBox'));
+                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_USER', $this->gadget->urlMap('Login'));
                         break;
                     default:
-                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap('LoginBox'));
+                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap('Login'));
                 }
                 $tpl->SetVariable('message', $message);
                 $tpl->ParseBlock('registration/success');

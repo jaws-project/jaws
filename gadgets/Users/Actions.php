@@ -9,7 +9,7 @@
 /**
  * Index actions
  */
-$actions['LoginBox'] = array(
+$actions['Login'] = array(
     'normal' => true,
     'layout' => true,
     'global' => true,
@@ -46,16 +46,6 @@ $actions['AboutUser'] = array(
     'file' => 'Profile',
     'parametric' => true,
 );
-$actions['Login'] = array(
-    'normal' => true,
-    'global' => true,
-    'file' => 'Login',
-);
-$actions['Logout'] = array(
-    'normal' => true,
-    'internal' => true,
-    'file' => 'Login',
-);
 $actions['LoginForgot'] = array(
     'normal' => true,
     'global' => true,
@@ -64,6 +54,16 @@ $actions['LoginForgot'] = array(
 $actions['LoginRecovery'] = array(
     'standalone' => true,
     'global' => true,
+    'file' => 'Login',
+);
+$actions['Authenticate'] = array(
+    'normal' => true,
+    'global' => true,
+    'file' => 'Login',
+);
+$actions['Logout'] = array(
+    'normal' => true,
+    'internal' => true,
     'file' => 'Login',
 );
 $actions['Registration'] = array(
@@ -347,13 +347,8 @@ $actions['ImportVCard'] = array(
 /**
  * Admin actions
  */
-$admin_actions['LoginBox'] = array(
-    'standalone' => true,
-    'file' => 'Login',
-);
 $admin_actions['Login'] = array(
     'standalone' => true,
-    'global' => true,
     'file' => 'Login',
 );
 $admin_actions['Users'] = array(
@@ -364,9 +359,14 @@ $admin_actions['MyAccount'] = array(
     'normal' => true,
     'file' => 'MyAccount',
 );
+$admin_actions['Authenticate'] = array(
+    'standalone' => true,
+    'global' => true,
+    'file' => 'Login',
+);
 $admin_actions['Logout'] = array(
     'normal' => true,
-    'file' => 'Users',
+    'file' => 'Login',
 );
 $admin_actions['Groups'] = array(
     'normal' => true,

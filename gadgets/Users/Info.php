@@ -13,7 +13,7 @@ class Users_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '3.5.0';
+    var $version = '3.6.0';
 
     /**
      * Is this gadget core gadget?
@@ -29,7 +29,7 @@ class Users_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'LoginBox';
+    var $default_action = 'Login';
 
     /**
      * Default back-end action name

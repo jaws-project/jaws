@@ -6,7 +6,7 @@
  * @package    Users
  */
 $maps[] = array(
-    'LoginBox',
+    'Login',
     'users/login[/referrer/{referrer}]',
     array('referrer' => '.*')
 );

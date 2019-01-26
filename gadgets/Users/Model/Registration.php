@@ -136,7 +136,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 $tpl->SetVariable(
                     'message',
                     _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap(
-                        'LoginBox',
+                        'Login',
                         array(),
                         array('absolute'=>true)
                     ))
