@@ -48,12 +48,12 @@ if (!$GLOBALS['app']->Session->Logged()) {
     }
 
     $ReqGadget = 'Users';
-    if (($ReqAction != 'Login') &&
+    if (($ReqAction != 'Authenticate') &&
         (!$httpAuthEnabled || !isset($_SERVER['PHP_AUTH_USER']))
     ) {
-        $ReqAction = 'LoginBox';
-    } else {
         $ReqAction = 'Login';
+    } else {
+        $ReqAction = 'Authenticate';
     }
 
     $GLOBALS['app']->mainGadget = $ReqGadget;
