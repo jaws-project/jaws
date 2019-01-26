@@ -164,12 +164,12 @@ class Jaws_Registry
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->insert(array(
-            'user'       => (int)$user,
-            'component'  => $component,
-            'key_name'   => $key_name,
-            'key_value'  => json_encode($key_value),
-            'key_type'   => (int)$key_type,
-            'updatetime' => Jaws_DB::getInstance()->date(),
+            'user'        => (int)$user,
+            'component'   => $component,
+            'key_name'    => $key_name,
+            'key_value'   => json_encode($key_value),
+            'key_type'    => (int)$key_type,
+            'update_time' => Jaws_DB::getInstance()->date(),
         ));
         $result = $tblReg->exec();
         if (!Jaws_Error::IsError($result)) {
@@ -199,17 +199,16 @@ class Jaws_Registry
 
         $data = array();
         $user = (int)$user;
-        $time = Jaws_DB::getInstance()->date();
         $tmp_regkeys = $this->regkeys;
         $tmp_customs = $this->customs;
-        $columns = array('user', 'component', 'key_name', 'key_value', 'key_type', 'updatetime');
+        $columns = array('user', 'component', 'key_name', 'key_value', 'key_type', 'update_time');
         foreach ($keys  as $key) {
             @list($key_name, $key_value, $key_type) = $key;
             $tmp_regkeys[$component][$key_name] = $key_value;
             if ($key_type == 1) {
                 $tmp_customs[$component][$key_name] = $key_value;
             }
-            $data[] = array($user, $component, $key_name, json_encode($key_value), (int)$key_type, $time);
+            $data[] = array($user, $component, $key_name, json_encode($key_value), (int)$key_type, time());
         }
 
         $tblReg = Jaws_ORM::getInstance()->table('registry');
