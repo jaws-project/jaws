@@ -40,17 +40,9 @@
             </field>
 
             <field>
-                <name>key_type</name>
-                <type>integer</type>
-                <length>2</length>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>update_time</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
+                <name>custom</name>
+                <type>boolean</type>
+                <default>false</default>
             </field>
 
             <index>
@@ -68,7 +60,7 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>reg_cmpt_type</name>
+                <name><variable>table_prefix</variable>reg_cmpt_custom</name>
                 <field>
                     <name>user</name>
                 </field>
@@ -76,7 +68,7 @@
                     <name>component</name>
                 </field>
                 <field>
-                    <name>key_type</name>
+                    <name>custom</name>
                 </field>
             </index>
 
@@ -191,7 +183,8 @@
         <declaration>
 
             <field>
-                <name>sid</name>
+                <name>id</name>
+                <was>sid</was>
                 <type>integer</type>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
@@ -265,6 +258,7 @@
 
             <field>
                 <name>insert_time</name>
+                <was>createtime</was>
                 <type>integer</type>
                 <length>8</length>
                 <default>0</default>
@@ -272,6 +266,7 @@
 
             <field>
                 <name>update_time</name>
+                <was>updatetime</was>
                 <type>integer</type>
                 <length>8</length>
                 <default>0</default>
@@ -292,13 +287,6 @@
                 <name><variable>table_prefix</variable>session_hidden</name>
                 <field>
                     <name>hidden</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>session_uptime</name>
-                <field>
-                    <name>update_time</name>
                 </field>
             </index>
 
@@ -355,85 +343,6 @@
 
         </declaration>
 
-    </table>
-
-    <table>
-        <name><variable>table_prefix</variable>zones</name>
-        <declaration>
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>location</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>country</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>province</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>city</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>title</name>
-                <type>text</type>
-                <length>128</length>
-            </field>
-
-            <field>
-                <name>center</name>
-                <type>text</type>
-                <length>16</length>
-            </field>
-
-            <field>
-                <name>around</name>
-                <type>text</type>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>zones_location</name>
-                <unique>true</unique>
-                <field>
-                    <name>location</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>zones_cpc</name>
-                <field>
-                    <name>country</name>
-                </field>
-                <field>
-                    <name>province</name>
-                </field>
-                <field>
-                    <name>city</name>
-                </field>
-            </index>
-
-        </declaration>
     </table>
 
 </database>

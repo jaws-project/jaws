@@ -20,7 +20,7 @@ class Jaws_Registry
     private $regkeys = array();
 
     /**
-     * All default registry keys custom attribute
+     * All default registry keys attribute customizable by user
      *
      * @var     array
      * @access  private
@@ -36,11 +36,11 @@ class Jaws_Registry
     function Init()
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $tblReg->select('component', 'key_name', 'key_value', 'custom:boolean');
+        $tblReg->select('component', 'key_name', 'key_value', 'key_type:integer');
         $result = $tblReg->where('user', 0)->fetchAll('', JAWS_ERROR_NOTICE);
         if (Jaws_Error::IsError($result)) {
             if ($result->getCode() == MDB2_ERROR_NOSUCHFIELD) {
-                // get 0.9.x jaws version
+                // get jaws old version
                 $result = $tblReg->select('key_value')
                     ->where('key_name', 'version')
                     ->and()
@@ -57,11 +57,11 @@ class Jaws_Registry
         foreach ($result as $regrec) {
             $key_value = json_decode($regrec['key_value']);
             if ($regrec['component'] == '' && $regrec['key_name'] == 'version') {
-                // for backend compatibility
+                // for backward compatibility
                 $key_value = is_null($key_value)? $regrec['key_value'] : $key_value;
             }
             $this->regkeys[$regrec['component']][$regrec['key_name']] = $key_value;
-            if ($regrec['custom']) {
+            if ($regrec['key_type'] == 1) {
                 $this->customs[$regrec['component']][$regrec['key_name']] = $key_value;
             }
         }
@@ -155,12 +155,12 @@ class Jaws_Registry
      * @access  public
      * @param   string  $key_name   Key name
      * @param   string  $key_value  Key value
-     * @param   bool    $custom     Customizable by user?
+     * @param   int     $key_type   Key type(Customizable? by user or admins)
      * @param   string  $component  Component name
      * @param   int     $user       User ID
      * @return  bool    True is set otherwise False
      */
-    function insert($key_name, $key_value, $custom = false, $component = '', $user = 0)
+    function insert($key_name, $key_value, $key_type = 0, $component = '', $user = 0)
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->insert(array(
@@ -168,13 +168,13 @@ class Jaws_Registry
             'component'  => $component,
             'key_name'   => $key_name,
             'key_value'  => json_encode($key_value),
-            'custom'     => (bool)$custom,
+            'key_type'   => (int)$key_type,
             'updatetime' => Jaws_DB::getInstance()->date(),
         ));
         $result = $tblReg->exec();
         if (!Jaws_Error::IsError($result)) {
             $this->regkeys[$component][$key_name] = $key_value;
-            if ($custom) {
+            if ($key_type == 1) {
                 $this->customs[$component][$key_name] = $key_value;
             }
         }
@@ -202,14 +202,14 @@ class Jaws_Registry
         $time = Jaws_DB::getInstance()->date();
         $tmp_regkeys = $this->regkeys;
         $tmp_customs = $this->customs;
-        $columns = array('user', 'component', 'key_name', 'key_value', 'custom', 'updatetime');
+        $columns = array('user', 'component', 'key_name', 'key_value', 'key_type', 'updatetime');
         foreach ($keys  as $key) {
-            @list($key_name, $key_value, $custom) = $key;
+            @list($key_name, $key_value, $key_type) = $key;
             $tmp_regkeys[$component][$key_name] = $key_value;
-            if ($custom) {
+            if ($key_type == 1) {
                 $tmp_customs[$component][$key_name] = $key_value;
             }
-            $data[] = array($user, $component, $key_name, json_encode($key_value), (bool)$custom, $time);
+            $data[] = array($user, $component, $key_name, json_encode($key_value), (int)$key_type, $time);
         }
 
         $tblReg = Jaws_ORM::getInstance()->table('registry');
@@ -228,12 +228,12 @@ class Jaws_Registry
      * @access  public
      * @param   string  $key_name   Key name
      * @param   string  $key_value  Key value
-     * @param   bool    $custom     Customizable by user?
+     * @param   int     $key_type   Key type(Customizable? by user or admins)
      * @param   string  $component  Component name
      * @param   int     $user       User ID
      * @return  bool    True is set otherwise False
      */
-    function update($key_name, $key_value, $custom = null, $component = '', $user = 0)
+    function update($key_name, $key_value, $key_type = null, $component = '', $user = 0)
     {
         $data = array();
         $data['user']      = (int)$user;
@@ -242,8 +242,8 @@ class Jaws_Registry
         if (!is_null($key_value)) {
             $data['key_value'] = json_encode($key_value);
         }
-        if (!is_null($custom)) {
-            $data['custom'] = (bool)$custom;
+        if (!is_null($key_type)) {
+            $data['key_type'] = (int)$key_type;
         }
 
         $tblReg = Jaws_ORM::getInstance()->table('registry');
@@ -264,8 +264,8 @@ class Jaws_Registry
                 $this->regkeys[$component][$key_name] = $key_value;
             }
 
-            if (array_key_exists('custom', $data)) {
-                if ($custom) {
+            if (array_key_exists('key_type', $data)) {
+                if ($key_type == 1) {
                     $this->customs[$component][$key_name] = $key_value;
                 } else {
                     unset($this->customs[$component][$key_name]);
@@ -282,15 +282,15 @@ class Jaws_Registry
      * @access  public
      * @param   string  $old_name   Old key name
      * @param   string  $new_name   New key name
-     * @param   bool    $custom     Customizable by user?
+     * @param   int     $key_type   Key type(Customizable? by user or admins)
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function rename($old_name, $new_name, $custom = null, $component = '')
+    function rename($old_name, $new_name, $key_type = null, $component = '')
     {
         $data['key_name'] =  $new_name;
-        if (!is_null($custom)) {
-            $data['custom'] = (bool)$custom;
+        if (!is_null($key_type)) {
+            $data['key_type'] = (int)$key_type;
         }
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->update($data);
@@ -310,11 +310,11 @@ class Jaws_Registry
 
         // update internal custom cache array
         if (isset($this->customs[$component][$old_name])) {
-            if ($custom !== false) {
+            if ($key_type == 1) {
                 $this->customs[$component][$new_name] = $this->customs[$component][$old_name];
             }
             unset($this->customs[$component][$old_name]);
-        } elseif ($custom) {
+        } elseif ($key_type == 1) {
             $this->customs[$component][$new_name] = $key_value;
         }
 

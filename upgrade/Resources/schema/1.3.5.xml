@@ -40,6 +40,12 @@
             </field>
 
             <field>
+                <name>custom</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
                 <name>key_type</name>
                 <type>integer</type>
                 <length>2</length>
@@ -76,7 +82,20 @@
                     <name>component</name>
                 </field>
                 <field>
-                    <name>key_type</name>
+                    <name>custom</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>reg_cmpt_custom</name>
+                <field>
+                    <name>user</name>
+                </field>
+                <field>
+                    <name>component</name>
+                </field>
+                <field>
+                    <name>custom</name>
                 </field>
             </index>
 
