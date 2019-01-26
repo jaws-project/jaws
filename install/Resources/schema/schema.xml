@@ -76,7 +76,7 @@
                     <name>component</name>
                 </field>
                 <field>
-                    <name>custom</name>
+                    <name>key_type</name>
                 </field>
             </index>
 
