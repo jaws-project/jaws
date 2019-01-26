@@ -14,7 +14,7 @@ define('RESPONSE_NOTICE',  'alert-success');
 /**
  *
  */
-define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrents,acl,updatetime");
+define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrents,acl,update_time");
 
 /**
  * Class to manage User session.
@@ -176,7 +176,7 @@ class Jaws_Session
         if (is_array($session)) {
             $checksum = md5($session['user'] . $session['data']);
 
-            $this->_SessionID  = $session['sid'];
+            $this->_SessionID  = $session['id'];
             $this->_Attributes = unserialize($session['data']);
             $this->SetAttribute('sid', $this->_SessionID, true);
             $this->referrer    = $session['referrer'];
@@ -198,7 +198,7 @@ class Jaws_Session
 
             // check session longevity
             $expTime = time() - 60 * (int) $GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
-            if ($session['updatetime'] < ($expTime - $session['longevity'])) {
+            if ($session['update_time'] < ($expTime - $session['longevity'])) {
                 $this->Logout();
                 $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session has expired');
                 return false;
@@ -225,7 +225,7 @@ class Jaws_Session
             }
 
             // concurrent logins
-            if ($session['updatetime'] < $expTime) {
+            if ($session['update_time'] < $expTime) {
                 $logins = $this->GetAttribute('concurrents');
                 $existSessions = $this->GetUserSessions($this->GetAttribute('user'), true);
                 if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
@@ -567,28 +567,28 @@ class Jaws_Session
             $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
         }
 
-        $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
+        $sessTable = Jaws_ORM::getInstance()->table('session');
         // Now we sync with a previous session only if has changed
         if ($this->_HasChanged) {
             $user = $this->GetAttribute('user');
             $serialized = serialize($this->_Attributes);
             $sessTable->update(array(
-                'user'       => $user,
-                'data'       => $serialized,
-                'longevity'  => $this->GetAttribute('longevity'),
-                'checksum'   => md5($user. $serialized),
-                'ip'         => $ip,
-                'agent'      => $agent,
-                'updatetime' => time()
+                'user'        => $user,
+                'data'        => $serialized,
+                'longevity'   => $this->GetAttribute('longevity'),
+                'checksum'    => md5($user. $serialized),
+                'ip'          => $ip,
+                'agent'       => $agent,
+                'update_time' => time()
             ));
-            $result = $sessTable->where('sid', $this->_SessionID)->exec();
+            $result = $sessTable->where('id', $this->_SessionID)->exec();
             if (!Jaws_Error::IsError($result)) {
                 $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully');
                 return $this->_SessionID;
             }
         } else {
-            $sessTable->update(array('updatetime' => time()));
-            $result = $sessTable->where('sid', $this->_SessionID)->exec();
+            $sessTable->update(array('update_time' => time()));
+            $result = $sessTable->where('id', $this->_SessionID)->exec();
             if (!Jaws_Error::IsError($result)) {
                 $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully(only modification time)');
                 return $this->_SessionID;
@@ -629,10 +629,10 @@ class Jaws_Session
         // referrer
         $referrer = Jaws_Utils::getHostReferrer();
 
-        $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
+        $sessTable = Jaws_ORM::getInstance()->table('session');
         if (!empty($this->_Attributes)) {
             //A new session, we insert it to the DB
-            $updatetime = time();
+            $update_time = time();
             $user = $this->GetAttribute('user');
             $serialized = serialize($this->_Attributes);
             $sessTable->insert(array(
@@ -644,8 +644,8 @@ class Jaws_Session
                 'checksum'   => md5($user. $serialized),
                 'ip'         => $ip,
                 'agent'      => $agent,
-                'createtime' => $updatetime,
-                'updatetime' => $updatetime
+                'insert_time' => $update_time,
+                'update_time' => $update_time
             ));
             $result = $sessTable->exec();
             if (!Jaws_Error::IsError($result)) {
@@ -669,9 +669,9 @@ class Jaws_Session
         if (!empty($sid)) {
             $sessTable = Jaws_ORM::getInstance()->table('session');
             if (is_array($sid)) {
-                $result = $sessTable->delete()->where('sid', $sid, 'in')->exec();
+                $result = $sessTable->delete()->where('id', $sid, 'in')->exec();
             } else {
-                $result = $sessTable->delete()->where('sid', $sid)->exec();
+                $result = $sessTable->delete()->where('id', $sid)->exec();
             }
         }
         return Jaws_Error::IsError($result)? false : true;
@@ -703,7 +703,7 @@ class Jaws_Session
         $expired = time() - ($GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy') * 60);
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $result = $sessTable->delete()
-            ->where('updatetime', $sessTable->expr('? - longevity', $expired), '<')
+            ->where('update_time', $sessTable->expr('? - longevity', $expired), '<')
             ->exec();
         return Jaws_Error::IsError($result)? false : true;
     }
@@ -722,7 +722,7 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select('count(user)')->where('user', (string)$user);
         if ($onlyOnline) {
-            $sessTable->and()->where('updatetime', $expired, '>=');
+            $sessTable->and()->where('update_time', $expired, '>=');
         }
         $result = $sessTable->fetchOne();
         return Jaws_Error::isError($result)? false : (int)$result;
@@ -739,10 +739,10 @@ class Jaws_Session
     {
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'sid', 'user', 'longevity', 'ip', 'agent', 'referrer', 'data',
-            'checksum', 'updatetime:integer'
+            'id', 'user', 'longevity', 'ip', 'agent', 'referrer', 'data',
+            'checksum', 'update_time:integer'
         );
-        return $sessTable->where('sid', $sid)->fetchRow();
+        return $sessTable->where('id', $sid)->fetchRow();
     }
 
     /**
@@ -767,13 +767,13 @@ class Jaws_Session
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'sid', 'domain', 'user', 'type', 'longevity', 'ip', 'agent', 'referrer',
-            'data', 'checksum', 'createtime', 'updatetime:integer'
+            'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent', 'referrer',
+            'data', 'checksum', 'createtime', 'update_time:integer'
         );
         if ($active) {
-            $sessTable->where('updatetime', $onlinetime, '>=');
+            $sessTable->where('update_time', $onlinetime, '>=');
         } elseif ($active === false) {
-            $sessTable->where('updatetime', $onlinetime, '<');
+            $sessTable->where('update_time', $onlinetime, '<');
         }
         if ($logged) {
             $sessTable->and()->where('user', '0', '<>');
@@ -783,7 +783,7 @@ class Jaws_Session
         if (!empty($type)) {
             $sessTable->and()->where('type', $type);
         }
-        $sessions = $sessTable->orderBy('updatetime desc')->limit($limit, $offset)->fetchAll();
+        $sessions = $sessTable->orderBy('update_time desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::isError($sessions)) {
             return $sessions;
         }
@@ -798,7 +798,7 @@ class Jaws_Session
                 $sessions[$key]['email']      = $data['email'];
                 $sessions[$key]['mobile']     = $data['mobile'];
                 $sessions[$key]['avatar']     = $data['avatar'];
-                $sessions[$key]['online']     = $session['updatetime'] > (time() - ($idle_timeout * 60));
+                $sessions[$key]['online']     = $session['update_time'] > (time() - ($idle_timeout * 60));
                 unset($sessions[$key]['data']);
             }
         }
@@ -822,11 +822,11 @@ class Jaws_Session
         $onlinetime = time() - ($idle_timeout * 60);
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
-        $sessTable->select('count(sid):integer');
+        $sessTable->select('count(id):integer');
         if ($active) {
-            $sessTable->where('updatetime', $onlinetime, '>=');
+            $sessTable->where('update_time', $onlinetime, '>=');
         } elseif ($active === false) {
-            $sessTable->where('updatetime', $onlinetime, '<');
+            $sessTable->where('update_time', $onlinetime, '<');
         }
         if ($logged) {
             $sessTable->and()->where('user', '0', '<>');
