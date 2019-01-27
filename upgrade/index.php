@@ -86,7 +86,7 @@ $GLOBALS['log'] = new Jaws_Log($_SESSION['use_log'], $logger);
 $GLOBALS['log']->Start();
 
 // Lets support older PHP versions so we can use spanking new functions
-require_once JAWS_PATH . 'include/Jaws/PHPFunctions.php';
+require_once JAWS_PATH . 'include/Jaws/Helper.php';
 
 require_once JAWS_PATH . 'include/Jaws/Const.php';
 require_once JAWS_PATH . 'include/Jaws/Error.php';

@@ -66,7 +66,7 @@ define(
 define('INSTALL_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // Lets support older PHP versions so we can use spanking new functions
-require_once JAWS_PATH . 'include/Jaws/PHPFunctions.php';
+require_once JAWS_PATH . 'include/Jaws/Helper.php';
 
 // Initialize the logger
 $_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
