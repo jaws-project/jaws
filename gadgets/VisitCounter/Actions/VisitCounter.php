@@ -30,7 +30,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
         if (is_dir($theme['path'] . 'VisitCounter/Resources/images/')) {
             $counter_image = $theme['url'] . 'VisitCounter/Resources/images/';
         } else {
-            $counter_image = $GLOBALS['app']->getSiteURL('/gadgets/VisitCounter/Resources/images/', true);
+            $counter_image = $GLOBALS['app']->getSiteURL('/gadgets/VisitCounter/Resources/images/');
         }
 
         $online_count = $model->GetOnlineVisitors();
