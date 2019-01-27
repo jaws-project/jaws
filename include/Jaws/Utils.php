@@ -108,9 +108,16 @@ class Jaws_Utils
         static $site_url;
         if (!isset($site_url)) {
             $site_url = array();
-            $site_url['scheme'] = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')? 'https' : 'http';
+            // server schema
+            if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+                $site_url['scheme'] = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
+            } else {
+                $site_url['scheme'] = empty($_SERVER['HTTPS'])? 'http' : 'https';
+            }
+
             //$site_url['host'] = $_SERVER['SERVER_NAME'];
             $site_url['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
+            // server port
             $site_url['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
 
             $path = strip_tags($_SERVER['PHP_SELF']);
