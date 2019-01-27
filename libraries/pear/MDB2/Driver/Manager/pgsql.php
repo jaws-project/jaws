@@ -370,7 +370,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                 $field_name = $db->quoteIdentifier($field_name, true);
                 $query = 'DROP ' . $field_name;
                 $result = $db->exec("ALTER TABLE $name $query");
-                if (MDB2::isError($result)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHFIELD)) {
                     return $result;
                 }
             }
@@ -380,7 +380,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
             foreach ($changes['rename'] as $field_name => $field) {
                 $field_name = $db->quoteIdentifier($field_name, true);
                 $result = $db->exec("ALTER TABLE $name RENAME COLUMN $field_name TO ".$db->quoteIdentifier($field['name'], true));
-                if (MDB2::isError($result)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHFIELD)) {
                     return $result;
                 }
             }
@@ -390,7 +390,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
             foreach ($changes['add'] as $field_name => $field) {
                 $query = 'ADD ' . $db->getDeclaration($field['type'], $field_name, $field);
                 $result = $db->exec("ALTER TABLE $name $query");
-                if (MDB2::isError($result)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_ALREADY_EXISTS)) {
                     return $result;
                 }
             }
