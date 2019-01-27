@@ -208,7 +208,7 @@ function GooglePageRank()
     if (is_dir($theme['path'] . 'PageRank')) {
         $pg_images = $theme['url'] .'PageRank/';
     } else {
-        $pg_images = $GLOBALS['app']->getSiteURL('/gadgets/Launcher/Resources/images/PageRank/', true);
+        $pg_images = $GLOBALS['app']->getSiteURL('/gadgets/Launcher/Resources/images/PageRank/');
     }
 
     return "<img src='{$pg_images}pr$rank.gif' alt='$rank' />";
