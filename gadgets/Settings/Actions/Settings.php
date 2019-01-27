@@ -67,7 +67,6 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $installedgadgets = $cmpModel->GetGadgetsList(null, true, true, true);
         $installedgadgets = array('-' => array('title' => _t('GLOBAL_NOGADGET'))) + $installedgadgets;
-        _log_var_dump($installedgadgets);
         foreach ($installedgadgets as $k => $v) {
             $tpl->SetBlock('settings/main_gadget');
             $tpl->SetVariable('value', $k);
