@@ -45,6 +45,11 @@
                 <default>false</default>
             </field>
 
+            <field>
+                <name>updatetime</name>
+                <type>timestamp</type>
+            </field>
+
             <index>
                 <name><variable>table_prefix</variable>reg_cmpt_key</name>
                 <unique>true</unique>
@@ -183,8 +188,7 @@
         <declaration>
 
             <field>
-                <name>id</name>
-                <was>sid</was>
+                <name>sid</name>
                 <type>integer</type>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
@@ -204,12 +208,6 @@
 
             <field>
                 <name>type</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
-                <name>auth</name>
                 <type>text</type>
                 <length>32</length>
             </field>
@@ -257,18 +255,16 @@
             </field>
 
             <field>
-                <name>insert_time</name>
-                <was>createtime</was>
+                <name>createtime</name>
                 <type>integer</type>
-                <length>8</length>
+                <length>16</length>
                 <default>0</default>
             </field>
 
             <field>
-                <name>update_time</name>
-                <was>updatetime</was>
+                <name>updatetime</name>
                 <type>integer</type>
-                <length>8</length>
+                <length>16</length>
                 <default>0</default>
             </field>
 

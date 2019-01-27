@@ -160,7 +160,8 @@
         <declaration>
 
             <field>
-                <name>sid</name>
+                <name>id</name>
+                <was>sid</was>
                 <type>integer</type>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
@@ -245,31 +246,6 @@
                 <length>8</length>
                 <default>0</default>
             </field>
-
-            <index>
-                <name><variable>table_prefix</variable>session_user</name>
-                <field>
-                    <name>user</name>
-                </field>
-
-                <field>
-                    <name>domain</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>session_hidden</name>
-                <field>
-                    <name>hidden</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>session_uptime</name>
-                <field>
-                    <name>update_time</name>
-                </field>
-            </index>
 
         </declaration>
     </table>

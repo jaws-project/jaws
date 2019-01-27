@@ -191,7 +191,7 @@
         <declaration>
 
             <field>
-                <name>sid</name>
+                <name>id</name>
                 <type>integer</type>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
