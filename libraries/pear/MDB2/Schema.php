@@ -1746,16 +1746,25 @@ class MDB2_Schema
                             MDB2_Schema::arrayMergeClobber($changes['change'][$was_table_name], $change);
                     }
                 }
-                if (!empty($current_definition['indexes']) && is_array($current_definition['indexes'])) {
-                    $previous_indexes = array();
-                    if (isset($previous_definition[$was_table_name]['indexes'])
-                        && is_array($previous_definition[$was_table_name]['indexes'])) {
-                        $previous_indexes = $previous_definition[$was_table_name]['indexes'];
-                    }
-                    $change = $this->compareTableIndexesDefinitions($table_name,
-                                                                    $current_definition['indexes'],
-                                                                    $previous_indexes);
 
+                $current_indexes = array();
+                if (!empty($current_definition['indexes']) && is_array($current_definition['indexes'])
+                ) {
+                    $current_indexes = $current_definition['indexes'];
+                }
+
+                $previous_indexes = array();
+                if (isset($previous_definition[$was_table_name]['indexes'])
+                    && is_array($previous_definition[$was_table_name]['indexes'])
+                ) {
+                    $previous_indexes = $previous_definition[$was_table_name]['indexes'];
+                }
+                if (!empty($current_indexes) || !empty($previous_indexes)) {
+                    $change = $this->compareTableIndexesDefinitions(
+                        $table_name,
+                        $current_definition['indexes'],
+                        $previous_indexes
+                    );
                     if (MDB2::isError($change)) {
                         return $change;
                     }
@@ -1763,6 +1772,7 @@ class MDB2_Schema
                         $changes['change'][$was_table_name]['indexes'] = $change;
                     }
                 }
+
                 if (empty($changes['change'][$was_table_name])) {
                     unset($changes['change'][$was_table_name]);
                 }
@@ -1962,13 +1972,13 @@ class MDB2_Schema
                     // Drop existing old name of index/constraint
                     if (in_array($index['was'], $this->db->manager->listTableIndexes($table_name))) {
                         $result = $this->db->manager->dropIndex($table_name, $index['was']);
-                        if (!empty($result) && MDB2::isError($result)) {
+                        if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
                             return $result;
                         }
                     }
                     if (in_array($index['was'], $this->db->manager->listTableConstraints($table_name))) {
                         $result = $this->db->manager->dropConstraint($table_name, $index['was']);
-                        if (!empty($result) && MDB2::isError($result)) {
+                        if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
                             return $result;
                         }
                     }
@@ -1980,13 +1990,13 @@ class MDB2_Schema
                  */
                 if (in_array($index_name, $this->db->manager->listTableIndexes($table_name))) {
                     $result = $this->db->manager->dropIndex($table_name, $index_name);
-                    if (!empty($result) && MDB2::isError($result)) {
+                    if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
                         return $result;
                     }
                 }
                 if (in_array($index_name, $this->db->manager->listTableConstraints($table_name))) {
                     $result = $this->db->manager->dropConstraint($table_name, $index_name);
-                    if (!empty($result) && MDB2::isError($result)) {
+                    if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
                         return $result;
                     }
                 }
@@ -1996,7 +2006,7 @@ class MDB2_Schema
                 } else {
                     $result = $this->db->manager->createIndex($table_name, $index_name, $index);
                 }
-                if (MDB2::isError($result)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_ALREADY_EXISTS)) {
                     return $result;
                 }
                 $alterations++;
@@ -2009,7 +2019,7 @@ class MDB2_Schema
                 } else {
                     $result = $this->db->manager->createIndex($table_name, $index_name, $index);
                 }
-                if (MDB2::isError($result)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_ALREADY_EXISTS)) {
                     return $result;
                 }
                 $alterations++;
@@ -2193,13 +2203,13 @@ class MDB2_Schema
         if (!empty($current_definition['name'])) {
             $previous_database_name = $this->db->setDatabase($current_definition['name']);
         }
-
+/*
         if (($support_transactions = $this->db->supports('transactions'))
             && MDB2::isError($result = $this->db->beginNestedTransaction())
         ) {
             return $result;
         }
-
+*/
         if (!empty($changes['tables']) && !empty($current_definition['tables'])) {
             $current_tables  = isset($current_definition['tables']) ? $current_definition['tables'] : array();
             $previous_tables = isset($previous_definition['tables']) ? $previous_definition['tables'] : array();
@@ -2219,7 +2229,7 @@ class MDB2_Schema
                 $alterations += $result;
             }
         }
-
+/*
         if ($support_transactions) {
             $res = $this->db->completeNestedTransaction();
             if (MDB2::isError($res)) {
@@ -2232,7 +2242,7 @@ class MDB2_Schema
                 'the requested database alterations were only partially implemented ('.
                 $result->getMessage().' ('.$result->getUserinfo().'))');
         }
-
+*/
         if (isset($previous_database_name)) {
             $this->db->setDatabase($previous_database_name);
         }
