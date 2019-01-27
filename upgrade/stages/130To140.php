@@ -43,17 +43,23 @@ class Upgrader_130To140 extends JawsUpgraderStage
         require_once JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
-            _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
+            _log(
+                JAWS_LOG_DEBUG,
+                "There was a problem connecting to the database, please check the details and try again"
+            );
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         // upgrade core database schema
-        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.2.0.xml';
-        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.2.0.xml';
-        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.2.0.xml';
+        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.3.0.xml';
+        $mid_schema = JAWS_PATH . 'upgrade/Resources/schema/1.3.5.xml';
         $new_schema = JAWS_PATH . 'upgrade/Resources/schema/schema.xml';
         if (!file_exists($old_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.2.0.xml'),0 , JAWS_ERROR_ERROR);
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.3.0.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        if (!file_exists($mid_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.3.5.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         if (!file_exists($new_schema)) {
@@ -61,7 +67,15 @@ class Upgrader_130To140 extends JawsUpgraderStage
         }
 
         _log(JAWS_LOG_DEBUG,"Upgrading core schema");
-        $result = Jaws_DB::getInstance()->installSchema($new_schema, array(), $old_schema);
+        $result = Jaws_DB::getInstance()->installSchema($mid_schema, array(), $old_schema);
+        if (Jaws_Error::isError($result)) {
+            _log(JAWS_LOG_ERROR, $result->getMessage());
+            if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
+                return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+            }
+        }
+
+        $result = Jaws_DB::getInstance()->installSchema($new_schema, array(), $mid_schema);
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_ERROR, $result->getMessage());
             if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
@@ -75,7 +89,7 @@ class Upgrader_130To140 extends JawsUpgraderStage
         $GLOBALS['app']->Registry->Init();
 
         // Upgrading core gadgets
-        $gadgets = array('UrlMapper', 'Settings', 'Policy', 'Users', 'Layout', 'ControlPanel');
+        $gadgets = array('Policy', 'Users');
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
