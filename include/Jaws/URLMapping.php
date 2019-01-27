@@ -413,7 +413,7 @@ class Jaws_URLMapping
             }
 
             if (!empty($url)) {
-                return ($abs_url? $GLOBALS['app']->getSiteURL('/') : '') . $url;
+                return ($abs_url? $GLOBALS['app']->getSiteURL('/', false) : '') . $url;
             }
         }
 
