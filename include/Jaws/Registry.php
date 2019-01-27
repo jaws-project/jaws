@@ -47,7 +47,7 @@ class Jaws_Registry
                     ->where('component', '')
                     ->fetchOne();
                 if (!Jaws_Error::IsError($result)) {
-                    return $result;
+                    return json_decode($result);
                 }
             }
 
