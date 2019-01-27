@@ -66,7 +66,7 @@ if (!defined('JAWS_GODUSER')) {
 }
 
 // Lets support older PHP versions so we can use spanking new functions
-require JAWS_PATH . 'include/Jaws/PHPFunctions.php';
+require JAWS_PATH . 'include/Jaws/Helper.php';
 
 // lets setup the include_path
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');

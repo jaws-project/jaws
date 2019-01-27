@@ -282,6 +282,31 @@ if (!function_exists('http_response_code')) {
         return $http_status_code;
     }
 }
+/**
+ * Build a URL
+ * @see http://php.net/manual/fa/function.parse-url.php
+ */
+if (!function_exists('build_url'))
+{
+    /**
+     * @param   array   $parts
+     * @return  string
+     */
+    function build_url(array $parts)
+    {
+        $scheme   = isset($parts['scheme'])? ($parts['scheme'] . '://') : '';
+        $host     = isset($parts['host'])? $parts['host'] : '';
+        $port     = isset($parts['port'])? (':' . $parts['port']) : '';
+        $user     = isset($parts['user'])? $parts['user'] : '';
+        $pass     = isset($parts['pass'])? (':' . $parts['pass'])  : '';
+        $pass     = ($user || $pass)? "$pass@" : '';
+        $path     = isset($parts['path'])? $parts['path'] : '';        
+        $query    = isset($parts['query'])? ('?' . $parts['query']) : '';        
+        $fragment = isset($parts['fragment'])? ('#' . $parts['fragment']) : '';
+
+        return implode('', [$scheme, $user, $pass, $host, $port, $path, $query, $fragment]);
+    }
+}
 
 /**
  * Convenience function to translate strings.
