@@ -132,16 +132,18 @@ class MDB2_Driver_pgsql extends MDB2_Driver_Common
             $error_regexps = array(
                 '/column .* (of relation .*)?does not exist/i'
                     => MDB2_ERROR_NOSUCHFIELD,
-                '/(relation|sequence|table).*does not exist|class .* not found/i'
-                    => MDB2_ERROR_NOSUCHTABLE,
                 '/database .* does not exist/'
                     => MDB2_ERROR_NOT_FOUND,
-                '/constraint .* does not exist/'
+                '/constraint .* (of relation .*)?does not exist/i'
                     => MDB2_ERROR_NOT_FOUND,
                 '/index .* does not exist/'
                     => MDB2_ERROR_NOT_FOUND,
                 '/role .* does not exist/i'
                     => MDB2_ERROR_NOSUCHUSER,
+                '/(relation|sequence|table).*does not exist|class .* not found/i'
+                    => MDB2_ERROR_NOSUCHTABLE,
+                '/column .* (of relation .*)?already exists/i'
+                    => MDB2_ERROR_ALREADY_EXISTS,
                 '/database .* already exists/i'
                     => MDB2_ERROR_ALREADY_EXISTS,
                 '/relation .* already exists/i'
