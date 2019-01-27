@@ -485,7 +485,7 @@ class Jaws
      * @param   bool    $rel_url    Relative url
      * @return  string  Site's URL
      */
-    function getSiteURL($suffix = '', $rel_url = false)
+    function getSiteURL($suffix = '', $rel_url = true)
     {
         static $site_url;
         if (!isset($site_url)) {

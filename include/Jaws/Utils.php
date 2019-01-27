@@ -103,7 +103,7 @@ class Jaws_Utils
      * @param   bool    $rel_url    relative url
      * @return  string  url of base script
      */
-    static function getBaseURL($suffix = '', $rel_url = false)
+    static function getBaseURL($suffix = '', $rel_url = true)
     {
         static $site_url;
         if (!isset($site_url)) {
