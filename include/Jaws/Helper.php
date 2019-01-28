@@ -384,24 +384,27 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
         $sync = false;
     }
 
-    if (!empty($next_location)) {
-        // prevent redirect if request is sent via ajax
-        $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-        if ($XMLHttpRequest) {
-            $data = $GLOBALS['app']->Session->PopResponse($data);
-        } else {
-            header('Location: '.$next_location);
-        }
-    }
-
     // set response status code
     http_response_code($status_code);
-    // encode data based on response type
-    $data = Jaws_Response::get($resType, $data);
+
+    // detect Ajax request
+    $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+        ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+    if (!empty($next_location) && $XMLHttpRequest) {
+        $data = $GLOBALS['app']->Session->PopResponse($data);
+    }
+
     // Sync session
     if ($sync) {
         $GLOBALS['app']->Session->update();
     }
+
+    if (!empty($next_location) && !$XMLHttpRequest) {
+        header('Location: '.$next_location);
+    }
+
+    // encode data based on response type
+    $data = Jaws_Response::get($resType, $data);
 
     // return data
     echo $data;
