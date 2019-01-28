@@ -23,15 +23,11 @@ class Users_Account_Default extends Jaws_Gadget_Action
 
         $response = $this->gadget->session->pop('Login.Response');
         if (!isset($response['data'])) {
-            //$referrer  = $this->gadget->request->fetch('referrer', 'get');
             $reqpost['username'] = '';
             $reqpost['password'] = '';
             $reqpost['authstep'] = 0;
-            $reqpost['authtype'] = '';
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
-            //$reqpost['referrer'] = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
-            $reqpost['referrer'] = bin2hex(Jaws_Utils::getRequestURL(true));
         } else {
             $reqpost = $response['data'];
         }
@@ -39,12 +35,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
         // set session key/value for check through login process
         $this->gadget->session->insert('checksess', 1);
 
-        if (is_null($reqpost['authtype'])) {
-            $reqpost['authtype'] = $this->gadget->request->fetch('authtype', 'get');
-        }
-
         // global variables
-        $tpl->SetVariable('referrer', $reqpost['referrer']);
         $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
 
         if (!empty($reqpost['authstep'])) {
@@ -114,24 +105,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
         $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
-        $authtype = $this->gadget->registry->fetch('authtype', 'Users');
-        if (!empty($reqpost['authtype']) || $authtype !== 'Default') {
-            $authtype = is_null($reqpost['authtype'])? $authtype : $reqpost['authtype'];
-            $tpl->SetBlock('LoginBox/login_step_1/authtype');
-            $tpl->SetVariable('lbl_authtype', _t('GLOBAL_AUTHTYPE'));
-            foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
-                $tpl->SetBlock('LoginBox/login_step_1/authtype/item');
-                $tpl->SetVariable('method', $method);
-                if ($method == $authtype) {
-                    $tpl->SetVariable('selected', 'selected="selected"');
-                } else {
-                    $tpl->SetVariable('selected', '');
-                }
-                $tpl->ParseBlock('LoginBox/login_step_1/authtype/item');
-            }
-            $tpl->ParseBlock('LoginBox/login_step_1/authtype');
-        }
-
         // remember
         $tpl->SetBlock('LoginBox/login_step_1/remember');
         $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
@@ -155,7 +128,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
         $tpl->SetBlock('LoginBox/login_step_2');
 
         $tpl->SetVariable('usecrypt', $reqpost['usecrypt']);
-        $tpl->SetVariable('authtype', $reqpost['authtype']);
         $tpl->SetVariable('remember', $reqpost['remember']);
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
         $tpl->SetVariable('password', isset($reqpost['password'])? $reqpost['password'] : '');
@@ -167,8 +139,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
     }
 
     /**
-     * Logins user, if something goes wrong then redirect user to previous page
-     * and notify the error
+     * Authenticate
      *
      * @access  public
      * @return  void
@@ -185,12 +156,11 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $httpAuth->AssignData();
             jaws()->request->update('username', $httpAuth->getUsername(), 'post');
             jaws()->request->update('password', $httpAuth->getPassword(), 'post');
-            jaws()->request->update('referrer', bin2hex(Jaws_Utils::getRequestURL(true)), 'post');
             jaws()->request->update('usecrypt', 0, 'post');
         }
 
         $loginData = $this->gadget->request->fetch(
-            array('username', 'password', 'usecrypt', 'loginkey', 'authstep', 'referrer', 'remember', 'authtype'),
+            array('username', 'password', 'usecrypt', 'loginkey', 'authstep', 'remember'),
             'post'
         );
 
@@ -241,6 +211,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
                 $user['last_update']
             );
             $user['internal'] = true;
+            $user['remember'] = (bool)$loginData['remember'];
 
             // two step verification?
             if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users'))
@@ -295,34 +266,13 @@ class Users_Account_Default extends Jaws_Gadget_Action
             // remove login key
             $this->gadget->session->delete('loginkey');
 
-            // create session & cookie
-            $GLOBALS['app']->Session->Create($user, (bool)$loginData['remember']);
-            // login event logging
-            $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
-            // let everyone know a user has been logged
-            $GLOBALS['app']->Listener->Shout('Session', 'LoginUser', $GLOBALS['app']->Session->GetAttributes());
-
-            // check password age
-            $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-            if ($password_max_age > 0) {
-                $expPasswordTime = time() - 3600 * $password_max_age;
-                if ((int)$user['last_password_update'] <= $expPasswordTime) {
-                    $this->gadget->session->push(
-                        _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
-                        'Account.Response',
-                        RESPONSE_WARNING,
-                        $loginData
-                    );
-                    return Jaws_Header::Location($this->gadget->urlMap('Account'));
-                }
-            }
-
             if (!$this->gadget->session->fetch('checksess')) {
                 // do logout
                 $GLOBALS['app']->Session->Logout();
                 throw new Exception(_t('GLOBAL_ERROR_SESSION_NOTFOUND'));
             }
 
+            return $user;
         } catch (Exception $error) {
             // increment login trying count in session
             $this->gadget->session->update(
@@ -339,13 +289,56 @@ class Users_Account_Default extends Jaws_Gadget_Action
             if ($httpAuthEnabled) {
                 return $this->gadget->action->loadAdmin('Login')->Login();
             }
+
+            return Jaws_Error::raiseError($error->getMessage(), __FUNCTION__);
         }
 
-        $referrer = parse_url(hex2bin($loginData['referrer']));
-        $referrer = (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
-                    (array_key_exists('query', $referrer)? "?{$referrer['query']}" : '') . 
-                    (array_key_exists('fragment', $referrer)? "#{$referrer['fragment']}" : '');
-        return Jaws_Header::Location($referrer);
+    }
+
+    /**
+     * Authorize
+     *
+     * @access  public
+     * @return  void
+     */
+    function Authorize($loginData = null)
+    {
+        // check password age
+        $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
+        if ($password_max_age > 0) {
+            $expPasswordTime = time() - 3600 * $password_max_age;
+            if ((int)$loginData['last_password_update'] <= $expPasswordTime) {
+                $this->gadget->session->push(
+                    _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
+                    'Account.Response',
+                    RESPONSE_WARNING,
+                    $loginData
+                );
+                return Jaws_Header::Location($this->gadget->urlMap('Account'));
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Login Error
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function LoginError($error, $referrer)
+    {
+        $urlParams = array();
+        $authtype = $this->gadget->request->fetch('authtype');
+        if (!empty($get['authtype'])) {
+            $urlParams['authtype'] = $get['authtype'];
+        }
+        if (!empty($referrer)) {
+            $urlParams['referrer'] = $referrer;
+        }
+
+        return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
     }
 
 }

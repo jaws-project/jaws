@@ -301,7 +301,32 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return $this->LoginLinks();
         }
 
-        $classname = "Users_Account_Default";
+        // 
+        $authtype = $this->gadget->request->fetch('authtype');
+        if (empty($authtype)) {
+            $authtype = $this->gadget->registry->fetch('authtype');
+        }
+        $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
+        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype.php";
+        if (!file_exists($authfile)) {
+            $GLOBALS['log']->Log(
+                JAWS_LOG_NOTICE,
+                $authtype. ' authentication driver doesn\'t exists, switched to default driver'
+            );
+            $authtype = 'Default';
+        }
+        // set authentication type in session
+        $this->gadget->session->update('authtype', $authtype);
+
+        // store referrer in session
+        $referrer = $this->gadget->request->fetch('referrer');
+        if (empty($referrer)) {
+            $referrer = bin2hex('');
+        }
+        $this->gadget->session->update('referrer', $referrer);
+
+        // load authentication method driver
+        $classname = "Users_Account_$authtype";
         $objAccount = new $classname($this->gadget);
         return $objAccount->Login();
     }
@@ -315,20 +340,45 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Authenticate()
     {
-/*
-        // load authentication method driver
-        if (!empty($loginData['authtype'])) {
-            $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $loginData['authtype']);
-        } else {
-            //$authtype = $GLOBALS['app']->Session->_AuthType;
-            $authtype = 'Default';
+        // fetch authentication type from session
+        $authtype = $this->gadget->session->fetch('authtype');
+
+        // parse referrer url
+        $referrer = parse_url(hex2bin($this->gadget->session->fetch('referrer')));
+        $this->gadget->session->delete('referrer');
+        foreach ($referrer as $part => $value) {
+            if (in_array($part, array('path', 'query', 'fragment'))) {
+                $referrer[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
+            } else {
+                // unset schema|host|port|user|pass for security reason
+                $referrer[$part] = null;
+            }
         }
-        $className = 'Jaws_Auth_' . $authtype;
-        $modelAuth = new $className();
-*/
-        $classname = "Users_Account_Default";
+        $referrer = str_replace('%2C', ',', build_url($referrer));
+
+        $classname = "Users_Account_$authtype";
         $objAccount = new $classname($this->gadget);
-        return $objAccount->Authenticate();
+        $loginData = $objAccount->Authenticate();
+        if (Jaws_Error::IsError($loginData)) {
+            if (method_exists($objAccount, 'LoginError')) {
+                return $objAccount->LoginError($loginData, $referrer);
+            }
+        } else {
+            // create session & cookie
+            $GLOBALS['app']->Session->Create($loginData, $loginData['remember']);
+            // login event logging
+            $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
+            // let everyone know a user has been logged in
+            $this->gadget->event->shout('LoginUser', $loginData);
+
+            // call Authorize method if exists
+            if (method_exists($objAccount, 'Authorize')) {
+                $objAccount->Authorize($loginData);
+            }
+        }
+
+        return Jaws_Header::Location($referrer);
+
     }
 
     /**
