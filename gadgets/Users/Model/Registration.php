@@ -265,7 +265,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $userModel = new Jaws_User;
         $user = $userModel->FindUserByTerm($term);
         if (Jaws_Error::IsError($user)) {
-            return $uInfos;
+            return $user;
         }
 
         if (empty($user)) {
