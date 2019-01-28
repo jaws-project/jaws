@@ -287,7 +287,21 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             ->and()
             ->where('verify_key', $key)
             ->exec();
-        return Jaws_Error::IsError($result)? false : !empty($result);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        if (empty($result)) {
+            $result = Jaws_ORM::getInstance()
+                ->table('users')
+                ->select('count(id):integer')
+                ->where('id', (int)$user)
+                ->and()
+                ->where('verify_key', $key)
+                ->fetchOne();
+            return Jaws_Error::IsError($result) ? false : !empty($result);
+        }
+        return true;
     }
 
     /**
