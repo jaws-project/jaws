@@ -108,15 +108,38 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $jUser->AddUserToGroup($user_id, $group);
         }
 
+        $this->SendVerifyKey($user_id, true, $password);
+
+        return $user_id;
+    }
+
+
+    /**
+     * Send verification key to user
+     *
+     * @access  public
+     * @param   int     $user                   User id
+     * @param   bool    $firstNotification      First notification ?
+     * @param   string  $password               User's password
+     * @return  mixed   User ID on success or Jaws_Error on failure
+     */
+    function SendVerifyKey($user, $firstNotification, $password = '')
+    {
         $site_url   = $GLOBALS['app']->getSiteURL('/');
         $settings   = $GLOBALS['app']->Registry->fetchAll('Settings');
         $activation = $this->gadget->registry->fetch('anon_activation');
         $message    = '';
 
+        $userModel = new Jaws_User();
+        $userInfo = $userModel->GetUser($user, true, true, true);
+        if (Jaws_Error::IsError($userInfo)) {
+            return $userInfo;
+        }
+
         //Send notification to the user
         $tpl = $this->gadget->template->load('RegistrationNotification.html');
         $tpl->SetBlock('UserNotification');
-        $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $nickname));
+        $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $userInfo['nickname']));
 
         switch ($activation) {
             case 'admin':
@@ -128,7 +151,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 // verify key
                 $tpl->SetBlock('UserNotification/Activation');
                 $tpl->SetVariable('lbl_key', _t('USERS_REGISTRATION_KEY'));
-                $tpl->SetVariable('key', $verifyKey);
+                $tpl->SetVariable('key', $userInfo['verify_key']);
                 $tpl->ParseBlock('UserNotification/Activation');
                 break;
 
@@ -143,56 +166,57 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 );
         }
 
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('username', $username);
-        $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('password', $password);
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email', $user_email);
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('mobile',      $user_mobile);
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-        $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-        $tpl->SetVariable('thanks',    _t('GLOBAL_THANKS'));
-        $tpl->SetVariable('site-name', $settings['site_name']);
-        $tpl->SetVariable('site-url',  $site_url);
+        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username',       $userInfo['username']);
+        $tpl->SetVariable('lbl_password',   _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('password',       $password);
+        $tpl->SetVariable('lbl_email',      _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email',          $userInfo['email']);
+        $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile',         $userInfo['mobile']);
+        $tpl->SetVariable('lbl_ip',         _t('GLOBAL_IP'));
+        $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
+        $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name',      $settings['site_name']);
+        $tpl->SetVariable('site-url',       $site_url);
         $tpl->ParseBlock('UserNotification');
         $message = $tpl->Get();
         $subject = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
 
         // Notify
         $params = array();
-        $params['key']     = crc32('Users.Registration.User' . $user_id);
+        $params['key']     = crc32('Users.Registration.User' . $user);
         $params['title']   = $subject;
         $params['summary'] = _t(
             'USERS_REGISTRATION_USER_SUMMARY',
-            $nickname,
+            $userInfo['nickname'],
             $site_url,
-            $username,
+            $userInfo['username'],
             $password,
-            $user_email,
-            $user_mobile,
-            $verifyKey
+            $userInfo['email'],
+            $userInfo['mobile'],
+            $userInfo['verify_key']
         );
+
         $params['description'] = $this->gadget->plugin->parse($message);
-        $params['emails']      = array($user_email);
-        $params['mobiles']     = array($user_mobile);
+        $params['emails']      = array($userInfo['email']);
+        $params['mobiles']     = array($userInfo['mobile']);
         $this->gadget->event->shout('Notify', $params);
 
         //Send an email to website owner
-        if ($this->gadget->registry->fetch('register_notification') == 'true') {
+        if ($firstNotification && $this->gadget->registry->fetch('register_notification') == 'true') {
             $tpl = $this->gadget->template->load('RegistrationNotification.html');
             $tpl->SetBlock('OwnerNotification');
             $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $settings['site_author']));
             $tpl->SetVariable('message', _t('USERS_REGISTRATION_ADMIN_MAIL_MSG'));
             $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-            $tpl->SetVariable('username', $username);
+            $tpl->SetVariable('username', $userInfo['username']);
             $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
-            $tpl->SetVariable('nickname', $nickname);
+            $tpl->SetVariable('nickname', $userInfo['nickname']);
             $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-            $tpl->SetVariable('email', $user_email);
+            $tpl->SetVariable('email', $userInfo['email']);
             $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-            $tpl->SetVariable('mobile',      $user_mobile);
+            $tpl->SetVariable('mobile',      $userInfo['mobile']);
             $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
             $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
 
@@ -205,15 +229,15 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
             // Notify
             $params = array();
-            $params['key']     = crc32('Users.Registration.Owner' . $user_id);
+            $params['key']     = crc32('Users.Registration.Owner' . $user);
             $params['title']   = $subject;
             $params['summary'] = _t(
                 'USERS_REGISTRATION_OWNER_SUMMARY',
                 $site_url,
-                $username,
-                $nickname,
-                $user_email,
-                $user_mobile
+                $userInfo['username'],
+                $userInfo['nickname'],
+                $userInfo['email'],
+                $userInfo['mobile']
             );
             $params['description'] = $this->gadget->plugin->parse($message);
             $params['emails']      = array($settings['site_email']);
@@ -221,7 +245,29 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $this->gadget->event->shout('Notify', $params);
         }
 
-        return $user_id;
+        return true;
+    }
+
+    /**
+     * Generate new Verify Key and send it again
+     *
+     * @access  public
+     * @param   int     $user   User ID
+     * @return  bool    True on success or False on failure
+     */
+    function ResendVerifyKey($user)
+    {
+        $verifyKey = Jaws_Utils::RandomText(5, false, false, true);
+        $result = Jaws_ORM::getInstance()
+            ->table('users')
+            ->update(array('verify_key' => $verifyKey))
+            ->where('id', (int)$user)
+            ->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        return $this->SendVerifyKey($user, false);
     }
 
     /**
