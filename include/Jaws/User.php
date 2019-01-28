@@ -209,7 +209,7 @@ class Jaws_User
         if ($account) {
             $columns = array_merge($columns, array('username', 'nickname', 'users.email', 'users.mobile',
                 'superadmin:boolean', 'concurrents', 'logon_hours', 'expiry_date', 'registered_date',
-                'status:integer', 'last_update', 'bad_password_count', 'last_access',)
+                'status:integer', 'last_update', 'bad_password_count', 'last_access', 'verify_key')
             );
         }
 
