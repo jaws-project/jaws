@@ -471,7 +471,7 @@ class Jaws_User
             ->where('lower(email)', Jaws_UTF8::strtolower($user))
             ->or()
             ->closeWhere('mobile', $user)
-            -> and()
+            ->and()
             ->where('recovery_key', trim($key))
             ->fetchRow();
     }
