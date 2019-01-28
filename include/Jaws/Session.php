@@ -60,13 +60,6 @@ class Jaws_Session
     protected $_AttributesTrash = array();
 
     /**
-     * Changes flag
-     * @var     bool    $_HasChanged
-     * @access  protected
-     */
-    protected $_HasChanged;
-
-    /**
      * Session unique identifier
      * @var     string $_SessionID
      * @access  protected
@@ -116,9 +109,6 @@ class Jaws_Session
             );
             $this->_AuthType = 'Default';
         }
-
-        // Try to restore session...
-        $this->_HasChanged = false;
 
         // Delete expired sessions
         if (mt_rand(1, 32) == mt_rand(1, 32)) {
@@ -398,8 +388,6 @@ class Jaws_Session
         if ($trashed) {
             $this->_AttributesTrash[$name] = $value;
         } else {
-            $this->_HasChanged =
-                !array_key_exists($name, $this->_Attributes) || ($this->_Attributes[$name] !== $value);
             if (is_array($value) && $name == 'LastResponses') {
                 $this->_Attributes['LastResponses'][] = $value;
             } else {
@@ -469,7 +457,6 @@ class Jaws_Session
                 $this->_AttributesTrash[$name] = $this->_Attributes[$name];
             }
             unset($this->_Attributes[$name]);
-            $this->_HasChanged = true;
         } elseif (!$trashed && array_key_exists($name, $this->_AttributesTrash)) {
             unset($this->_AttributesTrash[$name]);
         }
@@ -568,31 +555,21 @@ class Jaws_Session
         }
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
-        // Now we sync with a previous session only if has changed
-        if ($this->_HasChanged) {
-            $user = $this->GetAttribute('user');
-            $serialized = serialize($this->_Attributes);
-            $sessTable->update(array(
-                'user'        => $user,
-                'data'        => $serialized,
-                'longevity'   => $this->GetAttribute('longevity'),
-                'checksum'    => md5($user. $serialized),
-                'ip'          => $ip,
-                'agent'       => $agent,
-                'update_time' => time()
-            ));
-            $result = $sessTable->where('id', $this->_SessionID)->exec();
-            if (!Jaws_Error::IsError($result)) {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully');
-                return $this->_SessionID;
-            }
-        } else {
-            $sessTable->update(array('update_time' => time()));
-            $result = $sessTable->where('id', $this->_SessionID)->exec();
-            if (!Jaws_Error::IsError($result)) {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully(only modification time)');
-                return $this->_SessionID;
-            }
+        $user = $this->GetAttribute('user');
+        $serialized = serialize($this->_Attributes);
+        $sessTable->update(array(
+            'user'        => $user,
+            'data'        => $serialized,
+            'longevity'   => $this->GetAttribute('longevity'),
+            'checksum'    => md5($user. $serialized),
+            'ip'          => $ip,
+            'agent'       => $agent,
+            'update_time' => time()
+        ));
+        $result = $sessTable->where('id', $this->_SessionID)->exec();
+        if (!Jaws_Error::IsError($result)) {
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully');
+            return $this->_SessionID;
         }
 
         return false;
