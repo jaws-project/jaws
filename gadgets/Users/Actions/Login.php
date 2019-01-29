@@ -364,6 +364,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 return $objAccount->LoginError($loginData, $referrer);
             }
         } else {
+            $loginData['authtype'] = $authtype;
             // create session & cookie
             $GLOBALS['app']->Session->Create($loginData, $loginData['remember']);
             // login event logging
