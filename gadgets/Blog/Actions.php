@@ -26,6 +26,7 @@ $actions['SingleView'] = array(
     'file'   => 'Post',
 );
 $actions['ViewPage'] = array(
+    'layout' => true,
     'normal' => true,
     'file'   => 'Posts',
 );
