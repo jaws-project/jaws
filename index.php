@@ -6,7 +6,7 @@
  * @package    Core
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Helgi �ormar <dufuz@php.net>
+ * @author     Helgi Þormar <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
