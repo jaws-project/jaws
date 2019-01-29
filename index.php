@@ -6,7 +6,7 @@
  * @package    Core
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Helgi Þormar <dufuz@php.net>
+ * @author     Helgi ï¿½ormar <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
@@ -77,7 +77,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
     if ($AccessToWebsiteDenied && (empty($objAction) || !$objAction->getAttribute($ReqAction, 'global'))) {
         $IsIndex = false;
         $ReqGadget = 'Users';
-        $ReqAction = 'LoginBox';
+        $ReqAction = 'Login';
         $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->load();
         if (Jaws_Error::IsError($objAction)) {
             Jaws_Error::Fatal("Error loading gadget: $ReqGadget");

@@ -41,7 +41,7 @@ class Jaws_HTTPError
 
                 $urlLogin = $GLOBALS['app']->Map->GetURLFor(
                     'Users',
-                    'LoginBox',
+                    'Login',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
                 );
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_401') : $title;

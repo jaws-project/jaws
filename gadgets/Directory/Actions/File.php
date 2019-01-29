@@ -83,7 +83,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
                     $file['id']
                 ));
             } elseif ($allow_comments == 'restricted') {
-                $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Login');
                 $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
                 $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
             }

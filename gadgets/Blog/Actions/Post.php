@@ -131,7 +131,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
                         $entry['id']
                     ));
                 } elseif ($restricted) {
-                    $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                    $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Login');
                     $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
                     $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
                 }

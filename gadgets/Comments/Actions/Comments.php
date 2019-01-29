@@ -107,7 +107,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         } else {
             $tpl->SetBlock('comment_form/unregistered');
             $tpl->SetVariable('msg', _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox'),
+                $GLOBALS['app']->Map->GetURLFor('Users', 'Login'),
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Registration')));
             $tpl->ParseBlock('comment_form/unregistered');
         }

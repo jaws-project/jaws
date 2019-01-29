@@ -201,7 +201,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                     $image['id']
                 ));
             } elseif ($restricted) {
-                $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Login');
                 $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
                 $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
             }
@@ -307,7 +307,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $userGadget = Jaws_Gadget::getInstance('Users');
             return Jaws_Header::Location(
                 $userGadget->urlMap(
-                    'LoginBox',
+                    'Login',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
                 ), 401
             );

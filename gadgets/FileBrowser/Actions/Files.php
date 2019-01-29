@@ -30,7 +30,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
                 return _t('GLOBAL_ERROR_ACCESS_DENIED');
             } else {
                 return _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
-                    $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox'),
+                    $GLOBALS['app']->Map->GetURLFor('Users', 'Login'),
                     $GLOBALS['app']->Map->GetURLFor('Users', 'Registration'));
             }
         }
