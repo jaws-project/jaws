@@ -81,10 +81,6 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return false; //we need to handle errors on ajax
         }
 
-        if (!$menu['variables']) {
-            $menu['url'] = rawurldecode($menu['url']);
-        }
-
         return $menu;
     }
 
@@ -120,9 +116,14 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($url)) {
             $url = serialize($this->gadget->request->fetch('5:array', 'post'));
         } else {
-            $url = implode('/', array_map('rawurlencode', explode('/', $url)));
+            $parsedURL = parse_url($url);
+            foreach ($parsedURL as $part => $value) {
+                if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
+                    $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
+                }
+            }
             // prevent encode comma
-            $url = str_replace('%2C', ',', $url);
+            $url = str_replace('%2C', ',', build_url($parsedURL));
         }
 
         if (is_null($permission)) {
@@ -183,9 +184,14 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($url)) {
             $url = serialize($this->gadget->request->fetch('6:array', 'post'));
         } else {
-            $url = implode('/', array_map('rawurlencode', explode('/', $url)));
+            $parsedURL = parse_url($url);
+            foreach ($parsedURL as $part => $value) {
+                if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
+                    $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
+                }
+            }
             // prevent encode comma
-            $url = str_replace('%2C', ',', $url);
+            $url = str_replace('%2C', ',', build_url($parsedURL));
         }
 
         if (is_null($permission)) {
