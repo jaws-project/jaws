@@ -15,6 +15,17 @@ class Users_Account_Default extends Jaws_Gadget_Action
      */
     function Login()
     {
+        return (JAWS_SCRIPT == 'index')? $this->IndexLogin() : $this->AdminLogin();
+    }
+
+    /**
+     * Builds the frontend login box
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function IndexLogin()
+    {
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('LoginBox.html');
         $tpl->SetBlock('LoginBox');
@@ -76,6 +87,69 @@ class Users_Account_Default extends Jaws_Gadget_Action
     }
 
     /**
+     * Builds the backend login box
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function AdminLogin()
+    {
+        if ($GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true') {
+            $this->gadget->session->insert('checksess', 1);
+            $httpAuth = new Jaws_HTTPAuth();
+            $httpAuth->showLoginBox();
+            return false;
+        }
+
+        $this->AjaxMe('script.js');
+        // Init layout
+        $GLOBALS['app']->Layout->Load('gadgets/Users/Templates/Admin', 'LoginBox.html');
+        $ltpl =& $GLOBALS['app']->Layout->_Template;
+        $ltpl->SetVariable('admin-script', BASE_SCRIPT);
+        $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
+
+        $response = $this->gadget->session->pop('Login.Response');
+        if (!isset($response['data'])) {
+            $reqpost['username'] = '';
+            $reqpost['password'] = '';
+            $reqpost['authstep'] = 0;
+            $reqpost['remember'] = '';
+            $reqpost['usecrypt'] = '';
+            //$reqpost['referrer'] = bin2hex(Jaws_Utils::getRequestURL(true));
+        } else {
+            $reqpost = $response['data'];
+        }
+
+        // set session key/value for check through login process
+        $this->gadget->session->insert('checksess', 1);
+
+        // referrer
+        //$ltpl->SetVariable('referrer', $reqpost['referrer']);
+        //
+        $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
+
+        if (!empty($reqpost['authstep'])) {
+            $this->LoginBoxStep2($ltpl, $reqpost);
+        } else {
+            $this->LoginBoxStep1($ltpl, $reqpost);
+        }
+
+        //captcha
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+        $mPolicy->loadCaptcha($ltpl, 'layout', 'login');
+
+        $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
+
+        if (!empty($response)) {
+            $ltpl->SetVariable('response_type', $response['type']);
+            $ltpl->SetVariable('response_text', $response['text']);
+        }
+
+        return $GLOBALS['app']->Layout->Get();
+    }
+
+    /**
      * Get HTML login form
      *
      * @access  public
@@ -83,22 +157,23 @@ class Users_Account_Default extends Jaws_Gadget_Action
      */
     private function LoginBoxStep1(&$tpl, $reqpost)
     {
-        $tpl->SetBlock('LoginBox/login_step_1');
+        $block = $tpl->GetCurrentBlockPath();
+        $tpl->SetBlock("$block/login_step_1");
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock('LoginBox/login_step_1/encryption');
+            $tpl->SetBlock("$block/login_step_1/encryption");
             $tpl->SetVariable('pubkey', $JCrypt->getPublic());
-            $tpl->ParseBlock('LoginBox/login_step_1/encryption');
+            $tpl->ParseBlock("$block/login_step_1/encryption");
 
             // usecrypt
-            $tpl->SetBlock('LoginBox/login_step_1/usecrypt');
+            $tpl->SetBlock("$block/login_step_1/usecrypt");
             $tpl->SetVariable('lbl_usecrypt', _t('GLOBAL_LOGIN_SECURE'));
             if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
-                $tpl->SetBlock('LoginBox/login_step_1/usecrypt/selected');
-                $tpl->ParseBlock('LoginBox/login_step_1/usecrypt/selected');
+                $tpl->SetBlock("$block/login_step_1/usecrypt/selected");
+                $tpl->ParseBlock("$block/login_step_1/usecrypt/selected");
             }
-            $tpl->ParseBlock('LoginBox/login_step_1/usecrypt');
+            $tpl->ParseBlock("$block/login_step_1/usecrypt");
         }
 
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
@@ -106,15 +181,15 @@ class Users_Account_Default extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
 
         // remember
-        $tpl->SetBlock('LoginBox/login_step_1/remember');
+        $tpl->SetBlock("$block/login_step_1/remember");
         $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
         if (!empty($reqpost['remember'])) {
-            $tpl->SetBlock('LoginBox/login_step_1/remember/selected');
-            $tpl->ParseBlock('LoginBox/login_step_1/remember/selected');
+            $tpl->SetBlock("$block/login_step_1/remember/selected");
+            $tpl->ParseBlock("$block/login_step_1/remember/selected");
         }
-        $tpl->ParseBlock('LoginBox/login_step_1/remember');
+        $tpl->ParseBlock("$block/login_step_1/remember");
 
-        $tpl->ParseBlock('LoginBox/login_step_1');
+        $tpl->ParseBlock("$block/login_step_1");
     }
 
     /**
@@ -125,7 +200,8 @@ class Users_Account_Default extends Jaws_Gadget_Action
      */
     private function LoginBoxStep2(&$tpl, $reqpost)
     {
-        $tpl->SetBlock('LoginBox/login_step_2');
+        $block = $tpl->GetCurrentBlockPath();
+        $tpl->SetBlock("$block/login_step_2");
 
         $tpl->SetVariable('usecrypt', $reqpost['usecrypt']);
         $tpl->SetVariable('remember', $reqpost['remember']);
@@ -135,7 +211,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
         $tpl->SetVariable('lbl_loginkey', _t('GLOBAL_LOGINKEY'));
 
-        $tpl->ParseBlock('LoginBox/login_step_2');
+        $tpl->ParseBlock("$block/login_step_2");
     }
 
     /**
@@ -338,7 +414,14 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $urlParams['referrer'] = $referrer;
         }
 
-        return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
+        if (JAWS_SCRIPT == 'index') {
+            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
+        } else {
+            $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
+            $admin_script = empty($admin_script)? 'admin.php' : $admin_script;
+            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"));
+        }
+
     }
 
 }

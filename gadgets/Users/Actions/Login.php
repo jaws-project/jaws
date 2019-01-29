@@ -321,7 +321,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         // store referrer in session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
-            $referrer = bin2hex('');
+            $referrer = bin2hex(Jaws_Utils::getRequestURL());
         }
         $this->gadget->session->update('referrer', $referrer);
 
@@ -345,7 +345,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         // parse referrer url
         $referrer = parse_url(hex2bin($this->gadget->session->fetch('referrer')));
-        $this->gadget->session->delete('referrer');
         foreach ($referrer as $part => $value) {
             if (in_array($part, array('path', 'query', 'fragment'))) {
                 $referrer[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
@@ -354,14 +353,14 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $referrer[$part] = null;
             }
         }
-        $referrer = str_replace('%2C', ',', build_url($referrer));
+        $referrer = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($referrer));
 
         $classname = "Users_Account_$authtype";
         $objAccount = new $classname($this->gadget);
         $loginData = $objAccount->Authenticate();
         if (Jaws_Error::IsError($loginData)) {
             if (method_exists($objAccount, 'LoginError')) {
-                return $objAccount->LoginError($loginData, $referrer);
+                return $objAccount->LoginError($loginData, bin2hex($referrer));
             }
         } else {
             $loginData['authtype'] = $authtype;
@@ -391,7 +390,13 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Logout()
     {
         $GLOBALS['app']->Session->Logout();
-        return Jaws_Header::Location();
+
+        if (JAWS_SCRIPT == 'index') {
+            return Jaws_Header::Location();
+        } else {
+            $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
+            return Jaws_Header::Location($admin_script?: 'admin.php');
+        }
     }
 
 }
