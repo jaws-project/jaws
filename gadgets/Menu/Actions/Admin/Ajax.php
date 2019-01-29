@@ -122,8 +122,8 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                     $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
                 }
             }
-            // prevent encode comma
-            $url = str_replace('%2C', ',', build_url($parsedURL));
+            // prevent encode ,|=|&
+            $url = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($parsedURL));
         }
 
         if (is_null($permission)) {
@@ -190,8 +190,8 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                     $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
                 }
             }
-            // prevent encode comma
-            $url = str_replace('%2C', ',', build_url($parsedURL));
+            // prevent encode ,|=|&
+            $url = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($parsedURL));
         }
 
         if (is_null($permission)) {
