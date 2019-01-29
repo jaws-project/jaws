@@ -169,7 +169,7 @@ class Jaws_Registry
             'key_name'    => $key_name,
             'key_value'   => json_encode($key_value),
             'key_type'    => (int)$key_type,
-            'update_time' => Jaws_DB::getInstance()->date(),
+            'update_time' => time(),
         ));
         $result = $tblReg->exec();
         if (!Jaws_Error::IsError($result)) {
