@@ -745,7 +745,7 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
             'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent', 'referrer',
-            'data', 'checksum', 'createtime', 'update_time:integer'
+            'data', 'checksum', 'insert_time', 'update_time:integer'
         );
         if ($active) {
             $sessTable->where('update_time', $onlinetime, '>=');
