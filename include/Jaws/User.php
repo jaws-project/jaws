@@ -58,7 +58,7 @@ class Jaws_User
      * @param   string  $password  Password of the user
      * @return  boolean Returns true if the user is valid and false if not
      */
-    function VerifyUser($user, $password)
+    function VerifyUser($domain, $user, $password)
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $result = $usersTable->select(
@@ -66,11 +66,13 @@ class Jaws_User
             'superadmin:boolean', 'nickname', 'ssn', 'dob', 'concurrents:integer',
             'logon_hours', 'expiry_date', 'avatar', 'registered_date', 'last_update',
             'bad_password_count', 'last_password_update', 'last_access', 'status:integer')
-            ->where('lower(username)', Jaws_UTF8::strtolower($user))
+            ->where('domain', (int)$domain)
+            ->and()
+            ->openWhere('lower(username)', Jaws_UTF8::strtolower($user))
             ->or()
             ->where('lower(email)', Jaws_UTF8::strtolower($user))
             ->or()
-            ->where('mobile', $user)
+            ->closeWhere('mobile', $user)
             ->fetchRow();
         if (Jaws_Error::IsError($result) || empty($result)) {
             return Jaws_Error::raiseError(
