@@ -34,6 +34,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
 
         $response = $this->gadget->session->pop('Login.Response');
         if (!isset($response['data'])) {
+            $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
             $reqpost['password'] = '';
             $reqpost['authstep'] = 0;
@@ -110,6 +111,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
 
         $response = $this->gadget->session->pop('Login.Response');
         if (!isset($response['data'])) {
+            $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
             $reqpost['password'] = '';
             $reqpost['authstep'] = 0;
@@ -176,6 +178,24 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $tpl->ParseBlock("$block/login_step_1/usecrypt");
         }
 
+        // domain
+        if ($this->gadget->registry->fetch('multi_domain') == 'true') {
+            $domains = $this->gadget->model->load('Domains')->getDomains();
+            if (!Jaws_Error::IsError($domains) && !empty($domains)) {
+                $tpl->SetBlock("$block/login_step_1/multi_domain");
+                $tpl->SetVariable('lbl_domain', _t('USERS_DOMAIN'));
+                array_unshift($domains, array('id' => 0, 'title' => _t('USERS_NODOMAIN')));
+                foreach ($domains as $domain) {
+                    $tpl->SetBlock("$block/login_step_1/multi_domain/domain");
+                    $tpl->SetVariable('id', $domain['id']);
+                    $tpl->SetVariable('title', $domain['title']);
+                    $tpl->SetVariable('selected', ($domain['id'] == $reqpost['domain'])? 'selected="selected"': '');
+                    $tpl->ParseBlock("$block/login_step_1/multi_domain/domain");
+                }
+                $tpl->ParseBlock("$block/login_step_1/multi_domain");
+            }
+        }
+
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
         $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
@@ -236,7 +256,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
         }
 
         $loginData = $this->gadget->request->fetch(
-            array('username', 'password', 'usecrypt', 'loginkey', 'authstep', 'remember'),
+            array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'authstep', 'remember'),
             'post'
         );
 
@@ -264,9 +284,14 @@ class Users_Account_Default extends Jaws_Gadget_Action
                 $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
             }
 
+            // set default domain if not set
+            if (is_null($loginData['domain'])) {
+                $loginData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+            }
+
             // fetch user information from database
             $userModel = $GLOBALS['app']->loadObject('Jaws_User');
-            $user = $userModel->VerifyUser($loginData['username'], $loginData['password']);
+            $user = $userModel->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
             if (Jaws_Error::isError($user)) {
                 throw new Exception($user->getMessage());
             }
@@ -415,11 +440,11 @@ class Users_Account_Default extends Jaws_Gadget_Action
         }
 
         if (JAWS_SCRIPT == 'index') {
-            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
+            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams), '', 401);
         } else {
             $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
             $admin_script = empty($admin_script)? 'admin.php' : $admin_script;
-            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"));
+            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"), '', 401);
         }
 
     }

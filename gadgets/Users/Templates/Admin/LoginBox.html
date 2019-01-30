@@ -38,6 +38,16 @@
           <!-- BEGIN encryption -->
           <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
           <!-- END encryption -->
+          <!-- BEGIN multi_domain -->
+          <div>
+            <label for="domain">{{lbl_domain}}:</label>
+            <select class="form-control" name="domain" id="domain">
+              <!-- BEGIN domain -->
+              <option value="{{id}}" {{selected}}>{{title}}</option>
+              <!-- END domain -->
+            </select>
+          </div>
+          <!-- END multi_domain -->
           <div>
             <label for="username">{{lbl_username}}:</label>
             <input class="form-control ltr" name="username" id="username"
