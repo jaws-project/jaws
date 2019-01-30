@@ -361,7 +361,7 @@ function _t_lang($lang, $string)
  * @param   bool    $sync   Synchronize session
  * @return  void
  */
-function terminate(&$data = null, $status_code = 200, $next_location = '', $sync = true)
+function terminate(&$data = null, $status_code = 0, $next_location = '', $sync = true)
 {
     // Send content to client
     $resType = jaws()->request->fetch('restype');
@@ -385,7 +385,7 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
     }
 
     // set response status code
-    http_response_code($status_code);
+    http_response_code(empty($status_code)? http_response_code() : $status_code);
 
     // detect Ajax request
     $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
