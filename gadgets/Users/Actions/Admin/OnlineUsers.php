@@ -65,7 +65,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $objDate = Jaws_Date::getInstance();
         foreach ($sessions as $session) {
             $usrData = array();
-            $usrData['__KEY__'] = $session['sid'];
+            $usrData['__KEY__'] = $session['id'];
             if (empty($session['username'])) {
                 $usrData['username'] = _t('USERS_ONLINE_ANONY');
             } else {
@@ -82,10 +82,10 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
             $usrData['type'] = $session['type'];
             if ($session['online']) {
                 $usrData['last_activetime'] = "<label class='lastactive' title='"._t('USERS_ONLINE_ACTIVE')."'>".
-                    $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</label>";
+                    $objDate->Format($session['update_time'], 'Y-m-d H:i')."</label>";
             } else {
                 $usrData['last_activetime'] = "<s class='lastactive' title='"._t('USERS_ONLINE_INACTIVE')."'>".
-                    $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</s>";
+                    $objDate->Format($session['update_time'], 'Y-m-d H:i')."</s>";
             }
 
             $retData[] = $usrData;
