@@ -301,6 +301,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return $this->LoginLinks();
         }
 
+        http_response_code(401);
         // 
         $authtype = $this->gadget->request->fetch('authtype');
         if (empty($authtype)) {
