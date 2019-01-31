@@ -218,15 +218,9 @@ class MDB2_Driver_Manager_mysql extends MDB2_Driver_Manager_Common
                 if (!empty($def['primary'])) {
                     $pk_fields[$fieldname] = true;
                 }
-                if (!empty($def['autoincrement'])) {
-                    $autoincrement = $fieldname;
-                }
             }
-            if ((null !== $autoincrement) && count($pk_fields) > 1) {
+            if (count($pk_fields) > 1) {
                 $options['primary'] = $pk_fields;
-            } else {
-                // the PK constraint is on max one field => OK
-                $autoincrement = null;
             }
         }
 
@@ -235,9 +229,8 @@ class MDB2_Driver_Manager_mysql extends MDB2_Driver_Manager_Common
             return $query;
         }
 
-        if (null !== $autoincrement) {
-            // we have to remove the PK clause added by _getIntegerDeclaration()
-            $query = str_replace('AUTO_INCREMENT PRIMARY KEY', 'AUTO_INCREMENT', $query);
+        if (empty($options['primary'])) {
+            $query = str_replace('AUTO_INCREMENT', 'AUTO_INCREMENT PRIMARY KEY', $query);
         }
 
         $options_strings = array();
@@ -504,74 +497,63 @@ class MDB2_Driver_Manager_mysql extends MDB2_Driver_Manager_Common
             return MDB2_OK;
         }
 
-        $query = '';
-        if (!empty($changes['name'])) {
-            $change_name = $db->quoteIdentifier($changes['name'], true);
-            $query .= 'RENAME TO ' . $change_name;
+        $name = $db->quoteIdentifier($name, true);
+
+        if (!empty($changes['remove']) && is_array($changes['remove'])) {
+            foreach ($changes['remove'] as $field_name => $field) {
+                $field_name = $db->quoteIdentifier($field_name, true);
+                $query = 'DROP ' . $field_name;
+                $result = $db->exec("ALTER TABLE $name $query");
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
+                    return $result;
+                }
+            }
+        }
+
+        if (!empty($changes['rename']) && is_array($changes['rename'])) {
+            foreach ($changes['rename'] as $field_name => $field) {
+                $field_name = $db->quoteIdentifier($field_name, true);
+                $result = $db->exec(
+                    "ALTER TABLE $name CHANGE $field_name ".
+                    $db->getDeclaration($field['definition']['type'], $field['name'], $field['definition'])
+                );
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHFIELD)) {
+                    return $result;
+                }
+            }
         }
 
         if (!empty($changes['add']) && is_array($changes['add'])) {
             foreach ($changes['add'] as $field_name => $field) {
-                if ($query) {
-                    $query.= ', ';
+                $query = 'ADD ' . $db->getDeclaration($field['type'], $field_name, $field);
+                $result = $db->exec("ALTER TABLE $name $query");
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_ALREADY_EXISTS)) {
+                    return $result;
                 }
-                $query.= 'ADD ' . $db->getDeclaration($field['type'], $field_name, $field);
-            }
-        }
-
-        if (!empty($changes['remove']) && is_array($changes['remove'])) {
-            foreach ($changes['remove'] as $field_name => $field) {
-                if ($query) {
-                    $query.= ', ';
-                }
-                $field_name = $db->quoteIdentifier($field_name, true);
-                $query.= 'DROP ' . $field_name;
-            }
-        }
-
-        $rename = array();
-        if (!empty($changes['rename']) && is_array($changes['rename'])) {
-            foreach ($changes['rename'] as $field_name => $field) {
-                $rename[$field['name']] = $field_name;
             }
         }
 
         if (!empty($changes['change']) && is_array($changes['change'])) {
             foreach ($changes['change'] as $field_name => $field) {
-                if ($query) {
-                    $query.= ', ';
+                $field_name = $db->quoteIdentifier($field_name, true);
+                $result = $db->exec(
+                    "ALTER TABLE $name CHANGE $field_name ".
+                    $db->getDeclaration($field['definition']['type'], $field['name'], $field['definition'])
+                );
+                if (MDB2::isError($result)) {
+                    return $result;
                 }
-                if (isset($rename[$field_name])) {
-                    $old_field_name = $rename[$field_name];
-                    unset($rename[$field_name]);
-                } else {
-                    $old_field_name = $field_name;
-                }
-                $old_field_name = $db->quoteIdentifier($old_field_name, true);
-                $query.= "CHANGE $old_field_name " . $db->getDeclaration($field['definition']['type'], $field_name, $field['definition']);
             }
         }
 
-        if (!empty($rename) && is_array($rename)) {
-            foreach ($rename as $rename_name => $renamed_field) {
-                if ($query) {
-                    $query.= ', ';
-                }
-                $field = $changes['rename'][$renamed_field];
-                $renamed_field = $db->quoteIdentifier($renamed_field, true);
-                $query.= 'CHANGE ' . $renamed_field . ' ' . $db->getDeclaration($field['definition']['type'], $field['name'], $field['definition']);
+        if (!empty($changes['name'])) {
+            $change_name = $db->quoteIdentifier($changes['name'], true);
+            $result = $db->exec("ALTER TABLE $name RENAME TO ".$change_name);
+            if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
+                return $result;
             }
         }
 
-        if (!$query) {
-            return MDB2_OK;
-        }
-
-        $name = $db->quoteIdentifier($name, true);
-        $result = $db->exec("ALTER TABLE $name $query");
-        if (MDB2::isError($result)) {
-            return $result;
-        }
         return MDB2_OK;
     }
 
