@@ -286,6 +286,13 @@
                 </field>
             </index>
 
+            <index>
+                <name><variable>table_prefix</variable>session_updatetime</name>
+                <field>
+                    <name>updatetime</name>
+                </field>
+            </index>
+
         </declaration>
     </table>
 
