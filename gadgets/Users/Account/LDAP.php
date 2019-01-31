@@ -134,11 +134,12 @@ class Users_Account_LDAP extends Jaws_Gadget_Action
                     $user['timezone']    = null;
                     $user['remember']    = false;
                     return $user;
+                } else {
+                    throw new Exception("LDAP bind to $rdn failed!");
                 }
+            } else {
+                throw new Exception("LDAP connection to {$this->_Server}:{$this->_Port} failed!");
             }
-
-            throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'));
-
         } catch (Exception $error) {
             $this->gadget->session->push(
                 $error->getMessage(),
