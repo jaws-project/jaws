@@ -263,7 +263,7 @@ class MDB2_Driver_Datatype_mysqli extends MDB2_Driver_Datatype_Common
 
         $default = $autoinc = '';
         if (!empty($field['autoincrement'])) {
-            $autoinc = ' AUTO_INCREMENT PRIMARY KEY';
+            $autoinc = ' AUTO_INCREMENT';
         } elseif (array_key_exists('default', $field)) {
             if ($field['default'] === '') {
                 $field['default'] = empty($field['notnull']) ? null : 0;
