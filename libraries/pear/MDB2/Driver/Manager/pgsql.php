@@ -436,7 +436,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
         if (!empty($changes['name'])) {
             $change_name = $db->quoteIdentifier($changes['name'], true);
             $result = $db->exec("ALTER TABLE $name RENAME TO ".$change_name);
-            if (MDB2::isError($result)) {
+            if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHTABLE)) {
                 return $result;
             }
         }
