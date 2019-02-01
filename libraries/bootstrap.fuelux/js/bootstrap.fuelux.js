@@ -2999,15 +2999,87 @@ if (typeof jQuery === 'undefined') {
 		 */
 
 		function dateJalali(args) {
-			var leapYears = [1, 5, 9, 13, 17, 22, 26, 30];
+			this.jalaliEpoch = 1948320.5;
+			this.gregorianEpoch = 1721425.5;
 			var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 			var jMonthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
 
-			var year = 0,
-				month = 0,
-				day = 0,
-				wday = 0,
-				days = 0;
+			this.leap_persian = function(year) {
+				return ((((((year - ((year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
+			}
+
+			this.leap_gregorian = function(year) {
+				return ((year % 4) == 0) && (((year % 100) != 0) || ((year % 400) == 0));
+			}
+
+			this.persian_to_jd = function(year, month, day) {
+				var epbase = epyear = exyear = 0;
+
+				exyear = Math.floor((month - 1) / 12);
+				year   = year + exyear;
+				month  = month - exyear * 12;
+
+				epbase = year - ((year >= 0)? 474 : 473);
+				epyear = 474 + (epbase % 2820);
+
+				return day +
+					((month <= 7)? ((month - 1) * 31) : (((month - 1) * 30) + 6)) +
+					Math.floor(((epyear * 682) - 110) / 2816) +
+					(epyear - 1) * 365 +
+					Math.floor(epbase / 2820) * 1029983 +
+					(this.jalaliEpoch - 1);
+			}
+
+			this.jd_to_persian = function(jd) {
+				var year = month = day = wday = depoch = cycle = cyear = ycycle = aux1 = aux2 = yday = 0;
+
+				wday = Math.floor((jd + 1.5)) % 7;
+				jd = Math.floor(jd) + 0.5;
+
+				depoch = jd - this.persian_to_jd(475, 1, 1);
+				cycle = Math.floor(depoch / 1029983);
+				cyear = depoch % 1029983;
+				if (cyear == 1029982) {
+					ycycle = 2820;
+				} else {
+					aux1 = Math.floor(cyear / 366);
+					aux2 = cyear % 366;
+					ycycle = Math.floor(((2134 * aux1) + (2816 * aux2) + 2815) / 1028522) +
+					aux1 + 1;
+				}
+
+				year = ycycle + (2820 * cycle) + 474;
+				if (year <= 0) {
+					year--;
+				}
+				yday = (jd - this.persian_to_jd(year, 1, 1)) + 1;
+				month = (yday <= 186) ? Math.ceil(yday / 31) : Math.ceil((yday - 6) / 30);
+				day = (jd - this.persian_to_jd(year, month, 1)) + 1;
+
+				return {
+					'year'      : year,
+					'month'     : month,
+					'day'       : day,
+					'weekDay'   : wday,
+					'monthDays' : jMonthDays[month - 1] + (month == 12? Number(this.leap_persian(year)) : 0),
+					'yearDay'   : yday
+				};
+			}
+
+			this.gregorian_to_jd = function(year, month, day) {
+				return (this.gregorianEpoch - 1) +
+					(365 * (year - 1)) +
+					Math.floor((year - 1) / 4) +
+					(-Math.floor((year - 1) / 100)) +
+					Math.floor((year - 1) / 400) +
+					Math.floor(
+						(((367 * month) - 362) / 12) +
+						((month <= 2)? 0 : (this.leap_gregorian(year)? -1 : -2)) +
+						day
+					);
+			}
+
+			var year = month = day = wday = days = 0;
 
 			switch ($.type(args)) {
 				case 'string':
@@ -3018,19 +3090,9 @@ if (typeof jQuery === 'undefined') {
 				case 'array':
 					if (args.length) {
 						year  = parseInt(args[0]);
-						month = parseInt(args[1]) + 1;
+						month = parseInt(Number(args[1]) + 1);
 						day   = parseInt(args[2]);
-
-						// calculating Jalali calendar total days
-						var ym = Math.floor((month-1)/12);
-						month = month - ym*12;
-						year  = year + ym - 1;
-						days =  365*year + Math.floor(year/33)*8 + Math.floor(((year%33)+3)/4);
-						for (var i=0; i < (month-1); ++i) {
-							days += jMonthDays[i];
-						}
-						days = days + day;
-
+						days = this.persian_to_jd(year, month, day);
 						break;
 					}
 
@@ -3050,61 +3112,29 @@ if (typeof jQuery === 'undefined') {
 					year  = parseInt(gdate.getFullYear());
 					month = parseInt(Number(gdate.getMonth()) + 1);
 					day   = parseInt(gdate.getDate());
-
-					year--;
-					days = 365*year + Math.floor(year/4) - Math.floor(year/100) + Math.floor(year/400);
-					year++;
-					for (var i=0; i < (month-1); ++i) {
-						days += gMonthDays[i];
-					}
-					// is leap year
-					if (month > 2 && ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0))) {
-						days++;
-					}
-					days = days + day - 226894;
-
+					days = this.gregorian_to_jd(year, month, day);
 					break;
 
 				default:
 					return new Date(NaN);
 			}
 
-			wday = (days + 4) % 7;
-			year = Math.floor(days/12053)*33; // 12053 = 33*365 + 8
-			days %= 12053;
-			days--;
-			year = year + Math.floor(days / 1461)*4; // 1461 = 4*365 + 1
-			days  = (days % 1461) + 1;
+			var jdate = this.jd_to_persian(days);
 
-			year++;
-			var isLeap = leapYears.indexOf((year % 33)) > -1;
-			while (days > (365 + isLeap)) {
-				days = days - (365 + isLeap);
-				year++;
-				isLeap = leapYears.indexOf((year % 33)) > -1;
-			}
-
-			month = 0;
-			while (days > (jMonthDays[month] + ((month==11)? isLeap : 0)))
-			{
-				days -= jMonthDays[month];
-				month++;
-			}
-
-			this.jYear  = year;
-			this.jMonth = month;
-			this.jDay   = days;
-			this.jWeekDay = wday;
+			this.jYear  = jdate.year;
+			this.jMonth = jdate.month;
+			this.jDay   = jdate.day;
+			this.jWeekDay = jdate.weekDay;
 
 			// check is given date in a leap year
-			this.isLeapYear = leapYears.indexOf((this.jYear % 33)) > -1;
+			this.isLeapYear = this.leap_persian(this.jYear);
 
 			this.getFullYear = function() {
 				return this.jYear;
 			}
 
 			this.getMonth = function() {
-				return this.jMonth;
+				return this.jMonth - 1;
 			}
 
 			this.getDate = function() {
@@ -3138,9 +3168,9 @@ if (typeof jQuery === 'undefined') {
 						case 'm':
 							if (format.substr(i, 2) == 'mm') {
 								i++;
-								result += this.jMonth + 1;
+								result += this.jMonth;
 							} else {
-								result += this.jMonth + 1;
+								result += this.jMonth;
 							}
 							break;
 
@@ -3170,7 +3200,7 @@ if (typeof jQuery === 'undefined') {
 			}
 
 			this.toString = function() {
-				return this.jYear + '/' + (this.jMonth + 1) + '/' + this.jDay;
+				return this.jYear + '/' + (this.jMonth) + '/' + this.jDay;
 			}
 		}
 
