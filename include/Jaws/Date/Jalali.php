@@ -5,10 +5,10 @@
  * @category    Jaws_Date
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2019 Jaws Development Group
+ * @copyright   2006-2019 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Date_Persian extends Jaws_Date
+class Jaws_Date_Jalali extends Jaws_Date
 {
     protected static $jalaliEpoch = 1948320.5;
     protected static $gregorianEpoch = 1721425.5;
