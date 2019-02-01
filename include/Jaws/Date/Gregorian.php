@@ -66,9 +66,9 @@ class Jaws_Date_Gregorian extends Jaws_Date
      * Get date information
      *
      * @access  public
-     * @param   int     $year   Jalali year
-     * @param   int     $month  Jalali month
-     * @param   int     $day    Jalali day
+     * @param   int     $year   Year
+     * @param   int     $month  Month
+     * @param   int     $day    Day
      * @param   int     $hour   Hour
      * @param   int     $minute Minute
      * @param   int     $second Second
