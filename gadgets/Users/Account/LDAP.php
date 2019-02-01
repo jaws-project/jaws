@@ -110,6 +110,14 @@ class Users_Account_LDAP extends Jaws_Gadget_Action
                 $rdn = "uid=" . $loginData['username'] . "," . $this->_DN;
                 $bind = @ldap_bind($this->_LdapConnection, $rdn, $loginData['password']);
                 if ($bind) {
+                    $filter="(uid=" . $loginData['username'] . ")";
+                    $searchResult = ldap_search($this->_LdapConnection, $this->_DN, $filter);
+                    if (@ldap_count_entries($this->_LdapConnection, $searchResult) > 1) {
+                        $ldapUserInfo = @ldap_get_entries($this->_LdapConnection, $searchResult);
+                    } else {
+                        //throw new Exception("Can not find user info!");
+                    }
+
                     $user = array();
                     $user['id']          = strtolower('LDAP:'.$loginData['username']);
                     $user['internal']    = false;
