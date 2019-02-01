@@ -343,6 +343,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     {
         // fetch authentication type from session
         $authtype = $this->gadget->session->fetch('authtype');
+        if (empty($authtype)) {
+            return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
+        }
 
         // parse referrer url
         $referrer = parse_url(hex2bin($this->gadget->session->fetch('referrer')));
@@ -361,7 +364,12 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $loginData = $objAccount->Authenticate();
         if (Jaws_Error::IsError($loginData)) {
             if (method_exists($objAccount, 'LoginError')) {
-                return $objAccount->LoginError($loginData, bin2hex($referrer));
+                $default_authtype = $this->gadget->registry->fetch('authtype');
+                return $objAccount->LoginError(
+                    $loginData,
+                    ($authtype != $default_authtype)? $authtype : '',
+                    bin2hex($referrer)
+                );
             }
         } else {
             $loginData['authtype'] = $authtype;

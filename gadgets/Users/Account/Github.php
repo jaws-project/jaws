@@ -179,7 +179,7 @@ class Users_Account_Github extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML content
      */
-    function LoginError($error, $referrer)
+    function LoginError($error, $authtype, $referrer)
     {
         return 'Github Authentication Error: '. $error->getMessage();
     }

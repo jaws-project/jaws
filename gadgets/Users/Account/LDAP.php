@@ -159,12 +159,11 @@ class Users_Account_LDAP extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML content
      */
-    function LoginError($error, $referrer)
+    function LoginError($error, $authtype, $referrer)
     {
         $urlParams = array();
-        $authtype = $this->gadget->request->fetch('authtype');
-        if (!empty($get['authtype'])) {
-            $urlParams['authtype'] = $get['authtype'];
+        if (!empty($authtype)) {
+            $urlParams['authtype'] = $authtype;
         }
         if (!empty($referrer)) {
             $urlParams['referrer'] = $referrer;
