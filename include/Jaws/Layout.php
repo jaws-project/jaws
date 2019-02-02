@@ -56,12 +56,20 @@ class Jaws_Layout
     var $_Languages = array();
 
     /**
-     * Layout name
+     * Layout file name
      *
      * @access  private
      * @var     string
      */
-    private $layout = 'Layout';
+    private $layout_file = 'Layout';
+
+    /**
+     * Layout user name
+     *
+     * @access  private
+     * @var     int
+     */
+    private $layout_user = 0;
 
     /**
      * Site attributes
@@ -150,18 +158,43 @@ class Jaws_Layout
 
             $loadFromTheme = true;
             if (empty($layout_file)) {
+                $layout_user = 0;
+                $layout_type = (int)Jaws_Gadget::getInstance('Layout')->session->fetch('layout.type');
+
+                $gdgtUsers = Jaws_Gadget::getInstance('Users');
                 if ($GLOBALS['app']->mainIndex) {
-                    if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard') &&
-                        $GLOBALS['app']->Session->GetAttribute('layout') &&
-                        @is_file($theme['path']. 'Index.Dashboard.html')
-                    ) {
-                        $layout_file = 'Index.Dashboard.html';
-                    } elseif (@is_file($theme['path']. 'Index.html')) {
-                        $layout_file = 'Index.html';
+                    // index/first page layout
+                    if ($GLOBALS['app']->Session->Logged()) {
+                        // if user logged in
+                        if ($layout_type == 2 &&
+                            $gdgtUsers->gadget->GetPermission('UserLayoutAccess') &&
+                            @is_file($theme['path']. 'Index.User.html')
+                        ) {
+                            // set private layout for logged user
+                            $layout_file = 'Index.User.html';
+                            $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+                        } elseif (($layout_type == 1 || $layout_type == 2) &&
+                            $gdgtUsers->gadget->GetPermission('UsersLayoutAccess') &&
+                            @is_file($theme['path']. 'Index.Users.html')
+                        ) {
+                            // set global layout for logged users
+                            $layout_file = 'Index.Users.html';
+                        } elseif (@is_file($theme['path']. 'Index.html')) {
+                            $layout_file = 'Index.html';
+                        } else {
+                            $layout_file = 'Layout.html';
+                        }
                     } else {
-                        $layout_file = 'Layout.html';
+                        // if user not logged in
+                        if (@is_file($theme['path']. 'Index.html')) {
+                            $layout_file = 'Index.html';
+                        } else {
+                            $layout_file = 'Layout.html';
+                        }
                     }
+
                 } else {
+                    // nested pages layouts(not first page)
                     $gadget = $GLOBALS['app']->mainGadget;
                     $action = $GLOBALS['app']->mainAction;
                     if (@is_file($theme['path']. "$gadget.$action.html")) {
@@ -169,10 +202,32 @@ class Jaws_Layout
                     } elseif (@is_file($theme['path']. "$gadget.html")) {
                         $layout_file = "$gadget.html";
                     } else {
-                        $layout_file = 'Layout.html';
+                        if ($GLOBALS['app']->Session->Logged()) {
+                            // if user logged in
+                            if ($layout_type == 2 &&
+                                $gdgtUsers->gadget->GetPermission('UserLayoutAccess') &&
+                                @is_file($theme['path']. 'Layout.User.html')
+                            ) {
+                                // set private layout for logged user
+                                $layout_file = 'Layout.User.html';
+                                $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+                            } elseif (($layout_type == 1  || $layout_type == 2) &&
+                                $gdgtUsers->gadget->GetPermission('UsersLayoutAccess') &&
+                                @is_file($theme['path']. 'Layout.Users.html')
+                            ) {
+                                // set global layout for logged users
+                                $layout_file = 'Layout.Users.html';
+                            } else {
+                                $layout_file = 'Layout.html';
+                            }
+                        } else {
+                            $layout_file = 'Layout.html';
+                        }
                     }
                 }
-                $this->layout = basename($layout_file, '.html');
+
+                $this->layout_user = $layout_user;
+                $this->layout_file = basename($layout_file, '.html');
             }
         }
 
@@ -222,7 +277,7 @@ class Jaws_Layout
      */
     function GetLayoutName()
     {
-        return $this->layout;
+        return $this->layout_file;
     }
 
     /**
@@ -361,7 +416,7 @@ class Jaws_Layout
                 Jaws_Error::Fatal("Can't load layout model");
             }
 
-            return $layoutModel->GetLayoutItems($this->layout, true);
+            return $layoutModel->GetLayoutItems($this->layout_file, $this->layout_user, true);
         }
 
         $items = array();
