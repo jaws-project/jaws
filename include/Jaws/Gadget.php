@@ -519,6 +519,10 @@ class Jaws_Gadget
     function __get($property)
     {
         switch ($property) {
+            case 'gadget':
+                return $this;
+                break;
+
             case 'title':
             case 'description':
                 return _t(strtoupper($this->name. '_'. $property));
