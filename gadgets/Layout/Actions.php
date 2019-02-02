@@ -53,9 +53,9 @@ $actions['UpdateElementAction'] = array(
     'standalone' => true,
     'file' => 'Element',
 );
-$actions['Dashboard'] = array(
+$actions['LayoutType'] = array(
     'standalone' => true,
-    'file' => 'Dashboard',
+    'file' => 'Layouts',
 );
 
 /**

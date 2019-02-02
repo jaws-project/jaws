@@ -9,6 +9,10 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $maps[] = array(
+    'LayoutType',
+    'layout/switch/{type}'
+);
+$maps[] = array(
     'Layout',
     'layout[/{layout}][/theme/{theme}]',
     array(
@@ -16,4 +20,3 @@ $maps[] = array(
         'theme'  => '[[:alnum:]\-_\,]+',
     )
 );
-$maps[] = array('Dashboard', 'dashboard[/{user}]');

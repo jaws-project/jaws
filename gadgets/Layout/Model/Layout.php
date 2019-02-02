@@ -19,15 +19,14 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      * @param   bool    $published  Publish status
      * @return  array   Returns an array with the layout items or Jaws_Error on failure
      */
-    function GetLayoutItems($layout = 'Layout', $published = null)
+    function GetLayoutItems($layout = 'Layout', $user = 0, $published = null)
     {
-        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
             'id', 'title', 'gadget', 'action', 'params',
             'filename', 'when', 'section', 'position'
         );
-        $lyTable->where('user', $user)
+        $lyTable->where('user', (int)$user)
             ->and()
             ->where('theme', $this->gadget->theme)
             ->and()
@@ -66,9 +65,8 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      * @param   string  $layout Layout name
      * @return  mixed   Return true or Jaws_Error on failure
      */
-    function InitialLayout($layout = 'Layout')
+    function InitialLayout($layout = 'Layout', $user = 0)
     {
-        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         // REQUESTEDGADGET/REQUESTEDACTION
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $exists = $lyTable->select('count(id)')
@@ -97,13 +95,6 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                 null,
                 '',
                 1
-            );
-        }
-
-        if ($layout == 'Index.Dashboard') {
-            $GLOBALS['app']->Session->SetAttribute(
-                'layout',
-                $GLOBALS['app']->Session->GetAttribute('layout')? 0 : $user
             );
         }
 

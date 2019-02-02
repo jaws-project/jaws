@@ -19,7 +19,7 @@ class Layout_Hooks_Menu extends Jaws_Gadget_Hook
             'url'        => $this->gadget->urlMap('Layout'),
             'title'      => _t('LAYOUT_TITLE'),
             'permission' => array(
-                'key'    => 'ManageLayout',
+                'key'    => 'MainLayoutManage',
                 'subkey' => ''
             )
         );

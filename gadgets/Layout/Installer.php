@@ -19,14 +19,28 @@ class Layout_Installer extends Jaws_Gadget_Installer
     var $default_acl = false;
 
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        array('default_layout_type', 0, true),
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
      * @access  private
      */
     var $_ACLKeys = array(
-        'ManageLayout',
-        'ManageThemes',
+        'MainLayoutManage',
+        'UserLayoutAccess',
+        'UserLayoutManage',
+        'UsersLayoutAccess',
+        'UsersLayoutManage',
+        'SwitchThemeManage',
     );
 
     /**
@@ -45,17 +59,13 @@ class Layout_Installer extends Jaws_Gadget_Installer
         }
 
         // Insert default layout elements
-        $layoutModel  = $this->gadget->model->load('Layout');
         $elementModel = $this->gadget->model->loadAdmin('Elements');
-        $result = $layoutModel->GetLayoutItems();
-        if (!Jaws_Error::IsError($result) && empty($result)) {
-            $elementModel->NewElement(
-                'Layout', null, 'main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1
-            );
-            $elementModel->NewElement(
-                'Layout', null, 'bar1', 'Users', 'LoginBox', null, 'Login', 1
-            );
-        }
+        $elementModel->NewElement(
+            'Layout', null, 'main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1
+        );
+        $elementModel->NewElement(
+            'Layout', null, 'bar1', 'Users', 'LoginBox', null, 'Login', 1
+        );
 
         if (!empty($input_schema)) {
             $result = $this->installSchema($input_schema, $input_variables, 'schema.xml', true);
@@ -68,6 +78,8 @@ class Layout_Installer extends Jaws_Gadget_Installer
         $this->gadget->event->insert('UninstallGadget');
         $this->gadget->event->insert('EnableGadget');
         $this->gadget->event->insert('DisableGadget');
+        // add login user event listeners
+        $this->gadget->event->insert('LoginUser');
 
         return true;
     }
@@ -133,6 +145,22 @@ class Layout_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '4.1.0', '<')) {
+            // apply new changes in ACLs
+            $this->gadget->acl->rename('ManageLayout', 'MainLayoutManage');
+            $this->gadget->acl->rename('ManageThemes', 'SwitchThemeManage');
+            $this->gadget->acl->insert('UserLayoutAccess',  '', 0);
+            $this->gadget->acl->insert('UserLayoutManage',  '', 0);
+            $this->gadget->acl->insert('UsersLayoutAccess', '', 0);
+            $this->gadget->acl->insert('UsersLayoutManage', '', 0);
+
+            // registry key
+            $this->gadget->registry->insert('default_layout_type', 0, true);
+
+            // add login user event listeners
+            $this->gadget->event->insert('LoginUser');
         }
 
         return true;
