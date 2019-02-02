@@ -108,8 +108,8 @@ class Jaws_Date_Jalali extends Jaws_Date
      */
     public function jd_to_persian($jd)
     {
-        $jwday = floor(($jd + 1.5)) % 7;
         $jd = floor($jd) + 0.5;
+        $jwday = floor($jd + 1.5 + 1) % 7;
 
         $depoch = $jd - $this->persian_to_jd(475, 1, 1);
         $cycle = floor($depoch / 1029983);
