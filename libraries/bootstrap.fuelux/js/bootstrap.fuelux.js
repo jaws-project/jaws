@@ -3033,8 +3033,8 @@ if (typeof jQuery === 'undefined') {
 			this.jd_to_persian = function(jd) {
 				var year = month = day = wday = depoch = cycle = cyear = ycycle = aux1 = aux2 = yday = 0;
 
-				wday = Math.floor((jd + 1.5)) % 7;
 				jd = Math.floor(jd) + 0.5;
+				wday = Math.floor((jd + 1.5 + 1)) % 7;
 
 				depoch = jd - this.persian_to_jd(475, 1, 1);
 				cycle = Math.floor(depoch / 1029983);
