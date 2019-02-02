@@ -2547,7 +2547,6 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 34px;
   padding: 6px 12px;
   color: #555;
   background-color: #fff;
@@ -8343,7 +8342,6 @@ label.fuelux .checkbox-inline {
   background-clip: padding-box;
   border-radius: 0 4px 4px 0;
   border-top: 1px solid #cccccc;
-  height: 30px;
   margin: 0 -16px;
   padding: 4px 14px;
 }
