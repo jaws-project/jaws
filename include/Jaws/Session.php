@@ -67,6 +67,13 @@ class Jaws_Session
     protected $_SessionID;
 
     /**
+     * Auto update session
+     * @var     bool    $auto_update_session
+     * @access  protected
+     */
+    protected $auto_update_session = true;
+
+    /**
      * An interface for available drivers
      *
      * @access  public
@@ -171,13 +178,6 @@ class Jaws_Session
             $this->SetAttribute('sid', $this->_SessionID, true);
             $this->referrer    = $session['referrer'];
 
-            // salt & checksum
-            if (($salt !== $this->GetAttribute('salt')) || ($checksum !== $session['checksum'])) {
-                $this->Logout();
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session salt has been changed');
-                return false;
-            }
-
             // browser agent
             $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
             if ($agent !== $session['agent']) {
@@ -194,48 +194,57 @@ class Jaws_Session
                 return false;
             }
 
-            // user expiry date
-            $expiry_date = $this->GetAttribute('expiry_date');
-            if (!empty($expiry_date) && $expiry_date <= time()) {
-                $this->Logout();
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'This username is expired');
-                return false;
+            // salt & checksum
+            if (($salt !== $this->GetAttribute('salt')) || ($checksum !== $session['checksum'])) {
+                $this->Reset($this->_SessionID);
+                $this->auto_update_session = false;
+                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session salt has been changed');
             }
 
-            // logon hours
-            $logon_hours = $this->GetAttribute('logon_hours');
-            if (!empty($logon_hours)) {
-                $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
-                $lhByte = hexdec($logon_hours{$wdhour[0]*6 + intval($wdhour[1]/4)});
-                if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
+            if ($this->GetAttribute('logged')) {
+                // user expiry date
+                $expiry_date = $this->GetAttribute('expiry_date');
+                if (!empty($expiry_date) && $expiry_date <= time()) {
                     $this->Logout();
-                    $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Logon hours terminated');
+                    $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'This username is expired');
                     return false;
                 }
-            }
 
-            // concurrent logins
-            if ($session['update_time'] < $expTime) {
-                $logins = $this->GetAttribute('concurrents');
-                $existSessions = $this->GetUserSessions($this->GetAttribute('user'), true);
-                if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
-                    $this->Logout();
-                    $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Maximum number of concurrent logins reached');
-                    return false;
+                // logon hours
+                $logon_hours = $this->GetAttribute('logon_hours');
+                if (!empty($logon_hours)) {
+                    $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
+                    $lhByte = hexdec($logon_hours{$wdhour[0]*6 + intval($wdhour[1]/4)});
+                    if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
+                        $this->Logout();
+                        $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Logon hours terminated');
+                        return false;
+                    }
                 }
-            }
 
-            // last password updated time
-            $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-            if ($password_max_age > 0) {
-                $expPasswordTime = time() - 3600 * $password_max_age;
-                $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
-                if ($last_password_updated_time <= $expPasswordTime) {
-                    define('RESTRICTED_SESSION',  true);
-                    $GLOBALS['log']->Log(
-                        JAWS_LOG_NOTICE,
-                        'This password is expired, session switched to restricted mode.'
-                    );
+                // concurrent logins
+                if ($session['update_time'] < $expTime) {
+                    $logins = $this->GetAttribute('concurrents');
+                    $existSessions = $this->GetUserSessions($this->GetAttribute('user'), true);
+                    if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
+                        $this->Logout();
+                        $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Maximum number of concurrent logins reached');
+                        return false;
+                    }
+                }
+
+                // last password updated time
+                $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
+                if ($password_max_age > 0) {
+                    $expPasswordTime = time() - 3600 * $password_max_age;
+                    $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
+                    if ($last_password_updated_time <= $expPasswordTime) {
+                        define('RESTRICTED_SESSION',  true);
+                        $GLOBALS['log']->Log(
+                            JAWS_LOG_NOTICE,
+                            'This password is expired, session switched to restricted mode.'
+                        );
+                    }
                 }
             }
 
@@ -354,7 +363,9 @@ class Jaws_Session
         $this->SetAttribute('salt',        uniqid(mt_rand(), true));
         $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('internal',    false);
+        $this->SetAttribute('domain',      0);
         $this->SetAttribute('username',    '');
+        $this->SetAttribute('password',    '');
         $this->SetAttribute('superadmin',  false);
         $this->SetAttribute('groups',      array());
         $this->SetAttribute('logon_hours', '');
@@ -541,7 +552,7 @@ class Jaws_Session
      */
     function update()
     {
-        if (empty($this->_SessionID)) {
+        if (empty($this->_SessionID) || !$this->auto_update_session) {
             return true;
         }
 
