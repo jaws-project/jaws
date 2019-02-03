@@ -24,6 +24,11 @@ $actions['GetCities'] = array(
     'standalone' => true,
     'file'   => 'Zones',
 );
+$actions['HealthStatus'] = array(
+    'global' => true,
+    'standalone' => true,
+    'file'   => 'Settings',
+);
 
 /**
  * Admin actions

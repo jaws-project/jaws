@@ -191,4 +191,24 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
 
         return Jaws_Header::Location($this->gadget->urlMap('Settings'), 'Settings.Settings');
     }
+
+    /**
+     * Returns health status text
+     *
+     * @access  public
+     * @return  string
+     */
+    function HealthStatus()
+    {
+        if (defined('JAWS_HEALTH_STATUS')) {
+            $status = JAWS_HEALTH_STATUS;
+        }  else {
+            $status = $this->gadget->registry->fetch('health_status');
+        }
+
+        http_response_code(200);
+        header('Content-Length: ' . strlen($status));
+        return $status;
+    }
+
 }

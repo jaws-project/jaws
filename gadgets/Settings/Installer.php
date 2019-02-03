@@ -92,6 +92,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('master', ''),
         array('holder', ''),
         array('parent', ''),
+        array('health_status', '1'),
     );
 
     /**
@@ -323,6 +324,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
             }
         }
 
+        if (version_compare($old, '1.7.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('health_status', '1');
+        }
         return true;
     }
 
