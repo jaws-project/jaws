@@ -400,7 +400,7 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     }
 
     if (!empty($next_location) && !$XMLHttpRequest) {
-        header('Location: '.$next_location);
+        header('Location: '.$next_location, true, http_response_code());
     }
 
     // encode data based on response type
