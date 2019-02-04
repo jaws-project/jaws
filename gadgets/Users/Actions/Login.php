@@ -386,6 +386,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
         }
 
+        http_response_code(201);
         return Jaws_Header::Location($referrer);
 
     }

@@ -266,13 +266,13 @@ class Users_Account_Default extends Jaws_Gadget_Action
                 $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
                 $resCheck = $htmlPolicy->checkCaptcha('login');
                 if (Jaws_Error::IsError($resCheck)) {
-                    throw new Exception($resCheck->getMessage());
+                    throw new Exception($resCheck->getMessage(), 401);
                 }
             }
 
             $loginData['authstep'] = 0;
             if ($loginData['username'] === '' && $loginData['password'] === '') {
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'));
+                throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
             }
 
             if ($loginData['usecrypt']) {
@@ -293,7 +293,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $userModel = $GLOBALS['app']->loadObject('Jaws_User');
             $user = $userModel->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
             if (Jaws_Error::isError($user)) {
-                throw new Exception($user->getMessage());
+                throw new Exception($user->getMessage(), 401);
             }
 
             // fetch user groups
@@ -329,7 +329,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
                     $this->gadget->session->update('loginkey', $loginkey);
                     // notify
                     $params = array();
-                    $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->GetAttribute('sid'));
+                    $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->Session->GetAttribute('sid'));
                     $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
                     $params['summary'] = _t(
                         'GLOBAL_LOGINKEY_SUMMARY',
@@ -342,7 +342,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
                 }
                 // check verification key
                 if ($loginkey['text'] != $loginData['loginkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'));
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
             }
 
@@ -359,7 +359,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
                     array('Users', 'Login', JAWS_WARNING, null, 403, $user['id'])
                 );
 
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'));
+                throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'), 409);
             }
 
             // remove login trying count from session
@@ -370,7 +370,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
             if (!$this->gadget->session->fetch('checksess')) {
                 // do logout
                 $GLOBALS['app']->Session->Logout();
-                throw new Exception(_t('GLOBAL_ERROR_SESSION_NOTFOUND'));
+                throw new Exception(_t('GLOBAL_ERROR_SESSION_NOTFOUND'), 404);
             }
 
             return $user;
@@ -391,7 +391,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
                 return $this->gadget->action->loadAdmin('Login')->Login();
             }
 
-            return Jaws_Error::raiseError($error->getMessage(), __FUNCTION__);
+            return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
         }
 
     }
@@ -438,12 +438,13 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $urlParams['referrer'] = $referrer;
         }
 
+        http_response_code($error->getCode());
         if (JAWS_SCRIPT == 'index') {
-            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams), '', 401);
+            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
         } else {
             $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
             $admin_script = empty($admin_script)? 'admin.php' : $admin_script;
-            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"), '', 401);
+            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"));
         }
 
     }
