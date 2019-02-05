@@ -144,7 +144,7 @@ class Jaws_Gadget
      * @param   string $gadget Gadget's name(same as the filesystem name)
      * @return  void
      */
-    function __construct($gadget)
+    protected function __construct($gadget)
     {
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
