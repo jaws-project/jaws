@@ -210,6 +210,12 @@
             </field>
 
             <field>
+                <name>salt</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
                 <name>type</name>
                 <type>text</type>
                 <length>32</length>
