@@ -47,7 +47,7 @@ class Jaws_Session_Web extends Jaws_Session
         // Create cookie
         $this->SetCookie(
             JAWS_SESSION_NAME,
-            $this->_SessionID.'-'.$this->GetAttribute('salt'),
+            $this->ssid.'-'.$this->salt,
             $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0
         );
     }
@@ -66,7 +66,7 @@ class Jaws_Session_Web extends Jaws_Session
         if ($prepare_new_session) {
             $this->DestroyCookie(JAWS_SESSION_NAME);
         } else {
-            $this->SetCookie(JAWS_SESSION_NAME, $this->_SessionID.'-'.$this->GetAttribute('salt'), 0, true);
+            $this->SetCookie(JAWS_SESSION_NAME, $this->ssid.'-'.$this->salt, 0, true);
         }
     }
 
@@ -82,6 +82,10 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function SetCookie($name, $value, $minutes = 0, $httponly = null)
     {
+        if (defined('SESSION_INVALID')) {
+            return false;
+        }
+
         $version = $GLOBALS['app']->Registry->fetch('cookie_version', 'Settings');
         $expires = ($minutes == 0)? 0 : (time() + $minutes*60);
         $path    = $GLOBALS['app']->getSiteURL('/', true);
@@ -118,6 +122,10 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function DestroyCookie($name)
     {
+        if (defined('SESSION_INVALID')) {
+            return false;
+        }
+
         $this->SetCookie($name, false);
     }
 
