@@ -14,7 +14,7 @@ define('RESPONSE_NOTICE',  'alert-success');
 /**
  *
  */
-define('SESSION_RESERVED_ATTRIBUTES', "sid,salt,type,user,user_name,superadmin,concurrents,acl,update_time");
+define('SESSION_RESERVED_ATTRIBUTES', "type,user,user_name,superadmin,concurrents,acl,update_time");
 
 /**
  * Class to manage User session.
@@ -45,33 +45,33 @@ class Jaws_Session
 
     /**
      * Attributes array
-     * @var     array $_Attributes
+     * @var     array   $attributes
      * @access  protected
      * @see     SetAttribute(), GetAttibute()
      */
-    protected $_Attributes = array();
+    protected $attributes = array();
 
     /**
      * Attributes array trash
-     * @var     array $_AttributesTrash
+     * @var     array $trash
      * @access  protected
      * @see     SetAttribute(), GetAttibute()
      */
-    protected $_AttributesTrash = array();
+    protected $trash = array();
 
     /**
      * Session unique identifier
-     * @var     string $_SessionID
+     * @var     int     $ssid
      * @access  protected
      */
-    protected $_SessionID;
+    protected $ssid = 0;
 
     /**
-     * Auto update session
-     * @var     bool    $auto_update_session
+     * Session salt for prevent predication
+     * @var     string  $salt
      * @access  protected
      */
-    protected $auto_update_session = true;
+    protected $salt = '';
 
     /**
      * An interface for available drivers
@@ -146,13 +146,12 @@ class Jaws_Session
         // logout event logging
         $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Logout', JAWS_NOTICE));
         // let everyone know a user has been logout
-        $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->_Attributes);
+        $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->attributes);
         if ($prepare_new_session) {
-            $this->delete($this->_SessionID);
+            $this->delete($this->ssid);
             $this->Reset();
         } else {
-            $this->Reset($this->_SessionID);
-            $this->update();
+            $this->Reset($this->ssid);
         }
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
     }
@@ -166,48 +165,49 @@ class Jaws_Session
      */
     function Load($sid)
     {
-        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loading session');
-        $this->_SessionID = '';
         @list($sid, $salt) = explode('-', $sid);
         $session = $this->GetSession((int)$sid);
-        if (is_array($session)) {
-            $checksum = md5($session['user'] . $session['data']);
+        try {
+            // session exists
+            if (Jaws_Error::IsError($session) || empty($session)) {
+                throw new Exception('No previous session exists', JAWS_LOG_INFO);
+            }
 
-            $this->_SessionID  = $session['id'];
-            $this->_Attributes = unserialize($session['data']);
-            $this->SetAttribute('sid', $this->_SessionID, true);
-            $this->referrer    = $session['referrer'];
+            $this->ssid = $session['id'];
+            $this->salt = $session['salt'];
+            $this->referrer   = $session['referrer'];
+            $this->attributes = unserialize($session['data']);
+            $checksum = md5($session['user'] . $session['data']);
 
             // browser agent
             $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
             if ($agent !== $session['agent']) {
-                $this->Logout();
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session agent has been changed');
-                return false;
+                throw new Exception('Previous session agent has been changed', JAWS_LOG_NOTICE);
             }
 
-            // check session longevity
-            $expTime = time() - 60 * (int) $GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
+            // session longevity
+            $expTime = time() - 60 * (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
             if ($session['update_time'] < ($expTime - $session['longevity'])) {
-                $this->Logout();
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session has expired');
-                return false;
+                throw new Exception('Previous session has expired', JAWS_LOG_INFO);
             }
 
-            // salt & checksum
-            if (($salt !== $this->GetAttribute('salt')) || ($checksum !== $session['checksum'])) {
-                $this->Reset($this->_SessionID);
-                $this->auto_update_session = false;
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session salt has been changed');
+            // salt
+            if ($salt !== $session['salt']) {
+                define('SESSION_INVALID', true);
+                $this->Reset($this->ssid);
+                $GLOBALS['log']->Log(JAWS_LOG_INFO, 'Session salt has been changed');
+            }
+
+            // checksum
+            if ($checksum !== $session['checksum']) {
+                throw new Exception('Session checksum has been changed', JAWS_LOG_NOTICE);
             }
 
             if ($this->GetAttribute('logged')) {
                 // user expiry date
                 $expiry_date = $this->GetAttribute('expiry_date');
                 if (!empty($expiry_date) && $expiry_date <= time()) {
-                    $this->Logout();
-                    $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'This username is expired');
-                    return false;
+                    throw new Exception('This username is expired', JAWS_LOG_NOTICE);
                 }
 
                 // logon hours
@@ -216,9 +216,7 @@ class Jaws_Session
                     $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
                     $lhByte = hexdec($logon_hours{$wdhour[0]*6 + intval($wdhour[1]/4)});
                     if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
-                        $this->Logout();
-                        $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Logon hours terminated');
-                        return false;
+                        throw new Exception('Logon hours terminated', JAWS_LOG_NOTICE);
                     }
                 }
 
@@ -227,9 +225,7 @@ class Jaws_Session
                     $logins = $this->GetAttribute('concurrents');
                     $existSessions = $this->GetUserSessions($this->GetAttribute('user'), true);
                     if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
-                        $this->Logout();
-                        $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Maximum number of concurrent logins reached');
-                        return false;
+                        throw new Exception('Maximum number of concurrent logins reached', JAWS_LOG_NOTICE);
                     }
                 }
 
@@ -239,9 +235,9 @@ class Jaws_Session
                     $expPasswordTime = time() - 3600 * $password_max_age;
                     $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
                     if ($last_password_updated_time <= $expPasswordTime) {
-                        define('RESTRICTED_SESSION',  true);
+                        define('SESSION_RESTRICTED_GADGETS', 'Users,ControlPanel');
                         $GLOBALS['log']->Log(
-                            JAWS_LOG_NOTICE,
+                            JAWS_LOG_INFO,
                             'This password is expired, session switched to restricted mode.'
                         );
                     }
@@ -250,10 +246,10 @@ class Jaws_Session
 
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session was OK');
             return true;
+        } catch (Exception $error) {
+            $GLOBALS['log']->Log($error->getCode(), $error->getMessage());
+            return false;
         }
-
-        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'No previous session exists');
-        return false;
     }
 
     /**
@@ -267,7 +263,7 @@ class Jaws_Session
     function Create($info = array(), $remember = false)
     {
         if (empty($info)) {
-            $this->_Attributes = array();
+            $this->attributes = array();
             $info['id']          = 0;
             $info['internal']    = false;
             $info['domain']      = 0;
@@ -287,10 +283,8 @@ class Jaws_Session
             $info['last_password_update'] = 0;
         }
 
-        $this->SetAttribute('sid',         $this->_SessionID, true);
         $this->SetAttribute('user',        $info['id']);
         $this->SetAttribute('internal',    $info['internal']);
-        $this->SetAttribute('salt',        uniqid(mt_rand(), true));
         $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('domain',      $info['domain']);
         $this->SetAttribute('username',    $info['username']);
@@ -314,10 +308,11 @@ class Jaws_Session
         $this->SetAttribute('avatar',     $info['avatar']);
         $this->SetAttribute('last_password_update', $info['last_password_update']);
 
-        if (empty($this->_SessionID)) {
-            $this->_SessionID = $this->insert();
+        $this->salt = uniqid('', true);
+        if (empty($this->ssid)) {
+            $this->ssid = $this->insert($this->salt);
         } else {
-            $this->_SessionID = $this->update();
+            $this->ssid = $this->update($this->salt);
         }
 
         $this->referrer = Jaws_Utils::getHostReferrer();
@@ -358,9 +353,8 @@ class Jaws_Session
      */
     function Reset($sid = '')
     {
-        $this->_Attributes = array();
+        $this->attributes = array();
         $this->SetAttribute('user',        0);
-        $this->SetAttribute('salt',        uniqid(mt_rand(), true));
         $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('internal',    false);
         $this->SetAttribute('domain',      0);
@@ -381,7 +375,7 @@ class Jaws_Session
         $this->SetAttribute('avatar',      '');
         $this->SetAttribute('last_password_update', 0);
 
-        $this->_SessionID = $sid;
+        $this->ssid = $sid;
         return true;
     }
 
@@ -397,12 +391,12 @@ class Jaws_Session
     function SetAttribute($name, $value, $trashed = false)
     {
         if ($trashed) {
-            $this->_AttributesTrash[$name] = $value;
+            $this->trash[$name] = $value;
         } else {
             if (is_array($value) && $name == 'LastResponses') {
-                $this->_Attributes['LastResponses'][] = $value;
+                $this->attributes['LastResponses'][] = $value;
             } else {
-                $this->_Attributes[$name] = $value;
+                $this->attributes[$name] = $value;
             }
         }
 
@@ -418,10 +412,10 @@ class Jaws_Session
      */
     function GetAttribute($name)
     {
-        if (array_key_exists($name, $this->_Attributes)) {
-            return $this->_Attributes[$name];
-        } elseif (array_key_exists($name, $this->_AttributesTrash)) {
-            return $this->_AttributesTrash[$name];
+        if (array_key_exists($name, $this->attributes)) {
+            return $this->attributes[$name];
+        } elseif (array_key_exists($name, $this->trash)) {
+            return $this->trash[$name];
         }
 
         return null;
@@ -442,7 +436,7 @@ class Jaws_Session
         }
 
         if (empty($names)) {
-            return $this->_Attributes;
+            return $this->attributes;
         }
 
         $attributes = array();
@@ -463,13 +457,13 @@ class Jaws_Session
      */
     function DeleteAttribute($name, $trashed = false)
     {
-        if (array_key_exists($name, $this->_Attributes)) {
+        if (array_key_exists($name, $this->attributes)) {
             if ($trashed) {
-                $this->_AttributesTrash[$name] = $this->_Attributes[$name];
+                $this->trash[$name] = $this->attributes[$name];
             }
-            unset($this->_Attributes[$name]);
-        } elseif (!$trashed && array_key_exists($name, $this->_AttributesTrash)) {
-            unset($this->_AttributesTrash[$name]);
+            unset($this->attributes[$name]);
+        } elseif (!$trashed && array_key_exists($name, $this->trash)) {
+            unset($this->trash[$name]);
         }
 
         return true;
@@ -550,10 +544,10 @@ class Jaws_Session
      * @access  public
      * @return  mixed   Session ID if success, otherwise Jaws_Error or false
      */
-    function update()
+    function update($salt = '')
     {
-        if (empty($this->_SessionID) || !$this->auto_update_session) {
-            return true;
+        if (defined('SESSION_INVALID') || empty($this->ssid)) {
+            return false;
         }
 
         // agent
@@ -567,8 +561,8 @@ class Jaws_Session
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $user = $this->GetAttribute('user');
-        $serialized = serialize($this->_Attributes);
-        $sessTable->update(array(
+        $serialized = serialize($this->attributes);
+        $updData = array(
             'user'        => $user,
             'data'        => $serialized,
             'longevity'   => $this->GetAttribute('longevity'),
@@ -576,11 +570,15 @@ class Jaws_Session
             'ip'          => $ip,
             'agent'       => $agent,
             'update_time' => time()
-        ));
-        $result = $sessTable->where('id', $this->_SessionID)->exec();
+        );
+        if (!empty($salt)) {
+            $updData['salt'] = $salt;
+        }
+        $sessTable->update($updData);
+        $result = $sessTable->where('id', $this->ssid)->exec();
         if (!Jaws_Error::IsError($result)) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully');
-            return $this->_SessionID;
+            return $this->ssid;
         }
 
         return false;
@@ -592,7 +590,7 @@ class Jaws_Session
      * @access  public
      * @return  mixed   Session ID if success, otherwise Jaws_Error or false
      */
-    function insert()
+    function insert($salt)
     {
         $max_active_sessions = (int)$GLOBALS['app']->Registry->fetch('max_active_sessions', 'Policy');
         if (!empty($max_active_sessions)) {
@@ -600,7 +598,6 @@ class Jaws_Session
             if ($activeSessions >= $max_active_sessions) {
                 // remove expired session
                 $this->DeleteExpiredSessions();
-                $this->Logout();
                 Jaws_Error::Fatal(_t('GLOBAL_HTTP_ERROR_CONTENT_503_OVERLOAD'), 0, 503);
             }
         }
@@ -615,30 +612,28 @@ class Jaws_Session
         }
 
         // referrer
+        $this->Reset($this->ssid);
         $referrer = Jaws_Utils::getHostReferrer();
-
-        $sessTable = Jaws_ORM::getInstance()->table('session');
-        if (!empty($this->_Attributes)) {
-            //A new session, we insert it to the DB
-            $update_time = time();
-            $user = $this->GetAttribute('user');
-            $serialized = serialize($this->_Attributes);
-            $sessTable->insert(array(
+        $update_time = time();
+        $user = $this->GetAttribute('user');
+        $serialized = serialize($this->attributes);
+        $result = Jaws_ORM::getInstance()->table('session')->insert(
+            array(
                 'user'       => $user,
                 'type'       => JAWS_APPTYPE,
                 'longevity'  => $this->GetAttribute('longevity'),
                 'data'       => $serialized,
                 'referrer'   => md5($referrer),
+                'salt'       => $salt,
                 'checksum'   => md5($user. $serialized),
                 'ip'         => $ip,
                 'agent'      => $agent,
                 'insert_time' => $update_time,
                 'update_time' => $update_time
-            ));
-            $result = $sessTable->exec();
-            if (!Jaws_Error::IsError($result)) {
-                return $result;
-            }
+            )
+        )->exec();
+        if (!Jaws_Error::IsError($result)) {
+            return $result;
         }
 
         return false;
@@ -720,17 +715,17 @@ class Jaws_Session
      * Returns the session's attributes
      *
      * @access  private
-     * @param   string  $sid    Session ID
+     * @param   int     $sid    Session ID
      * @return  mixed   Session's attributes if exist, otherwise False
      */
     function GetSession($sid)
     {
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id', 'user', 'longevity', 'ip', 'agent', 'referrer', 'data',
+            'id:integer', 'salt', 'user', 'longevity', 'ip', 'agent', 'referrer', 'data',
             'checksum', 'update_time:integer'
         );
-        return $sessTable->where('id', $sid)->fetchRow();
+        return $sessTable->where('id', (int)$sid)->fetchRow();
     }
 
     /**
