@@ -474,14 +474,26 @@ class Jaws_ACL
             }
         }
 
+        // session in restricted mode, only defined gadgets permission will be checked
+        if (defined('SESSION_RESTRICTED_GADGETS')) {
+            static $authorized_gadgets;
+            if (!isset($authorized_gadgets)) {
+                $authorized_gadgets = array_filter(
+                    array_map(
+                        'trim',
+                        explode(',', strtolower(SESSION_RESTRICTED_GADGETS))
+                    )
+                );
+            }
+
+            if (!in_array(strtolower($gadget), $authorized_gadgets)) {
+                return 0;
+            }
+        }
+
         // don't check permissions for administrators
         if ($is_super_admin === true) {
             return 0xff;
-        }
-
-        // session in restricted mode, only users permission will be checked
-        if (defined('RESTRICTED_SESSION') && !in_array($gadget, array('Users', 'ControlPanel'))) {
-            return 0;
         }
 
         // 1. Check for user permission
