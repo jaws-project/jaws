@@ -154,18 +154,16 @@ function save_lang_data()
         return;
     }
 
-    var data = new Array();
-    var meta_elements = $('#meta_lang input');
-    data['meta'] = new Array();
-    for(var i = 0; i < meta_elements.length; i++) {
-        data['meta'][meta_elements[i].name] = meta_elements[i].value;
-    }
+    var data = {};
+    data['meta'] = {};
+    $('#meta_lang input').each(function(index) {
+        data['meta'][this.name] = $(this).val();
+    });
 
-    var strings_elements = $('#tbl_strings textarea');
-    data['strings'] = new Array();
-    for(var i = 0; i < strings_elements.length; i++) {
-        data['strings'][strings_elements[i].name] = strings_elements[i].value;
-    }
+    data['strings'] = {};
+    $('#tbl_strings textarea').each(function(index) {
+        data['strings'][this.name] = $(this).val();
+    });
 
     LanguagesAjax.callAsync('SetLangData', [component, lang, data]);
     LangDataChanged = false;
