@@ -44,9 +44,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $reqpost = $response['data'];
         }
 
-        // set session key/value for check through login process
-        $this->gadget->session->insert('checksess', 1);
-
         // global variables
         $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
 
@@ -96,7 +93,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
     function AdminLogin()
     {
         if ($GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true') {
-            $this->gadget->session->insert('checksess', 1);
             $httpAuth = new Jaws_HTTPAuth();
             $httpAuth->showLoginBox();
             return false;
@@ -121,9 +117,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
         } else {
             $reqpost = $response['data'];
         }
-
-        // set session key/value for check through login process
-        $this->gadget->session->insert('checksess', 1);
 
         // referrer
         //$ltpl->SetVariable('referrer', $reqpost['referrer']);
@@ -366,12 +359,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $this->gadget->session->delete('bad_login_count');
             // remove login key
             $this->gadget->session->delete('loginkey');
-
-            if (!$this->gadget->session->fetch('checksess')) {
-                // do logout
-                $GLOBALS['app']->Session->Logout();
-                throw new Exception(_t('GLOBAL_ERROR_SESSION_NOTFOUND'), 404);
-            }
 
             return $user;
         } catch (Exception $error) {
