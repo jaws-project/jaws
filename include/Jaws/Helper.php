@@ -384,9 +384,6 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
         $sync = false;
     }
 
-    // set response status code
-    http_response_code(empty($status_code)? http_response_code() : $status_code);
-
     // detect Ajax request
     $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
@@ -400,7 +397,12 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     }
 
     if (!empty($next_location) && !$XMLHttpRequest) {
-        header('Location: '.$next_location);
+        header('Location: '.$next_location, true, $status_code);
+    } else {
+        // set response status code
+        if (!empty($status_code) && !in_array($status_code, array(301, 302))) {
+            http_response_code($status_code);
+        }
     }
 
     // encode data based on response type
