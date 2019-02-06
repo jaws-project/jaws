@@ -194,6 +194,8 @@ class Jaws_Session
             // salt
             if ($salt !== $session['salt']) {
                 define('SESSION_INVALID', true);
+                // no permission for execution all actions
+                define('SESSION_RESTRICTED_GADGETS', '');
                 $this->Reset($this->ssid);
                 $GLOBALS['log']->Log(JAWS_LOG_INFO, 'Session salt has been changed');
             }
