@@ -124,6 +124,17 @@ class Jaws_Session
     }
 
     /**
+     * Return session ID
+     *
+     * @access  public
+     * @return  int     Session ID
+     */
+    function GetSessionID()
+    {
+        return $this->ssid;
+    }
+
+    /**
      * Return session login status
      *
      * @access  public
@@ -270,7 +281,6 @@ class Jaws_Session
             $info['internal']    = false;
             $info['domain']      = 0;
             $info['username']    = '';
-            $info['password']    = '';
             $info['superadmin']  = false;
             $info['groups']      = array();
             $info['layout']      = 0;
@@ -290,7 +300,6 @@ class Jaws_Session
         $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('domain',      $info['domain']);
         $this->SetAttribute('username',    $info['username']);
-        $this->SetAttribute('password',    $info['password']);
         $this->SetAttribute('superadmin',  $info['superadmin']);
         $this->SetAttribute('groups',      $info['groups']);
         $this->SetAttribute('logon_hours', $info['logon_hours']);
@@ -361,7 +370,6 @@ class Jaws_Session
         $this->SetAttribute('internal',    false);
         $this->SetAttribute('domain',      0);
         $this->SetAttribute('username',    '');
-        $this->SetAttribute('password',    '');
         $this->SetAttribute('superadmin',  false);
         $this->SetAttribute('groups',      array());
         $this->SetAttribute('logon_hours', '');
