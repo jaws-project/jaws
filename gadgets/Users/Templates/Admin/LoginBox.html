@@ -65,15 +65,6 @@
                    required
             />
           </div>
-          <!-- BEGIN authtype -->
-          <div><label for="authtype">{{lbl_authtype}}:</label>
-            <select class="form-control" name="authtype" id="authtype">
-            <!-- BEGIN item -->
-            <option value="{{method}}" {{selected}}>{{method}}</option>
-            <!-- END item -->
-            </select>
-          </div>
-          <!-- END authtype -->
           <!-- BEGIN remember -->
           <div>
             <label class="form-check-label" for="remember">
@@ -104,10 +95,7 @@
           <!-- END usecrypt -->
 <!-- END login_step_1 -->
 <!-- BEGIN login_step_2 -->
-          <input type="hidden" name="password" value="{{password}}" />
-          <input type="hidden" name="usecrypt" value="{{usecrypt}}" />
           <input type="hidden" name="authstep" value="1" />
-          <input type="hidden" name="authtype" value="{{authtype}}" />
           <input type="hidden" name="remember" value="{{remember}}" />
           <div>
             <label for="username">{{lbl_username}}:</label>

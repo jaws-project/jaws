@@ -36,7 +36,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
         if (!isset($response['data'])) {
             $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
-            $reqpost['password'] = '';
             $reqpost['authstep'] = 0;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
@@ -109,7 +108,6 @@ class Users_Account_Default extends Jaws_Gadget_Action
         if (!isset($response['data'])) {
             $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
-            $reqpost['password'] = '';
             $reqpost['authstep'] = 0;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
@@ -216,15 +214,47 @@ class Users_Account_Default extends Jaws_Gadget_Action
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_2");
 
-        $tpl->SetVariable('usecrypt', $reqpost['usecrypt']);
         $tpl->SetVariable('remember', $reqpost['remember']);
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
-        $tpl->SetVariable('password', isset($reqpost['password'])? $reqpost['password'] : '');
 
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
         $tpl->SetVariable('lbl_loginkey', _t('GLOBAL_LOGINKEY'));
 
         $tpl->ParseBlock("$block/login_step_2");
+    }
+
+    /**
+     * Notify user login key by email/mobile
+     * @access  public
+     * @param   string  $email  Email address
+     * @param   string  $mobile Mobile number
+     * @return  bool    True
+     */
+    function NotifyLoginKey($email, $mobile)
+    {
+        // generate login/verification key
+        $loginkey = array(
+            //'text' => Jaws_Utils::RandomText(5, true, false, true),
+            'text' => '12345',
+            'time' => time()
+        );
+
+        $params = array();
+        $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->Session->GetSessionID());
+        $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
+        $params['summary'] = _t(
+            'GLOBAL_LOGINKEY_SUMMARY',
+            $loginkey['text']
+        );
+        $params['description'] = $params['summary'];
+        $params['emails']  = array($email);
+        $params['mobiles'] = array($mobile);
+        $this->gadget->event->shout('Notify', $params);
+
+        // update session login-key
+        $this->gadget->session->update('loginkey', $loginkey);
+
+        return true;
     }
 
     /**
@@ -263,76 +293,76 @@ class Users_Account_Default extends Jaws_Gadget_Action
                 }
             }
 
-            $loginData['authstep'] = 0;
-            if ($loginData['username'] === '' && $loginData['password'] === '') {
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
-            }
+            if (empty($loginData['authstep'])) {
+                $this->gadget->session->update('temp.user', '');
+                if ($loginData['username'] === '' && $loginData['password'] === '') {
+                    throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
+                }
 
-            if ($loginData['usecrypt']) {
-                $JCrypt = Jaws_Crypt::getInstance();
-                if (!Jaws_Error::IsError($JCrypt)) {
-                    $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+                if ($loginData['usecrypt']) {
+                    $JCrypt = Jaws_Crypt::getInstance();
+                    if (!Jaws_Error::IsError($JCrypt)) {
+                        $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+                    }
+                } else {
+                    $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+                }
+
+                // set default domain if not set
+                if (is_null($loginData['domain'])) {
+                    $loginData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+                }
+
+                // fetch user information from database
+                $userModel = $GLOBALS['app']->loadObject('Jaws_User');
+                $user = $userModel->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
+                if (Jaws_Error::isError($user)) {
+                    throw new Exception($user->getMessage(), 401);
+                }
+
+                // fetch user groups
+                $groups = $userModel->GetGroupsOfUser($user['id']);
+                if (Jaws_Error::IsError($groups)) {
+                    $groups = array();
+                }
+
+                $user['groups'] = $groups;
+                $user['avatar'] = $userModel->GetAvatar(
+                    $user['avatar'],
+                    $user['email'],
+                    48,
+                    $user['last_update']
+                );
+                $user['internal'] = true;
+                $user['remember'] = (bool)$loginData['remember'];
+
+                // two step verification?
+                if ((bool)$this->gadget->registry->fetchByUser('two_step_verification', '', $user['id']))
+                {
+                    $loginData['authstep'] = 1;
+                    $this->gadget->session->update('temp.user', $user);
+
+                    // send notification to user
+                    $this->NotifyLoginKey($user['email'], $user['mobile']);
+
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
             } else {
-                $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
-            }
+                // fetch user data from session
+                $user = $this->gadget->session->fetch('temp.user');
+                if (empty($user)) {
+                    $loginData['authstep'] = 0;
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 401);
+                }
 
-            // set default domain if not set
-            if (is_null($loginData['domain'])) {
-                $loginData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
-            }
-
-            // fetch user information from database
-            $userModel = $GLOBALS['app']->loadObject('Jaws_User');
-            $user = $userModel->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
-            if (Jaws_Error::isError($user)) {
-                throw new Exception($user->getMessage(), 401);
-            }
-
-            // fetch user groups
-            $groups = $userModel->GetGroupsOfUser($user['id']);
-            if (Jaws_Error::IsError($groups)) {
-                $groups = array();
-            }
-
-            // FIXME: we must find better way for use password in extra protocols ex. IMAP
-            $user['password'] = $loginData['password'];
-            $user['groups'] = $groups;
-            $user['avatar'] = $userModel->GetAvatar(
-                $user['avatar'],
-                $user['email'],
-                48,
-                $user['last_update']
-            );
-            $user['internal'] = true;
-            $user['remember'] = (bool)$loginData['remember'];
-
-            // two step verification?
-            if ((bool)$GLOBALS['app']->Registry->fetchByUser($user['id'], 'two_step_verification', 'Users'))
-            {
-                // going to next authentication/verification step
-                $loginData['authstep'] = 1;
-                // check login key
                 $loginkey = $this->gadget->session->fetch('loginkey');
                 if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
-                    $loginkey = array(
-                        'text' => Jaws_Utils::RandomText(5, true, false, true),
-                        'time' => time()
-                    );
-                    $this->gadget->session->update('loginkey', $loginkey);
-                    // notify
-                    $params = array();
-                    $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->Session->GetAttribute('sid'));
-                    $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
-                    $params['summary'] = _t(
-                        'GLOBAL_LOGINKEY_SUMMARY',
-                        $loginkey['text']
-                    );
-                    $params['description'] = $params['summary'];
-                    $params['emails']  = array($user['email']);
-                    $params['mobiles'] = array($user['mobile']);
-                    $GLOBALS['app']->Listener->Shout('Users', 'Notify', $params);
+                    // send notification to user
+                    $this->NotifyLoginKey($user['email'], $user['mobile']);
+
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
+
                 // check verification key
                 if ($loginkey['text'] != $loginData['loginkey']) {
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
@@ -359,6 +389,8 @@ class Users_Account_Default extends Jaws_Gadget_Action
             $this->gadget->session->delete('bad_login_count');
             // remove login key
             $this->gadget->session->delete('loginkey');
+            // remove temp user data
+            $this->gadget->session->delete('temp.user');
 
             return $user;
         } catch (Exception $error) {
@@ -368,6 +400,7 @@ class Users_Account_Default extends Jaws_Gadget_Action
                 (int)$this->gadget->session->fetch('bad_login_count') + 1
             );
 
+            unset($loginData['password']);
             $this->gadget->session->push(
                 $error->getMessage(),
                 'Login.Response',
