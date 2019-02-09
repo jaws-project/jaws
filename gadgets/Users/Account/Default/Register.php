@@ -18,7 +18,7 @@ class Users_Account_Default_Register extends Users_Account_Default
         $rgstrData = $this->gadget->request->fetch(
             array(
                 'domain', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'regstep', 'regkey', 'usecrypt'
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'regkey', 'usecrypt'
             ),
             'post'
         );
@@ -32,7 +32,7 @@ class Users_Account_Default_Register extends Users_Account_Default
             }
 
             if (empty($rgstrData['regstep'])) {
-                $this->gadget->session->update('temp.register.user', '');
+                $this->gadget->session->delete('temp.register.user');
                 if ($rgstrData['password'] !== $rgstrData['password_check']) {
                     throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 401);
                 }
@@ -49,11 +49,6 @@ class Users_Account_Default_Register extends Users_Account_Default
                 // set default domain if not set
                 if (is_null($rgstrData['domain'])) {
                     $rgstrData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
-                }
-
-                // validate url
-                if (!preg_match('|^\S+://\S+\.\S+.+$|i', $rgstrData['url'])) {
-                    $rgstrData['url'] = '';
                 }
 
                 $dob = null;
@@ -86,7 +81,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 $userData = $this->gadget->session->fetch('temp.register.user');
                 if (empty($userData)) {
                     $rgstrData['regstep'] = 0;
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 401);
+                    throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
                 }
 
                 $regkey = $this->gadget->session->fetch('regkey');

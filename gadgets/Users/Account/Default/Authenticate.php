@@ -29,7 +29,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         }
 
         $loginData = $this->gadget->request->fetch(
-            array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'authstep', 'remember'),
+            array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'loginstep', 'remember'),
             'post'
         );
 
@@ -43,7 +43,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
             }
 
-            if (empty($loginData['authstep'])) {
+            if (empty($loginData['loginstep'])) {
                 $this->gadget->session->update('temp.login.user', '');
                 if ($loginData['username'] === '' && $loginData['password'] === '') {
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
@@ -89,7 +89,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 // two step verification?
                 if ((bool)$this->gadget->registry->fetchByUser('two_step_verification', '', $user['id']))
                 {
-                    $loginData['authstep'] = 1;
+                    $loginData['loginstep'] = 1;
                     $this->gadget->session->update('temp.login.user', $user);
 
                     // send notification to user
@@ -101,7 +101,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 // fetch user data from session
                 $user = $this->gadget->session->fetch('temp.login.user');
                 if (empty($user)) {
-                    $loginData['authstep'] = 0;
+                    $loginData['loginstep'] = 0;
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 401);
                 }
 

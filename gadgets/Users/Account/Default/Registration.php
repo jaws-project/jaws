@@ -84,7 +84,6 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('username',  $reqpost['username']);
         $tpl->SetVariable('email',     $reqpost['email']);
         $tpl->SetVariable('mobile',    $reqpost['mobile']);
-        $tpl->SetVariable('url',       $reqpost['url']);
         $tpl->SetVariable('nickname',  $reqpost['nickname']);
         $tpl->SetVariable('fname',     $reqpost['fname']);
         $tpl->SetVariable('lname',     $reqpost['lname']);
@@ -148,7 +147,22 @@ class Users_Account_Default_Registration extends Users_Account_Default
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/reg_step_3");
+        $anon_activation = $this->gadget->registry->fetch('anon_activation');
+        switch ($anon_activation) {
+            case 'admin':
+                $message = _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
+                break;
 
+            case 'user':
+                $message = _t('USERS_REGISTRATION_ACTIVATED_BY_USER');
+                break;
+
+            default:
+                $message = _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO');
+                break;
+        }
+        
+        $tpl->SetVariable('message', $message);
         $tpl->ParseBlock("$block/reg_step_3");
     }
 
