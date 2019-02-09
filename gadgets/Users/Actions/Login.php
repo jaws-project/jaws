@@ -308,7 +308,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $authtype = $this->gadget->registry->fetch('authtype');
         }
         $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
-        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype.php";
+        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Login.php";
         if (!file_exists($authfile)) {
             $GLOBALS['log']->Log(
                 JAWS_LOG_NOTICE,
@@ -327,7 +327,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $this->gadget->session->update('referrer', $referrer);
 
         // load authentication method driver
-        $classname = "Users_Account_$authtype";
+        $classname = "Users_Account_{$authtype}_Login";
         $objAccount = new $classname($this->gadget);
         return $objAccount->Login();
     }
@@ -359,13 +359,13 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
         $referrer = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($referrer));
 
-        $classname = "Users_Account_$authtype";
+        $classname = "Users_Account_{$authtype}_Authenticate";
         $objAccount = new $classname($this->gadget);
         $loginData = $objAccount->Authenticate();
         if (Jaws_Error::IsError($loginData)) {
-            if (method_exists($objAccount, 'LoginError')) {
+            if (method_exists($objAccount, 'AuthenticateError')) {
                 $default_authtype = $this->gadget->registry->fetch('authtype');
-                return $objAccount->LoginError(
+                return $objAccount->AuthenticateError(
                     $loginData,
                     ($authtype != $default_authtype)? $authtype : '',
                     bin2hex($referrer)
@@ -388,7 +388,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         http_response_code(201);
         return Jaws_Header::Location($referrer);
-
     }
 
     /**
@@ -407,6 +406,40 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
             return Jaws_Header::Location($admin_script?: 'admin.php');
         }
+    }
+
+    /**
+     * Notify user login key by email/mobile
+     * @access  public
+     * @param   string  $email  Email address
+     * @param   string  $mobile Mobile number
+     * @return  bool    True
+     */
+    function LoginNotifyKey($email, $mobile)
+    {
+        // generate login/verification key
+        $loginkey = array(
+            //'text' => Jaws_Utils::RandomText(5, true, false, true),
+            'text' => '12345',
+            'time' => time()
+        );
+
+        $params = array();
+        $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->Session->GetSessionID());
+        $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
+        $params['summary'] = _t(
+            'GLOBAL_LOGINKEY_SUMMARY',
+            $loginkey['text']
+        );
+        $params['description'] = $params['summary'];
+        $params['emails']  = array($email);
+        $params['mobiles'] = array($mobile);
+        $this->gadget->event->shout('Notify', $params);
+
+        // update session login-key
+        $this->gadget->session->update('loginkey', $loginkey);
+
+        return true;
     }
 
 }
