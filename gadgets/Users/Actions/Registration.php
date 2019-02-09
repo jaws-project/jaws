@@ -13,20 +13,46 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
      * @access  public
      * @return  void
      */
-    function DoRegister()
+    function Register()
     {
+        // fetch authentication type from session
+        $authtype = $this->gadget->session->fetch('authtype');
+        if (empty($authtype)) {
+            return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
+        }
+
         if ($this->gadget->registry->fetch('anon_register') !== 'true') {
             return Jaws_HTTPError::Get(404);
         }
 
-        $result  = '';
-        $post = $this->gadget->request->fetch(
-            array(
-                'domain', 'user', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'step', 'key'
-            ),
-            'post'
-        );
+        $classname = "Users_Account_{$authtype}_Register";
+        $objAccount = new $classname($this->gadget);
+        $registerData = $objAccount->Register();
+        if (Jaws_Error::IsError($registerData)) {
+            if (method_exists($objAccount, 'RegisterError')) {
+                $default_authtype = $this->gadget->registry->fetch('authtype');
+                return $objAccount->RegisterError(
+                    $registerData,
+                    ($authtype != $default_authtype)? $authtype : ''
+                );
+            }
+        } else {
+            $registerData['authtype'] = $authtype;
+            // create session & cookie
+            $GLOBALS['app']->Session->Create($registerData, $registerData['remember']);
+            // login event logging
+            $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
+            // let everyone know a user has been logged in
+            $this->gadget->event->shout('LoginUser', $registerData);
+
+            // call Authorize method if exists
+            if (method_exists($objAccount, 'Authorize')) {
+                $objAccount->Authorize($registerData);
+            }
+        }
+
+        http_response_code(201);
+        return Jaws_Header::Location('');
 
         try {
             // check captcha policy
@@ -137,131 +163,28 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
-        $response = $this->gadget->session->pop('Registration');
-        if (!isset($response['data'])) {
-            $post = array(
-                'domain' => 0,
-                'user'   => 0,
-                'step'   => 0,
-                'key'    => '',
-                'username' => '',
-                'email' => '',
-                'mobile' => '',
-                'url' => '',
-                'nickname' => '',
-                'fname' => '',
-                'lname' => '',
-                'ssn' => '',
-                'dob' => '',
-                'gender' => 0
+        http_response_code(401);
+        // 
+        $authtype = $this->gadget->request->fetch('authtype');
+        if (empty($authtype)) {
+            $authtype = $this->gadget->registry->fetch('authtype');
+        }
+        $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
+        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Registration.php";
+        if (!file_exists($authfile)) {
+            $GLOBALS['log']->Log(
+                JAWS_LOG_NOTICE,
+                $authtype. ' authentication driver doesn\'t exists, switched to default driver'
             );
-        } else {
-            $post = $response['data'];
-            $post['step'] = (int)$post['step'];
+            $authtype = 'Default';
         }
+        // set authentication type in session
+        $this->gadget->session->update('authtype', $authtype);
 
-        // Load the template
-        $tpl = $this->gadget->template->load('Registration.html');
-        $tpl->SetBlock('registration');
-        $tpl->SetVariable('user', $post['user']);
-        $tpl->SetVariable('step', $post['step']);
-        $tpl->SetVariable('title', _t('USERS_REGISTER'));
-
-        if (!empty($response)) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-        }
-
-        // fetch activation type
-        $anon_activation = $this->gadget->registry->fetch('anon_activation');
-        switch ($post['step']) {
-            case 1:
-                if ($anon_activation == 'user') {
-                    // key
-                    $tpl->SetBlock('registration/key');
-                    $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
-                    $tpl->SetVariable('lbl_key', _t('USERS_REGISTRATION_KEY'));
-                    $tpl->SetVariable('key', $post['key']);
-                    $tpl->ParseBlock('registration/key');
-                    //captcha
-                    $tpl->SetBlock('registration/captcha');
-                    $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-                    $mPolicy->loadCaptcha($tpl, 'registration/captcha');
-                    $tpl->ParseBlock('registration/captcha');
-                    // action
-                    $tpl->SetBlock('registration/action');
-                    $tpl->SetVariable('register', _t('USERS_REGISTER'));
-                    $tpl->ParseBlock('registration/action');
-                    break;
-                } else {
-                    $post['step'] = 2;
-                    // don't break
-                }
-
-            case 2:
-                $tpl->SetBlock('registration/success');
-                // select suitable message
-                switch ($anon_activation) {
-                    case 'admin':
-                        $message = _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
-                        break;
-                    case 'user':
-                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_USER', $this->gadget->urlMap('Login'));
-                        break;
-                    default:
-                        $message = _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap('Login'));
-                }
-                $tpl->SetVariable('message', $message);
-                $tpl->ParseBlock('registration/success');
-                break;
-
-            default:
-                $tpl->SetBlock('registration/request');
-                $tpl->SetVariable('domain',    $post['domain']);
-                $tpl->SetVariable('username',  $post['username']);
-                $tpl->SetVariable('email',     $post['email']);
-                $tpl->SetVariable('mobile',    $post['mobile']);
-                $tpl->SetVariable('url',       $post['url']);
-                $tpl->SetVariable('nickname',  $post['nickname']);
-                $tpl->SetVariable('fname',     $post['fname']);
-                $tpl->SetVariable('lname',     $post['lname']);
-                $tpl->SetVariable('ssn',       $post['ssn']);
-                $tpl->SetVariable('dob',       $post['dob']);
-                $tpl->SetVariable("selected_gender_{$post['gender']}", 'selected="selected"');
-                $tpl->SetVariable('lbl_account_info',  _t('USERS_ACCOUNT_INFO'));
-                $tpl->SetVariable('lbl_username',      _t('USERS_USERS_USERNAME'));
-                $tpl->SetVariable('validusernames',    _t('USERS_REGISTRATION_VALID_USERNAMES'));
-                $tpl->SetVariable('lbl_email',         _t('GLOBAL_EMAIL'));
-                $tpl->SetVariable('lbl_mobile',         _t('USERS_CONTACTS_MOBILE_NUMBER'));
-                $tpl->SetVariable('lbl_url',           _t('GLOBAL_URL'));
-                $tpl->SetVariable('lbl_nickname',       _t('USERS_USERS_NICKNAME'));
-                $tpl->SetVariable('lbl_password',      _t('USERS_USERS_PASSWORD'));
-                $tpl->SetVariable('sendpassword',      _t('USERS_USERS_SEND_AUTO_PASSWORD'));
-                $tpl->SetVariable('lbl_checkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
-                $tpl->SetVariable('lbl_personal_info', _t('USERS_PERSONAL_INFO'));
-                $tpl->SetVariable('lbl_fname',         _t('USERS_USERS_FIRSTNAME'));
-                $tpl->SetVariable('lbl_lname',         _t('USERS_USERS_LASTNAME'));
-                $tpl->SetVariable('lbl_gender',        _t('USERS_USERS_GENDER'));
-                $tpl->SetVariable('lbl_ssn',           _t('USERS_USERS_SSN'));
-                $tpl->SetVariable('gender_0',          _t('USERS_USERS_GENDER_0'));
-                $tpl->SetVariable('gender_1',          _t('USERS_USERS_GENDER_1'));
-                $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
-                $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
-                $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
-                $tpl->ParseBlock('registration/request');
-                //captcha
-                $tpl->SetBlock('registration/captcha');
-                $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-                $mPolicy->loadCaptcha($tpl, 'registration/captcha');
-                $tpl->ParseBlock('registration/captcha');
-                // action
-                $tpl->SetBlock('registration/action');
-                $tpl->SetVariable('register', _t('USERS_REGISTER'));
-                $tpl->ParseBlock('registration/action');
-        }
-
-        $tpl->ParseBlock('registration');
-        return $tpl->Get();
+        // load authentication method driver
+        $classname = "Users_Account_{$authtype}_Registration";
+        $objAccount = new $classname($this->gadget);
+        return $objAccount->Registration();
     }
 
     /**
@@ -343,6 +266,76 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $mail->SetSubject($subject);
         $mail->SetBody($this->gadget->plugin->parseAdmin($body));
         return $mail->send();
+    }
+
+    /**
+     * Notify user registration key
+     * @access  public
+     * @param   array   $uData  User data array
+     * @return  bool    True
+     */
+    function NotifyRegistrationKey($uData)
+    {
+        // generate registration key
+        $regkey = array(
+            'text' => Jaws_Utils::RandomText(5, true, false, true),
+            'time' => time()
+        );
+
+        $site_url = $GLOBALS['app']->getSiteURL('/');
+        $settings = $GLOBALS['app']->Registry->fetchAll('Settings');
+
+        $tpl = $this->gadget->template->load('RegistrationNotification.html');
+        $tpl->SetBlock('UserNotification');
+        $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $uData['nickname']));
+        $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
+        // verify key
+        $tpl->SetBlock('UserNotification/Activation');
+        $tpl->SetVariable('lbl_key', _t('USERS_REGISTRATION_KEY'));
+        $tpl->SetVariable('key', $regkey['text']);
+        $tpl->ParseBlock('UserNotification/Activation');
+
+        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username',       $uData['username']);
+        $tpl->SetVariable('lbl_password',   _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('password',       $uData['password']);
+        $tpl->SetVariable('lbl_email',      _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email',          $uData['email']);
+        $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile',         $uData['mobile']);
+        $tpl->SetVariable('lbl_ip',         _t('GLOBAL_IP'));
+        $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
+        $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name',      $settings['site_name']);
+        $tpl->SetVariable('site-url',       $site_url);
+        $tpl->ParseBlock('UserNotification');
+        $message = $tpl->Get();
+        $subject = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
+
+        // Notify
+        $params = array();
+        $params['key']     = crc32('Users.Registration.Key' . $uData['id']);
+        $params['title']   = $subject;
+        $params['summary'] = _t(
+            'USERS_REGISTRATION_USER_SUMMARY',
+            $uData['nickname'],
+            $site_url,
+            $uData['username'],
+            $uData['password'],
+            $uData['email'],
+            $uData['mobile'],
+            $regkey['text']
+        );
+
+        $params['description'] = $this->gadget->plugin->parse($message);
+        $params['emails']      = array($uData['email']);
+        $params['mobiles']     = array($uData['mobile']);
+        $this->gadget->event->shout('Notify', $params);
+
+        // update session login-key
+        $this->gadget->session->update('regkey', $regkey);
+
+        return true;
     }
 
 }

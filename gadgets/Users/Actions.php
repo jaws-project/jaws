@@ -71,7 +71,7 @@ $actions['Registration'] = array(
     'global' => true,
     'file' => 'Registration',
 );
-$actions['DoRegister'] = array(
+$actions['Register'] = array(
     'normal' => true,
     'global' => true,
     'file' => 'Registration',
