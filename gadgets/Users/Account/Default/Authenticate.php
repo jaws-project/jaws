@@ -93,7 +93,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     $this->gadget->session->update('temp.login.user', $user);
 
                     // send notification to user
-                    $this->gadget->action->load('Login')->LoginNotifyKey($user['email'], $user['mobile']);
+                    $this->gadget->action->load('Login')->NotifyLoginKey($user);
 
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
@@ -108,7 +108,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $loginkey = $this->gadget->session->fetch('loginkey');
                 if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
                     // send notification to user
-                    $this->gadget->action->load('Login')->LoginNotifyKey($user['email'], $user['mobile']);
+                    $this->gadget->action->load('Login')->NotifyLoginKey($user);
 
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }

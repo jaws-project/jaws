@@ -411,11 +411,10 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     /**
      * Notify user login key by email/mobile
      * @access  public
-     * @param   string  $email  Email address
-     * @param   string  $mobile Mobile number
+     * @param   array   $uData  User data array
      * @return  bool    True
      */
-    function LoginNotifyKey($email, $mobile)
+    function NotifyLoginKey($uData)
     {
         // generate login/verification key
         $loginkey = array(
@@ -423,16 +422,41 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             'time' => time()
         );
 
+        $site_url = $GLOBALS['app']->getSiteURL('/');
+        $settings = $GLOBALS['app']->Registry->fetchAll('Settings');
+
+        $tpl = $this->gadget->template->load('LoginNotification.html');
+        $tpl->SetBlock('verification');
+        $tpl->SetVariable('nickname', $uData['nickname']);
+        $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
+        $tpl->SetVariable('lbl_key', _t('USERS_LOGIN_KEY'));
+        $tpl->SetVariable('key', $loginkey['text']);
+
+        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username',       $uData['username']);
+        $tpl->SetVariable('lbl_email',      _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email',          $uData['email']);
+        $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('mobile',         $uData['mobile']);
+        $tpl->SetVariable('lbl_ip',         _t('GLOBAL_IP'));
+        $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
+        $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('site-name',      $settings['site_name']);
+        $tpl->SetVariable('site-url',       $site_url);
+        $tpl->ParseBlock('verification');
+        $message = $tpl->Get();
+        $subject = _t('GLOBAL_LOGINKEY_TITLE');
+
         $params = array();
-        $params['key']     = crc32('Session.Loginkey.' . $GLOBALS['app']->Session->GetSessionID());
+        $params['key']     = crc32('Users.Login.Key.' . $uData['id']);
         $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
         $params['summary'] = _t(
             'GLOBAL_LOGINKEY_SUMMARY',
             $loginkey['text']
         );
-        $params['description'] = $params['summary'];
-        $params['emails']  = array($email);
-        $params['mobiles'] = array($mobile);
+        $params['description'] = $message;
+        $params['emails']  = array($uData['email']);
+        $params['mobiles'] = array($uData['mobile']);
         $this->gadget->event->shout('Notify', $params);
 
         // update session login-key
