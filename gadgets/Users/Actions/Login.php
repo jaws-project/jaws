@@ -419,8 +419,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     {
         // generate login/verification key
         $loginkey = array(
-            //'text' => Jaws_Utils::RandomText(5, true, false, true),
-            'text' => '12345',
+            'text' => Jaws_Utils::RandomText(5, true, false, true),
             'time' => time()
         );
 
