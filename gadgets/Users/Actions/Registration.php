@@ -8,6 +8,46 @@
 class Users_Actions_Registration extends Jaws_Gadget_Action
 {
     /**
+     * Builds the registration form
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function Registration()
+    {
+        if ($GLOBALS['app']->Session->Logged()) {
+            return Jaws_Header::Location('');
+        }
+
+        if ($this->gadget->registry->fetch('anon_register') !== 'true') {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        http_response_code(401);
+        // 
+        $authtype = $this->gadget->request->fetch('authtype');
+        if (empty($authtype)) {
+            $authtype = $this->gadget->registry->fetch('authtype');
+        }
+        $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
+        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Registration.php";
+        if (!file_exists($authfile)) {
+            $GLOBALS['log']->Log(
+                JAWS_LOG_NOTICE,
+                $authtype. ' authentication driver doesn\'t exists, switched to default driver'
+            );
+            $authtype = 'Default';
+        }
+        // set authentication type in session
+        $this->gadget->session->update('authtype', $authtype);
+
+        // load authentication method driver
+        $classname = "Users_Account_{$authtype}_Registration";
+        $objAccount = new $classname($this->gadget);
+        return $objAccount->Registration();
+    }
+
+    /**
      * Registers the user
      *
      * @access  public
@@ -53,138 +93,6 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
 
         http_response_code(201);
         return Jaws_Header::Location('');
-
-        try {
-            // check captcha policy
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $resCheck = $htmlPolicy->checkCaptcha();
-            if (Jaws_Error::IsError($resCheck)) {
-                unset($post['password'], $post['password_check'], $post['random_password']);
-                throw new Exception($resCheck->GetMessage());
-            }
-
-            if (empty($post['step'])) {
-                // user creation
-                if ($post['password'] !== $post['password_check']) {
-                    unset($post['password'], $post['password_check'], $post['random_password']);
-                    throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'));
-                }
-
-                // validate url
-                if (!preg_match('|^\S+://\S+\.\S+.+$|i', $post['url'])) {
-                    $post['url'] = '';
-                }
-
-                $dob = null;
-                if (!empty($post['dob'])) {
-                    $dob = Jaws_Date::getInstance()->ToBaseDate(explode('-', $post['dob']), 'Y-m-d');
-                    $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d');
-                }
-
-                $result = $this->gadget->model->load('Registration')->CreateUser(
-                    $post['domain'],
-                    $post['username'],
-                    $post['email'],
-                    $post['mobile'],
-                    $post['nickname'],
-                    $post['fname'],
-                    $post['lname'],
-                    $post['gender'],
-                    $post['ssn'],
-                    $dob,
-                    $post['url'],
-                    $post['password'],
-                    $this->gadget->registry->fetch('anon_group')
-                );
-                if (Jaws_Error::IsError($result)) {
-                    unset($post['password'], $post['password_check'], $post['random_password']);
-                    throw new Exception($result->getMessage());
-                }
-
-                // increase step
-                $post = array(
-                    'user' => $result,
-                    'step' => 1,
-                    'key'  => '',
-                );
-                $this->gadget->session->push(
-                    _t('USERS_REGISTRATION_REGISTERED'),
-                    'Registration',
-                    RESPONSE_NOTICE,
-                    $post
-                );
-            } else {
-                // check verification key
-                if ($this->gadget->model->load('Registration')->verifyKey($post['user'], $post['key'])) {
-                    $post = array(
-                        'user' => $post['user'],
-                        'step' => 2,
-                    );
-                    $this->gadget->session->push(
-                        _t('USERS_REGISTRATION_VERIFIED'),
-                        'Registration',
-                        RESPONSE_NOTICE,
-                        $post
-                    );
-                } else {
-                    $post = array(
-                        'user' => $post['user'],
-                        'step' => 1,
-                        'key'  => $post['key'],
-                    );
-                    throw new Exception( _t('USERS_REGISTRATION_INVALID_KEY'));
-                }
-            }
-        } catch (Exception $e) {
-            $this->gadget->session->push(
-                $e->getMessage(),
-                'Registration',
-                RESPONSE_ERROR,
-                $post
-            );
-        }
-
-        return Jaws_Header::Location($this->gadget->urlMap('Registration'));
-    }
-
-    /**
-     * Builds the registration form
-     *
-     * @access  public
-     * @return  string  XHTML form
-     */
-    function Registration()
-    {
-        if ($GLOBALS['app']->Session->Logged()) {
-            return Jaws_Header::Location('');
-        }
-
-        if ($this->gadget->registry->fetch('anon_register') !== 'true') {
-            return Jaws_HTTPError::Get(404);
-        }
-
-        http_response_code(401);
-        // 
-        $authtype = $this->gadget->request->fetch('authtype');
-        if (empty($authtype)) {
-            $authtype = $this->gadget->registry->fetch('authtype');
-        }
-        $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
-        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Registration.php";
-        if (!file_exists($authfile)) {
-            $GLOBALS['log']->Log(
-                JAWS_LOG_NOTICE,
-                $authtype. ' authentication driver doesn\'t exists, switched to default driver'
-            );
-            $authtype = 'Default';
-        }
-        // set authentication type in session
-        $this->gadget->session->update('authtype', $authtype);
-
-        // load authentication method driver
-        $classname = "Users_Account_{$authtype}_Registration";
-        $objAccount = new $classname($this->gadget);
-        return $objAccount->Registration();
     }
 
     /**
