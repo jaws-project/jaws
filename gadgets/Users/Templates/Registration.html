@@ -6,16 +6,30 @@
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
+<!-- BEGIN request -->
   <form name="registerBox" action="{{base_script}}" method="post">
     <input type="hidden" name="gadget" value="Users" />
-    <input type="hidden" name="action" value="DoRegister" />
-    <input type="hidden" name="user" value="{{user}}" />
-    <input type="hidden" name="step" value="{{step}}" />
+    <input type="hidden" name="action" value="Register" />
     <div class="gadget_content content">
-      <!-- BEGIN request -->
+  <!-- BEGIN reg_step_1 -->
+      <input type="hidden" name="regstep" value="0" />
+      <!-- BEGIN encryption -->
+      <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
+      <!-- END encryption -->
       <fieldset>
         <legend><span>{{lbl_account_info}}</span></legend>
-        <div><label for="register_username">{{lbl_username}}:</label>
+        <!-- BEGIN multi_domain -->
+        <div>
+          <label for="domain">{{lbl_domain}}:</label>
+          <select class="form-control" name="domain" id="domain">
+            <!-- BEGIN domain -->
+            <option value="{{id}}" {{selected}}>{{title}}</option>
+            <!-- END domain -->
+          </select>
+        </div>
+        <!-- END multi_domain -->
+        <div>
+          <label for="register_username">{{lbl_username}}:</label>
           <input class="form-control" name="username" class="large username ltr" id="register_username" maxlength="80" value="{{username}}" type="text" required />
           <span><small>{{validusernames}}</small></span>
         </div>
@@ -61,26 +75,44 @@
           <input class="form-control" name="url" class="large url ltr" id="register_url" value="{{url}}" type="text" />
         </div>
       </fieldset>
-      <!-- END request -->
+  <!-- END reg_step_1 -->
+  <!-- BEGIN reg_step_2 -->
+      <input type="hidden" name="regstep" value="1" />
 
-      <!-- BEGIN key -->
       <p>{{message}}</p>
-      <div><label for="activate_key">{{lbl_key}}:</label>
-        <input class="form-control" name="key" class="large ltr" id="activate_key" type="text" value="{{key}}" required />
+      <div>
+        <label for="login_username">{{lbl_username}}:</label>
+        <input class="form-control ltr" name="username" id="username"
+               type="text"
+               value="{{username}}"
+               required
+               readonly
+        />
       </div>
-      <!-- END key -->
-      <!-- BEGIN success -->
-      {{message}}
-      <!-- END success -->
-      <!-- BEGIN captcha -->
+      <div>
+        <label for="regkey">{{lbl_regkey}}:</label>
+        <input class="form-control ltr" name="regkey" id="regkey"
+               type="text"
+               autocomplete="off"
+               value=""
+        />
+      </div>
+  <!-- END reg_step_2 -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-      <!-- END captcha -->
-
     </div>
-    <!-- BEGIN action -->
-    <div class="gadget_actions actions"><button class="btn btn-primary" type="submit">{{register}}</button></div>
-    <!-- END action -->
+    <div class="gadget_actions actions">
+      <button class="btn btn-primary" type="submit">{{register}}</button>
+    </div>
   </form>
+<!-- END request -->
+<!-- BEGIN reg_step_3 -->
+  <div class="gadget_content content">
+  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  cccccccccccccccccccccccccccccccccccccc
+  dddddddddddddddddddddddddddddddddddddd
+  </div>
+<!-- END reg_step_3 -->
 </div>
 <div class="gadget_footer"></div>
 <!-- END registration -->
