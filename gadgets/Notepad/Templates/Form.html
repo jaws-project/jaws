@@ -6,7 +6,7 @@
   <div class="gadget_response">
     <div id="notepad_{{action}}_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <form id="frm_note" name="frm_note" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="Notepad" />
       <input type="hidden" name="action" value="{{form_action}}" />
@@ -15,7 +15,7 @@
       <div><input class="form-control" id="note_title" name="title" value="{{note_title}}" class="x-large"/></div>
       <div><label for="note_content">{{lbl_content}}:</label></div>
       <div>{{note_content}}</div>
-      <div class="gadget_actions actions">
+      <div class="gadget_actions">
         <button class="btn" type="button" onclick="location.href='{{url_back}}'">{{lbl_cancel}}</button>
         <button class="btn btn-primary" type="button" onclick="submitNote(this.form)">{{lbl_ok}}</button>
       </div>
