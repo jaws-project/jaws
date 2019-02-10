@@ -7,7 +7,7 @@
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <form name="privatemessage" id="privatemessage" action="{{requested_url}}" method="post">
       <input type="hidden" name="gadget" value="PrivateMessage"/>
       <input type="hidden" name="action" value="Messages"/>
@@ -96,7 +96,7 @@
       </table>
 
       <!-- INCLUDE Navigation.html include/Jaws/Resources -->
-      <div class="gadget_actions actions">
+      <div class="gadget_actions">
           <label for="messages_actions_combo">{{lbl_actions}}:&nbsp;</label>
           <select class="form-control" title="{{lbl_actions}}" id="messages_actions_combo" name="messages_actions_combo">
               <option value="">{{lbl_no_action}}</option>
