@@ -9,7 +9,7 @@
   <form name="contact" action="{{base_script}}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="Contact" />
   <input type="hidden" name="action" value="Send" />
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <div class="contact_comments">{{comments}}</div>
   <!-- BEGIN name -->
       <div><label>{{lbl_name}}:</label>
@@ -75,7 +75,7 @@
   <!-- END attachment -->
   <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
   </div>
-  <div class="gadget_actions actions">{{btn_send}}</div>
+  <div class="gadget_actions">{{btn_send}}</div>
   </form>
 </div>
 <div class="gadget_footer"></div>
