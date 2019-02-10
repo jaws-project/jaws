@@ -11,8 +11,10 @@ $maps[] = array(
     array('referrer' => '.*')
 );
 $maps[] = array('Authenticate', 'users/authenticate');
-$maps[] = array('Registration', 'users/registration');
-$maps[] = array('Registered', 'users/registered');
+$maps[] = array(
+    'Registration',
+    'users/registration[/authtype/{authtype}]'
+);
 $maps[] = array('Logout', 'users/logout');
 $maps[] = array('Account', 'users/account');
 $maps[] = array('Personal', 'users/personal');
