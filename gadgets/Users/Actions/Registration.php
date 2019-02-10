@@ -69,15 +69,15 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $objAccount = new $classname($this->gadget);
         $registerData = $objAccount->Register();
         if (Jaws_Error::IsError($registerData)) {
-            if (method_exists($objAccount, 'RegisterError')) {
-                $default_authtype = $this->gadget->registry->fetch('authtype');
-                return $objAccount->RegisterError(
-                    $registerData,
-                    ($authtype != $default_authtype)? $authtype : ''
-                );
-            }
+            $default_authtype = $this->gadget->registry->fetch('authtype');
+            return $objAccount->RegisterError(
+                $registerData,
+                ($authtype != $default_authtype)? $authtype : ''
+            );
         } else {
+            // add required attributes for auto login into jaws
             $registerData['authtype'] = $authtype;
+
             // create session & cookie
             $GLOBALS['app']->Session->Create($registerData, $registerData['remember']);
             // login event logging
@@ -85,14 +85,15 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             // let everyone know a user has been logged in
             $this->gadget->event->shout('LoginUser', $registerData);
 
-            // call Authorize method if exists
-            if (method_exists($objAccount, 'Authorize')) {
-                $objAccount->Authorize($registerData);
-            }
+            $this->gadget->session->push(
+                _t('USERS_REGISTRATION_ACTIVATED'),
+                'Login.Response',
+                RESPONSE_NOTICE
+            );
         }
 
         http_response_code(201);
-        return Jaws_Header::Location('');
+        return Jaws_Header::Location($this->gadget->urlMap('Login'));
     }
 
     /**

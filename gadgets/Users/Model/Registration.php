@@ -79,10 +79,12 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             return $user;
         }
         $uData['id'] = $user;
+        $uData['groups'] = array();
 
         $anon_group = (int)$this->gadget->registry->fetch('anon_group');
         if (!empty($anon_group)) {
             $jawsUser->AddUserToGroup($user, $anon_group);
+            $uData['groups'] = array($anon_group);
         }
 
         return $uData;
@@ -349,6 +351,23 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         return $this->SendVerifyKey($user, false);
+    }
+
+    /**
+     * Checks the user verification key
+     *
+     * @access  public
+     * @param   int     $user   User ID
+     * @param   int     $status User status
+     * @return  mixed   Integer on success or Jaws_Error on failure
+     */
+    function updateUserStatus($user, $status = 0)
+    {
+        return Jaws_ORM::getInstance()
+            ->table('users')
+            ->update(array('status' => (int)$status, 'last_update' => time()))
+            ->where('id', (int)$user)
+            ->exec();
     }
 
     /**

@@ -29,7 +29,6 @@ class Users_Account_Default_Registration extends Users_Account_Default
                 'username' => '',
                 'email'    => '',
                 'mobile'   => '',
-                'url'      => '',
                 'nickname' => '',
                 'fname'    => '',
                 'lname'    => '',

@@ -72,9 +72,6 @@ class Users_Account_Default_Register extends Users_Account_Default
                     $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
 
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                } else {
-                    $rgstrData['regstep'] = 2;
-                    throw new Exception(_t('USERS_REGISTRATION_REGISTERED'), 201);
                 }
             } else {
                 // fetch user data from session
@@ -96,10 +93,29 @@ class Users_Account_Default_Register extends Users_Account_Default
                 if ($regkey['text'] != $rgstrData['regkey']) {
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
+
+                // update user status(enabled)
+                $this->gadget->model->load('Registration')->updateUserStatus($userData['id'], 1);
+            }
+
+            $this->gadget->session->delete('temp.register.user');
+            // auto login if user activated
+            if ($this->gadget->registry->fetch('anon_activation') != 'admin') {
+                unset($userData['password'], $userData['verify_key']);
+
+                // add required attributes for auto login into jaws
+                $userData['internal']    = true;
+                $userData['superadmin']  = false;
+                $userData['logon_hours'] = '';
+                $userData['expiry_date'] = 0;
+                $userData['concurrents'] = 0;
+                $userData['avatar']      = 'gadgets/Users/Resources/images/photo48px.png';
+                $userData['remember']    = false;
+                $userData['last_password_update'] = time();
+                return $userData;
             }
 
             $rgstrData['regstep'] = 2;
-            $this->gadget->session->delete('temp.register.user');
             throw new Exception(_t('USERS_REGISTRATION_REGISTERED'), 201);
 
         } catch (Exception $error) {
