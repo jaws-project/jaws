@@ -6,7 +6,7 @@
   <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <input class="form-control" type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}" placeholder="{{search}}">
     <button class="btn btn-primary" type="submit" value="search">{{search}}</button>
   </div>
@@ -22,7 +22,7 @@
   <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <div>
       <label>{{lbl_all}}:</label>
       <input class="form-control" type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}">
@@ -36,7 +36,7 @@
       </select>
     </div>
   </div>
-  <div class="gadget_actions actions">
+  <div class="gadget_actions">
     <button class="btn btn-primary" type="submit" value="search">{{search}}</button>
   </div>
   </form> 
@@ -51,7 +51,7 @@
   <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <fieldset>
       <legend><span>{{lbl_word_filter}}</span></legend>
       <p><label>{{lbl_all}}</label>{{all}}</p>
@@ -64,7 +64,7 @@
       <p><label>{{lbl_search_in}}</label>{{gadgets_combo}}</p>
     </fieldset>
   </div>
-  <div class="gadget_actions actions">{{btn_search}}</div>
+  <div class="gadget_actions">{{btn_search}}</div>
   </form>
 </div>
 <div class="gadget_footer"></div>
