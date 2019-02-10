@@ -9,7 +9,7 @@
   <div class="gadget_response">
     <div id="eventscalendar_{{action}}_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <form id="frm_event" name="frm_event" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="EventsCalendar" />
       <input type="hidden" name="action" value="{{form_action}}" />
@@ -58,7 +58,7 @@
         <tr><th><label for="event_recurrence">{{lbl_recurrence}}:</label></th>
           <td>{{recurrence}} {{month}} {{day}} {{wday}} </td></tr>
       </table>
-      <div class="gadget_actions actions">
+      <div class="gadget_actions">
         <button class="btn" type="button" onclick="window.location.assign('{{url_back}}')">{{lbl_cancel}}</button>
         <button class="btn btn-primary" type="button" onclick="submitEvent(this.form)">{{lbl_ok}}</button>
       </div>

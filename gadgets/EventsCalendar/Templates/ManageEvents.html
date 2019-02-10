@@ -9,7 +9,7 @@
   <div class="gadget_response">
     <div id="eventscalendar_events_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <form id="frm_search" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="EventsCalendar" />
       <input type="hidden" name="action" value="Search" />
@@ -59,7 +59,7 @@
       </tbody>
     </table>
     <!-- INCLUDE Navigation.html include/Jaws/Resources -->
-    <div class="gadget_actions actions">
+    <div class="gadget_actions">
       <button class="btn" onclick="location.assign('{{url_new}}')">{{lbl_new_event}}</button>
       <button class="btn" id="btn_del_event" onclick="deleteEvents()">{{lbl_del_event}}</button>
     </div>
