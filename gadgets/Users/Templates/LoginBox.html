@@ -10,7 +10,7 @@
     <input type="hidden" name="gadget" value="Users" />
     <input type="hidden" name="action" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
-    <div class="gadget_content content">
+    <div class="gadget_content">
 <!-- BEGIN login_step_1 -->
       <input type="hidden" name="loginstep" value="0" />
       <!-- BEGIN encryption -->
@@ -91,7 +91,7 @@
 <!-- END login_step_2 -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
-    <div class="gadget_actions actions">
+    <div class="gadget_actions">
       <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
       <div>{{forgot-password}}</div>
       <div>{{user-register}}</div>

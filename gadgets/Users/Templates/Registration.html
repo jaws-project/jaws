@@ -10,7 +10,7 @@
   <form name="registerBox" action="{{base_script}}" method="post">
     <input type="hidden" name="gadget" value="Users" />
     <input type="hidden" name="action" value="Register" />
-    <div class="gadget_content content">
+    <div class="gadget_content">
   <!-- BEGIN reg_step_1 -->
       <input type="hidden" name="regstep" value="0" />
       <!-- BEGIN encryption -->
@@ -97,13 +97,13 @@
   <!-- END reg_step_2 -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
-    <div class="gadget_actions actions">
+    <div class="gadget_actions">
       <button class="btn btn-primary" type="submit">{{register}}</button>
     </div>
   </form>
 <!-- END request -->
 <!-- BEGIN reg_step_3 -->
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <p>{{message}}</p>
   </div>
 <!-- END reg_step_3 -->

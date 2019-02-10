@@ -9,7 +9,7 @@
   <div class="gadget_response">
     <div id="users_preferences_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <!-- BEGIN gadget -->
     <form name="preferencesBox" action="{{base_script}}" method="post" onsubmit="return updatePreferences(this);">
       <input type="hidden" name="gadget" value="Users" />
@@ -49,7 +49,7 @@
             <!-- END text -->
           </div>
           <!-- END key -->
-          <div class="gadget_actions actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>
+          <div class="gadget_actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>
         </div>
       </fieldset>
     </form>
