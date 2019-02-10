@@ -166,6 +166,15 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
             // welcome
             $tpl->SetVariable('welcome', _t('USERS_WELCOME'));
+
+            $response = $this->gadget->session->pop('Login.Response');
+            if (empty($response)) {
+                $response['type'] = RESPONSE_NOTICE;
+                $response['text'] = _t('USERS_WELCOME');
+            }
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+
             $tpl->SetVariable('profile', _t('USERS_PROFILE'));
             $uInfo = $GLOBALS['app']->Session->GetAttributes('username', 'nickname', 'avatar', 'email');
             // username
@@ -363,14 +372,12 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $objAccount = new $classname($this->gadget);
         $loginData = $objAccount->Authenticate();
         if (Jaws_Error::IsError($loginData)) {
-            if (method_exists($objAccount, 'AuthenticateError')) {
-                $default_authtype = $this->gadget->registry->fetch('authtype');
-                return $objAccount->AuthenticateError(
-                    $loginData,
-                    ($authtype != $default_authtype)? $authtype : '',
-                    bin2hex($referrer)
-                );
-            }
+            $default_authtype = $this->gadget->registry->fetch('authtype');
+            return $objAccount->AuthenticateError(
+                $loginData,
+                ($authtype != $default_authtype)? $authtype : '',
+                bin2hex($referrer)
+            );
         } else {
             $loginData['authtype'] = $authtype;
             // create session & cookie
