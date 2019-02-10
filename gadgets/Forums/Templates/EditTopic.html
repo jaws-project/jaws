@@ -17,7 +17,7 @@
     <input type="hidden" name="action" value="UpdateTopic" />
     <input type="hidden" name="fid" value="{{fid}}" />
     <input type="hidden" name="tid" value="{{tid}}" />
-    <div class="gadget_content content">
+    <div class="gadget_content">
       <!-- BEGIN post_meta -->
       <div class="post_meta">
         <label>{{postedby_lbl}}:</label> <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
@@ -96,7 +96,7 @@
       <!-- END notification -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
-    <div class="gadget_actions actions">
+    <div class="gadget_actions">
       <button class="btn" type="button" name="cancel" onclick="window.location='{{forum_url}}'">{{btn_cancel_title}}</button>
       <button class="btn" type="button" name="preview" onclick="this.form.elements['action'].value='EditTopic'; this.form.submit();">{{btn_preview_title}}</button>
       <button class="btn btn-primary" type="submit" name="update">{{btn_update_title}}</button>
