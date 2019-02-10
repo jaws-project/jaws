@@ -11,7 +11,7 @@
   <form name="settings" action="{{base_script}}" method="post" onsubmit="return updateSettings();">
   <input type="hidden" name="gadget" value="Settings" />
   <input type="hidden" name="action" value="UpdateSettings" />
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <fieldset>
       <div><label for="site_status">{{lbl_site_status}}:</label>
         <select class="form-control" name="site_status" id="site_status">
@@ -86,7 +86,7 @@
 
     </fieldset>
   </div>
-  <div class="gadget_actions actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>
+  <div class="gadget_actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>
   </form>
 </div>
 <div class="gadget_footer"></div>
