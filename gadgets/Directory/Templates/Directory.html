@@ -16,12 +16,12 @@
     <span>{{path}}</span>
   </div>
 
-  <div class="gadget_content content">
+  <div class="gadget_content">
     <!-- INCLUDE FileFilters.html -->
     <!-- INCLUDE Files.html -->
   </div>
   <!-- BEGIN upload_files -->
-  <div class="gadget_actions actions">
+  <div class="gadget_actions">
     <button id="active_btn" onclick="Jaws_Gadget.getInstance('Directory').newFile()" class="btn btn-primary" >
       <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
       {{upload}}
@@ -74,7 +74,7 @@
         </tr>
         <!-- END published -->
       </table>
-      <div class="gadget_actions actions">
+      <div class="gadget_actions">
         <button class="btn btn-default" type="button" onclick="Jaws_Gadget.getInstance('Directory').stopAction()">
           {{lbl_cancel}}
         </button>
