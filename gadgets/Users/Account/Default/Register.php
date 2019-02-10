@@ -18,7 +18,7 @@ class Users_Account_Default_Register extends Users_Account_Default
         $rgstrData = $this->gadget->request->fetch(
             array(
                 'domain', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'regkey', 'usecrypt'
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'regkey', 'usecrypt', 'remember'
             ),
             'post'
         );
@@ -110,7 +110,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 $userData['expiry_date'] = 0;
                 $userData['concurrents'] = 0;
                 $userData['avatar']      = 'gadgets/Users/Resources/images/photo48px.png';
-                $userData['remember']    = false;
+                $userData['remember']    = (bool)$rgstrData['remember'];
                 $userData['last_password_update'] = time();
                 return $userData;
             }

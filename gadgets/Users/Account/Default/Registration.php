@@ -34,7 +34,8 @@ class Users_Account_Default_Registration extends Users_Account_Default
                 'lname'    => '',
                 'ssn'      => '',
                 'dob'      => '',
-                'gender'   => 0
+                'gender'   => 0,
+                'remember' => 0
             );
         } else {
             $reqpost = $response['data'];
@@ -88,6 +89,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('lname',     $reqpost['lname']);
         $tpl->SetVariable('ssn',       $reqpost['ssn']);
         $tpl->SetVariable('dob',       $reqpost['dob']);
+        $tpl->SetVariable('remember',  $reqpost['remember']);
         $tpl->SetVariable("selected_gender_{$reqpost['gender']}", 'selected="selected"');
         $tpl->SetVariable('lbl_account_info',  _t('USERS_ACCOUNT_INFO'));
         $tpl->SetVariable('lbl_username',      _t('USERS_USERS_USERNAME'));
@@ -109,6 +111,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
         $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
         $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
+        $tpl->SetVariable('lbl_remember',      _t('GLOBAL_REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/reg_step_1");
     }
@@ -127,11 +130,13 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
         $tpl->SetVariable('email',    isset($reqpost['email'])? $reqpost['email'] : '');
         $tpl->SetVariable('mobile',   isset($reqpost['mobile'])? $reqpost['mobile'] : '');
+        $tpl->SetVariable('mobile',   isset($reqpost['remember'])? $reqpost['remember'] : '0');
 
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_regkey', _t('USERS_REGISTRATION_KEY'));
+        $tpl->SetVariable('lbl_email',    _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_mobile',   _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_regkey',   _t('USERS_REGISTRATION_KEY'));
+        $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/reg_step_2");
     }
