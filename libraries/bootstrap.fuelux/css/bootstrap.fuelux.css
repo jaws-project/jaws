@@ -3,16 +3,12 @@
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-* {
-  margin:0;
-  padding:0;
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+html {
   border:0 none;
   font-size: 14px;
   line-height: 1.42857143;
   letter-spacing:0;
-}
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
@@ -3937,7 +3933,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .input-group-btn {
   position: relative;
-  font-size: 0;
   white-space: nowrap;
 }
 .input-group-btn > .btn {
@@ -3972,7 +3967,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 5px 15px;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
@@ -5110,7 +5105,7 @@ a.thumbnail.active {
   }
 }
 .progress {
-  height: 20px;
+  height: 2em;
   margin-bottom: 20px;
   overflow: hidden;
   background-color: #f5f5f5;
@@ -9134,7 +9129,6 @@ label.fuelux .checkbox-inline {
 .fuelux .repeater[data-viewtype="list"] .repeater-canvas.frozen-enabled .repeater-list table.table-frozen {
   border-right: 1px solid #dddddd;
   z-index: 2;
-  background: #FFF;
   border-collapse: collapse;
   table-layout: fixed;
   float: left;
@@ -9181,9 +9175,6 @@ label.fuelux .checkbox-inline {
 }
 .fuelux .repeater[data-viewtype="list"] .repeater-canvas.actions-enabled .repeater-list .actions-column-wrapper table.table-actions tr.empty-heading th {
   background: transparent;
-}
-.fuelux .repeater[data-viewtype="list"] .repeater-canvas.actions-enabled .repeater-list .actions-column-wrapper table.table-actions tr td {
-  background: #FFF;
 }
 .fuelux .repeater[data-viewtype="list"] .repeater-canvas.actions-enabled .repeater-list .actions-column-wrapper table.table-actions tr.selectable:hover td,
 .fuelux .repeater[data-viewtype="list"] .repeater-canvas.actions-enabled .repeater-list .actions-column-wrapper table.table-actions tr.selectable.hovered td {
