@@ -1,6 +1,6 @@
 <?php
 /**
- * Users Core Gadget
+ * LDAP account class
  *
  * @category    Gadget
  * @package     Users

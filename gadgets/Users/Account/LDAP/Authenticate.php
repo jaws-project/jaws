@@ -1,44 +1,12 @@
 <?php
 /**
- * Users Core Gadget
+ * LDAP Authenticate class
  *
  * @category    Gadget
  * @package     Users
  */
 class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
 {
-    /**
-     * LDAP connection
-     *
-     * @var     string
-     * @access  private
-     */
-    private $_LdapConnection;
-
-    /**
-     * LDAP server
-     *
-     * @var     string
-     * @access  private
-     */
-    private $_Server = 'localhost';
-
-    /**
-     * LDAP port
-     *
-     * @var     string
-     * @access  private
-     */
-    private $_Port = '389';
-
-    /**
-     * LDAP domain name
-     *
-     * @var     string
-     * @access  private
-     */
-    private $_DN = 'dc=foobar,dc=org';
-
     /**
      * Authenticate
      *
@@ -48,17 +16,11 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
     function Authenticate()
     {
         $loginData = $this->gadget->request->fetch(
-            array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'authstep', 'remember'),
+            array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'loginstep', 'remember'),
             'post'
         );
 
         try {
-            if (!$this->gadget->session->fetch('checksess')) {
-                // do logout
-                $GLOBALS['app']->Session->Logout();
-                throw new Exception(_t('GLOBAL_ERROR_SESSION_NOTFOUND'));
-            }
-
             // check captcha
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha('login');
@@ -66,7 +28,7 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                 throw new Exception($resCheck->getMessage());
             }
 
-            $loginData['authstep'] = 0;
+            $loginData['loginstep'] = 0;
             if ($loginData['username'] === '' && $loginData['password'] === '') {
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'));
             }
@@ -157,12 +119,13 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
             $urlParams['referrer'] = $referrer;
         }
 
+        http_response_code($error->getCode());
         if (JAWS_SCRIPT == 'index') {
-            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams), '', 401);
+            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
         } else {
             $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
             $admin_script = empty($admin_script)? 'admin.php' : $admin_script;
-            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"), '', 401);
+            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"));
         }
 
     }
