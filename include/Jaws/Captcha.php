@@ -118,7 +118,7 @@ class Jaws_Captcha
         if ($cleanup || $matched) {
             $this->delete((int)$key);
         } else {
-            $this->update(int)$key, Jaws_Utils::RandomText());
+            $this->update((int)$key, Jaws_Utils::RandomText());
         }
 
         return $matched;
