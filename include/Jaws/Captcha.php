@@ -115,8 +115,10 @@ class Jaws_Captcha
             $matched = !empty($value) && (strtolower($result) === strtolower($value));
         }
 
-        if ($cleanup) {
+        if ($cleanup || $matched) {
             $this->delete((int)$key);
+        } else {
+            $this->update(int)$key, Jaws_Utils::RandomText());
         }
 
         return $matched;

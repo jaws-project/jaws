@@ -83,9 +83,10 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   string  $field
+     * @param   bool    $cleanup    Delete captcha key after check
      * @return  bool    True if captcha loaded successfully
      */
-    function checkCaptcha($field = 'default')
+    function checkCaptcha($field = 'default', $cleanup = true)
     {
         $status = $this->gadget->registry->fetch($field. '_captcha_status');
         switch ($field) {
@@ -105,7 +106,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
 
         $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
         $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
-        if (!$objCaptcha->check()) {
+        if (!$objCaptcha->check($cleanup)) {
             return Jaws_Error::raiseError(_t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
                 'Jaws_Captcha',
                 JAWS_ERROR_NOTICE);
