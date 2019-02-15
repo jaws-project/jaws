@@ -41,6 +41,13 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         // set authentication type in session
         $this->gadget->session->update('authtype', $authtype);
 
+        // store referrer in session
+        $referrer = $this->gadget->request->fetch('referrer');
+        if (empty($referrer)) {
+            $referrer = bin2hex(Jaws_Utils::getRequestURL());
+        }
+        $this->gadget->session->update('referrer', $referrer);
+
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Registration";
         $objAccount = new $classname($this->gadget);
@@ -65,6 +72,18 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
+        // parse referrer url
+        $referrer = parse_url(hex2bin($this->gadget->session->fetch('referrer')));
+        foreach ($referrer as $part => $value) {
+            if (in_array($part, array('path', 'query', 'fragment'))) {
+                $referrer[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
+            } else {
+                // unset schema|host|port|user|pass for security reason
+                $referrer[$part] = null;
+            }
+        }
+        $referrer = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($referrer));
+
         $classname = "Users_Account_{$authtype}_Register";
         $objAccount = new $classname($this->gadget);
         $registerData = $objAccount->Register();
@@ -72,7 +91,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $default_authtype = $this->gadget->registry->fetch('authtype');
             return $objAccount->RegisterError(
                 $registerData,
-                ($authtype != $default_authtype)? $authtype : ''
+                ($authtype != $default_authtype)? $authtype : '',
+                bin2hex($referrer)
             );
         } else {
             // add required attributes for auto login into jaws
@@ -93,7 +113,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         http_response_code(201);
-        return Jaws_Header::Location($this->gadget->urlMap('Login'));
+        return Jaws_Header::Location(empty($referrer)? $this->gadget->urlMap('Login') : $referrer);
     }
 
     /**

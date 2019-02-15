@@ -137,11 +137,14 @@ class Users_Account_Default_Register extends Users_Account_Default
      * @access  public
      * @return  string  XHTML content
      */
-    function RegisterError($error, $authtype)
+    function RegisterError($error, $authtype, $referrer)
     {
         $urlParams = array();
         if (!empty($authtype)) {
             $urlParams['authtype'] = $authtype;
+        }
+        if (!empty($referrer)) {
+            $urlParams['referrer'] = $referrer;
         }
 
         http_response_code($error->getCode());
