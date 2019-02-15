@@ -635,19 +635,15 @@ class Jaws_Layout
         array_unshift(
             $this->extraTags['scripts']['elements'],
             array(
-                'src'  => 'libraries/jquery/jquery.min.js?'. JAWS_VERSION,
-                'type' => 'text/javascript'
+                'src'  => 'libraries/jquery/jquery.min.js?'. JAWS_VERSION
             ),
             array(
-                'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION,
-                'type' => 'text/javascript'
+                'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION
             ),
             array(
-                'src'  => 'include/Jaws/Resources/Ajax.js?'. JAWS_VERSION,
-                'type' => 'text/javascript'
+                'src'  => 'include/Jaws/Resources/Ajax.js?'. JAWS_VERSION
             ),
             array(
-                'type' => 'text/javascript',
                 'text' => $this->initializeScript()
             )
         );
@@ -731,8 +727,7 @@ class Jaws_Layout
             case 'addScript':
                 if (is_string($params[0])) {
                     $params[0] = array(
-                        'src'  => $params[0],
-                        'type' => 'text/javascript'
+                        'src'  => $params[0]
                     );
                 }
                 $this->extraTags['scripts']['elements'][md5($params[0]['src'])] = $params[0];
