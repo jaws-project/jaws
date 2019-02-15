@@ -30,20 +30,6 @@ define('SESSION_RESERVED_ATTRIBUTES', "type,user,user_name,superadmin,concurrent
 class Jaws_Session
 {
     /**
-     * Authentication model
-     * @var     object $_AuthModel
-     * @access  protected
-     */
-    protected $_AuthModel;
-
-    /**
-     * Authentication type
-     * @var     string $_AuthType
-     * @access  protected
-     */
-    protected $_AuthType;
-
-    /**
      * Attributes array
      * @var     array   $attributes
      * @access  protected
@@ -106,17 +92,6 @@ class Jaws_Session
      */
     function Init()
     {
-        $this->_AuthType = $GLOBALS['app']->Registry->fetch('authtype', 'Users');
-        $this->_AuthType = preg_replace('/[^[:alnum:]_\-]/', '', $this->_AuthType);
-        $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $this->_AuthType . '.php';
-        if (empty($this->_AuthType) || !file_exists($authFile)) {
-            $GLOBALS['log']->Log(
-                JAWS_LOG_NOTICE,
-                $authFile. ' file doesn\'t exists, using default authentication type'
-            );
-            $this->_AuthType = 'Default';
-        }
-
         // Delete expired sessions
         if (mt_rand(1, 32) == mt_rand(1, 32)) {
             $this->DeleteExpiredSessions();
