@@ -22,6 +22,11 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
             'status' => Menu_Info::STATUS_ANONYMOUS
         );
 
+        $urls[] = array(
+            'url'   => $this->gadget->urlMap('Registration'),
+            'title' => _t('USERS_REGISTER'),
+            'status' => Menu_Info::STATUS_ANONYMOUS
+        );
 
         $urls[] = array(
             'url' => array(
