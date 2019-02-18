@@ -286,6 +286,23 @@ class Jaws_Gadget_Installer
             return $installer;
         }
 
+        // all required gadgets, must be installed
+        foreach ($this->gadget->requirement as $req) {
+            if (!Jaws_Gadget::IsGadgetInstalled($req)) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
+                    __FUNCTION__
+                );
+            }
+        }
+
+        // update requirement registry keys
+        $requirement = ','. implode($this->gadget->requirement, ','). ',';
+        $this->gadget->registry->update('requirement', $requirement);
+        // update recommended registry keys
+        $recommended = ','. implode($this->gadget->recommended, ','). ',';
+        $this->gadget->registry->update('recommended', $recommended);
+
         if (method_exists($installer, 'Upgrade')) {
             $result = $installer->Upgrade($oldVersion, $newVersion);
             if (Jaws_Error::IsError($result)) {
