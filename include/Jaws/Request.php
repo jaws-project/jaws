@@ -274,10 +274,12 @@ class Jaws_Request
      * @param   bool    $filter         Returns filtered data or not
      * @param   bool    $xss_strip      Returns stripped html data tags/attributes
      * @param   bool    $json_decode    Decode JSON data or not
+     * @param   bool    $type_validate  Data type check
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    private function _fetch($keys, $method = '', $filters = true, $xss_strip = false, $json_decode = false)
-    {
+    private function _fetch($keys, $method = '', $filters = true,
+        $xss_strip = false, $json_decode = false, $type_validate = true
+    ) {
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         if (is_array($keys)) {
             $result = array();
@@ -319,7 +321,12 @@ class Jaws_Request
                 $this->filter($value, $key, $filters);
             }
 
-            return $this->func_type_check[$type]($value)? $value : null;
+            // check value type
+            if ($type_validate) {
+                return $this->func_type_check[$type]($value)? $value : null;
+            } else {
+                return $value;
+            }
         }
 
         return null;
@@ -389,9 +396,11 @@ class Jaws_Request
         $values = array_map(
             array($this, '_fetch'),
             $keys,
-            array_fill(0, count($keys), ''),
+            array_fill(0, count($keys), $method),
             array_fill(0, count($keys), $filter),
-            array_fill(0, count($keys), $xss_strip)
+            array_fill(0, count($keys), $xss_strip),
+            array_fill(0, count($keys), false),
+            array_fill(0, count($keys), false)
         );
 
         return array_combine($keys, $values);
