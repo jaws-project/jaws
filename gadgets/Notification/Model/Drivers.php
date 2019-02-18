@@ -69,14 +69,13 @@ class Notification_Model_Drivers extends Jaws_Gadget_Model
 
         $drivers = glob($pDir. '*.php');
         foreach ($drivers as $driver) {
-            $path_parts = pathinfo($driver);
-            $dName = $path_parts['filename'];
-            $obj = $this->LoadNotificationDriver($dName);
+            $driver = basename($driver, '.php');
+            $obj = $this->LoadNotificationDriver($driver);
             $dTitle = $obj->getTitle();
-            $index = urlencode($dName);
+            $index = urlencode($driver);
 
             $driversList[$index] = array(
-                'name'        => $dName,
+                'name'        => $driver,
                 'title'       => $dTitle,
                 'version'     => 1,
             );

@@ -46,10 +46,9 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
 
         // send notification to drivers
         $objDModel = $this->gadget->model->load('Drivers');
-        $drivers = glob(JAWS_PATH . 'include/Jaws/Notification/*.php');
+        $drivers = $objDModel->GetNotificationDrivers(true);
         foreach ($drivers as $driver) {
-            $driver = basename($driver, '.php');
-            $objDriver = $objDModel->LoadNotificationDriver($driver);
+            $objDriver = $objDModel->LoadNotificationDriver($driver['name']);
             $dType = $objDriver->getType();
             if (!empty($messages[$dType])) {
                 foreach ($messages[$dType] as $msgid => $msgContacts) {

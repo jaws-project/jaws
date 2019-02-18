@@ -34,30 +34,36 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
             $driversInfo[] = $driver;
         }
 
-        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
-        $gadgets = $cmpModel->GetGadgetsList(null, true, true);
-        foreach ($gadgets as $gadget => $info) {
-            $tpl->SetBlock('settings/gadget');
-            $tpl->SetVariable('gadget_title', $info['title']);
+        $gadgets = $this->gadget->model->load()->recommendedfor();
+        if (!Jaws_Error::IsError($gadgets)) {
+            foreach ($gadgets as $gadget) {
+                $objGadget = Jaws_Gadget::getInstance($gadget);
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
 
-            $driverOpt =& Piwi::CreateWidget('Combo', $gadget);
-            $driverOpt->AddOption(_t('NOTIFICATION_ALL_DRIVERS'), 1);
-            $driverOpt->AddOption(_t('GLOBAL_DISABLED'), 0);
-            foreach($driversInfo as $driver) {
-                $driverOpt->AddOption($driver, $driver);
+                $tpl->SetBlock('settings/gadget');
+                $tpl->SetVariable('gadget_title', $objGadget->title);
+
+                $driverOpt =& Piwi::CreateWidget('Combo', $gadget);
+                $driverOpt->AddOption(_t('NOTIFICATION_ALL_DRIVERS'), 1);
+                $driverOpt->AddOption(_t('GLOBAL_DISABLED'), 0);
+                foreach($driversInfo as $driver) {
+                    $driverOpt->AddOption($driver, $driver);
+                }
+                $driverOpt->setStyle('width:140px');
+
+                if (isset($configuration[$gadget])) {
+                    $driverOpt->SetDefault($configuration[$gadget]);
+                }
+                $tpl->SetVariable('driver_option', $driverOpt->Get());
+
+                $tpl->ParseBlock('settings/gadget');
             }
-            $driverOpt->setStyle('width:140px');
-
-            if (isset($configuration[$gadget])) {
-                $driverOpt->SetDefault($configuration[$gadget]);
-            }
-            $tpl->SetVariable('driver_option', $driverOpt->Get());
-
-            $tpl->ParseBlock('settings/gadget');
         }
 
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript:saveSettings();');
+        $save->AddEvent(ON_CLICK, 'saveSettings();');
         $tpl->SetVariable('btn_save', $save->Get());
 
         $tpl->ParseBlock('settings');
