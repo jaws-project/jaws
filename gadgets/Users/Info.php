@@ -13,7 +13,15 @@ class Users_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '3.9.0';
+    var $version = '3.10.0';
+
+    /**
+     * Recommended gadgets
+     *
+     * @var     array
+     * @access  public
+     */
+    var $recommended = array('Notification');
 
     /**
      * Is this gadget core gadget?
