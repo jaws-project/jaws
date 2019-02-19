@@ -24,6 +24,9 @@ AddType 'text/xml; charset=UTF-8' atom rss xml
     RewriteBase /
     RewriteEngine On
 
+    #RewriteCond %{HTTP:Authorization} ^(.*)
+    #RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
     # shortcut to access admin area
     RewriteRule ^admin$ /admin.php [NC,L]
     RewriteRule ^admin&checksess$ /admin.php/?checksess [NC,L]
