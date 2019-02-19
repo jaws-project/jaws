@@ -113,7 +113,7 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
     {
         $urlParams = array();
         if (!empty($authtype)) {
-            $urlParams['authtype'] = $authtype;
+            $urlParams['authtype'] = strtolower($authtype);
         }
         if (!empty($referrer)) {
             $urlParams['referrer'] = $referrer;

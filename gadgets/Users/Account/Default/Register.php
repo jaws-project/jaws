@@ -141,7 +141,7 @@ class Users_Account_Default_Register extends Users_Account_Default
     {
         $urlParams = array();
         if (!empty($authtype)) {
-            $urlParams['authtype'] = $authtype;
+            $urlParams['authtype'] = strtolower($authtype);
         }
         if (!empty($referrer)) {
             $urlParams['referrer'] = $referrer;

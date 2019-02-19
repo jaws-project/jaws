@@ -311,20 +311,27 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         http_response_code(401);
-        // 
+        // get/check given authentication type
         $authtype = $this->gadget->request->fetch('authtype');
         if (empty($authtype)) {
             $authtype = $this->gadget->registry->fetch('authtype');
         }
         $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
-        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Login.php";
-        if (!file_exists($authfile)) {
+        $drivers = array_map('basename', glob(JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
+        if (false === $dIndex = array_search(strtolower($authtype), array_map('strtolower', $drivers))) {
             $GLOBALS['log']->Log(
                 JAWS_LOG_NOTICE,
                 $authtype. ' authentication driver doesn\'t exists, switched to default driver'
             );
             $authtype = 'Default';
+        } else {
+            $authtype = $drivers[$dIndex];
         }
+        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Login.php";
+        if (!file_exists($authfile)) {
+            Jaws_Error::Fatal($authtype. ' authentication driver doesn\'t exists');
+        }
+
         // set authentication type in session
         $this->gadget->session->update('authtype', $authtype);
 

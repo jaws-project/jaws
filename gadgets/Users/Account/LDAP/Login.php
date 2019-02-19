@@ -22,7 +22,7 @@ class Users_Account_LDAP_Login extends Users_Account_LDAP
             );
         }
 
-        $classname = "Users_Account_Default";
+        $classname = "Users_Account_Default_Login";
         $objDefaultAccount = new $classname($this->gadget);
         return $objDefaultAccount->Login();
     }
