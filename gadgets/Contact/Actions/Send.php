@@ -58,7 +58,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         }
 
         if ($this->gadget->registry->fetch('use_antispam') == 'true') {
-            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $post['email'])) {
+            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
                 $GLOBALS['app']->Session->PushResponse(
                     _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
                     'Contact.Response',

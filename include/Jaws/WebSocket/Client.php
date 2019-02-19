@@ -65,7 +65,7 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
         $expectedKey = $randomKey.'258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
         $expectedKey = base64_encode(sha1($expectedKey, true));
 
-        if (preg_match('#Sec-WebSocket-Accept: (.*)\r\n\r\n$#imU', $response, $matches)) {
+        if (preg_match('#Sec-WebSocket\-Accept: (.*)\r\n\r\n$#imU', $response, $matches)) {
             $acceptKey = trim($matches[1]);
             if ($acceptKey === $expectedKey) {
                 return true;

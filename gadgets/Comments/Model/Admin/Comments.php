@@ -67,7 +67,7 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
         }
 
         // Validate website url
-        if (!preg_match('$^(http|https|ftp)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?$i', $url)) {
+        if (!preg_match('$^(http|https|ftp)://([A-Z0-9][A-Z0-9\-_]*(?:.[A-Z0-9][A-Z0-9\-_]*)+):?(d+)?/?$i', $url)) {
             $url = '';
         }
 

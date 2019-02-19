@@ -29,7 +29,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
     {
         if ($lang_str == $lang_str) {
             $lang_code = substr($lang_str, 0, strpos($lang_str, ';'));
-            if (preg_match("/^([a-z]{2})$|^([a-z]{2}[-][a-z]{2})$/", $lang_code)) {
+            if (preg_match("/^([a-z]{2})$|^([a-z]{2}[\-][a-z]{2})$/", $lang_code)) {
                 $lang_name = substr($lang_str, strpos($lang_str, ';')+1);
                 if (!empty($lang_name) || trim($lang_name) == $lang_name) {
                     $use_data_lang = $this->gadget->registry->fetch('use_data_lang') == 'true';
@@ -185,7 +185,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         }
 
         // Metadata
-        preg_match('/"Last-Translator:(.*)"/', isset($content)? $content : '', $res);
+        preg_match('/"Last\-Translator:(.*)"/', isset($content)? $content : '', $res);
         $data['meta']['Last-Translator'] = !empty($res)? trim($res[1]) : '';
 
         // Strings

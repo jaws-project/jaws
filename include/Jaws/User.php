@@ -802,7 +802,7 @@ class Jaws_User
     {
         // username
         $uData['username'] = trim($uData['username'], '-_.@');
-        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $uData['username'])) {
+        if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INVALID_USERNAME'),
                 __FUNCTION__,
@@ -834,7 +834,7 @@ class Jaws_User
         // email
         $uData['email'] = trim($uData['email']);
         if (!empty($uData['email'])) {
-            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
+            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
                     __FUNCTION__,
@@ -963,7 +963,7 @@ class Jaws_User
 
         // username
         $uData['username'] = trim($uData['username'], '-_.@');
-        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $uData['username'])) {
+        if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INVALID_USERNAME'),
                 __FUNCTION__,
@@ -985,7 +985,7 @@ class Jaws_User
         // email
         $uData['email'] = trim($uData['email']);
         if (!empty($uData['email'])) {
-            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['email'])) {
+            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
                     __FUNCTION__,
@@ -1006,7 +1006,7 @@ class Jaws_User
         // new email
         if (isset($uData['new_email']) && !empty($uData['new_email'])) {
             $uData['new_email'] = trim($uData['new_email']);
-            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['new_email'])) {
+            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['new_email'])) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
                     __FUNCTION__,
@@ -1375,7 +1375,7 @@ class Jaws_User
     {
         // name
         $gData['name'] = trim($gData['name'], '-_.@');
-        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
+        if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $gData['name'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
                 __FUNCTION__,
@@ -1435,7 +1435,7 @@ class Jaws_User
         // name
         if (isset($gData['name'])) {
             $gData['name'] = trim($gData['name'], '-_.@');
-            if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
+            if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $gData['name'])) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
                     __FUNCTION__,

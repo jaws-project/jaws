@@ -163,7 +163,7 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
     private function verify(&$buffer) {
         // Version
         $version = 0;
-        if (preg_match("/Sec-WebSocket-Version: (.*)\r\n/i", $buffer, $match)) {
+        if (preg_match("/Sec\-WebSocket\-Version: (.*)\r\n/i", $buffer, $match)) {
             $version = $match[1];
         }
 
@@ -181,7 +181,7 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
                 $origin = $match[1];
             }
             // Sec-WebSocket-Key
-            if (preg_match("/Sec-WebSocket-Key: (.*)\r\n/i", $buffer, $match)) {
+            if (preg_match("/Sec\-WebSocket\-Key: (.*)\r\n/i", $buffer, $match)) {
                 $key = $match[1];
             }
             // Data

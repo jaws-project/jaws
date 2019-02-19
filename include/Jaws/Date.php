@@ -248,7 +248,7 @@ class Jaws_Date
      */
     function ValidDBDate($date)
     {
-        if (preg_match("/^([123456789][[:digit:]]{3})-(0[1-9]|1[012])-(0[1-9]|[12][[:digit:]]|3[01]) ([01][[:digit:]]|2[0123]):([0-5][[:digit:]]):([0-5][[:digit:]])$/", $date, $date_part) &&
+        if (preg_match("/^([123456789][[:digit:]]{3})\-(0[1-9]|1[012])\-(0[1-9]|[12][[:digit:]]|3[01]) ([01][[:digit:]]|2[0123]):([0-5][[:digit:]]):([0-5][[:digit:]])$/", $date, $date_part) &&
             checkdate($date_part[2], $date_part[3], $date_part[1])) {
            return true;
         }
