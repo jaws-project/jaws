@@ -383,7 +383,7 @@ class Jaws_Request
      * @param   bool    $xss_strip  Returns stripped html data tags/attributes
      * @return  array   Filtered Data array
      */
-    function fetchAll($method = '', $filter = true, $xss_strip = false)
+    function fetchAll($method = '', $filter = true, $xss_strip = false, $type_validate = true)
     {
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         if (!isset($this->data[$method]) || empty($this->data[$method])) {
@@ -400,7 +400,7 @@ class Jaws_Request
             array_fill(0, count($keys), $filter),
             array_fill(0, count($keys), $xss_strip),
             array_fill(0, count($keys), false),
-            array_fill(0, count($keys), false)
+            array_fill(0, count($keys), $type_validate)
         );
 
         return array_combine($keys, $values);
