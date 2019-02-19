@@ -39,8 +39,8 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $params['createtime']       = $now;
         $params['updatetime']       = $now;
 
-        $catTable = $objORM->table('blog_category');
-        $categoryId = $catTable->insert($params)->exec();
+        $objORM = Jaws_ORM::getInstance()->table('blog_category');
+        $categoryId = $objORM->insert($params)->exec();
         if (Jaws_Error::IsError($categoryId)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'));
@@ -82,9 +82,6 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             $res = $objImage->save($this->GetCategoryLogoPath($categoryId), 'png');
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
-                //Rollback Transaction
-                $objORM->rollback();
-
                 // Return an error if image can't be resized
                 return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
             }

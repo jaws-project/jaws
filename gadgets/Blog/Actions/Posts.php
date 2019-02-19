@@ -254,6 +254,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
                 $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
                 $tpl->SetVariable('url', $perm_url);
+                $tpl->SetVariable('summary', $this->gadget->plugin->parse($entry['summary']));
 
                 $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
                 $tpl->SetVariable(
