@@ -102,8 +102,7 @@ class HTTP_Request2_SocketWrapper
             if (version_compare(phpversion(), '5.4.13', '>=')) {
                 $contextOptions['ssl']['disable_compression'] = true;
                 if (version_compare(phpversion(), '5.6', '>=')) {
-                    $contextOptions['ssl']['crypto_method'] = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT
-                                                              | STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+                    $contextOptions['ssl']['crypto_method'] = STREAM_CRYPTO_METHOD_ANY_CLIENT;
                 }
             }
         }
@@ -268,8 +267,7 @@ class HTTP_Request2_SocketWrapper
         if (version_compare(phpversion(), '5.6', '<')) {
             $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
         } else {
-            $cryptoMethod = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT
-                            | STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+            $cryptoMethod = STREAM_CRYPTO_METHOD_ANY_CLIENT;
         }
 
         if (!stream_socket_enable_crypto($this->socket, true, $cryptoMethod)) {
