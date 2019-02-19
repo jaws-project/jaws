@@ -15,11 +15,11 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      * Get the layout items
      *
      * @access  public
-     * @param   string  $layout     Layout name
-     * @param   bool    $published  Publish status
+     * @param   string  $layout         Layout name
+     * @param   bool    $onlyAvailable  Available status
      * @return  array   Returns an array with the layout items or Jaws_Error on failure
      */
-    function GetLayoutItems($layout = 'Layout', $user = 0, $published = null)
+    function GetLayoutItems($layout = 'Layout', $user = 0, $onlyAvailable = false)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
@@ -33,8 +33,10 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
             ->where('locality', $this->gadget->locality)
             ->and()
             ->where('layout', $layout);
-        if (!is_null($published)) {
-            $lyTable->and()->where('published', (bool)$published);
+        if ($onlyAvailable) {
+            $lyTable->and()->where('published', true);
+            $loggedStatus = $GLOBALS['app']->Session->Logged()? 3 : 2;
+            $lyTable->and()->openWhere('status', $loggedStatus)->or()->closeWhere('status', 1);
         }
         $elements = $lyTable->orderBy('position asc')->fetchAll();
         if (Jaws_Error::IsError($elements)) {
