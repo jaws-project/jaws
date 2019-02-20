@@ -922,22 +922,29 @@ class Jaws_User
             $uData['domain'] = (int)$GLOBALS['app']->Registry->fetch('default_domain', 'Users');
         }
 
-        // delete unverified old user with this username
-        $result = Jaws_ORM::getInstance()
+        // delete unverified old user with this username/email/mobile
+        $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->delete()
             ->where('domain', $uData['domain'])
             ->and()
-            ->where('username', $uData['username'])
-            ->and()
             ->where('status', 2)  // 2 = unverified user
-            ->exec();
+            ->and()
+            ->openWhere('username', $uData['username']);
+        if (!empty($uData['email'])) {
+            $objORM->or()->where('email', $uData['email']);
+        }
+        if (!empty($uData['mobile'])) {
+            $objORM->or()->where('mobile', $uData['mobile']);
+        }
+        $objORM->closeWhere();
+        $result = $objORM->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->insert($uData)->exec();
+        // insert user
+        $result = $objORM->table('users')->insert($uData)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
                 $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $uData['username']));
