@@ -44,36 +44,10 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         if (trim($uData['password']) == '') {
             $uData['password'] = Jaws_Utils::RandomText(8);
         }
-
-        $jawsUser = $GLOBALS['app']->loadObject('Jaws_User');
-        // this username already exists in the DB?
-        if ($jawsUser->UsernameExists($uData['username'])) {
-            return Jaws_Error::raiseError(
-                _t('USERS_USERS_ALREADY_EXISTS', $uData['username']),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-        // this email address already exists in the DB?
-        if ($jawsUser->UserEmailExists($uData['email'])) {
-            return Jaws_Error::raiseError(
-                _t('USERS_EMAIL_ALREADY_EXISTS', $uData['email']),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-        // this mobile number already exists in the DB?
-        if ($jawsUser->UserMobileExists($uData['mobile'])) {
-            return Jaws_Error::raiseError(
-                _t('USERS_MOBILE_ALREADY_EXISTS', $uData['mobile']),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-
         $uData['verify_key'] = Jaws_Utils::RandomText(5, false, false, true);
         $uData['status'] = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
 
+        $jawsUser = $GLOBALS['app']->loadObject('Jaws_User');
         $user = $jawsUser->AddUser($uData);
         if (Jaws_Error::IsError($user)) {
             return $user;
