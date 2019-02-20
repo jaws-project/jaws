@@ -35,15 +35,16 @@ class Jaws_Gadget_Request
      *
      * @access  public
      * @param   mixed   $key            The key being fetched
-     * @param   mixed   $types          Which super global is being fetched from, it can be an array
+     * @param   mixed   $method         Which super global is being fetched from, it can be an array
      * @param   bool    $filter         Returns filtered data or not
+     * @param   bool    $xss_strip      Returns stripped html data tags/attributes
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function fetch($key, $types = '', $filter = true, $json_decode = false)
+    function fetch($key, $method = '', $filter = true, $xss_strip = false, $json_decode = false)
     {
         if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
-            return jaws()->request->fetch($key, $types, $filter, $json_decode);
+            return jaws()->request->fetch($key, $method, $filter, $xss_strip, $json_decode);
         } else {
             return is_scalar($key)? null : array_fill_keys($key, null);
         }
@@ -53,14 +54,15 @@ class Jaws_Gadget_Request
      * Fetches the filtered data with out filter
      *
      * @access  public
-     * @param   string  $type   Which super global is being fetched from
-     * @param   bool    $filter Returns filtered data or not
+     * @param   string  $method     Which super global is being fetched from
+     * @param   bool    $filter     Returns filtered data
+     * @param   bool    $xss_strip  Returns stripped html data tags/attributes
      * @return  array   Filtered Data array
      */
-    function fetchAll($type = '', $filter = true)
+    function fetchAll($method = '', $filter = true, $xss_strip = false, $type_validate = true)
     {
         if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
-            return jaws()->request->fetchAll($type, $filter);
+            return jaws()->request->fetchAll($method, $filter, $xss_strip, $type_validate);
         } else {
             return array();
         }
