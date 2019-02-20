@@ -943,7 +943,31 @@ class Jaws_User
             return $result;
         }
 
+        // prevent duplicate username/email/mobile
+        $objORM->reset();
+        $objORM->table('users')
+            ->select('count(id)')
+            ->where('domain', $uData['domain'])
+            ->and()
+            ->openWhere('username', $uData['username']);
+        if (!empty($uData['email'])) {
+            $objORM->or()->where('email', $uData['email']);
+        }
+        if (!empty($uData['mobile'])) {
+            $objORM->or()->where('mobile', $uData['mobile']);
+        }
+        $objORM->closeWhere();
+        $howmany = $objORM->fetchOne();
+        if (Jaws_Error::IsError($howmany) || !empty($howmany)) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_USERS_ALREADY_EXISTS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
         // insert user
+        $objORM->reset();
         $result = $objORM->table('users')->insert($uData)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
