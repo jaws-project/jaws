@@ -49,11 +49,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $this->gadget->session->update('authtype', $authtype);
 
         // store referrer in session
-        $referrer = $this->gadget->request->fetch('referrer');
-        if (empty($referrer)) {
-            $referrer = bin2hex(Jaws_Utils::getRequestURL());
-        }
-        $this->gadget->session->update('referrer', $referrer);
+        $referrer = (string)$this->gadget->request->fetch('referrer');
+        $this->gadget->session->update('referrer', (string)$referrer);
 
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Registration";
