@@ -335,10 +335,16 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         // set authentication type in session
         $this->gadget->session->update('authtype', $authtype);
 
-        // store referrer in session
+        // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
-            $referrer = bin2hex(Jaws_Utils::getRequestURL());
+            if ($GLOBALS['app']->mainGadget == $GLOBALS['app']->requestedGadget &&
+                $GLOBALS['app']->mainAction == $GLOBALS['app']->requestedAction
+            ) {
+                $referrer = '';
+            } else {
+                $referrer = bin2hex(Jaws_Utils::getRequestURL());
+            }
         }
         $this->gadget->session->update('referrer', $referrer);
 
