@@ -124,6 +124,7 @@ function saveMenus()
                     $('#title').val(),
                     $('#url').val(),
                     $('#variables').val(),
+                    $('#symbol').val(),
                     $('#target').val(),
                     $('#order').val(),
                     $('#status').val(),
@@ -148,6 +149,7 @@ function saveMenus()
                     $('#title').val(),
                     $('#url').val(),
                     $('#variables').val(),
+                    $('#symbol').val(),
                     $('#target').val(),
                     $('#order').val(),
                     $('#status').val(),
@@ -353,6 +355,7 @@ function editMenu(mid)
     $('#url').val(menuInfo['url']);
     $('#url').prop('disabled', menuInfo['variables'] || !menuInfo['url']);
     $('#variables').val(menuInfo['variables']);
+    $('#symbol').val(menuInfo['symbol']);
     $('#target').val(menuInfo['target']);
     $('#permission').val(menuInfo['permission']);
     setOrderCombo($('#gid').val(), $('#pid').val());

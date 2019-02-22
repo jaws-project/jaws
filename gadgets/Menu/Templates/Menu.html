@@ -31,6 +31,7 @@
   <!-- BEGIN complex -->
   <li class="dropdown {{class}}">
     <a class="dropdown-toggle" href="{{url}}" target="{{target}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      <!-- BEGIN symbol --><span class="{{symbol}}"></span><!-- END symbol -->
       {{image}}<span>{{title}}</span> <span class="caret"></span>
     </a>
     {{submenu}}
@@ -38,7 +39,10 @@
   <!-- END complex -->
   <!-- BEGIN simple -->
   <li class="{{class}}">
-    <a href="{{url}}" target="{{target}}">{{image}}<span>{{title}}</span></a>
+    <a href="{{url}}" target="{{target}}">
+      <!-- BEGIN symbol --><span class="{{symbol}}"></span><!-- END symbol -->
+      {{image}}<span>{{title}}</span>
+    </a>
   </li>
   <!-- END simple -->
   <!-- END items -->
@@ -51,6 +55,7 @@
   <!-- BEGIN complex -->
   <li class="dropdown {{class}}">
     <a class="dropdown-toggle" href="{{url}}" target="{{target}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      <!-- BEGIN symbol --><span class="{{symbol}}"></span><!-- END symbol -->
       {{image}}<span>{{title}}</span> <span class="caret"></span>
     </a>
     {{submenu}}
@@ -58,7 +63,10 @@
   <!-- END complex -->
   <!-- BEGIN simple -->
   <li class="{{class}}">
-    <a href="{{url}}" target="{{target}}">{{image}}<span>{{title}}</span></a>
+    <a href="{{url}}" target="{{target}}">
+      <!-- BEGIN symbol --><span class="{{symbol}}"></span><!-- END symbol -->
+      {{image}}<span>{{title}}</span>
+    </a>
   </li>
   <!-- END simple -->
   <!-- END items -->

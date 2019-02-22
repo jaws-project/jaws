@@ -109,7 +109,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($pid, $gid, $type, $permission, $title, $url, $variables, $target,
+        @list($pid, $gid, $type, $permission, $title, $url, $variables, $symbol, $target,
             $order, $status, $image
         ) = $this->gadget->request->fetchAll('post');
 
@@ -141,6 +141,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             'title'      => $title,
             'url'        => $url,
             'variables'  => $variables,
+            'symbol'     => $symbol,
             'target'     => $target,
             'order'      => $order, 
             'status'     => (int)$status,
@@ -177,7 +178,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid, $pid, $gid, $type, $permission, $title, $url, $variables, $target,
+        @list($mid, $pid, $gid, $type, $permission, $title, $url, $variables, $symbol, $target,
             $order, $status, $image
         ) = $this->gadget->request->fetchAll('post');
 
@@ -209,6 +210,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             'title'      => $title,
             'url'        => $url,
             'variables'  => $variables,
+            'symbol'     => $symbol,
             'target'     => $target,
             'order'      => $order, 
             'status'     => (int)$status,
