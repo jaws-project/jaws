@@ -161,7 +161,6 @@ class Jaws_Session
 
             $this->ssid = $session['id'];
             $this->salt = $session['salt'];
-            $this->referrer   = $session['referrer'];
             $this->attributes = unserialize($session['data']);
             $checksum = md5($session['user'] . $session['data']);
 
@@ -301,7 +300,6 @@ class Jaws_Session
             $this->ssid = $this->update($this->salt);
         }
 
-        $this->referrer = Jaws_Utils::getHostReferrer();
         return true;
     }
 
@@ -313,21 +311,12 @@ class Jaws_Session
      */
     function extraCheck()
     {
-        // referrer
-        $referrer = Jaws_Utils::getHostReferrer();
-
-        if ($referrer == $_SERVER['HTTP_HOST'] || $this->referrer === md5($referrer)) {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session referrer OK');
-            return true;
-        } else {
-            $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Session referrer changed');
-            return false;
-        }
-
         if (isset($_SERVER['ORIGIN'])) {
             $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'cross-origin resource sharing detected');
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -596,9 +585,7 @@ class Jaws_Session
             $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
         }
 
-        // referrer
         $this->Reset($this->ssid);
-        $referrer = Jaws_Utils::getHostReferrer();
         $update_time = time();
         $user = $this->GetAttribute('user');
         $serialized = serialize($this->attributes);
@@ -608,7 +595,6 @@ class Jaws_Session
                 'type'       => JAWS_APPTYPE,
                 'longevity'  => $this->GetAttribute('longevity'),
                 'data'       => $serialized,
-                'referrer'   => md5($referrer),
                 'salt'       => $salt,
                 'checksum'   => md5($user. $serialized),
                 'ip'         => $ip,
@@ -707,7 +693,7 @@ class Jaws_Session
     {
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id:integer', 'salt', 'user', 'longevity', 'ip', 'agent', 'referrer', 'data',
+            'id:integer', 'salt', 'user', 'longevity', 'ip', 'agent', 'data',
             'checksum', 'update_time:integer'
         );
         return $sessTable->where('id', (int)$sid)->fetchRow();
@@ -735,7 +721,7 @@ class Jaws_Session
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent', 'referrer',
+            'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent',
             'data', 'checksum', 'insert_time', 'update_time:integer'
         );
         if ($active) {

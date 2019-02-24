@@ -56,7 +56,9 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
             }
 
             // check referrer host for internal action
-            if ($objAction->getAttribute($ReqAction, 'internal') && !$GLOBALS['app']->Session->extraCheck()) {
+            if ($objAction->getAttribute($ReqAction, 'internal') &&
+                (!$GLOBALS['app']->Session->extraCheck() || Jaws_Utils::getReferrerHost() != $_SERVER['HTTP_HOST'])
+            ) {
                 $ReqError = '403';
             }
 

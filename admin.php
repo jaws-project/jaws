@@ -91,7 +91,9 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     $GLOBALS['app']->define('', 'mainAction', $ReqAction);
 
     // check referrer host
-    if (!$GLOBALS['app']->Session->extraCheck()) {
+    if (!$GLOBALS['app']->Session->extraCheck() ||
+        Jaws_Utils::getReferrerHost() != $_SERVER['HTTP_HOST']
+    ) {
         $ReqResult = Jaws_HTTPError::Get(403);
     } else {
         $ReqResult = $objAction->Execute($ReqAction);

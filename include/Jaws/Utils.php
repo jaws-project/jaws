@@ -717,22 +717,18 @@ class Jaws_Utils
     }
 
     /**
-     * Get host referrer
+     * Get referrer host
      *
      * @access  public
      * @return  string  Referrer host
      */
-    static function getHostReferrer()
+    static function getReferrerHost()
     {
         $referrer = @parse_url($_SERVER['HTTP_REFERER']);
-        if ($referrer && isset($referrer['host']) && ($referrer['host'] != $_SERVER['HTTP_HOST'])) {
-            if (array_key_exists('port', $referrer)) {
-                $referrer = $referrer['host'] . ':' . $referrer['port'];
-            } else {
-                $referrer = $referrer['host'];
-            }
+        if (array_key_exists('port', $referrer)) {
+            $referrer = $referrer['host'] . ':' . $referrer['port'];
         } else {
-            $referrer = '';
+            $referrer = $referrer['host'];
         }
 
         return $referrer;
