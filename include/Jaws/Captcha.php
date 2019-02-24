@@ -65,6 +65,11 @@ class Jaws_Captcha
             $instances[$driver] = new $className($driver);
         }
 
+        // delete expired captcha
+        if (mt_rand(1, 10) == mt_rand(1, 10)) {
+            $this->delete(0);
+        }
+
         return $instances[$driver];
     }
 
@@ -115,7 +120,7 @@ class Jaws_Captcha
             $matched = !empty($value) && (strtolower($result) === strtolower($value));
         }
 
-        if ($cleanup || $matched) {
+        if ($cleanup) {
             $this->delete((int)$key);
         } else {
             $this->update((int)$key, Jaws_Utils::RandomText());
@@ -176,7 +181,7 @@ class Jaws_Captcha
     function delete($key = 0)
     {
         $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
-        $tblCaptcha->delete()->where('id', $key)->or()->where('updatetime', time() - 600, '<');
+        $tblCaptcha->delete()->where('id', $key)->or()->where('updatetime', time() - 300, '<');
         return $tblCaptcha->exec();
     }
 
