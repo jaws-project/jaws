@@ -61,7 +61,7 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                     }
 
                     $user = array();
-                    $user['id']          = strtolower('LDAP:'.$loginData['username']);
+                    $user['id']          = strtolower('ldap:'.$loginData['username']);
                     $user['internal']    = false;
                     $user['domain']      = (int)$loginData['domain'];
                     $user['username']    = $loginData['username'];
