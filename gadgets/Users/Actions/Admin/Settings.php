@@ -24,7 +24,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
 
         // authentication method
         $authtype =& Piwi::CreateWidget('Combo', 'authtype');
-        foreach ($GLOBALS['app']->GetAuthTypes() as $method) {
+        foreach ($this->gadget->model->loadAdmin('Settings')->GetAuthTypes() as $method) {
             $authtype->AddOption($method, $method);
         }
         $authtype->SetDefault($this->gadget->registry->fetch('authtype'));

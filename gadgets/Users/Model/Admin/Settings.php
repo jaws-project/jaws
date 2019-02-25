@@ -8,6 +8,17 @@
 class Users_Model_Admin_Settings extends Jaws_Gadget_Model
 {
     /**
+     * Get the available authentication types
+     *
+     * @access  public
+     * @return  array   Array with available authentication types
+     */
+    function GetAuthTypes()
+    {
+        return array_map('basename', glob(JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
+    }
+
+    /**
      * Updates the User gadget settings
      *
      * @access  public
@@ -17,7 +28,7 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
     function UpdateSettings($settings)
     {
         if ($this->gadget->GetPermission('ManageAuthenticationMethod')) {
-            $methods = $GLOBALS['app']->getAuthTypes();
+            $methods = $this->GetAuthTypes();
             if ($methods == false || !in_array($settings['authtype'], $methods)) {
                 unset($settings['authtype']);
             }
