@@ -126,7 +126,7 @@ class Jaws_URLMapping
         // fetch all registry keys
         $regKeys = $urlMapper->registry->fetchAll();
         $extension = $regKeys['map_extensions'];
-        $this->_enabled           = $regKeys['map_enabled'] == 'true';
+        $this->_enabled           = (JAWS_SCRIPT == 'admin')? false : ($regKeys['map_enabled'] == 'true');
         $this->_use_rewrite       = $regKeys['map_use_rewrite'] == 'true';
         $this->_use_aliases       = $regKeys['map_use_aliases'] == 'true';
         $this->_custom_precedence = $regKeys['map_custom_precedence'] == 'true';
@@ -417,12 +417,12 @@ class Jaws_URLMapping
             }
         }
 
-        if ($this->_use_rewrite) {
+        if (!$this->_enabled) {
+            $url = BASE_SCRIPT. '?gadget=' .$gadget . '&action='. $action;
+        } elseif ($this->_use_rewrite) {
             $url = $gadget . '/'. $action;
-        } elseif (!$this->_enabled) {
-            $url = 'index.php?' .$gadget . '/'. $action;
         } else {
-            $url = 'index.php/' .$gadget . '/'. $action;
+            $url = BASE_SCRIPT. '/' .$gadget . '/'. $action;
         }
 
         // // merging options and params
@@ -432,7 +432,11 @@ class Jaws_URLMapping
             //Params should be in pairs
             foreach ($params as $key => $value) {
                 $value = implode('/', array_map('rawurlencode', explode('/', $value)));
-                $url.= '/' . $key . '/' . $value;
+                if ($this->_enabled) {
+                    $url.= '/' . $key . '/' . $value;
+                } else {
+                    $url.= '&' . $key . '=' . $value;
+                }
             }
         }
 
