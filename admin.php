@@ -47,22 +47,23 @@ if (!$GLOBALS['app']->Session->Logged()) {
         Jaws_Error::Fatal($gdgtUsers->getMessage());
     }
 
-    $ReqGadget = 'Users';
-    if (($ReqAction != 'Authenticate') &&
-        (!$httpAuthEnabled || !isset($_SERVER['PHP_AUTH_USER']))
-    ) {
-        $ReqAction = 'Login';
+    $ReqResult = '';
+    if ($ReqGadget != 'Users' || !in_array($ReqAction, array('Login', 'Authenticate'))) {
+        Jaws_Header::Location(
+            $gdgtUsers->gadget->urlMap(
+                'Login',
+                array('referrer' => bin2hex(Jaws_Utils::getRequestURL()))
+            )
+        );
     } else {
-        $ReqAction = 'Authenticate';
-    }
-
-    $GLOBALS['app']->mainGadget = $ReqGadget;
-    $GLOBALS['app']->mainAction = $ReqAction;
-    $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
-    $GLOBALS['app']->define('', 'mainAction', $ReqAction);
-    $ReqResult = $gdgtUsers->action->loadAdmin()->Execute($ReqAction);
-    if (Jaws_Error::IsError($ReqResult)) {
-        Jaws_Error::Fatal($ReqResult->getMessage());
+        $GLOBALS['app']->mainGadget = $ReqGadget;
+        $GLOBALS['app']->mainAction = $ReqAction;
+        $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
+        $GLOBALS['app']->define('', 'mainAction', $ReqAction);
+        $ReqResult = $gdgtUsers->action->loadAdmin()->Execute($ReqAction);
+        if (Jaws_Error::IsError($ReqResult)) {
+            Jaws_Error::Fatal($ReqResult->getMessage());
+        }
     }
 
     terminate($ReqResult, 401);
