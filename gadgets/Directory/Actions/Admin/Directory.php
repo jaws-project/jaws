@@ -179,7 +179,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                     array('absolute' => true)
                 );
             }
-            $file['userlink'] = $GLOBALS['app']->Map->GetURLFor(
+            $file['userlink'] = $GLOBALS['app']->Map->GetMappedURL(
                 'Users',
                 'Profile',
                 array('user' => $file['username'])
