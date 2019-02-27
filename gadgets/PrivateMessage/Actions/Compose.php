@@ -109,7 +109,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 // user's profile
                 $tpl->SetVariable(
                     'user_url',
-                    $GLOBALS['app']->Map->GetURLFor(
+                    $GLOBALS['app']->Map->GetMappedURL(
                         'Users',
                         'Profile',
                         array('user' => $message['from_username'])
@@ -218,7 +218,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             // user's profile
             $tpl->SetVariable(
                 'recipient_user_url',
-                $GLOBALS['app']->Map->GetURLFor(
+                $GLOBALS['app']->Map->GetMappedURL(
                     'Users',
                     'Profile',
                     array('user' => $user_info['username'])

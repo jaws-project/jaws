@@ -171,7 +171,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('rownum', $i);
                 $tpl->SetVariable('id',  $message['id']);
                 $tpl->SetVariable('from', $message['from_nickname']);
-                $from_url = $GLOBALS['app']->Map->GetURLFor(
+                $from_url = $GLOBALS['app']->Map->GetMappedURL(
                     'Users',
                     'Profile',
                     array('user' => $message['from_username']));
@@ -210,7 +210,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $recipients_str = '';
                 if (is_array($messageInfo['users']) > 0) {
                     // user's profile
-                    $user_url = $GLOBALS['app']->Map->GetURLFor(
+                    $user_url = $GLOBALS['app']->Map->GetMappedURL(
                         'Users',
                         'Profile',
                         array('user' => $messageInfo['users'][0]['username']));
@@ -350,7 +350,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         // user's profile
         $tpl->SetVariable(
             'user_url',
-            $GLOBALS['app']->Map->GetURLFor(
+            $GLOBALS['app']->Map->GetMappedURL(
                 'Users',
                 'Profile',
                 array('user' => $message['from_username'])
