@@ -107,8 +107,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         } else {
             $tpl->SetBlock('comment_form/unregistered');
             $tpl->SetVariable('msg', _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Login'),
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Registration')));
+                $GLOBALS['app']->Map->GetMappedURL('Users', 'Login'),
+                $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration')));
             $tpl->ParseBlock('comment_form/unregistered');
         }
 
@@ -201,7 +201,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     // user's profile
                     $tpl->SetVariable(
                         'user_url',
-                        $GLOBALS['app']->Map->GetURLFor(
+                        $GLOBALS['app']->Map->GetMappedURL(
                             'Users',
                             'Profile',
                             array('user' => $entry['username'])
@@ -254,7 +254,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     // user's profile
                     $tpl->SetVariable(
                         'replier_url',
-                        $GLOBALS['app']->Map->GetURLFor(
+                        $GLOBALS['app']->Map->GetMappedURL(
                             'Users',
                             'Profile',
                             array('user' => $entry['replier_username'])
@@ -370,7 +370,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     // user's profile
                     $tpl->SetVariable(
                         'user_url',
-                        $GLOBALS['app']->Map->GetURLFor(
+                        $GLOBALS['app']->Map->GetMappedURL(
                             'Users',
                             'Profile',
                             array('user' => $entry['username'])
