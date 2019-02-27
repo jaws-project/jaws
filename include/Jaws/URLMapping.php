@@ -126,7 +126,7 @@ class Jaws_URLMapping
         // fetch all registry keys
         $regKeys = $urlMapper->registry->fetchAll();
         $extension = $regKeys['map_extensions'];
-        $this->_enabled           = (JAWS_SCRIPT == 'admin')? false : ($regKeys['map_enabled'] == 'true');
+        $this->_enabled           = $regKeys['map_enabled'] == 'true';
         $this->_use_rewrite       = $regKeys['map_use_rewrite'] == 'true';
         $this->_use_aliases       = $regKeys['map_use_aliases'] == 'true';
         $this->_custom_precedence = $regKeys['map_custom_precedence'] == 'true';
@@ -338,6 +338,40 @@ class Jaws_URLMapping
     }
 
     /**
+     * Raw URL
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget name
+     * @param   string  $action     Action name
+     * @param   array   $params     Parameters of action
+     * @param   array   $options    URL options(restype, mode, ...)
+     * @return  string  The raw url
+     */
+    function GetRawURL($gadget, $action='', $params = array(), $options = array())
+    {
+        // absolute or relative URL
+        $abs_url = isset($options['absolute'])? (bool)$options['absolute'] : false;
+        // URL extension(true: default extension, false: disable extension, custom extension)
+        $extension = isset($options['extension'])? $options['extension'] : true;
+        unset($options['absolute'], $options['extension']);
+
+        $url = BASE_SCRIPT. '?gadget=' .$gadget . '&action='. $action;
+
+        // merging options and params
+        $params = array_merge($params, $options);
+
+        if (is_array($params)) {
+            //params should be in pairs
+            foreach ($params as $key => $value) {
+                $value = implode('/', array_map('rawurlencode', explode('/', $value)));
+                $url.= '&' . $key . '=' . $value;
+            }
+        }
+
+        return ($abs_url? $GLOBALS['app']->getSiteURL('/') : '') . $url;
+    }
+
+    /**
      * Does the reverse stuff for an URL map. It gets all the params i
      * as an array and converts all the stuff to an URL map
      *
@@ -348,7 +382,7 @@ class Jaws_URLMapping
      * @param   array   $options    URL options(restype, mode, ...)
      * @return  string  The real URL map (aka jaws permalink)
      */
-    function GetURLFor($gadget, $action='', $params = array(), $options = array())
+    function GetMappedURL($gadget, $action='', $params = array(), $options = array())
     {
         // absolute or relative URL
         $abs_url = isset($options['absolute'])? (bool)$options['absolute'] : false;
@@ -418,11 +452,11 @@ class Jaws_URLMapping
         }
 
         if (!$this->_enabled) {
-            $url = BASE_SCRIPT. '?gadget=' .$gadget . '&action='. $action;
+            $url = 'index.php'. '?gadget=' .$gadget . '&action='. $action;
         } elseif ($this->_use_rewrite) {
             $url = $gadget . '/'. $action;
         } else {
-            $url = BASE_SCRIPT. '/' .$gadget . '/'. $action;
+            $url = 'index.php'. '/' .$gadget . '/'. $action;
         }
 
         // // merging options and params
