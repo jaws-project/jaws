@@ -73,7 +73,7 @@ class PhooInsert_Plugin
                     $imgData = Jaws_Image::getimagesize($img_file);
 
                     if (strtoupper($linked) == 'YES' ){
-                        $img_lnk = $GLOBALS['app']->Map->GetURLFor('Phoo',
+                        $img_lnk = $GLOBALS['app']->Map->GetMappedURL('Phoo',
                                                                    'ViewImage',
                                                                    array('id' => $imageid, 'albumid' => $albumid));
                         $new_text = '<a href="'.$img_lnk.'" ><img src="'. $img_url.'" title="'.
