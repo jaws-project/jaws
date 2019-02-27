@@ -123,7 +123,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             // user's profile
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetURLFor(
+                $GLOBALS['app']->Map->GetMappedURL(
                     'Users',
                     'Profile',
                     array('user' => $post['username'])
@@ -161,7 +161,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 $tpl->SetVariable('nickname', $post['updater_nickname']);
                 $tpl->SetVariable(
                     'user_url',
-                    $GLOBALS['app']->Map->GetURLFor(
+                    $GLOBALS['app']->Map->GetMappedURL(
                         'Users',
                         'Profile',
                         array('user' => $post['updater_username'])
@@ -352,7 +352,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 //            $tpl->SetVariable('nickname', $post['nickname']);
 //            $tpl->SetVariable(
 //                'user_url',
-//                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
+//                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $post['username']))
 //            );
 //            $objDate = Jaws_Date::getInstance();
 //            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
@@ -706,7 +706,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $tpl->SetVariable('nickname', $post['nickname']);
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
+                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $post['username']))
             );
             $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));

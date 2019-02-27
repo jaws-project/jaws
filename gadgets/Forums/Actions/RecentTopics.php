@@ -109,7 +109,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
                 // user's profile
                 $tpl->SetVariable(
                     'url_user',
-                    $GLOBALS['app']->Map->GetURLFor(
+                    $GLOBALS['app']->Map->GetMappedURL(
                         'Users',
                         'Profile',
                         array('user' => $topic['username'])

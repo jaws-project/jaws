@@ -103,7 +103,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('nickname', $topic['first_nickname']);
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['first_username']))
+                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['first_username']))
             );
             $tpl->SetVariable('firstpost_date', $objDate->Format($topic['first_post_time'], $date_format));
             $tpl->SetVariable('firstpost_date_iso', $objDate->ToISO((int)$topic['first_post_time']));
@@ -116,7 +116,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 $tpl->SetVariable('nickname', $topic['last_nickname']);
                 $tpl->SetVariable(
                     'user_url',
-                    $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['last_username']))
+                    $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['last_username']))
                 );
                 $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
@@ -259,7 +259,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('nickname', $topic['nickname']);
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
+                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['username']))
             );
             $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
@@ -692,7 +692,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('nickname', $topic['nickname']);
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
+                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['username']))
             );
             $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
