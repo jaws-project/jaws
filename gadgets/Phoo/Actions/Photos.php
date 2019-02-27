@@ -201,8 +201,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                     $image['id']
                 ));
             } elseif ($restricted) {
-                $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Login');
-                $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+                $login_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Login');
+                $register_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration');
                 $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
             }
 
