@@ -42,8 +42,10 @@ class Users_Installer extends Jaws_Gadget_Installer
         'ManageGroupACLs',
         'ManageAuthenticationMethod',
         'ManageFriends',
-        'AccessDashboard',
-        'ManageDashboard',
+        'AccessUserLayout',
+        'ManageUserLayout',
+        'AccessUsersLayout',
+        'ManageUsersLayout',
         'EditUserName',
         'EditUserEmail',
         'EditUserMobile',
@@ -278,6 +280,16 @@ class Users_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '3.11.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('AccessUserLayout');
+            $this->gadget->acl->insert('ManageUserLayout');
+            $this->gadget->acl->insert('AccessUsersLayout');
+            $this->gadget->acl->insert('ManageUsersLayout');
+            $this->gadget->acl->delete('AccessDashboard');
+            $this->gadget->acl->delete('ManageDashboard');
         }
 
         return true;

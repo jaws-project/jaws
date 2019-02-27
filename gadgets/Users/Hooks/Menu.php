@@ -48,19 +48,27 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
             )
         );
 
-/*
         $urls[] = array(
-            'url'   => $this->gadget->urlMap('Dashboard', array('user' => $logged_user), false, 'Layout'),
-            'title' => _t('USERS_DASHBOARD_USER')
-        );
-*/
-        $urls[] = array(
-            'url'        => $this->gadget->urlMap('Dashboard', array('user' => 0), array(), 'Layout'),
-            'title'      => _t('USERS_DASHBOARD_GLOBAL'),
+            'url'        => Jaws_Gadget::getInstance('Layout')->urlMap('LayoutType', array('type' => 2)),
+            'title'      => _t('USERS_DASHBOARD_USER'),
             'permission' => array(
-                'key'    => 'AccessDashboard',
+                'key'    => 'AccessUserLayout',
                 'subkey' => ''
             )
+        );
+
+        $urls[] = array(
+            'url'        => Jaws_Gadget::getInstance('Layout')->urlMap('LayoutType', array('type' => 1)),
+            'title'      => _t('USERS_DASHBOARD_USERS'),
+            'permission' => array(
+                'key'    => 'AccessUsersLayout',
+                'subkey' => ''
+            )
+        );
+
+        $urls[] = array(
+            'url'        => Jaws_Gadget::getInstance('Layout')->urlMap('LayoutType', array('type' => 0)),
+            'title'      => _t('USERS_DASHBOARD_GLOBAL'),
         );
 
         $urls[] = array(
