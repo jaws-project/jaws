@@ -50,7 +50,7 @@ if (!$GLOBALS['app']->Session->Logged()) {
     $ReqResult = '';
     if ($ReqGadget != 'Users' || !in_array($ReqAction, array('Login', 'Authenticate'))) {
         Jaws_Header::Location(
-            $gdgtUsers->gadget->urlMap(
+            $gdgtUsers->gadget->url(
                 'Login',
                 array('referrer' => bin2hex(Jaws_Utils::getRequestURL()))
             )

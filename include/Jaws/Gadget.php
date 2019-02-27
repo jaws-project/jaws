@@ -454,6 +454,33 @@ class Jaws_Gadget
     }
 
     /**
+     * Gets raw url
+     *
+     * @access  public
+     * @param   string  $action    Action name
+     * @param   array   $params    Parameters of action
+     * @param   array   $options    URL options(restype, mode, ...)
+     * @param   string  $gadget    Gadget name
+     * @return  string  The mapped URL
+     */
+    function url($action='', $params = array(), $options = array(), $gadget = '')
+    {
+        if (!is_array($options)) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'use options["absolute"] = true|false for set absolute url', 1);
+            $absolute = (bool)$options;
+            $options = array();
+            $options['absolute'] = $absolute;
+        }
+
+        return $GLOBALS['app']->Map->GetRawURL(
+            empty($gadget)? $this->name : $gadget,
+            $action,
+            $params,
+            $options
+        );
+    }
+
+    /**
      * Search in map and return its url if found
      *
      * @access  public
