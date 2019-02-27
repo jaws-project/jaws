@@ -107,13 +107,13 @@ class SmartBridge_Plugin
         $linkText = isset($matches[3])? $matches[3] : $linkText;
         switch ($gadget) {
             case 'Blog':
-                $mapURL = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $link));
+                $mapURL = $GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $link));
                 break;
             case 'Phoo':
-                $mapURL = $GLOBALS['app']->Map->GetURLFor('Phoo', 'Photos', array('album' => $link));
+                $mapURL = $GLOBALS['app']->Map->GetMappedURL('Phoo', 'Photos', array('album' => $link));
                 break;
             case 'StaticPage':
-                $mapURL = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'Page', array('id' => $link));
+                $mapURL = $GLOBALS['app']->Map->GetMappedURL('StaticPage', 'Page', array('id' => $link));
                 break;
         }
 
