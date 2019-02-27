@@ -18,18 +18,16 @@ class Layout_Actions_Layouts extends Jaws_Gadget_Action
      */
     function LayoutType()
     {
-        if (!$GLOBALS['app']->Session->GetPermission('Users', 'AccessDashboard')) {
-            return Jaws_HTTPError::Get(403);
-        }
-
         $type = (int)$this->gadget->request->fetch('type');
         switch ($type) {
             case 2:
+                Jaws_Gadget::getInstance('Users')->gadget->CheckPermission('AccessUserLayout');
                 $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
                 $layouts = array('Index.User', 'Layout.User');
                 break;
 
             case 1:
+                Jaws_Gadget::getInstance('Users')->gadget->CheckPermission('AccessUsersLayout');
                 $user = 0;
                 $layouts = array('Index.Users', 'Layout.Users');
                 break;

@@ -36,10 +36,6 @@ class Layout_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'MainLayoutManage',
-        'UserLayoutAccess',
-        'UserLayoutManage',
-        'UsersLayoutAccess',
-        'UsersLayoutManage',
         'SwitchThemeManage',
     );
 
@@ -168,6 +164,13 @@ class Layout_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '4.3.0', '<')) {
+            $this->gadget->acl->delete('UserLayoutAccess');
+            $this->gadget->acl->delete('UserLayoutManage');
+            $this->gadget->acl->delete('UsersLayoutAccess');
+            $this->gadget->acl->delete('UsersLayoutManage');
         }
 
         return true;
