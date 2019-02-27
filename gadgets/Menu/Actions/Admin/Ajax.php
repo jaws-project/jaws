@@ -116,7 +116,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($url)) {
             $url = serialize($this->gadget->request->fetch('5:array', 'post'));
         } else {
-            $parsedURL = parse_url($url);
+            $parsedURL = parse_url(htmlspecialchars_decode($url));
             foreach ($parsedURL as $part => $value) {
                 if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
                     $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
@@ -185,7 +185,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($url)) {
             $url = serialize($this->gadget->request->fetch('6:array', 'post'));
         } else {
-            $parsedURL = parse_url($url);
+            $parsedURL = parse_url(htmlspecialchars_decode($url));
             foreach ($parsedURL as $part => $value) {
                 if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
                     $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
