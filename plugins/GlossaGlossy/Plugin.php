@@ -78,7 +78,7 @@ class GlossaGlossy_Plugin
                     "<acronym title=\"".
                     str_replace(array('[term]', '[/term]'), '', strip_tags($term['description'])).
                     "\">$match_text</acronym>";
-                $url = $GLOBALS['app']->Map->GetURLFor(
+                $url = $GLOBALS['app']->Map->GetMappedURL(
                     'Glossary',
                     'ViewTerm',
                     array('term' => empty($term['fast_url'])? $term['id'] : $term['fast_url'])
