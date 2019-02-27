@@ -476,8 +476,8 @@ function metaWeblog_getCategories($params)
     $struct = array();
     foreach ($categories as $category) {
         $cid = empty($category['fast_url']) ? $category['id'] : Jaws_XSS::filter($category['fast_url']);
-        $htmlurl = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory', array('id' => $cid));
-        $rssurl  = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowRSSCategory', array('id' => $category['id']));
+        $htmlurl = $GLOBALS['app']->Map->GetMappedURL('Blog', 'ShowCategory', array('id' => $cid));
+        $rssurl  = $GLOBALS['app']->Map->GetMappedURL('Blog', 'ShowRSSCategory', array('id' => $category['id']));
         $data = array(
             'categoryId'   => new XML_RPC_Value($category['id']),
             'categoryName' => new XML_RPC_Value($category['name']),
@@ -540,7 +540,7 @@ function metaWeblog_getPost($params)
     }
 
     $pid  = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
-    $link = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $pid));
+    $link = $GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $pid));
 
     $data = array(
         'blogid'      => new XML_RPC_Value('1'),
@@ -673,8 +673,8 @@ function metaWeblog_getRecentPosts($params)
         $publishtime = date('Ymd', $publishtime) . 'T' . date('H:i:s', $publishtime);
         $summary     = stripslashes($entry['summary']);
         $content     = stripslashes($entry['text']);
-        $permalink   = new XML_RPC_Value($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $entry['id'])));
-        $link        = new XML_RPC_Value($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $entry['fast_url'])));
+        $permalink   = new XML_RPC_Value($GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $entry['id'])));
+        $link        = new XML_RPC_Value($GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $entry['fast_url'])));
         //FIXME: Fill the fields
         $allow_pings = new XML_RPC_Value('');
 
