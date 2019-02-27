@@ -75,8 +75,8 @@ class AccessLimiter_Plugin
         $tpl = new Jaws_Template();
         $tpl->Load('AccessLimiter.html', 'plugins/AccessLimiter/Templates/');
         $tpl->SetBlock('AccessLimiter');
-        $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'Login');
-        $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+        $login_url    = $GLOBALS['app']->Map->GetMappedURL('Users', 'Login');
+        $register_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration');
         $tpl->SetVariable('message', _t('GLOBAL_ERROR_ACCESS_RESTRICTED', $login_url, $register_url));
         $tpl->ParseBlock('AccessLimiter');
         return $tpl->Get();
