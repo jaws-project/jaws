@@ -167,14 +167,14 @@ class Jaws_Layout
                     if ($GLOBALS['app']->Session->Logged()) {
                         // if user logged in
                         if ($layout_type == 2 &&
-                            $gdgtUsers->gadget->GetPermission('UserLayoutAccess') &&
+                            $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
                             @is_file($theme['path']. 'Index.User.html')
                         ) {
                             // set private layout for logged user
                             $layout_file = 'Index.User.html';
                             $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
                         } elseif (($layout_type == 1 || $layout_type == 2) &&
-                            $gdgtUsers->gadget->GetPermission('UsersLayoutAccess') &&
+                            $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                             @is_file($theme['path']. 'Index.Users.html')
                         ) {
                             // set global layout for logged users
@@ -205,14 +205,14 @@ class Jaws_Layout
                         if ($GLOBALS['app']->Session->Logged()) {
                             // if user logged in
                             if ($layout_type == 2 &&
-                                $gdgtUsers->gadget->GetPermission('UserLayoutAccess') &&
+                                $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
                                 @is_file($theme['path']. 'Layout.User.html')
                             ) {
                                 // set private layout for logged user
                                 $layout_file = 'Layout.User.html';
                                 $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
                             } elseif (($layout_type == 1  || $layout_type == 2) &&
-                                $gdgtUsers->gadget->GetPermission('UsersLayoutAccess') &&
+                                $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                                 @is_file($theme['path']. 'Layout.Users.html')
                             ) {
                                 // set global layout for logged users
