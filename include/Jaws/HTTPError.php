@@ -39,7 +39,7 @@ class Jaws_HTTPError
                 // using invalid authentication type for avoid popup login box
                 header('WWW-Authenticate: LoginBox realm="'. $realm. '"');
 
-                $urlLogin = $GLOBALS['app']->Map->GetURLFor(
+                $urlLogin = $GLOBALS['app']->Map->GetMappedURL(
                     'Users',
                     'Login',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))

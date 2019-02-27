@@ -472,7 +472,7 @@ class Jaws_Gadget
             $options['absolute'] = $absolute;
         }
 
-        return $GLOBALS['app']->Map->GetURLFor(
+        return $GLOBALS['app']->Map->GetMappedURL(
             empty($gadget)? $this->name : $gadget,
             $action,
             $params,
