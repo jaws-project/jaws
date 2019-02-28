@@ -36,7 +36,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         if (!isset($response['data'])) {
             $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
-            $reqpost['authstep'] = 0;
+            $reqpost['loginstep'] = 0;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
         } else {
@@ -46,7 +46,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         // global variables
         $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
 
-        if (!empty($reqpost['authstep'])) {
+        if (!empty($reqpost['loginstep'])) {
             $this->LoginBoxStep2($tpl, $reqpost);
         } else {
             $this->LoginBoxStep1($tpl, $reqpost);
@@ -108,7 +108,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         if (!isset($response['data'])) {
             $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
-            $reqpost['authstep'] = 0;
+            $reqpost['loginstep'] = 0;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
             //$reqpost['referrer'] = bin2hex(Jaws_Utils::getRequestURL(true));
@@ -121,7 +121,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         //
         $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
 
-        if (!empty($reqpost['authstep'])) {
+        if (!empty($reqpost['loginstep'])) {
             $this->LoginBoxStep2($ltpl, $reqpost);
         } else {
             $this->LoginBoxStep1($ltpl, $reqpost);
