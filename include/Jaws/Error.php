@@ -185,11 +185,6 @@ class Jaws_Error
      */
     static function Fatal($message, $backtrace = 0, $http_response_code = 500)
     {
-        // Set Headers
-        header('Content-Type: text/html; charset=utf-8');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-
         if ($backtrace >= 0) {
             $backtrace++;
             $GLOBALS['log']->Log(JAWS_ERROR_FATAL, $message, $backtrace);
@@ -197,8 +192,7 @@ class Jaws_Error
         //Get content
         $content = file_get_contents(JAWS_PATH . 'gadgets/ControlPanel/Templates/FatalError.html');
         $content = str_replace('{{message}}', $message, $content);
-        jaws()->http_response_code($http_response_code);
-        terminate($content, $http_response_code, '', false);
+        terminate($content, $http_response_code);
     }
 
     /**
