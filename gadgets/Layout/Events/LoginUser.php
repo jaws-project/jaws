@@ -26,15 +26,19 @@ class Layout_Events_LoginUser extends Jaws_Gadget_Event
             Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
         }
 
-        $layout_type = 0;
-        if ($this->gadget->GetPermission('UsersLayoutAccess') &&
-            (@is_file($theme['path']. 'Index.Users.html') || @is_file($theme['path']. 'Layout.Users.html'))
-        ) {
-            $layout_type = 1;
-        } elseif ($this->gadget->GetPermission('UserLayoutAccess') &&
+        
+        if (Jaws_Gadget::getInstance('Users')->gadget->GetPermission('AccessUserLayout') &&
             (@is_file($theme['path']. 'Index.User.html') || @is_file($theme['path']. 'Layout.User.html'))
         ) {
+            // user personal dashboard/layout
             $layout_type = 2;
+        } elseif (Jaws_Gadget::getInstance('Users')->gadget->GetPermission('AccessUsersLayout') &&
+            (@is_file($theme['path']. 'Index.Users.html') || @is_file($theme['path']. 'Layout.Users.html'))
+        ) {
+            // all logged users dashboard/layout
+            $layout_type = 1;
+        } else {
+            $layout_type = 0;
         }
 
         $this->gadget->session->insert('layout.type', $layout_type);
