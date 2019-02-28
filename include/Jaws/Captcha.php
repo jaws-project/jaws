@@ -67,7 +67,7 @@ class Jaws_Captcha
 
         // delete expired captcha
         if (mt_rand(1, 10) == mt_rand(1, 10)) {
-            $this->delete(0);
+            $instances[$driver]->delete(0);
         }
 
         return $instances[$driver];
