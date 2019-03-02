@@ -418,14 +418,45 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Logout()
     {
-        $GLOBALS['app']->Session->Logout();
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_Header::Location('');
+        }
 
+        // get/check given registration driver type
+        $authtype = $this->gadget->request->fetch('authtype');
+        if (empty($authtype)) {
+            $authtype = $this->gadget->registry->fetch('authtype');
+        }
+        $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
+        $drivers = array_map('basename', glob(JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
+        if (false === $dIndex = array_search(strtolower($authtype), array_map('strtolower', $drivers))) {
+            $GLOBALS['log']->Log(
+                JAWS_LOG_NOTICE,
+                $authtype. ' registration driver doesn\'t exists, switched to default driver'
+            );
+            $authtype = 'Default';
+        } else {
+            $authtype = $drivers[$dIndex];
+        }
+        $classfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Logout.php";
+        if (!file_exists($classfile)) {
+            Jaws_Error::Fatal($authtype. ' logout class doesn\'t exists');
+        }
+
+        // load logout method of account driver
+        $classname = "Users_Account_{$authtype}_Logout";
+        $objAccount = new $classname($this->gadget);
+        $objAccount->Logout();
+
+        // logout from jaws
+        $GLOBALS['app']->Session->Logout();
         if (JAWS_SCRIPT == 'index') {
             return Jaws_Header::Location();
         } else {
             $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
             return Jaws_Header::Location($admin_script?: 'admin.php');
         }
+
     }
 
     /**
