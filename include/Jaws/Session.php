@@ -30,6 +30,13 @@ define('SESSION_RESERVED_ATTRIBUTES', "type,user,user_name,superadmin,concurrent
 class Jaws_Session
 {
     /**
+     * session changed flag 
+     * @var     bool    $changed
+     * @access  protected
+     */
+    protected $changed = false;
+
+    /**
      * Attributes array
      * @var     array   $attributes
      * @access  protected
@@ -293,6 +300,7 @@ class Jaws_Session
         $this->SetAttribute('avatar',     $info['avatar']);
         $this->SetAttribute('last_password_update', $info['last_password_update']);
 
+        $this->changed = true;
         $this->salt = uniqid('', true);
         if (empty($this->ssid)) {
             $this->ssid = $this->insert($this->salt);
@@ -350,6 +358,7 @@ class Jaws_Session
         $this->SetAttribute('last_password_update', 0);
 
         $this->ssid = $sid;
+        $this->changed = true;
         return true;
     }
 
@@ -367,6 +376,7 @@ class Jaws_Session
         if ($trashed) {
             $this->trash[$name] = $value;
         } else {
+            $this->changed = true;
             if (is_array($value) && $name == 'LastResponses') {
                 $this->attributes['LastResponses'][] = $value;
             } else {
@@ -432,6 +442,7 @@ class Jaws_Session
     function DeleteAttribute($name, $trashed = false)
     {
         if (array_key_exists($name, $this->attributes)) {
+            $this->changed = true;
             if ($trashed) {
                 $this->trash[$name] = $this->attributes[$name];
             }
@@ -534,20 +545,23 @@ class Jaws_Session
         }
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
-        $user = $this->GetAttribute('user');
-        $serialized = serialize($this->attributes);
-        $updData = array(
-            'user'        => $user,
-            'data'        => $serialized,
-            'longevity'   => $this->GetAttribute('longevity'),
-            'checksum'    => md5($user. $serialized),
-            'ip'          => $ip,
-            'agent'       => $agent,
-            'update_time' => time()
-        );
+        if ($this->changed) {
+            $this->changed = false;
+            $user = $this->GetAttribute('user');
+            $serialized = serialize($this->attributes);
+            $updData = array(
+                'user'        => $user,
+                'data'        => $serialized,
+                'longevity'   => $this->GetAttribute('longevity'),
+                'checksum'    => md5($user. $serialized),
+                'ip'          => $ip,
+                'agent'       => $agent,
+            );
+        }
         if (!empty($salt)) {
             $updData['salt'] = $salt;
         }
+        $updData['update_time'] = time();
         $sessTable->update($updData);
         $result = $sessTable->where('id', $this->ssid)->exec();
         if (!Jaws_Error::IsError($result)) {
