@@ -43,6 +43,14 @@ class Users_Account_Github extends Jaws_Gadget_Action
     protected $tokenURL = 'https://github.com/login/oauth/access_token';
 
     /**
+     * OAuth2 server revoke URL
+     *
+     * @var     string
+     * @access  protected
+     */
+    protected $revokeURL = 'https://api.github.com/applications/%s/tokens/%s';
+
+    /**
      * OAuth2 server api base URL
      *
      * @var     string

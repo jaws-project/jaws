@@ -40,13 +40,13 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
         $postData = json_encode(array(
             'client_id'     => $this->ClientID,
             'client_secret' => $this->ClientSecret,
+            'state'         => $get['state'],
+            'code'          => $get['code'],
             'redirect_uri'  => $this->gadget->urlMap(
                 'Authenticate',
                 array(),
                 array('extension' => false, 'absolute' => true)
             ),
-            'state'         => $get['state'],
-            'code'          => $get['code']
         ));
         $result = $httpRequest->rawPostData($this->tokenURL, $postData, $retData);
         if (Jaws_Error::IsError($result) || $result != 200) {
