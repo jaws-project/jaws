@@ -159,4 +159,31 @@ class Jaws_HTTPRequest
         }
     }
 
+    /**
+     * Delete HTTP method
+     *
+     * @access  public
+     * @param   string  $url        URL address
+     * @param   string  $response   Response body
+     * @return  mixed   Response code on success, otherwise Jaws_Error
+     */
+    function delete($url, &$response)
+    {
+        $this->httpRequest->setConfig($this->options)->setUrl($url);
+        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->setMethod(HTTP_Request2::METHOD_DELETE);
+        try {
+            $result = $this->httpRequest->send();
+            $response = $result->getBody();
+            return $result->getStatus();
+        } catch (Exception $error) {
+            return Jaws_Error::raiseError(
+                $error->getMessage(),
+                $error->getCode(),
+                $this->default_error_level,
+                1
+            );
+        }
+    }
+
 }
