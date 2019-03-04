@@ -21,14 +21,12 @@ class Users_Account_Github_Logout extends Users_Account_Github
             $this->gadget->session->fetch('access_token')
         );
         $httpRequest = new Jaws_HTTPRequest();
-        $httpRequest->content_type = 'application/x-www-form-urlencoded';
-        $httpRequest->httpRequest->setHeader('Accept', 'application/json');
         $httpRequest->httpRequest->setHeader(
             'Authorization',
             'Basic ' .base64_encode($this->ClientID.':'.$this->ClientSecret)
         );
         $result = $httpRequest->delete($revokeURL, $responseData);
-        if (Jaws_Error::IsError($result) || $result != 200) {
+        if (Jaws_Error::IsError($result) || $result != 204) {
             return Jaws_Error::raiseError('Revoke token error!', __FUNCTION__);
         }
 
