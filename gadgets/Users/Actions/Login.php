@@ -200,51 +200,66 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $tpl->ParseBlock('UserLinks/groups');
             }
 
-            // fetch current layout user
-            $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
-            $logged_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            // Layout/Dashboard manager
-            if (empty($layout_user)) {
-                // global site layout
-                if ($GLOBALS['app']->Session->GetPermission('Layout', 'ManageLayout')) {
-                    $tpl->SetBlock('UserLinks/layout');
-                    $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
-                    $tpl->SetVariable(
-                        'layout_url',
-                        $this->gadget->urlMap('Layout', array(), array(), 'Layout')
-                    );
-                    $tpl->ParseBlock('UserLinks/layout');
-                }
-            } else {
-                // user's dashboard layout
-                if ($this->gadget->GetPermission('ManageDashboard')) {
-                    $tpl->SetBlock('UserLinks/layout');
-                    $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
-                    $tpl->SetVariable(
-                        'layout_url',
-                        $this->gadget->urlMap('Layout', array('layout' => 'Index.Dashboard'), array(), 'Layout')
-                    );
-                    $tpl->ParseBlock('UserLinks/layout');
-                }
+            $layoutGadget = Jaws_Gadget::getInstance('Layout');
+            if ($layoutGadget->GetPermission('MainLayoutManage')) {
+                // link to manage global layout
+                $tpl->SetBlock('UserLinks/manage-layout');
+                $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
+                $tpl->SetVariable(
+                    'layout_url',
+                    $layoutGadget->urlMap('Layout')
+                );
+                $tpl->ParseBlock('UserLinks/manage-layout');
+            } elseif ($this->gadget->GetPermission('ManageUserLayout')) {
+                // link to manage personal layout
+                $tpl->SetBlock('UserLinks/manage-layout');
+                $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
+                $tpl->SetVariable(
+                    'layout_url',
+                    $layoutGadget->urlMap('Layout', array('layout' => 'Index.User'))
+                );
+                $tpl->ParseBlock('UserLinks/manage-layout');
             }
 
-            // Dashboard
-            if ($this->gadget->GetPermission('AccessDashboard')) {
-                $tpl->SetBlock('UserLinks/dashboard');
-                if (empty($layout_user)) {
-                    $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_USER'));
+            // dashboards
+            $layouts = array();
+            $layout_type = $layoutGadget->session->fetch('layout.type');
+            switch ($layout_type) {
+                case 2:
+                    if ($this->gadget->GetPermission('AccessUsersLayout')) {
+                        $layouts[] = 1;
+                    }
+                    $layouts[] = 0;
+                    break;
+
+                case 1:
+                    if ($this->gadget->GetPermission('AccessUserLayout')) {
+                        $layouts[] = 2;
+                    }
+                    $layouts[] = 0;
+                    break;
+
+                default:
+                    if ($this->gadget->GetPermission('AccessUserLayout')) {
+                        $layouts[] = 2;
+                    }
+                    if ($this->gadget->GetPermission('AccessUsersLayout')) {
+                        $layouts[] = 1;
+                    }
+            }
+
+            if (!empty($layouts)) {
+                $tpl->SetBlock('UserLinks/layouts');
+                foreach ($layouts as $layout) {
+                    $tpl->SetBlock('UserLinks/layouts/layout');
+                    $tpl->SetVariable('layout', _t("USERS_DASHBOARD_$layout"));
                     $tpl->SetVariable(
-                        'dashboard_url',
-                        $this->gadget->urlMap('Dashboard', array('user' => $logged_user), array(), 'Layout')
+                        'layout_url',
+                        $layoutGadget->urlMap('LayoutType', array('type' => $layout))
                     );
-                } else {
-                    $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_GLOBAL'));
-                    $tpl->SetVariable(
-                        'dashboard_url',
-                        $this->gadget->urlMap('Dashboard', array('user' => 0), array(), 'Layout')
-                    );
+                    $tpl->ParseBlock('UserLinks/layouts/layout');
                 }
-                $tpl->ParseBlock('UserLinks/dashboard');
+                $tpl->ParseBlock('UserLinks/layouts');
             }
 
             // ControlPanel

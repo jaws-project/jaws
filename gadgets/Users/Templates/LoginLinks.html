@@ -32,14 +32,18 @@
       <!-- BEGIN groups -->
       <li><a href="{{groups_url}}">{{user_groups}}</a></li>
       <!-- END groups -->
-      <!-- BEGIN layout -->
+      <!-- BEGIN manage-layout -->
       <li><a href="{{layout_url}}">{{layout}}</a></li>
-      <!-- END layout -->
-      <!-- BEGIN dashboard -->
-      <li><a href="{{dashboard_url}}">{{dashboard}}</a></li>
-      <!-- END dashboard -->
+      <!-- END manage-layout -->
+      <!-- BEGIN layouts -->
+      <li role="separator" class="divider"></li>
+        <!-- BEGIN layout -->
+        <li><a href="{{layout_url}}">{{layout}}</a></li>
+        <!-- END layout -->
+      <!-- END layouts -->
       <!-- BEGIN cpanel -->
-      <li><strong><a href="{{cpanel_url}}">{{cpanel}}</a></strong></li>
+      <li role="separator" class="divider"></li>
+      <li><a href="{{cpanel_url}}"><strong>{{cpanel}}</strong></a></li>
       <!-- END cpanel -->
       <li><a href="{{logout_url}}">{{logout}}</a></li>
     </ul>
