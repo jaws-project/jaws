@@ -31,7 +31,7 @@ class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
                                     $password_max_age, $password_min_length, $login_captcha, $login_captcha_driver,
                                     $xss_parsing_level, $session_idle_timeout, $session_remember_timeout)
     {
-        $this->gadget->registry->update('password_complexity',     ($password_complexity=='yes')? 'yes' : 'no');
+        $this->gadget->registry->update('password_complexity',     $password_complexity);
         $this->gadget->registry->update('password_bad_count',      (int)$password_bad_count);
         $this->gadget->registry->update('password_lockedout_time', (int)$password_lockedout_time);
         $this->gadget->registry->update('password_max_age',        (int)$password_max_age);

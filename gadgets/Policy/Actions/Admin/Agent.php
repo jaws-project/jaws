@@ -112,7 +112,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
 
         $script =& Piwi::CreateWidget('Combo', 'script');
         $script->SetID('script');
-        $script->setStyle('width: 120px;');
+        $script->setStyle('width: 14em;');
         $script->AddOption(_t('POLICY_SCRIPT_INDEX'), 'index');
         $script->AddOption(_t('POLICY_SCRIPT_ADMIN'), 'admin');
         $script->AddOption(_t('POLICY_SCRIPT_BOTH'),  '');

@@ -120,13 +120,18 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
 
         $script =& Piwi::CreateWidget('Combo', 'script');
         $script->SetID('script');
-        $script->setStyle('width: 120px;');
+        $script->setStyle('width: 14em;');
         $script->AddOption(_t('POLICY_SCRIPT_INDEX'), 'index');
         $script->AddOption(_t('POLICY_SCRIPT_ADMIN'), 'admin');
         $script->AddOption(_t('POLICY_SCRIPT_BOTH'),  '');
         $script->SetDefault('index');
         $tpl->SetVariable('lbl_script', _t('POLICY_SCRIPT'));
         $tpl->SetVariable('script', $script->Get());
+
+        $order =& Piwi::CreateWidget('Entry', 'order', '');
+        $order->setSize(10);
+        $tpl->SetVariable('lbl_order', _t('POLICY_ORDER'));
+        $tpl->SetVariable('order', $order->Get());
 
         $blocked =& Piwi::CreateWidget('Combo', 'blocked');
         $blocked->SetID('blocked');

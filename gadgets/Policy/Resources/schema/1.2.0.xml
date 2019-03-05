@@ -29,13 +29,6 @@
             </field>
 
             <field>
-                <name>order</name>
-                <type>integer</type>
-                <length>2</length>
-                <default>0</default>
-            </field>
-
-            <field>
                 <name>script</name>
                 <type>text</type>
                 <length>16</length>

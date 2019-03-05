@@ -30,10 +30,22 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $tpl->SetVariable('sidebar', $this->SideBar('AdvancedPolicies'));
         $tpl->SetVariable('legend_title', _t('POLICY_ADVANCED_POLICIES'));
 
+        // password complexity
+        $default_regexs = array(
+            '/^[[:print:]]{1,24}$/',
+            '/(?=.*[[:lower:]|[:upper:]])(?=.*[[:digit:]])/',
+            '/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])/',
+            '/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
+        );
         $complexity =& Piwi::CreateWidget('Combo', 'password_complexity');
-        $complexity->AddOption(_t('GLOBAL_YES'), 'yes');
-        $complexity->AddOption(_t('GLOBAL_NO'),  'no');
-        $complexity->SetDefault($this->gadget->registry->fetch('password_complexity'));
+        foreach ($default_regexs as $key => $value) {
+            $complexity->AddOption(_t("POLICY_PASSWORD_COMPLEXITY_{$key}"), $value);
+        }
+        $db_regex = $this->gadget->registry->fetch('password_complexity');
+        if (!in_array($db_regex, $default_regexs)) {
+            $complexity->AddOption(_t('POLICY_PASSWORD_COMPLEXITY_4'), $db_regex);
+        }
+        $complexity->SetDefault($db_regex);
         $tpl->SetVariable('lbl_password_complexity', _t('POLICY_PASSWORD_COMPLEXITY'));
         $tpl->SetVariable('password_complexity', $complexity->Get());
 

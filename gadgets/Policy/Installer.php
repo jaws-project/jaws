@@ -36,7 +36,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('password_lockedout_time', '60'),    // per second
         array('password_max_age', '0'),            // per hours 0 = resistant
         array('password_min_length', '0'),
-        array('password_complexity', 'no'),
+        array('password_complexity', '/^[[:print:]]{1,24}$/'),
         array('login_captcha_status', '3'),
         array('login_captcha_driver', 'Math'),
         array('xss_parsing_level', 'paranoid'),
@@ -117,7 +117,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.2.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.1.0.xml');
+            $result = $this->installSchema('1.2.0.xml', array(), '1.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -132,6 +132,24 @@ class Policy_Installer extends Jaws_Gadget_Installer
             $result = $objTable->update(array('script' => 'index'))->exec();
             if (Jaws_Error::IsError($result)) {
                 return $result;
+            }
+        }
+
+        if (version_compare($old, '1.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.2.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+            if ($this->gadget->registry->fetch('password_complexity') == 'yes') {
+                $this->gadget->registry->update(
+                    'password_complexity',
+                    '/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/'
+                );
+            } else {
+                $this->gadget->registry->update(
+                    'password_complexity',
+                    '/^[[:print:]]{1,24}$/'
+                );
             }
         }
 

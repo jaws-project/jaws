@@ -40,6 +40,7 @@ class Policy_Model_IP extends Jaws_Gadget_Model
                 ->openWhere('script', $script)
                 ->or()
                 ->closeWhere('script', null, 'is null')
+                ->orderBy('order asc', 'id desc')
                 ->fetchOne();
             if (!Jaws_Error::IsError($blocked) && !is_null($blocked)) {
                 return $blocked;

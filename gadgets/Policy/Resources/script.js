@@ -137,6 +137,7 @@ function saveIPRange()
                 $('#from_ipaddress').val(),
                 $('#to_ipaddress').val(),
                 $('#script').val(),
+                $('#order').val(),
                 $('#blocked').val()
             ]
         );
@@ -147,6 +148,7 @@ function saveIPRange()
                 $('#from_ipaddress').val(),
                 $('#to_ipaddress').val(),
                 $('#script').val(),
+                $('#order').val(),
                 $('#blocked').val()
             ]
         );
@@ -167,6 +169,7 @@ function editIPRange(element, id)
     $('#from_ipaddress').val(ipRange['from_ip']);
     $('#to_ipaddress').val(ipRange['to_ip']);
     $('#script').val(ipRange['script']? ipRange['script'] : '');
+    $('#order').val(ipRange['order']);
     $('#blocked').prop('selectedIndex', ipRange['blocked']? 1 : 0);
 }
 
@@ -355,6 +358,7 @@ function stopAction()
             $('#from_ipaddress').val('');
             $('#to_ipaddress').val('');
             $('#script').val('index');
+            $('#order').val('');
             unselectDataGridRow();
             break;
         case 'AgentBlocking':

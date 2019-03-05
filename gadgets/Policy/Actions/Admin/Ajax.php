@@ -44,9 +44,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function AddIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($from_ip, $to_ip, $script, $blocked) = $this->gadget->request->fetchAll('post');
+        @list($from_ip, $to_ip, $script, $order, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('IP');
-        $model->AddIPRange($from_ip, $to_ip, $script, $blocked);
+        $model->AddIPRange($from_ip, $to_ip, $script, $order, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
@@ -59,9 +59,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function EditIPRange()
     {
         $this->gadget->CheckPermission('ManageIPs');
-        @list($id, $from_ip, $to_ip, $script, $blocked) = $this->gadget->request->fetchAll('post');
+        @list($id, $from_ip, $to_ip, $script, $order, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('IP');
-        $model->EditIPRange($id, $from_ip, $to_ip, $script, $blocked);
+        $model->EditIPRange($id, $from_ip, $to_ip, $script, $order, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
