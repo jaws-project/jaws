@@ -253,6 +253,12 @@
             </field>
 
             <field>
+                <name>referrer</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
                 <name>data</name>
                 <type>text</type>
             </field>
