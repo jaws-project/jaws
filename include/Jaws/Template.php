@@ -56,7 +56,7 @@ class Jaws_Template
      */
     function __construct($loadFromTheme = false, $loadGlobalVariables = true)
     {
-        $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
+        $this->IdentifierRegExp = '[\.[:digit:][:lower:]_\-]+';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{{\s*('.$this->IdentifierRegExp.')\s*}}@sim';
         $this->IsBlockRegExp = '@##\s*('.$this->IdentifierRegExp.')\s*##@sim';
