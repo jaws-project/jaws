@@ -888,16 +888,14 @@ class Jaws_User
             );
         }
 
-        if ($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy') == 'yes') {
-            if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
-                    $uData['password'])
-            ) {
-                return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
-                    __FUNCTION__,
-                    JAWS_ERROR_NOTICE
-                );
-            }
+        if (!preg_match($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy'),
+                $uData['password'])
+        ) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         $uData['last_update'] = time();
@@ -1102,16 +1100,14 @@ class Jaws_User
                 );
             }
 
-            if ($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy') == 'yes') {
-                if (!preg_match('/(?=.*[[:lower:]])(?=.*[[:upper:]])(?=.*[[:digit:]])(?=.*[[:punct:]])/',
-                        $uData['password'])
-                ) {
-                    return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
-                }
+            if (!preg_match($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy'),
+                    $uData['password'])
+            ) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
             }
 
             // password hash
