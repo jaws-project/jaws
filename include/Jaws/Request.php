@@ -285,7 +285,7 @@ class Jaws_Request
             $result = array();
             foreach ($keys as $key) {
                 $k = strtok($key, ':');
-                $result[$k] = $this->_fetch($key, $method, $filters, $xss_strip, $json_decode);
+                $result[$k] = $this->_fetch($key, $method, $filters, $xss_strip, $json_decode, $type_validate);
             }
 
             return $result;
