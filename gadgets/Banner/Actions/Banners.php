@@ -108,8 +108,22 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             $tpl->ParseBlock("$type_block/title");
         }
 
-        foreach ($banners as $banner) {
+        foreach ($banners as $index => $banner) {
+            // indicator
+            $tpl->SetBlock("$type_block/indicator");
+            if ($index == 0) {
+                $tpl->SetBlock("$type_block/indicator/first");
+                $tpl->ParseBlock("$type_block/indicator/first");
+            }
+            $tpl->SetVariable('gid', $gid);
+            $tpl->SetVariable('index', $index);
+            $tpl->ParseBlock("$type_block/indicator");
+            // banner
             $tpl->SetBlock("$type_block/banner");
+            if ($index == 0) {
+                $tpl->SetBlock("$type_block/banner/first");
+                $tpl->ParseBlock("$type_block/banner/first");
+            }
             $tpl_template = new Jaws_Template();
             $tpl_template->LoadFromString('<!-- BEGIN x -->'.$banner['template'].'<!-- END x -->');
             $tpl_template->SetBlock('x');
