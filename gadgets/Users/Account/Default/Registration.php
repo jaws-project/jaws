@@ -57,11 +57,11 @@ class Users_Account_Default_Registration extends Users_Account_Default
             $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
 
             $tpl->SetVariable('register', _t('USERS_REGISTER'));
+            $tpl->SetVariable('url_back', $referrer);
+            $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+
             $tpl->ParseBlock('registration/request');
         }
-
-        $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
 
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
