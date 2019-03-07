@@ -326,7 +326,9 @@ function editMenu(mid)
     }
     currentAction = 'Menus';
 
-    $('#edit_area span').first().html(jaws.Menu.Defines.editMenuTitle + ' - ' + $('#menu_'+mid + ' a').first().html());
+    $('#edit_area span').first().html(
+        jaws.Menu.Defines.editMenuTitle + ' - ' + $('#menu_'+mid + ' a').first().html()
+    );
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
     $('#btn_save').css('display', 'inline');

@@ -81,6 +81,10 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return false; //we need to handle errors on ajax
         }
 
+        if (false === @unserialize($menu['url'])) {
+            $menu['url'] = Jaws_XSS::defilterURL($menu['url']);
+        }
+
         return $menu;
     }
 
@@ -116,14 +120,8 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($url)) {
             $url = serialize($this->gadget->request->fetch('5:array', 'post'));
         } else {
-            $parsedURL = parse_url(htmlspecialchars_decode($url));
-            foreach ($parsedURL as $part => $value) {
-                if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
-                    $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
-                }
-            }
-            // prevent encode ,|=|&
-            $url = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($parsedURL));
+            // parse & encode given url
+            $url = Jaws_XSS::filterURL($url);
         }
 
         if (is_null($permission)) {
@@ -185,14 +183,8 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($url)) {
             $url = serialize($this->gadget->request->fetch('6:array', 'post'));
         } else {
-            $parsedURL = parse_url(htmlspecialchars_decode($url));
-            foreach ($parsedURL as $part => $value) {
-                if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
-                    $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
-                }
-            }
-            // prevent encode ,|=|&
-            $url = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($parsedURL));
+            // parse & encode given url
+            $url = Jaws_XSS::filterURL($url);
         }
 
         if (is_null($permission)) {
