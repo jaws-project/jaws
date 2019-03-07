@@ -246,14 +246,22 @@ class Jaws_XSS
      * Filter URL
      *
      * @access  public
-     * @param   string  $url    URL
+     * @param   string  $url                URL
+     * @param   bool    $deny_remote_url    Deny remote URL
      * @return  string  Returns filtered URL
      */
-    static function filterURL($url)
+    static function filterURL($url, $deny_remote_url = false)
     {
         // parse & encode given url
         $parsedURL = parse_url(htmlspecialchars_decode($url));
         foreach ($parsedURL as $part => $value) {
+            if ($deny_remote_url &&
+                in_array($part, array('schema', 'host'))
+            ) {
+                $parsedURL[$part] = null;
+                continue;
+            }
+
             if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
                 $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
             }
