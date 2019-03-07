@@ -33,6 +33,8 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
             }
         }
 
+        // revert filtered URL
+        $banner['url'] = Jaws_XSS::defilterURL($banner['url']);
         return $banner;
     }
 
@@ -116,6 +118,10 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
             $domain = 0;
         }
+
+        // parse & encode given url
+        $url = Jaws_XSS::filterURL($url);
+
         $model = $this->gadget->model->loadAdmin('Banners');
         $model->InsertBanner($domain, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
@@ -139,6 +145,10 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
             $domain = 0;
         }
+
+        // parse & encode given url
+        $url = Jaws_XSS::filterURL($url);
+
         $model = $this->gadget->model->loadAdmin('Banners');
         $model->UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
