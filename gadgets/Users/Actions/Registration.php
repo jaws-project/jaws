@@ -58,7 +58,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Registration";
         $objAccount = new $classname($this->gadget);
-        return $objAccount->Registration(Jaws_XSS::filterURL(hex2bin($referrer), true));
+        return $objAccount->Registration(Jaws_XSS::filterURL(hex2bin($referrer), true, true));
     }
 
     /**
@@ -80,7 +80,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // parse referrer url
-        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->fetch('referrer')), true);
+        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->fetch('referrer')), true, true);
 
         $classname = "Users_Account_{$authtype}_Register";
         $objAccount = new $classname($this->gadget);
