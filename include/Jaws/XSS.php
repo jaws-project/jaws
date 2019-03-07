@@ -242,4 +242,37 @@ class Jaws_XSS
         return self::filter(self::defilter($string, $noquotes), $noquotes);
     }
 
+    /**
+     * Filter URL
+     *
+     * @access  public
+     * @param   string  $url    URL
+     * @return  string  Returns filtered URL
+     */
+    static function filterURL($url)
+    {
+        // parse & encode given url
+        $parsedURL = parse_url(htmlspecialchars_decode($url));
+        foreach ($parsedURL as $part => $value) {
+            if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
+                $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
+            }
+        }
+
+        // prevent encode ,|=|&
+        return str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($parsedURL));
+    }
+
+    /**
+     * Filter back URL
+     *
+     * @access  public
+     * @param   string  $url    URL
+     * @return  string  Returns defilter URL
+     */
+    static function defilterURL($url)
+    {
+        return rawurldecode(str_replace(array(',', '=', '&'), array('%2C', '%3D', '%26'), $url));
+    }
+
 }
