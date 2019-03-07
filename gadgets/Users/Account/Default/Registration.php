@@ -13,7 +13,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
      * @access  public
      * @return  string  XHTML form
      */
-    function Registration()
+    function Registration($referrer = '')
     {
         $this->AjaxMe('index.js');
         // Load the template
@@ -59,6 +59,9 @@ class Users_Account_Default_Registration extends Users_Account_Default
             $tpl->SetVariable('register', _t('USERS_REGISTER'));
             $tpl->ParseBlock('registration/request');
         }
+
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
 
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);

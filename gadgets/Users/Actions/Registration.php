@@ -48,14 +48,17 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         // set authentication type in session
         $this->gadget->session->update('authtype', $authtype);
 
-        // store referrer in session
-        $referrer = (string)$this->gadget->request->fetch('referrer');
-        $this->gadget->session->update('referrer', (string)$referrer);
+        // store referrer into session
+        $referrer = $this->gadget->request->fetch('referrer');
+        if (empty($referrer)) {
+            $referrer = bin2hex(Jaws_Utils::getRequestURL());
+        }
+        $this->gadget->session->update('referrer', $referrer);
 
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Registration";
         $objAccount = new $classname($this->gadget);
-        return $objAccount->Registration();
+        return $objAccount->Registration(Jaws_XSS::filterURL(hex2bin($referrer), true));
     }
 
     /**
@@ -77,16 +80,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // parse referrer url
-        $referrer = parse_url(hex2bin($this->gadget->session->fetch('referrer')));
-        foreach ($referrer as $part => $value) {
-            if (in_array($part, array('path', 'query', 'fragment'))) {
-                $referrer[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
-            } else {
-                // unset schema|host|port|user|pass for security reason
-                $referrer[$part] = null;
-            }
-        }
-        $referrer = str_replace(array('%2C', '%3D', '%26'), array(',', '=', '&'), build_url($referrer));
+        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->fetch('referrer')), true);
 
         $classname = "Users_Account_{$authtype}_Register";
         $objAccount = new $classname($this->gadget);

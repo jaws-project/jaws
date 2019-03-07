@@ -13,18 +13,18 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML content
      */
-    function Login()
+    function Login($referrer = '')
     {
-        return (JAWS_SCRIPT == 'index')? $this->IndexLogin() : $this->AdminLogin();
+        return (JAWS_SCRIPT == 'index')? $this->IndexLogin($referrer) : $this->AdminLogin($referrer);
     }
 
     /**
-     * Builds the frontend login box
+     * Builds the front-end login box
      *
      * @access  public
      * @return  string  XHTML content
      */
-    function IndexLogin()
+    function IndexLogin($referrer)
     {
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('LoginBox.html');
@@ -45,6 +45,8 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         // global variables
         $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
 
         if (!empty($reqpost['loginstep'])) {
             $this->LoginBoxStep2($tpl, $reqpost);
@@ -89,7 +91,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML content
      */
-    function AdminLogin()
+    function AdminLogin($referrer)
     {
         if ($GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true') {
             $httpAuth = new Jaws_HTTPAuth();
@@ -111,13 +113,10 @@ class Users_Account_Default_Login extends Users_Account_Default
             $reqpost['loginstep'] = 0;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
-            //$reqpost['referrer'] = bin2hex(Jaws_Utils::getRequestURL(true));
         } else {
             $reqpost = $response['data'];
         }
 
-        // referrer
-        //$ltpl->SetVariable('referrer', $reqpost['referrer']);
         //
         $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
 
@@ -132,7 +131,8 @@ class Users_Account_Default_Login extends Users_Account_Default
         $mPolicy->loadCaptcha($ltpl, 'layout', 'login');
 
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
-        $ltpl->SetVariable('back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
+        $ltpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/'));
+        $ltpl->SetVariable('lbl_back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
 
         if (!empty($response)) {
             $ltpl->SetVariable('response_type', $response['type']);
