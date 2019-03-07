@@ -248,9 +248,10 @@ class Jaws_XSS
      * @access  public
      * @param   string  $url                URL
      * @param   bool    $deny_remote_url    Deny remote URL
+     * @param   bool    $urlencoded         URL is encoded?
      * @return  string  Returns filtered URL
      */
-    static function filterURL($url, $deny_remote_url = false)
+    static function filterURL($url, $urlencoded = false, $deny_remote_url = false)
     {
         // parse & encode given url
         $parsedURL = parse_url(htmlspecialchars_decode($url));
@@ -263,7 +264,15 @@ class Jaws_XSS
             }
 
             if (in_array($part, array('host', 'path', 'query', 'fragment'))) {
-                $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
+                if ($urlencoded) {
+                    // for security reason we must re-encode url
+                    $parsedURL[$part] = implode(
+                        '/',
+                        array_map('rawurldecode', array_map('rawurlencode', explode('/', $value)))
+                    );
+                } else {
+                    $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
+                }
             }
         }
 
