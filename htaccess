@@ -35,7 +35,8 @@ AddType 'text/xml; charset=UTF-8' atom rss xml
     RewriteCond $1 !^(favicon\.(ico|png|gif|jpg)|robots\.txt|admin\.php) [NC]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /index.php/$1 [L]
+    RewriteCond "%{THE_REQUEST}" "^(.*)$"
+    RewriteRule .* /jaws/index.php/%1 [L]
 
 </IfModule>
 
