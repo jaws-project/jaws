@@ -11,6 +11,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * Builds the login box
      *
      * @access  public
+     * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
     function Login($referrer = '')
@@ -22,6 +23,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * Builds the front-end login box
      *
      * @access  public
+     * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
     function IndexLogin($referrer)
@@ -89,6 +91,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * Builds the backend login box
      *
      * @access  public
+     * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
     function AdminLogin($referrer)
