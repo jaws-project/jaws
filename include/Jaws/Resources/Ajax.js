@@ -147,15 +147,15 @@ jQuery.extend({
  */
 function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
 {
-    this.gadget = gadget;
+    this.baseGadget = gadget;
+    this.baseAction = null;
     this.callbackObject = callbackObject;
     this.callbackFunctions = callbackFunctions;
     this.loadingMessage = '';
     var reqValues = $('meta[name=application-name]').attr('content').split(':');
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
     this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
-    this.baseURL = this.baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
-    this.msgBox  = "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase();
+    this.baseURL = this.baseScript + '?gadget=' + this.baseGadget + '&restype=json&action=';
 
     /**
      * Performs asynchronous Ajax request
@@ -289,7 +289,12 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
             return;
         }
 
-        element = element || $(this.msgBox);
+        var gadget, action;
+        gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
+        action = this.baseAction? this.baseAction : this.mainRequest['action'];
+        var msgBox  = "#"+(gadget+'_'+ action+'_'+'response').toLowerCase();
+
+        element = element || $(msgBox);
         element.html(response.text).attr('class', response.type);
         element.stop(true, true).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
     };
@@ -298,17 +303,22 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
      * show loading indicator
      */
     this.showLoading = function (show) {
-        if ($(this.msgBox)) {
+        var gadget, action;
+        gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
+        action = this.baseAction? this.baseAction : this.mainRequest['action'];
+        var msgBox  = "#"+(gadget+'_'+ action+'_'+'response').toLowerCase();
+
+        if ($(msgBox)) {
             if (show) {
                 if (this.loadingMessage) {
                     loadingMessage = this.loadingMessage;
                 } else {
                     loadingMessage = jaws.Defines.loadingMessage || '...';
                 }
-                $(this.msgBox).html(loadingMessage).attr('class', 'response_loading alert-info');
-                $(this.msgBox).stop(true, true).fadeIn();
+                $(msgBox).html(loadingMessage).attr('class', 'response_loading alert-info');
+                $(msgBox).stop(true, true).fadeIn();
             } else {
-                $(this.msgBox).fadeOut(0, function() {$(this).removeClass();});
+                $(msgBox).fadeOut(0, function() {$(this).removeClass();});
             }
         }
     };
@@ -1032,40 +1042,47 @@ function hideWorkingNotification()
 var Jaws_Gadget = (function () {
     var instances = {};
 
-    function newInstance(gadget) {
-        var objGadget = new (window['Jaws_Gadget_'+gadget] || Object.constructor);
-        objGadget.gadget = objGadget;
-        objGadget.gadget.name = gadget;
-        objGadget.gadget.defines = jaws[gadget].Defines;
-        objGadget.gadget.actions = jaws[gadget].Actions;
+    function newInstance(gadget, action) {
+        var objGadgetAction = new (window['Jaws_Gadget_'+gadget] || Object.constructor);
+        objGadgetAction.gadget = objGadgetAction;
+        objGadgetAction.action = action;
+        objGadgetAction.gadget.name = gadget;
+        objGadgetAction.gadget.defines = jaws[gadget].Defines;
+        objGadgetAction.gadget.actions = jaws[gadget].Actions;
         // ajax interface method
-        objGadget.gadget.ajax = new JawsAjax(gadget, objGadget.AjaxCallback, objGadget);
+        objGadgetAction.gadget.ajax = new JawsAjax(gadget, objGadgetAction.AjaxCallback, objGadgetAction);
+        objGadgetAction.gadget.ajax.baseAction = action;
         // shout interface method
-        objGadget.gadget.shout = function(event, data, destGadget, broadcast) {
+        objGadgetAction.gadget.shout = function(event, data, destGadget, broadcast) {
             dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
             broadcast = typeof broadcast !== 'undefined'? broadcast : true;
-            return Jaws_Gadget.shout(objGadget, event, data, dstGadget, broadcast);
+            return Jaws_Gadget.shout(objGadgetAction, event, data, dstGadget, broadcast);
         }
 
-        return objGadget;
+        return objGadgetAction;
     }
  
     return {
         // return gadget js object instance
-        getInstance: function(gadget) {
+        getInstance: function(gadget, action) {
             if (!instances[gadget]) {
-                instances[gadget] = newInstance(gadget);
+                instances[gadget] = {};
+            }
+            if (!instances[gadget][action]) {
+                instances[gadget][action] = newInstance(gadget, action);
             }
 
-            return instances[gadget];
+            return instances[gadget][action];
         },
 
         // call gadget initialize method
         init: function() {
-            $.each(instances, function(index, instance) {
-                if (instance.init) {
-                    instance.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
-                }
+            $.each(instances, function(gadget, actionsInstances) {
+                $.each(actionsInstances, function(action, instance) {
+                    if (instance.init) {
+                        instance.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
+                    }
+                });
             });
         },
 
@@ -1104,7 +1121,9 @@ $(document).ready(function() {
     });
 
     $.each(jaws.Gadgets, function(index, gadget) {
-        Jaws_Gadget.getInstance(gadget);
+        $.each(jaws[gadget].Actions, function(index, action) {
+            Jaws_Gadget.getInstance(gadget, action);
+        });
     });
 
     Jaws_Gadget.init();
