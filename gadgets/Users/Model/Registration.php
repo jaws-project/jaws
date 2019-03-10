@@ -42,9 +42,17 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         if (trim($uData['password']) == '') {
-            $uData['password'] = Jaws_Utils::RandomText(8);
+            $uData['password'] = Jaws_Utils::RandomText(
+                8,
+                array(
+                    'lower' => true,
+                    'upper' => true,
+                    'number' => true,
+                    'special' => true
+                )
+            );
         }
-        $uData['verify_key'] = Jaws_Utils::RandomText(5, false, false, true);
+        $uData['verify_key'] = Jaws_Utils::RandomText(5, array('number' => true));
         $uData['status'] = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
 
         $jawsUser = $GLOBALS['app']->loadObject('Jaws_User');
@@ -99,7 +107,15 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         if (trim($password) == '') {
-            $password = Jaws_Utils::RandomText(8);
+            $password = Jaws_Utils::RandomText(
+                8,
+                array(
+                    'lower' => true,
+                    'upper' => true,
+                    'number' => true,
+                    'special' => true
+                )
+            );
         }
 
         $jUser = new Jaws_User;
@@ -128,7 +144,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             );
         }
 
-        $verifyKey = Jaws_Utils::RandomText(5, false, false, true);
+        $verifyKey = Jaws_Utils::RandomText(5, array('number' => true));
         $user_enabled = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
         $user_id = $jUser->AddUser(
             array(
@@ -314,7 +330,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      */
     function ResendVerifyKey($user)
     {
-        $verifyKey = Jaws_Utils::RandomText(5, false, false, true);
+        $verifyKey = Jaws_Utils::RandomText(5, array('number' => true));
         $result = Jaws_ORM::getInstance()
             ->table('users')
             ->update(array('verify_key' => $verifyKey))

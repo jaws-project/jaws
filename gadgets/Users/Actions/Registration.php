@@ -205,7 +205,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     {
         // generate registration key
         $regkey = array(
-            'text' => Jaws_Utils::RandomText(5, false, false, true),
+            'text' => Jaws_Utils::RandomText(5, array('number' => true)),
             'time' => time()
         );
 
