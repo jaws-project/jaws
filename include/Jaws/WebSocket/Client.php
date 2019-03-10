@@ -39,7 +39,14 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
             return $this->close($this->socket);
         }
 
-        $randomKey = base64_encode(Jaws_Utils::RandomText(16, true, true, true));
+        $randomKey = base64_encode(Jaws_Utils::RandomText(
+            16,
+            array(
+                'lower' => true,
+                'upper' => true,
+                'number' => true
+            )
+        ));
         $header = "GET $path HTTP/1.1\r\n";
         $header.= "Host: {$this->address}:{$this->port}\r\n";
         $header.= "Upgrade: websocket\r\n";
