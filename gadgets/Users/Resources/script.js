@@ -264,7 +264,7 @@ function Jaws_Gadget_Users() { return {
         resetGrid(name, result, total);
 
         this.fTimeout = setTimeout(
-            "Jaws_Gadget.getInstance('Users').getOnlineUsers('onlineusers_datagrid');",
+            "Jaws_Gadget.getInstance('Users', 'OnlineUsers').getOnlineUsers('onlineusers_datagrid');",
             30000
         );
     },
@@ -618,9 +618,9 @@ function Jaws_Gadget_Users() { return {
 
         var cInfo = this.gadget.ajax.callSync('GetUserContact', {'uid': uid});
         if (cInfo) {
-            changeProvince(cInfo['province_home'], 'city_home');
-            changeProvince(cInfo['province_work'], 'city_work');
-            changeProvince(cInfo['province_other'], 'city_other');
+            this.changeProvince(cInfo['province_home'], 'city_home');
+            this.changeProvince(cInfo['province_work'], 'city_work');
+            this.changeProvince(cInfo['province_other'], 'city_other');
 
             $('#contact-form input, #contact-form select, #contact-form textarea').each(
                 function () {

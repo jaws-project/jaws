@@ -135,7 +135,7 @@
               <label for="province_home">{{lbl_province}}:</label>
               <select name="province_home"
                 id="province_home"
-                onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_home');"
+                onchange="Jaws_Gadget.getInstance('Users', 'Users').changeProvince(this.value, 'city_home');"
               >
                 <!-- BEGIN province_home -->
                 <option value="{{value}}" {{selected}}>{{title}}</option>
@@ -173,7 +173,7 @@
               <label for="province_work">{{lbl_province}}:</label>
               <select name="province_work"
                 id="province_work"
-                onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_work');"
+                onchange="Jaws_Gadget.getInstance('Users', 'Users').changeProvince(this.value, 'city_work');"
               >
                 <!-- BEGIN province_work -->
                 <option value="{{value}}" {{selected}}>{{title}}</option>
@@ -211,7 +211,7 @@
               <label for="province_other">{{lbl_province}}:</label>
               <select name="province_other"
                 id="province_other"
-                onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_other');"
+                onchange="Jaws_Gadget.getInstance('Users', 'Users').changeProvince(this.value, 'city_other');"
               >
                 <!-- BEGIN province_other -->
                 <option value="{{value}}" {{selected}}>{{title}}</option>
