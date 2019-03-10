@@ -1716,7 +1716,7 @@ class Jaws_User
      */
     function UpdateUserVerifyKey($uid)
     {
-        $key = Jaws_Utils::RandomText(5, false, false, true);
+        $key = Jaws_Utils::RandomText(5, array('number' => true));
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $result = $usersTable->update(array('verify_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
@@ -1735,7 +1735,7 @@ class Jaws_User
      */
     function UpdatePasswordRecoveryKey($uid)
     {
-        $key = Jaws_Utils::RandomText(5, false, false, true);
+        $key = Jaws_Utils::RandomText(5, array('number' => true));
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $result = $usersTable->update(array('recovery_key' => $key))->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
