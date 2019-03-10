@@ -53,27 +53,37 @@ class Jaws_Utils
      * @param   bool    $use_number Include numbers
      * @return  string  Random text
      */
-    static function RandomText($length = 5, $use_lower = true, $use_upper = true, $use_number = false)
+    static function RandomText($length = 5, $complexity = array())
     {
-        $lower_case = 'abcdefghijklmnopqrstuvwxyz';
-        $upper_case = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
-        $numbers = '01234567890';
-        $possible = '';
-        if ($use_lower) {
-            $possible.= $lower_case;
-        }
-        if ($use_upper) {
-            $possible.= $upper_case;
-        }
-        if ($use_number) {
-            $possible.= $numbers;
+        // default complexity if not set is: lower & upper
+        if (empty($complexity)) {
+            $complexity = array(
+                'lower' => true,
+                'upper' => true
+            );
         }
 
+        $possible = array(
+            'lower'   => 'abcdefghijklmnopqrstuvwxyz',
+            'upper'   => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            'number'  => '0123456789',
+            'special' => '!@#$%^-,~?*',
+        );
+
         $string = '';
-        for ($i = 1; $i <= $length; $i++) {
-            $string.= substr($possible, mt_rand(0, strlen($possible)-1), 1);
+        $lngmin = 0;
+        $allPossibleChars = '';
+        foreach ($complexity as $key => $keyValue) {
+            if ($keyValue) {
+                $lngmin ++;
+                $string.= $possible[$key][mt_rand(0, strlen($possible[$key])-1)];
+                $allPossibleChars.= $possible[$key];
+            }
         }
-        return $string;
+
+        $length = ($length < $lngmin)? $lngmin : $length;
+        $string.= substr(str_shuffle($allPossibleChars), 0, $length - strlen($string));
+        return str_shuffle($string);
     }
 
     /**
