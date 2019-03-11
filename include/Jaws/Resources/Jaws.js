@@ -7,7 +7,7 @@
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2004-2015 Jaws Development Group
+ * @copyright   2004-2019 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 
@@ -147,7 +147,7 @@ jQuery.extend({
  */
 function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
 {
-    this.baseGadget = gadget;
+    this.baseGadget = null;
     this.baseAction = null;
     this.callbackObject = callbackObject;
     this.callbackFunctions = callbackFunctions;
@@ -155,7 +155,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
     var reqValues = $('meta[name=application-name]').attr('content').split(':');
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
     this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
-    this.baseURL = this.baseScript + '?gadget=' + this.baseGadget + '&restype=json&action=';
+    this.baseURL = this.baseScript + '?gadget=' + gadget + '&restype=json&action=';
 
     /**
      * Performs asynchronous Ajax request
@@ -1042,48 +1042,41 @@ function hideWorkingNotification()
 var Jaws_Gadget = (function () {
     var instances = {};
 
-    function newInstance(gadget, action) {
-        var objGadgetAction = new (window['Jaws_Gadget_'+gadget] || Object.constructor);
-        objGadgetAction.gadget = objGadgetAction;
-        objGadgetAction.action = action;
-        objGadgetAction.gadget.name = gadget;
-        objGadgetAction.gadget.defines = jaws[gadget].Defines;
-        objGadgetAction.gadget.actions = jaws[gadget].Actions;
-        // ajax interface method
-        objGadgetAction.gadget.ajax = new JawsAjax(gadget, objGadgetAction.AjaxCallback, objGadgetAction);
-        objGadgetAction.gadget.ajax.baseAction = action;
-        // shout interface method
-        objGadgetAction.gadget.shout = function(event, data, destGadget, broadcast) {
-            dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
-            broadcast = typeof broadcast !== 'undefined'? broadcast : true;
-            return Jaws_Gadget.shout(objGadgetAction, event, data, dstGadget, broadcast);
-        }
-
-        return objGadgetAction;
-    }
- 
     return {
         // return gadget js object instance
-        getInstance: function(gadget, action) {
+        getInstance: function(gadget) {
             if (!instances[gadget]) {
-                instances[gadget] = {};
-            }
-            if (!instances[gadget][action]) {
-                instances[gadget][action] = newInstance(gadget, action);
+                var objGadget = new (window['Jaws_Gadget_'+gadget] || Object.constructor);
+                objGadget.name = gadget;
+                objGadget.gadget = objGadget;
+                objGadget.objects = {
+                    'Actions': {}
+                };
+                objGadget.defines = jaws[gadget].Defines;
+                objGadget.actions = jaws[gadget].Actions;
+
+                // shout interface method
+                objGadget.shout = function(event, data, destGadget, broadcast) {
+                    dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
+                    broadcast = typeof broadcast !== 'undefined'? broadcast : true;
+                    return Jaws_Gadget.shout(objGadget, event, data, dstGadget, broadcast);
+                }
+
+                // load action base class
+                objGadget.action = new (window['Jaws_Gadget_Action']);
+                objGadget.action.gadget = objGadget;
+
+                // ajax interface
+                objGadget.ajax = new JawsAjax(gadget, objGadget.AjaxCallback, objGadget);
+
+                // load gadget initialize method if exist
+                if (objGadget.init) {
+                    objGadget.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
+                }
+                instances[gadget] = objGadget;
             }
 
-            return instances[gadget][action];
-        },
-
-        // call gadget initialize method
-        init: function() {
-            $.each(instances, function(gadget, actionsInstances) {
-                $.each(actionsInstances, function(action, instance) {
-                    if (instance.init) {
-                        instance.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
-                    }
-                });
-            });
+            return instances[gadget];
         },
 
         // call methods that listening the shouted event
@@ -1112,6 +1105,32 @@ var Jaws_Gadget = (function () {
 
 })();
 
+/*
+ * Jaws javascript gadget action class
+ */
+function Jaws_Gadget_Action() { return {
+    // return gadget js object instance
+    load: function(action) {
+        if (!this.gadget.objects['Actions'][action]) {
+            var objAction = new (window['Jaws_Gadget_'+this.gadget.name+'_Action_'+action] || Object.constructor);
+            objAction.name = action;
+            // ajax interface
+            objAction.ajax = new JawsAjax(this.gadget.name, objAction.AjaxCallback, objAction);
+            objAction.ajax.baseGadget = this.gadget.name;
+            objAction.ajax.baseAction = action;
+
+            // load action initialize method if exist
+            if (objAction.init) {
+                objAction.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
+            }
+
+            this.gadget.objects['Actions'][action] = objAction;
+        }
+
+        return this.gadget.objects['Actions'][action];
+    }
+}};
+
 /**
  * on document ready
  */
@@ -1121,10 +1140,9 @@ $(document).ready(function() {
     });
 
     $.each(jaws.Gadgets, function(index, gadget) {
+        Jaws_Gadget.getInstance(gadget);
         $.each(jaws[gadget].Actions, function(index, action) {
-            Jaws_Gadget.getInstance(gadget, action);
+            Jaws_Gadget.getInstance(gadget).action.load(action);
         });
     });
-
-    Jaws_Gadget.init();
 });
