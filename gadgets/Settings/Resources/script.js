@@ -6,16 +6,12 @@
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2017 Jaws Development Group
+ * @copyright  2004-2019 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_Settings() { return {
     // ASync callback method
     AjaxCallback : {
-        UpdateBasicSettings: function(response) {
-            this.gadget.ajax.showResponse(response);
-        },
-
         UpdateAdvancedSettings: function(response) {
             this.gadget.ajax.showResponse(response);
         },
@@ -35,16 +31,6 @@ function Jaws_Gadget_Settings() { return {
         UpdateProxySettings: function(response) {
             this.gadget.ajax.showResponse(response);
         }
-    },
-
-    /**
-     * Update basic settings
-     */
-    submitBasicForm: function() {
-        this.gadget.ajax.callAsync(
-            'UpdateBasicSettings',
-            $.unserialize($('#settingsForm input,select,textarea').serialize())
-        );
     },
 
     /**
@@ -158,3 +144,22 @@ function Jaws_Gadget_Settings() { return {
 
 }};
 
+function Jaws_Gadget_Settings_Action_BasicSettings() { return {
+    // ASync callback method
+    AjaxCallback : {
+        UpdateBasicSettings: function(response) {
+            this.ajax.showResponse(response);
+        }
+    },
+
+    /**
+     * Update basic settings
+     */
+    submitBasicForm: function() {
+        this.ajax.callAsync(
+            'UpdateBasicSettings',
+            $.unserialize($('#settingsForm input,select,textarea').serialize())
+        );
+    },
+
+}};
