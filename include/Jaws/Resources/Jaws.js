@@ -1046,7 +1046,7 @@ var Jaws_Gadget = (function () {
         // return gadget js object instance
         getInstance: function(gadget) {
             if (!instances[gadget]) {
-                var objGadget = new (window['Jaws_Gadget_'+gadget] || Object.constructor);
+                var objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
                 objGadget.name = gadget;
                 objGadget.gadget = objGadget;
                 objGadget.objects = {
@@ -1112,8 +1112,9 @@ function Jaws_Gadget_Action() { return {
     // return gadget js object instance
     load: function(action) {
         if (!this.gadget.objects['Actions'][action]) {
-            var objAction = new (window['Jaws_Gadget_'+this.gadget.name+'_Action_'+action] || Object.constructor);
+            var objAction = new (window['Jaws_Gadget_'+this.gadget.name+'_Action_'+action] || Object);
             objAction.name = action;
+            objAction.gadget = this.gadget;
             // ajax interface
             objAction.ajax = new JawsAjax(this.gadget.name, objAction.AjaxCallback, objAction);
             objAction.ajax.baseGadget = this.gadget.name;
