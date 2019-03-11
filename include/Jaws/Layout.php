@@ -641,7 +641,7 @@ class Jaws_Layout
                 'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION
             ),
             array(
-                'src'  => 'include/Jaws/Resources/Ajax.js?'. JAWS_VERSION
+                'src'  => 'include/Jaws/Resources/Jaws.js?'. JAWS_VERSION
             ),
             array(
                 'text' => $this->initializeScript()
