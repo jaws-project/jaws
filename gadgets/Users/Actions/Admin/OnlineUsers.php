@@ -140,7 +140,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $active->AddOption(_t('GLOBAL_ALL'), -1, false);
         $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_ACTIVE'), 1);
         $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_INACTIVE'), 0);
-        $active->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users', 'OnlineUsers').searchOnlineUsers();");
+        $active->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchOnlineUsers();");
         $active->SetDefault(-1);
         $tpl->SetVariable('filter_active', $active->Get());
         $tpl->SetVariable('lbl_filter_active', _t('USERS_ONLINE_FILTER_SESSION_STATUS'));
@@ -151,7 +151,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $logged->AddOption(_t('GLOBAL_ALL'), -1, false);
         $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_MEMBERS'), 1);
         $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_ANONYMOUS'), 0);
-        $logged->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users', 'OnlineUsers').searchOnlineUsers();");
+        $logged->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchOnlineUsers();");
         $logged->SetDefault(-1);
         $tpl->SetVariable('filter_logged', $logged->Get());
         $tpl->SetVariable('lbl_filter_logged', _t('USERS_ONLINE_FILTER_MEMBERSHIP'));
@@ -166,7 +166,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
                 $logged->AddOption($type, $type);
             }
         }
-        $logged->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users', 'OnlineUsers').searchOnlineUsers();");
+        $logged->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchOnlineUsers();");
         $logged->SetDefault(-1);
         $tpl->SetVariable('filter_session_type', $logged->Get());
         $tpl->SetVariable('lbl_filter_session_type', _t('USERS_ONLINE_SESSION_TYPE'));
@@ -187,7 +187,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $btnExecute =& Piwi::CreateWidget('Button', 'executeOnlineUsersAction', '', STOCK_YES);
         $btnExecute->AddEvent(
             ON_CLICK,
-            "Jaws_Gadget.getInstance('Users', 'OnlineUsers').onlineUsersDGAction($('#online_users_actions'));"
+            "Jaws_Gadget.getInstance('Users').onlineUsersDGAction($('#online_users_actions'));"
         );
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
