@@ -19,7 +19,10 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
      */
     function Authenticate()
     {
-        $get = $this->gadget->request->fetch(array('state', 'code'), 'get');
+        $get = $this->gadget->request->fetch(array('error', 'error_description', 'state', 'code'), 'get');
+        if(isset($get['error'])) {
+            return Jaws_Error::raiseError($get['error_description'], __FUNCTION__);
+        }
 
         // Verify the state matches our stored state
         if(!$get['state'] || $this->gadget->session->fetch('state') != $get['state']) {
