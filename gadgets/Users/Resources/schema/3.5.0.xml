@@ -271,11 +271,6 @@
             </field>
 
             <field>
-                <name>extra</name>
-                <type>text</type>
-            </field>
-
-            <field>
                 <name>status</name>
                 <type>integer</type>
                 <length>1</length>

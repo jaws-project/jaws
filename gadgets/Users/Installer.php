@@ -276,7 +276,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '3.5.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '3.4.0.xml');
+            $result = $this->installSchema('3.5.0.xml', array(), '3.4.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -290,6 +290,13 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->insert('ManageUsersLayout');
             $this->gadget->acl->delete('AccessDashboard');
             $this->gadget->acl->delete('ManageDashboard');
+        }
+
+        if (version_compare($old, '3.12.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '3.5.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
