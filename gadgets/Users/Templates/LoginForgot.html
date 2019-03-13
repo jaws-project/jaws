@@ -6,37 +6,69 @@
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
+<!-- BEGIN request -->
   <form name="forgotBox" action="{{base_script}}" method="post">
     <input type="hidden" name="gadget" value="Users" />
     <input type="hidden" name="action" value="LoginRecovery" />
-    <input type="hidden" name="step" value="{{step}}" />
     <div class="gadget_content">
       <fieldset>
-        <!-- BEGIN email -->
-        <div><label for="forgot_email">{{lbl_term}}:</label>
-           <input class="form-control" name="email" class="large email ltr" id="forgot_email" type="text" value="{{email}}"
-           <!-- BEGIN readonly -->readonly = "readonly"<!-- END readonly -->
-             required
-           />
+        <!-- BEGIN forgot_step_1 -->
+        <input type="hidden" name="rcvstep" value="0" />
+        <!-- BEGIN multi_domain -->
+        <div>
+          <label for="domain">{{lbl_domain}}:</label>
+          <select class="form-control" name="domain" id="domain">
+            <!-- BEGIN domain -->
+            <option value="{{id}}" {{selected}}>{{title}}</option>
+            <!-- END domain -->
+          </select>
         </div>
-        <!-- END email -->
-        <!-- BEGIN key -->
-        <div><label for="forgot_key">{{lbl_key}}:</label>
-           <input class="form-control" name="key" class="large ltr" id="forgot_key" type="text" value="{{key}}" required />
+        <!-- END multi_domain -->
+        <div>
+          <label for="forgot_account">{{lbl_account}}:</label>
+          <input class="form-control ltr" name="account" id="forgot_account"
+                 type="text"
+                 value="{{account}}"
+                 required
+          />
         </div>
-        <!-- END key -->
-        <!-- BEGIN success -->
-        <p>{{message}}</p>
-        <!-- END success -->
-        <!-- BEGIN captcha -->
+        <!-- END forgot_step_1 -->
+        <!-- BEGIN forgot_step_2 -->
+        <input type="hidden" name="rcvstep" value="1" />
+        <div>
+          <label for="forgot_account">{{lbl_term}}:</label>
+          <input class="form-control ltr" name="account" id="forgot_account"
+                 type="text"
+                 value="{{account}}"
+                 readonly
+          />
+        </div>
+        <div>
+          <label for="forgot_key">{{lbl_key}}:</label>
+          <input class="form-control ltr" name="rcvkey" id="forgot_key"
+                 type="text"
+                 autocomplete="off"
+                 value=""
+                 required
+          />
+        </div>
+        <!-- END forgot_step_2 -->
         <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-        <!-- END captcha -->
       </fieldset>
     </div>
-    <!-- BEGIN action -->
-    <div class="gadget_actions"><button class="btn btn-primary" type="submit" value="{{remember}}">{{remember}}</button></div>
-    <!-- END action -->
+
+    <div class="gadget_actions">
+      <button class="btn btn-primary" type="submit">{{recovery}}</button>
+      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+    </div>
+
   </form>
+<!-- END request -->
+<!-- BEGIN forgot_step_3 -->
+  <div class="gadget_content">
+    <p>{{message}}</p>
+  </div>
+<!-- END forgot_step_3 -->
 </div>
 <div class="gadget_footer"></div>
 <!-- END forgot -->

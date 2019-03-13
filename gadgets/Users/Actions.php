@@ -49,12 +49,12 @@ $actions['AboutUser'] = array(
 $actions['LoginForgot'] = array(
     'normal' => true,
     'global' => true,
-    'file' => 'Login',
+    'file' => 'Recovery',
 );
 $actions['LoginRecovery'] = array(
     'standalone' => true,
     'global' => true,
-    'file' => 'Login',
+    'file' => 'Recovery',
 );
 $actions['Authenticate'] = array(
     'normal' => true,
