@@ -10224,7 +10224,7 @@ label.fuelux .checkbox-inline {
   margin-right: 5px;
 }
 .fuelux .wizard > .actions {
-  z-index: 1000;
+  z-index: 990;
   position: absolute;
   right: 0;
   top: 0;
