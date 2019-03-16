@@ -1564,6 +1564,12 @@ class Jaws_User
             return false;
         }
 
+        // delete user's contact
+        $result = $objORM->delete()->table('users_contacts')->where('owner', $user['id'])->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
         // Registry
         if (!$GLOBALS['app']->Registry->deleteByUser($user['id'])) {
             return false;
