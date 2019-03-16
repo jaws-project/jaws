@@ -22,11 +22,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
 
         // check permissions
-        if ($layout == 'Index.Dashboard') {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+        if ($layout == 'Index.User') {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageUserLayout');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         } else {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
+            $GLOBALS['app']->Session->CheckPermission('Layout', 'MainLayoutManage');
             $user = 0;
         }
 
