@@ -36,7 +36,7 @@ AddType 'text/xml; charset=UTF-8' atom rss xml
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond "%{THE_REQUEST}" "^(.*)$"
-    RewriteRule .* /jaws/index.php/%1 [L]
+    RewriteRule .* /index.php/%1 [L]
 
 </IfModule>
 
