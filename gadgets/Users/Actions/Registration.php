@@ -93,6 +93,9 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                 bin2hex($referrer)
             );
         } else {
+            // 201 http code for auto login
+            http_response_code(201);
+
             // add required attributes for auto login into jaws
             $registerData['authtype'] = $authtype;
 
@@ -110,7 +113,6 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             );
         }
 
-        http_response_code(201);
         return Jaws_Header::Location(
             empty($referrer)? $this->gadget->urlMap('Login') : $referrer,
             'Users.Response.Login.Response'
