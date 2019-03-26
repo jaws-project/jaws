@@ -197,6 +197,53 @@ class Jaws_User
      * Get the info of an user by the username or ID
      *
      * @access  public
+     * @param   int     $domain     Domain Id
+     * @param   mixed   $user       The username or ID
+     * @param   array   $fieldsets  Fieldsets(account, personal, password)
+     * @return  mixed   Returns an array with the info of the user and false on error
+     */
+    function GetUserNew($domain, $user, $fieldsets = array())
+    {
+        $columns = array(
+            'default'  => array(
+                'domain:integer', 'users.id:integer', 'contact:integer', 'avatar', 'status:integer'
+            ),
+            'account'  => array(
+                'username', 'nickname', 'users.email', 'users.mobile',
+                'superadmin:boolean', 'concurrents', 'logon_hours', 'expiry_date', 'registered_date',
+                'last_update', 'bad_password_count', 'last_password_update', 'last_access', 'verify_key'
+            ),
+            'personal' => array(
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'extra', 'public:boolean', 'privacy:boolean',
+                'pgpkey', 'signature', 'about', 'experiences', 'occupations', 'interests'
+            ),
+            'password' => array('password'),
+        );
+        $fieldsets['default'] = true;
+
+        $selectedColumns = array();
+        foreach ($fieldsets as $key => $keyValue) {
+            if ($keyValue) {
+                $selectedColumns = array_merge($selectedColumns, $columns[$key]);
+            }
+        }
+
+        $objORM = Jaws_ORM::getInstance()->table('users');
+        $objORM->select($selectedColumns);
+        $objORM->where('domain', (int)$domain);
+        if (is_int($user)) {
+            $objORM->and()->where('users.id', $user);
+        } else {
+            $objORM->and()->where('lower(username)', Jaws_UTF8::strtolower($user));
+        }
+
+        return $objORM->fetchRow();
+    }
+
+    /**
+     * Get the info of an user by the username or ID
+     *
+     * @access  public
      * @param   mixed   $user       The username or ID
      * @param   bool    $account    Account information
      * @param   bool    $personal   Personal information
@@ -418,6 +465,31 @@ class Jaws_User
         $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
         $usersTable->where('group_id', (int)$group);
         return $usersTable->fetchAll();
+    }
+
+
+    /**
+     * Get the info of an user(s) by the email address
+     *
+     * @access  public
+     * @param   int     $domain     Domain Id
+     * @param   string  $term       User name/email/mobile
+     * @return  mixed   Returns an array with the info of the user or false on error
+     */
+    function GetUserByTerm($domain, $term)
+    {
+        return Jaws_ORM::getInstance()
+            ->table('users')
+            ->select('id:integer', 'domain:integer', 'username', 'nickname', 'email',
+                'mobile', 'superadmin:boolean', 'status:integer'
+            )->where('domain', (int)$domain)
+            ->and()
+            ->openWhere('lower(username)', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->where('lower(email)', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->closeWhere('mobile', $term)
+            ->fetchRow();
     }
 
     /**
