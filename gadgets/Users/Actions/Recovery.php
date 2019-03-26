@@ -146,12 +146,12 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         // parse referrer url
         $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->fetch('referrer')), true, true);
 
-        $classname = "Users_Account_{$authtype}_Register";
+        $classname = "Users_Account_{$authtype}_LoginRecovery";
         $objAccount = new $classname($this->gadget);
-        $registerData = $objAccount->Register();
+        $registerData = $objAccount->LoginRecovery();
         if (Jaws_Error::IsError($registerData)) {
             $default_authtype = $this->gadget->registry->fetch('authtype');
-            return $objAccount->RegisterError(
+            return $objAccount->LoginRecoveryError(
                 $registerData,
                 ($authtype != $default_authtype)? $authtype : '',
                 bin2hex($referrer)
@@ -234,15 +234,15 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
     }
 
     /**
-     * Notify user login key by email/mobile
+     * Notify user recovery key
      * @access  public
      * @param   array   $uData  User data array
      * @return  bool    True
      */
-    function NotifyLoginKey($uData)
+    function NotifyRecoveryKey($uData)
     {
-        // generate login/verification key
-        $loginkey = array(
+        // generate recovery key
+        $rcvkey = array(
             'text' => Jaws_Utils::RandomText(5, array('number' => true)),
             'time' => time()
         );
@@ -250,12 +250,13 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $site_url = $GLOBALS['app']->getSiteURL('/');
         $settings = $GLOBALS['app']->Registry->fetchAll('Settings');
 
-        $tpl = $this->gadget->template->load('LoginNotification.html');
-        $tpl->SetBlock('verification');
-        $tpl->SetVariable('nickname', $uData['nickname']);
-        $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
-        $tpl->SetVariable('lbl_key', _t('USERS_LOGIN_KEY'));
-        $tpl->SetVariable('key', $loginkey['text']);
+        $tpl = $this->gadget->template->load('LoginForgotNotification.html');
+        $tpl->SetBlock('Notification');
+        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $uData['nickname']));
+        $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
+        // recovery key
+        $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
+        $tpl->SetVariable('key', $rcvkey['text']);
 
         $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username',       $uData['username']);
@@ -268,24 +269,31 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
         $tpl->SetVariable('site-name',      $settings['site_name']);
         $tpl->SetVariable('site-url',       $site_url);
-        $tpl->ParseBlock('verification');
+        $tpl->ParseBlock('Notification');
         $message = $tpl->Get();
-        $subject = _t('GLOBAL_LOGINKEY_TITLE');
+        $subject = _t('USERS_FORGOT_REMEMBER', $settings['site_name']);
 
+        // Notify
         $params = array();
-        $params['key']     = crc32('Users.Login.Key.' . $uData['id']);
-        $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
+        $params['key']     = crc32('Users.Recovery.Key' . $uData['id']);
+        $params['title']   = $subject;
         $params['summary'] = _t(
-            'GLOBAL_LOGINKEY_SUMMARY',
-            $loginkey['text']
+            'USERS_FORGOT_LOGIN_SUMMARY',
+            $uData['nickname'],
+            $site_url,
+            $uData['username'],
+            $uData['email'],
+            $uData['mobile'],
+            $rcvkey['text']
         );
-        $params['description'] = $message;
-        $params['emails']  = array($uData['email']);
-        $params['mobiles'] = array($uData['mobile']);
+
+        $params['description'] = $this->gadget->plugin->parse($message);
+        $params['emails']      = array($uData['email']);
+        $params['mobiles']     = array($uData['mobile']);
         $this->gadget->event->shout('Notify', $params);
 
         // update session login-key
-        $this->gadget->session->update('loginkey', $loginkey);
+        $this->gadget->session->update('rcvkey', $rcvkey);
 
         return true;
     }

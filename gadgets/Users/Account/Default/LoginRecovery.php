@@ -15,10 +15,9 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
      */
     function LoginRecovery()
     {
-        $rgstrData = $this->gadget->request->fetch(
+        $rcvryData = $this->gadget->request->fetch(
             array(
-                'domain', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'regkey', 'usecrypt', 'remember'
+                'domain', 'account', 'rcvstep', 'rcvkey', 'usecrypt', 'remember'
             ),
             'post'
         );
@@ -31,100 +30,96 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 throw new Exception($resCheck->getMessage(), 401);
             }
 
-            if (empty($rgstrData['regstep'])) {
-                $this->gadget->session->delete('temp.register.user');
-                if ($rgstrData['password'] !== $rgstrData['password_check']) {
-                    throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 401);
-                }
-
-                if ($rgstrData['usecrypt']) {
+            if (empty($rcvryData['rcvstep'])) {
+                /*
+                $this->gadget->session->delete('temp.recovery.user');
+                if ($rcvryData['usecrypt']) {
                     $JCrypt = Jaws_Crypt::getInstance();
                     if (!Jaws_Error::IsError($JCrypt)) {
-                        $rgstrData['password'] = $JCrypt->decrypt($rgstrData['password']);
+                        $rcvryData['password'] = $JCrypt->decrypt($rcvryData['password']);
                     }
                 } else {
-                    $rgstrData['password'] = Jaws_XSS::defilter($rgstrData['password']);
+                    $rcvryData['password'] = Jaws_XSS::defilter($rcvryData['password']);
                 }
+                */
 
                 // set default domain if not set
-                if (is_null($rgstrData['domain'])) {
-                    $rgstrData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+                if (is_null($rcvryData['domain'])) {
+                    $rcvryData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
                 }
 
-                $dob = null;
-                if (!empty($rgstrData['dob'])) {
-                    $dob = Jaws_Date::getInstance()->ToBaseDate(explode('-', $rgstrData['dob']), 'Y-m-d');
-                    $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d');
-                }
-                $rgstrData['dob'] = $dob;
-
-                $userData = $this->gadget->model->load('Registration')->InsertUser($rgstrData);
-                if (Jaws_Error::IsError($userData)) {
-                    throw new Exception($userData->getMessage(), 401);
+                $objUser = jaws()->loadObject('Jaws_User', 'Users');
+                $userData = $objUser->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
+                if (Jaws_Error::IsError($userData) || empty($userData)) {
+                    throw new Exception(_t('USERS_USER_NOT_EXIST'), 401);
                 }
 
-                if ($this->gadget->registry->fetch('anon_activation') == 'user')
-                {
-                    $rgstrData['regstep'] = 1;
-                    $this->gadget->session->update('temp.register.user', $userData);
+                $rcvryData['rcvstep'] = 1;
+                $this->gadget->session->update('temp.recovery.user', $userData);
 
-                    // send notification to user
-                    $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
+                // send notification to user
+                $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
 
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                }
-            } else {
-                // fetch user data from session
-                $userData = $this->gadget->session->fetch('temp.register.user');
-                if (empty($userData)) {
-                    $rgstrData['regstep'] = 0;
-                    throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
-                }
+                throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
 
-                $regkey = $this->gadget->session->fetch('regkey');
-                if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300))) {
-                    // send notification to user
-                    $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
-
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                }
-
-                // check verification key
-                if ($regkey['text'] != $rgstrData['regkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                }
-
-                // update user status(enabled)
-                $this->gadget->model->load('Registration')->updateUserStatus($userData['id'], 1);
             }
 
-            $this->gadget->session->delete('temp.register.user');
-            // auto login if user activated
-            if ($this->gadget->registry->fetch('anon_activation') != 'admin') {
-                unset($userData['password'], $userData['verify_key']);
-
-                // add required attributes for auto login into jaws
-                $userData['internal']    = true;
-                $userData['superadmin']  = false;
-                $userData['logon_hours'] = '';
-                $userData['expiry_date'] = 0;
-                $userData['concurrents'] = 0;
-                $userData['avatar']      = 'gadgets/Users/Resources/images/photo48px.png';
-                $userData['remember']    = (bool)$rgstrData['remember'];
-                $userData['last_password_update'] = time();
-                return $userData;
+            // fetch user data from session
+            $userData = $this->gadget->session->fetch('temp.recovery.user');
+            if (empty($userData)) {
+                $rcvryData['rcvstep'] = 0;
+                throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
             }
 
-            $rgstrData['regstep'] = 2;
-            throw new Exception(_t('USERS_REGISTRATION_REGISTERED'), 201);
+            $regkey = $this->gadget->session->fetch('rcvkey');
+            if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300))) {
+                // send recovery key notification to user
+                $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
+
+                throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+            }
+
+            // check verification key
+            if ($regkey['text'] != $rcvryData['rcvkey']) {
+                throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+            }
+
+            $objUser = jaws()->loadObject('Jaws_User', 'Users');
+            $user = $objUser->GetUserNew(
+                $userData['domain'],
+                (int)$userData['id'],
+                array('account' => true)
+            );
+            if (Jaws_Error::IsError($user) || empty($user)) {
+                $rcvryData['rcvstep'] = 0;
+                throw new Exception(_t('USERS_USER_NOT_EXIST'), 401);
+            }
+
+            // fetch user groups
+            $groups = $objUser->GetGroupsOfUser($user['id']);
+            if (Jaws_Error::IsError($groups)) {
+                $groups = array();
+            }
+
+            $user['groups'] = $groups;
+            $user['avatar'] = $objUser->GetAvatar(
+                $user['avatar'],
+                $user['email'],
+                48,
+                $user['last_update']
+            );
+            $user['internal'] = true;
+            $user['remember'] = false;
+
+            return $user;
 
         } catch (Exception $error) {
-            unset($rgstrData['password'], $rgstrData['password_check']);
+            unset($rcvryData['password'], $rcvryData['password_check']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                'Registration.Response',
+                'Recovery.Response',
                 ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
-                $rgstrData
+                $rcvryData
             );
 
             return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
@@ -148,7 +143,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
         }
 
         http_response_code($error->getCode());
-        return Jaws_Header::Location($this->gadget->urlMap('Registration', $urlParams));
+        return Jaws_Header::Location($this->gadget->urlMap('LoginForgot', $urlParams));
     }
 
 }
