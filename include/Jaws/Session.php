@@ -225,9 +225,9 @@ class Jaws_Session
 
                 // last password updated time
                 $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-                if ($password_max_age > 0) {
+                $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
+                if ($password_max_age > 0 || $last_password_updated_time < 0) {
                     $expPasswordTime = time() - 3600 * $password_max_age;
-                    $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
                     if ($last_password_updated_time <= $expPasswordTime) {
                         define('SESSION_RESTRICTED_GADGETS', 'Users,ControlPanel');
                         $GLOBALS['log']->Log(
