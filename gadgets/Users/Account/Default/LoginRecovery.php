@@ -110,6 +110,8 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             );
             $user['internal'] = true;
             $user['remember'] = false;
+            // force user to change his password
+            $user['last_password_update'] = -1;
 
             return $user;
 
