@@ -1,21 +1,21 @@
 <?php
 /**
- * Jaws Lock class
+ * Jaws Mutex class
  *
- * @category    Lock
+ * @category    Mutex
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2019 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Lock
+class Jaws_Mutex
 {
     /**
-     * locks handles array
-     * @var     array   $locks
+     * Mutexs handles array
+     * @var     array   $mutex
      * @access  protected
      */
-    protected $locks = array();
+    protected $mutexs = array();
 
     /**
      * Creates the Jaws_Lock instance if it doesn't exist else it returns the already created one
@@ -25,21 +25,21 @@ class Jaws_Lock
      */
     static function getInstance()
     {
-        static $objLock;
-        if (!isset($objLock)) {
+        static $objMutex;
+        if (!isset($objMutex)) {
             if (JAWS_OS_WIN) {
-                $file = JAWS_PATH . 'include/Jaws/Lock/Win.php';
-                $className = 'Jaws_Lock_Win';
+                $file = JAWS_PATH . 'include/Jaws/Mutex/File.php';
+                $className = 'Jaws_Mutex_File';
             } else {
-                $file = JAWS_PATH . 'include/Jaws/Lock/Nix.php';
-                $className = 'Jaws_Lock_Nix';
+                $file = JAWS_PATH . 'include/Jaws/Mutex/Semaphore.php';
+                $className = 'Jaws_Mutex_Semaphore';
             }
 
             include_once($file);
-            $objLock = new $className();
+            $objMutex = new $className();
         }
 
-        return $objLock;
+        return $objMutex;
     }
 
     /**
@@ -67,7 +67,7 @@ class Jaws_Lock
      */
     function release($lname)
     {
-        unset($this->locks[$lname]);
+        unset($this->mutexs[$lname]);
     }
 
 }

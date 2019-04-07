@@ -1,29 +1,15 @@
 <?php
 /**
- * Jaws MS Windows Lock class
+ * Jaws Semaphore Mutex class
  *
- * @category    Lock
+ * @category    Mutex
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2019 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Lock_Win extends Jaws_Lock
+class Jaws_Mutex_Semaphore extends Jaws_Mutex
 {
-    /**
-     * lock files prefix
-     * @var     string  $lockPrefix
-     * @access  private
-     */
-    private $lockPrefix = 'lock_';
-
-    /**
-     * lock files directory
-     * @var     string  $lockDirectory
-     * @access  private
-     */
-    private $lockDirectory;
-
     /**
      * Constructor
      *
@@ -32,7 +18,6 @@ class Jaws_Lock_Win extends Jaws_Lock
      */
     function __construct()
     {
-        $this->lockDirectory = rtrim(sys_get_temp_dir(), '/\\');
     }
 
     /**
@@ -46,15 +31,10 @@ class Jaws_Lock_Win extends Jaws_Lock
     function acquire($lname, $nowait  = false)
     {
         if (!isset($this->locks[$lname])) {
-            $this->locks[$lname] = fopen($this->lockDirectory . '/'. $this->lockPrefix . md5($lname), 'a+');
+            $this->locks[$lname] = sem_get(ftok(__FILE__, chr(count($this->locks)+1)));
         }
 
-        while (!($lock = flock($this->locks[$lname], LOCK_EX | LOCK_NB)) && !$nowait) {
-            //Exclusive access not acquired, try again
-            usleep(mt_rand(0, 100)); // 0-100 microseconds
-        }
-
-        return $lock;
+        return sem_acquire($this->locks[$lname], $nowait);
     }
 
     /**
@@ -67,8 +47,7 @@ class Jaws_Lock_Win extends Jaws_Lock
     function release($lname)
     {
         if (isset($this->locks[$lname])) {
-            flock($this->locks[$lname], LOCK_UN);
-            fclose($this->locks[$lname]);
+            sem_release($this->locks[$lname]);
             parent::release($lname);
         }
     }
