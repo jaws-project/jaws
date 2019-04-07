@@ -45,11 +45,11 @@ class Jaws_Mutex_File extends Jaws_Mutex
      */
     function acquire($lname, $nowait  = false)
     {
-        if (!isset($this->locks[$lname])) {
-            $this->locks[$lname] = fopen($this->lockDirectory . '/'. $this->lockPrefix . md5($lname), 'a+');
+        if (!isset($this->mutexs[$lname])) {
+            $this->mutexs[$lname] = fopen($this->lockDirectory . '/'. $this->lockPrefix . md5($lname), 'a+');
         }
 
-        while (!($lock = flock($this->locks[$lname], LOCK_EX | LOCK_NB)) && !$nowait) {
+        while (!($lock = flock($this->mutexs[$lname], LOCK_EX | LOCK_NB)) && !$nowait) {
             //Exclusive access not acquired, try again
             usleep(mt_rand(0, 100)); // 0-100 microseconds
         }
@@ -66,9 +66,9 @@ class Jaws_Mutex_File extends Jaws_Mutex
      */
     function release($lname)
     {
-        if (isset($this->locks[$lname])) {
-            flock($this->locks[$lname], LOCK_UN);
-            fclose($this->locks[$lname]);
+        if (isset($this->mutexs[$lname])) {
+            flock($this->mutexs[$lname], LOCK_UN);
+            fclose($this->mutexs[$lname]);
             parent::release($lname);
         }
     }

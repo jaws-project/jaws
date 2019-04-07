@@ -30,11 +30,11 @@ class Jaws_Mutex_Semaphore extends Jaws_Mutex
      */
     function acquire($lname, $nowait  = false)
     {
-        if (!isset($this->locks[$lname])) {
-            $this->locks[$lname] = sem_get(ftok(__FILE__, chr(count($this->locks)+1)));
+        if (!isset($this->mutexs[$lname])) {
+            $this->mutexs[$lname] = sem_get(ftok(__FILE__, chr(count($this->mutexs)+1)));
         }
 
-        return sem_acquire($this->locks[$lname], $nowait);
+        return sem_acquire($this->mutexs[$lname], $nowait);
     }
 
     /**
@@ -46,8 +46,8 @@ class Jaws_Mutex_Semaphore extends Jaws_Mutex
      */
     function release($lname)
     {
-        if (isset($this->locks[$lname])) {
-            sem_release($this->locks[$lname]);
+        if (isset($this->mutexs[$lname])) {
+            sem_release($this->mutexs[$lname]);
             parent::release($lname);
         }
     }
