@@ -35,37 +35,41 @@ class Jaws_FileMemory
      * Constructor
      *
      * @access  private
-     * @param   string  $fname  File name
-     * @param   int     $fsize  File size
      * @return  void
      */
-    private function __construct($fname, $fsize = 4096)
+    private function __construct()
     {
-        $this->fname = $fname;
-        $this->shmkey = @shmop_open(crc32($this->fname), 'c', 0644, $fsize);
     }
 
     /**
      * Creates the Jaws_FileMemory instance if it doesn't exist else it returns the already created one
      *
      * @access  public
+     * @return  object  Jaws_FileMemory type object
+     */
+    static function getInstance()
+    {
+        return new Jaws_FileMemory();
+    }
+
+    /**
+     * Read data from shared memory block
+     *
+     * @access  public
      * @param   string  $fname  File name
      * @param   int     $fsize  File size
-     * @return  object  Jaws_Lock type object
+     * @param   bool    $exclusive access
+     * @return  mixed   Returns the data or FALSE on failure
      */
-    static function getInstance($fname, $fsize = 4096, $exclusive = true)
+    function open($fname, $fsize = 4096, $exclusive = true)
     {
-        static $instances = array();
-        if (!isset($instances[$fname])) {
-            $instances[$fname] = new Jaws_FileMemory($fname, $fsize);
-        }
-
+        $this->fname = $fname;
         //exclusive access acquire
         if ($exclusive) {
-            $instances[$fname]->lock(true);
+            $this->lock(true);
         }
-
-        return $instances[$fname];
+        $this->shmkey = @shmop_open(crc32($this->fname), 'c', 0644, $fsize);
+        return $this;
     }
 
     /**
@@ -112,7 +116,7 @@ class Jaws_FileMemory
      * @access  public
      * @return  void
      */
-    function delete ()
+    function delete()
     {
         $this->lock(false);
         shmop_delete($this->shmkey);
