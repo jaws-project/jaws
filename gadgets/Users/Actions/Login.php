@@ -323,7 +323,48 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     }
 
     /**
+     * Set/Get bad logins count
+     *
+     * @access  public
+     * @param   string  $username  Username
+     * @param   bool    $increase  increase bad logins count?
+     * @return  int     Bad logins count
+     */
+    function BadLogins($username, $increase = false)
+    {
+        $result = 0;
+        $memLogins = Jaws_FileMemory::getInstance()->open('bad_logins', 64*1024); //64 kbytes
+        $logins = $memLogins->read();
+        if (!$logins) {
+            $logins = array();
+        }
+
+        $lockedout_time = (int)$GLOBALS['app']->Registry->fetch('password_lockedout_time', 'Policy');
+        // loop for find outdated records
+        foreach ($logins as $user => $access) {
+            if ($access['time'] < time() - $lockedout_time) {
+                unset($logins[$user]);
+            }
+        }
+        // fetch bad logins count
+        $result = isset($logins[$username])? (int)$logins[$username]['count'] : 0;
+        if ($increase) {
+            $result++;
+            $logins[$username] = array(
+                'count' => $result,
+                'time' => time()
+            );
+        }
+        // write new date
+        $memLogins->write($logins);
+        $memLogins->close();
+
+        return $result;
+    }
+
+    /**
      * Notify user login key by email/mobile
+     *
      * @access  public
      * @param   array   $uData  User data array
      * @return  bool    True
