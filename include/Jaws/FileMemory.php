@@ -68,7 +68,10 @@ class Jaws_FileMemory
         if ($exclusive) {
             $this->lock(true);
         }
-        $this->shmkey = @shmop_open(crc32($this->fname), 'c', 0644, $fsize);
+        if (false === $this->shmkey = @shmop_open(crc32($this->fname), 'w', 0, 0)) {
+            $this->shmkey = @shmop_open(crc32($this->fname), 'c', 0644, $fsize);
+        }
+
         return $this;
     }
 
@@ -102,24 +105,26 @@ class Jaws_FileMemory
      * Close shared memory block
      *
      * @access  public
-     * @return  void
+     * @return  object  Returns the instance
      */
     function close()
     {
         $this->lock(false);
         shmop_close($this->shmkey);
+        return $this;
     }
 
     /**
      * Delete shared memory block
      *
      * @access  public
-     * @return  void
+     * @return  object  Returns the instance
      */
     function delete()
     {
         $this->lock(false);
         shmop_delete($this->shmkey);
+        return $this;
     }
 
     /**
@@ -127,7 +132,7 @@ class Jaws_FileMemory
      *
      * @access  public
      * @param   bool    $state  Lock/Unlock operation
-     * @return  void
+     * @return  object  Returns the instance
      */
     function lock($state = true)
     {
@@ -138,6 +143,7 @@ class Jaws_FileMemory
             Jaws_Mutex::getInstance()->release($this->fname);
             $this->exclusive = false;
         }
+        return $this;
     }
 
 }
