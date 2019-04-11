@@ -326,11 +326,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      * Set/Get bad logins count
      *
      * @access  public
-     * @param   string  $username  Username
-     * @param   bool    $increase  increase bad logins count?
+     * @param   string  $username   Username
+     * @param   bool    $operation  Operation type(1: increase, 0: get, -1: remove)
      * @return  int     Bad logins count
      */
-    function BadLogins($username, $increase = false)
+    function BadLogins($username, $operation = 0)
     {
         $result = 0;
         $memLogins = Jaws_FileMemory::getInstance()->open('bad_logins', 64*1024); //64 kbytes
@@ -348,13 +348,21 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
         // fetch bad logins count
         $result = isset($logins[$username])? (int)$logins[$username]['count'] : 0;
-        if ($increase) {
-            $result++;
-            $logins[$username] = array(
-                'count' => $result,
-                'time' => time()
-            );
+        switch ($operation) {
+            case 1:     // increase
+                $result++;
+                $logins[$username] = array(
+                    'count' => $result,
+                    'time' => time()
+                );
+                break;
+
+            case -1:    // remove
+                $result = 0;
+                unset($logins[$username]);
+                break;
         }
+
         // write new date
         $memLogins->write($logins);
         $memLogins->close();

@@ -34,18 +34,34 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         );
 
         try {
+            // get bad logins count
+            $bad_logins = $this->gadget->action->load('Login')->BadLogins($loginData['username'], 0);
             // check captcha
             if (!$httpAuthEnabled) {
-                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-                $resCheck = $htmlPolicy->checkCaptcha('login');
-                if (Jaws_Error::IsError($resCheck)) {
-                    throw new Exception($resCheck->getMessage(), 401);
+                $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
+                if ($bad_logins >= $max_captcha_login_bad_count) {
+                    $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                    $resCheck = $htmlPolicy->checkCaptcha('login');
+                    if (Jaws_Error::IsError($resCheck)) {
+                        throw new Exception($resCheck->getMessage(), 401);
+                    }
                 }
+            }
+
+            $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
+            if ($bad_logins >= $max_lockedout_login_bad_count) {
+                // forbidden access event logging
+                $GLOBALS['app']->Listener->Shout(
+                    'Users',
+                    'Log',
+                    array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
+                );
+                throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
             }
 
             if (empty($loginData['loginstep'])) {
                 $this->gadget->session->update('temp.login.user', '');
-                if ($loginData['username'] === '' && $loginData['password'] === '') {
+                if ($loginData['username'] === '') {
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
                 }
 
@@ -67,7 +83,9 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $userModel = $GLOBALS['app']->loadObject('Jaws_User');
                 $user = $userModel->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
                 if (Jaws_Error::isError($user)) {
-                    throw new Exception($user->getMessage(), 401);
+                    // increase bad logins count
+                    $this->gadget->action->load('Login')->BadLogins($loginData['username'], 1);
+                    throw new Exception($user->getMessage(), $user->getCode());
                 }
 
                 // fetch user groups
@@ -141,6 +159,8 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             $this->gadget->session->delete('loginkey');
             // remove temp user data
             $this->gadget->session->delete('temp.login.user');
+            // unset bad login entry
+            $this->gadget->action->load('Login')->BadLogins($user['username'], -1);
 
             return $user;
         } catch (Exception $error) {

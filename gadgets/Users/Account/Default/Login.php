@@ -56,9 +56,12 @@ class Users_Account_Default_Login extends Users_Account_Default
             $this->LoginBoxStep1($tpl, $reqpost);
         }
 
-        //captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
+        $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
+        if ($this->gadget->action->load('Login')->BadLogins($reqpost['username']) >= $max_captcha_login_bad_count) {
+            //captcha
+            $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+            $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
+        }
 
         if ($this->gadget->registry->fetch('anon_register') == 'true') {
             $link =& Piwi::CreateWidget(
