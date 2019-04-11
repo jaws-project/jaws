@@ -29,8 +29,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
         $status = $this->gadget->registry->fetch($field. '_captcha_status');
         switch ($field) {
             case 'login':
-                $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
-                if (($status == 'DISABLED') || ($bad_logins < (int)$status)) {
+                if ($status == 'DISABLED') {
                     return false;
                 }
                 break;
@@ -91,8 +90,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
         $status = $this->gadget->registry->fetch($field. '_captcha_status');
         switch ($field) {
             case 'login':
-                $bad_logins = (int)$GLOBALS['app']->Session->GetAttribute('bad_login_count');
-                if (($status == 'DISABLED') || ($bad_logins < (int)$status)) {
+                if ($status == 'DISABLED') {
                     return true;
                 }
                 break;
