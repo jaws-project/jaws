@@ -56,13 +56,6 @@ class Users_Account_Default_Login extends Users_Account_Default
             $this->LoginBoxStep1($tpl, $reqpost);
         }
 
-        $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
-        if ($this->gadget->action->load('Login')->BadLogins($reqpost['username']) >= $max_captcha_login_bad_count) {
-            //captcha
-            $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
-        }
-
         if ($this->gadget->registry->fetch('anon_register') == 'true') {
             $link =& Piwi::CreateWidget(
                 'Link',
@@ -99,12 +92,6 @@ class Users_Account_Default_Login extends Users_Account_Default
      */
     function AdminLogin($referrer)
     {
-        if ($GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true') {
-            $httpAuth = new Jaws_HTTPAuth();
-            $httpAuth->showLoginBox();
-            return false;
-        }
-
         $this->AjaxMe('script.js');
         // Init layout
         $GLOBALS['app']->Layout->Load('gadgets/Users/Templates/Admin', 'LoginBox.html');
@@ -131,10 +118,6 @@ class Users_Account_Default_Login extends Users_Account_Default
         } else {
             $this->LoginBoxStep1($ltpl, $reqpost);
         }
-
-        //captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $mPolicy->loadCaptcha($ltpl, 'layout', 'login');
 
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
         $ltpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/'));
@@ -207,6 +190,13 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->ParseBlock("$block/login_step_1/remember");
 
         $tpl->ParseBlock("$block/login_step_1");
+
+        // display captcha?
+        $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
+        if ($this->gadget->action->load('Login')->BadLogins($reqpost['username']) >= $max_captcha_login_bad_count) {
+            $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+            $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
+        }
     }
 
     /**
@@ -227,6 +217,10 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('lbl_loginkey', _t('GLOBAL_LOGINKEY'));
 
         $tpl->ParseBlock("$block/login_step_2");
+
+        // display captcha
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+        $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
     }
 
 }

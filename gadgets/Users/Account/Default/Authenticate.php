@@ -15,51 +15,36 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
      */
     function Authenticate()
     {
-        $httpAuthEnabled = false;
-        if (isset($_SERVER['PHP_AUTH_USER']) &&
-            (jaws()->request->method() != 'post') &&
-            $GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true'
-        ) {
-            $httpAuthEnabled = true;
-            $httpAuth = new Jaws_HTTPAuth();
-            $httpAuth->AssignData();
-            jaws()->request->update('username', $httpAuth->getUsername(), 'post');
-            jaws()->request->update('password', $httpAuth->getPassword(), 'post');
-            jaws()->request->update('usecrypt', 0, 'post');
-        }
-
         $loginData = $this->gadget->request->fetch(
             array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'loginstep', 'remember'),
             'post'
         );
 
         try {
-            // get bad logins count
-            $bad_logins = $this->gadget->action->load('Login')->BadLogins($loginData['username'], 0);
-            // check captcha
-            if (!$httpAuthEnabled) {
+            if (empty($loginData['loginstep'])) {
+                // get bad logins count
+                $bad_logins = $this->gadget->action->load('Login')->BadLogins($loginData['username'], 0);
                 $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
                 if ($bad_logins >= $max_captcha_login_bad_count) {
+                    // check captcha
                     $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
                     $resCheck = $htmlPolicy->checkCaptcha('login');
                     if (Jaws_Error::IsError($resCheck)) {
                         throw new Exception($resCheck->getMessage(), 401);
                     }
                 }
-            }
 
-            $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
-            if ($bad_logins >= $max_lockedout_login_bad_count) {
-                // forbidden access event logging
-                $GLOBALS['app']->Listener->Shout(
-                    'Users',
-                    'Log',
-                    array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
-                );
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
-            }
+                $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
+                if ($bad_logins >= $max_lockedout_login_bad_count) {
+                    // forbidden access event logging
+                    $GLOBALS['app']->Listener->Shout(
+                        'Users',
+                        'Log',
+                        array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
+                    );
+                    throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
+                }
 
-            if (empty($loginData['loginstep'])) {
                 $this->gadget->session->update('temp.login.user', '');
                 if ($loginData['username'] === '') {
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
@@ -116,6 +101,13 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
             } else {
+                // check captcha
+                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                $resCheck = $htmlPolicy->checkCaptcha('login');
+                if (Jaws_Error::IsError($resCheck)) {
+                    throw new Exception($resCheck->getMessage(), 401);
+                }
+
                 // fetch user data from session
                 $user = $this->gadget->session->fetch('temp.login.user');
                 if (empty($user)) {
@@ -177,9 +169,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 RESPONSE_ERROR,
                 $loginData
             );
-            if ($httpAuthEnabled) {
-                return $this->gadget->action->loadAdmin('Login')->Login();
-            }
 
             return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
         }
