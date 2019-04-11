@@ -145,8 +145,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'), 409);
             }
 
-            // remove login trying count from session
-            $this->gadget->session->delete('bad_login_count');
             // remove login key
             $this->gadget->session->delete('loginkey');
             // remove temp user data
@@ -156,12 +154,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
 
             return $user;
         } catch (Exception $error) {
-            // increment login trying count in session
-            $this->gadget->session->update(
-                'bad_login_count',
-                (int)$this->gadget->session->fetch('bad_login_count') + 1
-            );
-
             unset($loginData['password']);
             $this->gadget->session->push(
                 $error->getMessage(),
