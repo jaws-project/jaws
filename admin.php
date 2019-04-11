@@ -29,12 +29,6 @@ require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget', array('post', 'get')));
 $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action', array('post', 'get')));
 
-$httpAuthEnabled = $GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true';
-if ($httpAuthEnabled) {
-    require_once JAWS_PATH . 'include/Jaws/HTTPAuth.php';
-    $httpAuth = new Jaws_HTTPAuth();
-}
-
 // Init layout
 $GLOBALS['app']->InstanceLayout();
 // Run auto-load methods before standalone actions too
