@@ -77,26 +77,7 @@ class Jaws_User
         if (Jaws_Error::IsError($result) || empty($result)) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_WRONG'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-
-        // bad_password_count & lockedout time
-        $max_password_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
-        $password_lockedout_time = $GLOBALS['app']->Registry->fetch('password_lockedout_time', 'Policy');
-        if ($result['bad_password_count'] >= $max_password_bad_count &&
-           ((time() - $result['last_access']) <= $password_lockedout_time))
-        {
-            // forbidden access event logging
-            $GLOBALS['app']->Listener->Shout(
-                'Users',
-                'Log',
-                array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
-            );
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'),
-                __FUNCTION__,
+                401,
                 JAWS_ERROR_NOTICE
             );
         }
@@ -112,7 +93,7 @@ class Jaws_User
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_WRONG'),
-                __FUNCTION__,
+                401,
                 JAWS_ERROR_NOTICE
             );
         }
@@ -128,7 +109,7 @@ class Jaws_User
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_STATUS_'. $result['status']),
-                __FUNCTION__,
+                403,
                 JAWS_ERROR_NOTICE
             );
         }
@@ -143,7 +124,7 @@ class Jaws_User
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_EXPIRED'),
-                __FUNCTION__,
+                403,
                 JAWS_ERROR_NOTICE
             );
         }
@@ -160,7 +141,7 @@ class Jaws_User
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_LOGON_HOURS'),
-                __FUNCTION__,
+                403,
                 JAWS_ERROR_NOTICE
             );
         }
