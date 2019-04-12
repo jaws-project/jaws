@@ -148,7 +148,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
                 return false;
             }
         } elseif (is_dir($filename)) {
-            $return = Jaws_FileManagement::FullRemoval($filename);
+            $return = Jaws_Utils::delete($filename);
             if (!$return) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_ERROR_CANT_DELETE_DIR', $file), RESPONSE_ERROR);
                 return false;
