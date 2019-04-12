@@ -79,7 +79,7 @@ class Jaws_FileMemory
      * Read data from shared memory block
      *
      * @access  public
-     * @param   int     $start      Start posiotion
+     * @param   int     $start      Start position
      * @param   int     $count      Count of read bytes
      * @return  mixed   Returns the data or FALSE on failure
      */
@@ -94,7 +94,7 @@ class Jaws_FileMemory
      * @access  public
      * @param   string  $data       Data to write into shared memory block
      * @param   int     $offset     Offset of start writing data
-     * @return  mixed   The size of the written data, or FALSE onfailure
+     * @return  mixed   The size of the written data, or FALSE on failure
      */
     function write($data, $offset = 0)
     {
