@@ -441,13 +441,12 @@ class Jaws_Utils
      * Delete directories and files
      *
      * @access  public
-     * @param   string  $path           File/Directory path
-     * @param   bool    $dirs_include
-     * @param   bool    $self_include
+     * @param   string  $path       File/Directory path
+     * @param   bool    $itself     Include self directory
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see http://www.php.net/rmdir & http://www.php.net/unlink
      */
-    static function delete($path, $dirs_include = true, $self_include = true)
+    static function delete($path, $itself = true)
     {
         if (!file_exists($path)) {
             return true;
@@ -468,13 +467,13 @@ class Jaws_Utils
                     continue;
                 }
 
-                if (!Jaws_Utils::delete($path. DIRECTORY_SEPARATOR. $file, $dirs_include)) {
+                if (!Jaws_Utils::delete($path. DIRECTORY_SEPARATOR. $file, true)) {
                     return false;
                 }
             }
         }
 
-        if($dirs_include && $self_include) {
+        if ($itself) {
             return @rmdir($path);
         }
 
