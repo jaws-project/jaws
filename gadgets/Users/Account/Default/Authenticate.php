@@ -37,8 +37,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
                 if ($bad_logins >= $max_lockedout_login_bad_count) {
                     // forbidden access event logging
-                    $GLOBALS['app']->Listener->Shout(
-                        'Users',
+                    $this->gadget->event->shout(
                         'Log',
                         array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
                     );
