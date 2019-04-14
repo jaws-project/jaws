@@ -21,11 +21,26 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
         );
 
         try {
-            // check captcha
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $resCheck = $htmlPolicy->checkCaptcha('login');
-            if (Jaws_Error::IsError($resCheck)) {
-                throw new Exception($resCheck->getMessage());
+            // get bad logins count
+            $bad_logins = $this->gadget->action->load('Login')->BadLogins($loginData['username'], 0);
+            $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
+            if ($bad_logins >= $max_captcha_login_bad_count) {
+                // check captcha
+                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                $resCheck = $htmlPolicy->checkCaptcha('login');
+                if (Jaws_Error::IsError($resCheck)) {
+                    throw new Exception($resCheck->getMessage(), 401);
+                }
+            }
+
+            $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
+            if ($bad_logins >= $max_lockedout_login_bad_count) {
+                // forbidden access event logging
+                $this->gadget->event->shout(
+                    'Log',
+                    array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
+                );
+                throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
             }
 
             $loginData['loginstep'] = 0;
@@ -83,8 +98,15 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                     $user['editor']      = '';
                     $user['timezone']    = null;
                     $user['remember']    = false;
+
+                    // unset bad login entry
+                    $this->gadget->action->load('Login')->BadLogins($user['username'], -1);
+
                     return $user;
                 } else {
+                    // increase bad logins count
+                    $this->gadget->action->load('Login')->BadLogins($loginData['username'], 1);
+
                     throw new Exception("LDAP bind to $rdn failed!");
                 }
             } else {
