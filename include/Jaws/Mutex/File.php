@@ -39,17 +39,17 @@ class Jaws_Mutex_File extends Jaws_Mutex
      * Acquire exclusive access
      *
      * @access  public
-     * @param   string  $lname      Lock identifier
-     * @param   float   $nowait     Wait for the exclusive access to be acquired?
+     * @param   int     $lkey   Lock identifier
+     * @param   float   $nowait Wait for the exclusive access to be acquired?
      * @return  bool    True if exclusive access Acquired otherwise False
      */
-    function acquire($lname, $nowait  = false)
+    function acquire($lkey, $nowait  = false)
     {
-        if (!isset($this->mutexs[$lname])) {
-            $this->mutexs[$lname] = fopen($this->lockDirectory . '/'. $this->lockPrefix . md5($lname), 'a+');
+        if (!isset($this->mutexs[$lkey])) {
+            $this->mutexs[$lkey] = fopen($this->lockDirectory . '/'. $this->lockPrefix . (string)$lkey, 'a+');
         }
 
-        while (!($lock = flock($this->mutexs[$lname], LOCK_EX | LOCK_NB)) && !$nowait) {
+        while (!($lock = flock($this->mutexs[$lkey], LOCK_EX | LOCK_NB)) && !$nowait) {
             //Exclusive access not acquired, try again
             usleep(mt_rand(0, 100)); // 0-100 microseconds
         }
@@ -61,15 +61,15 @@ class Jaws_Mutex_File extends Jaws_Mutex
      * Release exclusive access
      *
      * @access  public
-     * @param   string  $lname  Lock unique name
+     * @param   int     $lkey   Lock identifier
      * @return  void
      */
-    function release($lname)
+    function release($lkey)
     {
-        if (isset($this->mutexs[$lname])) {
-            flock($this->mutexs[$lname], LOCK_UN);
-            fclose($this->mutexs[$lname]);
-            parent::release($lname);
+        if (isset($this->mutexs[$lkey])) {
+            flock($this->mutexs[$lkey], LOCK_UN);
+            fclose($this->mutexs[$lkey]);
+            parent::release($lkey);
         }
     }
 

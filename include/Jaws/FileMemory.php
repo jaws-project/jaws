@@ -11,11 +11,11 @@
 class Jaws_FileMemory
 {
     /**
-     * virtual file name
-     * @var     string  $fname
+     * virtual file key
+     * @var     string  $fkey
      * @access  private
      */
-    private $fname;
+    private $fkey;
 
     /**
      * shared memory resource handle
@@ -53,7 +53,7 @@ class Jaws_FileMemory
     }
 
     /**
-     * Read data from shared memory block
+     * Open shared memory block by name
      *
      * @access  public
      * @param   string  $fname  File name
@@ -63,13 +63,27 @@ class Jaws_FileMemory
      */
     function open($fname, $fsize = 4096, $exclusive = true)
     {
-        $this->fname = $fname;
+        return $this->openByKey(crc32($fname), $fsize, $exclusive);
+    }
+
+    /**
+     * Open shared memory block by key
+     *
+     * @access  public
+     * @param   int     $fkey   File key
+     * @param   int     $fsize  File size
+     * @param   bool    $exclusive access
+     * @return  mixed   Returns the data or FALSE on failure
+     */
+    function openByKey($fkey, $fsize = 4096, $exclusive = true)
+    {
+        $this->fkey = $fkey;
         //exclusive access acquire
         if ($exclusive) {
             $this->lock(true);
         }
-        if (false === $this->shmkey = @shmop_open(crc32($this->fname), 'w', 0, 0)) {
-            $this->shmkey = @shmop_open(crc32($this->fname), 'c', 0644, $fsize);
+        if (false === $this->shmkey = @shmop_open($fkey, 'w', 0, 0)) {
+            $this->shmkey = @shmop_open($fkey, 'c', 0644, $fsize);
         }
 
         return $this;
@@ -137,10 +151,10 @@ class Jaws_FileMemory
     function lock($state = true)
     {
         if ($state) {
-            Jaws_Mutex::getInstance()->acquire($this->fname);
+            Jaws_Mutex::getInstance()->acquire($this->fkey);
             $this->exclusive = true;
         } else {
-            Jaws_Mutex::getInstance()->release($this->fname);
+            Jaws_Mutex::getInstance()->release($this->fkey);
             $this->exclusive = false;
         }
         return $this;

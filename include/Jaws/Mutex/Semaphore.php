@@ -24,31 +24,31 @@ class Jaws_Mutex_Semaphore extends Jaws_Mutex
      * Acquire exclusive access
      *
      * @access  public
-     * @param   string  $lname      Lock identifier
-     * @param   float   $nowait     Wait for the exclusive access to be acquired?
+     * @param   int     $lkey   Lock identifier
+     * @param   float   $nowait Wait for the exclusive access to be acquired?
      * @return  bool    True if exclusive access Acquired otherwise False
      */
-    function acquire($lname, $nowait  = false)
+    function acquire($lkey, $nowait  = false)
     {
-        if (!isset($this->mutexs[$lname])) {
-            $this->mutexs[$lname] = sem_get(ftok(__FILE__, chr(count($this->mutexs)+1)));
+        if (!isset($this->mutexs[$lkey])) {
+            $this->mutexs[$lkey] = sem_get($lkey);
         }
 
-        return sem_acquire($this->mutexs[$lname], $nowait);
+        return sem_acquire($this->mutexs[$lkey], $nowait);
     }
 
     /**
      * Release exclusive access
      *
      * @access  public
-     * @param   string  $lname  Lock unique name
+     * @param   int     $lkey   Lock identifier
      * @return  void
      */
-    function release($lname)
+    function release($lkey)
     {
-        if (isset($this->mutexs[$lname])) {
-            sem_release($this->mutexs[$lname]);
-            parent::release($lname);
+        if (isset($this->mutexs[$lkey])) {
+            sem_release($this->mutexs[$lkey]);
+            parent::release($lkey);
         }
     }
 

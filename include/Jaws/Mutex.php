@@ -46,11 +46,11 @@ class Jaws_Mutex
      * Acquire exclusive access
      *
      * @access  public
-     * @param   string  $lname      Lock identifier
-     * @param   float   $nowait     Wait for the exclusive access to be acquired?
+     * @param   int     $lkey   Lock identifier
+     * @param   float   $nowait Wait for the exclusive access to be acquired?
      * @return  bool    True if exclusive access Acquired otherwise False
      */
-    function acquire($lname, $nowait  = false)
+    function acquire($lkey, $nowait  = false)
     {
         return Jaws_Error::raiseError(
             'acquire() method not supported by driver.',
@@ -62,12 +62,12 @@ class Jaws_Mutex
      * Release exclusive access
      *
      * @access  public
-     * @param   string  $lname  Lock unique name
+     * @param   int     $lkey   Lock identifier
      * @return  void
      */
-    function release($lname)
+    function release($lkey)
     {
-        unset($this->mutexs[$lname]);
+        unset($this->mutexs[$lkey]);
     }
 
 }
