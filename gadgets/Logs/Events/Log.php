@@ -20,9 +20,6 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      */
     function Execute($shouter, $params)
     {
-        @list($gadget, $action, $priority, $params, $status, $user) = $params;
-        $user = (int)$user;
-        $status = empty($status)? 200 : (int)$status;
         if (!isset($GLOBALS['app']->Session)) {
             return false;
         }
