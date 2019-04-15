@@ -89,7 +89,15 @@ class Jaws_User
             $GLOBALS['app']->Listener->Shout(
                 'Users',
                 'Log',
-                array('Users', 'Login', JAWS_WARNING, null, 401, $result['id'])
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'authtype' => 'Default',
+                    'domain'   => $result['domain'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'status'   => 401,
+                )
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_WRONG'),
@@ -105,7 +113,15 @@ class Jaws_User
             $GLOBALS['app']->Listener->Shout(
                 'Users',
                 'Log',
-                array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'authtype' => 'Default',
+                    'domain'   => $result['domain'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'status'   => 403,
+                )
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_STATUS_'. $result['status']),
@@ -120,7 +136,15 @@ class Jaws_User
             $GLOBALS['app']->Listener->Shout(
                 'Users',
                 'Log',
-                array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'authtype' => 'Default',
+                    'domain'   => $result['domain'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'status'   => 403,
+                )
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_EXPIRED'),
@@ -137,7 +161,15 @@ class Jaws_User
             $GLOBALS['app']->Listener->Shout(
                 'Users',
                 'Log',
-                array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'authtype' => 'Default',
+                    'domain'   => $result['domain'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'status'   => 403,
+                )
             );
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_LOGON_HOURS'),
