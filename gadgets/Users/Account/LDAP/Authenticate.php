@@ -39,7 +39,6 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                 $this->gadget->event->shout(
                     'Log',
                     array(
-                        'gadget'   => 'Users',
                         'action'   => 'Login',
                         'domain'   => (int)$loginData['domain'],
                         'username' => strtolower($loginData['username']),

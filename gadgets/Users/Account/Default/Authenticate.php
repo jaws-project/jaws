@@ -45,7 +45,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     $this->gadget->event->shout(
                         'Log',
                         array(
-                            'gadget'   => 'Users',
                             'action'   => 'Login',
                             'domain'   => $loginData['domain'],
                             'username' => strtolower($loginData['username']),
