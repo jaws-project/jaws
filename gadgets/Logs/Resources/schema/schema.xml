@@ -15,7 +15,7 @@
         </field>
 
         <field>
-            <name>authtype</name>
+            <name>auth</name>
             <type>text</type>
             <length>32</length>
             <notnull>true</notnull>

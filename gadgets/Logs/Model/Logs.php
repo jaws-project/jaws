@@ -22,7 +22,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         // unset invalid keys
         $invalids = array_diff(
             array_keys($dLog),
-            array('authtype', 'domain', 'username', 'gadget', 'action', 'priority', 'params', 'status')
+            array('auth', 'domain', 'username', 'gadget', 'action', 'priority', 'params', 'status')
         );
         foreach ($invalids as $invalid) {
             unset($dLog[$invalid]);
@@ -63,7 +63,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'id:integer', 'authtype', 'domain', 'username', 'gadget', 'action', 'priority',
+            'id:integer', 'auth', 'domain', 'username', 'gadget', 'action', 'priority',
             'apptype', 'backend:boolean', 'ip', 'agent', 'status', 'insert_time'
         );
         $logsTable->orderBy('logs.id desc');

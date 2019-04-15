@@ -24,8 +24,8 @@ class Logs_Events_Log extends Jaws_Gadget_Event
             return false;
         }
 
-        // authtype
-        $params['authtype'] = isset($params['authtype'])? $params['authtype'] : 'Default';
+        // auth
+        $params['auth'] = isset($params['auth'])? $params['auth'] : 'Default';
         // domain
         $params['domain'] =
             isset($params['domain'])?

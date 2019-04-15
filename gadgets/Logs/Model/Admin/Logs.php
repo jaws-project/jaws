@@ -70,7 +70,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'id:integer', 'authtype', 'domain', 'username', 'gadget', 'action', 'priority:integer',
+            'id:integer', 'auth', 'domain', 'username', 'gadget', 'action', 'priority:integer',
             'apptype', 'backend:boolean', 'ip', 'agent', 'status:integer', 'insert_time'
         );
         return $logsTable->where('id', (int)$id)->fetchRow();
