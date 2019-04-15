@@ -92,7 +92,7 @@ class Jaws_User
                 array(
                     'gadget'   => 'Users',
                     'action'   => 'Login',
-                    'authtype' => 'Default',
+                    'auth'     => 'Default',
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
@@ -116,7 +116,7 @@ class Jaws_User
                 array(
                     'gadget'   => 'Users',
                     'action'   => 'Login',
-                    'authtype' => 'Default',
+                    'auth'     => 'Default',
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
@@ -139,7 +139,7 @@ class Jaws_User
                 array(
                     'gadget'   => 'Users',
                     'action'   => 'Login',
-                    'authtype' => 'Default',
+                    'auth'     => 'Default',
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
@@ -164,7 +164,7 @@ class Jaws_User
                 array(
                     'gadget'   => 'Users',
                     'action'   => 'Login',
-                    'authtype' => 'Default',
+                    'auth'     => 'Default',
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
