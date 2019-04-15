@@ -25,7 +25,10 @@ class Logs_Events_Log extends Jaws_Gadget_Event
         }
 
         // auth
-        $params['auth'] = isset($params['auth'])? $params['auth'] : 'Default';
+        $params['auth'] =
+            isset($params['auth'])?
+            (string)$params['auth'] :
+            $GLOBALS['app']->Session->GetAttribute('auth');
         // domain
         $params['domain'] =
             isset($params['domain'])?
