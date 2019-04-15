@@ -255,7 +255,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 bin2hex($referrer)
             );
         } else {
-            $loginData['authtype'] = $authtype;
+            $loginData['auth'] = $authtype;
             // create session & cookie
             $GLOBALS['app']->Session->Create($loginData, $loginData['remember']);
             // login event logging

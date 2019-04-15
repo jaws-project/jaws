@@ -161,7 +161,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             http_response_code(201);
 
             // add required attributes for auto login into jaws
-            $registerData['authtype'] = $authtype;
+            $registerData['auth'] = $authtype;
 
             // create session & cookie
             $GLOBALS['app']->Session->Create($registerData, $registerData['remember']);
