@@ -260,6 +260,7 @@ class Jaws_Session
             $this->attributes = array();
             $info['id']          = 0;
             $info['internal']    = false;
+            $info['auth']        = '';
             $info['domain']      = 0;
             $info['username']    = '';
             $info['superadmin']  = false;
@@ -279,6 +280,7 @@ class Jaws_Session
         $this->SetAttribute('user',        $info['id']);
         $this->SetAttribute('internal',    $info['internal']);
         $this->SetAttribute('type',        JAWS_APPTYPE);
+        $this->SetAttribute('auth',        $info['auth']);
         $this->SetAttribute('domain',      $info['domain']);
         $this->SetAttribute('username',    $info['username']);
         $this->SetAttribute('superadmin',  $info['superadmin']);
@@ -340,6 +342,7 @@ class Jaws_Session
         $this->SetAttribute('user',        0);
         $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('internal',    false);
+        $this->SetAttribute('auth',        '');
         $this->SetAttribute('domain',      0);
         $this->SetAttribute('username',    '');
         $this->SetAttribute('superadmin',  false);
