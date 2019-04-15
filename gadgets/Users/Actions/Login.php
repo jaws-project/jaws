@@ -205,7 +205,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         // set authentication type in session
-        $this->gadget->session->update('authtype', $authtype);
+        $GLOBALS['app']->Session->SetAttribute('auth', $authtype);
 
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
@@ -236,7 +236,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Authenticate()
     {
         // fetch authentication type from session
-        $authtype = $this->gadget->session->fetch('authtype');
+        $authtype = $GLOBALS['app']->Session->GetAttribute('auth');
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }
@@ -285,22 +285,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return Jaws_Header::Location('');
         }
 
-        // get/check given registration driver type
-        $authtype = $this->gadget->request->fetch('authtype');
-        if (empty($authtype)) {
-            $authtype = $this->gadget->registry->fetch('authtype');
-        }
-        $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
-        $drivers = array_map('basename', glob(JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
-        if (false === $dIndex = array_search(strtolower($authtype), array_map('strtolower', $drivers))) {
-            $GLOBALS['log']->Log(
-                JAWS_LOG_NOTICE,
-                $authtype. ' registration driver doesn\'t exists, switched to default driver'
-            );
-            $authtype = 'Default';
-        } else {
-            $authtype = $drivers[$dIndex];
-        }
+        $authtype = $GLOBALS['app']->Session->GetAttribute('auth');
         $classfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Logout.php";
         if (!file_exists($classfile)) {
             Jaws_Error::Fatal($authtype. ' logout class doesn\'t exists');

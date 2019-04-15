@@ -46,7 +46,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // set authentication type in session
-        $this->gadget->session->update('authtype', $authtype);
+        $GLOBALS['app']->Session->SetAttribute('auth', $authtype);
 
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
@@ -70,7 +70,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     function Register()
     {
         // fetch authentication type from session
-        $authtype = $this->gadget->session->fetch('authtype');
+        $authtype = $GLOBALS['app']->Session->GetAttribute('auth');
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }
