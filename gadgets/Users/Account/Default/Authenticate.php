@@ -47,7 +47,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                         array(
                             'gadget'   => 'Users',
                             'action'   => 'Login',
-                            'authtype' => 'Default',
+                            'auth'     => 'Default',
                             'domain'   => $loginData['domain'],
                             'username' => strtolower($loginData['username']),
                             'priority' => JAWS_WARNING,

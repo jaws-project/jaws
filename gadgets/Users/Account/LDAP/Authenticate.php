@@ -41,7 +41,7 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                     array(
                         'gadget'   => 'Users',
                         'action'   => 'Login',
-                        'authtype' => 'LDAP',
+                        'auth'     => 'LDAP',
                         'domain'   => (int)$loginData['domain'],
                         'username' => strtolower($loginData['username']),
                         'priority' => JAWS_WARNING,
