@@ -538,7 +538,7 @@ class MDB2_Driver_Manager_mysql extends MDB2_Driver_Manager_Common
                 $field_name = $db->quoteIdentifier($field_name, true);
                 $result = $db->exec(
                     "ALTER TABLE $name CHANGE $field_name ".
-                    $db->getDeclaration($field['definition']['type'], $field['name'], $field['definition'])
+                    $db->getDeclaration($field['definition']['type'], $field_name, $field['definition'])
                 );
                 if (MDB2::isError($result)) {
                     return $result;
