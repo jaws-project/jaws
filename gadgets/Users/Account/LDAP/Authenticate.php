@@ -38,7 +38,15 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                 // forbidden access event logging
                 $this->gadget->event->shout(
                     'Log',
-                    array('Users', 'Login', JAWS_WARNING, null, 403, strtolower('ldap:'.$loginData['username']))
+                    array(
+                        'gadget'   => 'Users',
+                        'action'   => 'Login',
+                        'authtype' => 'LDAP',
+                        'domain'   => (int)$loginData['domain'],
+                        'username' => strtolower($loginData['username']),
+                        'priority' => JAWS_WARNING,
+                        'status'   => 403,
+                    )
                 );
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
             }

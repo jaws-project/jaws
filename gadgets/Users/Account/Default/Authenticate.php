@@ -20,6 +20,11 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             'post'
         );
 
+        // set default domain if not set
+        if (is_null($loginData['domain'])) {
+            $loginData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+        }
+
         try {
             if (empty($loginData['loginstep'])) {
                 // get bad logins count
@@ -37,10 +42,17 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
                 if ($bad_logins >= $max_lockedout_login_bad_count) {
                     // forbidden access event logging
-                    $GLOBALS['app']->Listener->Shout(
-                        'Users',
+                    $this->gadget->event->shout(
                         'Log',
-                        array('Users', 'Login', JAWS_WARNING, null, 403, $loginData['username'])
+                        array(
+                            'gadget'   => 'Users',
+                            'action'   => 'Login',
+                            'authtype' => 'Default',
+                            'domain'   => $loginData['domain'],
+                            'username' => strtolower($loginData['username']),
+                            'priority' => JAWS_WARNING,
+                            'status'   => 403,
+                        )
                     );
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
                 }
@@ -57,11 +69,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     }
                 } else {
                     $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
-                }
-
-                // set default domain if not set
-                if (is_null($loginData['domain'])) {
-                    $loginData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
                 }
 
                 // fetch user information from database
