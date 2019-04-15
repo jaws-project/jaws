@@ -45,8 +45,8 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
                 $logsTable->and()->where('logs.gadget', $filters['gadget']);
             }
-            if (isset($filters['user']) && !empty($filters['user'])) {
-                $logsTable->and()->where('user', $filters['user']);
+            if (isset($filters['username']) && !empty($filters['username'])) {
+                $logsTable->and()->where('username', $filters['username']);
             }
             if (isset($filters['priority']) && !empty($filters['priority'])) {
                 $logsTable->and()->where('priority', $filters['priority']);
@@ -70,13 +70,10 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'gadget', 'action', 'priority:integer',
-            'users.nickname', 'users.username', 'users.id as user_id:integer',
-            'apptype', 'backend:boolean', 'ip', 'agent', 'logs.status:integer',
-            'insert_time'
+            'id:integer', 'authtype', 'domain', 'username', 'gadget', 'action', 'priority:integer',
+            'apptype', 'backend:boolean', 'ip', 'agent', 'status:integer', 'insert_time'
         );
-        $logsTable->join('users', 'users.id', 'logs.user');
-        return $logsTable->where('logs.id', (int) $id)->fetchRow();
+        return $logsTable->where('id', (int)$id)->fetchRow();
     }
 
     /**
@@ -133,9 +130,9 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             if (isset($filters['action']) && !empty($filters['action'])) {
                 $logsTable->and()->where('logs.action', $filters['action']);
             }
-            // user
-            if (isset($filters['user']) && !empty($filters['user'])) {
-                $logsTable->and()->where('user', (int)$filters['user']);
+            // username
+            if (isset($filters['username']) && !empty($filters['username'])) {
+                $logsTable->and()->where('username', (int)$filters['username']);
             }
             // priority
             if (isset($filters['priority']) && !empty($filters['priority'])) {

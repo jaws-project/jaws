@@ -238,8 +238,6 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $logData['action'] = $log['action'];
             // Username
             $logData['username'] = $log['username'];
-            // Nickname
-            $logData['nickname'] = $log['nickname'];
             // Date
             $link =& Piwi::CreateWidget(
                 'Link',

@@ -22,7 +22,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         // unset invalid keys
         $invalids = array_diff(
             array_keys($dLog),
-            array('domain', 'username', 'gadget', 'action', 'priority', 'params', 'status')
+            array('authtype', 'domain', 'username', 'gadget', 'action', 'priority', 'params', 'status')
         );
         foreach ($invalids as $invalid) {
             unset($dLog[$invalid]);
@@ -42,7 +42,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         $dLog['apptype'] = JAWS_APPTYPE;
         $dLog['backend'] = (JAWS_SCRIPT == 'admin');
         $dLog['params']  = isset($dLog['params'])? $dLog['params'] : null;
-        $dLog['status']  = isset($dLog['status'])? (int)$status : 200;
+        $dLog['status']  = isset($dLog['status'])? (int)$dLog['status'] : 200;
         $dLog['insert_time'] = time();
 
         $logsTable = Jaws_ORM::getInstance()->table('logs');
@@ -63,11 +63,9 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'logs.domain', 'logs.username', 'gadget', 'action', 'priority',
-            'nickname', 'users.id as user:integer',
-            'apptype', 'backend:boolean', 'ip', 'agent', 'logs.status', 'logs.insert_time'
+            'id:integer', 'authtype', 'domain', 'username', 'gadget', 'action', 'priority',
+            'apptype', 'backend:boolean', 'ip', 'agent', 'status', 'insert_time'
         );
-        $logsTable->join('users', 'users.username', 'logs.username', 'left');
         $logsTable->orderBy('logs.id desc');
         $logsTable->limit((int)$limit, $offset);
 
@@ -80,7 +78,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
                     );
                 }
-                $logsTable->and()->where('logs.insert_time', $filters['from_date'], '>=');
+                $logsTable->and()->where('insert_time', $filters['from_date'], '>=');
             }
             // to_date
             if (isset($filters['to_date']) && !empty($filters['to_date'])) {
@@ -90,19 +88,19 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
                     );
                 }
-                $logsTable->and()->where('logs.insert_time', $filters['to_date'], '<=');
+                $logsTable->and()->where('insert_time', $filters['to_date'], '<=');
             }
             // gadget
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
-                $logsTable->and()->where('logs.gadget', $filters['gadget']);
+                $logsTable->and()->where('gadget', $filters['gadget']);
             }
             // action
             if (isset($filters['action']) && !empty($filters['action'])) {
-                $logsTable->and()->where('logs.action', $filters['action']);
+                $logsTable->and()->where('action', $filters['action']);
             }
-            // user
-            if (isset($filters['user']) && !empty($filters['user'])) {
-                $logsTable->and()->where('user', (int)$filters['user']);
+            // username
+            if (isset($filters['username']) && !empty($filters['username'])) {
+                $logsTable->and()->where('username', (int)$filters['username']);
             }
             // priority
             if (isset($filters['priority']) && !empty($filters['priority'])) {
@@ -110,7 +108,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
             }
             // status
             if (isset($filters['status']) && !empty($filters['status'])) {
-                $logsTable->and()->where('logs.status', $filters['status']);
+                $logsTable->and()->where('status', $filters['status']);
             }
         }
 
