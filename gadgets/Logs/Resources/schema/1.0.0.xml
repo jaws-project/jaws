@@ -15,36 +15,21 @@
         </field>
 
         <field>
-            <name>authtype</name>
-            <type>text</type>
-            <length>32</length>
-            <notnull>true</notnull>
-        </field>
-
-        <field>
-            <name>domain</name>
+            <name>user</name>
             <type>integer</type>
-            <default>0</default>
-            <notnull>true</notnull>
-        </field>
-
-        <field>
-            <name>username</name>
-            <type>text</type>
-            <length>32</length>
             <notnull>true</notnull>
         </field>
 
         <field>
             <name>gadget</name>
             <type>text</type>
-            <length>32</length>
+            <length>64</length>
         </field>
 
         <field>
             <name>action</name>
             <type>text</type>
-            <length>32</length>
+            <length>64</length>
         </field>
 
         <field>
