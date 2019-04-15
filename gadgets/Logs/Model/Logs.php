@@ -14,41 +14,39 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
      * Inserts a Log
      *
      * @access  public
-     * @param   string  $gadget     Gadget name
-     * @param   string  $action     Action name
-     * @param   int     $priority   Priority of log
-     * @param   array   $params     Action parameters
-     * @param   int     $status     Status code
+     * @param   array   $dLog   Log information data
      * @return  mixed   Log identity or Jaws_Error on failure
      */
-    function InsertLog($user, $gadget, $action, $priority = 0, $params = null, $status = 200)
+    function InsertLog($dLog)
     {
-        // ip address
-        $ip = 0;
-        if (preg_match('/\b(?:\d{1,3}\.){3}\d{1,3}\b/', $_SERVER['REMOTE_ADDR'])) {
-            $ip = ip2long($_SERVER['REMOTE_ADDR']);
-            $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($dLog),
+            array('domain', 'username', 'gadget', 'action', 'priority', 'params', 'status')
+        );
+        foreach ($invalids as $invalid) {
+            unset($dLog[$invalid]);
         }
+
+        // ip address
+        $dLog['ip'] = 0;
+        if (preg_match('/\b(?:\d{1,3}\.){3}\d{1,3}\b/', $_SERVER['REMOTE_ADDR'])) {
+            $dLog['ip'] = ip2long($_SERVER['REMOTE_ADDR']);
+            $dLog['ip'] = ($dLog['ip'] < 0)? ($dLog['ip'] + 0xffffffff + 1) : $dLog['ip'];
+        }
+
         // agent
-        $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
+        $dLog['agent'] = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
+
+        // extra data
+        $dLog['apptype'] = JAWS_APPTYPE;
+        $dLog['backend'] = (JAWS_SCRIPT == 'admin');
+        $dLog['params']  = isset($dLog['params'])? $dLog['params'] : null;
+        $dLog['status']  = isset($dLog['status'])? (int)$status : 200;
+        $dLog['insert_time'] = time();
 
         $logsTable = Jaws_ORM::getInstance()->table('logs');
-        $logsTable->insert(
-            array(
-                'user'     => (int)$user,
-                'gadget'   => $gadget,
-                'action'   => $action,
-                'priority' => $priority,
-                'params'   => $params,
-                'apptype'  => JAWS_APPTYPE,
-                'backend'  => JAWS_SCRIPT == 'admin',
-                'ip'       => $ip,
-                'agent'    => $agent,
-                'status'   => (int)$status,
-                'insert_time' => time(),
-            )
-        );
-
+        $logsTable->insert($dLog);
         return $logsTable->exec();
     }
 
@@ -65,10 +63,11 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'gadget', 'action', 'priority', 'nickname', 'username', 'users.id as user:integer',
+            'logs.id:integer', 'logs.domain', 'logs.username', 'gadget', 'action', 'priority',
+            'nickname', 'users.id as user:integer',
             'apptype', 'backend:boolean', 'ip', 'agent', 'logs.status', 'logs.insert_time'
         );
-        $logsTable->join('users', 'users.id', 'logs.user', 'left');
+        $logsTable->join('users', 'users.username', 'logs.username', 'left');
         $logsTable->orderBy('logs.id desc');
         $logsTable->limit((int)$limit, $offset);
 
