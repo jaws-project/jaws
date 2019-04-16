@@ -35,6 +35,11 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             'post'
         );
 
+        // set default domain if not set
+        if (is_null($loginData['domain'])) {
+            $loginData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+        }
+
         try {
             // get bad logins count
             $bad_logins = $this->gadget->action->load('Login')->BadLogins($loginData['username'], 0);
@@ -42,11 +47,17 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
             if ($bad_logins >= $max_lockedout_login_bad_count) {
                 // forbidden access event logging
-                $GLOBALS['app']->Listener->Shout(
-                    'Users',
+                $this->gadget->event->shout(
                     'Log',
-                    array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
+                    array(
+                        'action'   => 'Login',
+                        'domain'   => (int)$loginData['domain'],
+                        'username' => $loginData['username'],
+                        'priority' => JAWS_WARNING,
+                        'status'   => 403,
+                    )
                 );
+
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
             }
 
@@ -62,11 +73,6 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
                 }
             } else {
                 $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
-            }
-
-            // set default domain if not set
-            if (is_null($loginData['domain'])) {
-                $loginData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
             }
 
             // fetch user information from database
@@ -101,10 +107,15 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             }
             if (!empty($existSessions) && $existSessions >= $user['concurrents']) {
                 // login conflict event logging
-                $GLOBALS['app']->Listener->Shout(
-                    'Session',
+                $this->gadget->event->shout(
                     'Log',
-                    array('Users', 'Login', JAWS_WARNING, null, 403, $user['id'])
+                    array(
+                        'action'   => 'Login',
+                        'domain'   => (int)$user['domain'],
+                        'username' => $user['username'],
+                        'priority' => JAWS_WARNING,
+                        'status'   => 403,
+                    )
                 );
 
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'), 409);

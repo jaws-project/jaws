@@ -102,7 +102,17 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             // create session & cookie
             $GLOBALS['app']->Session->Create($registerData, $registerData['remember']);
             // login event logging
-            $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
+            $this->gadget->event->shout(
+                'Log',
+                array(
+                    'action'   => 'Login',
+                    'auth'     => $registerData['auth'],
+                    'domain'   => (int)$registerData['domain'],
+                    'username' => $registerData['username'],
+                    'priority' => JAWS_NOTICE,
+                    'status'   => 200,
+                )
+            );
             // let everyone know a user has been logged in
             $this->gadget->event->shout('LoginUser', $registerData);
 

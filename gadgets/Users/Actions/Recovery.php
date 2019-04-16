@@ -148,11 +148,11 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
 
         $classname = "Users_Account_{$authtype}_LoginRecovery";
         $objAccount = new $classname($this->gadget);
-        $registerData = $objAccount->LoginRecovery();
-        if (Jaws_Error::IsError($registerData)) {
+        $recoveryData = $objAccount->LoginRecovery();
+        if (Jaws_Error::IsError($recoveryData)) {
             $default_authtype = $this->gadget->registry->fetch('authtype');
             return $objAccount->LoginRecoveryError(
-                $registerData,
+                $recoveryData,
                 ($authtype != $default_authtype)? $authtype : '',
                 bin2hex($referrer)
             );
@@ -161,14 +161,24 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             http_response_code(201);
 
             // add required attributes for auto login into jaws
-            $registerData['auth'] = $authtype;
+            $recoveryData['auth'] = $authtype;
 
             // create session & cookie
-            $GLOBALS['app']->Session->Create($registerData, $registerData['remember']);
+            $GLOBALS['app']->Session->Create($recoveryData, $recoveryData['remember']);
             // login event logging
-            $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
+            $this->gadget->event->shout(
+                'Log',
+                array(
+                    'action'   => 'Login',
+                    'auth'     => $recoveryData['auth'],
+                    'domain'   => (int)$recoveryData['domain'],
+                    'username' => $recoveryData['username'],
+                    'priority' => JAWS_NOTICE,
+                    'status'   => 200,
+                )
+            );
             // let everyone know a user has been logged in
-            $this->gadget->event->shout('LoginUser', $registerData);
+            $this->gadget->event->shout('LoginUser', $recoveryData);
 
             $this->gadget->session->push(
                 _t('USERS_REGISTRATION_ACTIVATED'),
