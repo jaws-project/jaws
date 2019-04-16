@@ -141,10 +141,15 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             }
             if (!empty($existSessions) && $existSessions >= $user['concurrents']) {
                 // login conflict event logging
-                $GLOBALS['app']->Listener->Shout(
-                    'Session',
+                $this->gadget->event->shout(
                     'Log',
-                    array('Users', 'Login', JAWS_WARNING, null, 403, $user['id'])
+                    array(
+                        'action'   => 'Login',
+                        'domain'   => $user['domain'],
+                        'username' => strtolower($user['username']),
+                        'priority' => JAWS_WARNING,
+                        'status'   => 403,
+                    )
                 );
 
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'), 409);
