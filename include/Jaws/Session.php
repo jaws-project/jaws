@@ -137,7 +137,16 @@ class Jaws_Session
     function Logout($prepare_new_session = false)
     {
         // logout event logging
-        $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Logout', JAWS_NOTICE));
+        $GLOBALS['app']->Listener->Shout(
+            'Session',
+            'Log',
+            array(
+                'gadget'   => 'Users',
+                'action'   => 'Logout',
+                'priority' => JAWS_NOTICE,
+                'status'   => 200,
+            )
+        );
         // let everyone know a user has been logout
         $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->attributes);
         if ($prepare_new_session) {
