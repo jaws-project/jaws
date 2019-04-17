@@ -377,7 +377,16 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
             $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
         }
         // shout log event
-        $GLOBALS['app']->Listener->Shout('Action', 'Log', array($gadget, $action, $loglevel, null, http_response_code()));
+        $GLOBALS['app']->Listener->Shout(
+            'Action',
+            'Log',
+            array(
+                'gadget'   => $gadget,
+                'action'   => $action,
+                'priority' => $loglevel,
+                'status'   => http_response_code(),
+            )
+        );
     } else {
         $gadget = '';
         $action = '';
