@@ -84,7 +84,6 @@ class Jaws_Gadget_Event
      */
     public function shout($event, $params = array(), $gadget = '', $broadcast = true)
     {
-        $params['gadget'] = isset($params['gadget'])? $params['gadget'] : $this->gadget->name;
         return $GLOBALS['app']->Listener->Shout($this->gadget->name, $event, $params, $gadget, $broadcast);
     }
 
