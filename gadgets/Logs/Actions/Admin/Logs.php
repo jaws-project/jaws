@@ -63,7 +63,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         foreach ($gadgetList as $gadget) {
             $gadgetsCombo->AddOption($gadget['title'], $gadget['name']);
         }
-        $gadgetsCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
+        $gadgetsCombo->AddEvent(ON_CHANGE, "searchLogs();");
         $gadgetsCombo->SetDefault(-1);
         $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
         $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
@@ -78,7 +78,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
                 $usersCombo->AddOption($user['username'] . ' - ' . $user['nickname'], $user['id']);
             }
         }
-        $usersCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
+        $usersCombo->AddEvent(ON_CHANGE, "searchLogs();");
         $usersCombo->SetDefault(-1);
         $tpl->SetVariable('filter_user', $usersCombo->Get());
         $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
@@ -161,14 +161,15 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $grid->AddColumn($column1);
 
         $column2 = Piwi::CreateWidget('Column', _t('LOGS_ACTION'), null, false);
+        $column2->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column2);
 
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
+        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_AUTHTYPE'), null, false);
         $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
-        $column4 = Piwi::CreateWidget('Column', _t('LOGS_USER_NICKNAME'), null, false);
-        $column4->SetStyle('width:128px; white-space:nowrap;');
+        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
+        $column4->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
         $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
@@ -195,8 +196,8 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('lbl_priority', _t('LOGS_PRIORITY'));
         $tpl->SetVariable('lbl_status', _t('LOGS_LOG_STATUS'));
         $tpl->SetVariable('lbl_apptype', _t('LOGS_LOG_REQUEST_TYPE'));
+        $tpl->SetVariable('lbl_auth', _t('GLOBAL_AUTHTYPE'));
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('lbl_nickname', _t('LOGS_USER_NICKNAME'));
         $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
         $tpl->SetVariable('lbl_agent', _t('LOGS_AGENT'));
         $tpl->SetVariable('lbl_date', _t('GLOBAL_DATE'));
@@ -236,6 +237,8 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             }
             // Action
             $logData['action'] = $log['action'];
+            // Username
+            $logData['auth'] = $log['auth'];
             // Username
             $logData['username'] = $log['username'];
             // Date
