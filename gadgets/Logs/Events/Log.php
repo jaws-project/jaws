@@ -20,10 +20,11 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      */
     function Execute($shouter, $params)
     {
-        if (!isset($GLOBALS['app']->Session)) {
-            return false;
-        }
-
+        // gadget
+        $params['gadget'] =
+            isset($params['gadget'])?
+            $params['gadget'] :
+            $shouter;
         // auth
         $params['auth'] =
             isset($params['auth'])?
