@@ -14,7 +14,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      * FileMemory object
      * @access  private
      */
-    private $shmcache;
+    var $shmcache;
 
     /**
      * Constructor
@@ -22,9 +22,9 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      * @access  public
      * @return Null
      */
-    function Jaws_Cache_File()
+    function __construct()
     {
-        $this->shmcache = Jaws_FileMemory::getInstance('jaws_memcache');;
+        $this->shmcache = Jaws_FileMemory::getInstance('jaws_memcache');
     }
 
     /**
@@ -36,7 +36,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, &$value, $lifetime = 2592000)
+    function set($key, $value, $lifetime = 2592000)
     {
         $this->shmcache->lock(true);
         if ($this->shmcache->open('c', 64*1024)) {
@@ -124,16 +124,17 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
                 $keyscached = array();
             }
 
-        $key = Jaws_Utils::ftok($key);
-        if (array_key_exists($key, $keyscached)) {
-            $result = Jaws_FileMemory::delete($keyscached[$key]['token']);
-            unset($keyscached[$key]);
+            $key = Jaws_Utils::ftok($key);
+            if (array_key_exists($key, $keyscached)) {
+                $result = Jaws_FileMemory::delete($keyscached[$key]['token']);
+                unset($keyscached[$key]);
+            }
+
+            $this->shmcache->write(serialize($keyscached));
+            $this->shmcache->close();
         }
 
-        $this->shmcache->write(serialize($keyscached));
-        $this->shmcache->close();
         $this->shmcache->lock(false);
-
         return $result;
     }
 
