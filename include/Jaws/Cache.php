@@ -11,29 +11,28 @@
 class Jaws_Cache
 {
     /**
-     * Cache driver
-     * @access  private
-     */
-    var $_Driver;
-
-    /**
      * An interface for available drivers
      *
      * @access  public
+     * @param   string  $cacheDriver    Cache Driver name
+     * @return  mixed   Cache driver object on success otherwise Jaws_Error on failure
      */
-    function &factory()
+    static function &factory($cacheDriver = '')
     {
-        $this->_Driver = $this->Registry->fetch('cache_driver', 'Settings');
-        $this->_Driver = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Driver);
-        $driverFile = JAWS_PATH . 'include/Jaws/Cache/'. $this->_Driver . '.php';
-        if (!file_exists($driverFile)) {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loading cache driver $driverFile failed.");
-            $this->_Driver = 'File';
-            $driverFile = JAWS_PATH . 'include/Jaws/Cache/'. $this->_Driver . '.php';
+        if (empty($cacheDriver)) {
+            $cacheDriver = $GLOBALS['app']->Registry->fetch('cache_driver', 'Settings');
+        }
+        $cacheDriver = preg_replace('/[^[:alnum:]_-]/', '', $cacheDriver);
+
+        $cacheDriverFile = JAWS_PATH . 'include/Jaws/Cache/'. $cacheDriver .'.php';
+        if (!file_exists($cacheDriverFile)) {
+            return Jaws_Error::raiseError(
+                "Loading '$cacheDriver' cache driver failed.",
+                __FUNCTION__
+            );
         }
 
-        include_once $driverFile;
-        $className = 'Jaws_Cache_' . $this->_Driver;
+        $className = 'Jaws_Cache_' . $cacheDriver;
         $obj = new $className();
         return $obj;
     }
@@ -47,7 +46,7 @@ class Jaws_Cache
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, &$value, $lifetime = 2592000)
+    function set($key, $value, $lifetime = 2592000)
     {
         return false;
     }
