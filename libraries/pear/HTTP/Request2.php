@@ -372,13 +372,9 @@ class HTTP_Request2 implements SplSubject
             ));
 
         } else {
-            if (!array_key_exists($nameOrConfig, $this->config)) {
-                throw new HTTP_Request2_LogicException(
-                    "Unknown configuration parameter '{$nameOrConfig}'",
-                    HTTP_Request2_Exception::INVALID_ARGUMENT
-                );
+            if (array_key_exists($nameOrConfig, $this->config)) {
+                $this->config[$nameOrConfig] = $value;
             }
-            $this->config[$nameOrConfig] = $value;
         }
 
         return $this;
