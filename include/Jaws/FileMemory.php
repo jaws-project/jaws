@@ -11,11 +11,11 @@
 class Jaws_FileMemory
 {
     /**
-     * virtual file key
-     * @var     string  $fkey
+     * file token
+     * @var     int     $ftoken
      * @access  private
      */
-    private $fkey;
+    private $ftoken;
 
     /**
      * shared memory resource handle
@@ -25,68 +25,79 @@ class Jaws_FileMemory
     private $shmkey;
 
     /**
-     * exclusive access acquire?
-     * @var     bool    $exclusive
-     * @access  private
-     */
-    private $exclusive = false;
-
-    /**
      * Constructor
      *
      * @access  private
+     * @param   int     $ftoken     File token
      * @return  void
      */
-    private function __construct()
+    private function __construct($ftoken)
     {
+        $this->ftoken = $ftoken;
     }
 
     /**
      * Creates the Jaws_FileMemory instance if it doesn't exist else it returns the already created one
      *
      * @access  public
+     * @param   mixed   $ftoken     File token or name
      * @return  object  Jaws_FileMemory type object
      */
-    static function getInstance()
+    static function getInstance($ftoken)
     {
-        return new Jaws_FileMemory();
+        static $instances = array();
+        $ftoken = is_int($ftoken)? $ftoken : self::ftok($ftoken);
+        if (!isset($instances[$ftoken])) {
+            $instances[$ftoken] = new Jaws_FileMemory($ftoken);
+        }
+
+        return $instances[$ftoken];
     }
 
     /**
-     * Open shared memory block by name
+     * Get file name token
      *
      * @access  public
      * @param   string  $fname  File name
-     * @param   int     $fsize  File size
-     * @param   bool    $exclusive access
-     * @return  mixed   Returns the data or FALSE on failure
+     * @return  int     Returns file token
      */
-    function open($fname, $fsize = 4096, $exclusive = true)
+    static function ftok($fname)
     {
-        return $this->openByKey(crc32($fname), $fsize, $exclusive);
+        return crc32($fname);
     }
 
     /**
      * Open shared memory block by key
      *
      * @access  public
-     * @param   int     $fkey   File key
-     * @param   int     $fsize  File size
-     * @param   bool    $exclusive access
+     * @param   string  $mode   Open mode(a, c, w, n)
+     * @param   int     $size   File size
      * @return  mixed   Returns the data or FALSE on failure
      */
-    function openByKey($fkey, $fsize = 4096, $exclusive = true)
+    function open($mode = 'a', $size = 0)
     {
-        $this->fkey = $fkey;
-        //exclusive access acquire
-        if ($exclusive) {
-            $this->lock(true);
-        }
-        if (false === $this->shmkey = @shmop_open($fkey, 'w', 0, 0)) {
-            $this->shmkey = @shmop_open($fkey, 'c', 0644, $fsize);
+        switch ($mode) {
+            case 'a':
+                $this->shmkey = @shmop_open($this->ftoken, 'a', 0, 0);
+                break;
+
+            case 'w':
+                $this->shmkey = @shmop_open($this->ftoken, 'w', 0, 0);
+                break;
+
+            case 'c':
+                $this->shmkey = @shmop_open($this->ftoken, 'c', 0644, $size);
+                break;
+
+            case 'n':
+                $this->shmkey = @shmop_open($this->ftoken, 'c', 0644, $size);
+                break;
+
+            default:
+                $this->shmkey = false;
         }
 
-        return $this;
+        return $this->shmkey !== false;
     }
 
     /**
@@ -99,7 +110,7 @@ class Jaws_FileMemory
      */
     function read($start = 0, $count = 0)
     {
-        return @unserialize(shmop_read($this->shmkey, $start, $count));
+        return shmop_read($this->shmkey, $start, $count);
     }
 
     /**
@@ -112,33 +123,30 @@ class Jaws_FileMemory
      */
     function write($data, $offset = 0)
     {
-        return shmop_write($this->shmkey, serialize($data), $offset);
+        return shmop_write($this->shmkey, $data, $offset);
     }
 
     /**
      * Close shared memory block
      *
      * @access  public
-     * @return  object  Returns the instance
+     * @return  void
      */
     function close()
     {
-        $this->lock(false);
-        shmop_close($this->shmkey);
-        return $this;
+        @shmop_close($this->shmkey);
     }
 
     /**
      * Delete shared memory block
      *
      * @access  public
-     * @return  object  Returns the instance
+     * @param   int     $ftoken     File token or name
+     * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    function delete()
+    static function delete($ftoken)
     {
-        $this->lock(false);
-        shmop_delete($this->shmkey);
-        return $this;
+        return empty($ftoken)? true : shmop_delete(@shmop_open($ftoken, 'w', 0, 0));
     }
 
     /**
@@ -146,18 +154,15 @@ class Jaws_FileMemory
      *
      * @access  public
      * @param   bool    $state  Lock/Unlock operation
-     * @return  object  Returns the instance
+     * @return  void
      */
     function lock($state = true)
     {
         if ($state) {
-            Jaws_Mutex::getInstance()->acquire($this->fkey);
-            $this->exclusive = true;
+            Jaws_Mutex::getInstance()->acquire($this->ftoken);
         } else {
-            Jaws_Mutex::getInstance()->release($this->fkey);
-            $this->exclusive = false;
+            Jaws_Mutex::getInstance()->release($this->ftoken);
         }
-        return $this;
     }
 
 }
