@@ -5,16 +5,24 @@
  * @category   Cache
  * @package    Core
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2015 Jaws Development Group
+ * @copyright  2008-2019 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Cache_File extends Jaws_Cache
 {
     /**
-     * Cache path
+     * cache files prefix
+     * @var     string  $cachePrefix
      * @access  private
      */
-    var $_path = '';
+    private $cachePrefix = 'cache_';
+
+    /**
+     * cache files directory
+     * @var     string  $cacheDirectory
+     * @access  private
+     */
+    private $cacheDirectory;
 
     /**
      * Constructor
@@ -24,76 +32,48 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function __construct()
     {
-        // initializing driver
-        $this->_path = JAWS_CACHE;
+        $this->cacheDirectory = rtrim(sys_get_temp_dir(), '/\\');
     }
 
     /**
-     * Store cache of given component/section
+     * Store value of given key
      *
      * @access  public
+     * @param   string  $key    key
+     * @param   mixed   $value  value 
+     * @param   int     $lifetime
+     * @return  mixed
      */
-    function set($component, $section, $params, &$data, $lifetime = 0)
+    function set($key, &$value, $lifetime = 0)
     {
-        if (!is_null($params)) {
-            $params = is_array($params)? implode('_', $params) : $params;
-        } else {
-            $params = '';
-        }
-
-        $file = $this->_path. $component. '.'. $section. (empty($params)? '' : ('.'. $params));
-        return (bool) Jaws_Utils::file_put_contents($file, $data);
+        $file = $this->cacheDirectory . '/'. $this->cachePrefix. Jaws_Utils::ftok($key);
+        return (bool) Jaws_Utils::file_put_contents($file, $value);
     }
 
     /**
-     * Get cached data of given component/section
+     * Get cached value of given key
      *
      * @access  public
-     * @param   string  $component
-     * @param   string  $section
-     * @param   string  $params
-     * @return  string
+     * @param   string  $key    key
+     * @return  mixed   Returns key value
      */
-    function get($component, $section, $params = null)
+    function get($key)
     {
-        if (!is_null($params)) {
-            $params = is_array($params)? implode('_', $params) : $params;
-        } else {
-            $params = '';
-        }
-
-        $file = $this->_path. $component. '.'. $section. (empty($params)? '' : ('.'. $params));
-        $res = @file_get_contents($file);
-        return ($res === false) ? null : $res;
+        $file = $this->cacheDirectory . '/'. $this->cachePrefix. Jaws_Utils::ftok($key);
+        return @file_get_contents($file);
     }
 
     /**
-     * Delete cached data of given component/section
+     * Delete cached key
      *
      * @access  public
-     * @param   string  $component
-     * @param   string  $section
-     * @param   string  $params
-     * @return  bool
+     * @param   string  $key    key
+     * @return  mixed
      */
-    function delete($component = null, $section = null, $params = null)
+    function delete($key)
     {
-        if (!is_null($params)) {
-            $params = is_array($params)? implode('_', $params) : $params;
-        } else {
-            $params = '';
-        }
-
-        require_once PEAR_PATH. 'File/Find.php';
-        $match  = is_null($component)? '' : $component;
-        $match .= '.' . (is_null($section)? '' : $section);
-        $match .= empty($params)? '' : ('.' . $params);
-        $files = &File_Find::search('/'.$match.'/i', $this->_path, 'perl', false, 'files');
-        foreach ($files as $file) {
-            Jaws_Utils::Delete($file);
-        }
-
-        return true;
+        $file = $this->cacheDirectory . '/'. $this->cachePrefix. Jaws_Utils::ftok($key);
+        return Jaws_Utils::delete($file)
     }
 
 }
