@@ -46,24 +46,12 @@ class Jaws_FileMemory
     static function getInstance($ftoken)
     {
         static $instances = array();
-        $ftoken = is_int($ftoken)? $ftoken : self::ftok($ftoken);
+        $ftoken = is_int($ftoken)? $ftoken : Jaws_Utils::ftok($ftoken);
         if (!isset($instances[$ftoken])) {
             $instances[$ftoken] = new Jaws_FileMemory($ftoken);
         }
 
         return $instances[$ftoken];
-    }
-
-    /**
-     * Get file name token
-     *
-     * @access  public
-     * @param   string  $fname  File name
-     * @return  int     Returns file token
-     */
-    static function ftok($fname)
-    {
-        return crc32($fname);
     }
 
     /**

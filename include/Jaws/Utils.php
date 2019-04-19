@@ -481,6 +481,18 @@ class Jaws_Utils
     }
 
     /**
+     * Get file name token
+     *
+     * @access  public
+     * @param   string  $filename   File name
+     * @return  int     Returns file token
+     */
+    static function ftok($filename)
+    {
+        return crc32($filename);
+    }
+
+    /**
      * get upload temp directory
      *
      * @return  string  upload temp directory path
