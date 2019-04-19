@@ -328,40 +328,44 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function BadLogins($username, $operation = 0)
     {
         $result = 0;
-        $memLogins = Jaws_FileMemory::getInstance()->open('bad_logins', 64*1024); //64 kbytes
-        $logins = $memLogins->read();
-        if (!$logins) {
-            $logins = array();
-        }
-
-        $lockedout_time = (int)$GLOBALS['app']->Registry->fetch('password_lockedout_time', 'Policy');
-        // loop for find outdated records
-        foreach ($logins as $user => $access) {
-            if ($access['time'] < time() - $lockedout_time) {
-                unset($logins[$user]);
+        $memLogins = Jaws_FileMemory::getInstance('bad_logins');
+        $memLogins->lock(true);
+        if ($memLogins->open('c', 64*1024)) {
+            $logins = @unserialize($memLogins->read());
+            if (!$logins) {
+                $logins = array();
             }
+
+            $lockedout_time = (int)$GLOBALS['app']->Registry->fetch('password_lockedout_time', 'Policy');
+            // loop for find outdated records
+            foreach ($logins as $user => $access) {
+                if ($access['time'] < time() - $lockedout_time) {
+                    unset($logins[$user]);
+                }
+            }
+            // fetch bad logins count
+            $result = isset($logins[$username])? (int)$logins[$username]['count'] : 0;
+            switch ($operation) {
+                case 1:     // increase
+                    $result++;
+                    $logins[$username] = array(
+                        'count' => $result,
+                        'time' => time()
+                    );
+                    break;
+
+                case -1:    // remove
+                    $result = 0;
+                    unset($logins[$username]);
+                    break;
+            }
+
+            // write new date
+            $memLogins->write(serialize($logins));
+            $memLogins->close();
         }
-        // fetch bad logins count
-        $result = isset($logins[$username])? (int)$logins[$username]['count'] : 0;
-        switch ($operation) {
-            case 1:     // increase
-                $result++;
-                $logins[$username] = array(
-                    'count' => $result,
-                    'time' => time()
-                );
-                break;
 
-            case -1:    // remove
-                $result = 0;
-                unset($logins[$username]);
-                break;
-        }
-
-        // write new date
-        $memLogins->write($logins);
-        $memLogins->close();
-
+        $memLogins->lock(false);
         return $result;
     }
 
