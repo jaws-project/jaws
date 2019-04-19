@@ -39,31 +39,39 @@ class Jaws_Cache
     }
 
     /**
-     * Store cache of given component/section
+     * Store value of given key
      *
      * @access  public
+     * @param   string  $key    key
+     * @param   mixed   $value  value 
+     * @param   int     $lifetime
+     * @return  mixed
      */
-    function set($component, $section, $params, $data, $lifetime = 0)
+    function set($key, &$value, $lifetime = 2592000)
     {
         return false;
     }
 
     /**
-     * Get cached data of given component/section
+     * Get cached value of given key
      *
      * @access  public
+     * @param   string  $key    key
+     * @return  mixed   Returns key value
      */
-    function get($component, $section, $params = null)
+    function get($key)
     {
         return null;
     }
 
     /**
-     * Delete cached data of given component/section
+     * Delete cached key
      *
      * @access  public
+     * @param   string  $key    key
+     * @return  mixed
      */
-    function delete($component = null, $section = null, $params = null)
+    function delete($key)
     {
         return true;
     }
