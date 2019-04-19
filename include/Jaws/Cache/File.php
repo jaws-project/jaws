@@ -44,10 +44,10 @@ class Jaws_Cache_File extends Jaws_Cache
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, $value, $lifetime = 0)
+    function set($key, $value, $lifetime = 2592000)
     {
         $file = $this->cacheDirectory . '/'. $this->cachePrefix. Jaws_Utils::ftok($key);
-        return (bool) Jaws_Utils::file_put_contents($file, $value);
+        return empty($lifetime) false : (bool)Jaws_Utils::file_put_contents($file, $value);
     }
 
     /**

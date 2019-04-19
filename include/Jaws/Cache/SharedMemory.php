@@ -38,29 +38,35 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      */
     function set($key, $value, $lifetime = 2592000)
     {
-        $this->shmcache->lock(true);
-        if ($this->shmcache->open('c', 64*1024)) {
-            $keyscached = @unserialize($this->shmcache->read());
-            if (!$keyscached) {
-                $keyscached = array();
+        $result = false;
+        if (!empty($lifetime)) {
+            $this->shmcache->lock(true);
+            if ($this->shmcache->open('c', 64*1024)) {
+                $keyscached = @unserialize($this->shmcache->read());
+                if (!$keyscached) {
+                    $keyscached = array();
+                }
+
+                $key = Jaws_Utils::ftok($key);
+                $token = (int)floor(microtime(true)*100000);
+                $keyFile = Jaws_FileMemory::getInstance($token);
+                if ($keyFile->open('n', strlen($value))) {
+                    $result = $keyFile->write($value);
+                    Jaws_FileMemory::delete(@$keyscached[$key]['token']);
+                    $keyscached[$key] = array(
+                        'token'    => $token,
+                        'lifetime' => time() + $lifetime,
+                    );
+                    $keyFile->close();
+                }
+                $this->shmcache->write(serialize($keyscached));
+                $this->shmcache->close();
             }
 
-            $key = Jaws_Utils::ftok($key);
-            $token = (int)floor(microtime(true)*100000);
-            $keyFile = Jaws_FileMemory::getInstance($token);
-            if ($keyFile->open('n', strlen($value))) {
-                $keyFile->write($value);
-                Jaws_FileMemory::delete(@$keyscached[$key]['token']);
-                $keyscached[$key] = array(
-                    'token'    => $token,
-                    'lifetime' => time() + $lifetime,
-                );
-                $keyFile->close();
-            }
-            $this->shmcache->write(serialize($keyscached));
-            $this->shmcache->close();
+            $this->shmcache->lock(false);
         }
-        $this->shmcache->lock(false);
+
+        return $result;
     }
 
     /**

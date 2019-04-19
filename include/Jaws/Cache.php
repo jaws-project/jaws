@@ -76,13 +76,14 @@ class Jaws_Cache
     }
 
     /**
-     * Delete all expired cached data
+     * Get cache key
      *
      * @access  public
+     * @param   mixed  $params
      */
-    function delete_expired()
+    static function key($params)
     {
-        return true;
+        return serialize(func_get_args());
     }
 
 }

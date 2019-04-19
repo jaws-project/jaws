@@ -40,7 +40,7 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      */
     function set($key, $value, $lifetime = 2592000)
     {
-        return $this->memcache->set(Jaws_Utils::ftok($key), $value, 0, $lifetime);
+        return empty($lifetime)? false : $this->memcache->set(Jaws_Utils::ftok($key), $value, 0, $lifetime);
     }
 
     /**
