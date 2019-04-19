@@ -22,7 +22,7 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      * @access  public
      * @return Null
      */
-    function Jaws_Cache_File()
+    function __construct()
     {
         // initializing driver
         $this->memcache = new Memcache;
@@ -38,7 +38,7 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, &$value, $lifetime = 2592000)
+    function set($key, $value, $lifetime = 2592000)
     {
         return $this->memcache->set(Jaws_Utils::ftok($key), $value, 0, $lifetime);
     }
