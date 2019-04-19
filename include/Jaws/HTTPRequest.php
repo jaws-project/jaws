@@ -62,6 +62,7 @@ class Jaws_HTTPRequest
             $this->options['proxy_port'] = $GLOBALS['app']->Registry->fetch('proxy_port', 'Settings');
         }
 
+        $this->options['lifetime'] = 0;
         // merge default and passed options
         $this->options = array_merge($this->options, $options);
         $this->httpRequest = new HTTP_Request2();
@@ -77,21 +78,36 @@ class Jaws_HTTPRequest
      */
     function get($url, &$response)
     {
-        $this->httpRequest->setConfig($this->options)->setUrl($url);
-        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
-        $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
-        try {
-            $result = $this->httpRequest->send();
-            $response = $result->getBody();
-            return $result->getStatus();
-        } catch (Exception $error) {
-            return Jaws_Error::raiseError(
-                $error->getMessage(),
-                $error->getCode(),
-                $this->default_error_level,
-                1
-            );
+        $objCache = Jaws_Cache::factory('SharedMemory');
+        $key = Jaws_Cache::key($url);
+        if (false === $result = @unserialize($objCache->get($key))) {
+            $this->httpRequest->setConfig($this->options)->setUrl($url);
+            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+            $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
+            try {
+                $result = $this->httpRequest->send();
+                $objCache->set(
+                    $key,
+                    serialize(
+                        $result = array(
+                        'status' => $result->getStatus(),
+                        'body'   => $result->getBody()
+                        )
+                    ),
+                    $this->options['lifetime']
+                );
+            } catch (Exception $error) {
+                return Jaws_Error::raiseError(
+                    $error->getMessage(),
+                    $error->getCode(),
+                    $this->default_error_level,
+                    1
+                );
+            }
         }
+
+        $response = $result['body'];
+        return $result['status'];
     }
 
     /**
