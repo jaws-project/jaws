@@ -223,9 +223,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         if (JAWS_SCRIPT == 'index') {
             return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
         } else {
-            $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
-            $admin_script = empty($admin_script)? 'admin.php' : $admin_script;
-            return Jaws_Header::Location($admin_script . (empty($referrer)? '' : "?referrer=$referrer"));
+            return Jaws_Header::Location($this->gadget->url('Login', $urlParams));
         }
 
     }
