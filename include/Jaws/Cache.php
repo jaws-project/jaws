@@ -31,7 +31,7 @@ class Jaws_Cache
             $cacheDriver = '';
         }
 
-        $className = 'Jaws_Cache' . (empty($cacheDriver)? '' : "_$cacheDriver");
+        $className = empty($cacheDriver)? 'Jaws_Cache' : "Jaws_Cache_$cacheDriver";
         $obj = new $className();
         return $obj;
     }
