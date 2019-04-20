@@ -78,15 +78,14 @@ class Jaws_HTTPRequest
      */
     function get($url, &$response)
     {
-        $objCache = Jaws_Cache::factory('SharedMemory');
         $key = Jaws_Cache::key($url);
-        if (false === $result = @unserialize($objCache->get($key))) {
+        if (false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
             try {
                 $result = $this->httpRequest->send();
-                $objCache->set(
+                $GLOBALS['app']->Cache->set(
                     $key,
                     serialize(
                         $result = array(
