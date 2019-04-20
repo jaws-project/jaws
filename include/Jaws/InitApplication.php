@@ -72,7 +72,7 @@ require JAWS_PATH . 'include/Jaws/Helper.php';
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 
 // Create application
-$GLOBALS['app'] = jaws();
+$GLOBALS['app'] = Jaws::getInstance();
 // get an instance of Jaws_DB
 $objDatabase = Jaws_DB::getInstance('default', $db);
 if (Jaws_Error::IsError($objDatabase)) {
