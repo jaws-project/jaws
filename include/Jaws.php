@@ -159,6 +159,9 @@ class Jaws
      */
     function init()
     {
+        // load cache before others
+        $this->Cache = Jaws_Cache::factory();
+
         $this->Map->Init();
         $this->Session = Jaws_Session::factory();
         $this->Session->Init();
