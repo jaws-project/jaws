@@ -5,7 +5,7 @@
  * @category   Cache
  * @package    Core
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2015 Jaws Development Group
+ * @copyright  2008-2019 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Cache
@@ -24,15 +24,14 @@ class Jaws_Cache
         }
         $cacheDriver = preg_replace('/[^[:alnum:]_-]/', '', $cacheDriver);
 
-        $cacheDriverFile = JAWS_PATH . 'include/Jaws/Cache/'. $cacheDriver .'.php';
-        if (!file_exists($cacheDriverFile)) {
-            return Jaws_Error::raiseError(
-                "Loading '$cacheDriver' cache driver failed.",
-                __FUNCTION__
-            );
+        if (!empty($cacheDriver) &&
+            !file_exists(JAWS_PATH . "include/Jaws/Cache/{$cacheDriver}.php")
+        ) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERR, "Loading '$cacheDriver' cache driver failed.");
+            $cacheDriver = '';
         }
 
-        $className = 'Jaws_Cache_' . $cacheDriver;
+        $className = 'Jaws_Cache' . (empty($cacheDriver)? '' : "_$cacheDriver");
         $obj = new $className();
         return $obj;
     }
@@ -48,7 +47,7 @@ class Jaws_Cache
      */
     function set($key, $value, $lifetime = 2592000)
     {
-        return false;
+        return true;
     }
 
     /**
@@ -60,7 +59,7 @@ class Jaws_Cache
      */
     function get($key)
     {
-        return null;
+        return false;
     }
 
     /**
