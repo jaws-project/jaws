@@ -123,12 +123,16 @@ class Jaws_HTTPRequest
         $key = Jaws_Cache::key($url, $params);
         if (false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
-            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
-            $this->httpRequest->setHeader('Content-Type', $this->content_type);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
+            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+
+            $this->content_type = ($this->content_type)?: 'application/x-www-form-urlencoded';
+            $this->httpRequest->setHeader('Content-Type', $this->content_type);
+            $urlencoded = strpos($this->content_type, 'urlencoded') !== false;
+
             // add post data
             foreach($params as $key => $data) {
-                $this->httpRequest->addPostParameter($key, urlencode($data));
+                $this->httpRequest->addPostParameter($key, $urlencoded? urlencode($data) : $data);
             }
 
             try {
