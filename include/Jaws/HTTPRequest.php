@@ -126,6 +126,7 @@ class Jaws_HTTPRequest
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
 
+            // tip: multipart/form-data , application/x-www-form-urlencoded
             $this->content_type = ($this->content_type)?: 'application/x-www-form-urlencoded';
             $this->httpRequest->setHeader('Content-Type', $this->content_type);
             $urlencoded = strpos($this->content_type, 'urlencoded') !== false;
