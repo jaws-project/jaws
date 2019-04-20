@@ -102,7 +102,9 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
         }
 
         $key = Jaws_Utils::ftok($key);
-        if (array_key_exists($key, $keyscached)) {
+        if (array_key_exists($key, $keyscached) &&
+            ($keyscached[$key]['lifetime'] < time())
+        ) {
             $keyFile = Jaws_FileMemory::getInstance($keyscached[$key]['token']);
             if ($keyFile->open('a')) {
                 $value = $keyFile->read();
