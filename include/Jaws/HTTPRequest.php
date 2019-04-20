@@ -120,27 +120,41 @@ class Jaws_HTTPRequest
      */
     function post($url, $params = array(), &$response)
     {
-        $this->httpRequest->setConfig($this->options)->setUrl($url);
-        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
-        $this->httpRequest->setHeader('Content-Type', $this->content_type);
-        $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
-        // add post data
-        foreach($params as $key => $data) {
-            $this->httpRequest->addPostParameter($key, urlencode($data));
+        $key = Jaws_Cache::key($url, $params);
+        if (false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
+            $this->httpRequest->setConfig($this->options)->setUrl($url);
+            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+            $this->httpRequest->setHeader('Content-Type', $this->content_type);
+            $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
+            // add post data
+            foreach($params as $key => $data) {
+                $this->httpRequest->addPostParameter($key, urlencode($data));
+            }
+
+            try {
+                $result = $this->httpRequest->send();
+                $GLOBALS['app']->Cache->set(
+                    $key,
+                    serialize(
+                        $result = array(
+                        'status' => $result->getStatus(),
+                        'body'   => $result->getBody()
+                        )
+                    ),
+                    $this->options['lifetime']
+                );
+            } catch (Exception $error) {
+                return Jaws_Error::raiseError(
+                    $error->getMessage(),
+                    $error->getCode(),
+                    $this->default_error_level,
+                    1
+                );
+            }
         }
 
-        try {
-            $result = $this->httpRequest->send();
-            $response = $result->getBody();
-            return $result->getStatus();
-        } catch (Exception $error) {
-            return Jaws_Error::raiseError(
-                $error->getMessage(),
-                $error->getCode(),
-                $this->default_error_level,
-                1
-            );
-        }
+        $response = $result['body'];
+        return $result['status'];
     }
 
     /**
@@ -154,24 +168,38 @@ class Jaws_HTTPRequest
      */
     function rawPostData($url, $data = '', &$response)
     {
-        $this->httpRequest->setConfig($this->options)->setUrl($url);
-        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
-        $this->httpRequest->setHeader('Content-Type', $this->content_type);
-        $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
-        // set post data
-        $this->httpRequest->setBody($data);
-        try {
-            $result = $this->httpRequest->send();
-            $response = $result->getBody();
-            return $result->getStatus();
-        } catch (Exception $error) {
-            return Jaws_Error::raiseError(
-                $error->getMessage(),
-                $error->getCode(),
-                $this->default_error_level,
-                1
-            );
+        $key = Jaws_Cache::key($url, $data);
+        if (false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
+            $this->httpRequest->setConfig($this->options)->setUrl($url);
+            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+            $this->httpRequest->setHeader('Content-Type', $this->content_type);
+            $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
+            // set post data
+            $this->httpRequest->setBody($data);
+            try {
+                $result = $this->httpRequest->send();
+                $GLOBALS['app']->Cache->set(
+                    $key,
+                    serialize(
+                        $result = array(
+                        'status' => $result->getStatus(),
+                        'body'   => $result->getBody()
+                        )
+                    ),
+                    $this->options['lifetime']
+                );
+            } catch (Exception $error) {
+                return Jaws_Error::raiseError(
+                    $error->getMessage(),
+                    $error->getCode(),
+                    $this->default_error_level,
+                    1
+                );
+            }
         }
+
+        $response = $result['body'];
+        return $result['status'];
     }
 
     /**
