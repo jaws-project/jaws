@@ -78,11 +78,12 @@ class Jaws_Cache
      * Get cache key
      *
      * @access  public
-     * @param   mixed  $params
+     * @param   mixed   $params
+     * @return  int     Returns cache key
      */
     static function key($params)
     {
-        return serialize(func_get_args());
+        return Jaws_Utils::ftok(serialize(func_get_args()));
     }
 
 }

@@ -40,7 +40,7 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      */
     function set($key, $value, $lifetime = 2592000)
     {
-        return empty($lifetime)? false : $this->memcache->set(Jaws_Utils::ftok($key), $value, 0, $lifetime);
+        return empty($lifetime)? false : $this->memcache->set($key, $value, 0, $lifetime);
     }
 
     /**
@@ -52,7 +52,7 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      */
     function get($key)
     {
-        return $this->memcache->get(Jaws_Utils::ftok($key));
+        return $this->memcache->get($key);
     }
 
     /**
@@ -64,7 +64,7 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      */
     function delete($key)
     {
-        return $this->memcache->delete(Jaws_Utils::ftok($key));
+        return $this->memcache->delete($key);
     }
 
 }

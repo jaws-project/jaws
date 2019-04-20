@@ -46,7 +46,7 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function set($key, $value, $lifetime = 2592000)
     {
-        $file = $this->cacheDirectory . '/'. $this->cachePrefix. Jaws_Utils::ftok($key);
+        $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
         return empty($lifetime)? false : (bool)Jaws_Utils::file_put_contents($file, $value);
     }
 
@@ -59,7 +59,7 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function get($key)
     {
-        $file = $this->cacheDirectory . '/'. $this->cachePrefix. Jaws_Utils::ftok($key);
+        $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
         return @file_get_contents($file);
     }
 
@@ -72,7 +72,7 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function delete($key)
     {
-        $file = $this->cacheDirectory . '/'. $this->cachePrefix. Jaws_Utils::ftok($key);
+        $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
         return Jaws_Utils::delete($file);
     }
 
