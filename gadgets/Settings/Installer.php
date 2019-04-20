@@ -93,6 +93,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('holder', ''),
         array('parent', ''),
         array('health_status', '1'),
+        array('cache_driver', ''),
     );
 
     /**
@@ -328,6 +329,12 @@ class Settings_Installer extends Jaws_Gadget_Installer
             // registry keys 
             $this->gadget->registry->insert('health_status', '1');
         }
+
+        if (version_compare($old, '1.8.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('cache_driver', '');
+        }
+
         return true;
     }
 
