@@ -13,6 +13,12 @@ class Jaws_HTTPRequest
 {
     /**
      * @access  private
+     * @var int $request_cache_key  Cache key
+     */
+    private $request_cache_key = 0;
+
+    /**
+     * @access  private
      * @var array   $options    The request options
      */
     var $options = array();
@@ -80,15 +86,17 @@ class Jaws_HTTPRequest
      */
     function get($url, &$response, &$key = null)
     {
-        $key = Jaws_Cache::key($url);
-        if ($this->options['refresh'] || false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
+        $this->request_cache_key = $key = Jaws_Cache::key($url);
+        if ($this->options['refresh'] ||
+            false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
+        ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
             try {
                 $result = $this->httpRequest->send();
                 $GLOBALS['app']->Cache->set(
-                    $key,
+                    $this->request_cache_key,
                     serialize(
                         $result = array(
                         'status' => $result->getStatus(),
@@ -123,8 +131,10 @@ class Jaws_HTTPRequest
      */
     function post($url, $params = array(), &$response, &$key = null)
     {
-        $key = Jaws_Cache::key($url, $params);
-        if ($this->options['refresh'] || false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
+        $this->request_cache_key = $key = Jaws_Cache::key($url, $params);
+        if ($this->options['refresh'] ||
+            false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
+        ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
@@ -142,7 +152,7 @@ class Jaws_HTTPRequest
             try {
                 $result = $this->httpRequest->send();
                 $GLOBALS['app']->Cache->set(
-                    $key,
+                    $this->request_cache_key,
                     serialize(
                         $result = array(
                         'status' => $result->getStatus(),
@@ -177,8 +187,10 @@ class Jaws_HTTPRequest
      */
     function rawPostData($url, $data = '', &$response, &$key = null)
     {
-        $key = Jaws_Cache::key($url, $data);
-        if ($this->options['refresh'] || false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
+        $this->request_cache_key = $key = Jaws_Cache::key($url, $data);
+        if ($this->options['refresh'] ||
+            false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
+        ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
             $this->httpRequest->setHeader('Content-Type', $this->content_type);
@@ -188,7 +200,7 @@ class Jaws_HTTPRequest
             try {
                 $result = $this->httpRequest->send();
                 $GLOBALS['app']->Cache->set(
-                    $key,
+                    $this->request_cache_key,
                     serialize(
                         $result = array(
                         'status' => $result->getStatus(),
@@ -245,9 +257,9 @@ class Jaws_HTTPRequest
      * @param   int     $key    Cache key
      * @return  mixed
      */
-    function deleteCache($key)
+    function deleteCache($key = 0)
     {
-        return $GLOBALS['app']->Cache->delete($key);
+        return $GLOBALS['app']->Cache->delete(empty($key)? $this->request_cache_key : $key);
     }
 
 }
