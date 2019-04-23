@@ -247,7 +247,7 @@ class Jaws_HTTPRequest
      */
     function deleteCache($key)
     {
-        return $GLOBALS['app']->Cache->delete($key)
+        return $GLOBALS['app']->Cache->delete($key);
     }
 
 }
