@@ -75,9 +75,10 @@ class Jaws_HTTPRequest
      * @access  public
      * @param   string  $url        URL address
      * @param   string  $response   Response body
+     * @param   int     $key        Cache key
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function get($url, &$response)
+    function get($url, &$response, &$key = null)
     {
         $key = Jaws_Cache::key($url);
         if ($this->options['refresh'] || false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
@@ -117,9 +118,10 @@ class Jaws_HTTPRequest
      * @param   string  $url        URL address
      * @param   array   $params     Associated name/data values
      * @param   string  $response   Response body
+     * @param   int     $key        Cache key
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function post($url, $params = array(), &$response)
+    function post($url, $params = array(), &$response, &$key = null)
     {
         $key = Jaws_Cache::key($url, $params);
         if ($this->options['refresh'] || false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
@@ -170,9 +172,10 @@ class Jaws_HTTPRequest
      * @param   string  $url        URL address
      * @param   string  $data       Raw data
      * @param   string  $response   Response body
+     * @param   int     $key        Cache key
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function rawPostData($url, $data = '', &$response)
+    function rawPostData($url, $data = '', &$response, &$key = null)
     {
         $key = Jaws_Cache::key($url, $data);
         if ($this->options['refresh'] || false === $result = @unserialize($GLOBALS['app']->Cache->get($key))) {
@@ -233,6 +236,18 @@ class Jaws_HTTPRequest
                 1
             );
         }
+    }
+
+    /**
+     * Delete cache
+     *
+     * @access  public
+     * @param   int     $key    Cache key
+     * @return  mixed
+     */
+    function deleteCache($key)
+    {
+        return $GLOBALS['app']->Cache->delete($key)
     }
 
 }
