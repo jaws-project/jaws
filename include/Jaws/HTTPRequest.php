@@ -132,8 +132,8 @@ class Jaws_HTTPRequest
             $urlencoded = strpos($this->content_type, 'urlencoded') !== false;
 
             // add post data
-            foreach($params as $key => $data) {
-                $this->httpRequest->addPostParameter($key, $urlencoded? urlencode($data) : $data);
+            foreach($params as $name => $value) {
+                $this->httpRequest->addPostParameter($name, $urlencoded? urlencode($value) : $value);
             }
 
             try {
