@@ -28,17 +28,19 @@ self.addEventListener('fetch', event => {
 });
 <!-- END ServiceWorker -->
 <!-- BEGIN Registration -->
-navigator.serviceWorker.register(
-    'service-worker.js',
-    { scope: '{{base_url}}' }
-).then(function(registration) {
-        console.log('Service Worker Registered');
-    }
-);
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register(
+        'service-worker.js',
+        { scope: '{{base_url}}' }
+    ).then(function(registration) {
+            console.log('Service Worker Registered');
+        }
+    );
 
-navigator.serviceWorker.ready.then(
-    function(registration) {
-        console.log('Service Worker Ready');
-    }
-);
+    navigator.serviceWorker.ready.then(
+        function(registration) {
+            console.log('Service Worker Ready');
+        }
+    );
+}
 <!-- END Registration -->

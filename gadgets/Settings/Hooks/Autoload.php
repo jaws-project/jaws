@@ -15,10 +15,12 @@ class Settings_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $tpl = $this->gadget->template->load('ServiceWorker.js');
-        $tpl->SetBlock('Registration');
-        $tpl->ParseBlock('Registration');
-        $GLOBALS['app']->Layout->addScript(array('text' => $tpl->Get()));
+        if ($this->gadget->registry->fetch('pwa_enabled')) {
+            $tpl = $this->gadget->template->load('ServiceWorker.js');
+            $tpl->SetBlock('Registration');
+            $tpl->ParseBlock('Registration');
+            $GLOBALS['app']->Layout->addScript(array('text' => $tpl->Get()));
+        }
     }
 
 }
