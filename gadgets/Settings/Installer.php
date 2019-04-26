@@ -349,6 +349,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('pwa_description', 'Jaws Application Description');
         }
 
+        if (version_compare($old, '2.00', '<')) {
+            // nothing to do
+        }
+
         return true;
     }
 

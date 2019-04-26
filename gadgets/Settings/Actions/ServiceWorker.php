@@ -16,7 +16,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
     function ServiceWorker()
     {
         header('Content-Type: application/javascript');
-        $tpl = $this->gadget->template->load('include/Jaws/Resources/PWA.ServiceWorker');
+        $tpl = $this->gadget->template->load('ServiceWorker.js');
         $tpl->SetBlock('ServiceWorker');
         $reqSettings = $GLOBALS['app']->Registry->fetchAll('Settings');
         $tpl->SetVariable('pwa_version', $reqSettings['pwa_version']);
@@ -33,7 +33,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
     function Manifest()
     {
         header('Content-Type: application/manifest+json; charset=utf-8');
-        $tpl = $this->gadget->template->load('include/Jaws/Resources/PWA.Manifest');
+        $tpl = $this->gadget->template->load('Manifest.json');
         $tpl->SetBlock('Manifest');
         $reqSettings = $GLOBALS['app']->Registry->fetchAll('Settings');
         $tpl->SetVariable('pwa_fullname', $reqSettings['pwa_fullname']);
