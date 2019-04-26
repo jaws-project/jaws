@@ -94,6 +94,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('parent', ''),
         array('health_status', '1'),
         array('cache_driver', ''),
+        array('pwa_enabled', false),
+        array('pwa_version', '1.0.0'),
+        array('pwa_fullname', 'Jaws Application'),
+        array('pwa_shortname', 'jaws'),
+        array('pwa_description', 'Jaws Application Description'),
     );
 
     /**
@@ -333,6 +338,15 @@ class Settings_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.8.0', '<')) {
             // registry keys 
             $this->gadget->registry->insert('cache_driver', '');
+        }
+
+        if (version_compare($old, '1.9.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('pwa_enabled', false);
+            $this->gadget->registry->insert('pwa_version', '1.0.0');
+            $this->gadget->registry->insert('pwa_fullname', 'Jaws Application');
+            $this->gadget->registry->insert('pwa_shortname', 'jaws');
+            $this->gadget->registry->insert('pwa_description', 'Jaws Application Description');
         }
 
         return true;

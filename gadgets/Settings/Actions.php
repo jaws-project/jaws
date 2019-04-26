@@ -29,7 +29,14 @@ $actions['HealthStatus'] = array(
     'standalone' => true,
     'file'   => 'Settings',
 );
-
+$actions['ServiceWorker'] = array(
+    'standalone' => true,
+    'file'   => 'ServiceWorker',
+);
+$actions['Manifest'] = array(
+    'standalone' => true,
+    'file'   => 'ServiceWorker',
+);
 /**
  * Admin actions
  */
