@@ -6,6 +6,9 @@ self.addEventListener('install', e => {
       return cache.addAll([
         '{{base_url}}',
         <!-- BEGIN scripts -->'{{base_url}}{{script}}',<!-- END scripts -->
+        '{{base_url}}libraries/jquery/jquery.min.js?{{pwa_version}}',
+        '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?{{pwa_version}}',
+        '{{base_url}}include/Jaws/Resources/Jaws.js?{{pwa_version}}',
         '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css?{{pwa_version}}',
         '{{base_url}}{{theme_url}}style{{.dir}}.css?{{pwa_version}}'
       ]).then(() => self.skipWaiting());
