@@ -721,7 +721,7 @@ class Jaws_Layout
                         'rel'  => 'stylesheet'
                     );
                 }
-                $this->extraTags['links']['elements'][md5($params[0]['href'])] = $params[0];
+                $this->extraTags['links']['elements'][md5(serialize($params))] = $params[0];
                 break;
 
             case 'addScript':
@@ -730,7 +730,7 @@ class Jaws_Layout
                         'src'  => $params[0]
                     );
                 }
-                $this->extraTags['scripts']['elements'][md5($params[0]['src'])] = $params[0];
+                $this->extraTags['scripts']['elements'][md5(serialize($params))] = $params[0];
                 break;
 
             default:
