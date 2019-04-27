@@ -15,11 +15,19 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
      */
     function ServiceWorker()
     {
+        $layout = @hex2bin($this->gadget->request->fetch('layout'));
         header('Content-Type: application/javascript');
         $tpl = $this->gadget->template->load('ServiceWorker.js');
         $tpl->SetBlock('ServiceWorker');
-        $reqSettings = $GLOBALS['app']->Registry->fetchAll('Settings');
-        $tpl->SetVariable('pwa_version', $reqSettings['pwa_version']);
+        $tpl->SetVariable('pwa_version', $this->gadget->registry->fetch('pwa_version'));
+
+        $layout = (!empty($layout) && $tpl->BlockExists("ServiceWorker/$layout"))? $layout : 'Layout';
+        $tpl->SetVariable('layout', $layout);
+
+        // parse block related to given layout
+        $tpl->SetBlock("ServiceWorker/$layout");
+        $tpl->ParseBlock("ServiceWorker/$layout");
+
         $tpl->ParseBlock('ServiceWorker');
         return $tpl->Get();
     }

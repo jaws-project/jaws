@@ -1,17 +1,60 @@
 <!-- BEGIN ServiceWorker -->
-const cacheName = 'jaws-{{pwa_version}}';
+const cacheName = 'Jaws-{{layout}}-{{pwa_version}}';
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
-      return cache.addAll([
-        '{{base_url}}',
-        <!-- BEGIN scripts -->'{{base_url}}{{script}}',<!-- END scripts -->
-        '{{base_url}}libraries/jquery/jquery.min.js?{{pwa_version}}',
-        '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?{{pwa_version}}',
-        '{{base_url}}include/Jaws/Resources/Jaws.js?{{pwa_version}}',
-        '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css?{{pwa_version}}',
-        '{{base_url}}{{theme_url}}style{{.dir}}.css?{{pwa_version}}'
-      ]).then(() => self.skipWaiting());
+      return cache.addAll(
+        [
+          <!-- BEGIN Layout -->
+          '{{base_url}}',
+          '{{base_url}}libraries/jquery/jquery.min.js',
+          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+          '{{base_url}}include/Jaws/Resources/Jaws.js',
+          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
+          '{{base_url}}{{theme_url}}style{{.dir}}.css'
+          <!-- END Layout -->
+          <!-- BEGIN Layout.User -->
+          '{{base_url}}',
+          '{{base_url}}libraries/jquery/jquery.min.js',
+          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+          '{{base_url}}include/Jaws/Resources/Jaws.js',
+          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
+          '{{base_url}}{{theme_url}}style{{.dir}}.css'
+          <!-- END Layout.User -->
+          <!-- BEGIN Layout.Users -->
+          '{{base_url}}',
+          '{{base_url}}libraries/jquery/jquery.min.js',
+          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+          '{{base_url}}include/Jaws/Resources/Jaws.js',
+          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
+          '{{base_url}}{{theme_url}}style{{.dir}}.css'
+          <!-- END Layout.Users -->
+          <!-- BEGIN Index -->
+          '{{base_url}}',
+          '{{base_url}}libraries/jquery/jquery.min.js',
+          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+          '{{base_url}}include/Jaws/Resources/Jaws.js',
+          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
+          '{{base_url}}{{theme_url}}style{{.dir}}.css'
+          <!-- END Index -->
+          <!-- BEGIN Index.User -->
+          '{{base_url}}',
+          '{{base_url}}libraries/jquery/jquery.min.js',
+          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+          '{{base_url}}include/Jaws/Resources/Jaws.js',
+          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
+          '{{base_url}}{{theme_url}}style{{.dir}}.css'
+          <!-- END Index.User -->
+          <!-- BEGIN Index.Users -->
+          '{{base_url}}',
+          '{{base_url}}libraries/jquery/jquery.min.js',
+          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+          '{{base_url}}include/Jaws/Resources/Jaws.js',
+          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
+          '{{base_url}}{{theme_url}}style{{.dir}}.css'
+          <!-- END Index.Users -->
+        ]
+      ).then(() => self.skipWaiting());
     })
   );
 });
@@ -20,20 +63,26 @@ self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.open(cacheName)
-      .then(cache => cache.match(event.request, {ignoreSearch: true}))
-      .then(response => {
-      return response || fetch(event.request);
-    })
-  );
+/*
+ * Fetch request
+ */
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        fetch(event.request).then(function (response) {
+            caches.open(cacheName).then(function (cache) {
+                cache.put(event.request, response)
+            });
+            return response.clone();
+        }).catch(function() {
+            return caches.match(event.request, {'cacheName': cacheName, ignoreSearch: true});
+        })
+    );
 });
 <!-- END ServiceWorker -->
 <!-- BEGIN Registration -->
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(
-        'service-worker.js',
+        'service-worker.js?layout={{layout}}',
         { scope: '{{base_url}}' }
     ).then(function(registration) {
             console.log('Service Worker Registered');
