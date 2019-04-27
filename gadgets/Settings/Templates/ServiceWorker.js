@@ -5,54 +5,11 @@ self.addEventListener('install', e => {
     caches.open(cacheName).then(cache => {
       return cache.addAll(
         [
-          <!-- BEGIN Layout -->
           '{{base_url}}',
           '{{base_url}}libraries/jquery/jquery.min.js',
           '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
           '{{base_url}}include/Jaws/Resources/Jaws.js',
-          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
-          '{{base_url}}{{theme_url}}style{{.dir}}.css'
-          <!-- END Layout -->
-          <!-- BEGIN Layout.User -->
-          '{{base_url}}',
-          '{{base_url}}libraries/jquery/jquery.min.js',
-          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-          '{{base_url}}include/Jaws/Resources/Jaws.js',
-          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
-          '{{base_url}}{{theme_url}}style{{.dir}}.css'
-          <!-- END Layout.User -->
-          <!-- BEGIN Layout.Users -->
-          '{{base_url}}',
-          '{{base_url}}libraries/jquery/jquery.min.js',
-          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-          '{{base_url}}include/Jaws/Resources/Jaws.js',
-          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
-          '{{base_url}}{{theme_url}}style{{.dir}}.css'
-          <!-- END Layout.Users -->
-          <!-- BEGIN Index -->
-          '{{base_url}}',
-          '{{base_url}}libraries/jquery/jquery.min.js',
-          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-          '{{base_url}}include/Jaws/Resources/Jaws.js',
-          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
-          '{{base_url}}{{theme_url}}style{{.dir}}.css'
-          <!-- END Index -->
-          <!-- BEGIN Index.User -->
-          '{{base_url}}',
-          '{{base_url}}libraries/jquery/jquery.min.js',
-          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-          '{{base_url}}include/Jaws/Resources/Jaws.js',
-          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
-          '{{base_url}}{{theme_url}}style{{.dir}}.css'
-          <!-- END Index.User -->
-          <!-- BEGIN Index.Users -->
-          '{{base_url}}',
-          '{{base_url}}libraries/jquery/jquery.min.js',
-          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-          '{{base_url}}include/Jaws/Resources/Jaws.js',
-          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css',
-          '{{base_url}}{{theme_url}}style{{.dir}}.css'
-          <!-- END Index.Users -->
+          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css'
         ]
       ).then(() => self.skipWaiting());
     })
@@ -60,7 +17,7 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
+    event.waitUntil(self.clients.claim());
 });
 
 /*

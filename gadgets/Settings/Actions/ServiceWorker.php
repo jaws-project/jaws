@@ -21,7 +21,9 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         $tpl->SetBlock('ServiceWorker');
         $tpl->SetVariable('pwa_version', $this->gadget->registry->fetch('pwa_version'));
 
-        $layout = (!empty($layout) && $tpl->BlockExists("ServiceWorker/$layout"))? $layout : 'Layout';
+        if (!in_array($layout, array('Index', 'Index.User', 'Index.Users', 'Layout', 'Layout.User', 'Layout.Users'))) {
+            $layout = 'Layout';
+        }
         $tpl->SetVariable('layout', $layout);
 
         // parse block related to given layout
