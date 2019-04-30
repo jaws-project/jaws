@@ -23,18 +23,37 @@ self.addEventListener('activate', event => {
 /*
  * Fetch request
  */
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        fetch(event.request).then(function (response) {
+self.addEventListener('fetch', function (event) {
+    var freshResource = fetch(event.request).then(function (response) {
+        var clonedResponse = response.clone();
+        if (response.ok) {
+            // update the cache with the network response
             caches.open(cacheName).then(function (cache) {
-                cache.put(event.request, response)
+                cache.put(event.request, clonedResponse);
             });
-            return response.clone();
-        }).catch(function() {
-            return caches.match(event.request, {'cacheName': cacheName, ignoreSearch: true});
-        })
-    );
+        }
+        return response;
+    });
+
+    var cachedResource = caches.open(cacheName).then(function (cache) {
+        return cache.match(event.request, {ignoreSearch: true}).then(function(response) {
+            return response || freshResource;
+        });
+    }).catch(function (e) {
+        return caches.match(event.request.referrer, {'cacheName': cacheName, ignoreSearch: true});
+    });
+
+    event.respondWith(cachedResource);
 });
+
+/*
+ * Service Worker message
+ */
+self.addEventListener('message', function(event) {
+    console.log(event);
+    //alert(event.data.alert);
+});
+
 <!-- END ServiceWorker -->
 <!-- BEGIN Registration -->
 if ('serviceWorker' in navigator) {
