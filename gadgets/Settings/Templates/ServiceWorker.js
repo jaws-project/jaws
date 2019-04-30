@@ -24,7 +24,7 @@ self.addEventListener('activate', event => {
  * Fetch request
  */
 self.addEventListener('fetch', function (event) {
-    var freshResource = fetch(event.request).then(function (response) {
+    var reqResource = fetch(event.request).then(function (response) {
         var clonedResponse = response.clone();
         if (response.ok) {
             // update the cache with the network response
@@ -33,17 +33,15 @@ self.addEventListener('fetch', function (event) {
             });
         }
         return response;
-    });
-
-    var cachedResource = caches.open(cacheName).then(function (cache) {
-        return cache.match(event.request, {ignoreSearch: true}).then(function(response) {
-            return response || freshResource;
+    }).catch(function () {
+        return caches.open(cacheName).then(function (cache) {
+            return cache.match(event.request, {ignoreSearch: true}).then(function(response) {
+                return response || (new Response('!!!!!!!!'));
+            });
         });
-    }).catch(function (e) {
-        return caches.match(event.request.referrer, {'cacheName': cacheName, ignoreSearch: true});
     });
 
-    event.respondWith(cachedResource);
+    event.respondWith(reqResource);
 });
 
 /*
@@ -53,7 +51,6 @@ self.addEventListener('message', function(event) {
     console.log(event);
     //alert(event.data.alert);
 });
-
 <!-- END ServiceWorker -->
 <!-- BEGIN Registration -->
 if ('serviceWorker' in navigator) {
