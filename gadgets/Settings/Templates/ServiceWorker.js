@@ -1,18 +1,22 @@
 <!-- BEGIN ServiceWorker -->
 const cacheName = 'Jaws-{{pwa_version}}';
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(cacheName).then(cache => {
-      return cache.addAll(
-        [
-          'libraries/jquery/jquery.min.js',
-          'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-          'include/Jaws/Resources/Jaws.js',
-          'libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css'
-        ]
-      ).then(() => self.skipWaiting());
-    })
-  );
+/*
+ * service worker install event
+ */
+this.addEventListener('install', function(event) {
+    event.waitUntil(
+        caches.open(cacheName).then(
+            function(cache) {
+                return cache.addAll([
+                    '',
+                    'libraries/jquery/jquery.min.js',
+                    'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+                    'include/Jaws/Resources/Jaws.js',
+                    'libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css'
+                ]).then(() => self.skipWaiting());
+            }
+        )
+    );
 });
 
 self.addEventListener('activate', event => {
@@ -20,7 +24,7 @@ self.addEventListener('activate', event => {
 });
 
 /*
- * Fetch request
+ * service worker fetch request event
  */
 self.addEventListener('fetch', async function (event) {
     var reqResponse = fetch(event.request).then(
@@ -41,7 +45,7 @@ self.addEventListener('fetch', async function (event) {
         function (error) {
             return caches.open(cacheName).then(
                 function (cache) {
-                    return cache.match(event.request, {ignoreSearch: true}).then(
+                    return cache.match(event.request).then(
                         function(response) {
                             if (!response && event.request.mode == 'navigate') {
                                 // doesn't exists cache of request response
@@ -54,7 +58,7 @@ self.addEventListener('fetch', async function (event) {
                                     });
                                 });
                                 // set response to referrer page
-                                response = caches.match(event.request.referrer, {'cacheName': cacheName, ignoreSearch: true});
+                                response = cache.match(event.request.referrer);
                             }
 
                             return response;
