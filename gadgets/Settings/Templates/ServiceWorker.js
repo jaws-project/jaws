@@ -1,11 +1,10 @@
 <!-- BEGIN ServiceWorker -->
-const cacheName = 'Jaws-{{layout}}-{{pwa_version}}';
+const cacheName = 'Jaws-{{pwa_version}}';
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
       return cache.addAll(
         [
-          '{{url_index}}',
           'libraries/jquery/jquery.min.js',
           'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
           'include/Jaws/Resources/Jaws.js',
@@ -70,27 +69,24 @@ self.addEventListener('fetch', async function (event) {
 });
 
 /*
- * Service Worker message
+ * Service Worker message listener
  */
 self.addEventListener('message', function(event) {
-    console.log(event);
-    //alert(event.data.alert);
+    console.log('service-worker get a message!');
 });
 <!-- END ServiceWorker -->
 <!-- BEGIN Registration -->
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(
-        '{{base_url}}service-worker.js?layout={{layout}}',
-        {}
-    ).then(function (registration) {
-        console.log('Service Worker Registered');
-    }).catch (function (error) {
+        'service-worker.js?{{pwa_version}}',
+        {scope: '{{base_url}}'}
+    ).catch (function (error) {
         console.log('service-worker registration error: ', error);
     });
 
     navigator.serviceWorker.ready.then(
         function(registration) {
-            console.log('Service Worker Ready');
+            //
         }
     );
 
