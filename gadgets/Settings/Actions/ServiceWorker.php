@@ -19,8 +19,13 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         header('Content-Type: application/javascript');
         $tpl = $this->gadget->template->load('ServiceWorker.js');
         $tpl->SetBlock('ServiceWorker');
-        $tpl->SetVariable('pwa_version', $this->gadget->registry->fetch('pwa_version'));
 
+        $tpl->SetVariable('url_index', $GLOBALS['app']->GetSiteURL('/'));
+        $tpl->SetVariable('url_manifest', $this->gadget->urlMap('Manifest'));
+        $tpl->SetVariable('pwa_version', $this->gadget->registry->fetch('pwa_version'));
+        $tpl->SetVariable('offline_message', _t('SETTINGS_PWA_ERROR_REQUEST_DOES_NOT_EXIST'));
+
+        // validate layout name
         if (!in_array($layout, array('Index', 'Index.User', 'Index.Users', 'Layout', 'Layout.User', 'Layout.Users'))) {
             $layout = 'Layout';
         }

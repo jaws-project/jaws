@@ -5,11 +5,11 @@ self.addEventListener('install', e => {
     caches.open(cacheName).then(cache => {
       return cache.addAll(
         [
-          '{{base_url}}',
-          '{{base_url}}libraries/jquery/jquery.min.js',
-          '{{base_url}}libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-          '{{base_url}}include/Jaws/Resources/Jaws.js',
-          '{{base_url}}libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css'
+          '{{url_index}}',
+          'libraries/jquery/jquery.min.js',
+          'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
+          'include/Jaws/Resources/Jaws.js',
+          'libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css'
         ]
       ).then(() => self.skipWaiting());
     })
@@ -23,25 +23,50 @@ self.addEventListener('activate', event => {
 /*
  * Fetch request
  */
-self.addEventListener('fetch', function (event) {
-    var reqResource = fetch(event.request).then(function (response) {
-        var clonedResponse = response.clone();
-        if (response.ok) {
-            // update the cache with the network response
-            caches.open(cacheName).then(function (cache) {
-                cache.put(event.request, clonedResponse);
-            });
-        }
-        return response;
-    }).catch(function () {
-        return caches.open(cacheName).then(function (cache) {
-            return cache.match(event.request, {ignoreSearch: true}).then(function(response) {
-                return response || (new Response('!!!!!!!!'));
-            });
-        });
-    });
+self.addEventListener('fetch', async function (event) {
+    var reqResponse = fetch(event.request).then(
+        function (response) {
+            var clonedResponse = response.clone();
+            if (response.ok) {
+                // update the cache with the network response
+                caches.open(cacheName).then(
+                    function (cache) {
+                        cache.put(event.request, clonedResponse);
+                    }
+                );
+            }
 
-    event.respondWith(reqResource);
+            return response;
+        }
+    ).catch(
+        function (error) {
+            return caches.open(cacheName).then(
+                function (cache) {
+                    return cache.match(event.request, {ignoreSearch: true}).then(
+                        function(response) {
+                            if (!response && event.request.mode == 'navigate') {
+                                // doesn't exists cache of request response
+                                clients.get(event.clientId || event.resultingClientId).then(function (client) {
+                                    // post offline message
+                                    client.postMessage({
+                                        message: '{{offline_message}}',
+                                        redirectTo: client.url,
+                                        requestedURL: event.request.url
+                                    });
+                                });
+                                // set response to referrer page
+                                response = caches.match(event.request.referrer, {'cacheName': cacheName, ignoreSearch: true});
+                            }
+
+                            return response;
+                        }
+                    );
+                }
+            );
+        }
+    );
+
+    event.respondWith(reqResponse);
 });
 
 /*
@@ -55,17 +80,24 @@ self.addEventListener('message', function(event) {
 <!-- BEGIN Registration -->
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(
-        'service-worker.js?layout={{layout}}',
-        { scope: '{{base_url}}' }
-    ).then(function(registration) {
-            console.log('Service Worker Registered');
-        }
-    );
+        '{{base_url}}service-worker.js?layout={{layout}}',
+        {}
+    ).then(function (registration) {
+        console.log('Service Worker Registered');
+    }).catch (function (error) {
+        console.log('service-worker registration error: ', error);
+    });
 
     navigator.serviceWorker.ready.then(
         function(registration) {
             console.log('Service Worker Ready');
         }
     );
+
+    // Listen to messages coming from the service worker
+    navigator.serviceWorker.addEventListener('message', function(event) {
+        alert(event.data.message);
+        location = event.data.redirectTo;
+    });
 }
 <!-- END Registration -->

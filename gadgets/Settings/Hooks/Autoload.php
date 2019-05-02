@@ -15,7 +15,7 @@ class Settings_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        if ($this->gadget->registry->fetch('pwa_enabled')) {
+        if (JAWS_SCRIPT == 'index' && $this->gadget->registry->fetch('pwa_enabled')) {
             $tpl = $this->gadget->template->load('ServiceWorker.js');
             $tpl->SetBlock('Registration');
             $tpl->SetVariable('layout', bin2hex($GLOBALS['app']->Layout->GetLayoutName()));
