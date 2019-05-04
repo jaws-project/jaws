@@ -149,7 +149,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
 {
     this.baseGadget = null;
     this.baseAction = null;
-    this.callbackObject = callbackObject;
+    this.callbackObject = callbackObject || Jaws_Gadget.getInstance(gadget);
     this.callbackFunctions = callbackFunctions;
     this.loadingMessage = '';
     var reqValues = $('meta[name=application-name]').attr('content').split(':');
@@ -197,10 +197,13 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
         options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
+        options.success = this.onSuccess.bind(this, options);
+        options.error = this.onError.bind(this, options);
         //options.complete = this.onComplete.bind(this, options);
         var result = $.ajax(options);
         // hide loading
         this.showLoading(false);
+
         return eval('(' + result.responseText + ')');
     };
 
@@ -244,17 +247,38 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
         return $.ajax(options);
     };
 
-    this.onSend = function () {
+    this.onSend = function (reqOptions) {
         // start show loading indicator
         this.showLoading(true);
+        reqOptions.ftok = reqOptions.data.crc32();
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
         // ----
+        if (jaws.standalone) {
+            this.callbackObject.gadget.storage.update(
+                reqOptions.ftok,
+                JSON.stringify({
+                    status:       jqXHR.status,
+                    statusText:   jqXHR.statusText,
+                    readyState:   jqXHR.readyState,
+                    responseText: jqXHR.responseText
+                })
+            );
+        }
     };
 
     this.onError = function (reqOptions, jqXHR, textStatus, errorThrown) {
         // TODO: alert error message
+        if (jaws.standalone) {
+            var result = JSON.parse(this.callbackObject.gadget.storage.fetch(reqOptions.ftok));
+            if (result) {
+                jqXHR.status       = result.status;
+                jqXHR.statusText   = result.statusText;
+                jqXHR.readyState   = result.readyState;
+                jqXHR.responseText = result.responseText;
+            }
+        }
     };
 
     this.onComplete = function (reqOptions, jqXHR, textStatus) {
@@ -548,6 +572,33 @@ function initEditor(selector)
             break;
     }
 }
+
+/**
+ * Javascript crc32 string prototype
+ */
+String.prototype.crc32 = function() {
+    var makeCRCTable = function(){
+        var c;
+        var crcTable = [];
+        for(var n =0; n < 256; n++){
+            c = n;
+            for(var k =0; k < 8; k++){
+                c = ((c&1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+            }
+            crcTable[n] = c;
+        }
+        return crcTable;
+    }
+
+    var crcTable = window.crcTable || (window.crcTable = makeCRCTable());
+    var crc = 0 ^ (-1);
+
+    for (var i = 0; i < this.length; i++ ) {
+        crc = (crc >>> 8) ^ crcTable[(crc ^ this.charCodeAt(i)) & 0xFF];
+    }
+
+    return (crc ^ (-1)) >>> 0;
+};
 
 /**
  * Javascript blank string prototype
@@ -1052,8 +1103,14 @@ var Jaws_Gadget = (function () {
                 objGadget.objects = {
                     'Actions': {}
                 };
-                objGadget.defines = jaws[gadget].Defines;
-                objGadget.actions = jaws[gadget].Actions;
+
+                if (jaws[gadget]) {
+                    objGadget.defines = jaws[gadget].Defines;
+                    objGadget.actions = jaws[gadget].Actions;
+                } else {
+                    objGadget.defines = [];
+                    objGadget.actions = [];
+                }
 
                 // shout interface method
                 objGadget.shout = function(event, data, destGadget, broadcast) {
@@ -1068,6 +1125,8 @@ var Jaws_Gadget = (function () {
 
                 // ajax interface
                 objGadget.ajax = new JawsAjax(gadget, objGadget.AjaxCallback, objGadget);
+                // local storage interface
+                objGadget.storage = new JawsStorage(gadget);
 
                 // load gadget initialize method if exist
                 if (objGadget.init) {
@@ -1136,6 +1195,7 @@ function Jaws_Gadget_Action() { return {
  * on document ready
  */
 $(document).ready(function() {
+    jaws.standalone = window.matchMedia('(display-mode: standalone)').matches;
     $('textarea[role="editor"]').each(function(index) {
         initEditor(this)
     });
