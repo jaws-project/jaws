@@ -92,7 +92,7 @@ class Jaws_Session_Web extends Jaws_Session
         $domain  = '';//$GLOBALS['app']->Registry->fetch('cookie_domain', 'Settings');
         // secure
         $secure = $GLOBALS['app']->Registry->fetch('cookie_secure', 'Settings') == 'true';
-        $secure = $secure && (strtolower($_SERVER['HTTPS']) == 'on');
+        $secure = $secure && !empty($_SERVER['HTTPS']);
         // http only
         if (is_null($httponly)) {
             $httponly = $GLOBALS['app']->Registry->fetch('cookie_httponly', 'Settings') == 'true';
