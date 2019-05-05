@@ -28,40 +28,42 @@ self.addEventListener('activate', event => {
  * service worker fetch request event
  */
 self.addEventListener('fetch', async function (event) {
-    var reqResponse = fetch(event.request).then(
-        function (response) {
-            var clonedResponse = response.clone();
-            if (response.ok) {
-                // update the cache with the network response
-                caches.open(cacheName).then(
-                    function (cache) {
-                        cache.put(event.request, clonedResponse);
-                    }
-                );
-            }
-
-            return response;
-        }
-    ).catch(
-        function (error) {
-            return caches.open(cacheName).then(
-                function (cache) {
-                    return cache.match(event.request).then(
-                        function(response) {
-                            if (!response) {
-                                // set response to referrer page
-                                response = cache.match('offline');
-                            }
-
-                            return response;
+    if (event.request.method == 'GET') {
+        var reqResponse = fetch(event.request).then(
+            function (response) {
+                var clonedResponse = response.clone();
+                if (response.ok) {
+                    // update the cache with the network response
+                    caches.open(cacheName).then(
+                        function (cache) {
+                            cache.put(event.request, clonedResponse);
                         }
                     );
                 }
-            );
-        }
-    );
 
-    event.respondWith(reqResponse);
+                return response;
+            }
+        ).catch(
+            function (error) {
+                return caches.open(cacheName).then(
+                    function (cache) {
+                        return cache.match(event.request).then(
+                            function(response) {
+                                if (!response) {
+                                    // set response to referrer page
+                                    response = cache.match('offline');
+                                }
+
+                                return response;
+                            }
+                        );
+                    }
+                );
+            }
+        );
+
+        event.respondWith(reqResponse);
+    }
 });
 
 /*
