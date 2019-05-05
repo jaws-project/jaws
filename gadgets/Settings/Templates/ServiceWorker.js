@@ -9,6 +9,7 @@ this.addEventListener('install', function(event) {
             function(cache) {
                 return cache.addAll([
                     '',
+                    'offline',
                     'libraries/jquery/jquery.min.js',
                     'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
                     'include/Jaws/Resources/Jaws.js',
@@ -47,18 +48,9 @@ self.addEventListener('fetch', async function (event) {
                 function (cache) {
                     return cache.match(event.request).then(
                         function(response) {
-                            if (!response && event.request.mode == 'navigate') {
-                                // doesn't exists cache of request response
-                                clients.get(event.clientId || event.resultingClientId).then(function (client) {
-                                    // post offline message
-                                    client.postMessage({
-                                        message: '{{offline_message}}',
-                                        redirectTo: client.url,
-                                        requestedURL: event.request.url
-                                    });
-                                });
+                            if (!response) {
                                 // set response to referrer page
-                                response = cache.match(event.request.referrer);
+                                response = cache.match('offline');
                             }
 
                             return response;

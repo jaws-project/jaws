@@ -37,6 +37,10 @@ $actions['Manifest'] = array(
     'standalone' => true,
     'file'   => 'ServiceWorker',
 );
+$actions['Offline'] = array(
+    'normal' => true,
+    'file'   => 'ServiceWorker',
+);
 /**
  * Admin actions
  */

@@ -7,6 +7,7 @@
  */
 $maps[] = array('Settings', 'settings');
 $maps[] = array('HealthStatus', 'settings/health-status');
+$maps[] = array('Offline', 'offline');
 $maps[] = array(
     'ServiceWorker',
     'service-worker',

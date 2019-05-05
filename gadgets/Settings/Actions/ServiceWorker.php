@@ -18,10 +18,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         header('Content-Type: application/javascript');
         $tpl = $this->gadget->template->load('ServiceWorker.js');
         $tpl->SetBlock('ServiceWorker');
-
         $tpl->SetVariable('pwa_version', $this->gadget->registry->fetch('pwa_version'));
-        $tpl->SetVariable('offline_message', _t('SETTINGS_PWA_ERROR_REQUEST_DOES_NOT_EXIST'));
-
         $tpl->ParseBlock('ServiceWorker');
         return $tpl->Get();
     }
@@ -42,6 +39,21 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         $tpl->SetVariable('pwa_shortname', $reqSettings['pwa_shortname']);
         $tpl->SetVariable('pwa_description', $reqSettings['pwa_description']);
         $tpl->ParseBlock('Manifest');
+        return $tpl->Get();
+    }
+
+    /**
+     * Prepares PWA Service Worker offline page
+     *
+     * @access  public
+     * @return  string  Offline page
+     */
+    function Offline()
+    {
+        $tpl = $this->gadget->template->load('Offline.html');
+        $tpl->SetBlock('Offline');
+        $tpl->SetVariable('offline_message', _t('SETTINGS_PWA_ERROR_REQUEST_DOES_NOT_EXIST'));
+        $tpl->ParseBlock('Offline');
         return $tpl->Get();
     }
 
