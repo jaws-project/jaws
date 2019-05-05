@@ -1195,7 +1195,9 @@ function Jaws_Gadget_Action() { return {
  * on document ready
  */
 $(document).ready(function() {
-    jaws.standalone = window.matchMedia('(display-mode: standalone)').matches;
+    // detect running in full-screen/standalone mode
+    jaws.standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
     $('textarea[role="editor"]').each(function(index) {
         initEditor(this)
     });
