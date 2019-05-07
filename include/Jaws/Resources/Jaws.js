@@ -133,7 +133,35 @@ jQuery.extend({
                 //on error
             }).prop('async', true).attr('src', path);
         }
-    }
+    };
+
+    /**
+     * Javascript crc32 string prototype
+    */
+    jQuery.crc32 = function(str) {
+        var makeCRCTable = function(){
+            var c;
+            var crcTable = [];
+            for(var n =0; n < 256; n++){
+                c = n;
+                for(var k =0; k < 8; k++){
+                    c = ((c&1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+                }
+                crcTable[n] = c;
+            }
+            return crcTable;
+        }
+
+        var crcTable = window.crcTable || (window.crcTable = makeCRCTable());
+        var crc = 0 ^ (-1);
+
+        for (var i = 0; i < str.length; i++ ) {
+            crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
+        }
+
+        return (crc ^ (-1)) >>> 0;
+    };
+
 })(jQuery);
 
 
@@ -250,7 +278,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
     this.onSend = function (reqOptions) {
         // start show loading indicator
         this.showLoading(true);
-        reqOptions.ftok = reqOptions.data.crc32();
+        reqOptions.ftok = $.crc32(reqOptions.url + (reqOptions.data || ''));
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
@@ -572,33 +600,6 @@ function initEditor(selector)
             break;
     }
 }
-
-/**
- * Javascript crc32 string prototype
- */
-String.prototype.crc32 = function() {
-    var makeCRCTable = function(){
-        var c;
-        var crcTable = [];
-        for(var n =0; n < 256; n++){
-            c = n;
-            for(var k =0; k < 8; k++){
-                c = ((c&1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
-            }
-            crcTable[n] = c;
-        }
-        return crcTable;
-    }
-
-    var crcTable = window.crcTable || (window.crcTable = makeCRCTable());
-    var crc = 0 ^ (-1);
-
-    for (var i = 0; i < this.length; i++ ) {
-        crc = (crc >>> 8) ^ crcTable[(crc ^ this.charCodeAt(i)) & 0xFF];
-    }
-
-    return (crc ^ (-1)) >>> 0;
-};
 
 /**
  * Javascript blank string prototype
@@ -1195,9 +1196,7 @@ function Jaws_Gadget_Action() { return {
  * on document ready
  */
 $(document).ready(function() {
-    // detect running in full-screen/standalone mode
-    jaws.standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-
+    jaws.standalone = window.matchMedia('(display-mode: standalone)').matches;
     $('textarea[role="editor"]').each(function(index) {
         initEditor(this)
     });
