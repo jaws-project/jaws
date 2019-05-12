@@ -1170,7 +1170,9 @@ $(document).ready(function() {
                 registration.addEventListener('updatefound', () => {
                     registration.update();
                     // FIXME: we need notify user before reload
-                    location.reload(true);
+                    if (confirm('service worker update found, your page will be refresh!')) {
+                        location.reload(true);
+                    }
                 });
             }
         ).catch (
