@@ -6,7 +6,7 @@ self.importScripts(
 /*
  *  service worker version
 */
-const ServiceWorkerVersion = 'a.{{pwa_version}}';
+const ServiceWorkerVersion = '{{pwa_version}}';
 
 /*
  *  offline request page 
@@ -151,16 +151,6 @@ function getRequestResponseCache(request)
  * service worker install event
  */
 this.addEventListener('install', function(event) {
-    fetch(offlineRequest).then(
-        function (response) {
-            setRequestResponseCache(offlineRequest, response.clone());
-        }
-    ).catch (
-        function (error) {
-            console.log(error);
-        }
-    );
-
     /*
     event.waitUntil(
         caches.open(cacheName).then(
@@ -179,8 +169,28 @@ this.addEventListener('install', function(event) {
     */
 });
 
-self.addEventListener('activate', event => {
-    event.waitUntil(self.clients.claim());
+self.addEventListener('activate', function(event) {
+    localforage.clear().then(
+        function() {
+            console.log('cache.clear...');
+            fetch(offlineRequest).then(
+                function (response) {
+                    console.log('offline fetch...');
+                    setRequestResponseCache(offlineRequest, response.clone());
+                }
+            ).catch (
+                function (error) {
+                    console.log(error);
+                }
+            );
+        }
+    ).catch(
+        function(error) {
+            console.log(error);
+        }
+    );
+
+    return self.clients.claim();
 });
 
 /*
