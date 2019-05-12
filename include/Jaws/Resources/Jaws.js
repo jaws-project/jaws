@@ -135,33 +135,6 @@ jQuery.extend({
         }
     };
 
-    /**
-     * Javascript crc32 string prototype
-    */
-    jQuery.crc32 = function(str) {
-        var makeCRCTable = function(){
-            var c;
-            var crcTable = [];
-            for(var n =0; n < 256; n++){
-                c = n;
-                for(var k =0; k < 8; k++){
-                    c = ((c&1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
-                }
-                crcTable[n] = c;
-            }
-            return crcTable;
-        }
-
-        var crcTable = window.crcTable || (window.crcTable = makeCRCTable());
-        var crc = 0 ^ (-1);
-
-        for (var i = 0; i < str.length; i++ ) {
-            crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
-        }
-
-        return (crc ^ (-1)) >>> 0;
-    };
-
 })(jQuery);
 
 
@@ -278,35 +251,14 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
     this.onSend = function (reqOptions) {
         // start show loading indicator
         this.showLoading(true);
-        reqOptions.ftok = $.crc32(reqOptions.url + (reqOptions.data || ''));
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
         // ----
-        if (jaws.standalone) {
-            this.callbackObject.gadget.storage.update(
-                reqOptions.ftok,
-                JSON.stringify({
-                    status:       jqXHR.status,
-                    statusText:   jqXHR.statusText,
-                    readyState:   jqXHR.readyState,
-                    responseText: jqXHR.responseText
-                })
-            );
-        }
     };
 
     this.onError = function (reqOptions, jqXHR, textStatus, errorThrown) {
         // TODO: alert error message
-        if (jaws.standalone) {
-            var result = JSON.parse(this.callbackObject.gadget.storage.fetch(reqOptions.ftok));
-            if (result) {
-                jqXHR.status       = result.status;
-                jqXHR.statusText   = result.statusText;
-                jqXHR.readyState   = result.readyState;
-                jqXHR.responseText = result.responseText;
-            }
-        }
     };
 
     this.onComplete = function (reqOptions, jqXHR, textStatus) {
@@ -1198,6 +1150,47 @@ function Jaws_Gadget_Action() { return {
 $(document).ready(function() {
     // detect running in full-screen/standalone mode
     jaws.standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+    if (('serviceWorker' in navigator)) {
+        navigator.serviceWorker.register('service-worker.js', {}).then(
+            function(registration) {
+                if (registration.active) {
+                    console.log('active...');
+                    // send configuration to service worker
+                    registration.active.postMessage(
+                        {
+                            type: '', // message type
+                            base: $('base').first().attr('href'),
+                            script: jaws.Defines.script,
+                            standalone: jaws.standalone
+                        }
+                    );
+                }
+
+                registration.addEventListener('updatefound', () => {
+                    registration.update();
+                    // FIXME: we need notify user before reload
+                    location.reload(true);
+                });
+            }
+        ).catch (
+            function (error) {
+                console.log('service-worker registration error: ', error);
+            }
+        );
+
+        navigator.serviceWorker.ready.then(
+            function(registration) {
+                console.log('ready...');
+                //
+            }
+        );
+
+        // Listen to messages coming from the service worker
+        navigator.serviceWorker.addEventListener('message', function(event) {
+            console.log(event);
+        });
+    }
 
     $('textarea[role="editor"]').each(function(index) {
         initEditor(this)
