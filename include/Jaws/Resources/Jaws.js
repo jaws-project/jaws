@@ -1155,7 +1155,6 @@ $(document).ready(function() {
         navigator.serviceWorker.register('service-worker.js', {}).then(
             function(registration) {
                 if (registration.active) {
-                    console.log('active...');
                     // send configuration to service worker
                     registration.active.postMessage(
                         {
@@ -1183,7 +1182,6 @@ $(document).ready(function() {
 
         navigator.serviceWorker.ready.then(
             function(registration) {
-                console.log('ready...');
                 //
             }
         );
