@@ -15,11 +15,22 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
      */
     function ServiceWorker()
     {
-        header('Content-Type: application/javascript');
         $tpl = $this->gadget->template->load('ServiceWorker.js');
         $tpl->SetBlock('ServiceWorker');
         $tpl->SetVariable('pwa_version', $this->gadget->registry->fetch('pwa_version'));
+        $tpl->SetVariable(
+            'bodyText503',
+            preg_replace(
+                "$\r\n|\n$",
+                '\n',
+                addslashes(Jaws_HTTPError::Get(503, '', _t('SETTINGS_PWA_ERROR_REQUEST_DOES_NOT_EXIST')))
+            )
+        );
         $tpl->ParseBlock('ServiceWorker');
+
+        header('Content-Type: application/javascript');
+        http_response_code(200);
+
         return $tpl->Get();
     }
 

@@ -9,9 +9,14 @@ self.importScripts(
 const ServiceWorkerVersion = '{{pwa_version}}';
 
 /*
- *  offline request page 
+ *
+ */
+const bodyText503 = "{{bodyText503}}";
+
+/*
+ *  base request page 
 */
-var offlineRequest = new Request('offline.html');
+var baseRequest;
 
 (function() {
     /**
@@ -116,12 +121,12 @@ function setRequestResponseCache(request, response)
         }
     ).then(
         function (strResponse) {
-            localforage.setItem(ftok.toString(), strResponse).then(function (value) {
-                // value has been saved.
-            }).catch(function(error) {
-                // runs if there were any errors
-                console.log(error);
-            });
+            localforage.setItem(ftok.toString(), strResponse).catch(
+                function(error) {
+                    // runs if there were any errors
+                    console.log(error);
+                }
+            );
         }
     );
 }
@@ -151,46 +156,17 @@ function getRequestResponseCache(request)
  * service worker install event
  */
 this.addEventListener('install', function(event) {
-    /*
-    event.waitUntil(
-        caches.open(cacheName).then(
-            function(cache) {
-                return cache.addAll([
-                    '',
-                    'offline',
-                    'libraries/jquery/jquery.min.js',
-                    'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js',
-                    'include/Jaws/Resources/Jaws.js',
-                    'libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css'
-                ]).then(() => self.skipWaiting());
-            }
-        )
-    );
-    */
+    //
 });
 
 self.addEventListener('activate', function(event) {
-    localforage.clear().then(
-        function() {
-            console.log('cache.clear...');
-            fetch(offlineRequest).then(
-                function (response) {
-                    console.log('offline fetch...');
-                    setRequestResponseCache(offlineRequest, response.clone());
-                }
-            ).catch (
-                function (error) {
-                    console.log(error);
-                }
-            );
-        }
-    ).catch(
+    localforage.clear().catch(
         function(error) {
             console.log(error);
         }
     );
 
-    return self.clients.claim();
+    event.waitUntil(self.clients.claim());
 });
 
 /*
@@ -198,9 +174,10 @@ self.addEventListener('activate', function(event) {
  */
 self.addEventListener('fetch', async function (event) {
     var clonedRequest = event.request.clone();
-    self.clients.get(event.clientId || event.resultingClientId).then(function(client) {
-        //console.log(client);
-    });
+    if (event.request.url == self.registration.scope) {
+        baseRequest = event.request.clone();
+    }
+
     var reqResponse = fetch(event.request).then(
         function (response) {
             // set request response cache
@@ -210,12 +187,23 @@ self.addEventListener('fetch', async function (event) {
         }
     ).catch(
         function (error) {
-            // get request response cache
+            // get request response from cache
             return getRequestResponseCache(clonedRequest).catch(
                 function(error) {
-                    console.log(error);
-                    // get offline(503) response cache
-                    return getRequestResponseCache(offlineRequest);
+                    // offline response
+                    if (event.request.mode == 'navigate') {
+                        return new Response(
+                            bodyText503, {
+                                status: 503,
+                                statusText: 'Service Unavailable',
+                                headers: {
+                                    'content-type': "text/html; charset=utf-8"
+                                }
+                            }
+                        );
+                    } else {
+                        return new Response('', {status: 503, statusText: 'Service Unavailable'});
+                    }
                 }
             );
         }
