@@ -13,6 +13,18 @@ class Jaws_HTTPRequest
 {
     /**
      * @access  private
+     * @var int $expires    Cache expires time(second)
+     */
+    private $expires = 0;
+
+    /**
+     * @access  private
+     * @var int $refresh    Refresh/Update cache
+     */
+    private $refresh = false;
+
+    /**
+     * @access  private
      * @var int $request_cache_key  Cache key
      */
     private $request_cache_key = 0;
@@ -68,8 +80,6 @@ class Jaws_HTTPRequest
             $this->options['proxy_port'] = $GLOBALS['app']->Registry->fetch('proxy_port', 'Settings');
         }
 
-        $this->options['expires'] = 0;
-        $this->options['refresh'] = false;
         // merge default and passed options
         $this->options = array_merge($this->options, $options);
         $this->httpRequest = new HTTP_Request2();
@@ -81,13 +91,12 @@ class Jaws_HTTPRequest
      * @access  public
      * @param   string  $url        URL address
      * @param   string  $response   Response body
-     * @param   int     $key        Cache key
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function get($url, &$response, &$key = null)
+    function get($url, &$response)
     {
-        $this->request_cache_key = $key = Jaws_Cache::key($url);
-        if ($this->options['refresh'] ||
+        $this->request_cache_key = Jaws_Cache::key($url);
+        if ($this->refresh ||
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
@@ -99,11 +108,11 @@ class Jaws_HTTPRequest
                     $this->request_cache_key,
                     serialize(
                         $result = array(
-                        'status' => $result->getStatus(),
-                        'body'   => $result->getBody()
+                            'status' => $result->getStatus(),
+                            'body'   => $result->getBody()
                         )
                     ),
-                    $this->options['expires']
+                    $this->expires
                 );
             } catch (Exception $error) {
                 return Jaws_Error::raiseError(
@@ -126,13 +135,12 @@ class Jaws_HTTPRequest
      * @param   string  $url        URL address
      * @param   array   $params     Associated name/data values
      * @param   string  $response   Response body
-     * @param   int     $key        Cache key
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function post($url, $params = array(), &$response, &$key = null)
+    function post($url, $params = array(), &$response)
     {
-        $this->request_cache_key = $key = Jaws_Cache::key($url, $params);
-        if ($this->options['refresh'] ||
+        $this->request_cache_key = Jaws_Cache::key($url, $params);
+        if ($this->refresh ||
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
@@ -155,11 +163,11 @@ class Jaws_HTTPRequest
                     $this->request_cache_key,
                     serialize(
                         $result = array(
-                        'status' => $result->getStatus(),
-                        'body'   => $result->getBody()
+                            'status' => $result->getStatus(),
+                            'body'   => $result->getBody()
                         )
                     ),
-                    $this->options['expires']
+                    $this->expires
                 );
             } catch (Exception $error) {
                 return Jaws_Error::raiseError(
@@ -182,13 +190,12 @@ class Jaws_HTTPRequest
      * @param   string  $url        URL address
      * @param   string  $data       Raw data
      * @param   string  $response   Response body
-     * @param   int     $key        Cache key
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function rawPostData($url, $data = '', &$response, &$key = null)
+    function rawPostData($url, $data = '', &$response)
     {
-        $this->request_cache_key = $key = Jaws_Cache::key($url, $data);
-        if ($this->options['refresh'] ||
+        $this->request_cache_key = Jaws_Cache::key($url, $data);
+        if ($this->refresh ||
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
@@ -203,11 +210,11 @@ class Jaws_HTTPRequest
                     $this->request_cache_key,
                     serialize(
                         $result = array(
-                        'status' => $result->getStatus(),
-                        'body'   => $result->getBody()
+                            'status' => $result->getStatus(),
+                            'body'   => $result->getBody()
                         )
                     ),
-                    $this->options['expires']
+                    $this->expires
                 );
             } catch (Exception $error) {
                 return Jaws_Error::raiseError(
@@ -251,15 +258,28 @@ class Jaws_HTTPRequest
     }
 
     /**
+     * Set cache options
+     *
+     * @access  private
+     * @param   int     $expires    Cache expires time(second)
+     * @param   bool    $refresh    Refresh/Update cache
+     * @return  void
+     */
+    function setCacheOptions($expires = 0, $refresh = false)
+    {
+        $this->expires = $expires;
+        $this->refresh = $refresh;
+    }
+
+    /**
      * Delete cache
      *
      * @access  public
-     * @param   int     $key    Cache key
      * @return  mixed
      */
-    function deleteCache($key = 0)
+    function deleteCache()
     {
-        return $GLOBALS['app']->Cache->delete(empty($key)? $this->request_cache_key : $key);
+        return $GLOBALS['app']->Cache->delete($this->request_cache_key);
     }
 
 }
