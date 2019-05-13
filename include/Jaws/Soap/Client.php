@@ -48,20 +48,6 @@ class Jaws_Soap_Client extends Jaws_Soap
     }
 
     /**
-     * Set cache options
-     *
-     * @access  private
-     * @param   int     $expires    Cache expires time(second)
-     * @param   bool    $refresh    Refresh/Update cache
-     * @return  void
-     */
-    function setCacheOptions($expires = 0, $refresh = false)
-    {
-        $this->expires = $expires;
-        $this->refresh = $refresh;
-    }
-
-    /**
      * Overloading __call magic method
      *
      * @access  private
@@ -103,15 +89,28 @@ class Jaws_Soap_Client extends Jaws_Soap
     }
 
     /**
+     * Set cache options
+     *
+     * @access  private
+     * @param   int     $expires    Cache expires time(second)
+     * @param   bool    $refresh    Refresh/Update cache
+     * @return  void
+     */
+    function setCacheOptions($expires = 0, $refresh = false)
+    {
+        $this->expires = $expires;
+        $this->refresh = $refresh;
+    }
+
+    /**
      * Delete cache
      *
      * @access  public
-     * @param   int     $key    Cache key
      * @return  mixed
      */
-    function deleteCache($key = 0)
+    function deleteCache()
     {
-        return $GLOBALS['app']->Cache->delete(empty($key)? $this->request_cache_key : $key);
+        return $GLOBALS['app']->Cache->delete($this->request_cache_key);
     }
 
 }
