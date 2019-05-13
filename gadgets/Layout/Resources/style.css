@@ -380,3 +380,6 @@ float:right;
 body{
 padding-bottom:48px;
 }
+.visible-layout{
+display: inline-block !important;
+}
