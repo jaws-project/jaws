@@ -24,7 +24,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      */
     function __construct()
     {
-        $this->shmcache = Jaws_FileMemory::getInstance('jaws_memcache');
+        $this->shmcache = Jaws_SharedSegment::getInstance('jaws_memcache');
     }
 
     /**
