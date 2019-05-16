@@ -27,12 +27,12 @@ class Jaws_Mutex
     {
         static $objMutex;
         if (!isset($objMutex)) {
-            if (JAWS_OS_WIN) {
-                $file = JAWS_PATH . 'include/Jaws/Mutex/File.php';
-                $className = 'Jaws_Mutex_File';
-            } else {
+            if (function_exists('sem_acquire')) {
                 $file = JAWS_PATH . 'include/Jaws/Mutex/Semaphore.php';
                 $className = 'Jaws_Mutex_Semaphore';
+            } else {
+                $file = JAWS_PATH . 'include/Jaws/Mutex/File.php';
+                $className = 'Jaws_Mutex_File';
             }
 
             include_once($file);
