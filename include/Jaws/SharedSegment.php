@@ -8,50 +8,55 @@
  * @copyright   2019 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_FileMemory
+class Jaws_SharedSegment
 {
     /**
      * file token
-     * @var     int     $ftoken
+     * @var     int     $ftok
      * @access  private
      */
-    private $ftoken;
-
-    /**
-     * shared memory resource handle
-     * @var     resource    $shmkey
-     * @access  private
-     */
-    private $shmkey;
+    protected $ftok;
 
     /**
      * Constructor
      *
-     * @access  private
-     * @param   int     $ftoken     File token
+     * @access  protected
+     * @param   int     $ftok   File token
      * @return  void
      */
-    private function __construct($ftoken)
+    protected function __construct($ftok)
     {
-        $this->ftoken = $ftoken;
+        $this->ftok = $ftok;
     }
 
     /**
-     * Creates the Jaws_FileMemory instance if it doesn't exist else it returns the already created one
+     * An interface for available drivers
      *
      * @access  public
-     * @param   mixed   $ftoken     File token or name
-     * @return  object  Jaws_FileMemory type object
+     * @param   mixed   $ftok           File token or name
+     * @param   string  $segmentDriver  Cache Driver name
+     * @return  mixed   Shared Segment driver object on success otherwise Jaws_Error on failure
      */
-    static function getInstance($ftoken)
+    static function getInstance($ftok, $segmentDriver = '')
     {
+        $segmentDriver = preg_replace('/[^[:alnum:]_\-]/', '', $segmentDriver);
+        if (empty($segmentDriver)) {
+            $segmentDriver = 'Memory';
+        }
+        
+        if (!extension_loaded('shmop')) {
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loading 'shmop' shared segment driver failed.");
+            $segmentDriver = 'File';
+        }
+        $className = "Jaws_SharedSegment_$segmentDriver";
+
         static $instances = array();
-        $ftoken = is_int($ftoken)? $ftoken : Jaws_Utils::ftok($ftoken);
-        if (!isset($instances[$ftoken])) {
-            $instances[$ftoken] = new Jaws_FileMemory($ftoken);
+        $ftok = is_int($ftok)? $ftok : Jaws_Utils::ftok($ftok);
+        if (!isset($instances[$ftok])) {
+            $instances[$ftok] = new $className($ftok);
         }
 
-        return $instances[$ftoken];
+        return $instances[$ftok];
     }
 
     /**
@@ -64,28 +69,10 @@ class Jaws_FileMemory
      */
     function open($mode = 'a', $size = 0)
     {
-        switch ($mode) {
-            case 'a':
-                $this->shmkey = @shmop_open($this->ftoken, 'a', 0, 0);
-                break;
-
-            case 'w':
-                $this->shmkey = @shmop_open($this->ftoken, 'w', 0, 0);
-                break;
-
-            case 'c':
-                $this->shmkey = @shmop_open($this->ftoken, 'c', 0644, $size);
-                break;
-
-            case 'n':
-                $this->shmkey = @shmop_open($this->ftoken, 'c', 0644, $size);
-                break;
-
-            default:
-                $this->shmkey = false;
-        }
-
-        return $this->shmkey !== false;
+        return Jaws_Error::raiseError(
+            'open() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -98,7 +85,10 @@ class Jaws_FileMemory
      */
     function read($start = 0, $count = 0)
     {
-        return shmop_read($this->shmkey, $start, $count);
+        return Jaws_Error::raiseError(
+            'read() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -111,7 +101,10 @@ class Jaws_FileMemory
      */
     function write($data, $offset = 0)
     {
-        return shmop_write($this->shmkey, $data, $offset);
+        return Jaws_Error::raiseError(
+            'write() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -122,19 +115,25 @@ class Jaws_FileMemory
      */
     function close()
     {
-        @shmop_close($this->shmkey);
+        return Jaws_Error::raiseError(
+            'close() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
      * Delete shared memory block
      *
      * @access  public
-     * @param   int     $ftoken     File token or name
+     * @param   int     $ftok   File token or name
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    static function delete($ftoken)
+    static function delete($ftok)
     {
-        return empty($ftoken)? true : shmop_delete(@shmop_open($ftoken, 'w', 0, 0));
+        return Jaws_Error::raiseError(
+            'delete() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -147,9 +146,9 @@ class Jaws_FileMemory
     function lock($state = true)
     {
         if ($state) {
-            Jaws_Mutex::getInstance()->acquire($this->ftoken);
+            Jaws_Mutex::getInstance()->acquire($this->ftok);
         } else {
-            Jaws_Mutex::getInstance()->release($this->ftoken);
+            Jaws_Mutex::getInstance()->release($this->ftok);
         }
     }
 
