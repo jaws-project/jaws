@@ -328,7 +328,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function BadLogins($username, $operation = 0)
     {
         $result = 0;
-        $memLogins = Jaws_FileMemory::getInstance('bad_logins');
+        $memLogins = Jaws_SharedSegment::getInstance('bad_logins');
         $memLogins->lock(true);
         if ($memLogins->open('c', 64*1024)) {
             $logins = @unserialize($memLogins->read());
