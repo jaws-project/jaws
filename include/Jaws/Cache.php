@@ -22,7 +22,7 @@ class Jaws_Cache
         if (empty($cacheDriver)) {
             $cacheDriver = $GLOBALS['app']->Registry->fetch('cache_driver', 'Settings');
         }
-        $cacheDriver = preg_replace('/[^[:alnum:]_-]/', '', $cacheDriver);
+        $cacheDriver = preg_replace('/[^[:alnum:]_\-]/', '', $cacheDriver);
 
         if (!empty($cacheDriver) &&
             !file_exists(JAWS_PATH . "include/Jaws/Cache/{$cacheDriver}.php")

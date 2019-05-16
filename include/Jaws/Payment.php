@@ -46,7 +46,7 @@ class Jaws_Payment
      */
     static function factory($payDriver, $options, $callback = '')
     {
-        $payDriver = preg_replace('/[^[:alnum:]_-]/', '', $payDriver);
+        $payDriver = preg_replace('/[^[:alnum:]_\-]/', '', $payDriver);
         $payDriverFile = JAWS_PATH . "include/Jaws/Payment/$payDriver.php";
         if (!file_exists($payDriverFile)) {
             return Jaws_Error::raiseError("[$payDriver]: Loading payment driver failed.", __CLASS__);

@@ -20,7 +20,7 @@ class Jaws_Response
      */
     static function get($resType, $data)
     {
-        $resType = preg_replace('/[^[:alnum:]_-]/', '', $resType);
+        $resType = preg_replace('/[^[:alnum:]_\-]/', '', $resType);
         $drivers = array_map('basename', glob(JAWS_PATH . 'include/Jaws/Response/*.php'));
         if (false === $driver = array_search(strtolower("$resType.php"), array_map('strtolower', $drivers))) {
             return $data;
