@@ -46,8 +46,15 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function set($key, $value, $lifetime = 2592000)
     {
-        $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
-        return empty($lifetime)? false : (bool)Jaws_Utils::file_put_contents($file, $value);
+        $result = false;
+        if (!empty($lifetime)) {
+            $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
+            if ($result = Jaws_Utils::file_put_contents($file, $value)) {
+                @touch($file, time() + $lifetime);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -60,7 +67,12 @@ class Jaws_Cache_File extends Jaws_Cache
     function get($key)
     {
         $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
-        return @file_get_contents($file);
+        $ftime = @filemtime($file);
+        if ((int)$ftime > time()) {
+            return @file_get_contents($file);
+        }
+
+        return false;
     }
 
     /**
