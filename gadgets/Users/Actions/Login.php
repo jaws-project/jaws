@@ -272,11 +272,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             );
             // let everyone know a user has been logged in
             $this->gadget->event->shout('LoginUser', $loginData);
-
-            // call Authorize method if exists
-            if (method_exists($objAccount, 'Authorize')) {
-                $objAccount->Authorize($loginData);
-            }
         }
 
         http_response_code(201);
