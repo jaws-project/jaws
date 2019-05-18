@@ -1087,49 +1087,55 @@ class Jaws_User
         }
 
         // username
-        $uData['username'] = trim($uData['username'], '-_.@');
-        if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_USERNAME'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-        $uData['username'] = strtolower($uData['username']);
-
-        // nickname
-        $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
-        if (empty($uData['nickname'])) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-
-        // email
-        $uData['email'] = trim($uData['email']);
-        if (!empty($uData['email'])) {
-            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
+        if (array_key_exists('username', $uData)) {
+            $uData['username'] = trim($uData['username'], '-_.@');
+            if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    _t('GLOBAL_ERROR_INVALID_USERNAME'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
             }
-            $uData['email'] = strtolower($uData['email']);
-            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
-            if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
+            $uData['username'] = strtolower($uData['username']);
+        }
+
+        // nickname
+        if (array_key_exists('nickname', $uData)) {
+            $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
+            if (empty($uData['nickname'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                    _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
+            }
+        }
+
+        // email
+        if (array_key_exists('email', $uData)) {
+            $uData['email'] = trim($uData['email']);
+            if (!empty($uData['email'])) {
+                if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
+                $uData['email'] = strtolower($uData['email']);
+                $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+                if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
             }
         }
 
         // new email
-        if (isset($uData['new_email']) && !empty($uData['new_email'])) {
+        if (array_key_exists('new_email', $uData)) {
             $uData['new_email'] = trim($uData['new_email']);
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['new_email'])) {
                 return Jaws_Error::raiseError(
@@ -1149,29 +1155,23 @@ class Jaws_User
         }
 
         // mobile
-        $uData['mobile'] = isset($uData['mobile'])? trim($uData['mobile']) : '';
-        if (!empty($uData['mobile'])) {
+        if (array_key_exists('mobile', $uData)) {
+            $uData['mobile'] = isset($uData['mobile'])? trim($uData['mobile']) : '';
             if (!empty($uData['mobile'])) {
-                if (!preg_match("/^[00|\+|0]\d{10,16}$/", $uData['mobile'])) {
-                    return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
+                if (!empty($uData['mobile'])) {
+                    if (!preg_match("/^[00|\+|0]\d{10,16}$/", $uData['mobile'])) {
+                        return Jaws_Error::raiseError(
+                            _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
+                            __FUNCTION__,
+                            JAWS_ERROR_NOTICE
+                        );
+                    }
                 }
             }
         }
 
-        if (empty($uData['email']) && empty($uData['mobile'])) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
-        }
-
         // password & complexity
-        if (isset($uData['password']) && $uData['password'] !== '') {
+        if (array_key_exists('password', $uData)) {
             $min = (int)$GLOBALS['app']->Registry->fetch('password_min_length', 'Policy');
             if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
                 return Jaws_Error::raiseError(
@@ -1195,14 +1195,25 @@ class Jaws_User
             $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
             $uData['recovery_key'] = '';
             $uData['last_password_update'] = time();
-        } else {
-            unset($uData['password']);
         }
 
         // get user information, we need it for rename avatar
         $user = Jaws_User::GetUser((int)$id, true, true);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
+        }
+
+        // at least one of email or mobile or email
+        if (((array_key_exists('email', $uData) && empty($uData['email'])) ||
+            (!array_key_exists('email', $uData) && empty($user['email']))) &&
+            ((array_key_exists('mobile', $uData) && empty($uData['mobile'])) ||
+            (!array_key_exists('mobile', $uData) && empty($user['mobile'])))
+        ) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         // if currently a user logged
@@ -1230,7 +1241,7 @@ class Jaws_User
             }
         }
 
-        if (($uData['username'] !== $user['username'])) {
+        if (array_key_exists('username', $uData) && ($uData['username'] !== $user['username'])) {
             // check reserved users
             $reservedUsers = preg_split("/\n|\r|\n\r/", $GLOBALS['app']->Registry->fetch('reserved_users', 'Users'));
             if (in_array($uData['username'], $reservedUsers)) {
@@ -1285,9 +1296,19 @@ class Jaws_User
         }
 
         if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
-            $GLOBALS['app']->Session->SetAttribute('username', $uData['username']);
-            $GLOBALS['app']->Session->SetAttribute('nickname', $uData['nickname']);
-            $GLOBALS['app']->Session->SetAttribute('email',    $uData['email']);
+            if (array_key_exists('username', $uData)) {
+                $GLOBALS['app']->Session->SetAttribute('username', $uData['username']);
+            }
+            if (array_key_exists('nickname', $uData)) {
+                $GLOBALS['app']->Session->SetAttribute('nickname', $uData['nickname']);
+            }
+            if (array_key_exists('email', $uData)) {
+                $GLOBALS['app']->Session->SetAttribute('email', $uData['email']);
+            }
+            if (array_key_exists('mobile', $uData)) {
+                $GLOBALS['app']->Session->SetAttribute('mobile', $uData['mobile']);
+            }
+
             // update user's avatar in current session
             if (isset($uData['avatar'])) {
                 $GLOBALS['app']->Session->SetAttribute(
