@@ -231,20 +231,6 @@ class Jaws_Session
                         throw new Exception('Maximum number of concurrent logins reached', JAWS_LOG_NOTICE);
                     }
                 }
-
-                // last password updated time
-                $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-                $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
-                if ($password_max_age > 0 || $last_password_updated_time < 0) {
-                    $expPasswordTime = time() - 3600 * $password_max_age;
-                    if ($last_password_updated_time <= $expPasswordTime) {
-                        define('SESSION_RESTRICTED_GADGETS', 'Users,ControlPanel');
-                        $GLOBALS['log']->Log(
-                            JAWS_LOG_INFO,
-                            'This password is expired, session switched to restricted mode.'
-                        );
-                    }
-                }
             }
 
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session was OK');
