@@ -29,10 +29,8 @@ class Users_Account_Default_Login extends Users_Account_Default
     function IndexLogin($referrer)
     {
         $this->AjaxMe('index.js');
-        $tpl = $this->gadget->template->load('LoginBox.html');
-        $tpl->SetBlock('LoginBox');
-        $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl = $this->gadget->template->load('Login.html');
+        $tpl->SetBlock('login');
 
         $response = $this->gadget->session->pop('Login.Response');
         if (!isset($response['data'])) {
@@ -43,35 +41,20 @@ class Users_Account_Default_Login extends Users_Account_Default
             $reqpost['usecrypt'] = '';
         } else {
             $reqpost = $response['data'];
+            $reqpost['loginstep'] = (int)$reqpost['loginstep'];
         }
 
-        // global variables
-        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
-        $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+        switch ($reqpost['loginstep']) {
+            case 2:
+                $this->LoginBoxStep2($tpl, $reqpost, $referrer);
+                break;
 
-        if (!empty($reqpost['loginstep'])) {
-            $this->LoginBoxStep2($tpl, $reqpost);
-        } else {
-            $this->LoginBoxStep1($tpl, $reqpost);
-        }
+            case 3:
+                $this->LoginBoxStep3($tpl, $reqpost, $referrer);
+                break;
 
-        if ($this->gadget->registry->fetch('anon_register') == 'true') {
-            $link =& Piwi::CreateWidget(
-                'Link',
-                _t('USERS_REGISTER'),
-                $this->gadget->urlMap('Registration')
-            );
-            $tpl->SetVariable('user-register', $link->Get());
-        }
-
-        if ($this->gadget->registry->fetch('password_recovery') == 'true') {
-            $link =& Piwi::CreateWidget(
-                'Link',
-                _t('USERS_FORGOT_LOGIN'),
-                $this->gadget->urlMap('LoginForgot')
-            );
-            $tpl->SetVariable('forgot-password', $link->Get());
+            default:
+                $this->LoginBoxStep1($tpl, $reqpost, $referrer);
         }
 
         if (!empty($response)) {
@@ -79,7 +62,7 @@ class Users_Account_Default_Login extends Users_Account_Default
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $tpl->ParseBlock('LoginBox');
+        $tpl->ParseBlock('login');
         return $tpl->Get();
     }
 
@@ -113,10 +96,12 @@ class Users_Account_Default_Login extends Users_Account_Default
         //
         $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
 
-        if (!empty($reqpost['loginstep'])) {
-            $this->LoginBoxStep2($ltpl, $reqpost);
+        if ($reqpost['loginstep'] == 3) {
+            $this->LoginBoxStep3($ltpl, $reqpost, $referrer);
+        } elseif ($reqpost['loginstep'] == 2) {
+            $this->LoginBoxStep2($ltpl, $reqpost, $referrer);
         } else {
-            $this->LoginBoxStep1($ltpl, $reqpost);
+            $this->LoginBoxStep1($ltpl, $reqpost, $referrer);
         }
 
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
@@ -137,10 +122,13 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    private function LoginBoxStep1(&$tpl, $reqpost)
+    private function LoginBoxStep1(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_1");
+
+        $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
@@ -189,14 +177,39 @@ class Users_Account_Default_Login extends Users_Account_Default
         }
         $tpl->ParseBlock("$block/login_step_1/remember");
 
-        $tpl->ParseBlock("$block/login_step_1");
-
         // display captcha?
         $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
         if ($this->gadget->action->load('Login')->BadLogins($reqpost['username']) >= $max_captcha_login_bad_count) {
             $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, $tpl->GetCurrentBlockPath(), 'login');
+            $mPolicy->loadCaptcha($tpl, "$block/login_step_1", 'login');
         }
+
+        // global variables
+        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+
+        // anon_register
+        if ($this->gadget->registry->fetch('anon_register') == 'true') {
+            $link =& Piwi::CreateWidget(
+                'Link',
+                _t('USERS_REGISTER'),
+                $this->gadget->urlMap('Registration')
+            );
+            $tpl->SetVariable('user-register', $link->Get());
+        }
+
+        // password_recovery
+        if ($this->gadget->registry->fetch('password_recovery') == 'true') {
+            $link =& Piwi::CreateWidget(
+                'Link',
+                _t('USERS_FORGOT_LOGIN'),
+                $this->gadget->urlMap('LoginForgot')
+            );
+            $tpl->SetVariable('forgot-password', $link->Get());
+        }
+
+        $tpl->ParseBlock("$block/login_step_1");
     }
 
     /**
@@ -205,10 +218,13 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    private function LoginBoxStep2(&$tpl, $reqpost)
+    private function LoginBoxStep2(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_2");
+
+        $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('remember', $reqpost['remember']);
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
@@ -216,11 +232,45 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
         $tpl->SetVariable('lbl_loginkey', _t('GLOBAL_LOGINKEY'));
 
-        $tpl->ParseBlock("$block/login_step_2");
-
         // display captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
+        $mPolicy->loadCaptcha($tpl, "$block/login_step_2", 'login');
+
+        // global variables
+        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+
+        $tpl->ParseBlock("$block/login_step_2");
+    }
+
+    /**
+     * Get HTML login form
+     *
+     * @access  public
+     * @return  string  XHTML template of the login form
+     */
+    private function LoginBoxStep3(&$tpl, $reqpost, $referrer)
+    {
+        $block = $tpl->GetCurrentBlockPath();
+        $tpl->SetBlock("$block/login_step_3");
+
+        $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
+
+        $tpl->SetVariable('remember', $reqpost['remember']);
+        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
+
+        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
+        $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
+        $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
+
+        // global variables
+        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+
+        $tpl->ParseBlock("$block/login_step_3");
     }
 
 }

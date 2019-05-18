@@ -16,9 +16,13 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
     function Authenticate()
     {
         $loginData = $this->gadget->request->fetch(
-            array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'loginstep', 'remember'),
+            array(
+                'domain', 'username', 'password', 'chkpassword',
+                'usecrypt', 'loginkey', 'loginstep', 'remember'
+            ),
             'post'
         );
+        $loginData['loginstep'] = (int)$loginData['loginstep'];
 
         // set default domain if not set
         if (is_null($loginData['domain'])) {
@@ -26,7 +30,76 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         }
 
         try {
-            if (empty($loginData['loginstep'])) {
+            if ($loginData['loginstep'] == 3) { // user password expired try to change it
+                if ($loginData['usecrypt']) {
+                    $JCrypt = Jaws_Crypt::getInstance();
+                    if (!Jaws_Error::IsError($JCrypt)) {
+                        $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+                        $loginData['chkpassword'] = $JCrypt->decrypt($loginData['chkpassword']);
+                    }
+                } else {
+                    $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+                    $loginData['chkpassword'] = Jaws_XSS::defilter($loginData['chkpassword']);
+                }
+
+                // changing expired password
+                if ($loginData['password'] !== $loginData['chkpassword']) {
+                    throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 206);
+                }
+
+                // fetch user data from session
+                $user = $this->gadget->session->fetch('temp.login.user');
+                if (empty($user)) {
+                    $loginData['loginstep'] = 1;
+                    throw new Exception(_t('USERS_USER_NOT_EXIST'), 404);
+                }
+
+                // trying change password
+                $userModel = $GLOBALS['app']->loadObject('Jaws_User');
+                $result = $userModel->UpdateUser(
+                    $user['id'],
+                    array(
+                        'password' => $loginData['password'],
+                    )
+                );
+                if (Jaws_Error::IsError($result)) {
+                    throw new Exception($result->getMessage(), 500);
+                }
+
+                // set password update time
+                $user['last_password_update'] = time();
+
+            } elseif ($loginData['loginstep'] == 2) { // two step/factor verification step
+                // check captcha
+                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                $resCheck = $htmlPolicy->checkCaptcha('login');
+                if (Jaws_Error::IsError($resCheck)) {
+                    throw new Exception($resCheck->getMessage(), 401);
+                }
+
+                // fetch user data from session
+                $user = $this->gadget->session->fetch('temp.login.user');
+                if (empty($user)) {
+                    $loginData['loginstep'] = 1;
+                    throw new Exception(_t('USERS_USER_NOT_EXIST'), 404);
+                }
+
+                $loginkey = $this->gadget->session->fetch('loginkey');
+                if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
+                    // send notification to user
+                    $this->gadget->action->load('Login')->NotifyLoginKey($user);
+
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                }
+
+                // check verification key
+                if ($loginkey['text'] != $loginData['loginkey']) {
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                }
+
+                // remove login key
+                $this->gadget->session->delete('loginkey');
+            } else { // user login step
                 // get bad logins count
                 $bad_logins = $this->gadget->action->load('Login')->BadLogins($loginData['username'], 0);
                 $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
@@ -94,44 +167,27 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $user['internal'] = true;
                 $user['remember'] = (bool)$loginData['remember'];
 
+                // store user data in registry for using next steps
+                $this->gadget->session->update('temp.login.user', $user);
+
                 // two step verification?
                 if ((bool)$this->gadget->registry->fetchByUser('two_step_verification', '', $user['id']))
                 {
-                    $loginData['loginstep'] = 1;
-                    $this->gadget->session->update('temp.login.user', $user);
-
+                    $loginData['loginstep'] = 2;
                     // send notification to user
                     $this->gadget->action->load('Login')->NotifyLoginKey($user);
 
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
-            } else {
-                // check captcha
-                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-                $resCheck = $htmlPolicy->checkCaptcha('login');
-                if (Jaws_Error::IsError($resCheck)) {
-                    throw new Exception($resCheck->getMessage(), 401);
-                }
+            } // end of login step
 
-                // fetch user data from session
-                $user = $this->gadget->session->fetch('temp.login.user');
-                if (empty($user)) {
-                    $loginData['loginstep'] = 0;
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 401);
-                }
-
-                $loginkey = $this->gadget->session->fetch('loginkey');
-                if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
-                    // send notification to user
-                    $this->gadget->action->load('Login')->NotifyLoginKey($user);
-
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                }
-
-                // check verification key
-                if ($loginkey['text'] != $loginData['loginkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                }
+            // check password was expired
+            $password_max_age = (int)$this->gadget->registry->fetch('password_max_age', 'Policy');
+            if (($password_max_age > 0) &&
+               (($user['last_password_update'] + $password_max_age) < time())
+            ) {
+                $loginData['loginstep'] = 3;
+                throw new Exception(_t('GLOBAL_ERROR_PASSWORD_EXPIRED'), 206);
             }
 
             // check user concurrents logins
@@ -155,8 +211,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'), 409);
             }
 
-            // remove login key
-            $this->gadget->session->delete('loginkey');
             // remove temp user data
             $this->gadget->session->delete('temp.login.user');
             // unset bad login entry
@@ -164,7 +218,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
 
             return $user;
         } catch (Exception $error) {
-            unset($loginData['password']);
+            unset($loginData['password'], $loginData['chkpassword']);
             $this->gadget->session->push(
                 $error->getMessage(),
                 'Login.Response',
@@ -175,32 +229,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
         }
 
-    }
-
-    /**
-     * Authorize
-     *
-     * @access  public
-     * @return  void
-     */
-    function Authorize($loginData = null)
-    {
-        // check password age
-        $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-        if ($password_max_age > 0) {
-            $expPasswordTime = time() - 3600 * $password_max_age;
-            if ((int)$loginData['last_password_update'] <= $expPasswordTime) {
-                $this->gadget->session->push(
-                    _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
-                    'Account.Response',
-                    RESPONSE_WARNING,
-                    $loginData
-                );
-                return Jaws_Header::Location($this->gadget->urlMap('Account'));
-            }
-        }
-
-        return true;
     }
 
     /**
