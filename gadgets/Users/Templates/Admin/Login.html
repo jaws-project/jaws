@@ -24,20 +24,20 @@
           {{response_text}}
         </div>
       </div>
-      <form name="loginbox" action="{{base_script}}"
+<!-- BEGIN login_step_1 -->
+      <form name="loginBox" action="{{base_script}}"
         onsubmit="return Jaws_Gadget.getInstance('Users').submitLoginForm(this);"
         method="post"
       >
         <input type="hidden" name="gadget" value="Users" />
         <input type="hidden" name="action" value="Authenticate" />
         <input type="hidden" name="referrer" value="{{referrer}}" />
+        <input type="hidden" name="loginstep" value="1" />
+        <!-- BEGIN encryption -->
+        <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
+        <!-- END encryption -->
         <fieldset id="loginbox">
           <legend><span>{{legend_title}}</span></legend>
-<!-- BEGIN login_step_1 -->
-          <input type="hidden" name="loginstep" value="0" />
-          <!-- BEGIN encryption -->
-          <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
-          <!-- END encryption -->
           <!-- BEGIN multi_domain -->
           <div>
             <label for="domain">{{lbl_domain}}:</label>
@@ -93,16 +93,34 @@
              </label>
           </div>
           <!-- END usecrypt -->
+          <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+          <div class="buttons">
+            <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
+            <div>{{forgot-password}}</div>
+            <div>{{user-register}}</div>
+            <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>
+          </div>
+        </fieldset>
+      </form>
 <!-- END login_step_1 -->
+
 <!-- BEGIN login_step_2 -->
-          <input type="hidden" name="loginstep" value="1" />
-          <input type="hidden" name="remember" value="{{remember}}" />
+      <form name="loginBox" action="{{base_script}}"
+        onsubmit="return Jaws_Gadget.getInstance('Users').submitLoginForm(this);"
+        method="post"
+      >
+        <input type="hidden" name="gadget" value="Users" />
+        <input type="hidden" name="action" value="Authenticate" />
+        <input type="hidden" name="referrer" value="{{referrer}}" />
+        <input type="hidden" name="loginstep" value="2" />
+        <input type="hidden" name="remember" value="{{remember}}" />
+        <fieldset id="loginbox">
+          <legend><span>{{legend_title}}</span></legend>
           <div>
-            <label for="username">{{lbl_username}}:</label>
+            <label for="login_username">{{lbl_username}}:</label>
             <input class="form-control ltr" name="username" id="username"
                    type="text"
                    value="{{username}}"
-                   required
                    readonly
             />
           </div>
@@ -114,15 +132,67 @@
                    value=""
             />
           </div>
-<!-- END login_step_2 -->
-
+          <div>
+            <br/>
+          </div>
           <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
           <div class="buttons">
             <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
+            <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>
           </div>
         </fieldset>
       </form>
-      <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>
+<!-- END login_step_2 -->
+
+<!-- BEGIN login_step_3 -->
+      <form name="loginBox" action="{{base_script}}"
+        onsubmit="return Jaws_Gadget.getInstance('Users').submitLoginForm(this);"
+        method="post"
+      >
+        <input type="hidden" name="gadget" value="Users" />
+        <input type="hidden" name="action" value="Authenticate" />
+        <input type="hidden" name="referrer" value="{{referrer}}" />
+        <input type="hidden" name="loginstep" value="3" />
+        <input type="hidden" name="remember" value="{{remember}}" />
+        <!-- BEGIN encryption -->
+        <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
+        <!-- END encryption -->
+        <fieldset id="loginbox">
+          <legend><span>{{legend_title}}</span></legend>
+          <div>
+            <label for="login_username">{{lbl_username}}:</label>
+            <input class="form-control ltr" name="username" id="username"
+                   type="text"
+                   value="{{username}}"
+                   readonly
+            />
+          </div>
+          <div>
+            <label for="password">{{lbl_password}}:</label>
+            <input class="form-control ltr" name="password" id="password"
+                   type="password"
+                   autocomplete="off"
+                   value=""
+                   required
+            />
+          </div>
+          <div>
+            <label for="chkpassword">{{lbl_chkpassword}}:</label>
+            <input class="form-control ltr" name="chkpassword" id="chkpassword"
+                   type="password"
+                   autocomplete="off"
+                   value=""
+                   required
+            />
+          </div>
+          <div class="buttons">
+            <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
+            <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>
+          </div>
+        </fieldset>
+      </form>
+<!-- END login_step_3 -->
+
     </div>
    </div>
    <hr />

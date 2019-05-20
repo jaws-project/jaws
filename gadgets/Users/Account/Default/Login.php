@@ -77,7 +77,7 @@ class Users_Account_Default_Login extends Users_Account_Default
     {
         $this->AjaxMe('script.js');
         // Init layout
-        $GLOBALS['app']->Layout->Load('gadgets/Users/Templates/Admin', 'LoginBox.html');
+        $GLOBALS['app']->Layout->Load('gadgets/Users/Templates/Admin', 'Login.html');
         $ltpl =& $GLOBALS['app']->Layout->_Template;
         $ltpl->SetVariable('admin-script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
@@ -91,6 +91,7 @@ class Users_Account_Default_Login extends Users_Account_Default
             $reqpost['usecrypt'] = '';
         } else {
             $reqpost = $response['data'];
+            $reqpost['loginstep'] = (int)$reqpost['loginstep'];
         }
 
         //
