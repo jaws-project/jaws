@@ -47,6 +47,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         }
 
         $tpl->SetVariable('title', _t('SUBSCRIPTION_SUBSCRIPTION'));
+        $tpl->SetVariable('web_push_subscription', _t('SUBSCRIPTION_SUBSCRIBE_BY_WEB_PUSH'));
         $this->SetTitle(_t('SUBSCRIPTION_SUBSCRIPTION'));
 
         if (empty($currentUser)) {
@@ -71,8 +72,6 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
         // call gadget hook
         foreach ($gadgets as $gadget => $title) {
-            $tpl->SetBlock('subscription/gadget');
-
             // load gadget
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
@@ -85,10 +84,15 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                 continue;
             }
 
-            $tpl->SetVariable('gadget_title',  $title);
-
             // fetch subscription items
             $items = $objHook->Execute();
+            if (Jaws_Error::IsError($items) || count($items) < 1) {
+                continue;
+            }
+
+            $tpl->SetBlock('subscription/gadget');
+            $tpl->SetVariable('gadget_title',  $title);
+            $tpl->SetVariable('gadget_name',  $gadget);
 
             foreach ($items as $item) {
                 $tpl->SetBlock('subscription/gadget/item');
@@ -150,7 +154,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
      */
     function UpdateSubscription()
     {
-        $post = $this->gadget->request->fetch(array('email', 'mobile', 'subscriptionItems:array'), 'post');
+        $post = $this->gadget->request->fetch(array('email', 'mobile', 'subscriptionItems:array', 'webPush:array'), 'post');
         $selectedItems = $post['subscriptionItems'];
         if(empty($selectedItems)) {
             $subscriptionItems = $this->gadget->request->fetch('subscriptionItems', 'post');
@@ -167,11 +171,12 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             }
         }
 
-       $sModel = $this->gadget->model->load('Subscription');
+        $sModel = $this->gadget->model->load('Subscription');
         $result = $sModel->UpdateSubscription(
             $GLOBALS['app']->Session->GetAttribute('user'),
             $post['email'],
             $post['mobile'],
+            $post['webPush'],
             $selectedItems
         );
         if (Jaws_Error::IsError($result)) {
@@ -248,7 +253,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
     {
         $post  = $this->gadget->request->fetch(
             array(
-                'email', 'mobile', 'subscription_gadget', 'subscription_action',
+                'email', 'mobile', 'web_push', 'subscription_gadget', 'subscription_action',
                 'subscription_reference', 'is_subscribe'
             ),
             'post'
@@ -259,6 +264,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->GetAttribute('user'),
             $post['email'],
             $post['mobile'],
+            $post['web_push'],
             $post['subscription_gadget'],
             $post['subscription_action'],
             $post['subscription_reference'],

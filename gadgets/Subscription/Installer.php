@@ -38,7 +38,11 @@ class Subscription_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Add listener for Subscription
         $this->gadget->event->insert('Subscription');
+
+        // Add listener for remove/publish menu items related to given gadget
+        $this->gadget->event->insert('UninstallGadget');
 
         return true;
     }

@@ -80,4 +80,16 @@ class Subscription_Model_Admin_Subscription extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()->table('subscription')->delete()->where('id', $ids, 'in')->exec();
     }
+
+    /**
+     * Delete gadget's subscription
+     *
+     * @access  public
+     * @param   string   $gadget    Gadget name
+     * @return bool True or error
+     */
+    function DeleteGadgetSubscriptions($gadget)
+    {
+        return Jaws_ORM::getInstance()->table('subscription')->delete()->where('gadget', $gadget)->exec();
+    }
 }

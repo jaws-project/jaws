@@ -33,6 +33,7 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
         $users = array();
         $emails = array();
         $mobiles = array();
+        $webPushes = array();
         foreach ($usersSubscriptions as $row) {
             if (!empty($row['user'])) {
                 $users[] = $row['user'];
@@ -43,15 +44,23 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
             if (!empty($row['mobile_number'])) {
                 $mobiles[] = $row['mobile_number'];
             }
+            if (!empty($row['web_push'])) {
+                $webPushes[] = $row['web_push'];
+            }
         }
 
+        $gadgetLogo = $GLOBALS['app']->getSiteURL('/gadgets/' . $shouter . '/Resources/images/logo.png', false);
         $params['title'] = _t('SUBSCRIPTION_NOTIFICATION_TITLE');
         $params['summary'] = $params['summary'];
         $params['description'] = $params['description'];
+        $params['url'] = isset($params['url']) ? $params['url'] : '';
+        $params['icon'] = !empty($params['icon']) ? $params['icon'] : $gadgetLogo;
+        $params['image'] = isset($params['image']) ? $params['image'] : '';
         $params['gadget'] = $shouter;
         $params['users'] = $users;
         $params['emails'] = $emails;
         $params['mobiles'] = $mobiles;
+        $params['web_pushes'] = $webPushes;
         $this->gadget->event->shout('Notify', $params);
     }
 }

@@ -32,6 +32,12 @@
             </field>
 
             <field>
+                <name>web_push</name>
+                <type>text</type>
+                <length>1024</length>
+            </field>
+
+            <field>
                 <name>gadget</name>
                 <type>text</type>
                 <length>32</length>
