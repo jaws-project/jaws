@@ -36,20 +36,24 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * @param   int     $user           User ID
      * @param   string  $email          User Email
      * @param   string  $mobile         User Mobile number
+     * @param   array   $webPush        User Web push api params
      * @param   array   $selectedItems  Selected item's for subscription
      * @return  bool    True or  error
      */
-    function UpdateSubscription($user, $email, $mobile, $selectedItems)
+    function UpdateSubscription($user, $email, $mobile, $webPush, $selectedItems)
     {
         if (empty($selectedItems)) {
             return false;
         }
 
-        if (empty($user) && empty($email) && empty($mobile)) {
+        if (empty($user) && empty($email) && empty($mobile) && empty($webPush)) {
             return false;
         }
 
+
         $gadgetActions = array();
+        $references = array();
+        $webPush = empty($webPush) ? '' : serialize($webPush);
         foreach ($selectedItems as $item) {
             // explode string like this Forums_forum_1 (gadget_action_reference)
             $itemData = explode('_', $item);
@@ -59,7 +63,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
             $gadget = $itemData['0'];
             $action = $itemData['1'];
             $reference = (int)$itemData['2'];
-            $references[] = array($user, $email, $mobile, $gadget, $action, $reference, time());
+            $references[] = array($user, $email, $mobile, $webPush, $gadget, $action, $reference, time());
             $gadgetActions[$gadget][$action] = $action;
         }
 
@@ -88,7 +92,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
         // insert user subscription data to DB
         $table = $objORM->table('subscription');
         $result = $table->insertAll(
-            array('user', 'email', 'mobile_number', 'gadget', 'action', 'reference', 'insert_time'),
+            array('user', 'email', 'mobile_number', 'web_push', 'gadget', 'action', 'reference', 'insert_time'),
             $references
         )->exec();
 
@@ -109,13 +113,14 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * @param   int         $user           User ID
      * @param   string      $email          User Email
      * @param   string      $mobile         User Mobile number
+     * @param   string      $webPush        User Web Push parameters
      * @param   string      $gadget         Gadget name
      * @param   string      $action         Action name
      * @param   int         $reference      Reference Id
      * @param   bool        $isSubscribe    Subscribe to this?
      * @return  bool        True or error
      */
-    function UpdateGadgetSubscription($user, $email, $mobile, $gadget, $action, $reference, $isSubscribe)
+    function UpdateGadgetSubscription($user, $email, $mobile, $webPush, $gadget, $action, $reference, $isSubscribe)
     {
         if (empty($user) && empty($email) && empty($mobile)) {
             return false;
@@ -136,6 +141,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
                 'user' => $user,
                 'email' => $email,
                 'mobile_number' => $mobile,
+                'web_push' => $webPush,
                 'gadget' => $gadget,
                 'action' => $action,
                 'reference' => $reference,
@@ -251,7 +257,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
     function GetUsersSubscriptions($gadget, $action, $reference)
     {
         $sTable = Jaws_ORM::getInstance()->table('subscription');
-        return $sTable->select('user:integer', 'email', 'mobile_number')
+        return $sTable->select('user:integer', 'email', 'mobile_number', 'web_push')
             ->where('gadget', $gadget)->and()
             ->where('action', $action)->and()
             ->where('reference', $reference)
