@@ -19,6 +19,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
         array('eml_fetch_limit', '100'),
         array('sms_fetch_limit', '100'),
+        array('wp_fetch_limit', '100'),
         array('configuration', ''), // array(gadget_name=>(0,1, driver_name))
     );
 
@@ -67,7 +68,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'notification_email', 'notification_mobile', 'notification_messages', 'notification_driver'
+            'notification_email', 'notification_mobile', 'notification_web_push', 'notification_messages', 'notification_driver'
         );
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
@@ -108,6 +109,15 @@ class Notification_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '1.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.2.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $this->gadget->registry->insert('wp_fetch_limit', '100');
         }
 
         return true;

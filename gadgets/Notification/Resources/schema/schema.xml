@@ -35,6 +35,24 @@
                 <type>text</type>
             </field>
 
+            <field>
+                <name>url</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>icon</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>image</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
             <index>
                 <name><variable>table_prefix</variable>notification_k</name>
                 <unique>true</unique>
@@ -131,6 +149,45 @@
 
             <index>
                 <name><variable>table_prefix</variable>notification_m_msg</name>
+                <field>
+                    <name>message</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>notification_web_push</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>message</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>contact</name>
+                <type>text</type>
+                <length>1024</length>
+            </field>
+
+            <field>
+                <name>publish_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>notification_pm_msg</name>
                 <field>
                     <name>message</name>
                 </field>

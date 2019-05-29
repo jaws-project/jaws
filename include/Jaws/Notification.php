@@ -13,8 +13,9 @@ class Jaws_Notification
     /**
      * Drivers notification type
      */
-    const EML_DRIVER = 0;
-    const SMS_DRIVER = 1;
+    const EML_DRIVER = 0; // Email
+    const SMS_DRIVER = 1; // SMS
+    const WP_DRIVER = 2; // Web push API
 
     /**
      * Driver title
@@ -132,10 +133,13 @@ class Jaws_Notification
      * @param   string  $title      Notification title
      * @param   string  $summary    Notification summary
      * @param   string  $content    Notification content
+     * @param   string  $url        Notification URL
+     * @param   string  $icon       Notification icon
+     * @param   string  $image      Notification image
      * @param   integer $time   Time of notify(timestamps)
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($contacts, $title, $summary, $content, $time)
+    function notify($contacts, $title, $summary, $content, $url, $icon, $image, $time)
     {
         return Jaws_Error::raiseError('notify() method not supported by this driver.', __CLASS__);
     }
