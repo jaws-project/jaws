@@ -5547,12 +5547,12 @@ button.list-group-item-danger.active:focus {
   float: left !important;
   font-family: "Glyphicons Halflings";
   content:"\e252";
-  padding-right: 8px;
+  padding-right: 0.5rem;
 }
 .panel-title > a.collapsed:before {
   float: left !important;
   content:"\e250";
-  padding-right: 8px;
+  padding-right: 0.5rem;
 }
 .panel-footer {
   padding: 10px 15px;
