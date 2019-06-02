@@ -5543,6 +5543,17 @@ button.list-group-item-danger.active:focus {
 .panel-title > .small > a {
   color: inherit;
 }
+.panel-title > a:before {
+  float: left !important;
+  font-family: "Glyphicons Halflings";
+  content:"\e252";
+  padding-right: 8px;
+}
+.panel-title > a.collapsed:before {
+  float: left !important;
+  content:"\e250";
+  padding-right: 8px;
+}
 .panel-footer {
   padding: 10px 15px;
   background-color: #f5f5f5;
