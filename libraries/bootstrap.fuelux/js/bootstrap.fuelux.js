@@ -2848,8 +2848,10 @@ if (typeof jQuery === 'undefined') {
 
 			this.$element.on( 'click.fu.combobox', 'a', $.proxy( this.itemclicked, this ) );
 			this.$element.on( 'change.fu.combobox', 'input', $.proxy( this.inputchanged, this ) );
+			this.$element.on( 'hide.bs.dropdown', $.proxy( this.menuHide, this ) );
 			this.$element.on( 'shown.bs.dropdown', $.proxy( this.menuShown, this ) );
 			this.$input.on( 'keyup.fu.combobox', $.proxy( this.keypress, this ) );
+			this.$input.on( 'click.fu.combobox', $.proxy( this.inputclick, this ) );
 
 			// set default selection
 			this.setDefaultSelection();
@@ -2911,6 +2913,12 @@ if (typeof jQuery === 'undefined') {
 				this.$selectedItem = null;
 				this.$input.val( '' );
 				this.$dropMenu.find( 'li' ).removeClass( 'selected' );
+			},
+
+			menuHide: function( e ) {
+				if (this.options.showOptionsOnKeypress && this.$input.is(":focus")) {
+					e.preventDefault();
+				}
 			},
 
 			menuShown: function() {
@@ -3014,6 +3022,13 @@ if (typeof jQuery === 'undefined') {
 
 				// return focus to control after selecting an option
 				this.$element.find( '.dropdown-toggle' ).focus();
+			},
+
+			inputclick: function ( e ) {
+				if ( this.options.showOptionsOnKeypress && !this.$inputGroupBtn.hasClass( 'open' ) ) {
+					this.$button.dropdown( 'toggle' );
+					this.$input.focus();
+				}
 			},
 
 			keypress: function( e ) {
@@ -3136,6 +3151,7 @@ if (typeof jQuery === 'undefined') {
 			autoResizeMenu: true,
 			filterOnKeypress: false,
 			showOptionsOnKeypress: false,
+			noMatchesMessage: 'No Matches',
 			filter: function filter( list, predicate, self ) {
 				var visible = 0;
 				self.$dropMenu.find( '.empty-indicator' ).remove();
@@ -3149,7 +3165,7 @@ if (typeof jQuery === 'undefined') {
 					if ( text === predicate ) {
 						$li.addClass( 'text-success' );
 						visible++;
-					} else if ( text.substr( 0, predicate.length ) === predicate ) {
+					} else if ( text.indexOf(predicate) >= 0 ) {
 						$li.addClass( 'text-info' );
 						visible++;
 					} else {
@@ -3158,7 +3174,11 @@ if (typeof jQuery === 'undefined') {
 				} );
 
 				if ( visible === 0 ) {
-					self.$dropMenu.append( '<li class="empty-indicator text-muted"><em>No Matches</em></li>' );
+					self.$dropMenu.append(
+						'<li class="empty-indicator text-muted"><em>' +
+						self.options.noMatchesMessage +
+						'</em></li>'
+					);
 				}
 			}
 		};
