@@ -17,6 +17,11 @@ class Logs_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
+        array('syslog', false),
+        array(
+            'syslog_format',
+            '{insert_time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
+        ),
         array('log_priority_level', '6'),
         array('log_parameters', 'false'),
     );
@@ -87,6 +92,15 @@ class Logs_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert('syslog', false);
+            $this->gadget->registry->insert(
+                'syslog_format',
+                '{insert_time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
+            );
         }
 
         return true;

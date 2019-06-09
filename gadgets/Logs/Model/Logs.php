@@ -45,6 +45,22 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         $dLog['status']  = isset($dLog['status'])? (int)$dLog['status'] : 200;
         $dLog['insert_time'] = time();
 
+        // register logs in syslogs if enabled
+        if ($this->gadget->registry->fetch('syslog')) {
+            openlog('jaws', LOG_NDELAY, LOG_USER);
+            $syslog_message = $this->gadget->registry->fetch('syslog_format');
+            $syslog_message = preg_replace_callback(
+                '/{([[:digit:][:lower:]_]+)}/si',
+                function ($matches) use($dLog) {
+                    return $dLog[$matches[1]];
+                },
+                $syslog_message
+            );
+
+            syslog($dLog['priority'], $syslog_message);
+            closelog();
+        }
+
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->insert($dLog);
         return $logsTable->exec();
