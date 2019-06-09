@@ -41,7 +41,7 @@ class Logs_Events_Log extends Jaws_Gadget_Event
             (string)$params['username'] :
             $GLOBALS['app']->Session->GetAttribute('username');
         // priority
-        $params['priority'] = isset($params['priority'])? (int)$params['priority'] : JAWS_INFO;
+        $params['priority'] = empty($params['priority'])? JAWS_INFO : (int)$params['priority'];
 
         // log events if user logged
         if (empty($params['username']) ||
