@@ -142,7 +142,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
      * @param   int     $ftok   File token or name
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    static function delete($ftok)
+    function delete($ftok)
     {
         return
             empty($ftok)?

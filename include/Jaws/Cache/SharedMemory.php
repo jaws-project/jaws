@@ -48,10 +48,10 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
                 }
 
                 $token = (int)floor(microtime(true)*100000);
-                $keyFile = Jaws_FileMemory::getInstance($token);
+                $keyFile = Jaws_SharedSegment::getInstance($token);
                 if ($keyFile->open('n', strlen($value))) {
                     $result = $keyFile->write($value);
-                    Jaws_FileMemory::delete(@$keyscached[$key]['token']);
+                    $this->shmcache->delete(@$keyscached[$key]['token']);
                     $keyscached[$key] = array(
                         'token'    => $token,
                         'lifetime' => time() + $lifetime,
@@ -89,7 +89,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
                 $this->shmcache->lock(true);
                 foreach ($keyscached as $bkey => $block) {
                     if (time() > $block['lifetime']) {
-                        Jaws_FileMemory::delete($block['token']);
+                        $this->shmcache->delete($block['token']);
                         unset($keyscached[$bkey]);
                     }
                 }
@@ -103,7 +103,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
         if (array_key_exists($key, $keyscached) &&
             ($keyscached[$key]['lifetime'] > time())
         ) {
-            $keyFile = Jaws_FileMemory::getInstance($keyscached[$key]['token']);
+            $keyFile = Jaws_SharedSegment::getInstance($keyscached[$key]['token']);
             if ($keyFile->open('a')) {
                 $value = $keyFile->read();
                 $keyFile->close();
@@ -131,7 +131,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
             }
 
             if (array_key_exists($key, $keyscached)) {
-                $result = Jaws_FileMemory::delete($keyscached[$key]['token']);
+                $result = $this->shmcache->delete($keyscached[$key]['token']);
                 unset($keyscached[$key]);
             }
 
