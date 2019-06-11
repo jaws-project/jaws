@@ -3165,7 +3165,7 @@ if (typeof jQuery === 'undefined') {
 					if ( text === predicate ) {
 						$li.addClass( 'text-success' );
 						visible++;
-					} else if ( text.indexOf(predicate) >= 0 ) {
+					} else if ( text.toLowerCase().indexOf(predicate.toLowerCase()) >= 0 ) {
 						$li.addClass( 'text-info' );
 						visible++;
 					} else {
