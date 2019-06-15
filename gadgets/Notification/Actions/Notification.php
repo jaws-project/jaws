@@ -35,7 +35,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         }
         $messages[Jaws_Notification::EML_DRIVER] = $this->GroupByMessages($result);
 
-        $smsLimit = (int)$this->gadget->registry->fetch('eml_fetch_limit');
+        $smsLimit = (int)$this->gadget->registry->fetch('sms_fetch_limit');
         // fetches SMS notification
         $result = $model->GetNotifications(Jaws_Notification::SMS_DRIVER, $smsLimit);
         if (Jaws_Error::IsError($result)) {
