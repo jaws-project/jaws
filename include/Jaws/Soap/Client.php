@@ -58,7 +58,7 @@ class Jaws_Soap_Client extends Jaws_Soap
     function __call($method, $arguments)
     {
         // request cache key
-        $this->request_cache_key = Jaws_Cache::key($arguments);
+        $this->request_cache_key = Jaws_Cache::key($method, $arguments);
 
         try {
             if ($this->refresh ||
