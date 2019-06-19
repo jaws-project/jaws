@@ -6,7 +6,31 @@
 <div class="gadget_container">
   <div class="gadget_content">
     <div class="feed_title" data-alias="{{alias}}"><a href="{{feed_link}}" rel="external" target="_blank">{{feed_title}}</a></div>
-    <ul><!-- BEGIN item --><li><a href="{{href}}" rel="external" target="_blank">{{title}}</a></li><!-- END item --></ul>
+    <ul>
+      <!-- BEGIN item -->
+      <li>
+        <div class="row">
+          <div class="col-md-2 col-xs-4">
+<!--
+img[src=""] {
+  content:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
+}
+-->
+            <img src="{{enclosure}}" />
+          </div>
+          <div class="col-md-10 col-xs-8">
+            <a href="{{href}}" rel="external" target="_blank">{{title}}</a>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+            <p>{{summary}}</p>
+            </div>
+        </div>
+
+      </li>
+      <!-- END item -->
+    </ul>
   </div>
 </div>
 <div class="gadget_footer"></div>
