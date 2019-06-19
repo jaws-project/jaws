@@ -5,12 +5,14 @@
 </div>
 <div class="gadget_container">
   <div class="gadget_content">
-    <div class="feed_title" data-alias="{{alias}}"><a href="{{feed_link}}" rel="external" target="_blank">{{feed_title}}</a></div>
+    <div class="feed_title" data-alias="{{alias}}">
+      <h4><a href="{{feed_link}}" rel="external" target="_blank">{{feed_title}}</a></h4>
+    </div>
     <ul>
       <!-- BEGIN item -->
       <li>
         <div class="row">
-          <div class="col-md-2 col-xs-4">
+          <div class="col-lg-2 col-md-3 col-xs-4">
 <!--
 img[src=""] {
   content:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
@@ -18,16 +20,11 @@ img[src=""] {
 -->
             <img src="{{enclosure}}" />
           </div>
-          <div class="col-md-10 col-xs-8">
-            <a href="{{href}}" rel="external" target="_blank">{{title}}</a>
+          <div class="col-lg-10 col-md-9 col-xs-8">
+            <h5><a href="{{href}}" rel="external" target="_blank">{{title}}</a></h5>
+            <p>{{summary}}</p>
           </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-            <p>{{summary}}</p>
-            </div>
-        </div>
-
       </li>
       <!-- END item -->
     </ul>
