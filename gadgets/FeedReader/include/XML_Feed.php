@@ -214,11 +214,26 @@ class XML_Feed extends XML_Parser
             case 'LINK':
                 if ($this->level_1_tag == 'FEED') {
                     if ($this->level_2_tag == 'ENTRY') {
-                        $this->_add('item', 'link', $attrs['HREF']);
+                        if (!empty($attrs['REL']) && $attrs['REL'] == 'enclosure') {
+                            if (empty($attrs['TYPE']) || (strpos($attrs['TYPE'], 'image/') !== false)) {
+                                $this->_add('item', 'enclosure', $attrs['HREF']);
+                            }
+                        } else {
+                            $this->_add('item', 'link', $attrs['HREF']);
+                        }
                         break;
                     } elseif(empty($this->level_2_tag)) {
                         $this->_add('channel', 'link', $attrs['HREF']);
                         break;
+                    }
+                }
+                $this->activeTag = $tagName;
+                break;
+
+            case 'ENCLOSURE':
+                if ($this->level_1_tag == 'CHANNEL' && $this->level_2_tag == 'ITEM') {
+                    if (empty($attrs['TYPE']) || (strpos($attrs['TYPE'], 'image/') !== false)) {
+                        $this->_add('item', 'enclosure', $attrs['URL']);
                     }
                 }
                 $this->activeTag = $tagName;
