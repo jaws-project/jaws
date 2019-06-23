@@ -1319,14 +1319,44 @@ mark,
 .text-left {
   text-align: right;
 }
+.text-xs-left {
+  text-align: right;
+}
 .text-right {
+  text-align: left;
+}
+.text-xs-right {
   text-align: left;
 }
 .text-center {
   text-align: center;
 }
+.text-xs-center {
+  text-align: center;
+}
 .text-justify {
   text-align: justify;
+}
+.text-xs-justify {
+  text-align: justify;
+}
+@media (min-width: 768px) {
+  .text-sm-left { text-align: right; }
+  .text-sm-right { text-align: left; }
+  .text-sm-center { text-align: center; }
+  .text-sm-justify { text-align: justify; }
+}
+@media (min-width: 992px) {
+  .text-md-left { text-align: right; }
+  .text-md-right { text-align: left; }
+  .text-md-center { text-align: center; }
+  .text-md-justify { text-align: justify; }
+}
+@media (min-width: 1200px) {
+  .text-lg-left { text-align: right; }
+  .text-lg-right { text-align: left; }
+  .text-lg-center { text-align: center; }
+  .text-lg-justify { text-align: justify; }
 }
 .text-nowrap {
   white-space: nowrap;
