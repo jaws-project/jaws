@@ -1169,7 +1169,7 @@ $(document).ready(function() {
                 registration.addEventListener('updatefound', () => {
                     registration.update();
                     // FIXME: we need notify user before reload
-                    if (confirm('service worker update found, your page will be refresh!')) {
+                    if (confirm(jaws.Defines.reloadMessage)) {
                         location.reload(true);
                     }
                 });

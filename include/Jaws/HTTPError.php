@@ -111,6 +111,8 @@ class Jaws_HTTPError
 
             $tpl->SetVariable('title',   $title);
             $tpl->SetVariable('content', $message);
+            $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK'));
+            $tpl->SetVariable('lbl_reload', _t('GLOBAL_RELOAD'));
 
             $tpl->ParseBlock($code);
             return $tpl->Get();

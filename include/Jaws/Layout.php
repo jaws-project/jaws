@@ -114,6 +114,7 @@ class Jaws_Layout
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
         $GLOBALS['app']->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
+        $GLOBALS['app']->define('', 'reloadMessage', _t('GLOBAL_RELOAD_MESSAGE'));
     }
 
     /**
