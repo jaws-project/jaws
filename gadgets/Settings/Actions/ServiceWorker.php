@@ -23,7 +23,11 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
             preg_replace(
                 "$\r\n|\n$",
                 '\n',
-                addslashes(Jaws_HTTPError::Get(503, '', _t('SETTINGS_PWA_ERROR_REQUEST_DOES_NOT_EXIST')))
+                addslashes(Jaws_HTTPError::Get(
+                    503,
+                    _t('SETTINGS_PWA_ERROR_OFFLINE_TITLE'),
+                    _t('SETTINGS_PWA_ERROR_OFFLINE_CONTENT')
+                ))
             )
         );
         $tpl->ParseBlock('ServiceWorker');
