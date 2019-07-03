@@ -165,13 +165,27 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
      * @param   object  data    Parameters passed to the function (optional)
      * @return  void
      */
-    this.callAsync = function (action, data, done) {
-        var options  = {};
+    this.callAsync = function (action, data, done, callOptions) {
+        var options = {};
+        callOptions = callOptions || {};
+        // default status of showing message for synchronize call is off
+        if (!callOptions.hasOwnProperty('showMessage')) {
+            callOptions.showMessage = true;
+        }
+        // response message/loading container
+        if (!callOptions || !callOptions.message_container) {
+            var rc_gadget, rc_action;
+            rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
+            rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
+            callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
+        }
+
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
         options.url  = this.baseURL + action;
         options.type = 'POST';
         options.async  = true;
         options.action = action;
+        options.callOptions = callOptions;
         options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
@@ -188,13 +202,27 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
      * @param   object  data    Parameters passed to the function (optional)
      * @return  mixed   Response text on synchronous mode or void otherwise
      */
-    this.callSync = function (action, data, done) {
+    this.callSync = function (action, data, done, callOptions) {
         var options = {};
+        callOptions = callOptions || {};
+        // default status of showing message for synchronize call is off
+        if (!callOptions.hasOwnProperty('showMessage')) {
+            callOptions.showMessage = false;
+        }
+        // response message/loading container
+        if (!callOptions || !callOptions.message_container) {
+            var rc_gadget, rc_action;
+            rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
+            rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
+            callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
+        }
+
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
         options.url = this.baseURL + action;
         options.type = 'POST';
         options.async = false;
         options.action = action;
+        options.callOptions = callOptions;
         options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
@@ -203,7 +231,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
         //options.complete = this.onComplete.bind(this, options);
         var result = $.ajax(options);
         // hide loading
-        this.showLoading(false);
+        this.showLoading(false, callOptions.message_container);
 
         return eval('(' + result.responseText + ')');
     };
@@ -250,7 +278,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
 
     this.onSend = function (reqOptions) {
         // start show loading indicator
-        this.showLoading(true);
+        this.showLoading(true, reqOptions.callOptions.message_container);
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
@@ -263,7 +291,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
 
     this.onComplete = function (reqOptions, jqXHR, textStatus) {
         // hide loading
-        this.showLoading(false);
+        this.showLoading(false, reqOptions.callOptions.message_container);
 
         response = eval('(' + jqXHR.responseText + ')');
         // call inline user define function
@@ -275,15 +303,24 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
             this.callbackFunctions[reqOptions.action].call(
                 this.callbackObject,
                 response,
-                jqXHR.status
+                jqXHR.status,
+                reqOptions.callOptions
             );
+        }
+
+        if (reqOptions.callOptions.showMessage) {
+            this.showResponse(response, reqOptions.callOptions.message_container);
         }
     };
 
     /*
      * show response message
      */
-    this.showResponse = function (response, element) {
+    this.showResponse = function (response, message_container) {
+        if (!message_container || !message_container.length) {
+            return;
+        }
+
         if (Array.isArray(response)) {
             // only show first response
             response = response[0];
@@ -293,36 +330,30 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
             return;
         }
 
-        var gadget, action;
-        gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
-        action = this.baseAction? this.baseAction : this.mainRequest['action'];
-        var msgBox  = "#"+(gadget+'_'+ action+'_'+'response').toLowerCase();
-
-        element = element || $(msgBox);
-        element.html(response.text).attr('class', response.type);
-        element.stop(true, true).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
+        message_container.html(response.text).attr('class', response.type);
+        message_container.stop(true, true).fadeIn().delay(4000).fadeOut(
+            1000,
+            function() {
+                $(this).removeClass();
+            }
+        );
     };
 
     /*
      * show loading indicator
      */
-    this.showLoading = function (show) {
-        var gadget, action;
-        gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
-        action = this.baseAction? this.baseAction : this.mainRequest['action'];
-        var msgBox  = "#"+(gadget+'_'+ action+'_'+'response').toLowerCase();
-
-        if ($(msgBox)) {
+    this.showLoading = function (show, message_container) {
+        if (message_container.length) {
             if (show) {
                 if (this.loadingMessage) {
                     loadingMessage = this.loadingMessage;
                 } else {
                     loadingMessage = jaws.Defines.loadingMessage || '...';
                 }
-                $(msgBox).html(loadingMessage).attr('class', 'response_loading alert-info');
-                $(msgBox).stop(true, true).fadeIn();
+                message_container.html(loadingMessage).attr('class', 'response_loading alert-info');
+                message_container.stop(true, true).fadeIn();
             } else {
-                $(msgBox).fadeOut(0, function() {$(this).removeClass();});
+                message_container.fadeOut(0, function() {$(this).removeClass();});
             }
         }
     };
