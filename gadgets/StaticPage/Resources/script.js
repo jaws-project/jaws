@@ -17,14 +17,12 @@ var StaticPageCallback = {
         if (response[0]['type'] == 'alert-success') {
             getDG('pages_datagrid');
         }
-        StaticPageAjax.showResponse(response);
     },
 
     DeleteTranslation: function(response) {
         if (response[0]['type'] == 'alert-success') {
             getDG('pages_datagrid');
         }
-        StaticPageAjax.showResponse(response);
     },
 
     MassiveDelete: function(response) {
@@ -38,11 +36,6 @@ var StaticPageCallback = {
             PiwiGrid.multiSelect($('#pages_datagrid'));
             getDG('pages_datagrid');
         }
-        StaticPageAjax.showResponse(response);
-    },
-
-    UpdateSettings: function(response) {
-        StaticPageAjax.showResponse(response);
     },
 
     AutoDraft: function(response) {
@@ -56,7 +49,6 @@ var StaticPageCallback = {
             $('#groups_datagrid')[0].setCurrentPage(0);
             getDG('groups_datagrid');
         }
-        StaticPageAjax.showResponse(response);
     },
 
     UpdateGroup: function(response) {
@@ -64,7 +56,6 @@ var StaticPageCallback = {
             stopAction();
             getDG('groups_datagrid');
         }
-        StaticPageAjax.showResponse(response);
     },
 
     DeleteGroup: function(response) {
@@ -73,7 +64,6 @@ var StaticPageCallback = {
             $('#groups_datagrid')[0].deleteItem();
             getDG('groups_datagrid');
         }
-        StaticPageAjax.showResponse(response);
     }
 
 };
