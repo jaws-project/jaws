@@ -12,25 +12,6 @@
 function Jaws_Gadget_Settings() { return {
     // ASync callback method
     AjaxCallback : {
-        UpdateAdvancedSettings: function(response) {
-            this.gadget.ajax.showResponse(response);
-        },
-
-        UpdateMetaSettings: function(response) {
-            this.gadget.ajax.showResponse(response);
-        },
-
-        UpdateMailSettings: function(response) {
-            this.gadget.ajax.showResponse(response);
-        },
-
-        UpdateFTPSettings: function(response) {
-            this.gadget.ajax.showResponse(response);
-        },
-
-        UpdateProxySettings: function(response) {
-            this.gadget.ajax.showResponse(response);
-        }
     },
 
     /**
@@ -147,9 +128,6 @@ function Jaws_Gadget_Settings() { return {
 function Jaws_Gadget_Settings_Action_BasicSettings() { return {
     // ASync callback method
     AjaxCallback : {
-        UpdateBasicSettings: function(response) {
-            this.ajax.showResponse(response);
-        }
     },
 
     /**

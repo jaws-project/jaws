@@ -9,9 +9,6 @@
  * Use async mode, create Callback
  */
 var SettingsCallback = {
-    UpdateSettings: function(response) {
-        SettingsAjax.showResponse(response);
-    }
 };
 
 /**
