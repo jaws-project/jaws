@@ -11,9 +11,6 @@
  * Use async mode, create Callback
  */
 var ServerTimeCallback = {
-    UpdateProperties: function(response) {
-        ServerTimeAjax.showResponse(response);
-    }
 };
 
 /**
