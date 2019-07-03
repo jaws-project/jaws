@@ -11,10 +11,6 @@
  * Use async mode, create Callback
  */
 var ShoutboxCallback = {
-
-    UpdateProperties: function(response) {
-        ShoutboxAjax.showResponse(response);
-    }
 };
 
 /**
