@@ -11,9 +11,6 @@
  * Use async mode, create Callback
  */
 var SearchCallback = {
-    SaveChanges: function(response) {
-        SearchAjax.showResponse(response);
-    }
 };
 
 /**
