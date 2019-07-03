@@ -35,7 +35,6 @@ function Jaws_Gadget_Users() { return {
                 $('#users_datagrid')[0].lastPage();
                 getDG('users_datagrid');
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         UpdateUser: function(response) {
@@ -43,45 +42,35 @@ function Jaws_Gadget_Users() { return {
                 this.stopUserAction();
                 getDG('users_datagrid');
             }
-            this.gadget.ajax.showResponse(response);
-        },
-
-        UpdateUserACL: function(response) {
-            this.gadget.ajax.showResponse(response);
         },
 
         AddUserToGroups: function(response) {
             if (response[0]['type'] == 'alert-success') {
                 this.stopUserAction();
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         UpdatePersonal: function(response) {
             if (response[0]['type'] == 'alert-success') {
                 this.stopUserAction();
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         UpdateContacts: function(response) {
             if (response[0]['type'] == 'alert-success') {
                 this.stopUserAction();
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         UpdateExtra: function(response) {
             if (response[0]['type'] == 'alert-success') {
                 this.stopUserAction();
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         UpdateMyAccount: function(response) {
             $('#pass1').val('');
             $('#pass2').val('');
-            this.gadget.ajax.showResponse(response);
         },
 
         DeleteUser: function(response) {
@@ -90,7 +79,6 @@ function Jaws_Gadget_Users() { return {
                 $('#users_datagrid')[0].deleteItem();
                 getDG('users_datagrid');
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         AddGroup: function(response) {
@@ -100,7 +88,6 @@ function Jaws_Gadget_Users() { return {
                 $('#groups_datagrid')[0].lastPage();
                 getDG('groups_datagrid');
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         UpdateGroup: function(response) {
@@ -108,7 +95,6 @@ function Jaws_Gadget_Users() { return {
                 this.stopGroupAction();
                 getDG('groups_datagrid');
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         DeleteGroup: function(response) {
@@ -117,18 +103,12 @@ function Jaws_Gadget_Users() { return {
                 $('#groups_datagrid')[0].deleteItem();
                 getDG('groups_datagrid');
             }
-            this.gadget.ajax.showResponse(response);
-        },
-
-        UpdateGroupACL: function(response) {
-            this.gadget.ajax.showResponse(response);
         },
 
         AddUsersToGroup: function(response) {
             if (response[0]['type'] == 'alert-success') {
                 this.stopGroupAction();
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         DeleteSession: function(response) {
@@ -136,20 +116,8 @@ function Jaws_Gadget_Users() { return {
                 clearTimeout(this.fTimeout);
                 getDG('onlineusers_datagrid', $('#onlineusers_datagrid')[0].getCurrentPage(), true);
             }
-            this.gadget.ajax.showResponse(response);
-        },
-
-        IPBlock: function(response) {
-            this.gadget.ajax.showResponse(response);
-        },
-
-        AgentBlock: function(response) {
-            this.gadget.ajax.showResponse(response);
-        },
-
-        UpdateSettings: function(response) {
-            this.gadget.ajax.showResponse(response);
         }
+
     },
 
     /**

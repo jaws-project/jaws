@@ -9,75 +9,66 @@
  * Use async mode, create Callback
  */
 var UsersCallback = {
-    UpdateContact: function (response) {
-        UsersAjax.showResponse(response);
-    },
-
     SaveContact: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     DeleteContacts: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
-    },
-    UpdatePreferences: function (response) {
-        UsersAjax.showResponse(response);
     },
 
     AddUser: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     UpdateUser: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     DeleteUser: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     AddUserToGroups: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     AddGlobalGroup: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     DeleteGlobalGroup: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
 
     UpdateGlobalGroup: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     AddUsersToGroup: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     UpdateBookmark: function (response) {
         if (response.type == 'alert-success') {
             if (currentAction == "Bookmarks") {
@@ -87,13 +78,12 @@ var UsersCallback = {
                 $('#bookmarkModal-' + response.data.gadget + '-' + response.data.action + '-' + response.data.reference).modal('hide');
             }
         }
-        UsersAjax.showResponse(response);
     },
+
     DeleteBookmark: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
 
     SaveFriendGroup: function (response) {
@@ -101,20 +91,19 @@ var UsersCallback = {
             stopAction();
             $('#friendModal').modal('hide');
         }
-        UsersAjax.showResponse(response);
     },
+
     DeleteFriendGroups: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
         }
-        UsersAjax.showResponse(response);
     },
+
     AddUsersToFriendGroup: function (response) {
         if (response.type == 'alert-success') {
             $('#friendMembersModal').modal('hide');
         }
-        UsersAjax.showResponse(response);
-    },
+    }
 
 };
 
