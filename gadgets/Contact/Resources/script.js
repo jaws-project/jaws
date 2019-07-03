@@ -18,7 +18,6 @@ var ContactCallback = {
             getDG('contacts_datagrid');
             stopAction();
         }
-        ContactAjax.showResponse(response);
     },
 
     DeleteRecipient: function(response) {
@@ -27,7 +26,6 @@ var ContactCallback = {
             getDG();
             stopAction();
         }
-        ContactAjax.showResponse(response);
     },
 
     InsertRecipient: function(response) {
@@ -37,7 +35,6 @@ var ContactCallback = {
             getDG();
             stopAction();
         }
-        ContactAjax.showResponse(response);
     },
 
     UpdateRecipient: function(response) {
@@ -45,11 +42,6 @@ var ContactCallback = {
             getDG();
             stopAction();
         }
-        ContactAjax.showResponse(response);
-    },
-
-    UpdateProperties: function(response) {
-        ContactAjax.showResponse(response);
     },
 
     DeleteContact: function(response) {
@@ -58,14 +50,12 @@ var ContactCallback = {
             getDG('contacts_datagrid');
             stopAction();
         }
-        ContactAjax.showResponse(response);
     },
 
     SendEmail: function(response) {
         if (response['type'] == 'alert-success') {
             newEmail();
         }
-        ContactAjax.showResponse(response);
     }
 };
 
