@@ -19,7 +19,6 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        ComponentsAjax.showResponse(response);
     },
 
     UpgradeGadget2: function (response) {
@@ -29,7 +28,6 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        ComponentsAjax.showResponse(response);
     },
 
     UninstallGadget2: function (response) {
@@ -38,7 +36,6 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        ComponentsAjax.showResponse(response);
     },
 
     EnableGadget: function (response) {
@@ -48,7 +45,6 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        ComponentsAjax.showResponse(response);
     },
 
     DisableGadget: function (response) {
@@ -58,7 +54,6 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        ComponentsAjax.showResponse(response);
     },
 
     InstallPlugin: function (response) {
@@ -67,7 +62,6 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        ComponentsAjax.showResponse(response);
     },
 
     UninstallPlugin: function (response) {
@@ -76,7 +70,6 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        ComponentsAjax.showResponse(response);
     },
 
     UpdatePluginUsage: function (response) {
@@ -87,7 +80,6 @@ var ComponentsCallback = {
                 $('#component_registry').remove();
             }
         }
-        ComponentsAjax.showResponse(response);
     },
 
     UpdateRegistry: function (response) {
@@ -99,7 +91,6 @@ var ComponentsCallback = {
                 $('#plugin_usage').remove();
             }
         }
-        ComponentsAjax.showResponse(response);
     },
 
     UpdateACL: function (response) {
@@ -107,7 +98,6 @@ var ComponentsCallback = {
             aclChanges = {};
             aclCache = $('#component_acl').clone(true, true);
         }
-        ComponentsAjax.showResponse(response);
     }
 };
 
