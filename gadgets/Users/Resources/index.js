@@ -583,7 +583,6 @@ function usersDataSource(options, callback)
             }
             // pass the datasource back to the repeater
             callback(dataSource);
-            UsersAjax.showResponse(response);
         }
     );
 }
@@ -844,7 +843,6 @@ function contactsDataSource(options, callback)
             }
             // pass the datasource back to the repeater
             callback(dataSource);
-            UsersAjax.showResponse(response);
         }
     );
 
