@@ -15,7 +15,6 @@ function Jaws_Gadget_Categories() { return {
                 this.stopAction();
                 $('#categories-grid').repeater('render');
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         InsertCategory: function(response) {
@@ -23,7 +22,6 @@ function Jaws_Gadget_Categories() { return {
                 this.stopAction();
                 $('#categories-grid').repeater('render');
             }
-            this.gadget.ajax.showResponse(response);
         },
 
         UpdateCategory: function(response) {
@@ -31,7 +29,6 @@ function Jaws_Gadget_Categories() { return {
                 this.stopAction();
                 $('#categories-grid').repeater('render');
             }
-            this.gadget.ajax.showResponse(response);
         }
     },
 
@@ -174,7 +171,6 @@ function Jaws_Gadget_Categories() { return {
                 }
                 // pass the dataSource back to the repeater
                 callback(dataSource);
-                this.gadget.ajax.showResponse(response);
             }
         );
     },
