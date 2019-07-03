@@ -157,6 +157,9 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
     this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
     this.baseURL = this.baseScript + '?gadget=' + gadget + '&restype=json&action=';
+    this.default_message_container = $(
+        "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase()
+    );
 
     /**
      * Performs asynchronous Ajax request
@@ -318,7 +321,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
      */
     this.showResponse = function (response, message_container) {
         if (!message_container || !message_container.length) {
-            return;
+            message_container = this.default_message_container;
         }
 
         if (Array.isArray(response)) {
