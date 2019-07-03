@@ -13,34 +13,30 @@ var SitemapCallback = {
         if (response[0]['type'] == 'alert-success') {
             stopAction();
         }
-        SitemapAjax.showResponse(response);
     },
+
     UpdateGadgetProperties: function(response) {
         if (response[0]['type'] == 'alert-success') {
             stopAction();
         }
-        SitemapAjax.showResponse(response);
     },
+
     SyncSitemapXML: function(response) {
         if (response[0]['type'] == 'alert-success') {
             syncSitemapDataFile(selectedGadget);
         }
-        SitemapAjax.showResponse(response);
     },
+
     SyncSitemapData: function(response) {
         if (response[0]['type'] == 'alert-success') {
             stopAction();
         }
-        SitemapAjax.showResponse(response);
     },
+
     PingSearchEngines: function(response) {
         if (response[0]['type'] == 'alert-success') {
             stopAction();
         }
-        SitemapAjax.showResponse(response);
-    },
-    UpdateRobots: function(response) {
-        SitemapAjax.showResponse(response);
     }
 }
 
