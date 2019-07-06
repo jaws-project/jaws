@@ -50,14 +50,16 @@ class Jaws_Notification_Mail extends Jaws_Notification
      * Sends notify to user
      *
      * @access  public
-     * @param   array   $contacts   Contacts array
-     * @param   string  $title      Notification title
-     * @param   string  $summary    Notification summary
-     * @param   string  $content    Notification content
-     * @param   integer $time       Time of notify(timestamps)
+     * @param   array   $contacts       Contacts array
+     * @param   string  $title          Notification title
+     * @param   string  $summary        Notification summary
+     * @param   string  $content        Notification content
+     * @param   string  $callback_url   Notification callback URL
+     * @param   string  $image          Notification image
+     * @param   integer $time           Time of notify(timestamps)
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($contacts, $title, $summary, $content, $time)
+    function notify($contacts, $title, $summary, $content, $callback_url, $image, $time)
     {
         $this->object->reset();
         $this->object->SetFrom();
