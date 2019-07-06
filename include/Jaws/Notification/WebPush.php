@@ -9,10 +9,10 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 
-require_once JAWS_PATH . 'libraries/vendor/autoload.php';
+//require_once JAWS_PATH . 'libraries/vendor/autoload.php';
 
-use Minishlink\WebPush\WebPush;
-use Minishlink\WebPush\Subscription;
+//use Minishlink\WebPush\WebPush;
+//use Minishlink\WebPush\Subscription;
 
 class Jaws_Notification_WebPush extends Jaws_Notification
 {
@@ -30,7 +30,7 @@ class Jaws_Notification_WebPush extends Jaws_Notification
      * @access  protected
      * @var     int
      */
-    protected $type = Jaws_Notification::WP_DRIVER;
+    protected $type = Jaws_Notification::WEB_DRIVER;
 
     /**
      * Store $auth object instance
