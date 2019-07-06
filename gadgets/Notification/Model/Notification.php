@@ -25,17 +25,17 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             case Jaws_Notification::SMS_DRIVER:
                 $objORM = $objORM->table('notification_mobile');
                 break;
-            case Jaws_Notification::WP_DRIVER:
+            case Jaws_Notification::WEB_DRIVER:
                 $objORM = $objORM->table('notification_web_push');
                 break;
             default:
                 return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $objORM->select('id:integer', 'message', 'contact', 'publish_time:integer')
+        return $objORM->select('id:integer', 'message', 'contact', 'time:integer')
             ->limit($limit)
-            ->where('publish_time', time(), '<=')
-            ->orderBy('publish_time, message asc')->fetchAll();
+            ->where('time', time(), '<=')
+            ->orderBy('time, message asc')->fetchAll();
     }
 
 
@@ -66,10 +66,10 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @param   string      $url                URL
      * @param   string      $icon               Path of icon
      * @param   string      $image              Path of image
-     * @param   integer     $publish_time       Publish timestamps
+     * @param   integer     $time               Publish timestamps
      * @return  bool        True or error
      */
-    function InsertNotifications($notifications, $key, $title, $summary, $description, $url, $icon, $image, $publish_time)
+    function InsertNotifications($notifications, $key, $title, $summary, $description, $url, $icon, $image, $time)
     {
         if (empty($notifications) || (empty($notifications['emails']) && empty($notifications['mobiles']) && empty($notifications['web_pushes']))) {
             return false;
@@ -98,7 +98,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             foreach ($notifications['emails'] as $email) {
                 // FIXME : increase performance by adding upsertAll method in core
                 $res = $objORM->upsert(
-                    array('message' => $messageId, 'contact' => $email, 'publish_time' => $publish_time)
+                    array('message' => $messageId, 'contact' => $email, 'time' => $time)
                 )
                     ->and()
                     ->where('message', $messageId)
@@ -118,7 +118,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 // FIXME : increase performance by adding upsertAll method in core
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                    array('message' => $messageId, 'contact' => $mobile, 'publish_time' => $publish_time)
+                    array('message' => $messageId, 'contact' => $mobile, 'time' => $time)
                 )
                     ->and()
                     ->where('message', $messageId)
@@ -138,7 +138,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 // FIXME : increase performance by adding upsertAll method in core
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                    array('message' => $messageId, 'contact' => $webPush, 'publish_time' => $publish_time)
+                    array('message' => $messageId, 'contact' => $webPush, 'time' => $time)
                 )
                     ->and()
                     ->where('message', $messageId)
@@ -229,7 +229,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             case Jaws_Notification::SMS_DRIVER:
                 $objORM = $objORM->table('notification_mobile');
                 break;
-            case Jaws_Notification::WP_DRIVER:
+            case Jaws_Notification::WEB_DRIVER:
                 $objORM = $objORM->table('notification_web_push');
                 break;
             default:

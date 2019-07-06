@@ -58,7 +58,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                         $message['title'],
                         $message['summary'],
                         $message['description'],
-                        $msgContacts['publish_time']
+                        $msgContacts['time']
                     );
                     if (!Jaws_Error::IsError($res)) {
                         // delete notification
@@ -89,7 +89,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         foreach ($messages as $message) {
             if ($lastMessage != $message['message']) {
                 $lastMessage = $message['message'];
-                $groupedMessages[$lastMessage]['publish_time'] = $message['publish_time'];
+                $groupedMessages[$lastMessage]['time'] = $message['time'];
             }
             $groupedMessages[$lastMessage]['ids'][] = $message['id'];
             $groupedMessages[$lastMessage]['contacts'][] = $message['contact'];
