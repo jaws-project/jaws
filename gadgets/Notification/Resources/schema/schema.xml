@@ -36,7 +36,13 @@
             </field>
 
             <field>
-                <name>callback</name>
+                <name>template</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>url</name>
                 <description>callback url</description>
                 <type>text</type>
                 <length>128</length>
@@ -47,12 +53,6 @@
                 <description>image url of message</description>
                 <type>text</type>
                 <length>128</length>
-            </field>
-
-            <field>
-                <name>template</name>
-                <type>text</type>
-                <length>32</length>
             </field>
 
             <index>

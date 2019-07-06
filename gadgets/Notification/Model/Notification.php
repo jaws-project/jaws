@@ -231,7 +231,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $objORM = $objORM->table('notification_mobile');
                 break;
             case Jaws_Notification::WEB_DRIVER:
-                $objORM = $objORM->table('notification_web_push');
+                $objORM = $objORM->table('notification_web');
                 break;
             default:
                 return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
@@ -252,7 +252,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         $msgTable = Jaws_ORM::getInstance()->table('notification_messages');
         $emlTable = Jaws_ORM::getInstance()->table('notification_email')->select('message')->distinct();
         $smsTable = Jaws_ORM::getInstance()->table('notification_mobile')->select('message')->distinct();
-        $wpTable = Jaws_ORM::getInstance()->table('notification_web_push')->select('message')->distinct();
+        $wpTable = Jaws_ORM::getInstance()->table('notification_web')->select('message')->distinct();
 
         return $msgTable->delete()
             ->where('id', $emlTable, 'not in')
