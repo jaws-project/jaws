@@ -87,17 +87,18 @@ class Jaws_Notification_WebPush extends Jaws_Notification
      * Sends notify to user
      *
      * @access  public
-     * @param   array   $contacts    Contacts array
-     * @param   string  $title       Notification title
-     * @param   string  $summary     Notification summary
-     * @param   string  $content     Notification content
+     * @param   array   $contacts       Contacts array
+     * @param   string  $title          Notification title
+     * @param   string  $summary        Notification summary
+     * @param   string  $content        Notification content
+     * @param   integer $time           Time of notify(timestamps)
      * @param   string  $callback_url   Notification callback URL
      * @param   string  $image          Notification image
-     * @param   integer $time           Time of notify(timestamps)
+     * @param   string  $template       Notification template
      * @return  mixed   Jaws_Error on failure
      * @throws ErrorException
      */
-    function notify($contacts, $title, $summary, $content, $callback_url, $image, $time)
+    function notify($contacts, $title, $summary, $content, $time, $callback_url, $image, $template)
     {
         $dir = _t_lang( $GLOBALS['app']->Registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
         $notifyContent = array(

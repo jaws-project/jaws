@@ -54,12 +54,13 @@ class Jaws_Notification_Mail extends Jaws_Notification
      * @param   string  $title          Notification title
      * @param   string  $summary        Notification summary
      * @param   string  $content        Notification content
+     * @param   integer $time           Time of notify(timestamps)
      * @param   string  $callback_url   Notification callback URL
      * @param   string  $image          Notification image
-     * @param   integer $time           Time of notify(timestamps)
+     * @param   string  $template       Notification template
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($contacts, $title, $summary, $content, $callback_url, $image, $time)
+    function notify($contacts, $title, $summary, $content, $time, $callback_url, $image, $template)
     {
         $this->object->reset();
         $this->object->SetFrom();
