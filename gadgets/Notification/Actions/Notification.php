@@ -58,7 +58,10 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                         $message['title'],
                         $message['summary'],
                         $message['description'],
-                        $msgContacts['time']
+                        $msgContacts['time'],
+                        $message['callback'],
+                        $message['image'],
+                        $message['template']
                     );
                     if (!Jaws_Error::IsError($res)) {
                         // delete notification

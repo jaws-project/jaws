@@ -123,7 +123,10 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 strip_tags($params['title']),
                 strip_tags($params['summary']),
                 $params['description'],
-                $params['time']
+                $params['time'],
+                isset($params['callback'])? $params['callback'] : '',
+                isset($params['image'])? $params['image'] : '',
+                isset($params['template'])? $params['template'] : ''
             );
             if (Jaws_Error::IsError($res)) {
                 return $res;
