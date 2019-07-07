@@ -310,7 +310,7 @@ class Jaws_Gadget_Installer
             }
         }
 
-        if (is_string($result)) {
+        if (isset($result) && is_string($result)) {
             // set return the new version number
             $this->gadget->registry->update('version', $result);
         } else {
