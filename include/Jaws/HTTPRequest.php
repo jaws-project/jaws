@@ -86,6 +86,21 @@ class Jaws_HTTPRequest
     }
 
     /**
+     * Sets request header(s)
+     *
+     * @access  public
+     * @param   string  $name       header name
+     * @param   string  $value      value of header key, header will be removed if value is null
+     * @param   bool    $replace    whether to replace previous header
+     * @return  mixed   Jaws_HTTPRequest object
+     */
+    function setHeader($name, $value = null, $replace = true)
+    {
+        $this->httpRequest->setHeader($name, $value, $replace);
+        return $this;
+    }
+
+    /**
      * Gets the URL content
      *
      * @access  public
