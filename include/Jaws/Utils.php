@@ -170,7 +170,9 @@ class Jaws_Utils
     {
         static $uri;
         if (!isset($uri)) {
-            if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
+            if (isset($_SERVER['REDIRECT_URL']) && !empty($_SERVER['REDIRECT_URL'])) {
+                $uri = $_SERVER['REDIRECT_URL'];
+            } elseif (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
                 $uri = $_SERVER['REQUEST_URI'];
             } elseif (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
                 $uri = $_SERVER['PHP_SELF'] . '?' .$_SERVER['QUERY_STRING'];
@@ -182,11 +184,11 @@ class Jaws_Utils
             $uri = substr($uri, strlen($rel_base));
         }
 
-        return $rel_url? ltrim($uri, '/') : (Jaws_Utils::getBaseURL() .$uri);
+        return $rel_url? ltrim($uri, '/') : (Jaws_Utils::getBaseURL('', false) .$uri);
     }
 
     /**
-     * is directory writeable?
+     * is directory writable?
      *
      * @access  public
      * @param   string  $path directory path
