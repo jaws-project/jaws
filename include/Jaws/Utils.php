@@ -1003,7 +1003,7 @@ class Jaws_Utils
         header("Pragma: public");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         // content mime type
-        header('Content-Type: ', empty($mimetype)? Jaws_Utils::mime_extension_type($fpath) : $mimetype);
+        header('Content-Type: '. (empty($mimetype)? Jaws_Utils::mime_extension_type($fpath) : $mimetype));
         // content disposition and filename
         $disposition = $inline? 'inline' : 'attachment';
         header("Content-Disposition: $disposition; filename=$fname");
