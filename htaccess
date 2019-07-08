@@ -21,22 +21,24 @@ AddType 'text/html; charset=UTF-8' html
 AddType 'text/xml; charset=UTF-8' atom rss xml
 
 <IfModule mod_rewrite.c>
-    RewriteBase /
     RewriteEngine On
+
+    #map another domain to a virtual directory 
+    #RewriteCond %{HTTP_HOST} ^my\.domain\.tld$ [NC]
+    #RewriteCond %{REQUEST_URI} !^/(index.php/)?virtualDirectory/ [NC]
+    #RewriteRule ^(.*)$ /virtualDirectory/$1 [NC,L]
 
     #RewriteCond %{HTTP:Authorization} ^(.*)
     #RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
     # shortcut to access admin area
     RewriteRule ^admin$ /admin.php [NC,L]
-    RewriteRule ^admin&checksess$ /admin.php/?checksess [NC,L]
 
     # working without using index.php from URLs for better SEO optimization
-    RewriteCond $1 !^(favicon\.(ico|png|gif|jpg)|robots\.txt|admin\.php) [NC]
+    RewriteCond $1 !^(favicon\.(ico|png|gif|jpg)|admin\.php) [NC]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond "%{THE_REQUEST}" "^(.*)$"
-    RewriteRule .* /index.php/%1 [L]
+    RewriteRule ^(.*)$ /jaws/index.php/$1 [NC,L]
 
 </IfModule>
 
