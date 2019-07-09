@@ -34,9 +34,9 @@ class Weather_Actions_GoogleMap extends Jaws_Gadget_Action
         header("Pragma: public");
 
         $httpRequest = new Jaws_HTTPRequest();
-        $result = $httpRequest->get($gMapURL, $data);
-        if (Jaws_Error::IsError($result) || $result != 200) {
-            $data = @file_get_contents('gadgets/Weather/Resources/images/gmap.png');
+        $result = $httpRequest->get($gMapURL);
+        if (Jaws_Error::IsError($result) || $result['status'] != 200) {
+            $result['body'] = @file_get_contents('gadgets/Weather/Resources/images/gmap.png');
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         } else {
@@ -45,6 +45,6 @@ class Weather_Actions_GoogleMap extends Jaws_Gadget_Action
             header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
         }
 
-        echo $data;
+        echo $result['body'];
     }
 }
