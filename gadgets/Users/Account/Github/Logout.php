@@ -25,8 +25,8 @@ class Users_Account_Github_Logout extends Users_Account_Github
             'Authorization',
             'Basic ' .base64_encode($this->ClientID.':'.$this->ClientSecret)
         );
-        $result = $httpRequest->delete($revokeURL, $responseData);
-        if (Jaws_Error::IsError($result) || $result != 204) {
+        $result = $httpRequest->delete($revokeURL);
+        if (Jaws_Error::IsError($result) || $result['status'] != 204) {
             return Jaws_Error::raiseError('Revoke token error!', __FUNCTION__);
         }
 

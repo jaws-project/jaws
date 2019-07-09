@@ -51,12 +51,12 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
                 array('extension' => false, 'absolute' => true)
             ),
         ));
-        $result = $httpRequest->rawPostData($this->tokenURL, $postData, $retData);
-        if (Jaws_Error::IsError($result) || $result != 200) {
+        $result = $httpRequest->rawPostData($this->tokenURL, $postData);
+        if (Jaws_Error::IsError($result) || $result['status'] != 200) {
             return Jaws_Error::raiseError('Token URL post error!', __FUNCTION__);
         }
 
-        $token = json_decode($retData, true);
+        $token = json_decode($result['body'], true);
         if (isset($token['access_token'])) {
             $this->gadget->session->update('access_token', $token['access_token']);
         } else {
