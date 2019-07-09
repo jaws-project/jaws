@@ -121,8 +121,8 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         $httpRequest = new Jaws_HTTPRequest();
         $httpRequest->content_type = 'application/json';
         $data = json_encode(array('domain' => $hostName, 'activities' => $activities));
-        $result = $httpRequest->rawPostData("http://$parent/activities/get", $data, $retData);
-        if (Jaws_Error::IsError($result) || $result != 200) {
+        $result = $httpRequest->rawPostData("http://$parent/activities/get", $data);
+        if (Jaws_Error::IsError($result) || $result['status'] != 200) {
             $this->gadget->registry->update('processing', 'false');
             return false;
         }
@@ -132,7 +132,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
 
         // finish procession
         $this->gadget->registry->update('processing', 'false');
-        return $retData;
+        return $result['body'];
     }
 
     /**
