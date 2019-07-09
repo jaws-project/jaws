@@ -119,7 +119,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         }
 
         $httpRequest = new Jaws_HTTPRequest();
-        $httpRequest->content_type = 'application/json';
+        $httpRequest->setHeader('Content-Type', 'application/json');
         $data = json_encode(array('domain' => $hostName, 'activities' => $activities));
         $result = $httpRequest->rawPostData("http://$parent/activities/get", $data);
         if (Jaws_Error::IsError($result) || $result['status'] != 200) {
