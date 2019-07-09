@@ -31,7 +31,7 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
 
         //
         $httpRequest = new Jaws_HTTPRequest();
-        $httpRequest->content_type = 'application/json';
+        $httpRequest->setHeader('Content-Type', 'application/json');
         $httpRequest->httpRequest->setHeader('Accept', 'application/json');
         if ($this->gadget->session->fetch('access_token')) {
             $httpRequest->httpRequest->setHeader(
@@ -64,8 +64,8 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
         }
 
         //
-        $httpRequest->content_type = 'application/json';
-        $httpRequest->httpRequest->setHeader('Accept', 'application/json');
+        $httpRequest->setHeader('Content-Type', 'application/json');
+        $httpRequest->setHeader('Accept', 'application/json');
         if ($this->gadget->session->fetch('access_token')) {
             $httpRequest->httpRequest->setHeader(
                 'Authorization',
