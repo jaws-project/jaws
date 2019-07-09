@@ -117,10 +117,11 @@ class Jaws_Request
 
         $this->data['get']    = $_GET;
         $this->data['cookie'] = $_COOKIE;
-        // support json encoded posted data
+        // backup raw posted data
+        $this->data['input'] = @file_get_contents('php://input');
         if (false !== strpos($_SERVER['CONTENT_TYPE'], 'application/json')) {
-            $json = file_get_contents('php://input');
-            $this->data['post'] = json_decode($json, true);
+            // support json encoded posted data
+            $this->data['post'] = json_decode($this->data['input'], true);
         } else {
             $this->data['post'] = $_POST;
         }
@@ -418,6 +419,18 @@ class Jaws_Request
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         $this->data[$method][$key] = $value;
         return true;
+    }
+
+    /**
+     * Get raw/untouched part of input data 
+     *
+     * @access  public
+     * @param   string  $part   Part of request data(get|post|cookie|input)
+     * @return  mixed   input data
+     */
+    function rawData($part = '')
+    {
+        return empty($part)? $this->data : $this->data[$part];
     }
 
     /**
