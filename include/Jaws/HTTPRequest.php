@@ -37,9 +37,9 @@ class Jaws_HTTPRequest
 
     /**
      * @access  public
-     * @var     string   $user_agent    User Agent
+     * @const   string   JAWS_USER_AGENT   Jaws User Agent
      */
-    var $user_agent = 'Jaws HTTPRequest (http://jaws-project.com)';
+    const JAWS_USER_AGENT = 'Jaws HTTPRequest (http://jaws-project.com)';
 
     /**
      * @access  public
@@ -107,9 +107,13 @@ class Jaws_HTTPRequest
         if ($this->refresh ||
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
+            $headers = $this->httpRequest->getHeaders();
+            // user agent
+            if (!array_key_exists('user-agent', $headers)) {
+                $this->httpRequest->setHeader('User-Agent', self::JAWS_USER_AGENT);
+            }
+
             $this->httpRequest->setConfig($this->options)->setUrl($url);
-            // FIXME: if user-agent not set then set it to default agent
-            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
             try {
                 $result = $this->httpRequest->send();
@@ -151,13 +155,17 @@ class Jaws_HTTPRequest
         if ($this->refresh ||
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
+            $headers = $this->httpRequest->getHeaders();
+            // detect data need url-encoding
+            $urlencoded = strpos($headers['content-type'], 'application/x-www-form-urlencoded') !== false;
+
+            // user agent
+            if (!array_key_exists('user-agent', $headers)) {
+                $this->httpRequest->setHeader('User-Agent', self::JAWS_USER_AGENT);
+            }
+
             $this->httpRequest->setConfig($this->options)->setUrl($url);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
-            // FIXME: if user-agent not set then set it to default agent
-            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
-
-            $headers = $this->httpRequest->getHeaders();
-            $urlencoded = strpos($headers['content-type'], 'application/x-www-form-urlencoded') !== false;
 
             // add post data
             foreach($params as $name => $value) {
@@ -204,10 +212,13 @@ class Jaws_HTTPRequest
         if ($this->refresh ||
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
-            $this->httpRequest->setConfig($this->options)->setUrl($url);
-            // FIXME: if user-agent not set then set it to default agent
-            $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+            $headers = $this->httpRequest->getHeaders();
+            // user agent
+            if (!array_key_exists('user-agent', $headers)) {
+                $this->httpRequest->setHeader('User-Agent', self::JAWS_USER_AGENT);
+            }
 
+            $this->httpRequest->setConfig($this->options)->setUrl($url);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
             // set post data
             $this->httpRequest->setBody($data);
@@ -246,9 +257,13 @@ class Jaws_HTTPRequest
      */
     function delete($url)
     {
+        $headers = $this->httpRequest->getHeaders();
+        // user agent
+        if (!array_key_exists('user-agent', $headers)) {
+            $this->httpRequest->setHeader('User-Agent', self::JAWS_USER_AGENT);
+        }
+
         $this->httpRequest->setConfig($this->options)->setUrl($url);
-        // FIXME: if user-agent not set then set it to default agent
-        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
         $this->httpRequest->setMethod(HTTP_Request2::METHOD_DELETE);
         try {
             $result = $this->httpRequest->send();
