@@ -105,10 +105,9 @@ class Jaws_HTTPRequest
      *
      * @access  public
      * @param   string  $url        URL address
-     * @param   string  $response   Response body
-     * @return  mixed   Response code on success, otherwise Jaws_Error
+     * @return  mixed   Response(status/header/body) on success, otherwise Jaws_Error
      */
-    function get($url, &$response)
+    function get($url)
     {
         $this->request_cache_key = Jaws_Cache::key($url);
         if ($this->refresh ||
@@ -124,6 +123,7 @@ class Jaws_HTTPRequest
                     serialize(
                         $result = array(
                             'status' => $result->getStatus(),
+                            'header' => $result->getHeader(),
                             'body'   => $result->getBody()
                         )
                     ),
@@ -139,20 +139,18 @@ class Jaws_HTTPRequest
             }
         }
 
-        $response = $result['body'];
-        return $result['status'];
+        return $result;
     }
 
     /**
      * Posts data to the URL
      *
      * @access  public
-     * @param   string  $url        URL address
-     * @param   array   $params     Associated name/data values
-     * @param   string  $response   Response body
-     * @return  mixed   Response code on success, otherwise Jaws_Error
+     * @param   string  $url    URL address
+     * @param   array   $params Associated name/data values
+     * @return  mixed   Response(status/header/body) on success, otherwise Jaws_Error
      */
-    function post($url, $params = array(), &$response)
+    function post($url, $params = array())
     {
         $this->request_cache_key = Jaws_Cache::key($url, $params);
         if ($this->refresh ||
@@ -179,6 +177,7 @@ class Jaws_HTTPRequest
                     serialize(
                         $result = array(
                             'status' => $result->getStatus(),
+                            'header' => $result->getHeader(),
                             'body'   => $result->getBody()
                         )
                     ),
@@ -194,20 +193,18 @@ class Jaws_HTTPRequest
             }
         }
 
-        $response = $result['body'];
-        return $result['status'];
+        return $result;
     }
 
     /**
      * Raw posts data to the URL
      *
      * @access  public
-     * @param   string  $url        URL address
-     * @param   string  $data       Raw data
-     * @param   string  $response   Response body
+     * @param   string  $url    URL address
+     * @param   string  $data   Raw data
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function rawPostData($url, $data = '', &$response)
+    function rawPostData($url, $data = '')
     {
         $this->request_cache_key = Jaws_Cache::key($url, $data);
         if ($this->refresh ||
@@ -226,6 +223,7 @@ class Jaws_HTTPRequest
                     serialize(
                         $result = array(
                             'status' => $result->getStatus(),
+                            'header' => $result->getHeader(),
                             'body'   => $result->getBody()
                         )
                     ),
@@ -241,8 +239,7 @@ class Jaws_HTTPRequest
             }
         }
 
-        $response = $result['body'];
-        return $result['status'];
+        return $result;
     }
 
     /**
