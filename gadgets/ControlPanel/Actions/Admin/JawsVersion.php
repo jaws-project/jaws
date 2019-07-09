@@ -21,10 +21,10 @@ class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_Action
         $jaws_version = '';
         $httpRequest = new Jaws_HTTPRequest();
         $httpRequest->default_error_level = JAWS_ERROR_NOTICE;
-        $result = $httpRequest->get('http://jaws-project.com/version/0', $data);
-        if (!Jaws_Error::IsError($result) && $result == 200) {
-            if (preg_match('/^\d+(\.\d+)+.*/i', $data)) {
-                $jaws_version = $data;
+        $result = $httpRequest->get('http://jaws-project.com/version/0');
+        if (!Jaws_Error::IsError($result) && $result['status'] == 200) {
+            if (preg_match('/^\d+(\.\d+)+.*/i', $result['body'])) {
+                $jaws_version = $result['body'];
                 $this->gadget->registry->update(
                     'update_last_checking',
                     array('version' => $jaws_version, 'time' => time())
