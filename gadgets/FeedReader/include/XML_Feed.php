@@ -56,17 +56,17 @@ class XML_Feed extends XML_Parser
     {
         $httpRequest = new Jaws_HTTPRequest();
         //$httpRequest->default_error_level = JAWS_ERROR_NOTICE;
-        $result = $httpRequest->get($file, $retData);
+        $result = $httpRequest->get($file);
         if (Jaws_Error::IsError($result)) {
             return $result;
-        } elseif ($result != 200) {
+        } elseif ($result['status'] != 200) {
             return Jaws_Error::raiseError(
                 'HTTP response error',
                 HTTP_REQUEST_ERROR_RESPONSE
             );
         }
-        
-        $this->setInputString($retData);
+
+        $this->setInputString($result['body']);
         return true;
     }
 
