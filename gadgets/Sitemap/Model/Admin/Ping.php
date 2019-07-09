@@ -29,9 +29,12 @@ class Sitemap_Model_Admin_Ping extends Jaws_Gadget_Model
         $httpRequest->default_error_level = JAWS_ERROR_NOTICE;
         foreach ($searchEngines as $engine => $pingURL) {
             $pingURL = str_replace('{url}', $url, $pingURL);
-            $result = $httpRequest->get($pingURL, $retData);
-            if (!Jaws_Error::IsError($result) && $result != 200) {
-                $GLOBALS['log']->Log(JAWS_ERROR_NOTICE, "Could not ping search engine '$engine': $retData");
+            $result = $httpRequest->get($pingURL);
+            if (!Jaws_Error::IsError($result) && $result['status'] != 200) {
+                $GLOBALS['log']->Log(
+                    JAWS_ERROR_NOTICE,
+                    "Could not ping search engine '$engine': {$result['body']}"
+                );
             }
         }
 
