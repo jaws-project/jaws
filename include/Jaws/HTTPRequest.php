@@ -202,7 +202,7 @@ class Jaws_HTTPRequest
      * @access  public
      * @param   string  $url    URL address
      * @param   string  $data   Raw data
-     * @return  mixed   Response code on success, otherwise Jaws_Error
+     * @return  mixed   Response(status/header/body) on success, otherwise Jaws_Error
      */
     function rawPostData($url, $data = '')
     {
@@ -247,18 +247,20 @@ class Jaws_HTTPRequest
      *
      * @access  public
      * @param   string  $url        URL address
-     * @param   string  $response   Response body
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
-    function delete($url, &$response)
+    function delete($url)
     {
         $this->httpRequest->setConfig($this->options)->setUrl($url);
         $this->httpRequest->setHeader('User-Agent', $this->user_agent);
         $this->httpRequest->setMethod(HTTP_Request2::METHOD_DELETE);
         try {
             $result = $this->httpRequest->send();
-            $response = $result->getBody();
-            return $result->getStatus();
+            return array(
+                'status' => $result->getStatus(),
+                'header' => $result->getHeader(),
+                'body'   => $result->getBody()
+            );
         } catch (Exception $error) {
             return Jaws_Error::raiseError(
                 $error->getMessage(),
