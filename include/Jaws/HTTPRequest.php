@@ -43,12 +43,6 @@ class Jaws_HTTPRequest
 
     /**
      * @access  public
-     * @var     string   $content_type  Request content-type
-     */
-    var $content_type = '';
-
-    /**
-     * @access  public
      * @var     integer $default_error_level    Default error logging level
      */
     var $default_error_level = JAWS_ERROR_ERROR;
@@ -114,6 +108,7 @@ class Jaws_HTTPRequest
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
+            // FIXME: if user-agent not set then set it to default agent
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
             try {
@@ -158,12 +153,11 @@ class Jaws_HTTPRequest
         ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
+            // FIXME: if user-agent not set then set it to default agent
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
 
-            // tip: multipart/form-data , application/x-www-form-urlencoded
-            $this->content_type = ($this->content_type)?: 'application/x-www-form-urlencoded';
-            $this->httpRequest->setHeader('Content-Type', $this->content_type);
-            $urlencoded = strpos($this->content_type, 'urlencoded') !== false;
+            $headers = $this->httpRequest->getHeaders();
+            $urlencoded = strpos($headers['content-type'], 'application/x-www-form-urlencoded') !== false;
 
             // add post data
             foreach($params as $name => $value) {
@@ -211,8 +205,9 @@ class Jaws_HTTPRequest
             false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
         ) {
             $this->httpRequest->setConfig($this->options)->setUrl($url);
+            // FIXME: if user-agent not set then set it to default agent
             $this->httpRequest->setHeader('User-Agent', $this->user_agent);
-            $this->httpRequest->setHeader('Content-Type', $this->content_type);
+
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
             // set post data
             $this->httpRequest->setBody($data);
@@ -252,6 +247,7 @@ class Jaws_HTTPRequest
     function delete($url)
     {
         $this->httpRequest->setConfig($this->options)->setUrl($url);
+        // FIXME: if user-agent not set then set it to default agent
         $this->httpRequest->setHeader('User-Agent', $this->user_agent);
         $this->httpRequest->setMethod(HTTP_Request2::METHOD_DELETE);
         try {
