@@ -18,7 +18,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         $loginData = $this->gadget->request->fetch(
             array(
                 'domain', 'username', 'password', 'chkpassword',
-                'usecrypt', 'loginkey', 'loginstep', 'remember'
+                'usecrypt', 'loginkey', 'loginstep', 'remember', 'defaults:array'
             ),
             'post'
         );
@@ -166,6 +166,8 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 );
                 $user['internal'] = true;
                 $user['remember'] = (bool)$loginData['remember'];
+                // user define default data for pass to login listener gadgets
+                $user['defaults'] = $loginData['defaults'];
 
                 // store user data in registry for using next steps
                 $this->gadget->session->update('temp.login.user', $user);
