@@ -166,7 +166,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 );
                 $user['internal'] = true;
                 $user['remember'] = (bool)$loginData['remember'];
-                // user define default data for pass to login listener gadgets
+                // user define default data for pass to user login listener gadgets
                 $user['defaults'] = $loginData['defaults'];
 
                 // store user data in registry for using next steps
