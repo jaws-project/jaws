@@ -42,8 +42,7 @@
             </field>
 
             <field>
-                <name>callback</name>
-                <was>url</was>
+                <name>url</name>
                 <description>callback url</description>
                 <type>text</type>
                 <length>128</length>
@@ -93,6 +92,7 @@
 
             <field>
                 <name>time</name>
+                <was>publish_time</was>
                 <type>integer</type>
                 <length>8</length>
             </field>
@@ -164,6 +164,7 @@
 
             <field>
                 <name>time</name>
+                <was>publish_time</was>
                 <type>integer</type>
                 <length>8</length>
             </field>
