@@ -26,7 +26,7 @@ class Users_Account_Default_Register extends Users_Account_Default
         try {
             // check captcha
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $resCheck = $htmlPolicy->checkCaptcha('login');
+            $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
                 throw new Exception($resCheck->getMessage(), 401);
             }
