@@ -113,6 +113,9 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                     'status'   => 200,
                 )
             );
+            // let everyone know a user has been registered
+            $this->gadget->event->shout('RegisterUser', $registerData);
+
             // let everyone know a user has been logged in
             $this->gadget->event->shout('LoginUser', $registerData);
 

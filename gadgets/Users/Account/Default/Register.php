@@ -18,7 +18,8 @@ class Users_Account_Default_Register extends Users_Account_Default
         $rgstrData = $this->gadget->request->fetch(
             array(
                 'domain', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'regkey', 'usecrypt', 'remember'
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'regkey', 'usecrypt', 'remember',
+                'defaults:array'
             ),
             'post'
         );
@@ -62,6 +63,8 @@ class Users_Account_Default_Register extends Users_Account_Default
                 if (Jaws_Error::IsError($userData)) {
                     throw new Exception($userData->getMessage(), 401);
                 }
+                // user define default data for pass to user register listener gadgets
+                $userData['defaults'] = $rgstrData['defaults'];
 
                 if ($this->gadget->registry->fetch('anon_activation') == 'user')
                 {
