@@ -143,20 +143,31 @@ jQuery.extend({
  *
  * @param   string  gadget      Gadget Name
  * @param   object  callback    Callback functions
- * @param   string  baseScript  Base URL
+ * @param   object  ajaxOptions Default options(baseScript, ...)
  * @return  void
  */
-function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
+function JawsAjax(gadget, callbackFunctions, callbackObject, ajaxOptions)
 {
     this.baseGadget = null;
     this.baseAction = null;
+    this.ajaxOptions = ajaxOptions || {};
     this.callbackObject = callbackObject || Jaws_Gadget.getInstance(gadget);
     this.callbackFunctions = callbackFunctions;
+
     this.loadingMessage = '';
     var reqValues = $('meta[name=application-name]').attr('content').split(':');
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
-    this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
-    this.baseURL = this.baseScript + '?gadget=' + gadget + '&restype=json&action=';
+
+    // base script
+    if (!this.ajaxOptions.hasOwnProperty('baseScript')) {
+        this.ajaxOptions.baseScript  = this.mainRequest['base'];
+    }
+    // default status of showing response message
+    if (!this.ajaxOptions.hasOwnProperty('showMessage')) {
+        this.ajaxOptions.showMessage = true;
+    }
+
+    this.baseURL = this.ajaxOptions.baseScript + '?gadget=' + gadget + '&restype=json&action=';
     this.default_message_container = $(
         "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase()
     );
@@ -171,12 +182,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
     this.callAsync = function (action, data, done, callOptions) {
         var options = {};
         callOptions = callOptions || {};
-        // default status of showing message for synchronize call is off
-        if (!callOptions.hasOwnProperty('showMessage')) {
-            callOptions.showMessage = true;
-        }
         // response message/loading container
-        if (!callOptions || !callOptions.message_container) {
+        if (!callOptions.hasOwnProperty('message_container')) {
             var rc_gadget, rc_action;
             rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
             rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
@@ -208,12 +215,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
     this.callSync = function (action, data, done, callOptions) {
         var options = {};
         callOptions = callOptions || {};
-        // default status of showing message for synchronize call is off
-        if (!callOptions.hasOwnProperty('showMessage')) {
-            callOptions.showMessage = false;
-        }
         // response message/loading container
-        if (!callOptions || !callOptions.message_container) {
+        if (!callOptions.hasOwnProperty('message_container')) {
             var rc_gadget, rc_action;
             rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
             rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
@@ -310,8 +313,12 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, baseScript)
                 reqOptions.callOptions
             );
         }
-
-        if (reqOptions.callOptions.showMessage) {
+        
+        if (reqOptions.callOptions.hasOwnProperty('showMessage')) {
+            if (reqOptions.callOptions.showMessage) {
+                this.showResponse(response, reqOptions.callOptions.message_container);
+            }
+        } else if (this.ajaxOptions.showMessage) {
             this.showResponse(response, reqOptions.callOptions.message_container);
         }
     };
