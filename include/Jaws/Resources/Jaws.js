@@ -141,16 +141,16 @@ jQuery.extend({
 /**
  * Ajax base class
  *
- * @param   string  gadget      Gadget Name
- * @param   object  callback    Callback functions
- * @param   object  ajaxOptions Default options(baseScript, ...)
+ * @param   string  gadget          Gadget Name
+ * @param   object  callback        Callback functions
+ * @param   object  defaultOptions  Default options(baseScript, ...)
  * @return  void
  */
-function JawsAjax(gadget, callbackFunctions, callbackObject, ajaxOptions)
+function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 {
     this.baseGadget = null;
     this.baseAction = null;
-    this.ajaxOptions = ajaxOptions || {};
+    this.defaultOptions = defaultOptions || {};
     this.callbackObject = callbackObject || Jaws_Gadget.getInstance(gadget);
     this.callbackFunctions = callbackFunctions;
 
@@ -159,15 +159,15 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, ajaxOptions)
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
 
     // base script
-    if (!this.ajaxOptions.hasOwnProperty('baseScript')) {
-        this.ajaxOptions.baseScript  = this.mainRequest['base'];
+    if (!this.defaultOptions.hasOwnProperty('baseScript')) {
+        this.defaultOptions.baseScript  = this.mainRequest['base'];
     }
     // default status of showing response message
-    if (!this.ajaxOptions.hasOwnProperty('showMessage')) {
-        this.ajaxOptions.showMessage = true;
+    if (!this.defaultOptions.hasOwnProperty('showMessage')) {
+        this.defaultOptions.showMessage = true;
     }
 
-    this.baseURL = this.ajaxOptions.baseScript + '?gadget=' + gadget + '&restype=json&action=';
+    this.baseURL = this.defaultOptions.baseScript + '?gadget=' + gadget + '&restype=json&action=';
     this.default_message_container = $(
         "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase()
     );
@@ -318,7 +318,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, ajaxOptions)
             if (reqOptions.callOptions.showMessage) {
                 this.showResponse(response, reqOptions.callOptions.message_container);
             }
-        } else if (this.ajaxOptions.showMessage) {
+        } else if (this.defaultOptions.showMessage) {
             this.showResponse(response, reqOptions.callOptions.message_container);
         }
     };
