@@ -8887,9 +8887,8 @@ if (typeof jQuery === 'undefined') {
 					returnOptions.filter = this.$filters.selectlist( 'selectedItem' );
 				}
 
+				returnOptions.pageSize = this.options.defaultPageSize;
 				if ( !this.infiniteScrollingEnabled ) {
-					returnOptions.pageSize = 25;
-
 					if ( this.$pageSize.length > 0 ) {
 						returnOptions.pageSize = parseInt( this.$pageSize.selectlist( 'selectedItem' ).value, 10 );
 					}
@@ -9373,6 +9372,7 @@ if (typeof jQuery === 'undefined') {
 				} );
 			},
 			defaultView: -1, // should be a string value. -1 means it will grab the active view from the view controls
+			defaultPageSize: 25,
 			dropPagingCap: 10,
 			staticHeight: -1, // normally true or false. -1 means it will look for data-staticheight on the element
 			views: null, // can be set to an object to configure multiple views of the same type,
