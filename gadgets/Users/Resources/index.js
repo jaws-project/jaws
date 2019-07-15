@@ -567,7 +567,6 @@ function usersDataSource(options, callback)
                     'count': response['data'].total,
                     'start': options.offset + 1,
                     'end':   options.end,
-                    'columns': columns,
                     'items': response['data'].records
                 };
             } else {
@@ -577,9 +576,11 @@ function usersDataSource(options, callback)
                     'count': 0,
                     'start': 0,
                     'end':   0,
-                    'columns': columns,
                     'items': {}
                 };
+            }
+            if (options.view !=='thumbnail') {
+                dataSource.columns = columns;
             }
             // pass the datasource back to the repeater
             callback(dataSource);
@@ -628,14 +629,16 @@ function initiateUsersDG() {
     // initialize the repeater
     var repeater = $('#usersGrid');
     repeater.repeater({
-        // setup your custom datasource to handle data retrieval;
-        // responsible for any paging, sorting, filtering, searching logic
+        defaultView: 'thumbnail',
+        defaultPageSize: 16,
+        thumbnail_infiniteScroll: true,
         dataSource: usersDataSource,
         staticHeight: 600,
         list_actions: list_actions,
         list_selectable: 'multi',
         list_direction: $('.repeater-canvas').css('direction'),
-        list_highlightSortedColumn: true
+        list_highlightSortedColumn: true,
+        thumbnail_template: '<div class="thumbnail repeater-thumbnail"> <span>{{nickname}}</span><br/><span>{{username}}</span></div>'
     });
 
     // monitor required events
