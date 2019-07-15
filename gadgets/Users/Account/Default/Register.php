@@ -32,7 +32,30 @@ class Users_Account_Default_Register extends Users_Account_Default
                 throw new Exception($resCheck->getMessage(), 401);
             }
 
-            if (empty($rgstrData['regstep'])) {
+            if ($rgstrData['regstep'] == 2) {
+                // fetch user data from session
+                $userData = $this->gadget->session->fetch('temp.register.user');
+                if (empty($userData)) {
+                    $rgstrData['regstep'] = 1;
+                    throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 404);
+                }
+
+                $regkey = $this->gadget->session->fetch('regkey');
+                if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300))) {
+                    // send notification to user
+                    $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
+
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                }
+
+                // check verification key
+                if ($regkey['text'] != $rgstrData['regkey']) {
+                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                }
+
+                // update user status(enabled)
+                $this->gadget->model->load('Registration')->updateUserStatus($userData['id'], 1);
+            } else {
                 $this->gadget->session->delete('temp.register.user');
                 if ($rgstrData['password'] !== $rgstrData['password_check']) {
                     throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 401);
@@ -68,7 +91,7 @@ class Users_Account_Default_Register extends Users_Account_Default
 
                 if ($this->gadget->registry->fetch('anon_activation') == 'user')
                 {
-                    $rgstrData['regstep'] = 1;
+                    $rgstrData['regstep'] = 2;
                     $this->gadget->session->update('temp.register.user', $userData);
 
                     // send notification to user
@@ -76,29 +99,6 @@ class Users_Account_Default_Register extends Users_Account_Default
 
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
-            } else {
-                // fetch user data from session
-                $userData = $this->gadget->session->fetch('temp.register.user');
-                if (empty($userData)) {
-                    $rgstrData['regstep'] = 0;
-                    throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
-                }
-
-                $regkey = $this->gadget->session->fetch('regkey');
-                if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300))) {
-                    // send notification to user
-                    $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
-
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                }
-
-                // check verification key
-                if ($regkey['text'] != $rgstrData['regkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
-                }
-
-                // update user status(enabled)
-                $this->gadget->model->load('Registration')->updateUserStatus($userData['id'], 1);
             }
 
             $this->gadget->session->delete('temp.register.user');
