@@ -7570,7 +7570,7 @@ if (typeof jQuery === 'undefined') {
 			this.fetchingData = false;
 
 			this.$element.on( 'scroll.fu.infinitescroll', $.proxy( this.onScroll, this ) );
-			this.onScroll();
+			//this.onScroll();
 		};
 
 		InfiniteScroll.prototype = {
@@ -8952,7 +8952,7 @@ if (typeof jQuery === 'undefined') {
 
 				if ( this.infiniteScrollingCont ) {
 					if ( data.end === true || ( this.currentPage + 1 ) >= pages ) {
-						this.infiniteScrollingCont.infinitescroll( 'end', end );
+						this.infiniteScrollingCont.infinitescroll( 'end', this.viewOptions.thumbnail_endItemsHTML );
 					} else {
 						this.infiniteScrollingCont.infinitescroll( 'onScroll' );
 					}
@@ -10514,6 +10514,7 @@ if (typeof jQuery === 'undefined') {
 				thumbnail_infiniteScroll: false,
 				thumbnail_itemRendered: null,
 				thumbnail_noItemsHTML: 'no items found',
+				thumbnail_endItemsHTML: '---------',
 				thumbnail_selectable: false,
 				thumbnail_template: '<div class="thumbnail repeater-thumbnail"><img height="75" src="{{src}}" width="65"><span>{{name}}</span></div>'
 			} );
@@ -10572,6 +10573,50 @@ if (typeof jQuery === 'undefined') {
 					var $thumbnail = $( fillTemplate( helpers.subset[ helpers.index ], this.viewOptions.thumbnail_template ) );
 
 					$thumbnail.data( 'item_data', helpers.data.items[ helpers.index ] );
+
+					if (this.viewOptions.list_actions) {
+						var actionsHtml = '';
+						var i;
+						var length;
+
+						for ( i = 0, length = this.viewOptions.list_actions.items.length; i < length; i++ ) {
+							var action = this.viewOptions.list_actions.items[ i ];
+							var html = action.html;
+
+							actionsHtml += '<li><a href="#" data-action="' + action.name + '" class="action-item"> ' + html + '</a></li>';
+						}
+
+						var actionsDropdown = '<div class="btn-group">' +
+							'<button type="button" class="btn btn-xs btn-default dropdown-toggle repeater-actions-button" data-toggle="dropdown" data-flip="auto" aria-expanded="false">' +
+							'<span class="caret"></span>' +
+							'</button>' +
+							'<ul class="dropdown-menu dropdown-menu-right" role="menu">' +
+							actionsHtml +
+							'</ul></div>';
+					}
+
+					$thumbnail.append( actionsDropdown );
+					// row level actions click
+					$thumbnail.find( '.action-item' ).on( 'click', function onBodyActionItemClick( e ) {
+						e.preventDefault();
+						if ( !self.isDisabled ) {
+							var actionName = $( this ).data( 'action' );
+							var actionObj = $.grep( self.viewOptions.list_actions.items, function matchedActions( actions ) {
+								return actions.name === actionName;
+							} )[ 0 ];
+
+							var selectedObj = {
+								item: $thumbnail,
+								rowData: $thumbnail.data( 'item_data' )
+							};
+
+							if ( actionObj.clickAction ) {
+								var callback = function noop() {}; // for backwards compatibility. No idea why this was originally here...
+								actionObj.clickAction( selectedObj, callback, e );
+							}
+						}
+
+					} );
 
 					if ( selectable ) {
 						$thumbnail.addClass( 'selectable' );

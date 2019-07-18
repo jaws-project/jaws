@@ -8601,6 +8601,7 @@ label.fuelux .checkbox-inline {
 .fuelux .infinitescroll .infinitescroll-end {
   clear: both;
   font-style: italic;
+  font-size: 14px;
   padding: 6px;
   text-align: center;
 }
