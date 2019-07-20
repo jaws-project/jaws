@@ -10520,7 +10520,7 @@ if (typeof jQuery === 'undefined') {
 				thumbnail_noItemsHTML: 'no items found',
 				thumbnail_endItemsHTML: '---------',
 				thumbnail_selectable: false,
-				thumbnail_template: '<div class="thumbnail repeater-thumbnail"><img height="75" src="{{src}}" width="65"><span>{{name}}</span></div>'
+				thumbnail_template: '<img height="75" src="{{src}}" width="65"><span>{{name}}</span>'
 			} );
 
 			//EXTENSION DEFINITION
@@ -10574,7 +10574,12 @@ if (typeof jQuery === 'undefined') {
 					var selectable = this.viewOptions.thumbnail_selectable;
 					var selected = 'selected';
 					var self = this;
-					var $thumbnail = $( fillTemplate( helpers.subset[ helpers.index ], this.viewOptions.thumbnail_template ) );
+					var $thumbnail = $(
+						fillTemplate(
+							helpers.subset[ helpers.index ],
+							'<div class="thumbnail repeater-thumbnail">' + this.viewOptions.thumbnail_template + '</div>'
+						)
+					);
 
 					$thumbnail.data( 'item_data', helpers.data.items[ helpers.index ] );
 

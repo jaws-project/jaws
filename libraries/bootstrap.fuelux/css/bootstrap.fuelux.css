@@ -9426,6 +9426,12 @@ label.fuelux .checkbox-inline {
   min-width: 100px;
   margin: 8px 7px;
   text-align: center;
+  position: relative;
+}
+.repeater-thumbnail div.btn-group {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 .fuelux .repeater-thumbnail img {
   display: block;
