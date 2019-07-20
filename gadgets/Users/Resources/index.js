@@ -116,7 +116,7 @@ function stopAction() {
             selectedUser = null;
             $('#userModal').modal('hide');
             $('form#users-form')[0].reset();
-            $('#usersGrid').repeater('render');
+            $('#usersGrid').repeater('render', {clearInfinite: true,pageIncrement: null});
             break;
         case 'UserGroups':
             selectedUser = null;
@@ -567,7 +567,6 @@ function usersDataSource(options, callback)
                     'count': response['data'].total,
                     'start': options.offset + 1,
                     'end':   options.end,
-                    'columns': columns,
                     'items': response['data'].records
                 };
             } else {
@@ -630,8 +629,16 @@ function initiateUsersDG() {
     // initialize the repeater
     var repeater = $('#usersGrid');
     repeater.repeater({
-        // setup your custom datasource to handle data retrieval;
-        // responsible for any paging, sorting, filtering, searching logic
+        /*
+        defaultView: 'thumbnail',
+        defaultPageSize: 2,
+        list_infiniteScroll: true,
+        thumbnail_infiniteScroll: true,
+        list_noItemsHTML: '',
+        thumbnail_noItemsHTML: '',
+        thumbnail_endItemsHTML: '',
+        thumbnail_template: '<span>{{username}}</span><br/><span>{{nickname}}</span><br/><span>{{email}}</span>',
+        */
         dataSource: usersDataSource,
         staticHeight: 600,
         list_actions: list_actions,
@@ -642,11 +649,11 @@ function initiateUsersDG() {
 
     // monitor required events
     $( ".datagrid-filters select" ).change(function() {
-        $('#usersGrid').repeater('render');
+        $('#usersGrid').repeater('render', {clearInfinite: true,pageIncrement: null});
     });
     $( ".datagrid-filters input" ).keypress(function(e) {
         if (e.which == 13) {
-            $('#usersGrid').repeater('render');
+            $('#usersGrid').repeater('render', {clearInfinite: true,pageIncrement: null});
         }
     });
     $('#userModal').on('hidden.bs.modal', function (e) {
