@@ -275,6 +275,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $params['description'] = $this->gadget->plugin->parse($message);
         $params['emails']      = array($uData['email']);
         $params['mobiles']     = array($uData['mobile']);
+        $params['template']    = 'UserRegister';
         $this->gadget->event->shout('Notify', $params);
 
         // update session login-key
