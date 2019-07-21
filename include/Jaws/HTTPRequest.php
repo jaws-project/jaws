@@ -157,7 +157,12 @@ class Jaws_HTTPRequest
         ) {
             $headers = $this->httpRequest->getHeaders();
             // detect data need url-encoding
-            $urlencoded = strpos($headers['content-type'], 'application/x-www-form-urlencoded') !== false;
+            if (array_key_exists('content-type', $headers)) {
+                $urlencoded = strpos($headers['content-type'], 'application/x-www-form-urlencoded') !== false;
+            } else {
+                $urlencoded = true;
+                $this->httpRequest->setHeader('content-type', 'application/x-www-form-urlencoded');
+            }
 
             // user agent
             if (!array_key_exists('user-agent', $headers)) {
