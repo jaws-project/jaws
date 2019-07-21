@@ -99,6 +99,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('pwa_fullname', 'Jaws Application'),
         array('pwa_shortname', 'jaws'),
         array('pwa_description', 'Jaws Application Description'),
+        array('buildnumber', ''),
     );
 
     /**
@@ -140,6 +141,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         // Registry keys
         $this->gadget->registry->update('key', $uniqueKey);
         $this->gadget->registry->update('robots', implode(',', $robots));
+        $this->gadget->registry->update('buildnumber', date('YmdGi'));
         // tinyMCE frontend toolbar
         $this->gadget->registry->update(
             'editor_tinymce_frontend_toolbar',
@@ -355,6 +357,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '2.1.0', '<')) {
             // nothing to do
+        }
+
+        if (version_compare($old, '2.2.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('buildnumber', date('YmdGi'));
         }
 
         return true;
