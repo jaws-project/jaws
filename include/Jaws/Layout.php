@@ -111,6 +111,10 @@ class Jaws_Layout
         );
         $this->attributes['admin_script'] = $this->attributes['admin_script'] ?: 'admin.php';
 
+        if (!array_key_exists('buildnumber', $this->attributes)) {
+            $this->attributes['buildnumber'] = date('YmdG');
+        }
+
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
         $GLOBALS['app']->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
@@ -255,6 +259,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('site-author',    $this->attributes['site_author']);
         $this->_Template->SetVariable('site-license',   $this->attributes['site_license']);
         $this->_Template->SetVariable('site-copyright', $this->attributes['site_copyright']);
+        $this->_Template->SetVariable('site-buildnumber', $this->attributes['buildnumber']);
         $cMetas = @unserialize($this->attributes['site_custom_meta']);
         if (!empty($cMetas)) {
             foreach ($cMetas as $cMeta) {
@@ -636,13 +641,13 @@ class Jaws_Layout
         array_unshift(
             $this->extraTags['scripts']['elements'],
             array(
-                'src'  => 'libraries/jquery/jquery.min.js?'. JAWS_VERSION
+                'src'  => 'libraries/jquery/jquery.min.js?'. $this->attributes['buildnumber']
             ),
             array(
-                'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION
+                'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. $this->attributes['buildnumber']
             ),
             array(
-                'src'  => 'include/Jaws/Resources/Jaws.js?'. JAWS_VERSION
+                'src'  => 'include/Jaws/Resources/Jaws.js?' . $this->attributes['buildnumber']
             ),
             array(
                 'text' => $this->initializeScript()
