@@ -9955,9 +9955,9 @@ if (typeof jQuery === 'undefined') {
 					}
 					helpers.container.removeClass( 'actions-enabled actions-enabled multi-select-enabled' );
 
-					$('.frozen-thead-wrapper').remove();
-					$('.frozen-column-wrapper').remove();
-					$('.actions-column-wrapper').remove();
+					$listContainer.find('.frozen-thead-wrapper').remove();
+					$listContainer.find('.frozen-column-wrapper').remove();
+					$listContainer.find('.actions-column-wrapper').remove();
 
 					$table = $listContainer.find( 'table' );
 					renderThead.call( this, $table, helpers.data );
