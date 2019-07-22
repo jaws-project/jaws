@@ -1220,9 +1220,10 @@ $(document).ready(function() {
 
                 registration.addEventListener('updatefound', () => {
                     registration.update();
-                    // FIXME: we need notify user before reload
-                    if (confirm(jaws.Defines.reloadMessage)) {
-                        location.reload(true);
+                    if (navigator.serviceWorker.controller) {
+                        if (confirm(jaws.Defines.reloadMessage)) {
+                            location.reload(true);
+                        }
                     }
                 });
             }
