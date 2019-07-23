@@ -722,7 +722,7 @@ class Jaws_Layout
             case 'addLink':
                 if (is_string($params[0])) {
                     $params[0] = array(
-                        'href' => $params[0],
+                        'href' => $params[0]. '?'. $this->attributes['buildnumber'],
                         'type' => 'text/css',
                         'rel'  => 'stylesheet'
                     );
@@ -733,7 +733,7 @@ class Jaws_Layout
             case 'addScript':
                 if (is_string($params[0])) {
                     $params[0] = array(
-                        'src'  => $params[0]
+                        'src'  => $params[0]. '?'. $this->attributes['buildnumber'],
                     );
                 }
                 $this->extraTags['scripts']['elements'][md5(serialize($params))] = $params[0];
