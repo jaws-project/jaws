@@ -172,6 +172,9 @@ class Jaws_Utils
         if (!isset($uri)) {
             if (isset($_SERVER['REDIRECT_URL']) && !empty($_SERVER['REDIRECT_URL'])) {
                 $uri = $_SERVER['REDIRECT_URL'];
+                if (isset($_SERVER['REDIRECT_QUERY_STRING']) && !empty($_SERVER['REDIRECT_QUERY_STRING'])) {
+                    $uri.= '?'. $_SERVER['REDIRECT_QUERY_STRING'];
+                }
             } elseif (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
                 $uri = $_SERVER['REQUEST_URI'];
             } elseif (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
