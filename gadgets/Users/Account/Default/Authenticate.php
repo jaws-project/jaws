@@ -18,7 +18,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         $loginData = $this->gadget->request->fetch(
             array(
                 'domain', 'username', 'password', 'chkpassword',
-                'usecrypt', 'loginkey', 'loginstep', 'remember', 'defaults:array'
+                'usecrypt', 'resend', 'loginkey', 'loginstep', 'remember', 'defaults:array'
             ),
             'post'
         );
@@ -85,10 +85,11 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 $loginkey = $this->gadget->session->fetch('loginkey');
-                if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300))) {
+                if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300)) ||
+                   (!empty($loginData['resend']) && ($loginkey['time'] < (time() - 90)))
+                ) {
                     // send notification to user
                     $this->gadget->action->load('Login')->NotifyLoginKey($user);
-
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
 

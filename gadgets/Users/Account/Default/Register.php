@@ -18,8 +18,8 @@ class Users_Account_Default_Register extends Users_Account_Default
         $rgstrData = $this->gadget->request->fetch(
             array(
                 'domain', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'regkey', 'usecrypt', 'remember',
-                'defaults:array'
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'resend', 'regkey', 'usecrypt',
+                'remember', 'defaults:array'
             ),
             'post'
         );
@@ -85,10 +85,11 @@ class Users_Account_Default_Register extends Users_Account_Default
                 }
 
                 $regkey = $this->gadget->session->fetch('regkey');
-                if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300))) {
+                if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300)) ||
+                   (!empty($rgstrData['resend']) && ($regkey['time'] < (time() - 90)))
+                ) {
                     // send notification to user
                     $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
-
                     throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
                 }
 
