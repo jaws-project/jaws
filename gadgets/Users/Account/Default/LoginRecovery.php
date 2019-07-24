@@ -17,7 +17,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
     {
         $rcvryData = $this->gadget->request->fetch(
             array(
-                'domain', 'account', 'rcvstep', 'rcvkey', 'usecrypt', 'remember'
+                'domain', 'account', 'rcvstep', 'resend', 'rcvkey', 'usecrypt', 'remember'
             ),
             'post'
         );
@@ -71,16 +71,17 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
             }
 
-            $regkey = $this->gadget->session->fetch('rcvkey');
-            if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300))) {
+            $rcvkey = $this->gadget->session->fetch('rcvkey');
+            if (!isset($rcvkey['text']) || ($rcvkey['time'] < (time() - 300)) ||
+               (!empty($rcvryData['resend']) && ($rcvkey['time'] < (time() - 90)))
+            ) {
                 // send recovery key notification to user
                 $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
-
                 throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
             }
 
             // check verification key
-            if ($regkey['text'] != $rcvryData['rcvkey']) {
+            if ($rcvkey['text'] != $rcvryData['rcvkey']) {
                 throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
             }
 
