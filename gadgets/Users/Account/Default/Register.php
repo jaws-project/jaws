@@ -32,7 +32,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 throw new Exception($resCheck->getMessage(), 401);
             }
 
-            if (empty($rgstrData['regstep'])) {
+            if (empty($rgstrData['regstep']) || $rgstrData['regstep'] == 1) {
                 $this->gadget->session->delete('temp.register.user');
                 if ($rgstrData['password'] !== $rgstrData['password_check']) {
                     throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 401);
