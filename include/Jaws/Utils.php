@@ -486,15 +486,16 @@ class Jaws_Utils
     }
 
     /**
-     * Get file name token
+     * Map pathname and a project identifier to a token
      *
      * @access  public
-     * @param   string  $filename   File name
-     * @return  int     Returns file token
+     * @param   string  $pathname   File path name
+     * @param   string  $proj       Project name
+     * @return  int     Returns     file token
      */
-    static function ftok($filename)
+    static function ftok($pathname, $proj = '')
     {
-        return crc32($filename);
+        return crc32($proj . $pathname);
     }
 
     /**
