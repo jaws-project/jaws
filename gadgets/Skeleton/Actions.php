@@ -18,7 +18,6 @@ $actions['Display'] = array(
     'file' => 'Display',
 );
 
-
 /**
  * Admin actions
  */
