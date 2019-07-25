@@ -13,6 +13,13 @@
 class Jaws
 {
     /**
+     * The installation instance
+     * @var     string
+     * @access  public
+     */
+    var $instance = '';
+
+    /**
      * The processed main request is in index page
      *
      * @var     bool
@@ -181,6 +188,9 @@ class Jaws
     function loadPreferences($preferences = array(), $loadFromDatabase = true)
     {
         if ($loadFromDatabase) {
+            // fetch installation instance
+            $this->instance = $this->Registry->fetch('instance', 'Settings');
+
             $user   = $this->Session->GetAttribute('user');
             $layout = $this->Session->GetAttribute('layout');
             $this->_Preferences = array(
