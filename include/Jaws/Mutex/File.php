@@ -18,11 +18,11 @@ class Jaws_Mutex_File extends Jaws_Mutex
     private $lockPrefix = 'lock_';
 
     /**
-     * lock files directory
-     * @var     string  $lockDirectory
+     * lock files path
+     * @var     string  $lockPath
      * @access  private
      */
-    private $lockDirectory;
+    private $lockPath;
 
     /**
      * Constructor
@@ -32,7 +32,7 @@ class Jaws_Mutex_File extends Jaws_Mutex
      */
     function __construct()
     {
-        $this->lockDirectory = rtrim(sys_get_temp_dir(), '/\\');
+        $this->lockPath = rtrim(sys_get_temp_dir(), '/\\'). '/'. $this->lockPrefix. $GLOBALS['app']->instance. '_';
     }
 
     /**
@@ -46,7 +46,10 @@ class Jaws_Mutex_File extends Jaws_Mutex
     function acquire($lkey, $nowait  = false)
     {
         if (!isset($this->mutexs[$lkey])) {
-            $this->mutexs[$lkey] = fopen($this->lockDirectory . '/'. $this->lockPrefix . (string)$lkey, 'a+');
+            $this->mutexs[$lkey] = fopen(
+                $this->lockPath. (string)$lkey,
+                'a+'
+            );
         }
 
         while (!($lock = flock($this->mutexs[$lkey], LOCK_EX | LOCK_NB)) && !$nowait) {

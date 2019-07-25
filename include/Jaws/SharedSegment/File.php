@@ -25,11 +25,11 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
     private $sharedPrefix = 'shared_';
 
     /**
-     * shared files directory
-     * @var     string  $sharedDirectory
+     * shared files path
+     * @var     string  $sharedPath
      * @access  private
      */
-    private $sharedDirectory;
+    private $sharedPath;
 
     /**
      * Constructor
@@ -41,7 +41,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
     protected function __construct($ftok)
     {
         parent::__construct($ftok);
-        $this->sharedDirectory = rtrim(sys_get_temp_dir(), '/\\');
+        $this->sharedPath = rtrim(sys_get_temp_dir(), '/\\'). '/'. $this->sharedPrefix. $GLOBALS['app']->instance. '_';
     }
 
     /**
@@ -58,7 +58,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
             case 'a':
                 // open an existing file for read only 
                 $this->hSHFile = @fopen(
-                    $this->sharedDirectory . '/'. $this->sharedPrefix . (string)$this->ftok,
+                    $this->sharedPath. (string)$this->ftok,
                     'r'
                 );
                 break;
@@ -66,7 +66,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
             case 'w':
                 // open an existing file for read & write
                 $this->hSHFile = @fopen(
-                    $this->sharedDirectory . '/'. $this->sharedPrefix . (string)$this->ftok,
+                    $this->sharedPath. (string)$this->ftok,
                     'r+'
                 );
                 break;
@@ -74,7 +74,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
             case 'c':
                 // create new file if exists, try to open it for read & write
                 $this->hSHFile = @fopen(
-                    $this->sharedDirectory . '/'. $this->sharedPrefix . (string)$this->ftok,
+                    $this->sharedPath. (string)$this->ftok,
                     'c+'
                 );
                 break;
@@ -82,7 +82,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
             case 'n':
                 // create new file if exists exists, fail and return false
                 $this->hSHFile = @fopen(
-                    $this->sharedDirectory . '/'. $this->sharedPrefix . (string)$this->ftok,
+                    $this->sharedPath. (string)$this->ftok,
                     'x+'
                 );
                 break;
@@ -105,7 +105,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
     function read($start = 0, $count = 0)
     {
         @fseek($this->hSHFile, $start);
-        $count = $count?: @filesize($this->sharedDirectory . '/'. $this->sharedPrefix . (string)$this->ftok);
+        $count = $count?: @filesize($this->sharedPath. (string)$this->ftok);
         return @fread($this->hSHFile, $count);
     }
 
@@ -148,7 +148,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
             empty($ftok)?
                 true :
                 Jaws_Utils::delete(
-                    $this->sharedDirectory . '/'. $this->sharedPrefix . (string)$this->ftok
+                    $this->sharedPath. (string)$this->ftok
                 );
     }
 
