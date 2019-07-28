@@ -20,7 +20,6 @@ class Contact_Informs_Email extends Jaws_Gadget_Action
      */
     function SendToRecipient($recipient, $contact)
     {
-        _log_var_dump($recipient, $contact);
         $from_name  = $contact['name'];
         $from_email = $contact['email'];
         $site_url   = $GLOBALS['app']->getSiteURL('/');
