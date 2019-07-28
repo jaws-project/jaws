@@ -15,7 +15,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
      * Show default contact form
      *
      * @access  public
-     * @return  string   XHTML templatecontent
+     * @return  string   XHTML template content
      */
     function Contact()
     {
