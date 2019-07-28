@@ -27,9 +27,9 @@ class Contact_Informs_Email extends Jaws_Gadget_Action
 
         $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
-            $message = Jaws_String::AutoParagraph($contact['msg_txt']);
+            $message = Jaws_String::AutoParagraph($contact['message']);
         } else {
-            $message = $contact['msg_txt'];
+            $message = $contact['message'];
         }
 
         $tpl = $this->gadget->template->load('SendToRecipient.html');
