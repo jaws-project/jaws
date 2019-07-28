@@ -174,9 +174,9 @@
 
         <field>
             <name>inform_type</name>
-            <type>text</type>
-            <length>64</length>
-            <default>Email</default>
+            <type>integer</type>
+            <length>1</length>
+            <default>1</default>
         </field>
 
         <field>

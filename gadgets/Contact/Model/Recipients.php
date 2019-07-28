@@ -21,7 +21,7 @@ class Contact_Model_Recipients extends Jaws_Gadget_Model
     function GetRecipient($id)
     {
         $rcpTable = Jaws_ORM::getInstance()->table('contacts_recipients');
-        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'inform_type:integer', 'visible:integer');
+        $rcpTable->select('id:integer', 'name', 'email', 'tel', 'fax', 'mobile', 'inform_type', 'visible:integer');
         return $rcpTable->where('id', $id)->fetchRow();
     }
 

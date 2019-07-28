@@ -181,7 +181,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $tel            Phone number of recipient
      * @internal param  string  $fax            Fax number of recipient
      * @internal param  string  $mobile         Mobile number of recipient
-     * @internal param  int     $inform_type    Inform Type
+     * @internal param  string  $inform_type    Inform Type
      * @internal param  string  $visible        The visible of the recipient
      * @return  array   Response array (notice or error)
      */

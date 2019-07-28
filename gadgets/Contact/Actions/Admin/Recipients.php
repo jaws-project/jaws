@@ -50,10 +50,14 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
         $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
         $tpl->SetVariable('mobile', $entry->Get());
 
+        $informtypes = array_map('basename', glob(JAWS_PATH . 'gadgets/Contact/Informs/*.php'));
         $informType =& Piwi::CreateWidget('Combo', 'inform_type');
         $informType->SetID('inform_type');
         $informType->AddOption(_t('GLOBAL_DISABLE'), 0);
-        $informType->AddOption(_t('GLOBAL_EMAIL'),   1);
+        foreach ($informtypes as $inform) {
+            $inform = basename($inform, '.php');
+            $informType->AddOption($inform, $inform);
+        }
         $informType->SetDefault(0);
         $tpl->SetVariable('lbl_inform_type', _t('CONTACT_RECIPIENTS_INFORM_TYPE'));
         $tpl->SetVariable('inform_type', $informType->Get());
