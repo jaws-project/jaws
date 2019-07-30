@@ -27,9 +27,10 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         );
 
         if ($GLOBALS['app']->Session->Logged()) {
-            $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
+            $post['name']   = $GLOBALS['app']->Session->GetAttribute('nickname');
+            $post['email']  = $GLOBALS['app']->Session->GetAttribute('email');
+            $post['mobile'] = $GLOBALS['app']->Session->GetAttribute('mobile');
+            $post['url']    = $GLOBALS['app']->Session->GetAttribute('url');
         }
 
         if (trim($post['name'])    == '' ||
@@ -57,6 +58,46 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
+        // email
+        $post['email'] = trim($post['email']);
+        if (!empty($post['email'])) {
+            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $post['email'] = strtolower($post['email']);
+            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+            if (false !== strpos($blockedDomains, "\n".substr(strrchr($post['email'], '@'), 1))) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($post['email'], '@'), 1)),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
+        // mobile
+        $post['mobile'] = isset($post['mobile'])? trim($post['mobile']) : '';
+        if (!empty($post['mobile'])) {
+            if (!empty($post['mobile'])) {
+                if (!preg_match("/^[00|\+|0]\d{10,16}$/", $post['mobile'])) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
+            }
+        }
+
+        if (empty($post['email']) && empty($post['mobile'])) {
+            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
+            Jaws_Header::Referrer();
+        }
+/*
         if ($this->gadget->registry->fetch('use_antispam') == 'true') {
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
                 $GLOBALS['app']->Session->PushResponse(
@@ -68,7 +109,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
                 Jaws_Header::Referrer();
             }
         }
-
+*/
         $attachment = null;
         if (($this->gadget->registry->fetch('enable_attachment') == 'true') &&
             $this->gadget->GetPermission('AllowAttachment')) 
