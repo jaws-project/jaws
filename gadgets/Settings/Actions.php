@@ -41,6 +41,11 @@ $actions['Offline'] = array(
     'normal' => true,
     'file'   => 'ServiceWorker',
 );
+$actions['UpdateEndpoint'] = array(
+    'normal' => true,
+    'file'   => 'ServiceWorker',
+);
+
 /**
  * Admin actions
  */
