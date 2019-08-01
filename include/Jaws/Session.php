@@ -295,6 +295,7 @@ class Jaws_Session
         $this->SetAttribute('mobile',     $info['mobile']);
         $this->SetAttribute('ssn',        $info['ssn']);
         $this->SetAttribute('avatar',     $info['avatar']);
+        $this->SetAttribute('endpoint',   '');
         $this->SetAttribute('last_password_update', $info['last_password_update']);
 
         $this->changed = true;
@@ -353,6 +354,7 @@ class Jaws_Session
         $this->SetAttribute('mobile',      '');
         $this->SetAttribute('ssn',         '');
         $this->SetAttribute('avatar',      '');
+        $this->SetAttribute('endpoint',    '');
         $this->SetAttribute('last_password_update', 0);
 
         $this->ssid = $sid;
@@ -554,6 +556,7 @@ class Jaws_Session
                 'checksum'    => md5($user. $serialized),
                 'ip'          => $ip,
                 'agent'       => $agent,
+                'endpoint'    => $this->GetAttribute('endpoint'),
             );
         }
         if (!empty($salt)) {
@@ -611,6 +614,7 @@ class Jaws_Session
                 'checksum'   => md5($user. $serialized),
                 'ip'         => $ip,
                 'agent'      => $agent,
+                'endpoint'   => $this->GetAttribute('endpoint'),
                 'insert_time' => $update_time,
                 'update_time' => $update_time
             )
@@ -706,7 +710,7 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
             'id:integer', 'salt', 'user', 'longevity', 'ip', 'agent', 'data',
-            'checksum', 'update_time:integer'
+            'endpoint', 'checksum', 'update_time:integer'
         );
         return $sessTable->where('id', (int)$sid)->fetchRow();
     }
@@ -734,7 +738,7 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
             'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent',
-            'data', 'checksum', 'insert_time', 'update_time:integer'
+            'data', 'endpoint', 'checksum', 'insert_time', 'update_time:integer'
         );
         if ($active) {
             $sessTable->where('update_time', $onlinetime, '>=');
