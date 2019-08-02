@@ -53,7 +53,9 @@ class JawsUpgrader
     {
         $file = 'stages/' . $stage['file'] . '.php';
         if (!file_exists($file)) {
-            Jaws_Error::Fatal('The ' . $stage['name'] . " stage couldn't be loaded, because " . $stage['file'] . ".php doesn't exist.", __FILE__, __LINE__);
+            Jaws_Error::Fatal(
+                'The ' . $stage['name'] . " stage couldn't be loaded, because " . $stage['file'] . ".php doesn't exist."
+            );
         }
 
         if ($instance) {
@@ -71,8 +73,9 @@ class JawsUpgrader
                 return $stage;
             }
 
-            Jaws_Error::Fatal("The ".$stage['name']." stage couldn't be loaded, because the class ".
-                              $stage['file']." couldn't be found.", __FILE__, __LINE__);
+            Jaws_Error::Fatal(
+                "The ".$stage['name']." stage couldn't be loaded, because the class ". $stage['file']." couldn't be found."
+            );
         }
 
         $this->Stages[] = $stage;

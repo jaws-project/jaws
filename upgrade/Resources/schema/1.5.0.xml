@@ -258,11 +258,6 @@
             </field>
 
             <field>
-                <name>endpoint</name>
-                <type>text</type>
-            </field>
-
-            <field>
                 <name>checksum</name>
                 <type>text</type>
                 <length>32</length>
