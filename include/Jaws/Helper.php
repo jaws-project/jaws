@@ -377,16 +377,18 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
             $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
         }
         // shout log event
-        $GLOBALS['app']->Listener->Shout(
-            'Action',
-            'Log',
-            array(
-                'gadget'   => $gadget,
-                'action'   => $action,
-                'priority' => $loglevel,
-                'status'   => http_response_code(),
-            )
-        );
+        if (isset($GLOBALS['app']->Session)) {
+            $GLOBALS['app']->Listener->Shout(
+                'Action',
+                'Log',
+                array(
+                    'gadget'   => $gadget,
+                    'action'   => $action,
+                    'priority' => $loglevel,
+                    'status'   => http_response_code(),
+                )
+            );
+        }
     } else {
         $gadget = '';
         $action = '';
@@ -401,7 +403,7 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     }
 
     // Sync session
-    if ($sync) {
+    if (isset($GLOBALS['app']->Session) && $sync) {
         $GLOBALS['app']->Session->update();
     }
 
