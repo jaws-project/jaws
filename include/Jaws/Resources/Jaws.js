@@ -168,16 +168,18 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
     var reqValues = $('meta[name=application-name]').attr('content').split(':');
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
 
+    // owner gadget
+    this.gadget = gadget;
+
     // base script
-    if (!this.defaultOptions.hasOwnProperty('baseScript')) {
-        this.defaultOptions.baseScript  = this.mainRequest['base'];
-    }
+    this.baseScript = this.defaultOptions.hasOwnProperty('baseScript')?
+        this.defaultOptions.baseScript : this.mainRequest['base'];
+
     // default status of showing response message
     if (!this.defaultOptions.hasOwnProperty('showMessage')) {
         this.defaultOptions.showMessage = true;
     }
 
-    this.baseURL = this.defaultOptions.baseScript + '?gadget=' + gadget + '&restype=json&action=';
     this.default_message_container = $(
         "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase()
     );
@@ -191,6 +193,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
      */
     this.callAsync = function (action, data, done, callOptions) {
         var options = {};
+        var gadget, baseScript;
+
         callOptions = callOptions || {};
         // response message/loading container
         if (!callOptions.hasOwnProperty('message_container')) {
@@ -200,8 +204,11 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
         }
 
+        gadget = callOptions.hasOwnProperty('gadget')? callOptions.gadget : this.gadget;
+        baseScript = callOptions.hasOwnProperty('baseScript')? callOptions.baseScript : this.baseScript;
+
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
-        options.url  = this.baseURL + action;
+        options.url  = baseScript + '?gadget=' + gadget + '&restype=json&action=' + action;
         options.type = 'POST';
         options.async  = true;
         options.action = action;
@@ -224,6 +231,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
      */
     this.callSync = function (action, data, done, callOptions) {
         var options = {};
+        var gadget, baseScript;
+
         callOptions = callOptions || {};
         // response message/loading container
         if (!callOptions.hasOwnProperty('message_container')) {
@@ -233,8 +242,11 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
         }
 
+        gadget = callOptions.hasOwnProperty('gadget')? callOptions.gadget : this.gadget;
+        baseScript = callOptions.hasOwnProperty('baseScript')? callOptions.baseScript : this.baseScript;
+
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
-        options.url = this.baseURL + action;
+        options.url  = baseScript + '?gadget=' + gadget + '&restype=json&action=' + action;
         options.type = 'POST';
         options.async = false;
         options.action = action;
@@ -269,7 +281,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             type: 'POST',
             data: fd,
             dataType: 'text',
-            url: this.baseURL + action,
+            url: this.baseScript + '?gadget=' + this.gadget + '&restype=json&action=' + action,
             action: action,
             timeout: 10 * 60 * 1000, /* 10 minutes */
             contentType: false,
