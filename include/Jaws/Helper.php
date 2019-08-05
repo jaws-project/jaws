@@ -309,6 +309,32 @@ if (!function_exists('build_url'))
 }
 
 /**
+ * Timing attack safe string comparison
+ *
+ * @param   string  $known_string   The string of known length to compare against 
+ * @param   string  $user_string    The user-supplied string 
+ * @return  bool    Returns TRUE when the two strings are equal, FALSE otherwise
+ * @see     http://www.php.net/hash-equals
+ */
+if (!function_exists('hash_equals')) {
+    function hash_equals($known_string, $user_string)
+    {
+        if (strlen($known_string) !== strlen($user_string)) {
+            return false;
+        }
+
+        $ret = 0;
+        $res = $known_string ^ $user_string;
+
+        for ($i = strlen($res) - 1; $i >= 0; $i--) {
+            $ret |= ord($res[$i]);
+        }
+
+        return !$ret;
+    }
+}
+
+/**
  * Convenience function to translate strings.
  *
  * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
