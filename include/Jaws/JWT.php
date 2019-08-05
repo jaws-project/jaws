@@ -253,7 +253,6 @@ class Jaws_JWT
                         if ($timestamp <= ($payload[$key] + $this->maxAge - $this->leeway)) {
                             return Jaws_Error::raiseError('Invalid JWT token: Not now', __FUNCTION__);
                         }
-                    
                         break;
                 }
             }
