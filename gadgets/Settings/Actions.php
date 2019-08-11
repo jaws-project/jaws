@@ -31,10 +31,12 @@ $actions['HealthStatus'] = array(
 );
 $actions['ServiceWorker'] = array(
     'standalone' => true,
+    'global' => true,
     'file'   => 'ServiceWorker',
 );
 $actions['Manifest'] = array(
     'standalone' => true,
+    'global' => true,
     'file'   => 'ServiceWorker',
 );
 $actions['Offline'] = array(
