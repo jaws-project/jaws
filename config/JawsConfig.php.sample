@@ -29,6 +29,12 @@ $db['name']     = '';
 $db['prefix']   = '';
 
 /**
+ * this value use/return by action HealthStatus of Settings gadget <<jaws-server-base-url>>/settings/health-status
+ * can use this option for load-balancers application health check
+ */
+define('JAWS_HEALTH_STATUS', 200);
+
+/**
  * Logs
  *
  * If you want to enable logging Jaws, maybe to track the errors, or to debug a good
