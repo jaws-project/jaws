@@ -71,7 +71,7 @@ class Jaws_UTF8
         if ($delimiter == '') {
             return false;
         }
-        return preg_split('!'.preg_quote($delimiter,'!').'!u', $str);
+        return preg_split('!'.preg_quote($delimiter, '!').'!u', $str);
     }
 
     /**
@@ -173,7 +173,7 @@ class Jaws_UTF8
         }
         $lstr = Jaws_UTF8::strtolower($str);
         $lsearch = Jaws_UTF8::strtolower($search);
-        preg_match('/^(.*)'.preg_quote($lsearch).'/Us',$lstr, $matches);
+        preg_match('/^(.*)'.preg_quote($lsearch, '/').'/Us',$lstr, $matches);
         if (count($matches) == 2) {
             return substr($str, strlen($matches[1]));
         }
@@ -481,10 +481,10 @@ class Jaws_UTF8
     static function str_replace($search, $replace, $str)
     {
         if(!is_array($search)) {
-            $search = '!'.preg_quote($search,'!').'!u';
+            $search = '!'.preg_quote($search, '!').'!u';
         } else {
             foreach ($search as $k => $v) {
-                $search[$k] = '!'.preg_quote($v).'!u';
+                $search[$k] = '!'.preg_quote($v, '!').'!u';
             }
         }
         return preg_replace($search, $replace, $str);
@@ -502,7 +502,7 @@ class Jaws_UTF8
                 return $str;
             }
             $search = Jaws_UTF8::strtolower($search);
-            $search = preg_quote($search);
+            $search = preg_quote($search, '/');
             $lstr   = Jaws_UTF8::strtolower($str);
             $i = 0;
             $matched = 0;
