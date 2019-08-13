@@ -600,7 +600,7 @@ class Net_SMTP
             if (PEAR::isError($result = $this->_parseResponse(220))) {
                 return $result;
             }
-            if (PEAR::isError($result = $this->_socket->enableCrypto(true, STREAM_CRYPTO_METHOD_TLS_CLIENT))) {
+            if (PEAR::isError($result = $this->_socket->enableCrypto(true, STREAM_CRYPTO_METHOD_ANY_CLIENT))) {
                 return $result;
             } elseif ($result !== true) {
                 return PEAR::raiseError('STARTTLS failed');
