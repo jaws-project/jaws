@@ -122,9 +122,15 @@ class Jaws_Mail
             'pipelining'    => $options['pipelining'] == 'true',
             'username'      => $options['smtp_user'],
             'password'      => $options['smtp_pass'],
+            'socket_options' => array (
+                'ssl' => array(
+                    'allow_self_signed' => true,
+                    'verify_peer'       => false,
+                    'verify_peer_name'  => false,
+                ),
+            ),
         );
     }
-
 
     /**
      * Creates the Jaws_Mail instance if it doesn't exist else it returns the already created one
@@ -336,7 +342,7 @@ class Jaws_Mail
         $headers = $this->mail_mime->headers($this->headers);
         $res = $mail->send($this->recipient, $headers, $realbody);
         if (PEAR::isError($res)) {
-            return Jaws_Error::raiseError($res->getMessage(), __FUNCTION__, JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError($res->getMessage(), __FUNCTION__);
         }
 
         return true;
