@@ -216,7 +216,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('message', $message);
 
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_url  = $GLOBALS['app']->getSiteURL('/', false);
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);
 
