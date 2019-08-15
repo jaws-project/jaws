@@ -141,7 +141,7 @@ class Emoticons_Plugin
         $newHTML  = '';
         foreach($htmlTags as $tagContent) {
             //If tagContent is a tag (starts with <) don't parse it
-            if ((strlen($tagContent) > 0) && ($tagContent{0} != '<')) { 
+            if ((strlen($tagContent) > 0) && ($tagContent[0] != '<')) {
                 $tagContent = preg_replace($iconsmap['regexps'], $iconsmap['images'], $tagContent);
             }
             $newHTML .= $tagContent;
