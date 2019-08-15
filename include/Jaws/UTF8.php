@@ -678,40 +678,40 @@ class Jaws_UTF8
             return $ord0;
         }
 
-        if ( !isset($chr{1}) ) {
+        if ( !isset($chr[1]) ) {
             return false;
         }
 
-        $ord1 = ord($chr{1});
+        $ord1 = ord($chr[1]);
         if ( $ord0 >= 192 && $ord0 <= 223 ) {
             return ( $ord0 - 192 ) * 64 + ( $ord1 - 128 );
         }
 
-        if ( !isset($chr{2}) ) {
+        if ( !isset($chr[2]) ) {
             return false;
         }
-        $ord2 = ord($chr{2});
+        $ord2 = ord($chr[2]);
         if ( $ord0 >= 224 && $ord0 <= 239 ) {
             return ($ord0-224)*4096 + ($ord1-128)*64 + ($ord2-128);
         }
 
-        if ( !isset($chr{3}) ) {
+        if ( !isset($chr[3]) ) {
             return false;
         }
-        $ord3 = ord($chr{3});
+        $ord3 = ord($chr[3]);
         if ($ord0>=240 && $ord0<=247) {
             return ($ord0-240)*262144 + ($ord1-128)*4096 + ($ord2-128)*64 + ($ord3-128);
         }
     
-        if ( !isset($chr{4}) ) {
+        if ( !isset($chr[4]) ) {
             return false;
         }
-        $ord4 = ord($chr{4});
+        $ord4 = ord($chr[4]);
         if ($ord0>=248 && $ord0<=251) {
             return ($ord0-248)*16777216 + ($ord1-128)*262144 + ($ord2-128)*4096 + ($ord3-128)*64 + ($ord4-128);
         }
 
-        if ( !isset($chr{5}) ) {
+        if ( !isset($chr[5]) ) {
             return false;
         }
         if ($ord0>=252 && $ord0<=253) {
@@ -720,7 +720,7 @@ class Jaws_UTF8
                     + ($ord2-128)*262144 
                         + ($ord3-128)*4096 
                             + ($ord4-128)*64 
-                                + (ord($c{5})-128);
+                                + (ord($c[5])-128);
         }
     
         if ( $ord0 >= 254 && $ord0 <= 255 ) { 
@@ -826,7 +826,7 @@ class Jaws_UTF8
                     for ($c = 0; $c < $strlen_chrs; ++$c) {
 
                         $substr_chrs_c_2 = substr($chrs, $c, 2);
-                        $ord_chrs_c = ord($chrs{$c});
+                        $ord_chrs_c = ord($chrs[$c]);
 
                         switch (true) {
                             case $substr_chrs_c_2 == '\b':
@@ -856,7 +856,7 @@ class Jaws_UTF8
                             case $substr_chrs_c_2 == '\\/':
                                 if (($delim == '"' && $substr_chrs_c_2 != '\\\'') ||
                                    ($delim == "'" && $substr_chrs_c_2 != '\\"')) {
-                                    $utf8 .= $chrs{++$c};
+                                    $utf8 .= $chrs[++$c];
                                 }
                                 break;
 
@@ -869,7 +869,7 @@ class Jaws_UTF8
                                 break;
 
                             case ($ord_chrs_c >= 0x20) && ($ord_chrs_c <= 0x7F):
-                                $utf8 .= $chrs{$c};
+                                $utf8 .= $chrs[$c];
                                 break;
 
                             case ($ord_chrs_c & 0xE0) == 0xC0:
@@ -908,7 +908,7 @@ class Jaws_UTF8
                     return $utf8;
 
                 } elseif (preg_match('/^\[.*\]$/s', $str) || preg_match('/^\{.*\}$/s', $str)) {
-                    if ($str{0} == '[') {
+                    if ($str[0] == '[') {
                         $stk = array(3);
                         $arr = array();
                     } else {
@@ -939,7 +939,7 @@ class Jaws_UTF8
                         $top = end($stk);
                         $substr_chrs_c_2 = substr($chrs, $c, 2);
 
-                        if (($c == $strlen_chrs) || (($chrs{$c} == ',') && ($top['what'] == 1))) {
+                        if (($c == $strlen_chrs) || (($chrs[$c] == ',') && ($top['what'] == 1))) {
                             $slice = substr($chrs, $top['where'], ($c - $top['where']));
                             array_push($stk, array('what' => 1, 'where' => ($c + 1), 'delim' => false));
 
@@ -961,26 +961,26 @@ class Jaws_UTF8
 
                             }
 
-                        } elseif ((($chrs{$c} == '"') || ($chrs{$c} == "'")) && ($top['what'] != 2)) {
-                            array_push($stk, array('what' => 2, 'where' => $c, 'delim' => $chrs{$c}));
+                        } elseif ((($chrs[$c] == '"') || ($chrs[$c] == "'")) && ($top['what'] != 2)) {
+                            array_push($stk, array('what' => 2, 'where' => $c, 'delim' => $chrs[$c]));
 
-                        } elseif (($chrs{$c} == $top['delim']) &&
+                        } elseif (($chrs[$c] == $top['delim']) &&
                                  ($top['what'] == 2) &&
                                  ((strlen(substr($chrs, 0, $c)) - strlen(rtrim(substr($chrs, 0, $c), '\\'))) % 2 != 1)) {
                             array_pop($stk);
 
-                        } elseif (($chrs{$c} == '[') &&
+                        } elseif (($chrs[$c] == '[') &&
                                  in_array($top['what'], array(1, 3, 4))) {
                             array_push($stk, array('what' => 3, 'where' => $c, 'delim' => false));
 
-                        } elseif (($chrs{$c} == ']') && ($top['what'] == 3)) {
+                        } elseif (($chrs[$c] == ']') && ($top['what'] == 3)) {
                             array_pop($stk);
 
-                        } elseif (($chrs{$c} == '{') &&
+                        } elseif (($chrs[$c] == '{') &&
                                  in_array($top['what'], array(1, 3, 4))) {
                             array_push($stk, array('what' => 4, 'where' => $c, 'delim' => false));
 
-                        } elseif (($chrs{$c} == '}') && ($top['what'] == 4)) {
+                        } elseif (($chrs[$c] == '}') && ($top['what'] == 4)) {
                             array_pop($stk);
 
                         } elseif (($substr_chrs_c_2 == '/*') &&
