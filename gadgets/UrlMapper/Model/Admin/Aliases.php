@@ -65,7 +65,7 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
             return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'));
         }
 
-        if ($url{0} == '?') {
+        if ($url[0] == '?') {
             $url = substr($url, 1);
         }
 

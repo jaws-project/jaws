@@ -246,7 +246,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
     {
         //for compatible with old versions
         $extension = ($extension == 'index.php')? '' : $extension;
-        if (!empty($extension) && $extension{0} != '.') {
+        if (!empty($extension) && $extension[0] != '.') {
             $extension = '.'.$extension;
         }
 
@@ -293,7 +293,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
     function UpdateMap($id, $custom_map, $vars_regexps, $order,
                        $map, $map_extension = '.', $time = ''
     ) {
-        if (!empty($map_extension) && $map_extension{0} != '.') {
+        if (!empty($map_extension) && $map_extension[0] != '.') {
             $map_extension = '.'.$map_extension;
         }
 
