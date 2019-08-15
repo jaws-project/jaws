@@ -152,7 +152,7 @@ class Jaws_User
 
         // logon hours
         $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
-        $lhByte = hexdec($result['logon_hours']{$wdhour[0]*6 + intval($wdhour[1]/4)});
+        $lhByte = hexdec($result['logon_hours'][$wdhour[0]*6 + intval($wdhour[1]/4)]);
         if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
             // forbidden access event logging
             $GLOBALS['app']->Listener->Shout(
