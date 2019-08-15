@@ -39,7 +39,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
 
             $gadgets = scandir($gDir);
             foreach ($gadgets as $gadget) {
-                if ($gadget{0} == '.' || !is_dir($gDir . $gadget)) {
+                if ($gadget[0] == '.' || !is_dir($gDir . $gadget)) {
                     continue;
                 }
 

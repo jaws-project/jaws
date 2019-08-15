@@ -33,7 +33,7 @@ class Components_Model_Plugins extends Jaws_Gadget_Model
             $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
             $plugins = scandir($pDir);
             foreach ($plugins as $plugin) {
-                if ($plugin{0} == '.' || !is_dir($pDir . $plugin)) {
+                if ($plugin[0] == '.' || !is_dir($pDir . $plugin)) {
                     continue;
                 }
 
