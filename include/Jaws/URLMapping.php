@@ -214,7 +214,7 @@ class Jaws_URLMapping
         }
 
         //If no path info is given but request method is post
-        if (empty($this->_request_uri) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (empty($this->_request_uri)) {
             return true;
         }
 
