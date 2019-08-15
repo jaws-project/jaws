@@ -140,7 +140,7 @@ class Jaws_JWT
             case 'RS384':
             case 'RS512':
                 $pubKey = openssl_pkey_get_details($this->key)['key'];
-                $result = openssl_verify($input, $signature, $pubKey, $algo) === 1;
+                $result = openssl_verify($input, $signature, $pubKey, $this->algos[$this->algo]) === 1;
                 break;
 
             default:
