@@ -65,7 +65,7 @@ class Jaws_Translate
         $gDir = JAWS_PATH . 'gadgets' . DIRECTORY_SEPARATOR;
         $gadgets = scandir($gDir);
         foreach ($gadgets as $gadget) {
-            if ($gadget{0} == '.' || !is_dir($gDir . $gadget)) {
+            if ($gadget[0] == '.' || !is_dir($gDir . $gadget)) {
                 continue;
             }
             self::$real_gadgets_module[strtoupper($gadget)] = $gadget;
@@ -74,7 +74,7 @@ class Jaws_Translate
         $pDir = JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
         $plugins = scandir($pDir);
         foreach ($plugins as $plugin) {
-            if ($plugin{0} == '.' || !is_dir($pDir . $plugin)) {
+            if ($plugin[0] == '.' || !is_dir($pDir . $plugin)) {
                 continue;
             }
             self::$real_plugins_module[strtoupper($plugin)] = $plugin;

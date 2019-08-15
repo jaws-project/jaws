@@ -217,7 +217,7 @@ class Jaws_Session
                 $logon_hours = $this->GetAttribute('logon_hours');
                 if (!empty($logon_hours)) {
                     $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
-                    $lhByte = hexdec($logon_hours{$wdhour[0]*6 + intval($wdhour[1]/4)});
+                    $lhByte = hexdec($logon_hours[$wdhour[0]*6 + intval($wdhour[1]/4)]);
                     if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
                         throw new Exception('Logon hours terminated', JAWS_LOG_NOTICE);
                     }

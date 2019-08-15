@@ -131,7 +131,7 @@ class Jaws_URLMapping
         $this->_use_aliases       = $regKeys['map_use_aliases'] == 'true';
         $this->_custom_precedence = $regKeys['map_custom_precedence'] == 'true';
         $this->_restrict_multimap = $regKeys['map_restrict_multimap'] == 'true';
-        if (!empty($extension) && $extension{0} != '.') {
+        if (!empty($extension) && $extension[0] != '.') {
             $extension = '.'.$extension;
         }
         $this->_extension = $extension;
