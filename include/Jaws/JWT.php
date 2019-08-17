@@ -139,8 +139,8 @@ class Jaws_JWT
             case 'RS256':
             case 'RS384':
             case 'RS512':
-                $pubKey = openssl_pkey_get_details($this->key)['key'];
-                $result = openssl_verify($input, $signature, $pubKey, $this->algos[$this->algo]) === 1;
+                $pkeyDetails = openssl_pkey_get_details($this->key);
+                $result = openssl_verify($input, $signature, $pkeyDetails['key'], $this->algos[$this->algo]) === 1;
                 break;
 
             default:
@@ -157,7 +157,7 @@ class Jaws_JWT
      * @param   array|string    $data   Input data
      * @return  string
      */
-    private function base64URLEncode($data)
+    public static function base64URLEncode($data)
     {
         if (is_array($data)) {
             $data = json_encode($data, JSON_UNESCAPED_SLASHES);
@@ -173,7 +173,7 @@ class Jaws_JWT
      * @param   array|string    $data   Input data
      * @return  string
      */
-    private function base64URLDecode($data)
+    public static function base64URLDecode($data)
     {
         $data = base64_decode(strtr($data, '-_', '+/'));
         $result = json_decode($data, true);
@@ -193,9 +193,9 @@ class Jaws_JWT
     {
         $header = array('typ' => 'JWT', 'alg' => $this->algo) + $header;
 
-        $header    = $this->base64URLEncode($header);
-        $payload   = $this->base64URLEncode($payload);
-        $signature = $this->base64URLEncode($this->sign($header . '.' . $payload));
+        $header    = self::base64URLEncode($header);
+        $payload   = self::base64URLEncode($payload);
+        $signature = self::base64URLEncode($this->sign($header . '.' . $payload));
 
         return $header . '.' . $payload . '.' . $signature;
     }
@@ -218,7 +218,7 @@ class Jaws_JWT
         list($header64b, $payload64b, $signature64b) = $token;
 
         // verify header
-        $header = $this->base64URLDecode($header64b);
+        $header = self::base64URLDecode($header64b);
         if (empty($header['alg'])) {
             return Jaws_Error::raiseError('Invalid JWT token: Missing header typo of algorithm', __FUNCTION__);
         }
@@ -227,13 +227,13 @@ class Jaws_JWT
         }
 
         // verify signature
-        $signature = $this->base64URLDecode($signature64b);
+        $signature = self::base64URLDecode($signature64b);
         if (!$this->verify($header64b . '.' . $payload64b, $signature)) {
             return Jaws_Error::raiseError('Invalid JWT token: Signature failed', __FUNCTION__);
         }
 
         $timestamp = time();
-        $payload = $this->base64URLDecode($payload64b);
+        $payload = self::base64URLDecode($payload64b);
         foreach ($this->hkeyTimes as $key) {
             if (isset($payload[$key])) {
                 switch ($key) {
