@@ -78,10 +78,13 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
      * @access  public
      * @return  void
      */
-    function UpdateEndpoint()
+    function UpdateWebPushSubscription()
     {
-        $endpoint = $this->gadget->request->fetch('endpoint', 'post');
-        $GLOBALS['app']->Session->SetAttribute('endpoint', $endpoint);
+        $subscription = $this->gadget->request->fetch(
+            array('endpoint', 'p256dh', 'auth', 'encoding'),
+            'post'
+        );
+        $GLOBALS['app']->Session->SetAttribute('webpush', $subscription);
     }
 
 }

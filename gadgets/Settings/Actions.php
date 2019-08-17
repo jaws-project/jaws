@@ -43,7 +43,7 @@ $actions['Offline'] = array(
     'normal' => true,
     'file'   => 'ServiceWorker',
 );
-$actions['UpdateEndpoint'] = array(
+$actions['UpdateWebPushSubscription'] = array(
     'normal' => true,
     'file'   => 'ServiceWorker',
 );
