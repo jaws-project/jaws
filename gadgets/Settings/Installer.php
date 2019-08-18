@@ -372,6 +372,12 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('instance', (string)time());
         }
 
+        if (version_compare($old, '2.4.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->update('pwa_version', '2.0.0');
+            $this->gadget->registry->update('buildnumber', date('YmdGi'));
+        }
+
         return true;
     }
 
