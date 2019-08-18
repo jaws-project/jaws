@@ -14,6 +14,8 @@ class Notification_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
+        array('webpush_pvt_key', ''),
+        array('webpush_pub_key', ''),
         array('processing', 'false'),
         array('last_update', '0'),
         array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
@@ -55,6 +57,13 @@ class Notification_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        //
+        $keyPair = $this->Generate_ECDSA_KeyPair();
+
+        // registry keys
+        $this->gadget->registry->update('webpush_pvt_key', $keyPair['pvt_key']);
+        $this->gadget->registry->update('webpush_pub_key', $keyPair['pub_key']);
+
         $this->gadget->event->insert('Notify');
         return true;
     }
@@ -81,6 +90,29 @@ class Notification_Installer extends Jaws_Gadget_Installer
         }
 
         return true;
+    }
+    /**
+     * Generate new ECDSA key pair
+     *
+     * @access  private
+     * @return  mixed   ECDSA key pair
+     */
+    private function Generate_ECDSA_KeyPair()
+    {
+        $new_key_pair = openssl_pkey_new(
+            array(
+                "digest_alg" => OPENSSL_ALGO_SHA256,
+                "private_key_bits" => 2048,
+                "private_key_type" => OPENSSL_KEYTYPE_EC,
+                "curve_name" => "prime256v1"
+            )
+        );
+        $details = openssl_pkey_get_details($new_key_pair);
+
+        return array(
+            'pub_key'  => Jaws_JWT::base64URLEncode(chr(4) . $details['ec']['x'].$details['ec']['y']),
+            'pvt_key' => Jaws_JWT::base64URLEncode($details['ec']['d'])
+        );
     }
 
     /**
@@ -127,7 +159,15 @@ class Notification_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
 
+        if (version_compare($old, '1.5.0', '<')) {
+            //
+            $keyPair = $this->Generate_ECDSA_KeyPair();
+
+            // registry keys
+            $this->gadget->registry->insert('webpush_pvt_key', $keyPair['pvt_key']);
+            $this->gadget->registry->insert('webpush_pub_key', $keyPair['pub_key']);
         }
 
         return true;
