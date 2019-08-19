@@ -215,21 +215,23 @@ self.addEventListener('fetch', async function (event) {
 /*
  * Service Worker webpush message listener
  */
-self.addEventListener('push', function(event) {
+self.addEventListener('push', function(event)
+{
     if (!(self.Notification && self.Notification.permission === 'granted')) {
         return;
     }
 
-    var data = {};
-    if (event.data) {
-        data = event.data.json();
-    }
-    var title = data.title || 'Notification Title';
-    var message = data.message || 'Notification Message';
+    var title, options = {};
 
-    self.registration.showNotification(title, {
-        body: message
-    });
+    try {
+        var data = event.data.json();
+        title = data.title || 'Notification Title';
+        options.body = data.body || 'Notification Body'
+    } catch(error) {
+        title = event.data.text();
+    }
+
+    self.registration.showNotification(title, options);
 });
 
 self.addEventListener('notificationclick', function (event) {
