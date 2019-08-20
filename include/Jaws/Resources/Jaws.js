@@ -1207,6 +1207,21 @@ function Jaws_Gadget_Action() { return {
     }
 }};
 
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
 /**
  * on document ready
  */
@@ -1241,6 +1256,50 @@ $(document).ready(function() {
         ).catch (
             function (error) {
                 console.log('service-worker registration error: ', error);
+            }
+        );
+
+        navigator.serviceWorker.ready.then(
+            function(serviceWorkerRegistration) {
+                var options = {
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(jaws.Notification.Defines.webpush_pub_key)
+                };
+
+                serviceWorkerRegistration.pushManager.getSubscription().then(
+                    function(pushSubscription) {
+                        if (pushSubscription)
+                        {
+                            pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
+                            pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
+                            jaws.Defines.webpush_subscription = pushSubscription;
+                        } else {
+                            serviceWorkerRegistration.pushManager.subscribe(options).then(
+                                function (pushSubscription)
+                                {
+                                    pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
+                                    pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
+                                    jaws.Defines.webpush_subscription = pushSubscription;
+                                    Jaws_Gadget.getInstance('Settings').gadget.ajax.callAsync(
+                                        'UpdateWebPushSubscription',
+                                        pushSubscription,
+                                        false,
+                                        {baseScript: 'index.php'}
+                                    );
+                                }
+                            ).catch (
+                                function(error) {
+                                    console.log(error);
+                                }
+                            );
+                        }
+                    }
+                ).catch (
+                    function(error) {
+                        console.log(error);
+                    }
+                );
+
             }
         );
 
