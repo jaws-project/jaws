@@ -64,7 +64,10 @@ class Notification_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->update('webpush_pvt_key', $keyPair['pvt_key']);
         $this->gadget->registry->update('webpush_pub_key', $keyPair['pub_key']);
 
+        // Add listeners
         $this->gadget->event->insert('Notify');
+        $this->gadget->event->insert('LoginUser');
+
         return true;
     }
 
@@ -168,6 +171,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
             // registry keys
             $this->gadget->registry->insert('webpush_pvt_key', $keyPair['pvt_key']);
             $this->gadget->registry->insert('webpush_pub_key', $keyPair['pub_key']);
+        }
+
+        if (version_compare($old, '1.6.0', '<')) {
+            // Add listener for login user
+            $this->gadget->event->insert('LoginUser');
         }
 
         return true;
