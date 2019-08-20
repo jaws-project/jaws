@@ -940,6 +940,12 @@ function Jaws_Gadget_Users() { return {
      *
      */
     submitLoginForm: function(form) {
+        if ($(form).find('[name=defaults]').length && jaws.Defines.webpush_subscription) {
+            $('<input type="hidden" name="defaults[webpush_subscription]" />').val(
+                btoa(JSON.stringify(jaws.Defines.webpush_subscription))
+            ).appendTo($(form));
+        }
+
         if ($('#usecrypt').prop('checked')) {
             $.loadScript('libraries/js/jsencrypt.min.js', function() {
                 if (!$('#loginkey').length) {
@@ -955,6 +961,7 @@ function Jaws_Gadget_Users() { return {
 
         return true;
     },
+
     //-------------------------------
     /**
      * initialize gadget actions

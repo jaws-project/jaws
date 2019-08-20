@@ -33,6 +33,7 @@
         <input type="hidden" name="action" value="Authenticate" />
         <input type="hidden" name="referrer" value="{{referrer}}" />
         <input type="hidden" name="loginstep" value="1" />
+        <input type="hidden" name="defaults" value="" />
         <!-- BEGIN encryption -->
         <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
         <!-- END encryption -->
@@ -185,6 +186,18 @@
                    required
             />
           </div>
+          <!-- BEGIN usecrypt -->
+          <div>
+            <label class="form-check-label" for="usecrypt">
+            <input class="form-check-input" type="checkbox"
+                   name="usecrypt"
+                   id="usecrypt"
+                   <!-- BEGIN selected --> checked="checked"<!-- END selected -->
+                   value="true" />
+              {{lbl_usecrypt}}
+            </label>
+          </div>
+          <!-- END usecrypt -->
           <div class="buttons">
             <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
             <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>

@@ -1333,8 +1333,14 @@ function updateBookmark() {
 /**
  *
  */
-function encryptPassword(form)
+function submitLoginForm(form)
 {
+    if ($(form).find('[name=defaults]').length && jaws.Defines.webpush_subscription) {
+        $('<input type="hidden" name="defaults[webpush_subscription]" />').val(
+            btoa(JSON.stringify(jaws.Defines.webpush_subscription))
+        ).appendTo($(form));
+    }
+
     if ($('#usecrypt').prop('checked')) {
         $.loadScript('libraries/js/jsencrypt.min.js', function() {
             var objRSACrypt = new JSEncrypt();
