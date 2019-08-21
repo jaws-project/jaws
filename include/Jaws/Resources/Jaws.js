@@ -1280,7 +1280,7 @@ $(document).ready(function() {
                                     pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
                                     pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
                                     jaws.Defines.webpush_subscription = pushSubscription;
-                                    Jaws_Gadget.getInstance('Settings').gadget.ajax.callAsync(
+                                    Jaws_Gadget.getInstance('Notification').gadget.ajax.callAsync(
                                         'UpdateWebPushSubscription',
                                         pushSubscription,
                                         false,
