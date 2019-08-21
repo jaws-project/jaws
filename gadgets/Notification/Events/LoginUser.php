@@ -15,7 +15,7 @@ class Notification_Events_LoginUser extends Jaws_Gadget_Event
     {
         if (isset($user['defaults']['webpush_subscription'])) {
             $subscription = json_decode(base64_decode($user['defaults']['webpush_subscription']), true);
-            $GLOBALS['app']->Session->SetAttribute('webpush', $subscription);
+            $this->gadget->action->load('Notification')->UpdateWebPushSubscription($subscription);
         }
 
         return true;

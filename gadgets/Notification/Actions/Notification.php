@@ -100,4 +100,24 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
 
         return $groupedMessages;
     }
+
+    /**
+     * Update session WebPush subscription endpoint
+     *
+     * @access  public
+     * @return  void
+     */
+    function UpdateWebPushSubscription($subscription = null)
+    {
+        if (empty($subscription)) {
+            $subscription = $this->gadget->request->fetch(
+                array('endpoint', 'keys:array', 'contentEncoding'),
+                'post'
+            );
+        }
+
+        $GLOBALS['app']->Session->SetAttribute('webpush', $subscription);
+        return true;
+    }
+
 }

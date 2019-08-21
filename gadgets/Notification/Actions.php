@@ -14,6 +14,10 @@ $actions['SendNotifications'] = array(
     'standalone' => true,
     'file' => 'Notification',
 );
+$actions['UpdateWebPushSubscription'] = array(
+    'standalone' => true,
+    'file'   => 'Notification',
+);
 
 /**
  * Admin actions
