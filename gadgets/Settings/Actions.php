@@ -43,10 +43,6 @@ $actions['Offline'] = array(
     'normal' => true,
     'file'   => 'ServiceWorker',
 );
-$actions['UpdateWebPushSubscription'] = array(
-    'normal' => true,
-    'file'   => 'ServiceWorker',
-);
 
 /**
  * Admin actions

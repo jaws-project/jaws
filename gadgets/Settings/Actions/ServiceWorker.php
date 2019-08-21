@@ -72,20 +72,4 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         return $tpl->Get();
     }
 
-    /**
-     * Update session WebPush subscription endpoint
-     *
-     * @access  public
-     * @return  void
-     */
-    function UpdateWebPushSubscription()
-    {
-        $subscription = $this->gadget->request->fetch(
-            array('endpoint', 'keys:array', 'contentEncoding'),
-            'post'
-        );
-
-        $GLOBALS['app']->Session->SetAttribute('webpush', $subscription);
-    }
-
 }
