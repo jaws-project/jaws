@@ -81,10 +81,26 @@ class Jaws_JWT
         }
 
         if (in_array(substr($algo, 0, 2), array('RS', 'ES'))) {
-            $this->key = openssl_pkey_get_private($key, $passphrase?: '');
-            if ($this->key === false) {
-                return Jaws_Error::raiseError(openssl_error_string(), __FUNCTION__);
+            $this->key = array();
+            if (array_key_exists('private', $key)) {
+                $this->key['private'] = openssl_pkey_get_private($key['private'], $passphrase?: '');
+                if ($this->key['private'] === false) {
+                    return Jaws_Error::raiseError(openssl_error_string(), __FUNCTION__);
+                }
+
+                // fetch pem format of public key from private key
+                $key['public'] = openssl_pkey_get_details($this->key['private'])['key'];
             }
+
+            if (array_key_exists('public', $key)) {
+                $this->key['public'] = openssl_pkey_get_public($key['public']);
+                if ($this->key['public'] === false) {
+                    return Jaws_Error::raiseError(openssl_error_string(), __FUNCTION__);
+                }
+            } else {
+                return Jaws_Error::raiseError('Private|Public key not found', __FUNCTION__);
+            }
+
         } else {
             $this->key = $key;
         }
@@ -263,14 +279,14 @@ class Jaws_JWT
             case 'RS256':
             case 'RS384':
             case 'RS512':
-                openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
+                openssl_sign($input, $signature, $this->key['private'], $this->algos[$this->algo]);
                 break;
 
             case 'ES224':
             case 'ES256':
             case 'ES384':
             case 'ES512':
-                openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
+                openssl_sign($input, $signature, $this->key['private'], $this->algos[$this->algo]);
                 $signature = self::toECDSA($signature, $this->algos[$this->algo]);
                 break;
 
@@ -303,17 +319,15 @@ class Jaws_JWT
             case 'RS256':
             case 'RS384':
             case 'RS512':
-                $pkeyDetails = openssl_pkey_get_details($this->key);
-                $result = openssl_verify($input, $signature, $pkeyDetails['key'], $this->algos[$this->algo]) === 1;
+                $result = openssl_verify($input, $signature, $this->key['public'], $this->algos[$this->algo]) === 1;
                 break;
 
             case 'ES224':
             case 'ES256':
             case 'ES384':
             case 'ES512':
-                $pkeyDetails = openssl_pkey_get_details($this->key);
                 $signature = self::fromECDSA($signature, $this->algos[$this->algo]);
-                $result = openssl_verify($input, $signature, $pkeyDetails['key'], $this->algos[$this->algo]) === 1;
+                $result = openssl_verify($input, $signature, $this->key['public'], $this->algos[$this->algo]) === 1;
                 break;
 
             default:
