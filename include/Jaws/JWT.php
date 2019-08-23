@@ -1,13 +1,12 @@
 <?php
 /**
- * JSON Web Token
+ * JavaScript Web Token
  *
  * @category    Application
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
  * @copyright   2019 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
- * @BasedOn     https://github.com/adhocore/php-jwt
  */
 class Jaws_JWT
 {
@@ -18,12 +17,19 @@ class Jaws_JWT
      * @var     array
      */
     private $algos = array(
+        // HMAC digest algorithms
         'HS256' => 'sha256',
         'HS384' => 'sha384',
         'HS512' => 'sha512',
+        // RSA digest algorithms
         'RS256' => OPENSSL_ALGO_SHA256,
         'RS384' => OPENSSL_ALGO_SHA384,
         'RS512' => OPENSSL_ALGO_SHA512,
+        // ECDSA digest algorithms
+        'ES224' => OPENSSL_ALGO_SHA224,
+        'ES256' => OPENSSL_ALGO_SHA256,
+        'ES384' => OPENSSL_ALGO_SHA384,
+        'ES512' => OPENSSL_ALGO_SHA512,
     );
 
     /**
@@ -74,7 +80,7 @@ class Jaws_JWT
             return Jaws_Error::raiseError('Unsupported algo '. $algo, __FUNCTION__);
         }
 
-        if (substr($algo, 0, 2) === 'RS') {
+        if (in_array(substr($algo, 0, 2), array('RS', 'ES'))) {
             $this->key = openssl_pkey_get_private($key, $passphrase?: '');
             if ($this->key === false) {
                 return Jaws_Error::raiseError(openssl_error_string(), __FUNCTION__);
@@ -86,6 +92,156 @@ class Jaws_JWT
         $this->algo   = $algo;
         $this->maxAge = $maxAge;
         $this->leeway = $leeway;
+    }
+
+    /**
+     * DER to ECDSA
+     *
+     * @param   string  $signature  DER formated signature
+     * @param   int     $algo       Digest algorithm
+     *
+     * @return  string  ECDSA formated signature
+     */
+    public static function toECDSA(string $signature, int $algo): string
+    {
+        /**
+         *
+         */
+        function retrievePositiveInteger(string $data): string
+        {
+            while (ord($data[0]) == 0 && ord($data[1]) > 127) {
+                $data = substr($data, 1);
+            }
+
+            return $data;
+        } // end function
+
+
+        // retrieve part length by digest algorithm
+        switch ($algo) {
+            case OPENSSL_ALGO_SHA224:
+                $partLength = 28;
+                break;
+
+            case OPENSSL_ALGO_SHA256:
+                $partLength = 32;
+                break;
+
+            case OPENSSL_ALGO_SHA384:
+                $partLength = 48;
+                break;
+
+            case OPENSSL_ALGO_SHA512:
+                $partLength = 66;
+                break;
+
+            default:
+                return '';
+        }
+
+        try {
+            if (ord($signature[0]) != 48) {
+                throw new RuntimeException();
+            }
+            if (ord($signature[1]) == 129) {
+                $signature = substr($signature, 3);
+            } else {
+                $signature = substr($signature, 2);
+            }
+
+            if (ord($signature[0]) != 2) {
+                throw new RuntimeException();
+            }
+
+            $rlen = ord($signature[1]);
+            $r = retrievePositiveInteger(substr($signature, 2, $rlen));
+            $r = str_pad($r, $partLength, chr(0), STR_PAD_LEFT);
+
+            $signature = substr($signature, 2 + $rlen);
+            if (ord($signature[0]) != 2) {
+                throw new RuntimeException();
+            }
+            $slen = ord($signature[1]);
+            $s = retrievePositiveInteger(substr($signature, 2, $slen));
+            $s = str_pad($s, $partLength, chr(0), STR_PAD_LEFT);
+
+            return $r . $s;
+
+        } catch (RuntimeException $error) {
+            return '';
+        }
+    }
+
+    /**
+     * ECDSA to DER
+     *
+     * @param   string  $signature  ECDSA formated signature
+     * @param   int     $algo       Digest algorithm
+     *
+     * @return  string  DER formated signature
+     */
+    public static function fromECDSA(string $signature, int $algo): string
+    {
+        /**
+         *
+         */
+        function preparePositiveInteger(string $data): string
+        {
+            if (ord($data[0]) > 127) {
+                return chr(0) . $data;
+            }
+
+            while (ord($data[0]) == 0 && ord($data[1]) <= 127) {
+                $data = substr($data, 1);
+            }
+
+            return $data;
+        } // end function
+
+
+        // retrieve part length by digest algorithm
+        switch ($algo) {
+            case OPENSSL_ALGO_SHA224:
+                $partLength = 28;
+                break;
+
+            case OPENSSL_ALGO_SHA256:
+                $partLength = 32;
+                break;
+
+            case OPENSSL_ALGO_SHA384:
+                $partLength = 48;
+                break;
+
+            case OPENSSL_ALGO_SHA512:
+                $partLength = 66;
+                break;
+
+            default:
+                return '';
+        }
+
+        try {
+            if (strlen($signature) != 2 * $partLength) {
+                throw new RuntimeException();
+            }
+
+            $r = substr($signature, 0, $partLength);
+            $s = substr($signature, $partLength);
+
+            $r = preparePositiveInteger($r);
+            $rlen = strlen($r);
+            $s = preparePositiveInteger($s);
+            $slen = strlen($s);
+
+            return
+                chr(48). (($rlen + $slen + 4) > 128 ? chr(129) : '') . chr($rlen + $slen + 4).
+                chr(2) . chr($rlen) . $r.
+                chr(2) . chr($slen) . $s;
+
+        } catch (RuntimeException $error) {
+            return '';
+        }
     }
 
     /**
@@ -108,6 +264,14 @@ class Jaws_JWT
             case 'RS384':
             case 'RS512':
                 openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
+                break;
+
+            case 'ES224':
+            case 'ES256':
+            case 'ES384':
+            case 'ES512':
+                openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
+                $signature = self::toECDSA($signature, $this->algos[$this->algo]);
                 break;
 
             default:
@@ -140,6 +304,15 @@ class Jaws_JWT
             case 'RS384':
             case 'RS512':
                 $pkeyDetails = openssl_pkey_get_details($this->key);
+                $result = openssl_verify($input, $signature, $pkeyDetails['key'], $this->algos[$this->algo]) === 1;
+                break;
+
+            case 'ES224':
+            case 'ES256':
+            case 'ES384':
+            case 'ES512':
+                $pkeyDetails = openssl_pkey_get_details($this->key);
+                $signature = self::fromECDSA($signature, $this->algos[$this->algo]);
                 $result = openssl_verify($input, $signature, $pkeyDetails['key'], $this->algos[$this->algo]) === 1;
                 break;
 
