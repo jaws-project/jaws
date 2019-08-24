@@ -94,6 +94,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
 
         return true;
     }
+
     /**
      * Generate new ECDSA key pair
      *
@@ -111,11 +112,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
             )
         );
         openssl_pkey_export($new_key_pair, $privateKeyPEM);
-        $publicKeyPEM = openssl_pkey_get_details($new_key_pair)['key'];
+        $pkeyDetails = openssl_pkey_get_details($new_key_pair);
 
         return array(
             'private' => $privateKeyPEM,
-            'public'  => $publicKeyPEM,
+            'public'  => Jaws_JWT::base64URLEncode(chr(4) . $pkeyDetails['ec']['x'].$pkeyDetails['ec']['y']),
         );
     }
 
