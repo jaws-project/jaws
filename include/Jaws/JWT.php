@@ -120,18 +120,19 @@ class Jaws_JWT
      */
     public static function toECDSA(string $signature, int $algo): string
     {
-        /**
-         *
-         */
-        function retrievePositiveInteger(string $data): string
-        {
-            while (ord($data[0]) == 0 && ord($data[1]) > 127) {
-                $data = substr($data, 1);
-            }
+        if (!function_exists('retrievePositiveInteger')) {
+            /**
+             *
+             */
+            function retrievePositiveInteger(string $data): string
+            {
+                while (ord($data[0]) == 0 && ord($data[1]) > 127) {
+                    $data = substr($data, 1);
+                }
 
-            return $data;
-        } // end function
-
+                return $data;
+            } // end function
+        }
 
         // retrieve part length by digest algorithm
         switch ($algo) {
@@ -198,22 +199,23 @@ class Jaws_JWT
      */
     public static function fromECDSA(string $signature, int $algo): string
     {
-        /**
-         *
-         */
-        function preparePositiveInteger(string $data): string
-        {
-            if (ord($data[0]) > 127) {
-                return chr(0) . $data;
-            }
+        if (!function_exists('preparePositiveInteger')) {
+            /**
+             *
+             */
+            function preparePositiveInteger(string $data): string
+            {
+                if (ord($data[0]) > 127) {
+                    return chr(0) . $data;
+                }
 
-            while (ord($data[0]) == 0 && ord($data[1]) <= 127) {
-                $data = substr($data, 1);
-            }
+                while (ord($data[0]) == 0 && ord($data[1]) <= 127) {
+                    $data = substr($data, 1);
+                }
 
-            return $data;
-        } // end function
-
+                return $data;
+            } // end function
+        }
 
         // retrieve part length by digest algorithm
         switch ($algo) {
