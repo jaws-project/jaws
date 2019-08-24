@@ -56,7 +56,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $filters['offset'] = (int)$filters['offset'];
 
         $sessions = $GLOBALS['app']->Session->GetSessions(
-            $filters['active'], $filters['logged'], $filters['type'], 50, $filters['offset']);
+            $filters['logged'], $filters['active'], $filters['type'], 50, $filters['offset']);
         if (Jaws_Error::IsError($sessions)) {
             return array();
         }
@@ -107,7 +107,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
         $filters['type'] = ($filters['session_type'] == '-1')? null : $filters['session_type'];
         $sessionsCount = $GLOBALS['app']->Session->GetSessionsCount(
-            $filters['active'], $filters['logged'], $filters['type']);
+            $filters['logged'], $filters['active'], $filters['type']);
         if (Jaws_Error::IsError($sessionsCount)) {
             return array();
         }
