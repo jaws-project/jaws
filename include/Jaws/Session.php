@@ -774,7 +774,7 @@ class Jaws_Session
                 $sessions[$key]['mobile']     = $data['mobile'];
                 $sessions[$key]['avatar']     = $data['avatar'];
                 $sessions[$key]['online']     = $session['update_time'] > (time() - ($idle_timeout * 60));
-                $sessions[$key]['webpush']    = $data['webpush'];
+                $sessions[$key]['webpush']    = isset($data['webpush'])? $data['webpush'] : null;
                 unset($sessions[$key]['data']);
             }
         }
