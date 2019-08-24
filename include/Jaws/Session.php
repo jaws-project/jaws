@@ -269,6 +269,7 @@ class Jaws_Session
             $info['mobile']     = '';
             $info['ssn']        = '';
             $info['avatar']     = '';
+            $info['webpush']    = null;
             $info['last_password_update'] = 0;
         }
 
@@ -295,7 +296,6 @@ class Jaws_Session
         $this->SetAttribute('mobile',     $info['mobile']);
         $this->SetAttribute('ssn',        $info['ssn']);
         $this->SetAttribute('avatar',     $info['avatar']);
-        $this->SetAttribute('webpush',    null);
         $this->SetAttribute('last_password_update', $info['last_password_update']);
 
         $this->changed = true;
@@ -556,7 +556,7 @@ class Jaws_Session
                 'checksum'    => md5($user. $serialized),
                 'ip'          => $ip,
                 'agent'       => $agent,
-                'webpush'     => $this->GetAttribute('webpush'),
+                'webpush'     => serialize($this->GetAttribute('webpush')),
             );
         }
         if (!empty($salt)) {
@@ -614,7 +614,7 @@ class Jaws_Session
                 'checksum'   => md5($user. $serialized),
                 'ip'         => $ip,
                 'agent'      => $agent,
-                'webpush'    => $this->GetAttribute('webpush'),
+                'webpush'    => serialize($this->GetAttribute('webpush')),
                 'insert_time' => $update_time,
                 'update_time' => $update_time
             )
@@ -679,7 +679,7 @@ class Jaws_Session
     }
 
     /**
-     * Returns all users's sessions count
+     * Returns all user's sessions count
      *
      * @access  public
      * @param   int     $user       User ID
@@ -719,15 +719,15 @@ class Jaws_Session
      * Returns the sessions attributes
      *
      * @access  public
-     * @param   bool    $active Active session
      * @param   bool    $logged Logged user's session
-                (null: all sessions, true: logged users's sessions, false: anonymous sessions)
+                (null: all sessions, true: logged users sessions, false: anonymous sessions, numericL specific user)
+     * @param   bool    $active Active session
      * @param   string  $type   Session type
      * @param   int     $limit
      * @param   int     $offset
      * @return  mixed   Sessions attributes if successfully, otherwise Jaws_Error
      */
-    function GetSessions($active = true, $logged = null, $type = null, $limit = 0, $offset = null)
+    function GetSessions($logged = null, $active = null, $type = null, $limit = 0, $offset = null)
     {
         // remove expired session
         $this->DeleteExpiredSessions();
@@ -740,16 +740,21 @@ class Jaws_Session
             'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent',
             'data', 'webpush', 'checksum', 'insert_time', 'update_time:integer'
         );
-        if ($active) {
+
+        if ($active === true) {
             $sessTable->where('update_time', $onlinetime, '>=');
         } elseif ($active === false) {
             $sessTable->where('update_time', $onlinetime, '<');
         }
-        if ($logged) {
+
+        if ($logged === true) {
             $sessTable->and()->where('user', '0', '<>');
         } elseif ($logged === false) {
             $sessTable->and()->where('user', '0');
+        } elseif (is_numeric($logged)) {
+            $sessTable->and()->where('user', (string)$logged);
         }
+
         if (!empty($type)) {
             $sessTable->and()->where('type', $type);
         }
@@ -769,6 +774,7 @@ class Jaws_Session
                 $sessions[$key]['mobile']     = $data['mobile'];
                 $sessions[$key]['avatar']     = $data['avatar'];
                 $sessions[$key]['online']     = $session['update_time'] > (time() - ($idle_timeout * 60));
+                $sessions[$key]['webpush']    = $data['webpush'];
                 unset($sessions[$key]['data']);
             }
         }
@@ -780,29 +786,33 @@ class Jaws_Session
      * Returns the count of active sessions
      *
      * @access  public
-     * @param   bool    $active Active session
      * @param   bool    $logged Logged user's session
-                (null: all sessions, true: logged users's sessions, false: anonymous sessions)
+                (null: all sessions, true: logged users sessions, false: anonymous sessions, numericL specific user)
+     * @param   bool    $active Active session
      * @param   string  $type   Session type
      * @return  mixed   Active sessions count if successfully, otherwise Jaws_Error
      */
-    function GetSessionsCount($active = true, $logged = null, $type = null)
+    function GetSessionsCount($logged = null, $active = null, $type = null)
     {
         $idle_timeout = (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
         $onlinetime = time() - ($idle_timeout * 60);
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select('count(id):integer');
-        if ($active) {
+
+        if ($active === true) {
             $sessTable->where('update_time', $onlinetime, '>=');
         } elseif ($active === false) {
             $sessTable->where('update_time', $onlinetime, '<');
         }
-        if ($logged) {
+        if ($logged === true) {
             $sessTable->and()->where('user', '0', '<>');
         } elseif ($logged === false) {
             $sessTable->and()->where('user', '0');
+        } elseif (is_numeric($logged)) {
+            $sessTable->and()->where('user', (string)$logged);
         }
+
         if (!empty($type)) {
             $sessTable->and()->where('type', $type);
         }
