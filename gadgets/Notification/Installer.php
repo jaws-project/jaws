@@ -61,8 +61,8 @@ class Notification_Installer extends Jaws_Gadget_Installer
         $keyPair = $this->Generate_ECDSA_KeyPair();
 
         // registry keys
-        $this->gadget->registry->update('webpush_pvt_key', $keyPair['pvt_key']);
-        $this->gadget->registry->update('webpush_pub_key', $keyPair['pub_key']);
+        $this->gadget->registry->update('webpush_pvt_key', $keyPair['private']);
+        $this->gadget->registry->update('webpush_pub_key', $keyPair['public']);
 
         // Add listeners
         $this->gadget->event->insert('Notify');
@@ -110,11 +110,12 @@ class Notification_Installer extends Jaws_Gadget_Installer
                 "curve_name" => "prime256v1"
             )
         );
-        $details = openssl_pkey_get_details($new_key_pair);
+        openssl_pkey_export($new_key_pair, $privateKeyPEM);
+        $publicKeyPEM = openssl_pkey_get_details($new_key_pair)['key'];
 
         return array(
-            'pub_key'  => Jaws_JWT::base64URLEncode(chr(4) . $details['ec']['x'].$details['ec']['y']),
-            'pvt_key' => Jaws_JWT::base64URLEncode($details['ec']['d'])
+            'private' => $privateKeyPEM,
+            'public'  => $publicKeyPEM,
         );
     }
 
@@ -169,8 +170,8 @@ class Notification_Installer extends Jaws_Gadget_Installer
             $keyPair = $this->Generate_ECDSA_KeyPair();
 
             // registry keys
-            $this->gadget->registry->insert('webpush_pvt_key', $keyPair['pvt_key']);
-            $this->gadget->registry->insert('webpush_pub_key', $keyPair['pub_key']);
+            $this->gadget->registry->insert('webpush_pvt_key', $keyPair['private']);
+            $this->gadget->registry->insert('webpush_pub_key', $keyPair['public']);
         }
 
         if (version_compare($old, '1.6.0', '<')) {
