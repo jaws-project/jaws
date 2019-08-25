@@ -13,7 +13,7 @@ class Notification_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.6.0';
+    var $version = '1.7.0';
 
     /**
      * Is this gadget core gadget?

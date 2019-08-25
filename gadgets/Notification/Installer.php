@@ -66,7 +66,6 @@ class Notification_Installer extends Jaws_Gadget_Installer
 
         // Add listeners
         $this->gadget->event->insert('Notify');
-        $this->gadget->event->insert('LoginUser');
 
         return true;
     }
@@ -178,6 +177,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.6.0', '<')) {
             // Add listener for login user
             $this->gadget->event->insert('LoginUser');
+        }
+
+        if (version_compare($old, '1.7.0', '<')) {
+            // Add listener for login user
+            $this->gadget->event->delete('LoginUser');
         }
 
         return true;
