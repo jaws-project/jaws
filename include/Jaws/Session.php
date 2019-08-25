@@ -150,7 +150,6 @@ class Jaws_Session
         // let everyone know a user has been logout
         $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->attributes);
         if ($prepare_new_session) {
-            $this->delete($this->ssid);
             $this->Reset();
         } else {
             $this->Reset($this->ssid);
@@ -269,7 +268,6 @@ class Jaws_Session
             $info['mobile']     = '';
             $info['ssn']        = '';
             $info['avatar']     = '';
-            $info['webpush']    = null;
             $info['last_password_update'] = 0;
         }
 
@@ -334,6 +332,11 @@ class Jaws_Session
      */
     function Reset($sid = '')
     {
+        if (empty($sid)) {
+            $this->delete($this->ssid);
+        }
+
+        $webpush = $this->GetAttribute('webpush');
         $this->attributes = array();
         $this->SetAttribute('user',        0);
         $this->SetAttribute('type',        JAWS_APPTYPE);
@@ -354,6 +357,7 @@ class Jaws_Session
         $this->SetAttribute('mobile',      '');
         $this->SetAttribute('ssn',         '');
         $this->SetAttribute('avatar',      '');
+        $this->SetAttribute('webpush',     $webpush);
         $this->SetAttribute('last_password_update', 0);
 
         $this->ssid = $sid;
