@@ -354,7 +354,6 @@ class Jaws_Session
         $this->SetAttribute('mobile',      '');
         $this->SetAttribute('ssn',         '');
         $this->SetAttribute('avatar',      '');
-        $this->SetAttribute('webpush',     null);
         $this->SetAttribute('last_password_update', 0);
 
         $this->ssid = $sid;
