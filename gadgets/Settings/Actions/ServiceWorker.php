@@ -18,6 +18,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ServiceWorker.js');
         $tpl->SetBlock('ServiceWorker');
         $tpl->SetVariable('pwa_version', $this->gadget->registry->fetch('pwa_version'));
+        $tpl->SetVariable('notification_icon', $this->gadget->registry->fetch('site_favicon'));
         $tpl->SetVariable(
             'bodyText503',
             preg_replace(

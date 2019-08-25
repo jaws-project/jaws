@@ -7,6 +7,7 @@ self.importScripts(
  *  service worker version
 */
 const ServiceWorkerVersion = '{{pwa_version}}';
+const Notification_Default_Icon  = '{{notification_icon}}';
 
 /*
  *
@@ -225,8 +226,11 @@ self.addEventListener('push', function(event)
 
     try {
         var data = event.data.json();
-        title = data.title || 'Notification Title';
-        options.body = data.body || 'Notification Body'
+        title = data.title;
+        options.body    = data.body;
+        options.dir     = data.dir     || 'auto';
+        options.icon    = data.icon    || Notification_Default_Icon;
+        options.vibrate = data.vibrate || [];
     } catch(error) {
         title = event.data.text();
     }
@@ -234,6 +238,9 @@ self.addEventListener('push', function(event)
     self.registration.showNotification(title, options);
 });
 
+/*
+ * Service Worker webpush notification click
+ */
 self.addEventListener('notificationclick', function (event) {
     event.notification.close();
     if (clients.openWindow) {
