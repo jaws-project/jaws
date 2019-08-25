@@ -1266,40 +1266,36 @@ $(document).ready(function() {
                     applicationServerKey: urlBase64ToUint8Array(jaws.Notification.Defines.webpush_pub_key)
                 };
 
-                serviceWorkerRegistration.pushManager.getSubscription().then(
-                    function(pushSubscription) {
-                        if (pushSubscription)
-                        {
-                            pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
-                            pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
-                            jaws.Defines.webpush_subscription = pushSubscription;
-                        } else {
-                            serviceWorkerRegistration.pushManager.subscribe(options).then(
-                                function (pushSubscription)
-                                {
-                                    pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
-                                    pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
-                                    jaws.Defines.webpush_subscription = pushSubscription;
-                                    Jaws_Gadget.getInstance('Notification').gadget.ajax.callAsync(
-                                        'UpdateWebPushSubscription',
-                                        pushSubscription,
-                                        false,
-                                        {baseScript: 'index.php'}
-                                    );
-                                }
-                            ).catch (
-                                function(error) {
-                                    console.log(error);
-                                }
-                            );
+                if (typeof serviceWorkerRegistration.pushManager !== 'undefined') {
+                    serviceWorkerRegistration.pushManager.getSubscription().then(
+                        function(pushSubscription) {
+                            if (jaws.Defines.logged && !pushSubscription) {
+                                serviceWorkerRegistration.pushManager.subscribe(options).then(
+                                    function (pushSubscription)
+                                    {
+                                        pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
+                                        pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
+                                        jaws.Defines.webpush_subscription = pushSubscription;
+                                        Jaws_Gadget.getInstance('Notification').gadget.ajax.callAsync(
+                                            'UpdateWebPushSubscription',
+                                            pushSubscription,
+                                            false,
+                                            {baseScript: 'index.php'}
+                                        );
+                                    }
+                                ).catch (
+                                    function(error) {
+                                        console.log(error);
+                                    }
+                                );
+                            }
                         }
-                    }
-                ).catch (
-                    function(error) {
-                        console.log(error);
-                    }
-                );
-
+                    ).catch (
+                        function(error) {
+                            console.log(error);
+                        }
+                    );
+                }
             }
         );
 
