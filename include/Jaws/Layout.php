@@ -119,6 +119,7 @@ class Jaws_Layout
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
         $GLOBALS['app']->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
         $GLOBALS['app']->define('', 'reloadMessage', _t('GLOBAL_RELOAD_MESSAGE'));
+        $GLOBALS['app']->define('', 'logged', (bool)$GLOBALS['app']->Session->Logged());
     }
 
     /**
