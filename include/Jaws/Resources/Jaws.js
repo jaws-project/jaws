@@ -1229,7 +1229,7 @@ $(document).ready(function() {
     // detect running in full-screen/standalone mode
     jaws.standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
 
-    if (('serviceWorker' in navigator)) {
+    if (jaws.Defines.service_worker_enabled && ('serviceWorker' in navigator)) {
         navigator.serviceWorker.register('service-worker.js', {}).then(
             function(registration) {
                 if (registration.active) {
@@ -1261,12 +1261,14 @@ $(document).ready(function() {
 
         navigator.serviceWorker.ready.then(
             function(serviceWorkerRegistration) {
-                var options = {
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(jaws.Notification.Defines.webpush_pub_key)
-                };
+                if (jaws.Notification.Defines.webpush_enabled &&
+                    typeof serviceWorkerRegistration.pushManager !== 'undefined'
+                ) {
+                    var options = {
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(jaws.Notification.Defines.webpush_pub_key)
+                    };
 
-                if (typeof serviceWorkerRegistration.pushManager !== 'undefined') {
                     serviceWorkerRegistration.pushManager.getSubscription().then(
                         function(pushSubscription) {
                             if (jaws.Defines.logged && !pushSubscription) {
@@ -1275,7 +1277,6 @@ $(document).ready(function() {
                                     {
                                         pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
                                         pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
-                                        jaws.Defines.webpush_subscription = pushSubscription;
                                         Jaws_Gadget.getInstance('Notification').gadget.ajax.callAsync(
                                             'UpdateWebPushSubscription',
                                             pushSubscription,
