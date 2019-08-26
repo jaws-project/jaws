@@ -14,6 +14,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
+        array('webpush_enabled', false),
         array('webpush_pvt_key', ''),
         array('webpush_pub_key', ''),
         array('processing', 'false'),
@@ -182,6 +183,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.7.0', '<')) {
             // Add listener for login user
             $this->gadget->event->delete('LoginUser');
+        }
+
+        if (version_compare($old, '1.8.0', '<')) {
+            // registry keys
+            $this->gadget->registry->insert('webpush_enabled', false);
         }
 
         return true;
