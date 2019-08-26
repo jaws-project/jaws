@@ -95,6 +95,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('parent', ''),
         array('health_status', '1'),
         array('cache_driver', ''),
+        array('service_worker_enabled', false),
         array('pwa_enabled', false),
         array('pwa_version', '1.0.0'),
         array('pwa_fullname', 'Jaws Application'),
@@ -376,6 +377,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
             // registry keys 
             $this->gadget->registry->update('pwa_version', '2.0.0');
             $this->gadget->registry->update('buildnumber', date('YmdGi'));
+        }
+
+        if (version_compare($old, '2.5.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('service_worker_enabled', false);
         }
 
         return true;
