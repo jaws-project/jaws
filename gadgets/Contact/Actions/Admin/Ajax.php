@@ -55,6 +55,11 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
             );
         }
 
+        if (array_key_exists('reply_sent', $data) && (bool)$data['reply_sent']) {
+            $gadget = $this->gadget->action->loadAdmin('Contacts');
+            $gadget->SendReply($id);
+        }
+
         return $GLOBALS['app']->Session->GetResponse(
             _t('CONTACT_CONTACTS_UPDATED'),
             RESPONSE_NOTICE,
