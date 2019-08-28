@@ -374,10 +374,10 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         }
 
         $jDate = Jaws_Date::getInstance();
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_url  = $GLOBALS['app']->getSiteURL('/', false);
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $profile_url = $GLOBALS['app']->getSiteURL('/'). $GLOBALS['app']->Map->GetMappedURL(
+        $profile_url = $site_url. $GLOBALS['app']->Map->GetMappedURL(
             'Users',
             'Profile',
             array('user' => $GLOBALS['app']->Session->GetAttribute('username'))
