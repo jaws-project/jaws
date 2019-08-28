@@ -53,6 +53,11 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
                 'title' => _t('FEEDREADER_FEED'),
                 'value' => $psites
             );
+
+            $result[] = array(
+                'title' => _t('GLOBAL_COUNT'),
+                'value' => 10
+            );
         }
 
         return $result;
@@ -123,9 +128,10 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   int     $id     Feed site ID
+     * @param   mixed   $limit  Feed entry count
      * @return  string  XHTML content with all titles and links of feed sites
      */
-    function DisplayFeed($id = 0)
+    function DisplayFeed($id = 0, $limit = 10)
     {
         if(empty($id)) {
             $id = $this->gadget->registry->fetch('default_feed');
@@ -206,7 +212,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
                     isset($item['summary'])? strip_tags($item['summary']) : ''
                 );
                 $tpl->ParseBlock("feedreader/$block/item");
-                if (($site['count_entry'] > 0) && ($site['count_entry'] <= ($index + 1))) {
+                if ((($site['count_entry'] > 0) && ($site['count_entry'] <= ($index + 1))) ||
+                   ($limit <= ($index + 1))
+                ) {
                     break;
                 }
             }
