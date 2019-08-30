@@ -36,7 +36,7 @@ jQuery.extend({
 
     viewport: function() {
         var dWidth = $(document).innerWidth();
-        var currentBreakPoint = (dWidth < 690) ? 'xs' : ((dWidth < 992) ? 'sm' : ((dWidth < 1200) ? 'md' : 'lg'));
+        var currentBreakPoint = (dWidth < 700) ? 'xs' : ((dWidth < 992) ? 'sm' : ((dWidth < 1200) ? 'md' : 'lg'));
         return {
             is: function(breakPoint) {
                 return breakPoint == currentBreakPoint;
