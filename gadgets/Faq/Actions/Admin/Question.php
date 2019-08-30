@@ -80,7 +80,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $tpl->SetVariable('question', $questionEntry->Get());
 
         //answer
-        $answer =& $GLOBALS['app']->LoadEditor('Faq', 'answer', '', false);
+        $answer =& $GLOBALS['app']->LoadEditor('Faq', 'answer');
         $answer->TextArea->SetStyle('width: 100%;');
         $answer->TextArea->SetRows(8);
         $answer->setID('answer');
@@ -258,6 +258,8 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('EditQuestion');
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
+        $post['data']['answer'] = Jaws_XSS::defilter($post['data']['answer']);
+
         $model = $this->gadget->model->loadAdmin('Question');
         $res = $model->UpdateQuestion($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
