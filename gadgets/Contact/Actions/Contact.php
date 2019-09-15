@@ -86,6 +86,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
                 break;
         }
 
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('Contact.html');
         $tpl->SetBlock('contact');
 

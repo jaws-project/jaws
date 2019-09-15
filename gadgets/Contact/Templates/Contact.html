@@ -6,7 +6,11 @@
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <form name="contact" action="{{base_script}}" method="post" enctype="multipart/form-data">
+  <form name="contact" action="{{base_script}}"
+    method="post"
+    onsubmit="return submitContactForm(this);"
+    enctype="multipart/form-data"
+  >
   <input type="hidden" name="gadget" value="Contact" />
   <input type="hidden" name="action" value="Send" />
   <div class="gadget_content">
