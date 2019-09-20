@@ -273,15 +273,29 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
      * @param   {function}  progress    Progress callback function
      * @return  {boolean}
      */
-    this.uploadFile = function (action, file, done, progress) {
+    this.uploadFile = function (action, file, done, progress, callOptions) {
         var fd = new FormData();
+        var gadget, baseScript;
         fd.append('file', file);
+
+        callOptions = callOptions || {};
+        // response message/loading container
+        if (!callOptions.hasOwnProperty('message_container')) {
+            var rc_gadget, rc_action;
+            rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
+            rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
+            callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
+        }
+
+        gadget = callOptions.hasOwnProperty('gadget')? callOptions.gadget : this.gadget;
+        baseScript = callOptions.hasOwnProperty('baseScript')? callOptions.baseScript : this.baseScript;
+
         var options = {
             async: true,
             type: 'POST',
             data: fd,
             dataType: 'text',
-            url: this.baseScript + '?gadget=' + this.gadget + '&restype=json&action=' + action,
+            url: baseScript + '?gadget=' + gadget + '&restype=json&action=' + action,
             action: action,
             timeout: 10 * 60 * 1000, /* 10 minutes */
             contentType: false,
@@ -297,6 +311,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
                 }
             }
         };
+
+        options.callOptions = callOptions;
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
