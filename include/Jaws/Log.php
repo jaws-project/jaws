@@ -260,8 +260,13 @@ class Jaws_Log
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         }
 
-        $file = @$trace[2]['file'];
-        $line = @$trace[2]['line'];
+        if (@$trace[1]['function'] == '_log_var_dump') {
+            $file = @$trace[1]['file'];
+            $line = @$trace[1]['line'];
+        } else {
+            $file = @$trace[2]['file'];
+            $line = @$trace[2]['line'];
+        }
 
         ob_start();
         call_user_func_array('var_dump', func_get_args());
