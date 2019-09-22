@@ -34,48 +34,64 @@ class Users_Actions_VCard extends Users_Actions_Default
 //            $vCard->nickname($contact['nickname']);
             $vCard->title($contact['title']);
 
-            if (!empty($contact['tel'])) {
-                $tel = json_decode($contact['tel'], true);
-                $vCard->tel($tel['home'], 'Home');
-                $vCard->tel($tel['work'], 'Work');
-                $vCard->tel($tel['other'], 'Other');
+            $keys = array('tel' => 'voice', 'mobile' => 'cell', 'fax' => 'fax');
+            $props = array('home', 'work', 'other');
+            foreach ($keys as $key => $type) {
+                $keyValues = array_filter(json_decode($contact[$key], true));
+                foreach ($props as $prop) {
+                    if (array_key_exists($prop, $keyValues)) {
+                        $vCard->tel($keyValues[$prop], $prop, $type);
+                    }
+                }
             }
 
             if (!empty($contact['email'])) {
-                $email = json_decode($contact['email'], true);
-                $vCard->email($email['home'], 'Home');
-                $vCard->email($email['work'], 'Work');
-                $vCard->email($email['other'], 'Other');
+                $email = array_filter(json_decode($contact['email'], true));
+                foreach ($props as $prop) {
+                    if (array_key_exists($prop, $email)) {
+                        $vCard->email($email[$prop], $prop);
+                    }
+                }
+            }
+
+            if (!empty($contact['url'])) {
+                $url = array_filter(json_decode($contact['url'], true));
+                foreach ($props as $prop) {
+                    if (array_key_exists($prop, $url)) {
+                        $vCard->url($url[$prop], $prop);
+                    }
+                }
             }
 
             if (!empty($contact['address'])) {
                 $adr = json_decode($contact['address'], true);
-                $vCard->adr($adr['home'], 'Home');
-                $vCard->adr($adr['work'], 'Work');
-                $vCard->adr($adr['other'], 'Other');
-            }
+                foreach ($props as $prop) {
+                    if (empty($adr[$prop]) || empty(array_filter($adr[$prop]))) {
+                        continue;
+                    }
 
-            if (!empty($contact['url'])) {
-                $url = json_decode($contact['url'], true);
-                $vCard->url($url['home'], 'Home');
-                $vCard->url($url['work'], 'Work');
-                $vCard->url($url['other'], 'Other');
+                    $vCard->adr('', 'POBox');
+                    $vCard->adr('', 'ExtendedAddress');
+                    $vCard->adr($adr[$prop]['address'], 'StreetAddress');
+                    $vCard->adr($adr[$prop]['city'], 'Locality');
+                    $vCard->adr($adr[$prop]['province'], 'Region');
+                    $vCard->adr($adr[$prop]['postal_code'], 'PostalCode');
+                    $vCard->adr($adr[$prop]['country'], 'Country');
+                }
             }
 
             $vCard->note($contact['note']);
-
             $result = $result . $vCard;
         }
 
-        header("Content-Disposition: attachment; filename=\"" . 'contacts.vcf' . "\"");
-        header("Content-type: application/csv");
-        header("Content-Length: " . strlen($result));
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        header("Connection: close");
+        header('Content-Disposition: attachment; filename="contacts.vcf"');
+        header('Content-type: application/csv');
+        header('Content-Length: ' . strlen($result));
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        header('Connection: close');
 
-        echo $result;
-        return;
+        return $result;
     }
 
     /**
@@ -90,19 +106,25 @@ class Users_Actions_VCard extends Users_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
-        if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('GLOBAL_ERROR_UPLOAD'),
-                RESPONSE_ERROR
-            );
+        if (!empty($_FILES)) {
+            $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
+            if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
+                return $GLOBALS['app']->Session->GetResponse(
+                    _t('GLOBAL_ERROR_UPLOAD'),
+                    RESPONSE_ERROR
+                );
+            }
+
+            $inputVcards = @file_get_contents(Jaws_Utils::upload_tmp_dir() . '/' . $res['file'][0]['host_filename']);
+        } else {
+            $inputVcards = Jaws_Request::getInstance()->rawData('input');
         }
 
         try {
             require_once JAWS_PATH . 'gadgets/Users/include/vCard.php';
             $vCard = new vCard(
-                Jaws_Utils::upload_tmp_dir() . '/' . $res['file'][0]['host_filename'],
                 false,
+                $inputVcards,
                 array('Collapse' => false)
             );
             if (count($vCard) == 0) {
@@ -153,150 +175,91 @@ class Users_Actions_VCard extends Users_Actions_Default
      * @access  public
      * @return  string HTML content with menu and menu items
      */
-    function PrepareForImport($vCard)
+    function PrepareForImport(&$vCard)
     {
-        if ($vCard->N) {
-            $data['name'] = implode(';', $vCard->N[0]);
-        } else {
-            $data['name'] = $vCard->FN[0] . ';;;;';
-        }
+        //$vCard->NICKNAME
+        //$vCard->PHOTO
+
+        $data['name']  = Jaws_UTF8::trim($vCard->N[0]['LastName'] . ' ' . $vCard->N[0]['FirstName']);
+        $data['name'] = $data['name']?: @$vCard->FN[0];
         if (empty($data['name'])) {
             return false; // TODO: Show message: Can not import data without name
         }
+        $data['title'] = (@$vCard->TITLE[0])?: (@$vCard->FN[0]?: $data['name']);
+        $data['note']  = @$vCard->NOTE[0];
 
-//        if ($vCard->NICKNAME) {
-//            $data['nickname'] = implode(';', $vCard->NICKNAME[0]);
-//        }
-
-        if ($vCard->TITLE) {
-            $data['title'] = $vCard->TITLE[0];
-        } else {
-            $data['title'] = $data['name'];
-        }
-
-        if ($vCard->NOTE) {
-            $data['note'] = $vCard->NOTE[0];
-        }
-
-        if ($vCard->TEL) {
-            foreach ($vCard->TEL as $tel) {
-                $telHome = array();
-                $telWork = array();
-                $telOther = array();
-
-                if (is_scalar($tel)) {
-                    $telOther[] = $tel['Value'];
-                } else {
-                    foreach ($vCard->TEL[0]['Type'] as $type) {
-                        switch (strtolower($type)) {
-                            case 'home':
-                                $telHome[] = $vCard->TEL[0]['Value'];
-                                break;
-                            case 'work':
-                                $telWork[] = $vCard->TEL[0]['Value'];
-                                break;
-                            default:
-                                $telOther[] = $vCard->TEL[0]['Value'];
-                                break;
-                        }
-                    }
-                }
-
-                $telItems = array(
-                    'home' => empty($telHome) ? '' : implode(';', $telHome),
-                    'work' => empty($telWork) ? '' : implode(';', $telWork),
-                    'other' => empty($telOther) ? '' : implode(';', $telOther),
-                );
-                $data['tel'] = json_encode($telItems);
+        $mappedTelType = array('voice' => 'tel', 'cell' => 'mobile', 'fax' => 'fax');
+        $data['tel'] = $data['fax'] = $data['mobile'] = $data['email'] = $data['url'] = $data['address'] = array(
+            'home' => '',
+            'work' => '',
+            'other' => ''
+        );
+        foreach ($vCard->TEL as $tel) {
+            $telProp = array_intersect(array('home', 'work', 'other'), $tel['Type']);
+            if (empty($telProp)) {
+                $telProp = array('home');
             }
-        }
 
-        if ($vCard->EMAIL) {
-            foreach ($vCard->EMAIL as $email) {
-                $emailHome = array();
-                $emailWork = array();
-                $emailOther = array();
-
-                if (is_scalar($email)) {
-                    $emailOther[] = $email['Value'];
-                } else {
-                    foreach ($vCard->EMAIL[0]['Type'] as $type) {
-                        switch (strtolower($type)) {
-                            case 'home':
-                                $emailHome[] = $vCard->EMAIL[0]['Value'];
-                                break;
-                            case 'work':
-                                $emailWork[] = $vCard->EMAIL[0]['Value'];
-                                break;
-                            default:
-                                $emailOther[] = $vCard->EMAIL[0]['Value'];
-                                break;
-                        }
-                    }
-                }
-
-                $emailItems = array(
-                    'home' => empty($emailHome) ? '' : implode(';', $emailHome),
-                    'work' => empty($emailWork) ? '' : implode(';', $emailWork),
-                    'other' => empty($emailOther) ? '' : implode(';', $emailOther),
-                );
-                $data['email'] = json_encode($emailItems);
+            $telType = array_intersect(array('voice', 'cell', 'fax'), $tel['Type']);
+            if (empty($telType)) {
+                $telType = array('voice');
             }
+
+            $data[$mappedTelType[reset($telType)]][reset($telProp)] = $tel['Value'];
         }
+        $data['tel']    = json_encode($data['tel']);
+        $data['fax']    = json_encode($data['fax']);
+        $data['mobile'] = json_encode($data['mobile']);
 
-        if ($vCard->URL) {
-            $data['url'] = implode('\n', $vCard->URL);
-        }
-
-        if ($vCard->ADR) {
-            foreach ($vCard->ADR as $address) {
-                $addressHome = array();
-                $addressWork = array();
-                $addressOther = array();
-
-                $adr = array();
-                $adr['country_name'] = isset($address['Country']) ? $address['Country'] . ' ' : '';
-                $adr['province_name'] = isset($address['Region']) ? $address['Region'] . ' ' : '';
-                $adr['postal_code'] = isset($address['PostalCode']) ? $address['PostalCode'] . ' ' : '';
-                $adr['po_box'] = isset($address['POBox']) ? $address['POBox'] . ' ' : '';
-
-                $adrStr = ($address['StreetAddress'] ? $address['StreetAddress'] . ' ' : '');
-                $adrStr .= ($address['ExtendedAddress'] ? $address['ExtendedAddress'] . ' ' : '');
-                $adrStr .= ($address['Locality'] ? $address['Locality'] . ' ' : '');
-                $adr['address'] = $adrStr;
-
-                foreach ($vCard->ADR[0]['Type'] as $type) {
-                        switch (strtolower($type)) {
-                            case 'home':
-                                $addressHome = $adr;
-                                break;
-                            case 'work':
-                                $addressWork = $adr;
-                                break;
-                            default:
-                                $addressOther = $adr;
-                                break;
-                        }
-                    }
-
-                $addressItems = array(
-                    'home' => empty($addressHome) ? '' : implode(';', $addressHome),
-                    'work' => empty($addressWork) ? '' : implode(';', $addressWork),
-                    'other' => empty($addressOther) ? '' : implode(';', $addressOther),
-                );
-                $data['address'] = json_encode($addressItems);
+        // email
+        foreach ($vCard->EMAIL as $email) {
+            if (!is_array($email)) {
+                $data['email']['home'] = $email;
+                continue;
             }
-        }
 
-        /*        if ($vCard->PHOTO) {
-                    foreach ($vCard->PHOTO as $Photo) {
-                        if ($Photo['Encoding'] == 'b') {
-                            $vCard->SaveFile('photo', 0, Jaws_Utils::upload_tmp_dir() . '/test_image.' . $Photo['Type'][0]);
-                            $data['image'] = 'test_image.' . $Photo['Type'][0];
-                            break;
-                        }
-                    }
-                }*/
+            $email['Type'] = array_key_exists('Type', $email)? $email['Type'] : array('home');
+            $emailProp = array_intersect(array('home', 'work', 'other'), $email['Type']);
+            if (empty($emailProp)) {
+                continue;
+            }
+
+            $data['email'][reset($emailProp)] = $email['Value'];
+        }
+        $data['email'] = json_encode($data['email']);
+
+        // url
+        foreach ($vCard->URL as $url) {
+            if (!is_array($url)) {
+                $data['url']['home'] = $url;
+                continue;
+            }
+
+            $urlProp = array_intersect(array('home', 'work', 'other'), $url['Type']);
+            if (empty($urlProp)) {
+                continue;
+            }
+
+            $data['url'][reset($urlProp)] = $url['Value'];
+        }
+        $data['url'] = json_encode($data['url']);
+
+        // address
+        foreach ($vCard->ADR as $address) {
+            $adrProp = array_intersect(array('home', 'work', 'other'), $address['Type']);
+            if (empty($adrProp)) {
+                continue;
+            }
+
+            $data['address'][reset($adrProp)] = array(
+                'address'     => $address['StreetAddress'],
+                'city'        => $address['Locality'],
+                'province'    => $address['Region'],
+                'postal_code' => $address['PostalCode'],
+                'country'     => $address['Country']
+            );
+        }
+        $data['address'] = json_encode($data['address']);
 
         return $data;
     }

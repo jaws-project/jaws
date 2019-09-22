@@ -24,6 +24,7 @@ $maps[] = array('Bookmarks', 'users/bookmarks');
 $maps[] = array('Contact', 'users/contact');
 $maps[] = array('Contacts', 'users/contacts');
 $maps[] = array('ExportVCard', 'users/contacts/export');
+$maps[] = array('ImportVCard', 'users/contacts/import[/restype/{restype}]');
 $maps[] = array('Friends', 'users/{uid}/friends');
 $maps[] = array('FriendsGroups', 'users/{uid}/friends/groups');
 $maps[] = array('UserGroupUI', 'users/groups/new');
