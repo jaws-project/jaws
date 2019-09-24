@@ -194,7 +194,14 @@ class Users_Actions_VCard extends Users_Actions_Default
             'work' => '',
             'other' => ''
         );
+
+        // tel/mobile/fax
         foreach ($vCard->TEL as $tel) {
+            if (!is_array($tel)) {
+                $data['tel']['home'] = $tel;
+                continue;
+            }
+
             $telProp = array_intersect(array('home', 'work', 'other'), $tel['Type']);
             if (empty($telProp)) {
                 $telProp = array('home');
