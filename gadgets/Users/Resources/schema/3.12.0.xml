@@ -575,6 +575,7 @@
             <field>
                 <name>image</name>
                 <type>text</type>
+                <length>128</length>
             </field>
 
             <field>
@@ -612,20 +613,10 @@
                 <type>text</type>
             </field>
 
-            <field>
-                <name>checksum</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
             <index>
-                <name><variable>table_prefix</variable>users_contacts_oc</name>
+                <name><variable>table_prefix</variable>users_contacts_owner</name>
                 <field>
                     <name>owner</name>
-                </field>
-
-                <field>
-                    <name>checksum</name>
                 </field>
             </index>
 
