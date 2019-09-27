@@ -1498,8 +1498,19 @@ class Jaws_User
         }
 
         $data['owner'] = $uid;
-        return Jaws_ORM::getInstance()
+        $checksum = crc64(json_encode($data));
+        $objORM = Jaws_ORM::getInstance()
             ->table('users_contacts')
+            ->select('count(id):integer')
+            ->where('owner', $uid)
+            ->and()
+            ->where('checksum', $checksum);
+        if (!empty($objORM->fetchOne())) {
+            return false;
+        }
+
+        $data['checksum'] = $checksum;
+        return $objORM->table('users_contacts')
             ->upsert($data)
             ->where('id', $cid)
             ->and()
