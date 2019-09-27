@@ -28,6 +28,17 @@ if (!function_exists('hex2bin')) {
 }
 
 /**
+ * Calculates the crc32 polynomial of a string
+ * @see http://www.php.net/crc32
+ */
+if (!function_exists('crc64')) {
+    function crc64($str)
+    {
+        return (int)base_convert('0x' . hash('crc32', $str) . hash('crc32b', $str), 16, 10);
+    }
+}
+
+/**
  * Get GMT/UTC date/time information
  * @see http://www.php.net/getdate
  */
@@ -434,6 +445,8 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     }
 
     if (!empty($next_location) && !$XMLHttpRequest) {
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
         header('Location: '.$next_location, true, $status_code);
     } else {
         // set response status code
