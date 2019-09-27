@@ -627,7 +627,7 @@ class vCard implements Countable, Iterator
                         $Type = array_merge($Type, explode(',', $Parameter[1]));
                         break;
                     case 'value':
-                        if (strtolower($Parameter[1]) == 'url')
+                        if (strtolower($Parameter[1]) == 'uri')
                         {
                             $Result['encoding'] = 'uri';
                         }
