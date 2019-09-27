@@ -222,7 +222,8 @@ class vCard implements Countable, Iterator
                             case 'encoding':
                                 if (in_array($ParamValue, array('b', 'base64')))
                                 {
-                                    $Value = base64_decode($Value);
+                                    $Encoding = 'base64';
+                                    //$Value = base64_decode($Value);
                                 }
                                 elseif ($ParamValue == 'quoted-printable') // v2.1
                                 {
@@ -369,7 +370,7 @@ class vCard implements Countable, Iterator
         if (is_writable($TargetPath) || (!file_exists($TargetPath) && is_writable(dirname($TargetPath))))
         {
             $RawContent = $this -> Data[$Key][$Index]['Value'];
-            if (isset($this -> Data[$Key][$Index]['Encoding']) && $this -> Data[$Key][$Index]['Encoding'] == 'b')
+            if (isset($this -> Data[$Key][$Index]['Encoding']) && $this -> Data[$Key][$Index]['Encoding'] == 'base64')
             {
                 $RawContent = base64_decode($RawContent);
             }
@@ -617,7 +618,7 @@ class vCard implements Countable, Iterator
                     case 'encoding':
                         if (in_array($Parameter[1], array('quoted-printable', 'b', 'base64')))
                         {
-                            $Result['encoding'] = $Parameter[1] == 'base64' ? 'b' : $Parameter[1];
+                            $Result['encoding'] = $Parameter[1] == 'b' ? 'base64' : $Parameter[1];
                         }
                         break;
                     case 'charset':

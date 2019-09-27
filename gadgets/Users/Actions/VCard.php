@@ -177,11 +177,8 @@ class Users_Actions_VCard extends Users_Actions_Default
      */
     function PrepareForImport(&$vCard)
     {
-        //$vCard->NICKNAME
-        //$vCard->PHOTO
-
         $data['name']  = Jaws_UTF8::trim($vCard->N[0]['LastName'] . ' ' . $vCard->N[0]['FirstName']);
-        $data['name'] = $data['name']?: @$vCard->FN[0];
+        $data['name'] = $data['name']?: (@$vCard->FN[0]?: @$vCard->NICKNAME[0]);
         if (empty($data['name'])) {
             return false; // TODO: Show message: Can not import data without name
         }
@@ -267,6 +264,11 @@ class Users_Actions_VCard extends Users_Actions_Default
             );
         }
         $data['address'] = json_encode($data['address']);
+
+        // photo
+        if ($vCard->PHOTO) {
+            $data['image'] = json_encode($vCard->PHOTO[0]);
+        }
 
         return $data;
     }
