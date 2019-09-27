@@ -220,14 +220,15 @@ class vCard implements Countable, Iterator
                         switch ($ParamKey)
                         {
                             case 'encoding':
-                                $Encoding = $ParamValue;
                                 if (in_array($ParamValue, array('b', 'base64')))
                                 {
-                                    //$Value = base64_decode($Value);
+                                    $Value = base64_decode($Value);
                                 }
                                 elseif ($ParamValue == 'quoted-printable') // v2.1
                                 {
                                     $Value = quoted_printable_decode($Value);
+                                } else {
+                                    $Encoding = $ParamValue;
                                 }
                                 break;
                             case 'charset': // v2.1
@@ -317,7 +318,7 @@ class vCard implements Countable, Iterator
                 $Value = $this -> Data[$Key];
                 foreach ($Value as $K => $V)
                 {
-                    if (stripos($V['Value'], 'uri:') === 0)
+                    if (is_array($V) && stripos($V['Value'], 'uri:') === 0)
                     {
                         $Value[$K]['Value'] = substr($V, 4);
                         $Value[$K]['Encoding'] = 'uri';
@@ -359,7 +360,7 @@ class vCard implements Countable, Iterator
             return false;
         }
 
-        // Returing false if it is an image URL
+        // Returning false if it is an image URL
         if (stripos($this -> Data[$Key][$Index]['Value'], 'uri:') === 0)
         {
             return false;
@@ -595,7 +596,7 @@ class vCard implements Countable, Iterator
                 // The second part of the "if" statement means that email elements can have non-standard types (see the spec)
                 if (
                     (isset(self::$Spec_ElementTypes[$Key]) && in_array($Parameter[0], self::$Spec_ElementTypes[$Key])) ||
-                    ($Key == 'email' && is_scalar($Parameter[0]))
+                    (/*$Key == 'email' &&*/ is_scalar($Parameter[0]))
                 )
                 {
                     $Type[] = $Parameter[0];
