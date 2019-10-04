@@ -52,7 +52,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetBlock('comment_form');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
-        $response = $GLOBALS['app']->Session->PopResponse('Comments');
+        $response = $this->gadget->session->pop('Comments');
         if (isset($response['data'])) {
             $data = $response['data'];
         } else {
@@ -117,7 +117,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('message', $data['message']);
 
         $tpl->SetVariable('bookmark', $gadget. '_'. $action);
-        $response = $GLOBALS['app']->Session->PopResponse('Comments');
+        $response = $this->gadget->session->pop('Comments');
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
@@ -442,7 +442,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         }
 
         if (trim($post['message']) == ''|| trim($post['name']) == '') {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('COMMENTS_COMMENT_INCOMPLETE_FIELDS'),
                 'Comments',
                 RESPONSE_ERROR,
@@ -458,7 +458,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         * to not fill this out
         */
         if (!empty($post['url2'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('COMMENTS_FAILED_SPAM_CHECK_MESSAGES'),
                 'Comments',
                 RESPONSE_ERROR,
@@ -470,7 +470,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $resCheck->getMessage(),
                 'Comments',
                 RESPONSE_ERROR,
@@ -487,7 +487,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         $objHook = Jaws_Gadget::getInstance($post['requested_gadget'])->hook->load('Comments');
         if (Jaws_Error::IsError($objHook)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $objHook->getMessage(),
                 'Comments',
                 RESPONSE_ERROR,
@@ -498,7 +498,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         $reference = $objHook->Execute($post['requested_action'], $post['reference']);
         if (empty($reference)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('COMMENTS_ERROR_REFERENCE_EXISTS'),
                 'Comments',
                 RESPONSE_ERROR,
@@ -513,7 +513,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $post['email'], $post['url'], $post['message'], $permalink, $status, $post['is_private']
         );
         if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
                 'Comments',
                 RESPONSE_ERROR,
@@ -521,7 +521,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             );
         } else {
             $this->EmailComment($reference, $post['message']);
-            $GLOBALS['app']->Session->PushResponse(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
+            $this->gadget->session->push(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
         }
 
         return Jaws_Header::Location($reference['reference_link']);
