@@ -30,7 +30,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_owner', _t('NOTEPAD_NOTE_OWNER'));
 
         // Ckeck for response
-        $response = $GLOBALS['app']->Session->PopResponse('Notepad.Response');
+        $response = $this->gadget->session->pop('Response');
         if ($response) {
             $tpl->SetVariable('response_text', $response['text']);
             $tpl->SetVariable('response_type', $response['type']);
@@ -147,9 +147,9 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         return Jaws_Header::Location($url);
 
         /*if (strlen($search['query']) < 2) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_SHORT_QUERY'),
-                'Notepad.Response',
+                'Response',
                 RESPONSE_ERROR
             );
         }*/

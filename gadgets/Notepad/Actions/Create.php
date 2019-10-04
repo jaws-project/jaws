@@ -25,7 +25,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
 
         // Response
         $note = array();
-        $response = $GLOBALS['app']->Session->PopResponse('Notepad.Response');
+        $response = $this->gadget->session->pop('Response');
         if ($response) {
             $tpl->SetVariable('response_text', $response['text']);
             $tpl->SetVariable('response_type', $response['type']);
@@ -66,9 +66,9 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
     {
         $data = $this->gadget->request->fetch(array('title', 'content'), 'post');
         if (empty($data['title']) || empty($data['content'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),
-                'Notepad.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $data
             );
@@ -81,18 +81,18 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         $data['content'] = Jaws_XSS::defilter($data['content']);
         $result = $model->Insert($data);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_NOTE_CREATE'),
-                'Notepad.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $data
             );
             Jaws_Header::Referrer();
         }
 
-        $GLOBALS['app']->Session->PushResponse(
+        $this->gadget->session->push(
             _t('NOTEPAD_NOTICE_NOTE_CREATED'),
-            'Notepad.Response'
+            'Response'
         );
         return Jaws_Header::Location($this->gadget->urlMap('Notepad'));
     }

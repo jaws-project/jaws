@@ -20,7 +20,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
     function EditNote()
     {
         // Response
-        $response = $GLOBALS['app']->Session->PopResponse('Notepad.Response');
+        $response = $this->gadget->session->pop('Response');
         if ($response) {
             $note = $response['data'];
         }
@@ -76,9 +76,9 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
     {
         $data = $this->gadget->request->fetch(array('id', 'title', 'content'), 'post');
         if (empty($data['id']) || empty($data['title']) || empty($data['content'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),
-                'Notepad.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $data
             );
@@ -91,9 +91,9 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_RETRIEVING_DATA'),
-                'Notepad.Response',
+                'Response',
                 RESPONSE_ERROR
             );
             Jaws_Header::Referrer();
@@ -101,9 +101,9 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
 
         // Verify owner
         if ($note['user'] != $user) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_NO_PERMISSION'),
-                'Notepad.Response',
+                'Response',
                 RESPONSE_ERROR
             );
             Jaws_Header::Referrer();
@@ -113,18 +113,18 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $data['content'] = Jaws_XSS::defilter($data['content']);
         $result = $model->Update($id, $data);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_NOTE_UPDATE'),
-                'Notepad.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $data
             );
             Jaws_Header::Referrer();
         }
 
-        $GLOBALS['app']->Session->PushResponse(
+        $this->gadget->session->push(
             _t('NOTEPAD_NOTICE_NOTE_UPDATED'),
-            'Notepad.Response'
+            'Response'
         );
         return Jaws_Header::Location($this->gadget->urlMap('Notepad'));
     }

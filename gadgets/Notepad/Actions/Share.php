@@ -140,9 +140,9 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
             );
         }
 
-        $GLOBALS['app']->Session->PushResponse(
+        $this->gadget->session->push(
             _t('NOTEPAD_NOTICE_SHARE_UPDATED'),
-            'Notepad.Response'
+            'Response'
         );
         return $GLOBALS['app']->Session->GetResponse(
             _t('NOTEPAD_NOTICE_SHARE_UPDATED')
