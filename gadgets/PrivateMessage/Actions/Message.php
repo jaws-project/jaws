@@ -157,7 +157,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
+        if ($response = $this->gadget->session->pop('Message')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -479,15 +479,15 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $model = $this->gadget->model->load('Message');
         $res = $model->MarkMessages($ids, $status, $user);
         if ($res === true) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_NOTICE
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
@@ -515,23 +515,23 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $res = $model->ArchiveMessage($ids, $user, true);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
 
         if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_ARCHIVED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_NOTICE
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
@@ -565,23 +565,23 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $res = $model->ArchiveMessage($ids, $user, false);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
 
         if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_UNARCHIVED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_NOTICE
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_UNARCHIVED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
@@ -608,23 +608,23 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $res = $model->TrashMessage($ids, $user, true);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
 
         if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_TRASHED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_NOTICE
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASHED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
@@ -657,23 +657,23 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $res = $model->TrashMessage($ids, $user, false);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
 
         if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_TRASH_RESTORED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_NOTICE
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASH_RESTORED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
@@ -700,23 +700,23 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $res = $model->DeleteMessage($ids, $user);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }
 
         if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_DELETED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_NOTICE
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_NOT_DELETED'),
-                'PrivateMessage.Message',
+                'Message',
                 RESPONSE_ERROR
             );
         }

@@ -330,23 +330,23 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $url = $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX));
         if (Jaws_Error::IsError($message_id)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $message_id->getMessage(),
-                'PrivateMessage.Compose',
+                'Compose',
                 RESPONSE_ERROR
             );
         } else {
             if ($post['is_draft']) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     _t('PRIVATEMESSAGE_DRAFT_SAVED'),
-                    'PrivateMessage.Compose',
+                    'Compose',
                     RESPONSE_NOTICE,
                     array('is_draft' => true, 'message_id' => $message_id)
                 );
             } else {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     _t('PRIVATEMESSAGE_MESSAGE_SEND'),
-                    'PrivateMessage.Compose',
+                    'Compose',
                     RESPONSE_NOTICE,
                     array('url' => $url)
                 );
