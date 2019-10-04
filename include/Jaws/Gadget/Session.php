@@ -41,7 +41,7 @@ class Jaws_Gadget_Session
     function fetch($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Session->GetAttribute("$gadget.Attributes.$name");
+        return $GLOBALS['app']->Session->getAttribute($name, $gadget);
     }
 
     /**
@@ -56,7 +56,7 @@ class Jaws_Gadget_Session
     function insert($name, $value, $trashed = false)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->SetAttribute("$gadget.Attributes.$name", $value, $trashed);
+        return $GLOBALS['app']->Session->setAttribute($name, $value, $trashed, $gadget);
     }
 
     /**
@@ -71,7 +71,7 @@ class Jaws_Gadget_Session
     function update($name, $value, $trashed = false)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->SetAttribute("$gadget.Attributes.$name", $value, $trashed);
+        return $GLOBALS['app']->Session->setAttribute($name, $value, $trashed, $gadget);
     }
 
     /**
@@ -85,7 +85,7 @@ class Jaws_Gadget_Session
     function delete($name, $trashed = false)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->DeleteAttribute("$gadget.Attributes.$name", $trashed);
+        return $GLOBALS['app']->Session->deleteAttribute($name, $trashed, $gadget);
     }
 
     /**
@@ -102,7 +102,7 @@ class Jaws_Gadget_Session
     function push($text, $resource = 'Resource', $type = RESPONSE_NOTICE, $data = null, $code = 0)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->PushResponse($text, "$gadget.Response.$resource", $type, $data, $code);
+        return $GLOBALS['app']->Session->pushResponse($text, "Response.$resource", $type, $data, $code, $gadget);
     }
 
     /**
@@ -116,7 +116,22 @@ class Jaws_Gadget_Session
     function pop($resource = 'Resource', $remove = true)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->PopResponse("$gadget.Response.$resource", $remove);
+        return $GLOBALS['app']->Session->popResponse("Response.$resource", $remove, $gadget);
+    }
+
+    /**
+     * Get formated data by response structure
+     *
+     * @access  public
+     * @param   string  $text   Response text
+     * @param   string  $type   Response type
+     * @param   mixed   $data   Response data
+     * @param   int     $code   Response code
+     * @return  array   Returns array include text, type, data and code class
+     */
+    function response($text, $type = RESPONSE_NOTICE, $data = null, $code = 0)
+    {
+        return $GLOBALS['app']->Session->getResponse($text, $type, $data, $code);
     }
 
 }

@@ -25,10 +25,10 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function init()
     {
-        parent::Init();
-        $session = $this->GetCookie(JAWS_SESSION_NAME);
-        if (empty($session) || !$this->Load($session)) {
-            $this->Create();
+        parent::init();
+        $session = $this->getCookie(JAWS_SESSION_NAME);
+        if (empty($session) || !$this->load($session)) {
+            $this->create();
         }
     }
 
@@ -41,11 +41,11 @@ class Jaws_Session_Web extends Jaws_Session
      * @return  void
      * @see     Jaws_Session::Create
      */
-    function Create($info = array(), $remember = false)
+    function create($info = array(), $remember = false)
     {
-        parent::Create($info, $remember);
+        parent::create($info, $remember);
         // Create cookie
-        $this->SetCookie(
+        $this->setCookie(
             JAWS_SESSION_NAME,
             $this->ssid.'-'.$this->salt,
             $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0
@@ -60,13 +60,13 @@ class Jaws_Session_Web extends Jaws_Session
      * @return  void
      * @see Jaws_Session::Logout
      */
-    function Logout($prepare_new_session = false)
+    function logout($prepare_new_session = false)
     {
         parent::Logout($prepare_new_session);
         if ($prepare_new_session) {
-            $this->DestroyCookie(JAWS_SESSION_NAME);
+            $this->destroyCookie(JAWS_SESSION_NAME);
         } else {
-            $this->SetCookie(JAWS_SESSION_NAME, $this->ssid.'-'.$this->salt, 0, true);
+            $this->setCookie(JAWS_SESSION_NAME, $this->ssid.'-'.$this->salt, 0, true);
         }
     }
 
@@ -80,7 +80,7 @@ class Jaws_Session_Web extends Jaws_Session
      * @param   bool    $httponly   If TRUE the cookie will be made accessible only through the HTTP protocol
      * @return  void
      */
-    function SetCookie($name, $value, $minutes = 0, $httponly = null)
+    function setCookie($name, $value, $minutes = 0, $httponly = null)
     {
         if (defined('SESSION_INVALID')) {
             return false;
@@ -107,7 +107,7 @@ class Jaws_Session_Web extends Jaws_Session
      * @param   string  $name   Cookie name
      * @return  string
      */
-    function GetCookie($name)
+    function getCookie($name)
     {
         $version = $GLOBALS['app']->Registry->fetch('cookie_version', 'Settings');
         return jaws()->request->fetch($name, 'cookie');
@@ -120,13 +120,13 @@ class Jaws_Session_Web extends Jaws_Session
      * @param   string  $name   Cookie name
      * @return  void
      */
-    function DestroyCookie($name)
+    function destroyCookie($name)
     {
         if (defined('SESSION_INVALID')) {
             return false;
         }
 
-        $this->SetCookie($name, false);
+        $this->setCookie($name, false);
     }
 
     /**
@@ -140,14 +140,14 @@ class Jaws_Session_Web extends Jaws_Session
      * @param   string  $errorMessage   Error message to return
      * @return  mixed   True if granted, else throws an Exception(Jaws_Error::Fatal)
      */
-    function CheckPermission($gadget, $key, $subkey = '', $together = true, $errorMessage = '')
+    function checkPermission($gadget, $key, $subkey = '', $together = true, $errorMessage = '')
     {
-        if ($this->GetPermission($gadget, $key, $subkey, $together)) {
+        if ($this->getPermission($gadget, $key, $subkey, $together)) {
             return true;
         }
 
         $user = Jaws_Gadget::getInstance('Users')->action->load('Default');
-        $result = $user->ShowNoPermission($this->GetAttribute('username'), $gadget, $key);
+        $result = $user->ShowNoPermission($this->getAttribute('username'), $gadget, $key);
         $result = Jaws_HTTPError::Get(403, '', $result);
 
         terminate($result, 403);
