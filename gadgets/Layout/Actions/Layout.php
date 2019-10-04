@@ -59,7 +59,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $t_item->Blocks['working_notification']->Parsed = '';
 
         $t_item->SetBlock('response');
-        $response = $GLOBALS['app']->Session->PopResponse('Layout');
+        $response = $this->gadget->session->pop('Layout');
         if ($response) {
             $t_item->SetVariable('response_text', $response['text']);
             $t_item->SetVariable('response_type', $response['type']);
@@ -322,7 +322,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout'),
                 'Layout',
                 RESPONSE_ERROR
@@ -330,14 +330,14 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['main'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/main'),
                 'Layout',
                 RESPONSE_ERROR);
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['links'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/links'),
                 'Layout',
                 RESPONSE_ERROR
@@ -345,7 +345,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['metas'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/metas'),
                 'Layout',
                 RESPONSE_ERROR
@@ -353,7 +353,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['scripts'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/scripts'),
                 'Layout',
                 RESPONSE_ERROR
@@ -367,7 +367,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             null,
             'Settings'
         );
-        $GLOBALS['app']->Session->PushResponse(
+        $this->gadget->session->push(
             _t('LAYOUT_THEME_CHANGED'),
             'Layout',
             RESPONSE_NOTICE
