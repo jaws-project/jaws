@@ -401,9 +401,13 @@ class Jaws_Session
      */
     function getAttribute($name, $component = '')
     {
-        if (array_key_exists($name, $this->attributes[$component])) {
+        if (array_key_exists($component, $this->attributes) &&
+            array_key_exists($name, $this->attributes[$component])
+        ) {
             return $this->attributes[$component][$name];
-        } elseif (array_key_exists($name, $this->trash[$component])) {
+        } elseif (array_key_exists($component, $this->trash) && 
+            array_key_exists($name, $this->trash[$component])
+        ) {
             return $this->trash[$component][$name];
         }
 
@@ -421,7 +425,11 @@ class Jaws_Session
     function getAttributes($component = '', $attributes = array())
     {
         if (empty($attributes)) {
-            return $this->attributes[$component];
+            if (array_key_exists($component, $this->attributes)) {
+                return $this->attributes[$component];
+            }
+
+            return array();
         }
 
         $result = array();
