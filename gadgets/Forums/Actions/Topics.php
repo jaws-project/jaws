@@ -289,7 +289,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
         $rqst['notification'] = true;
         // response
-        if ($response = $GLOBALS['app']->Session->PopResponse('UpdateTopic')) {
+        if ($response = $this->gadget->session->pop('UpdateTopic')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
             $topic['subject'] = $response['data']['subject'];
@@ -399,7 +399,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         }
 
         if (empty($topic['subject']) ||  empty($topic['message'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
                 'UpdateTopic',
                 RESPONSE_ERROR,
@@ -414,7 +414,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $resCheck->getMessage(),
                     'UpdateTopic',
                     RESPONSE_ERROR,
@@ -437,7 +437,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             );
 
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $res->getMessage(),
                     'UpdateTopic',
                     RESPONSE_ERROR,
@@ -554,7 +554,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $error_message,
                 'UpdateTopic',
                 RESPONSE_ERROR,
@@ -623,9 +623,9 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
                 $result = $tModel->DeleteTopic($topic['id'], $topic['fid']);
                 if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushResponse(
+                    $this->gadget->session->push(
                         _t('FORUMS_TOPICS_DELETE_ERROR'),
-                        'Forums.DeleteTopic'
+                        'DeleteTopic'
                     );
                     // redirect to referrer page
                     Jaws_Header::Referrer();
@@ -678,7 +678,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('title', _t('FORUMS_TOPICS_DELETE_TITLE'));
 
             // error response
-            if ($response = $GLOBALS['app']->Session->PopResponse('Forums.DeleteTopic')) {
+            if ($response = $this->gadget->session->pop('DeleteTopic')) {
                 $tpl->SetVariable('response_type', $response['type']);
                 $tpl->SetVariable('response_text', $response['text']);
             }

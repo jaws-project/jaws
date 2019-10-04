@@ -425,7 +425,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         }
 
         if (empty($post['message'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
                 'UpdatePost',
                 RESPONSE_ERROR,
@@ -440,7 +440,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $resCheck->getMessage(),
                     'UpdatePost',
                     RESPONSE_ERROR,
@@ -469,7 +469,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 null
             );
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $res->getMessage(),
                     'UpdatePost',
                     RESPONSE_ERROR,
@@ -560,7 +560,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $error_message,
                 'UpdatePost',
                 RESPONSE_ERROR,
@@ -641,9 +641,9 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                     $post['fid']
                 );
                 if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushResponse(
+                    $this->gadget->session->push(
                         _t('FORUMS_POSTS_DELETE_ERROR'),
-                        'Forums.DeletePost'
+                        'DeletePost'
                     );
                     // redirect to referrer page
                     Jaws_Header::Referrer();
@@ -692,7 +692,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $tpl->SetVariable('title', _t('FORUMS_POSTS_DELETE_TITLE'));
 
             // error response
-            if ($response = $GLOBALS['app']->Session->PopResponse('Forums.DeletePost')) {
+            if ($response = $this->gadget->session->pop('DeletePost')) {
                 $tpl->SetVariable('response_type', $response['type']);
                 $tpl->SetVariable('response_text', $response['text']);
             }
