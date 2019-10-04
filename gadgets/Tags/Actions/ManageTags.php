@@ -37,7 +37,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
 
         $tpl = $this->gadget->template->load('ManageTags.html');
         $tpl->SetBlock('tags');
-        if ($response = $GLOBALS['app']->Session->PopResponse('Tags.ManageTags')) {
+        if ($response = $this->gadget->session->pop('ManageTags')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -198,15 +198,15 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
         $res = $model->UpdateTag($id, $post, $user);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('TAGS_ERROR_CANT_UPDATE_TAG'),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_ERROR
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('TAGS_TAG_UPDATED'),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_NOTICE
             );
         }
@@ -231,15 +231,15 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $model = $this->gadget->model->loadAdmin('Tags');
         $res = $model->DeleteTags($ids, $user);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('TAGS_ERROR_CANT_DELETE_TAG'),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_ERROR
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('TAGS_TAG_DELETED'),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_NOTICE
             );
         }
@@ -262,16 +262,16 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $post = $this->gadget->request->fetch(array('tags_checkbox:array', 'new_tag_name'), 'post');
         $ids = $post['tags_checkbox'];
         if (count($ids) < 3) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_ERROR
             );
         }
         if (empty($post['new_tag_name'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('TAGS_ERROR_ENTER_NEW_TAG_NAME'),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_ERROR
             );
         }
@@ -279,15 +279,15 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $model = $this->gadget->model->loadAdmin('Tags');
         $res = $model->MergeTags($ids, $post['new_tag_name'], $user);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_ERROR
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('TAGS_TAGS_MERGED'),
-                'Tags.ManageTags',
+                'ManageTags',
                 RESPONSE_NOTICE
             );
         }
