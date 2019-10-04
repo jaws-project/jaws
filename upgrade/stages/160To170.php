@@ -83,9 +83,31 @@ class Upgrader_160To170 extends JawsUpgraderStage
                 $sessions = $objORM->table('session')->select('id:integer', 'user', 'data')->fetchAll();
                 
                 foreach ($sessions as $session) {
+                    $data = unserialize($session['data']);
+                    $newdata = array();
+                    foreach ($data as $key => $value) {
+                        $keyParts = explode('.', $key);
+                        if (count($keyParts) == 3) {
+                            if ($keyParts[1] == 'Response') {
+                                $newdata[$keyParts[0]]['Response'.$keyParts[2]] = $value;
+                            } else {
+                                $newdata[$keyParts[0]][$keyParts[2]] = $value;
+                            }
+                        } else {
+                            $newdata[''][$key] = $value;
+                        }
+                    }
+
+                    $serialized = serialize($newdata);
+                    $checksum = md5($session['user'] . $serialized);
                     $result = $objORM->update(
-                        array('userid' => (int)$session['user'])
-                    )->exec();
+                        array(
+                            'userid' => (int)$session['user'],
+                            'data' => $serialized,
+                            'checksum' => $checksum
+                        )
+                    )->where('id', $session['id'])
+                    ->exec();
                     if (Jaws_Error::IsError($result)) {
                         // do nothing
                     }
