@@ -17,7 +17,7 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('BasicSettings');
         $this->AjaxMe('index.js');
-        $response = $GLOBALS['app']->Session->PopResponse('Settings.Settings');
+        $response = $this->gadget->session->pop('Settings');
 
         // Load the template
         $tpl = $this->gadget->template->load('Settings.html');
@@ -177,15 +177,15 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
         $uModel = $this->gadget->model->load('Settings');
         $result = $uModel->SaveSettings($post);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result->GetMessage(),
-                'Settings.Settings',
+                'Settings',
                 RESPONSE_ERROR
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('SETTINGS_SAVED'),
-                'Settings.Settings'
+                'Settings'
             );
         }
 
