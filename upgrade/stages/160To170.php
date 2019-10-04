@@ -1,6 +1,6 @@
 <?php
 /**
- * Jaws Upgrade Stage - From 1.5.0 to 1.6.0
+ * Jaws Upgrade Stage - From 1.6.0 to 1.7.0
  *
  * @category    Application
  * @package     UpgradeStage
@@ -8,7 +8,7 @@
  * @copyright   2019 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_150To160 extends JawsUpgraderStage
+class Upgrader_160To170 extends JawsUpgraderStage
 {
     /**
      * Builds the upgrader page.
@@ -19,14 +19,14 @@ class Upgrader_150To160 extends JawsUpgraderStage
     function Display()
     {
         $tpl = new Jaws_Template(false, false);
-        $tpl->Load('display.html', 'stages/150To160/templates');
-        $tpl->SetBlock('150To160');
+        $tpl->Load('display.html', 'stages/160To170/templates');
+        $tpl->SetBlock('160To170');
 
-        $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.5.0', '1.6.0'));
+        $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.6.0', '1.7.0'));
         $tpl->setVariable('lbl_notes', _t('UPGRADE_VER_NOTES'));
         $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
 
-        $tpl->ParseBlock('150To160');
+        $tpl->ParseBlock('160To170');
         return $tpl->Get();
     }
 
@@ -50,23 +50,46 @@ class Upgrader_150To160 extends JawsUpgraderStage
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
-        // upgrade core database schema
-        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.5.0.xml';
-        $new_schema = JAWS_PATH . 'upgrade/Resources/schema/1.6.0.xml';
-        if (!file_exists($old_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.5.0.xml'),0 , JAWS_ERROR_ERROR);
-        }
+        $schema_array = array(
+            '1.6.0' => '1.6.1',
+            '1.6.1' => '1.6.2',
+            '1.6.2' => '1.6.3',
+            '1.6.3' => 'schema'
+        );
+        foreach ($schema_array as $old => $new) {
+            // upgrade core database schema
+            $old_schema = JAWS_PATH . "upgrade/Resources/schema/$old.xml";
+            $new_schema = JAWS_PATH . "upgrade/Resources/schema/$new.xml";
+            if (!file_exists($old_schema)) {
+                return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', "$old.xml"),0 , JAWS_ERROR_ERROR);
+            }
 
-        if (!file_exists($new_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.6.0.xml'),0 , JAWS_ERROR_ERROR);
-        }
+            if (!file_exists($new_schema)) {
+                return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', "$new.xml"),0 , JAWS_ERROR_ERROR);
+            }
 
-        _log(JAWS_LOG_DEBUG,"Upgrading core schema");
-        $result = Jaws_DB::getInstance()->installSchema($new_schema, array(), $old_schema);
-        if (Jaws_Error::isError($result)) {
-            _log(JAWS_LOG_ERROR, $result->getMessage());
-            if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
-                return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+            _log(JAWS_LOG_DEBUG,"Upgrading core schema");
+            $result = Jaws_DB::getInstance()->installSchema($new_schema, array(), $old_schema);
+            if (Jaws_Error::isError($result)) {
+                _log(JAWS_LOG_ERROR, $result->getMessage());
+                if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
+                    return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+                }
+            }
+
+            // update sessions user/checksum
+            if ($new == '1.6.1') {
+                $objORM = Jaws_ORM::getInstance();
+                $sessions = $objORM->table('session')->select('id:integer', 'user', 'data')->fetchAll();
+                
+                foreach ($sessions as $session) {
+                    $result = $objORM->update(
+                        array('userid' => (int)$session['user'])
+                    )->exec();
+                    if (Jaws_Error::IsError($result)) {
+                        // do nothing
+                    }
+                }
             }
         }
 
