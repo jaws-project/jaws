@@ -30,7 +30,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->SetVariable('control-panel', _t('CONTROLPANEL_TITLE'));
         $tpl->SetBlock('layout/login-info', false);
         $tpl->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
-        $uInfo = $GLOBALS['app']->Session->GetAttributes('username', 'nickname', 'avatar', 'email');
+        $uInfo = $GLOBALS['app']->Session->getAttributes('', array('username', 'nickname', 'avatar', 'email'));
         $tpl->SetVariable('username', $uInfo['username']);
         $tpl->SetVariable('nickname', $uInfo['nickname']);
         $tpl->SetVariable('email',    $uInfo['email']);
