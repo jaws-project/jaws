@@ -205,8 +205,8 @@
 
             <field>
                 <name>user</name>
-                <type>integer</type>
-                <length>8</length>
+                <type>text</type>
+                <length>48</length>
             </field>
 
             <field>
@@ -285,11 +285,11 @@
             <index>
                 <name><variable>table_prefix</variable>session_user</name>
                 <field>
-                    <name>domain</name>
+                    <name>user</name>
                 </field>
 
                 <field>
-                    <name>user</name>
+                    <name>domain</name>
                 </field>
             </index>
 

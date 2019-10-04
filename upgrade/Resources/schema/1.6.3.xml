@@ -205,6 +205,7 @@
 
             <field>
                 <name>user</name>
+                <was>userid</was>
                 <type>integer</type>
                 <length>8</length>
             </field>
@@ -281,17 +282,6 @@
                 <length>8</length>
                 <default>0</default>
             </field>
-
-            <index>
-                <name><variable>table_prefix</variable>session_user</name>
-                <field>
-                    <name>domain</name>
-                </field>
-
-                <field>
-                    <name>user</name>
-                </field>
-            </index>
 
             <index>
                 <name><variable>table_prefix</variable>session_hidden</name>
