@@ -37,9 +37,9 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             trim($post['subject']) == '' ||
             trim($post['message']) == '')
         {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('CONTACT_INCOMPLETE_FIELDS'),
-                'Contact.Response',
+                'Response',
                 RESPONSE_ERROR
             );
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
@@ -49,9 +49,9 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $resCheck->getMessage(),
-                'Contact.Response',
+                'Response',
                 RESPONSE_ERROR
             );
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
@@ -100,9 +100,9 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
 /*
         if ($this->gadget->registry->fetch('use_antispam') == 'true') {
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
-                    'Contact.Response',
+                    'Response',
                     RESPONSE_ERROR
                 );
                 $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
@@ -119,9 +119,9 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
                                               '',
                                               false);
             if (Jaws_Error::IsError($attach)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $attach->getMessage(),
-                    'Contact.Response',
+                    'Response',
                     RESPONSE_ERROR
                 );
                 $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
@@ -173,16 +173,16 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
                 // FIXME:: check result
             }
 
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('CONTACT_RESULT_SENT'),
-                'Contact.Response',
+                'Response',
                 RESPONSE_NOTICE
             );
 
         } catch (Exception $error) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $error->getMessage(),
-                'Contact.Response',
+                'Response',
                 RESPONSE_ERROR
             );
         }
