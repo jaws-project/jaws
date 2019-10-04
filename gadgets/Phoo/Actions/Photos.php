@@ -316,7 +316,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('UploadPhoto.html');
         $tpl->SetBlock('uploadUI');
 
-        if ($response = $GLOBALS['app']->Session->PopResponse('Phoo.UploadPhoto')) {
+        if ($response = $this->gadget->session->pop('UploadPhoto')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -368,15 +368,15 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Photos');
         $res = $model->SavePhoto($_FILES['photo'], $post['title'], $post['description']);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $res->getMessage(),
-                'Phoo.UploadPhoto',
+                'UploadPhoto',
                 RESPONSE_ERROR
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('PHOO_PHOTO_ADDED'),
-                'Phoo.UploadPhoto',
+                'UploadPhoto',
                 RESPONSE_NOTICE
             );
         }
