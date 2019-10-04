@@ -70,7 +70,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget_title', _t('POLL_ACTION_POLL_TITLE'));
         $tpl->SetVariable('title', $poll['title']);
 
-        $response = $GLOBALS['app']->Session->PopResponse('Poll.Vote');
+        $response = $this->gadget->session->pop('Vote');
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
@@ -249,15 +249,15 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $res = $model->AddAnswerVotes($poll['id'], $post['answers']);
             }
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $res->GetMessage(),
-                    'Poll.Vote',
+                    'Vote',
                     RESPONSE_ERROR
                 );
             } else {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     _t('POLL_THANKS'),
-                    'Poll.Vote'
+                    'Vote'
                 );
             }
             Jaws_Header::Referrer();
