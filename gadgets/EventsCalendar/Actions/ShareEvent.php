@@ -162,9 +162,9 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             );
         }
 
-        $GLOBALS['app']->Session->PushResponse(
+        $this->gadget->session->push(
             _t('EVENTSCALENDAR_NOTICE_SHARE_UPDATED'),
-            'Events.Response'
+            'Response'
         );
         return $GLOBALS['app']->Session->GetResponse(
             _t('EVENTSCALENDAR_NOTICE_SHARE_UPDATED')

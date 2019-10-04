@@ -51,7 +51,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // Response
-        $response = $GLOBALS['app']->Session->PopResponse('Events.Response');
+        $response = $this->gadget->session->pop('Response');
         if ($response) {
             $tpl->SetVariable('response_text', $response['text']);
             $tpl->SetVariable('response_type', $response['type']);
@@ -246,9 +246,9 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             'recurrence', 'month', 'day', 'wday',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($event['subject']) || empty($event['start_date'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
-                'Events.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $event
             );
@@ -269,18 +269,18 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Event');
         $result = $model->InsertEvent($event);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_EVENT_CREATE'),
-                'Events.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $event
             );
             Jaws_Header::Referrer();
         }
 
-        $GLOBALS['app']->Session->PushResponse(
+        $this->gadget->session->push(
             _t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'),
-            'Events.Response'
+            'Response'
         );
         return Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $event['user'])));
     }
@@ -298,9 +298,9 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             'recurrence', 'month', 'day', 'wday',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($data['subject']) || empty($data['start_date'])) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
-                'Events.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $data
             );
@@ -313,9 +313,9 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_RETRIEVING_DATA'),
-                'Events.Response',
+                'Response',
                 RESPONSE_ERROR
             );
             Jaws_Header::Referrer();
@@ -323,9 +323,9 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         // Verify owner
         if ($event['owner'] != $user) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
-                'Events.Response',
+                'Response',
                 RESPONSE_ERROR
             );
             Jaws_Header::Referrer();
@@ -341,18 +341,18 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         $result = $model->UpdateEvent($id, $data, $event);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_EVENT_UPDATE'),
-                'Events.Response',
+                'Response',
                 RESPONSE_ERROR,
                 $data
             );
             Jaws_Header::Referrer();
         }
 
-        $GLOBALS['app']->Session->PushResponse(
+        $this->gadget->session->push(
             _t('EVENTSCALENDAR_NOTICE_EVENT_UPDATED'),
-            'Events.Response'
+            'Response'
         );
         return Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $data['user'])));
     }
@@ -406,14 +406,14 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (count($id_set) !== count($verifiedEvents)) {
             $msg = _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS_FAILED');
             // FIXME: we are creating response twice
-            $GLOBALS['app']->Session->PushResponse($msg, 'Events.Response', RESPONSE_WARNING);
+            $this->gadget->session->push($msg, 'Response', RESPONSE_WARNING);
             return $GLOBALS['app']->Session->GetResponse($msg, RESPONSE_WARNING);
         }
 
         $msg = (count($id_set) === 1)?
             _t('EVENTSCALENDAR_NOTICE_EVENT_DELETED') :
             _t('EVENTSCALENDAR_NOTICE_EVENTS_DELETED');
-        $GLOBALS['app']->Session->PushResponse($msg, 'Events.Response');
+        $this->gadget->session->push($msg, 'Response');
         return $GLOBALS['app']->Session->GetResponse($msg);
     }
 }

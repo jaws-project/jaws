@@ -59,7 +59,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // Check for response
-        $response = $GLOBALS['app']->Session->PopResponse('Events.Response');
+        $response = $this->gadget->session->pop('Response');
         if ($response) {
             $tpl->SetVariable('response_text', $response['text']);
             $tpl->SetVariable('response_type', $response['type']);
