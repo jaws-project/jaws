@@ -22,7 +22,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
         $sModel = $this->gadget->model->load('Subscription');
         $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
-        $response = $GLOBALS['app']->Session->PopResponse('Subscription.Subscription');
+        $response = $this->gadget->session->pop('Subscription');
         $email = '';
         $mobile = '';
         $selectedItems = array();
@@ -161,9 +161,9 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             $selectedItems = empty($subscriptionItems) ? null : array($subscriptionItems) ;
 
             if(empty($selectedItems)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     _t('SUBSCRIPTION_ERROR_NOT_ITEM_SELECTED'),
-                    'Subscription.Subscription',
+                    'Subscription',
                     RESPONSE_ERROR,
                     $post
                 );
@@ -180,16 +180,16 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             $selectedItems
         );
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result->GetMessage(),
-                'Subscription.Subscription',
+                'Subscription',
                 RESPONSE_ERROR,
                 $post
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('SUBSCRIPTION_SUBSCRIPTION_UPDATED'),
-                'Subscription.Subscription'
+                'Subscription'
             );
         }
 
@@ -272,16 +272,16 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         );
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result->GetMessage(),
-                'Subscription.Subscription',
+                'Subscription',
                 RESPONSE_ERROR,
                 $post
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('SUBSCRIPTION_SUBSCRIPTION_UPDATED'),
-                'Subscription.Subscription'
+                'Subscription'
             );
         }
 
