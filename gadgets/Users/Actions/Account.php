@@ -25,7 +25,7 @@ class Users_Actions_Account extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');
+        $response = $this->gadget->session->pop('Account');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
             $account = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
@@ -184,14 +184,14 @@ class Users_Actions_Account extends Users_Actions_Default
                         $message = $message. "\n" . _t('USERS_EMAIL_REPLACEMENT_SENT');
                     }
                 }
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $message,
-                    'Users.Account.Response'
+                    'Account'
                 );
             } else {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $result->GetMessage(),
-                    'Users.Account.Response',
+                    'Account',
                     RESPONSE_ERROR,
                     $post
                 );
@@ -199,9 +199,9 @@ class Users_Actions_Account extends Users_Actions_Default
         } else {
             // unset unnecessary account data
             unset($post['password'], $post['chkpassword']);
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('USERS_USERS_PASSWORDS_DONT_MATCH'),
-                'Users.Account.Response',
+                'Account',
                 RESPONSE_ERROR,
                 $post
             );

@@ -26,7 +26,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Contact');
+        $response = $this->gadget->session->pop('Contact');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
             $contact = $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'));
@@ -168,16 +168,16 @@ class Users_Actions_Contacts extends Users_Actions_Default
             $post
         );
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result->GetMessage(),
-                'Users.Contact',
+                'Contact',
                 RESPONSE_ERROR,
                 $post
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('USERS_USERS_CONTACTINFO_UPDATED'),
-                'Users.Contact'
+                'Contact'
             );
         }
 

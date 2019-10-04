@@ -60,7 +60,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $objAccount = new $classname($this->gadget);
         return $objAccount->LoginForgot(Jaws_XSS::filterURL(hex2bin($referrer), true, true));
 /*
-        $response = $GLOBALS['app']->Session->PopResponse('Users.LoginForgot');
+        $response = $this->gadget->session->pop('LoginForgot');
         if (!isset($response['data'])) {
             $post = array(
                 'step'  => 0,
@@ -115,7 +115,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
                 $tpl->ParseBlock('forgot/action');
         }
 
-        if ($response = $GLOBALS['app']->Session->PopResponse('Users.LoginForgot')) {
+        if ($response = $this->gadget->session->pop('LoginForgot')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -194,9 +194,9 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $resCheck->GetMessage(),
-                'Users.LoginForgot',
+                'LoginForgot',
                 RESPONSE_ERROR,
                 $post
             );
@@ -206,17 +206,17 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         if (empty($post['step'])) {
             $result = $this->gadget->model->load('Registration')->SendLoginRecoveryKey($post['email']);
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $result->GetMessage(),
-                    'Users.LoginForgot',
+                    'LoginForgot',
                     RESPONSE_ERROR,
                     $post
                 );
             } else {
                 $post['step'] = 1;
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     _t('USERS_FORGOT_REQUEST_SENT'),
-                    'Users.LoginForgot',
+                    'LoginForgot',
                     RESPONSE_NOTICE,
                     $post
                 );
@@ -224,17 +224,17 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         } else {
             $result = $this->gadget->model->load('Account')->UpdatePassword($post['email'], $post['key']);
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $result->getMessage(),
-                    'Users.LoginForgot',
+                    'LoginForgot',
                     RESPONSE_ERROR,
                     $post
                 );
             } else {
                 $post['step'] = 2;
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     _t('USERS_FORGOT_PASSWORD_CHANGED'),
-                    'Users.LoginForgot',
+                    'LoginForgot',
                     RESPONSE_NOTICE,
                     $post
                 );

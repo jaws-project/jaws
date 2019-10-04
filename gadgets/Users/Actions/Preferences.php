@@ -137,7 +137,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
             $tpl->ParseBlock('preferences/gadget');
         }
 
-        if ($response = $GLOBALS['app']->Session->PopResponse('Users.Preferences')) {
+        if ($response = $this->gadget->session->pop('Preferences')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -188,14 +188,14 @@ class Users_Actions_Preferences extends Users_Actions_Default
             $gadget
         );
         if (!Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('USERS_PREFERENCES_UPDATED'),
-                'Users.Preferences'
+                'Preferences'
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result->GetMessage(),
-                'Users.Preferences',
+                'Preferences',
                 RESPONSE_ERROR
             );
         }

@@ -35,7 +35,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
         $this->gadget->define('lbl_manageFriends', _t('USERS_FRIENDS_MANAGE'));
 
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Groups');
+        $response = $this->gadget->session->pop('Groups');
         // Load the template
         $tpl = $this->gadget->template->load('Friends.html');
         $tpl->SetBlock('groups');
@@ -182,9 +182,9 @@ class Users_Actions_Friends extends Users_Actions_Default
                 // TODO: improve performance
                 $res= $jUser->DeleteGroup($id, $user);
                 if (Jaws_Error::IsError($res)) {
-                    $GLOBALS['app']->Session->PushResponse(
+                    $this->gadget->session->push(
                         $res->getMessage(),
-                        'Users.Groups',
+                        'Groups',
                         RESPONSE_ERROR
                     );
                     break;

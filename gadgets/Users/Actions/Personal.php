@@ -25,7 +25,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission('EditUserPersonal');
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Personal.Response');
+        $response = $this->gadget->session->pop('Personal');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
             $personal  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
@@ -157,9 +157,9 @@ class Users_Actions_Personal extends Users_Actions_Default
                 'gif,jpg,jpeg,png,svg'
             );
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushResponse(
+                $this->gadget->session->push(
                     $res->GetMessage(),
-                    'Users.Personal.Response',
+                    'Personal',
                     RESPONSE_ERROR,
                     $post
                 );
@@ -178,16 +178,16 @@ class Users_Actions_Personal extends Users_Actions_Default
             $post
         );
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result->GetMessage(),
-                'Users.Personal.Response',
+                'Personal',
                 RESPONSE_ERROR,
                 $post
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 _t('USERS_USERS_PERSONALINFO_UPDATED'),
-                'Users.Personal.Response'
+                'Personal'
             );
         }
 
