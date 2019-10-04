@@ -451,13 +451,17 @@ class Jaws_Session
      */
     function deleteAttribute($name, $trashed = false, $component = '')
     {
-        if (array_key_exists($name, $this->attributes[$component])) {
+        if (array_key_exists($component, $this->attributes) &&
+            array_key_exists($name, $this->attributes[$component])
+        ) {
             $this->changed = true;
             if ($trashed) {
                 $this->trash[$component][$name] = $this->attributes[$component][$name];
             }
             unset($this->attributes[$component][$name]);
-        } elseif (!$trashed && array_key_exists($name, $this->trash[$component])) {
+        } elseif (!$trashed && array_key_exists($component, $this->trash) &&
+            array_key_exists($name, $this->trash[$component])
+        ) {
             unset($this->trash[$component][$name]);
         }
 
