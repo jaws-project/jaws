@@ -33,7 +33,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
 
             $tpl->SetVariable('profile', _t('USERS_PROFILE'));
-            $uInfo = $GLOBALS['app']->Session->GetAttributes('username', 'nickname', 'avatar', 'email');
+            $uInfo = $GLOBALS['app']->Session->GetAttributes('', array('username', 'nickname', 'avatar', 'email'));
             // username
             $tpl->SetVariable('username',  $uInfo['username']);
             // nickname
