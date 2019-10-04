@@ -171,8 +171,8 @@ class Jaws
 
         $this->Map->Init();
         $this->Session = Jaws_Session::factory();
-        $this->Session->Init();
-        $logged_user = $GLOBALS['app']->Session->GetAttributes('user', 'groups');
+        $this->Session->init();
+        $logged_user = $GLOBALS['app']->Session->getAttributes('', array('user', 'groups'));
         $this->ACL->Init($logged_user['user'], $logged_user['groups']);
         $this->loadPreferences();
     }
