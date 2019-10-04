@@ -183,15 +183,15 @@ class Directory_Actions_File extends Jaws_Gadget_Action
             $result = Jaws_Error::raiseError(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'), __FUNCTION__, JAWS_ERROR_NOTICE);
         }
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result->getMessage(),
-                'Directory.SaveFile',
+                'SaveFile',
                 RESPONSE_ERROR
             );
         } else {
-            $GLOBALS['app']->Session->PushResponse(
+            $this->gadget->session->push(
                 $result,
-                'Directory.SaveFile',
+                'SaveFile',
                 RESPONSE_NOTICE
             );
         }

@@ -77,7 +77,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
         $tpl->SetBlock('directory');
 
-        $response = $GLOBALS['app']->Session->PopResponse('Directory.SaveFile');
+        $response = $this->gadget->session->pop('SaveFile');
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
