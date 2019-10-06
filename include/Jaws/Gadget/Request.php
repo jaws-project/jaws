@@ -11,6 +11,14 @@
 class Jaws_Gadget_Request
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -28,6 +36,7 @@ class Jaws_Gadget_Request
     function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
@@ -43,7 +52,7 @@ class Jaws_Gadget_Request
      */
     function fetch($key, $method = '', $filter = true, $xss_strip = false, $json_decode = false)
     {
-        if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
+        if ($this->gadget->name == $this->app->mainGadget) {
             return jaws()->request->fetch($key, $method, $filter, $xss_strip, $json_decode);
         } else {
             return is_scalar($key)? null : array_fill_keys($key, null);
@@ -61,7 +70,7 @@ class Jaws_Gadget_Request
      */
     function fetchAll($method = '', $filter = true, $xss_strip = false, $type_validate = true)
     {
-        if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
+        if ($this->gadget->name == $this->app->mainGadget) {
             return jaws()->request->fetchAll($method, $filter, $xss_strip, $type_validate);
         } else {
             return array();
