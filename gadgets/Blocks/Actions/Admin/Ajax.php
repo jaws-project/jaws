@@ -48,11 +48,11 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Block');
         $res = $model->NewBlock($title, $contents, $displayTitle, $user);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(),
+            return $this->gadget->session->response($res->GetMessage(),
                                                          RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('BLOCKS_ADDED', "#$res"),
+        return $this->gadget->session->response(_t('BLOCKS_ADDED', "#$res"),
                                                      RESPONSE_NOTICE,
                                                      $res);
     }
@@ -76,7 +76,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
         $model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -92,7 +92,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Block');
         $model->DeleteBlock($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**

@@ -61,11 +61,11 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('BLOCKS_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOCKS_ERROR_NOT_UPDATED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_UPDATED', $title), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BLOCKS_UPDATED', $title), RESPONSE_NOTICE);
         return true;
     }
 
@@ -83,12 +83,12 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_ERROR_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('BLOCKS_ERROR_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOCKS_ERROR_NOT_UPDATED'));
         }
         // TODO: we must trigger SHOUT here
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BLOCKS_DELETED', $block['title']), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BLOCKS_DELETED', $block['title']), RESPONSE_NOTICE);
         return true;
     }
 
