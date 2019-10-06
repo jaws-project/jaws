@@ -33,7 +33,7 @@ class Jaws_Registry
      * @access  public
      * @return  string  Jaws version
      */
-    function Init()
+    function init()
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->select('component', 'key_name', 'key_value', 'key_type:integer');
