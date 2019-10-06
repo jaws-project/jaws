@@ -143,10 +143,10 @@ class Jaws
      * @access  public
      * @return  object returns the instance
      */
-    static function getInstance()
+    static function getInstance($create_instance = true)
     {
-        static $objJaws;
-        if (!isset($objJaws)) {
+        static $objJaws = false;
+        if ($create_instance && empty($objJaws)) {
             $objJaws = new Jaws();
         }
 
