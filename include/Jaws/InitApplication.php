@@ -72,14 +72,14 @@ require JAWS_PATH . 'include/Jaws/Helper.php';
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 
 // Create application
-$app = Jaws::getInstance();
+$jawsApp = Jaws::getInstance();
 // get an instance of Jaws_DB
 $objDatabase = Jaws_DB::getInstance('default', $db);
 if (Jaws_Error::IsError($objDatabase)) {
     Jaws_Error::Fatal($objDatabase->getMessage());
 }
 
-$db_jaws_version = $app->registry->init();
+$db_jaws_version = $jawsApp->registry->init();
 if ($db_jaws_version != JAWS_VERSION) {
     if (strrstr(JAWS_VERSION, '.', true) != strrstr($db_jaws_version, '.', true)) {
         //require_once JAWS_PATH . 'upgrade/JawsUpgrader.php';
@@ -92,11 +92,11 @@ if ($db_jaws_version != JAWS_VERSION) {
         //}
     }
 
-    $app->registry->update('version', JAWS_VERSION);
+    $jawsApp->registry->update('version', JAWS_VERSION);
 }
 
 // init application
-$app->init();
+$jawsApp->init();
 
 // load Piwi initialize
 require_once JAWS_PATH . 'include/Jaws/InitPiwi.php';
