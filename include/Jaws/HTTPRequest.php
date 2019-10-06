@@ -12,6 +12,14 @@ require_once PEAR_PATH. 'HTTP/Request2.php';
 class Jaws_HTTPRequest
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * @access  private
      * @var int $expires    Cache expires time(second)
      */
@@ -62,16 +70,18 @@ class Jaws_HTTPRequest
      */
     function __construct($options = array())
     {
-        $this->options['timeout'] = (int)$GLOBALS['app']->Registry->fetch('connection_timeout', 'Settings');
-        if ($GLOBALS['app']->Registry->fetch('proxy_enabled', 'Settings') == 'true') {
+        $this->app = Jaws::getInstance();
+
+        $this->options['timeout'] = (int)$this->app->registry->fetch('connection_timeout', 'Settings');
+        if ($this->app->registry->fetch('proxy_enabled', 'Settings') == 'true') {
             $this->options['proxy_type'] = 'http';
             $this->options['proxy_auth_scheme'] = HTTP_Request2::AUTH_BASIC;
-            if ($GLOBALS['app']->Registry->fetch('proxy_auth', 'Settings') == 'true') {
-                $this->options['proxy_user'] = $GLOBALS['app']->Registry->fetch('proxy_user', 'Settings');
-                $this->options['proxy_password'] = $GLOBALS['app']->Registry->fetch('proxy_pass', 'Settings');
+            if ($this->app->registry->fetch('proxy_auth', 'Settings') == 'true') {
+                $this->options['proxy_user'] = $this->app->registry->fetch('proxy_user', 'Settings');
+                $this->options['proxy_password'] = $this->app->registry->fetch('proxy_pass', 'Settings');
             }
-            $this->options['proxy_host'] = $GLOBALS['app']->Registry->fetch('proxy_host', 'Settings');
-            $this->options['proxy_port'] = $GLOBALS['app']->Registry->fetch('proxy_port', 'Settings');
+            $this->options['proxy_host'] = $this->app->registry->fetch('proxy_host', 'Settings');
+            $this->options['proxy_port'] = $this->app->registry->fetch('proxy_port', 'Settings');
         }
 
         // merge default and passed options
@@ -105,7 +115,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url);
         if ($this->refresh ||
-            false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
+            false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
         ) {
             $headers = $this->httpRequest->getHeaders();
             // user agent
@@ -117,7 +127,7 @@ class Jaws_HTTPRequest
             $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
             try {
                 $result = $this->httpRequest->send();
-                $GLOBALS['app']->Cache->set(
+                $this->app->cache->set(
                     $this->request_cache_key,
                     serialize(
                         $result = array(
@@ -153,7 +163,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url, $params);
         if ($this->refresh ||
-            false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
+            false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
         ) {
             $headers = $this->httpRequest->getHeaders();
             // detect data need url-encoding
@@ -179,7 +189,7 @@ class Jaws_HTTPRequest
 
             try {
                 $result = $this->httpRequest->send();
-                $GLOBALS['app']->Cache->set(
+                $this->app->cache->set(
                     $this->request_cache_key,
                     serialize(
                         $result = array(
@@ -215,7 +225,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url, $data);
         if ($this->refresh ||
-            false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
+            false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
         ) {
             $headers = $this->httpRequest->getHeaders();
             // user agent
@@ -229,7 +239,7 @@ class Jaws_HTTPRequest
             $this->httpRequest->setBody($data);
             try {
                 $result = $this->httpRequest->send();
-                $GLOBALS['app']->Cache->set(
+                $this->app->cache->set(
                     $this->request_cache_key,
                     serialize(
                         $result = array(
@@ -309,7 +319,7 @@ class Jaws_HTTPRequest
      */
     function deleteCache()
     {
-        return $GLOBALS['app']->Cache->delete($this->request_cache_key);
+        return $this->app->cache->delete($this->request_cache_key);
     }
 
 }
