@@ -11,6 +11,14 @@
 class Jaws_Gadget_Actions_MenuNavigation
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -29,8 +37,8 @@ class Jaws_Gadget_Actions_MenuNavigation
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
-
 
     /**
      * Get menu navigation
@@ -54,8 +62,8 @@ class Jaws_Gadget_Actions_MenuNavigation
         $tpl->SetVariable('label', empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label);
 
         $thisGadget = $this->gadget->name;
-        $mainGadget = $GLOBALS['app']->mainGadget;
-        $mainAction = $GLOBALS['app']->mainAction;
+        $mainGadget = $this->app->mainGadget;
+        $mainAction = $this->app->mainAction;
         if (empty($options)) {
             // use gadget normal actions if navigation index exist
             foreach ($this->gadget->actions['index'] as $thisAction => $action) {
