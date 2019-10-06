@@ -27,19 +27,19 @@ class Jaws_HTTPError
         header('Pragma: no-cache');
 
         // Let everyone know a HTTP error has been happened
-        $result = $GLOBALS['app']->Listener->Shout('HTTPError', 'HTTPError', $code, 'UrlMapper');
+        $result = Jaws::getInstance()->listener->Shout('HTTPError', 'HTTPError', $code, 'UrlMapper');
         if (!Jaws_Error::IsError($result) && !empty($result)) {
             $code = empty($result['code'])? $code : $result['code'];
         }
 
         switch ($code) {
             case 401:
-                $realm = $GLOBALS['app']->Registry->fetch('realm', 'Settings');
+                $realm = Jaws::getInstance()->registry->fetch('realm', 'Settings');
                 jaws()->http_response_code(401);
                 // using invalid authentication type for avoid popup login box
                 header('WWW-Authenticate: LoginBox realm="'. $realm. '"');
 
-                $urlLogin = $GLOBALS['app']->Map->GetMappedURL(
+                $urlLogin = Jaws::getInstance()->map->GetMappedURL(
                     'Users',
                     'Login',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
@@ -87,8 +87,8 @@ class Jaws_HTTPError
         }
 
         // if current theme has a error code html file, return it, if not return the messages.
-        $theme = $GLOBALS['app']->GetTheme();
-        $site_name = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
+        $theme = Jaws::getInstance()->GetTheme();
+        $site_name = Jaws::getInstance()->registry->fetch('site_name', 'Settings');
         if (file_exists($theme['path'] . "$code.html")) {
             $tpl = new Jaws_Template();
             $tpl->Load("$code.html", $theme['path']);
@@ -97,17 +97,17 @@ class Jaws_HTTPError
             //set global site config
             $direction = _t('GLOBAL_LANG_DIRECTION');
             $dir  = $direction == 'rtl' ? '.' . $direction : '';
-            $brow = $GLOBALS['app']->GetBrowserFlag();
+            $brow = Jaws::getInstance()->getBrowserFlag();
             $brow = empty($brow)? '' : '.'.$brow;
 
             $tpl->SetVariable('.dir', $dir);
             $tpl->SetVariable('.browser', $brow);
             $tpl->SetVariable('site-name',   $site_name);
             $tpl->SetVariable('site-title',  $site_name);
-            $tpl->SetVariable('site-slogan', $GLOBALS['app']->Registry->fetch('site_slogan', 'Settings'));
-            $tpl->SetVariable('site-author',      $GLOBALS['app']->Registry->fetch('site_author', 'Settings'));
-            $tpl->SetVariable('site-copyright',   $GLOBALS['app']->Registry->fetch('copyright', 'Settings'));
-            $tpl->SetVariable('site-description', $GLOBALS['app']->Registry->fetch('site_description', 'Settings'));
+            $tpl->SetVariable('site-slogan', Jaws::getInstance()->registry->fetch('site_slogan', 'Settings'));
+            $tpl->SetVariable('site-author',      Jaws::getInstance()->registry->fetch('site_author', 'Settings'));
+            $tpl->SetVariable('site-copyright',   Jaws::getInstance()->registry->fetch('copyright', 'Settings'));
+            $tpl->SetVariable('site-description', Jaws::getInstance()->registry->fetch('site_description', 'Settings'));
 
             $tpl->SetVariable('title',   $title);
             $tpl->SetVariable('content', $message);
