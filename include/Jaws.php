@@ -296,7 +296,7 @@ class Jaws
      * @access  public
      * @return  string The default language
      */
-    function GetLanguage()
+    function getLanguage()
     {
         $language = $this->_Preferences['language'];
         // Check if valid language name
@@ -304,7 +304,7 @@ class Jaws
             strpos($language, '%') !== false ||
             strpos($language, '\\') !== false ||
             strpos($language, '/') !== false) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_INVALID_NAME', 'GetLanguage'),
+                return new Jaws_Error(_t('GLOBAL_ERROR_INVALID_NAME', 'getLanguage'),
                                       'Getting language name');
         }
         return $language;
@@ -316,7 +316,7 @@ class Jaws
      * @access  public
      * @return  string The default language
      */
-    function GetEditor()
+    function getEditor()
     {
         return $this->_Preferences['editor'];
     }
@@ -327,7 +327,7 @@ class Jaws
      * @access  public
      * @return  string The type of browser
      */
-    function GetBrowserFlag()
+    function getBrowserFlag()
     {
         if (empty($this->_BrowserFlag)) {
             require_once PEAR_PATH. 'Net/Detect.php';
@@ -344,7 +344,7 @@ class Jaws
      * @access  public
      * @return  string The default language
      */
-    function GetCalendar()
+    function getCalendar()
     {
         return $this->_Preferences['calendar'];
     }
