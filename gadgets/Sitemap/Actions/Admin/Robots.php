@@ -54,11 +54,11 @@ class Sitemap_Actions_Admin_Robots extends Sitemap_Actions_Admin_Default
         $robots = $this->gadget->request->fetch('robots', 'post');
         $result = $this->gadget->registry->update('robots.txt', $robots);
         if (!$result || Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_ROBOTS_NOT_SAVED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('SITEMAP_ERROR_ROBOTS_NOT_SAVED'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ROBOTS_SAVED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('SITEMAP_ROBOTS_SAVED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 }

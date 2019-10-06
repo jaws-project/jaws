@@ -305,14 +305,14 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->UpdateCategory($post['gname'], $post['category'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CANT_UPDATE_CATEGORY_PROPERTIES'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_ERROR_CANT_UPDATE_CATEGORY_PROPERTIES'),
                 RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_CATEGORY_PROPERTIES_UPDATED'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_CATEGORY_PROPERTIES_UPDATED'),
                 RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -329,14 +329,14 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $data['update_time'] = '';
         $res = $model->UpdateGadgetProperties($post['gname'], $data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CANT_UPDATE_GADGET_PROPERTIES'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_ERROR_CANT_UPDATE_GADGET_PROPERTIES'),
                 RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_GADGET_PROPERTIES_UPDATED'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_GADGET_PROPERTIES_UPDATED'),
                 RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -351,14 +351,14 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->SyncSitemapXML($gadget);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CANT_SYNC_XML_FILE'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_ERROR_CANT_SYNC_XML_FILE'),
                 RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_XML_FILE_SYNCED'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_XML_FILE_SYNCED'),
                 RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -373,13 +373,13 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->SyncSitemapData($gadget);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CANT_SYNC_DATA_FILE'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_ERROR_CANT_SYNC_DATA_FILE'),
                 RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_DATA_FILE_SYNCED'),
+            $this->app->session->PushLastResponse(_t('SITEMAP_DATA_FILE_SYNCED'),
                 RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 }
