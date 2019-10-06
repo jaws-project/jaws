@@ -44,11 +44,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bData['stop_time']         = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[\/\- \:]/', $start_time), 'Y-m-d H:i:s');
-            $bData['start_time']    = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $bData['start_time']    = $this->app->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[\/\- \:]/', $stop_time), 'Y-m-d H:i:s');
-            $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $bData['stop_time']     = $this->app->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
         $bData['createtime']        = Jaws_DB::getInstance()->date();
@@ -60,10 +60,10 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $res = $bannersTable->insert($bData)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_BANNERS_CREATED', $title), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BANNER_BANNERS_CREATED', $title), RESPONSE_NOTICE);
 
         return true;
     }
@@ -103,11 +103,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bData['stop_time']         = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[\/\- \:]/', $start_time), 'Y-m-d H:i:s');
-            $bData['start_time']    = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $bData['start_time']    = $this->app->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[\/\- \:]/', $stop_time), 'Y-m-d H:i:s');
-            $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $bData['stop_time']     = $this->app->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
         $bData['updatetime']        = Jaws_DB::getInstance()->date();
@@ -117,11 +117,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $res = $bannersTable->update($bData)->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_BANNERS_UPDATED', $title), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BANNER_BANNERS_UPDATED', $title), RESPONSE_NOTICE);
         return true;
     }
 
@@ -168,7 +168,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             }
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_GROUPS_UPDATED_BANNERS'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BANNER_GROUPS_UPDATED_BANNERS'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -221,23 +221,23 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if(!isset($banner['id'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('BANNER_BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $res = $bannersTable->delete()->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BANNER_BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
         if (!empty($banner['banner'])) {
             Jaws_Utils::Delete(JAWS_DATA . $this->gadget->DataDirectory . $banner['banner']);
         }

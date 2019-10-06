@@ -30,10 +30,10 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         $res = $bgroupsTable->insert($bgData)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_GROUPS_CREATED', $title), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BANNER_GROUPS_CREATED', $title), RESPONSE_NOTICE);
 
         return true;
     }
@@ -62,10 +62,10 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         $res = $bgroupsTable->update($bgData)->where('id', $gid)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_GROUPS_UPDATED', $title), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BANNER_GROUPS_UPDATED', $title), RESPONSE_NOTICE);
 
         return true;
     }
@@ -80,19 +80,19 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_GROUPS_ERROR_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('BANNER_GROUPS_ERROR_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
 
         $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if(!isset($group['id'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_GROUPS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('BANNER_GROUPS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -103,11 +103,11 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         $res = $bannersTable->delete()->where('id', $gid)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('BANNER_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('BANNER_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
 
         return true;
     }
