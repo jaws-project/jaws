@@ -78,7 +78,7 @@ class Jaws_HTTPAuth
      */
     function showLoginBox()
     {
-        $realm = $GLOBALS['app']->Registry->fetch('realm', 'Settings');
+        $realm = Jaws::getInstance()->registry->fetch('realm', 'Settings');
         header('WWW-Authenticate: Basic realm="'.$realm.'"');
         header('HTTP/1.0 401 Unauthorized');            
 
