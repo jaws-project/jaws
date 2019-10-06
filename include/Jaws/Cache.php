@@ -20,7 +20,7 @@ class Jaws_Cache
     static function &factory($cacheDriver = '')
     {
         if (empty($cacheDriver)) {
-            $cacheDriver = $GLOBALS['app']->Registry->fetch('cache_driver', 'Settings');
+            $cacheDriver = Jaws::getInstance()->registry->fetch('cache_driver', 'Settings');
         }
         $cacheDriver = preg_replace('/[^[:alnum:]_\-]/', '', $cacheDriver);
 
