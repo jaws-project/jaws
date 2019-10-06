@@ -11,6 +11,14 @@
 class Jaws_Notification
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Drivers notification type
      */
     const EML_DRIVER = 0; // Email
@@ -57,14 +65,16 @@ class Jaws_Notification
      */
     protected function __construct($options = array())
     {
+        $this->app = Jaws::getInstance();
+
         // fetch all registry keys related to site attributes
-        $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);
+        $this->attributes = $this->app->registry->fetchAll('Settings', false);
         Jaws_Translate::getInstance()->LoadTranslation(
             'Global',
             JAWS_COMPONENT_OTHERS,
             $this->attributes['site_language']
         );
-        $this->attributes['site_url']       = $GLOBALS['app']->GetSiteURL('/');
+        $this->attributes['site_url']       = $this->app->GetSiteURL('/');
         $this->attributes['site_direction'] = _t_lang($this->attributes['site_language'], 'GLOBAL_LANG_DIRECTION');
     }
 
