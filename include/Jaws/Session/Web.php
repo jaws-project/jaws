@@ -44,10 +44,10 @@ class Jaws_Session_Web extends Jaws_Session
     function create($info = array(), $remember = false)
     {
         parent::create($info, $remember);
-        // Create cookie
+        // create cookie
         $this->setCookie(
             JAWS_SESSION_NAME,
-            $this->ssid.'-'.$this->salt,
+            $this->session['id'] . '-' . $this->session['salt'],
             $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0
         );
     }
@@ -56,18 +56,17 @@ class Jaws_Session_Web extends Jaws_Session
      * Logout from session
      *
      * @access  public
-     * @param   bool    $prepare_new_session Preparing new session for incoming request
      * @return  void
      * @see Jaws_Session::Logout
      */
-    function logout($prepare_new_session = false)
+    function logout()
     {
-        parent::Logout($prepare_new_session);
-        if ($prepare_new_session) {
-            $this->destroyCookie(JAWS_SESSION_NAME);
-        } else {
-            $this->setCookie(JAWS_SESSION_NAME, $this->ssid.'-'.$this->salt, 0, true);
-        }
+        parent::Logout();
+        $this->setCookie(
+            JAWS_SESSION_NAME,
+            $this->session['id'] . '-' . $this->session['salt'],
+            0
+        );
     }
 
     /**

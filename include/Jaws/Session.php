@@ -30,6 +30,32 @@ define('SESSION_RESERVED_ATTRIBUTES', "type,user,user_name,superadmin,concurrent
 class Jaws_Session
 {
     /**
+     * session array
+     * @var     array   $session
+     * @access  protected
+     */
+    protected $session = array(
+        'id'        => 0,
+        'salt'      => '',
+        'longevity' => 0,
+        'domain'    => '',
+        'user'      => 0,
+        'type'      => '',
+        'auth'      => '',
+        'webpush'   => '',
+    );
+
+    /**
+     * request session id/salt
+     * @var     array   $request
+     * @access  protected
+     */
+    protected $request = array(
+        'id'   => 0,
+        'salt' => ''
+    );
+
+    /**
      * session changed flag 
      * @var     bool    $changed
      * @access  protected
@@ -51,20 +77,6 @@ class Jaws_Session
      * @see     SetAttribute(), GetAttibute()
      */
     protected $trash = array();
-
-    /**
-     * Session unique identifier
-     * @var     int     $ssid
-     * @access  protected
-     */
-    protected $ssid = 0;
-
-    /**
-     * Session salt for prevent predication
-     * @var     string  $salt
-     * @access  protected
-     */
-    protected $salt = '';
 
     /**
      * An interface for available drivers
@@ -113,7 +125,7 @@ class Jaws_Session
      */
     function getSessionID()
     {
-        return $this->ssid;
+        return $this->session['id'];
     }
 
     /**
@@ -131,10 +143,9 @@ class Jaws_Session
      * Logout from session and reset session values
      *
      * @access  public
-     * @param   bool    $prepare_new_session Preparing new session for incoming request
      * @return  void
      */
-    function logout($prepare_new_session = false)
+    function logout()
     {
         // logout event logging
         $GLOBALS['app']->Listener->Shout(
@@ -149,11 +160,7 @@ class Jaws_Session
         );
         // let everyone know a user has been logout
         $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->attributes);
-        if ($prepare_new_session) {
-            $this->reset();
-        } else {
-            $this->reset($this->ssid);
-        }
+        $this->reset();
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
     }
 
@@ -161,51 +168,55 @@ class Jaws_Session
      * Loads Jaws Session
      *
      * @access  protected
-     * @param   string  $sid Session identifier
+     * @param   string  $sessid Session identifier
      * @return  bool    True if can load session, false if not
      */
-    function load($sid)
+    function load($sessid)
     {
-        @list($sid, $salt) = explode('-', $sid);
-        $session = $this->getSession((int)$sid);
+        @list($this->request['id'], $this->request['salt']) = explode('-', $sessid);
+        $this->request['id'] = (int)$this->request['id'];
+
+        $session = $this->getSession($this->request['id']);
         try {
             // session exists
             if (Jaws_Error::IsError($session) || empty($session)) {
                 throw new Exception('No previous session exists', JAWS_LOG_INFO);
             }
 
-            $this->ssid = $session['id'];
-            $this->salt = $session['salt'];
-            $this->attributes = unserialize($session['data']);
-            $checksum = md5($session['user'] . $session['data']);
+            $this->session = $session;
+            $this->attributes = unserialize($this->session['data']);
+            $checksum = md5($this->session['user'] . $this->session['data']);
 
             // browser agent
             $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
-            if ($agent !== $session['agent']) {
+            if ($agent !== $this->session['agent']) {
                 throw new Exception('Previous session agent has been changed', JAWS_LOG_NOTICE);
             }
 
             // session longevity
             $expTime = time() - 60 * (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
-            if ($session['update_time'] < ($expTime - $session['longevity'])) {
+            if ($this->session['update_time'] < ($expTime - $this->session['longevity'])) {
                 throw new Exception('Previous session has expired', JAWS_LOG_INFO);
             }
 
             // salt
-            if ($salt !== $session['salt']) {
+            if ($this->request['salt'] !== $this->session['salt']) {
                 define('SESSION_INVALID', true);
                 // no permission for execution all actions
                 define('SESSION_RESTRICTED_GADGETS', '');
-                $this->reset($this->ssid);
+                $this->reset();
                 $GLOBALS['log']->Log(JAWS_LOG_INFO, 'Session salt has been changed');
             }
 
+            /*
+            // FIXME: temporary prevent check checksum(will be enabled after new major version(maybe 2.0?!))
             // checksum
-            if ($checksum !== $session['checksum']) {
+            if ($checksum !== $this->session['checksum']) {
                 throw new Exception('Session checksum has been changed', JAWS_LOG_NOTICE);
             }
+            */
 
-            if ($this->getAttribute('logged')) {
+            if (!empty($this->session['user'])) {
                 // user expiry date
                 $expiry_date = $this->getAttribute('expiry_date');
                 if (!empty($expiry_date) && $expiry_date <= time()) {
@@ -223,7 +234,7 @@ class Jaws_Session
                 }
 
                 // concurrent logins
-                if ($session['update_time'] < $expTime) {
+                if ($this->session['update_time'] < $expTime) {
                     $logins = $this->getAttribute('concurrents');
                     $existSessions = $this->getUserSessions($this->getAttribute('user'), true);
                     if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
@@ -297,11 +308,11 @@ class Jaws_Session
         $this->setAttribute('last_password_update', $info['last_password_update']);
 
         $this->changed = true;
-        $this->salt = uniqid('', true);
-        if (empty($this->ssid)) {
-            $this->ssid = $this->insert($this->salt);
+        $this->session['salt'] = uniqid('', true);
+        if (empty($this->session['id'])) {
+            $this->session['id'] = $this->insert();
         } else {
-            $this->ssid = $this->update($this->salt);
+            $this->update(true);
         }
 
         return true;
@@ -327,29 +338,23 @@ class Jaws_Session
      * Reset current session
      *
      * @access  protected
-     * @param   int     $sid  Session ID
      * @return  bool    True if can reset it
      */
-    function reset($sid = '')
+    function reset()
     {
-        if (empty($sid)) {
-            $this->delete($this->ssid);
-        }
-
-        $webpush = $this->getAttribute('webpush');
+        // session
+        $this->session['user'] = 0;
+        $this->session['auth'] = '';
+        $this->session['domain'] = 0;
+        // attributes
         $this->attributes = array();
-        $this->setAttribute('user',        0);
-        $this->setAttribute('type',        JAWS_APPTYPE);
         $this->setAttribute('internal',    false);
-        $this->setAttribute('auth',        '');
-        $this->setAttribute('domain',      0);
         $this->setAttribute('username',    '');
         $this->setAttribute('superadmin',  false);
         $this->setAttribute('groups',      array());
         $this->setAttribute('logon_hours', '');
         $this->setAttribute('expiry_date', 0);
         $this->setAttribute('concurrents', 0);
-        $this->setAttribute('longevity',   0);
         $this->setAttribute('logged',      false);
         $this->setAttribute('layout',      0);
         $this->setAttribute('nickname',    '');
@@ -357,10 +362,8 @@ class Jaws_Session
         $this->setAttribute('mobile',      '');
         $this->setAttribute('ssn',         '');
         $this->setAttribute('avatar',      '');
-        $this->setAttribute('webpush',     $webpush);
         $this->setAttribute('last_password_update', 0);
 
-        $this->ssid = $sid;
         $this->changed = true;
         return true;
     }
@@ -541,11 +544,12 @@ class Jaws_Session
      * update current session
      *
      * @access  public
+     * @param   bool    $updateSalt     Update session salt?
      * @return  mixed   Session ID if success, otherwise Jaws_Error or false
      */
-    function update($salt = '')
+    function update($updateSalt = false)
     {
-        if (defined('SESSION_INVALID') || empty($this->ssid)) {
+        if (defined('SESSION_INVALID')) {
             return false;
         }
 
@@ -561,27 +565,28 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         if ($this->changed) {
             $this->changed = false;
-            $user = $this->getAttribute('user');
             $serialized = serialize($this->attributes);
             $updData = array(
-                'user'        => $user,
+                'user'        => $this->session['user'],
                 'data'        => $serialized,
-                'longevity'   => $this->getAttribute('longevity'),
-                'checksum'    => md5($user. $serialized),
+                'longevity'   => $this->session['longevity'],
+                'checksum'    => md5($this->session['user'] . $serialized),
                 'ip'          => $ip,
                 'agent'       => $agent,
-                'webpush'     => serialize($this->getAttribute('webpush')),
+                'webpush'     => serialize($this->session['webpush']),
             );
+
+            if ($updateSalt) {
+                $updData['salt'] = $this->session['salt'];
+            }
         }
-        if (!empty($salt)) {
-            $updData['salt'] = $salt;
-        }
+
         $updData['update_time'] = time();
         $sessTable->update($updData);
-        $result = $sessTable->where('id', $this->ssid)->exec();
+        $result = $sessTable->where('id', $this->session['id'])->exec();
         if (!Jaws_Error::IsError($result)) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully');
-            return $this->ssid;
+            return $this->session['id'];
         }
 
         return false;
@@ -593,7 +598,7 @@ class Jaws_Session
      * @access  public
      * @return  mixed   Session ID if success, otherwise Jaws_Error or false
      */
-    function insert($salt)
+    function insert()
     {
         $max_active_sessions = (int)$GLOBALS['app']->Registry->fetch('max_active_sessions', 'Policy');
         if (!empty($max_active_sessions)) {
@@ -614,21 +619,19 @@ class Jaws_Session
             $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
         }
 
-        $this->reset($this->ssid);
         $update_time = time();
-        $user = $this->getAttribute('user');
         $serialized = serialize($this->attributes);
         $result = Jaws_ORM::getInstance()->table('session')->insert(
             array(
-                'user'       => $user,
-                'type'       => JAWS_APPTYPE,
-                'longevity'  => $this->getAttribute('longevity'),
-                'data'       => $serialized,
-                'salt'       => $salt,
-                'checksum'   => md5($user. $serialized),
-                'ip'         => $ip,
-                'agent'      => $agent,
-                'webpush'    => serialize($this->getAttribute('webpush')),
+                'user'        => $this->session['user'],
+                'type'        => JAWS_APPTYPE,
+                'longevity'   => $this->session['longevity'],
+                'data'        => $serialized,
+                'salt'        => $this->session['salt'],
+                'checksum'    => md5($this->session['user'] . $serialized),
+                'ip'          => $ip,
+                'agent'       => $agent,
+                'webpush'     => serialize($this->session['webpush']),
                 'insert_time' => $update_time,
                 'update_time' => $update_time
             )
@@ -972,6 +975,31 @@ class Jaws_Session
         }
 
         return $responses;
+    }
+
+    /**
+     * Overloading __get magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @return  mixed   Requested property otherwise Jaws_Error
+     */
+    function __get($property)
+    {
+        switch ($property) {
+            case 'id':
+            case 'user':
+            case 'type':
+            case 'auth':
+            case 'domain':
+            case 'webpush':
+                return $this->session[$property];
+                break;
+
+            default:
+                return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
+        }
+
     }
 
 }
