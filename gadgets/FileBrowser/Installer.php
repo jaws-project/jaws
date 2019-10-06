@@ -92,7 +92,7 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '1.0.0', '<')) {
             // removeing gadget registry keys
-            $GLOBALS['app']->Registry->delete($this->gadget->name);
+            $this->app->registry->delete($this->gadget->name);
 
             // adding registry keys
             $installer->_RegKeys = array_merge(

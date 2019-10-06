@@ -36,7 +36,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
             return array();
         }
 
-        if ($GLOBALS['app']->Registry->fetch('frontend_avail', 'FileBrowser') != 'true') {
+        if ($this->app->registry->fetch('frontend_avail', 'FileBrowser') != 'true') {
             return array();
         }
 
