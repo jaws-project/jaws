@@ -359,7 +359,7 @@ class Jaws
      * @param   bool    $filter  Convert special characters to HTML entities
      * @return  object  The editor in /gadgets/Settings/editor
      */
-    function &LoadEditor($gadget, $name, $value = '', $filter = true)
+    function &loadEditor($gadget, $name, $value = '', $filter = true)
     {
         if ($filter && !empty($value)) {
             $value = Jaws_XSS::filter($value);
