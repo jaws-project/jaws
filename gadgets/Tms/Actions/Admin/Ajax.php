@@ -37,11 +37,11 @@ class Tms_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $gadget = $this->gadget->action->loadAdmin('Themes');
         $res = $gadget->DeleteTheme($theme);
         if (Jaws_Error::IsError($res) || !$res) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('TMS_ERROR_CANT_DELETE_THEME'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('TMS_ERROR_CANT_DELETE_THEME'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('TMS_RESPONSE_THEME_DELETED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('TMS_RESPONSE_THEME_DELETED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 }
