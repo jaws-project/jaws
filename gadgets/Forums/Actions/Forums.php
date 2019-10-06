@@ -154,7 +154,7 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
                 $tpl->SetVariable('nickname', $forum['nickname']);
                 $tpl->SetVariable(
                     'user_url',
-                    $GLOBALS['app']->Map->GetMappedURL(
+                    $this->app->map->GetMappedURL(
                         'Users',
                         'Profile',
                         array('user' => $forum['username'])

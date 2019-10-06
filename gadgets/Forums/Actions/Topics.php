@@ -41,7 +41,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $uid = null;
             $private = null;
         } else {
-            $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $uid = (int)$this->app->session->getAttribute('user');
             // anonymous users
             $published = empty($uid) ? true : $published;
 
@@ -103,7 +103,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('nickname', $topic['first_nickname']);
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['first_username']))
+                $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $topic['first_username']))
             );
             $tpl->SetVariable('firstpost_date', $objDate->Format($topic['first_post_time'], $date_format));
             $tpl->SetVariable('firstpost_date_iso', $objDate->ToISO((int)$topic['first_post_time']));
@@ -116,7 +116,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 $tpl->SetVariable('nickname', $topic['last_nickname']);
                 $tpl->SetVariable(
                     'user_url',
-                    $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['last_username']))
+                    $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $topic['last_username']))
                 );
                 $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
@@ -144,7 +144,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             _t('FORUMS_TOPICS_COUNT', $forum['topics'])
         );
 
-        if ($GLOBALS['app']->Session->Logged() && $this->gadget->GetPermission('AddTopic')) {
+        if ($this->app->session->logged() && $this->gadget->GetPermission('AddTopic')) {
             $tpl->SetBlock('topics/action');
             $tpl->SetVariable('action_lbl', _t('FORUMS_TOPICS_NEW'));
             $tpl->SetVariable('action_url', $this->gadget->urlMap('NewTopic', array('fid' => $forum['id'])));
@@ -174,7 +174,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function EditTopic()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -259,7 +259,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('nickname', $topic['nickname']);
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['username']))
+                $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $topic['username']))
             );
             $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
@@ -385,7 +385,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function UpdateTopic()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -474,7 +474,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
                 $topic['forum_title'] = $result['title'];
                 $result = $tModel->InsertTopic(
-                    $GLOBALS['app']->Session->GetAttribute('user'),
+                    $this->app->session->getAttribute('user'),
                     $topic['fid'],
                     $topic['subject'],
                     $topic['message'],
@@ -493,7 +493,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
             // check permission for edit topic
             $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
-            $update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $update_uid = (int)$this->app->session->getAttribute('user');
             if ((!$this->gadget->GetPermission('EditTopic')) ||
                 ($oldTopic['first_post_uid'] != $update_uid && !$forumManage) ||
                 ($oldTopic['locked'] && !$forumManage) ||
@@ -595,7 +595,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function DeleteTopic()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -614,7 +614,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 // check delete permissions
                 $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
                 if ((!$this->gadget->GetPermission('DeleteTopic')) ||
-                    ($topic['first_post_uid'] != (int)$GLOBALS['app']->Session->GetAttribute('user') &&
+                    ($topic['first_post_uid'] != (int)$this->app->session->getAttribute('user') &&
                      !$forumManage) ||
                     ((time() - $topic['first_post_time']) > $delete_limit_time && !$forumManage)
                 ) {
@@ -692,7 +692,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $tpl->SetVariable('nickname', $topic['nickname']);
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['username']))
+                $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $topic['username']))
             );
             $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
@@ -727,7 +727,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function LockTopic()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -776,7 +776,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function PublishTopic()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -791,7 +791,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         }
 
         // check user permissions
-        $logged_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $logged_user = (int)$this->app->session->getAttribute('user');
         if($logged_user != $topic['first_post_uid'] && !$this->gadget->GetPermission('ForumManage', $topic['fid'])) {
             return Jaws_HTTPError::Get(403);
         }

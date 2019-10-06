@@ -457,10 +457,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         // user profile link
         $lnkProfile =& Piwi::CreateWidget(
             'Link',
-            $GLOBALS['app']->Session->GetAttribute('nickname'),
+            $this->app->session->getAttribute('nickname'),
             $this->gadget->urlMap(
                 'Profile',
-                array('user' => $GLOBALS['app']->Session->GetAttribute('username')),
+                array('user' => $this->app->session->getAttribute('username')),
                 array('absolute' => true),
                 'Users'
             )

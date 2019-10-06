@@ -45,7 +45,7 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
             $objDate = Jaws_Date::getInstance();
             $tpl->SetBlock('topics');
 
-            $userURL = $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $user['username']));
+            $userURL = $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $user['username']));
             $tpl->SetVariable('index_title', _t('FORUMS_TOPICS'));
             $tpl->SetVariable('title', $user['nickname']);
             $tpl->SetVariable('url', $userURL);
@@ -88,7 +88,7 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
                     $tpl->SetVariable('nickname', $topic['last_nickname']);
                     $tpl->SetVariable(
                         'user_url',
-                        $GLOBALS['app']->Map->GetMappedURL('Users', 'Profile', array('user' => $topic['last_username']))
+                        $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $topic['last_username']))
                     );
                     $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
                     $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
