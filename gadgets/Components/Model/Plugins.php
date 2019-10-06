@@ -30,7 +30,7 @@ class Components_Model_Plugins extends Jaws_Gadget_Model
                 Jaws_Error::Fatal('The plugins directory does not exists!', __FILE__, __LINE__);
             }
 
-            $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+            $installed_plugins = $this->app->registry->fetch('plugins_installed_items');
             $plugins = scandir($pDir);
             foreach ($plugins as $plugin) {
                 if ($plugin[0] == '.' || !is_dir($pDir . $plugin)) {

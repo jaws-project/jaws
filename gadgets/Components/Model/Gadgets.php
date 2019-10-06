@@ -33,9 +33,9 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                 Jaws_Error::Fatal('The gadgets directory does not exists!', __FILE__, __LINE__);
             }
 
-            $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
+            $installed_gadgets = $this->app->registry->fetch('gadgets_installed_items');
             $installed_gadgets = array_filter(explode(',', $installed_gadgets));
-            $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
+            $disabled_gadgets = $this->app->registry->fetch('gadgets_disabled_items');
 
             $gadgets = scandir($gDir);
             foreach ($gadgets as $gadget) {

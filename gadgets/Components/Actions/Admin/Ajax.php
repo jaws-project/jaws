@@ -222,8 +222,8 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $usage = array();
         $usage['gadgets'] = array();
-        $usage['backend'] = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
-        $usage['frontend'] = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
+        $usage['backend'] = $this->app->registry->fetch('backend_gadgets', $plugin);
+        $usage['frontend'] = $this->app->registry->fetch('frontend_gadgets', $plugin);
         $model = $this->gadget->model->load('Gadgets');
         $gadgets = $model->GetGadgetsList(null, true, true, true);
         foreach ($gadgets as $gadget) {
@@ -261,7 +261,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($comp, $is_plugin) = $this->gadget->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('Registry');
         $ui = $html->RegistryUI();
-        $data = $GLOBALS['app']->Registry->fetchAll($comp);
+        $data = $this->app->registry->fetchAll($comp);
         return array('ui' => $ui, 'data' => $data);
     }
 
@@ -277,7 +277,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($comp, $data) = $this->gadget->request->fetchAll('post');
         $data = $this->gadget->request->fetch('1:array', 'post');
         foreach ($data as $key => $value) {
-            $res = $GLOBALS['app']->Registry->update($key, $value, null, $comp);
+            $res = $this->app->registry->update($key, $value, null, $comp);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_REGISTRY_NOT_UPDATED'), RESPONSE_ERROR);
             }
@@ -299,7 +299,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $html = $this->gadget->action->loadAdmin('ACL');
         $ui = $html->ACLUI();
         $acls = array();
-        $result = $GLOBALS['app']->ACL->fetchAll($comp);
+        $result = $this->app->acl->fetchAll($comp);
         if (!$is_plugin && !empty($result)) {
             $info = Jaws_Gadget::getInstance($comp);
             foreach ($result as $key_name => $acl) {
@@ -330,7 +330,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $data = $this->gadget->request->fetch('1:array', 'post');
         foreach ($data as $key => $value) {
             list($key, $subkey) = explode(':', $key);
-            $res = $GLOBALS['app']->ACL->update($key, $subkey, $value, $comp);
+            $res = $this->app->acl->update($key, $subkey, $value, $comp);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_ACL_NOT_UPDATED'), RESPONSE_ERROR);
             }
