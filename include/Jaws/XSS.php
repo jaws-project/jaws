@@ -110,7 +110,7 @@ class Jaws_XSS
         static $safe_xss;
         static $xss_parsing_level;
         if (!isset($safe_xss)) {
-            $xss_parsing_level = $GLOBALS['app']->Registry->fetch('xss_parsing_level', 'Policy');
+            $xss_parsing_level = Jaws::getInstance()->registry->fetch('xss_parsing_level', 'Policy');
 
             //Create safe html object
             require_once PEAR_PATH. 'HTML/Safe.php';
