@@ -115,14 +115,14 @@ class Directory_Actions_File extends Jaws_Gadget_Action
     {
         $result = $this->gadget->action->loadAdmin('Files')->PlayMedia($file);
         if ($result) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 '',
                 RESPONSE_NOTICE,
                 $result
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('GLOBAL_ERROR_FILE_DOES_NOT_EXIST'),
             RESPONSE_ERROR
         );
@@ -234,9 +234,9 @@ class Directory_Actions_File extends Jaws_Gadget_Action
 
         $res = $this->gadget->model->loadAdmin('Files')->DeleteFile($fileInfo);
         if (Jaws_Error::isError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_ITEMS_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('DIRECTORY_NOTICE_ITEMS_DELETED'), RESPONSE_NOTICE);
         }
     }
 

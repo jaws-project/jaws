@@ -27,7 +27,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
 
         if ($mode === 'edit') {
-            $editor =& $GLOBALS['app']->LoadEditor('Directory', 'description');
+            $editor =& $this->app->loadEditor('Directory', 'description');
             $editor->TextArea->SetStyle('width:100%; height:60px;');
             $tpl->SetVariable('description', $editor->get());
         } else {
@@ -85,10 +85,10 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $this->gadget->event->shout('Activities', array('action'=>'Folder'));
 
         } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($e->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_CREATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response(_t('DIRECTORY_NOTICE_DIR_CREATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -129,9 +129,9 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             }
 
         } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($e->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response(_t('DIRECTORY_NOTICE_DIR_UPDATED'), RESPONSE_NOTICE);
     }
 }

@@ -37,7 +37,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
 
-        $description =& $GLOBALS['app']->LoadEditor('Directory', 'description', '', false);
+        $description =& $this->app->loadEditor('Directory', 'description', '', false);
         $description->setId('description');
         $description->TextArea->SetRows(8);
         $tpl->SetVariable('description', $description->Get());
@@ -73,7 +73,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         }
         $total = $this->gadget->model->load('Files')->GetFiles($params, true);
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(

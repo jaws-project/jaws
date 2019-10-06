@@ -27,7 +27,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         if ($mode === 'edit') {
-            $editor =& $GLOBALS['app']->LoadEditor('Directory', 'description');
+            $editor =& $this->app->loadEditor('Directory', 'description');
             $editor->TextArea->SetStyle('width:100%; height:60px;');
             $tpl->SetVariable('description', $editor->get());
             $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
@@ -81,12 +81,12 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         }
 
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->getMessage(),
                 RESPONSE_ERROR
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result,
                 RESPONSE_NOTICE
             );

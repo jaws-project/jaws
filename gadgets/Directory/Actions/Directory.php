@@ -70,7 +70,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $this->SetActionMode('Directory', 'standalone', 'normal');
         }
 
-        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             $tpl = $this->gadget->template->load('Directory.html');
         } else {
             $tpl = $this->gadget->template->load('DirBox.html');
@@ -113,7 +113,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
 
             $description = '';
-            $descriptionEditor =& $GLOBALS['app']->LoadEditor(
+            $descriptionEditor =& $this->app->loadEditor(
                 'Directory', 'description', Jaws_XSS::defilter($description), false
             );
             $descriptionEditor->setId('description');
@@ -160,7 +160,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         );
 
         // Layout action
-        $isLayoutAction = $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT;
+        $isLayoutAction = $this->app->requestedActionMode == ACTION_MODE_LAYOUT;
         if ($isLayoutAction) {
             $page = 0;
             $params['file_type'] = (int)$type;
@@ -214,11 +214,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $from_date = $to_date = '';
         if (!empty($filters['filter_from_date'])) {
             $from_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_from_date']));
-            $from_date = $GLOBALS['app']->UserTime2UTC($from_date['timestamp']);
+            $from_date = $this->app->UserTime2UTC($from_date['timestamp']);
         }
         if (!empty($filters['filter_to_date'])) {
             $to_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_to_date'] . ' 23:59:59'));
-            $to_date = $GLOBALS['app']->UserTime2UTC($to_date['timestamp']);
+            $to_date = $this->app->UserTime2UTC($to_date['timestamp']);
         }
         $params['date'] = array($from_date, $to_date);
         if (!empty($filters['filter_order'])) {
@@ -228,12 +228,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
         $this->AjaxMe('index.js');
 
         $block = $tpl->GetCurrentBlockPath();
@@ -340,7 +340,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_action', _t('GLOBAL_ACTIONS'));
 
-        $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
+        $tpl->SetVariable('site_url', $this->app->getSiteURL('/'));
         $theme = $GLOBALS['app']->GetTheme();
         $iconUrl = is_dir($theme['url'] . 'mimetypes')? $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
         $icons = array(

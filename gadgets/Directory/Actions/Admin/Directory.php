@@ -19,12 +19,12 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Workspace.html');
@@ -302,7 +302,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $id_set = $this->gadget->request->fetch('id_set');
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('DIRECTORY_ERROR_DELETE'),
                 RESPONSE_ERROR
             );
@@ -332,12 +332,12 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         }
 
         if ($fault === true) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('DIRECTORY_WARNING_DELETE'),
                 RESPONSE_WARNING
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('DIRECTORY_NOTICE_ITEMS_DELETED'),
                 RESPONSE_NOTICE
             );
@@ -354,7 +354,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
     {
         $data = $this->gadget->request->fetch(array('id_set', 'target'));
         if (empty($data['id_set']) || is_null($data['target'])) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('DIRECTORY_ERROR_MOVE'),
                 RESPONSE_ERROR
             );
@@ -368,7 +368,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         if ($target !== 0) {
             $dir = $modelFiles->GetFile($target);
             if (Jaws_Error::IsError($dir) || !$dir['is_dir']) {
-                return $GLOBALS['app']->Session->GetResponse(
+                return $this->gadget->session->response(
                     _t('DIRECTORY_ERROR_MOVE'),
                     RESPONSE_ERROR
                 );
@@ -418,12 +418,12 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         }
 
         if ($fault === true) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('DIRECTORY_WARNING_MOVE'),
                 RESPONSE_WARNING
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('DIRECTORY_NOTICE_ITEMS_MOVED'),
                 RESPONSE_NOTICE
             );
@@ -445,11 +445,11 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $start_date = $end_date = '';
         if (!empty($data['start_date'])) {
             $start_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['start_date']));
-            $start_date = $GLOBALS['app']->UserTime2UTC($start_date['timestamp']);
+            $start_date = $this->app->UserTime2UTC($start_date['timestamp']);
         }
         if (!empty($data['end_date'])) {
             $end_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['end_date'].' 23:59:59'));
-            $end_date = $GLOBALS['app']->UserTime2UTC($end_date['timestamp']);
+            $end_date = $this->app->UserTime2UTC($end_date['timestamp']);
         }
         $date = array($start_date, $end_date);
 
@@ -471,7 +471,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         $files = $model->GetFiles($params);
         if (Jaws_Error::IsError($files)){
-            return $GLOBALS['app']->Session->GetResponse($files->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($files->getMessage(), RESPONSE_ERROR);
         }
 
         $objDate = Jaws_Date::getInstance();
@@ -486,7 +486,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('DIRECTORY_NOTICE_SEARCH_RESULT', count($files)),
             RESPONSE_NOTICE,
             $files);
