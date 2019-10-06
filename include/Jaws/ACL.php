@@ -44,7 +44,7 @@ class Jaws_ACL
      * @param   string  $groups Array of groups ID
      * @return  void
      */
-    function Init($user = 0, $groups = array())
+    function init($user = 0, $groups = array())
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         // fetch default ACLs
