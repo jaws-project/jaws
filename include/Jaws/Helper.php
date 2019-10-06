@@ -404,18 +404,18 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     $resType = jaws()->request->fetch('restype');
 
     // Event logging
-    if (isset($GLOBALS['app'])) {
-        $gadget = $GLOBALS['app']->mainGadget;
-        $action = $GLOBALS['app']->mainAction;
-        $sync = isset($GLOBALS['app']->Session)? $sync : false;
+    if (Jaws::getInstance(false)) {
+        $gadget = Jaws::getInstance()->mainGadget;
+        $action = Jaws::getInstance()->mainAction;
+        $sync = property_exists(Jaws::getInstance(), 'session')? $sync : false;
 
         $loglevel = 0;
         if (!empty($gadget) && !empty($action)) {
             $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
         }
         // shout log event
-        if (isset($GLOBALS['app']->Session)) {
-            $GLOBALS['app']->Listener->Shout(
+        if (property_exists(Jaws::getInstance(), 'session')) {
+            Jaws::getInstance()->listener->Shout(
                 'Action',
                 'Log',
                 array(
@@ -436,12 +436,12 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
     if (!empty($next_location) && $XMLHttpRequest) {
-        $data = $GLOBALS['app']->Session->PopResponse($data);
+        $data = Jaws::getInstance()->session->popResponse($data);
     }
 
     // Sync session
-    if (isset($GLOBALS['app']->Session) && $sync) {
-        $GLOBALS['app']->Session->update();
+    if (property_exists(Jaws::getInstance(), 'session') && $sync) {
+        Jaws::getInstance()->session->update();
     }
 
     if (!empty($next_location) && !$XMLHttpRequest) {
