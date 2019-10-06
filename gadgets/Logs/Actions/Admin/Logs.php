@@ -21,12 +21,12 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
@@ -311,14 +311,14 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogs($logsID);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
+            $this->app->session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
                 RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_LOGS_DELETED'),
+            $this->app->session->PushLastResponse(_t('LOGS_LOGS_DELETED'),
                 RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -335,14 +335,14 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogsUseFilters($filters);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
+            $this->app->session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
                 RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_LOGS_DELETED'),
+            $this->app->session->PushLastResponse(_t('LOGS_LOGS_DELETED'),
                 RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**

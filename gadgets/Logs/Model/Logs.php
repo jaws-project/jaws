@@ -90,7 +90,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {
                     $objDate = Jaws_Date::getInstance();
-                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                    $filters['from_date'] = $this->app->UserTime2UTC(
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
                     );
                 }
@@ -100,7 +100,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
             if (isset($filters['to_date']) && !empty($filters['to_date'])) {
                 if (!is_numeric($filters['to_date'])) {
                     $objDate = Jaws_Date::getInstance();
-                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                    $filters['to_date'] = $this->app->UserTime2UTC(
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
                     );
                 }

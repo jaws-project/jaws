@@ -25,7 +25,7 @@ class Logs_Model_Admin_Settings extends Jaws_Gadget_Model
 
         foreach ($result as $r) {
             if (!$r || Jaws_Error::IsError($r)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('LOGS_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('LOGS_ERROR_SETTINGS_NOT_SAVE'));
             }
         }
