@@ -29,7 +29,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
             $page   = urlencode(Jaws_Utils::getRequestURL(false));
             $name   = urlencode($this->gadget->registry->fetch('site_name', 'Settings'));
             $slogan = urlencode($this->gadget->registry->fetch('site_slogan', 'Settings'));
-            $title  = $GLOBALS['app']->Layout->GetTitle();
+            $title  = $this->app->layout->GetTitle();
 
             foreach ($emblems as $e) {
                 $e['url'] = str_replace(
@@ -40,7 +40,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
                 $tpl->SetBlock('emblems/emblem');
                 $tpl->SetVariable('id', $e['id']);
                 $tpl->SetVariable('title', _t('EMBLEMS_TYPE_' . $e['type'], $e['title']));
-                $tpl->SetVariable('image', $GLOBALS['app']->getDataURL('emblems/' . $e['image']));
+                $tpl->SetVariable('image', $this->app->getDataURL('emblems/' . $e['image']));
                 $tpl->SetVariable('url',   $e['url']);
                 $tpl->ParseBlock('emblems/emblem');
             }
