@@ -126,7 +126,7 @@ class Jaws_URLMapping
      * @param   string  $request_uri    Requested URL
      * @return  bool    True on success, or False on failure
      */
-    function Init($request_uri = '')
+    function init($request_uri = '')
     {
         $urlMapper = Jaws_Gadget::getInstance('UrlMapper');
         if (Jaws_Error::isError($urlMapper)) {
