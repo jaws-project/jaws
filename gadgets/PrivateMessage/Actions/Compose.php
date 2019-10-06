@@ -368,13 +368,13 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $userModel = new Jaws_User();
         $users = $userModel->GetUsers(false, false, null, null, $term, 'nickname', 5);
         if (Jaws_Error::IsError($users)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $users->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             $users
