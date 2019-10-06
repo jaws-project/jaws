@@ -13,6 +13,14 @@
 class Jaws_URLMapping
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * UrlMapper Maps Model
      *
      * @var     object
@@ -99,6 +107,17 @@ class Jaws_URLMapping
      * @access  private
      */
     private $_extension;
+
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @return  void
+     */
+    function __construct()
+    {
+        $this->app = Jaws::getInstance();
+    }
 
     /**
      * Initializes the Jaws URL Mapping
@@ -368,7 +387,7 @@ class Jaws_URLMapping
             }
         }
 
-        return ($abs_url? $GLOBALS['app']->getSiteURL('/') : '') . $url;
+        return ($abs_url? $this->app->getSiteURL('/') : '') . $url;
     }
 
     /**
@@ -447,7 +466,7 @@ class Jaws_URLMapping
             }
 
             if (!empty($url)) {
-                return ($abs_url? $GLOBALS['app']->getSiteURL('/', false) : '') . $url;
+                return ($abs_url? $this->app->getSiteURL('/', false) : '') . $url;
             }
         }
 
@@ -474,7 +493,7 @@ class Jaws_URLMapping
             }
         }
 
-        return ($abs_url? $GLOBALS['app']->getSiteURL('/', false) : '') . $url;
+        return ($abs_url? $this->app->getSiteURL('/', false) : '') . $url;
     }
 
 }
