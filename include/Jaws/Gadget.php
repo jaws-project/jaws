@@ -154,9 +154,9 @@ class Jaws_Gadget
      */
     protected function __construct($gadget)
     {
-        $this->app = Jaws::getInstance();
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
@@ -263,7 +263,7 @@ class Jaws_Gadget
      */
     function define($key, $value = '')
     {
-        $GLOBALS['app']->define($this->name, $key, $value);
+        $this->app->define($this->name, $key, $value);
     }
 
     /**
@@ -274,7 +274,7 @@ class Jaws_Gadget
      */
     function defines()
     {
-        return $GLOBALS['app']->defines($this->name);
+        return $this->app->defines($this->name);
     }
 
     /**
@@ -304,7 +304,7 @@ class Jaws_Gadget
     {
         $jawsVersion = $this->_Req_JawsVersion;
         if (empty($jawsVersion)) {
-            $jawsVersion = $GLOBALS['app']->Registry->fetch('version');
+            $jawsVersion = $this->app->registry->fetch('version');
         }
 
         return $jawsVersion;
@@ -334,7 +334,7 @@ class Jaws_Gadget
      */
     function GetDoc()
     {
-        $lang = $GLOBALS['app']->GetLanguage();
+        $lang = $this->app->GetLanguage();
         return str_replace(array('{url}', '{lang}', '{page}', '{lower-page}',
                                  '{type}', '{lower-type}', '{types}', '{lower-types}'),
                            array($this->_Wiki_URL, $lang, $this->name, strtolower($this->name),
@@ -351,7 +351,7 @@ class Jaws_Gadget
      */
     public static function IsGadgetInstalled($gadget)
     {
-        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
+        $installed_gadgets = $this->app->registry->fetch('gadgets_installed_items');
         return (false !== strpos($installed_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
     }
 
@@ -404,7 +404,7 @@ class Jaws_Gadget
 
         static $disabled_gadgets;
         if (!isset($disabled_gadgets)) {
-            $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
+            $disabled_gadgets = $this->app->registry->fetch('gadgets_disabled_items');
         }
 
         return (false === strpos($disabled_gadgets, ",{$gadget},"));
@@ -433,7 +433,7 @@ class Jaws_Gadget
      */
     function GetPermission($key, $subkey = '', $together = true, $gadget = false)
     {
-        return $GLOBALS['app']->Session->GetPermission(
+        return $this->app->session->GetPermission(
             empty($gadget)? $this->name : $gadget,
             $key,
             $subkey,
@@ -453,7 +453,7 @@ class Jaws_Gadget
      */
     function CheckPermission($key, $subkey = '', $together = true, $gadget = false, $errorMessage = '')
     {
-        return $GLOBALS['app']->Session->CheckPermission(
+        return $this->app->session->CheckPermission(
             empty($gadget)? $this->name : $gadget,
             $key,
             $subkey ,
@@ -481,7 +481,7 @@ class Jaws_Gadget
             $options['absolute'] = $absolute;
         }
 
-        return $GLOBALS['app']->Map->GetRawURL(
+        return $this->app->map->GetRawURL(
             empty($gadget)? $this->name : $gadget,
             $action,
             $params,
@@ -508,7 +508,7 @@ class Jaws_Gadget
             $options['absolute'] = $absolute;
         }
 
-        return $GLOBALS['app']->Map->GetMappedURL(
+        return $this->app->map->GetMappedURL(
             empty($gadget)? $this->name : $gadget,
             $action,
             $params,
