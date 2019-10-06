@@ -50,7 +50,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         header('Content-Type: application/manifest+json; charset=utf-8');
         $tpl = $this->gadget->template->load('Manifest.json');
         $tpl->SetBlock('Manifest');
-        $reqSettings = $GLOBALS['app']->Registry->fetchAll('Settings');
+        $reqSettings = $this->app->registry->fetchAll('Settings');
         $tpl->SetVariable('pwa_fullname', $reqSettings['pwa_fullname']);
         $tpl->SetVariable('pwa_shortname', $reqSettings['pwa_shortname']);
         $tpl->SetVariable('pwa_description', $reqSettings['pwa_description']);
