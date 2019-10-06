@@ -59,7 +59,7 @@ class LinkDump_Actions_Feeds extends Jaws_Gadget_Action
             return false;
         }
 
-        $url    = $GLOBALS['app']->GetSiteURL('/');
+        $url    = $this->app->getSiteURL('/');
         $title  = $this->gadget->registry->fetch('site_name', 'Settings');
         $desc   = $this->gadget->registry->fetch('site_description', 'Settings');
         $author = $this->gadget->registry->fetch('site_author', 'Settings');

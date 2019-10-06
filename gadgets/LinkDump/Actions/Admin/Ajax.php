@@ -100,7 +100,7 @@ class LinkDump_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->InsertGroup($title, $fast_url, $limitation, $links_type, $order_type);
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -116,7 +116,7 @@ class LinkDump_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Links');
         $model->InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank);
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -132,7 +132,7 @@ class LinkDump_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->UpdateGroup($gid, $title, $fast_url, $limitation, $links_type, $order_type);
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
     
     /**
@@ -146,7 +146,7 @@ class LinkDump_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageLinks');
         $model = $this->gadget->model->loadAdmin('Links');
         $model->UpdateLink($id, $gid, $title, $url, $fast_url, $desc, $tags, $rank);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -161,7 +161,7 @@ class LinkDump_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageLinks');
         $model = $this->gadget->model->loadAdmin('Links');
         $model->DeleteLink($id, $gid, $rank);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -177,7 +177,7 @@ class LinkDump_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->DeleteGroup($gid);
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
 }
