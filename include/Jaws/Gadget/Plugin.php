@@ -63,7 +63,7 @@ class Jaws_Gadget_Plugin
             }
 
             foreach ($plugins as $plugin => $properties) {
-                if ($properties['onlyNormalMode'] && $GLOBALS['app']->requestedActionMode != 'normal') {
+                if ($properties['onlyNormalMode'] && $this->app->requestedActionMode != 'normal') {
                     continue;
                 }
                 // check is plugin enabled on this gadget
@@ -100,7 +100,7 @@ class Jaws_Gadget_Plugin
             }
 
             foreach ($plugins as $plugin => $properties) {
-                if ($properties['onlyNormalMode'] && $GLOBALS['app']->requestedActionMode != 'normal') {
+                if ($properties['onlyNormalMode'] && $this->app->requestedActionMode != 'normal') {
                     continue;
                 }
                 // check is plugin enabled on this gadget
