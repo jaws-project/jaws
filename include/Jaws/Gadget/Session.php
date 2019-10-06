@@ -11,6 +11,14 @@
 class Jaws_Gadget_Session
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -28,6 +36,7 @@ class Jaws_Gadget_Session
     function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
@@ -41,7 +50,7 @@ class Jaws_Gadget_Session
     function fetch($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Session->getAttribute($name, $gadget);
+        return $this->app->session->getAttribute($name, $gadget);
     }
 
     /**
@@ -56,7 +65,7 @@ class Jaws_Gadget_Session
     function insert($name, $value, $trashed = false)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->setAttribute($name, $value, $trashed, $gadget);
+        return $this->app->session->setAttribute($name, $value, $trashed, $gadget);
     }
 
     /**
@@ -71,7 +80,7 @@ class Jaws_Gadget_Session
     function update($name, $value, $trashed = false)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->setAttribute($name, $value, $trashed, $gadget);
+        return $this->app->session->setAttribute($name, $value, $trashed, $gadget);
     }
 
     /**
@@ -85,7 +94,7 @@ class Jaws_Gadget_Session
     function delete($name, $trashed = false)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->deleteAttribute($name, $trashed, $gadget);
+        return $this->app->session->deleteAttribute($name, $trashed, $gadget);
     }
 
     /**
@@ -102,7 +111,7 @@ class Jaws_Gadget_Session
     function push($text, $resource = 'Resource', $type = RESPONSE_NOTICE, $data = null, $code = 0)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->pushResponse($text, "Response.$resource", $type, $data, $code, $gadget);
+        return $this->app->session->pushResponse($text, "Response.$resource", $type, $data, $code, $gadget);
     }
 
     /**
@@ -116,7 +125,7 @@ class Jaws_Gadget_Session
     function pop($resource = 'Resource', $remove = true)
     {
         $gadget = $this->gadget->name;
-        return $GLOBALS['app']->Session->popResponse("Response.$resource", $remove, $gadget);
+        return $this->app->session->popResponse("Response.$resource", $remove, $gadget);
     }
 
     /**
@@ -131,7 +140,7 @@ class Jaws_Gadget_Session
      */
     function response($text, $type = RESPONSE_NOTICE, $data = null, $code = 0)
     {
-        return $GLOBALS['app']->Session->getResponse($text, $type, $data, $code);
+        return $this->app->session->getResponse($text, $type, $data, $code);
     }
 
 }
