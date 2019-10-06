@@ -105,13 +105,13 @@ class Akismet
      */
     function __construct()
     {
-        if (is_null($GLOBALS['app']->Registry->fetch('akismet_key', 'Policy'))) {
-            $GLOBALS['app']->Registry->insert('akismet_key', '', false, 'Policy');
+        if (is_null($this->app->registry->fetch('akismet_key', 'Policy'))) {
+            $this->app->registry->insert('akismet_key', '', false, 'Policy');
         }
 
-        $this->apiKey    = $GLOBALS['app']->Registry->fetch('akismet_key', 'Policy');
+        $this->apiKey    = $this->app->registry->fetch('akismet_key', 'Policy');
         $this->siteURL   = $GLOBALS['app']->GetSiteURL('/');
-        $jaws_version    = $GLOBALS['app']->Registry->fetch('version');
+        $jaws_version    = $this->app->registry->fetch('version');
         $this->userAgent = "Jaws/{$jaws_version} | Akismet/{$this->apiVersion}";
         if (!$this->apiKeyIsValid = $this->IsApiKeyValid()) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR,
@@ -145,15 +145,15 @@ class Akismet
 
         require_once PEAR_PATH. 'HTTP/Request.php';
         $options = array();
-        $timeout = (int)$GLOBALS['app']->Registry->fetch('connection_timeout', 'Settings');
+        $timeout = (int)$this->app->registry->fetch('connection_timeout', 'Settings');
         $options['timeout'] = $timeout;
-        if ($GLOBALS['app']->Registry->fetch('proxy_enabled', 'Settings') == 'true') {
-            if ($GLOBALS['app']->Registry->fetch('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $GLOBALS['app']->Registry->fetch('proxy_user', 'Settings');
-                $options['proxy_pass'] = $GLOBALS['app']->Registry->fetch('proxy_pass', 'Settings');
+        if ($this->app->registry->fetch('proxy_enabled', 'Settings') == 'true') {
+            if ($this->app->registry->fetch('proxy_auth', 'Settings') == 'true') {
+                $options['proxy_user'] = $this->app->registry->fetch('proxy_user', 'Settings');
+                $options['proxy_pass'] = $this->app->registry->fetch('proxy_pass', 'Settings');
             }
-            $options['proxy_host'] = $GLOBALS['app']->Registry->fetch('proxy_host', 'Settings');
-            $options['proxy_port'] = $GLOBALS['app']->Registry->fetch('proxy_port', 'Settings');
+            $options['proxy_host'] = $this->app->registry->fetch('proxy_host', 'Settings');
+            $options['proxy_port'] = $this->app->registry->fetch('proxy_port', 'Settings');
         }
 
         $httpRequest = new HTTP_Request('', $options);

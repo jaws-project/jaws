@@ -36,7 +36,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
 
             default:
                 if (($status == 'DISABLED') ||
-                    ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
+                    ($status == 'ANONYMOUS' && $this->app->session->logged())) {
                     return false;
                 }
         }
@@ -97,7 +97,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
 
             default:
                 if (($status == 'DISABLED') ||
-                    ($status == 'ANONYMOUS' && $GLOBALS['app']->Session->Logged())) {
+                    ($status == 'ANONYMOUS' && $this->app->session->logged())) {
                     return true;
                 }
         }
