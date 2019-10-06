@@ -38,14 +38,14 @@ class Jaws_Plugin
         static $installedPlugins;
         if (!isset($installedPlugins)) {
             $installedPlugins = array();
-            $plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+            $plugins = Jaws::getInstance()->registry->fetch('plugins_installed_items');
             if (!Jaws_Error::isError($plugins) && !empty($plugins)) {
                 $plugins = array_filter(explode(',', $plugins));
                 foreach ($plugins as $plugin) {
                     $objPlugin = Jaws_Plugin::getInstance($plugin, false);
                     if (!Jaws_Error::IsError($objPlugin)) {
-                        $fgadgets = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
-                        $bgadgets = $GLOBALS['app']->Registry->fetch('backend_gadgets',  $plugin);
+                        $fgadgets = Jaws::getInstance()->registry->fetch('frontend_gadgets', $plugin);
+                        $bgadgets = Jaws::getInstance()->registry->fetch('backend_gadgets',  $plugin);
                         $installedPlugins[$objPlugin->pluginType][$plugin] = array (
                             'pluginType'       => $objPlugin->pluginType,
                             'onlyNormalMode'   => $objPlugin->onlyNormalMode,
@@ -138,7 +138,7 @@ class Jaws_Plugin
      */
     public static function IsPluginInstalled($plugin)
     {
-        $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+        $installed_plugins = Jaws::getInstance()->registry->fetch('plugins_installed_items');
         return (false !== strpos($installed_plugins, ",$plugin,"));
     }
 
@@ -157,22 +157,22 @@ class Jaws_Plugin
         }
 
         // adding plugin to installed plugins list
-        $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+        $installed_plugins = Jaws::getInstance()->registry->fetch('plugins_installed_items');
         if (false !== strpos($installed_plugins, ",$plugin,")) {
             return true;
         }
         $installed_plugins.= $plugin. ',';
-        $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
+        Jaws::getInstance()->registry->update('plugins_installed_items', $installed_plugins);
 
         // backend_gadgets
-        $GLOBALS['app']->Registry->insert(
+        Jaws::getInstance()->registry->insert(
             'backend_gadgets',
             (isset($objPlugin->backendEnabled) && $objPlugin->backendEnabled)? '*' : ',',
             false,
             $plugin
         );
         // frontend_gadgets
-        $GLOBALS['app']->Registry->insert(
+        Jaws::getInstance()->registry->insert(
             'frontend_gadgets',
             (isset($objPlugin->frontendEnabled) && $objPlugin->frontendEnabled)? '*' : ',',
             false,
@@ -188,7 +188,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Listener->Shout('Plugin', 'InstallPlugin', $plugin);
+        $res = Jaws::getInstance()->listener->Shout('Plugin', 'InstallPlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             //do nothing
         }
@@ -211,12 +211,12 @@ class Jaws_Plugin
         }
         
         // removing plugin from installed plugins list
-        $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+        $installed_plugins = Jaws::getInstance()->registry->fetch('plugins_installed_items');
         $installed_plugins = str_replace(",$plugin,", ',', $installed_plugins);
-        $GLOBALS['app']->Registry->update('plugins_installed_items', $installed_plugins);
+        Jaws::getInstance()->registry->update('plugins_installed_items', $installed_plugins);
 
         // removing plugin registry keys
-        $GLOBALS['app']->Registry->Delete($plugin);
+        Jaws::getInstance()->registry->Delete($plugin);
 
         // load plugin uninstall method
         if (method_exists($objPlugin, 'Uninstall')) {
@@ -227,7 +227,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Listener->Shout('Plugin', 'UninstallPlugin', $plugin);
+        $res = Jaws::getInstance()->listener->Shout('Plugin', 'UninstallPlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
