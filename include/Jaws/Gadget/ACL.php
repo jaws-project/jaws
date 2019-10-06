@@ -11,6 +11,14 @@
 class Jaws_Gadget_ACL
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -28,6 +36,7 @@ class Jaws_Gadget_ACL
     function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
@@ -44,10 +53,10 @@ class Jaws_Gadget_ACL
     {
         if (is_array($name)) {
             $gadget = empty($value)? $this->gadget->name : $value;
-            return $GLOBALS['app']->ACL->insertAll($name, $gadget);
+            return $this->app->acl->insertAll($name, $gadget);
         } else {
             $gadget = empty($gadget)? $this->gadget->name : $gadget;
-            return $GLOBALS['app']->ACL->insert($name, $subkey, $value, $gadget);
+            return $this->app->acl->insert($name, $subkey, $value, $gadget);
         }
     }
 
@@ -63,7 +72,7 @@ class Jaws_Gadget_ACL
     function fetch($name, $subkey = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->ACL->fetch($name, $subkey, $gadget);
+        return $this->app->acl->fetch($name, $subkey, $gadget);
     }
 
     /**
@@ -79,7 +88,7 @@ class Jaws_Gadget_ACL
     function update($name, $subkey = '', $value = 0, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->ACL->update($name, $subkey, $value, $gadget);
+        return $this->app->acl->update($name, $subkey, $value, $gadget);
     }
 
     /**
@@ -94,7 +103,7 @@ class Jaws_Gadget_ACL
     function rename($old_name, $new_name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->ACL->rename($old_name, $new_name, $gadget);
+        return $this->app->acl->rename($old_name, $new_name, $gadget);
     }
 
     /**
@@ -109,7 +118,7 @@ class Jaws_Gadget_ACL
     function delete($key_name, $subkey = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->ACL->delete($gadget, $key_name, $subkey);
+        return $this->app->acl->delete($gadget, $key_name, $subkey);
     }
 
     /**
