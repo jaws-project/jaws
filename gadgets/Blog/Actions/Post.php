@@ -96,7 +96,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':
-                    $allow_comments_config = $GLOBALS['app']->Session->Logged();
+                    $allow_comments_config = $this->app->session->logged();
                     $restricted = !$allow_comments_config;
                     break;
 
@@ -131,8 +131,8 @@ class Blog_Actions_Post extends Blog_Actions_Default
                         $entry['id']
                     ));
                 } elseif ($restricted) {
-                    $login_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Login');
-                    $register_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration');
+                    $login_url = $this->app->map->GetMappedURL('Users', 'Login');
+                    $register_url = $this->app->map->GetMappedURL('Users', 'Registration');
                     $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
                 }
             }

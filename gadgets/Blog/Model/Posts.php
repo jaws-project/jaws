@@ -353,7 +353,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         if ($published) {
             // entry's author can get/show drafted entries
             $now = Jaws_DB::getInstance()->date();
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $user = (int)$this->app->session->getAttribute('user');
             $blogTable->and()->openWhere('blog.user_id', $user)->or();
             $blogTable->openWhere('published', $published)->and()->closewhere('blog.publishtime', $now, '<=');
             $blogTable->closeWhere();

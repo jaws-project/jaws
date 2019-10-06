@@ -27,7 +27,7 @@ class Blog_Actions_Pingback extends Blog_Actions_Default
                 $model = $this->gadget->model->load('Posts');
 
                 //We need to parse the target URI to get the post ID
-                $GLOBALS['app']->Map->Parse($response['targetURI']);
+                $this->app->map->Parse($response['targetURI']);
 
                 //pingbacks come from POST but JawsURL maps everything on get (that how Maps work)
                 $postID = $this->gadget->request->fetch('id', 'get');

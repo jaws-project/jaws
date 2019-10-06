@@ -72,7 +72,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $this->_Atom->SetAuthor($this->gadget->registry->fetch('site_author', 'Settings'),
             $GLOBALS['app']->GetSiteURL(),
             $this->gadget->registry->fetch('gate_email', 'Settings'));
-        $this->_Atom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
+        $this->_Atom->SetGenerator('JAWS '.$this->app->registry->fetch('version'));
         $this->_Atom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
 
         $objDate = Jaws_Date::getInstance();
@@ -233,7 +233,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $categoryAtom->SetAuthor($this->gadget->registry->fetch('site_author', 'Settings'),
             $siteURL,
             $this->gadget->registry->fetch('gate_email', 'Settings'));
-        $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
+        $categoryAtom->SetGenerator('JAWS '.$this->app->registry->fetch('version'));
         $categoryAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
 
         $objDate = Jaws_Date::getInstance();

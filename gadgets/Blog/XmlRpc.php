@@ -30,7 +30,7 @@ require_once PEAR_PATH . 'XML/RPC/Server.php';
  */
 function userAuthentication($username, $password)
 {
-    $authType = $GLOBALS['app']->Registry->fetch('authtype', 'Users');
+    $authType = $this->app->registry->fetch('authtype', 'Users');
     $authType = preg_replace('/[^[:alnum:]_\-]/', '', $authType);
     $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
     if (empty($authType) || !file_exists($authFile)) {
@@ -54,10 +54,10 @@ function userAuthentication($username, $password)
     $objAuth = new $className();
     $result = $objAuth->Auth($username, $password);
     if (!Jaws_Error::IsError($result)) {
-        $GLOBALS['app']->Session->SetAttribute('logged', true);
-        $GLOBALS['app']->Session->SetAttribute('user', $result['id']);
-        $GLOBALS['app']->Session->SetAttribute('groups', $result['groups']);
-        $GLOBALS['app']->Session->SetAttribute('superadmin', $result['superadmin']);
+        $this->app->session->setAttribute('logged', true);
+        $this->app->session->setAttribute('user', $result['id']);
+        $this->app->session->setAttribute('groups', $result['groups']);
+        $this->app->session->setAttribute('superadmin', $result['superadmin']);
     }
 
     return $result;
@@ -136,7 +136,7 @@ function metaWeblog_getUsersBlogs($params)
 
     $struct = array();
     $siteurl = $GLOBALS['app']->GetSiteURL();
-    $sitename = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
+    $sitename = $this->app->registry->fetch('site_name', 'Settings');
 
     $data = array(
         'isAdmin'  => new XML_RPC_Value('1', 'boolean'),
@@ -251,11 +251,11 @@ function metaWeblog_newPost($params)
     if (isset($struct['mt_allow_comments'])) {
         $allow_c = (bool)$struct['mt_allow_comments'];
     } else {
-        $allow_c = (bool)$GLOBALS['app']->Registry->fetch('allow_comments');
+        $allow_c = (bool)$this->app->registry->fetch('allow_comments');
     }
     // categories
     if (empty($categories)) {
-        $categories = array($GLOBALS['app']->Registry->fetch('default_category'));
+        $categories = array($this->app->registry->fetch('default_category'));
     }
     // published
     $publish  = getScalarValue($params, 4);
@@ -360,7 +360,7 @@ function metaWeblog_editPost($params)
     if (isset($struct['mt_allow_comments'])) {
         $allow_c = (bool)$struct['mt_allow_comments'];
     } else {
-        $allow_c = (bool)$GLOBALS['app']->Registry->fetch('allow_comments');
+        $allow_c = (bool)$this->app->registry->fetch('allow_comments');
     }
     // published
     $publish = getScalarValue($params, 4);
@@ -476,8 +476,8 @@ function metaWeblog_getCategories($params)
     $struct = array();
     foreach ($categories as $category) {
         $cid = empty($category['fast_url']) ? $category['id'] : Jaws_XSS::filter($category['fast_url']);
-        $htmlurl = $GLOBALS['app']->Map->GetMappedURL('Blog', 'ShowCategory', array('id' => $cid));
-        $rssurl  = $GLOBALS['app']->Map->GetMappedURL('Blog', 'ShowRSSCategory', array('id' => $category['id']));
+        $htmlurl = $this->app->map->GetMappedURL('Blog', 'ShowCategory', array('id' => $cid));
+        $rssurl  = $this->app->map->GetMappedURL('Blog', 'ShowRSSCategory', array('id' => $category['id']));
         $data = array(
             'categoryId'   => new XML_RPC_Value($category['id']),
             'categoryName' => new XML_RPC_Value($category['name']),
@@ -540,7 +540,7 @@ function metaWeblog_getPost($params)
     }
 
     $pid  = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
-    $link = $GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $pid));
+    $link = $this->app->map->GetMappedURL('Blog', 'SingleView', array('id' => $pid));
 
     $data = array(
         'blogid'      => new XML_RPC_Value('1'),
@@ -673,8 +673,8 @@ function metaWeblog_getRecentPosts($params)
         $publishtime = date('Ymd', $publishtime) . 'T' . date('H:i:s', $publishtime);
         $summary     = stripslashes($entry['summary']);
         $content     = stripslashes($entry['text']);
-        $permalink   = new XML_RPC_Value($GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $entry['id'])));
-        $link        = new XML_RPC_Value($GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $entry['fast_url'])));
+        $permalink   = new XML_RPC_Value($this->app->map->GetMappedURL('Blog', 'SingleView', array('id' => $entry['id'])));
+        $link        = new XML_RPC_Value($this->app->map->GetMappedURL('Blog', 'SingleView', array('id' => $entry['fast_url'])));
         //FIXME: Fill the fields
         $allow_pings = new XML_RPC_Value('');
 
