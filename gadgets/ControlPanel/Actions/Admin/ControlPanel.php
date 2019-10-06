@@ -38,7 +38,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->SetVariable('site-url', $this->app->getSiteURL());
         $tpl->SetVariable('view-site', _t('GLOBAL_VIEW_SITE'));
 
-        if ($GLOBALS['app']->Session->GetPermission('Users', 'default_admin, EditAccountInformation')) {
+        if ($this->app->session->getPermission('Users', 'default_admin, EditAccountInformation')) {
             $uAccoun =& Piwi::CreateWidget('Link',
                                            $uInfo['nickname'],
                                            BASE_SCRIPT . '?gadget=Users&amp;action=MyAccount');
