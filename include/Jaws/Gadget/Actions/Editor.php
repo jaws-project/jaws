@@ -11,6 +11,14 @@
 class Jaws_Gadget_Actions_Editor
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -28,6 +36,7 @@ class Jaws_Gadget_Actions_Editor
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
@@ -41,7 +50,7 @@ class Jaws_Gadget_Actions_Editor
      */
     function load($name, $value = '', $markup = JAWS_MARKUP_BBCODE)
     {
-        $editor = $GLOBALS['app']->GetEditor();
+        $editor = $this->app->GetEditor();
         if (!file_exists(JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
             $editor = 'TextArea';
         }
@@ -62,7 +71,7 @@ class Jaws_Gadget_Actions_Editor
      */
     function loadAdmin($name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
-        $editor = $GLOBALS['app']->GetEditor();
+        $editor = $this->app->GetEditor();
         if (!file_exists(JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
             $editor = 'TextArea';
         }
