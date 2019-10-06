@@ -197,9 +197,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->InsertCategory($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_CATEGORY_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -216,9 +216,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->UpdateCategory($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_CATEGORY_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -235,9 +235,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->DeleteCategory($id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_CATEGORY_DELETED'), RESPONSE_NOTICE);
         }
     }
 
@@ -253,9 +253,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $result = $model->MoveCategory($post['id'], $post['old_pos'], $post['new_pos']);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_MOVED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_CATEGORY_MOVED'), RESPONSE_NOTICE);
         }
     }
 }

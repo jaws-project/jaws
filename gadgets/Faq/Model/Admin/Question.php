@@ -82,7 +82,7 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $rid = $faqTable->select('faq_position')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($rid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
         }
 
@@ -92,22 +92,22 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
                 array('faq_position' => $faqTable->expr('faq_position - ?', 1))
             )->where('faq_position', $rid['faq_position'], '>')->exec();
             if (Jaws_Error::IsError($rs)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
             }
 
             $faqTable = Jaws_ORM::getInstance()->table('faq');
             $rs = $faqTable->delete()->where('id', $id)->exec();
             if (Jaws_Error::IsError($rs)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
             }
 
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);
             return true;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+        $this->app->session->PushLastResponse(_t('FAQ_ERROR_QUESTION_DOES_NOT_EXISTS'), RESPONSE_ERROR);
         return new Jaws_Error(_t('FAQ_ERROR_QUESTION_DOES_NOT_EXISTS'));
     }
 

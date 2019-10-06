@@ -80,7 +80,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $tpl->SetVariable('question', $questionEntry->Get());
 
         //answer
-        $answer =& $GLOBALS['app']->LoadEditor('Faq', 'answer');
+        $answer =& $this->app->loadEditor('Faq', 'answer');
         $answer->TextArea->SetStyle('width: 100%;');
         $answer->TextArea->SetRows(8);
         $answer->setID('answer');
@@ -242,9 +242,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
         $res = $model->InsertQuestion($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_QUESTION_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -263,9 +263,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
         $res = $model->UpdateQuestion($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_QUESTION_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -282,9 +282,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $res = $model->DeleteQuestion($id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);
         }
     }
 
@@ -300,9 +300,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
         $result = $model->MoveQuestion($post['category'], $post['id'], $post['position'], $post['direction']);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_MOVED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FAQ_QUESTION_MOVED'), RESPONSE_NOTICE);
         }
     }
 }
