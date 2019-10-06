@@ -392,7 +392,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             $feed['published'] = ($feed['published'])? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $feeds[$key] = $feed;
         }
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(
@@ -433,9 +433,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $data['user'] = (int)$this->app->session->getAttribute('user');
         $res = $model->InsertUserFeed($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_ERROR_SITE_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FEEDREADER_ERROR_SITE_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_SITE_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FEEDREADER_SITE_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -456,9 +456,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $user = (int)$this->app->session->getAttribute('user');
         $res = $model->UpdateUserFeed($post['id'], $post['data'], $user);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FEEDREADER_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_SITE_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FEEDREADER_SITE_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -480,9 +480,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $user = (int)$this->app->session->getAttribute('user');
         $res = $model->DeleteUserFeed($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_SITE_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('FEEDREADER_SITE_DELETED'), RESPONSE_NOTICE);
         }
     }
 

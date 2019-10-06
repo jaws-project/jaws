@@ -56,10 +56,10 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $title, $url, $cache_time, $view_type, $count_entry, $title_view, $alias, $published
         );
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('FEEDREADER_SITE_ADDED'),
             RESPONSE_NOTICE
         );
@@ -81,10 +81,10 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $view_type, $count_entry, $title_view, $alias, $published
         );
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('FEEDREADER_SITE_UPDATED'),
             RESPONSE_NOTICE
         );
@@ -101,10 +101,10 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $result = $this->_Model->DeleteFeed($id);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('FEEDREADER_SITE_DELETED'),
             RESPONSE_NOTICE
         );
