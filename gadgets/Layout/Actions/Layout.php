@@ -24,7 +24,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         // check permissions
         if ($layout == 'Index.User') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageUserLayout');
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $user = (int)$this->app->session->getAttribute('user');
         } else {
             $GLOBALS['app']->Session->CheckPermission('Layout', 'MainLayoutManage');
             $user = 0;
