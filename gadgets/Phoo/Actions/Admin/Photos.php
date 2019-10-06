@@ -202,7 +202,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             }
 
             //Get failures
-            $failures = $GLOBALS['app']->Session->GetAttribute('failures');
+            $failures = $this->app->session->getAttribute('failures');
             // Failures
             if (is_array($failures) && count($failures) > 0) {
                 foreach ($failures as $f) {

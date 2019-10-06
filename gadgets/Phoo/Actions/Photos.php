@@ -173,7 +173,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':
-                    $allow_comments_config = $GLOBALS['app']->Session->Logged();
+                    $allow_comments_config = $this->app->session->logged();
                     $restricted = !$allow_comments_config;
                     break;
 
@@ -201,8 +201,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                     $image['id']
                 ));
             } elseif ($restricted) {
-                $login_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Login');
-                $register_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration');
+                $login_url = $this->app->map->GetMappedURL('Users', 'Login');
+                $register_url = $this->app->map->GetMappedURL('Users', 'Registration');
                 $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
             }
 
@@ -303,7 +303,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      */
     function UploadPhotoUI()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             $userGadget = Jaws_Gadget::getInstance('Users');
             return Jaws_Header::Location(
                 $userGadget->urlMap(
@@ -360,7 +360,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      */
     function UploadPhoto()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
         $post  = $this->gadget->request->fetch(array('title', 'description'), 'post');

@@ -28,7 +28,7 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $aModel = $this->gadget->model->load('Albums');
         $pModel = $this->gadget->model->loadAdmin('Photos');
         $album_data = $aModel->getAlbumInfo($album);
-        $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
+        $id = $pModel->NewEntry($this->app->session->getAttribute('user'),
                                 $file,
                                 $name,
                                 '',
