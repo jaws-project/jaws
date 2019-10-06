@@ -76,7 +76,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         }
 
         $model = $this->gadget->model->load('Notepad');
-        $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $data['user'] = (int)$this->app->session->getAttribute('user');
         $data['title'] = Jaws_XSS::defilter($data['title']);
         $data['content'] = Jaws_XSS::defilter($data['content']);
         $result = $model->Insert($data);

@@ -22,7 +22,7 @@ class Notepad_Actions_Open extends Jaws_Gadget_Action
 
         $id = (int)$this->gadget->request->fetch('id', 'get');
         $model = $this->gadget->model->load('Notepad');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$this->app->session->getAttribute('user');
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note) || empty($note)) {
             return;
