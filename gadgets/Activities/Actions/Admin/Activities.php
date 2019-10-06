@@ -17,12 +17,12 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Activities.html');
@@ -225,9 +225,9 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $model = $this->gadget->model->loadAdmin('Activities');
         $res = $model->DeleteActivities($activity);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
         }
     }
 
@@ -243,9 +243,9 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $model = $this->gadget->model->loadAdmin('Activities');
         $res = $model->DeleteAllActivities();
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
         }
     }
 
