@@ -71,7 +71,7 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
         $tpl->SetVariable('fast_url', $fast_url->Get());
 
         $selected_content = isset($selected_content)? $selected_content : '';
-        $contents =& $GLOBALS['app']->LoadEditor('Glossary', 'term_contents', $selected_content);
+        $contents =& $this->app->loadEditor('Glossary', 'term_contents', $selected_content);
         $contents->setID('term_contents');
         $contents->TextArea->SetStyle('width: 99%; height: 260px;');
         $tpl->SetVariable('contents', _t('GLOSSARY_DESC'));

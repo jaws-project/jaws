@@ -46,7 +46,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $id = $model->NewTerm($term, $fast_url, $contents);
-        $response = $GLOBALS['app']->Session->PopLastResponse();
+        $response = $this->app->session->PopLastResponse();
         $response['id'] = $id;
         return $response;
     }
@@ -69,7 +69,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $contents = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
         $model->UpdateTerm($id, $term, $fast_url, $contents);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -85,7 +85,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Term');
         $model->DeleteTerm($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
