@@ -82,7 +82,7 @@ class Jaws_Crypt
      */
     private static function internalKey() {
         // fetch all registry keys related to crypt
-        $cryptPolicies = $GLOBALS['app']->Registry->fetchAll('Policy', false);
+        $cryptPolicies = Jaws::getInstance()->registry->fetchAll('Policy', false);
         if ($cryptPolicies['crypt_enabled'] != 'true') {
             return Jaws_Error::raiseError(
                 'RSA encryption is not enabled.',
@@ -98,9 +98,9 @@ class Jaws_Crypt
                 return $result;
             }
 
-            $GLOBALS['app']->Registry->update('crypt_pvt_key', $result['pvt_key'], false, 'Policy');
-            $GLOBALS['app']->Registry->update('crypt_pub_key', $result['pub_key'], false, 'Policy');
-            $GLOBALS['app']->Registry->update('crypt_key_start_date', time(), false, 'Policy');
+            Jaws::getInstance()->registry->update('crypt_pvt_key', $result['pvt_key'], false, 'Policy');
+            Jaws::getInstance()->registry->update('crypt_pub_key', $result['pub_key'], false, 'Policy');
+            Jaws::getInstance()->registry->update('crypt_key_start_date', time(), false, 'Policy');
             $cryptPolicies['crypt_pvt_key'] = $result['pvt_key'];
             $cryptPolicies['crypt_pub_key'] = $result['pub_key'];
         }
