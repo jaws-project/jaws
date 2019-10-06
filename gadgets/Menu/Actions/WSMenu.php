@@ -62,7 +62,7 @@ class Menu_Actions_WSMenu extends Jaws_Gadget_Action
                     continue;
                 }
 
-                if (!$GLOBALS['app']->Session->GetPermission($menu['type'], 'default')) {
+                if (!$this->app->session->getPermission($menu['type'], 'default')) {
                     continue;
                 }
 
@@ -70,14 +70,14 @@ class Menu_Actions_WSMenu extends Jaws_Gadget_Action
                 if (!empty($menu['permission'])) {
                     $permission = unserialize($menu['permission']);
                     if (isset($permission['gadget'])) {
-                        if (!$GLOBALS['app']->Session->GetPermission($permission['gadget'], 'default')) {
+                        if (!$this->app->session->getPermission($permission['gadget'], 'default')) {
                             continue;
                         }
                     } else {
                         $permission['gadget'] = $menu['type'];
                     }
 
-                    if (!$GLOBALS['app']->Session->GetPermission(
+                    if (!$this->app->session->getPermission(
                         $permission['gadget'],
                         $permission['key'],
                         $permission['subkey']
