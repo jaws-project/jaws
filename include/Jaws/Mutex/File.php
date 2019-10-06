@@ -32,7 +32,9 @@ class Jaws_Mutex_File extends Jaws_Mutex
      */
     function __construct()
     {
-        $this->lockPath = rtrim(sys_get_temp_dir(), '/\\'). '/'. $this->lockPrefix. $GLOBALS['app']->instance. '_';
+        $this->lockPath =
+            rtrim(sys_get_temp_dir(), '/\\') . '/' .
+            $this->lockPrefix . Jaws::getInstance()->instance . '_';
     }
 
     /**
