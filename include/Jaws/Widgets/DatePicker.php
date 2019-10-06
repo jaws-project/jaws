@@ -68,7 +68,7 @@ class Jaws_Widgets_DatePicker extends DatePicker
      **/
     function buildXHTML()
     {
-        $GLOBALS['app']->Layout->AddHeadLink(
+        Jaws::getInstance()->layout->AddHeadLink(
             'libraries/piwi/data/css/'. $this->_theme. '.css',
             'stylesheet',
             'text/css'
