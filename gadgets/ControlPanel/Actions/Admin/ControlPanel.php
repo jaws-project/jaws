@@ -19,23 +19,23 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
      */
     function Layout($ReqGadget, $ReqResult, $ReqGadgetVersion)
     {
-        $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/Templates', 'Layout.html');
+        $this->app->layout->Load('gadgets/ControlPanel/Templates', 'Layout.html');
         // Load ControlPanel header
-        $GLOBALS['app']->Layout->Populate($ReqResult);
+        $this->app->layout->Populate($ReqResult);
 
-        $tpl = $GLOBALS['app']->Layout->_Template;
+        $tpl = $this->app->layout->_Template;
         $tpl->SetVariable('gadget', $ReqGadget);
         $tpl->SetVariable('gadget_version', $ReqGadgetVersion);
         $tpl->SetVariable('requested_gadget', strtolower($ReqGadget));
         $tpl->SetVariable('control-panel', _t('CONTROLPANEL_TITLE'));
         $tpl->SetBlock('layout/login-info', false);
         $tpl->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
-        $uInfo = $GLOBALS['app']->Session->getAttributes('', array('username', 'nickname', 'avatar', 'email'));
+        $uInfo = $this->app->session->getAttributes('', array('username', 'nickname', 'avatar', 'email'));
         $tpl->SetVariable('username', $uInfo['username']);
         $tpl->SetVariable('nickname', $uInfo['nickname']);
         $tpl->SetVariable('email',    $uInfo['email']);
         $tpl->SetVariable('avatar',   $uInfo['avatar']);
-        $tpl->SetVariable('site-url', $GLOBALS['app']->GetSiteURL());
+        $tpl->SetVariable('site-url', $this->app->getSiteURL());
         $tpl->SetVariable('view-site', _t('GLOBAL_VIEW_SITE'));
 
         if ($GLOBALS['app']->Session->GetPermission('Users', 'default_admin, EditAccountInformation')) {
@@ -86,13 +86,13 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             $tpl->ParseBlock('layout/warning');
         }
 
-        $responses = $GLOBALS['app']->Session->PopLastResponse();
+        $responses = $this->app->session->PopLastResponse();
         if ($responses) {
             $tpl->SetVariable('response_text', $responses[0]['text']);
             $tpl->SetVariable('response_type', $responses[0]['type']);
         }
 
-        return $GLOBALS['app']->Layout->Get();
+        return $this->app->layout->Get();
     }
 
     /**
@@ -139,7 +139,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                 $tpl->SetVariable('desc', $gadget['desc']);
                 if ($gadget['name'] === 'Index') {
                     $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/ControlPanel/Resources/images/view_site.png'));
-                    $tpl->SetVariable('url', $GLOBALS['app']->getSiteURL('/'));
+                    $tpl->SetVariable('url', $this->app->getSiteURL('/'));
                 } else {
                     $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['name'].'/Resources/images/logo.png'));
                     $tpl->SetVariable('url', BASE_SCRIPT . '?gadget='.$gadget['name']);
