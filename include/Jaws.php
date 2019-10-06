@@ -135,12 +135,6 @@ class Jaws
      */
     private function __construct()
     {
-        $this->loadObject('Jaws_Request', 'request', true);
-        $this->loadObject('Jaws_Registry', 'registry');
-        $this->loadObject('Jaws_ACL', 'acl');
-        $this->loadObject('Jaws_Listener', 'listener');
-        $this->loadObject('Jaws_URLMapping', 'map');
-        $this->define('', 'script', JAWS_SCRIPT);
     }
 
     /**
@@ -166,14 +160,12 @@ class Jaws
      */
     function init()
     {
-        // load cache before others
-        $this->Cache = Jaws_Cache::factory();
+        $this->define('', 'script', JAWS_SCRIPT);
 
-        $this->map->Init();
-        $this->session = Jaws_Session::factory();
+        $this->map->init();
         $this->session->init();
         $logged_user = $this->session->getAttributes('', array('user', 'groups'));
-        $this->acl->Init($logged_user['user'], $logged_user['groups']);
+        $this->acl->init($logged_user['user'], $logged_user['groups']);
         $this->loadPreferences();
     }
 
@@ -227,18 +219,6 @@ class Jaws
     }
 
     /**
-     * Setup the applications cache.
-     *
-     * @return  void
-     * @access  public
-     */
-    function InstanceCache()
-    {
-        require_once JAWS_PATH . 'include/Jaws/Cache.php';
-        $this->Cache =& Jaws_Cache::factory();
-    }
-
-    /**
      * Setup the applications Layout object.
      *
      * @return  void
@@ -246,7 +226,6 @@ class Jaws
      */
     function InstanceLayout()
     {
-        $this->loadObject('Jaws_Layout', 'Layout');
         $this->_UseLayout = true;
     }
 
@@ -807,15 +786,53 @@ class Jaws
     }
 
     /**
-     * Overloading magic method
+     * Overloading __get magic method
      *
      * @access  private
      * @param   string  $property   Property name
-     * @return  mixed   Property value otherwise Null
+     * @return  mixed   Requested property otherwise null
      */
-    public function __get($property)
+    function __get($property)
     {
-        return isset($this->$property)? $this->$property : null;
+        switch ($property) {
+            case 'request':
+                return $this->loadObject('Jaws_Request', 'request', true);
+                break;
+
+            case 'registry':
+                return $this->loadObject('Jaws_Registry', 'registry');
+                break;
+
+            case 'acl':
+                return $this->loadObject('Jaws_ACL', 'acl');
+                break;
+
+            case 'listener':
+                return $this->loadObject('Jaws_Listener', 'listener');
+                break;
+
+            case 'map':
+                return $this->loadObject('Jaws_URLMapping', 'map');
+                break;
+
+            case 'layout':
+                return $this->loadObject('Jaws_Layout', 'layout');
+                break;
+
+            case 'session':
+                $this->session = Jaws_Session::factory();
+                return $this->session;
+                break;
+
+            case 'cache':
+                $this->cache = Jaws_Cache::factory();
+                return $this->cache;
+                break;
+
+            default:
+                return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
+        }
+
     }
 
 }
