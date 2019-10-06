@@ -15,14 +15,12 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $GLOBALS['app']->define(
-            $this->gadget->name,
+        $this->gadget->define(
             'webpush_enabled',
             $this->gadget->registry->fetch('webpush_enabled')
         );
         // set webpush public key for using in webpush subscription
-        $GLOBALS['app']->define(
-            $this->gadget->name,
+        $this->gadget->define(
             'webpush_pub_key',
             $this->gadget->registry->fetch('webpush_pub_key')
         );
