@@ -51,7 +51,7 @@ class Jaws_SharedSegment
         $className = "Jaws_SharedSegment_$segmentDriver";
 
         static $instances = array();
-        $ftok = is_int($ftok)? $ftok : Jaws_Utils::ftok($ftok, $GLOBALS['app']->instance);
+        $ftok = is_int($ftok)? $ftok : Jaws_Utils::ftok($ftok, Jaws::getInstance()->instance);
         if (!isset($instances[$ftok])) {
             $instances[$ftok] = new $className($ftok);
         }
