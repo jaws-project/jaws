@@ -11,6 +11,14 @@
 class Jaws_Gadget_Event
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -36,6 +44,7 @@ class Jaws_Gadget_Event
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
@@ -84,7 +93,7 @@ class Jaws_Gadget_Event
      */
     public function shout($event, $params = array(), $gadget = '', $broadcast = true)
     {
-        return $GLOBALS['app']->Listener->Shout($this->gadget->name, $event, $params, $gadget, $broadcast);
+        return $this->app->listener->Shout($this->gadget->name, $event, $params, $gadget, $broadcast);
     }
 
 
@@ -99,7 +108,7 @@ class Jaws_Gadget_Event
     public function insert($event, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Listener->AddListener($gadget, $event);
+        return $this->app->listener->AddListener($gadget, $event);
     }
 
 
@@ -114,7 +123,7 @@ class Jaws_Gadget_Event
     public function delete($event = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Listener->DeleteListener($gadget, $event);
+        return $this->app->listener->DeleteListener($gadget, $event);
     }
 
 }
