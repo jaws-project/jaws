@@ -71,7 +71,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
                 }
             }
 
-            $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $data['user'] = (int)$this->app->session->getAttribute('user');
             $data['is_dir'] = true;
             $data['published'] = $data['published']? true : false;
             $data['title'] = Jaws_XSS::defilter($data['title']);

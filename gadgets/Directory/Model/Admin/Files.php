@@ -51,7 +51,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
     function SaveFile($data)
     {
         try {
-            $loggedUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $loggedUser = (int)$this->app->session->getAttribute('user');
             // Validate parent
             if ($data['parent'] != 0) {
                 $parent = $this->gadget->model->load('Files')->GetFile($data['parent']);

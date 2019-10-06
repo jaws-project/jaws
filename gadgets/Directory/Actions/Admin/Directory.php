@@ -179,7 +179,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                     array('absolute' => true)
                 );
             }
-            $file['userlink'] = $GLOBALS['app']->Map->GetMappedURL(
+            $file['userlink'] = $this->app->map->GetMappedURL(
                 'Users',
                 'Profile',
                 array('user' => $file['username'])
@@ -272,7 +272,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function BuildTree($root = 0, $exclude = array(), &$tree)
     {
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$this->app->session->getAttribute('user');
         $dirs = $this->gadget->model->load('Files')->GetFiles(array('parent' => $root, 'is_dir' => true));
         if (Jaws_Error::IsError($dirs)) {
             return;
@@ -308,7 +308,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             );
         }
 
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$this->app->session->getAttribute('user');
         $fault = false;
         foreach ($id_set as $id) {
             // Validate file

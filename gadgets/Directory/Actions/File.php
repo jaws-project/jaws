@@ -23,7 +23,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
 
         // check private file
         if (!$file['public']) {
-            $loggedUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $loggedUser = (int)$this->app->session->getAttribute('user');
             if ($file['user'] != $loggedUser && $get['key'] != $file['key']) {
                 return Jaws_HTTPError::Get(403);
             }
@@ -83,8 +83,8 @@ class Directory_Actions_File extends Jaws_Gadget_Action
                     $file['id']
                 ));
             } elseif ($allow_comments == 'restricted') {
-                $login_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Login');
-                $register_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration');
+                $login_url = $this->app->map->GetMappedURL('Users', 'Login');
+                $register_url = $this->app->map->GetMappedURL('Users', 'Registration');
                 $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
             }
         }
@@ -169,7 +169,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      */
     function SaveFile()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -213,7 +213,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      */
     function DeleteFile()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -227,7 +227,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         if (empty($fileInfo)) {
             return Jaws_HTTPError::Get(404);
         }
-        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+        $currentUser = $this->app->session->getAttribute('user');
         if ($fileInfo['public'] || $fileInfo['user'] != $currentUser) {
             return Jaws_HTTPError::Get(403);
         }
