@@ -474,7 +474,7 @@ class Jaws_AtomFeed
     {
         $this->Version = $version;
         $this->Lang    = $lang;
-        $this->SiteURL = $GLOBALS['app']->GetSiteURL('/');
+        $this->SiteURL = Jaws::getInstance()->GetSiteURL('/');
     }
 
     /**
