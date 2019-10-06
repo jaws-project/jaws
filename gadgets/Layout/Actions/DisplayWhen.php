@@ -37,7 +37,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $dir  = $direction == 'rtl' ? '.' . $direction : '';
         $brow = $GLOBALS['app']->GetBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
-        $base_url = $GLOBALS['app']->GetSiteURL('/');
+        $base_url = $this->app->getSiteURL('/');
 
         $tpl->SetVariable('BASE_URL', $base_url);
         $tpl->SetVariable('.dir', $dir);
@@ -106,11 +106,11 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Elements');
         $res = $model->UpdateDisplayWhen($item, $layout, $dw);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
 }

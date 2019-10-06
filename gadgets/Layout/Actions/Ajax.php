@@ -33,12 +33,12 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             (int)$new_position
         );
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_MOVED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_MOVED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -53,12 +53,12 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Elements');
         $result = $model->DeleteElement($item, $layout, $section, $position);
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_DELETED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_DELETED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -107,11 +107,11 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         }
 
         if ($id === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
             $res['success'] = false;
         } else {
             $el = $model->GetElement($id);
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
             $info = Jaws_Gadget::getInstance($gadget);
             $el['tname'] = $info->title;
             if (isset($actions[$action])) {
@@ -136,7 +136,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $res = $el;
             $res['success'] = true;
         }
-        $res['message'] = $GLOBALS['app']->Session->PopLastResponse();
+        $res['message'] = $this->app->session->PopLastResponse();
         return $res;
     }
 

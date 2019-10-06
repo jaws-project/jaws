@@ -36,7 +36,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $dir  = $direction == 'rtl' ? '.' . $direction : '';
         $brow = $GLOBALS['app']->GetBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
-        $base_url = $GLOBALS['app']->GetSiteURL('/');
+        $base_url = $this->app->getSiteURL('/');
 
         $tpl->SetVariable('BASE_URL', $base_url);
         $tpl->SetVariable('.dir', $dir);
@@ -116,7 +116,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $dir  = $direction == 'rtl' ? '.' . $direction : '';
         $brow = $GLOBALS['app']->GetBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
-        $base_url = $GLOBALS['app']->GetSiteURL('/');
+        $base_url = $this->app->getSiteURL('/');
 
         $tpl->SetVariable('BASE_URL', $base_url);
         $tpl->SetVariable('.dir', $dir);
@@ -234,11 +234,11 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
             $res = Jaws_Error::IsError($res)? false : true;
         }
         if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_UPDATED'), RESPONSE_NOTICE);
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
 }

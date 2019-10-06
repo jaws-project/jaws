@@ -155,7 +155,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetVariable('section_id', $name);
                     $t_item->SetVariable('pos', $gadget['position']);
                     $t_item->SetVariable('item_id', $gadget['id']);
-                    $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
+                    $t_item->SetVariable('base_script_url', $this->app->getSiteURL('/'.BASE_SCRIPT));
                     $t_item->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['gadget'].'/Resources/images/logo.png'));
                     $t_item->SetVariable(
                         'delete',
@@ -291,7 +291,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('layouts_combo', $layouts->Get());
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
-        $url = $GLOBALS['app']->getSiteURL('/').
+        $url = $this->app->getSiteURL('/').
             BASE_SCRIPT. '?gadget=Layout&amp;action=AddLayoutElement&amp;layout='. $layout;
         $add->AddEvent(ON_CLICK, "addGadget('".$url."', '"._t('LAYOUT_NEW')."');");
         $tpl->SetVariable('add_gadget', $add->Get());
