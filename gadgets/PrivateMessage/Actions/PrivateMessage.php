@@ -18,7 +18,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
      */
     function PrivateMessage()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(401);
         }
 
@@ -27,7 +27,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $tpl->SetVariable('title', $this->gadget->title);
 
         $model = $this->gadget->model->load('Message');
-        $user_id = $GLOBALS['app']->Session->GetAttribute('user');
+        $user_id = $this->app->session->getAttribute('user');
         $unreadNotifyCount = $model->GetMessagesStatistics(
                                                 $user_id,
                                                 PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS,

@@ -18,12 +18,12 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
      */
     function Compose()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(401);
         }
 
         $this->gadget->CheckPermission('SendMessage');
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $user = $this->app->session->getAttribute('user');
         $this->AjaxMe('index.js');
         // set default value of javascript variables
         $this->gadget->define('icon_add', STOCK_ADD);
@@ -109,7 +109,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 // user's profile
                 $tpl->SetVariable(
                     'user_url',
-                    $GLOBALS['app']->Map->GetMappedURL(
+                    $this->app->map->GetMappedURL(
                         'Users',
                         'Profile',
                         array('user' => $message['from_username'])
@@ -218,7 +218,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             // user's profile
             $tpl->SetVariable(
                 'recipient_user_url',
-                $GLOBALS['app']->Map->GetMappedURL(
+                $this->app->map->GetMappedURL(
                     'Users',
                     'Profile',
                     array('user' => $user_info['username'])
@@ -262,7 +262,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $message_id = $this->gadget->request->fetch('id', 'post');
         }
 
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $user = $this->app->session->getAttribute('user');
         $model = $this->gadget->model->load('Message');
         $tpl = $this->gadget->template->load('Compose.html');
         $tpl->SetBlock('attachments');
@@ -304,7 +304,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
      */
     function SendMessage()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(401);
         }
         $this->gadget->CheckPermission('SendMessage');
@@ -318,7 +318,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         );
         $post['body'] = Jaws_Request::getInstance()->strip_crlf($post['body']);
 
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $user = $this->app->session->getAttribute('user');
         $model = $this->gadget->model->load('Message');
 
         if (empty($post['folder'])) {
