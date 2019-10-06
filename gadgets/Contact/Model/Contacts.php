@@ -51,7 +51,7 @@ class Contact_Model_Contacts extends Jaws_Gadget_Model
     {
         $now = Jaws_DB::getInstance()->date();
         $data = array();
-        $data['[user]']     = $GLOBALS['app']->Session->GetAttribute('user');
+        $data['[user]']     = $this->app->session->getAttribute('user');
         $data['ip']         = $_SERVER['REMOTE_ADDR'];
         $data['name']       = $name;
         $data['email']      = $email;

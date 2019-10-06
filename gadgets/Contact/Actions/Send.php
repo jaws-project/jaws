@@ -26,11 +26,11 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             'post'
         );
 
-        if ($GLOBALS['app']->Session->Logged()) {
-            $post['name']   = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['email']  = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['mobile'] = $GLOBALS['app']->Session->GetAttribute('mobile');
-            $post['url']    = $GLOBALS['app']->Session->GetAttribute('url');
+        if ($this->app->session->logged()) {
+            $post['name']   = $this->app->session->getAttribute('nickname');
+            $post['email']  = $this->app->session->getAttribute('email');
+            $post['mobile'] = $this->app->session->getAttribute('mobile');
+            $post['url']    = $this->app->session->getAttribute('url');
         }
 
         if (trim($post['name'])    == '' ||
@@ -69,7 +69,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
                 );
             }
             $post['email'] = strtolower($post['email']);
-            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+            $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
             if (false !== strpos($blockedDomains, "\n".substr(strrchr($post['email'], '@'), 1))) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($post['email'], '@'), 1)),

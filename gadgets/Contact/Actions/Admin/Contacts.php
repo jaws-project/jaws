@@ -377,10 +377,10 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $site_url  = $GLOBALS['app']->getSiteURL('/', false);
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $profile_url = $site_url. $GLOBALS['app']->Map->GetMappedURL(
+        $profile_url = $site_url. $this->app->map->GetMappedURL(
             'Users',
             'Profile',
-            array('user' => $GLOBALS['app']->Session->GetAttribute('username'))
+            array('user' => $this->app->session->getAttribute('username'))
         );
         Jaws_Translate::getInstance()->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
         Jaws_Translate::getInstance()->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
@@ -403,7 +403,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl->SetVariable('message',     $contact['msg_txt']);
         $tpl->SetVariable('reply',       $reply);
         $tpl->SetVariable('createtime',  $jDate->Format($contact['createtime']));
-        $tpl->SetVariable('nickname',    $GLOBALS['app']->Session->GetAttribute('nickname'));
+        $tpl->SetVariable('nickname',    $this->app->session->getAttribute('nickname'));
         $tpl->SetVariable('profile_url', $profile_url);
         $tpl->SetVariable('site-name',   $site_name);
         $tpl->SetVariable('site-url',    $site_url);
