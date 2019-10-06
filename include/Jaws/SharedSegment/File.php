@@ -41,7 +41,9 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
     protected function __construct($ftok)
     {
         parent::__construct($ftok);
-        $this->sharedPath = rtrim(sys_get_temp_dir(), '/\\'). '/'. $this->sharedPrefix. $GLOBALS['app']->instance. '_';
+        $this->sharedPath =
+            rtrim(sys_get_temp_dir(), '/\\') . '/'.
+            $this->sharedPrefix . Jaws::getInstance()->instance . '_';
     }
 
     /**
