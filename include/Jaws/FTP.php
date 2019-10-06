@@ -101,7 +101,7 @@ class Jaws_FTP
         }
         if (!isset($instances[$instance])) {
             if ($instance == 'default') {
-                $defaultOptions = $GLOBALS['app']->Registry->fetchAll('Settings');
+                $defaultOptions = Jaws::getInstance()->registry->fetchAll('Settings');
                 $options['host']     = $defaultOptions['ftp_host'];
                 $options['port']     = $defaultOptions['ftp_port'];
                 $options['passive']  = $defaultOptions['ftp_mode'] == 'passive';
