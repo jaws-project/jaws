@@ -168,7 +168,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
             $GLOBALS['app']->GetSiteURL('/'),
             $this->gadget->registry->fetch('gate_email', 'Settings')
         );
-        $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
+        $commentAtom->SetGenerator('JAWS '.$this->app->registry->fetch('version'));
         $commentAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
         $commentAtom->SetTagLine(_t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget).'_TITLE')));
 

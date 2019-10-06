@@ -73,7 +73,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
         switch ($allow_comments_config) {
             case 'restricted':
-                $allow_comments_config = $GLOBALS['app']->Session->Logged();
+                $allow_comments_config = $this->app->session->logged();
                 break;
 
             default:
@@ -87,7 +87,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
             $rand = rand();
             $tpl->SetVariable('rand', $rand);
-            if (!$GLOBALS['app']->Session->Logged()) {
+            if (!$this->app->session->logged()) {
                 $tpl->SetBlock('comment_form/info-box');
                 $url_value = empty($data['url'])? 'http://' : $data['url'];
                 $tpl->SetVariable('url', _t('GLOBAL_URL'));
@@ -107,8 +107,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         } else {
             $tpl->SetBlock('comment_form/unregistered');
             $tpl->SetVariable('msg', _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
-                $GLOBALS['app']->Map->GetMappedURL('Users', 'Login'),
-                $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration')));
+                $this->app->map->GetMappedURL('Users', 'Login'),
+                $this->app->map->GetMappedURL('Users', 'Registration')));
             $tpl->ParseBlock('comment_form/unregistered');
         }
 
@@ -201,7 +201,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     // user's profile
                     $tpl->SetVariable(
                         'user_url',
-                        $GLOBALS['app']->Map->GetMappedURL(
+                        $this->app->map->GetMappedURL(
                             'Users',
                             'Profile',
                             array('user' => $entry['username'])
@@ -254,7 +254,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     // user's profile
                     $tpl->SetVariable(
                         'replier_url',
-                        $GLOBALS['app']->Map->GetMappedURL(
+                        $this->app->map->GetMappedURL(
                             'Users',
                             'Profile',
                             array('user' => $entry['replier_username'])
@@ -370,7 +370,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     // user's profile
                     $tpl->SetVariable(
                         'user_url',
-                        $GLOBALS['app']->Map->GetMappedURL(
+                        $this->app->map->GetMappedURL(
                             'Users',
                             'Profile',
                             array('user' => $entry['username'])
@@ -435,10 +435,10 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             'post'
         );
 
-        if ($GLOBALS['app']->Session->Logged()) {
-            $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
+        if ($this->app->session->logged()) {
+            $post['name']  = $this->app->session->getAttribute('nickname');
+            $post['email'] = $this->app->session->getAttribute('email');
+            $post['url']   = $this->app->session->getAttribute('url');
         }
 
         if (trim($post['message']) == ''|| trim($post['name']) == '') {

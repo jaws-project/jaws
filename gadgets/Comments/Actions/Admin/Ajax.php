@@ -81,7 +81,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
                     $email,
                     $message,
                     $reply,
-                    $GLOBALS['app']->Session->GetAttribute('nickname')
+                    $this->app->session->getAttribute('nickname')
                 );
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
