@@ -196,7 +196,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                 array(
                     'gadget' => 'Users',
                     'action' => 'Login',
-                    'user'   => $GLOBALS['app']->Session->GetAttribute('user'),
+                    'user'   => $this->app->session->getAttribute('user'),
                 ),
                 10
             );
