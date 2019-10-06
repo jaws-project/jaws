@@ -22,11 +22,11 @@ class ServerTime_Model_Admin_Properties extends Jaws_Gadget_Model
     {
         $res = $this->gadget->registry->update('date_format', $format);
         if ($res) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('SERVERTIME_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('SERVERTIME_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('SERVERTIME_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+        $this->app->session->PushLastResponse(_t('SERVERTIME_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         return new Jaws_Error(_t('SERVERTIME_ERROR_PROPERTIES_NOT_UPDATED'));
     }
 
