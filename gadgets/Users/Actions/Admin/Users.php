@@ -154,12 +154,12 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         // set default value of javascript variables
         $this->gadget->define('addUser_title', _t('USERS_USERS_ADD'));
@@ -601,7 +601,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function Logout()
     {
-        $GLOBALS['app']->Session->Logout();
+        $this->app->session->logout();
         $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
         return Jaws_Header::Location($admin_script?: 'admin.php');
     }

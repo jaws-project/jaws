@@ -109,7 +109,7 @@ class Users_Actions_VCard extends Users_Actions_Default
         if (!empty($_FILES)) {
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
             if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
-                return $GLOBALS['app']->Session->GetResponse(
+                return $this->gadget->session->response(
                     _t('GLOBAL_ERROR_UPLOAD'),
                     RESPONSE_ERROR
                 );
@@ -128,7 +128,7 @@ class Users_Actions_VCard extends Users_Actions_Default
                 array('Collapse' => false)
             );
             if (count($vCard) == 0) {
-                return $GLOBALS['app']->Session->GetResponse(
+                return $this->gadget->session->response(
                     _t('USERS_ERROR_VCARD_DATA_NOT_FOUND'),
                     RESPONSE_ERROR
                 );
@@ -150,20 +150,20 @@ class Users_Actions_VCard extends Users_Actions_Default
                 }
             }
         } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $e->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
         if(Jaws_Error::IsError($contactId)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $contactId->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('USERS_VCARD_IMPORT_COMPLETED'),
             RESPONSE_NOTICE
         );

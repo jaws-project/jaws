@@ -53,9 +53,9 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         if ($personal) {
             if (empty($profile['avatar'])) {
-                $profile['avatar'] = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
+                $profile['avatar'] = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
             } else {
-                $profile['avatar'] = $GLOBALS['app']->getDataURL(). 'avatar/'. $profile['avatar'];
+                $profile['avatar'] = $this->app->getDataURL(). 'avatar/'. $profile['avatar'];
             }
 
             if (!empty($profile['dob'])) {
@@ -103,7 +103,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($group, $domain, $superadmin, $status, $term, $orderBy, $offset) = $this->gadget->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
-        if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
+        if (!$this->app->session->isSuperAdmin()) {
             $superadmin = false;
         }
 
@@ -127,7 +127,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($group, $domain, $superadmin, $status, $term) = $this->gadget->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
-        if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
+        if (!$this->app->session->isSuperAdmin()) {
             $superadmin = false;
         }
 
@@ -156,21 +156,21 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         $uData['status'] = (int)$uData['status'];
-        $uData['superadmin'] = $GLOBALS['app']->Session->IsSuperAdmin()? (bool)$uData['superadmin'] : false;
+        $uData['superadmin'] = $this->app->session->isSuperAdmin()? (bool)$uData['superadmin'] : false;
         $res = $this->_UserModel->AddUser($uData);
         if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(),
+            $this->app->session->PushLastResponse($res->getMessage(),
                                                        RESPONSE_ERROR);
         } else {
             $guid = $this->gadget->registry->fetch('anon_group');
             if (!empty($guid)) {
                 $this->_UserModel->AddUserToGroup($res, (int)$guid);
             }
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CREATED', $uData['username']),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_CREATED', $uData['username']),
                                                        RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -199,20 +199,20 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $res = $this->_UserModel->UpdateUser($uid, $uData);
         if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
             // send activate notification
             if ($uData['prev_status'] == 2 && $uData['status'] == 1) {
                 $uRegistration = $this->gadget->action->load('Registration');
                 $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
             }
-            $GLOBALS['app']->Session->PushLastResponse(
+            $this->app->session->PushLastResponse(
                 _t('USERS_USERS_UPDATED', $uData['username']),
                 RESPONSE_NOTICE
             );
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -226,25 +226,25 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageUsers');
         @list($uid) = $this->gadget->request->fetchAll('post');
         if ($uid == $this->app->session->getAttribute('user')) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DELETE_SELF'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_CANT_DELETE_SELF'),
                                                        RESPONSE_ERROR);
         } else {
             $profile = $this->_UserModel->GetUser((int)$uid);
-            if (!$GLOBALS['app']->Session->IsSuperAdmin() && $profile['superadmin']) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DELETE', $profile['username']),
+            if (!$this->app->session->isSuperAdmin() && $profile['superadmin']) {
+                $this->app->session->PushLastResponse(_t('USERS_USERS_CANT_DELETE', $profile['username']),
                                                            RESPONSE_ERROR);
-                return $GLOBALS['app']->Session->PopLastResponse();
+                return $this->app->session->PopLastResponse();
             }
 
             if (!$this->_UserModel->DeleteUser($uid)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DELETE', $profile['username']),
+                $this->app->session->PushLastResponse(_t('USERS_USERS_CANT_DELETE', $profile['username']),
                                                            RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_DELETED', $profile['username']),
+                $this->app->session->PushLastResponse(_t('USERS_USER_DELETED', $profile['username']),
                                                            RESPONSE_NOTICE);
             }
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -257,19 +257,19 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $sid = $this->gadget->request->fetchAll('post');
-        if ($GLOBALS['app']->Session->Delete($sid)) {
-            $GLOBALS['app']->Session->PushLastResponse(
+        if ($this->app->session->delete($sid)) {
+            $this->app->session->PushLastResponse(
                 _t('USERS_ONLINE_SESSION_DELETED'),
                 RESPONSE_NOTICE
             );
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(
+            $this->app->session->PushLastResponse(
                 _t('USERS_ONLINE_SESSION_NOT_DELETED'),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -286,22 +286,22 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('IP');
         $sIds = $this->gadget->request->fetchAll('post');
         foreach ($sIds as $id) {
-            $session = $GLOBALS['app']->Session->GetSession($id);
+            $session = $this->app->session->getSession($id);
 
             if ($mPolicy->AddIPRange($session['ip'], null, true)) {
-                $GLOBALS['app']->Session->PushLastResponse(
+                $this->app->session->PushLastResponse(
                     _t('POLICY_RESPONSE_IP_ADDED'),
                     RESPONSE_NOTICE
                 );
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(
+                $this->app->session->PushLastResponse(
                     _t('POLICY_RESPONSE_IP_NOT_ADDED'),
                     RESPONSE_ERROR
                 );
             }
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -318,22 +318,22 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('Agent');
         foreach ($sIds as $id) {
-            $session = $GLOBALS['app']->Session->GetSession($id);
+            $session = $this->app->session->getSession($id);
 
             if ($mPolicy->AddAgent($session['agent'], true)) {
-                $GLOBALS['app']->Session->PushLastResponse(
+                $this->app->session->PushLastResponse(
                     _t('POLICY_RESPONSE_AGENT_ADDED'),
                     RESPONSE_NOTICE
                 );
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(
+                $this->app->session->PushLastResponse(
                     _t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'),
                     RESPONSE_ERROR
                 );
             }
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -353,14 +353,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         if ($res) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_ACL_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USER_ACL_UPDATED'),
                                                        RESPONSE_NOTICE);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USER_ACL_NOT_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USER_ACL_NOT_UPDATED'),
                                                        RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -380,14 +380,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         if ($res) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUP_ACL_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_GROUP_ACL_UPDATED'),
                                                        RESPONSE_NOTICE);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUP_ACL_NOT_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_GROUP_ACL_NOT_UPDATED'),
                                                        RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -417,14 +417,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
                 $this->_UserModel->DeleteUserFromGroup($uid, $group);
             }
 
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_UPDATED_USERS'),
+            $this->app->session->PushLastResponse(_t('USERS_GROUPS_UPDATED_USERS'),
                                                        RESPONSE_NOTICE);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse($oldGroups->GetMessage(),
+            $this->app->session->PushLastResponse($oldGroups->GetMessage(),
                                                        RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -441,11 +441,11 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $uModel = $this->gadget->model->loadAdmin('UsersGroup');
         $res = $uModel->AddUsersToGroup($guid, $users);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('USERS_GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -533,14 +533,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $res = $this->_UserModel->UpdateUser($uid, $uData);
         if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(),
+            $this->app->session->PushLastResponse($res->getMessage(),
                                                        RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_MYACCOUNT_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_MYACCOUNT_UPDATED'),
                                                        RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -635,7 +635,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (!empty($dob)) {
             $objDate = Jaws_Date::getInstance();
             $dob = $objDate->ToBaseDate(preg_split('/[- :]/', $dob), 'Y-m-d H:i:s');
-            $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d H:i:s');
+            $dob = $this->app->UserTime2UTC($dob, 'Y-m-d H:i:s');
         }
 
         $pData = array(
@@ -657,14 +657,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $res = $this->_UserModel->UpdatePersonal($uid, $pData);
         if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_PERSONALINFO_NOT_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_PERSONALINFO_NOT_UPDATED'),
                                                        RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_PERSONALINFO_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_PERSONALINFO_UPDATED'),
                                                        RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -702,14 +702,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             )
         );
         if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_NOT_ADVANCED_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_NOT_ADVANCED_UPDATED'),
                                                        RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_ADVANCED_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_ADVANCED_UPDATED'),
                                                        RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -744,14 +744,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $post['data']
         );
         if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_NOT_CONTACTINFO_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_NOT_CONTACTINFO_UPDATED'),
                                                        RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CONTACTINFO_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_CONTACTINFO_UPDATED'),
                                                        RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -778,14 +778,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $post['data']
         );
         if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_NOT_EXTRAINFO_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_NOT_EXTRAINFO_UPDATED'),
                                                        RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_EXTRAINFO_UPDATED'),
+            $this->app->session->PushLastResponse(_t('USERS_USERS_EXTRAINFO_UPDATED'),
                                                        RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -838,15 +838,15 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         );
 
         if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(
+            $this->app->session->PushLastResponse(
                 _t('USERS_GROUPS_CREATED', $title),
                 RESPONSE_NOTICE
             );
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -869,15 +869,15 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             )
         );
         if (Jaws_Error::isError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(
+            $this->app->session->PushLastResponse(
                 _t('USERS_GROUPS_UPDATED', $title),
                 RESPONSE_NOTICE
             );
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -894,13 +894,13 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $currentUid = $this->app->session->getAttribute('user');
         $groupinfo = $this->_UserModel->GetGroup((int)$guid);
         if (!$this->_UserModel->DeleteGroup($guid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),
+            $this->app->session->PushLastResponse(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),
                                                        RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_DELETED', $groupinfo['name']),
+            $this->app->session->PushLastResponse(_t('USERS_GROUPS_DELETED', $groupinfo['name']),
                                                        RESPONSE_NOTICE);
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**

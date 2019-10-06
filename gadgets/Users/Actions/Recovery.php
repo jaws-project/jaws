@@ -164,7 +164,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             $recoveryData['auth'] = $authtype;
 
             // create session & cookie
-            $GLOBALS['app']->Session->Create($recoveryData, $recoveryData['remember']);
+            $this->app->session->create($recoveryData, $recoveryData['remember']);
             // login event logging
             $this->gadget->event->shout(
                 'Log',
@@ -259,7 +259,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             'time' => time()
         );
 
-        $site_url = $GLOBALS['app']->getSiteURL('/');
+        $site_url = $this->app->getSiteURL('/');
         $settings = $this->app->registry->fetchAll('Settings');
 
         $tpl = $this->gadget->template->load('LoginForgotNotification.html');

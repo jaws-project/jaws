@@ -44,9 +44,9 @@ class Users_Actions_Personal extends Users_Actions_Default
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         if (empty($personal['avatar'])) {
-            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
+            $user_current_avatar = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
         } else {
-            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $personal['avatar'];
+            $user_current_avatar = $this->app->getDataURL() . "avatar/" . $personal['avatar'];
             $user_current_avatar .= !empty($personal['last_update']) ? "?" . $personal['last_update'] . "" : '';
         }
         $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);

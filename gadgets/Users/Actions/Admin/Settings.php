@@ -102,13 +102,13 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         );
 
         if ($this->gadget->model->loadAdmin('Settings')->UpdateSettings($settings)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('USERS_PROPERTIES_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('USERS_PROPERTIES_CANT_UPDATE'),
             RESPONSE_ERROR
         );

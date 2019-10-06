@@ -27,7 +27,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             $tpl->SetBlock('NoPermission/known');
             $logoutLink = $this->gadget->urlMap('Logout');
             $referLink  = empty($_SERVER['HTTP_REFERER'])?
-                $GLOBALS['app']->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
+                $this->app->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
             $tpl->SetVariable(
                 'known_description',
                 _t('USERS_NO_PERMISSION_KNOWN_DESC', $logoutLink, $referLink));
@@ -39,7 +39,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
                 array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
             );
             $referLink = empty($_SERVER['HTTP_REFERER'])?
-                $GLOBALS['app']->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
+                $this->app->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
             $tpl->SetVariable(
                 'anon_description',
                 _t('USERS_NO_PERMISSION_ANON_DESC', $loginLink, $referLink));

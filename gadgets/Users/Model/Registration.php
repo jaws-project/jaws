@@ -55,7 +55,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $uData['verify_key'] = Jaws_Utils::RandomText(5, array('number' => true));
         $uData['status'] = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
 
-        $jawsUser = $GLOBALS['app']->loadObject('Jaws_User');
+        $jawsUser = $this->app->loadObject('Jaws_User');
         $user = $jawsUser->AddUser($uData);
         if (Jaws_Error::IsError($user)) {
             return $user;
@@ -198,7 +198,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      */
     function SendVerifyKey($user, $firstNotification, $password = '')
     {
-        $site_url   = $GLOBALS['app']->getSiteURL('/');
+        $site_url   = $this->app->getSiteURL('/');
         $settings   = $this->app->registry->fetchAll('Settings');
         $activation = $this->gadget->registry->fetch('anon_activation');
         $message    = '';
@@ -418,7 +418,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             return $RecoveryKey;
         }
 
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_url  = $this->app->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
         $tpl = $this->gadget->template->load('LoginNotification.html');

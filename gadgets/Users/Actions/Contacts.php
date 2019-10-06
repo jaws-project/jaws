@@ -49,9 +49,9 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         if (empty($contact['avatar'])) {
-            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
+            $user_current_avatar = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
         } else {
-            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $contact['avatar'];
+            $user_current_avatar = $this->app->getDataURL() . "avatar/" . $contact['avatar'];
             $user_current_avatar .= !empty($contact['last_update']) ? "?" . $contact['last_update'] . "" : '';
         }
         $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
@@ -277,7 +277,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             $post['offset']
         );
         if (Jaws_Error::isError($contacts)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $contacts->getMessage(),
                 RESPONSE_ERROR
             );
@@ -285,13 +285,13 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         $total = $objUser->GetUserContactsCount($currentUser, $post['search']);
         if (Jaws_Error::IsError($total)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $total->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(
@@ -336,9 +336,9 @@ class Users_Actions_Contacts extends Users_Actions_Default
             $post['data']
         );
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CONTACTINFO_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_USERS_CONTACTINFO_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -359,9 +359,9 @@ class Users_Actions_Contacts extends Users_Actions_Default
             $ids
         );
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CONTACTINFO_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_USERS_CONTACTINFO_DELETED'), RESPONSE_NOTICE);
         }
     }
 }

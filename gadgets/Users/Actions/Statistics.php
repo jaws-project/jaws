@@ -21,7 +21,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINEUSERS'));
 
         $uniqueOnline = array();
-        $sessions = $GLOBALS['app']->Session->GetSessions();
+        $sessions = $this->app->session->getSessions();
         if (!Jaws_Error::isError($sessions)) {
             foreach($sessions as $session) {
                 if (!empty($session['username'])) {
@@ -62,7 +62,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_registered_users', _t('USERS_ONLINE_REGISTERED_COUNT'));
         $tpl->SetVariable('lbl_guests_users', _t('USERS_ONLINE_GUESTS_COUNT'));
 
-        $sessions = $GLOBALS['app']->Session->GetSessions();
+        $sessions = $this->app->session->getSessions();
         $registered = count(array_filter(array_map(
             function ($sess) {
                 return $sess['username'];

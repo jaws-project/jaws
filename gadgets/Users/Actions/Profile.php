@@ -109,7 +109,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
         );
 
-        if (!$GLOBALS['app']->Session->IsSuperAdmin() &&
+        if (!$this->app->session->isSuperAdmin() &&
             $this->app->session->getAttribute('user') != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
@@ -197,7 +197,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
         );
  
-        if (!$GLOBALS['app']->Session->IsSuperAdmin() &&
+        if (!$this->app->session->isSuperAdmin() &&
             $this->app->session->getAttribute('user') != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');

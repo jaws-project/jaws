@@ -55,7 +55,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 // trying change password
-                $userModel = $GLOBALS['app']->loadObject('Jaws_User');
+                $userModel = $this->app->loadObject('Jaws_User');
                 $result = $userModel->UpdateUser(
                     $user['id'],
                     array(
@@ -144,7 +144,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 // fetch user information from database
-                $userModel = $GLOBALS['app']->loadObject('Jaws_User');
+                $userModel = $this->app->loadObject('Jaws_User');
                 $user = $userModel->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
                 if (Jaws_Error::isError($user)) {
                     // increase bad logins count

@@ -100,7 +100,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $registerData['auth'] = $authtype;
 
             // create session & cookie
-            $GLOBALS['app']->Session->Create($registerData, $registerData['remember']);
+            $this->app->session->create($registerData, $registerData['remember']);
             // login event logging
             $this->gadget->event->shout(
                 'Log',
@@ -180,7 +180,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
      */
     function ActivateNotification($user, $anon_activation)
     {
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_url  = $this->app->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
         $tpl = $this->gadget->template->load('UserNotification.txt');
@@ -227,7 +227,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             'time' => time()
         );
 
-        $site_url = $GLOBALS['app']->getSiteURL('/');
+        $site_url = $this->app->getSiteURL('/');
         $settings = $this->app->registry->fetchAll('Settings');
 
         $tpl = $this->gadget->template->load('RegistrationNotification.html');

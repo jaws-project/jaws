@@ -55,7 +55,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 $dob = null;
                 if (!empty($rgstrData['dob'])) {
                     $dob = Jaws_Date::getInstance()->ToBaseDate(explode('-', $rgstrData['dob']), 'Y-m-d');
-                    $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d');
+                    $dob = $this->app->UserTime2UTC($dob, 'Y-m-d');
                 }
                 $rgstrData['dob'] = $dob;
 

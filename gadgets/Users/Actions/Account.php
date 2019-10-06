@@ -70,9 +70,9 @@ class Users_Actions_Account extends Users_Actions_Default
         }
 
         if (empty($account['avatar'])) {
-            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
+            $user_current_avatar = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
         } else {
-            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $account['avatar'];
+            $user_current_avatar = $this->app->getDataURL() . "avatar/" . $account['avatar'];
             $user_current_avatar .= !empty($account['last_update']) ? "?" . $account['last_update'] . "" : '';
         }
         $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
@@ -258,7 +258,7 @@ class Users_Actions_Account extends Users_Actions_Default
             $tpl->ParseBlock('Notification/Activation');
         }
 
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_url  = $this->app->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url',  $site_url);

@@ -51,7 +51,7 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         // Users
         $uModel = new Jaws_User();
-        $superadmin = $GLOBALS['app']->Session->IsSuperAdmin() ? null : false;
+        $superadmin = $this->app->session->isSuperAdmin() ? null : false;
         $users = $uModel->GetUsers(false, false, $superadmin);
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
@@ -157,9 +157,9 @@ class Users_Actions_Friends extends Users_Actions_Default
         }
 
         if (Jaws_Error::isError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_CREATED', $post['data']['title']), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_GROUPS_CREATED', $post['data']['title']), RESPONSE_NOTICE);
         }
     }
 
@@ -192,9 +192,9 @@ class Users_Actions_Friends extends Users_Actions_Default
             }
 
             if (Jaws_Error::isError($res)) {
-                return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+                return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
             } else {
-                return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUP_DELETED'), RESPONSE_NOTICE);
+                return $this->gadget->session->response(_t('USERS_GROUP_DELETED'), RESPONSE_NOTICE);
             }
         }
     }
@@ -215,9 +215,9 @@ class Users_Actions_Friends extends Users_Actions_Default
         $res = $uModel->AddUsersToGroup((int)$post['gid'], $post['users'], $user);
 
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUP_CANNOT_ADD_USER'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('USERS_GROUP_CANNOT_ADD_USER'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUP_ADDED_USER'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_GROUP_ADDED_USER'), RESPONSE_NOTICE);
         }
     }
 }

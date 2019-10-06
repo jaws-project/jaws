@@ -179,20 +179,20 @@ class Users_Actions_Users extends Users_Actions_Default
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers($group, $domain, $superadmin, $status, $term, $orderBy, $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($users)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $users->getMessage(),
                 RESPONSE_ERROR
             );
         }
         $total = $uModel->GetUsersCount($group, $domain, $superadmin, $status, $term);
         if (Jaws_Error::IsError($total)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $total->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(
@@ -230,9 +230,9 @@ class Users_Actions_Users extends Users_Actions_Default
 
         if ($post['personal']) {
             if (empty($profile['avatar'])) {
-                $profile['avatar'] = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
+                $profile['avatar'] = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
             } else {
-                $profile['avatar'] = $GLOBALS['app']->getDataURL(). 'avatar/'. $profile['avatar'];
+                $profile['avatar'] = $this->app->getDataURL(). 'avatar/'. $profile['avatar'];
             }
 
             if (!empty($profile['dob'])) {
@@ -263,17 +263,17 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $uData['status'] = (int)$uData['status'];
-        $uData['superadmin'] = $GLOBALS['app']->Session->IsSuperAdmin()? (bool)$uData['superadmin'] : false;
+        $uData['superadmin'] = $this->app->session->isSuperAdmin()? (bool)$uData['superadmin'] : false;
         $uModel = new Jaws_User();
         $res = $uModel->AddUser($uData);
         if (Jaws_Error::isError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
             $guid = $this->gadget->registry->fetch('anon_group');
             if (!empty($guid)) {
                 $uModel->AddUserToGroup($res, (int)$guid);
             }
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
         }
     }
 
@@ -300,7 +300,7 @@ class Users_Actions_Users extends Users_Actions_Default
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
-            if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
+            if (!$this->app->session->isSuperAdmin()) {
                 unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
             }
         }
@@ -308,14 +308,14 @@ class Users_Actions_Users extends Users_Actions_Default
         $uModel = new Jaws_User();
         $res = $uModel->UpdateUser($post['uid'], $uData);
         if (Jaws_Error::isError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
             // send activate notification
             if ($uData['prev_status'] == 2 && $uData['status'] == 1) {
                 $uRegistration = $this->gadget->action->load('Registration');
                 $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
             }
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_UPDATED', $uData['username']), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_USERS_UPDATED', $uData['username']), RESPONSE_NOTICE);
         }
     }
 
@@ -330,7 +330,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageUsers');
         $uid = $this->gadget->request->fetch('id', 'post');
         if ($uid == $this->app->session->getAttribute('user')) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('USERS_USERS_CANT_DELETE_SELF'),
                 RESPONSE_ERROR
             );
@@ -338,20 +338,20 @@ class Users_Actions_Users extends Users_Actions_Default
 
         $uModel = new Jaws_User();
         $profile = $uModel->GetUser((int)$uid);
-        if (!$GLOBALS['app']->Session->IsSuperAdmin() && $profile['superadmin']) {
-            return $GLOBALS['app']->Session->GetResponse(
+        if (!$this->app->session->isSuperAdmin() && $profile['superadmin']) {
+            return $this->gadget->session->response(
                 _t('USERS_USERS_CANT_DELETE', $profile['username']),
                 RESPONSE_ERROR
             );
         }
 
         if (!$uModel->DeleteUser($uid)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('USERS_USERS_CANT_DELETE', $profile['username']),
                 RESPONSE_ERROR
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('USERS_USER_DELETED', $profile['username']),
                 RESPONSE_NOTICE
             );
@@ -405,10 +405,10 @@ class Users_Actions_Users extends Users_Actions_Default
                 $uModel->DeleteUserFromGroup($post['uid'], $group);
             }
 
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_UPDATED_USERS'),
+            return $this->gadget->session->response(_t('USERS_GROUPS_UPDATED_USERS'),
                 RESPONSE_NOTICE);
         } else {
-            return $GLOBALS['app']->Session->GetResponse($oldGroups->GetMessage(),
+            return $this->gadget->session->response($oldGroups->GetMessage(),
                 RESPONSE_ERROR);
         }
     }

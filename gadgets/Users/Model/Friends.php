@@ -33,7 +33,7 @@ class Users_Model_Friends extends Jaws_Gadget_Model
         foreach ($list as $user) {
             if ($userModel->UserIsInGroup($user['id'], $guid)) {
                 if (!isset($postedUsers[$user['id']])) {
-                    if (!$GLOBALS['app']->Session->IsSuperAdmin() && $user['superadmin']) {
+                    if (!$this->app->session->isSuperAdmin() && $user['superadmin']) {
                         continue;
                     }
                     $userModel->DeleteUserFromGroup($user['id'], $guid, $owner);

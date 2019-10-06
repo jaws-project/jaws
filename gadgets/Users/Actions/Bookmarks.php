@@ -64,9 +64,9 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
             $bookmarked
         );
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('USERS_BOOKMARK_UPDATED'),
                 RESPONSE_NOTICE,
                 array('gadget' => $data['gadget'], 'action' => $data['action'], 'reference' => $data['reference'])
@@ -183,9 +183,9 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         $currentUser = $this->app->session->getAttribute('user');
         $result = $this->gadget->model->load('Bookmarks')->DeleteBookmark($id, $currentUser);
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('USERS_BOOKMARK_DELETED'),
                 RESPONSE_NOTICE
             );

@@ -33,7 +33,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
 
             $tpl->SetVariable('profile', _t('USERS_PROFILE'));
-            $uInfo = $GLOBALS['app']->Session->getAttributes('', array('username', 'nickname', 'avatar', 'email'));
+            $uInfo = $this->app->session->getAttributes('', array('username', 'nickname', 'avatar', 'email'));
             // username
             $tpl->SetVariable('username',  $uInfo['username']);
             // nickname
@@ -210,8 +210,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
-            if ($GLOBALS['app']->mainGadget == $GLOBALS['app']->requestedGadget &&
-                $GLOBALS['app']->mainAction == $GLOBALS['app']->requestedAction
+            if ($this->app->mainGadget == $this->app->requestedGadget &&
+                $this->app->mainAction == $this->app->requestedAction
             ) {
                 $referrer = '';
             } else {
@@ -257,7 +257,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         } else {
             $loginData['auth'] = $authtype;
             // create session & cookie
-            $GLOBALS['app']->Session->Create($loginData, $loginData['remember']);
+            $this->app->session->create($loginData, $loginData['remember']);
             // login event logging
             $this->gadget->event->shout(
                 'Log',
@@ -302,7 +302,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $objAccount->Logout();
 
         // logout from jaws
-        $GLOBALS['app']->Session->Logout();
+        $this->app->session->logout();
         if (JAWS_SCRIPT == 'index') {
             return Jaws_Header::Location();
         } else {
@@ -379,7 +379,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             'time' => time()
         );
 
-        $site_url = $GLOBALS['app']->getSiteURL('/');
+        $site_url = $this->app->getSiteURL('/');
         $settings = $this->app->registry->fetchAll('Settings');
 
         $tpl = $this->gadget->template->load('LoginNotification.html');

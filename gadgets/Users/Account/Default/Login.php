@@ -77,8 +77,8 @@ class Users_Account_Default_Login extends Users_Account_Default
     {
         $this->AjaxMe('script.js');
         // Init layout
-        $GLOBALS['app']->Layout->Load('gadgets/Users/Templates/Admin', 'Login.html');
-        $ltpl =& $GLOBALS['app']->Layout->_Template;
+        $this->app->layout->Load('gadgets/Users/Templates/Admin', 'Login.html');
+        $ltpl =& $this->app->layout->_Template;
         $ltpl->SetVariable('admin-script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
 
@@ -106,7 +106,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         }
 
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
-        $ltpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/'));
+        $ltpl->SetVariable('url_back', $this->app->getSiteURL('/'));
         $ltpl->SetVariable('lbl_back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
 
         if (!empty($response)) {
@@ -114,7 +114,7 @@ class Users_Account_Default_Login extends Users_Account_Default
             $ltpl->SetVariable('response_text', $response['text']);
         }
 
-        return $GLOBALS['app']->Layout->Get();
+        return $this->app->layout->Get();
     }
 
     /**

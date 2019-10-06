@@ -93,7 +93,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
             return $res;
         }
 
-        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_url  = $this->app->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
         $tpl = $this->gadget->template->load('LoginNotification.html');

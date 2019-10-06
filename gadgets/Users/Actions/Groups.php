@@ -51,7 +51,7 @@ class Users_Actions_Groups extends Users_Actions_Default
 
         // Users
         $uModel = new Jaws_User();
-        $superadmin = $GLOBALS['app']->Session->IsSuperAdmin() ? null : false;
+        $superadmin = $this->app->session->isSuperAdmin() ? null : false;
         $users = $uModel->GetUsers(false, false, $superadmin);
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
@@ -133,9 +133,9 @@ class Users_Actions_Groups extends Users_Actions_Default
         $res = $uModel->AddGroup($gData);
 
         if (Jaws_Error::isError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_CREATED', $gData['title']), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_GROUPS_CREATED', $gData['title']), RESPONSE_NOTICE);
         }
     }
 
@@ -155,9 +155,9 @@ class Users_Actions_Groups extends Users_Actions_Default
         $uModel = new Jaws_User();
         $res = $uModel->UpdateGroup($post['id'], $gData);
         if (Jaws_Error::isError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_UPDATED', $gData['title']), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_GROUPS_UPDATED', $gData['title']), RESPONSE_NOTICE);
         }
     }
 
@@ -174,10 +174,10 @@ class Users_Actions_Groups extends Users_Actions_Default
         $uModel = new Jaws_User();
         $groupinfo = $uModel->GetGroup((int)$gid);
         if (!$uModel->DeleteGroup($gid)) {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),
+            return $this->gadget->session->response(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),
                 RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_DELETED', $groupinfo['name']),
+            return $this->gadget->session->response(_t('USERS_GROUPS_DELETED', $groupinfo['name']),
                 RESPONSE_NOTICE);
         }
     }
@@ -213,9 +213,9 @@ class Users_Actions_Groups extends Users_Actions_Default
         $uModel = $this->gadget->model->loadAdmin('UsersGroup');
         $res = $uModel->AddUsersToGroup((int)$post['gid'], $post['users']);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('USERS_GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('USERS_GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
         }
     }
 
