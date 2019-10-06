@@ -40,7 +40,7 @@ class Webcam_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($title, $url, $refresh) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Webcam');
         $model->NewWebcam($title, $url, $refresh);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -55,7 +55,7 @@ class Webcam_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $title, $url, $refresh) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Webcam');
         $model->UpdateWebcam($id, $title, $url, $refresh);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -70,7 +70,7 @@ class Webcam_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Webcam');
         $model->DeleteWebcam($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -85,7 +85,7 @@ class Webcam_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($limit) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($limit);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**

@@ -22,10 +22,10 @@ class Webcam_Model_Admin_Properties extends Jaws_Gadget_Model
     {
         $res = $this->gadget->registry->update('limit_random', $limit);
         if ($res || !Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('WEBCAM_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+        $this->app->session->PushLastResponse(_t('WEBCAM_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         return new Jaws_Error(_t('WEBCAM_ERROR_PROPERTIES_NOT_UPDATED'));
     }
 }
