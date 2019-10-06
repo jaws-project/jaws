@@ -21,12 +21,12 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if ($gc > 0) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('MENU_ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('MENU_ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -35,12 +35,12 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $gData['published']  = (bool)$published;
         $gid = $mgroupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($gid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $this->gadget->acl->insert('GroupAccess', $gid, true);
-        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
+        $this->app->session->PushLastResponse(_t('MENU_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
         return true;
     }
 
@@ -60,12 +60,12 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $mgroupsTable->select('count(id):integer')->where('id', $gid, '<>')->and()->where('title', $title);
         $gc = $mgroupsTable->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if ($gc > 0) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('MENU_ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('MENU_ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -74,11 +74,11 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $gData['published']  = $published;
         $res = $mgroupsTable->update($gData)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('MENU_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -92,36 +92,36 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('MENU_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('MENU_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
         $model = $this->gadget->model->load('Group');
         $group = $model->GetGroups($gid);
         if (Jaws_Error::IsError($group)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if(!isset($group['id'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('MENU_ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('MENU_ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
         $objORM = Jaws_ORM::getInstance();
         $res = $objORM->delete()->table('menus')->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $res = $objORM->delete()->table('menus_groups')->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $this->gadget->acl->delete('GroupAccess', $gid);
-        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_DELETED', $gid), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('MENU_NOTICE_GROUP_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
 

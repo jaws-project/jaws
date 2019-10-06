@@ -30,7 +30,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mid = $menusTable->insert($mData)->exec();
 
         if (Jaws_Error::IsError($mid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -39,7 +39,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         }
 
         $this->MoveMenu($mid, $mData['gid'], $mData['gid'], $mData['pid'], $mData['pid'], $mData['order'], null);
-        $GLOBALS['app']->Session->PushLastResponse($mid.'%%' . _t('MENU_NOTICE_MENU_CREATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse($mid.'%%' . _t('MENU_NOTICE_MENU_CREATED'), RESPONSE_NOTICE);
 
         return true;
     }
@@ -57,7 +57,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
         if (Jaws_Error::IsError($oldMenu)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('MENU_ERROR_GET_MENUS'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('MENU_ERROR_GET_MENUS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -78,7 +78,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $res = $menusTable->update($mData)->where('id', $mid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -95,7 +95,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             $mData['order'],
             $oldMenu['order']
         );
-        $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_MENU_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('MENU_NOTICE_MENU_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -111,7 +111,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Menu');
         $menu = $model->GetMenu($mid);
         if (Jaws_Error::IsError($menu)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -119,7 +119,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             $menusTable = Jaws_ORM::getInstance()->table('menus');
             $pids = $menusTable->select('id')->where('pid', $mid)->fetchAll();
             if (Jaws_Error::IsError($pids)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
@@ -132,7 +132,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             $this->MoveMenu($mid, $menu['gid'], $menu['gid'], $menu['pid'], $menu['pid'], 0xfff, $menu['order']);
             $res = $menusTable->delete()->where('id', $mid)->exec();
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         }
@@ -189,7 +189,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
                     $menusTable->update(array('gid' => $new_gid))->where('id', $menu['id'])->or();
                     $res = $menusTable->where('pid', $menu['id'])->exec();
                     if (Jaws_Error::IsError($res)) {
-                        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                        $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                         return false;
                     }
                 }
@@ -205,7 +205,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             )->where('pid', $old_pid)->and()->where('gid', $old_gid)->and()->where('order', $old_order, '>')->exec();
 
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
@@ -217,7 +217,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
             $res = $menusTable->and()->where('order', $new_order, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif (empty($old_order)) {
@@ -228,7 +228,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
             $res = $menusTable->and()->where('order', $new_order, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_order > $old_order) {
@@ -240,7 +240,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
             $res = $menusTable->and()->where('order', $old_order, '>')->and()->where('order', $new_order, '<=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_order < $old_order) {
@@ -252,12 +252,12 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
             $res = $menusTable->and()->where('order', $new_order, '>=')->and()->where('order', $old_order, '<')->exec();
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         }
 
-        //$GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_MENU_MOVED'), RESPONSE_NOTICE);
+        //$this->app->session->PushLastResponse(_t('MENU_NOTICE_MENU_MOVED'), RESPONSE_NOTICE);
         return true;
     }
 
