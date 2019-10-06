@@ -34,11 +34,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $params['stop_time']   = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $params['start_time'] = $this->app->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $params['stop_time'] = $this->app->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
         $params['createtime']  = $now;
         $params['updatetime']  = $now;
@@ -48,11 +48,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $result = $quotesTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_ADDED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(
+        $this->app->session->PushLastResponse(
             _t('QUOTES_QUOTE_ADDED'),
             RESPONSE_NOTICE,
             array('id' => $result, 'title' => $title)
@@ -85,11 +85,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $params['stop_time']   = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $params['start_time'] = $this->app->UserTime2UTC($start_time,  'Y-m-d H:i:s');
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $params['stop_time'] = $this->app->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
         $params['updatetime']  = Jaws_DB::getInstance()->date();
@@ -99,11 +99,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $result = $quotesTable->update($params)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_UPDATED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -119,11 +119,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $result = $quotesTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_DELETED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_DELETED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -184,7 +184,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
                 }
             }
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_GROUPS_UPDATED_QUOTES'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('QUOTES_GROUPS_UPDATED_QUOTES'), RESPONSE_NOTICE);
 
         return true;
     }

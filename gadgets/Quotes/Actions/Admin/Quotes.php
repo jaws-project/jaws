@@ -22,12 +22,12 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
         $this->gadget->define('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
@@ -113,7 +113,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('published', $published->Get());
 
         // quotation editor
-        $quotation =& $GLOBALS['app']->LoadEditor('Blocks', 'quotation', '', '');
+        $quotation =& $this->app->loadEditor('Blocks', 'quotation', '', '');
         $tpl->SetVariable('lbl_quotation', _t('QUOTES_QUOTE_QUOTATION'));
         $tpl->SetVariable('quotation', $quotation->Get());
 
