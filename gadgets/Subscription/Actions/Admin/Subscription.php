@@ -203,9 +203,9 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $model = $this->gadget->model->loadAdmin('Subscription');
         $res = $model->DeleteSubscriptions($subscriptionsID);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('SUBSCRIPTION_ERROR_CANT_DELETE_SUBSCRIPTIONS'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('SUBSCRIPTION_ERROR_CANT_DELETE_SUBSCRIPTIONS'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('SUBSCRIPTION_SUBSCRIPTION_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('SUBSCRIPTION_SUBSCRIPTION_DELETED'), RESPONSE_NOTICE);
         }
     }
 }
