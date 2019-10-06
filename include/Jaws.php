@@ -133,13 +133,13 @@ class Jaws
      * @access  public
      * @return  void
      */
-    function __construct()
+    private function __construct()
     {
         $this->loadObject('Jaws_Request', 'request', true);
-        $this->loadObject('Jaws_Registry', 'Registry');
-        $this->loadObject('Jaws_ACL', 'ACL');
-        $this->loadObject('Jaws_Listener', 'Listener');
-        $this->loadObject('Jaws_URLMapping', 'Map');
+        $this->loadObject('Jaws_Registry', 'registry');
+        $this->loadObject('Jaws_ACL', 'acl');
+        $this->loadObject('Jaws_Listener', 'listener');
+        $this->loadObject('Jaws_URLMapping', 'map');
         $this->define('', 'script', JAWS_SCRIPT);
     }
 
@@ -169,11 +169,11 @@ class Jaws
         // load cache before others
         $this->Cache = Jaws_Cache::factory();
 
-        $this->Map->Init();
-        $this->Session = Jaws_Session::factory();
-        $this->Session->init();
-        $logged_user = $GLOBALS['app']->Session->getAttributes('', array('user', 'groups'));
-        $this->ACL->Init($logged_user['user'], $logged_user['groups']);
+        $this->map->Init();
+        $this->session = Jaws_Session::factory();
+        $this->session->init();
+        $logged_user = $this->session->getAttributes('', array('user', 'groups'));
+        $this->acl->Init($logged_user['user'], $logged_user['groups']);
         $this->loadPreferences();
     }
 
@@ -189,22 +189,22 @@ class Jaws
     {
         if ($loadFromDatabase) {
             // fetch installation instance
-            $this->instance = $this->Registry->fetch('instance', 'Settings');
+            $this->instance = $this->registry->fetch('instance', 'Settings');
 
-            $user   = $this->Session->GetAttribute('user');
-            $layout = $this->Session->GetAttribute('layout');
+            $user   = $this->session->getAttribute('user');
+            $layout = $this->session->getAttribute('layout');
             $this->_Preferences = array(
-                'theme'         => (array)$this->Registry->fetch('theme', 'Settings'),
-                'editor'        => $this->Registry->fetchByUser($user,   'editor',   'Settings'),
-                'timezone'      => $this->Registry->fetchByUser($user,   'timezone', 'Settings'),
-                'site_timezone' => $this->Registry->fetch('timezone', 'Settings'),
-                'calendar'      => $this->Registry->fetchByUser($layout, 'calendar', 'Settings'),
+                'theme'         => (array)$this->registry->fetch('theme', 'Settings'),
+                'editor'        => $this->registry->fetchByUser($user,   'editor',   'Settings'),
+                'timezone'      => $this->registry->fetchByUser($user,   'timezone', 'Settings'),
+                'site_timezone' => $this->registry->fetch('timezone', 'Settings'),
+                'calendar'      => $this->registry->fetchByUser($layout, 'calendar', 'Settings'),
             );
 
             if (JAWS_SCRIPT == 'index') {
-                $this->_Preferences['language'] = $this->Registry->fetchByUser($layout, 'site_language', 'Settings');
+                $this->_Preferences['language'] = $this->registry->fetchByUser($layout, 'site_language', 'Settings');
             } else {
-                $this->_Preferences['language'] = $this->Registry->fetchByUser($user, 'admin_language', 'Settings');
+                $this->_Preferences['language'] = $this->registry->fetchByUser($user, 'admin_language', 'Settings');
             }
         }
 
@@ -352,7 +352,7 @@ class Jaws
     {
         if (empty($this->_BrowserFlag)) {
             require_once PEAR_PATH. 'Net/Detect.php';
-            $bFlags = explode(',', $this->Registry->fetch('browsers_flag', 'Settings'));
+            $bFlags = explode(',', $this->registry->fetch('browsers_flag', 'Settings'));
             $this->_BrowserFlag = Net_UserAgent_Detect::getBrowser($bFlags);
         }
 
@@ -581,7 +581,7 @@ class Jaws
      */
     function RunAutoload()
     {
-        $data    = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
+        $data    = $GLOBALS['app']->registry->fetch('gadgets_autoload_items');
         $gadgets = array_filter(explode(',', $data));
         foreach($gadgets as $gadget) {
             if (Jaws_Gadget::IsGadgetEnabled($gadget)) {
@@ -675,7 +675,7 @@ class Jaws
             $this->_BrowserEncoding = (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '');
             $this->_BrowserEncoding = strtolower($this->_BrowserEncoding);
             $_GZipEnabled = true;
-            if (($this->Registry->fetch('gzip_compression', 'Settings') != 'true') ||
+            if (($this->registry->fetch('gzip_compression', 'Settings') != 'true') ||
                 !extension_loaded('zlib') ||
                 ini_get('zlib.output_compression') ||
                 (ini_get('zlib.output_compression_level') > 0) ||
@@ -701,7 +701,7 @@ class Jaws
         static $_IsRobot;
         if (!isset($_IsRobot)) {
             $_IsRobot = false;
-            $robots = explode(',', $this->Registry->fetch('robots', 'Settings'));
+            $robots = explode(',', $this->registry->fetch('robots', 'Settings'));
             $robots = array_map('strtolower', $robots);
             $uagent = strtolower(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']));
             $ipaddr = $_SERVER['REMOTE_ADDR'];
