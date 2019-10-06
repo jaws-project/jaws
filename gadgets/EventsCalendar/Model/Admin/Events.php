@@ -50,7 +50,7 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
         if (!empty($filters) && count($filters) > 0) {
             if (isset($filters['start_time']) && !empty($filters['start_time'])) {
                 if (!is_numeric($filters['start_time'])) {
-                    $filters['start_time'] = $GLOBALS['app']->UserTime2UTC(
+                    $filters['start_time'] = $this->app->UserTime2UTC(
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['start_time']), 'U')
                     );
                 }
@@ -58,7 +58,7 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
             }
             if (isset($filters['stop_time']) && !empty($filters['stop_time'])) {
                 if (!is_numeric($filters['stop_time'])) {
-                    $filters['stop_time'] = $GLOBALS['app']->UserTime2UTC(
+                    $filters['stop_time'] = $this->app->UserTime2UTC(
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['stop_time']), 'U')
                     );
                 }

@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $get = $this->gadget->request->fetch(array('year', 'month'), 'get');
         $year = (int)$get['year'];
@@ -44,9 +44,9 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $jDate = Jaws_Date::getInstance();
         $daysInMonth = $jDate->monthDays($year, $month);
         $start = $jDate->ToBaseDate($year, $month, 1);
-        $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
+        $start = $this->app->UserTime2UTC($start['timestamp']);
         $stop = $jDate->ToBaseDate($year, $month, $daysInMonth, 23, 59, 59);
-        $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
+        $stop = $this->app->UserTime2UTC($stop['timestamp']);
 
         // Current month
         $info = $jDate->GetDateInfo($year, $month, 1);

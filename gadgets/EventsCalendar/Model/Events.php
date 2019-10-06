@@ -70,13 +70,13 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
 
                     case 'start':
                         $start = $jDate->ToBaseDate(preg_split('/[\/\- \:]/', $value), 'Y-m-d');
-                        $start = $GLOBALS['app']->UserTime2UTC($start);
+                        $start = $this->app->UserTime2UTC($start);
                         $table->where('stop_time', $start, '>')->and();
                         break;
 
                     case 'stop':
                         $stop = $jDate->ToBaseDate(preg_split('/[\/\- \:]/', $value), 'Y-m-d');
-                        $stop = $GLOBALS['app']->UserTime2UTC($stop);
+                        $stop = $this->app->UserTime2UTC($stop);
                         $table->where('start_time', $stop, '<');
                         break;
                 }

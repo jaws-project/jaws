@@ -90,9 +90,9 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
 
             $daysInMonth = $jDate->monthDays($year, $m);
             $start = $jDate->ToBaseDate($year, $m, 1);
-            $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
+            $start = $this->app->UserTime2UTC($start['timestamp']);
             $stop = $jDate->ToBaseDate($year, $m, $daysInMonth, 23, 59, 59);
-            $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
+            $stop = $this->app->UserTime2UTC($stop['timestamp']);
             $table->where('recs.start_time', $stop, '<')->and();
             $table->where('recs.stop_time', $start, '>');
             $table->groupBy('events.id');

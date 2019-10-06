@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $eventId = (int)$this->gadget->request->fetch('event', 'get');
         $model = $this->gadget->model->load('Event');
@@ -113,7 +113,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
 
         // Actions
-        $siteUrl = $GLOBALS['app']->GetSiteURL('/');
+        $siteUrl = $this->app->getSiteURL('/');
         $tpl->SetVariable('url_edit', $siteUrl . $this->gadget->urlMap('EditEvent',
                 array('user' => $user, 'event' => $eventId)));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));

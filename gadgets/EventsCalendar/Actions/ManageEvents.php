@@ -35,9 +35,9 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
-        $siteUrl = $GLOBALS['app']->GetSiteURL('/');
+        $siteUrl = $this->app->getSiteURL('/');
         $eventsUrl = $siteUrl . $this->gadget->urlMap('ManageEvents', array('user' => $user));
 
         $this->gadget->define('events_url', $eventsUrl);

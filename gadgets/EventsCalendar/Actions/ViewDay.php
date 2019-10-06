@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $get = $this->gadget->request->fetch(array('year', 'month', 'day'), 'get');
         $year = (int)$get['year'];
@@ -97,9 +97,9 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
 
         // Fetch events
         $model = $this->gadget->model->load('Calendar');
-        $start = $GLOBALS['app']->UserTime2UTC($date['timestamp']);
+        $start = $this->app->UserTime2UTC($date['timestamp']);
         $stop = $jDate->ToBaseDate($year, $month, $day, 23, 59, 59);
-        $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
+        $stop = $this->app->UserTime2UTC($stop['timestamp']);
         $events = $model->GetEvents($user, null, null, $start, $stop);
         if (Jaws_Error::IsError($events)){
             $events = array();

@@ -42,7 +42,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function EventForm($id = 0)
     {
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('EventForm.html');
         $tpl->SetBlock('form');
@@ -226,7 +226,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') .
+        $tpl->SetVariable('url_back', $this->app->getSiteURL('/') .
             $this->gadget->urlMap('ManageEvents', array('user' => $this->app->session->getAttribute('user'))));
 
         $tpl->ParseBlock('form');
@@ -368,7 +368,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $id_set = $this->gadget->request->fetch('id_set');
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
                 RESPONSE_ERROR
             );
@@ -379,7 +379,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $user = (int)$this->app->session->getAttribute('user');
         $verifiedEvents = $model->CheckEvents($id_set, $user);
         if (Jaws_Error::IsError($verifiedEvents)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
                 RESPONSE_ERROR
             );
@@ -387,7 +387,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         // No events was verified
         if (empty($verifiedEvents)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
@@ -397,7 +397,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Event');
         $res = $model->DeleteEvents($verifiedEvents);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
                 RESPONSE_ERROR
             );
@@ -407,13 +407,13 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             $msg = _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS_FAILED');
             // FIXME: we are creating response twice
             $this->gadget->session->push($msg, 'Response', RESPONSE_WARNING);
-            return $GLOBALS['app']->Session->GetResponse($msg, RESPONSE_WARNING);
+            return $this->gadget->session->response($msg, RESPONSE_WARNING);
         }
 
         $msg = (count($id_set) === 1)?
             _t('EVENTSCALENDAR_NOTICE_EVENT_DELETED') :
             _t('EVENTSCALENDAR_NOTICE_EVENTS_DELETED');
         $this->gadget->session->push($msg, 'Response');
-        return $GLOBALS['app']->Session->GetResponse($msg);
+        return $this->gadget->session->response($msg);
     }
 }

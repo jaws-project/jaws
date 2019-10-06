@@ -53,7 +53,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ShareEvent.html');
         $tpl->SetBlock('share');
@@ -137,7 +137,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         // Validate event
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event) || empty($event)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('EVENTSCALENDAR_ERROR_RETRIEVING_DATA'),
                 RESPONSE_ERROR
             );
@@ -145,7 +145,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
 
         // Verify owner
         if ($event['user'] != $user) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
@@ -156,7 +156,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Share');
         $res = $model->UpdateEventUsers($id, $users);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('EVENTSCALENDAR_ERROR_EVENT_SHARE'),
                 RESPONSE_ERROR
             );
@@ -166,7 +166,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             _t('EVENTSCALENDAR_NOTICE_SHARE_UPDATED'),
             'Response'
         );
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('EVENTSCALENDAR_NOTICE_SHARE_UPDATED')
         );
     }

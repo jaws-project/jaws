@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $data = $this->gadget->request->fetch(array('year', 'month', 'day'), 'get');
         $year = (int)$data['year'];
@@ -84,9 +84,9 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
 
         // This week
         $start = $jDate->ToBaseDate($year, $month, $startDay);
-        $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
+        $start = $this->app->UserTime2UTC($start['timestamp']);
         $stop = $jDate->ToBaseDate($year, $month, $stopDay, 23, 59, 59);
-        $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
+        $stop = $this->app->UserTime2UTC($stop['timestamp']);
         $from = $jDate->Format($start, 'Y MN d');
         $to = $jDate->Format($stop, 'Y MN d');
         $current = $from . ' - ' . $to;

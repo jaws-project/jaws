@@ -74,13 +74,13 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $start_time = $jDate->ToBaseDate(
             preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time'])
         );
-        $event['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time['timestamp']);
+        $event['start_time'] = $this->app->UserTime2UTC($start_time['timestamp']);
         unset($event['start_date']);
 
         $stop_time = $jDate->ToBaseDate(
             preg_split('/[- :]/', $event['stop_date'] . ' ' . $event['stop_time'])
         );
-        $event['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time['timestamp']);
+        $event['stop_time'] = $this->app->UserTime2UTC($stop_time['timestamp']);
         unset($event['stop_date']);
 
         $event['createtime'] = $event['updatetime'] = time();
@@ -134,13 +134,13 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $start_time = $jDate->ToBaseDate(
             preg_split('/[\/\- \:]/', $event['start_date'] . ' ' . $event['start_time'])
         );
-        $event['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time['timestamp']);
+        $event['start_time'] = $this->app->UserTime2UTC($start_time['timestamp']);
         unset($event['start_date']);
 
         $stop_time = $jDate->ToBaseDate(
             preg_split('/[\/\- \:]/', $event['stop_date'] . ' ' . $event['stop_time'])
         );
-        $event['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time['timestamp']);
+        $event['stop_time'] = $this->app->UserTime2UTC($stop_time['timestamp']);
         unset($event['stop_date']);
 
         $event['updatetime'] = time();
@@ -251,7 +251,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                     for ($i = (int)$startInfo['mon']; $i <= $endMonth; $i++) {
                         $startArr[1] = $i;
                         $time = $jDate->ToBaseDate($startArr);
-                        $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
+                        $iso = $this->app->UserTime2UTC($time['timestamp']);
                         if ($iso < $event['stop_time']) {
                             $recArr[] = $iso;
                         }
@@ -263,7 +263,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                     for ($i = $startInfo['year']; $i <= $stopInfo['year']; $i++) {
                         $startArr[0] = $i;
                         $time = $jDate->ToBaseDate($startArr);
-                        $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
+                        $iso = $this->app->UserTime2UTC($time['timestamp']);
                         if ($iso < $event['stop_time']) {
                             $recArr[] = $iso;
                         }

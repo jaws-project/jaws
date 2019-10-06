@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             return '';
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $tpl = $this->gadget->template->load('Reminder.html');
         $tpl->SetBlock('reminder');
 
@@ -84,7 +84,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             $tpl->SetVariable('location', $event['location']);
             $tpl->SetVariable('priority', _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $event['priority']));
 
-            $date = $GLOBALS['app']->UserTime2UTC($event['start_time']);
+            $date = $this->app->UserTime2UTC($event['start_time']);
             $tpl->SetVariable('date', $jDate->Format($date, 'DN d MN Y - h:i a'));
 
             if ($user === 'public') {

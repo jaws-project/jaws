@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
             return '';
         }
 
-        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('Today.html');
         $tpl->SetBlock('today');
@@ -74,9 +74,9 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         // Fetch events
         $info = $jDate->GetDateInfo($now);
         $dayStart = $jDate->ToBaseDate($info['year'], $info['mon'], $info['mday'], 0, 0, 0);
-        $dayStart = $GLOBALS['app']->UserTime2UTC($dayStart['timestamp']);
+        $dayStart = $this->app->UserTime2UTC($dayStart['timestamp']);
         $dayEnd = $jDate->ToBaseDate($info['year'], $info['mon'], $info['mday'], 23, 59, 59);
-        $dayEnd = $GLOBALS['app']->UserTime2UTC($dayEnd['timestamp']);
+        $dayEnd = $this->app->UserTime2UTC($dayEnd['timestamp']);
         $model = $this->gadget->model->load('Today');
         if ($user === 'public') {
             $events = $model->GetPublicEvents($dayStart, $dayEnd);
