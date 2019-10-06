@@ -11,6 +11,14 @@
 class Jaws_Gadget_Registry
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -28,6 +36,7 @@ class Jaws_Gadget_Registry
     function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
@@ -43,7 +52,7 @@ class Jaws_Gadget_Registry
     function insert($key, $value, $custom = false, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->insert($key, $value, $custom, $gadget);
+        return $this->app->registry->insert($key, $value, $custom, $gadget);
     }
 
     /**
@@ -58,7 +67,7 @@ class Jaws_Gadget_Registry
     function insertAll($keys, $gadget = '', $user = 0)
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->insertAll($keys, $gadget, $user);
+        return $this->app->registry->insertAll($keys, $gadget, $user);
     }
 
     /**
@@ -71,7 +80,7 @@ class Jaws_Gadget_Registry
      */
     function insertAllByUser($keys, $gadget = '')
     {
-        return $this->insertAll($keys, $gadget, $GLOBALS['app']->Session->GetAttribute('user'));
+        return $this->insertAll($keys, $gadget, $this->app->session->getAttribute('user'));
     }
 
     /**
@@ -85,7 +94,7 @@ class Jaws_Gadget_Registry
     function fetch($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->fetch($name, $gadget);
+        return $this->app->registry->fetch($name, $gadget);
     }
 
     /**
@@ -99,7 +108,7 @@ class Jaws_Gadget_Registry
     function fetchAll($onlyCustom = false, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->fetchAll($gadget, $onlyCustom);
+        return $this->app->registry->fetchAll($gadget, $onlyCustom);
     }
 
     /**
@@ -114,8 +123,8 @@ class Jaws_Gadget_Registry
     function fetchByUser($name, $gadget = '', $user = null)
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->fetchByUser(
-            is_null($user)? $GLOBALS['app']->Session->GetAttribute('user') : $user,
+        return $this->app->registry->fetchByUser(
+            is_null($user)? $this->app->session->getAttribute('user') : $user,
             $name,
             $gadget
         );
@@ -131,8 +140,8 @@ class Jaws_Gadget_Registry
     function fetchAllByUser($gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->fetchAllByUser(
-            $GLOBALS['app']->Session->GetAttribute('user'),
+        return $this->app->registry->fetchAllByUser(
+            $this->app->session->getAttribute('user'),
             $gadget
         );
     }
@@ -150,7 +159,7 @@ class Jaws_Gadget_Registry
     function update($name, $value, $custom = null, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->update($name, $value, $custom, $gadget);
+        return $this->app->registry->update($name, $value, $custom, $gadget);
     }
 
     /**
@@ -166,12 +175,12 @@ class Jaws_Gadget_Registry
     function updateByUser($name, $value, $gadget = '', $user = null)
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->update(
+        return $this->app->registry->update(
             $name,
             $value,
             null,
             $gadget,
-            is_null($user)? $GLOBALS['app']->Session->GetAttribute('user') : $user
+            is_null($user)? $this->app->session->getAttribute('user') : $user
         );
     }
 
@@ -188,7 +197,7 @@ class Jaws_Gadget_Registry
     function rename($old_name, $new_name, $custom = null, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->rename($old_name, $new_name, $custom, $gadget);
+        return $this->app->registry->rename($old_name, $new_name, $custom, $gadget);
     }
 
     /**
@@ -202,7 +211,7 @@ class Jaws_Gadget_Registry
     function delete($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->delete($gadget, $name);
+        return $this->app->registry->delete($gadget, $name);
     }
 
     /**
@@ -215,8 +224,8 @@ class Jaws_Gadget_Registry
     function deleteByUser($gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->deleteByUser(
-            $GLOBALS['app']->Session->GetAttribute('user'),
+        return $this->app->registry->deleteByUser(
+            $this->app->session->getAttribute('user'),
             $gadget
         );
     }
