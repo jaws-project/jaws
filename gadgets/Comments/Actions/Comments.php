@@ -146,11 +146,11 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
     function ShowComments($gadget, $action, $reference, $pagination_data, $user = null, $perPage = null, $orderBy = 0)
     {
         $max_size = 52;
-        $compactView = $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT;
+        $compactView = $this->app->requestedActionMode == ACTION_MODE_LAYOUT;
         $rqst = $this->gadget->request->fetch(array('order', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL && !empty($rqst['order'])) {
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL && !empty($rqst['order'])) {
             $orderBy = (int)$rqst['order'];
         }
 
@@ -479,7 +479,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $permalink = $GLOBALS['app']->GetSiteURL();
+        $permalink = $this->app->getSiteURL();
         $status = $this->gadget->registry->fetch('default_comment_status');
         if ($this->gadget->GetPermission('ManageComments')) {
             $status = Comments_Info::COMMENTS_STATUS_APPROVED;
@@ -537,7 +537,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
      */
     function EmailComment($reference, $message)
     {
-        $site_url   = $GLOBALS['app']->getSiteURL('/');
+        $site_url   = $this->app->getSiteURL('/');
         $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
 
         $tpl = $this->gadget->template->load('EmailComment.html');
@@ -578,7 +578,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
      */
     function EmailReply($email, $message, $reply, $replier)
     {
-        $site_url   = $GLOBALS['app']->getSiteURL('/');
+        $site_url   = $this->app->getSiteURL('/');
         $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
 
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');

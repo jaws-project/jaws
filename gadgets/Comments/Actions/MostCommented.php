@@ -59,7 +59,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
     {
         // FIXME: Added a registry key for limit count
         $limit = empty($limit)? 10 : $limit;
-        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'comments_normal';
             //$rqst = $this->gadget->request->fetch(array('gadget', 'page'), 'get');
             //$gadget = is_null($rqst['gadget'])? $gadget : $rqst['gadget'];
@@ -96,7 +96,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
 
         $mostCount = $this->gadget->model->load('Comments')->GetMostCommentedCount($gadget);
         if (!Jaws_Error::IsError($mostCount)) {
-            if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+            if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
                 // Pagination
                 $this->gadget->action->load('PageNavigation')->pagination(
                     $tpl,

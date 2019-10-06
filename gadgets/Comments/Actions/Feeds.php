@@ -146,7 +146,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
         }
 
         $commentAtom = new Jaws_AtomFeed();
-        $siteURL = $GLOBALS['app']->GetSiteURL('/');
+        $siteURL = $this->app->getSiteURL('/');
         $params = array('gadgetname' => $gadget);
         if (!empty($action)) {
             $params['actionname'] = $action;
@@ -165,7 +165,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
         $commentAtom->SetId($siteURL);
         $commentAtom->SetAuthor(
             $this->gadget->registry->fetch('site_author', 'Settings'),
-            $GLOBALS['app']->GetSiteURL('/'),
+            $this->app->getSiteURL('/'),
             $this->gadget->registry->fetch('gate_email', 'Settings')
         );
         $commentAtom->SetGenerator('JAWS '.$this->app->registry->fetch('version'));
@@ -174,7 +174,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
 
         $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
-        $permalink = $GLOBALS['app']->GetSiteURL();
+        $permalink = $this->app->getSiteURL();
         foreach ($comments as $c) {
             $entry_id = $c['reference'];
             $entry = new AtomEntry();

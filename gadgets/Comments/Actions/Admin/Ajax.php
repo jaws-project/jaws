@@ -73,7 +73,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->UpdateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
             if (!empty($reply) && !empty($email) && $sendEmail) {
                 $cHTML = $this->gadget->action->load('Comments');
@@ -84,13 +84,13 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
                     $this->app->session->getAttribute('nickname')
                 );
                 if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
+                    $this->app->session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
                 }
             }
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('COMMENTS_COMMENT_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -106,12 +106,12 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->DeleteMassiveComment($ids);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_DELETED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('COMMENTS_COMMENT_DELETED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -127,12 +127,12 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->MarkAs($post['ids'], $post['status']);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_MARKED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('COMMENTS_COMMENT_MARKED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -148,12 +148,12 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $cModel = $this->gadget->model->loadAdmin('Settings');
         $res = $cModel->SaveSettings($allowComments, $defaultStatus, $orderType);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('COMMENTS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
 }
