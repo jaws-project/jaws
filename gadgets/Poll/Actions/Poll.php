@@ -83,11 +83,11 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $allowVote = $model->CheckAllowVoteForIP($poll['id'], $ip);
                 break;
             case Poll_Info::POLL_RESTRICTION_TYPE_USER:
-                $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+                $currentUser = $this->app->session->getAttribute('user');
                 $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
                 break;
             case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
-                $session = $GLOBALS['app']->Session->GetAttribute('sid');
+                $session = $this->app->session->getAttribute('sid');
                 $allowVote = $model->CheckAllowVoteForSession($poll['id'], $session);
                 break;
             case Poll_Info::POLL_RESTRICTION_TYPE_FREE:
@@ -230,11 +230,11 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                     $allowVote = $model->CheckAllowVoteForIP($poll['id'], $ip);
                     break;
                 case Poll_Info::POLL_RESTRICTION_TYPE_USER:
-                    $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+                    $currentUser = $this->app->session->getAttribute('user');
                     $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
                     break;
                 case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
-                    $session = $GLOBALS['app']->Session->GetAttribute('sid');
+                    $session = $this->app->session->getAttribute('sid');
                     $allowVote = $model->CheckAllowVoteForSession($poll['id'], $session);
                     break;
                 case Poll_Info::POLL_RESTRICTION_TYPE_FREE:
