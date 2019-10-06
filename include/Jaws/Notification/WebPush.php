@@ -59,7 +59,7 @@ class Jaws_Notification_WebPush extends Jaws_Notification
         if (!empty($options['server_public_key'])) {
             $this->auth = array(
                 'VAPID' => array(
-                    'subject' => $GLOBALS['app']->GetSiteURL('/'),
+                    'subject' => $this->app->GetSiteURL('/'),
                     'publicKey' => $options['server_public_key'],
                     'privateKey' => $options['server_private_key'], // in the real world, this would be in a secret file
                 ),
@@ -100,7 +100,7 @@ class Jaws_Notification_WebPush extends Jaws_Notification
      */
     function notify($contacts, $title, $summary, $content, $time, $callback_url, $image, $template)
     {
-        $dir = _t_lang( $GLOBALS['app']->Registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
+        $dir = _t_lang($this->app->registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
         $notifyContent = array(
             'title' => $summary,
             'body' => $content,
