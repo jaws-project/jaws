@@ -129,7 +129,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $model = $this->gadget->model->loadAdmin('Categories');
         $categories = $model->GetCategories($post['filters'], $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($categories)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $categories->getMessage(),
                 RESPONSE_ERROR
             );
@@ -140,13 +140,13 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         }
         $total = $model->GetCategoriesCount($post['filters']);
         if (Jaws_Error::IsError($total)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $total->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(
@@ -186,14 +186,14 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $category = $this->gadget->model->loadAdmin('Categories')->GetCategory($id);
         if (Jaws_Error::IsError($category) || empty($category)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                  empty($category)? _t('CATEGORIES_CATEGORY_NOTFOUND') : $category->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
         $category['insert_time'] = Jaws_Date::getInstance()->Format($category['insert_time']);
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             $category
@@ -213,12 +213,12 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $data = $this->gadget->request->fetch('data:array', 'post');
         $result = $this->gadget->model->loadAdmin('Categories')->InsertCategory($data);
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->GetMessage(),
                 RESPONSE_ERROR
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('CATEGORIES_CATEGORY_INSERTED'),
                 RESPONSE_NOTICE,
                 $result
@@ -239,9 +239,9 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $result = $this->gadget->model->loadAdmin('Categories')->UpdateCategory($post['id'], $post['data']);
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('CATEGORIES_CATEGORY_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -258,9 +258,9 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $result =  $this->gadget->model->loadAdmin('Categories')->DeleteCategory($id);
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('CATEGORIES_CATEGORY_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_DELETED'), RESPONSE_NOTICE);
         }
     }
 
