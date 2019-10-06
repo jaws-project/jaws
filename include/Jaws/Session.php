@@ -30,6 +30,14 @@ define('SESSION_RESERVED_ATTRIBUTES', "type,user,user_name,superadmin,concurrent
 class Jaws_Session
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * session array
      * @var     array   $session
      * @access  protected
@@ -77,6 +85,17 @@ class Jaws_Session
      * @see     SetAttribute(), GetAttibute()
      */
     protected $trash = array();
+
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @return  void
+     */
+    protected function __construct()
+    {
+        $this->app = Jaws::getInstance();
+    }
 
     /**
      * An interface for available drivers
@@ -148,7 +167,7 @@ class Jaws_Session
     function logout()
     {
         // logout event logging
-        $GLOBALS['app']->Listener->Shout(
+        $this->app->listener->Shout(
             'Session',
             'Log',
             array(
@@ -159,7 +178,7 @@ class Jaws_Session
             )
         );
         // let everyone know a user has been logout
-        $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->attributes);
+        $this->app->listener->Shout('Session', 'LogoutUser', $this->attributes);
         $this->reset();
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
     }
@@ -194,7 +213,7 @@ class Jaws_Session
             }
 
             // session longevity
-            $expTime = time() - 60 * (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
+            $expTime = time() - 60 * (int)$this->app->registry->fetch('session_idle_timeout', 'Policy');
             if ($this->session['update_time'] < ($expTime - $this->session['longevity'])) {
                 throw new Exception('Previous session has expired', JAWS_LOG_INFO);
             }
@@ -226,7 +245,7 @@ class Jaws_Session
                 // logon hours
                 $logon_hours = $this->getAttribute('logon_hours');
                 if (!empty($logon_hours)) {
-                    $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
+                    $wdhour = explode(',', $this->app->UTC2UserTime(time(), 'w,G', true));
                     $lhByte = hexdec($logon_hours[$wdhour[0]*6 + intval($wdhour[1]/4)]);
                     if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
                         throw new Exception('Logon hours terminated', JAWS_LOG_NOTICE);
@@ -295,7 +314,7 @@ class Jaws_Session
         $this->setAttribute('concurrents', $info['concurrents']);
         $this->setAttribute(
             'longevity', 
-            $remember? (int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy')*3600 : 0
+            $remember? (int)$this->app->registry->fetch('session_remember_timeout', 'Policy')*3600 : 0
         );
         $this->setAttribute('logged',     !empty($info['id']));
         $this->setAttribute('layout',     isset($info['layout'])? $info['layout'] : 0);
@@ -488,7 +507,7 @@ class Jaws_Session
         $keys = array_filter(array_map('trim', explode(',', $key)));
         $perms = array();
         foreach ($keys as $key) {
-            $perm = $GLOBALS['app']->ACL->GetFullPermission(
+            $perm = $this->app->acl->GetFullPermission(
                 $user,
                 array_keys($groups),
                 $gadget,
@@ -600,7 +619,7 @@ class Jaws_Session
      */
     function insert()
     {
-        $max_active_sessions = (int)$GLOBALS['app']->Registry->fetch('max_active_sessions', 'Policy');
+        $max_active_sessions = (int)$this->app->registry->fetch('max_active_sessions', 'Policy');
         if (!empty($max_active_sessions)) {
             $activeSessions = $this->getSessionsCount(true);
             if ($activeSessions >= $max_active_sessions) {
@@ -687,7 +706,7 @@ class Jaws_Session
      */
     function deleteExpiredSessions()
     {
-        $expired = time() - ($GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy') * 60);
+        $expired = time() - ($this->app->registry->fetch('session_idle_timeout', 'Policy') * 60);
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $result = $sessTable->delete()
             ->where('update_time', $sessTable->expr('? - longevity', $expired), '<')
@@ -705,7 +724,7 @@ class Jaws_Session
      */
     function getUserSessions($user, $onlyOnline = false)
     {
-        $expired = time() - ($GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy') * 60);
+        $expired = time() - ($this->app->registry->fetch('session_idle_timeout', 'Policy') * 60);
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select('count(user)')->where('user', (int)$user);
         if ($onlyOnline) {
@@ -749,7 +768,7 @@ class Jaws_Session
         // remove expired session
         $this->deleteExpiredSessions();
 
-        $idle_timeout = (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
+        $idle_timeout = (int)$this->app->registry->fetch('session_idle_timeout', 'Policy');
         $onlinetime = time() - ($idle_timeout * 60);
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
@@ -811,7 +830,7 @@ class Jaws_Session
      */
     function getSessionsCount($logged = null, $active = null, $type = null)
     {
-        $idle_timeout = (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
+        $idle_timeout = (int)$this->app->registry->fetch('session_idle_timeout', 'Policy');
         $onlinetime = time() - ($idle_timeout * 60);
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
