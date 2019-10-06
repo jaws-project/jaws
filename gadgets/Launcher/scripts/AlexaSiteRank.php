@@ -105,7 +105,7 @@ function AlexaSiteRank()
         return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $cache_dir),  __FUNCTION__);
     }
 
-    $url = $GLOBALS['app']->GetSiteURL('/');
+    $url = $this->app->getSiteURL('/');
     $file = $cache_dir . 'alexarank_' . md5($url);
     $timedif = time() - (file_exists($file)? @filemtime($file) : 0);
 
