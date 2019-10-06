@@ -12,6 +12,14 @@
 class Jaws_Gadget
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Gadget version
      *
      * @var     string
@@ -146,6 +154,7 @@ class Jaws_Gadget
      */
     protected function __construct($gadget)
     {
+        $this->app = Jaws::getInstance();
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
     }
