@@ -93,13 +93,13 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
         );
 
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->GetMessage(),
                 RESPONSE_ERROR,
                 $response
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('ABUSEREPORTER_REPORT_SAVED'),
                 RESPONSE_NOTICE,
                 $response

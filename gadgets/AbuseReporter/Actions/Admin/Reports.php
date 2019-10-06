@@ -165,7 +165,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         }
 
         $reportsCount = $model->GetReportsCount($post['filters']);
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(
@@ -209,9 +209,9 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $result = $this->gadget->model->loadAdmin('Reports')->UpdateReport($post['id'], $post['data']);
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('ABUSEREPORTER_REPORT_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('ABUSEREPORTER_REPORT_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -228,9 +228,9 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $result =  $this->gadget->model->loadAdmin('Reports')->DeleteReport($id);
         if (Jaws_Error::isError($result)) {
-            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('ABUSEREPORTER_REPORT_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('ABUSEREPORTER_REPORT_DELETED'), RESPONSE_NOTICE);
         }
     }
 
