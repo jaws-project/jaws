@@ -191,7 +191,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
+        if ($uid == $this->app->session->getAttribute('user')) {
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
@@ -225,7 +225,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageUsers');
         @list($uid) = $this->gadget->request->fetchAll('post');
-        if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
+        if ($uid == $this->app->session->getAttribute('user')) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_CANT_DELETE_SELF'),
                                                        RESPONSE_ERROR);
         } else {
@@ -347,9 +347,9 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageUserACLs');
         @list($uid, $comp, $acls) = $this->gadget->request->fetchAll('post');
         $acls = $this->gadget->request->fetch('2:array', 'post');
-        $res = $GLOBALS['app']->ACL->deleteByUser($uid, $comp);
+        $res = $this->app->acl->deleteByUser($uid, $comp);
         if ($res) {
-            $res = $GLOBALS['app']->ACL->insertAll($acls, $comp, $uid);
+            $res = $this->app->acl->insertAll($acls, $comp, $uid);
         }
 
         if ($res) {
@@ -374,9 +374,9 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageUserACLs');
         @list($gid, $comp, $acls) = $this->gadget->request->fetchAll('post');
         $acls = $this->gadget->request->fetch('2:array', 'post');
-        $res = $GLOBALS['app']->ACL->deleteByGroup($gid, $comp);
+        $res = $this->app->acl->deleteByGroup($gid, $comp);
         if ($res) {
-            $res = $GLOBALS['app']->ACL->insertAll($acls, $comp, 0, $gid);
+            $res = $this->app->acl->insertAll($acls, $comp, 0, $gid);
         }
 
         if ($res) {
@@ -473,7 +473,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $comp, $action) = $this->gadget->request->fetchAll('post');
         // fetch default ACLs
         $default_acls = array();
-        $result = $GLOBALS['app']->ACL->fetchAll($comp);
+        $result = $this->app->acl->fetchAll($comp);
         if (!empty($result)) {
             // set ACL keys description
             $info = Jaws_Gadget::getInstance($comp);
@@ -492,8 +492,8 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         // fetch user/group ACLs
         $custom_acls = array();
         $result = ($action === 'UserACL')?
-            $GLOBALS['app']->ACL->fetchAllByUser($id, $comp):
-            $GLOBALS['app']->ACL->fetchAllByGroup($id, $comp);
+            $this->app->acl->fetchAllByUser($id, $comp):
+            $this->app->acl->fetchAllByGroup($id, $comp);
         if (!empty($result)) {
             foreach ($result as $key_name => $acl) {
                 foreach ($acl as $subkey => $value) {
@@ -891,7 +891,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGroups');
         @list($guid) = $this->gadget->request->fetchAll('post');
 
-        $currentUid = $GLOBALS['app']->Session->GetAttribute('user');
+        $currentUid = $this->app->session->getAttribute('user');
         $groupinfo = $this->_UserModel->GetGroup((int)$guid);
         if (!$this->_UserModel->DeleteGroup($guid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),

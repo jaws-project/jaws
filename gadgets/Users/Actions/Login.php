@@ -17,7 +17,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('LoginLinks.html');
 
-        if ($GLOBALS['app']->Session->Logged()) {
+        if ($this->app->session->logged()) {
             $tpl->SetBlock('UserLinks');
             $tpl->SetVariable('title', _t('GLOBAL_MY_ACCOUNT'));
 
@@ -178,7 +178,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Login()
     {
-        if ($GLOBALS['app']->Session->Logged()) {
+        if ($this->app->session->logged()) {
             return $this->LoginLinks();
         }
 
@@ -205,7 +205,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         // set authentication type in session
-        $GLOBALS['app']->Session->SetAttribute('auth', $authtype);
+        $this->app->session->setAttribute('auth', $authtype);
 
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
@@ -236,7 +236,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Authenticate()
     {
         // fetch authentication type from session
-        $authtype = $GLOBALS['app']->Session->GetAttribute('auth');
+        $authtype = $this->app->session->getAttribute('auth');
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }
@@ -286,11 +286,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Logout()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location('');
         }
 
-        $authtype = $GLOBALS['app']->Session->GetAttribute('auth');
+        $authtype = $this->app->session->getAttribute('auth');
         $classfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Logout.php";
         if (!file_exists($classfile)) {
             Jaws_Error::Fatal($authtype. ' logout class doesn\'t exists');
@@ -331,7 +331,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $logins = array();
             }
 
-            $lockedout_time = (int)$GLOBALS['app']->Registry->fetch('password_lockedout_time', 'Policy');
+            $lockedout_time = (int)$this->app->registry->fetch('password_lockedout_time', 'Policy');
             // loop for find outdated records
             foreach ($logins as $user => $access) {
                 if ($access['time'] < time() - $lockedout_time) {
@@ -380,7 +380,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         );
 
         $site_url = $GLOBALS['app']->getSiteURL('/');
-        $settings = $GLOBALS['app']->Registry->fetchAll('Settings');
+        $settings = $this->app->registry->fetchAll('Settings');
 
         $tpl = $this->gadget->template->load('LoginNotification.html');
         $tpl->SetBlock('verification');

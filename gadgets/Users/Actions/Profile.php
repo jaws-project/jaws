@@ -44,10 +44,10 @@ class Users_Actions_Profile extends Users_Actions_Default
     function AboutUser($user)
     {
         if (empty($user)) {
-            if (!$GLOBALS['app']->Session->Logged()) {
+            if (!$this->app->session->logged()) {
                 return false;
             }
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $user = (int)$this->app->session->getAttribute('user');
         }
 
         $usrModel = new Jaws_User;
@@ -110,7 +110,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         );
 
         if (!$GLOBALS['app']->Session->IsSuperAdmin() &&
-            $GLOBALS['app']->Session->GetAttribute('user') != $user['id'])
+            $this->app->session->getAttribute('user') != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
         }
@@ -165,7 +165,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Profile.html');
         $tpl->SetBlock('profile');
         $tpl->SetVariable('title',  _t('USERS_PROFILE_INFO'));
-        if ($user['id'] == $GLOBALS['app']->Session->GetAttribute('user')) {
+        if ($user['id'] == $this->app->session->getAttribute('user')) {
             // Menu navigation
             $this->gadget->action->load('MenuNavigation')->navigation($tpl);
         }
@@ -198,7 +198,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         );
  
         if (!$GLOBALS['app']->Session->IsSuperAdmin() &&
-            $GLOBALS['app']->Session->GetAttribute('user') != $user['id'])
+            $this->app->session->getAttribute('user') != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
         }
@@ -206,7 +206,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         // set about item data
         $tpl->SetVariablesArray($user);
 
-        if ($user['public'] || $GLOBALS['app']->Session->Logged()) {
+        if ($user['public'] || $this->app->session->logged()) {
             $tpl->SetBlock('profile/public');
 
             // set profile item data

@@ -148,7 +148,7 @@ class Users_Actions_Users extends Users_Actions_Default
      */
     function GetUsers()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(401);
         }
         $this->gadget->CheckPermission('ManageUsers');
@@ -296,7 +296,7 @@ class Users_Actions_Users extends Users_Actions_Default
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        if ($post['uid'] == $GLOBALS['app']->Session->GetAttribute('user')) {
+        if ($post['uid'] == $this->app->session->getAttribute('user')) {
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
@@ -329,7 +329,7 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $uid = $this->gadget->request->fetch('id', 'post');
-        if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
+        if ($uid == $this->app->session->getAttribute('user')) {
             return $GLOBALS['app']->Session->GetResponse(
                 _t('USERS_USERS_CANT_DELETE_SELF'),
                 RESPONSE_ERROR

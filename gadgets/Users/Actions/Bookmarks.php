@@ -40,7 +40,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     function UpdateBookmark()
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -59,7 +59,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
 
         $bookmarked = (bool)$post['bookmarked'];
         $result = $this->gadget->model->load('Bookmarks')->UpdateBookmark(
-            $GLOBALS['app']->Session->GetAttribute('user'),
+            $this->app->session->getAttribute('user'),
             $data,
             $bookmarked
         );
@@ -144,7 +144,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         );
 
         $bModel = $this->gadget->model->load('Bookmarks');
-        $post['filters']['user'] = $GLOBALS['app']->Session->GetAttribute('user');
+        $post['filters']['user'] = $this->app->session->getAttribute('user');
         $bookmarks = $bModel->GetBookmarks($post['filters'], $post['limit'], $post['offset']);
         $bookmarksCount = $bModel->GetBookmarksCount($post['filters']);
 
@@ -165,7 +165,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
         $id = (int)$this->gadget->request->fetch('id', 'post');
-        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+        $currentUser = $this->app->session->getAttribute('user');
         return $this->gadget->model->load('Bookmarks')->GetBookmark($id, $currentUser);
     }
 
@@ -180,7 +180,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserBookmarks');
         $id = (int)$this->gadget->request->fetch('id', 'post');
 
-        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+        $currentUser = $this->app->session->getAttribute('user');
         $result = $this->gadget->model->load('Bookmarks')->DeleteBookmark($id, $currentUser);
         if (Jaws_Error::isError($result)) {
             return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);

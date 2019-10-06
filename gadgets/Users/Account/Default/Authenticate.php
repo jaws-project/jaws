@@ -113,7 +113,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     }
                 }
 
-                $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
+                $max_lockedout_login_bad_count = $this->app->registry->fetch('password_bad_count', 'Policy');
                 if ($bad_logins >= $max_lockedout_login_bad_count) {
                     // forbidden access event logging
                     $this->gadget->event->shout(

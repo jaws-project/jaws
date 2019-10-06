@@ -15,7 +15,7 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
      */
     function Authenticate()
     {
-        if (($GLOBALS['app']->Registry->fetch('http_auth', 'Settings') != 'true') ||
+        if (($this->app->registry->fetch('http_auth', 'Settings') != 'true') ||
             (!isset($_SERVER['PHP_AUTH_USER'])) ||
             (jaws()->request->method() == 'post')
         ) {
@@ -44,7 +44,7 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             // get bad logins count
             $bad_logins = $this->gadget->action->load('Login')->BadLogins($loginData['username'], 0);
 
-            $max_lockedout_login_bad_count = $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy');
+            $max_lockedout_login_bad_count = $this->app->registry->fetch('password_bad_count', 'Policy');
             if ($bad_logins >= $max_lockedout_login_bad_count) {
                 // forbidden access event logging
                 $this->gadget->event->shout(

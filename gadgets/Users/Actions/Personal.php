@@ -15,7 +15,7 @@ class Users_Actions_Personal extends Users_Actions_Default
      */
     function Personal()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -28,7 +28,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         $response = $this->gadget->session->pop('Personal');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
-            $personal  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
+            $personal  = $jUser->GetUser($this->app->session->getAttribute('user'), true, true);
         } else {
             $personal = $response['data'];
         }
@@ -122,7 +122,7 @@ class Users_Actions_Personal extends Users_Actions_Default
      */
     function UpdatePersonal()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -174,7 +174,7 @@ class Users_Actions_Personal extends Users_Actions_Default
 
         $model  = $this->gadget->model->load('Personal');
         $result = $model->UpdatePersonal(
-            $GLOBALS['app']->Session->GetAttribute('user'),
+            $this->app->session->getAttribute('user'),
             $post
         );
         if (Jaws_Error::IsError($result)) {

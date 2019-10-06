@@ -15,7 +15,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
      */
     function Contact()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -29,7 +29,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $response = $this->gadget->session->pop('Contact');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
-            $contact = $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'));
+            $contact = $jUser->GetUserContact($this->app->session->getAttribute('user'));
             if (Jaws_Error::IsError($contact)) {
                 return Jaws_HTTPError::Get(500);
             }
@@ -139,7 +139,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
      */
     function UpdateContact()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -164,7 +164,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         $uModel = $this->gadget->model->load('Contacts');
         $result = $uModel->UpdateContact(
-            $GLOBALS['app']->Session->GetAttribute('user'),
+            $this->app->session->getAttribute('user'),
             $post
         );
         if (Jaws_Error::IsError($result)) {
@@ -192,7 +192,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
      */
     function Contacts()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -251,7 +251,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $id = (int)$this->gadget->request->fetch('id', 'post');
 
         $jUser = new Jaws_User;
-        return $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'), $id);
+        return $jUser->GetUserContact($this->app->session->getAttribute('user'), $id);
     }
 
     /**
@@ -269,7 +269,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         );
 
         $objUser = jaws()->loadObject('Jaws_User', 'Users');
-        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+        $currentUser = $this->app->session->getAttribute('user');
         $contacts = $objUser->GetUserContacts(
             $currentUser,
             $post['search'],
@@ -331,7 +331,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         $cModel = $this->gadget->model->load('Contacts');
         $result = $cModel->UpdateContacts(
-            $GLOBALS['app']->Session->GetAttribute('user'),
+            $this->app->session->getAttribute('user'),
             $post['cid'],
             $post['data']
         );
@@ -355,7 +355,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $ids = $this->gadget->request->fetch('ids:array', 'post');
         $jUser = new Jaws_User;
         $result = $jUser->DeleteUserContacts(
-            $GLOBALS['app']->Session->GetAttribute('user'),
+            $this->app->session->getAttribute('user'),
             $ids
         );
         if (Jaws_Error::isError($result)) {

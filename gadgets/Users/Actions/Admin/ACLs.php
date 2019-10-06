@@ -42,7 +42,7 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
         $component = $this->gadget->request->fetch('component', 'post');
         // fetch default ACLs
         $default_acls = array();
-        $result = $GLOBALS['app']->ACL->fetchAll($component);
+        $result = $this->app->acl->fetchAll($component);
         if (!empty($result)) {
             // set ACL keys description
             $info = Jaws_Gadget::getInstance($component);
@@ -70,8 +70,8 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
     {
         $post = $this->gadget->request->fetch(array('component', 'acl'), 'post');
         return array(
-            'groups' => $GLOBALS['app']->ACL->fetchGroupsByACL($post['component'], $post['acl']),
-            'users' => $GLOBALS['app']->ACL->fetchUsersByACL($post['component'], $post['acl'])
+            'groups' => $this->app->acl->fetchGroupsByACL($post['component'], $post['acl']),
+            'users' => $this->app->acl->fetchUsersByACL($post['component'], $post['acl'])
         );
     }
 }

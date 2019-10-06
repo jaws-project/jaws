@@ -15,7 +15,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
      */
     function Registration()
     {
-        if ($GLOBALS['app']->Session->Logged()) {
+        if ($this->app->session->logged()) {
             return Jaws_Header::Location('');
         }
 
@@ -46,7 +46,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // set authentication type in session
-        $GLOBALS['app']->Session->SetAttribute('auth', $authtype);
+        $this->app->session->setAttribute('auth', $authtype);
 
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
@@ -70,7 +70,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     function Register()
     {
         // fetch authentication type from session
-        $authtype = $GLOBALS['app']->Session->GetAttribute('auth');
+        $authtype = $this->app->session->getAttribute('auth');
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }
@@ -140,7 +140,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
      */
     function ReplaceUserEmail()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_HTTPError::Get(401);
         }
 
@@ -228,7 +228,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         );
 
         $site_url = $GLOBALS['app']->getSiteURL('/');
-        $settings = $GLOBALS['app']->Registry->fetchAll('Settings');
+        $settings = $this->app->registry->fetchAll('Settings');
 
         $tpl = $this->gadget->template->load('RegistrationNotification.html');
         $tpl->SetBlock('UserNotification');

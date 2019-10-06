@@ -15,7 +15,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
      */
     function Preferences()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -58,7 +58,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
                 continue;
             }
 
-            $keys = $GLOBALS['app']->Registry->fetchAll($gadget, true);
+            $keys = $this->app->registry->fetchAll($gadget, true);
             if (empty($keys)) {
                 continue;
             }
@@ -165,7 +165,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
             return $option !== '';
         }
 
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',

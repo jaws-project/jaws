@@ -199,7 +199,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
     function SendVerifyKey($user, $firstNotification, $password = '')
     {
         $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $settings   = $GLOBALS['app']->Registry->fetchAll('Settings');
+        $settings   = $this->app->registry->fetchAll('Settings');
         $activation = $this->gadget->registry->fetch('anon_activation');
         $message    = '';
 

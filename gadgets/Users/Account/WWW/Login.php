@@ -16,7 +16,7 @@ class Users_Account_WWW_Login extends Users_Account_WWW
      */
     function Login($referrer = '')
     {
-        if ($GLOBALS['app']->Registry->fetch('http_auth', 'Settings') == 'true') {
+        if ($this->app->registry->fetch('http_auth', 'Settings') == 'true') {
             if (isset($_SERVER['PHP_AUTH_USER'])) {
                 $this->gadget->action->load('Login')->Authenticate();
             } else {
