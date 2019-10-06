@@ -89,11 +89,11 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
         $res = $table->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_ADDED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_IP_NOT_ADDED', 'AddIPRange'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_ADDED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_IP_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -133,11 +133,11 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
         $res = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_IP_NOT_DELETED', 'EditIPRange'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_EDITED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_IP_EDITED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -153,11 +153,11 @@ class Policy_Model_Admin_IP extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_ipblock');
         $res = $table->delete()->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_IP_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_IP_DELETED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_IP_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 

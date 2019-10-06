@@ -73,11 +73,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $res = $table->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_AGENT_NOT_ADDEDD', 'AddAgent'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_ADDED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -101,11 +101,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $res = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_EDITED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_EDITED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLICY_RESPONSE_AGENT_NOT_EDITED', 'EditAgent'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_EDITED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_EDITED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -121,11 +121,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $res = $table->delete()->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_DELETED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_AGENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 

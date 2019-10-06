@@ -47,7 +47,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($from_ip, $to_ip, $script, $order, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('IP');
         $model->AddIPRange($from_ip, $to_ip, $script, $order, $blocked);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -62,7 +62,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $from_ip, $to_ip, $script, $order, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('IP');
         $model->EditIPRange($id, $from_ip, $to_ip, $script, $order, $blocked);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -77,7 +77,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('IP');
         $model->DeleteIPRange($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -111,7 +111,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($agent, $script, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Agent');
         $model->AddAgent($agent, $script, $blocked);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -126,7 +126,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $agent, $script, $blocked) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Agent');
         $model->EditAgent($id, $agent, $script, $blocked);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -141,7 +141,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Agent');
         $model->DeleteAgent($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -157,12 +157,12 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('IP');
         $res = $model->IPBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -178,12 +178,12 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Agent');
         $res = $model->AgentBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -198,7 +198,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($enabled, $key_age, $key_len) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Encryption');
         $model->UpdateEncryptionSettings($enabled == 'true', $key_age, $key_len);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -221,7 +221,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $obfuscator,
             $blocked_domains
         );
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -243,7 +243,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
             $xss_parsing_level, $session_idle_timeout, $session_remember_timeout
         );
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**

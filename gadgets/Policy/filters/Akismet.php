@@ -110,7 +110,7 @@ class Akismet
         }
 
         $this->apiKey    = $this->app->registry->fetch('akismet_key', 'Policy');
-        $this->siteURL   = $GLOBALS['app']->GetSiteURL('/');
+        $this->siteURL   = $this->app->getSiteURL('/');
         $jaws_version    = $this->app->registry->fetch('version');
         $this->userAgent = "Jaws/{$jaws_version} | Akismet/{$this->apiVersion}";
         if (!$this->apiKeyIsValid = $this->IsApiKeyValid()) {

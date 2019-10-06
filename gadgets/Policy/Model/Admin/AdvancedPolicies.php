@@ -46,7 +46,7 @@ class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
         $objCaptcha = Jaws_Captcha::getInstance($login_captcha_driver);
         $objCaptcha->install();
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 }

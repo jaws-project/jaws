@@ -109,7 +109,7 @@ class TypePad
         }
 
         $this->apiKey    = $this->app->registry->fetch('typepad_key', 'Policy');
-        $this->siteURL   = $GLOBALS['app']->GetSiteURL('/');
+        $this->siteURL   = $this->app->getSiteURL('/');
         $jaws_version    = $this->app->registry->fetch('version');
         $this->userAgent = "Jaws/{$jaws_version} | TypePad/{$this->apiVersion}";
         if (!$this->apiKeyIsValid = $this->IsApiKeyValid()) {
