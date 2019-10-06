@@ -168,7 +168,7 @@ class Jaws_Gadget_Action
     public function AjaxMe($file = '')
     {
         if (!empty($file)) {
-            $GLOBALS['app']->Layout->addScript(
+            $this->app->layout->addScript(
                 'gadgets/'.$this->gadget->name.'/Resources/'. $file.'?'.$this->gadget->version
             );
         }
@@ -193,8 +193,8 @@ class Jaws_Gadget_Action
     public function SetTitle($title)
     {
         //Set title in case we are no running on standalone..
-        if (isset($GLOBALS['app']->Layout)) {
-            $GLOBALS['app']->Layout->SetTitle($title);
+        if (isset($this->app->layout)) {
+            $this->app->layout->SetTitle($title);
         }
     }
 
@@ -209,8 +209,8 @@ class Jaws_Gadget_Action
     public function SetDescription($desc)
     {
         //Set description in case we are no running on standalone..
-        if (isset($GLOBALS['app']->Layout)) {
-            $GLOBALS['app']->Layout->SetDescription($desc);
+        if (isset($this->app->layout)) {
+            $this->app->layout->SetDescription($desc);
         }
     }
 
@@ -225,8 +225,8 @@ class Jaws_Gadget_Action
     public function AddToMetaKeywords($keywords)
     {
         //Add keywords in case we are no running on standalone..
-        if (isset($GLOBALS['app']->Layout)) {
-            $GLOBALS['app']->Layout->AddToMetaKeywords($keywords);
+        if (isset($this->app->layout)) {
+            $this->app->layout->AddToMetaKeywords($keywords);
         }
     }
 
@@ -241,8 +241,8 @@ class Jaws_Gadget_Action
     public function AddToMetaLanguages($language)
     {
         //Add language in case we are no running on standalone..
-        if (isset($GLOBALS['app']->Layout)) {
-            $GLOBALS['app']->Layout->AddToMetaLanguages($language);
+        if (isset($this->app->layout)) {
+            $this->app->layout->AddToMetaLanguages($language);
         }
     }
 
@@ -263,8 +263,8 @@ class Jaws_Gadget_Action
             return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
         }
 
-        if (!$GLOBALS['app']->Session->GetPermission($this->gadget->name, 'default')) {
-            return Jaws_HTTPError::Get($GLOBALS['app']->Session->Logged()? 403 : 401);
+        if (!$this->app->session->GetPermission($this->gadget->name, 'default')) {
+            return Jaws_HTTPError::Get($this->app->session->Logged()? 403 : 401);
         }
 
         if (!$this->IsValidAction($action)) {
@@ -276,13 +276,13 @@ class Jaws_Gadget_Action
             );
         }
 
-        if (isset($GLOBALS['app']->Layout)) {
+        if (isset($this->app->layout)) {
             $title = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_TITLE');
             $description = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_DESC');
             $title = (_t($title) == $title)? '' : _t($title);
             $description = (_t($description) == $description)? '' : _t($description);
-            $GLOBALS['app']->Layout->SetTitle($title);
-            $GLOBALS['app']->Layout->SetDescription($description);
+            $this->app->layout->SetTitle($title);
+            $this->app->layout->SetDescription($description);
         }
 
         $file = $this->gadget->actions[JAWS_SCRIPT][$action]['file'];
@@ -296,12 +296,12 @@ class Jaws_Gadget_Action
         }
 
         if (method_exists($objAction, $action)) {
-            $GLOBALS['app']->define($this->gadget->name, false);
+            $this->app->define($this->gadget->name, false);
             $this->gadget->loaded_actions[$action] = true;
-            $GLOBALS['app']->requestedGadget  = $this->gadget->name;
-            $GLOBALS['app']->requestedAction  = $action;
-            $GLOBALS['app']->requestedSection = $section;
-            $GLOBALS['app']->requestedActionMode = $mode;
+            $this->app->requestedGadget  = $this->gadget->name;
+            $this->app->requestedAction  = $action;
+            $this->app->requestedSection = $section;
+            $this->app->requestedActionMode = $mode;
             if (is_null($params)) {
                 return $objAction->$action();
             } else {
