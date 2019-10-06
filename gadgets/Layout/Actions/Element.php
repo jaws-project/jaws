@@ -38,7 +38,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $brow = empty($brow)? '' : '.'.$brow;
         $base_url = $this->app->getSiteURL('/');
 
-        $tpl->SetVariable('BASE_URL', $base_url);
+        $tpl->SetVariable('base_url', $base_url);
         $tpl->SetVariable('.dir', $dir);
         $tpl->SetVariable('.browser', $brow);
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -118,7 +118,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $brow = empty($brow)? '' : '.'.$brow;
         $base_url = $this->app->getSiteURL('/');
 
-        $tpl->SetVariable('BASE_URL', $base_url);
+        $tpl->SetVariable('base_url', $base_url);
         $tpl->SetVariable('.dir', $dir);
         $tpl->SetVariable('.browser', $brow);
         $tpl->SetVariable('base_script', BASE_SCRIPT);
