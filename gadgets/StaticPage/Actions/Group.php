@@ -82,9 +82,9 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->SetTitle($group['title']);
-        $GLOBALS['app']->Layout->AddToMetaKeywords($group['meta_keywords']);
-        $GLOBALS['app']->Layout->SetDescription($group['meta_description']);
+        $this->app->layout->SetTitle($group['title']);
+        $this->app->layout->AddToMetaKeywords($group['meta_keywords']);
+        $this->app->layout->SetDescription($group['meta_description']);
 
         if (!is_numeric($gid)) {
             $gid = $group['id'];
@@ -111,7 +111,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
         // parsing read-more block if required
         if (!empty($limit) &&
             count($pages) >= $limit &&
-            $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT
+            $this->app->requestedActionMode == ACTION_MODE_LAYOUT
         ) {
             $urlParam = array(
                 'gid'   => empty($group['fast_url'])? $group['id'] : $group['fast_url'],

@@ -95,7 +95,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         $tpl->SetBlock('page');
 
         if (!$page['published'] &&
-            !$GLOBALS['app']->Session->IsSuperAdmin() &&
+            !$this->app->session->isSuperAdmin() &&
             $page['user'] !== (int)$this->app->session->getAttribute('user'))
         {
             $this->SetTitle(_t('STATICPAGE_TITLE_NOT_FOUND'));

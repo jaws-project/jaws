@@ -197,7 +197,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         $pageform->Add($btnAdvanced);
 
         // Editor
-        $editor =& $GLOBALS['app']->LoadEditor('StaticPage', 'content', $content, false);
+        $editor =& $this->app->loadEditor('StaticPage', 'content', $content, false);
         $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width:100%;');
         $pageform->Add($editor);

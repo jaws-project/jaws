@@ -271,7 +271,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
 
         $page = $model->GetPage($id);
         if (Jaws_Error::IsError($page)) {
-            $GLOBALS['app']->Session->PushLastResponse($page->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($page->GetMessage(), RESPONSE_ERROR);
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditPage&id=' . $id);
         }
 

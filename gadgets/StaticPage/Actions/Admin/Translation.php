@@ -28,7 +28,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $page_id = (int)$this->gadget->request->fetch('page', 'get');
         $page = $model->GetPage($page_id);
         if (Jaws_Error::IsError($page)) {
-            $GLOBALS['app']->Session->PushLastResponse($page->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($page->GetMessage(), RESPONSE_ERROR);
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         }
         return $this->CreateForm($page['title'], '', '', '', '', $page['content'], true, true, '', $page_id, '',
@@ -80,7 +80,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $trans_id = (int)$this->gadget->request->fetch('id', 'get');
         $translation = $model->GetPageTranslation($trans_id);
         if (Jaws_Error::IsError($translation)) {
-            $GLOBALS['app']->Session->PushLastResponse($translation->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($translation->GetMessage(), RESPONSE_ERROR);
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         }
         return $this->CreateForm($translation['title'], '', $translation['meta_keywords'], $translation['meta_description'],
