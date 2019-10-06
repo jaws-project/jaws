@@ -351,7 +351,7 @@ class Jaws_Gadget
      */
     public static function IsGadgetInstalled($gadget)
     {
-        $installed_gadgets = $this->app->registry->fetch('gadgets_installed_items');
+        $installed_gadgets = Jaws::getInstance()->registry->fetch('gadgets_installed_items');
         return (false !== strpos($installed_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
     }
 
@@ -404,7 +404,7 @@ class Jaws_Gadget
 
         static $disabled_gadgets;
         if (!isset($disabled_gadgets)) {
-            $disabled_gadgets = $this->app->registry->fetch('gadgets_disabled_items');
+            $disabled_gadgets = Jaws::getInstance()->registry->fetch('gadgets_disabled_items');
         }
 
         return (false === strpos($disabled_gadgets, ",{$gadget},"));
