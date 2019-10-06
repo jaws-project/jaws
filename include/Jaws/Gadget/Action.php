@@ -12,6 +12,15 @@
 class Jaws_Gadget_Action
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+
+    /**
      * Jaws_Gadget object
      *
      * @var     object
@@ -30,6 +39,8 @@ class Jaws_Gadget_Action
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
+
         // fetch gadget actions
         $this->fetchAll();
     }
