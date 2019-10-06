@@ -170,7 +170,7 @@ class Jaws_Gadget_Installer
             $result = $installer->Install($input_schema, $input_variables);
             if (Jaws_Error::IsError($result)) {
                 // removing gadget registry keys
-                $GLOBALS['app']->Registry->delete($this->gadget->name);
+                $this->app->registry->delete($this->gadget->name);
                 return $result;
             }
         }
@@ -179,15 +179,15 @@ class Jaws_Gadget_Installer
         $this->gadget->acl->insert($installer->GetACLs(), $this->gadget->name);
 
         // adding gadget to installed gadgets list
-        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
+        $installed_gadgets = $this->app->registry->fetch('gadgets_installed_items');
         $installed_gadgets.= $this->gadget->name. ',';
-        $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
+        $this->app->registry->update('gadgets_installed_items', $installed_gadgets);
 
         // adding gadget to auto-load gadgets list
         if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
-            $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
+            $autoload_gadgets = $this->app->registry->fetch('gadgets_autoload_items');
             $autoload_gadgets.= $this->gadget->name. ',';
-            $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
+            $this->app->registry->update('gadgets_autoload_items', $autoload_gadgets);
         }
 
         // end install gadget event
@@ -249,21 +249,21 @@ class Jaws_Gadget_Installer
         }
 
         // removing gadget from installed gadgets list
-        $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
+        $installed_gadgets = $this->app->registry->fetch('gadgets_installed_items');
         $installed_gadgets = str_replace(",{$this->gadget->name},", ',', $installed_gadgets);
-        $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
+        $this->app->registry->update('gadgets_installed_items', $installed_gadgets);
 
         // removing gadget from auto-load gadgets list
-        $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
+        $autoload_gadgets = $this->app->registry->fetch('gadgets_autoload_items');
         $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
-        $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
+        $this->app->registry->update('gadgets_autoload_items', $autoload_gadgets);
 
         // removing gadget listeners
         $this->gadget->event->delete();
         // removing gadget ACL keys
-        $GLOBALS['app']->ACL->delete($this->gadget->name);
+        $this->app->acl->delete($this->gadget->name);
         // removing gadget registry keys
-        $GLOBALS['app']->Registry->delete($this->gadget->name);
+        $this->app->registry->delete($this->gadget->name);
 
         // end uninstall gadget event
         $result = $this->gadget->event->shout('UninstallGadget', $this->gadget->name);
@@ -328,15 +328,15 @@ class Jaws_Gadget_Installer
         }
 
         // auto-load feature
-        $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
+        $autoload_gadgets = $this->app->registry->fetch('gadgets_autoload_items');
         if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
             if (false === strpos($autoload_gadgets, ",{$this->gadget->name},")) {
                 $autoload_gadgets.= $this->gadget->name. ',';
-                $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
+                $this->app->registry->update('gadgets_autoload_items', $autoload_gadgets);
             }
         } else {
             $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
-            $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
+            $this->app->registry->update('gadgets_autoload_items', $autoload_gadgets);
         }
 
         // end upgrade gadget event
@@ -374,9 +374,9 @@ class Jaws_Gadget_Installer
         }
 
         // removing gadget from disabled gadgets list
-        $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
+        $disabled_gadgets = $this->app->registry->fetch('gadgets_disabled_items');
         $disabled_gadgets = str_replace(",{$this->gadget->name},", ',', $disabled_gadgets);
-        $GLOBALS['app']->Registry->update('gadgets_disabled_items', $disabled_gadgets);
+        $this->app->registry->update('gadgets_disabled_items', $disabled_gadgets);
 
         // end disable gadget event
         $res = $this->gadget->event->shout('EnableGadget', $this->gadget->name);
@@ -429,9 +429,9 @@ class Jaws_Gadget_Installer
         }
 
         // adding gadget to disabled gadgets list
-        $disabled_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_disabled_items');
+        $disabled_gadgets = $this->app->registry->fetch('gadgets_disabled_items');
         $disabled_gadgets.= $this->gadget->name. ',';
-        $GLOBALS['app']->Registry->update('gadgets_disabled_items', $disabled_gadgets);
+        $this->app->registry->update('gadgets_disabled_items', $disabled_gadgets);
 
         // end disable gadget event
         $res = $this->gadget->event->shout('DisableGadget', $this->gadget->name);
@@ -453,7 +453,7 @@ class Jaws_Gadget_Installer
     public function CanRunInCoreVersion()
     {
         if (self::IsGadgetInstalled($this->gadget->name)) {
-            $coreVersion     = $GLOBALS['app']->Registry->fetch('version');
+            $coreVersion     = $this->app->registry->fetch('version');
             $requiredVersion = $this->gadget->GetRequiredJawsVersion();
 
             if ($requiredVersion == $coreVersion) {
