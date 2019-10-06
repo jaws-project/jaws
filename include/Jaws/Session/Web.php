@@ -48,7 +48,7 @@ class Jaws_Session_Web extends Jaws_Session
         $this->setCookie(
             JAWS_SESSION_NAME,
             $this->session['id'] . '-' . $this->session['salt'],
-            $remember? 60*(int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy') : 0
+            $remember? 60*(int)$this->app->registry->fetch('session_remember_timeout', 'Policy') : 0
         );
     }
 
@@ -85,16 +85,16 @@ class Jaws_Session_Web extends Jaws_Session
             return false;
         }
 
-        $version = $GLOBALS['app']->Registry->fetch('cookie_version', 'Settings');
+        $version = $this->app->registry->fetch('cookie_version', 'Settings');
         $expires = ($minutes == 0)? 0 : (time() + $minutes*60);
-        $path    = $GLOBALS['app']->getSiteURL('/', true);
-        $domain  = '';//$GLOBALS['app']->Registry->fetch('cookie_domain', 'Settings');
+        $path    = $this->app->getSiteURL('/', true);
+        $domain  = '';//$this->app->registry->fetch('cookie_domain', 'Settings');
         // secure
-        $secure = $GLOBALS['app']->Registry->fetch('cookie_secure', 'Settings') == 'true';
+        $secure = $this->app->registry->fetch('cookie_secure', 'Settings') == 'true';
         $secure = $secure && !empty($_SERVER['HTTPS']);
         // http only
         if (is_null($httponly)) {
-            $httponly = $GLOBALS['app']->Registry->fetch('cookie_httponly', 'Settings') == 'true';
+            $httponly = $this->app->registry->fetch('cookie_httponly', 'Settings') == 'true';
         }
         setcookie($name, $value, $expires, $path, $domain, $secure, $httponly);
     }
@@ -108,7 +108,7 @@ class Jaws_Session_Web extends Jaws_Session
      */
     function getCookie($name)
     {
-        $version = $GLOBALS['app']->Registry->fetch('cookie_version', 'Settings');
+        $version = $this->app->registry->fetch('cookie_version', 'Settings');
         return jaws()->request->fetch($name, 'cookie');
     }
 
