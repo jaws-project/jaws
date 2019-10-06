@@ -12,6 +12,14 @@
 class Jaws_Layout
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Template that will be used to print the data
      *
      * @var    Jaws_Template
@@ -102,8 +110,10 @@ class Jaws_Layout
      */
     function __construct()
     {
+        $this->app = Jaws::getInstance();
+
         // fetch all registry keys related to site attributes
-        $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);
+        $this->attributes = $this->app->registry->fetchAll('Settings', false);
         //parse default site keywords
         $this->attributes['site_keywords'] = array_map(
             'Jaws_UTF8::trim',
@@ -116,11 +126,11 @@ class Jaws_Layout
         }
 
         // set default site language
-        $this->_Languages[] = $GLOBALS['app']->GetLanguage();
-        $GLOBALS['app']->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
-        $GLOBALS['app']->define('', 'reloadMessage', _t('GLOBAL_RELOAD_MESSAGE'));
-        $GLOBALS['app']->define('', 'logged', (bool)$GLOBALS['app']->Session->Logged());
-        $GLOBALS['app']->define(
+        $this->_Languages[] = $this->app->GetLanguage();
+        $this->app->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
+        $this->app->define('', 'reloadMessage', _t('GLOBAL_RELOAD_MESSAGE'));
+        $this->app->define('', 'logged', (bool)$this->app->session->Logged());
+        $this->app->define(
             '',
             'service_worker_enabled',
             @$this->attributes['service_worker_enabled']
@@ -138,8 +148,8 @@ class Jaws_Layout
     function Load($layout_path = '', $layout_file = '')
     {
         if ($this->attributes['site_status'] == 'disabled' &&
-           (JAWS_SCRIPT != 'admin' || $GLOBALS['app']->Session->Logged()) &&
-           !$GLOBALS['app']->Session->IsSuperAdmin()
+           (JAWS_SCRIPT != 'admin' || $this->app->session->Logged()) &&
+           !$this->app->session->IsSuperAdmin()
         ) {
             $data = Jaws_HTTPError::Get(503);
             terminate($data, 503);
@@ -162,7 +172,7 @@ class Jaws_Layout
 
         $loadFromTheme = false;
         if (empty($layout_path)) {
-            $theme = $GLOBALS['app']->GetTheme();
+            $theme = $this->app->GetTheme();
             if (!$theme['exists']) {
                 Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
             }
@@ -173,9 +183,9 @@ class Jaws_Layout
                 $layout_type = (int)Jaws_Gadget::getInstance('Layout')->session->fetch('layout.type');
 
                 $gdgtUsers = Jaws_Gadget::getInstance('Users');
-                if ($GLOBALS['app']->mainIndex) {
+                if ($this->app->mainIndex) {
                     // index/first page layout
-                    if ($GLOBALS['app']->Session->Logged()) {
+                    if ($this->app->session->Logged()) {
                         // if user logged in
                         if ($layout_type == 2 &&
                             $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
@@ -183,7 +193,7 @@ class Jaws_Layout
                         ) {
                             // set private layout for logged user
                             $layout_file = 'Index.User.html';
-                            $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+                            $layout_user = (int)$this->app->session->getAttribute('user');
                         } elseif (($layout_type == 1 || $layout_type == 2) &&
                             $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                             @is_file($theme['path']. 'Index.Users.html')
@@ -206,14 +216,14 @@ class Jaws_Layout
 
                 } else {
                     // nested pages layouts(not first page)
-                    $gadget = $GLOBALS['app']->mainGadget;
-                    $action = $GLOBALS['app']->mainAction;
+                    $gadget = $this->app->mainGadget;
+                    $action = $this->app->mainAction;
                     if (@is_file($theme['path']. "$gadget.$action.html")) {
                         $layout_file = "$gadget.$action.html";
                     } elseif (@is_file($theme['path']. "$gadget.html")) {
                         $layout_file = "$gadget.html";
                     } else {
-                        if ($GLOBALS['app']->Session->Logged()) {
+                        if ($this->app->session->Logged()) {
                             // if user logged in
                             if ($layout_type == 2 &&
                                 $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
@@ -221,7 +231,7 @@ class Jaws_Layout
                             ) {
                                 // set private layout for logged user
                                 $layout_file = 'Layout.User.html';
-                                $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+                                $layout_user = (int)$this->app->session->getAttribute('user');
                             } elseif (($layout_type == 1  || $layout_type == 2) &&
                                 $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                                 @is_file($theme['path']. 'Layout.Users.html')
@@ -248,9 +258,9 @@ class Jaws_Layout
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
         $dir  = $direction == 'rtl' ? ".$direction" : '';
-        $browser  = $GLOBALS['app']->GetBrowserFlag();
+        $browser  = $this->app->GetBrowserFlag();
         $browser  = empty($browser)? '' : ".$browser";
-        $base_url = $GLOBALS['app']->GetSiteURL('/');
+        $base_url = $this->app->GetSiteURL('/');
 
         $this->_Template->SetVariable('base_url', $base_url);
         $this->_Template->SetVariable('skip_to_content', _t('GLOBAL_SKIP_TO_CONTENT'));
@@ -495,17 +505,17 @@ class Jaws_Layout
                 $content = '';
                 $this->_Template->SetBlock($block);
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
-                    $item['gadget'] = $GLOBALS['app']->mainGadget;
-                    $item['action'] = $GLOBALS['app']->mainAction;
+                    $item['gadget'] = $this->app->mainGadget;
+                    $item['action'] = $this->app->mainAction;
                     $item['params'] = array();
                     $content = $req_result;
                 } elseif (!$onlyMainAction) {
-                    if ($this->IsDisplayable($GLOBALS['app']->mainGadget,
-                                             $GLOBALS['app']->mainAction,
+                    if ($this->IsDisplayable($this->app->mainGadget,
+                                             $this->app->mainAction,
                                              $item['when'],
-                                             $GLOBALS['app']->mainIndex))
+                                             $this->app->mainIndex))
                     {
-                        if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
+                        if ($this->app->session->GetPermission($item['gadget'], $default_acl)) {
                             $item['params'] = unserialize($item['params']);
                             $content = $this->PutGadget(
                                 $item['gadget'],
@@ -596,7 +606,7 @@ class Jaws_Layout
     function initializeScript()
     {
         $result = '';
-        $allDefines = $GLOBALS['app']->defines();
+        $allDefines = $this->app->defines();
         foreach ($allDefines as $component => $defines) {
             if (empty($component)) {
                 $jsObj = 'jaws';
@@ -634,13 +644,13 @@ class Jaws_Layout
                 'content' => 'Jaws Project (http://jaws-project.com)'
             )
         );
-        $use_rewrite = $GLOBALS['app']->Registry->fetch('map_use_rewrite', 'UrlMapper') == 'true';
+        $use_rewrite = $this->app->registry->fetch('map_use_rewrite', 'UrlMapper') == 'true';
         $use_rewrite = $use_rewrite && (JAWS_SCRIPT == 'index');
         $this->addMeta(
             array(
                 'name'    => 'application-name',
                 'content' => ($use_rewrite? '' : BASE_SCRIPT). ':'.
-                    $GLOBALS['app']->mainGadget. ':'. $GLOBALS['app']->mainAction
+                    $this->app->mainGadget. ':'. $this->app->mainAction
             )
         );
         // add mandatory javascript links
@@ -703,7 +713,7 @@ class Jaws_Layout
             return $this->_Template->Get();
         } else {
             $content = $this->_Template->Get();
-            if ($GLOBALS['app']->GZipEnabled()) {
+            if ($this->app->GZipEnabled()) {
                 jaws()->request->update('restype', 'gzip');
             }
             return $content;
