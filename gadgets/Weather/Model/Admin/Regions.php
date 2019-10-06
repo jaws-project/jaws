@@ -38,11 +38,11 @@ class Weather_Model_Admin_Regions extends Jaws_Gadget_Model
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $result = $weatherTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_ADDED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_REGION_ADDED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('WEATHER_REGION_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -73,11 +73,11 @@ class Weather_Model_Admin_Regions extends Jaws_Gadget_Model
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $result = $weatherTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_UPDATED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_REGION_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('WEATHER_REGION_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -93,11 +93,11 @@ class Weather_Model_Admin_Regions extends Jaws_Gadget_Model
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $result = $weatherTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_DELETED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 }

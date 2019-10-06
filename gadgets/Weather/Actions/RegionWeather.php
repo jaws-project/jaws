@@ -138,8 +138,8 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             $tpl->ParseBlock('weather/current');
 
             if ($forecast) {
-                $GLOBALS['app']->Layout->SetTitle(_t('WEATHER_REGION', $region['title']));
-                $GLOBALS['app']->Layout->AddToMetaKeywords($this->gadget->title. ','. $region['title']);
+                $this->app->layout->SetTitle(_t('WEATHER_REGION', $region['title']));
+                $this->app->layout->AddToMetaKeywords($this->gadget->title. ','. $region['title']);
                 $objDate = Jaws_Date::getInstance();
                 $tpl->SetBlock('weather/forecast');
                 $tpl->SetVariable('lbl_forecast', _t('WEATHER_FORECAST'));
@@ -340,7 +340,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             $region['published'] = ($region['published']) ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $regions[$key] = $region;
         }
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(
@@ -380,9 +380,9 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $data['user'] = (int)$this->app->session->getAttribute('user');
         $res = $model->InsertUserRegion($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_REGION_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('WEATHER_REGION_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -403,9 +403,9 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $user = (int)$this->app->session->getAttribute('user');
         $res = $model->UpdateUserRegion($post['id'], $post['data'], $user);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_REGION_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('WEATHER_REGION_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -425,9 +425,9 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $user = (int)$this->app->session->getAttribute('user');
         $res = $this->gadget->model->load('Regions')->DeleteUserRegion($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);
         }
     }
 }
