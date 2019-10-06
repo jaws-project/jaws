@@ -24,9 +24,9 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
 
         // check permissions
         if ($layout == 'Index.Dashboard') {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $this->app->session->checkPermission('Users', 'ManageDashboard');
         } else {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
+            $this->app->session->checkPermission('Users', 'ManageLayout');
         }
 
         $model = $this->gadget->model->loadAdmin('Elements');
@@ -35,7 +35,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
         $dir  = $direction == 'rtl' ? '.' . $direction : '';
-        $brow = $GLOBALS['app']->GetBrowserFlag();
+        $brow = $this->app->getBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
         $base_url = $this->app->getSiteURL('/');
 
@@ -98,9 +98,9 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         @list($item, $layout, $dw) = $this->gadget->request->fetchAll('post');
         // check permissions
         if ($layout == 'Index.Dashboard') {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $this->app->session->checkPermission('Users', 'ManageDashboard');
         } else {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
+            $this->app->session->checkPermission('Users', 'ManageLayout');
         }
 
         $model = $this->gadget->model->loadAdmin('Elements');

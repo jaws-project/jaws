@@ -91,7 +91,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         if (isset($actions[$action])) {
             // check permissions
             $layoutACL = ($layout == 'Index.Dashboard')? 'ManageDashboard' : 'ManageLayout';
-            if ($GLOBALS['app']->Session->GetPermission('Users', $layoutACL)) {
+            if ($this->app->session->getPermission('Users', $layoutACL)) {
                 $id = $model->NewElement(
                     $layout,
                     null,

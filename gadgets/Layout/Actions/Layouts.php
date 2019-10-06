@@ -37,7 +37,7 @@ class Layout_Actions_Layouts extends Jaws_Gadget_Action
                 $layouts = array('Index', 'Layout');
         }
 
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = $this->app->GetTheme();
         if (!$theme['exists']) {
             Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
         }

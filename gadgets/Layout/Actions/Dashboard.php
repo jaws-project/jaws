@@ -18,7 +18,7 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
      */
     function Dashboard()
     {
-        if (!$GLOBALS['app']->Session->GetPermission('Users', 'AccessDashboard')) {
+        if (!$this->app->session->getPermission('Users', 'AccessDashboard')) {
             return Jaws_HTTPError::Get(403);
         }
 

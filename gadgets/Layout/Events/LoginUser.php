@@ -21,7 +21,7 @@ class Layout_Events_LoginUser extends Jaws_Gadget_Event
             return false;
         }
 
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = $this->app->GetTheme();
         if (!$theme['exists']) {
             Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
         }

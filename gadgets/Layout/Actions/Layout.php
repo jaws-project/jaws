@@ -23,10 +23,10 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // check permissions
         if ($layout == 'Index.User') {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageUserLayout');
+            $this->app->session->checkPermission('Users', 'ManageUserLayout');
             $user = (int)$this->app->session->getAttribute('user');
         } else {
-            $GLOBALS['app']->Session->CheckPermission('Layout', 'MainLayoutManage');
+            $this->app->session->checkPermission('Layout', 'MainLayoutManage');
             $user = 0;
         }
 
@@ -43,7 +43,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             $this->UpdateTheme($rqst['theme'], $rqst['locality']);
             return Jaws_Header::Location($this->gadget->urlMap('Layout'));
         }
-        $GLOBALS['app']->SetTheme($theme, $theme_locality);
+        $this->app->SetTheme($theme, $theme_locality);
 
         $result = $this->gadget->model->load('Layout')->InitialLayout($layout);
         if (Jaws_Error::IsError($result)) {
@@ -78,7 +78,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $t_item->Blocks['drag_drop']->Parsed = '';
 
         // Init layout
-        $GLOBALS['app']->InstanceLayout();
+        $this->app->InstanceLayout();
 
         $fakeLayout = new Jaws_Layout();
         $fakeLayout->Load('', "$layout.html");
@@ -268,7 +268,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                 $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 'Index');
             }
             // dashboard layout available if user has permission for use it
-            if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard') &&
+            if ($this->app->session->getPermission('Users', 'ManageDashboard') &&
                 isset($theme_layouts['Index.Dashboard.html'])
             ) {
                 $layouts->AddOption(_t('LAYOUT_DASHBOARD'), 'Index.Dashboard');
