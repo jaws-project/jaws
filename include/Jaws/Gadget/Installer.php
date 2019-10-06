@@ -11,6 +11,14 @@
 class Jaws_Gadget_Installer
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Default ACL value of front-end gadget access
      *
      * @var     bool
@@ -52,6 +60,7 @@ class Jaws_Gadget_Installer
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
+        $this->app = Jaws::getInstance();
     }
 
     /**
