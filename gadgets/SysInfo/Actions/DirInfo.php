@@ -18,7 +18,7 @@ class SysInfo_Actions_DirInfo extends Jaws_Gadget_Action
      */
     function DirInfo()
     {
-        if (!$GLOBALS['app']->Session->GetPermission('SysInfo', 'DirInfo')) {
+        if (!$this->app->session->getPermission('SysInfo', 'DirInfo')) {
             return false;
         }
 

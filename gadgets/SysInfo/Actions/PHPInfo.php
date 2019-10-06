@@ -18,7 +18,7 @@ class SysInfo_Actions_PHPInfo extends Jaws_Gadget_Action
      */
     function PHPInfo()
     {
-        if (!$GLOBALS['app']->Session->GetPermission('SysInfo', 'PHPInfo')) {
+        if (!$this->app->session->getPermission('SysInfo', 'PHPInfo')) {
             return false;
         }
 
