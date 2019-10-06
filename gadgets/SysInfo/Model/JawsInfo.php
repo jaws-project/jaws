@@ -54,9 +54,9 @@ class SysInfo_Model_JawsInfo extends Jaws_Gadget_Model
             array('title' => "WWW-Authentication",
                 'value' => $this->gadget->registry->fetch('http_auth', 'Settings')),
             array('title' => "URL mapping",
-                'value' => $GLOBALS['app']->Registry->fetch('map_enabled', 'UrlMapper')),
+                'value' => $this->app->registry->fetch('map_enabled', 'UrlMapper')),
             array('title' => "Use rewrite",
-                'value' => $GLOBALS['app']->Registry->fetch('map_use_rewrite', 'UrlMapper')),
+                'value' => $this->app->registry->fetch('map_use_rewrite', 'UrlMapper')),
         );
     }
 }
