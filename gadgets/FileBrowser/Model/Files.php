@@ -82,7 +82,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         if ($path == '/') {
             $path = '';
         }
-        $url = $GLOBALS['app']->getDataURL(str_replace('//', '/', $root_dir.'/'.$path.'/'.$fname), false);
+        $url = $this->app->getDataURL(str_replace('//', '/', $root_dir.'/'.$path.'/'.$fname), false);
         $file['url'] = $url;
         $file['relative'] = str_replace('//', '/', $path.'/'.$fname);
 
@@ -92,7 +92,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         $ext = strtolower(strrev(substr(strrev($fname), 0, strpos(strrev($fname), '.'))));
 
         //Get the icon
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = $this->app->GetTheme();
         $iconName   = $this->getExtImage($ext);
         $image_path = $theme['path'] . 'FileBrowser/';
         $image_url  = $theme['url']  . 'FileBrowser/';
