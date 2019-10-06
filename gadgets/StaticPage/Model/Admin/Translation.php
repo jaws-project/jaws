@@ -45,7 +45,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $params['title'] = $title;
         $params['content'] = $content;
         $params['language'] = $language;
-        $params['user'] = $GLOBALS['app']->Session->GetAttribute('user');
+        $params['user'] = $this->app->session->getAttribute('user');
         $params['meta_keywords'] = $meta_keys;
         $params['meta_description'] = $meta_desc;
         $params['published'] = (bool)$published;
@@ -105,7 +105,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
 
         // check modify other's pages ACL
         if (!$this->gadget->GetPermission('ModifyOthersPages') &&
-            ($GLOBALS['app']->Session->GetAttribute('user') != $translation['user']))
+            ($this->app->session->getAttribute('user') != $translation['user']))
         {
             // FIXME: need new language statement
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), RESPONSE_ERROR);
@@ -173,7 +173,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
                 return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'));
             }
 
-            if ($GLOBALS['app']->Session->GetAttribute('user') != $translation['user']) {
+            if ($this->app->session->getAttribute('user') != $translation['user']) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'));
             }
