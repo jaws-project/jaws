@@ -49,7 +49,7 @@ $actions['ManageEvents'] = array(
     'file' => 'ManageEvents',
     'navigation' => array(
         'params' => array(
-            'user' => (int)$GLOBALS['app']->Session->GetAttribute('user')
+            'user' => (int)$this->app->session->getAttribute('user')
         ),
         'order' => 1
     ),
@@ -107,7 +107,7 @@ $actions['ViewYear'] = array(
     'file' => 'ViewYear',
     'navigation' => array(
         'params' => array(
-            'user' => (int)$GLOBALS['app']->Session->GetAttribute('user')
+            'user' => (int)$this->app->session->getAttribute('user')
         ),
         'order' => 0
     ),

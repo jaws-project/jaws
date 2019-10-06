@@ -18,7 +18,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
      */
     function ManageEvents()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             $userGadget = Jaws_Gadget::getInstance('Users');
             return Jaws_Header::Location(
                 $userGadget->urlMap(
@@ -30,7 +30,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
 
         // Validate user
         $user = (int)$this->gadget->request->fetch('user:int', 'get');
-        if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
+        if ($user > 0 && $user !== (int)$this->app->session->getAttribute('user')) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
@@ -236,7 +236,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             $post,
             'Events.Search'
         );
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$this->app->session->getAttribute('user');
         $url = $this->gadget->urlMap('ManageEvents', array('user' => $user));
         return Jaws_Header::Location($url);
     }

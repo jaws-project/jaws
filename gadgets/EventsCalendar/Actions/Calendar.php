@@ -38,11 +38,11 @@ class EventsCalendar_Actions_Calendar extends Jaws_Gadget_Action
      */
     function Calendar($user)
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return '';
         }
 
-        $user = ($user === 'public')? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = ($user === 'public')? 0 : (int)$this->app->session->getAttribute('user');
         $action = $this->gadget->action->load('ViewYear');
         return $action->ViewYear($user);
     }

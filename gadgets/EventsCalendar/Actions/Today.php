@@ -38,7 +38,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
      */
     function Today($user)
     {
-        if ($user === 'user' && !$GLOBALS['app']->Session->Logged()) {
+        if ($user === 'user' && !$this->app->session->logged()) {
             return '';
         }
 
@@ -81,7 +81,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         if ($user === 'public') {
             $events = $model->GetPublicEvents($dayStart, $dayEnd);
         } else {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $user = (int)$this->app->session->getAttribute('user');
             $events = $model->GetUserEvents($user, $dayStart, $dayEnd);
         }
         if (Jaws_Error::IsError($events)){

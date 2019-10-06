@@ -62,7 +62,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (!isset($event) || empty($event)) {
             if (!empty($id)) {
                 $model = $this->gadget->model->load('Event');
-                $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+                $user = (int)$this->app->session->getAttribute('user');
                 $event = $model->GetEvent($id, $user);
                 if (Jaws_Error::IsError($event) ||
                     empty($event) ||
@@ -227,7 +227,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') .
-            $this->gadget->urlMap('ManageEvents', array('user' => $GLOBALS['app']->Session->GetAttribute('user'))));
+            $this->gadget->urlMap('ManageEvents', array('user' => $this->app->session->getAttribute('user'))));
 
         $tpl->ParseBlock('form');
         return $tpl->Get();
@@ -255,7 +255,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $event['owner'] = $event['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $event['owner'] = $event['user'] = (int)$this->app->session->getAttribute('user');
         if (empty($event['stop_date'])) {
             $event['stop_date'] = $event['start_date'];
         }
@@ -310,7 +310,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Validate event
         $model = $this->gadget->model->load('Event');
         $id = (int)$data['id'];
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$this->app->session->getAttribute('user');
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event)) {
             $this->gadget->session->push(
@@ -331,7 +331,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $data['user'] = (int)$this->app->session->getAttribute('user');
         if (empty($data['stop_date'])) {
             $data['stop_date'] = $data['start_date'];
         }
@@ -376,7 +376,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         // Verify events & user
         $model = $this->gadget->model->load('Event');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$this->app->session->getAttribute('user');
         $verifiedEvents = $model->CheckEvents($id_set, $user);
         if (Jaws_Error::IsError($verifiedEvents)) {
             return $GLOBALS['app']->Session->GetResponse(

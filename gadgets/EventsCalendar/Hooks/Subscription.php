@@ -27,7 +27,7 @@ class EventsCalendar_Hooks_Subscription extends Jaws_Gadget_Hook
         );
 
         // user events
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$this->app->session->getAttribute('user');
         $options[] = array(
             'selectable' => true,
             'action' => 'ViewYear',
