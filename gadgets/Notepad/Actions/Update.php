@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->addLink('gadgets/Notepad/Resources/site_style.css');
+$this->app->layout->addLink('gadgets/Notepad/Resources/site_style.css');
 class Notepad_Actions_Update extends Jaws_Gadget_Action
 {
     /**
@@ -52,7 +52,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title', _t('NOTEPAD_NOTE_TITLE'));
 
         // Editor
-        $editor =& $GLOBALS['app']->LoadEditor('Notepad', 'content', $note['content']);
+        $editor =& $this->app->loadEditor('Notepad', 'content', $note['content']);
         $editor->setID('content');
         $tpl->SetVariable('note_content', $editor->Get());
         $tpl->SetVariable('lbl_content', _t('NOTEPAD_NOTE_CONTENT'));

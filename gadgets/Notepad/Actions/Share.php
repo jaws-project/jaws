@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->addLink('gadgets/Notepad/Resources/site_style.css');
+$this->app->layout->addLink('gadgets/Notepad/Resources/site_style.css');
 class Notepad_Actions_Share extends Jaws_Gadget_Action
 {
     /**
@@ -115,7 +115,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         // Validate note
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note) || empty($note)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('NOTEPAD_ERROR_RETRIEVING_DATA'),
                 RESPONSE_ERROR
             );
@@ -123,7 +123,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
 
         // Verify owner
         if ($note['user'] != $user) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('NOTEPAD_ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
@@ -134,7 +134,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Share');
         $res = $model->UpdateNoteUsers($id, $users);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('NOTEPAD_ERROR_NOTE_SHARE'),
                 RESPONSE_ERROR
             );
@@ -144,7 +144,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
             _t('NOTEPAD_NOTICE_SHARE_UPDATED'),
             'Response'
         );
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('NOTEPAD_NOTICE_SHARE_UPDATED')
         );
     }

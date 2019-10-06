@@ -39,7 +39,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
      */
     function StickyNote($count)
     {
-        $GLOBALS['app']->Layout->addLink('gadgets/Notepad/Resources/site_style.css');
+        $this->app->layout->addLink('gadgets/Notepad/Resources/site_style.css');
         $model = $this->gadget->model->load('StickyNote');
         $user = (int)$this->app->session->getAttribute('user');
         $notes = $model->GetLatestNotes($user, $count);

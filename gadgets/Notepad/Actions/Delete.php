@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->addLink('gadgets/Notepad/Resources/site_style.css');
+$this->app->layout->addLink('gadgets/Notepad/Resources/site_style.css');
 class Notepad_Actions_Delete extends Jaws_Gadget_Action
 {
     /**
@@ -22,7 +22,7 @@ class Notepad_Actions_Delete extends Jaws_Gadget_Action
         $id_set = $this->gadget->request->fetch('id_set');
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('NOTEPAD_ERROR_NOTE_DELETE'),
                 RESPONSE_ERROR
             );
@@ -33,7 +33,7 @@ class Notepad_Actions_Delete extends Jaws_Gadget_Action
         $user = (int)$this->app->session->getAttribute('user');
         $verified_nodes = $model->CheckNotes($id_set, $user);
         if (Jaws_Error::IsError($verified_nodes)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('NOTEPAD_ERROR_NOTE_DELETE'),
                 RESPONSE_ERROR
             );
@@ -41,7 +41,7 @@ class Notepad_Actions_Delete extends Jaws_Gadget_Action
 
         // No notes was verified
         if (empty($verified_nodes)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('NOTEPAD_ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
@@ -50,7 +50,7 @@ class Notepad_Actions_Delete extends Jaws_Gadget_Action
         // Delete notes
         $res = $model->Delete($verified_nodes);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('NOTEPAD_ERROR_NOTE_DELETE'),
                 RESPONSE_ERROR
             );
@@ -60,14 +60,14 @@ class Notepad_Actions_Delete extends Jaws_Gadget_Action
             $msg = _t('NOTEPAD_WARNING_DELETE_NOTES_FAILED');
             // FIXME: we are creating response twice
             $this->gadget->session->push($msg, 'Response', RESPONSE_WARNING);
-            return $GLOBALS['app']->Session->GetResponse($msg, RESPONSE_WARNING);
+            return $this->gadget->session->response($msg, RESPONSE_WARNING);
         }
 
         $msg = (count($id_set) === 1)?
             _t('NOTEPAD_NOTICE_NOTE_DELETED') :
             _t('NOTEPAD_NOTICE_NOTES_DELETED');
         $this->gadget->session->push($msg, 'Response');
-        return $GLOBALS['app']->Session->GetResponse($msg);
+        return $this->gadget->session->response($msg);
     }
 
 }
