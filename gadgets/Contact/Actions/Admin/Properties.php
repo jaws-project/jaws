@@ -55,7 +55,7 @@ class Contact_Actions_Admin_Properties extends Contact_Actions_Admin_Default
 
         // Comments
         $comments = $this->gadget->registry->fetch('comments');
-        $editor =& $GLOBALS['app']->LoadEditor('Contact', 'comments', $comments, false);
+        $editor =& $this->app->loadEditor('Contact', 'comments', $comments, false);
         $editor->SetId('comments');
         $tpl->SetVariable('lbl_comments', _t('CONTACT_PROPERTIES_COMMENTS'));
         $tpl->SetVariable('comments', $editor->Get());

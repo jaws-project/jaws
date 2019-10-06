@@ -49,7 +49,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $result = $this->gadget->model->loadAdmin('Contacts')->UpdateContact($id, $data);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->getMessage(),
                 RESPONSE_ERROR
             );
@@ -60,7 +60,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $gadget->SendReply($id);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('CONTACT_CONTACTS_UPDATED'),
             RESPONSE_NOTICE,
             $result
@@ -80,13 +80,13 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $result = $this->gadget->model->loadAdmin('Contacts')->DeleteContact($id);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('CONTACT_CONTACTS_DELETED'),
             RESPONSE_NOTICE,
             $result
@@ -163,13 +163,13 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         unset($data['id']);
         $result = $this->gadget->model->loadAdmin('Recipients')->InsertRecipient($data);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('CONTACT_RECIPIENT_ADDED'),
             RESPONSE_NOTICE,
             $result
@@ -198,13 +198,13 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         unset($data['id']);
         $result = $this->gadget->model->loadAdmin('Recipients')->UpdateRecipient($id, $data);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('CONTACT_RECIPIENT_UPDATED'),
             RESPONSE_NOTICE,
             $result
@@ -224,13 +224,13 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $result = $this->gadget->model->loadAdmin('Recipients')->DeleteRecipient($id);
         if (Jaws_Error::IsError($result)) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 $result->getMessage(),
                 RESPONSE_ERROR
             );
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('CONTACT_RECIPIENT_DELETED'),
             RESPONSE_NOTICE,
             $result
@@ -255,7 +255,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -348,7 +348,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $gadget = $this->gadget->action->loadAdmin('Mailer');
         $gadget->SendEmail($target, $subject, $message, $attachment);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**

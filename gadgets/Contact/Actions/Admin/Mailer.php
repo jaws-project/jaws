@@ -122,7 +122,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('remove', $link->get());
 
         // Message
-        $editor =& $GLOBALS['app']->LoadEditor('Contact', 'message');
+        $editor =& $this->app->loadEditor('Contact', 'message');
         $editor->setID('message');
         $tpl->SetVariable('message', $editor->Get());
         $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_MESSAGE'), $editor->TextArea);
@@ -216,7 +216,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('message', $message);
 
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
-        $site_url  = $GLOBALS['app']->getSiteURL('/', false);
+        $site_url  = $this->app->getSiteURL('/', false);
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);
 
@@ -290,11 +290,11 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
 
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_EMAIL_NOT_SENT'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('CONTACT_ERROR_EMAIL_NOT_SENT'), RESPONSE_ERROR);
             return false;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_NOTICE_EMAIL_SENT'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('CONTACT_NOTICE_EMAIL_SENT'), RESPONSE_NOTICE);
         return true;
     }
 }

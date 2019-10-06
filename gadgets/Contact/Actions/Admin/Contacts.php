@@ -32,7 +32,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $recipientCombo =& Piwi::CreateWidget('Combo', 'recipient_filter');
         $recipientCombo->SetID('recipient_filter');
         $recipientCombo->AddEvent(ON_CHANGE, "getContacts('contacts_datagrid', 0, true)");
-        if ($GLOBALS['app']->Session->IsSuperAdmin()) {
+        if ($this->app->session->isSuperAdmin()) {
             $recipientCombo->AddOption('', -1);
             $recipientCombo->SetDefault(-1);
             $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
@@ -78,7 +78,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $this->gadget->define('legend_title',            _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
         $this->gadget->define('messageDetail_title',     _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
         $this->gadget->define('contactReply_title',      _t('CONTACT_CONTACTS_MESSAGE_REPLY'));
-        $this->gadget->define('dataURL',                 $GLOBALS['app']->getDataURL() . 'contact/');
+        $this->gadget->define('dataURL',                 $this->app->getDataURL() . 'contact/');
 
         $tpl->ParseBlock('Contacts');
         return $tpl->Get();
@@ -125,7 +125,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
     function GetContacts($recipient = -1, $offset = null)
     {
         // check current-user is supper-admin
-        if (((int)$recipient <= -1) && !$GLOBALS['app']->Session->IsSuperAdmin()) {
+        if (((int)$recipient <= -1) && !$this->app->session->isSuperAdmin()) {
             return array();
         }
 
@@ -334,13 +334,13 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Contacts');
         $contact = $model->GetReply($cid);
         if (Jaws_Error::IsError($contact)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
                                                        RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         if (!isset($contact['id'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
+            $this->app->session->PushLastResponse(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
                                                        RESPONSE_ERROR);
             return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'));
         }
@@ -353,12 +353,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             $rModel = $this->gadget->model->load('Recipients');
             $recipient = $rModel->GetRecipient($rid);
             if (Jaws_Error::IsError($recipient)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
                                                            RESPONSE_ERROR);
                 return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
             }
             if (!isset($recipient['id'])) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),
+                $this->app->session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),
                                                            RESPONSE_ERROR);
                 return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'));
             }
@@ -374,7 +374,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         }
 
         $jDate = Jaws_Date::getInstance();
-        $site_url  = $GLOBALS['app']->getSiteURL('/', false);
+        $site_url  = $this->app->getSiteURL('/', false);
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
         $profile_url = $site_url. $this->app->map->GetMappedURL(
@@ -419,12 +419,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $mail->SetBody($template, array('format' => $format));
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);
             return false;
         }
 
         $model->UpdateContact($cid, array('reply_sent' => 1));
-        $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_REPLY_SENT'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('CONTACT_REPLY_SENT'), RESPONSE_NOTICE);
         return true;
     }
 
