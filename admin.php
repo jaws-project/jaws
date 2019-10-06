@@ -25,17 +25,18 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 }
 
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
+$jawsApp = Jaws::getInstance();
 
 $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget', array('post', 'get')));
 $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action', array('post', 'get')));
 
 // Init layout
-$GLOBALS['app']->InstanceLayout();
+$jawsApp->instanceLayout();
 // Run auto-load methods before standalone actions too
-$GLOBALS['app']->RunAutoload();
+$jawsApp->RunAutoload();
 
 // Check for login action is requested
-if (!$GLOBALS['app']->Session->Logged()) {
+if (!$jawsApp->session->Logged()) {
     $gdgtUsers = Jaws_Gadget::getInstance('Users');
     if (Jaws_Error::IsError($gdgtUsers)) {
         Jaws_Error::Fatal($gdgtUsers->getMessage());
@@ -50,10 +51,10 @@ if (!$GLOBALS['app']->Session->Logged()) {
             )
         );
     } else {
-        $GLOBALS['app']->mainGadget = $ReqGadget;
-        $GLOBALS['app']->mainAction = $ReqAction;
-        $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
-        $GLOBALS['app']->define('', 'mainAction', $ReqAction);
+        $jawsApp->mainGadget = $ReqGadget;
+        $jawsApp->mainAction = $ReqAction;
+        $jawsApp->define('', 'mainGadget', $ReqGadget);
+        $jawsApp->define('', 'mainAction', $ReqAction);
         $ReqResult = $gdgtUsers->action->loadAdmin()->Execute($ReqAction);
         if (Jaws_Error::IsError($ReqResult)) {
             Jaws_Error::Fatal($ReqResult->getMessage());
@@ -69,10 +70,10 @@ if (empty($ReqGadget)) {
 }
 
 // Can use Control Panel?
-$GLOBALS['app']->Session->CheckPermission('ControlPanel', 'default_admin');
+$jawsApp->session->CheckPermission('ControlPanel', 'default_admin');
 
 if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
-    $GLOBALS['app']->Session->CheckPermission($ReqGadget, 'default_admin');
+    $jawsApp->session->CheckPermission($ReqGadget, 'default_admin');
     $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->loadAdmin();
     if (Jaws_Error::IsError($objAction)) {
         Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
@@ -80,13 +81,13 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
 
     $ReqAction = empty($ReqAction)? $objAction->gadget->default_admin_action : $ReqAction;
     // set requested gadget/action
-    $GLOBALS['app']->mainGadget = $ReqGadget;
-    $GLOBALS['app']->mainAction = $ReqAction;
-    $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
-    $GLOBALS['app']->define('', 'mainAction', $ReqAction);
+    $jawsApp->mainGadget = $ReqGadget;
+    $jawsApp->mainAction = $ReqAction;
+    $jawsApp->define('', 'mainGadget', $ReqGadget);
+    $jawsApp->define('', 'mainAction', $ReqAction);
 
     // check referrer host
-    if (!$GLOBALS['app']->Session->extraCheck() ||
+    if (!$jawsApp->session->extraCheck() ||
         Jaws_Utils::getReferrerHost() != $_SERVER['HTTP_HOST']
     ) {
         $ReqResult = Jaws_HTTPError::Get(403);

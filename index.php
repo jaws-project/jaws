@@ -25,24 +25,25 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 }
 
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
+$jawsApp = Jaws::getInstance();
 
 $IsIndex   = false;
 $objAction = null;
 $IsReqActionStandAlone = false;
 // Only registered user can access not global website
-$AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
-                         $GLOBALS['app']->Registry->fetch('global_website', 'Settings') == 'false';
+$AccessToWebsiteDenied = !$jawsApp->session->Logged() &&
+                         $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
 
 // Get forwarded error from webserver
 $ReqError = jaws()->request->fetch('http_error', 'get');
-if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
+if (empty($ReqError) && $jawsApp->map->Parse()) {
     $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget'));
     $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action'));
 
     if (empty($ReqGadget)) {
         $IsIndex = true;
-        $ReqGadget = $GLOBALS['app']->Registry->fetchByUser(
-            $GLOBALS['app']->Session->GetAttribute('layout'),
+        $ReqGadget = $jawsApp->registry->fetchByUser(
+            $jawsApp->session->getAttribute('layout'),
             'main_gadget',
             'Settings'
         );
@@ -57,17 +58,17 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 
             // check referrer host for internal action
             if ($objAction->getAttribute($ReqAction, 'internal') &&
-                (!$GLOBALS['app']->Session->extraCheck() || Jaws_Utils::getReferrerHost() != $_SERVER['HTTP_HOST'])
+                (!$jawsApp->session->extraCheck() || Jaws_Utils::getReferrerHost() != $_SERVER['HTTP_HOST'])
             ) {
                 $ReqError = '403';
             }
 
             $ReqAction = empty($ReqAction)? $objAction->gadget->default_action : $ReqAction;
             // set requested gadget/action
-            $GLOBALS['app']->mainGadget = $ReqGadget;
-            $GLOBALS['app']->mainAction = $ReqAction;
-            $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
-            $GLOBALS['app']->define('', 'mainAction', $ReqAction);
+            $jawsApp->mainGadget = $ReqGadget;
+            $jawsApp->mainAction = $ReqAction;
+            $jawsApp->define('', 'mainGadget', $ReqGadget);
+            $jawsApp->define('', 'mainAction', $ReqAction);
         } else {
             $ReqError = '404';
             $ReqGadget = null;
@@ -87,10 +88,10 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 
         $ReqError = '';
         // set requested gadget
-        $GLOBALS['app']->mainGadget = $ReqGadget;
-        $GLOBALS['app']->mainAction = $ReqAction;
-        $GLOBALS['app']->define('', 'mainGadget', $ReqGadget);
-        $GLOBALS['app']->define('', 'mainAction', $ReqAction);
+        $jawsApp->mainGadget = $ReqGadget;
+        $jawsApp->mainAction = $ReqAction;
+        $jawsApp->define('', 'mainGadget', $ReqGadget);
+        $jawsApp->define('', 'mainAction', $ReqAction);
     }
 } else {
     $ReqError = empty($ReqError)? '404' : $ReqError;
@@ -99,24 +100,24 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 }
 
 // set requested in front-end first/home page
-$GLOBALS['app']->mainIndex = $IsIndex;
+$jawsApp->mainIndex = $IsIndex;
 // Init layout...
-$GLOBALS['app']->InstanceLayout();
-$GLOBALS['app']->Layout->Load();
+$jawsApp->instanceLayout();
+$jawsApp->layout->Load();
 
 // Run auto-load methods before standalone actions too
-$GLOBALS['app']->RunAutoload();
+$jawsApp->RunAutoload();
 
 if (empty($ReqError)) {
     $ReqResult = '';
     if (!empty($objAction)) {
         // set in main request
-        $GLOBALS['app']->inMainRequest = true;
+        $jawsApp->inMainRequest = true;
         $ReqResult = $objAction->Execute($ReqAction);
         if (Jaws_Error::isError($ReqResult)) {
             $ReqResult = $ReqResult->GetMessage();
         }
-        $GLOBALS['app']->inMainRequest = false;
+        $jawsApp->inMainRequest = false;
 
         // we must check type of action after execute, because gadget can change it at runtime
         $ReqMode = Jaws_Gadget::filter(jaws()->request->fetch('mode'));
@@ -127,8 +128,8 @@ if (empty($ReqError)) {
 }
 
 if (!$IsReqActionStandAlone) {
-    $GLOBALS['app']->Layout->Populate($ReqResult, $AccessToWebsiteDenied);
-    $ReqResult = $GLOBALS['app']->Layout->Get();
+    $jawsApp->layout->Populate($ReqResult, $AccessToWebsiteDenied);
+    $ReqResult = $jawsApp->layout->Get();
 }
 
 terminate($ReqResult);
