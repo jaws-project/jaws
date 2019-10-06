@@ -752,7 +752,7 @@ class Jaws
         $time = is_numeric($time)? $time : strtotime($time);
 
         // GMT offset
-        $timezone = $default_timezone? $this->_Preferences['timezone'] : $this->_Timezone;
+        $timezone = $default_timezone? $this->_Preferences['timezone'] : $this->_Preferences['site_timezone'];
         if (is_numeric($timezone)) {
             $gmt_offset = $timezone * 3600;
         } else {
