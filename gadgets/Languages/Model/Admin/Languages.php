@@ -37,14 +37,14 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
 
                     $lang_dir = $jaws_lang_dir. DIRECTORY_SEPARATOR. $lang_code;
                     if (!Jaws_Utils::mkdir($lang_dir, 2)) {
-                        $GLOBALS['app']->Session->PushLastResponse(
+                        $this->app->session->PushLastResponse(
                                             _t('GLOBAL_ERROR_FAILED_CREATING_DIR'),
                                             RESPONSE_ERROR);
                         return false;
                     }
 
                     if (!Jaws_Utils::is_writable($jaws_lang_dir)) {
-                        $GLOBALS['app']->Session->PushLastResponse(
+                        $this->app->session->PushLastResponse(
                                             _t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE'),
                                             RESPONSE_ERROR);
                         return false;
@@ -54,22 +54,22 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                     $lang_fname_file = $lang_dir. DIRECTORY_SEPARATOR. 'FullName';
                     if (Jaws_Utils::file_put_contents($lang_fname_file, $lang_name)) {
                         if ($lang_exist) {
-                            $GLOBALS['app']->Session->PushLastResponse(
+                            $this->app->session->PushLastResponse(
                                             _t('LANGUAGES_LANGUAGE_UPDATED', $lang_code),
                                             RESPONSE_NOTICE);
                         } else {
-                            $GLOBALS['app']->Session->PushLastResponse(
+                            $this->app->session->PushLastResponse(
                                             _t('LANGUAGES_LANGUAGE_ADDED', $lang_code),
                                             RESPONSE_NOTICE);
                         }
                         return true;
                     } else {
                         if ($lang_exist) {
-                            $GLOBALS['app']->Session->PushLastResponse(
+                            $this->app->session->PushLastResponse(
                                             _t('LANGUAGES_LANGUAGE_UPDATE_ERROR', $lang_code),
                                             RESPONSE_ERROR);
                         } else {
-                            $GLOBALS['app']->Session->PushLastResponse(
+                            $this->app->session->PushLastResponse(
                                             _t('LANGUAGES_LANGUAGE_ADD_ERROR', $lang_code),
                                             RESPONSE_ERROR);
                         }
@@ -79,7 +79,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
             }
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('LANGUAGES_NAME_ERROR'), RESPONSE_ERROR);
+        $this->app->session->PushLastResponse(_t('LANGUAGES_NAME_ERROR'), RESPONSE_ERROR);
         return false;
     }
 
@@ -343,21 +343,21 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         }
 
         if (!$writeable) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LANGUAGES_NOT_PERMISSION'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('LANGUAGES_NOT_PERMISSION'), RESPONSE_ERROR);
             return false;
         }
 
         if ($change_detected) {
             if (Jaws_Utils::file_put_contents($data_file, $tpl->Get())) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
+                $this->app->session->PushLastResponse(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
                 return true;
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('LANGUAGES_NOT_UPDATED', $module), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('LANGUAGES_NOT_UPDATED', $module), RESPONSE_ERROR);
                 return false;
             }
         } else {
             Jaws_Utils::Delete($data_file);
-            $GLOBALS['app']->Session->PushLastResponse(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
             return true;
         }
     }

@@ -22,7 +22,7 @@ class Languages_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($lang_str) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Languages');
         $model->SaveLanguage($lang_str);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -54,6 +54,6 @@ class Languages_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
         $model = $this->gadget->model->loadAdmin('Languages');
         $model->SetLangData($component[1], (int)$component[0], $langTo, $data);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 }
