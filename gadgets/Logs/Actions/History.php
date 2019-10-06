@@ -33,7 +33,7 @@ class Logs_Actions_History extends Jaws_Gadget_Action
      */
     function LoginHistory($limit = 5)
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
+        if (!$this->app->session->logged()) {
             return false;
         }
 
@@ -42,7 +42,7 @@ class Logs_Actions_History extends Jaws_Gadget_Action
             array(
                 'gadget' => 'Users',
                 'action' => 'Login',
-                'user'   => $GLOBALS['app']->Session->GetAttribute('user'),
+                'user'   => $this->app->session->getAttribute('user'),
             ),
             $limit
         );

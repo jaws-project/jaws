@@ -29,17 +29,17 @@ class Logs_Events_Log extends Jaws_Gadget_Event
         $params['auth'] =
             isset($params['auth'])?
             (string)$params['auth'] :
-            $GLOBALS['app']->Session->GetAttribute('auth');
+            $this->app->session->getAttribute('auth');
         // domain
         $params['domain'] =
             isset($params['domain'])?
             (int)$params['domain'] :
-            $GLOBALS['app']->Session->GetAttribute('domain');
+            $this->app->session->getAttribute('domain');
         // username
         $params['username'] =
             isset($params['username'])?
             (string)$params['username'] :
-            $GLOBALS['app']->Session->GetAttribute('username');
+            $this->app->session->getAttribute('username');
         // priority
         $params['priority'] = empty($params['priority'])? JAWS_INFO : (int)$params['priority'];
 

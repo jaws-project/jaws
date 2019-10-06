@@ -289,7 +289,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $log['backend']  = $log['backend']? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_INDEX');
 
         // user's profile link
-        $log['user_url'] = $GLOBALS['app']->Map->GetMappedURL(
+        $log['user_url'] = $this->app->map->GetMappedURL(
             'Users',
             'Profile',
             array('user' => $log['username'])
