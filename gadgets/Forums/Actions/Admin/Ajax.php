@@ -96,10 +96,10 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $fModel = $this->gadget->model->loadAdmin('Forums');
         $res = $fModel->InsertForum($gid, $title, $description, $fast_url, $order, $locked, $private, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('FORUMS_NOTICE_FORUM_CREATED'),
             RESPONSE_NOTICE,
             $res
@@ -131,10 +131,10 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $fModel = $this->gadget->model->loadAdmin('Forums');
         $res = $fModel->UpdateForum($fid, $gid, $title, $description, $fast_url, $order, $locked, $private, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('FORUMS_NOTICE_FORUM_UPDATED'),
             RESPONSE_NOTICE
         );
@@ -154,14 +154,14 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $fModel = $this->gadget->model->loadAdmin('Forums');
         $res = $fModel->DeleteForum($fid);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } elseif ($res) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('FORUMS_NOTICE_FORUM_DELETED'),
                 RESPONSE_NOTICE
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('FORUMS_ERROR_FORUM_NOT_EMPTY'),
                 RESPONSE_ERROR
             );
@@ -186,10 +186,10 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $gModel = $this->gadget->model->loadAdmin('Groups');
         $gid = $gModel->InsertGroup($title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($gid)) {
-            return $GLOBALS['app']->Session->GetResponse($gid->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($gid->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('FORUMS_NOTICE_GROUP_CREATED'),
             RESPONSE_NOTICE,
             $gid
@@ -215,10 +215,10 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $gModel = $this->gadget->model->loadAdmin('Groups');
         $res = $gModel->UpdateGroup($gid, $title, $description, $fast_url, $order, $locked, $published);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('FORUMS_NOTICE_GROUP_UPDATED'),
             RESPONSE_NOTICE
         );
@@ -237,14 +237,14 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $gModel = $this->gadget->model->loadAdmin('Groups');
         $res = $gModel->DeleteGroup($gid);
         if (Jaws_Error::IsError($res)) {
-            return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } elseif ($res) {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('FORUMS_NOTICE_GROUP_DELETED'),
                 RESPONSE_NOTICE
             );
         } else {
-            return $GLOBALS['app']->Session->GetResponse(
+            return $this->gadget->session->response(
                 _t('FORUMS_ERROR_GROUP_NOT_EMPTY'),
                 RESPONSE_ERROR
             );
