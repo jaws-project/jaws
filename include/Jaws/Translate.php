@@ -107,7 +107,7 @@ class Jaws_Translate
      * @param   bool    $load_user_translated   Loaded user customized translated statements
      * @return  void
      */
-    function Init($lang = 'en')
+    function init($lang = 'en')
     {
         $this->_defaultLanguage = $lang;
     }
