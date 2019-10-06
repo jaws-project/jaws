@@ -65,7 +65,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
             if(file_exists($image_path)) {
                 $cat['image_url'] = $this->GetCategoryLogoURL($id);
             } else {
-                $cat['image_url'] = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+                $cat['image_url'] = $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
             }
         }
 
@@ -181,6 +181,6 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      */
     function GetCategoryLogoURL($id, $rel_url = true)
     {
-        return $GLOBALS['app']->getDataURL("blog/categories/$id.png", $rel_url);
+        return $this->app->getDataURL("blog/categories/$id.png", $rel_url);
     }
 }

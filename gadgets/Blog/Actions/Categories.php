@@ -57,7 +57,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $name = $catInfo['name'];
         $tpl = $this->gadget->template->load('CategoryPosts.html');
 
-        $GLOBALS['app']->Layout->addLink(
+        $this->app->layout->addLink(
             array(
                 'href'  => $this->gadget->urlMap('ShowAtomCategory', array('id' => $cat)),
                 'type'  => 'application/atom+xml',
@@ -65,7 +65,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
                 'title' => 'Atom - '. $name
             )
         );
-        $GLOBALS['app']->Layout->addLink(
+        $this->app->layout->addLink(
             array(
                 'href'  => $this->gadget->urlMap('ShowRSSCategory', array('id' => $cat)),
                 'type'  => 'application/rss+xml',
@@ -134,7 +134,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
                 $tpl->SetVariable('url', $this->gadget->urlMap('ShowCategory', array('id' => $cid)));
 
                 if (file_exists(JAWS_DATA . "blog/categories/{$e['id']}.png")) {
-                    $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL("blog/categories/{$e['id']}.png"));
+                    $tpl->SetVariable('url_image', $this->app->getDataURL("blog/categories/{$e['id']}.png"));
                 } else {
                     $tpl->SetVariable('url_image', 'data:image/png;base64,');
                 }

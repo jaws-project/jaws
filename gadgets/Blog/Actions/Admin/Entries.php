@@ -25,12 +25,12 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Entry.html');
@@ -58,7 +58,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('subtitle_field', $subtitleEntry->Get());
 
         // Image
-        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        $imageUrl = $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
         $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
         $blogImage->SetID('blog_image');
         $tpl->SetVariable('blog_image', $blogImage->Get());
@@ -77,7 +77,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $button->AddEvent(ON_CLICK, 'removeImage()');
         $tpl->SetVariable('btn_remove', $button->Get());
 
-        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        $imageUrl = $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
         $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
         $blogImage->SetID('blog_image');
         $tpl->SetVariable('blog_image', $blogImage->Get());
@@ -110,7 +110,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Summary
         $tpl->SetVariable('lbl_summary', _t('BLOG_ENTRY_SUMMARY'));
-        $summary =& $GLOBALS['app']->LoadEditor('Blog', 'summary_block', '', false);
+        $summary =& $this->app->loadEditor('Blog', 'summary_block', '', false);
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
         $summary->TextArea->SetStyle('width: 750px;');
@@ -118,7 +118,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Body
         $tpl->SetVariable('text', _t('BLOG_ENTRY_BODY'));
-        $editor =& $GLOBALS['app']->LoadEditor('Blog', 'text_block', '', false);
+        $editor =& $this->app->loadEditor('Blog', 'text_block', '', false);
         $editor->setId('text_block');
         $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width: 100%;');
@@ -283,9 +283,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 false
             );
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } elseif (empty($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
             } else {
                 $image = $res['image_file'][0]['host_filename'];
             }
@@ -355,12 +355,12 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Entry.html');
@@ -385,9 +385,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('subtitle_field', $subtitleEntry->Get());
 
         // Image
-        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        $imageUrl = $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
         if (!empty($entry['image'])) {
-            $imageUrl = $GLOBALS['app']->getDataURL() . 'blog/images/'. $entry['image'];
+            $imageUrl = $this->app->getDataURL() . 'blog/images/'. $entry['image'];
         }
         $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
         $blogImage->SetID('blog_image');
@@ -441,7 +441,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Summary
         $tpl->SetVariable('lbl_summary', _t('BLOG_ENTRY_SUMMARY'));
-        $summary =& $GLOBALS['app']->LoadEditor('Blog', 'summary_block', $entry['summary'], false);
+        $summary =& $this->app->loadEditor('Blog', 'summary_block', $entry['summary'], false);
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
         $summary->TextArea->SetStyle('width: 750px;');
@@ -449,7 +449,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Body
         $tpl->SetVariable('text', _t('BLOG_BODY'));
-        $editor =& $GLOBALS['app']->LoadEditor('Blog', 'text_block', $entry['text'], false);
+        $editor =& $this->app->loadEditor('Blog', 'text_block', $entry['text'], false);
         $editor->setId('text_block');
         $editor->TextArea->SetRows(12);
         $editor->TextArea->SetStyle('width: 100%;');
@@ -645,9 +645,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                     false
                 );
                 if (Jaws_Error::IsError($res)) {
-                    $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                    $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
                 } elseif (empty($res)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                    $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
                 } else {
                     $image = $res['image_file'][0]['host_filename'];
 
@@ -708,9 +708,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             // Delete Post
             $res = $model->DeleteEntry($post['id']);
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ENTRY_DELETED'), RESPONSE_NOTICE);
+                $this->app->session->PushLastResponse(_t('BLOG_ENTRY_DELETED'), RESPONSE_NOTICE);
             }
 
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
@@ -721,7 +721,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Ask for confirmation...
         $entry = $bModel->GetEntry($get['id']);
         if (Jaws_Error::IsError($entry)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
+            $this->app->session->PushLastResponse(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
         }
 

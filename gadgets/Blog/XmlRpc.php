@@ -16,7 +16,7 @@ define('JAWS_SCRIPT', 'xmlrpc');
 define('BASE_SCRIPT', basename(__FILE__));
 require '../../config/JawsConfig.php';
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
-$GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
+$this->app->loadObject('Jaws_ACL', 'ACL');
 require_once JAWS_PATH . 'include/Jaws/User.php';
 require_once PEAR_PATH . 'XML/RPC/Server.php';
 
@@ -73,7 +73,7 @@ function userAuthentication($username, $password)
  */
 function GetBlogPermission($user, $task)
 {
-    return $GLOBALS['app']->Session->GetPermission('Blog', $task);
+    return $this->app->session->getPermission('Blog', $task);
 }
 
 /**
@@ -135,7 +135,7 @@ function metaWeblog_getUsersBlogs($params)
     }
 
     $struct = array();
-    $siteurl = $GLOBALS['app']->GetSiteURL();
+    $siteurl = $this->app->getSiteURL();
     $sitename = $this->app->registry->fetch('site_name', 'Settings');
 
     $data = array(
@@ -175,7 +175,7 @@ function metaWeblog_getUserInfo($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $siteurl = $GLOBALS['app']->GetSiteURL();
+    $siteurl = $this->app->getSiteURL();
     $user = Jaws_User::GetUser((int)$userInfo['id'], true, true);
     $data = array(
         'nickname'  => new XML_RPC_Value($user['username']),

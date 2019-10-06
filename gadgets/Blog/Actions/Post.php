@@ -20,7 +20,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
      */
     function LastPost()
     {
-        $GLOBALS['app']->Layout->addLink(
+        $this->app->layout->addLink(
             array(
                 'href'  => $this->gadget->urlMap('Atom'),
                 'type'  => 'application/atom+xml',
@@ -28,7 +28,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
                 'title' => 'Atom - All'
             )
         );
-        $GLOBALS['app']->Layout->addLink(
+        $this->app->layout->addLink(
             array(
                 'href'  => $this->gadget->urlMap('RSS'),
                 'type'  => 'application/rss+xml',

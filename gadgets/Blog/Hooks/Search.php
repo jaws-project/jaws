@@ -71,7 +71,7 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
             if (empty($r['image'])) {
                 $entry['image'] = 'gadgets/Blog/Resources/images/logo.png';
             } else {
-                $entry['image'] = $GLOBALS['app']->getDataURL(). 'blog/images/'. $r['image'];
+                $entry['image'] = $this->app->getDataURL(). 'blog/images/'. $r['image'];
             }
 
             $entry['snippet'] = empty($r['summary'])? $r['text'] : $r['summary'];

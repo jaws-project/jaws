@@ -92,7 +92,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model->SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
                                     $xml_limit, $comments, $trackback, $trackback_status,
                                     $pingback);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -144,7 +144,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Categories');
         $model->NewCategory($post['name'], $post['description'], $post['fast_url'],
             $post['meta_keywords'], $post['meta_desc'], $post['image'], $post['delete_image']);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -170,7 +170,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Categories');
         $model->UpdateCategory($post['id'], $post['name'], $post['description'], $post['fast_url'],
             $post['meta_keywords'], $post['meta_desc'], $post['image'], $post['delete_image']);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -186,7 +186,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Categories');
         $model->DeleteCategory($id);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -236,7 +236,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $ids = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Posts');
         $model->MassiveEntryDelete($ids);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -254,7 +254,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $ids = $this->gadget->request->fetch('0:array', 'post');
         $model = $this->gadget->model->loadAdmin('Posts');
         $model->ChangeEntryStatus($ids, $status);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -270,7 +270,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $ids = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Trackbacks');
         $model->MassiveTrackbackDelete($ids);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
 
@@ -288,7 +288,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($ids, $status) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Trackbacks');
         $model->MarkTrackbacksAs($ids, $status);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     /**
@@ -346,9 +346,9 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                true
             );
             if (!Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
+                $this->app->session->PopLastResponse(); // emptying all responses message
                 $newid = $res;
-                $GLOBALS['app']->Session->PushLastResponse(
+                $this->app->session->PushLastResponse(
                     _t('BLOG_ENTRY_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
                     RESPONSE_NOTICE,
                     $newid
@@ -376,6 +376,6 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                true
             );
         }
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 }

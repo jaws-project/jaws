@@ -23,7 +23,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
-        $this->gadget->define('noImageURL', $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif'));
+        $this->gadget->define('noImageURL', $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif'));
 
         $tpl = $this->gadget->template->loadAdmin('Categories.html');
         $tpl->SetBlock('categories');
@@ -45,7 +45,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         $tpl->SetVariable('combo', $combo->Get());
 
         // Logo
-        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        $imageUrl = $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
         $logo =& Piwi::CreateWidget('Image', $imageUrl);
         $logo->SetID('image_preview');
         $tpl->SetVariable('image_preview', $logo->Get());
@@ -167,14 +167,14 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     function UploadImage()
     {
         if (!isset($_FILES['file'])) {
-            return $GLOBALS['app']->Session->GetResponse(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
         }
         $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
         if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
-            return $GLOBALS['app']->Session->GetResponse(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
+            return $this->gadget->session->response(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(
+        return $this->gadget->session->response(
             _t('BLOG_IMAGE_UPLOADED'),
             RESPONSE_NOTICE,
             $res['file'][0]

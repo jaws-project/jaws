@@ -335,7 +335,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
     function GetEntry($id, $published = false)
     {
         // super admins can get/show drafted entries
-        $published = (bool)$published && !$GLOBALS['app']->Session->IsSuperAdmin();
+        $published = (bool)$published && !$this->app->session->isSuperAdmin();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'subtitle',
@@ -587,8 +587,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         // from today
         if ($from == 1) {
-            $today = $GLOBALS['app']->UserTime2UTC(
-                $GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'),
+            $today = $this->app->UserTime2UTC(
+                $this->app->UTC2UserTime(time(), 'Y-m-d 00:00:00'),
                 'Y-m-d H:i:s'
             );
             $blogTable->and()->where('publishtime', $today, '>=');
@@ -621,8 +621,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         // from today
         if ($from == 1) {
-            $today = $GLOBALS['app']->UserTime2UTC(
-                $GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'),
+            $today = $this->app->UserTime2UTC(
+                $this->app->UTC2UserTime(time(), 'Y-m-d 00:00:00'),
                 'Y-m-d H:i:s'
             );
             $blogTable->and()->where('publishtime', $today, '>=');

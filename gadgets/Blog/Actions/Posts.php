@@ -26,7 +26,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $page = 1;
         }
 
-        $GLOBALS['app']->Layout->addLink(
+        $this->app->layout->addLink(
             array(
                 'href'  => $this->gadget->urlMap('Atom'),
                 'type'  => 'application/atom+xml',
@@ -34,7 +34,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 'title' => 'Atom - All'
             )
         );
-        $GLOBALS['app']->Layout->addLink(
+        $this->app->layout->addLink(
             array(
                 'href'  => $this->gadget->urlMap('RSS'),
                 'type'  => 'application/rss+xml',
@@ -46,7 +46,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
          * This will be supported in next Blog version - Bookmarks for each categorie
         $categories = $model->GetCategories();
         if (!Jaws_Error::IsError($categories)) {
-        $GLOBALS['app']->Layout->AddHeadLink(
+        $this->app->layout->AddHeadLink(
                 $base_url.'blog.atom',
                 'alternate',
                 'application/atom+xml',
@@ -203,7 +203,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $tpl->SetVariable('url_image', 'data:image/png;base64,');
             } else {
                 $tpl->SetVariable('image', $e['image']);
-                $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $e['image']);
+                $tpl->SetVariable('url_image', $this->app->getDataURL(). 'blog/images/'. $e['image']);
             }
 
             $tpl->ParseBlock('recent_posts/item');
@@ -280,7 +280,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                     $tpl->SetVariable('url_image', 'data:image/png;base64,');
                 } else {
                     $tpl->SetVariable('image', $entry['image']);
-                    $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $entry['image']);
+                    $tpl->SetVariable('url_image', $this->app->getDataURL(). 'blog/images/'. $entry['image']);
                 }
 
                 $tpl->ParseBlock('favorite_posts/item');

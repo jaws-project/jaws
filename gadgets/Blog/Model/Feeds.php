@@ -58,7 +58,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             }
         }
 
-        $siteURL = $GLOBALS['app']->GetSiteURL('/');
+        $siteURL = $this->app->getSiteURL('/');
         $url = $this->gadget->urlMap(
             $feed_type == 'atom'? 'Atom' : 'RSS',
             array(),
@@ -70,7 +70,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $this->_Atom->SetId($siteURL);
         $this->_Atom->SetTagLine($this->gadget->registry->fetch('site_slogan', 'Settings'));
         $this->_Atom->SetAuthor($this->gadget->registry->fetch('site_author', 'Settings'),
-            $GLOBALS['app']->GetSiteURL(),
+            $this->app->getSiteURL(),
             $this->gadget->registry->fetch('gate_email', 'Settings'));
         $this->_Atom->SetGenerator('JAWS '.$this->app->registry->fetch('version'));
         $this->_Atom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
@@ -149,7 +149,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_ATOMFILE'));
             }
 
-            $atom->SetLink($GLOBALS['app']->getDataURL('xml/blog.atom', false));
+            $atom->SetLink($this->app->getDataURL('xml/blog.atom', false));
             ///FIXME we need to do more error checking over here
             @file_put_contents(JAWS_DATA . 'xml/blog.atom', $atom->GetXML());
             Jaws_Utils::chmod(JAWS_DATA . 'xml/blog.atom');
@@ -177,7 +177,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_RSSFILE'));
             }
 
-            $atom->SetLink($GLOBALS['app']->getDataURL('xml/blog.rss', false));
+            $atom->SetLink($this->app->getDataURL('xml/blog.rss', false));
             ///FIXME we need to do more error checking over here
             @file_put_contents(JAWS_DATA . 'xml/blog.rss', $atom->ToRSS2());
             Jaws_Utils::chmod(JAWS_DATA . 'xml/blog.rss');
@@ -219,7 +219,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $cid = empty($catInfo['fast_url']) ? $catInfo['id'] : Jaws_XSS::filter($catInfo['fast_url']);
 
         $categoryAtom = new Jaws_AtomFeed();
-        $siteURL = $GLOBALS['app']->GetSiteURL('/');
+        $siteURL = $this->app->getSiteURL('/');
         $url = $this->gadget->urlMap(
             $feed_type == 'atom'? 'ShowAtomCategory' : 'ShowRSSCategory',
             array('id' => $cid),
@@ -311,7 +311,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
             $filename = basename($catAtom->Link->HRef);
             $filename = substr($filename, 0, strrpos($filename, '.')) . '.atom';
-            $catAtom->SetLink($GLOBALS['app']->getDataURL('xml/' . $filename, false));
+            $catAtom->SetLink($this->app->getDataURL('xml/' . $filename, false));
             ///FIXME we need to do more error checking over here
             @file_put_contents(JAWS_DATA . 'xml/' . $filename, $catAtom->GetXML());
             Jaws_Utils::chmod(JAWS_DATA . 'xml/' . $filename);
@@ -345,7 +345,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
             $filename = basename($catAtom->Link->HRef);
             $filename = substr($filename, 0, strrpos($filename, '.')) . '.rss';
-            $catAtom->SetLink($GLOBALS['app']->getDataURL('xml/' . $filename, false));
+            $catAtom->SetLink($this->app->getDataURL('xml/' . $filename, false));
             ///FIXME we need to do more error checking over here
             @file_put_contents(JAWS_DATA . 'xml/' . $filename, $catAtom->ToRSS2());
             Jaws_Utils::chmod(JAWS_DATA . 'xml/' . $filename);

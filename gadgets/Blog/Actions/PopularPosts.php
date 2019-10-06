@@ -47,7 +47,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('PopularPosts.html');
 
-        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'popular_posts_normal';
             $page = (int)$this->gadget->request->fetch('page', 'get');
             $page = empty($page)? 1 : (int)$page;
@@ -95,14 +95,14 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
                     $tpl->SetVariable('url_image', 'data:image/png;base64,');
                 } else {
                     $tpl->SetVariable('image', $entry['image']);
-                    $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $entry['image']);
+                    $tpl->SetVariable('url_image', $this->app->getDataURL(). 'blog/images/'. $entry['image']);
                 }
 
                 $tpl->ParseBlock("$baseBlock/item");
             }
         }
 
-        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             // Pagination
             $this->gadget->action->load('PageNavigation')->pagination(
                 $tpl,

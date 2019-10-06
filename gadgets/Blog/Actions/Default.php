@@ -120,7 +120,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             $tpl->SetVariable('url_image', 'data:image/png;base64,');
         } else {
             $tpl->SetVariable('image', $entry['image']);
-            $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $entry['image']);
+            $tpl->SetVariable('url_image', $this->app->getDataURL(). 'blog/images/'. $entry['image']);
         }
 
         $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
@@ -145,7 +145,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             );
             $tpl->SetVariable('text', $summary);
         } else {
-            $GLOBALS['app']->Layout->addLink(
+            $this->app->layout->addLink(
                 array(
                     'href'  => $this->gadget->urlMap('Atom'),
                     'type'  => 'application/atom+xml',
@@ -153,7 +153,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
                     'title' => 'Atom - All'
                 )
             );
-            $GLOBALS['app']->Layout->addLink(
+            $this->app->layout->addLink(
                 array(
                     'href'  => $this->gadget->urlMap('RSS'),
                     'type'  => 'application/rss+xml',

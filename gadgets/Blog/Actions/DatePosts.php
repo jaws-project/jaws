@@ -50,8 +50,8 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
             return false;
         }
 
-        $min_date = $GLOBALS['app']->UserTime2UTC($min_date['timestamp'], 'Y-m-d H:i:s');
-        $max_date = $GLOBALS['app']->UserTime2UTC($max_date['timestamp'], 'Y-m-d H:i:s');
+        $min_date = $this->app->UserTime2UTC($min_date['timestamp'], 'Y-m-d H:i:s');
+        $max_date = $this->app->UserTime2UTC($max_date['timestamp'], 'Y-m-d H:i:s');
 
         $pModel = $this->gadget->model->load('Posts');
         $dpModel = $this->gadget->model->load('DatePosts');

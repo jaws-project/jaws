@@ -53,7 +53,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
     {
         $tpl = $this->gadget->template->load('RecentTypePosts.html');
 
-        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'recent_posts_normal';
             $type = (int)$this->gadget->request->fetch('type', 'get');
         } else {
@@ -115,7 +115,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
                 $tpl->SetVariable('url_image', 'data:image/png;base64,');
             } else {
                 $tpl->SetVariable('image', $e['image']);
-                $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $e['image']);
+                $tpl->SetVariable('url_image', $this->app->getDataURL(). 'blog/images/'. $e['image']);
             }
 
             $tpl->ParseBlock("$baseBlock/item");
