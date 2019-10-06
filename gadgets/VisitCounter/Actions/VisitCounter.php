@@ -26,11 +26,11 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Visitors');
         $viewMode = strtolower($this->gadget->registry->fetch('mode'));
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = $this->app->GetTheme();
         if (is_dir($theme['path'] . 'VisitCounter/Resources/images/')) {
             $counter_image = $theme['url'] . 'VisitCounter/Resources/images/';
         } else {
-            $counter_image = $GLOBALS['app']->getSiteURL('/gadgets/VisitCounter/Resources/images/');
+            $counter_image = $this->app->getSiteURL('/gadgets/VisitCounter/Resources/images/');
         }
 
         $online_count = $model->GetOnlineVisitors();

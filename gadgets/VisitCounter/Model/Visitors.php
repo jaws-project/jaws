@@ -42,7 +42,7 @@ class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
      */
     function AddVisitor($ip, $inc = true)
     {
-        $date = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
+        $date = $this->app->UserTime2UTC($this->app->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
         $table = Jaws_ORM::getInstance()->table('ipvisitor');
         $table->select('ip', 'visit_time:integer');
         $table->where('ip', $ip)->and()->where('visit_time', $date, '>=');
@@ -116,7 +116,7 @@ class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
             $rs = date('Y-m-d H:i:s');
         }
 
-        return $GLOBALS['app']->UserTime2UTC($rs);
+        return $this->app->UserTime2UTC($rs);
     }
 
     /**
@@ -148,7 +148,7 @@ class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
     */
     function GetTodayVisitors($type = null)
     {
-        $date = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
+        $date = $this->app->UserTime2UTC($this->app->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
         if (is_null($type)) {
             $type = $this->GetVisitType();
         }
@@ -181,11 +181,11 @@ class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
     */
     function GetYesterdayVisitors($type = null)
     {
-        $begin = $GLOBALS['app']->UserTime2UTC(
-            $GLOBALS['app']->UTC2UserTime(time() - 24 * 3600, 'Y-m-d 00:00:00')
+        $begin = $this->app->UserTime2UTC(
+            $this->app->UTC2UserTime(time() - 24 * 3600, 'Y-m-d 00:00:00')
         );
-        $end = $GLOBALS['app']->UserTime2UTC(
-            $GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00')
+        $end = $this->app->UserTime2UTC(
+            $this->app->UTC2UserTime(time(), 'Y-m-d 00:00:00')
         );
         if (is_null($type)) {
             $type = $this->GetVisitType();

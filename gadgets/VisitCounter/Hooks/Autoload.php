@@ -19,7 +19,7 @@ class VisitCounter_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        if (!$GLOBALS['app']->IsAgentRobot()) {
+        if (!$this->app->IsAgentRobot()) {
             $this->AddVisitor();
         }
     }
@@ -34,10 +34,10 @@ class VisitCounter_Hooks_Autoload extends Jaws_Gadget_Hook
     {
         $model = $this->gadget->model->load('Visitors');
         $days = $model->GetCookiePeriod();
-        if (!$GLOBALS['app']->Session->GetCookie('VisitCounter')) {
+        if (!$this->app->session->getCookie('VisitCounter')) {
             $res = $model->AddVisitor($_SERVER['REMOTE_ADDR'], true);
             if (!Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->SetCookie('VisitCounter', true, 60 * 24 * $days);
+                $this->app->session->setCookie('VisitCounter', true, 60 * 24 * $days);
             }
         } else {
             $model->AddVisitor($_SERVER['REMOTE_ADDR'], false);

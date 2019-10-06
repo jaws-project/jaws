@@ -31,11 +31,11 @@ class VisitCounter_Model_Admin_Properties extends Jaws_Gadget_Model
         $rs4 = $this->gadget->registry->update('mode', $mode);
         $rs5 = $this->gadget->registry->update('custom_text', $custom_text);
         if ($rs1 && $rs2 && $rs3 && $rs4 && $rs5) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->app->session->PushLastResponse(_t('VISITCOUNTER_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
             return true;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_ERROR_PROPERTIES_UPDATED'), RESPONSE_ERROR);
+        $this->app->session->PushLastResponse(_t('VISITCOUNTER_ERROR_PROPERTIES_UPDATED'), RESPONSE_ERROR);
         return new Jaws_Error(_t('VISITCOUNTER_ERROR_PROPERTIES_UPDATED'));
     }
 }
