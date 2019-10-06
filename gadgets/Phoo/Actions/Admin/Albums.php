@@ -70,7 +70,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('status_field', $statCombo->get());
 
         $desc = isset($description) ? $description : '';
-        $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $desc, false);
+        $editor =& $this->app->loadEditor('Phoo', 'description', $desc, false);
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
         // FIXME: Ugly hack to set rows in editor
@@ -130,7 +130,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
             }
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
@@ -198,7 +198,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('status', _t('PHOO_STATUS'));
         $tpl->SetVariable('status_field', $statCombo->get());
 
-        $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $album['description'], false);
+        $editor =& $this->app->loadEditor('Phoo', 'description', $album['description'], false);
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
         // FIXME: Ugly hack to set rows in editor
@@ -257,7 +257,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
             }
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');

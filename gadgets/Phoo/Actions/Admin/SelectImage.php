@@ -50,7 +50,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
 
         $image = $model->GetImageEntry($iGet['image']);
         if (Jaws_Error::IsError ($image)) {
-            $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
             JawsHeader::Location ("admin.php?gadget=Phoo");
         }
         $album = $this->gadget->request->fetch('album', 'get');
@@ -76,7 +76,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
         } else {
             $tpl->SetBlock('ImageSelect/selected');
             $tpl->SetVariable('extra_params', $extraParams);
-            $filename = $GLOBALS['app']->getDataURL('phoo/' . $image['image']);
+            $filename = $this->app->getDataURL('phoo/' . $image['image']);
             $title = (empty($image['title']))? '' : $image['title'];
             $desc = $image['description'];
             if (isset($r_album)){
@@ -88,7 +88,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
             $tpl->SetVariable('t_thumb',            _t('PHOO_THUMB'));
             $tpl->SetVariable('t_medium',           _t('PHOO_MEDIUM'));
             $tpl->SetVariable('insert_image_title', _t('PHOO_INSERTIMAGE'));
-            $tpl->SetVariable('s_image',            $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
+            $tpl->SetVariable('s_image',            $this->app->getDataURL('phoo/' . $image['medium']));
             $tpl->SetVariable('s_name',             $title);
             $tpl->SetVariable('s_desc',             $desc);
             $tpl->SetVariable('s_picture',          $image['id']);

@@ -75,7 +75,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
                 $tpl->SetVariable('filename', $mb['filename']);
                 $tpl->SetVariable('width',    $imgData[0]);
                 $tpl->SetVariable('height',   $imgData[1]);
-                $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $mb['thumb']));
+                $tpl->SetVariable('thumb',    $this->app->getDataURL('phoo/' . $mb['thumb']));
                 $tpl->SetVariable('createtime', $objDate->Format($mb['createtime']));
                 $tpl->ParseBlock('moblog/item');
             }

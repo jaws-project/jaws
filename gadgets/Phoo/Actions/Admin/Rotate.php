@@ -33,7 +33,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
-            $GLOBALS['app']->Session->PushLastResponse($objImage->getMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($objImage->getMessage(), RESPONSE_ERROR);
         } else {
             // thumb
             $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['thumb']));
@@ -41,7 +41,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
             $res = $objImage->save();
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } else {
                 // medium
                 $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['medium']));
@@ -49,7 +49,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                 $res = $objImage->save();
                 $objImage->free();
                 if (Jaws_Error::IsError($res)) {
-                    $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                    $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
                 } else {
                     // original image
                     $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['image']));
@@ -57,9 +57,9 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                     $res = $objImage->save();
                     $objImage->free();
                     if (Jaws_Error::IsError($res)) {
-                        $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                        $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
                     } else {
-                        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_IMAGE_ROTATED_LEFT'), RESPONSE_NOTICE);
+                        $this->app->session->PushLastResponse(_t('GLOBAL_IMAGE_ROTATED_LEFT'), RESPONSE_NOTICE);
                     }
                 }
             }
@@ -90,7 +90,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
-            $GLOBALS['app']->Session->PushLastResponse($objImage->getMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($objImage->getMessage(), RESPONSE_ERROR);
         } else {
             // thumb
             $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['thumb']));
@@ -98,7 +98,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
             $res = $objImage->save();
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } else {
                 // medium
                 $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['medium']));
@@ -106,7 +106,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                 $res = $objImage->save();
                 $objImage->free();
                 if (Jaws_Error::IsError($res)) {
-                    $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                    $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
                 } else {
                     // original image
                     $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['image']));
@@ -114,9 +114,9 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                     $res = $objImage->save();
                     $objImage->free();
                     if (Jaws_Error::IsError($res)) {
-                        $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                        $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
                     } else {
-                        $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_IMAGE_ROTATED_RIGHT'), RESPONSE_NOTICE);
+                        $this->app->session->PushLastResponse(_t('GLOBAL_IMAGE_ROTATED_RIGHT'), RESPONSE_NOTICE);
                     }
                 }
             }

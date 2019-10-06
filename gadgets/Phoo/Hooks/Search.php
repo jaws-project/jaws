@@ -86,7 +86,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
                 $path = substr($r['filename'], 0, strrpos($r['filename'], '/'));
                 $file = basename($r['filename']);
 
-                $entry['image']   = $GLOBALS['app']->getDataURL("phoo/$path/thumb/$file");
+                $entry['image']   = $this->app->getDataURL("phoo/$path/thumb/$file");
                 $entry['snippet'] = $r['description'];
                 $entry['date']    = $date->ToISO($r['createtime']);
                 $entries[]  = $entry;

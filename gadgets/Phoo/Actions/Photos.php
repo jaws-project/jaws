@@ -84,9 +84,9 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                             array('id' => $image['id'], 'albumid' => $image['albumid'])
                         );
                         $tpl->SetVariable('url',      $url);
-                        $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $image['thumb']));
-                        $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
-                        $tpl->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
+                        $tpl->SetVariable('thumb',    $this->app->getDataURL('phoo/' . $image['thumb']));
+                        $tpl->SetVariable('medium',   $this->app->getDataURL('phoo/' . $image['medium']));
+                        $tpl->SetVariable('image',    $this->app->getDataURL('phoo/' . $image['image']));
                         $tpl->SetVariable('name',     $image['name']);
                         $tpl->SetVariable('filename', $image['filename']);
                         $tpl->SetVariable('img_desc', $image['stripped_description']);
@@ -156,15 +156,15 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $tpl->SetVariable('img_desc',    $image['stripped_description']);
         $tpl->SetVariable('albumid',     $albumid);
         $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($image['description']));
-        $tpl->SetVariable('medium',      $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
-        $tpl->SetVariable('image',       $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
+        $tpl->SetVariable('medium',      $this->app->getDataURL('phoo/' . $image['medium']));
+        $tpl->SetVariable('image',       $this->app->getDataURL('phoo/' . $image['image']));
         $tpl->SetVariable('width',       $imgData[0]);
         $tpl->SetVariable('height',      $imgData[1]);
 
         // show if the original was kept
         $settings = $sModel->GetSettings();
         if ($settings['keep_original'] == 'true') {
-            $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
+            $tpl->SetVariable('url', $this->app->getDataURL('phoo/' . $image['image']));
         } else {
             $tpl->SetVariable('url', 'javascript:void();');
         }
@@ -340,7 +340,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         }
 
         // description
-        $descriptionEditor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', '');
+        $descriptionEditor =& $this->app->loadEditor('Phoo', 'description', '');
         $descriptionEditor->setId('description');
         $descriptionEditor->TextArea->SetRows(8);
         $tpl->SetVariable('description', $descriptionEditor->Get());

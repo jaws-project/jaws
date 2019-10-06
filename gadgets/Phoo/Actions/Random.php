@@ -73,9 +73,9 @@ class Phoo_Actions_Random extends Jaws_Gadget_Action
         );
         $tpl->SetVariable('name',     $r['name']);
         $tpl->SetVariable('filename', $r['filename']);
-        $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $r['thumb']));
-        $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $r['medium']));
-        $tpl->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $r['image']));
+        $tpl->SetVariable('thumb',    $this->app->getDataURL('phoo/' . $r['thumb']));
+        $tpl->SetVariable('medium',   $this->app->getDataURL('phoo/' . $r['medium']));
+        $tpl->SetVariable('image',    $this->app->getDataURL('phoo/' . $r['image']));
         $tpl->SetVariable('img_desc', $r['stripped_description']);
         $tpl->ParseBlock('random_image');
         return $tpl->Get();

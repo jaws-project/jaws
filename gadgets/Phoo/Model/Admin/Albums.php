@@ -38,11 +38,11 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('PHOO_ALBUM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -62,7 +62,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $table->where('phoo_album_id', $id);
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
         }
 
@@ -82,7 +82,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
             $table->having('count(phoo_image_id)', 1);
             $result = $table->fetchAll();
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
             }
 
@@ -102,7 +102,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
                 $result = $table->exec();
             }
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
             }
 
@@ -111,7 +111,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
             $table->delete()->where('phoo_album_id', $id);
             $result = $table->exec();
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+                $this->app->session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
             }
         }
@@ -121,11 +121,11 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $table->delete()->where('id', $id);
         $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_DELETED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('PHOO_ALBUM_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -155,11 +155,11 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $id = $table->insert($data)->exec();
         if (Jaws_Error::IsError($id)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_CREATED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_CREATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('PHOO_ALBUM_CREATED'), RESPONSE_NOTICE);
         return $id;
     }
 

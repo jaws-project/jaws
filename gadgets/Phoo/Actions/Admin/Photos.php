@@ -174,7 +174,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                                     $tpl->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
                                     $tpl->ParseBlock('phoo/photos/albums/item/notfound');
                                 } else {
-                                    $tpl->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
+                                    $tpl->SetVariable('thumb',  $this->app->getDataURL('phoo/' . $img['thumb']));
                                     $tpl->SetVariable('width',  $imgData[0]);
                                     $tpl->SetVariable('height', $imgData[1]);
                                 }
@@ -196,7 +196,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                         }
                         $tpl->ParseBlock('phoo/photos/albums');
                     } else {
-                        $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_INEXISTENT_ALBUM'), RESPONSE_ERROR);
+                        $this->app->session->PushLastResponse(_t('PHOO_INEXISTENT_ALBUM'), RESPONSE_ERROR);
                     }
                 }
             }
@@ -248,12 +248,12 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $get = $this->gadget->request->fetch(array('image', 'album'), 'get');
         $image = $pModel->GetImageEntry((int)$get['image']);
         if (Jaws_Error::IsError($image)) {
-            $GLOBALS['app']->Session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
         $id                 = $image['id'];
-        $filename           = $GLOBALS['app']->getDataURL('phoo/' . $image['medium']);
+        $filename           = $this->app->getDataURL('phoo/' . $image['medium']);
         $title              = $image['title'];
         $desc               = $image['description'];
         $meta_keywords      = $image['meta_keywords'];
@@ -289,7 +289,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('name_field', $name->Get());
 
         // Include the editor
-        $editor =& $GLOBALS['app']->LoadEditor('Phoo', 'description', $desc, false);
+        $editor =& $this->app->loadEditor('Phoo', 'description', $desc, false);
         $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 99%;');
 

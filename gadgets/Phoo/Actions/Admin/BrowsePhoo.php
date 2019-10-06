@@ -190,7 +190,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                                     $tpl->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
                                     $tpl->ParseBlock('phoo_browse/photos/albums/item/notfound');
                                 } else {
-                                    $tpl->SetVariable('thumb',  $GLOBALS['app']->getDataURL('phoo/' . $img['thumb']));
+                                    $tpl->SetVariable('thumb',  $this->app->getDataURL('phoo/' . $img['thumb']));
                                     $tpl->SetVariable('width',  $imgData[0]);
                                     $tpl->SetVariable('height', $imgData[1]);
                                 }
@@ -233,7 +233,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
         }
 
         // clear pushed message
-        $GLOBALS['app']->Session->PopLastResponse();
+        $this->app->session->PopLastResponse();
 
         $tpl->ParseBlock('phoo_browse');
         return $tpl->Get();

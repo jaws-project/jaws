@@ -57,7 +57,7 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Photos');
         $model->UpdateEntry($id, $title, $desc, $meta_keywords, $meta_description,
             $allow_comments, $published, $albums, $tags);
-        return $GLOBALS['app']->Session->PopLastResponse();
+        return $this->app->session->PopLastResponse();
     }
 
     function GetAlbums()
