@@ -26,11 +26,11 @@ class Jaws_Header
     static function Location($url = '', $resource = '', $status_code = 302)
     {
         if (empty($url) || !preg_match('$^(http|https|ftp)://.*$i', $url)) {
-            $url = $GLOBALS['app']->getSiteURL('/'). $url;
+            $url = Jaws::getInstance()->getSiteURL('/'). $url;
         }
 
-        if (!isset($GLOBALS['app']) ||
-            $GLOBALS['app']->requestedActionMode != ACTION_MODE_LAYOUT
+        if (Jaws::getInstance(false) ||
+            Jaws::getInstance()->requestedActionMode != ACTION_MODE_LAYOUT
         ) {
             terminate($resource, $status_code, $url);
         }
@@ -49,7 +49,7 @@ class Jaws_Header
         if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
             $url = $_SERVER['HTTP_REFERER'];
         } else {
-            $url = $GLOBALS['app']->getSiteURL('/');
+            $url = Jaws::getInstance()->getSiteURL('/');
         }
 
         $data = null;
