@@ -35,11 +35,11 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $pollData['stop_time'] = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time);
+            $pollData['start_time'] = $this->app->UserTime2UTC($start_time);
         }
         if (!empty($stop_time)) {
             $stop_time = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time);
+            $pollData['stop_time'] = $this->app->UserTime2UTC($stop_time);
         }
 
         $pollData['type'] = $type;
@@ -50,14 +50,14 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $table = Jaws_ORM::getInstance()->table('poll');
         $result = $table->insert($pollData)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_ADDED'));
         }
 
         // shout Activity event
         $this->gadget->event->shout('Activities', array('action'=>'Poll'));
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_POLLS_ADDED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_POLLS_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -86,11 +86,11 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $pollData['stop_time'] = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time);
+            $pollData['start_time'] = $this->app->UserTime2UTC($start_time);
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time);
+            $pollData['stop_time'] = $this->app->UserTime2UTC($stop_time);
         }
         $pollData['type'] = $type;
         $pollData['restriction'] = $restriction;
@@ -100,11 +100,11 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $table = Jaws_ORM::getInstance()->table('poll');
         $result = $table->update($pollData)->where('id', (int)$pid)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_UPDATED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_POLLS_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_POLLS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -120,18 +120,18 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $table = Jaws_ORM::getInstance()->table('poll');
         $res = $table->delete()->where('id', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_DELETED'));
         }
 
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $res = $table->delete()->where('poll', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_EXCEPTION_ANSWER_NOT_DELETED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_POLLS_DELETED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_POLLS_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -157,7 +157,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
                 }
             }
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_UPDATED_POLLS'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_GROUPS_UPDATED_POLLS'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -202,7 +202,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $model = $this->gadget->model->loadAdmin('Answer');
         $oldAnswers = $this->GetPollAnswers($pid);
         if (Jaws_Error::IsError($oldAnswers)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'));
         }
 
@@ -231,19 +231,19 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
             if ($found) {
                 $res = $model->UpdateAnswer($newAnswer['id'], $newAnswer['title'], $index);
                 if (Jaws_Error::IsError($res)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_UPDATED'), RESPONSE_ERROR);
+                    $this->app->session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_UPDATED'), RESPONSE_ERROR);
                     return false;
                 }
             } else {
                 $res = $model->InsertAnswer($pid, $newAnswer['title'], $index);
                 if (Jaws_Error::IsError($res)) {
-                    $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_ADDED'), RESPONSE_ERROR);
+                    $this->app->session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_ADDED'), RESPONSE_ERROR);
                     return false;
                 }
             }
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ANSWERS_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_ANSWERS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 

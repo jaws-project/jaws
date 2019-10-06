@@ -24,12 +24,12 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $count = $table->select('COUNT([id])')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($count)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if ($count > 0) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLL_ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -39,11 +39,11 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table->reset();
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_ADDED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_CREATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_GROUPS_CREATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -63,12 +63,12 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
             ->where('id', $gid, '!=')->and()
             ->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if ($gc > 0) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLL_ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -78,11 +78,11 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table->reset();
         $result = $table->update($data)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_UPDATED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_UPDATED'), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_GROUPS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -96,18 +96,18 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
     function DeletePollGroup($gid)
     {
         if ($gid == 1) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_GROUP_NOT_DELETED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLL_ERROR_GROUP_NOT_DELETED'), RESPONSE_ERROR);
             return false;
         }
 
         $group = $this->GetPollGroup($gid);
         if (Jaws_Error::IsError($group)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if(!isset($group['id'])) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('POLL_ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -117,11 +117,11 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $result = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_DELETED'));
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
+        $this->app->session->PushLastResponse(_t('POLL_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
 }
