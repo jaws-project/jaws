@@ -28,7 +28,7 @@ class Jaws_User
      * @access  protected
      * @return  void
      */
-    protected function __construct()
+    function __construct()
     {
         $this->app = Jaws::getInstance();
     }
