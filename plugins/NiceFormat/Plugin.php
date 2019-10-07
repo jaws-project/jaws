@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class NiceFormat_Plugin
+class NiceFormat_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = '0.4';
@@ -37,54 +37,54 @@ class NiceFormat_Plugin
         $italic->SetAccessKey('I');
 
         $hrule =& Piwi::CreateWidget('Button', 'hrule', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-hrule.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-hrule.png', true));
         $hrule->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '----\\n','','');");
         $hrule->SetTitle(_t('PLUGINS_NICEFORMAT_HRULE').' ALT+H');
         $hrule->SetAccessKey('H');
 
         $heading1 =& Piwi::CreateWidget('Button', 'heading1', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-heading1.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-heading1.png', true));
         $heading1->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '=======','=======','".
                             _t('PLUGINS_NICEFORMAT_LEVEL_1')."');");
         $heading1->SetTitle(_t('PLUGINS_NICEFORMAT_LEVEL_1').' ALT+1');
         $heading1->SetAccessKey('1');
 
         $heading2 =& Piwi::CreateWidget('Button', 'heading2', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-heading2.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-heading2.png', true));
         $heading2->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '======','======','".
                             _t('PLUGINS_NICEFORMAT_LEVEL_2')."');");
         $heading2->SetTitle(_t('PLUGINS_NICEFORMAT_LEVEL_2').' ALT+2');
         $heading2->SetAccessKey('2');
 
         $heading3 =& Piwi::CreateWidget('Button', 'heading3', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-heading3.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-heading3.png', true));
         $heading3->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '=====','=====','".
                             _t('PLUGINS_NICEFORMAT_LEVEL_3')."');");
         $heading3->SetTitle(_t('PLUGINS_NICEFORMAT_LEVEL_3').' ALT+3');
         $heading3->SetAccessKey('3');
 
         $heading4 =& Piwi::CreateWidget('Button', 'heading4', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-heading4.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-heading4.png', true));
         $heading4->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '====','====','".
                             _t('PLUGINS_NICEFORMAT_LEVEL_4')."');");
         $heading4->SetTitle(_t('PLUGINS_NICEFORMAT_LEVEL_4').' ALT+4');
         $heading4->SetAccessKey('4');
 
         $heading5 =& Piwi::CreateWidget('Button', 'heading5', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-heading5.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-heading5.png', true));
         $heading5->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '===','===','".
                             _t('PLUGINS_NICEFORMAT_LEVEL_5')."');");
         $heading5->SetTitle(_t('PLUGINS_NICEFORMAT_LEVEL_5').' ALT+5');
         $heading5->SetAccessKey('5');
 
         $listenum =& Piwi::CreateWidget('Button', 'listenum', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-listnum.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-listnum.png', true));
         $listenum->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '  - ','\\n','".
                             _t('PLUGINS_NICEFORMAT_LIST_NUMERIC')."');");
         $listenum->SetTitle(_t('PLUGINS_NICEFORMAT_LIST_NUMERIC'));
 
         $listbullet =& Piwi::CreateWidget('Button', 'listbullet', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/NiceFormat/images/stock-listbullet.png', true));
+                        $this->app->getSiteURL('/plugins/NiceFormat/images/stock-listbullet.png', true));
         $listbullet->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '  * ','\\n','".
                                   _t('PLUGINS_NICEFORMAT_LIST_BULLET')."');");
         $listbullet->SetTitle(_t('PLUGINS_NICEFORMAT_LIST_BULLET'));
