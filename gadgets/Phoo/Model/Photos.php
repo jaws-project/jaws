@@ -477,7 +477,7 @@ class Phoo_Model_Photos extends Phoo_Model
         }
 
         $data = array();
-        $data['user_id'] = $this->app->session->getAttribute('user');
+        $data['user_id'] = $this->app->session->user;
         $data['filename'] = date('Y_m_d') . '/' . $filename;
         $data['title'] = $title;
         $data['description'] = $description;
