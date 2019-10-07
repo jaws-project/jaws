@@ -91,8 +91,8 @@ class Jaws_Pingback
     function showHeaders($uriListener)
     {
         header('X-Pingback: '.$uriListener);
-        if (isset($GLOBALS['app']->Layout)) {
-            $GLOBALS['app']->Layout->AddHeadLink(
+        if (property_exists(Jaws::getInstance(), 'layout')) {
+            Jaws::getInstance()->layout->AddHeadLink(
                 $uriListener,
                 'pingback',
                 ''
