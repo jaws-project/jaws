@@ -25,11 +25,11 @@ class Jaws_Response_Print
         header('Pragma: no-cache');
 
         // if current theme has a error code html file, return it, if not return the messages.
-        $theme = $GLOBALS['app']->GetTheme();
-        $site_name = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
+        $theme = Jaws::getInstance()->GetTheme();
+        $site_name = Jaws::getInstance()->registry->fetch('site_name', 'Settings');
         if (file_exists($theme['path'] . 'Print.html')) {
             // fetch all registry keys related to site attributes
-            $siteAttributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);
+            $siteAttributes = Jaws::getInstance()->registry->fetchAll('Settings', false);
 
             $tpl = new Jaws_Template();
             $tpl->Load('Print.html', $theme['path']);
