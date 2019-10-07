@@ -62,7 +62,7 @@ class Jaws_Soap_Client extends Jaws_Soap
 
         try {
             if ($this->refresh ||
-                false === $result = @unserialize($GLOBALS['app']->Cache->get($this->request_cache_key))
+                false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
             ) {
                 $result = call_user_func_array(array($this->SoapClient, $method), $arguments);
                 if (is_soap_fault($result)) {
@@ -70,7 +70,7 @@ class Jaws_Soap_Client extends Jaws_Soap
                 }
 
                 // set cache
-                $GLOBALS['app']->Cache->set(
+                $this->app->cache->set(
                     $this->request_cache_key,
                     serialize($result),
                     $this->expires
@@ -110,7 +110,7 @@ class Jaws_Soap_Client extends Jaws_Soap
      */
     function deleteCache()
     {
-        return $GLOBALS['app']->Cache->delete($this->request_cache_key);
+        return $this->app->cache->delete($this->request_cache_key);
     }
 
 }

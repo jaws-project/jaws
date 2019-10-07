@@ -11,6 +11,14 @@
 class Jaws_Soap
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Constructor
      *
      * @access  public
@@ -18,6 +26,7 @@ class Jaws_Soap
      */
     function __construct()
     {
+        $this->app = Jaws::getInstance();
     }
 
 }
