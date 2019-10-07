@@ -56,7 +56,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
     function GetDirectory()
     {
         $params = array(
-            'user' => (int)$this->app->session->getAttribute('user'),
+            'user' => (int)$this->app->session->user,
             'file_type' => $this->gadget->request->fetch('type'),
             'public' => false,
         );
