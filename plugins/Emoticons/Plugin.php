@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emoticons_Plugin
+class Emoticons_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = '0.5.1';
@@ -43,7 +43,7 @@ class Emoticons_Plugin
         $combo->SetTitle(_t('PLUGINS_EMOTICONS_ADD'));
         $combo->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', this[this.selectedIndex].value,'','');");
 
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = $this->app->GetTheme();
         $image_path = $theme['path'] . $this->_ImagePath;
         foreach ($iconsmap as $icon => $file) {
             $icons_file_url = $this->_ImagePath . '/' . $file;
@@ -122,7 +122,7 @@ class Emoticons_Plugin
                                                  'face-surprise.png',
                                                  )
                           );
-            $theme = $GLOBALS['app']->GetTheme();
+            $theme = $this->app->GetTheme();
             $image_path = $theme['path'] . $this->_ImagePath;
             for($i=0; $i<count($iconsmap['images']); $i++) {
                 $icons_dir_url = '';
