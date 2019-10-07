@@ -10,7 +10,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class PhooInsert_Plugin
+class PhooInsert_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = "0.6.3";
@@ -49,7 +49,7 @@ class PhooInsert_Plugin
         if (Jaws_Gadget::IsGadgetInstalled ('Phoo')) {
             $howMany = preg_match_all("#\[phoo album=\"(.*?)\" picture=\"(.*?)\" title=\"(.*?)\" class=\"(.*?)\" size=\"(.*?)\" linked=\"(.*?)\"\]#si", $html, $matches);
             $new_html = $html;
-            $url = $GLOBALS['app']->getSiteURL();
+            $url = $this->app->getSiteURL();
             $objPhoo = Jaws_Gadget::getInstance('Phoo')->model->load('Photos');
             for ($i = 0; $i < $howMany; $i++) {
                 $albumid = $matches[1][$i];
@@ -62,18 +62,18 @@ class PhooInsert_Plugin
                 if (!Jaws_Error::IsError($image) && !empty($image)) {
                     if (strtoupper($size)=='THUMB') {
                         $img_file = JAWS_DATA . 'phoo/' . $image['thumb'];
-                        $img_url  = $GLOBALS['app']->getDataURL('phoo/' . $image['thumb']);
+                        $img_url  = $this->app->getDataURL('phoo/' . $image['thumb']);
                     } elseif (strtoupper($size)=='MEDIUM') {
                         $img_file = JAWS_DATA . 'phoo/' . $image['medium'];
-                        $img_url  = $GLOBALS['app']->getDataURL('phoo/' . $image['medium']);
+                        $img_url  = $this->app->getDataURL('phoo/' . $image['medium']);
                     } else {
                         $img_file = JAWS_DATA . 'phoo/' . $image['image'];
-                        $img_url  = $GLOBALS['app']->getDataURL('phoo/' . $image['image']);
+                        $img_url  = $this->app->getDataURL('phoo/' . $image['image']);
                     }
                     $imgData = Jaws_Image::getimagesize($img_file);
 
                     if (strtoupper($linked) == 'YES' ){
-                        $img_lnk = $GLOBALS['app']->Map->GetMappedURL('Phoo',
+                        $img_lnk = $this->app->map->GetMappedURL('Phoo',
                                                                    'ViewImage',
                                                                    array('id' => $imageid, 'albumid' => $albumid));
                         $new_text = '<a href="'.$img_lnk.'" ><img src="'. $img_url.'" title="'.
