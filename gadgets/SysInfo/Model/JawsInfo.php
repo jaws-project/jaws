@@ -20,7 +20,7 @@ class SysInfo_Model_JawsInfo extends Jaws_Gadget_Model
     {
         $cmpGModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $cmpPModel = Jaws_Gadget::getInstance('Components')->model->load('Plugins');
-        $theme          = $GLOBALS['app']->GetTheme();
+        $theme          = $this->app->GetTheme();
         $coreGadgets    = $cmpGModel->GetGadgetsList(true, true, true);
         $gadgets        = $cmpGModel->GetGadgetsList(false, true, true);
         $outdateGadgets = $cmpGModel->GetGadgetsList(null, true, false);
