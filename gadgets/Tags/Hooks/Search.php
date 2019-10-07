@@ -33,7 +33,7 @@ class Tags_Hooks_Search extends Jaws_Gadget_Hook
         $objORM->select('id', 'name', 'title', 'description', 'meta_keywords', 'meta_description');
         $objORM->openWhere('user', 0);
         if ($this->app->session->logged()) {
-            $objORM->or()->where('user', (int)$this->app->session->getAttribute('user'));
+            $objORM->or()->where('user', (int)$this->app->session->user);
         }
         $objORM->closeWhere()->and()->loadWhere('search.terms');
         $result = $objORM->orderBy('id')->fetchAll();
