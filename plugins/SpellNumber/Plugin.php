@@ -8,7 +8,7 @@
  * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SpellNumber_Plugin
+class SpellNumber_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = '0.1';
@@ -23,7 +23,7 @@ class SpellNumber_Plugin
     function GetWebControl($textarea)
     {
         $button =& Piwi::CreateWidget('Button', 'addspellnumber', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/SpellNumber/images/stock-spell_number.png', true));
+                        $this->app->getSiteURL('/plugins/SpellNumber/images/stock-spell_number.png', true));
         $button->SetTitle(_t('PLUGINS_SPELLNUMBER_ADD').' ALT+N');
         $button->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[number]','[/number]','');");
         $button->SetAccessKey('N');
