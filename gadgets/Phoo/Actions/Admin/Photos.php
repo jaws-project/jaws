@@ -212,7 +212,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                 }
             }
             //Delete key
-            $GLOBALS['app']->Session->DeleteAttribute('failures');
+            $this->app->session->deleteAttribute('failures');
             $tpl->ParseBlock('phoo/photos');
 
         } else {

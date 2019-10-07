@@ -35,7 +35,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
 
         // TODO set default value for change page address to correct location after uploading image
         $extraParams = '&amp;';
-        $editor = $GLOBALS['app']->GetEditor();
+        $editor = $this->app->getEditor();
         if ($editor === 'CKEditor') {
             $extraParams = $this->gadget->request->fetch('extra_params');
             if(empty($extraParams)) {
@@ -224,7 +224,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
             }
 
             // Delete key
-            $GLOBALS['app']->Session->DeleteAttribute('failures');
+            $this->app->session->deleteAttribute('failures');
             $tpl->ParseBlock('phoo_browse/photos');
         } else {
             $tpl->SetBlock('phoo_browse/noalbums');

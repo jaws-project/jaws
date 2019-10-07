@@ -34,7 +34,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
         $extraParams = '';
-        $editor = $GLOBALS['app']->GetEditor();
+        $editor = $this->app->getEditor();
         if ($editor === 'TinyMCE') {
             $tpl->SetBlock('ImageSelect/script');
             $tpl->ParseBlock('ImageSelect/script');
