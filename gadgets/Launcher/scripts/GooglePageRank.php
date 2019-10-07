@@ -190,7 +190,7 @@ function GooglePageRank()
                               __FUNCTION__);
     }
 
-    $url = $this->app->getSiteURL('/');
+    $url = Jaws::getInstance()->getSiteURL('/');
     $file = $cache_dir . 'rank_' . md5($url);
     $timedif = time() - (file_exists($file)? @filemtime($file) : 0);
 
@@ -204,11 +204,11 @@ function GooglePageRank()
     }
 
     unset($gRank);
-    $theme = $GLOBALS['app']->GetTheme();
+    $theme = Jaws::getInstance()->GetTheme();
     if (is_dir($theme['path'] . 'PageRank')) {
         $pg_images = $theme['url'] .'PageRank/';
     } else {
-        $pg_images = $this->app->getSiteURL('/gadgets/Launcher/Resources/images/PageRank/');
+        $pg_images = Jaws::getInstance()->getSiteURL('/gadgets/Launcher/Resources/images/PageRank/');
     }
 
     return "<img src='{$pg_images}pr$rank.gif' alt='$rank' />";
