@@ -23,7 +23,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
         }
 
         $rqst = $this->gadget->request->fetch(array('uid', 'mid', 'aid'), 'get');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
 
         $mModel = $this->gadget->model->load('Message');
         $aModel = $this->gadget->model->load('Attachment');

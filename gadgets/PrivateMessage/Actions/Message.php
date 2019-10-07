@@ -156,7 +156,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         if ($response = $this->gadget->session->pop('Message')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
@@ -288,7 +288,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $id = $this->gadget->request->fetch('id', 'get');
         $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $usrModel = new Jaws_User;
         $message = $model->GetMessage($id, true);
 
@@ -309,7 +309,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         if ($folder == PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX && $message['read'] == false) {
-            $user = $this->app->session->getAttribute('user');
+            $user = $this->app->session->user;
             $model->MarkMessages($id, true, $user);
         }
 
@@ -474,7 +474,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             $ids = $get['id'];
         }
 
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
 
         $model = $this->gadget->model->load('Message');
         $res = $model->MarkMessages($ids, $status, $user);
@@ -512,7 +512,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $res = $model->ArchiveMessage($ids, $user, true);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
@@ -562,7 +562,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $res = $model->ArchiveMessage($ids, $user, false);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
@@ -605,7 +605,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $res = $model->TrashMessage($ids, $user, true);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
@@ -654,7 +654,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $res = $model->TrashMessage($ids, $user, false);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
@@ -697,7 +697,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $res = $model->DeleteMessage($ids, $user);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(

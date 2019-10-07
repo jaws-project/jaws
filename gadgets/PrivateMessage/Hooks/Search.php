@@ -38,7 +38,7 @@ class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook
 
         $objORM->table('pm_messages');
         $objORM->select('id', 'from', 'folder', 'subject', 'body', 'insert_time');
-        $user = (int)$this->app->session->getAttribute('user');
+        $user = (int)$this->app->session->user;
         $objORM->openWhere()->openWhere('from', $user);
         $objORM->and()->where('to', 0);
         $objORM->closeWhere()->or()->where('to', $user);

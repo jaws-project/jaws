@@ -27,7 +27,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $tpl->SetVariable('title', $this->gadget->title);
 
         $model = $this->gadget->model->load('Message');
-        $user_id = $this->app->session->getAttribute('user');
+        $user_id = $this->app->session->user;
         $unreadNotifyCount = $model->GetMessagesStatistics(
                                                 $user_id,
                                                 PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS,
