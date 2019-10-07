@@ -83,7 +83,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $allowVote = $model->CheckAllowVoteForIP($poll['id'], $ip);
                 break;
             case Poll_Info::POLL_RESTRICTION_TYPE_USER:
-                $currentUser = $this->app->session->getAttribute('user');
+                $currentUser = $this->app->session->user;
                 $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
                 break;
             case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
@@ -230,7 +230,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                     $allowVote = $model->CheckAllowVoteForIP($poll['id'], $ip);
                     break;
                 case Poll_Info::POLL_RESTRICTION_TYPE_USER:
-                    $currentUser = $this->app->session->getAttribute('user');
+                    $currentUser = $this->app->session->user;
                     $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
                     break;
                 case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
