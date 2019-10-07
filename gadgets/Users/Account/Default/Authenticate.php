@@ -196,7 +196,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             // check user concurrents logins
             $existSessions = 0;
             if (!empty($user['concurrents'])) {
-                $existSessions = $GLOBALS['app']->Session->GetUserSessions($user['id'], true);
+                $existSessions = $this->app->session->getUserSessions($user['id'], true);
             }
             if (!empty($existSessions) && $existSessions >= $user['concurrents']) {
                 // login conflict event logging
