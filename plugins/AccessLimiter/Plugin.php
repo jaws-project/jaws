@@ -8,7 +8,7 @@
  * @copyright  2009-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class AccessLimiter_Plugin
+class AccessLimiter_Plugin extends Jaws_Plugin
 {
     var $friendly = false;
     var $version = '0.1';
@@ -43,15 +43,15 @@ class AccessLimiter_Plugin
         $groups = $data[4];
         $content= &$data[5];
 
-        if ($GLOBALS['app']->Session->Logged()) {
-            if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
+        if ($this->app->session->logged()) {
+            if (!$this->app->session->isSuperAdmin()) {
                 $users  = empty($users) ? array() : array_map('trim', explode(',', $users));
                 $groups = empty($groups)? array() : array_map('trim', explode(',', $groups));
 
                 static $user_groups;
-                $user = $GLOBALS['app']->Session->GetAttribute('username');
+                $user = $this->app->session->getAttribute('username');
                 if (!isset($user_groups)) {
-                    $user_groups = $GLOBALS['app']->Session->GetAttribute('groups');
+                    $user_groups = $this->app->session->getAttribute('groups');
                     $user_groups = array_values($user_groups);
                 }
 
@@ -75,8 +75,8 @@ class AccessLimiter_Plugin
         $tpl = new Jaws_Template();
         $tpl->Load('AccessLimiter.html', 'plugins/AccessLimiter/Templates/');
         $tpl->SetBlock('AccessLimiter');
-        $login_url    = $GLOBALS['app']->Map->GetMappedURL('Users', 'Login');
-        $register_url = $GLOBALS['app']->Map->GetMappedURL('Users', 'Registration');
+        $login_url    = $this->app->map->GetMappedURL('Users', 'Login');
+        $register_url = $this->app->map->GetMappedURL('Users', 'Registration');
         $tpl->SetVariable('message', _t('GLOBAL_ERROR_ACCESS_RESTRICTED', $login_url, $register_url));
         $tpl->ParseBlock('AccessLimiter');
         return $tpl->Get();
