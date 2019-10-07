@@ -48,7 +48,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
     {
         $result = array();
         $wModel = $this->gadget->model->load('Regions');
-        $user = (int)$this->app->session->getAttribute('user');
+        $user = (int)$this->app->session->user;
         $regions = $wModel->GetRegions(true, $user);
         if (!Jaws_Error::isError($regions)) {
             $pregions = array();
@@ -90,7 +90,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 
         // check user permissions
         if (!empty($region['user'])) {
-            if ($region['user'] != $this->app->session->getAttribute('user')) {
+            if ($region['user'] != $this->app->session->user) {
                 return Jaws_HTTPError::Get(403);
             }
         }
@@ -217,7 +217,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Regions');
 
-        $user = empty($user)? 0 : (int)$this->app->session->getAttribute('user');
+        $user = empty($user)? 0 : (int)$this->app->session->user;
         $regions = $model->GetRegions(true, $user);
         if (!Jaws_Error::isError($regions)) {
             $options = array();
@@ -328,7 +328,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         );
 
         $model = $this->gadget->model->load('Regions');
-        $user = (int)$this->app->session->getAttribute('user');
+        $user = (int)$this->app->session->user;
         $filters = array();
         if (!empty($post['searchBy'])) {
             $filters = array('term' => $post['searchBy']);
@@ -377,7 +377,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 
         $data = $this->gadget->request->fetch('data:array', 'post');
         $model = $this->gadget->model->load('Regions');
-        $data['user'] = (int)$this->app->session->getAttribute('user');
+        $data['user'] = (int)$this->app->session->user;
         $res = $model->InsertUserRegion($data);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
@@ -400,7 +400,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $model = $this->gadget->model->load('Regions');
-        $user = (int)$this->app->session->getAttribute('user');
+        $user = (int)$this->app->session->user;
         $res = $model->UpdateUserRegion($post['id'], $post['data'], $user);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
@@ -422,7 +422,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         }
 
         $id = (int)$this->gadget->request->fetch('id', 'post');
-        $user = (int)$this->app->session->getAttribute('user');
+        $user = (int)$this->app->session->user;
         $res = $this->gadget->model->load('Regions')->DeleteUserRegion($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
