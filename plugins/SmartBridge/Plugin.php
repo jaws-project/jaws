@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SmartBridge_Plugin
+class SmartBridge_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version  = '0.2';
@@ -31,7 +31,7 @@ class SmartBridge_Plugin
     function GetWebControl($textarea)
     {
         $button =& Piwi::CreateWidget('Button', 'addbridge', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/SmartBridge/images/smart-bridge-stock.png', true));
+                        $this->app->getSiteURL('/plugins/SmartBridge/images/smart-bridge-stock.png', true));
         $button->SetTitle(_t('PLUGINS_SMARTBRIDGE_ADD').' ALT+B');
         $button->AddEvent(ON_CLICK, "javascript: insertTags('$textarea','[a:Gadget:FastURL]','[/a]','".
                           _t('PLUGINS_SMARTBRIDGE_SAMPLE')."');");
@@ -107,13 +107,13 @@ class SmartBridge_Plugin
         $linkText = isset($matches[3])? $matches[3] : $linkText;
         switch ($gadget) {
             case 'Blog':
-                $mapURL = $GLOBALS['app']->Map->GetMappedURL('Blog', 'SingleView', array('id' => $link));
+                $mapURL = $this->app->map->GetMappedURL('Blog', 'SingleView', array('id' => $link));
                 break;
             case 'Phoo':
-                $mapURL = $GLOBALS['app']->Map->GetMappedURL('Phoo', 'Photos', array('album' => $link));
+                $mapURL = $this->app->map->GetMappedURL('Phoo', 'Photos', array('album' => $link));
                 break;
             case 'StaticPage':
-                $mapURL = $GLOBALS['app']->Map->GetMappedURL('StaticPage', 'Page', array('id' => $link));
+                $mapURL = $this->app->map->GetMappedURL('StaticPage', 'Page', array('id' => $link));
                 break;
         }
 
