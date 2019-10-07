@@ -153,7 +153,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
 
         if (!empty($tags)) {
             // store tags of main request for later use
-            if ($GLOBALS['app']->inMainRequest) {
+            if ($this->app->inMainRequest) {
                 self::$mainRequestReference = array(
                     'gadget' => $gadget,
                     'action' => $action,
