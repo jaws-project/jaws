@@ -61,7 +61,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($cat, $status, $search) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->load('Posts');
         $entries = $model->AdvancedSearch(false, $cat, $status, $search,
-                                                 $this->app->session->getAttribute('user'));
+                                                 $this->app->session->user);
         return count($entries);
     }
 
@@ -326,7 +326,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         if ($id == 'NEW') {
             $res = $model->NewEntry(
-               $this->app->session->getAttribute('user'),
+               $this->app->session->user,
                $categories,
                $title,
                $subtitle,
