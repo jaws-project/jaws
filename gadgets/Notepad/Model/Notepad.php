@@ -143,7 +143,7 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
         $data = array(
             'note_id' => $id,
             'user_id' => $data['user'],
-            'owner_id' => (int)$this->app->session->getAttribute('user')
+            'owner_id' => (int)$this->app->session->user
         );
         $table = Jaws_ORM::getInstance()->table('notepad_users');
         $res = $table->insert($data)->exec();

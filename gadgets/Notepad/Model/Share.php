@@ -47,7 +47,7 @@ class Notepad_Model_Share extends Jaws_Gadget_Model
         }
 
         // Delete current users except owner
-        $uid = (int)$this->app->session->getAttribute('user');
+        $uid = (int)$this->app->session->user;
         $table = Jaws_ORM::getInstance()->table('notepad_users');
         $table->delete()->where('note_id', $id)->and();
         $res = $table->where('user_id', $uid, '<>')->exec();
