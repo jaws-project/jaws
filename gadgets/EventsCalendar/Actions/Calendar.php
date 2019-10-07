@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Calendar extends Jaws_Gadget_Action
             return '';
         }
 
-        $user = ($user === 'public')? 0 : (int)$this->app->session->getAttribute('user');
+        $user = ($user === 'public')? 0 : (int)$this->app->session->user;
         $action = $this->gadget->action->load('ViewYear');
         return $action->ViewYear($user);
     }

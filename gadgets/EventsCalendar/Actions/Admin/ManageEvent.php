@@ -65,7 +65,7 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
         // Validate event
         $model = $this->gadget->model->load('Event');
         $id = (int)$post['id'];
-        $user = (int)$this->app->session->getAttribute('user');
+        $user = (int)$this->app->session->user;
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event)) {
             return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_RETRIEVING_DATA'), RESPONSE_ERROR);

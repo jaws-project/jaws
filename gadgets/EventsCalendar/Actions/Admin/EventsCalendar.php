@@ -58,7 +58,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const = array();
         $const['mode'] = $mode;
         $const['script'] = BASE_SCRIPT;
-        $const['user'] = (int)$this->app->session->getAttribute('user');
+        $const['user'] = (int)$this->app->session->user;
         $const['calendar'] = $this->gadget->registry->fetch('calendar', 'Settings');
         $const['eventsLimit'] = $this->gadget->registry->fetch('events_limit');
         $const['subject'] = _t('EVENTSCALENDAR_EVENT_SUBJECT');

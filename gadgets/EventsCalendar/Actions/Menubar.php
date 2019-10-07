@@ -34,7 +34,7 @@ class EventsCalendar_Actions_Menubar extends Jaws_Gadget_Action
                 );
             }
         } else {
-            $user = (int)$this->app->session->getAttribute('user');
+            $user = (int)$this->app->session->user;
             if ($user > 0) {
                 $menubar->AddOption('Events', _t('EVENTSCALENDAR_MY_EVENTS'),
                     $this->gadget->urlMap('ViewYear', array('user' => $user)),

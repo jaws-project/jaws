@@ -47,7 +47,7 @@ class EventsCalendar_Model_Share extends Jaws_Gadget_Model
         }
 
         // Delete current users except owner
-        $uid = (int)$this->app->session->getAttribute('user');
+        $uid = (int)$this->app->session->user;
         $table = Jaws_ORM::getInstance()->table('ec_users');
         $table->delete()->where('event', $id)->and();
         $res = $table->where('user', $uid, '<>')->exec();

@@ -67,7 +67,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         if ($user === 'public') {
             $events = $model->GetPublicEvents(time());
         } else {
-            $user = (int)$this->app->session->getAttribute('user');
+            $user = (int)$this->app->session->user;
             $events = $model->GetUserEvents($user, time());
         }
         if (Jaws_Error::IsError($events)) {
