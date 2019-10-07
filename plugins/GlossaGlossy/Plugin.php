@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class GlossaGlossy_Plugin
+class GlossaGlossy_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = '0.3';
@@ -24,7 +24,7 @@ class GlossaGlossy_Plugin
     {
         if (Jaws_Gadget::IsGadgetInstalled('Glossary')) {
             $glossarybutton =& Piwi::CreateWidget('Button', 'glossarybutton', '',
-                                $GLOBALS['app']->getSiteURL('/plugins/GlossaGlossy/images/stock-glossary.png', true));
+                                $this->app->getSiteURL('/plugins/GlossaGlossy/images/stock-glossary.png', true));
             $glossarybutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[term]','[/term]','".
                                       _t('PLUGINS_GLOSSAGLOSSY_YOURTERM')."');");
             $glossarybutton->SetTitle(_t('PLUGINS_GLOSSAGLOSSY_ADD').' ALT+G');
@@ -78,7 +78,7 @@ class GlossaGlossy_Plugin
                     "<acronym title=\"".
                     str_replace(array('[term]', '[/term]'), '', strip_tags($term['description'])).
                     "\">$match_text</acronym>";
-                $url = $GLOBALS['app']->Map->GetMappedURL(
+                $url = $this->app->map->GetMappedURL(
                     'Glossary',
                     'ViewTerm',
                     array('term' => empty($term['fast_url'])? $term['id'] : $term['fast_url'])
