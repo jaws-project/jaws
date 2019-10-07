@@ -5,7 +5,7 @@
  * @category   Plugin
  * @package    Bookmark
  */
-class Bookmark_Plugin
+class Bookmark_Plugin extends Jaws_Plugin
 {
     var $friendly = false;
     var $version  = '0.1';
@@ -22,7 +22,7 @@ class Bookmark_Plugin
      */
     function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
-        $GLOBALS['app']->Layout->addScript('gadgets/Users/Resources/index.js');
+        $this->app->layout->addScript('gadgets/Users/Resources/index.js');
         $tpl = new Jaws_Template();
         $tpl->Load('Bookmark.html', 'plugins/Bookmark/Templates/');
         $tpl->SetBlock('Bookmark');
