@@ -100,8 +100,26 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         $btnSend->SetSubmit();
         $tpl->SetVariable('btn_send', $btnSend->Get());
 
-        $last_message = $GLOBALS['app']->Session->PopSimpleResponse('Contact.Data');
-        if ($response = $this->gadget->session->pop('Response')) {
+        $response = $this->gadget->session->pop('Contact');
+        if (isset($response['data'])) {
+            $message = $response['data'];
+        } else {
+            $message = array(
+                'name'      => $this->app->session->getCookie('visitor_name'),
+                'email'     => $this->app->session->getCookie('visitor_email'),
+                'url'       => $this->app->session->getCookie('visitor_url')?: 'http://',
+                'company'   => '',
+                'tel'       => '',
+                'fax'       => '',
+                'mobile'    => '',
+                'address'   => '',
+                'recipient' => '',
+                'subject'   => '',
+                'message'   => '',
+            );
+        }
+
+        if (!empty($response)) {
             $tpl->SetVariable('response_text', $response['text']);
             $tpl->SetVariable('response_type', $response['type']);
         }
@@ -111,9 +129,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             if (in_array('name', $items_array)) {
                 $tpl->SetBlock('contact/name');
                 $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-                $name = isset($last_message['name'])?
-                        $last_message['name'] : $GLOBALS['app']->Session->GetCookie('visitor_name');
-                $tpl->SetVariable('name', isset($name)? $name : '');
+                $tpl->SetVariable('name', $message['name']);
                 $tpl->ParseBlock('contact/name');
             }
 
@@ -121,9 +137,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             if (in_array('email', $items_array)) {
                 $tpl->SetBlock('contact/email');
                 $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-                $email = isset($last_message['email'])?
-                         $last_message['email'] : $GLOBALS['app']->Session->GetCookie('visitor_email');
-                $tpl->SetVariable('email', isset($email)? $email : '');
+                $tpl->SetVariable('email', $message['email']);
                 $tpl->ParseBlock('contact/email');
             }
 
@@ -131,9 +145,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             if (in_array('url', $items_array)) {
                 $tpl->SetBlock('contact/url');
                 $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-                $url = isset($last_message['url'])?
-                       $last_message['url'] : $GLOBALS['app']->Session->GetCookie('visitor_url');
-                $tpl->SetVariable('url', isset($url)? $url : 'http://');
+                $tpl->SetVariable('url', $message['url']);
                 $tpl->ParseBlock('contact/url');
             }
         }
@@ -146,8 +158,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('company', $items_array)) {
             $tpl->SetBlock('contact/company');
             $tpl->SetVariable('lbl_company', _t('CONTACT_COMPANY'));
-            $company = isset($last_message['company'])? $last_message['company'] : '';
-            $tpl->SetVariable('company', $company);
+            $tpl->SetVariable('company', $message['company']);
             $tpl->ParseBlock('contact/company');
         }
 
@@ -155,8 +166,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('tel', $items_array)) {
             $tpl->SetBlock('contact/tel');
             $tpl->SetVariable('lbl_tel', _t('CONTACT_TEL'));
-            $tel = isset($last_message['tel'])? $last_message['tel'] : '';
-            $tpl->SetVariable('tel', $tel);
+            $tpl->SetVariable('tel', $message['tel']);
             $tpl->ParseBlock('contact/tel');
         }
 
@@ -164,8 +174,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('fax', $items_array)) {
             $tpl->SetBlock('contact/fax');
             $tpl->SetVariable('lbl_fax', _t('CONTACT_FAX'));
-            $fax = isset($last_message['fax'])? $last_message['fax'] : '';
-            $tpl->SetVariable('fax', $fax);
+            $tpl->SetVariable('fax', $message['fax']);
             $tpl->ParseBlock('contact/fax');
         }
 
@@ -173,8 +182,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('mobile', $items_array)) {
             $tpl->SetBlock('contact/mobile');
             $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
-            $mobile = isset($last_message['mobile'])? $last_message['mobile'] : '';
-            $tpl->SetVariable('mobile', $mobile);
+            $tpl->SetVariable('mobile', $message['mobile']);
             $tpl->ParseBlock('contact/mobile');
         }
 
@@ -182,8 +190,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('address', $items_array)) {
             $tpl->SetBlock('contact/address');
             $tpl->SetVariable('lbl_address',  _t('CONTACT_ADDRESS'));
-            $address = isset($last_message['address'])? $last_message['address'] : '';
-            $tpl->SetVariable('address', $address);
+            $tpl->SetVariable('address', $message['address']);
             $tpl->ParseBlock('contact/address');
         }
 
@@ -195,12 +202,14 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
                 $tpl->SetBlock('contact/recipient');
                 $tpl->SetVariable('lbl_recipient', _t('CONTACT_RECIPIENT'));
 
-                $rcpt = isset($last_message['recipient'])? $last_message['recipient'] : '';
                 foreach ($recipients as $recipient) {
                     $tpl->SetBlock('contact/recipient/item');
                     $tpl->SetVariable('recipient_id',   $recipient['id']);
                     $tpl->SetVariable('recipient_name', $recipient['name']);
-                    $tpl->SetVariable('selected', ($rcpt== $recipient['id'])? 'selected="selected"': '');
+                    $tpl->SetVariable(
+                        'selected',
+                        ($message['recipient'] == $recipient['id'])? 'selected="selected"': ''
+                    );
                     $tpl->ParseBlock('contact/recipient/item');
                 }
                 $tpl->ParseBlock('contact/recipient');
@@ -211,8 +220,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('subject', $items_array)) {
             $tpl->SetBlock('contact/subject');
             $tpl->SetVariable('lbl_subject',  _t('CONTACT_SUBJECT'));
-            $subject = isset($last_message['subject'])? $last_message['subject'] : '';
-            $tpl->SetVariable('subject', $subject);
+            $tpl->SetVariable('subject', $message['subject']);
             $tpl->ParseBlock('contact/subject');
         }
 
@@ -230,8 +238,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('message', $items_array)) {
             $tpl->SetBlock('contact/message');
             $tpl->SetVariable('lbl_message',  _t('CONTACT_MESSAGE'));
-            $message = isset($last_message['message'])? $last_message['message'] : '';
-            $tpl->SetVariable('message', $message);
+            $tpl->SetVariable('message', $message['message']);
             $tpl->ParseBlock('contact/message');
         }
 

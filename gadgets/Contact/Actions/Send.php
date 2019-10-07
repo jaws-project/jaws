@@ -39,10 +39,10 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         {
             $this->gadget->session->push(
                 _t('CONTACT_INCOMPLETE_FIELDS'),
-                'Response',
-                RESPONSE_ERROR
+                'Contact',
+                RESPONSE_ERROR,
+                $post
             );
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
             Jaws_Header::Referrer();
         }
 
@@ -51,10 +51,10 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($resCheck)) {
             $this->gadget->session->push(
                 $resCheck->getMessage(),
-                'Response',
-                RESPONSE_ERROR
+                'Contact',
+                RESPONSE_ERROR,
+                $post
             );
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
             Jaws_Header::Referrer();
         }
 
@@ -94,7 +94,12 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         }
 
         if (empty($post['email']) && empty($post['mobile'])) {
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
+            $this->gadget->session->push(
+                _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
+                'Contact',
+                RESPONSE_ERROR,
+                $post
+            );
             Jaws_Header::Referrer();
         }
 /*
@@ -102,10 +107,10 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
                 $this->gadget->session->push(
                     _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
-                    'Response',
-                    RESPONSE_ERROR
+                    'Contact',
+                    RESPONSE_ERROR,
+                    $post
                 );
-                $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
                 Jaws_Header::Referrer();
             }
         }
@@ -121,10 +126,10 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($attach)) {
                 $this->gadget->session->push(
                     $attach->getMessage(),
-                    'Response',
-                    RESPONSE_ERROR
+                    'Contact',
+                    RESPONSE_ERROR,
+                    $post
                 );
-                $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
                 Jaws_Header::Referrer();
             }
 
@@ -175,15 +180,16 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
 
             $this->gadget->session->push(
                 _t('CONTACT_RESULT_SENT'),
-                'Response',
+                'Contact',
                 RESPONSE_NOTICE
             );
 
         } catch (Exception $error) {
             $this->gadget->session->push(
                 $error->getMessage(),
-                'Response',
-                RESPONSE_ERROR
+                'Contact',
+                RESPONSE_ERROR,
+                $post
             );
         }
 

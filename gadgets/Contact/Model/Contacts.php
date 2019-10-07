@@ -76,9 +76,9 @@ class Contact_Model_Contacts extends Jaws_Gadget_Model
             return false;
         }
 
-        $GLOBALS['app']->Session->SetCookie('visitor_name',  $name,  60*24*150);
-        $GLOBALS['app']->Session->SetCookie('visitor_email', $email, 60*24*150);
-        $GLOBALS['app']->Session->SetCookie('visitor_url',   $url,   60*24*150);
+        $this->app->session->setCookie('visitor_name',  $name,  60*24*150);
+        $this->app->session->setCookie('visitor_email', $email, 60*24*150);
+        $this->app->session->setCookie('visitor_url',   $url,   60*24*150);
 
         return $result;
     }
