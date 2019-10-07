@@ -22,7 +22,7 @@ class Layout_Actions_Layouts extends Jaws_Gadget_Action
         switch ($type) {
             case 2:
                 Jaws_Gadget::getInstance('Users')->gadget->CheckPermission('AccessUserLayout');
-                $user = (int)$this->app->session->getAttribute('user');
+                $user = (int)$this->app->session->user;
                 $layouts = array('Index.User', 'Layout.User');
                 break;
 
