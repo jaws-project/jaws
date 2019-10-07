@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FastLinks_Plugin
+class FastLinks_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = '0.3';
@@ -25,14 +25,14 @@ class FastLinks_Plugin
         $buttonbox =& Piwi::CreateWidget('Division');
 
         $linkbutton =& Piwi::CreateWidget('Button', 'linkbutton', '',
-                            $GLOBALS['app']->getSiteURL('/plugins/FastLinks/images/stock-fastlink.png', true));
+                            $this->app->getSiteURL('/plugins/FastLinks/images/stock-fastlink.png', true));
         $linkbutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[url]','[/url]','".
                               _t('PLUGINS_FASTLINKS_YOURLINK')."');");
         $linkbutton->SetTitle(_t('PLUGINS_FASTLINKS_ADD_SITE').' ALT+L');
         $linkbutton->SetAccessKey('L');
 
         $emailbutton =& Piwi::CreateWidget('Button', 'emailbutton', '',
-                            $GLOBALS['app']->getSiteURL('/plugins/FastLinks/images/stock-fastemail.png', true));
+                            $this->app->getSiteURL('/plugins/FastLinks/images/stock-fastemail.png', true));
         $emailbutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[email]','[/email]','".
                                _t('PLUGINS_FASTLINKS_YOUREMAIL')."');");
         $emailbutton->SetTitle(_t('PLUGINS_FASTLINKS_ADD_EMAIL').' ALT+E');
