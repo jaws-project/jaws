@@ -38,7 +38,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             $tpl->SetBlock('workspace/standalone');
             $tpl->ParseBlock('workspace/standalone');
 
-            $editor = $GLOBALS['app']->GetEditor();
+            $editor = $this->app->getEditor();
             if ($editor === 'TinyMCE') {
             } elseif ($editor === 'CKEditor') {
                 $getParams = $this->gadget->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
@@ -108,7 +108,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $this->gadget->define('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));
         $this->gadget->define('imgDeleteFile', STOCK_DELETE);
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = $this->app->GetTheme();
         $icon_url = is_dir($theme['url'] . 'mimetypes')?
             $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
         $this->gadget->define('icon_url', $icon_url);

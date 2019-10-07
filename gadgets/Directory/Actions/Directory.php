@@ -341,7 +341,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_action', _t('GLOBAL_ACTIONS'));
 
         $tpl->SetVariable('site_url', $this->app->getSiteURL('/'));
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = $this->app->GetTheme();
         $iconUrl = is_dir($theme['url'] . 'mimetypes')? $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
         $icons = array(
             1 => 'folder',

@@ -21,8 +21,8 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $this->gadget->define('type', $this->gadget->request->fetch('type', 'get'));
         $tpl = $browserLayout->_Template;
         // bookmark default layout
-        $mainLayout = $GLOBALS['app']->Layout;
-        $GLOBALS['app']->Layout = $browserLayout;
+        $mainLayout = $this->app->layout;
+        $this->app->layout = $browserLayout;
         if ($this->app->session->logged()) {
             $tpl->SetBlock('layout/upload');
             $tpl->SetVariable('lbl_upload', _t('DIRECTORY_UPLOAD_FILE'));
@@ -43,7 +43,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $tpl->SetVariable('description', $description->Get());
 
         // restore default layout
-        $GLOBALS['app']->Layout = $mainLayout;
+        $this->app->layout = $mainLayout;
         return $browserLayout->Get(true);
     }
 
