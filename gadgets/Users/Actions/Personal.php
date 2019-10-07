@@ -28,7 +28,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         $response = $this->gadget->session->pop('Personal');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
-            $personal  = $jUser->GetUser($this->app->session->getAttribute('user'), true, true);
+            $personal  = $jUser->GetUser($this->app->session->user, true, true);
         } else {
             $personal = $response['data'];
         }
@@ -174,7 +174,7 @@ class Users_Actions_Personal extends Users_Actions_Default
 
         $model  = $this->gadget->model->load('Personal');
         $result = $model->UpdatePersonal(
-            $this->app->session->getAttribute('user'),
+            $this->app->session->user,
             $post
         );
         if (Jaws_Error::IsError($result)) {

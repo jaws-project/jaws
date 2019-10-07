@@ -100,7 +100,7 @@ class Users_Actions_Friends extends Users_Actions_Default
             'post'
         );
 
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $jUser = new Jaws_User;
         $groups = $jUser->GetGroups($user, $post['limit'], $post['offset']);
 
@@ -128,7 +128,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageFriends');
         $id = $this->gadget->request->fetch('id', 'post');
 
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $jUser = new Jaws_User;
         return $jUser->GetGroup($id, $user);
     }
@@ -144,7 +144,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageFriends');
 
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $jUser = new Jaws_User;
 
         // Update group
@@ -174,7 +174,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageFriends');
 
         $ids = $this->gadget->request->fetch('ids:array', 'post');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
 
         if (!empty($ids)) {
             $jUser = new Jaws_User;
@@ -211,7 +211,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $post = $this->gadget->request->fetch(array('gid', 'users:array'), 'post');
 
         $uModel = $this->gadget->model->load('Friends');
-        $user = $this->app->session->getAttribute('user');
+        $user = $this->app->session->user;
         $res = $uModel->AddUsersToGroup((int)$post['gid'], $post['users'], $user);
 
         if (Jaws_Error::IsError($res)) {

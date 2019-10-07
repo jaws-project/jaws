@@ -28,7 +28,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $response = $this->gadget->session->pop('Account');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
-            $account = $jUser->GetUser($this->app->session->getAttribute('user'), true, true);
+            $account = $jUser->GetUser($this->app->session->user, true, true);
         } else {
             $account = $response['data'];
         }
@@ -157,7 +157,7 @@ class Users_Actions_Account extends Users_Actions_Default
 
             $model  = $this->gadget->model->load('Account');
             $result = $model->UpdateAccount(
-                $this->app->session->getAttribute('user'),
+                $this->app->session->user,
                 $post['username'],
                 $post['nickname'],
                 $post['email'],
@@ -171,7 +171,7 @@ class Users_Actions_Account extends Users_Actions_Default
                 $message = _t('USERS_MYACCOUNT_UPDATED');
                 if (!empty($post['new_email'])) {
                     $mResult = $this->ReplaceEmailNotification(
-                        $this->app->session->getAttribute('user'),
+                        $this->app->session->user,
                         $post['username'],
                         $post['nickname'],
                         $post['new_email'],

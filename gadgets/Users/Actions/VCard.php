@@ -21,7 +21,7 @@ class Users_Actions_VCard extends Users_Actions_Default
 
         require_once JAWS_PATH . 'gadgets/Users/include/vCard.php';
 
-        $currentUser = $this->app->session->getAttribute('user');
+        $currentUser = $this->app->session->user;
         $jUser = new Jaws_User;
         $contacts = $jUser->GetUserContacts($currentUser);
 
@@ -135,7 +135,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             }
 
             $jUser = new Jaws_User;
-            $currentUser = $this->app->session->getAttribute('user');
+            $currentUser = $this->app->session->user;
             if (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {

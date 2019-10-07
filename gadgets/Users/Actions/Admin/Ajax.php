@@ -191,7 +191,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        if ($uid == $this->app->session->getAttribute('user')) {
+        if ($uid == $this->app->session->user) {
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
@@ -225,7 +225,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageUsers');
         @list($uid) = $this->gadget->request->fetchAll('post');
-        if ($uid == $this->app->session->getAttribute('user')) {
+        if ($uid == $this->app->session->user) {
             $this->app->session->PushLastResponse(_t('USERS_USERS_CANT_DELETE_SELF'),
                                                        RESPONSE_ERROR);
         } else {
@@ -891,7 +891,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGroups');
         @list($guid) = $this->gadget->request->fetchAll('post');
 
-        $currentUid = $this->app->session->getAttribute('user');
+        $currentUid = $this->app->session->user;
         $groupinfo = $this->_UserModel->GetGroup((int)$guid);
         if (!$this->_UserModel->DeleteGroup($guid)) {
             $this->app->session->PushLastResponse(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),

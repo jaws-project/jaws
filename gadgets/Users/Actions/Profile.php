@@ -47,7 +47,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             if (!$this->app->session->logged()) {
                 return false;
             }
-            $user = (int)$this->app->session->getAttribute('user');
+            $user = (int)$this->app->session->user;
         }
 
         $usrModel = new Jaws_User;
@@ -110,7 +110,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         );
 
         if (!$this->app->session->isSuperAdmin() &&
-            $this->app->session->getAttribute('user') != $user['id'])
+            $this->app->session->user != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
         }
@@ -165,7 +165,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Profile.html');
         $tpl->SetBlock('profile');
         $tpl->SetVariable('title',  _t('USERS_PROFILE_INFO'));
-        if ($user['id'] == $this->app->session->getAttribute('user')) {
+        if ($user['id'] == $this->app->session->user) {
             // Menu navigation
             $this->gadget->action->load('MenuNavigation')->navigation($tpl);
         }
@@ -198,7 +198,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         );
  
         if (!$this->app->session->isSuperAdmin() &&
-            $this->app->session->getAttribute('user') != $user['id'])
+            $this->app->session->user != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
         }

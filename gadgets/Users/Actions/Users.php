@@ -296,7 +296,7 @@ class Users_Actions_Users extends Users_Actions_Default
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        if ($post['uid'] == $this->app->session->getAttribute('user')) {
+        if ($post['uid'] == $this->app->session->user) {
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
@@ -329,7 +329,7 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $uid = $this->gadget->request->fetch('id', 'post');
-        if ($uid == $this->app->session->getAttribute('user')) {
+        if ($uid == $this->app->session->user) {
             return $this->gadget->session->response(
                 _t('USERS_USERS_CANT_DELETE_SELF'),
                 RESPONSE_ERROR

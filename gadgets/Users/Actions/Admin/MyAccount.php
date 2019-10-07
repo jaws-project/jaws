@@ -18,7 +18,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
 
         $uModel = new Jaws_User();
-        $uInfo = $uModel->GetUser($this->app->session->getAttribute('user'), true, true);
+        $uInfo = $uModel->GetUser($this->app->session->user, true, true);
         if (Jaws_Error::IsError($uInfo) || empty($uInfo)) {
             return false;
         }

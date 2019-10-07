@@ -59,7 +59,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
 
         $bookmarked = (bool)$post['bookmarked'];
         $result = $this->gadget->model->load('Bookmarks')->UpdateBookmark(
-            $this->app->session->getAttribute('user'),
+            $this->app->session->user,
             $data,
             $bookmarked
         );
@@ -144,7 +144,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         );
 
         $bModel = $this->gadget->model->load('Bookmarks');
-        $post['filters']['user'] = $this->app->session->getAttribute('user');
+        $post['filters']['user'] = $this->app->session->user;
         $bookmarks = $bModel->GetBookmarks($post['filters'], $post['limit'], $post['offset']);
         $bookmarksCount = $bModel->GetBookmarksCount($post['filters']);
 
@@ -165,7 +165,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
         $id = (int)$this->gadget->request->fetch('id', 'post');
-        $currentUser = $this->app->session->getAttribute('user');
+        $currentUser = $this->app->session->user;
         return $this->gadget->model->load('Bookmarks')->GetBookmark($id, $currentUser);
     }
 
@@ -180,7 +180,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserBookmarks');
         $id = (int)$this->gadget->request->fetch('id', 'post');
 
-        $currentUser = $this->app->session->getAttribute('user');
+        $currentUser = $this->app->session->user;
         $result = $this->gadget->model->load('Bookmarks')->DeleteBookmark($id, $currentUser);
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
