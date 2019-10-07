@@ -5,7 +5,7 @@
  * @category   Plugin
  * @package    AbuseReport
  */
-class AbuseReport_Plugin
+class AbuseReport_Plugin extends Jaws_Plugin
 {
     var $friendly = false;
     var $version  = '0.1';
@@ -28,7 +28,7 @@ class AbuseReport_Plugin
             return $html;
         }
 
-        $GLOBALS['app']->Layout->addScript('gadgets/AbuseReporter/Resources/index.js');
+        $this->app->layout->addScript('gadgets/AbuseReporter/Resources/index.js');
         $tpl = new Jaws_Template();
         $tpl->Load('Report.html', 'plugins/AbuseReport/Templates/');
         $tpl->SetBlock('Report');
