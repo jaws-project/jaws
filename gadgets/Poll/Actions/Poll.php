@@ -95,7 +95,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 break;
         }
 
-//        $votable = ($poll['restriction'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']));
+//        $votable = ($poll['restriction'] == 1) || (!$this->app->session->getCookie('poll_'.$poll['id']));
         if ($allowVote || $poll['result_view']) {
             //print the answers or results
             $answers = $model->GetPollAnswers($poll['id']);
@@ -244,7 +244,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
 
             if ($allowVote && is_array($post['answers']) && count($post['answers']) > 0) {
-                $GLOBALS['app']->Session->SetCookie('poll_' . $poll['id'], 'voted',
+                $this->app->session->setCookie('poll_' . $poll['id'], 'voted',
                     (int)$this->gadget->registry->fetch('cookie_period') * 24 * 60);
                 $res = $model->AddAnswerVotes($poll['id'], $post['answers']);
             }
