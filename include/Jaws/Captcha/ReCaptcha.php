@@ -24,9 +24,9 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
      */
     function install()
     {
-        if (is_null($GLOBALS['app']->Registry->fetch('reCAPTCHA_public_key', 'Policy'))) {
-            $GLOBALS['app']->Registry->insert('reCAPTCHA_public_key', '', false, 'Policy');
-            $GLOBALS['app']->Registry->insert('reCAPTCHA_private_key', '', false, 'Policy');
+        if (is_null($this->app->registry->fetch('reCAPTCHA_public_key', 'Policy'))) {
+            $this->app->registry->insert('reCAPTCHA_public_key', '', false, 'Policy');
+            $this->app->registry->insert('reCAPTCHA_private_key', '', false, 'Policy');
         }
 
         return true;
@@ -42,7 +42,7 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
     {
         $res = array();
         $objReCaptcha = new ReCaptcha();
-        $publickey = $GLOBALS['app']->Registry->fetch('reCAPTCHA_public_key', 'Policy');
+        $publickey = $this->app->registry->fetch('reCAPTCHA_public_key', 'Policy');
         $reCAPTCHA = $objReCaptcha->recaptcha_get_html($publickey);
 
         $res = array();
@@ -64,7 +64,7 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
     {
         $recaptcha = jaws()->request->fetch(array('recaptcha_challenge_field', 'recaptcha_response_field'), 'post');
         if ($recaptcha['recaptcha_response_field']) {
-            $privatekey = $GLOBALS['app']->Registry->fetch('reCAPTCHA_private_key', 'Policy');
+            $privatekey = $this->app->registry->fetch('reCAPTCHA_private_key', 'Policy');
             $objReCaptcha = new ReCaptcha();
             $objReCaptcha->recaptcha_check_answer(
                 $privatekey,

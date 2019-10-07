@@ -11,6 +11,14 @@
 class Jaws_Captcha
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Captcha driver name
      *
      * @var     string
@@ -44,6 +52,7 @@ class Jaws_Captcha
     function __construct($driver)
     {
         $this->_driver = $driver;
+        $this->app = Jaws::getInstance();
     }
 
     /**
