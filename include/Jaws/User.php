@@ -15,6 +15,25 @@ define('AVATAR_PATH', JAWS_DATA. 'avatar'. DIRECTORY_SEPARATOR);
 class Jaws_User
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
+     * Constructor
+     *
+     * @access  protected
+     * @return  void
+     */
+    protected function __construct()
+    {
+        $this->app = Jaws::getInstance();
+    }
+
+    /**
      * Get hashed password
      *
      * @access  public
@@ -86,7 +105,7 @@ class Jaws_User
         if ($result['password'] !== Jaws_User::GetHashedPassword($password, $result['password'])) {
             $this->updateLastAccess($result['id'], false);
             // password incorrect event logging
-            $GLOBALS['app']->Listener->Shout(
+            $this->app->listener->Shout(
                 'Users',
                 'Log',
                 array(
@@ -109,7 +128,7 @@ class Jaws_User
         // status
         if ($result['status'] !== 1) {
             // forbidden access event logging
-            $GLOBALS['app']->Listener->Shout(
+            $this->app->listener->Shout(
                 'Users',
                 'Log',
                 array(
@@ -131,7 +150,7 @@ class Jaws_User
         // expiry date
         if (!empty($result['expiry_date']) && $result['expiry_date'] <= time()) {
             // forbidden access event logging
-            $GLOBALS['app']->Listener->Shout(
+            $this->app->listener->Shout(
                 'Users',
                 'Log',
                 array(
@@ -151,11 +170,11 @@ class Jaws_User
         }
 
         // logon hours
-        $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
+        $wdhour = explode(',', $this->app->UTC2UserTime(time(), 'w,G', true));
         $lhByte = hexdec($result['logon_hours'][$wdhour[0]*6 + intval($wdhour[1]/4)]);
         if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
             // forbidden access event logging
-            $GLOBALS['app']->Listener->Shout(
+            $this->app->listener->Shout(
                 'Users',
                 'Log',
                 array(
@@ -651,7 +670,7 @@ class Jaws_User
             require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
             $uAvatar = Jaws_Gravatar::GetGravatar($email, $size);
         } else {
-            $uAvatar = $GLOBALS['app']->getDataURL(). "avatar/$avatar";
+            $uAvatar = $this->app->getDataURL(). "avatar/$avatar";
             $uAvatar.= !empty($time)? "?$time" : '';
         }
 
@@ -894,7 +913,7 @@ class Jaws_User
         $uData['username'] = strtolower($uData['username']);
 
         // check reserved users
-        $reservedUsers = preg_split("/\n|\r|\n\r/", $GLOBALS['app']->Registry->fetch('reserved_users', 'Users'));
+        $reservedUsers = preg_split("/\n|\r|\n\r/", $this->app->registry->fetch('reserved_users', 'Users'));
         if (in_array($uData['username'], $reservedUsers)) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
@@ -924,7 +943,7 @@ class Jaws_User
                 );
             }
             $uData['email'] = strtolower($uData['email']);
-            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+            $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
             if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
@@ -957,7 +976,7 @@ class Jaws_User
         }
 
         // password & complexity
-        $min = (int)$GLOBALS['app']->Registry->fetch('password_min_length', 'Policy');
+        $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
         $min = ($min == 0)? 1 : $min;
         if ($uData['password'] == '' ||
             !preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])
@@ -969,7 +988,7 @@ class Jaws_User
             );
         }
 
-        if (!preg_match($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy'),
+        if (!preg_match($this->app->registry->fetch('password_complexity', 'Policy'),
                 $uData['password'])
         ) {
             return Jaws_Error::raiseError(
@@ -991,7 +1010,7 @@ class Jaws_User
                 $uData['expiry_date'] = 0;
             } else {
                 $objDate = Jaws_Date::getInstance();
-                $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
+                $uData['expiry_date'] = $this->app->UserTime2UTC(
                     (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
                 );
             }
@@ -999,7 +1018,7 @@ class Jaws_User
 
         // set user's domain to default domain if not set
         if (!isset($uData['domain'])) {
-            $uData['domain'] = (int)$GLOBALS['app']->Registry->fetch('default_domain', 'Users');
+            $uData['domain'] = (int)$this->app->registry->fetch('default_domain', 'Users');
         }
 
         // delete unverified old user with this username/email/mobile
@@ -1057,7 +1076,7 @@ class Jaws_User
         }
 
         // Let everyone know a user has been added
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'AddUser', $result);
+        $res = $this->app->listener->Shout('Users', 'AddUser', $result);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -1123,7 +1142,7 @@ class Jaws_User
                     );
                 }
                 $uData['email'] = strtolower($uData['email']);
-                $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+                $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
                 if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
                     return Jaws_Error::raiseError(
                         _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
@@ -1172,7 +1191,7 @@ class Jaws_User
 
         // password & complexity
         if (array_key_exists('password', $uData)) {
-            $min = (int)$GLOBALS['app']->Registry->fetch('password_min_length', 'Policy');
+            $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
             if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
@@ -1181,7 +1200,7 @@ class Jaws_User
                 );
             }
 
-            if (!preg_match($GLOBALS['app']->Registry->fetch('password_complexity', 'Policy'),
+            if (!preg_match($this->app->registry->fetch('password_complexity', 'Policy'),
                     $uData['password'])
             ) {
                 return Jaws_Error::raiseError(
@@ -1217,9 +1236,10 @@ class Jaws_User
         }
 
         // if currently a user logged
-        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->Logged()) {
+        
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->logged()) {
             // other users can't modify the god user
-            if (JAWS_GODUSER == $user['id'] && $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+            if (JAWS_GODUSER == $user['id'] && $this->app->session->getAttribute('user') != $user['id']) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
@@ -1228,7 +1248,7 @@ class Jaws_User
             }
 
             // not superadmin cant set/modify superadmin users 
-            if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
+            if (!$this->app->session->isSuperAdmin()) {
                 unset($uData['superadmin']);
                 // non-superadmin user can't change properties of superadmin users
                 if ($user['superadmin']) {
@@ -1243,7 +1263,7 @@ class Jaws_User
 
         if (array_key_exists('username', $uData) && ($uData['username'] !== $user['username'])) {
             // check reserved users
-            $reservedUsers = preg_split("/\n|\r|\n\r/", $GLOBALS['app']->Registry->fetch('reserved_users', 'Users'));
+            $reservedUsers = preg_split("/\n|\r|\n\r/", $this->app->registry->fetch('reserved_users', 'Users'));
             if (in_array($uData['username'], $reservedUsers)) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
@@ -1273,7 +1293,7 @@ class Jaws_User
                 $uData['expiry_date'] = 0;
             } else {
                 $objDate = Jaws_Date::getInstance();
-                $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
+                $uData['expiry_date'] = $this->app->UserTime2UTC(
                     (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
                 );
             }
@@ -1295,35 +1315,35 @@ class Jaws_User
                     AVATAR_PATH. $uData['avatar']);
         }
 
-        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user == $id) {
             if (array_key_exists('username', $uData)) {
-                $GLOBALS['app']->Session->SetAttribute('username', $uData['username']);
+                $this->app->session->setAttribute('username', $uData['username']);
             }
             if (array_key_exists('nickname', $uData)) {
-                $GLOBALS['app']->Session->SetAttribute('nickname', $uData['nickname']);
+                $this->app->session->setAttribute('nickname', $uData['nickname']);
             }
             if (array_key_exists('email', $uData)) {
-                $GLOBALS['app']->Session->SetAttribute('email', $uData['email']);
+                $this->app->session->setAttribute('email', $uData['email']);
             }
             if (array_key_exists('mobile', $uData)) {
-                $GLOBALS['app']->Session->SetAttribute('mobile', $uData['mobile']);
+                $this->app->session->setAttribute('mobile', $uData['mobile']);
             }
 
             // update user's avatar in current session
             if (isset($uData['avatar'])) {
-                $GLOBALS['app']->Session->SetAttribute(
+                $this->app->session->setAttribute(
                     'avatar',
                     $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
                 );
             }
             // update last password update time in current session
             if (isset($uData['last_password_update'])) {
-                $GLOBALS['app']->Session->SetAttribute('last_password_update', $uData['last_password_update']);
+                $this->app->session->setAttribute('last_password_update', $uData['last_password_update']);
             }
         }
 
         // Let everyone know a user has been updated
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'UpdateUser', $id);
+        $res = $this->app->listener->Shout('Users', 'UpdateUser', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -1360,7 +1380,11 @@ class Jaws_User
         }
 
         if (JAWS_GODUSER == $user['id']) {
-            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+            
+            if (!isset($this->app) ||
+                !property_exists($this->app, 'session') ||
+                $this->app->session->user != $user['id']
+            ) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
@@ -1396,21 +1420,21 @@ class Jaws_User
             return $result;
         }
 
-        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user == $id) {
             foreach($pData as $k => $v) {
                 if ($k == 'avatar') {
-                    $GLOBALS['app']->Session->SetAttribute(
+                    $this->app->session->setAttribute(
                         $k,
                         $this->GetAvatar($v, $user['email'], 48, $pData['last_update'])
                     );
                 } else {
-                    $GLOBALS['app']->Session->SetAttribute($k, $v);
+                    $this->app->session->setAttribute($k, $v);
                 }
             }
         }
 
         // Let everyone know a user has been updated
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'UpdateUser', $id);
+        $res = $this->app->listener->Shout('Users', 'UpdateUser', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -1443,7 +1467,10 @@ class Jaws_User
         }
 
         if (JAWS_GODUSER == $user['id']) {
-            if (!isset($GLOBALS['app']->Session) || $GLOBALS['app']->Session->GetAttribute('user') != $user['id']) {
+            if (!isset($this->app) ||
+                !property_exists($this->app, 'session') ||
+                $this->app->session->user != $user['id']
+            ) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
@@ -1562,7 +1589,7 @@ class Jaws_User
         }
 
         // Let everyone know a group has been added
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'AddGroup', $result);
+        $res = $this->app->listener->Shout('Users', 'AddGroup', $result);
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -1627,7 +1654,7 @@ class Jaws_User
         }
 
         // Let everyone know a group has been updated
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'UpdateGroup', $id);
+        $res = $this->app->listener->Shout('Users', 'UpdateGroup', $id);
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -1655,7 +1682,7 @@ class Jaws_User
         }
 
         // users can't delete himself
-        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $user['id']) {
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user == $user['id']) {
             return false;
         }
 
@@ -1684,15 +1711,15 @@ class Jaws_User
         }
 
         // Registry
-        if (!$GLOBALS['app']->Registry->deleteByUser($user['id'])) {
+        if (!$this->app->registry->deleteByUser($user['id'])) {
             return false;
         }
         // ACL
-        if (!$GLOBALS['app']->ACL->deleteByUser($user['id'])) {
+        if (!$this->app->acl->deleteByUser($user['id'])) {
             return false;
         }
         // Session
-        if (!$GLOBALS['app']->Session->DeleteUserSessions($user['id'])) {
+        if (!$this->app->session->deleteUserSessions($user['id'])) {
             return false;
         }
 
@@ -1700,7 +1727,7 @@ class Jaws_User
         $objORM->commit();
 
         // Let everyone know that a user has been deleted
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'DeleteUser', $user);
+        $res = $this->app->listener->Shout('Users', 'DeleteUser', $user);
         if (Jaws_Error::IsError($res)) {
             // nothing
         }
@@ -1739,13 +1766,13 @@ class Jaws_User
             return false;
         }
 
-        $GLOBALS['app']->ACL->deleteByGroup($id);
+        $this->app->acl->deleteByGroup($id);
 
         //Commit Transaction
         $objORM->commit();
 
         // Let everyone know a group has been deleted
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'DeleteGroup', $id);
+        $res = $this->app->listener->Shout('Users', 'DeleteGroup', $id);
         if (Jaws_Error::IsError($res)) {
             // nothing
         }
