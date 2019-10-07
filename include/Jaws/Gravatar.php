@@ -21,19 +21,19 @@ class Jaws_Gravatar
      */
     static function GetGravatar($email = '', $size = 48)
     {
-        $theme = $GLOBALS['app']->GetTheme();
+        $theme = Jaws::getInstance()->GetTheme();
         if (file_exists($theme['path'] . 'default_avatar.png')) {
             $defaultImage = $theme['url'] . 'default_avatar.png';
         } else {
             $defaultImage = "gadgets/Users/Resources/images/photo{$size}px.png";
         }
 
-        if (empty($email) || $GLOBALS['app']->Registry->fetch('use_gravatar', 'Settings') == 'no') {
+        if (empty($email) || Jaws::getInstance()->registry->fetch('use_gravatar', 'Settings') == 'no') {
             return $defaultImage;
         }
 
         $id = md5($email);
-        $rating = $GLOBALS['app']->Registry->fetch('gravatar_rating', 'Settings');
+        $rating = Jaws::getInstance()->registry->fetch('gravatar_rating', 'Settings');
         if (Jaws_Error::isError($rating)) {
             $rating = 'g';
         }
@@ -44,7 +44,7 @@ class Jaws_Gravatar
             $size = 0;
         }
 
-        $defaultImage = urlencode($GLOBALS['app']->getSiteURL('/'.$defaultImage));
+        $defaultImage = urlencode(Jaws::getInstance()->getSiteURL('/'.$defaultImage));
         $gravatar = 'http://www.gravatar.com/avatar/'. md5(strtolower(trim($email)));
         $gravatar.= '?d=' . $defaultImage. '&amp;r='. $rating. '&amp;s=' . $size;
 
