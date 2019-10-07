@@ -13,6 +13,14 @@
 class Jaws_Plugin
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      *  definition plugin types
      */
     const PLUGIN_TYPE_ALLTYPES = 0;
@@ -26,6 +34,17 @@ class Jaws_Plugin
      * @access  protected
      */
     var $_PluginType = Jaws_Plugin::PLUGIN_TYPE_MODIFIER;
+
+    /**
+     * Constructor
+     *
+     * @access  protected
+     * @return  void
+     */
+    protected function __construct()
+    {
+        $this->app = Jaws::getInstance();
+    }
 
     /**
      * Get installed plugins
