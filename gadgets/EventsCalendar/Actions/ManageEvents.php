@@ -59,7 +59,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         // Check for response
-        $response = $this->gadget->session->pop('Response');
+        $response = $this->gadget->session->pop('Event');
         if ($response) {
             $tpl->SetVariable('response_text', $response['text']);
             $tpl->SetVariable('response_type', $response['type']);
@@ -68,7 +68,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         // Check for search query
         $params = array();
         $params['user'] = $user;
-        $params['search'] = $GLOBALS['app']->Session->PopSimpleResponse('Events.Search', false);
+        $params['search'] = @$response['data'];
 
         // Fetch page
         $page = (int)$this->gadget->request->fetch('page:int', 'get');
@@ -232,12 +232,10 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         if (empty($post)) {
             $post = null;
         }
-        $GLOBALS['app']->Session->PushSimpleResponse(
-            $post,
-            'Events.Search'
+
+        $this->gadget->session->push('', 'Event', RESPONSE_NOTICE, $post);
+        return Jaws_Header::Location(
+            $this->gadget->urlMap('ManageEvents', array('user' =>$this->app->session->user))
         );
-        $user = (int)$this->app->session->getAttribute('user');
-        $url = $this->gadget->urlMap('ManageEvents', array('user' => $user));
-        return Jaws_Header::Location($url);
     }
 }
