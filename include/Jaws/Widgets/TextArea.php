@@ -15,6 +15,14 @@ require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
 class Jaws_Widgets_TextArea extends Container
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * @access  private
      * @var     object
      * @see     function  AddControl
@@ -78,6 +86,8 @@ class Jaws_Widgets_TextArea extends Container
      */
     function __construct($gadget, $name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
+        $this->app = Jaws::getInstance();
+
         $this->_Name   = $name;
         $this->_Value  = $value;
         $this->_Gadget = $gadget;
@@ -170,7 +180,7 @@ class Jaws_Widgets_TextArea extends Container
      */
     function extraBuild()
     {
-        $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+        $installed_plugins = $this->app->registry->fetch('plugins_installed_items');
         $installed_plugins = array_filter(explode(',', $installed_plugins));
         $pluginKey = 'frontend_gadgets';
         if (JAWS_SCRIPT == 'admin') {
@@ -178,7 +188,7 @@ class Jaws_Widgets_TextArea extends Container
         }
 
         foreach ($installed_plugins as $plugin) {
-            $gadgets = $GLOBALS['app']->Registry->fetch($pluginKey, $plugin);
+            $gadgets = $this->app->registry->fetch($pluginKey, $plugin);
             if (($gadgets == '*') || in_array($this->_Gadget, explode(',', $gadgets))) {
                 $objPlugin = Jaws_Plugin::getInstance($plugin);
                 if (!Jaws_Error::IsError($objPlugin) && method_exists($objPlugin, 'GetWebControl')) {
