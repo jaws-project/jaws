@@ -42,7 +42,7 @@ class Logs_Actions_History extends Jaws_Gadget_Action
             array(
                 'gadget' => 'Users',
                 'action' => 'Login',
-                'user'   => $this->app->session->getAttribute('user'),
+                'user'   => $this->app->session->user,
             ),
             $limit
         );
