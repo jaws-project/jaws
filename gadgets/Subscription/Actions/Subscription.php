@@ -21,7 +21,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         $tpl->SetBlock('subscription');
 
         $sModel = $this->gadget->model->load('Subscription');
-        $currentUser = $this->app->session->getAttribute('user');
+        $currentUser = $this->app->session->user;
         $response = $this->gadget->session->pop('Subscription');
         $email = '';
         $mobile = '';
@@ -173,7 +173,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
         $sModel = $this->gadget->model->load('Subscription');
         $result = $sModel->UpdateSubscription(
-            $this->app->session->getAttribute('user'),
+            $this->app->session->user,
             $post['email'],
             $post['mobile'],
             $post['webPush'],
@@ -219,7 +219,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
         // check user current subscription
         $sModel = $this->gadget->model->load('Subscription');
-        $currentUser = $this->app->session->getAttribute('user');
+        $currentUser = $this->app->session->user;
         $isSubscribed = $sModel->GetUserSubscription($currentUser, null, null, $gadget, $action, $reference);
 
         if ($isSubscribed) {
@@ -261,7 +261,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
         $sModel = $this->gadget->model->load('Subscription');
         $result = $sModel->UpdateGadgetSubscription(
-            $this->app->session->getAttribute('user'),
+            $this->app->session->user,
             $post['email'],
             $post['mobile'],
             $post['web_push'],
