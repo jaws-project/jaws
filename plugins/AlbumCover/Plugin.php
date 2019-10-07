@@ -9,7 +9,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class AlbumCover_Plugin
+class AlbumCover_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = '0.4';
@@ -29,7 +29,7 @@ class AlbumCover_Plugin
         }
 
         // Registry key
-        $GLOBALS['app']->Registry->insert('devtag', 'MY DEV TAG', false, 'AlbumCover');
+        $this->app->registry->insert('devtag', 'MY DEV TAG', false, 'AlbumCover');
 
         return true;
     }
@@ -56,7 +56,7 @@ class AlbumCover_Plugin
     function GetWebControl($textarea)
     {
         $button =& Piwi::CreateWidget('Button', 'addalbumcover', '',
-                        $GLOBALS['app']->getSiteURL('/plugins/AlbumCover/images/stock-album.png', true));
+                        $this->app->getSiteURL('/plugins/AlbumCover/images/stock-album.png', true));
         $button->SetTitle(_t('PLUGINS_ALBUMCOVER_ADD').' ALT+A');
         $button->AddEvent(ON_CLICK, "javascript: insertTags('$textarea','[AlbumCover Artist=\'\' Album=\'\']','','');");
         $button->SetAccessKey('A');
@@ -149,7 +149,7 @@ class AlbumCover_Plugin
         $page=1;
         $proxy = $service->getProxy();
 
-        $devtag = $GLOBALS['app']->Registry->fetch('devtag', 'AlbumCover');
+        $devtag = $this->app->registry->fetch('devtag', 'AlbumCover');
 
         $params = array(
             'artist'    => htmlentities($Artist),
