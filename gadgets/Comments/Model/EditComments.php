@@ -93,7 +93,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $ret = $objORM->table('comments_details')->insert(
             array(
                 'cid'         => $gar,
-                'user'        => (int)$this->app->session->getAttribute('user'),
+                'user'        => (int)$this->app->session->user,
                 'name'        => $name,
                 'email'       => $email,
                 'url'         => $url,
@@ -151,7 +151,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['url']     = $url;
         $cData['msg_txt'] = $message;
         $cData['hash']    = crc32($message);
-        $cData['replier'] = (int)$this->app->session->getAttribute('user');
+        $cData['replier'] = (int)$this->app->session->user;
         $cData['status']  = $status;
         if ($this->gadget->GetPermission('ReplyComments')) {
             $cData['reply'] = $reply;
