@@ -8,7 +8,7 @@
  * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class SyntaxHighlight_Plugin
+class SyntaxHighlight_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = '0.3';
@@ -43,7 +43,7 @@ class SyntaxHighlight_Plugin
         }
 
         $button_terminal =& Piwi::CreateWidget('Button', 'addcode', '',
-                                $GLOBALS['app']->getSiteURL('/images/stock/stock-terminal.png', true));
+                                $this->app->getSiteURL('/images/stock/stock-terminal.png', true));
         $button_terminal->SetTitle(_t('PLUGINS_SYNTAXHIGHLIGHT_ADD_TERMINAL').' ALT+T');
         $button_terminal->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[terminal]\\n','\\n[/terminal]\\n','".
                                    _t('PLUGINS_SYNTAXHIGHLIGHT_YOUR_TERMINAL')."');");
