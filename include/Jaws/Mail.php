@@ -141,7 +141,7 @@ class Jaws_Mail
      */
     static function getInstance($instance = 'default')
     {
-        if (!isset($GLOBALS['app'])) {
+        if (!Jaws::getInstance(false)) {
             return Jaws_Error::raiseError('$GLOBALS[\'app\'] not available', __FUNCTION__);
         }
 
@@ -149,9 +149,9 @@ class Jaws_Mail
         static $defaultOptions = array();
         // initialize default options
         if (empty($defaultOptions)) {
-            $defaultOptions = $GLOBALS['app']->Registry->fetchAll('Settings');
+            $defaultOptions = Jaws::getInstance()->registry->fetchAll('Settings');
             // Get blocked domains name from registry
-            $defaultOptions['blocked_domains'] = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+            $defaultOptions['blocked_domains'] = Jaws::getInstance()->registry->fetch('blocked_domains', 'Policy');
         }
 
         if (!isset($objInstance[$instance])) {
