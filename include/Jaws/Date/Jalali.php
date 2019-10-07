@@ -224,7 +224,7 @@ class Jaws_Date_Jalali extends Jaws_Date
             $date = $year;
         }
 
-        $date = $GLOBALS['app']->UTC2UserTime($date);
+        $date = Jaws::getInstance()->UTC2UserTime($date);
         $grdate = explode('-', date('Y-m-d-H-i-s', $date));
         $prdate = $this->gregorian_to_persian($grdate[0], $grdate[1], $grdate[2]);
         $second = $grdate[5];
@@ -281,7 +281,7 @@ class Jaws_Date_Jalali extends Jaws_Date
             return '';
         }
 
-        $date = $GLOBALS['app']->UTC2UserTime($date);
+        $date = Jaws::getInstance()->UTC2UserTime($date);
         $grdate = explode('-', date('Y-m-d-H-i-s', $date));
 
         $prdate = $this->gregorian_to_persian($grdate[0], $grdate[1], $grdate[2]);
@@ -291,7 +291,7 @@ class Jaws_Date_Jalali extends Jaws_Date
         $prdate['date']   = $date;
 
         if (empty($format)) {
-            $format = $GLOBALS['app']->Registry->fetch('date_format', 'Settings');
+            $format = Jaws::getInstance()->registry->fetch('date_format', 'Settings');
         }
 
         return ($format == 'since')? $this->SinceFormat($prdate['date']) : $this->DateFormat($format, $prdate);
