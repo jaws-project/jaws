@@ -13,6 +13,14 @@ require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
 class Jaws_Widgets_CKEditor extends Container
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * @access  private
      * @var     object
      */
@@ -123,6 +131,8 @@ class Jaws_Widgets_CKEditor extends Container
      */
     function __construct($gadget, $name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
+        $this->app = Jaws::getInstance();
+
         $value = str_replace('&lt;', '&amp;lt;', $value);
         $value = str_replace('&gt;', '&amp;gt;', $value);
 
@@ -133,9 +143,9 @@ class Jaws_Widgets_CKEditor extends Container
 
         // set toolbar options
         if (JAWS_SCRIPT == 'admin') {
-            $toolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_backend_toolbar', 'Settings');
+            $toolbars = $this->app->registry->fetch('editor_ckeditor_backend_toolbar', 'Settings');
         } else {
-            $toolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_frontend_toolbar', 'Settings');
+            $toolbars = $this->app->registry->fetch('editor_ckeditor_frontend_toolbar', 'Settings');
         }
         $toolbars = array_filter(explode('|', $toolbars));
         foreach ($toolbars as $key => $items) {
@@ -152,7 +162,7 @@ class Jaws_Widgets_CKEditor extends Container
         $this->TextArea->setRole('editor');
         $this->TextArea->setData('editor', 'ckeditor');
 
-        $this->_Language = $GLOBALS['app']->GetLanguage();
+        $this->_Language = $this->app->getLanguage();
         $this->_Direction = _t('GLOBAL_LANG_DIRECTION');
 
         $this->_Container =& Piwi::CreateWidget('Division');
@@ -189,25 +199,25 @@ class Jaws_Widgets_CKEditor extends Container
                 break;
         }
 
-        $GLOBALS['app']->define('', 'editorPlugins', $plugins);
-        $GLOBALS['app']->define('', 'editorToolbar', $this->toolbars);
+        $this->app->define('', 'editorPlugins', $plugins);
+        $this->app->define('', 'editorToolbar', $this->toolbars);
 
         $this->_Container->PackStart($this->TextArea);
         $this->_XHTML .= $this->_Container->Get();
 
         if (JAWS_SCRIPT == 'index') {
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                $GLOBALS['app']->define(
+                $this->app->define(
                     '',
                     'editorImageBrowser',
                     BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=3'
                 );
-                $GLOBALS['app']->define(
+                $this->app->define(
                     '',
                     'editorFileBrowser',
                     BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=1,6'
                 );
-                $GLOBALS['app']->define(
+                $this->app->define(
                     '',
                     'editorMediaBrowser',
                     BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=4,5'
@@ -216,12 +226,12 @@ class Jaws_Widgets_CKEditor extends Container
         } else {
             // Phoo
             if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-                $GLOBALS['app']->define('', 'editorImageBrowser', BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo');
+                $this->app->define('', 'editorImageBrowser', BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo');
             }
             // Directory
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                $GLOBALS['app']->define('', 'editorFileBrowser', BASE_SCRIPT. '?gadget=Directory&action=Browse');
-                $GLOBALS['app']->define('', 'editorMediaBrowser', BASE_SCRIPT. '?gadget=Directory&action=DirExplorer');
+                $this->app->define('', 'editorFileBrowser', BASE_SCRIPT. '?gadget=Directory&action=Browse');
+                $this->app->define('', 'editorMediaBrowser', BASE_SCRIPT. '?gadget=Directory&action=DirExplorer');
             }
         }
 
