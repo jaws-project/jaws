@@ -41,7 +41,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $uid = null;
             $private = null;
         } else {
-            $uid = (int)$this->app->session->getAttribute('user');
+            $uid = (int)$this->app->session->user;
             // anonymous users
             $published = empty($uid) ? true : $published;
 
@@ -474,7 +474,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
                 $topic['forum_title'] = $result['title'];
                 $result = $tModel->InsertTopic(
-                    $this->app->session->getAttribute('user'),
+                    $this->app->session->user,
                     $topic['fid'],
                     $topic['subject'],
                     $topic['message'],
@@ -493,7 +493,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
             // check permission for edit topic
             $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
-            $update_uid = (int)$this->app->session->getAttribute('user');
+            $update_uid = (int)$this->app->session->user;
             if ((!$this->gadget->GetPermission('EditTopic')) ||
                 ($oldTopic['first_post_uid'] != $update_uid && !$forumManage) ||
                 ($oldTopic['locked'] && !$forumManage) ||
@@ -614,7 +614,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 // check delete permissions
                 $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
                 if ((!$this->gadget->GetPermission('DeleteTopic')) ||
-                    ($topic['first_post_uid'] != (int)$this->app->session->getAttribute('user') &&
+                    ($topic['first_post_uid'] != (int)$this->app->session->user &&
                      !$forumManage) ||
                     ((time() - $topic['first_post_time']) > $delete_limit_time && !$forumManage)
                 ) {
@@ -791,7 +791,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         }
 
         // check user permissions
-        $logged_user = (int)$this->app->session->getAttribute('user');
+        $logged_user = (int)$this->app->session->user;
         if($logged_user != $topic['first_post_uid'] && !$this->gadget->GetPermission('ForumManage', $topic['fid'])) {
             return Jaws_HTTPError::Get(403);
         }

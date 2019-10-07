@@ -33,7 +33,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         }
 
         if (!$topic['published'] || $topic['private']) {
-            $logged_user = (int)$this->app->session->getAttribute('user');
+            $logged_user = (int)$this->app->session->user;
             if ($logged_user != $topic['first_post_uid'] &&
                 !$this->gadget->GetPermission('ForumManage', $rqst['fid'])
             ) {
@@ -201,7 +201,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             if ($topic['first_post_id'] == $post['id']) {
                 // check permission for edit topic
                 if ($this->gadget->GetPermission('EditTopic') &&
-                    ($post['uid'] == (int)$this->app->session->getAttribute('user') || $forumManage) &&
+                    ($post['uid'] == (int)$this->app->session->user || $forumManage) &&
                     (!$topic['locked'] || $forumManage) &&
                     ((time() - $post['insert_time']) <= $edit_max_limit_time || $forumManage)
                 ) {
@@ -220,7 +220,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
                 // check permission for delete topic
                 if ($this->gadget->GetPermission('DeleteTopic') &&
-                    ($post['uid'] == (int)$this->app->session->getAttribute('user') || $forumManage) &&
+                    ($post['uid'] == (int)$this->app->session->user || $forumManage) &&
                     ((time() - $post['insert_time']) <= $edit_min_limit_time || $forumManage)
                 ) {
                     $tpl->SetBlock('posts/post/action');
@@ -238,7 +238,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             } else {
                 // check permission for edit post
                 if ($this->gadget->GetPermission('EditPost') &&
-                    ($post['uid'] == (int)$this->app->session->getAttribute('user') || $forumManage) &&
+                    ($post['uid'] == (int)$this->app->session->user || $forumManage) &&
                     (!$topic['locked'] || $forumManage) &&
                     ((time() - $post['insert_time']) <= $edit_max_limit_time || $forumManage)
                 ) {
@@ -250,7 +250,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
                 // check permission for delete post
                 if ($this->gadget->GetPermission('DeletePost') &&
-                    ($post['uid'] == (int)$this->app->session->getAttribute('user') || $forumManage) &&
+                    ($post['uid'] == (int)$this->app->session->user || $forumManage) &&
                     (!$topic['locked'] || $forumManage) &&
                     ((time() - $post['insert_time']) <= $edit_min_limit_time || $forumManage)
                 ){
@@ -497,7 +497,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         $pModel = $this->gadget->model->load('Posts');
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost(
-                $this->app->session->getAttribute('user'),
+                $this->app->session->user,
                 $post['tid'],
                 $post['fid'],
                 $post['message'],
@@ -516,7 +516,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
             // check edit permissions
             $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
-            $update_uid = (int)$this->app->session->getAttribute('user');
+            $update_uid = (int)$this->app->session->user;
             if ((!$this->gadget->GetPermission('EditPost')) ||
                 ($oldPost['uid'] != $update_uid && !$forumManage) ||
                 ($topic['locked'] && !$forumManage) ||
@@ -628,7 +628,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 // check delete permissions
                 $forumManage = $this->gadget->GetPermission('ForumManage', $post['fid']);
                 if ((!$this->gadget->GetPermission('DeletePost')) ||
-                    ($post['uid'] != (int)$this->app->session->getAttribute('user') && !$forumManage) ||
+                    ($post['uid'] != (int)$this->app->session->user && !$forumManage) ||
                     ($post['topic_locked'] && !$forumManage) ||
                     ((time() - $post['insert_time']) > $delete_limit_time && !$forumManage)
                 ) {
