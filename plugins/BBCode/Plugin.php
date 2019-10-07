@@ -8,7 +8,7 @@
  * @copyright  2012-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class BBCode_Plugin
+class BBCode_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version  = '0.1';
