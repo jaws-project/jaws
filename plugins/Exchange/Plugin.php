@@ -8,7 +8,7 @@
  * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Exchange_Plugin
+class Exchange_Plugin extends Jaws_Plugin
 {
     var $friendly = false;
     var $version = '0.1.0';
@@ -103,7 +103,7 @@ class Exchange_Plugin
      */
     function ParseText($html, $reference = 0, $action = '', $gadget = '')
     {
-        $lang = $GLOBALS['app']->GetLanguage();
+        $lang = $this->app->getLanguage();
         foreach ($this->_ExchangeList as $exchange) {
             if (false !== strpos($exchange['language'], $lang)) {
                 $html = $this->Preparing($html, $exchange['pattern'], $exchange['replacement']);
