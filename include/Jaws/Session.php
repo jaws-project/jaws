@@ -44,12 +44,15 @@ class Jaws_Session
      */
     protected $session = array(
         'id'        => 0,
-        'salt'      => '',
-        'longevity' => 0,
         'domain'    => '',
         'user'      => 0,
-        'type'      => '',
+        'salt'      => '',
+        'type'      => JAWS_APPTYPE,
         'auth'      => '',
+        'hidden'    => false,
+        'longevity' => 0,
+        'ip'        => 0,
+        'agent'     => '',
         'webpush'   => '',
     );
 
@@ -362,9 +365,12 @@ class Jaws_Session
     function reset()
     {
         // session
-        $this->session['user'] = 0;
-        $this->session['auth'] = '';
-        $this->session['domain'] = 0;
+        $this->session['user']      = 0;
+        $this->session['auth']      = '';
+        $this->session['domain']    = 0;
+        $this->session['hidden']    = false;
+        $this->session['longevity'] = 0;
+
         // attributes
         $this->attributes = array();
         $this->setAttribute('internal',    false);
