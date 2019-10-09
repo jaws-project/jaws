@@ -840,13 +840,3 @@ class Jaws
     }
 
 }
-
-/**
- * Convenience function to application object
- *
- * @access  public
- * @return  object  Jaws object
- */
-function jaws() {
-    return Jaws::getInstance();
-}
