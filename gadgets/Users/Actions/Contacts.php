@@ -268,9 +268,8 @@ class Users_Actions_Contacts extends Users_Actions_Default
             'post'
         );
 
-        $objUser = jaws()->loadObject('Jaws_User', 'Users');
         $currentUser = $this->app->session->user;
-        $contacts = $objUser->GetUserContacts(
+        $contacts = $this->app->users->GetUserContacts(
             $currentUser,
             $post['search'],
             $post['limit'],
@@ -283,7 +282,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             );
         }
 
-        $total = $objUser->GetUserContactsCount($currentUser, $post['search']);
+        $total = $this->app->users->GetUserContactsCount($currentUser, $post['search']);
         if (Jaws_Error::IsError($total)) {
             return $this->gadget->session->response(
                 $total->getMessage(),

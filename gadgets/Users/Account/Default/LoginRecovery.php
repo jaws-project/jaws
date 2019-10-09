@@ -48,8 +48,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                     $rcvryData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
                 }
 
-                $objUser = jaws()->loadObject('Jaws_User', 'Users');
-                $userData = $objUser->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
+                $userData = $this->app->users->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
                 if (Jaws_Error::IsError($userData) || empty($userData)) {
                     throw new Exception(_t('USERS_USER_NOT_EXIST'), 401);
                 }
@@ -85,8 +84,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
             }
 
-            $objUser = jaws()->loadObject('Jaws_User', 'Users');
-            $user = $objUser->GetUserNew(
+            $user = $this->app->users->GetUserNew(
                 $userData['domain'],
                 (int)$userData['id'],
                 array('account' => true)
@@ -97,13 +95,13 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             }
 
             // fetch user groups
-            $groups = $objUser->GetGroupsOfUser($user['id']);
+            $groups = $this->app->users->GetGroupsOfUser($user['id']);
             if (Jaws_Error::IsError($groups)) {
                 $groups = array();
             }
 
             $user['groups'] = $groups;
-            $user['avatar'] = $objUser->GetAvatar(
+            $user['avatar'] = $this->app->users->GetAvatar(
                 $user['avatar'],
                 $user['email'],
                 48,

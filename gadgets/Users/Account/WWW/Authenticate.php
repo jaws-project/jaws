@@ -17,7 +17,7 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
     {
         if (($this->app->registry->fetch('http_auth', 'Settings') != 'true') ||
             (!isset($_SERVER['PHP_AUTH_USER'])) ||
-            (jaws()->request->method() == 'post')
+            ($this->app->request->method() == 'post')
         ) {
             $classname = "Users_Account_Default_Authenticate";
             $objDefaultAccount = new $classname($this->gadget);
@@ -26,9 +26,9 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
 
         $httpAuth = new Jaws_HTTPAuth();
         $httpAuth->AssignData();
-        jaws()->request->update('username', $httpAuth->getUsername(), 'post');
-        jaws()->request->update('password', $httpAuth->getPassword(), 'post');
-        jaws()->request->update('usecrypt', 0, 'post');
+        $this->app->request->update('username', $httpAuth->getUsername(), 'post');
+        $this->app->request->update('password', $httpAuth->getPassword(), 'post');
+        $this->app->request->update('usecrypt', 0, 'post');
 
         $loginData = $this->gadget->request->fetch(
             array('domain', 'username', 'password', 'usecrypt', 'loginkey', 'loginstep', 'remember'),

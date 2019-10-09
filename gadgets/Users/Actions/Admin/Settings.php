@@ -50,7 +50,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         $anonGroup =& Piwi::CreateWidget('Combo', 'anon_group');
         $anonGroup->SetID('anon_group');
         $anonGroup->AddOption(_t('USERS_GROUPS_NOGROUP'), 0);
-        $groups = jaws()->loadObject('Jaws_User', 'Users')->GetGroups(null, 'title');
+        $groups = $this->app->users->GetGroups(null, 'title');
         if (!Jaws_Error::IsError($groups)) {
             foreach ($groups as $group) {
                 $anonGroup->AddOption($group['title'], $group['id']);
@@ -95,7 +95,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
     function UpdateSettings()
     {
         $this->gadget->CheckPermission('ManageSettings');
-        $settings = jaws()->request->fetchAll('post');
+        $settings = Jaws::getInstance()->request->fetchAll('post');
         $settings['reserved_users'] = implode(
             "\n",
             array_filter(preg_split("/\n|\r|\n\r/", strtolower($settings['reserved_users'])))

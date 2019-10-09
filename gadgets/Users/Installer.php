@@ -147,11 +147,6 @@ class Users_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $objUsers = jaws()->loadObject('Jaws_User', 'Users');
-            if (Jaws_Error::IsError($objUsers)) {
-                return $objUsers;
-            }
-
             $tblUsers = Jaws_ORM::getInstance()->table('users');
             $users = $tblUsers->select(
                 'id:integer', 'email', 'url', 'nickname', 'fname', 'lname', 'avatar',
