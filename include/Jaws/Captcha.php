@@ -120,7 +120,7 @@ class Jaws_Captcha
      */
     function check($cleanup = true)
     {
-        $post = jaws()->request->fetch(array('captcha_key', 'entry_value'), 'post');
+        $post = $this->app->request->fetch(array('captcha_key', 'entry_value'), 'post');
         list($key, $value) = array_values($post);
 
         $matched = false;

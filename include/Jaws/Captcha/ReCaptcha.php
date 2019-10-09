@@ -62,7 +62,10 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
      */
     function check()
     {
-        $recaptcha = jaws()->request->fetch(array('recaptcha_challenge_field', 'recaptcha_response_field'), 'post');
+        $recaptcha = $this->app->request->fetch(
+            array('recaptcha_challenge_field', 'recaptcha_response_field'),
+            'post'
+        );
         if ($recaptcha['recaptcha_response_field']) {
             $privatekey = $this->app->registry->fetch('reCAPTCHA_private_key', 'Policy');
             $objReCaptcha = new ReCaptcha();
