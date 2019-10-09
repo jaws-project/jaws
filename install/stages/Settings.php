@@ -34,17 +34,19 @@ class Installer_Settings extends JawsInstallerStage
             'site_sample'   => false,
         );
 
-        if (!isset($GLOBALS['app'])) {
-            // Connect to the database and setup registry and similar.
+        require_once JAWS_PATH . 'include/Jaws.php';
+        if (!Jaws::getInstance(false)) {
             require_once JAWS_PATH . 'include/Jaws/DB.php';
+            // Connect to the database and setup registry and similar.
             $objDatabase = Jaws_DB::getInstance('default', $_SESSION['install']['Database']);
+
             // Create application
-            include_once JAWS_PATH . 'include/Jaws.php';
-            $GLOBALS['app'] = jaws();
-            $GLOBALS['app']->Registry->Init();
-            $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']), false);
+            $jawsApp = Jaws::getInstance();
+            $jawsApp->registry->init();
+            $jawsApp->loadPreferences(array('language' => $_SESSION['install']['language']), false);
             Jaws_Translate::getInstance()->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
         }
+
     }
 
     /**
@@ -145,9 +147,9 @@ class Installer_Settings extends JawsInstallerStage
         $settings['site_email']     = $_SESSION['install']['CreateUser']['email'];
         foreach ($settings as $key => $value) {
             if (in_array($key, array('site_language', 'admin_language'))) {
-                $GLOBALS['app']->Registry->update($key, $value, true, 'Settings');
+                Jaws::getInstance()->registry->update($key, $value, true, 'Settings');
             } else {
-                $GLOBALS['app']->Registry->update($key, $value, false, 'Settings');
+                Jaws::getInstance()->registry->update($key, $value, false, 'Settings');
             }
         }
 
@@ -241,7 +243,7 @@ class Installer_Settings extends JawsInstallerStage
         }
 
         // set Blog as main gadget
-        $GLOBALS['app']->Registry->update('main_gadget', 'Blog', true, 'Settings');
+        Jaws::getInstance()->registry->update('main_gadget', 'Blog', true, 'Settings');
 
         // Copy Photo Organizer sample data
         $source = JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';

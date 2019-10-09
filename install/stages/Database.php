@@ -326,13 +326,13 @@ class Installer_Database extends JawsInstallerStage
 
         // Create application
         require_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = jaws();
-        $GLOBALS['app']->Registry->Init();
-        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']), false);
+        $jawsApp = Jaws::getInstance();
+        $jawsApp->registry->init();
+        $jawsApp->loadPreferences(array('language' => $_SESSION['install']['language']), false);
         Jaws_Translate::getInstance()->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 
         // registry keys
-        $result = $GLOBALS['app']->Registry->insertAll(
+        $result = $jawsApp->registry->insertAll(
             array(
                 array('version', JAWS_VERSION),
                 array('gadgets_installed_items', ','),
