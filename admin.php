@@ -27,8 +27,8 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 $jawsApp = Jaws::getInstance();
 
-$ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget', array('post', 'get')));
-$ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action', array('post', 'get')));
+$ReqGadget = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('gadget', array('post', 'get')));
+$ReqAction = Jaws_Gadget_Action::filter(Jaws::getInstance()->request->fetch('action', array('post', 'get')));
 
 // Init layout
 $jawsApp->instanceLayout();

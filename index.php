@@ -35,10 +35,10 @@ $AccessToWebsiteDenied = !$jawsApp->session->Logged() &&
                          $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
 
 // Get forwarded error from webserver
-$ReqError = jaws()->request->fetch('http_error', 'get');
+$ReqError = Jaws::getInstance()->request->fetch('http_error', 'get');
 if (empty($ReqError) && $jawsApp->map->Parse()) {
-    $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget'));
-    $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action'));
+    $ReqGadget = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('gadget'));
+    $ReqAction = Jaws_Gadget_Action::filter(Jaws::getInstance()->request->fetch('action'));
 
     if (empty($ReqGadget)) {
         $IsIndex = true;
@@ -120,7 +120,7 @@ if (empty($ReqError)) {
         $jawsApp->inMainRequest = false;
 
         // we must check type of action after execute, because gadget can change it at runtime
-        $ReqMode = Jaws_Gadget::filter(jaws()->request->fetch('mode'));
+        $ReqMode = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('mode'));
         $IsReqActionStandAlone = ($ReqMode == 'standalone') || $objAction->IsStandAlone($ReqAction);
     }
 } else {
