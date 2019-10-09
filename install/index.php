@@ -217,7 +217,7 @@ $layout->Load('layout.html', 'templates');
 $layout->SetBlock('layout');
 
 // Basic setup
-$layout->SetVariable('BASE_URL', Jaws_Utils::getBaseURL('/install/'));
+$layout->SetVariable('base_url', Jaws_Utils::getBaseURL('/install/'));
 $layout->SetVariable('.dir', $dir);
 $layout->SetVariable('site-title', 'Jaws ' . JAWS_VERSION);
 $layout->SetVariable('site-name',  'Jaws ' . JAWS_VERSION);
