@@ -175,7 +175,7 @@ class Jaws_URLMapping
         // fetch apptype
         $params = explode('/', $this->_request_uri);
         if (false !== $apptype_key = array_search('apptype', $params)) {
-            jaws()->request->update('apptype', $params[$apptype_key + 1], 'get');
+            $this->app->request->update('apptype', $params[$apptype_key + 1], 'get');
             unset($params[$apptype_key], $params[$apptype_key+1]);
         }
         // decode url parts
