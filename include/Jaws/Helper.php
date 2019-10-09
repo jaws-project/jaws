@@ -401,7 +401,7 @@ function _t_lang($lang, $string)
 function terminate(&$data = null, $status_code = 0, $next_location = '', $sync = true)
 {
     // Send content to client
-    $resType = jaws()->request->fetch('restype');
+    $resType = Jaws::getInstance()->request->fetch('restype');
 
     // Event logging
     if (Jaws::getInstance(false)) {
