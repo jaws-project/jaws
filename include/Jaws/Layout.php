@@ -580,7 +580,7 @@ class Jaws_Layout
             return $output;
         }
 
-        jaws()->http_response_code(200);
+        $this->app->http_response_code(200);
         $output = Jaws_Gadget::getInstance($gadget)
             ->action
             ->load()
@@ -588,7 +588,7 @@ class Jaws_Layout
         if (Jaws_Error::isError($output)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'In '.$gadget.'::'.$action.','.$output->GetMessage());
             $output = '';
-        } elseif (jaws()->http_response_code() !== 200) {
+        } elseif ($this->app->http_response_code() !== 200) {
             $output = '';
         } else {
             $this->loaded_layout_gadgets[$gadget] = true;
@@ -714,7 +714,7 @@ class Jaws_Layout
         } else {
             $content = $this->_Template->Get();
             if ($this->app->GZipEnabled()) {
-                jaws()->request->update('restype', 'gzip');
+                $this->app->request->update('restype', 'gzip');
             }
             return $content;
         }
