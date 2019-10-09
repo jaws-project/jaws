@@ -24,11 +24,12 @@ class Upgrader_Report extends JawsUpgraderStage
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
 
         require_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = jaws();
+        $jawsApp = Jaws::getInstance();
+
         if (!isset($_SESSION['upgrade']['InstalledVersion'])) {
-            $_SESSION['upgrade']['InstalledVersion'] = $GLOBALS['app']->Registry->Init();
+            $_SESSION['upgrade']['InstalledVersion'] = $jawsApp->registry->init();
         }
-        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
+        $jawsApp->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $supportedversions = array(
             array('version' => '1.7.0', 'stage' => '14'),

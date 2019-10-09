@@ -59,8 +59,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
     {
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = jaws();
-        $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
+        Jaws::getInstance()->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
@@ -126,11 +125,11 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
 
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = jaws();
-        $GLOBALS['app']->Registry->Init();
+        $jawsApp = Jaws::getInstance();
+        $jawsApp->registry->init();
 
         _log(JAWS_LOG_DEBUG,"Setting ".JAWS_VERSION." as the current installed version");
-        $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
+        $jawsApp->registry->update('version', JAWS_VERSION);
 
         //remove cache directory
         $path = JAWS_DATA. 'cache';

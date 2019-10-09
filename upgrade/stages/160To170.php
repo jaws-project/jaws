@@ -117,8 +117,7 @@ class Upgrader_160To170 extends JawsUpgraderStage
 
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';
-        $GLOBALS['app'] = jaws();
-        $GLOBALS['app']->Registry->Init();
+        Jaws::getInstance()->registry->init();
 
         // Upgrading core gadgets
         $gadgets = array('Settings', 'Users');
