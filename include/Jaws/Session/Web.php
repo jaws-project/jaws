@@ -109,7 +109,7 @@ class Jaws_Session_Web extends Jaws_Session
     function getCookie($name)
     {
         $version = $this->app->registry->fetch('cookie_version', 'Settings');
-        return jaws()->request->fetch($name, 'cookie');
+        return $this->app->request->fetch($name, 'cookie');
     }
 
     /**
