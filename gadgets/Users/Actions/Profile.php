@@ -134,14 +134,19 @@ class Users_Actions_Profile extends Users_Actions_Default
             return Jaws_HTTPError::Get(404);
         }
 
-        $usrModel = new Jaws_User;
-        $user = $usrModel->GetUser($user, true, true, true);
+        if ($this->app->session->getAttribute('username') != $user &&
+            !$this->gadget->GetPermission('AccessUsersProfile')
+        ) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $user = $this->app->users->GetUser($user, true, true, true);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return Jaws_HTTPError::Get(404);
         }
 
         // Avatar
-        $user['avatar'] = $usrModel->GetAvatar(
+        $user['avatar'] = $this->app->users->GetAvatar(
             $user['avatar'],
             $user['email'],
             128,

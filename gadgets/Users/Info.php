@@ -13,7 +13,7 @@ class Users_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '3.14.0';
+    var $version = '4.0.0';
 
     /**
      * Recommended gadgets
