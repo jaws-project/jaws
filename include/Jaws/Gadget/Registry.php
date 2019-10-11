@@ -80,7 +80,7 @@ class Jaws_Gadget_Registry
      */
     function insertAllByUser($keys, $gadget = '')
     {
-        return $this->insertAll($keys, $gadget, $this->app->session->getAttribute('user'));
+        return $this->insertAll($keys, $gadget, $this->app->session->user);
     }
 
     /**
@@ -124,7 +124,7 @@ class Jaws_Gadget_Registry
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $this->app->registry->fetchByUser(
-            is_null($user)? $this->app->session->getAttribute('user') : $user,
+            is_null($user)? $this->app->session->user : $user,
             $name,
             $gadget
         );
@@ -141,7 +141,7 @@ class Jaws_Gadget_Registry
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $this->app->registry->fetchAllByUser(
-            $this->app->session->getAttribute('user'),
+            $this->app->session->user,
             $gadget
         );
     }
@@ -180,7 +180,7 @@ class Jaws_Gadget_Registry
             $value,
             null,
             $gadget,
-            is_null($user)? $this->app->session->getAttribute('user') : $user
+            is_null($user)? $this->app->session->user : $user
         );
     }
 
@@ -225,7 +225,7 @@ class Jaws_Gadget_Registry
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $this->app->registry->deleteByUser(
-            $this->app->session->getAttribute('user'),
+            $this->app->session->user,
             $gadget
         );
     }
