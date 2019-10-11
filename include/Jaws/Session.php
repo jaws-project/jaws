@@ -140,17 +140,6 @@ class Jaws_Session
     }
 
     /**
-     * Return session ID
-     *
-     * @access  public
-     * @return  int     Session ID
-     */
-    function getSessionID()
-    {
-        return $this->session['id'];
-    }
-
-    /**
      * Return session login status
      *
      * @access  public
