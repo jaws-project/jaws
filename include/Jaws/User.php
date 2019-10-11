@@ -1239,7 +1239,7 @@ class Jaws_User
         
         if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->logged()) {
             // other users can't modify the god user
-            if (JAWS_GODUSER == $user['id'] && $this->app->session->getAttribute('user') != $user['id']) {
+            if (JAWS_GODUSER == $user['id'] && $this->app->session->user != $user['id']) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
