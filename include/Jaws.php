@@ -164,8 +164,7 @@ class Jaws
 
         $this->map->init();
         $this->session->init();
-        $logged_user = $this->session->getAttributes('', array('user', 'groups'));
-        $this->acl->init($logged_user['user'], $logged_user['groups']);
+        $this->acl->init($this->session->user, $this->session->getAttribute('groups'));
         $this->loadPreferences();
     }
 
@@ -183,7 +182,7 @@ class Jaws
             // fetch installation instance
             $this->instance = $this->registry->fetch('instance', 'Settings');
 
-            $user   = $this->session->getAttribute('user');
+            $user   = $this->session->user;
             $layout = $this->session->getAttribute('layout');
             $this->_Preferences = array(
                 'theme'         => (array)$this->registry->fetch('theme', 'Settings'),
