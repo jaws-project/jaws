@@ -193,7 +193,7 @@ class Jaws_Layout
                         ) {
                             // set private layout for logged user
                             $layout_file = 'Index.User.html';
-                            $layout_user = (int)$this->app->session->getAttribute('user');
+                            $layout_user = (int)$this->app->session->user;
                         } elseif (($layout_type == 1 || $layout_type == 2) &&
                             $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                             @is_file($theme['path']. 'Index.Users.html')
@@ -231,7 +231,7 @@ class Jaws_Layout
                             ) {
                                 // set private layout for logged user
                                 $layout_file = 'Layout.User.html';
-                                $layout_user = (int)$this->app->session->getAttribute('user');
+                                $layout_user = (int)$this->app->session->user;
                             } elseif (($layout_type == 1  || $layout_type == 2) &&
                                 $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                                 @is_file($theme['path']. 'Layout.Users.html')
