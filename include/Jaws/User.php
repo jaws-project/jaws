@@ -1190,7 +1190,7 @@ class Jaws_User
         }
 
         // password & complexity
-        if (array_key_exists('password', $uData) && $uData['password']!== '') {
+        if (array_key_exists('password', $uData) && !empty($uData['password'])) {
             $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
             if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
                 return Jaws_Error::raiseError(
