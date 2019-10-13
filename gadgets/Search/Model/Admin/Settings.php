@@ -22,10 +22,10 @@ class Search_Model_Admin_Settings extends Jaws_Gadget_Model
         $list = is_array($gadgets)? implode(', ', $gadgets) : '*';
         $res = $this->gadget->registry->update('searchable_gadgets', $list);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('SEARCH_ERROR_NOT_SAVED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('SEARCH_ERROR_NOT_SAVED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SEARCH_ERROR_NOT_SAVED'));
         }
-        $this->app->session->PushLastResponse(_t('SEARCH_SAVED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('SEARCH_SAVED'), RESPONSE_NOTICE);
         return true;
     }
 
