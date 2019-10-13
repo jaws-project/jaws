@@ -89,12 +89,12 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->AddTag($data);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('TAGS_TAG_ADDED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('TAGS_TAG_ADDED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -112,12 +112,12 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->UpdateTag($id, $data);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('TAGS_TAG_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('TAGS_TAG_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -133,12 +133,12 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->DeleteTags($ids);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('TAGS_TAG_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('TAGS_TAG_DELETED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -156,12 +156,12 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->MergeTags($ids, $newName);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('TAGS_TAGS_MERGED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('TAGS_TAGS_MERGED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -177,12 +177,12 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Settings');
         $res = $model->SaveSettings($tagResultLimit);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('TAGS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('TAGS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }

@@ -200,14 +200,14 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 _t('TAGS_ERROR_CANT_UPDATE_TAG'),
-                'ManageTags',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'ManageTags'
             );
         } else {
             $this->gadget->session->push(
                 _t('TAGS_TAG_UPDATED'),
-                'ManageTags',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'ManageTags'
             );
         }
 
@@ -233,14 +233,14 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 _t('TAGS_ERROR_CANT_DELETE_TAG'),
-                'ManageTags',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'ManageTags'
             );
         } else {
             $this->gadget->session->push(
                 _t('TAGS_TAG_DELETED'),
-                'ManageTags',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'ManageTags'
             );
         }
 
@@ -264,15 +264,15 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         if (count($ids) < 3) {
             $this->gadget->session->push(
                 _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'),
-                'ManageTags',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'ManageTags'
             );
         }
         if (empty($post['new_tag_name'])) {
             $this->gadget->session->push(
                 _t('TAGS_ERROR_ENTER_NEW_TAG_NAME'),
-                'ManageTags',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'ManageTags'
             );
         }
         $user = (int)$this->app->session->user;
@@ -281,14 +281,14 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'ManageTags',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'ManageTags'
             );
         } else {
             $this->gadget->session->push(
                 _t('TAGS_TAGS_MERGED'),
-                'ManageTags',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'ManageTags'
             );
         }
 
