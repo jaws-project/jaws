@@ -283,9 +283,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 false
             );
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             } elseif (empty($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
             } else {
                 $image = $res['image_file'][0]['host_filename'];
             }
@@ -645,9 +645,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                     false
                 );
                 if (Jaws_Error::IsError($res)) {
-                    $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                    $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
                 } elseif (empty($res)) {
-                    $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                    $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
                 } else {
                     $image = $res['image_file'][0]['host_filename'];
 
@@ -708,9 +708,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             // Delete Post
             $res = $model->DeleteEntry($post['id']);
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), RESPONSE_ERROR);
             } else {
-                $this->app->session->PushLastResponse(_t('BLOG_ENTRY_DELETED'), RESPONSE_NOTICE);
+                $this->gadget->session->push(_t('BLOG_ENTRY_DELETED'), RESPONSE_NOTICE);
             }
 
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
@@ -721,7 +721,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Ask for confirmation...
         $entry = $bModel->GetEntry($get['id']);
         if (Jaws_Error::IsError($entry)) {
-            $this->app->session->PushLastResponse(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
+            $this->gadget->session->push(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
         }
 

@@ -42,7 +42,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->table('blog_category');
         $categoryId = $objORM->insert($params)->exec();
         if (Jaws_Error::IsError($categoryId)) {
-            $this->app->session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'));
         }
 
@@ -88,7 +88,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             Jaws_Utils::delete($tmpLogo);
         }
 
-        $this->app->session->PushLastResponse(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -109,7 +109,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
     function UpdateCategory($cid, $name, $description, $fast_url, $meta_keywords, $meta_desc, $image_info, $delete_image)
     {
         if(!$this->gadget->GetPermission('CategoryManage', $cid)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -126,7 +126,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $result = $catTable->update($params)->where('id', $cid)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'));
         }
 
@@ -176,7 +176,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             Jaws_Utils::delete($tmpLogo);
         }
 
-        $this->app->session->PushLastResponse(_t('BLOG_CATEGORY_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('BLOG_CATEGORY_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -194,12 +194,12 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $sql = "SELECT COUNT([entry_id]) FROM [[blog_entrycat]] WHERE [category_id] = {id}";
         $count = Jaws_DB::getInstance()->queryOne($sql, $params);
         if (Jaws_Error::IsError($count)) {
-        $this->app->session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+        $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
         return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
         }
 
         if ($count > 0) {
-        $this->app->session->PushLastResponse(_t('BLOG_ERROR_CATEGORIES_LINKED'), RESPONSE_ERROR);
+        $this->gadget->session->push(_t('BLOG_ERROR_CATEGORIES_LINKED'), RESPONSE_ERROR);
         return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_LINKED'));
         }
          **/
@@ -209,7 +209,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $result = $objORM->delete()->where('category_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $objORM->rollback();
-            $this->app->session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
         }
 
@@ -217,14 +217,14 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $result = $catTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $objORM->rollback();
-            $this->app->session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
         }
 
         $objORM->commit();
         $this->gadget->acl->delete('CategoryAccess', $id);
         $this->gadget->acl->delete('CategoryManage', $id);
-        $this->app->session->PushLastResponse(_t('BLOG_CATEGORY_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('BLOG_CATEGORY_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
