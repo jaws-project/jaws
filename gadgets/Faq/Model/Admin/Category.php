@@ -77,7 +77,7 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
         $table = Jaws_ORM::getInstance()->table('faq_category');
         $row = $table->select('category_position')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            $this->app->session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'));
         }
 
@@ -88,29 +88,29 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
             )->where('category_position', $row['category_position'], '>')->exec();
 
             if (Jaws_Error::IsError($result)) {
-                $this->app->session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'));
             }
 
             $table = Jaws_ORM::getInstance()->table('faq_category');
             $result = $table->delete()->where('id', $id)->exec();
             if (Jaws_Error::IsError($result)) {
-                $this->app->session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'));
             }
 
             $faqTable = Jaws_ORM::getInstance()->table('faq');
             $result = $faqTable->delete()->where('category', $id)->exec();
             if (Jaws_Error::IsError($result)) {
-                $this->app->session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'));
             }
 
-            $this->app->session->PushLastResponse(_t('FAQ_CATEGORY_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('FAQ_CATEGORY_DELETED'), RESPONSE_NOTICE);
             return true;
         }
 
-        $this->app->session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+        $this->gadget->session->push(_t('FAQ_ERROR_CATEGORY_DOES_NOT_EXISTS'), RESPONSE_ERROR);
         return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_DOES_NOT_EXISTS'));
     }
 
