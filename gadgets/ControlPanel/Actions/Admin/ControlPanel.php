@@ -86,7 +86,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             $tpl->ParseBlock('layout/warning');
         }
 
-        $responses = $this->app->session->PopLastResponse();
+        $responses = $this->gadget->session->pop();
         if ($responses) {
             $tpl->SetVariable('response_text', $responses[0]['text']);
             $tpl->SetVariable('response_type', $responses[0]['type']);
