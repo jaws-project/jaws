@@ -186,12 +186,12 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $model = $this->gadget->model->loadAdmin('Drivers');
         $res = $model->UpdateNotificationDriver($post['id'], $post['data'], $post['settings']);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('NOTIFICATION_DRIVER_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('NOTIFICATION_DRIVER_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -208,12 +208,12 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $model = $this->gadget->model->loadAdmin('Drivers');
         $res = $model->InstallNotificationDriver($dName);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('NOTIFICATION_DRIVER_INSTALLED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('NOTIFICATION_DRIVER_INSTALLED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -230,12 +230,12 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $model = $this->gadget->model->loadAdmin('Drivers');
         $res = $model->UninstallNotificationDriver($driver);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('NOTIFICATION_DRIVER_UNINSTALLED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('NOTIFICATION_DRIVER_UNINSTALLED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
