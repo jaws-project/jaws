@@ -42,7 +42,7 @@ class Weather_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($title, $fast_url, $latitude, $longitude, $published) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Regions');
         $model->InsertRegion($title, $fast_url, $latitude, $longitude, $published);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -57,7 +57,7 @@ class Weather_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $title, $fast_url, $latitude, $longitude, $published) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Regions');
         $model->UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -72,7 +72,7 @@ class Weather_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Regions');
         $model->DeleteRegion($id);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -87,7 +87,7 @@ class Weather_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($unit, $update_period, $date_format, $api_key) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($unit, $update_period, $date_format, $api_key);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
