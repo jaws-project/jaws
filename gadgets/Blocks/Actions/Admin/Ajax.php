@@ -76,7 +76,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
         $model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -92,7 +92,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Block');
         $model->DeleteBlock($id);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
