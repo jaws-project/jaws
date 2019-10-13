@@ -126,7 +126,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model->InsertBanner($domain, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -153,7 +153,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model->UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -169,7 +169,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->InsertGroup($title, $limit_count, $show_title, $show_type, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -185,7 +185,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->UpdateGroup($gid, $title, $limit_count, $show_title, $show_type, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -200,7 +200,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gid, $banners) = $this->gadget->request->fetch(array('0', '1:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Banners');
         $model->AddBannersToGroup($gid, $banners);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -216,7 +216,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Banners');
         $model->DeleteBanner($bid);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -232,7 +232,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Reports');
         $model->ResetViews($bid);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -248,7 +248,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Reports');
         $model->ResetClicks($bid);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -264,7 +264,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->DeleteGroup($gid);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**

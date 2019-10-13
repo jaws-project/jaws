@@ -328,9 +328,9 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             false
         );
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
         } else {
             if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
                 $post['domain'] = 0;

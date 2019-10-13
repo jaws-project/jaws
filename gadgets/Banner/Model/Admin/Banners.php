@@ -60,10 +60,10 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $res = $bannersTable->insert($bData)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $this->app->session->PushLastResponse(_t('BANNER_BANNERS_CREATED', $title), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('BANNER_BANNERS_CREATED', $title), RESPONSE_NOTICE);
 
         return true;
     }
@@ -117,11 +117,11 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $res = $bannersTable->update($bData)->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->app->session->PushLastResponse(_t('BANNER_BANNERS_UPDATED', $title), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('BANNER_BANNERS_UPDATED', $title), RESPONSE_NOTICE);
         return true;
     }
 
@@ -168,7 +168,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             }
         }
 
-        $this->app->session->PushLastResponse(_t('BANNER_GROUPS_UPDATED_BANNERS'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('BANNER_GROUPS_UPDATED_BANNERS'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -221,23 +221,23 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if(!isset($banner['id'])) {
-            $this->app->session->PushLastResponse(_t('BANNER_BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('BANNER_BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $res = $bannersTable->delete()->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->app->session->PushLastResponse(_t('BANNER_BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('BANNER_BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
         if (!empty($banner['banner'])) {
             Jaws_Utils::Delete(JAWS_DATA . $this->gadget->DataDirectory . $banner['banner']);
         }
