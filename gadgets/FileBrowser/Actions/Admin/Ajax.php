@@ -101,7 +101,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $model->UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -136,7 +136,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $fModel->UpdateDBFileInfo($path, $dir, $title, $description, $fast_url, $oldname);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -157,7 +157,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $fModel->DeleteDBFileInfo($path, $file);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -178,7 +178,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $fModel->DeleteDBFileInfo($path, $dir);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }

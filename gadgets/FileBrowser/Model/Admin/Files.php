@@ -42,7 +42,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $fModel = $this->gadget->model->load('Files');
         $dbFile = $fModel->DBFileInfo($path, $oldname);
         if (Jaws_Error::IsError($dbFile)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -54,11 +54,11 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             $table = Jaws_ORM::getInstance()->table('filebrowser');
             $res = $table->update($params)->where('path', $path)->and()->where('filename', $oldname)->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
-            $this->app->session->PushLastResponse(_t('FILEBROWSER_FILE_UPDATED', $file), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('FILEBROWSER_FILE_UPDATED', $file), RESPONSE_NOTICE);
         } else {
             //Insert
             $fast_url = $this->GetRealFastUrl($fast_url, 'filebrowser');
@@ -68,7 +68,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             $fileTable = Jaws_ORM::getInstance()->table('filebrowser');
             $res = $fileTable->insert($params)->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
@@ -76,7 +76,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
                 $this->gadget->acl->insert('OutputAccess', $res, true);
             }
 
-            $this->app->session->PushLastResponse(_t('FILEBROWSER_FILE_ADDED', $file), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('FILEBROWSER_FILE_ADDED', $file), RESPONSE_NOTICE);
         }
 
         return true;
@@ -102,12 +102,12 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             $res = $table->delete()->where('id', $dbRow['id'])->exec();
             if (!Jaws_Error::IsError($res)) {
                 $this->gadget->acl->delete('OutputAccess', $dbRow['id']);
-                $this->app->session->PushLastResponse(_t('FILEBROWSER_FILE_DELETED', $file), RESPONSE_NOTICE);
+                $this->gadget->session->push(_t('FILEBROWSER_FILE_DELETED', $file), RESPONSE_NOTICE);
                 return true;
             }
         }
 
-        $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+        $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
         return false;
     }
 
@@ -137,20 +137,20 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         {
             $msgError = is_dir($filename)? _t('FILEBROWSER_ERROR_CANT_DELETE_DIR', $file):
                 _t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file);
-            $this->app->session->PushLastResponse($msgError, RESPONSE_ERROR);
+            $this->gadget->session->push($msgError, RESPONSE_ERROR);
             return false;
         }
 
         if (is_file($filename)) {
             $return = @unlink($filename);
             if (!$return) {
-                $this->app->session->PushLastResponse(_t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file), RESPONSE_ERROR);
                 return false;
             }
         } elseif (is_dir($filename)) {
             $return = Jaws_Utils::delete($filename);
             if (!$return) {
-                $this->app->session->PushLastResponse(_t('FILEBROWSER_ERROR_CANT_DELETE_DIR', $file), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('FILEBROWSER_ERROR_CANT_DELETE_DIR', $file), RESPONSE_ERROR);
                 return false;
             }
         }
@@ -187,7 +187,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             in_array(strtolower(basename($oldfile)), $blackList) ||
             in_array(strtolower(basename($newfile)), $blackList))
         {
-            $this->app->session->PushLastResponse(
+            $this->gadget->session->push(
                 _t('FILEBROWSER_ERROR_CANT_RENAME', $old, $new),
                 RESPONSE_ERROR
             );
@@ -196,7 +196,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
 
         $return = @rename($oldfile, $newfile);
         if ($return) {
-            $this->app->session->PushLastResponse(
+            $this->gadget->session->push(
                 _t('FILEBROWSER_RENAMED', $old, $new),
                 RESPONSE_NOTICE
             );
@@ -204,7 +204,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         }
 
         $msgError = _t('FILEBROWSER_ERROR_CANT_RENAME', $old, $new);
-        $this->app->session->PushLastResponse($msgError, RESPONSE_ERROR);
+        $this->gadget->session->push($msgError, RESPONSE_ERROR);
         return false;
     }
 

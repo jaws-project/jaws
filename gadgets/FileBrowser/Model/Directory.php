@@ -153,7 +153,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $fModel = $this->gadget->model->load('Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (!file_exists($folder) || !$adr = scandir($folder)) {
-            $this->app->session->PushLastResponse(
+            $this->gadget->session->push(
                 _t('FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', $path),
                 RESPONSE_ERROR
             );

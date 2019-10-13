@@ -193,13 +193,13 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $uploaddir = File_Util::realpath($uploaddir) . DIRECTORY_SEPARATOR;
 
         if (!File_Util::pathInRoot($uploaddir, $fModel->GetFileBrowserRootDir())) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
         } else {
             $res = Jaws_Utils::UploadFiles($_FILES, $uploaddir, '');
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             } elseif (empty($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
             } else {
                 $post['oldname'] = preg_replace('/[^[:alnum:]_\.\-]*/', '', $post['oldname']);
                 if (!empty($post['oldname']) && ($res['uploadfile'][0]['host_filename'] != $post['oldname'])) {
