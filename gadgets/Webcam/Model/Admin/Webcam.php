@@ -30,11 +30,11 @@ class Webcam_Model_Admin_Webcam extends Jaws_Gadget_Model
         $result = $webcamTable->insert($data)->exec();
 
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('WEBCAM_ERROR_NOT_ADDED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('WEBCAM_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEBCAM_ERROR_NOT_ADDED'));
         }
 
-        $this->app->session->PushLastResponse(_t('WEBCAM_ADDED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('WEBCAM_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -57,11 +57,11 @@ class Webcam_Model_Admin_Webcam extends Jaws_Gadget_Model
         $webcamTable = Jaws_ORM::getInstance()->table('webcam');
         $result = $webcamTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('WEBCAM_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('WEBCAM_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'));
         }
 
-        $this->app->session->PushLastResponse(_t('WEBCAM_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('WEBCAM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -78,11 +78,11 @@ class Webcam_Model_Admin_Webcam extends Jaws_Gadget_Model
         $result = $webcamTable->delete()->where('id', $id)->exec();
 
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('WEBCAM_ERROR_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('WEBCAM_ERROR_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'));
         }
 
-        $this->app->session->PushLastResponse(_t('WEBCAM_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('WEBCAM_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 }
