@@ -21,18 +21,18 @@ class Sitemap_Actions_Admin_Ping extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Ping');
         $res = $model->PingSearchEngines();
         if (Jaws_Error::IsError($res) || $res === false) {
-            $this->app->session->PushLastResponse(
+            $this->gadget->session->push(
                 _t('SITEMAP_ERROR_CANT_PING_SEARCHENGINES'),
                 RESPONSE_ERROR
             );
         } else {
-            $this->app->session->PushLastResponse(
+            $this->gadget->session->push(
                 _t('SITEMAP_SEARCHENGINES_PINGED'),
                 RESPONSE_NOTICE
             );
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }
