@@ -42,7 +42,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
         $lid = $linksTable->insert($lData)->exec();
         if (Jaws_Error::IsError($lid)) {
-            $this->app->session->PushLastResponse($lid->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($lid->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('LINKDUMP_LINKS_ADD_ERROR', 'AddLink'));
         }
 
@@ -52,12 +52,12 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->InsertReferenceTags('LinkDump', 'link', $lid, true, null, $tags);
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
             }
         }
 
         $this->InvalidateFeed($gid);
-        $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_ADDED'), RESPONSE_NOTICE, $lid);
+        $this->gadget->session->push(_t('LINKDUMP_LINKS_ADDED'), RESPONSE_NOTICE, $lid);
         return true;
     }
 
@@ -83,7 +83,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Links');
         $oldLink = $model->GetLink($id);
         if (Jaws_Error::IsError($oldLink)) {
-            $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
             return new Jaws_Error($oldLink->getMessage());
         }
 
@@ -99,7 +99,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
         $res = $linksTable->update($lData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
             return $res;
         }
 
@@ -109,7 +109,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->UpdateReferenceTags('LinkDump', 'link', $id, true, time(), $tags);
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_TAG_ERROR'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('LINKDUMP_LINKS_UPDATE_TAG_ERROR'), RESPONSE_ERROR);
             }
         }
 
@@ -118,7 +118,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         }
         $this->InvalidateFeed($gid);
 
-        $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('LINKDUMP_LINKS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -144,7 +144,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
                 )
             )->where('gid', $old_gid)->and()->where('rank', $old_rank, '>')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
@@ -155,7 +155,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif (empty($old_rank)) {
@@ -165,7 +165,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank > $old_rank) {
@@ -177,7 +177,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $old_rank, '>');
             $res = $linksTable->and()->where('rank', $new_rank, '<=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank < $old_rank) {
@@ -188,7 +188,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=');
             $res = $linksTable->and()->where('rank', $old_rank, '<')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         }
@@ -210,7 +210,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance();
         $res = $objORM->delete()->table('linkdump_links')->where('id', $lid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
             return $res;
         }
 
@@ -220,13 +220,13 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->DeleteReferenceTags('LinkDump', 'link', $lid);
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
                 return $res;
             }
         }
 
         $this->InvalidateFeed($gid);
-        $this->app->session->PushLastResponse(_t('LINKDUMP_LINKS_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('LINKDUMP_LINKS_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 

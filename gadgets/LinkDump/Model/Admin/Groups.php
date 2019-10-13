@@ -36,11 +36,11 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
         $gid = $groupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($gid)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->app->session->PushLastResponse(_t('LINKDUMP_GROUPS_ADDED'), RESPONSE_NOTICE, $gid);
+        $this->gadget->session->push(_t('LINKDUMP_GROUPS_ADDED'), RESPONSE_NOTICE, $gid);
         return true;
     }
 
@@ -70,13 +70,13 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
         $res = $groupsTable->update($gData)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $model = $this->gadget->model->loadAdmin('Links');
         $model->InvalidateFeed($gid);
-        $this->app->session->PushLastResponse(_t('LINKDUMP_GROUPS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('LINKDUMP_GROUPS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -90,18 +90,18 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $this->app->session->PushLastResponse(_t('LINKDUMP_GROUPS_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LINKDUMP_GROUPS_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
         $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if(!isset($group['id'])) {
-            $this->app->session->PushLastResponse(_t('LINKDUMP_GROUPS_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LINKDUMP_GROUPS_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -111,7 +111,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             foreach ($links as $link) {
                 $res = $model->DeleteReferenceTags('LinkDump', 'link', $link['id']);
                 if (Jaws_Error::IsError($res)) {
-                    $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                    $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                     return false;
                 }
             }
@@ -120,17 +120,17 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->table('linkdump_links');
         $res = $objORM->delete()->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $res = $objORM->delete()->table('linkdump_groups')->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->app->session->PushLastResponse(_t('LINKDUMP_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('LINKDUMP_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
 }
