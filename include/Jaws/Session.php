@@ -857,15 +857,15 @@ class Jaws_Session
      *
      * @access  public
      * @param   string  $text       Response text
-     * @param   string  $resource   Response name
      * @param   string  $type       Response type
+     * @param   string  $resource   Response name
      * @param   mixed   $data       Response data
      * @param   int     $code       Response code
      * @param   string  $component  Component name
      * @return  void
      */
     function pushResponse(
-        $text, $resource = 'Response', $type = RESPONSE_NOTICE, $data = null, $code = 0, $component = ''
+        $text, $type = RESPONSE_NOTICE, $resource = 'Response', $data = null, $code = 0, $component = ''
     ) {
         $this->setAttribute(
             $resource,

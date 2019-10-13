@@ -102,13 +102,13 @@ class Jaws_Gadget_Session
      *
      * @access  public
      * @param   string  $text       Response text
-     * @param   string  $resource   Response name
      * @param   string  $type       Response type
+     * @param   string  $resource   Response name
      * @param   mixed   $data       Response data
      * @param   int     $code       Response code
      * @return  void
      */
-    function push($text, $resource = 'Resource', $type = RESPONSE_NOTICE, $data = null, $code = 0)
+    function push($text, $type = RESPONSE_NOTICE, $resource = 'Resource', $data = null, $code = 0)
     {
         $gadget = $this->gadget->name;
         return $this->app->session->pushResponse($text, "Response.$resource", $type, $data, $code, $gadget);
