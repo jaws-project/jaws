@@ -71,7 +71,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gadget) = $this->gadget->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->InstallGadget($gadget);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -85,7 +85,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gadget) = $this->gadget->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->UpgradeGadget($gadget);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -99,7 +99,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gadget) = $this->gadget->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->UninstallGadget($gadget);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -113,7 +113,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gadget) = $this->gadget->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->EnableGadget($gadget);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -127,7 +127,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gadget) = $this->gadget->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->DisableGadget($gadget);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -181,11 +181,11 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($plugin) = $this->gadget->request->fetchAll('post');
         $return = Jaws_Plugin::InstallPlugin($plugin);
         if (Jaws_Error::IsError($return)) {
-            $this->app->session->PushLastResponse(_t('COMPONENTS_PLUGINS_INSTALL_FAILURE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('COMPONENTS_PLUGINS_INSTALL_FAILURE'), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('COMPONENTS_PLUGINS_INSTALL_OK', $plugin), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('COMPONENTS_PLUGINS_INSTALL_OK', $plugin), RESPONSE_NOTICE);
         }
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -200,11 +200,11 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($plugin) = $this->gadget->request->fetchAll('post');
         $return = Jaws_Plugin::UninstallPlugin($plugin);
         if (Jaws_Error::isError($return)) {
-            $this->app->session->PushLastResponse(_t('COMPONENTS_PLUGINS_UNINSTALL_FAILURE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('COMPONENTS_PLUGINS_UNINSTALL_FAILURE'), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('COMPONENTS_PLUGINS_UNINSTALL_OK', $plugin), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('COMPONENTS_PLUGINS_UNINSTALL_OK', $plugin), RESPONSE_NOTICE);
         }
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -245,8 +245,8 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($plugin, $backend, $frontend) = $this->gadget->request->fetchAll('post');
         $this->gadget->registry->update('backend_gadgets', $backend, false, $plugin);
         $this->gadget->registry->update('frontend_gadgets', $frontend, false, $plugin);
-        $this->app->session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
-        return $this->app->session->PopLastResponse();
+        $this->gadget->session->push(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -279,11 +279,11 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         foreach ($data as $key => $value) {
             $res = $this->app->registry->update($key, $value, null, $comp);
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('COMPONENTS_REGISTRY_NOT_UPDATED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('COMPONENTS_REGISTRY_NOT_UPDATED'), RESPONSE_ERROR);
             }
         }
-        $this->app->session->PushLastResponse(_t('COMPONENTS_REGISTRY_UPDATED'), RESPONSE_NOTICE);
-        return $this->app->session->PopLastResponse();
+        $this->gadget->session->push(_t('COMPONENTS_REGISTRY_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -332,12 +332,12 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
             list($key, $subkey) = explode(':', $key);
             $res = $this->app->acl->update($key, $subkey, $value, $comp);
             if (Jaws_Error::IsError($res)) {
-                $this->app->session->PushLastResponse(_t('COMPONENTS_ACL_NOT_UPDATED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('COMPONENTS_ACL_NOT_UPDATED'), RESPONSE_ERROR);
             }
         }
 
-        $this->app->session->PushLastResponse(_t('COMPONENTS_ACL_UPDATED'), RESPONSE_NOTICE);
-        return $this->app->session->PopLastResponse();
+        $this->gadget->session->push(_t('COMPONENTS_ACL_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->pop();
     }
 
 }
