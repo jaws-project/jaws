@@ -58,12 +58,12 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Maps');
         $res = $model->UpdateMap($id, $map, null, $order);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_ERROR_MAP_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('URLMAPPER_ERROR_MAP_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_MAP_UPDATED', $map), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('URLMAPPER_MAP_UPDATED', $map), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -95,7 +95,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
                                     $use_aliases == 'true',
                                     $precedence == 'true',
                                     $extension);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -141,7 +141,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($alias, $url) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Aliases');
         $model->AddAlias($alias, $url);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -156,7 +156,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $alias, $url) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Aliases');
         $model->UpdateAlias($id, $alias, $url);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -171,7 +171,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Aliases');
         $model->DeleteAlias($id);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -220,12 +220,12 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $res = $model->AddErrorMap($url, $code, $new_url, $new_code);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_ERRORMAP_ADDED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('URLMAPPER_ERRORMAP_ADDED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -240,7 +240,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $url, $code, $new_url, $new_code) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $model->UpdateErrorMap($id, $url, $code, $new_url, $new_code);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -272,7 +272,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $ids = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $model->DeleteErrorMaps($ids);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -287,7 +287,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $filters = $this->gadget->request->fetch('filters:array', 'post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $model->DeleteErrorMapsFilters($filters);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }

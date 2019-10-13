@@ -30,11 +30,11 @@ class UrlMapper_Model_Admin_Properties extends Jaws_Gadget_Model
         $res = $res && $this->gadget->registry->update('map_use_aliases', ($use_aliases === true)? 'true' : 'false');
 
         if ($res === false) {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'));
         }
 
-        $this->app->session->PushLastResponse(_t('URLMAPPER_SETTINGS_SAVED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('URLMAPPER_SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
 }

@@ -86,13 +86,13 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
         $data['update_time'] = time();
 
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'));
         }
 
         if ($result != $data['url_hash']) {
             if ($this->ErrorMapExists($data['url_hash'])) {
-                $this->app->session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_ALREADY_EXISTS'));
             }
         }
@@ -100,11 +100,11 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $result = $errorsTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'));
         }
 
-        $this->app->session->PushLastResponse(_t('URLMAPPER_ERRORMAP_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('URLMAPPER_ERRORMAP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -120,11 +120,11 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $result = $errorsTable->delete()->where('id', $ids, 'in')->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'));
         }
 
-        $this->app->session->PushLastResponse(_t('URLMAPPER_ERRORMAP_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('URLMAPPER_ERRORMAP_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -172,11 +172,11 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
 
         $result = $errorsTable->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'));
         }
 
-        $this->app->session->PushLastResponse(_t('URLMAPPER_ERRORMAP_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('URLMAPPER_ERRORMAP_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
