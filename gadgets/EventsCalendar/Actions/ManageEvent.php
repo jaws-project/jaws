@@ -248,8 +248,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (empty($event['subject']) || empty($event['start_date'])) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
-                'Event',
                 RESPONSE_ERROR,
+                'Event',
                 $event
             );
             Jaws_Header::Referrer();
@@ -271,8 +271,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_EVENT_CREATE'),
-                'Event',
                 RESPONSE_ERROR,
+                'Event',
                 $event
             );
             Jaws_Header::Referrer();
@@ -280,8 +280,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         $this->gadget->session->push(
             _t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'),
-            'Event',
-            RESPONSE_NOTICE
+            RESPONSE_NOTICE,
+            'Event'
         );
         return Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $event['user'])));
     }
@@ -301,8 +301,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (empty($data['subject']) || empty($data['start_date'])) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
-                'Event',
                 RESPONSE_ERROR,
+                'Event',
                 $data
             );
             Jaws_Header::Referrer();
@@ -316,8 +316,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($event)) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_RETRIEVING_DATA'),
-                'Event',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Event'
             );
             Jaws_Header::Referrer();
         }
@@ -326,8 +326,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if ($event['owner'] != $user) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
-                'Event',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Event'
             );
             Jaws_Header::Referrer();
         }
@@ -344,8 +344,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_EVENT_UPDATE'),
-                'Event',
                 RESPONSE_ERROR,
+                'Event',
                 $data
             );
             Jaws_Header::Referrer();
@@ -353,8 +353,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         $this->gadget->session->push(
             _t('EVENTSCALENDAR_NOTICE_EVENT_UPDATED'),
-            'Event',
-            RESPONSE_NOTICE
+            RESPONSE_NOTICE,
+            'Event'
         );
         return Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $data['user'])));
     }
@@ -408,14 +408,14 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (count($id_set) !== count($verifiedEvents)) {
             $msg = _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS_FAILED');
             // FIXME: we are creating response twice
-            $this->gadget->session->push($msg, 'Event', RESPONSE_WARNING);
+            $this->gadget->session->push($msg, RESPONSE_WARNING, 'Event');
             return $this->gadget->session->response($msg, RESPONSE_WARNING);
         }
 
         $msg = (count($id_set) === 1)?
             _t('EVENTSCALENDAR_NOTICE_EVENT_DELETED') :
             _t('EVENTSCALENDAR_NOTICE_EVENTS_DELETED');
-        $this->gadget->session->push($msg, 'Event', RESPONSE_NOTICE);
+        $this->gadget->session->push($msg, RESPONSE_NOTICE, 'Event');
         return $this->gadget->session->response($msg);
     }
 

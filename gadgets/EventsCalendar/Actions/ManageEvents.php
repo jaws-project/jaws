@@ -233,7 +233,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             $post = null;
         }
 
-        $this->gadget->session->push('', 'Event', RESPONSE_NOTICE, $post);
+        $this->gadget->session->push('', RESPONSE_NOTICE, 'Event', $post);
         return Jaws_Header::Location(
             $this->gadget->urlMap('ManageEvents', array('user' =>$this->app->session->user))
         );
