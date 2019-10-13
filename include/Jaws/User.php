@@ -1190,30 +1190,34 @@ class Jaws_User
         }
 
         // password & complexity
-        if (array_key_exists('password', $uData) && !empty($uData['password'])) {
-            $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
-            if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
-                return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
-                    __FUNCTION__,
-                    JAWS_ERROR_NOTICE
-                );
-            }
+        if (array_key_exists('password', $uData)) {
+            if (!empty($uData['password'])) {
+                $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
+                if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
 
-            if (!preg_match($this->app->registry->fetch('password_complexity', 'Policy'),
-                    $uData['password'])
-            ) {
-                return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
-                    __FUNCTION__,
-                    JAWS_ERROR_NOTICE
-                );
-            }
+                if (!preg_match($this->app->registry->fetch('password_complexity', 'Policy'),
+                        $uData['password'])
+                ) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
 
-            // password hash
-            $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
-            $uData['recovery_key'] = '';
-            $uData['last_password_update'] = time();
+                // password hash
+                $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
+                $uData['recovery_key'] = '';
+                $uData['last_password_update'] = time();
+            } else {
+                unset($uData['password']);
+            }
         }
 
         // get user information, we need it for rename avatar
