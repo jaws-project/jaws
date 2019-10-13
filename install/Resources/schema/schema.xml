@@ -253,6 +253,11 @@
             </field>
 
             <field>
+                <name>properties</name>
+                <type>text</type>
+            </field>
+
+            <field>
                 <name>data</name>
                 <type>text</type>
             </field>
