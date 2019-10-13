@@ -311,14 +311,14 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogs($logsID);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $this->app->session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
+            $this->gadget->session->push(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
                 RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('LOGS_LOGS_DELETED'),
+            $this->gadget->session->push(_t('LOGS_LOGS_DELETED'),
                 RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -335,14 +335,14 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogsUseFilters($filters);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $this->app->session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
+            $this->gadget->session->push(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
                 RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('LOGS_LOGS_DELETED'),
+            $this->gadget->session->push(_t('LOGS_LOGS_DELETED'),
                 RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
