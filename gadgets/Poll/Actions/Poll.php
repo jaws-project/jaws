@@ -251,12 +251,13 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($res)) {
                 $this->gadget->session->push(
                     $res->GetMessage(),
-                    'Vote',
-                    RESPONSE_ERROR
+                    RESPONSE_ERROR,
+                    'Vote'
                 );
             } else {
                 $this->gadget->session->push(
                     _t('POLL_THANKS'),
+                    RESPONSE_NOTICE,
                     'Vote'
                 );
             }

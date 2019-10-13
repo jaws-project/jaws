@@ -63,7 +63,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Poll');
         $model->InsertPoll($title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -90,7 +90,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Poll');
         $model->UpdatePoll($pid, $title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -107,7 +107,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Poll');
         $model->DeletePoll($pid);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -162,7 +162,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Poll');
         $model->UpdatePollAnswers($pid, $answers);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -199,7 +199,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Group');
         $model->InsertPollGroup($title, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -218,7 +218,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Group');
         $model->UpdatePollGroup($gid, $title, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -235,7 +235,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Group');
         $model->DeletePollGroup($gid);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -289,7 +289,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $polls = $this->gadget->request->fetch('1:array', 'post');
         $model = $this->gadget->model->loadAdmin('Poll');
         $model->AddPollsToPollGroup($gid, $polls);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
