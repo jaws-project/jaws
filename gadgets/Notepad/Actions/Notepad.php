@@ -149,8 +149,8 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         /*if (strlen($search['query']) < 2) {
             $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_SHORT_QUERY'),
-                'Response',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Response'
             );
         }*/
     }

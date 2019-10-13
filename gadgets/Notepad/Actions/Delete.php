@@ -59,14 +59,14 @@ class Notepad_Actions_Delete extends Jaws_Gadget_Action
         if (count($id_set) !== count($verified_nodes)) {
             $msg = _t('NOTEPAD_WARNING_DELETE_NOTES_FAILED');
             // FIXME: we are creating response twice
-            $this->gadget->session->push($msg, 'Response', RESPONSE_WARNING);
+            $this->gadget->session->push($msg, RESPONSE_WARNING, 'Response');
             return $this->gadget->session->response($msg, RESPONSE_WARNING);
         }
 
         $msg = (count($id_set) === 1)?
             _t('NOTEPAD_NOTICE_NOTE_DELETED') :
             _t('NOTEPAD_NOTICE_NOTES_DELETED');
-        $this->gadget->session->push($msg, 'Response');
+        $this->gadget->session->push($msg, RESPONSE_NOTICE, 'Response');
         return $this->gadget->session->response($msg);
     }
 

@@ -78,8 +78,8 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         if (empty($data['id']) || empty($data['title']) || empty($data['content'])) {
             $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),
-                'Response',
                 RESPONSE_ERROR,
+                'Response',
                 $data
             );
             Jaws_Header::Referrer();
@@ -93,8 +93,8 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($note)) {
             $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_RETRIEVING_DATA'),
-                'Response',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Response'
             );
             Jaws_Header::Referrer();
         }
@@ -103,8 +103,8 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         if ($note['user'] != $user) {
             $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_NO_PERMISSION'),
-                'Response',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Response'
             );
             Jaws_Header::Referrer();
         }
@@ -115,8 +115,8 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_NOTE_UPDATE'),
-                'Response',
                 RESPONSE_ERROR,
+                'Response',
                 $data
             );
             Jaws_Header::Referrer();
@@ -124,6 +124,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
 
         $this->gadget->session->push(
             _t('NOTEPAD_NOTICE_NOTE_UPDATED'),
+            RESPONSE_NOTICE,
             'Response'
         );
         return Jaws_Header::Location($this->gadget->urlMap('Notepad'));

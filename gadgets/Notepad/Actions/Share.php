@@ -142,6 +142,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
 
         $this->gadget->session->push(
             _t('NOTEPAD_NOTICE_SHARE_UPDATED'),
+            RESPONSE_NOTICE,
             'Response'
         );
         return $this->gadget->session->response(

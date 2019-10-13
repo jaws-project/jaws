@@ -68,8 +68,8 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         if (empty($data['title']) || empty($data['content'])) {
             $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),
-                'Response',
                 RESPONSE_ERROR,
+                'Response',
                 $data
             );
             Jaws_Header::Referrer();
@@ -83,8 +83,8 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 _t('NOTEPAD_ERROR_NOTE_CREATE'),
-                'Response',
                 RESPONSE_ERROR,
+                'Response',
                 $data
             );
             Jaws_Header::Referrer();
@@ -92,6 +92,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
 
         $this->gadget->session->push(
             _t('NOTEPAD_NOTICE_NOTE_CREATED'),
+            RESPONSE_NOTICE,
             'Response'
         );
         return Jaws_Header::Location($this->gadget->urlMap('Notepad'));
