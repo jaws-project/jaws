@@ -421,7 +421,7 @@ class Phoo_Model_Photos extends Phoo_Model
         $uploaddir = JAWS_DATA . 'phoo/' . date('Y_m_d') . '/';
         if (!is_dir($uploaddir)) {
             if (!Jaws_Utils::is_writable(JAWS_DATA . 'phoo/')) {
-                $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
             }
 
@@ -431,7 +431,7 @@ class Phoo_Model_Photos extends Phoo_Model
             $new_dirs[] = $uploaddir . 'medium';
             foreach ($new_dirs as $new_dir) {
                 if (!Jaws_Utils::mkdir($new_dir)) {
-                    $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                    $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                     return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
                 }
             }
@@ -462,7 +462,7 @@ class Phoo_Model_Photos extends Phoo_Model
         $objImage->free();
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
-            $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
             return new Jaws_Error($res->GetMessage());
         }
 
@@ -472,7 +472,7 @@ class Phoo_Model_Photos extends Phoo_Model
         $objImage->free();
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
-            $this->app->session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'));
         }
 

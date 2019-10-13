@@ -52,12 +52,12 @@ class Phoo_Model_Admin_Settings extends Jaws_Gadget_Model
 
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || $r === false) {
-                $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_SETTINGS'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPDATE_SETTINGS'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_SETTINGS'));
             }
         }
 
-        $this->app->session->PushLastResponse(_t('PHOO_SETTINGS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('PHOO_SETTINGS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 }

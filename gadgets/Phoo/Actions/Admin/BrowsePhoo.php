@@ -233,7 +233,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
         }
 
         // clear pushed message
-        $this->app->session->PopLastResponse();
+        $this->gadget->session->pop();
 
         $tpl->ParseBlock('phoo_browse');
         return $tpl->Get();

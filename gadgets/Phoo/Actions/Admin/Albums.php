@@ -130,7 +130,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
             }
         } else {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
@@ -257,7 +257,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
             }
         } else {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');

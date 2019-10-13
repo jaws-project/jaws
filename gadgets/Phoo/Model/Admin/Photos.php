@@ -41,7 +41,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'));
         }
 
@@ -55,7 +55,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             $tModel->InsertReferenceTags('Phoo', 'image', $id, $data['published'], time(), $tags);
         }
 
-        $this->app->session->PushLastResponse(_t('PHOO_PHOTO_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('PHOO_PHOTO_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -72,21 +72,21 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $image = $table->select('filename')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($image)) {
-            $this->app->session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         $table->reset();
         $result = $table->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         $table = Jaws_ORM::getInstance()->table('phoo_image_album');
         $result = $table->delete()->where('phoo_image_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
         }
 
@@ -96,7 +96,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetThumbPath($image['filename']));
         }
 
-        $this->app->session->PushLastResponse(_t('PHOO_PHOTO_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('PHOO_PHOTO_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -116,12 +116,12 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
     {
         // check if it's really a uploaded file.
         /*if (is_uploaded_file($files['tmp_name'])) {
-            $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
         }*/
 
         if (!preg_match("/\.png$|\.jpg$|\.jpeg$|\.gif$/i", $files['name'])) {
-            $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'));
         }
 
@@ -129,7 +129,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $uploaddir = JAWS_DATA . 'phoo/' . date('Y_m_d') . '/';
         if (!is_dir($uploaddir)) {
             if (!Jaws_Utils::is_writable(JAWS_DATA . 'phoo/')) {
-                $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
             }
 
@@ -139,7 +139,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             $new_dirs[] = $uploaddir . 'medium';
             foreach ($new_dirs as $new_dir) {
                 if (!Jaws_Utils::mkdir($new_dir)) {
-                    $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                    $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                     return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
                 }
             }
@@ -152,10 +152,10 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
 
         $res = Jaws_Utils::UploadFiles($files, $uploaddir, 'jpg,gif,png,jpeg', false, !$fromControlPanel);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         } elseif (empty($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'));
         }
         $filename = $res[0][0]['host_filename'];
@@ -177,7 +177,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $objImage->free();
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
-            $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
@@ -187,7 +187,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $objImage->free();
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'));
         }
 
@@ -230,7 +230,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
         }
 
@@ -246,7 +246,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $saParams['action'] = 'Photo';
         $this->gadget->event->shout('Activities', $saParams);
 
-        $this->app->session->PushLastResponse(_t('PHOO_PHOTO_ADDED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('PHOO_PHOTO_ADDED'), RESPONSE_NOTICE);
         return $result;
     }
 
@@ -267,7 +267,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $table = Jaws_ORM::getInstance()->table('phoo_image_album', '', '');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'));
         }
 
@@ -298,7 +298,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             }
         }
 
-        $this->app->session->PushLastResponse(_t('PHOO_ALBUMS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('PHOO_ALBUMS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 }

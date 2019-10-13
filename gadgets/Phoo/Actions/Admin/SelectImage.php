@@ -50,7 +50,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
 
         $image = $model->GetImageEntry($iGet['image']);
         if (Jaws_Error::IsError ($image)) {
-            $this->app->session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($image->GetMessage(), RESPONSE_ERROR);
             JawsHeader::Location ("admin.php?gadget=Phoo");
         }
         $album = $this->gadget->request->fetch('album', 'get');

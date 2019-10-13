@@ -370,14 +370,14 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'UploadPhoto',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'UploadPhoto'
             );
         } else {
             $this->gadget->session->push(
                 _t('PHOO_PHOTO_ADDED'),
-                'UploadPhoto',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'UploadPhoto'
             );
         }
 

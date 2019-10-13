@@ -196,7 +196,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                         }
                         $tpl->ParseBlock('phoo/photos/albums');
                     } else {
-                        $this->app->session->PushLastResponse(_t('PHOO_INEXISTENT_ALBUM'), RESPONSE_ERROR);
+                        $this->gadget->session->push(_t('PHOO_INEXISTENT_ALBUM'), RESPONSE_ERROR);
                     }
                 }
             }
@@ -248,7 +248,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $get = $this->gadget->request->fetch(array('image', 'album'), 'get');
         $image = $pModel->GetImageEntry((int)$get['image']);
         if (Jaws_Error::IsError($image)) {
-            $this->app->session->PushLastResponse($image->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($image->GetMessage(), RESPONSE_ERROR);
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
