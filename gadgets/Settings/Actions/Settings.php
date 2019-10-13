@@ -179,12 +179,13 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $result->GetMessage(),
-                'Settings',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Settings'
             );
         } else {
             $this->gadget->session->push(
                 _t('SETTINGS_SAVED'),
+                RESPONSE_NOTICE,
                 'Settings'
             );
         }
