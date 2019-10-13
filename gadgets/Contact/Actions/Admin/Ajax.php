@@ -255,7 +255,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -348,7 +348,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $gadget = $this->gadget->action->loadAdmin('Mailer');
         $gadget->SendEmail($target, $subject, $message, $attachment);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**

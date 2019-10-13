@@ -290,11 +290,11 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
 
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('CONTACT_ERROR_EMAIL_NOT_SENT'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('CONTACT_ERROR_EMAIL_NOT_SENT'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->app->session->PushLastResponse(_t('CONTACT_NOTICE_EMAIL_SENT'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('CONTACT_NOTICE_EMAIL_SENT'), RESPONSE_NOTICE);
         return true;
     }
 }

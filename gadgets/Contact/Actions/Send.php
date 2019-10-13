@@ -39,8 +39,8 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         {
             $this->gadget->session->push(
                 _t('CONTACT_INCOMPLETE_FIELDS'),
-                'Contact',
                 RESPONSE_ERROR,
+                'Contact',
                 $post
             );
             Jaws_Header::Referrer();
@@ -51,8 +51,8 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($resCheck)) {
             $this->gadget->session->push(
                 $resCheck->getMessage(),
-                'Contact',
                 RESPONSE_ERROR,
+                'Contact',
                 $post
             );
             Jaws_Header::Referrer();
@@ -96,8 +96,8 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         if (empty($post['email']) && empty($post['mobile'])) {
             $this->gadget->session->push(
                 _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
-                'Contact',
                 RESPONSE_ERROR,
+                'Contact',
                 $post
             );
             Jaws_Header::Referrer();
@@ -107,8 +107,8 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
                 $this->gadget->session->push(
                     _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
-                    'Contact',
                     RESPONSE_ERROR,
+                    'Contact',
                     $post
                 );
                 Jaws_Header::Referrer();
@@ -126,8 +126,8 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($attach)) {
                 $this->gadget->session->push(
                     $attach->getMessage(),
-                    'Contact',
                     RESPONSE_ERROR,
+                    'Contact',
                     $post
                 );
                 Jaws_Header::Referrer();
@@ -180,15 +180,15 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
 
             $this->gadget->session->push(
                 _t('CONTACT_RESULT_SENT'),
-                'Contact',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Contact'
             );
 
         } catch (Exception $error) {
             $this->gadget->session->push(
                 $error->getMessage(),
-                'Contact',
                 RESPONSE_ERROR,
+                'Contact',
                 $post
             );
         }

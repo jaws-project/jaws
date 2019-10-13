@@ -334,13 +334,13 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Contacts');
         $contact = $model->GetReply($cid);
         if (Jaws_Error::IsError($contact)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'),
                                                        RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         if (!isset($contact['id'])) {
-            $this->app->session->PushLastResponse(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
+            $this->gadget->session->push(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
                                                        RESPONSE_ERROR);
             return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'));
         }
@@ -353,12 +353,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             $rModel = $this->gadget->model->load('Recipients');
             $recipient = $rModel->GetRecipient($rid);
             if (Jaws_Error::IsError($recipient)) {
-                $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
+                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'),
                                                            RESPONSE_ERROR);
                 return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
             }
             if (!isset($recipient['id'])) {
-                $this->app->session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),
+                $this->gadget->session->push(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),
                                                            RESPONSE_ERROR);
                 return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'));
             }
@@ -419,12 +419,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $mail->SetBody($template, array('format' => $format));
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('CONTACT_ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);
             return false;
         }
 
         $model->UpdateContact($cid, array('reply_sent' => 1));
-        $this->app->session->PushLastResponse(_t('CONTACT_REPLY_SENT'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('CONTACT_REPLY_SENT'), RESPONSE_NOTICE);
         return true;
     }
 
