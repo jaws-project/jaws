@@ -74,6 +74,14 @@ class Jaws_Session
     protected $changed = false;
 
     /**
+     * Properties array
+     * @var     array   $properties
+     * @access  protected
+     * @see     setProperty(), __get()
+     */
+    protected $properties = array();
+
+    /**
      * Attributes array
      * @var     array   $attributes
      * @access  protected
@@ -85,7 +93,7 @@ class Jaws_Session
      * Attributes array trash
      * @var     array $trash
      * @access  protected
-     * @see     SetAttribute(), GetAttibute()
+     * @see     setAttribute(), getAttibute()
      */
     protected $trash = array();
 
@@ -147,7 +155,7 @@ class Jaws_Session
      */
     function logged()
     {
-        return $this->getAttribute('logged');
+        return !empty($this->session['user']);
     }
 
     /**
@@ -229,13 +237,13 @@ class Jaws_Session
 
             if (!empty($this->session['user'])) {
                 // user expiry date
-                $expiry_date = $this->getAttribute('expiry_date');
+                $expiry_date = $this->properties['expiry_date'];
                 if (!empty($expiry_date) && $expiry_date <= time()) {
                     throw new Exception('This username is expired', JAWS_LOG_NOTICE);
                 }
 
                 // logon hours
-                $logon_hours = $this->getAttribute('logon_hours');
+                $logon_hours = $this->properties['logon_hours'];
                 if (!empty($logon_hours)) {
                     $wdhour = explode(',', $this->app->UTC2UserTime(time(), 'w,G', true));
                     $lhByte = hexdec($logon_hours[$wdhour[0]*6 + intval($wdhour[1]/4)]);
@@ -246,8 +254,8 @@ class Jaws_Session
 
                 // concurrent logins
                 if ($this->session['update_time'] < $expTime) {
-                    $logins = $this->getAttribute('concurrents');
-                    $existSessions = $this->getUserSessions($this->getAttribute('user'), true);
+                    $logins = $this->properties['concurrents'];
+                    $existSessions = $this->getUserSessions($this->session['user'], true);
                     if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
                         throw new Exception('Maximum number of concurrent logins reached', JAWS_LOG_NOTICE);
                     }
@@ -272,51 +280,38 @@ class Jaws_Session
      */
     function create($info = array(), $remember = false)
     {
-        if (empty($info)) {
-            $this->attributes = array();
-            $info['id']          = 0;
-            $info['internal']    = false;
-            $info['auth']        = '';
-            $info['domain']      = 0;
-            $info['username']    = '';
-            $info['superadmin']  = false;
-            $info['groups']      = array();
-            $info['layout']      = 0;
-            $info['nickname']    = '';
-            $info['logon_hours'] = '';
-            $info['expiry_date'] = 0;
-            $info['concurrents'] = 0;
-            $info['email']      = '';
-            $info['mobile']     = '';
-            $info['ssn']        = '';
-            $info['avatar']     = '';
-            $info['last_password_update'] = 0;
-        }
+        /*
+        FIXME:
+                $this->setAttribute(
+                    'longevity', 
+                    $remember? (int)$this->app->registry->fetch('session_remember_timeout', 'Policy')*3600 : 0
+                );
+        */
 
-        $this->setAttribute('user',        $info['id']);
-        $this->setAttribute('internal',    $info['internal']);
-        $this->setAttribute('type',        JAWS_APPTYPE);
-        $this->setAttribute('auth',        $info['auth']);
-        $this->setAttribute('domain',      $info['domain']);
-        $this->setAttribute('username',    $info['username']);
-        $this->setAttribute('superadmin',  $info['superadmin']);
-        $this->setAttribute('groups',      $info['groups']);
-        $this->setAttribute('logon_hours', $info['logon_hours']);
-        $this->setAttribute('expiry_date', $info['expiry_date']);
-        $this->setAttribute('concurrents', $info['concurrents']);
-        $this->setAttribute(
-            'longevity', 
-            $remember? (int)$this->app->registry->fetch('session_remember_timeout', 'Policy')*3600 : 0
+        $this->properties = array(
+            'internal'    => false,
+            'username'    => '',
+            'superadmin'  => false,
+            'groups'      => array(),
+            'logon_hours' => '',
+            'expiry_date' => 0,
+            'concurrents' => 0,
+            'layout'      => 0,
+            'nickname'    => '',
+            'email'       => '',
+            'mobile'      => '',
+            'ssn'         => '',
+            'avatar'      => '',
         );
-        $this->setAttribute('logged',     !empty($info['id']));
-        $this->setAttribute('layout',     isset($info['layout'])? $info['layout'] : 0);
-        //profile
-        $this->setAttribute('nickname',   $info['nickname']);
-        $this->setAttribute('email',      $info['email']);
-        $this->setAttribute('mobile',     $info['mobile']);
-        $this->setAttribute('ssn',        $info['ssn']);
-        $this->setAttribute('avatar',     $info['avatar']);
-        $this->setAttribute('last_password_update', $info['last_password_update']);
+
+        if (!empty($info)) {
+            // set given valid properties
+            $properties = array_intersect(array_keys($info),  array_keys($this->properties));
+
+            foreach ($properties as $property) {
+                $this->properties[$property] = $info[$property];
+            }
+        }
 
         $this->changed = true;
         $this->session['salt'] = uniqid('', true);
@@ -362,23 +357,44 @@ class Jaws_Session
 
         // attributes
         $this->attributes = array();
-        $this->setAttribute('internal',    false);
-        $this->setAttribute('username',    '');
-        $this->setAttribute('superadmin',  false);
-        $this->setAttribute('groups',      array());
-        $this->setAttribute('logon_hours', '');
-        $this->setAttribute('expiry_date', 0);
-        $this->setAttribute('concurrents', 0);
-        $this->setAttribute('logged',      false);
-        $this->setAttribute('layout',      0);
-        $this->setAttribute('nickname',    '');
-        $this->setAttribute('email',       '');
-        $this->setAttribute('mobile',      '');
-        $this->setAttribute('ssn',         '');
-        $this->setAttribute('avatar',      '');
-        $this->setAttribute('last_password_update', 0);
+
+        // properties
+        $this->properties = array(
+            'internal'    => false,
+            'username'    => '',
+            'superadmin'  => false,
+            'groups'      => array(),
+            'logon_hours' => '',
+            'expiry_date' => 0,
+            'concurrents' => 0,
+            'logged'      => false,
+            'layout'      => 0,
+            'nickname'    => '',
+            'email'       => '',
+            'mobile'      => '',
+            'ssn'         => '',
+            'avatar'      => '',
+        );
 
         $this->changed = true;
+        return true;
+    }
+
+    /**
+     * Set a session property
+     *
+     * @access  public
+     * @param   string  $name   property name
+     * @param   mixed   $value  property value
+     * @return  bool    True
+     */
+    function setProperty($name, $value)
+    {
+        if (array_key_exists($name, array_keys($this->properties))) {
+            $this->changed = true;
+            $this->properties[$name] = $value;
+        }
+
         return true;
     }
 
@@ -497,8 +513,8 @@ class Jaws_Session
      */
     function getPermission($gadget, $key, $subkey = '', $together = true)
     {
-        $user = $this->getAttribute('user');
-        $groups = $this->getAttribute('groups');
+        $user = $this->session['user'];
+        $groups = $this->properties['groups'];
         $keys = array_filter(array_map('trim', explode(',', $key)));
         $perms = array();
         foreach ($keys as $key) {
@@ -536,7 +552,7 @@ class Jaws_Session
         }
 
         if (empty($errorMessage)) {
-            $errorMessage = 'User '.$this->getAttribute('username').
+            $errorMessage = 'User '.$this->properties['username'].
                 ' don\'t have permission to execute '.$gadget.'::'.$key. (empty($subkey)? '' : "($subkey)");
         }
 
@@ -551,7 +567,7 @@ class Jaws_Session
      */
     function isSuperAdmin()
     {
-        return $this->getAttribute('logged') && $this->getAttribute('superadmin');
+        return !empty($this->session['user']) && $this->properties['superadmin'];
     }
 
     /**
@@ -929,20 +945,18 @@ class Jaws_Session
      */
     function __get($property)
     {
-        switch ($property) {
-            case 'id':
-            case 'user':
-            case 'type':
-            case 'auth':
-            case 'domain':
-            case 'webpush':
-                return $this->session[$property];
-                break;
-
-            default:
-                return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
+        // session
+        if (array_key_exists($property, array_keys($this->session))) {
+            //id, user, type, auth, domain, webpush
+            return $this->session[$property];
         }
 
+        // properties
+        if (array_key_exists($property, array_keys($this->properties))) {
+            return $this->properties[$property];
+        }
+
+        return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
     }
 
 }
