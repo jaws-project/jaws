@@ -164,9 +164,9 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
 
         $res = Jaws_Utils::ExtractFiles($_FILES, JAWS_DATA . 'themes' . DIRECTORY_SEPARATOR, false);
         if (!Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('TMS_THEME_UPLOADED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('TMS_THEME_UPLOADED'), RESPONSE_NOTICE);
         } else {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         }
 
         return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Tms&action=Themes');
