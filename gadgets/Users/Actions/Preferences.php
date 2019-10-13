@@ -190,13 +190,14 @@ class Users_Actions_Preferences extends Users_Actions_Default
         if (!Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 _t('USERS_PREFERENCES_UPDATED'),
+                RESPONSE_NOTICE,
                 'Preferences'
             );
         } else {
             $this->gadget->session->push(
                 $result->GetMessage(),
-                'Preferences',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Preferences'
             );
         }
 

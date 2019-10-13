@@ -184,8 +184,8 @@ class Users_Actions_Friends extends Users_Actions_Default
                 if (Jaws_Error::IsError($res)) {
                     $this->gadget->session->push(
                         $res->getMessage(),
-                        'Groups',
-                        RESPONSE_ERROR
+                        RESPONSE_ERROR,
+                        'Groups'
                     );
                     break;
                 }

@@ -121,8 +121,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
 
             $this->gadget->session->push(
                 _t('USERS_REGISTRATION_ACTIVATED'),
-                'Login.Response',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Login.Response'
             );
         }
 

@@ -224,8 +224,8 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             unset($loginData['password'], $loginData['chkpassword']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                'Login.Response',
                 RESPONSE_ERROR,
+                'Login.Response',
                 $loginData
             );
 

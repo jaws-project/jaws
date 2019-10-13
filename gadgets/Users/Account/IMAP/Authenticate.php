@@ -85,8 +85,8 @@ class Users_Account_IMAP_Authenticate extends Users_Account_IMAP
         } catch (Exception $error) {
             $this->gadget->session->push(
                 $error->getMessage(),
-                'Login.Response',
                 RESPONSE_ERROR,
+                'Login.Response',
                 $loginData
             );
 

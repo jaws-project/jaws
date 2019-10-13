@@ -186,13 +186,14 @@ class Users_Actions_Account extends Users_Actions_Default
                 }
                 $this->gadget->session->push(
                     $message,
+                    RESPONSE_NOTICE,
                     'Account'
                 );
             } else {
                 $this->gadget->session->push(
                     $result->GetMessage(),
-                    'Account',
                     RESPONSE_ERROR,
+                    'Account',
                     $post
                 );
             }
@@ -201,8 +202,8 @@ class Users_Actions_Account extends Users_Actions_Default
             unset($post['password'], $post['chkpassword']);
             $this->gadget->session->push(
                 _t('USERS_USERS_PASSWORDS_DONT_MATCH'),
-                'Account',
                 RESPONSE_ERROR,
+                'Account',
                 $post
             );
         }

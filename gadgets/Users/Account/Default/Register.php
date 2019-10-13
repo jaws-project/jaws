@@ -126,8 +126,8 @@ class Users_Account_Default_Register extends Users_Account_Default
             unset($rgstrData['password'], $rgstrData['password_check']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                'Registration.Response',
                 ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
+                'Registration.Response',
                 $rgstrData
             );
 

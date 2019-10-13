@@ -170,13 +170,14 @@ class Users_Actions_Contacts extends Users_Actions_Default
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $result->GetMessage(),
-                'Contact',
                 RESPONSE_ERROR,
+                'Contact',
                 $post
             );
         } else {
             $this->gadget->session->push(
                 _t('USERS_USERS_CONTACTINFO_UPDATED'),
+                RESPONSE_NOTICE,
                 'Contact'
             );
         }

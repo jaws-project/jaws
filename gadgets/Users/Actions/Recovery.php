@@ -182,8 +182,8 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
 
             $this->gadget->session->push(
                 _t('USERS_REGISTRATION_ACTIVATED'),
-                'Login.Response',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Login.Response'
             );
         }
 
@@ -196,8 +196,8 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($resCheck)) {
             $this->gadget->session->push(
                 $resCheck->GetMessage(),
-                'LoginForgot',
                 RESPONSE_ERROR,
+                'LoginForgot',
                 $post
             );
             return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
@@ -208,16 +208,16 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($result)) {
                 $this->gadget->session->push(
                     $result->GetMessage(),
-                    'LoginForgot',
                     RESPONSE_ERROR,
+                    'LoginForgot',
                     $post
                 );
             } else {
                 $post['step'] = 1;
                 $this->gadget->session->push(
                     _t('USERS_FORGOT_REQUEST_SENT'),
-                    'LoginForgot',
                     RESPONSE_NOTICE,
+                    'LoginForgot',
                     $post
                 );
             }
@@ -226,16 +226,16 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($result)) {
                 $this->gadget->session->push(
                     $result->getMessage(),
-                    'LoginForgot',
                     RESPONSE_ERROR,
+                    'LoginForgot',
                     $post
                 );
             } else {
                 $post['step'] = 2;
                 $this->gadget->session->push(
                     _t('USERS_FORGOT_PASSWORD_CHANGED'),
-                    'LoginForgot',
                     RESPONSE_NOTICE,
+                    'LoginForgot',
                     $post
                 );
             }

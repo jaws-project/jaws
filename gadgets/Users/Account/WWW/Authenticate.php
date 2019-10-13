@@ -133,8 +133,8 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             unset($loginData['password']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                'Login.Response',
                 RESPONSE_ERROR,
+                'Login.Response',
                 $loginData
             );
 

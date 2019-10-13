@@ -159,8 +159,8 @@ class Users_Actions_Personal extends Users_Actions_Default
             if (Jaws_Error::IsError($res)) {
                 $this->gadget->session->push(
                     $res->GetMessage(),
-                    'Personal',
                     RESPONSE_ERROR,
+                    'Personal',
                     $post
                 );
 
@@ -187,6 +187,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         } else {
             $this->gadget->session->push(
                 _t('USERS_USERS_PERSONALINFO_UPDATED'),
+                RESPONSE_NOTICE,
                 'Personal'
             );
         }
