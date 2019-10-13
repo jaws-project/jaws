@@ -332,22 +332,22 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         if (Jaws_Error::IsError($message_id)) {
             $this->gadget->session->push(
                 $message_id->getMessage(),
-                'Compose',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Compose'
             );
         } else {
             if ($post['is_draft']) {
                 $this->gadget->session->push(
                     _t('PRIVATEMESSAGE_DRAFT_SAVED'),
-                    'Compose',
                     RESPONSE_NOTICE,
+                    'Compose',
                     array('is_draft' => true, 'message_id' => $message_id)
                 );
             } else {
                 $this->gadget->session->push(
                     _t('PRIVATEMESSAGE_MESSAGE_SEND'),
-                    'Compose',
                     RESPONSE_NOTICE,
+                    'Compose',
                     array('url' => $url)
                 );
             }

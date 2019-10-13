@@ -481,14 +481,14 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         if ($res === true) {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED'),
-                'Message',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Message'
             );
         } else {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
         Jaws_Header::Referrer();
@@ -517,22 +517,22 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
 
         if ($res == true) {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_ARCHIVED'),
-                'Message',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Message'
             );
         } else {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED'),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
         if (count($messagesSelected) > 0) {
@@ -567,22 +567,22 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
 
         if ($res == true) {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_UNARCHIVED'),
-                'Message',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Message'
             );
         } else {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_UNARCHIVED'),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
         Jaws_Header::Referrer();
@@ -610,22 +610,22 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
 
         if ($res == true) {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_TRASHED'),
-                'Message',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Message'
             );
         } else {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASHED'),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
         if (count($messagesSelected) > 0) {
@@ -659,22 +659,22 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
 
         if ($res == true) {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_TRASH_RESTORED'),
-                'Message',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Message'
             );
         } else {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASH_RESTORED'),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
         Jaws_Header::Referrer();
@@ -702,22 +702,22 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
 
         if ($res == true) {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_DELETED'),
-                'Message',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'Message'
             );
         } else {
             $this->gadget->session->push(
                 _t('PRIVATEMESSAGE_MESSAGE_NOT_DELETED'),
-                'Message',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Message'
             );
         }
         if (count($messagesSelected) > 0) {
