@@ -444,8 +444,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if (trim($post['message']) == ''|| trim($post['name']) == '') {
             $this->gadget->session->push(
                 _t('COMMENTS_COMMENT_INCOMPLETE_FIELDS'),
-                'Comments',
                 RESPONSE_ERROR,
+                'Comments',
                 $post
             );
             Jaws_Header::Referrer();
@@ -460,8 +460,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if (!empty($post['url2'])) {
             $this->gadget->session->push(
                 _t('COMMENTS_FAILED_SPAM_CHECK_MESSAGES'),
-                'Comments',
                 RESPONSE_ERROR,
+                'Comments',
                 $post
             );
             Jaws_Header::Referrer();
@@ -472,8 +472,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($resCheck)) {
             $this->gadget->session->push(
                 $resCheck->getMessage(),
-                'Comments',
                 RESPONSE_ERROR,
+                'Comments',
                 $post
             );
             Jaws_Header::Referrer();
@@ -489,8 +489,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($objHook)) {
             $this->gadget->session->push(
                 $objHook->getMessage(),
-                'Comments',
                 RESPONSE_ERROR,
+                'Comments',
                 $post
             );
             Jaws_Header::Referrer();
@@ -500,8 +500,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if (empty($reference)) {
             $this->gadget->session->push(
                 _t('COMMENTS_ERROR_REFERENCE_EXISTS'),
-                'Comments',
                 RESPONSE_ERROR,
+                'Comments',
                 $post
             );
             Jaws_Header::Referrer();
@@ -515,13 +515,13 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if (Jaws_Error::isError($res)) {
             $this->gadget->session->push(
                 $res->getMessage(),
-                'Comments',
                 RESPONSE_ERROR,
+                'Comments',
                 $post
             );
         } else {
             $this->EmailComment($reference, $post['message']);
-            $this->gadget->session->push(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
+            $this->gadget->session->push(_t('COMMENTS_MESSAGE_SENT'), RESPONSE_NOTICE, 'Comments');
         }
 
         return Jaws_Header::Location($reference['reference_link']);
