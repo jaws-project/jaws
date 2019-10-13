@@ -427,8 +427,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         if (empty($post['message'])) {
             $this->gadget->session->push(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                'UpdatePost',
                 RESPONSE_ERROR,
+                'UpdatePost',
                 $post
             );
             // redirect to referrer page
@@ -442,8 +442,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($resCheck)) {
                 $this->gadget->session->push(
                     $resCheck->getMessage(),
-                    'UpdatePost',
                     RESPONSE_ERROR,
+                    'UpdatePost',
                     $post
                 );
                 Jaws_Header::Referrer();
@@ -471,8 +471,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($res)) {
                 $this->gadget->session->push(
                     $res->getMessage(),
-                    'UpdatePost',
                     RESPONSE_ERROR,
+                    'UpdatePost',
                     $post
                 );
                 // redirect to referrer page
@@ -562,8 +562,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $error_message,
-                'UpdatePost',
                 RESPONSE_ERROR,
+                'UpdatePost',
                 $post
             );
             // redirect to referrer page
@@ -643,6 +643,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 if (Jaws_Error::IsError($result)) {
                     $this->gadget->session->push(
                         _t('FORUMS_POSTS_DELETE_ERROR'),
+                        RESPONSE_NOTICE,
                         'DeletePost'
                     );
                     // redirect to referrer page

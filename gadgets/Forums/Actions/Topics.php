@@ -401,8 +401,8 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         if (empty($topic['subject']) ||  empty($topic['message'])) {
             $this->gadget->session->push(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                'UpdateTopic',
                 RESPONSE_ERROR,
+                'UpdateTopic',
                 $topic
             );
             // redirect to referrer page
@@ -416,8 +416,8 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($resCheck)) {
                 $this->gadget->session->push(
                     $resCheck->getMessage(),
-                    'UpdateTopic',
                     RESPONSE_ERROR,
+                    'UpdateTopic',
                     $topic
                 );
                 Jaws_Header::Referrer();
@@ -439,8 +439,8 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($res)) {
                 $this->gadget->session->push(
                     $res->getMessage(),
-                    'UpdateTopic',
                     RESPONSE_ERROR,
+                    'UpdateTopic',
                     $topic
                 );
                 // redirect to referrer page
@@ -556,8 +556,8 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $error_message,
-                'UpdateTopic',
                 RESPONSE_ERROR,
+                'UpdateTopic',
                 $topic
             );
             // redirect to referrer page
@@ -625,6 +625,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 if (Jaws_Error::IsError($result)) {
                     $this->gadget->session->push(
                         _t('FORUMS_TOPICS_DELETE_ERROR'),
+                        RESPONSE_NOTICE,
                         'DeleteTopic'
                     );
                     // redirect to referrer page
