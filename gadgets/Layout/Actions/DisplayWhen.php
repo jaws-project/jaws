@@ -106,11 +106,11 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Elements');
         $res = $model->UpdateDisplayWhen($item, $layout, $dw);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
         }
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }

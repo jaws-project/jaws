@@ -33,12 +33,12 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             (int)$new_position
         );
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($result->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_MOVED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('LAYOUT_ELEMENT_MOVED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -53,12 +53,12 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Elements');
         $result = $model->DeleteElement($item, $layout, $section, $position);
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($result->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('LAYOUT_ELEMENT_DELETED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -107,11 +107,11 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         }
 
         if ($id === false) {
-            $this->app->session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
             $res['success'] = false;
         } else {
             $el = $model->GetElement($id);
-            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
             $info = Jaws_Gadget::getInstance($gadget);
             $el['tname'] = $info->title;
             if (isset($actions[$action])) {
@@ -136,7 +136,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $res = $el;
             $res['success'] = true;
         }
-        $res['message'] = $this->app->session->PopLastResponse();
+        $res['message'] = $this->gadget->session->pop();
         return $res;
     }
 

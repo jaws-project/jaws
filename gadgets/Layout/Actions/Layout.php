@@ -324,39 +324,40 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         if (!isset($tpl->Blocks['layout'])) {
             $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout'),
-                'Layout',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Layout'
             );
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['main'])) {
             $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/main'),
-                'Layout',
-                RESPONSE_ERROR);
+                RESPONSE_ERROR,
+                'Layout'
+            );
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['links'])) {
             $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/links'),
-                'Layout',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Layout'
             );
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['metas'])) {
             $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/metas'),
-                'Layout',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Layout'
             );
             return false;
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['scripts'])) {
             $this->gadget->session->push(
                 _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/scripts'),
-                'Layout',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'Layout'
             );
             return false;
         }
@@ -369,8 +370,8 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         );
         $this->gadget->session->push(
             _t('LAYOUT_THEME_CHANGED'),
-            'Layout',
-            RESPONSE_NOTICE
+            RESPONSE_NOTICE,
+            'Layout'
         );
     }
 

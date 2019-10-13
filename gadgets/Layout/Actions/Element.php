@@ -234,11 +234,11 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
             $res = Jaws_Error::IsError($res)? false : true;
         }
         if ($res === false) {
-            $this->app->session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('LAYOUT_ELEMENT_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('LAYOUT_ELEMENT_UPDATED'), RESPONSE_NOTICE);
         }
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }
