@@ -22,7 +22,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Page');
         $model->DeletePage($id);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -37,7 +37,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Translation');
         $model->DeleteTranslation($id);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -52,7 +52,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $pages = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Page');
         $model->MassiveDelete($pages);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
     
     /**
@@ -67,7 +67,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($defaultPage, $multiLang) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Settings');
         $model->UpdateSettings($defaultPage, $multiLang);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -137,7 +137,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
                                       date('H:i:s'),
                                       (int)$id,
                                       date('D, d'));
-            $this->app->session->PushLastResponse(
+            $this->gadget->session->push(
                 _t('STATICPAGE_PAGE_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
                 RESPONSE_NOTICE,
                 $newid
@@ -146,7 +146,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $model->UpdatePage($id, $group, $showtitle, $title, $content, $language,
                                       $fast_url, $meta_keys, $meta_desc, $published, true);
         }
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -208,12 +208,12 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Group');
         $res = $model->InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('STATICPAGE_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('STATICPAGE_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -229,12 +229,12 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Group');
         $res = $model->UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible == 'true');
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('STATICPAGE_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('STATICPAGE_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -250,12 +250,12 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Group');
         $res = $model->DeleteGroup($id);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->app->session->PushLastResponse(_t('STATICPAGE_NOTICE_GROUP_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('STATICPAGE_NOTICE_GROUP_DELETED'), RESPONSE_NOTICE);
         }
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }
