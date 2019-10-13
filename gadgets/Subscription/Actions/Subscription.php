@@ -163,8 +163,8 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             if(empty($selectedItems)) {
                 $this->gadget->session->push(
                     _t('SUBSCRIPTION_ERROR_NOT_ITEM_SELECTED'),
-                    'Subscription',
                     RESPONSE_ERROR,
+                    'Subscription',
                     $post
                 );
                 return Jaws_Header::Location($this->gadget->urlMap('Subscription'), 'Subscription.Subscription');
@@ -182,13 +182,14 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $result->GetMessage(),
-                'Subscription',
                 RESPONSE_ERROR,
+                'Subscription',
                 $post
             );
         } else {
             $this->gadget->session->push(
                 _t('SUBSCRIPTION_SUBSCRIPTION_UPDATED'),
+                RESPONSE_NOTICE,
                 'Subscription'
             );
         }
@@ -274,13 +275,14 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $result->GetMessage(),
-                'Subscription',
                 RESPONSE_ERROR,
+                'Subscription',
                 $post
             );
         } else {
             $this->gadget->session->push(
                 _t('SUBSCRIPTION_SUBSCRIPTION_UPDATED'),
+                RESPONSE_NOTICE,
                 'Subscription'
             );
         }
