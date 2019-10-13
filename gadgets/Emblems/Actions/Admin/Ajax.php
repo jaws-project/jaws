@@ -24,12 +24,12 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Emblems');
         $res = $model->UpdateEmblem($id, $data);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
-        $this->app->session->PushLastResponse(_t('EMBLEMS_UPDATED'), RESPONSE_NOTICE);
-        return $this->app->session->PopLastResponse();
+        $this->gadget->session->push(_t('EMBLEMS_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -47,7 +47,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Emblems');
         $res = $model->DeleteEmblem($id);
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
@@ -56,8 +56,8 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
             Jaws_Utils::Delete(JAWS_DATA . 'emblems/' . $emblem['image']);
         }
 
-        $this->app->session->PushLastResponse(_t('EMBLEMS_DELETED'), RESPONSE_NOTICE);
-        return $this->app->session->PopLastResponse();
+        $this->gadget->session->push(_t('EMBLEMS_DELETED'), RESPONSE_NOTICE);
+        return $this->gadget->session->pop();
     }
 
     /**

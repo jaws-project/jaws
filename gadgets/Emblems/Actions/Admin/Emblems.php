@@ -200,9 +200,9 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $post['url'] = Jaws_XSS::defilter($post['url']);
         $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
-            $this->app->session->PushLastResponse(_t('EMBLEMS_ERROR_NO_IMAGE_UPLOADED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('EMBLEMS_ERROR_NO_IMAGE_UPLOADED'), RESPONSE_ERROR);
         } else {
             $post['image'] = $res['image'][0]['host_filename'];
             $post['published'] = (bool)$post['published'];
@@ -210,9 +210,9 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
             $res = $model->AddEmblem($post);
             if (Jaws_Error::IsError($res)) {
                 Jaws_Utils::delete(JAWS_DATA. 'emblems/'. $post['image']);
-                $this->app->session->PushLastResponse(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
+                $this->gadget->session->push(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             } else {
-                $this->app->session->PushLastResponse(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
+                $this->gadget->session->push(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
             }
         }
 
