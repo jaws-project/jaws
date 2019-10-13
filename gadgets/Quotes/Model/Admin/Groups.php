@@ -28,12 +28,12 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $gc = $table->select('count(id)')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if ($gc > 0) {
-            $this->app->session->PushLastResponse(_t('QUOTES_GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('QUOTES_GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -48,11 +48,11 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $result = $table->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->app->session->PushLastResponse(
+        $this->gadget->session->push(
             _t('QUOTES_GROUPS_CREATED'),
             RESPONSE_NOTICE,
             array('id' => $result, 'title' => $title)
@@ -80,12 +80,12 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $gc = $table->select('count(id)')->where('title', $title)->and()->where('id', $gid, '!=')->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if ($gc > 0) {
-            $this->app->session->PushLastResponse(_t('QUOTES_GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('QUOTES_GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -100,10 +100,10 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $res = $table->update($params)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $this->app->session->PushLastResponse(_t('QUOTES_GROUPS_UPDATED', $gid), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('QUOTES_GROUPS_UPDATED', $gid), RESPONSE_NOTICE);
         return true;
     }
 
@@ -117,18 +117,18 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $this->app->session->PushLastResponse(_t('QUOTES_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('QUOTES_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
         $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroups($gid);
         if (Jaws_Error::IsError($group)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         if(!isset($group[0]['id'])) {
-            $this->app->session->PushLastResponse(_t('QUOTES_GROUPS_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('QUOTES_GROUPS_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -137,11 +137,11 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $res = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->app->session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->app->session->PushLastResponse(_t('QUOTES_GROUPS_DELETED', $group[0]['title']), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('QUOTES_GROUPS_DELETED', $group[0]['title']), RESPONSE_NOTICE);
 
         return true;
     }

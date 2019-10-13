@@ -48,11 +48,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $result = $quotesTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
+            $this->gadget->session->push($result->GetMessage(), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_ADDED'));
         }
 
-        $this->app->session->PushLastResponse(
+        $this->gadget->session->push(
             _t('QUOTES_QUOTE_ADDED'),
             RESPONSE_NOTICE,
             array('id' => $result, 'title' => $title)
@@ -99,11 +99,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $result = $quotesTable->update($params)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('QUOTES_QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_UPDATED'));
         }
 
-        $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('QUOTES_QUOTE_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -119,11 +119,11 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $result = $quotesTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('QUOTES_QUOTE_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_DELETED'));
         }
 
-        $this->app->session->PushLastResponse(_t('QUOTES_QUOTE_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('QUOTES_QUOTE_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -184,7 +184,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
                 }
             }
         }
-        $this->app->session->PushLastResponse(_t('QUOTES_GROUPS_UPDATED_QUOTES'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('QUOTES_GROUPS_UPDATED_QUOTES'), RESPONSE_NOTICE);
 
         return true;
     }

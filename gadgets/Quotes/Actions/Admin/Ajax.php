@@ -72,7 +72,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $quotation = $this->gadget->request->fetch(1, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Quotes');
         $model->InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -90,7 +90,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $quotation = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Quotes');
         $model->UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -105,7 +105,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Quotes');
         $model->DeleteQuote($id);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -141,7 +141,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -159,7 +159,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -186,7 +186,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gid, $quotes) = $this->gadget->request->fetch(array('0', '1:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Quotes');
         $model->AddQuotesToGroup($gid, $quotes);
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
     /**
@@ -202,6 +202,6 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Groups');
         $model->DeleteGroup($gid);
 
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 }
