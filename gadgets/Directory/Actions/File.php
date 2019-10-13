@@ -185,14 +185,14 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $result->getMessage(),
-                'SaveFile',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                'SaveFile'
             );
         } else {
             $this->gadget->session->push(
                 $result,
-                'SaveFile',
-                RESPONSE_NOTICE
+                RESPONSE_NOTICE,
+                'SaveFile'
             );
         }
 
