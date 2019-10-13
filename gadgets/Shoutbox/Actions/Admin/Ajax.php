@@ -22,7 +22,7 @@ class Shoutbox_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($limit, $max_strlen, $authority) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Settings');
         $model->UpdateProperties($limit, $max_strlen, $authority == 'true');
-        return $this->app->session->PopLastResponse();
+        return $this->gadget->session->pop();
     }
 
 }

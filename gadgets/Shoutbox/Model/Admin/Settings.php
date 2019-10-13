@@ -27,11 +27,11 @@ class Shoutbox_Model_Admin_Settings extends Jaws_Gadget_Model
         $res = $res && $this->gadget->registry->update('max_strlen', $max_strlen);
         $res = $res && $this->gadget->registry->update('anon_post_authority', ($authority == true)? 'true' : 'false');
         if ($res === false) {
-            $this->app->session->PushLastResponse(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'));
         }
 
-        $this->app->session->PushLastResponse(_t('SHOUTBOX_SETTINGS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push(_t('SHOUTBOX_SETTINGS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 }
