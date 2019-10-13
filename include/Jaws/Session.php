@@ -901,55 +901,6 @@ class Jaws_Session
     }
 
     /**
-     * Push response data
-     *
-     * @deprecated
-     * @access  public
-     * @param   mixed   $data       Response data
-     * @param   string  $resource   Response name
-     * @return  void
-     */
-    function pushSimpleResponse($data, $resource = 'SimpleResponse')
-    {
-        $this->setAttribute($resource, $data);
-    }
-
-    /**
-     * Returns the response data
-     *
-     * @deprecated
-     * @access  public
-     * @param   string  $resource   Resource's name
-     * @param   bool    $remove     Optional remove popped response
-     * @return  mixed   Response data, or Null if resource not found
-     */
-    function popSimpleResponse($resource = 'SimpleResponse', $remove = true)
-    {
-        return $this->popResponse($resource, $remove);
-    }
-
-    /**
-     * Add the last response to the session system
-     *
-     * @access  public
-     * @param   string  $text   Response text
-     * @param   string  $type   Response type
-     * @param   mixed   $data   Response data
-     * @return  void
-     */
-    function pushLastResponse($text, $type = RESPONSE_NOTICE, $data = null)
-    {
-        $this->setAttribute(
-            'LastResponses',
-            array(
-                'text' => $text,
-                'type' => $type,
-                'data' => $data
-            )
-        );
-    }
-
-    /**
      * Get the response
      *
      * @access  public
@@ -967,28 +918,6 @@ class Jaws_Session
             'data' => $data,
             'code' => $code
         );
-    }
-
-    /**
-     * Return and deletes the last response pushed
-     *
-     * @access  public
-     * @return  mixed   Last responses array if exist, otherwise False
-     */
-    function popLastResponse()
-    {
-        $responses = $this->getAttribute('LastResponses');
-        if ($responses === null) {
-            return false;
-        }
-
-        $this->deleteAttribute('LastResponses');
-        $responses = array_reverse($responses);
-        if (empty($responses[0]['text'])) {
-            return false;
-        }
-
-        return $responses;
     }
 
     /**
