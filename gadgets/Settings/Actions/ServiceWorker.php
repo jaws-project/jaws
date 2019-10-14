@@ -48,6 +48,8 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
     function Manifest()
     {
         header('Content-Type: application/manifest+json; charset=utf-8');
+        header('Cache-Control: max-age= 604800'); // cached for 7 days!
+
         $tpl = $this->gadget->template->load('Manifest.json');
         $tpl->SetBlock('Manifest');
         $reqSettings = $this->app->registry->fetchAll('Settings');
