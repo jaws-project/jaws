@@ -54,7 +54,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
 
         // Fetch notes
         $model = $this->gadget->model->load('Notepad');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $count = $model->GetNumberOfNotes($user, $shared, $foreign, $query);
         $notes = $model->GetNotes($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($notes)){

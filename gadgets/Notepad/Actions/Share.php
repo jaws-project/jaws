@@ -23,7 +23,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         // Fetch note
         $id = (int)$this->gadget->request->fetch('id', 'get');
         $model = $this->gadget->model->load('Notepad');
-        $uid = (int)$this->app->session->user;
+        $uid = (int)$this->app->session->user->id;
         $note = $model->GetNote($id, $uid);
         if (Jaws_Error::IsError($note) ||
             empty($note) ||
@@ -110,7 +110,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
     {
         $id = (int)$this->gadget->request->fetch('id');
         $model = $this->gadget->model->load('Notepad');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
 
         // Validate note
         $note = $model->GetNote($id, $user);

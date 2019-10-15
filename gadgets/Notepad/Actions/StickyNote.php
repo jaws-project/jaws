@@ -41,7 +41,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
     {
         $this->app->layout->addLink('gadgets/Notepad/Resources/site_style.css');
         $model = $this->gadget->model->load('StickyNote');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $notes = $model->GetLatestNotes($user, $count);
         if (Jaws_Error::IsError($notes) || empty($notes)) {
             return;
