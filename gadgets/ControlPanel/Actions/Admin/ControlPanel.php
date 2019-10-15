@@ -30,20 +30,21 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->SetVariable('control-panel', _t('CONTROLPANEL_TITLE'));
         $tpl->SetBlock('layout/login-info', false);
         $tpl->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
-        $uInfo = $this->app->session->getAttributes('', array('username', 'nickname', 'avatar', 'email'));
-        $tpl->SetVariable('username', $uInfo['username']);
-        $tpl->SetVariable('nickname', $uInfo['nickname']);
-        $tpl->SetVariable('email',    $uInfo['email']);
-        $tpl->SetVariable('avatar',   $uInfo['avatar']);
+        $tpl->SetVariable('username', $this->app->session->user->username);
+        $tpl->SetVariable('nickname', $this->app->session->user->nickname);
+        $tpl->SetVariable('email',    $this->app->session->user->email);
+        $tpl->SetVariable('avatar',   $this->app->session->user->avatar);
         $tpl->SetVariable('site-url', $this->app->getSiteURL());
         $tpl->SetVariable('view-site', _t('GLOBAL_VIEW_SITE'));
 
         if ($this->app->session->getPermission('Users', 'default_admin, EditAccountInformation')) {
-            $uAccoun =& Piwi::CreateWidget('Link',
-                                           $uInfo['nickname'],
-                                           BASE_SCRIPT . '?gadget=Users&amp;action=MyAccount');
+            $uAccoun =& Piwi::CreateWidget(
+                'Link',
+                $this->app->session->user->nickname,
+                BASE_SCRIPT . '?gadget=Users&amp;action=MyAccount'
+            );
         } else {
-            $uAccoun =& Piwi::CreateWidget('Label', $uInfo['nickname']);
+            $uAccoun =& Piwi::CreateWidget('Label', $this->app->session->user->nickname);
         }
 
         $tpl->SetVariable('my-account', $uAccoun->Get());
@@ -196,7 +197,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                 array(
                     'gadget' => 'Users',
                     'action' => 'Login',
-                    'user'   => $this->app->session->user,
+                    'user'   => $this->app->session->user->id,
                 ),
                 10
             );
