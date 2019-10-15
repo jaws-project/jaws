@@ -20,7 +20,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
     {
         // Validate user
         $user = (int)$this->gadget->request->fetch('user:int', 'get');
-        if ($user > 0 && $user !== (int)$this->app->session->user) {
+        if ($user > 0 && $user !== (int)$this->app->session->user->id) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }

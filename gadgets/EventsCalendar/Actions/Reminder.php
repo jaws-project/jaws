@@ -38,7 +38,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
      */
     function Reminder($user)
     {
-        if ($user === 'user' && !$this->app->session->logged()) {
+        if ($user === 'user' && !$this->app->session->user->logged) {
             return '';
         }
 
@@ -67,7 +67,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         if ($user === 'public') {
             $events = $model->GetPublicEvents(time());
         } else {
-            $user = (int)$this->app->session->user;
+            $user = (int)$this->app->session->user->id;
             $events = $model->GetUserEvents($user, time());
         }
         if (Jaws_Error::IsError($events)) {

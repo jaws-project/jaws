@@ -18,7 +18,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
      */
     function ShareEvent()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             $userGadget = Jaws_Gadget::getInstance('Users');
             return Jaws_Header::Location(
                 $userGadget->urlMap(
@@ -30,7 +30,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
 
         // Validate user
         $userId = (int)$this->gadget->request->fetch('user:int', 'get');
-        if ($userId > 0 && $userId !== (int)$this->app->session->user) {
+        if ($userId > 0 && $userId !== (int)$this->app->session->user->id) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
@@ -132,7 +132,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
     {
         $id = (int)$this->gadget->request->fetch('id');
         $model = $this->gadget->model->load('Event');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
 
         // Validate event
         $event = $model->GetEvent($id, $user);
