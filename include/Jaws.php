@@ -164,7 +164,7 @@ class Jaws
 
         $this->map->init();
         $this->session->init();
-        $this->acl->init($this->session->user, $this->session->getAttribute('groups'));
+        $this->acl->init($this->session->user->id, $this->session->user->groups);
         $this->loadPreferences();
     }
 
@@ -182,8 +182,9 @@ class Jaws
             // fetch installation instance
             $this->instance = $this->registry->fetch('instance', 'Settings');
 
-            $user   = $this->session->user;
-            $layout = $this->session->getAttribute('layout');
+            $user   = $this->session->user->id;
+            //FIXME:: there is no layout attribute!
+            $layout = $this->session->user->layout;
             $this->_Preferences = array(
                 'theme'         => (array)$this->registry->fetch('theme', 'Settings'),
                 'editor'        => $this->registry->fetchByUser($user,   'editor',   'Settings'),
