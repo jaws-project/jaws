@@ -44,7 +44,7 @@ class Menu_Actions_WSMenu extends Jaws_Gadget_Action
 
 
         $availableMenus = array();
-        $logged = $this->app->session->logged();
+        $logged = $this->app->session->user->logged;
         foreach ($menus as $i => $menu) {
             // is menu viewable?
             if ($menu['status'] == 0) {
@@ -98,7 +98,7 @@ class Menu_Actions_WSMenu extends Jaws_Gadget_Action
                 $vars = unserialize($menu['variables']);
                 $url  = unserialize($menu['url']);
                 foreach ($vars as $var => $val) {
-                    $val = $this->app->session->getAttribute($val);
+                    $val = $this->app->session->$val;
                     if (is_null($val)) {
                         continue 2;
                     }
