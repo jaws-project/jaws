@@ -129,7 +129,7 @@ class Jaws_Layout
         $this->_Languages[] = $this->app->GetLanguage();
         $this->app->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
         $this->app->define('', 'reloadMessage', _t('GLOBAL_RELOAD_MESSAGE'));
-        $this->app->define('', 'logged', (bool)$this->app->session->Logged());
+        $this->app->define('', 'logged', (bool)$this->app->session->user->logged);
         $this->app->define(
             '',
             'service_worker_enabled',
@@ -148,8 +148,8 @@ class Jaws_Layout
     function Load($layout_path = '', $layout_file = '')
     {
         if ($this->attributes['site_status'] == 'disabled' &&
-           (JAWS_SCRIPT != 'admin' || $this->app->session->Logged()) &&
-           !$this->app->session->IsSuperAdmin()
+           (JAWS_SCRIPT != 'admin' || $this->app->session->user->logged) &&
+           !$this->app->session->user->superadmin
         ) {
             $data = Jaws_HTTPError::Get(503);
             terminate($data, 503);
@@ -180,12 +180,12 @@ class Jaws_Layout
             $loadFromTheme = true;
             if (empty($layout_file)) {
                 $layout_user = 0;
-                $layout_type = (int)Jaws_Gadget::getInstance('Layout')->session->fetch('layout.type');
+                $layout_type = (int)Jaws_Gadget::getInstance('Layout')->session->layout_type;
 
                 $gdgtUsers = Jaws_Gadget::getInstance('Users');
                 if ($this->app->mainIndex) {
                     // index/first page layout
-                    if ($this->app->session->Logged()) {
+                    if ($this->app->session->user->logged) {
                         // if user logged in
                         if ($layout_type == 2 &&
                             $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
@@ -193,7 +193,7 @@ class Jaws_Layout
                         ) {
                             // set private layout for logged user
                             $layout_file = 'Index.User.html';
-                            $layout_user = (int)$this->app->session->user;
+                            $layout_user = (int)$this->app->session->user->id;
                         } elseif (($layout_type == 1 || $layout_type == 2) &&
                             $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                             @is_file($theme['path']. 'Index.Users.html')
@@ -223,7 +223,7 @@ class Jaws_Layout
                     } elseif (@is_file($theme['path']. "$gadget.html")) {
                         $layout_file = "$gadget.html";
                     } else {
-                        if ($this->app->session->Logged()) {
+                        if ($this->app->session->user->logged) {
                             // if user logged in
                             if ($layout_type == 2 &&
                                 $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
@@ -231,7 +231,7 @@ class Jaws_Layout
                             ) {
                                 // set private layout for logged user
                                 $layout_file = 'Layout.User.html';
-                                $layout_user = (int)$this->app->session->user;
+                                $layout_user = (int)$this->app->session->user->id;
                             } elseif (($layout_type == 1  || $layout_type == 2) &&
                                 $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
                                 @is_file($theme['path']. 'Layout.Users.html')
