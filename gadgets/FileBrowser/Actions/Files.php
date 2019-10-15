@@ -26,7 +26,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         }
 
         if (!$this->gadget->GetPermission('OutputAccess')) {
-            if ($this->app->session->logged()) {
+            if ($this->app->session->user->logged) {
                 return _t('GLOBAL_ERROR_ACCESS_DENIED');
             } else {
                 return _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
