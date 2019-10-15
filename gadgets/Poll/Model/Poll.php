@@ -30,8 +30,8 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
             'poll' => $pid,
             'votes' => implode(',', $answers),
             'ip' => $_SERVER['REMOTE_ADDR'],
-            'user' => $this->app->session->user,
-            'session' => $this->app->session->getAttribute('sid'),
+            'user' => $this->app->session->user->id,
+            'session' => $this->app->session->id,
             'insert_time' => time(),
         );
         $pResults = $objORM->table('poll_results')
