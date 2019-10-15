@@ -36,7 +36,7 @@ $jawsApp->instanceLayout();
 $jawsApp->RunAutoload();
 
 // Check for login action is requested
-if (!$jawsApp->session->Logged()) {
+if (!$jawsApp->session->user->logged) {
     $gdgtUsers = Jaws_Gadget::getInstance('Users');
     if (Jaws_Error::IsError($gdgtUsers)) {
         Jaws_Error::Fatal($gdgtUsers->getMessage());
