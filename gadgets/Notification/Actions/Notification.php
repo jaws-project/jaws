@@ -116,7 +116,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             );
         }
 
-        $this->app->session->setAttribute('webpush', $subscription);
+        $this->app->session->webpush = $subscription;
         return true;
     }
 
