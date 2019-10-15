@@ -61,7 +61,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      */
     function TagCloud($gadget = null, $user = 0)
     {
-        if (!empty($user) && !$this->app->session->logged()) {
+        if (!empty($user) && !$this->app->session->user->logged) {
             return false;
         }
 
@@ -69,7 +69,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $gadget = $this->gadget->request->fetch('tagged_gadget', 'get');
         }
 
-        $user = empty($user)? 0 : (int)$this->app->session->user;
+        $user = empty($user)? 0 : (int)$this->app->session->user->id;
         $model = $this->gadget->model->load('Tags');
         $tags = $model->GenerateTagCloud($gadget, $user);
         if (Jaws_Error::IsError($tags) || empty($tags)) {
@@ -191,7 +191,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $tag = $get['tag'];
         $gadget = $get['tagged_gadget'];
         $user = (int)$get['user'];
-        if (!empty($user) && ($user != $this->app->session->user)) {
+        if (!empty($user) && ($user != $this->app->session->user->id)) {
             return Jaws_HTTPError::Get(403);
         }
 

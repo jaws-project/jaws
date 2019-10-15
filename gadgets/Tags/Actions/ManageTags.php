@@ -16,7 +16,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
      */
     function ManageTags()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -54,7 +54,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
         $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $model = $this->gadget->model->loadAdmin('Tags');
         $tags = $model->GetTags($filters, $limit, ($page - 1) * $limit, 0, $user);
         $tagsTotal = $model->GetTagsCount($filters, $user);
@@ -137,14 +137,14 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
      */
     function EditTagUI()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
         $this->AjaxMe('index.js');
 
         $tag_id = $this->gadget->request->fetch('tag', 'get');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($tag_id);
         if ($tag['user'] != $user) {
@@ -183,14 +183,14 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
      */
     function UpdateTag()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
         $post = $this->gadget->request->fetch(array('tid', 'name', 'title', 'description'), 'post');
         $id = $post['tid'];
         unset($post['tid']);
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($id);
         if ($tag['user'] != $user) {
@@ -222,12 +222,12 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
      */
     function DeleteTags()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
         $ids = $this->gadget->request->fetch('tags_checkbox:array', 'post');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $model = $this->gadget->model->loadAdmin('Tags');
         $res = $model->DeleteTags($ids, $user);
         if (Jaws_Error::IsError($res)) {
@@ -255,7 +255,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
      */
     function MergeTags()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -275,7 +275,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
                 'ManageTags'
             );
         }
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $model = $this->gadget->model->loadAdmin('Tags');
         $res = $model->MergeTags($ids, $post['new_tag_name'], $user);
         if (Jaws_Error::IsError($res)) {
