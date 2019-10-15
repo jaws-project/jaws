@@ -51,7 +51,7 @@ class Users_Actions_Groups extends Users_Actions_Default
 
         // Users
         $uModel = new Jaws_User();
-        $superadmin = $this->app->session->isSuperAdmin() ? null : false;
+        $superadmin = $this->app->session->user->superadmin ? null : false;
         $users = $uModel->GetUsers(false, false, $superadmin);
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
@@ -74,7 +74,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      */
     function GetGroups()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(401);
         }
         $this->gadget->CheckPermission('ManageGroups');

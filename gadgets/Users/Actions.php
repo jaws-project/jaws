@@ -36,7 +36,7 @@ $actions['Profile'] = array(
     'file' => 'Profile',
     'navigation' => array(
         'params' => array(
-            'user' => $this->app->session->getAttribute('username')
+            'user' => $this->app->session->user->username
         ),
         'order' => 0
     ),

@@ -21,7 +21,7 @@ class Users_Account_Github_Login extends Users_Account_Github
     {
         // Generate a random hash and store in the session for security
         $state = hash('sha256', microtime(TRUE).rand().$_SERVER['REMOTE_ADDR']);
-        $this->gadget->session->update('state', $state);
+        $this->gadget->session->state = $state;
         $this->gadget->session->delete('access_token');
 
         $params = array(

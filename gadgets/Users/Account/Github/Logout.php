@@ -18,7 +18,7 @@ class Users_Account_Github_Logout extends Users_Account_Github
         $revokeURL = sprintf(
             $this->revokeURL,
             $this->ClientID,
-            $this->gadget->session->fetch('access_token')
+            $this->gadget->session->access_token
         );
         $httpRequest = new Jaws_HTTPRequest();
         $httpRequest->httpRequest->setHeader(

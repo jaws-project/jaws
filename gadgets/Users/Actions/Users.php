@@ -148,7 +148,7 @@ class Users_Actions_Users extends Users_Actions_Default
      */
     function GetUsers()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(401);
         }
         $this->gadget->CheckPermission('ManageUsers');
@@ -263,7 +263,7 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $uData['status'] = (int)$uData['status'];
-        $uData['superadmin'] = $this->app->session->isSuperAdmin()? (bool)$uData['superadmin'] : false;
+        $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
         $uModel = new Jaws_User();
         $res = $uModel->AddUser($uData);
         if (Jaws_Error::isError($res)) {
@@ -296,11 +296,11 @@ class Users_Actions_Users extends Users_Actions_Default
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        if ($post['uid'] == $this->app->session->user) {
+        if ($post['uid'] == $this->app->session->user->id) {
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
-            if (!$this->app->session->isSuperAdmin()) {
+            if (!$this->app->session->user->superadmin) {
                 unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
             }
         }
@@ -329,7 +329,7 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $uid = $this->gadget->request->fetch('id', 'post');
-        if ($uid == $this->app->session->user) {
+        if ($uid == $this->app->session->user->id) {
             return $this->gadget->session->response(
                 _t('USERS_USERS_CANT_DELETE_SELF'),
                 RESPONSE_ERROR
@@ -338,7 +338,7 @@ class Users_Actions_Users extends Users_Actions_Default
 
         $uModel = new Jaws_User();
         $profile = $uModel->GetUser((int)$uid);
-        if (!$this->app->session->isSuperAdmin() && $profile['superadmin']) {
+        if (!$this->app->session->user->superadmin && $profile['superadmin']) {
             return $this->gadget->session->response(
                 _t('USERS_USERS_CANT_DELETE', $profile['username']),
                 RESPONSE_ERROR

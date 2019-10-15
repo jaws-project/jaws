@@ -15,7 +15,7 @@ class Users_Actions_Friends extends Users_Actions_Default
      */
     function FriendsGroups()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -51,7 +51,7 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         // Users
         $uModel = new Jaws_User();
-        $superadmin = $this->app->session->isSuperAdmin() ? null : false;
+        $superadmin = $this->app->session->user->superadmin ? null : false;
         $users = $uModel->GetUsers(false, false, $superadmin);
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
@@ -100,7 +100,7 @@ class Users_Actions_Friends extends Users_Actions_Default
             'post'
         );
 
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
         $jUser = new Jaws_User;
         $groups = $jUser->GetGroups($user, $post['limit'], $post['offset']);
 
@@ -128,7 +128,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageFriends');
         $id = $this->gadget->request->fetch('id', 'post');
 
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
         $jUser = new Jaws_User;
         return $jUser->GetGroup($id, $user);
     }
@@ -144,7 +144,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageFriends');
 
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
         $jUser = new Jaws_User;
 
         // Update group
@@ -174,7 +174,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageFriends');
 
         $ids = $this->gadget->request->fetch('ids:array', 'post');
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
 
         if (!empty($ids)) {
             $jUser = new Jaws_User;
@@ -211,7 +211,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $post = $this->gadget->request->fetch(array('gid', 'users:array'), 'post');
 
         $uModel = $this->gadget->model->load('Friends');
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
         $res = $uModel->AddUsersToGroup((int)$post['gid'], $post['users'], $user);
 
         if (Jaws_Error::IsError($res)) {

@@ -15,7 +15,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
      */
     function Preferences()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -165,7 +165,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
             return $option !== '';
         }
 
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',

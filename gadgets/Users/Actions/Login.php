@@ -17,7 +17,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('LoginLinks.html');
 
-        if ($this->app->session->logged()) {
+        if ($this->app->session->user->logged) {
             $tpl->SetBlock('UserLinks');
             $tpl->SetVariable('title', _t('GLOBAL_MY_ACCOUNT'));
 
@@ -33,21 +33,20 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
 
             $tpl->SetVariable('profile', _t('USERS_PROFILE'));
-            $uInfo = $this->app->session->getAttributes('', array('username', 'nickname', 'avatar', 'email'));
             // username
-            $tpl->SetVariable('username',  $uInfo['username']);
+            $tpl->SetVariable('username', $this->app->session->user->username);
             // nickname
-            $tpl->SetVariable('nickname',  $uInfo['nickname']);
+            $tpl->SetVariable('nickname', $this->app->session->user->nickname);
             // avatar
-            $tpl->SetVariable('avatar', $uInfo['avatar']);
+            $tpl->SetVariable('avatar', $this->app->session->user->avatar);
 
             // profile link
             $tpl->SetVariable(
                 'profile_url',
-                $this->gadget->urlMap('Profile', array('user' => $uInfo['username']))
+                $this->gadget->urlMap('Profile', array('user' => $this->app->session->user->username))
             );
             // email
-            $tpl->SetVariable('email',  $uInfo['email']);
+            $tpl->SetVariable('email',  $this->app->session->user->email);
 
             // manage friends
             if ($this->gadget->GetPermission('ManageFriends')) {
@@ -178,7 +177,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Login()
     {
-        if ($this->app->session->logged()) {
+        if ($this->app->session->user->logged) {
             return $this->LoginLinks();
         }
 
@@ -205,7 +204,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         // set authentication type in session
-        $this->app->session->setAttribute('auth', $authtype);
+        $this->gadget->session->auth = $authtype;
 
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
@@ -218,7 +217,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $referrer = bin2hex(Jaws_Utils::getRequestURL());
             }
         }
-        $this->gadget->session->update('referrer', $referrer);
+        $this->gadget->session->referrer = $referrer;
 
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Login";
@@ -236,13 +235,13 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Authenticate()
     {
         // fetch authentication type from session
-        $authtype = $this->app->session->getAttribute('auth');
+        $authtype = $this->app->session->auth;
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }
 
         // parse referrer url
-        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->fetch('referrer')), true, true);
+        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->referrer), true, true);
 
         $classname = "Users_Account_{$authtype}_Authenticate";
         $objAccount = new $classname($this->gadget);
@@ -286,11 +285,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Logout()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_Header::Location('');
         }
 
-        $authtype = $this->app->session->getAttribute('auth');
+        $authtype = $this->app->session->auth;
         $classfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Logout.php";
         if (!file_exists($classfile)) {
             Jaws_Error::Fatal($authtype. ' logout class doesn\'t exists');
@@ -418,7 +417,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $this->gadget->event->shout('Notify', $params);
 
         // update session login-key
-        $this->gadget->session->update('loginkey', $loginkey);
+        $this->gadget->session->loginkey = $loginkey;
 
         return true;
     }

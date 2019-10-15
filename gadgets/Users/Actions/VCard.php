@@ -15,13 +15,13 @@ class Users_Actions_VCard extends Users_Actions_Default
      */
     function ExportVCard()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
         require_once JAWS_PATH . 'gadgets/Users/include/vCard.php';
 
-        $currentUser = $this->app->session->user;
+        $currentUser = $this->app->session->user->id;
         $jUser = new Jaws_User;
         $contacts = $jUser->GetUserContacts($currentUser);
 
@@ -102,7 +102,7 @@ class Users_Actions_VCard extends Users_Actions_Default
      */
     function ImportVCard()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -135,7 +135,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             }
 
             $jUser = new Jaws_User;
-            $currentUser = $this->app->session->user;
+            $currentUser = $this->app->session->user->id;
             if (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {

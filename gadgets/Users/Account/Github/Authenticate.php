@@ -25,7 +25,7 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
         }
 
         // Verify the state matches our stored state
-        if(!$get['state'] || $this->gadget->session->fetch('state') != $get['state']) {
+        if(!$get['state'] || $this->gadget->session->state != $get['state']) {
             return Jaws_Error::raiseError('state not matched!', __FUNCTION__);
         }
 
@@ -33,10 +33,10 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
         $httpRequest = new Jaws_HTTPRequest();
         $httpRequest->setHeader('Content-Type', 'application/json');
         $httpRequest->httpRequest->setHeader('Accept', 'application/json');
-        if ($this->gadget->session->fetch('access_token')) {
+        if ($this->gadget->session->access_token) {
             $httpRequest->httpRequest->setHeader(
                 'Authorization',
-                'Bearer ' . $this->gadget->session->fetch('access_token')
+                'Bearer ' . $this->gadget->session->access_token
             );
         }
 
@@ -58,7 +58,7 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
 
         $token = json_decode($result['body'], true);
         if (isset($token['access_token'])) {
-            $this->gadget->session->update('access_token', $token['access_token']);
+            $this->gadget->session->access_token = $token['access_token'];
         } else {
             return Jaws_Error::raiseError($token['error_description'], $token['error']);
         }
@@ -66,10 +66,10 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
         //
         $httpRequest->setHeader('Content-Type', 'application/json');
         $httpRequest->setHeader('Accept', 'application/json');
-        if ($this->gadget->session->fetch('access_token')) {
+        if ($this->gadget->session->access_token) {
             $httpRequest->httpRequest->setHeader(
                 'Authorization',
-                'Bearer ' . $this->gadget->session->fetch('access_token')
+                'Bearer ' . $this->gadget->session->access_token
             );
         }
         $result = $httpRequest->get($this->apiBaseURL . 'user', $loginData);

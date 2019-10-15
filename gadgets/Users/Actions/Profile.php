@@ -44,10 +44,10 @@ class Users_Actions_Profile extends Users_Actions_Default
     function AboutUser($user)
     {
         if (empty($user)) {
-            if (!$this->app->session->logged()) {
+            if (!$this->app->session->user->logged) {
                 return false;
             }
-            $user = (int)$this->app->session->user;
+            $user = (int)$this->app->session->user->id;
         }
 
         $usrModel = new Jaws_User;
@@ -109,8 +109,8 @@ class Users_Actions_Profile extends Users_Actions_Default
             'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
         );
 
-        if (!$this->app->session->isSuperAdmin() &&
-            $this->app->session->user != $user['id'])
+        if (!$this->app->session->user->superadmin &&
+            $this->app->session->user->id != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
         }
@@ -134,7 +134,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             return Jaws_HTTPError::Get(404);
         }
 
-        if ($this->app->session->getAttribute('username') != $user &&
+        if ($this->app->session->user->username != $user &&
             !$this->gadget->GetPermission('AccessUsersProfile')
         ) {
             return Jaws_HTTPError::Get(403);
@@ -170,7 +170,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Profile.html');
         $tpl->SetBlock('profile');
         $tpl->SetVariable('title',  _t('USERS_PROFILE_INFO'));
-        if ($user['id'] == $this->app->session->user) {
+        if ($user['id'] == $this->app->session->user->id) {
             // Menu navigation
             $this->gadget->action->load('MenuNavigation')->navigation($tpl);
         }
@@ -202,8 +202,8 @@ class Users_Actions_Profile extends Users_Actions_Default
             'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
         );
  
-        if (!$this->app->session->isSuperAdmin() &&
-            $this->app->session->user != $user['id'])
+        if (!$this->app->session->user->superadmin &&
+            $this->app->session->user->id != $user['id'])
         {
             $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
         }
@@ -211,7 +211,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         // set about item data
         $tpl->SetVariablesArray($user);
 
-        if ($user['public'] || $this->app->session->logged()) {
+        if ($user['public'] || $this->app->session->user->logged) {
             $tpl->SetBlock('profile/public');
 
             // set profile item data

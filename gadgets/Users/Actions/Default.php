@@ -23,7 +23,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         $tpl->SetBlock('NoPermission');
         $tpl->SetVariable('nopermission', _t('USERS_NO_PERMISSION_TITLE'));
         $tpl->SetVariable('description', _t('USERS_NO_PERMISSION_DESC', $gadget, $action));
-        if ($this->app->session->logged()) {
+        if ($this->app->session->user->logged) {
             $tpl->SetBlock('NoPermission/known');
             $logoutLink = $this->gadget->urlMap('Logout');
             $referLink  = empty($_SERVER['HTTP_REFERER'])?
@@ -66,7 +66,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Profile',
             _t('USERS_PROFILE'),
-            $this->gadget->urlMap('Profile', array('user' => $this->app->session->getAttribute('username'))),
+            $this->gadget->urlMap('Profile', array('user' => $this->app->session->user->username)),
             STOCK_ABOUT
         );
 
@@ -109,7 +109,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
                 _t('USERS_PROFILE'),
                 $this->gadget->urlMap(
                     'Profile',
-                    array('user' => $this->app->session->getAttribute('username'))
+                    array('user' => $this->app->session->user->username)
                 )
             );
         }

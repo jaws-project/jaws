@@ -15,7 +15,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
      */
     function Registration()
     {
-        if ($this->app->session->logged()) {
+        if ($this->app->session->user->logged) {
             return Jaws_Header::Location('');
         }
 
@@ -46,14 +46,14 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // set authentication type in session
-        $this->app->session->setAttribute('auth', $authtype);
+        $this->gadget->session->auth = $authtype;
 
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
             $referrer = bin2hex(Jaws_Utils::getRequestURL());
         }
-        $this->gadget->session->update('referrer', $referrer);
+        $this->gadget->session->referrer = $referrer;
 
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Registration";
@@ -70,7 +70,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     function Register()
     {
         // fetch authentication type from session
-        $authtype = $this->app->session->getAttribute('auth');
+        $authtype = $this->app->session->auth;
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }
@@ -80,7 +80,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // parse referrer url
-        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->fetch('referrer')), true, true);
+        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->referrer), true, true);
 
         $classname = "Users_Account_{$authtype}_Register";
         $objAccount = new $classname($this->gadget);
@@ -140,7 +140,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
      */
     function ReplaceUserEmail()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(401);
         }
 
@@ -279,7 +279,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $this->gadget->event->shout('Notify', $params);
 
         // update session login-key
-        $this->gadget->session->update('regkey', $regkey);
+        $this->gadget->session->regkey = $regkey;
 
         return true;
     }

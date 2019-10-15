@@ -69,7 +69,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 if ($this->gadget->registry->fetch('anon_activation') == 'user')
                 {
                     $rgstrData['regstep'] = 2;
-                    $this->gadget->session->update('temp.register.user', $userData);
+                    $this->gadget->session->temp_register_user = $userData;
 
                     // send notification to user
                     $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
@@ -78,13 +78,13 @@ class Users_Account_Default_Register extends Users_Account_Default
                 }
             } else {
                 // fetch user data from session
-                $userData = $this->gadget->session->fetch('temp.register.user');
+                $userData = $this->gadget->session->temp_register_user;
                 if (empty($userData)) {
                     $rgstrData['regstep'] = 1;
                     throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
                 }
 
-                $regkey = $this->gadget->session->fetch('regkey');
+                $regkey = $this->gadget->session->regkey;
                 if (!isset($regkey['text']) || ($regkey['time'] < (time() - 300)) ||
                    (!empty($rgstrData['resend']) && ($regkey['time'] < (time() - 90)))
                 ) {

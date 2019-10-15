@@ -48,7 +48,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 // fetch user data from session
-                $user = $this->gadget->session->fetch('temp.login.user');
+                $user = $this->gadget->session->temp_login_user;
                 if (empty($user)) {
                     $loginData['loginstep'] = 1;
                     throw new Exception(_t('USERS_USER_NOT_EXIST'), 404);
@@ -78,13 +78,13 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 // fetch user data from session
-                $user = $this->gadget->session->fetch('temp.login.user');
+                $user = $this->gadget->session->temp_login_user;
                 if (empty($user)) {
                     $loginData['loginstep'] = 1;
                     throw new Exception(_t('USERS_USER_NOT_EXIST'), 404);
                 }
 
-                $loginkey = $this->gadget->session->fetch('loginkey');
+                $loginkey = $this->gadget->session->loginkey;
                 if (!isset($loginkey['text']) || ($loginkey['time'] < (time() - 300)) ||
                    (!empty($loginData['resend']) && ($loginkey['time'] < (time() - 90)))
                 ) {
@@ -129,7 +129,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
                 }
 
-                $this->gadget->session->update('temp.login.user', '');
+                $this->gadget->session->temp_login_user = '';
                 if ($loginData['username'] === '') {
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
                 }
@@ -171,7 +171,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $user['defaults'] = $loginData['defaults'];
 
                 // store user data in registry for using next steps
-                $this->gadget->session->update('temp.login.user', $user);
+                $this->gadget->session->temp_login_user = $user;
 
                 // two step verification?
                 if ((bool)$this->gadget->registry->fetchByUser('two_step_verification', '', $user['id']))

@@ -15,7 +15,7 @@ class Users_Actions_Account extends Users_Actions_Default
      */
     function Account()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -28,7 +28,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $response = $this->gadget->session->pop('Account');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
-            $account = $jUser->GetUser($this->app->session->user, true, true);
+            $account = $jUser->GetUser($this->app->session->user->id, true, true);
         } else {
             $account = $response['data'];
         }
@@ -96,7 +96,7 @@ class Users_Actions_Account extends Users_Actions_Default
      */
     function UpdateAccount()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'Login',
@@ -119,33 +119,33 @@ class Users_Actions_Account extends Users_Actions_Default
             if (empty($post['username']) ||
                 !$this->gadget->GetPermission('EditUserName'))
             {
-                $post['username'] = $this->app->session->getAttribute('username');
+                $post['username'] = $this->app->session->user->username;
             }
             // check edit nickname permission
             if (empty($post['nickname']) ||
                 !$this->gadget->GetPermission('EditUserNickname'))
             {
-                $post['nickname'] = $this->app->session->getAttribute('nickname');
+                $post['nickname'] = $this->app->session->user->nickname;
             }
             // check edit email permission
             if (empty($post['email']) ||
                 !$this->gadget->GetPermission('EditUserEmail'))
             {
-                $post['email'] = $this->app->session->getAttribute('email');
+                $post['email'] = $this->app->session->user->email;
             }
 
             // set new email
             $post['new_email'] = '';
-            if ($post['email'] != $this->app->session->getAttribute('email')) {
+            if ($post['email'] != $this->app->session->user->email) {
                 $post['new_email'] = $post['email'];
-                $post['email'] = $this->app->session->getAttribute('email');
+                $post['email'] = $this->app->session->user->email;
             }
 
             // check edit mobile permission
             if (empty($post['mobile']) ||
                 !$this->gadget->GetPermission('EditUserMobile'))
             {
-                $post['mobile'] = $this->app->session->getAttribute('mobile');
+                $post['mobile'] = $this->app->session->user->mobile;
             }
 
             // check edit password permission
@@ -157,7 +157,7 @@ class Users_Actions_Account extends Users_Actions_Default
 
             $model  = $this->gadget->model->load('Account');
             $result = $model->UpdateAccount(
-                $this->app->session->user,
+                $this->app->session->user->id,
                 $post['username'],
                 $post['nickname'],
                 $post['email'],
@@ -171,7 +171,7 @@ class Users_Actions_Account extends Users_Actions_Default
                 $message = _t('USERS_MYACCOUNT_UPDATED');
                 if (!empty($post['new_email'])) {
                     $mResult = $this->ReplaceEmailNotification(
-                        $this->app->session->user,
+                        $this->app->session->user->id,
                         $post['username'],
                         $post['nickname'],
                         $post['new_email'],

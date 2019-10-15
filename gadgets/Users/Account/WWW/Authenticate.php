@@ -61,7 +61,7 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
             }
 
-            $this->gadget->session->update('temp.login.user', '');
+            $this->gadget->session->temp_login_user = '';
             if ($loginData['username'] === '') {
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
             }

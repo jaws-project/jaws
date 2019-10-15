@@ -103,7 +103,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($group, $domain, $superadmin, $status, $term, $orderBy, $offset) = $this->gadget->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
-        if (!$this->app->session->isSuperAdmin()) {
+        if (!$this->app->session->user->superadmin) {
             $superadmin = false;
         }
 
@@ -127,7 +127,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($group, $domain, $superadmin, $status, $term) = $this->gadget->request->fetchAll('post');
         $superadmin = ($superadmin == -1)? null : (bool)$superadmin;
-        if (!$this->app->session->isSuperAdmin()) {
+        if (!$this->app->session->user->superadmin) {
             $superadmin = false;
         }
 
@@ -156,7 +156,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         $uData['status'] = (int)$uData['status'];
-        $uData['superadmin'] = $this->app->session->isSuperAdmin()? (bool)$uData['superadmin'] : false;
+        $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
         $res = $this->_UserModel->AddUser($uData);
         if (Jaws_Error::isError($res)) {
             $this->gadget->session->push($res->getMessage(),
@@ -191,7 +191,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        if ($uid == $this->app->session->user) {
+        if ($uid == $this->app->session->user->id) {
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
@@ -225,12 +225,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageUsers');
         @list($uid) = $this->gadget->request->fetchAll('post');
-        if ($uid == $this->app->session->user) {
+        if ($uid == $this->app->session->user->id) {
             $this->gadget->session->push(_t('USERS_USERS_CANT_DELETE_SELF'),
                                                        RESPONSE_ERROR);
         } else {
             $profile = $this->_UserModel->GetUser((int)$uid);
-            if (!$this->app->session->isSuperAdmin() && $profile['superadmin']) {
+            if (!$this->app->session->user->superadmin && $profile['superadmin']) {
                 $this->gadget->session->push(_t('USERS_USERS_CANT_DELETE', $profile['username']),
                                                            RESPONSE_ERROR);
                 return $this->gadget->session->pop();
@@ -891,7 +891,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGroups');
         @list($guid) = $this->gadget->request->fetchAll('post');
 
-        $currentUid = $this->app->session->user;
+        $currentUid = $this->app->session->user->id;
         $groupinfo = $this->_UserModel->GetGroup((int)$guid);
         if (!$this->_UserModel->DeleteGroup($guid)) {
             $this->gadget->session->push(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),

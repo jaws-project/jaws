@@ -54,7 +54,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 }
 
                 $rcvryData['rcvstep'] = 1;
-                $this->gadget->session->update('temp.recovery.user', $userData);
+                $this->gadget->session->temp_recovery_user = $userData;
 
                 // send notification to user
                 $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
@@ -64,13 +64,13 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             }
 
             // fetch user data from session
-            $userData = $this->gadget->session->fetch('temp.recovery.user');
+            $userData = $this->gadget->session->temp_recovery_user;
             if (empty($userData)) {
                 $rcvryData['rcvstep'] = 0;
                 throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
             }
 
-            $rcvkey = $this->gadget->session->fetch('rcvkey');
+            $rcvkey = $this->gadget->session->rcvkey;
             if (!isset($rcvkey['text']) || ($rcvkey['time'] < (time() - 300)) ||
                (!empty($rcvryData['resend']) && ($rcvkey['time'] < (time() - 90)))
             ) {
