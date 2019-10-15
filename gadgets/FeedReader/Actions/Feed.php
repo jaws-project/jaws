@@ -73,7 +73,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
     {
         $result = array();
         $rModel = $this->gadget->model->load('Feed');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $sites = $rModel->GetFeeds(true, $user);
         if (!Jaws_Error::isError($sites)) {
             $psites = array();
@@ -99,7 +99,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function DisplayFeeds($user = 0)
     {
-        $user = empty($user)? 0 : (int)$this->app->session->user;
+        $user = empty($user)? 0 : (int)$this->app->session->user->id;
         $model = $this->gadget->model->load('Feed');
         $feeds = $model->GetFeeds(true, $user);
         if (Jaws_Error::IsError($feeds)) {
@@ -145,7 +145,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         // check user permissions
         if (!empty($site['user'])) {
-            if ($site['user'] != (int)$this->app->session->user) {
+            if ($site['user'] != (int)$this->app->session->user->id) {
                 return Jaws_HTTPError::Get(403);
             }
         }
@@ -306,7 +306,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function UserFeedsList()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -369,7 +369,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function GetUserFeeds()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -379,7 +379,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         );
 
         $model = $this->gadget->model->load('Feed');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
 
         $filters = array();
         if (!empty($post['searchBy'])) {
@@ -412,7 +412,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
     {
         $id = $this->gadget->request->fetch('id', 'post');
         $model = $this->gadget->model->load('Feed');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         return $model->GetFeed($id, $user);
     }
 
@@ -424,13 +424,13 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function InsertFeed()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
         $data = $this->gadget->request->fetch('data:array', 'post');
         $model = $this->gadget->model->load('Feed');
-        $data['user'] = (int)$this->app->session->user;
+        $data['user'] = (int)$this->app->session->user->id;
         $res = $model->InsertUserFeed($data);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('FEEDREADER_ERROR_SITE_NOT_ADDED'), RESPONSE_ERROR);
@@ -447,13 +447,13 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function UpdateFeed()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $model = $this->gadget->model->load('Feed');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $res = $model->UpdateUserFeed($post['id'], $post['data'], $user);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('FEEDREADER_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
@@ -470,14 +470,14 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function DeleteUserFeed()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
         $id = (int)$this->gadget->request->fetch('id', 'post');
 
         $model = $this->gadget->model->load('Feed');
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $res = $model->DeleteUserFeed($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
