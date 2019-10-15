@@ -291,7 +291,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
-        $id = $pModel->NewEntry($this->app->session->user , $post['categories'],
+        $id = $pModel->NewEntry($this->app->session->user->id , $post['categories'],
                            $post['title'], $post['subtitle'], $content['summary_block'], $content['text_block'],
                            $image, $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                            $post['tags'], isset($post['allow_comments'][0]), $post['trackback_to'],
@@ -348,7 +348,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             Jaws_Error::Fatal('Post not found', __FILE__, __LINE__);
         }
 
-        if ($this->app->session->user != $entry['user_id']) {
+        if ($this->app->session->user->id != $entry['user_id']) {
             $this->gadget->CheckPermission('ModifyOthersEntries');
         }
 
@@ -898,7 +898,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $model = $this->gadget->model->load('Posts');
         $entries = $model->AdvancedSearch($limit, $cat, $status, $search,
-                                          $this->app->session->user);
+                                          $this->app->session->user->id);
 
         if (Jaws_Error::IsError($entries)) {
             return array();

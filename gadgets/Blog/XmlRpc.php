@@ -54,10 +54,12 @@ function userAuthentication($username, $password)
     $objAuth = new $className();
     $result = $objAuth->Auth($username, $password);
     if (!Jaws_Error::IsError($result)) {
-        $this->app->session->setAttribute('logged', true);
-        $this->app->session->setAttribute('user', $result['id']);
-        $this->app->session->setAttribute('groups', $result['groups']);
-        $this->app->session->setAttribute('superadmin', $result['superadmin']);
+        $this->app->session->user = array(
+            'id'         => $result['id'],
+            'logged'     => true,
+            'groups'     => $result['groups'],
+            'superadmin' => $result['superadmin']
+        );
     }
 
     return $result;

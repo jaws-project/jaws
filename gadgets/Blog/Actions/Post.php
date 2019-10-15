@@ -96,7 +96,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':
-                    $allow_comments_config = $this->app->session->logged();
+                    $allow_comments_config = $this->app->session->user->logged;
                     $restricted = !$allow_comments_config;
                     break;
 

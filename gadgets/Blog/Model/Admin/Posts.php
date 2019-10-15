@@ -287,7 +287,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'));
         }
 
-        if ($this->app->session->user != $e['user_id']) {
+        if ($this->app->session->user->id != $e['user_id']) {
             if (!$this->gadget->GetPermission('ModifyOthersEntries')) {
                 $this->gadget->session->push(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'));
@@ -440,7 +440,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if (
-            $this->app->session->user != $e['user_id'] &&
+            $this->app->session->user->id != $e['user_id'] &&
             !$this->gadget->GetPermission('ModifyOthersEntries')
         ) {
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'));

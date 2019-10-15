@@ -335,7 +335,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
     function GetEntry($id, $published = false)
     {
         // super admins can get/show drafted entries
-        $published = (bool)$published && !$this->app->session->isSuperAdmin();
+        $published = (bool)$published && !$this->app->session->user->superadmin;
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'subtitle',
@@ -353,7 +353,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         if ($published) {
             // entry's author can get/show drafted entries
             $now = Jaws_DB::getInstance()->date();
-            $user = (int)$this->app->session->user;
+            $user = (int)$this->app->session->user->id;
             $blogTable->and()->openWhere('blog.user_id', $user)->or();
             $blogTable->openWhere('published', $published)->and()->closewhere('blog.publishtime', $now, '<=');
             $blogTable->closeWhere();
