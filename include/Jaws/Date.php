@@ -52,7 +52,7 @@ class Jaws_Date
         static $dbCalendar;
         if (!isset($dbCalendar)) {
             $dbCalendar = Jaws::getInstance()->registry->fetchByUser(
-                Jaws::getInstance()->session->user,
+                Jaws::getInstance()->session->user->id,
                 'calendar',
                 'Settings'
             );
