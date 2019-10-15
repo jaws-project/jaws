@@ -341,10 +341,10 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         // user profile link
         $lnkProfile =& Piwi::CreateWidget(
             'Link',
-            $this->app->session->getAttribute('nickname'),
+            $this->app->session->user->nickname,
             $this->gadget->urlMap(
                 'Profile',
-                array('user' => $this->app->session->getAttribute('username')),
+                array('user' => $this->app->session->user->username),
                 array('absolute' => true),
                 'Users'
             )

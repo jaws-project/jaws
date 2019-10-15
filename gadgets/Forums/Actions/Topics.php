@@ -41,7 +41,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $uid = null;
             $private = null;
         } else {
-            $uid = (int)$this->app->session->user;
+            $uid = (int)$this->app->session->user->id;
             // anonymous users
             $published = empty($uid) ? true : $published;
 
@@ -144,7 +144,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             _t('FORUMS_TOPICS_COUNT', $forum['topics'])
         );
 
-        if ($this->app->session->logged() && $this->gadget->GetPermission('AddTopic')) {
+        if ($this->app->session->user->logged && $this->gadget->GetPermission('AddTopic')) {
             $tpl->SetBlock('topics/action');
             $tpl->SetVariable('action_lbl', _t('FORUMS_TOPICS_NEW'));
             $tpl->SetVariable('action_url', $this->gadget->urlMap('NewTopic', array('fid' => $forum['id'])));
@@ -174,7 +174,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function EditTopic()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -385,7 +385,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function UpdateTopic()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -474,7 +474,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
                 $topic['forum_title'] = $result['title'];
                 $result = $tModel->InsertTopic(
-                    $this->app->session->user,
+                    $this->app->session->user->id,
                     $topic['fid'],
                     $topic['subject'],
                     $topic['message'],
@@ -493,7 +493,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
             // check permission for edit topic
             $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
-            $update_uid = (int)$this->app->session->user;
+            $update_uid = (int)$this->app->session->user->id;
             if ((!$this->gadget->GetPermission('EditTopic')) ||
                 ($oldTopic['first_post_uid'] != $update_uid && !$forumManage) ||
                 ($oldTopic['locked'] && !$forumManage) ||
@@ -595,7 +595,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function DeleteTopic()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -614,7 +614,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 // check delete permissions
                 $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
                 if ((!$this->gadget->GetPermission('DeleteTopic')) ||
-                    ($topic['first_post_uid'] != (int)$this->app->session->user &&
+                    ($topic['first_post_uid'] != (int)$this->app->session->user->id &&
                      !$forumManage) ||
                     ((time() - $topic['first_post_time']) > $delete_limit_time && !$forumManage)
                 ) {
@@ -728,7 +728,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function LockTopic()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -777,7 +777,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
      */
     function PublishTopic()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -792,7 +792,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         }
 
         // check user permissions
-        $logged_user = (int)$this->app->session->user;
+        $logged_user = (int)$this->app->session->user->id;
         if($logged_user != $topic['first_post_uid'] && !$this->gadget->GetPermission('ForumManage', $topic['fid'])) {
             return Jaws_HTTPError::Get(403);
         }
