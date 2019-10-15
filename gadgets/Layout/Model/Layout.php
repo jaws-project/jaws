@@ -35,7 +35,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
             ->where('layout', $layout);
         if ($onlyAvailable) {
             $lyTable->and()->where('published', true);
-            $loggedStatus = $this->app->session->logged()? 3 : 2;
+            $loggedStatus = $this->app->session->user->logged? 3 : 2;
             $lyTable->and()->openWhere('status', $loggedStatus)->or()->closeWhere('status', 1);
         }
         $elements = $lyTable->orderBy('position asc')->fetchAll();

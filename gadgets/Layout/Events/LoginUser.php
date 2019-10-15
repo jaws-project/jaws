@@ -41,7 +41,7 @@ class Layout_Events_LoginUser extends Jaws_Gadget_Event
             $layout_type = 0;
         }
 
-        $this->gadget->session->insert('layout.type', $layout_type);
+        $this->gadget->session->layout_type = $layout_type;
         return true;
     }
 
