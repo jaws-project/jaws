@@ -40,50 +40,6 @@ class Jaws_Gadget_Session
     }
 
     /**
-     * Fetch a session attribute
-     *
-     * @access  public
-     * @param   string  $name   Key name
-     * @param   string  $gadget (Optional) Gadget name
-     * @return  mixed   Returns value of the attribute or Null if not exist
-     */
-    function fetch($name, $gadget = '')
-    {
-        $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $this->app->session->getAttribute($name, $gadget);
-    }
-
-    /**
-     * Insert a session attribute
-     *
-     * @access  public
-     * @param   string  $name       Session key name
-     * @param   string  $value      Session key value
-     * @param   bool    $trashed    Trashed attribute(eliminated end of current request)
-     * @return  void
-     */
-    function insert($name, $value, $trashed = false)
-    {
-        $gadget = $this->gadget->name;
-        return $this->app->session->setAttribute($name, $value, $trashed, $gadget);
-    }
-
-    /**
-     * Update a session attribute
-     *
-     * @access  public
-     * @param   string  $name       Session key name
-     * @param   mixed   $value      Session key value
-     * @param   bool    $trashed    Trashed attribute(eliminated end of current request)
-     * @return  void
-     */
-    function update($name, $value, $trashed = false)
-    {
-        $gadget = $this->gadget->name;
-        return $this->app->session->setAttribute($name, $value, $trashed, $gadget);
-    }
-
-    /**
      * Delete a session attribute
      *
      * @access  public
@@ -141,6 +97,31 @@ class Jaws_Gadget_Session
     function response($text, $type = RESPONSE_NOTICE, $data = null, $code = 0)
     {
         return $this->app->session->getResponse($text, $type, $data, $code);
+    }
+
+    /**
+     * Overloading __get magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @return  mixed   Requested property otherwise Jaws_Error
+     */
+    function __get($property)
+    {
+        return $this->app->session->getAttribute($property, $this->gadget->name);
+    }
+
+    /**
+     * Overloading __set magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @param   mixed   $value      Property value
+     * @return  void
+     */
+    function __set($property, $value)
+    {
+        return $this->app->session->setAttribute($property, $value, false, $this->gadget->name);
     }
 
 }
