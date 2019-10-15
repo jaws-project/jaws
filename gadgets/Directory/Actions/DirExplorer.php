@@ -23,7 +23,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         // bookmark default layout
         $mainLayout = $this->app->layout;
         $this->app->layout = $browserLayout;
-        if ($this->app->session->logged()) {
+        if ($this->app->session->user->logged) {
             $tpl->SetBlock('layout/upload');
             $tpl->SetVariable('lbl_upload', _t('DIRECTORY_UPLOAD_FILE'));
             $tpl->ParseBlock('layout/upload');
@@ -56,7 +56,7 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
     function GetDirectory()
     {
         $params = array(
-            'user' => (int)$this->app->session->user,
+            'user' => (int)$this->app->session->user->id,
             'file_type' => $this->gadget->request->fetch('type'),
             'public' => false,
         );

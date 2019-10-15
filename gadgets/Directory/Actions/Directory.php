@@ -100,7 +100,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         // if user has permission, display upload area
-        if ($this->app->session->logged()) {
+        if ($this->app->session->user->logged) {
             $tpl->SetBlock('directory/upload_form');
             $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
             $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
@@ -186,12 +186,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         if (!empty($user)) {
             if (is_numeric($user)) {
                 $params['user'] = (int)$user;
-                if ($params['user'] == (int)$this->app->session->user) {
+                if ($params['user'] == (int)$this->app->session->user->id) {
                     unset($params['public'], $params['published']);
                 }
             } else {
                 $params['user'] = $user;
-                if ($params['user'] == $this->app->session->getAttribute('username')) {
+                if ($params['user'] == $this->app->session->user->username) {
                     unset($params['public'], $params['published']);
                 }
             }
@@ -466,7 +466,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         // check private file
         if (!$file['public']) {
-            $loggedUser = (int)$this->app->session->user;
+            $loggedUser = (int)$this->app->session->user->id;
             if ($file['user'] != $loggedUser && $get['key'] != $file['key']) {
                 return Jaws_HTTPError::Get(403);
             }

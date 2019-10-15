@@ -272,7 +272,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function BuildTree($root = 0, $exclude = array(), &$tree)
     {
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $dirs = $this->gadget->model->load('Files')->GetFiles(array('parent' => $root, 'is_dir' => true));
         if (Jaws_Error::IsError($dirs)) {
             return;
@@ -308,7 +308,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             );
         }
 
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $fault = false;
         foreach ($id_set as $id) {
             // Validate file

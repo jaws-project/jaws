@@ -23,7 +23,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
 
         // check private file
         if (!$file['public']) {
-            $loggedUser = (int)$this->app->session->user;
+            $loggedUser = (int)$this->app->session->user->id;
             if ($file['user'] != $loggedUser && $get['key'] != $file['key']) {
                 return Jaws_HTTPError::Get(403);
             }
@@ -169,7 +169,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      */
     function SaveFile()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -213,7 +213,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
      */
     function DeleteFile()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -227,7 +227,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         if (empty($fileInfo)) {
             return Jaws_HTTPError::Get(404);
         }
-        $currentUser = $this->app->session->user;
+        $currentUser = $this->app->session->user->id;
         if ($fileInfo['public'] || $fileInfo['user'] != $currentUser) {
             return Jaws_HTTPError::Get(403);
         }
