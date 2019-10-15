@@ -43,7 +43,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('AddBlock');
 
         @list($title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
         $contents = $this->gadget->request->fetch(1, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
         $res = $model->NewBlock($title, $contents, $displayTitle, $user);
@@ -72,7 +72,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('EditBlock');
 
         @list($id, $title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
         $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
         $model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
