@@ -96,7 +96,7 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
 
         // check duplicated message
         $hash = crc32($message);
-        $user = (int)$this->app->session->user;
+        $user = (int)$this->app->session->user->id;
         $duplicated = $this->IsMessageDuplicated($commentReference, $user, $hash);
         if (Jaws_Error::IsError($duplicated)) {
             return $duplicated;
@@ -181,7 +181,7 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
         $cData['status']  = $status;
         if ($this->gadget->GetPermission('ReplyComments')) {
             $cData['reply'] = $reply;
-            $cData['replier'] = (int)$this->app->session->user;
+            $cData['replier'] = (int)$this->app->session->user->id;
         }
 
         $commentsTable = Jaws_ORM::getInstance()->table('comments_details');

@@ -73,7 +73,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
         switch ($allow_comments_config) {
             case 'restricted':
-                $allow_comments_config = $this->app->session->logged();
+                $allow_comments_config = $this->app->session->user->logged;
                 break;
 
             default:
@@ -87,7 +87,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
             $rand = rand();
             $tpl->SetVariable('rand', $rand);
-            if (!$this->app->session->logged()) {
+            if (!$this->app->session->user->logged) {
                 $tpl->SetBlock('comment_form/info-box');
                 $url_value = empty($data['url'])? 'http://' : $data['url'];
                 $tpl->SetVariable('url', _t('GLOBAL_URL'));
@@ -435,10 +435,10 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             'post'
         );
 
-        if ($this->app->session->logged()) {
-            $post['name']  = $this->app->session->getAttribute('nickname');
-            $post['email'] = $this->app->session->getAttribute('email');
-            $post['url']   = $this->app->session->getAttribute('url');
+        if ($this->app->session->user->logged) {
+            $post['name']  = $this->app->session->user->nickname;
+            $post['email'] = $this->app->session->user->email;
+            $post['url']   = $this->app->session->user->url;
         }
 
         if (trim($post['message']) == ''|| trim($post['name']) == '') {
