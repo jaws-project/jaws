@@ -516,7 +516,7 @@ class Jaws_Session
                 $gadget,
                 $key,
                 $subkey,
-                $this->isSuperAdmin()
+                $this->userAttributes['superadmin']
             );
             if (!is_null($perm)) {
                 $perms[] = $perm;
@@ -549,17 +549,6 @@ class Jaws_Session
         }
 
         Jaws_Error::Fatal($errorMessage, 1, 403);
-    }
-
-    /**
-     * Returns is a current user is superadmin
-     *
-     * @access  public
-     * @return  bool    True if user is a superadmin
-     */
-    function isSuperAdmin()
-    {
-        return !empty($this->session['user']) && $this->userAttributes->superadmin;
     }
 
     /**
