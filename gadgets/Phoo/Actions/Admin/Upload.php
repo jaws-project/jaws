@@ -139,7 +139,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
             }
         }
 
-        $this->app->session->setAttribute('failures', $failures);
+        $this->gadget->session->failures = $failures;
         if (empty($extra_params)) {
             return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album=' . $album);
         } else {

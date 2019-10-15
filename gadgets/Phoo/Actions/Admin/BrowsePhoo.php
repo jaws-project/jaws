@@ -214,7 +214,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
             }
 
             // Get failures
-            $failures = $this->app->session->getAttribute('failures');
+            $failures = $this->gadget->session->failures;
             if (is_array($failures) && count($failures) > 0) {
                 foreach ($failures as $f) {
                     $tpl->SetBlock('phoo_browse/photos/failures');

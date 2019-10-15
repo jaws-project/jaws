@@ -173,7 +173,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
             switch ($allow_comments_config) {
                 case 'restricted':
-                    $allow_comments_config = $this->app->session->logged();
+                    $allow_comments_config = $this->app->session->user->logged;
                     $restricted = !$allow_comments_config;
                     break;
 
@@ -303,7 +303,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      */
     function UploadPhotoUI()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             $userGadget = Jaws_Gadget::getInstance('Users');
             return Jaws_Header::Location(
                 $userGadget->urlMap(
@@ -360,7 +360,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      */
     function UploadPhoto()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(403);
         }
         $post  = $this->gadget->request->fetch(array('title', 'description'), 'post');
