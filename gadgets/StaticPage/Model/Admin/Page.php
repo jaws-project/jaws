@@ -126,7 +126,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
     function DeletePage($id)
     {
         if (!$this->gadget->GetPermission('ModifyOthersPages')) {
-            $user = $this->app->session->user;
+            $user = $this->app->session->user->id;
             $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
             $sptTable->select('count(base_id)')->where('base_id', $id)->and()->where('user', $user, '<>');
             $result = $sptTable->fetchOne();
