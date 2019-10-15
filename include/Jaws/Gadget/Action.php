@@ -264,7 +264,7 @@ class Jaws_Gadget_Action
         }
 
         if (!$this->app->session->GetPermission($this->gadget->name, 'default')) {
-            return Jaws_HTTPError::Get($this->app->session->Logged()? 403 : 401);
+            return Jaws_HTTPError::Get($this->app->session->user->logged? 403 : 401);
         }
 
         if (!$this->IsValidAction($action)) {
