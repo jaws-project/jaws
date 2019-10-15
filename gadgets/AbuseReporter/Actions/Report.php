@@ -74,7 +74,7 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
             array('report_gadget', 'report_action', 'report_reference', 'url', 'comment', 'type', 'priority'),
             'post'
         );
-        $currentUser = $this->app->session->user;
+        $currentUser = $this->app->session->user->id;
         $result = $this->gadget->model->load('Reports')->SaveReport(
             $currentUser,
             $post['report_gadget'],
