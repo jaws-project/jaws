@@ -253,7 +253,7 @@
             </field>
 
             <field>
-                <name>properties</name>
+                <name>user_attributes</name>
                 <type>text</type>
             </field>
 
