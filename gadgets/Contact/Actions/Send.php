@@ -26,11 +26,11 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             'post'
         );
 
-        if ($this->app->session->logged()) {
-            $post['name']   = $this->app->session->getAttribute('nickname');
-            $post['email']  = $this->app->session->getAttribute('email');
-            $post['mobile'] = $this->app->session->getAttribute('mobile');
-            $post['url']    = $this->app->session->getAttribute('url');
+        if ($this->app->session->user->logged) {
+            $post['name']   = $this->app->session->user->nickname;
+            $post['email']  = $this->app->session->user->email;
+            $post['mobile'] = $this->app->session->user->mobile;
+            $post['url']    = $this->app->session->user->url;
         }
 
         if (trim($post['name'])    == '' ||

@@ -124,7 +124,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             $tpl->SetVariable('response_type', $response['type']);
         }
 
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             //name
             if (in_array('name', $items_array)) {
                 $tpl->SetBlock('contact/name');

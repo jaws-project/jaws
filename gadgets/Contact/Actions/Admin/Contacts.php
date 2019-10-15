@@ -32,7 +32,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $recipientCombo =& Piwi::CreateWidget('Combo', 'recipient_filter');
         $recipientCombo->SetID('recipient_filter');
         $recipientCombo->AddEvent(ON_CHANGE, "getContacts('contacts_datagrid', 0, true)");
-        if ($this->app->session->isSuperAdmin()) {
+        if ($this->app->session->user->superadmin) {
             $recipientCombo->AddOption('', -1);
             $recipientCombo->SetDefault(-1);
             $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
@@ -125,7 +125,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
     function GetContacts($recipient = -1, $offset = null)
     {
         // check current-user is supper-admin
-        if (((int)$recipient <= -1) && !$this->app->session->isSuperAdmin()) {
+        if (((int)$recipient <= -1) && !$this->app->session->user->superadmin) {
             return array();
         }
 
@@ -380,7 +380,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $profile_url = $site_url. $this->app->map->GetMappedURL(
             'Users',
             'Profile',
-            array('user' => $this->app->session->getAttribute('username'))
+            array('user' => $this->app->session->user->username)
         );
         Jaws_Translate::getInstance()->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
         Jaws_Translate::getInstance()->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
@@ -403,7 +403,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl->SetVariable('message',     $contact['msg_txt']);
         $tpl->SetVariable('reply',       $reply);
         $tpl->SetVariable('createtime',  $jDate->Format($contact['createtime']));
-        $tpl->SetVariable('nickname',    $this->app->session->getAttribute('nickname'));
+        $tpl->SetVariable('nickname',    $this->app->session->user->nickname);
         $tpl->SetVariable('profile_url', $profile_url);
         $tpl->SetVariable('site-name',   $site_name);
         $tpl->SetVariable('site-url',    $site_url);
