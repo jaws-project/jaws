@@ -18,12 +18,12 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
      */
     function Attachment()
     {
-        if (!$this->app->session->logged()) {
+        if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(401);
         }
 
         $rqst = $this->gadget->request->fetch(array('uid', 'mid', 'aid'), 'get');
-        $user = $this->app->session->user;
+        $user = $this->app->session->user->id;
 
         $mModel = $this->gadget->model->load('Message');
         $aModel = $this->gadget->model->load('Attachment');
