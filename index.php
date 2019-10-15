@@ -31,7 +31,7 @@ $IsIndex   = false;
 $objAction = null;
 $IsReqActionStandAlone = false;
 // Only registered user can access not global website
-$AccessToWebsiteDenied = !$jawsApp->session->Logged() &&
+$AccessToWebsiteDenied = !$jawsApp->session->user->logged &&
                          $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
 
 // Get forwarded error from webserver
@@ -42,8 +42,9 @@ if (empty($ReqError) && $jawsApp->map->Parse()) {
 
     if (empty($ReqGadget)) {
         $IsIndex = true;
+        // FIXME:: there is no layout attribute!
         $ReqGadget = $jawsApp->registry->fetchByUser(
-            $jawsApp->session->getAttribute('layout'),
+            $jawsApp->session->user->layout,
             'main_gadget',
             'Settings'
         );
