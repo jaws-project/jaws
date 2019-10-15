@@ -1241,9 +1241,9 @@ class Jaws_User
 
         // if currently a user logged
         
-        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->logged()) {
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user->logged) {
             // other users can't modify the god user
-            if (JAWS_GODUSER == $user['id'] && $this->app->session->user != $user['id']) {
+            if (JAWS_GODUSER == $user['id'] && $this->app->session->user->id != $user['id']) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
@@ -1252,7 +1252,7 @@ class Jaws_User
             }
 
             // not superadmin cant set/modify superadmin users 
-            if (!$this->app->session->isSuperAdmin()) {
+            if (!$this->app->session->user->superadmin) {
                 unset($uData['superadmin']);
                 // non-superadmin user can't change properties of superadmin users
                 if ($user['superadmin']) {
@@ -1319,30 +1319,29 @@ class Jaws_User
                     AVATAR_PATH. $uData['avatar']);
         }
 
-        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user == $id) {
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user->id == $id) {
             if (array_key_exists('username', $uData)) {
-                $this->app->session->setAttribute('username', $uData['username']);
+                $this->app->session->user = array('username' => $uData['username']);
             }
             if (array_key_exists('nickname', $uData)) {
-                $this->app->session->setAttribute('nickname', $uData['nickname']);
+                $this->app->session->user  = array('nickname' => $uData['nickname']);
             }
             if (array_key_exists('email', $uData)) {
-                $this->app->session->setAttribute('email', $uData['email']);
+                $this->app->session->user = array('email' => $uData['email']);
             }
             if (array_key_exists('mobile', $uData)) {
-                $this->app->session->setAttribute('mobile', $uData['mobile']);
+                $this->app->session->user = array('mobile' => $uData['mobile']);
             }
 
             // update user's avatar in current session
             if (isset($uData['avatar'])) {
-                $this->app->session->setAttribute(
-                    'avatar',
-                    $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
+                $this->app->session->user = array(
+                    'avatar' => $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
                 );
             }
             // update last password update time in current session
             if (isset($uData['last_password_update'])) {
-                $this->app->session->setAttribute('last_password_update', $uData['last_password_update']);
+                $this->app->session->user = array('last_password_update' => $uData['last_password_update']);
             }
         }
 
@@ -1387,7 +1386,7 @@ class Jaws_User
             
             if (!isset($this->app) ||
                 !property_exists($this->app, 'session') ||
-                $this->app->session->user != $user['id']
+                $this->app->session->user->id != $user['id']
             ) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
@@ -1424,15 +1423,14 @@ class Jaws_User
             return $result;
         }
 
-        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user == $id) {
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user->id == $id) {
             foreach($pData as $k => $v) {
                 if ($k == 'avatar') {
-                    $this->app->session->setAttribute(
-                        $k,
-                        $this->GetAvatar($v, $user['email'], 48, $pData['last_update'])
+                    $this->app->session->user = array(
+                        $k => $this->GetAvatar($v, $user['email'], 48, $pData['last_update'])
                     );
                 } else {
-                    $this->app->session->setAttribute($k, $v);
+                    $this->app->session->user = array($k => $v);
                 }
             }
         }
@@ -1473,7 +1471,7 @@ class Jaws_User
         if (JAWS_GODUSER == $user['id']) {
             if (!isset($this->app) ||
                 !property_exists($this->app, 'session') ||
-                $this->app->session->user != $user['id']
+                $this->app->session->user->id != $user['id']
             ) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_ACCESS_DENIED'),
@@ -1686,7 +1684,9 @@ class Jaws_User
         }
 
         // users can't delete himself
-        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user == $user['id']) {
+        if (isset($this->app) &&
+            property_exists($this->app, 'session') && $this->app->session->user->id == $user['id']
+        ) {
             return false;
         }
 
