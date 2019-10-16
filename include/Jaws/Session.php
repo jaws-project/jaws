@@ -193,7 +193,9 @@ class Jaws_Session
 
             $this->session = $session;
             $this->attributes = unserialize($this->session['data']);
-            $checksum = md5($this->session['user'] . $this->session['data']);
+            $this->userAttributes = unserialize($this->session['user_attributes']);
+            $checksum = md5($this->session['user'] . $this->session['user_attributes']);
+            unset($this->session['data'], $this->session['user_attributes']);
 
             // browser agent
             $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
@@ -263,12 +265,11 @@ class Jaws_Session
      * Create a new session for a given data
      *
      * @access  protected
-     * @param   array   $sessionAttributes  Session attributes
-     * @param   array   $userAttributes     User's attributes
+     * @param   array   $userAttributes User's attributes
      * @param   bool    $remember       Remember me
      * @return  bool    True if can create session
      */
-    function create($sessionAttributes = array(), $userAttributes = array(), $remember = false)
+    function create($userAttributes = array(), $remember = false)
     {
         $this->userAttributes = array(
             'id'          => 0,
@@ -506,7 +507,7 @@ class Jaws_Session
     function getPermission($gadget, $key, $subkey = '', $together = true)
     {
         $user = $this->session['user'];
-        $groups = $this->userAttributes->groups;
+        $groups = $this->userAttributes['groups'];
         $keys = array_filter(array_map('trim', explode(',', $key)));
         $perms = array();
         foreach ($keys as $key) {
@@ -564,26 +565,19 @@ class Jaws_Session
             return false;
         }
 
-        // agent
-        $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
-        // ip
-        $ip = 0;
-        if (preg_match('/\b(?:\d{1,3}\.){3}\d{1,3}\b/', $_SERVER['REMOTE_ADDR'])) {
-            $ip = ip2long($_SERVER['REMOTE_ADDR']);
-            $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
-        }
-
         $sessTable = Jaws_ORM::getInstance()->table('session');
         if ($this->changed) {
             $this->changed = false;
-            $serialized = serialize($this->attributes);
             $updData = array(
+                'domain'      => $this->session['domain'],
                 'user'        => $this->session['user'],
-                'data'        => $serialized,
+                'user_attributes' => serialize($this->userAttributes),
+                'data'        => serialize($this->attributes),
+                'auth'        => $this->session['auth'],
                 'longevity'   => $this->session['longevity'],
-                'checksum'    => md5($this->session['user'] . $serialized),
-                'ip'          => $ip,
-                'agent'       => $agent,
+                'checksum'    => '',
+                'ip'          => $this->session['ip'],
+                'agent'       => $this->session['agent'],
                 'webpush'     => serialize($this->session['webpush']),
             );
 
@@ -621,27 +615,19 @@ class Jaws_Session
             }
         }
 
-        // agent
-        $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
-        // ip
-        $ip = 0;
-        if (preg_match('/\b(?:\d{1,3}\.){3}\d{1,3}\b/', $_SERVER['REMOTE_ADDR'])) {
-            $ip = ip2long($_SERVER['REMOTE_ADDR']);
-            $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
-        }
-
         $update_time = time();
-        $serialized = serialize($this->attributes);
         $result = Jaws_ORM::getInstance()->table('session')->insert(
             array(
+                'domain'      => $this->session['domain'],
                 'user'        => $this->session['user'],
-                'type'        => JAWS_APPTYPE,
+                'user_attributes' => serialize($this->userAttributes),
+                'data'        => serialize($this->attributes),
+                'type'        => $this->session['type'],
                 'longevity'   => $this->session['longevity'],
-                'data'        => $serialized,
                 'salt'        => $this->session['salt'],
-                'checksum'    => md5($this->session['user'] . $serialized),
-                'ip'          => $ip,
-                'agent'       => $agent,
+                'checksum'    => '',
+                'ip'          => $this->session['ip'],
+                'agent'       => $this->session['agent'],
                 'webpush'     => serialize($this->session['webpush']),
                 'insert_time' => $update_time,
                 'update_time' => $update_time
@@ -737,7 +723,7 @@ class Jaws_Session
     {
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id:integer', 'salt', 'user:integer', 'longevity', 'ip', 'agent', 'data',
+            'id:integer', 'salt', 'user:integer', 'longevity', 'ip', 'agent', 'user_attributes', 'data',
             'webpush', 'checksum', 'update_time:integer'
         );
         return $sessTable->where('id', (int)$sid)->fetchRow();
@@ -766,7 +752,7 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
             'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent',
-            'data', 'webpush', 'checksum', 'insert_time', 'update_time:integer'
+            'user_attributes', 'webpush', 'checksum', 'insert_time', 'update_time:integer'
         );
 
         if ($active === true) {
@@ -792,19 +778,19 @@ class Jaws_Session
         }
 
         foreach ($sessions as $key => $session) {
-            if ($data = @unserialize($session['data'])) {
-                $sessions[$key]['internal']   = $data['internal'];
-                $sessions[$key]['username']   = $data['username'];
-                $sessions[$key]['superadmin'] = $data['superadmin'];
-                $sessions[$key]['groups']     = $data['groups'];
-                $sessions[$key]['nickname']   = $data['nickname'];
-                $sessions[$key]['email']      = $data['email'];
-                $sessions[$key]['mobile']     = $data['mobile'];
-                $sessions[$key]['avatar']     = $data['avatar'];
+            if ($userAttributes = @unserialize($session['user_attributes'])) {
+                $sessions[$key]['internal']   = $userAttributes['internal'];
+                $sessions[$key]['username']   = $userAttributes['username'];
+                $sessions[$key]['superadmin'] = $userAttributes['superadmin'];
+                $sessions[$key]['groups']     = $userAttributes['groups'];
+                $sessions[$key]['nickname']   = $userAttributes['nickname'];
+                $sessions[$key]['email']      = $userAttributes['email'];
+                $sessions[$key]['mobile']     = $userAttributes['mobile'];
+                $sessions[$key]['avatar']     = $userAttributes['avatar'];
                 $sessions[$key]['online']     = $session['update_time'] > (time() - ($idle_timeout * 60));
-                $sessions[$key]['webpush']    = isset($data['webpush'])? $data['webpush'] : null;
-                unset($sessions[$key]['data']);
             }
+
+            unset($sessions[$key]['userAttributes'], $sessions[$key]['data']);
         }
 
         return $sessions;
