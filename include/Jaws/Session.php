@@ -228,13 +228,13 @@ class Jaws_Session
 
             if (!empty($this->session['user'])) {
                 // user expiry date
-                $expiry_date = $this->userAttributes->expiry_date;
+                $expiry_date = $this->userAttributes['expiry_date'];
                 if (!empty($expiry_date) && $expiry_date <= time()) {
                     throw new Exception('This username is expired', JAWS_LOG_NOTICE);
                 }
 
                 // logon hours
-                $logon_hours = $this->userAttributes->logon_hours;
+                $logon_hours = $this->userAttributes['logon_hours'];
                 if (!empty($logon_hours)) {
                     $wdhour = explode(',', $this->app->UTC2UserTime(time(), 'w,G', true));
                     $lhByte = hexdec($logon_hours[$wdhour[0]*6 + intval($wdhour[1]/4)]);
@@ -245,7 +245,7 @@ class Jaws_Session
 
                 // concurrent logins
                 if ($this->session['update_time'] < $expTime) {
-                    $logins = $this->userAttributes->concurrents;
+                    $logins = $this->userAttributes['concurrents'];
                     $existSessions = $this->getUserSessions($this->session['user'], true);
                     if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
                         throw new Exception('Maximum number of concurrent logins reached', JAWS_LOG_NOTICE);
@@ -545,7 +545,7 @@ class Jaws_Session
         }
 
         if (empty($errorMessage)) {
-            $errorMessage = 'User '.$this->userAttributes->username.
+            $errorMessage = 'User '.$this->userAttributes['username'].
                 ' don\'t have permission to execute '.$gadget.'::'.$key. (empty($subkey)? '' : "($subkey)");
         }
 
@@ -724,7 +724,7 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
             'id:integer', 'salt', 'domain', 'user:integer', 'type', 'auth', 'longevity', 'ip', 'agent',
-            'user_attributes', 'data', 'webpush', 'checksum', 'update_time:integer'
+            'user_attributes', 'data', 'webpush', 'hidden:boolean', 'checksum', 'update_time:integer'
         );
         return $sessTable->where('id', (int)$sid)->fetchRow();
     }
