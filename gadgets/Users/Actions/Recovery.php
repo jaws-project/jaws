@@ -134,7 +134,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
     function LoginRecovery()
     {
         // fetch authentication type from session
-        $authtype = $this->app->session->auth;
+        $authtype = $this->gadget->session->auth;
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }

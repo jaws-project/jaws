@@ -235,7 +235,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Authenticate()
     {
         // fetch authentication type from session
-        $authtype = $this->app->session->auth;
+        $authtype = $this->gadget->session->auth;
         if (empty($authtype)) {
             return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
         }
