@@ -212,7 +212,7 @@ class Jaws
         $this->_Preferences['calendar'] = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar']);
 
         // load the language translates
-        Jaws_Translate::getInstance()->Init($this->_Preferences['language']);
+        Jaws_Translate::getInstance()->init($this->_Preferences['language']);
 
         // pass preferences to client
         $this->define('', 'preferences', $this->_Preferences);
