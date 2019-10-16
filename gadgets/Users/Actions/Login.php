@@ -79,7 +79,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
             // dashboards
             $layouts = array();
-            $layout_type = $layoutGadget->session->fetch('layout.type');
+            $layout_type = $layoutGadget->session->layout_type;
             switch ($layout_type) {
                 case 2:
                     if ($this->gadget->GetPermission('AccessUsersLayout')) {
@@ -289,7 +289,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return Jaws_Header::Location('');
         }
 
-        $authtype = $this->app->session->auth;
+        $authtype = $this->gadget->session->auth;
         $classfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Logout.php";
         if (!file_exists($classfile)) {
             Jaws_Error::Fatal($authtype. ' logout class doesn\'t exists');
