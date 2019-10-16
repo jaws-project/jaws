@@ -723,8 +723,8 @@ class Jaws_Session
     {
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id:integer', 'salt', 'user:integer', 'longevity', 'ip', 'agent', 'user_attributes', 'data',
-            'webpush', 'checksum', 'update_time:integer'
+            'id:integer', 'salt', 'domain', 'user:integer', 'type', 'auth', 'longevity', 'ip', 'agent',
+            'user_attributes', 'data', 'webpush', 'checksum', 'update_time:integer'
         );
         return $sessTable->where('id', (int)$sid)->fetchRow();
     }
@@ -751,7 +751,7 @@ class Jaws_Session
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id', 'domain', 'user', 'type', 'longevity', 'ip', 'agent',
+            'id', 'domain', 'user', 'type', 'auth', 'longevity', 'ip', 'agent',
             'user_attributes', 'webpush', 'checksum', 'insert_time', 'update_time:integer'
         );
 
