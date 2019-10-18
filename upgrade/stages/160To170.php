@@ -79,92 +79,100 @@ class Upgrader_160To170 extends JawsUpgraderStage
 
             // update sessions user/checksum
             if ($new == '1.6.1') {
-                $objORM = Jaws_ORM::getInstance();
-                $sessions = $objORM->table('session')->select('id:integer', 'user', 'data')->fetchAll();
+                $offset = 0;
+                $objORM = Jaws_ORM::getInstance()->table('session');
+                $objORM->beginTransaction(false);
+                do {
+                    $sessions = $objORM->select('id:integer', 'user', 'data')->limit(100, $offset)->fetchAll();
+                    $offset+=100;
+                    foreach ($sessions as $session) {
+                        $data = unserialize($session['data']);
+                        $newdata = array();
+                        $userdata = array();
+                        $sessiondata = array(
+                            'auth'      => '',
+                            'domain'    => '',
+                            'type'      => '',
+                            'longevity' => 0,
+                        );
 
-                foreach ($sessions as $session) {
-                    $data = unserialize($session['data']);
-                    $newdata = array();
-                    $userdata = array();
-                    $sessiondata = array(
-                        'auth'      => '',
-                        'domain'    => '',
-                        'type'      => '',
-                        'longevity' => 0,
-                        'webpush'   => '',
-                    );
-
-                    foreach ($data as $key => $value) {
-                        $keyParts = explode('.', $key);
-                        if (count($keyParts) == 3) {
-                            if ($keyParts[1] == 'Response') {
-                                $newdata[$keyParts[0]]['Response'.$keyParts[2]] = $value;
+                        foreach ($data as $key => $value) {
+                            $keyParts = explode('.', $key);
+                            if (count($keyParts) == 3) {
+                                if ($keyParts[1] == 'Response') {
+                                    $newdata[$keyParts[0]]['Response'.$keyParts[2]] = $value;
+                                } else {
+                                    $newdata[$keyParts[0]][$keyParts[2]] = $value;
+                                }
                             } else {
-                                $newdata[$keyParts[0]][$keyParts[2]] = $value;
+                                switch ($key) {
+                                    case 'user':
+                                        $userdata['id'] = (int)$value;
+                                        break;
+
+                                    case 'auth':
+                                    case 'domain':
+                                        $userdata[$key] = $value;
+                                        $sessiondata[$key] = $value;
+                                        break;
+
+                                    case 'internal':
+                                    case 'username':
+                                    case 'superadmin':
+                                    case 'groups':
+                                    case 'logon_hours':
+                                    case 'expiry_date':
+                                    case 'concurrents':
+                                    case 'logged':
+                                    case 'layout':
+                                    case 'nickname':
+                                    case 'email':
+                                    case 'mobile':
+                                    case 'ssn':
+                                    case 'avatar':
+                                        $userdata[$key] = $value;
+                                        break;
+
+                                    case 'type':
+                                    case 'longevity':
+                                        $sessiondata[$key] = $value;
+                                        // without break;
+
+                                    case 'webpush':
+                                    case 'last_password_update':
+                                        break;
+
+                                    default:
+                                        $newdata[''][$key] = $value;
+                                }
+
                             }
-                        } else {
-                            switch ($key) {
-                                case 'user':
-                                    $userdata['id'] = (int)$value;
-                                    break;
+                        }
 
-                                case 'auth':
-                                case 'domain':
-                                    $userdata[$key] = $value;
-                                    $sessiondata[$key] = $value;
-                                    break;
-
-                                case 'internal':
-                                case 'username':
-                                case 'superadmin':
-                                case 'groups':
-                                case 'logon_hours':
-                                case 'expiry_date':
-                                case 'concurrents':
-                                case 'logged':
-                                case 'layout':
-                                case 'nickname':
-                                case 'email':
-                                case 'mobile':
-                                case 'ssn':
-                                case 'avatar':
-                                    $userdata[$key] = $value;
-                                    break;
-
-                                case 'type':
-                                case 'longevity':
-                                case 'webpush':
-                                    $sessiondata[$key] = $value;
-                                    break;
-
-                                default:
-                                    $newdata[''][$key] = $value;
-                            }
-
+                        $userdata_serialized = serialize($userdata);
+                        $checksum = md5((int)$session['user'] . $userdata_serialized);
+                        $result = $objORM->update(
+                            array(
+                                'userid' => (int)$session['user'],
+                                'user_attributes' => $userdata_serialized,
+                                'data' => serialize($newdata),
+                                'auth'      => $sessiondata['auth'],
+                                'domain'    => $sessiondata['domain'],
+                                'type'      => $sessiondata['type'],
+                                'longevity' => $sessiondata['longevity'],
+                                'checksum'  => $checksum
+                            )
+                        )->where('id', $session['id'])
+                        ->exec();
+                        if (Jaws_Error::IsError($result)) {
+                            _log(JAWS_LOG_DEBUG, $result->getMessage());
+                            // do nothing
                         }
                     }
-
-                    $userdata_serialized = serialize($userdata);
-                    $checksum = md5((int)$session['user'] . $userdata_serialized);
-                    $result = $objORM->update(
-                        array(
-                            'userid' => (int)$session['user'],
-                            'user_attributes' => $userdata_serialized,
-                            'data' => serialize($newdata),
-                            'auth'      => $sessiondata['auth'],
-                            'domain'    => $sessiondata['domain'],
-                            'type'      => $sessiondata['type'],
-                            'longevity' => $sessiondata['longevity'],
-                            'webpush'   => $sessiondata['webpush'],
-                            'checksum'  => $checksum
-                        )
-                    )->where('id', $session['id'])
-                    ->exec();
-                    if (Jaws_Error::IsError($result)) {
-                        // do nothing
-                    }
-                }
+                } while (count($sessions) == 100);
+                $objORM->commit();;
             }
+
         }
 
         // Create application
