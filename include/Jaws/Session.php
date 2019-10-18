@@ -218,13 +218,10 @@ class Jaws_Session
                 $GLOBALS['log']->Log(JAWS_LOG_INFO, 'Session salt has been changed');
             }
 
-            /*
-            // FIXME: temporary prevent check checksum(will be enabled after new major version(maybe 2.0?!))
             // checksum
             if ($checksum !== $this->session['checksum']) {
                 throw new Exception('Session checksum has been changed', JAWS_LOG_NOTICE);
             }
-            */
 
             if (!empty($this->session['user'])) {
                 // user expiry date
@@ -568,14 +565,15 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         if ($this->changed) {
             $this->changed = false;
+            $userAttributes_serialized = serialize($this->userAttributes);
             $updData = array(
                 'domain'      => $this->session['domain'],
                 'user'        => $this->session['user'],
-                'user_attributes' => serialize($this->userAttributes),
+                'user_attributes' => $userAttributes_serialized,
                 'data'        => serialize($this->attributes),
                 'auth'        => $this->session['auth'],
                 'longevity'   => $this->session['longevity'],
-                'checksum'    => '',
+                'checksum'    => md5($this->session['user'] . $userAttributes_serialized),
                 'ip'          => $this->session['ip'],
                 'agent'       => $this->session['agent'],
                 'webpush'     => serialize($this->session['webpush']),
@@ -616,16 +614,17 @@ class Jaws_Session
         }
 
         $update_time = time();
+        $userAttributes_serialized = serialize($this->userAttributes);
         $result = Jaws_ORM::getInstance()->table('session')->insert(
             array(
                 'domain'      => $this->session['domain'],
                 'user'        => $this->session['user'],
-                'user_attributes' => serialize($this->userAttributes),
+                'user_attributes' => $userAttributes_serialized,
                 'data'        => serialize($this->attributes),
                 'type'        => $this->session['type'],
                 'longevity'   => $this->session['longevity'],
                 'salt'        => $this->session['salt'],
-                'checksum'    => '',
+                'checksum'    => md5($this->session['user'] . $userAttributes_serialized),
                 'ip'          => $this->session['ip'],
                 'agent'       => $this->session['agent'],
                 'webpush'     => serialize($this->session['webpush']),
