@@ -81,10 +81,19 @@ class Upgrader_160To170 extends JawsUpgraderStage
             if ($new == '1.6.1') {
                 $objORM = Jaws_ORM::getInstance();
                 $sessions = $objORM->table('session')->select('id:integer', 'user', 'data')->fetchAll();
-                
+
                 foreach ($sessions as $session) {
                     $data = unserialize($session['data']);
                     $newdata = array();
+                    $userdata = array();
+                    $sessiondata = array(
+                        'auth'      => '',
+                        'domain'    => '',
+                        'type'      => '',
+                        'longevity' => 0,
+                        'webpush'   => '',
+                    );
+
                     foreach ($data as $key => $value) {
                         $keyParts = explode('.', $key);
                         if (count($keyParts) == 3) {
@@ -94,17 +103,60 @@ class Upgrader_160To170 extends JawsUpgraderStage
                                 $newdata[$keyParts[0]][$keyParts[2]] = $value;
                             }
                         } else {
-                            $newdata[''][$key] = $value;
+                            switch ($key) {
+                                case 'user':
+                                    $userdata['id'] = (int)$value;
+                                    break;
+
+                                case 'auth':
+                                case 'domain':
+                                    $userdata[$key] = $value;
+                                    $sessiondata[$key] = $value;
+                                    break;
+
+                                case 'internal':
+                                case 'username':
+                                case 'superadmin':
+                                case 'groups':
+                                case 'logon_hours':
+                                case 'expiry_date':
+                                case 'concurrents':
+                                case 'logged':
+                                case 'layout':
+                                case 'nickname':
+                                case 'email':
+                                case 'mobile':
+                                case 'ssn':
+                                case 'avatar':
+                                    $userdata[$key] = $value;
+                                    break;
+
+                                case 'type':
+                                case 'longevity':
+                                case 'webpush':
+                                    $sessiondata[$key] = $value;
+                                    break;
+
+                                default:
+                                    $newdata[''][$key] = $value;
+                            }
+
                         }
                     }
 
-                    $serialized = serialize($newdata);
-                    $checksum = md5($session['user'] . $serialized);
+                    $userdata_serialized = serialize($userdata);
+                    $checksum = md5((int)$session['user'] . $userdata_serialized);
                     $result = $objORM->update(
                         array(
                             'userid' => (int)$session['user'],
-                            'data' => $serialized,
-                            'checksum' => $checksum
+                            'user_attributes' => $userdata_serialized,
+                            'data' => serialize($newdata),
+                            'auth'      => $sessiondata['auth'],
+                            'domain'    => $sessiondata['domain'],
+                            'type'      => $sessiondata['type'],
+                            'longevity' => $sessiondata['longevity'],
+                            'webpush'   => $sessiondata['webpush'],
+                            'checksum'  => $checksum
                         )
                     )->where('id', $session['id'])
                     ->exec();

@@ -250,7 +250,11 @@
             <field>
                 <name>agent</name>
                 <type>text</type>
-                <length>252</length>
+            </field>
+
+            <field>
+                <name>user_attributes</name>
+                <type>text</type>
             </field>
 
             <field>
