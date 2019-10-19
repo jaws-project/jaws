@@ -67,7 +67,7 @@ class Jaws_Gadget_Session
     function push($text, $type = RESPONSE_NOTICE, $resource = 'Resource', $data = null, $code = 0)
     {
         $gadget = $this->gadget->name;
-        return $this->app->session->pushResponse($text, "Response.$resource", $type, $data, $code, $gadget);
+        return $this->app->session->pushResponse($text, $type, "Response.$resource", $data, $code, $gadget);
     }
 
     /**
