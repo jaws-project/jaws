@@ -44,7 +44,7 @@ var BlocksCallback = {
                 selIndex = 0;
                 combo.options[selIndex].selected = true;
             }
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 edit(combo.options[selIndex].value);
             }
         } else {
