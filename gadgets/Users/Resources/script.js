@@ -29,7 +29,7 @@ function Jaws_Gadget_Users() { return {
     // ASync callback method
     AjaxCallback : {
         AddUser: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopUserAction();
                 $('#users_datagrid')[0].addItem();
                 $('#users_datagrid')[0].lastPage();
@@ -38,32 +38,32 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdateUser: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopUserAction();
                 getDG('users_datagrid');
             }
         },
 
         AddUserToGroups: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopUserAction();
             }
         },
 
         UpdatePersonal: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopUserAction();
             }
         },
 
         UpdateContacts: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopUserAction();
             }
         },
 
         UpdateExtra: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopUserAction();
             }
         },
@@ -74,7 +74,7 @@ function Jaws_Gadget_Users() { return {
         },
 
         DeleteUser: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopUserAction();
                 $('#users_datagrid')[0].deleteItem();
                 getDG('users_datagrid');
@@ -82,7 +82,7 @@ function Jaws_Gadget_Users() { return {
         },
 
         AddGroup: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopGroupAction();
                 $('#groups_datagrid')[0].addItem();
                 $('#groups_datagrid')[0].lastPage();
@@ -91,14 +91,14 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdateGroup: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopGroupAction();
                 getDG('groups_datagrid');
             }
         },
 
         DeleteGroup: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopGroupAction();
                 $('#groups_datagrid')[0].deleteItem();
                 getDG('groups_datagrid');
@@ -106,13 +106,13 @@ function Jaws_Gadget_Users() { return {
         },
 
         AddUsersToGroup: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 this.stopGroupAction();
             }
         },
 
         DeleteSession: function(response) {
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 clearTimeout(this.fTimeout);
                 getDG('onlineusers_datagrid', $('#onlineusers_datagrid')[0].getCurrentPage(), true);
             }
