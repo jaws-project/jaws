@@ -14,21 +14,21 @@
  */
 var CommentsCallback = {
     UpdateComment: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             stopCommentAction();
             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
     },
 
     DeleteComments: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             stopCommentAction();
             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
     },
 
     MarkAs: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             stopCommentAction();
             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
