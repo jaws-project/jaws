@@ -849,14 +849,24 @@ class Jaws_Session
     function pushResponse(
         $text, $type = RESPONSE_NOTICE, $resource = 'Response', $data = null, $code = 0, $component = ''
     ) {
-        $this->setAttribute(
-            $resource,
+        $resource_data = $this->getAttribute($resource, $component);
+        if (!is_array($resource_data)) {
+            $resource_data = array();
+        }
+
+        array_push(
+            $resource_data,
             array(
                 'text' => $text,
                 'type' => $type,
                 'data' => $data,
                 'code' => $code
-            ),
+            )
+        );
+
+        $this->setAttribute(
+            $resource,
+            $resource_data,
             false,
             $component
         );
@@ -873,10 +883,21 @@ class Jaws_Session
      */
     function popResponse($resource = 'Response', $remove = true, $component = '')
     {
-        $response = $this->getAttribute($resource, $component);
-        if ($remove) {
-            // move it into attributes trash
-            $this->deleteAttribute($resource, true, $component);
+        $resource_data = $this->getAttribute($resource, $component);
+        if (!is_array($resource_data)) {
+            $resource_data = array();
+        }
+        $response = array_pop($resource_data);
+
+        if (is_null($resource_data)) {
+            $this->deleteAttribute($resource, false, $component);
+        } else {
+            $this->setAttribute(
+                $resource,
+                $resource_data,
+                false,
+                $component
+            );
         }
 
         return $response;
