@@ -97,10 +97,10 @@ function saveQuote()
                 $('#published').val() == 'true'
             ]
         );
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             if ($('#group_filter').val() == -1 || $('#group_filter').val() == $('#gid').val()) {
                 var box = $('#quotes_combo')[0];
-                box.options[box.options.length] = new Option(response[0]['data']['title'], response[0]['data']['id']);
+                box.options[box.options.length] = new Option(response['data']['title'], response['data']['id']);
             }
             stopAction();
         }
@@ -120,7 +120,7 @@ function saveQuote()
                 $('#published').val() == 'true'
             ]
         );
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             box.options[quoteIndex].text = $('#title').val();
             stopAction();
         }
@@ -138,7 +138,7 @@ function deleteQuote()
         var box = $('#quotes_combo')[0];
         var quoteIndex = box.selectedIndex;
         var response = QuotesAjax.callSync('DeleteQuote', box.value);
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             box.options[quoteIndex] = null;
             stopAction();
         }
@@ -219,9 +219,9 @@ function saveGroup()
                     $('#published').val() == 'true'
                 ]
             );
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 var box = $('#groups_combo')[0];
-                box.options[box.options.length] = new Option(response[0]['data']['title'], response[0]['data']['id']);
+                box.options[box.options.length] = new Option(response['data']['title'], response['data']['id']);
                 stopAction();
             }
             QuotesAjax.showResponse(response);
@@ -240,7 +240,7 @@ function saveGroup()
                     $('#published').val() == 'true'
                 ]
             );
-            if (response[0]['type'] == 'alert-success') {
+            if (response['type'] == 'alert-success') {
                 box.options[groupIndex].text = $('#title').val();
                 stopAction();
             }
@@ -274,7 +274,7 @@ function deleteGroup()
         var box = $('#groups_combo')[0];
         var quoteIndex = box.selectedIndex;
         var response = QuotesAjax.callSync('DeleteGroup', box.value);
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             box.options[quoteIndex] = null;
             stopAction();
         }
