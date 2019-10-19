@@ -134,7 +134,6 @@ float: left;
 }
 
 #top_header {
-width: 850px;
 min-height: 80px;
 height: 80px;
 display: block;
@@ -163,7 +162,7 @@ margin: 0px;
 
 #container {
 padding: 0;
-width: 790px;
+width: 975px;
 margin: 0 auto;
 display: block;
 direction: rtl;
@@ -173,7 +172,7 @@ background: transparent;
 }
 
 html>body #container{
-width: 790px;
+width: 975px;
 }
 
 #sub_footer {
@@ -218,7 +217,7 @@ border: 1px solid #3465a4;
 background-color: #c1dcf8;
 padding: 10px 30px 10px 0px;
 margin: 0 0 0 20px;
-width: 210px;
+width: 250px;
 line-height:1.4em;
 }
 
@@ -236,7 +235,7 @@ text-decoration: line-through;
 
 .content {
 padding-left: 48px;
-margin-right: 270px;
+margin-right: 310px;
 }
 
 .msg_info, .msg_warning, .msg_error {

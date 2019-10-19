@@ -134,7 +134,6 @@ float: right;
 }
 
 #top_header {
-width: 850px;
 min-height: 80px;
 height: 80px;
 display: block;
@@ -163,7 +162,7 @@ margin: 0px;
 
 #container {
 padding: 0;
-width: 790px;
+width: 975px;
 margin: 0 auto;
 display: block;
 text-align: left;
@@ -172,7 +171,7 @@ background: transparent;
 }
 
 html>body #container{
-width: 790px;
+width: 975px;
 }
 #main-section {
 margin-left: auto;
@@ -221,7 +220,7 @@ background-color: #c1dcf8;
 padding: 10px;
 margin-left: 20px;
 margin-top: 0px;
-width: 210px;
+width: 250px;
 line-height:1.4em;
 }
 
@@ -239,7 +238,7 @@ text-decoration: line-through;
 }
 
 .content {
-padding-left: 270px;
+padding-left: 310px;
 margin-right: 48px;
 }
 
