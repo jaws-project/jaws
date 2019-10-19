@@ -12,14 +12,14 @@
  */
 var LanguagesCallback = {
     SaveLanguage: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             setTimeout( "refresh()", 1000);
         }
         LanguagesAjax.showResponse(response);
     },
 
     SetLangData: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             changeColorOfTranslatedTerms();
         }
         LanguagesAjax.showResponse(response);
