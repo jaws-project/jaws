@@ -10,31 +10,31 @@
  */
 var SitemapCallback = {
     UpdateCategory: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             stopAction();
         }
     },
 
     UpdateGadgetProperties: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             stopAction();
         }
     },
 
     SyncSitemapXML: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             syncSitemapDataFile(selectedGadget);
         }
     },
 
     SyncSitemapData: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             stopAction();
         }
     },
 
     PingSearchEngines: function(response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             stopAction();
         }
     }
