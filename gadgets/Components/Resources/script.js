@@ -13,7 +13,7 @@
  */
 var ComponentsCallback = {
     InstallGadget2: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
             buildComponentList();
@@ -22,7 +22,7 @@ var ComponentsCallback = {
     },
 
     UpgradeGadget2: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
             buildComponentList();
@@ -31,7 +31,7 @@ var ComponentsCallback = {
     },
 
     UninstallGadget2: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
             closeUI();
@@ -39,7 +39,7 @@ var ComponentsCallback = {
     },
 
     EnableGadget: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = false;
             buildComponentList();
@@ -48,7 +48,7 @@ var ComponentsCallback = {
     },
 
     DisableGadget: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = true;
             buildComponentList();
@@ -57,7 +57,7 @@ var ComponentsCallback = {
     },
 
     InstallPlugin: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
             closeUI();
@@ -65,7 +65,7 @@ var ComponentsCallback = {
     },
 
     UninstallPlugin: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
             closeUI();
@@ -73,7 +73,7 @@ var ComponentsCallback = {
     },
 
     UpdatePluginUsage: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             usageCache = $('#plugin_usage').clone(true, true);
             if (regCache) {
                 regCache = null;
@@ -83,7 +83,7 @@ var ComponentsCallback = {
     },
 
     UpdateRegistry: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             regChanges = {};
             regCache = $('#component_registry').clone(true, true);
             if (usageCache) {
@@ -94,7 +94,7 @@ var ComponentsCallback = {
     },
 
     UpdateACL: function (response) {
-        if (response[0]['type'] == 'alert-success') {
+        if (response['type'] == 'alert-success') {
             aclChanges = {};
             aclCache = $('#component_acl').clone(true, true);
         }
