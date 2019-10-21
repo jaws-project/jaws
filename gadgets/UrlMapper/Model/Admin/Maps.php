@@ -325,6 +325,45 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
     }
 
     /**
+     * Updates custom map route of the map
+     *
+     * @access  public
+     * @param   int     $id             Map ID
+     * @param   string  $custom_map     Custom_map to use (foo/bar/{param}/{param2}...)
+     * @param   int     $order          Sequence number of the map
+     * @param   string  $extension      Extension of default map
+     * @return  mixed   True on success, Jaws_Error otherwise
+     */
+    function UpdateCustomMap($id, $custom_map, $order, $extension = '.')
+    {
+        if (!empty($extension) && $extension[0] != '.') {
+            $extension = '.'.$extension;
+        }
+
+        $dbMap = $this->GetMap($id);
+        if (Jaws_Error::IsError($dbMap)) {
+            return $dbMap;
+        }
+
+        if (empty($dbMap)) {
+            return Jaws_Error::raiseError(_t('URLMAPPER_NO_MAPS'),  __FUNCTION__);
+        }
+
+        $params = array();
+        $params['extension']     = $extension;
+        $params['custom_map']    = $custom_map;
+        $params['custom_regexp'] = $this->GetMapRegExp($custom_map, unserialize($dbMap['vars_regexps']));
+        $params['order']         = $order;
+        $params['update_time']   = time();
+
+        return Jaws_ORM::getInstance()
+            ->table('url_maps')
+            ->update($params)
+            ->where('id', (int)$id)
+            ->exec();
+    }
+
+    /**
      * Deletes all maps related to a gadget
      *
      * @access  public

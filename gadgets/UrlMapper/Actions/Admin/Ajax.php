@@ -54,13 +54,13 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateMap()
     {
         $this->gadget->CheckPermission('ManageMaps');
-        @list($id, $map, $order) = $this->gadget->request->fetchAll('post');
+        @list($id, $custom_map, $order) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Maps');
-        $res = $model->UpdateMap($id, $map, null, $order);
+        $res = $model->UpdateCustomMap($id, $custom_map, $order);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(_t('URLMAPPER_ERROR_MAP_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('URLMAPPER_MAP_UPDATED', $map), RESPONSE_NOTICE);
+            $this->gadget->session->push(_t('URLMAPPER_MAP_UPDATED', $custom_map), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
