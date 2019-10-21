@@ -192,8 +192,9 @@ class Jaws_Session
             }
 
             $this->session = $session;
-            $this->attributes = unserialize($this->session['data']);
-            $this->userAttributes = unserialize($this->session['user_attributes']);
+            $this->attributes         = unserialize($this->session['data']);
+            $this->userAttributes     = unserialize($this->session['user_attributes']);
+            $this->session['webpush'] = unserialize($this->session['webpush']);
             $checksum = md5($this->session['user'] . $this->session['user_attributes']);
             unset($this->session['data'], $this->session['user_attributes']);
 
