@@ -40,6 +40,9 @@ class Jaws_Soap_Client extends Jaws_Soap
             return Jaws_Error::raiseError('SOAP extension is not available.', __CLASS__);
         }
 
+        // call parent constructor
+        parent::__construct();
+
         try {
             $this->SoapClient = new SoapClient($wsdl, $options);
         } catch (Exception $error) {

@@ -14,9 +14,9 @@ class Jaws_Soap
      * Jaws app object
      *
      * @var     object
-     * @access  public
+     * @access  protected
      */
-    public $app = null;
+    protected $app = null;
 
     /**
      * Constructor
