@@ -98,7 +98,7 @@ class Menu_Actions_WSMenu extends Jaws_Gadget_Action
                 $vars = unserialize($menu['variables']);
                 $url  = unserialize($menu['url']);
                 foreach ($vars as $var => $val) {
-                    switch ($val['scope']) {
+                    switch (@$val['scope']) {
                         case SESSION_SCOPE_APP:
                             $val = $this->app->session->{$val['name']};
                             break;
