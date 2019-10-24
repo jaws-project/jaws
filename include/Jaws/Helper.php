@@ -436,7 +436,11 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
     if (!empty($next_location) && $XMLHttpRequest) {
-        $data = Jaws::getInstance()->session->popResponse($data);
+        if (!empty($gadget)) {
+            $data = Jaws_Gadget::getInstance($gadget)->session->pop($data);
+        } else {
+            $data = Jaws::getInstance()->session->popResponse($data);
+        }
     }
 
     // Sync session
