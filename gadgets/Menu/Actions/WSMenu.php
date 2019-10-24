@@ -98,7 +98,23 @@ class Menu_Actions_WSMenu extends Jaws_Gadget_Action
                 $vars = unserialize($menu['variables']);
                 $url  = unserialize($menu['url']);
                 foreach ($vars as $var => $val) {
-                    $val = $this->app->session->$val;
+                    switch ($val['scope']) {
+                        case SESSION_SCOPE_APP:
+                            $val = $this->app->session->{$val['name']};
+                            break;
+
+                        case SESSION_SCOPE_USER:
+                            $val = $this->app->session->user->{$val['name']};
+                            break;
+
+                        case SESSION_SCOPE_GADGET:
+                            $val = $objGadget->session->{$val['name']};
+                            break;
+
+                        default:
+                            $val = null;
+                    }
+
                     if (is_null($val)) {
                         continue 2;
                     }
