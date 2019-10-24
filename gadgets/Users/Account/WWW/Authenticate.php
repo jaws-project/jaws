@@ -124,7 +124,7 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             // remove login key
             $this->gadget->session->delete('loginkey');
             // remove temp user data
-            $this->gadget->session->delete('temp.login.user');
+            $this->gadget->session->delete('temp_login_user');
             // unset bad login entry
             $this->gadget->action->load('Login')->BadLogins($user['username'], -1);
 

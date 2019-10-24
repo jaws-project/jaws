@@ -215,7 +215,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             }
 
             // remove temp user data
-            $this->gadget->session->delete('temp.login.user');
+            $this->gadget->session->delete('temp_login_user');
             // unset bad login entry
             $this->gadget->action->load('Login')->BadLogins($user['username'], -1);
 

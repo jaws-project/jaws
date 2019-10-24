@@ -32,7 +32,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
 
             if (empty($rcvryData['rcvstep'])) {
                 /*
-                $this->gadget->session->delete('temp.recovery.user');
+                $this->gadget->session->delete('temp_recovery_user');
                 if ($rcvryData['usecrypt']) {
                     $JCrypt = Jaws_Crypt::getInstance();
                     if (!Jaws_Error::IsError($JCrypt)) {

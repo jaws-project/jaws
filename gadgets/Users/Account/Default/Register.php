@@ -33,7 +33,7 @@ class Users_Account_Default_Register extends Users_Account_Default
             }
 
             if (empty($rgstrData['regstep']) || $rgstrData['regstep'] == 1) {
-                $this->gadget->session->delete('temp.register.user');
+                $this->gadget->session->delete('temp_register_user');
                 if ($rgstrData['password'] !== $rgstrData['password_check']) {
                     throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 401);
                 }
@@ -102,7 +102,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 $this->gadget->model->load('Registration')->updateUserStatus($userData['id'], 1);
             }
 
-            $this->gadget->session->delete('temp.register.user');
+            $this->gadget->session->delete('temp_register_user');
             // auto login if user activated
             if ($this->gadget->registry->fetch('anon_activation') != 'admin') {
                 unset($userData['password'], $userData['verify_key']);
