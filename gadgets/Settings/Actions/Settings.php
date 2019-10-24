@@ -190,7 +190,7 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
             );
         }
 
-        return Jaws_Header::Location($this->gadget->urlMap('Settings'), 'Settings.Settings');
+        return Jaws_Header::Location($this->gadget->urlMap('Settings'), 'Settings');
     }
 
     /**
