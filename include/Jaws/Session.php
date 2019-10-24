@@ -1,20 +1,17 @@
 <?php
 /**
- * Responses warning
- */
-define('RESPONSE_WARNING', 'alert-warning');
-/**
- * Responses error
+ * Responses error/warning/notice
  */
 define('RESPONSE_ERROR',   'alert-danger');
-/**
- * Responses notice
- */
+define('RESPONSE_WARNING', 'alert-warning');
 define('RESPONSE_NOTICE',  'alert-success');
+
 /**
- *
+ * Session variable scope gadget/app/user
  */
-define('SESSION_RESERVED_ATTRIBUTES', "type,user,user_name,superadmin,concurrents,acl,update_time");
+define('SESSION_SCOPE_GADGET', 0);
+define('SESSION_SCOPE_APP',    1);
+define('SESSION_SCOPE_USER',   2);
 
 /**
  * Class to manage User session.
