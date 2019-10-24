@@ -35,7 +35,10 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
             ),
             'title' => _t('USERS_PROFILE'),
             'variables' => array(
-                'user'  => array('scope' => SESSION_VAR_SCOPE_ROOT, 'name' => 'username')
+                'user'  => array(
+                    'scope'  => SESSION_SCOPE_USER,
+                    'name'   => 'username'
+                )
             )
         );
 
