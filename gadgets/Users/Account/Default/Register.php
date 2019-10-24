@@ -154,7 +154,7 @@ class Users_Account_Default_Register extends Users_Account_Default
         http_response_code($error->getCode());
         return Jaws_Header::Location(
             $this->gadget->urlMap('Registration', $urlParams),
-            'Users.Response.Registration.Response'
+            'Registration.Response'
         );
     }
 

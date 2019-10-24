@@ -201,7 +201,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
             );
         }
 
-        return Jaws_Header::Location($this->gadget->urlMap('Preferences'), 'Users.Preferences');
+        return Jaws_Header::Location($this->gadget->urlMap('Preferences'), 'Preferences');
     }
 
 }

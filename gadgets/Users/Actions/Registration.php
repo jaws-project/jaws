@@ -128,7 +128,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
 
         return Jaws_Header::Location(
             empty($referrer)? $this->gadget->urlMap('Login') : $referrer,
-            'Users.Response.Login.Response'
+            'Login.Response'
         );
     }
 

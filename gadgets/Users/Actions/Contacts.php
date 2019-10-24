@@ -182,7 +182,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             );
         }
 
-        return Jaws_Header::Location($this->gadget->urlMap('Contact'), 'Users.Contact');
+        return Jaws_Header::Location($this->gadget->urlMap('Contact'), 'Contact');
     }
 
     /**
