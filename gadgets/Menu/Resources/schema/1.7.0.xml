@@ -55,11 +55,6 @@
         </field>
 
         <field>
-            <name>options</name>
-            <type>text</type>
-        </field>
-
-        <field>
             <name>target</name>
             <type>integer</type>
             <length>1</length>
