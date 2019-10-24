@@ -181,11 +181,17 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                     $menu['title'] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $menu['title']);
                 }
 
+                // menu options
+                $menu['options'] = @unserialize($menu['options']);
+                if (empty($menu['options'])) {
+                    $menu['options'] = array();
+                }
+
                 // generate url map
                 $menu['url'] = $objGadget->urlMap(
                     $url['action'],
                     $params,
-                    array(),
+                    $menu['options'],
                     isset($url['gadget'])? $url['gadget'] : ''
                 );
             }

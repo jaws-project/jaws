@@ -90,7 +90,7 @@ width:400px;
 overflow:hidden;
 }
 #menus_edit{
-height:390px;
+min-height:390px;
 border:1px solid #d3d7cf;
 }
 #tbl_group, #tbl_menu{

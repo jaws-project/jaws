@@ -242,6 +242,11 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $urlEntry->SetStyle('direction: ltr;width: 256px;');
         $tpl->SetVariable('url', $urlEntry->Get());
 
+        $tpl->SetVariable('lbl_options', _t('MENU_OPTIONS'));
+        $optionsEntry =& Piwi::CreateWidget('Entry', 'options', '');
+        $optionsEntry->SetStyle('direction: ltr;width: 256px;');
+        $tpl->SetVariable('options', $optionsEntry->Get());
+
         $tpl->SetVariable('lbl_symbol', _t('MENU_SYMBOL'));
         $symbolEntry =& Piwi::CreateWidget('Entry', 'symbol', '');
         $symbolEntry->SetStyle('direction: ltr;width: 256px;');

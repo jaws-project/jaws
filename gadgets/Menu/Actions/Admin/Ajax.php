@@ -84,6 +84,13 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (false === @unserialize($menu['url'])) {
             $menu['url'] = Jaws_XSS::defilterURL($menu['url']);
         }
+        // menu options
+        $menu['options'] = @unserialize($menu['options']);
+        if (!empty($menu['options'])) {
+            $menu['options'] = http_build_query($menu['options']);
+        } else {
+            $menu['options'] = '';
+        }
 
         return $menu;
     }
@@ -113,7 +120,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($pid, $gid, $type, $permission, $title, $url, $variables, $symbol, $target,
+        @list($pid, $gid, $type, $permission, $title, $url, $variables, $options, $symbol, $target,
             $order, $status, $image
         ) = $this->gadget->request->fetchAll('post');
 
@@ -130,6 +137,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($variables)) {
             $variables = serialize($this->gadget->request->fetch('6:array', 'post'));
         }
+        // parse & serialize menu options
+        parse_str(Jaws_XSS::filterURL($options), $options);
+        $options = serialize($options);
 
         $mData = array(
             'pid'        => $pid,
@@ -139,6 +149,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             'title'      => $title,
             'url'        => $url,
             'variables'  => $variables,
+            'options'    => $options,
             'symbol'     => $symbol,
             'target'     => $target,
             'order'      => $order, 
@@ -176,7 +187,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid, $pid, $gid, $type, $permission, $title, $url, $variables, $symbol, $target,
+        @list($mid, $pid, $gid, $type, $permission, $title, $url, $variables, $options, $symbol, $target,
             $order, $status, $image
         ) = $this->gadget->request->fetchAll('post');
 
@@ -193,6 +204,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (is_null($variables)) {
             $variables  = serialize($this->gadget->request->fetch('7:array', 'post'));
         }
+        // parse & serialize menu options
+        parse_str(Jaws_XSS::filterURL($options), $options);
+        $options = serialize($options);
 
         $mData = array(
             'pid'        => $pid,
@@ -202,6 +216,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             'title'      => $title,
             'url'        => $url,
             'variables'  => $variables,
+            'options'    => $options,
             'symbol'     => $symbol,
             'target'     => $target,
             'order'      => $order, 
@@ -314,6 +329,10 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                             // serialize variables
                             if (isset($link['variables'])) {
                                 $links[$key]['variables'] = serialize($link['variables']);
+                            }
+                            // query options
+                            if (isset($link['options'])) {
+                                $links[$key]['options'] = http_build_query($link['options']);
                             }
                             // serialize permission
                             if (isset($link['permission'])) {

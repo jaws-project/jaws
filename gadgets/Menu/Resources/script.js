@@ -124,6 +124,7 @@ function saveMenus()
                     $('#title').val(),
                     $('#url').val(),
                     $('#variables').val(),
+                    $('#options').val(),
                     $('#symbol').val(),
                     $('#target').val(),
                     $('#order').val(),
@@ -149,6 +150,7 @@ function saveMenus()
                     $('#title').val(),
                     $('#url').val(),
                     $('#variables').val(),
+                    $('#options').val(),
                     $('#symbol').val(),
                     $('#target').val(),
                     $('#order').val(),
@@ -357,6 +359,7 @@ function editMenu(mid)
     $('#url').val(menuInfo['url']);
     $('#url').prop('disabled', menuInfo['variables'] || !menuInfo['url']);
     $('#variables').val(menuInfo['variables']);
+    $('#options').val(menuInfo['options']);
     $('#symbol').val(menuInfo['symbol']);
     $('#target').val(menuInfo['target']);
     $('#permission').val(menuInfo['permission']);
@@ -450,6 +453,7 @@ function getReferences(type)
         $('#references').append($('<option>').val(link['url']).text(link['title']));
         cachedMenus[type][i] = new Array();
         cachedMenus[type][i]['url']   = link['url'];
+        cachedMenus[type][i]['options'] = link['options']? link['options'] : '';
         cachedMenus[type][i]['variables'] = link['variables']? link['variables'] : '';
         cachedMenus[type][i]['title'] = link['title'];
         if (link['title2']) {
@@ -483,6 +487,7 @@ function changeReferences() {
     }
 
     $('#variables').val(cachedMenus[type][selIndex]['variables']);
+    $('#options').val(cachedMenus[type][selIndex]['options']);
     $('#permission').val(cachedMenus[type][selIndex]['permission']);
     $('#url').val($('#references').val());
     $('#url').prop('disabled', cachedMenus[type][selIndex]['variables'] || !cachedMenus[type][selIndex]['url']);

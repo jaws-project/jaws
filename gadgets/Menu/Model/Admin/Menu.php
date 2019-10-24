@@ -8,7 +8,7 @@
 class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
 {
     /**
-     * Inserta a new menu
+     * Inserts a new menu
      *
      * @access  public
      * @param   array   $mData  Menu data attributes
