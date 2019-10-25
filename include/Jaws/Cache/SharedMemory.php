@@ -2,11 +2,11 @@
 /**
  * SharedMemory cache driver
  *
- * @category   Cache
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2018-2019 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Cache
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2018-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Cache_SharedMemory extends Jaws_Cache
 {
