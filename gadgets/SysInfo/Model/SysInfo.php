@@ -91,8 +91,8 @@ class SysInfo_Model_SysInfo extends Jaws_Gadget_Model
             array('title' => 'Database Host/Port/Name/Prefix',
                 'value' => $this->GetDBServerInfo(1)),
             array('title' => 'Free/Total disk space',
-                'value' => JAWS_UTILS::FormatSize(@disk_free_space(JAWS_PATH)). '/' .
-                JAWS_UTILS::FormatSize(@disk_total_space(JAWS_PATH))),
+                'value' => JAWS_UTILS::FormatSize(@disk_free_space(ROOT_JAWS_PATH)). '/' .
+                JAWS_UTILS::FormatSize(@disk_total_space(ROOT_JAWS_PATH))),
             array('title' => 'Jaws Version/Codename',
                 'value' => JAWS_VERSION . '/' . JAWS_VERSION_CODENAME),
             array('title' => 'User Agent',

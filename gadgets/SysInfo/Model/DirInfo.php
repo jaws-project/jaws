@@ -19,7 +19,7 @@ class SysInfo_Model_DirInfo extends Jaws_Gadget_Model
      */
     function GetFSPermission($path)
     {
-        $path = JAWS_PATH . $path;
+        $path = ROOT_JAWS_PATH . $path;
         $perms = @decoct(@fileperms($path) & 0777);
         if (strlen($perms) < 3) {
             return '---------';
