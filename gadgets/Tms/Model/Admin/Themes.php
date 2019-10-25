@@ -57,8 +57,8 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
         if ($copy_example_to_repository) {
             //Copy image to repository/images
             if (file_exists($srcDir . '/example.png')) {
-                @copy($srcDir. '/example.png', JAWS_DATA. "themes/repository/Resources/images/$theme.png");
-                Jaws_Utils::chmod(JAWS_DATA . 'themes/repository/Resources/images/' . $theme . '.png');
+                @copy($srcDir. '/example.png', ROOT_DATA_PATH. "themes/repository/Resources/images/$theme.png");
+                Jaws_Utils::chmod(ROOT_DATA_PATH . 'themes/repository/Resources/images/' . $theme . '.png');
             }
         }
 

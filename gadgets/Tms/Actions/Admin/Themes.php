@@ -162,7 +162,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UploadTheme');
 
-        $res = Jaws_Utils::ExtractFiles($_FILES, JAWS_DATA . 'themes' . DIRECTORY_SEPARATOR, false);
+        $res = Jaws_Utils::ExtractFiles($_FILES, ROOT_DATA_PATH . 'themes' . DIRECTORY_SEPARATOR, false);
         if (!Jaws_Error::IsError($res)) {
             $this->gadget->session->push(_t('TMS_THEME_UPLOADED'), RESPONSE_NOTICE);
         } else {
@@ -193,7 +193,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $tmsModel = $this->gadget->model->loadAdmin('Themes');
             $res = $tmsModel->packTheme(
                 $tInfo['name'],
-                ($locality == 0? JAWS_DATA : JAWS_BASE_DATA) . 'themes',
+                ($locality == 0? ROOT_DATA_PATH : JAWS_BASE_DATA) . 'themes',
                 $tmpDir,
                 false
             );
