@@ -21,7 +21,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
     function GetCalendarList()
     {
         $calendars = array();
-        $path = JAWS_PATH . 'include/Jaws/Date';
+        $path = ROOT_JAWS_PATH . 'include/Jaws/Date';
         if (is_dir($path)) {
             $dir = scandir($path);
             foreach ($dir as $calendar) {
