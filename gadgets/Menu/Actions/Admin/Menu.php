@@ -202,7 +202,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $typeCombo->SetID('type');
         $typeCombo->setStyle('width: 256px;');
         $typeCombo->AddOption(_t('GLOBAL_URL'), 'url');
-        $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget) {
