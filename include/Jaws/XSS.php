@@ -2,13 +2,13 @@
 /**
  * XSS Prevention class
  *
- * @category   JawsType
- * @package    Core
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     David Coallier <david@echolibre.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2017 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    JawsType
+ * @package     Core
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      David Coallier <david@echolibre.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_XSS
 {
