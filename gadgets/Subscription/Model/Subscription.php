@@ -18,7 +18,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $info) {
-            if (is_file(JAWS_PATH . "gadgets/$gadget/Hooks/Subscription.php")) {
+            if (is_file(ROOT_JAWS_PATH . "gadgets/$gadget/Hooks/Subscription.php")) {
                 $gadgets[$gadget] = $info['title'];
                 continue;
             }
