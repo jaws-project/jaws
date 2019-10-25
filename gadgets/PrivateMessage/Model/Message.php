@@ -132,7 +132,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             if ($attachmentCount == 0) {
                 $model = $this->gadget->model->load('Attachment');
                 $attachmentInfo = $model->GetAttachment($attachment);
-                $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . 'attachments' .
+                $filepath = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments' .
                     DIRECTORY_SEPARATOR . $attachmentInfo['filename'];
                 if (!Jaws_Utils::delete($filepath)) {
                     //Rollback Transaction
@@ -439,7 +439,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         // Insert attachments info
         if (!empty($messageData['attachments']) && count($messageData['attachments']) > 0) {
             $maData = array();
-            $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR;
+            $pm_dir = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR;
             foreach ($messageData['attachments'] as $attachment) {
 
                 // check new attachments file -- we must copy tmp files to correct location
@@ -453,7 +453,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
                     if (!file_exists($pm_dir)) {
                         if (!Jaws_Utils::mkdir($pm_dir)) {
-                            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', JAWS_DATA));
+                            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', ROOT_DATA_PATH));
                         }
                     }
 
