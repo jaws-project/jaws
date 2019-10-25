@@ -28,7 +28,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
 
         // get drivers list
         $driversInfo = array();
-        $drivers = glob(JAWS_PATH . 'include/Jaws/Notification/*.php');
+        $drivers = glob(ROOT_JAWS_PATH . 'include/Jaws/Notification/*.php');
         foreach ($drivers as $driver) {
             $driver = basename($driver, '.php');
             $driversInfo[] = $driver;

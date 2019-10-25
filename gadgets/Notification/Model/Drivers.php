@@ -62,7 +62,7 @@ class Notification_Model_Drivers extends Jaws_Gadget_Model
     function GetNotificationDriversList()
     {
         $driversList = array();
-        $pDir = JAWS_PATH . 'include/Jaws/Notification/';
+        $pDir = ROOT_JAWS_PATH . 'include/Jaws/Notification/';
         if (!is_dir($pDir)) {
             Jaws_Error::Fatal('The notifications driver directory does not exists!', __FILE__, __LINE__);
         }
