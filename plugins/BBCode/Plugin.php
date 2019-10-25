@@ -276,7 +276,7 @@ class BBCode_Plugin extends Jaws_Plugin
                             $mSource = preg_replace('/[^[:alnum:]_-]/', '', $params);
                         }
                         $replacement = '';
-                        $mSourcePath = JAWS_PATH. "plugins/BBCode/Templates/$mSource.html";
+                        $mSourcePath = ROOT_JAWS_PATH. "plugins/BBCode/Templates/$mSource.html";
                         if (file_exists($mSourcePath)) {
                             $tpl = new Jaws_Template();
                             $tpl->Load("$mSource.html", 'plugins/BBCode/Templates/');
