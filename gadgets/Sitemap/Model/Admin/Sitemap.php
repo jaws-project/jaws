@@ -219,7 +219,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $xmlContent = $tpl->Get();
 
         // Check gadget directory in sitemap
-        $gadget_dir = JAWS_DATA . 'sitemap/'. strtolower($gadget);
+        $gadget_dir = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget);
         if (!Jaws_Utils::mkdir($gadget_dir, 1)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }
@@ -230,7 +230,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         }
 
         // remove Main sitemap.xml cached file
-        $xml_file = JAWS_DATA . 'sitemap/sitemap.xml';
+        $xml_file = ROOT_DATA_PATH . 'sitemap/sitemap.xml';
         if (file_exists($xml_file)) {
             @unlink($xml_file);
         }
@@ -268,7 +268,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         }
 
         // Check gadget directory in sitemap
-        $gadget_dir = JAWS_DATA . 'sitemap/'. strtolower($gadget);
+        $gadget_dir = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget);
         if (!Jaws_Utils::mkdir($gadget_dir, 1)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }

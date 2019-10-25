@@ -24,7 +24,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
         $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
-            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/Hooks/Sitemap.php')) {
+            if (is_file(ROOT_JAWS_PATH . 'gadgets/' . $gadget['name'] . '/Hooks/Sitemap.php')) {
                 $gadget['name'] = trim($gadget['name']);
                 if ($gadget['name'] == 'Sitemap' || empty($gadget['name'])) {
                     continue;
@@ -80,7 +80,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetSitemapXML()
     {
-        $xml_file = JAWS_DATA . 'sitemap/sitemap.xml';
+        $xml_file = ROOT_DATA_PATH . 'sitemap/sitemap.xml';
         if (file_exists($xml_file)) {
             if (false === $data = @file_get_contents($xml_file)) {
                 return false;
@@ -94,7 +94,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
 
         $gadgets = $this->GetAvailableSitemapGadgets();
         foreach ($gadgets as $gadget) {
-            $gadget_xml_file = JAWS_DATA. 'sitemap/'. strtolower($gadget['name']). '/sitemap.xml';
+            $gadget_xml_file = ROOT_DATA_PATH. 'sitemap/'. strtolower($gadget['name']). '/sitemap.xml';
             if (file_exists($gadget_xml_file)) {
                 $tpl->SetBlock('xml/item');
                 $tpl->SetVariable(
@@ -129,7 +129,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetGadgetSitemapXML($gadget)
     {
-        $xml_file = JAWS_DATA . 'sitemap/'. strtolower($gadget). '/sitemap.xml';
+        $xml_file = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget). '/sitemap.xml';
         if (file_exists($xml_file)) {
             if (false === $data = @file_get_contents($xml_file)) {
                 return false;
@@ -147,7 +147,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetSitemapData($gadget)
     {
-        $data_file = JAWS_DATA . 'sitemap/'. strtolower($gadget) . '/sitemap.bin';
+        $data_file = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget) . '/sitemap.bin';
         if (file_exists($data_file)) {
             if (false === $data = @file_get_contents($data_file)) {
                 return array();
