@@ -140,8 +140,8 @@ class SyntaxHighlight_Plugin extends Jaws_Plugin
             foreach ($htmltable as $key => $value) {
                 $code = str_replace(addslashes($value), $key, $code);
             }
-            require_once JAWS_PATH.'libraries/geshi/geshi.php';
-            $geshi = new GeSHi($code, $lang,  JAWS_PATH.'libraries/geshi/geshi');
+            require_once ROOT_JAWS_PATH.'libraries/geshi/geshi.php';
+            $geshi = new GeSHi($code, $lang,  ROOT_JAWS_PATH.'libraries/geshi/geshi');
             $geshi->set_header_type(GESHI_HEADER_DIV);
             $geshi->enable_keyword_links(false);
             $new_code = $geshi->parse_code();
