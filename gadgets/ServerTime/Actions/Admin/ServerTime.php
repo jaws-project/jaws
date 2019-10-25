@@ -27,7 +27,7 @@ class ServerTime_Actions_Admin_ServerTime extends Jaws_Gadget_Action
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'ServerTime'));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet($this->gadget->title);
         $fieldset->SetDirection('vertical');
         $fieldset->SetStyle('white-space: nowrap;');
