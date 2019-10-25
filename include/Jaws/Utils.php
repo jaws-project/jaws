@@ -832,7 +832,7 @@ class Jaws_Utils
         static $langs;
         if (!isset($langs)) {
             $langs = array('en' => 'International English');
-            $langdir = JAWS_PATH . 'languages/';
+            $langdir = ROOT_JAWS_PATH . 'languages/';
             $files = @scandir($langdir);
             if ($files !== false) {
                 foreach($files as $file) {
@@ -853,7 +853,7 @@ class Jaws_Utils
             static $dLangs;
             if (!isset($dLangs)) {
                 $dLangs = array();
-                $langdir = JAWS_DATA . 'languages/';
+                $langdir = ROOT_DATA_PATH . 'languages/';
                 $files = @scandir($langdir);
                 if ($files !== false) {
                     foreach($files as $file) {
