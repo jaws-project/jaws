@@ -366,10 +366,10 @@ class Jaws
         }
 
         $editor = $this->_Preferences['editor'];
-        $file   = JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php';
+        $file   = ROOT_JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php';
         if (!file_exists($file)) {
             $editor = 'TextArea';
-            $file   = JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php';
+            $file   = ROOT_JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php';
         }
         $editorClass = "Jaws_Widgets_$editor";
 
@@ -416,9 +416,9 @@ class Jaws
         $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
         $classname = str_replace('_', '/', $classname);
         if (0 === strpos($classname, 'Jaws/')) {
-            $file = JAWS_PATH. "include/$classname.php";
+            $file = ROOT_JAWS_PATH. "include/$classname.php";
         } else {
-            $file = JAWS_PATH. "gadgets/$classname.php";
+            $file = ROOT_JAWS_PATH. "gadgets/$classname.php";
         }
         if (!file_exists($file)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Loaded class file: ' . $file);
@@ -506,19 +506,19 @@ class Jaws
      * @access  public
      * @param   string  $suffix    suffix part of url
      * @param   bool    $rel_url   relative url
-     * @param   bool    $base_data use JAWS_BASE_DATA instead of JAWS_DATA
+     * @param   bool    $base_data use JAWS_BASE_DATA instead of ROOT_DATA_PATH
      * @return  string  Related URL to data directory
      */
     function getDataURL($suffix = '', $rel_url = true, $base_data = false)
     {
-        if (!defined('JAWS_DATA_URL') || $base_data) {
-            $url = substr($base_data? JAWS_BASE_DATA : JAWS_DATA, strlen(JAWS_PATH));
+        if (!defined('ROOT_DATA_PATH_URL') || $base_data) {
+            $url = substr($base_data? JAWS_BASE_DATA : ROOT_DATA_PATH, strlen(ROOT_JAWS_PATH));
             $url = str_replace('\\', '/', $url);
             if (!$rel_url) {
                 $url = $this->getSiteURL('/' . $url);
             }
         } else {
-            $url = JAWS_DATA_URL;
+            $url = ROOT_DATA_PATH_URL;
         }
 
         $suffix = is_bool($suffix)? array() : explode('/', $suffix);
@@ -532,13 +532,13 @@ class Jaws
      * @access  public
      * @param   string  $suffix         suffix part of url
      * @param   bool    $rel_url        relative url
-     * @param   bool    $base_themes    use JAWS_BASE_DATA instead of JAWS_DATA
+     * @param   bool    $base_themes    use JAWS_BASE_DATA instead of ROOT_DATA_PATH
      * @return  string  Related URL to themes directory
      */
     function getThemeURL($suffix = '', $rel_url = true, $base_themes = false)
     {
         if (!defined('JAWS_THEMES_URL') || $base_themes) {
-            $url = substr($base_themes? JAWS_BASE_THEMES : JAWS_THEMES, strlen(JAWS_PATH));
+            $url = substr($base_themes? JAWS_BASE_THEMES : JAWS_THEMES, strlen(ROOT_JAWS_PATH));
             $url = str_replace('\\', '/', $url);
             if (!$rel_url) {
                 $url = $this->getSiteURL('/' . $url);
