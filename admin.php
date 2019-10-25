@@ -15,16 +15,18 @@ define('JAWS_SCRIPT', 'admin');
 define('BASE_SCRIPT', basename(__FILE__));
 
 // Redirect to the installer if JawsConfig can't be found.
-$root = dirname(__FILE__);
-if (!file_exists($root . '/config/JawsConfig.php')) {
-    require_once 'include/Jaws/Utils.php';
+require_once 'include/Jaws/Utils.php';
+if (!file_exists(__DIR__ . '/config/JawsConfig.php')) {
     header('Location: '. Jaws_Utils::getBaseURL('/'). 'install/index.php');
     exit;
 } else {
-    require $root . '/config/JawsConfig.php';
+    require __DIR__ . '/config/JawsConfig.php';
+    if (!defined('ROOT_JAWS_PATH')) {
+        header('Location: '. Jaws_Utils::getBaseURL('/'). 'upgrade/index.php');
+    }
 }
 
-require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/InitApplication.php';
 $jawsApp = Jaws::getInstance();
 
 $ReqGadget = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('gadget', array('post', 'get')));
