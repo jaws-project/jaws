@@ -100,7 +100,7 @@ class AlexaRank
  */
 function AlexaSiteRank()
 {
-    $cache_dir = JAWS_DATA . 'launcher' . DIRECTORY_SEPARATOR;
+    $cache_dir = ROOT_DATA_PATH . 'launcher' . DIRECTORY_SEPARATOR;
     if (!Jaws_Utils::mkdir($cache_dir)) {
         return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $cache_dir),  __FUNCTION__);
     }

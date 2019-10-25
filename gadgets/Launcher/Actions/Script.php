@@ -54,7 +54,7 @@ class Launcher_Actions_Script extends Jaws_Gadget_Action
 
         if (!empty($script)) {
             // Check if script exists
-            if (@include_once JAWS_PATH. "gadgets/Launcher/scripts/$script.php") {
+            if (@include_once ROOT_JAWS_PATH. "gadgets/Launcher/scripts/$script.php") {
                 // Check if function exists and return its execution result
                 if (function_exists($script)) {
                     return call_user_func($script, $params);

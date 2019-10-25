@@ -19,7 +19,7 @@ class Launcher_Model_Scripts extends Jaws_Gadget_Model
     function GetScripts()
     {
         $result = array();
-        $path = JAWS_PATH . 'gadgets/Launcher/scripts/';
+        $path = ROOT_JAWS_PATH . 'gadgets/Launcher/scripts/';
         $adr = scandir($path);
         foreach($adr as $file) {
             if (substr($file, -4) == '.php') {
