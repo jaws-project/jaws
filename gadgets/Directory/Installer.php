@@ -45,7 +45,7 @@ class Directory_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $new_dir = JAWS_DATA . 'directory';
+        $new_dir = ROOT_DATA_PATH . 'directory';
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }

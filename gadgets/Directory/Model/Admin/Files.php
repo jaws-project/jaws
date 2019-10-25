@@ -74,7 +74,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $data['published'] = is_null($data['published']) ? true : (bool)$data['published'];
             }
 
-            $dirPath = JAWS_DATA . 'directory';
+            $dirPath = ROOT_DATA_PATH . 'directory';
             if (!is_dir($dirPath)) {
                 if (!Jaws_Utils::mkdir($dirPath)) {
                     throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
@@ -259,7 +259,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
         // Delete from disk
         if (!$data['is_dir']) {
-            $filename = JAWS_DATA . 'directory/' . $data['host_filename'];
+            $filename = ROOT_DATA_PATH . 'directory/' . $data['host_filename'];
             if (file_exists($filename)) {
                 if (!Jaws_Utils::delete($filename)) {
                     return false;
@@ -268,7 +268,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
             // delete thumbnail file
             $fileInfo = pathinfo($filename);
-            $thumbnailPath = JAWS_DATA . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
+            $thumbnailPath = ROOT_DATA_PATH . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
             if (file_exists($thumbnailPath)) {
                 if (!Jaws_Utils::delete($thumbnailPath)) {
                     return false;

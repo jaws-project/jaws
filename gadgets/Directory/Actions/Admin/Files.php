@@ -123,7 +123,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($file) || empty($file) || empty($file['host_filename'])) {
             return;
         }
-        $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
+        $filename = ROOT_DATA_PATH . 'directory/' . $file['host_filename'];
         if (!file_exists($filename)) {
             return;
         }
@@ -168,7 +168,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->loadAdmin('Media.html');
         $tpl->SetBlock($block);
         if ($type === Directory_Info::FILE_TYPE_TEXT) {
-            $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
+            $filename = ROOT_DATA_PATH . 'directory/' . $file['host_filename'];
             if (file_exists($filename)) {
                 $tpl->SetVariable('text', file_get_contents($filename));
             }
@@ -190,7 +190,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
     {
         $response = array();
         $type = $this->gadget->request->fetch('type', 'post');
-        $dirPath = JAWS_DATA . 'directory';
+        $dirPath = ROOT_DATA_PATH . 'directory';
         if (!is_dir($dirPath)) {
             if (!Jaws_Utils::mkdir($dirPath)) {
                 $response = array(
