@@ -2,11 +2,11 @@
 /**
  * Contact Gadget
  *
- * @category   Gadget
- * @package    Contact
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2019 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget
+ * @package     Contact
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2019-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Contact_Informs_Email extends Jaws_Gadget_Action
 {
