@@ -285,7 +285,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
         $gadgetList = $cmpModel->GetGadgetsList(null, true, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
-            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/Hooks/Search.php'))
+            if (is_file(ROOT_JAWS_PATH . 'gadgets/' . $gadget['name'] . '/Hooks/Search.php'))
                 $gadgets[$key] = $gadget;
         }
         return $gadgets;
