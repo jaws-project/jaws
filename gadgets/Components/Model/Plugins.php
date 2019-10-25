@@ -25,7 +25,7 @@ class Components_Model_Plugins extends Jaws_Gadget_Model
         static $pluginsList;
         if (!isset($pluginsList)) {
             $pluginsList = array();
-            $pDir = JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
+            $pDir = ROOT_JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
             if (!is_dir($pDir)) {
                 Jaws_Error::Fatal('The plugins directory does not exists!', __FILE__, __LINE__);
             }
