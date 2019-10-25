@@ -2,11 +2,11 @@
 /**
  * Object-relational mapping class
  *
- * @category   ORM
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    ORM
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2012-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_ORM
 {
@@ -1256,7 +1256,7 @@ class Jaws_ORM
  * @category   ORM
  * @package    Core
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012-2015 Jaws Development Group
+ * @copyright  2012-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_ORM_Function
