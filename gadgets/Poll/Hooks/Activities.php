@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Poll
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2008-2016 Jaws Development Group
+ * @copyright   2008-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Poll_Hooks_Activities extends Jaws_Gadget_Hook
