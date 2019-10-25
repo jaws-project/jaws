@@ -30,13 +30,13 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
             '&album='.$post['fromalbum']);
         }
 
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
             $this->gadget->session->push($objImage->getMessage(), RESPONSE_ERROR);
         } else {
             // thumb
-            $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['thumb']));
+            $objImage->load(ROOT_DATA_PATH. 'phoo/'. rawurldecode($image['thumb']));
             $objImage->rotate(-90);
             $res = $objImage->save();
             $objImage->free();
@@ -44,7 +44,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                 $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             } else {
                 // medium
-                $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['medium']));
+                $objImage->load(ROOT_DATA_PATH. 'phoo/'. rawurldecode($image['medium']));
                 $objImage->rotate(-90);
                 $res = $objImage->save();
                 $objImage->free();
@@ -52,7 +52,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                     $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
                 } else {
                     // original image
-                    $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['image']));
+                    $objImage->load(ROOT_DATA_PATH. 'phoo/'. rawurldecode($image['image']));
                     $objImage->rotate(-90);
                     $res = $objImage->save();
                     $objImage->free();
@@ -87,13 +87,13 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
             '&album='.$post['fromalbum']);
         }
 
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
             $this->gadget->session->push($objImage->getMessage(), RESPONSE_ERROR);
         } else {
             // thumb
-            $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['thumb']));
+            $objImage->load(ROOT_DATA_PATH. 'phoo/'. rawurldecode($image['thumb']));
             $objImage->rotate(90);
             $res = $objImage->save();
             $objImage->free();
@@ -101,7 +101,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                 $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             } else {
                 // medium
-                $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['medium']));
+                $objImage->load(ROOT_DATA_PATH. 'phoo/'. rawurldecode($image['medium']));
                 $objImage->rotate(90);
                 $res = $objImage->save();
                 $objImage->free();
@@ -109,7 +109,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                     $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
                 } else {
                     // original image
-                    $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['image']));
+                    $objImage->load(ROOT_DATA_PATH. 'phoo/'. rawurldecode($image['image']));
                     $objImage->rotate(90);
                     $res = $objImage->save();
                     $objImage->free();

@@ -21,7 +21,7 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('Import');
         @list($image, $name, $album) = $this->gadget->request->fetchAll('post');
         $file = array();
-        $file['tmp_name'] = JAWS_DATA . 'phoo/import/' . $image;
+        $file['tmp_name'] = ROOT_DATA_PATH . 'phoo/import/' . $image;
         $file['name'] = $image;
         $file['size'] = @filesize($file['tmp_name']);
 

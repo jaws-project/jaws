@@ -47,7 +47,7 @@ class Phoo_Model_Photoblog extends Phoo_Model
             return new Jaws_Error(_t('PHOO_ERROR_GETASPORTRAIT'));
         }
 
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
         $portrait = array();
         foreach ($result as $r) {
             $info = array();

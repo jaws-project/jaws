@@ -20,7 +20,7 @@ class Phoo_Model_Admin_Import extends Jaws_Gadget_Model
     function GetItemsToImport()
     {
         $items = array();
-        $path =  JAWS_DATA . 'phoo/import';
+        $path =  ROOT_DATA_PATH . 'phoo/import';
         if (is_dir($path)) {
             ///FIXME use scandir
             $d = dir($path);

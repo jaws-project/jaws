@@ -149,7 +149,7 @@ class Phoo_Model_Photos extends Phoo_Model
             return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'));
         }
 
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
         foreach ($r2 as $row) {
             $info = array();
 
@@ -215,7 +215,7 @@ class Phoo_Model_Photos extends Phoo_Model
             return array();
         }
 
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
         $image = array();
         $image['id']             = $r['id'];
         $image['name']           = $r['title'];
@@ -284,7 +284,7 @@ class Phoo_Model_Photos extends Phoo_Model
         // EXIF STUFF
         $show = $this->gadget->registry->fetch('show_exif_info');
         if ($show == 'true' && function_exists('exif_read_data')) {
-            if ($data = @exif_read_data(JAWS_DATA . 'phoo/' . $r['filename'], 1, true)) {
+            if ($data = @exif_read_data(ROOT_DATA_PATH . 'phoo/' . $r['filename'], 1, true)) {
                 $cameraimg = '';
                 if (isset($data['IFD0']['Make'])) {
                     $camera = $data['IFD0']['Make'].' / '.$data['IFD0']['Model'];
@@ -418,9 +418,9 @@ class Phoo_Model_Photos extends Phoo_Model
     function SavePhoto($photoFile, $title, $description)
     {
 //        $res = Jaws_Utils::UploadFiles($_FILES['logo'], $tmpDir, 'png,jpg,jpeg,bmp,gif');
-        $uploaddir = JAWS_DATA . 'phoo/' . date('Y_m_d') . '/';
+        $uploaddir = ROOT_DATA_PATH . 'phoo/' . date('Y_m_d') . '/';
         if (!is_dir($uploaddir)) {
-            if (!Jaws_Utils::is_writable(JAWS_DATA . 'phoo/')) {
+            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH . 'phoo/')) {
                 $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
             }
@@ -447,7 +447,7 @@ class Phoo_Model_Photos extends Phoo_Model
         $uploadfile = $uploaddir . $filename;
 
         // Resize Image
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
             return Jaws_Error::raiseError($objImage->GetMessage());
@@ -514,7 +514,7 @@ class Phoo_Model_Photos extends Phoo_Model
         // Lets remove the original if keep_original = false
         if ($this->gadget->registry->fetch('keep_original') == 'false') {
             if (!empty($data['filename'])) {
-                Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $data['filename']);
+                Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $data['filename']);
             }
         }
 

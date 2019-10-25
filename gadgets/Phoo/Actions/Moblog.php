@@ -55,9 +55,9 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
         $moblog = $model->GetMoblog($aid);
         if (!Jaws_Error::IsError($moblog)) {
             $objDate = Jaws_Date::getInstance();
-            include_once JAWS_PATH . 'include/Jaws/Image.php';
+            include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
             foreach ($moblog as $mb) {
-                $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $mb['thumb']);
+                $imgData = Jaws_Image::getimagesize(ROOT_DATA_PATH . 'phoo/' . $mb['thumb']);
                 if (Jaws_Error::IsError($imgData)) {
                     continue;
                 }

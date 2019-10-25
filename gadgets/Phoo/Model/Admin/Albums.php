@@ -86,12 +86,12 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
                 return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
             }
 
-            include_once JAWS_PATH . 'include/Jaws/Image.php';
+            include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
             foreach ($result as $r) {
                 if (!empty($r['filename'])) {
-                    Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $r['filename']);
-                    Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetMediumPath($r['filename']));
-                    Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetThumbPath($r['filename']));
+                    Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $r['filename']);
+                    Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $this->GetMediumPath($r['filename']));
+                    Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $this->GetThumbPath($r['filename']));
                 }
             }
 

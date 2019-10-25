@@ -53,7 +53,7 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
             $b->SetSubmit(true);
             $tpl->SetVariable ('import_button', $b->Get());
             $counter = 0;
-            include_once JAWS_PATH . 'include/Jaws/Image.php';
+            include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
             foreach ($items as $i) {
                 $tpl->SetBlock('import/pictures/item');
                 $tpl->SetVariable('thumb', BASE_SCRIPT . '?gadget=Phoo&amp;action=Thumb&amp;image='.$i);

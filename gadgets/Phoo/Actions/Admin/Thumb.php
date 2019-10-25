@@ -25,7 +25,7 @@ class Phoo_Actions_Admin_Thumb extends Phoo_Actions_Admin_Default
 
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {
-            $result = $objImage->load(JAWS_DATA . 'phoo/import/' . $image);
+            $result = $objImage->load(ROOT_DATA_PATH . 'phoo/import/' . $image);
             if (!Jaws_Error::IsError($result)) {
                 $thumbSize = explode('x', $this->gadget->registry->fetch('thumbsize'));
                 $objImage->resize($thumbSize[0], $thumbSize[1]);

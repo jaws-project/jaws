@@ -58,7 +58,7 @@ class Phoo_Actions_Random extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Random.html');
         $tpl->SetBlock('random_image');
-        $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $r['thumb']);
+        $imgData = Jaws_Image::getimagesize(ROOT_DATA_PATH . 'phoo/' . $r['thumb']);
         if (!Jaws_Error::IsError($imgData)) {
             $tpl->SetVariable('width',  $imgData[0]);
             $tpl->SetVariable('height', $imgData[1]);
