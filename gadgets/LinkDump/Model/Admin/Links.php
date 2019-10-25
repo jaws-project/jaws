@@ -245,7 +245,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             $gid = $group['fast_url'];
         }
 
-        $rss_path = JAWS_DATA . 'xml/link-' . $gid . '.rss';
+        $rss_path = ROOT_DATA_PATH . 'xml/link-' . $gid . '.rss';
         return @unlink($rss_path);
     }
 }

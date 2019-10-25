@@ -43,7 +43,7 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
      */
     function Install($input_schema = '', $input_variables = array())
     {
-        $new_dir = JAWS_DATA . 'xml' . DIRECTORY_SEPARATOR;
+        $new_dir = ROOT_DATA_PATH . 'xml' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
