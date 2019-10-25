@@ -464,7 +464,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         {
             $res = Jaws_Utils::UploadFiles(
                 $_FILES,
-                JAWS_DATA. 'forums',
+                ROOT_DATA_PATH. 'forums',
                 '',
                 null
             );

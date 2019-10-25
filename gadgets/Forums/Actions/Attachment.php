@@ -34,7 +34,7 @@ class Forums_Actions_Attachment extends Jaws_Gadget_Action
         }
 
         if (!empty($attachment)) {
-            $filepath = JAWS_DATA. 'forums/'. $attachment['filename'];
+            $filepath = ROOT_DATA_PATH. 'forums/'. $attachment['filename'];
             if (file_exists($filepath)) {
                 // increase download hits
                 $result = $aModel->HitAttachmentDownload($rqst['attach']);

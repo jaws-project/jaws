@@ -66,7 +66,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $new_dir = JAWS_DATA . 'forums';
+        $new_dir = ROOT_DATA_PATH . 'forums';
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
@@ -138,8 +138,8 @@ class Forums_Installer extends Jaws_Gadget_Installer
                     array(array(
                         'user_filename' => $post['attachment_user_fname'],
                         'host_filename' => $post['attachment_host_fname'],
-                        'host_filesize' => @filesize(JAWS_DATA. 'forums/'. $post['attachment_host_fname']),
-                        'host_filetype' => @mime_content_type(JAWS_DATA. 'forums/'. $post['attachment_host_fname']),
+                        'host_filesize' => @filesize(ROOT_DATA_PATH. 'forums/'. $post['attachment_host_fname']),
+                        'host_filetype' => @mime_content_type(ROOT_DATA_PATH. 'forums/'. $post['attachment_host_fname']),
                         'hitcount' => $post['attachment_hits_count'],
                     ))
                 );
