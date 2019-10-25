@@ -2,11 +2,11 @@
 /**
  * Simple class to create Atom feeds...
  *
- * @category   XML
- * @package    Core
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @copyright  2004-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    XML
+ * @package     Core
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @copyright   2004-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 define('SHOW_EMAILS_IN_FEED', false);
 

@@ -2,11 +2,11 @@
 /**
  * Class that deals like a wrapper between Jaws and pear/Crypt
  *
- * @category   Crypt
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Crypt
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2007-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Crypt
 {
