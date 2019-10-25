@@ -29,14 +29,23 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
 
         $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
-            $this->gadget->session->push(_t('COMPONENTS_GADGETS_INSTALL_FAILURE', $gadget), RESPONSE_ERROR);
+            $this->app->session->pushResponse(
+                _t('COMPONENTS_GADGETS_INSTALL_FAILURE', $gadget),
+                RESPONSE_ERROR
+            );
         } else {
             $installer = $objGadget->installer->load();
             $return = $installer->InstallGadget();
             if (Jaws_Error::IsError($return)) {
-                $this->gadget->session->push($return->GetMessage(), RESPONSE_ERROR);
+                $this->app->session->pushResponse(
+                    $return->GetMessage(),
+                    RESPONSE_ERROR
+                );
             } else {
-                $this->gadget->session->push(_t('COMPONENTS_GADGETS_INSTALL_OK', $objGadget->title), RESPONSE_NOTICE);
+                $this->app->session->pushResponse(
+                    _t('COMPONENTS_GADGETS_INSTALL_OK', $objGadget->title),
+                    RESPONSE_NOTICE
+                );
             }
         }
 
