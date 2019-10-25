@@ -976,10 +976,11 @@ class Jaws_Utils
      * @param   string  $fpath      File path
      * @param   string  $fname      File name
      * @param   string  $mimetype   File mime type
+     * @param   int     $expires    Max age of expire
      * @param   string  $inline     Inline disposition?
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    static function Download($fpath, $fname, $mimetype = '', $inline = true)
+    static function Download($fpath, $fname, $mimetype = '', $expires = 0, $inline = true)
     {
         if (false === $fhandle = @fopen($fpath, 'rb')) {
             return false;
@@ -1002,10 +1003,13 @@ class Jaws_Utils
 
         // ranges unit
         header("Accept-Ranges: bytes");
-        // browser must download file from server instead of cache
-        header("Expires: 0");
-        header("Pragma: public");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
+        // cache control
+        if (empty($expires)) {
+            header('Cache-Control: no-store'); // no cache
+        } else {
+            header("Cache-Control: max-age=$expires");
+        }
         // content mime type
         header('Content-Type: '. (empty($mimetype)? Jaws_Utils::mime_extension_type($fpath) : $mimetype));
         // content disposition and filename
