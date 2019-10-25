@@ -323,7 +323,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Banners');
         $res = Jaws_Utils::UploadFiles(
             $_FILES,
-            JAWS_DATA . $this->gadget->DataDirectory,
+            ROOT_DATA_PATH . $this->gadget->DataDirectory,
             'jpg,gif,swf,png,jpeg,bmp,svg',
             false
         );

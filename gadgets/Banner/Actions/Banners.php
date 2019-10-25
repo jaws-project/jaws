@@ -128,7 +128,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             $tpl_template->LoadFromString('<!-- BEGIN x -->'.$banner['template'].'<!-- END x -->');
             $tpl_template->SetBlock('x');
             $tpl_template->SetVariable('title',  $banner['title']);
-            if (file_exists(JAWS_DATA . $this->gadget->DataDirectory . $banner['banner'])) {
+            if (file_exists(ROOT_DATA_PATH . $this->gadget->DataDirectory . $banner['banner'])) {
                 $tpl_template->SetVariable(
                     'banner',
                     $this->app->getDataURL($this->gadget->DataDirectory . $banner['banner'])
