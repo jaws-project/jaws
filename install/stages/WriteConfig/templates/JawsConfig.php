@@ -7,22 +7,29 @@
  * @copyright  2004-2015 Jaws Development Group
  */
 // Path where Jaws is installed
-define('JAWS_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
-<!-- BEGIN jaws_data -->
-define('JAWS_DATA', '{{jaws_data}}');
-<!-- END jaws_data -->
-<!-- BEGIN jaws_base_data -->
-define('JAWS_BASE_DATA', '{{jaws_base_data}}');
-<!-- END jaws_base_data -->
-<!-- BEGIN jaws_themes -->
-define('JAWS_THEMES', '{{jaws_themes}}');
-<!-- END jaws_themes -->
-<!-- BEGIN jaws_base_themes -->
-define('JAWS_BASE_THEMES', '{{jaws_base_themes}}');
-<!-- END jaws_base_themes -->
-<!-- BEGIN jaws_cache -->
-define('JAWS_CACHE', '{{jaws_cache}}');
-<!-- END jaws_cache -->
+define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR);
+define('JAWS_PATH', substr(dirname(__DIR__) . DIRECTORY_SEPARATOR, strlen(ROOT_PATH)));
+define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH);
+<!-- BEGIN data_path -->
+define('DATA_PATH', '{{data_path}}');
+define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
+<!-- END data_path -->
+<!-- BEGIN base_data_path -->
+define('BASE_DATA_PATH', '{{base_data_path}}');
+define('ROOT_BASE_DATA_PATH', ROOT_PATH . BASE_DATA_PATH);
+<!-- END base_data_path -->
+<!-- BEGIN themes_path -->
+define('THEMES_PATH', '{{themes_path}}');
+define('ROOT_THEMES_PATH', ROOT_PATH . THEMES_PATH);
+<!-- END themes_path -->
+<!-- BEGIN base_themes_path -->
+define('BASE_THEMES_PATH', '{{base_themes_path}}');
+define('ROOT_BASE_THEMES_PATH', ROOT_PATH . BASE_THEMES_PATH);
+<!-- END base_themes_path -->
+<!-- BEGIN cache_path -->
+define('CACHE_PATH', '{{cache_path}}');
+define('ROOT_CACHE_PATH', ROOT_PATH . CACHE_PATH);
+<!-- END cache_path -->
 
 $db = array(); //DONT RENAME/DELETE THIS VARIABLE!!
 /**
@@ -101,6 +108,6 @@ define('LOG_ACTIVATED', {{log_level}});
 
 $GLOBALS['logger']['method'] = 'LogToFile';
 $GLOBALS['logger']['options'] = array();
-$GLOBALS['logger']['options']['file'] = JAWS_DATA . 'logs/.jaws.log';
+$GLOBALS['logger']['options']['file'] = ROOT_DATA_PATH . 'logs/.jaws.log';
 $GLOBALS['logger']['options']['size'] = 2097152;
 <!-- END JawsConfig -->

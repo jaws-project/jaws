@@ -36,24 +36,24 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
     date_default_timezone_set('UTC');
 }
 
-define('JAWS_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
-define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
+define('ROOT_JAWS_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+define('PEAR_PATH', ROOT_JAWS_PATH . 'libraries/pear/');
 
 // lets setup the include_path
-set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
+set_include_path('.' . PATH_SEPARATOR . ROOT_JAWS_PATH . 'libraries/pear');
 
 // this variables currently temporary until we complete multiple instance installing
 define(
-    'JAWS_DATA',
-    isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : (JAWS_PATH . 'data'. DIRECTORY_SEPARATOR)
+    'ROOT_DATA_PATH',
+    isset($_SESSION['ROOT_DATA_PATH'])? $_SESSION['ROOT_DATA_PATH'] : (ROOT_JAWS_PATH . 'data'. DIRECTORY_SEPARATOR)
 );
 define(
     'JAWS_BASE_DATA',
-    isset($_SESSION['JAWS_BASE_DATA'])? $_SESSION['JAWS_BASE_DATA'] : JAWS_DATA
+    isset($_SESSION['JAWS_BASE_DATA'])? $_SESSION['JAWS_BASE_DATA'] : ROOT_DATA_PATH
 );
 define(
     'JAWS_THEMES',
-    isset($_SESSION['JAWS_THEMES'])? $_SESSION['JAWS_THEMES'] : (JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR)
+    isset($_SESSION['JAWS_THEMES'])? $_SESSION['JAWS_THEMES'] : (ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR)
 );
 define(
     'JAWS_BASE_THEMES',
@@ -61,32 +61,32 @@ define(
 );
 define(
     'JAWS_CACHE',
-    isset($_SESSION['JAWS_CACHE'])? $_SESSION['JAWS_CACHE'] : (JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR)
+    isset($_SESSION['JAWS_CACHE'])? $_SESSION['JAWS_CACHE'] : (ROOT_DATA_PATH. 'cache'. DIRECTORY_SEPARATOR)
 );
 define('INSTALL_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // Lets support older PHP versions so we can use spanking new functions
-require_once JAWS_PATH . 'include/Jaws/Helper.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
 
 // Initialize the logger
 $_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
 $logger = array('method'  => 'LogToFile',
-                'options' => array('file' => JAWS_DATA . 'logs/.install.log'));
-require JAWS_PATH . 'include/Jaws/Log.php';
+                'options' => array('file' => ROOT_DATA_PATH . 'logs/.install.log'));
+require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
 $GLOBALS['log'] = new Jaws_Log($_SESSION['use_log'], $logger);
 $GLOBALS['log']->Start();
 
-require_once JAWS_PATH . 'include/Jaws/Const.php';
-require_once JAWS_PATH . 'include/Jaws/Error.php';
-require_once JAWS_PATH . 'include/Jaws/Utils.php';
-require_once JAWS_PATH . 'include/Jaws/Gadget.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Error.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Gadget.php';
 
 if (!isset($_SESSION['install'])) {
     $_SESSION['install'] = array('stage' => 0, 'lastStage' => array());
 }
 
 // Lets handle our requests
-require JAWS_PATH . 'include/Jaws/Request.php';
+require ROOT_JAWS_PATH . 'include/Jaws/Request.php';
 $request = Jaws_Request::getInstance();
 $lang = $request->fetch('language', 'post');
 if (isset($lang)) {
@@ -95,7 +95,7 @@ if (isset($lang)) {
     $_SESSION['install']['language'] = 'en';
 }
 
-include_once JAWS_PATH . 'include/Jaws/Translate.php';
+include_once ROOT_JAWS_PATH . 'include/Jaws/Translate.php';
 $objTranslate = Jaws_Translate::getInstance(false);
 if (isset($_SESSION['install']['language'])) {
     $objTranslate->SetLanguage($_SESSION['install']['language']);
@@ -163,7 +163,7 @@ if (!isset($GLOBALS['message']) && $skip) {
     header('Location: index.php');
 }
 
-include_once JAWS_PATH . 'include/Jaws/Template.php';
+include_once ROOT_JAWS_PATH . 'include/Jaws/Template.php';
 $tpl = new Jaws_Template(false, false);
 $tpl->Load('page.html', 'templates');
 $tpl->SetBlock('page');

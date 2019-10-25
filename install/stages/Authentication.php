@@ -75,7 +75,7 @@ class Installer_Authentication extends JawsInstallerStage
 
         // try to entering to secure transformation mode 
         if ($_SESSION['secure'] && (!isset($_SESSION['pub_key']) || empty($_SESSION['pub_key']))) {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
+            require_once ROOT_JAWS_PATH . 'include/Jaws/Crypt.php';
             $pkey = Jaws_Crypt::Generate_RSA_KeyPair(512);
             if (!Jaws_Error::isError($pkey)) {
                 $_SESSION['pub_key'] = $pkey['pub_key'];

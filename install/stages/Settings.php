@@ -34,9 +34,9 @@ class Installer_Settings extends JawsInstallerStage
             'site_sample'   => false,
         );
 
-        require_once JAWS_PATH . 'include/Jaws.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws.php';
         if (!Jaws::getInstance(false)) {
-            require_once JAWS_PATH . 'include/Jaws/DB.php';
+            require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
             // Connect to the database and setup registry and similar.
             $objDatabase = Jaws_DB::getInstance('default', $_SESSION['install']['Database']);
 
@@ -209,7 +209,7 @@ class Installer_Settings extends JawsInstallerStage
                 _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
             } else {
                 $installer = $objGadget->installer->load();
-                $input_schema = JAWS_PATH. "install/stages/Settings/Sample/$gadget/insert.xml";
+                $input_schema = ROOT_JAWS_PATH. "install/stages/Settings/Sample/$gadget/insert.xml";
                 if (!file_exists($input_schema)) {
                     $input_schema = '';
                 }
@@ -229,8 +229,8 @@ class Installer_Settings extends JawsInstallerStage
             _log(JAWS_LOG_DEBUG, "There was a problem while loading gadget: Layout");
             _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
         } else {
-            $base_schema  = JAWS_PATH. "gadgets/Layout/Resources/schema/schema.xml";
-            $input_schema = JAWS_PATH. "install/stages/Settings/Sample/Layout/insert.xml";
+            $base_schema  = ROOT_JAWS_PATH. "gadgets/Layout/Resources/schema/schema.xml";
+            $input_schema = ROOT_JAWS_PATH. "install/stages/Settings/Sample/Layout/insert.xml";
 
             $installer = $objGadget->installer->load();
             $res = $installer->installSchema($input_schema, '', $base_schema, true);
@@ -246,8 +246,8 @@ class Installer_Settings extends JawsInstallerStage
         Jaws::getInstance()->registry->update('main_gadget', 'Blog', true, 'Settings');
 
         // Copy Photo Organizer sample data
-        $source = JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';
-        $destination = JAWS_DATA. 'phoo/'. $variables['Phoo']['folder-path']. '/';
+        $source = ROOT_JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';
+        $destination = ROOT_DATA_PATH. 'phoo/'. $variables['Phoo']['folder-path']. '/';
         if (Jaws_Utils::copy($source, $destination)) {
             _log(JAWS_LOG_DEBUG, "Sample data of gadget Phoo copied successfully.");
         } else {

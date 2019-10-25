@@ -54,7 +54,7 @@ class Installer_Customize extends JawsInstallerStage
      */
     function Run()
     {
-        $paths = array('jaws_data', 'jaws_base_data', 'jaws_themes', 'jaws_base_themes', 'jaws_cache');
+        $paths = array('data_path', 'base_data_path', 'themes_path', 'base_themes_path', 'cache_path');
         $request = Jaws_Request::getInstance();
         $postedData = $request->fetch($paths, 'post');
         $postedData = array_filter($postedData);

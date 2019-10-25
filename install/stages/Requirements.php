@@ -42,8 +42,8 @@ class Installer_Requirements extends JawsInstallerStage
         $tpl->setVariable('result',       _t('INSTALL_REQ_RESULT'));
         $tpl->SetVariable('prev',         _t('GLOBAL_PREVIOUS'));
         $tpl->SetVariable('next',         _t('GLOBAL_NEXT'));
-        if ($this->_check_path(JAWS_DATA. 'logs', 'rw', '')) {
-            $tpl->SetVariable('log_use', _t('INSTALL_INTRO_LOG', JAWS_DATA.'logs/install.txt'));
+        if ($this->_check_path(ROOT_DATA_PATH. 'logs', 'rw', '')) {
+            $tpl->SetVariable('log_use', _t('INSTALL_INTRO_LOG', ROOT_DATA_PATH.'logs/install.txt'));
             $tpl->SetBlock('Requirements/logcheckbox');
             $tpl->SetVariable('checked', !empty($_SESSION['use_log'])? 'checked="checked"' : '');
             $tpl->ParseBlock('Requirements/logcheckbox');
@@ -88,10 +88,10 @@ class Installer_Requirements extends JawsInstallerStage
 
         // data directory
         $tpl->setBlock('Requirements/req_item');
-        $result = $this->_check_path(JAWS_DATA, 'rw', '');
+        $result = $this->_check_path(ROOT_DATA_PATH, 'rw', '');
         $tpl->setVariable('item', _t('INSTALL_REQ_DIRECTORY', 'data'));
         $tpl->setVariable('item_requirement', _t('INSTALL_REQ_WRITABLE'));
-        $tpl->setVariable('item_actual', $this->_get_perms(JAWS_DATA, ''));
+        $tpl->setVariable('item_actual', $this->_get_perms(ROOT_DATA_PATH, ''));
         if ($result) {
             _log(JAWS_LOG_DEBUG,"data directory has read and write permission privileges");
             $result_txt = '<span style="color: #0b0;">'._t('INSTALL_REQ_OK').'</span>';
@@ -252,7 +252,7 @@ class Installer_Requirements extends JawsInstallerStage
             $type = JAWS_ERROR_ERROR;
         }
 
-        if (!$this->_check_path(JAWS_DATA, 'rw', '')) {
+        if (!$this->_check_path(ROOT_DATA_PATH, 'rw', '')) {
             if (isset($text)) {
                 $text = _t('INSTALL_REQ_RESPONSE_DIR_PERMISSION', _t('INSTALL_REQ_BAD'));
             } else {
@@ -298,7 +298,7 @@ class Installer_Requirements extends JawsInstallerStage
      * @param   string   $properties    Properties to use when checking the path
      * @return  boolean  If properties  match the given path(s) we return true, otherwise false
      */
-    function _check_path($paths, $properties, $basePath = JAWS_PATH)
+    function _check_path($paths, $properties, $basePath = ROOT_JAWS_PATH)
     {
         $paths = !is_array($paths)? array($paths) : $paths;
         foreach ($paths as $path) {
@@ -328,7 +328,7 @@ class Installer_Requirements extends JawsInstallerStage
      * @param   string  $paths         Path(s) to check
      * @return  string  permissions string
      */
-    function _get_perms($paths, $basePath = JAWS_PATH)
+    function _get_perms($paths, $basePath = ROOT_JAWS_PATH)
     {
         $paths = !is_array($paths)? array($paths) : $paths;
         $paths_perms = array();

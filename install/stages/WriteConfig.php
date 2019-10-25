@@ -18,13 +18,13 @@ class Installer_WriteConfig extends JawsInstallerStage
      */
     function BuildConfig()
     {
-        include_once JAWS_PATH . 'include/Jaws/Template.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Template.php';
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('JawsConfig.php', 'stages/WriteConfig/templates');
 
         $tpl->SetBlock('JawsConfig');
-        $_SESSION['JAWS_DATA'] = isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : JAWS_DATA;
-        $paths = array('jaws_data', 'jaws_base_data', 'jaws_themes', 'jaws_base_themes', 'jaws_cache');
+        $_SESSION['DATA_PATH'] = isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : DATA_PATH;
+        $paths = array('data_path', 'base_data_path', 'themes_path', 'base_themes_path', 'cache_path');
         foreach ($paths as $path) {
             if (isset($_SESSION[strtoupper($path)])) {
                 $tpl->SetBlock("JawsConfig/$path");
@@ -61,7 +61,7 @@ class Installer_WriteConfig extends JawsInstallerStage
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
         $tpl->SetBlock('WriteConfig');
 
-        $config_path = JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
+        $config_path = ROOT_JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
         $tpl->setVariable('lbl_info',                _t('INSTALL_CONFIG_INFO'));
         $tpl->setVariable('lbl_solution',            _t('INSTALL_CONFIG_SOLUTION'));
         $tpl->setVariable('lbl_solution_permission', _t('INSTALL_CONFIG_SOLUTION_PERMISSION', $config_path));
@@ -102,9 +102,9 @@ class Installer_WriteConfig extends JawsInstallerStage
         $configString = $this->BuildConfig();
 
         // following what the web page says (choice 1) and assume that the user has created it already
-        if (file_exists(JAWS_PATH . 'config/JawsConfig.php')) {
+        if (file_exists(ROOT_JAWS_PATH . 'config/JawsConfig.php')) {
             $configMD5    = md5($configString);
-            $existsConfig = file_get_contents(JAWS_PATH . 'config/JawsConfig.php');
+            $existsConfig = file_get_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php');
             $existsMD5    = md5($existsConfig);
             if ($configMD5 == $existsMD5) {
                 _log(JAWS_LOG_DEBUG,"Previous and new configuration files have the same content, everything is ok");
@@ -114,8 +114,8 @@ class Installer_WriteConfig extends JawsInstallerStage
         }
 
         // create a new one if the dir is writeable
-        if (Jaws_Utils::is_writable(JAWS_PATH . 'config/')) {
-            $result = file_put_contents(JAWS_PATH . 'config/JawsConfig.php', $configString);
+        if (Jaws_Utils::is_writable(ROOT_JAWS_PATH . 'config/')) {
+            $result = file_put_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php', $configString);
             if ($result) {
                 _log(JAWS_LOG_DEBUG,"Configuration file has been created/updated");
                 return true;

@@ -263,7 +263,7 @@ class Installer_Database extends JawsInstallerStage
         }
 
         if ($_SESSION['secure']) {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
+            require_once ROOT_JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt =  Jaws_Crypt::getInstance(
                 array(
                     'pvt_key' => $_SESSION['pvt_key'],
@@ -307,7 +307,7 @@ class Installer_Database extends JawsInstallerStage
         );
 
         // Connect to database
-        require_once JAWS_PATH . 'include/Jaws/DB.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['install']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database.");
@@ -325,7 +325,7 @@ class Installer_Database extends JawsInstallerStage
         }
 
         // Create application
-        require_once JAWS_PATH . 'include/Jaws.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws.php';
         $jawsApp = Jaws::getInstance();
         $jawsApp->registry->init();
         $jawsApp->loadPreferences(array('language' => $_SESSION['install']['language']), false);
