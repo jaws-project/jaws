@@ -244,7 +244,7 @@ class Users_Actions_Profile extends Users_Actions_Default
     function Activity(&$tpl, $uid, $uname)
     {
         $activity = false;
-        $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {

@@ -35,7 +35,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {

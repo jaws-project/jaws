@@ -15,7 +15,7 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
      */
     function GetAuthTypes()
     {
-        return array_map('basename', glob(JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
+        return array_map('basename', glob(ROOT_JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
     }
 
     /**

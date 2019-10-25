@@ -204,7 +204,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
     function GetSessionTypes()
     {
         $result = array();
-        $path = JAWS_PATH. 'include/Jaws/Session/';
+        $path = ROOT_JAWS_PATH. 'include/Jaws/Session/';
         $adr = scandir($path);
         foreach ($adr as $file) {
             if (substr($file, -4) == '.php') {

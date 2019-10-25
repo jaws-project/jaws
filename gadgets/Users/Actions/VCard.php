@@ -19,7 +19,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        require_once JAWS_PATH . 'gadgets/Users/include/vCard.php';
+        require_once ROOT_JAWS_PATH . 'gadgets/Users/include/vCard.php';
 
         $currentUser = $this->app->session->user->id;
         $jUser = new Jaws_User;
@@ -121,7 +121,7 @@ class Users_Actions_VCard extends Users_Actions_Default
         }
 
         try {
-            require_once JAWS_PATH . 'gadgets/Users/include/vCard.php';
+            require_once ROOT_JAWS_PATH . 'gadgets/Users/include/vCard.php';
             $vCard = new vCard(
                 false,
                 $inputVcards,

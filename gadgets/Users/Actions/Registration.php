@@ -30,7 +30,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $authtype = $this->gadget->registry->fetch('authtype');
         }
         $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
-        $drivers = array_map('basename', glob(JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
+        $drivers = array_map('basename', glob(ROOT_JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
         if (false === $dIndex = array_search(strtolower($authtype), array_map('strtolower', $drivers))) {
             $GLOBALS['log']->Log(
                 JAWS_LOG_NOTICE,
@@ -40,7 +40,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         } else {
             $authtype = $drivers[$dIndex];
         }
-        $authfile = JAWS_PATH . "gadgets/Users/Account/$authtype/Login.php";
+        $authfile = ROOT_JAWS_PATH . "gadgets/Users/Account/$authtype/Login.php";
         if (!file_exists($authfile)) {
             Jaws_Error::Fatal($authtype. ' registration driver doesn\'t exists');
         }
