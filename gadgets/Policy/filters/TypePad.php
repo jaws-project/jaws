@@ -2,11 +2,11 @@
 /**
  * Class to use TypePad spam-filtering API
  *
- * @category   AntiSpam
- * @package    Policy
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2009-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    AntiSpam
+ * @package     Policy
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2009-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class TypePad 
 {
