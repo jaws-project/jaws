@@ -33,7 +33,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Blog'));
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveAdditionalSettings'));
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_ADDITIONAL_SETTINGS'));
         // $fieldset =& Piwi::CreateWidget('FieldSet', _t('BLOG_ADDITIONAL_SETTINGS'));
 

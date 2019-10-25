@@ -15,9 +15,9 @@ define('APP_TYPE',    'web');
 define('JAWS_SCRIPT', 'xmlrpc');
 define('BASE_SCRIPT', basename(__FILE__));
 require '../../config/JawsConfig.php';
-require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/InitApplication.php';
 $this->app->loadObject('Jaws_ACL', 'ACL');
-require_once JAWS_PATH . 'include/Jaws/User.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/User.php';
 require_once PEAR_PATH . 'XML/RPC/Server.php';
 
 /**
@@ -32,7 +32,7 @@ function userAuthentication($username, $password)
 {
     $authType = $this->app->registry->fetch('authtype', 'Users');
     $authType = preg_replace('/[^[:alnum:]_\-]/', '', $authType);
-    $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
+    $authFile = ROOT_JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
     if (empty($authType) || !file_exists($authFile)) {
         $GLOBALS['log']->Log(
             JAWS_LOG_NOTICE,
@@ -49,7 +49,7 @@ function userAuthentication($username, $password)
         );
     }
 
-    require_once JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
+    require_once ROOT_JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
     $className = 'Jaws_Auth_' . $authType;
     $objAuth = new $className();
     $result = $objAuth->Auth($username, $password);

@@ -66,21 +66,21 @@ class Blog_Installer extends Jaws_Gadget_Installer
      */
     function Install($input_schema = '', $input_variables = array())
     {
-        if (!Jaws_Utils::is_writable(JAWS_DATA)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA));
+        if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
-        $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images';
+        $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images';
         if (!Jaws_Utils::mkdir($new_dir, 1)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
-        $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'categories';
+        $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'categories';
         if (!Jaws_Utils::mkdir($new_dir, 1)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
-        $new_dir = JAWS_DATA . 'xml' . DIRECTORY_SEPARATOR;
+        $new_dir = ROOT_DATA_PATH . 'xml' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
@@ -189,7 +189,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->delete('comment_status');
             $this->gadget->registry->insert('recommended', ',Comments,Tags,');
 
-            $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images';
+            $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images';
             if (!Jaws_Utils::mkdir($new_dir, 1)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
             }
@@ -206,7 +206,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             // registry keys
             $this->gadget->registry->insert('category_image_size', '128x128');
             // make directories
-            $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'categories';
+            $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'categories';
             if (!Jaws_Utils::mkdir($new_dir, 1)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
             }

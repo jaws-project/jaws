@@ -168,7 +168,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      */
     function GetCategoryLogoPath($id)
     {
-        return JAWS_DATA . "blog/categories/$id.png";
+        return ROOT_DATA_PATH . "blog/categories/$id.png";
     }
 
     /**

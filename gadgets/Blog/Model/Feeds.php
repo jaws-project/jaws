@@ -145,14 +145,14 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($write) {
-            if (!Jaws_Utils::is_writable(JAWS_DATA . 'xml')) {
+            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH . 'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_ATOMFILE'));
             }
 
             $atom->SetLink($this->app->getDataURL('xml/blog.atom', false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(JAWS_DATA . 'xml/blog.atom', $atom->GetXML());
-            Jaws_Utils::chmod(JAWS_DATA . 'xml/blog.atom');
+            @file_put_contents(ROOT_DATA_PATH . 'xml/blog.atom', $atom->GetXML());
+            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/blog.atom');
         }
 
         return $atom->GetXML();
@@ -173,14 +173,14 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($write) {
-            if (!Jaws_Utils::is_writable(JAWS_DATA . 'xml')) {
+            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH . 'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_RSSFILE'));
             }
 
             $atom->SetLink($this->app->getDataURL('xml/blog.rss', false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(JAWS_DATA . 'xml/blog.rss', $atom->ToRSS2());
-            Jaws_Utils::chmod(JAWS_DATA . 'xml/blog.rss');
+            @file_put_contents(ROOT_DATA_PATH . 'xml/blog.rss', $atom->ToRSS2());
+            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/blog.rss');
         }
 
         return $atom->ToRSS2();
@@ -305,7 +305,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($writeToDisk) {
-            if (!Jaws_Utils::is_writable(JAWS_DATA.'xml')) {
+            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH.'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'));
             }
 
@@ -313,8 +313,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $filename = substr($filename, 0, strrpos($filename, '.')) . '.atom';
             $catAtom->SetLink($this->app->getDataURL('xml/' . $filename, false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(JAWS_DATA . 'xml/' . $filename, $catAtom->GetXML());
-            Jaws_Utils::chmod(JAWS_DATA . 'xml/' . $filename);
+            @file_put_contents(ROOT_DATA_PATH . 'xml/' . $filename, $catAtom->GetXML());
+            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/' . $filename);
         }
 
         return $catAtom->GetXML();
@@ -339,7 +339,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($writeToDisk) {
-            if (!Jaws_Utils::is_writable(JAWS_DATA.'xml')) {
+            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH.'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'));
             }
 
@@ -347,8 +347,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $filename = substr($filename, 0, strrpos($filename, '.')) . '.rss';
             $catAtom->SetLink($this->app->getDataURL('xml/' . $filename, false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(JAWS_DATA . 'xml/' . $filename, $catAtom->ToRSS2());
-            Jaws_Utils::chmod(JAWS_DATA . 'xml/' . $filename);
+            @file_put_contents(ROOT_DATA_PATH . 'xml/' . $filename, $catAtom->ToRSS2());
+            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/' . $filename);
         }
 
         return $catAtom->ToRSS2();
