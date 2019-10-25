@@ -61,13 +61,13 @@ class PhooInsert_Plugin extends Jaws_Plugin
                 $image = $objPhoo->GetImageEntry($imageid);
                 if (!Jaws_Error::IsError($image) && !empty($image)) {
                     if (strtoupper($size)=='THUMB') {
-                        $img_file = JAWS_DATA . 'phoo/' . $image['thumb'];
+                        $img_file = ROOT_DATA_PATH . 'phoo/' . $image['thumb'];
                         $img_url  = $this->app->getDataURL('phoo/' . $image['thumb']);
                     } elseif (strtoupper($size)=='MEDIUM') {
-                        $img_file = JAWS_DATA . 'phoo/' . $image['medium'];
+                        $img_file = ROOT_DATA_PATH . 'phoo/' . $image['medium'];
                         $img_url  = $this->app->getDataURL('phoo/' . $image['medium']);
                     } else {
-                        $img_file = JAWS_DATA . 'phoo/' . $image['image'];
+                        $img_file = ROOT_DATA_PATH . 'phoo/' . $image['image'];
                         $img_url  = $this->app->getDataURL('phoo/' . $image['image']);
                     }
                     $imgData = Jaws_Image::getimagesize($img_file);
