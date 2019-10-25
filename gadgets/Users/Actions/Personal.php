@@ -180,8 +180,8 @@ class Users_Actions_Personal extends Users_Actions_Default
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
                 $result->GetMessage(),
-                'Personal',
                 RESPONSE_ERROR,
+                'Personal',
                 $post
             );
         } else {
