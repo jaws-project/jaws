@@ -24,7 +24,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
             $user = (int)$this->gadget->request->fetch('user:int', 'get');
         }
         if ($user > 0 && $user !== (int)$this->app->session->user->id) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            require_once ROOT_JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 

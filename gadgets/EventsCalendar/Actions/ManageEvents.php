@@ -31,7 +31,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         // Validate user
         $user = (int)$this->gadget->request->fetch('user:int', 'get');
         if ($user > 0 && $user !== (int)$this->app->session->user->id) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            require_once ROOT_JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -81,7 +81,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $count = $model->GetEvents($params, true);
         $events = $model->GetEvents($params);
         if (Jaws_Error::IsError($events)) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            require_once ROOT_JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(500);
         }
 
