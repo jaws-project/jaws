@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    Forums
  * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2012-2015 Jaws Development Group
+ * @copyright  2012-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Forums_Actions_UserTopics extends Jaws_Gadget_Action

@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Forums
  * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2008-2020 Jaws Development Group
  */
 class Forums_Hooks_Users extends Jaws_Gadget_Hook
 {
