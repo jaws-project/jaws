@@ -8,48 +8,48 @@
         <col style="width:350px;"/>
       </colgroup>
       <tr>
-        <td><label for="jaws_data">JAWS_DATA:</label></td>
+        <td><label for="data_path">DATA_PATH:</label></td>
         <td>
-          <input type="hidden" name="default_jaws_data" id="default_jaws_data" value="{{jaws_data}}" />
-          <input class="form-check-input" type="checkbox" name="chk_jaws_data" id="chk_jaws_data" onchange="toggleEnabled(this);"
-            {{checked_jaws_data}} value="true"/>
-          <input type="text" name="jaws_data" id="jaws_data" value="{{jaws_data}}"
-            {{disabled_jaws_data}} size="32" onchange="jawsDataChange();" style="direction: ltr;" />
+          <input type="hidden" name="default_data_path" id="default_data_path" value="{{data_path}}" />
+          <input class="form-check-input" type="checkbox" name="chk_data_path" id="chk_data_path" onchange="toggleEnabled(this);"
+            {{checked_data_path}} value="true"/>
+          <input type="text" name="data_path" id="data_path" value="{{data_path}}"
+            {{disabled_data_path}} size="32" onchange="jawsDataChange();" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
-        <td><label for="jaws_base_data">JAWS_BASE_DATA:</label></td>
+        <td><label for="base_data_path">BASE_DATA_PATH:</label></td>
         <td>
-          <input class="form-check-input" type="checkbox" name="chk_jaws_base_data" id="chk_jaws_base_data" onchange="toggleEnabled(this);"
-            {{checked_jaws_base_data}} value="true"/>
-          <input type="text" name="jaws_base_data" id="jaws_base_data" value="{{jaws_base_data}}"
-            {{disabled_jaws_base_data}} size="32" onchange="jawsBaseDataChange();" style="direction: ltr;" />
+          <input class="form-check-input" type="checkbox" name="chk_base_data_path" id="chk_base_data_path" onchange="toggleEnabled(this);"
+            {{checked_base_data_path}} value="true"/>
+          <input type="text" name="base_data_path" id="base_data_path" value="{{base_data_path}}"
+            {{disabled_base_data_path}} size="32" onchange="jawsBaseDataChange();" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
-        <td><label for="jaws_themes">JAWS_THEMES:</label></td>
+        <td><label for="themes_path">THEMES_PATH:</label></td>
         <td>
-          <input class="form-check-input" type="checkbox" name="chk_jaws_themes" id="chk_jaws_themes" onchange="toggleEnabled(this);"
-            {{checked_jaws_themes}} value="true"/>
-          <input type="text" name="jaws_themes" id="jaws_themes" value="{{jaws_themes}}" {{disabled_jaws_themes}}
+          <input class="form-check-input" type="checkbox" name="chk_themes_path" id="chk_themes_path" onchange="toggleEnabled(this);"
+            {{checked_themes_path}} value="true"/>
+          <input type="text" name="themes_path" id="themes_path" value="{{themes_path}}" {{disabled_themes_path}}
             size="32" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
-        <td><label for="jaws_base_themes">JAWS_BASE_THEMES:</label></td>
+        <td><label for="base_themes_path">BASE_THEMES_PATH:</label></td>
         <td>
-          <input class="form-check-input" type="checkbox" name="chk_jaws_base_themes" id="chk_jaws_base_themes" onchange="toggleEnabled(this);"
-            {{checked_jaws_base_themes}} value="true"/>
-          <input type="text" name="jaws_base_themes" id="jaws_base_themes" value="{{jaws_base_themes}}"
-            {{disabled_jaws_base_themes}} size="32" style="direction: ltr;" />
+          <input class="form-check-input" type="checkbox" name="chk_base_themes_path" id="chk_base_themes_path" onchange="toggleEnabled(this);"
+            {{checked_base_themes_path}} value="true"/>
+          <input type="text" name="base_themes_path" id="base_themes_path" value="{{base_themes_path}}"
+            {{disabled_base_themes_path}} size="32" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
-        <td><label for="jaws_cache">JAWS_CACHE:</label></td>
+        <td><label for="cache_path">CACHE_PATH:</label></td>
         <td>
-          <input class="form-check-input" type="checkbox" name="chk_jaws_cache" id="chk_jaws_cache" onchange="toggleEnabled(this);"
-            {{checked_jaws_cache}} value="true"/>
-          <input type="text" name="jaws_cache" id="jaws_cache" value="{{jaws_cache}}" {{disabled_jaws_cache}}
+          <input class="form-check-input" type="checkbox" name="chk_cache_path" id="chk_cache_path" onchange="toggleEnabled(this);"
+            {{checked_cache_path}} value="true"/>
+          <input type="text" name="cache_path" id="cache_path" value="{{cache_path}}" {{disabled_cache_path}}
             size="32" style="direction: ltr;" />
         </td>
       </tr>
@@ -74,29 +74,29 @@
   }
 
   function jawsDataChange() {
-    // jaws data
-    if (!$('chk_jaws_data').checked) {
-        $('jaws_data').value = $('default_jaws_data').value;
+    // data path
+    if (!$('chk_data_path').checked) {
+        $('data_path').value = $('default_data_path').value;
         jawsBaseDataChange();
     }
     // jaws base data
-    if (!$('chk_jaws_base_data').checked) {
-        $('jaws_base_data').value = $('jaws_data').value;
+    if (!$('chk_base_data_path').checked) {
+        $('base_data_path').value = $('data_path').value;
         jawsBaseDataChange();
     }
     // jaws themes
-    if (!$('chk_jaws_themes').checked) {
-        $('jaws_themes').value = $('jaws_data').value+ 'themes' + $('jaws_themes').value.slice(-1);
+    if (!$('chk_themes_path').checked) {
+        $('themes_path').value = $('data_path').value+ 'themes' + $('themes_path').value.slice(-1);
     }
-    // jaws cache
-    if (!$('chk_jaws_cache').checked) {
-        $('jaws_cache').value = $('jaws_data').value+ 'cache' + $('jaws_cache').value.slice(-1);
+    // cache path
+    if (!$('chk_cache_path').checked) {
+        $('cache_path').value = $('data_path').value+ 'cache' + $('cache_path').value.slice(-1);
     }
   }
 
   function jawsBaseDataChange() {
-    if (!$('chk_jaws_base_themes').checked) {
-        $('jaws_base_themes').value = $('jaws_base_data').value+ 'themes' + $('jaws_base_data').value.slice(-1);
+    if (!$('chk_base_themes_path').checked) {
+        $('base_themes_path').value = $('base_data_path').value+ 'themes' + $('base_data_path').value.slice(-1);
     }
   }
 

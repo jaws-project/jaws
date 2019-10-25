@@ -32,7 +32,7 @@ class Installer_Customize extends JawsInstallerStage
 
         $tpl->SetVariable('customize_info', _t('INSTALL_CUSTOMIZE_INFO'));
 
-        $paths = array('jaws_data', 'jaws_base_data', 'jaws_themes', 'jaws_base_themes', 'jaws_cache');
+        $paths = array('data_path', 'base_data_path', 'themes_path', 'base_themes_path', 'cache_path');
         foreach ($paths as $path) {
             $upper_path = strtoupper($path);
             $tpl->SetVariable($path, constant($upper_path));

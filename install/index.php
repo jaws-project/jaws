@@ -36,34 +36,47 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
     date_default_timezone_set('UTC');
 }
 
-define('ROOT_JAWS_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR);
+define('JAWS_PATH', substr(dirname(__DIR__) . DIRECTORY_SEPARATOR, strlen(ROOT_PATH)));
+define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH);
 define('PEAR_PATH', ROOT_JAWS_PATH . 'libraries/pear/');
 
 // lets setup the include_path
 set_include_path('.' . PATH_SEPARATOR . ROOT_JAWS_PATH . 'libraries/pear');
 
 // this variables currently temporary until we complete multiple instance installing
+// data path
 define(
-    'ROOT_DATA_PATH',
-    isset($_SESSION['ROOT_DATA_PATH'])? $_SESSION['ROOT_DATA_PATH'] : (ROOT_JAWS_PATH . 'data'. DIRECTORY_SEPARATOR)
+    'DATA_PATH',
+    isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : (JAWS_PATH . 'data' . DIRECTORY_SEPARATOR)
 );
+define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
+// base data path
 define(
-    'JAWS_BASE_DATA',
-    isset($_SESSION['JAWS_BASE_DATA'])? $_SESSION['JAWS_BASE_DATA'] : ROOT_DATA_PATH
+    'BASE_DATA_PATH',
+    isset($_SESSION['BASE_DATA_PATH'])? $_SESSION['BASE_DATA_PATH'] : DATA_PATH
 );
+define('ROOT_BASE_DATA_PATH', ROOT_PATH . BASE_DATA_PATH);
+// themes data path
 define(
-    'JAWS_THEMES',
-    isset($_SESSION['JAWS_THEMES'])? $_SESSION['JAWS_THEMES'] : (ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR)
+    'THEMES_PATH',
+    isset($_SESSION['THEMES_PATH'])? $_SESSION['THEMES_PATH'] : (DATA_PATH. 'themes'. DIRECTORY_SEPARATOR)
 );
+define('ROOT_THEMES_PATH', ROOT_PATH . THEMES_PATH);
+// themes base data path
 define(
-    'JAWS_BASE_THEMES',
-    isset($_SESSION['JAWS_BASE_THEMES'])? $_SESSION['JAWS_BASE_THEMES'] : JAWS_THEMES
+    'BASE_THEMES_PATH',
+    isset($_SESSION['BASE_THEMES_PATH'])? $_SESSION['BASE_THEMES_PATH'] : THEMES_PATH
 );
+define('ROOT_BASE_THEMES_PATH', ROOT_PATH . BASE_THEMES_PATH);
+// cache path
 define(
-    'JAWS_CACHE',
-    isset($_SESSION['JAWS_CACHE'])? $_SESSION['JAWS_CACHE'] : (ROOT_DATA_PATH. 'cache'. DIRECTORY_SEPARATOR)
+    'CACHE_PATH',
+    isset($_SESSION['CACHE_PATH'])? $_SESSION['CACHE_PATH'] : (DATA_PATH. 'cache'. DIRECTORY_SEPARATOR)
 );
-define('INSTALL_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+define('ROOT_CACHE_PATH', ROOT_PATH . CACHE_PATH);
+// install path
+define('INSTALL_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 // Lets support older PHP versions so we can use spanking new functions
 require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
