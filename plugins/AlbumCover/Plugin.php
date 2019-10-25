@@ -23,7 +23,7 @@ class AlbumCover_Plugin extends Jaws_Plugin
      */
     function Install()
     {
-        $new_dir = JAWS_DATA . 'AlbumCover' . DIRECTORY_SEPARATOR;
+        $new_dir = ROOT_DATA_PATH . 'AlbumCover' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), $this->_Name);
         }
@@ -42,7 +42,7 @@ class AlbumCover_Plugin extends Jaws_Plugin
      */
     function Uninstall()
     {
-        Jaws_Utils::delete(JAWS_DATA . 'AlbumCover' . DIRECTORY_SEPARATOR);
+        Jaws_Utils::delete(ROOT_DATA_PATH . 'AlbumCover' . DIRECTORY_SEPARATOR);
         return true;
     }
 
@@ -89,7 +89,7 @@ class AlbumCover_Plugin extends Jaws_Plugin
      */
     function GetAlbumCover($data)
     {
-        $albumDir = JAWS_DATA . 'AlbumCover/';
+        $albumDir = ROOT_DATA_PATH . 'AlbumCover/';
 
         if (!isset($data[1]) || !isset($data[2]) || empty($data[1]) || empty($data[2])) {
             return '';
@@ -108,10 +108,10 @@ class AlbumCover_Plugin extends Jaws_Plugin
                 //FIXME: Notify that can't copy image to cache...
                 $img = Jaws_XSS::filter($amazonImg);
             } else {
-                $img = JAWS_DATA . 'AlbumCover/' . $img;
+                $img = ROOT_DATA_PATH . 'AlbumCover/' . $img;
             }
         } else {
-            $img = JAWS_DATA . 'AlbumCover/' . $img;
+            $img = ROOT_DATA_PATH . 'AlbumCover/' . $img;
         }
 
         $text = $Artist . ' - ' . $Album;
