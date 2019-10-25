@@ -211,7 +211,7 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $info) {
-            if (file_exists(JAWS_PATH . "gadgets/$gadget/Hooks/Activities.php")) {
+            if (file_exists(ROOT_JAWS_PATH . "gadgets/$gadget/Hooks/Activities.php")) {
                 $result[$gadget] = $info['title'];
             }
             
