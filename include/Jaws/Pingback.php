@@ -1,12 +1,12 @@
 <?php
 /**
- * Manages the pinkback, sends and receives
+ * Manages the pingback, sends and receives
  *
- * @category   Services
- * @package    Core
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2006-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Services
+ * @package     Core
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @copyright   2006-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Pingback
 {
