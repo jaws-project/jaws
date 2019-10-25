@@ -23,12 +23,12 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         static $root_dir;
         if (!isset($root_dir)) {
             $root_dir = trim($this->gadget->registry->fetch('root_dir'));
-            $root_dir = JAWS_DATA . trim($root_dir, "\\/");
+            $root_dir = ROOT_DATA_PATH . trim($root_dir, "\\/");
             $root_dir = str_replace('..', '', $root_dir);
 
             require_once PEAR_PATH. 'File/Util.php';
             $root_dir = File_Util::realpath($root_dir). '/';
-            if (!File_Util::pathInRoot($root_dir, JAWS_DATA)) {
+            if (!File_Util::pathInRoot($root_dir, ROOT_DATA_PATH)) {
                 Jaws_Error::Fatal(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'), __FILE__, __LINE__);
             }
         }
@@ -100,7 +100,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
             $file['icon'] = $image_url . $iconName;
         } else {
             //Is icon does not exists..
-            if (!is_file(JAWS_PATH. 'images/'.$iconName)) {
+            if (!is_file(ROOT_JAWS_PATH. 'images/'.$iconName)) {
                 $icon = 'images/mimetypes/text-generic.png';
             } else {
                 $icon = 'images/'.$iconName;

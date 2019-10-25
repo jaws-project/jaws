@@ -63,7 +63,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
                 $item['url'] = $this->gadget->urlMap('FileInfo', array('id' => $fid));
                 $filetype = ltrim(strrchr($file['filename'], '.'), '.');
                 $fileicon = $fModel->getExtImage($filetype);
-                if (is_file(JAWS_PATH . 'images/'. $fileicon)) {
+                if (is_file(ROOT_JAWS_PATH . 'images/'. $fileicon)) {
                     $item['image'] = 'images/'. $fileicon;
                 } else {
                     $item['image'] = 'images/mimetypes/unknown.png';
