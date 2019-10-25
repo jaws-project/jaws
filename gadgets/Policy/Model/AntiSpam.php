@@ -26,7 +26,7 @@ class Policy_Model_AntiSpam extends Jaws_Gadget_Model
     function IsSpam($permalink, $type, $author, $author_email, $author_url, $content)
     {
         $filter = preg_replace('/[^[:alnum:]_\-]/', '', $this->gadget->registry->fetch('filter'));
-        if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
+        if ($filter == 'DISABLED' || !@include_once(ROOT_JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
         }

@@ -46,7 +46,7 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
     function GetFilters()
     {
         $result = array();
-        $path = JAWS_PATH . 'gadgets/Policy/filters/';
+        $path = ROOT_JAWS_PATH . 'gadgets/Policy/filters/';
         $adr = scandir($path);
         foreach ($adr as $file) {
             if (substr($file, -4) == '.php') {
@@ -67,7 +67,7 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
     function GetCaptchas()
     {
         $result = array();
-        $path = JAWS_PATH. 'include/Jaws/Captcha/';
+        $path = ROOT_JAWS_PATH. 'include/Jaws/Captcha/';
         $adr = scandir($path);
         foreach ($adr as $file) {
             if (substr($file, -4) == '.php') {
@@ -88,7 +88,7 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
     function GetObfuscators()
     {
         $result = array();
-        $path = JAWS_PATH . 'gadgets/Policy/obfuscators/';
+        $path = ROOT_JAWS_PATH . 'gadgets/Policy/obfuscators/';
         $adr = scandir($path);
         foreach ($adr as $file) {
             if (substr($file, -4) == '.php') {
@@ -114,7 +114,7 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
     function SubmitSpam($permalink, $type, $author, $author_email, $author_url, $content)
     {
         $filter = preg_replace('/[^[:alnum:]_\-]/', '', $this->gadget->registry->fetch('filter'));
-        if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
+        if ($filter == 'DISABLED' || !@include_once(ROOT_JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
         }
@@ -142,7 +142,7 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
     function SubmitHam($permalink, $type, $author, $author_email, $author_url, $content)
     {
         $filter = preg_replace('/[^[:alnum:]_\-]/', '', $this->gadget->registry->fetch('filter'));
-        if ($filter == 'DISABLED' || !@include_once(JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
+        if ($filter == 'DISABLED' || !@include_once(ROOT_JAWS_PATH . "gadgets/Policy/filters/$filter.php"))
         {
             return false;
         }
