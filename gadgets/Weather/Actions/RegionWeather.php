@@ -109,12 +109,12 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
         }
 
-        require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
+        require_once ROOT_JAWS_PATH . 'gadgets/Weather/include/Underground.php';
         $metric = $this->gadget->registry->fetchByUser('unit') == 'metric';
         $wService = new Underground_Weather(
             $this->gadget->registry->fetch('api_key'),
             $metric,
-            JAWS_DATA . 'weather',
+            ROOT_DATA_PATH . 'weather',
             $this->gadget->registry->fetch('update_period'),
             $options);
         $rWeather = $wService->getWeather($region['latitude'], $region['longitude']);
@@ -231,12 +231,12 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
                 $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
             }
 
-            require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
+            require_once ROOT_JAWS_PATH . 'gadgets/Weather/include/Underground.php';
             $metric = $this->gadget->registry->fetch('unit') == 'metric';
             $wService = new Underground_Weather(
                 $this->gadget->registry->fetch('api_key'),
                 $metric,
-                JAWS_DATA . 'weather',
+                ROOT_DATA_PATH . 'weather',
                 $this->gadget->registry->fetch('update_period'),
                 $options);
 
