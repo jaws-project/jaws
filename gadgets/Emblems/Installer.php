@@ -18,11 +18,11 @@ class Emblems_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        if (!Jaws_Utils::is_writable(JAWS_DATA)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA));
+        if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
-        $new_dir = JAWS_DATA . 'emblems' . DIRECTORY_SEPARATOR;
+        $new_dir = ROOT_DATA_PATH . 'emblems' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
@@ -35,7 +35,7 @@ class Emblems_Installer extends Jaws_Gadget_Installer
         // If you are here, then copy the default jaws and feeds images
         $emblems = array('jaws', 'php', 'apache', 'mysql', 'pgsql', 'xhtml', 'css', 'atom', 'rss');
         foreach ($emblems as $emblem) {
-            copy(JAWS_PATH. "gadgets/Emblems/Resources/images/$emblem.png", $new_dir. "$emblem.png");
+            copy(ROOT_JAWS_PATH. "gadgets/Emblems/Resources/images/$emblem.png", $new_dir. "$emblem.png");
             Jaws_Utils::chmod($new_dir. "$emblem.png");
         }
 

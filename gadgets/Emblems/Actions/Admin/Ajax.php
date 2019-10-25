@@ -53,7 +53,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         // delete the file
         if (!empty($emblem['image'])) {
-            Jaws_Utils::Delete(JAWS_DATA . 'emblems/' . $emblem['image']);
+            Jaws_Utils::Delete(ROOT_DATA_PATH . 'emblems/' . $emblem['image']);
         }
 
         $this->gadget->session->push(_t('EMBLEMS_DELETED'), RESPONSE_NOTICE);

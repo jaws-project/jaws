@@ -28,7 +28,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $addform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Emblems'));
         $addform->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'AddEmblem'));
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fs = new Jaws_Widgets_FieldSet(_t('EMBLEMS_ADD_EMBLEM'));
         $fs->SetDirection('vertical');
 
@@ -198,7 +198,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
     {
         $post = $this->gadget->request->fetch(array('title', 'url', 'type', 'published'), 'post');
         $post['url'] = Jaws_XSS::defilter($post['url']);
-        $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
+        $res = Jaws_Utils::UploadFiles($_FILES, ROOT_DATA_PATH . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
@@ -209,7 +209,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
             $model = $this->gadget->model->loadAdmin('Emblems');
             $res = $model->AddEmblem($post);
             if (Jaws_Error::IsError($res)) {
-                Jaws_Utils::delete(JAWS_DATA. 'emblems/'. $post['image']);
+                Jaws_Utils::delete(ROOT_DATA_PATH. 'emblems/'. $post['image']);
                 $this->gadget->session->push(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             } else {
                 $this->gadget->session->push(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
