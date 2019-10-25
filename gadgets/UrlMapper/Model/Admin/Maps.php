@@ -99,7 +99,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
      */
     function AddGadgetMaps($gadget)
     {
-        $file = JAWS_PATH . 'gadgets/' . $gadget . '/Map.php';
+        $file = ROOT_JAWS_PATH . 'gadgets/' . $gadget . '/Map.php';
         if (file_exists($file)) {
             $maps = array();
             include_once $file;
@@ -140,7 +140,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
      */
     function UpdateGadgetMaps($gadget)
     {
-        $file = JAWS_PATH. "gadgets/$gadget/Map.php";
+        $file = ROOT_JAWS_PATH. "gadgets/$gadget/Map.php";
         $maps = array();
         if (@include($file)) {
             $now = time();

@@ -28,7 +28,7 @@ class UrlMapper_Actions_Admin_Aliases extends UrlMapper_Actions_Admin_Default
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'alias_id', '-'));
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('URLMAPPER_ALIASES_ALIAS'));
         $fieldset->SetDirection('vertical');
         $fieldset->SetID('AliasFieldset');

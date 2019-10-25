@@ -26,7 +26,7 @@ class UrlMapper_Actions_Admin_Properties extends UrlMapper_Actions_Admin_Default
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('GLOBAL_PROPERTIES'));
         $fieldset->SetDirection('vertical');
 
