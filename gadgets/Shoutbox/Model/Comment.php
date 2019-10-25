@@ -6,7 +6,7 @@
  * @package    Shoutbox
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2004-2015 Jaws Development Group
+ * @copyright  2004-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Shoutbox_Model_Comment extends Jaws_Gadget_Model
