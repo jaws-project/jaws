@@ -35,7 +35,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
         $form->SetId('frm_settings');
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('GLOBAL_PROPERTIES'));
 
         //Default page (combo)
