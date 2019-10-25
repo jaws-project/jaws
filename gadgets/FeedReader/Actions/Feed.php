@@ -153,12 +153,12 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('FeedReader.html');
         $tpl->SetBlock('feedreader');
 
-        require_once JAWS_PATH . 'gadgets/FeedReader/include/XML_Feed.php';
+        require_once ROOT_JAWS_PATH . 'gadgets/FeedReader/include/XML_Feed.php';
         $parser = new XML_Feed();
         $parser->cache_time = $site['cache_time'];
 
-        if (Jaws_Utils::is_writable(JAWS_DATA.'feedcache')) {
-            $parser->cache_dir = JAWS_DATA . 'feedcache';
+        if (Jaws_Utils::is_writable(ROOT_DATA_PATH.'feedcache')) {
+            $parser->cache_dir = ROOT_DATA_PATH . 'feedcache';
         }
 
         $res = $parser->fetch(Jaws_XSS::defilter($site['url']));
