@@ -5,7 +5,7 @@
  * @category    Notification
  * @package     Core
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2019 Jaws Development Group
+ * @copyright   2019-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 
