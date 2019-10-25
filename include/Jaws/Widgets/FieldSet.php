@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH . 'libraries/piwi/Widget/Container/FieldSet.php';
+require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Container/FieldSet.php';
 
 /**
  * Overwrites the Piwi fieldset and creates one that works for Jaws

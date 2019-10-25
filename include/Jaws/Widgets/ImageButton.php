@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH . 'libraries/piwi/Widget/Bin/Bin.php';
+require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Bin/Bin.php';
 
 /**
  * Buttons with text and some stuff in them. Will be represented as a 'div'

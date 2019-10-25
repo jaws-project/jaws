@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 
-//require_once JAWS_PATH . 'libraries/vendor/autoload.php';
+//require_once ROOT_JAWS_PATH . 'libraries/vendor/autoload.php';
 
 //use Minishlink\WebPush\WebPush;
 //use Minishlink\WebPush\Subscription;

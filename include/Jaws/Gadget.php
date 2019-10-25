@@ -171,7 +171,7 @@ class Jaws_Gadget
         static $instances = array();
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         if (!isset($instances[$gadget])) {
-            if (!is_dir(JAWS_PATH . "gadgets/$gadget")) {
+            if (!is_dir(ROOT_JAWS_PATH . "gadgets/$gadget")) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
                     __FUNCTION__,
@@ -180,7 +180,7 @@ class Jaws_Gadget
                 );
             }
 
-            $file = JAWS_PATH . "gadgets/$gadget/Info.php";
+            $file = ROOT_JAWS_PATH . "gadgets/$gadget/Info.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
@@ -352,7 +352,7 @@ class Jaws_Gadget
     public static function IsGadgetInstalled($gadget)
     {
         $installed_gadgets = Jaws::getInstance()->registry->fetch('gadgets_installed_items');
-        return (false !== strpos($installed_gadgets, ",{$gadget},")) && is_dir(JAWS_PATH. "gadgets/{$gadget}");
+        return (false !== strpos($installed_gadgets, ",{$gadget},")) && is_dir(ROOT_JAWS_PATH. "gadgets/{$gadget}");
     }
 
     /**

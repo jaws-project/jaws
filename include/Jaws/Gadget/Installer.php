@@ -85,7 +85,7 @@ class Jaws_Gadget_Installer
     public function &loadInstaller()
     {
         $classname = $this->gadget->name. '_Installer';
-        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Installer.php';
+        $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Installer.php';
         if (!file_exists($file)) {
             return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
         }
@@ -184,7 +184,7 @@ class Jaws_Gadget_Installer
         $this->app->registry->update('gadgets_installed_items', $installed_gadgets);
 
         // adding gadget to auto-load gadgets list
-        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
+        if (file_exists(ROOT_JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
             $autoload_gadgets = $this->app->registry->fetch('gadgets_autoload_items');
             $autoload_gadgets.= $this->gadget->name. ',';
             $this->app->registry->update('gadgets_autoload_items', $autoload_gadgets);
@@ -329,7 +329,7 @@ class Jaws_Gadget_Installer
 
         // auto-load feature
         $autoload_gadgets = $this->app->registry->fetch('gadgets_autoload_items');
-        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
+        if (file_exists(ROOT_JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
             if (false === strpos($autoload_gadgets, ",{$this->gadget->name},")) {
                 $autoload_gadgets.= $this->gadget->name. ',';
                 $this->app->registry->update('gadgets_autoload_items', $autoload_gadgets);
@@ -484,7 +484,7 @@ class Jaws_Gadget_Installer
     {
         $main_file = $new_schema;
         if (!preg_match('@\\\\|/@', $new_schema)) {
-            $main_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$new_schema";
+            $main_file = ROOT_JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$new_schema";
         }
         if (!file_exists($main_file)) {
             return Jaws_Error::raiseError(
@@ -499,7 +499,7 @@ class Jaws_Gadget_Installer
         if (!empty($old_schema)) {
                 $base_file = $old_schema;
             if (!preg_match('@\\\\|/@', $old_schema)) {
-                $base_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$old_schema";
+                $base_file = ROOT_JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$old_schema";
             }
             if (!file_exists($base_file)) {
                 return Jaws_Error::raiseError(

@@ -11,7 +11,7 @@
 /**
  * Widget that interacts with piwi and jaws and extends Piwi::DatePicker
  */
-require_once JAWS_PATH . 'libraries/piwi/Widget/Bin/DatePicker.php';
+require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Bin/DatePicker.php';
 
 class Jaws_Widgets_DatePicker extends DatePicker
 {

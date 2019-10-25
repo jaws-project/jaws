@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
+require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
 
 /**
  * Jaws TinyMCE Wrapper (uses JS and disable plugins)
@@ -130,7 +130,7 @@ class Jaws_Widgets_TinyMCE extends Container
 
         $plugins = implode(
             ',',
-            array_map('basename', glob(JAWS_PATH.'libraries/tinymce/plugins/*', GLOB_ONLYDIR))
+            array_map('basename', glob(ROOT_JAWS_PATH.'libraries/tinymce/plugins/*', GLOB_ONLYDIR))
         );
 
         // load plugins related to markup language

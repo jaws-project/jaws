@@ -13,7 +13,7 @@
 /**
  *
  */
-require_once JAWS_PATH . 'include/Jaws.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws.php';
 spl_autoload_register('Jaws::loadClass');
 
 /**

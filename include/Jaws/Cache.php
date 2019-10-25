@@ -25,7 +25,7 @@ class Jaws_Cache
         $cacheDriver = preg_replace('/[^[:alnum:]_\-]/', '', $cacheDriver);
 
         if (!empty($cacheDriver) &&
-            !file_exists(JAWS_PATH . "include/Jaws/Cache/{$cacheDriver}.php")
+            !file_exists(ROOT_JAWS_PATH . "include/Jaws/Cache/{$cacheDriver}.php")
         ) {
             $GLOBALS['log']->Log(JAWS_LOG_ERR, "Loading '$cacheDriver' cache driver failed.");
             $cacheDriver = '';

@@ -51,7 +51,7 @@ class Jaws_Gadget_Actions_Editor
     function load($name, $value = '', $markup = JAWS_MARKUP_BBCODE)
     {
         $editor = $this->app->GetEditor();
-        if (!file_exists(JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
+        if (!file_exists(ROOT_JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
             $editor = 'TextArea';
         }
 
@@ -72,7 +72,7 @@ class Jaws_Gadget_Actions_Editor
     function loadAdmin($name, $value = '', $markup = JAWS_MARKUP_HTML)
     {
         $editor = $this->app->GetEditor();
-        if (!file_exists(JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
+        if (!file_exists(ROOT_JAWS_PATH . 'include/Jaws/Widgets/' . $editor . '.php')) {
             $editor = 'TextArea';
         }
 

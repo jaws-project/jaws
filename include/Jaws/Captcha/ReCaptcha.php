@@ -2,7 +2,7 @@
 /*
  * load reCaptcha library
  */
-require_once JAWS_PATH . 'libraries/php/ReCaptcha.php';
+require_once ROOT_JAWS_PATH . 'libraries/php/ReCaptcha.php';
 
 /**
  * reCaptcha

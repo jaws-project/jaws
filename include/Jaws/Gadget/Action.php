@@ -65,10 +65,10 @@ class Jaws_Gadget_Action
 
         if (!isset($this->gadget->objects['Actions'][$filename])) {
             $classname = $this->gadget->name. "_Actions_$filename";
-            $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
+            $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
             if (!file_exists($file)) {
                 $classname = "Jaws_Gadget_Actions_$filename";
-                $file = JAWS_PATH. "include/Jaws/Gadget/Actions/$filename.php";
+                $file = ROOT_JAWS_PATH. "include/Jaws/Gadget/Actions/$filename.php";
                 if (!file_exists($file)) {
                     return Jaws_Error::raiseError("Actions filename [$filename] not exists!", __FUNCTION__);
                 }
@@ -106,7 +106,7 @@ class Jaws_Gadget_Action
 
         if (!isset($this->gadget->objects['AdminActions'][$filename])) {
             $classname = $this->gadget->name. "_Actions_Admin_$filename";
-            $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
+            $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
 
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
@@ -135,7 +135,7 @@ class Jaws_Gadget_Action
     public function fetchAll($script = '')
     {
         if (empty($this->gadget->actions)) {
-            $file = JAWS_PATH . 'gadgets/'. $this->gadget->name. '/Actions.php';
+            $file = ROOT_JAWS_PATH . 'gadgets/'. $this->gadget->name. '/Actions.php';
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }

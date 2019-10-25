@@ -94,14 +94,14 @@ class Jaws_Plugin
         static $instances = array();
         $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
         if (!isset($instances[$plugin])) {
-            if (!is_dir(JAWS_PATH . "plugins/$plugin")) {
+            if (!is_dir(ROOT_JAWS_PATH . "plugins/$plugin")) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
                     __FUNCTION__
                 );
             }
 
-            $file = JAWS_PATH . "plugins/$plugin/Plugin.php";
+            $file = ROOT_JAWS_PATH . "plugins/$plugin/Plugin.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),

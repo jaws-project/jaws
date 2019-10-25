@@ -92,7 +92,7 @@ class Jaws_Notification
         static $instances = array();
         $driver = preg_replace('/[^[:alnum:]_\-]/', '', $driver);
         if (!isset($instances[$driver])) {
-            $driverFile = JAWS_PATH . "include/Jaws/Notification/$driver.php";
+            $driverFile = ROOT_JAWS_PATH . "include/Jaws/Notification/$driver.php";
             if (!file_exists($driverFile)) {
                 return Jaws_Error::raiseError('Loading notification driver failed.', __CLASS__);
             }

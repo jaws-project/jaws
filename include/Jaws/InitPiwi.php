@@ -20,7 +20,7 @@ if (!Jaws::classExists('Piwi')) {
         define('PIWI_LOAD', 'SMART');
     }
 
-    require JAWS_PATH . 'libraries/piwi/Piwi.php';
+    require ROOT_JAWS_PATH . 'libraries/piwi/Piwi.php';
 
     $config = array(
                 'LINK_PRIFIX'                => '',

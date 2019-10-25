@@ -9,7 +9,7 @@
  * @copyright  2011-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
+require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
 class Jaws_Widgets_CKEditor extends Container
 {
     /**
@@ -186,7 +186,7 @@ class Jaws_Widgets_CKEditor extends Container
 
         $plugins = implode(
             ',',
-            array_map('basename', glob(JAWS_PATH.'libraries/ckeditor/plugins/*', GLOB_ONLYDIR))
+            array_map('basename', glob(ROOT_JAWS_PATH.'libraries/ckeditor/plugins/*', GLOB_ONLYDIR))
         );
         
         // load plugins related to markup language

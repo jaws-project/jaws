@@ -139,7 +139,7 @@ class Jaws_Template
             if (file_exists($this->theme['path']. $layout. $filePath. '/'. $fname)) {
                 $filePath = $this->theme['path']. $layout. $filePath;
             } else {
-                $filePath = JAWS_PATH . $filePath;
+                $filePath = ROOT_JAWS_PATH . $filePath;
             }
         }
 

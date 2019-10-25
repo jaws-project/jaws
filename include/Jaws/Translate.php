@@ -62,7 +62,7 @@ class Jaws_Translate
      */
     private function __construct($load_user_translated)
     {
-        $gDir = JAWS_PATH . 'gadgets' . DIRECTORY_SEPARATOR;
+        $gDir = ROOT_JAWS_PATH . 'gadgets' . DIRECTORY_SEPARATOR;
         $gadgets = scandir($gDir);
         foreach ($gadgets as $gadget) {
             if ($gadget[0] == '.' || !is_dir($gDir . $gadget)) {
@@ -71,7 +71,7 @@ class Jaws_Translate
             self::$real_gadgets_module[strtoupper($gadget)] = $gadget;
         }
 
-        $pDir = JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
+        $pDir = ROOT_JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
         $plugins = scandir($pDir);
         foreach ($plugins as $plugin) {
             if ($plugin[0] == '.' || !is_dir($pDir . $plugin)) {
@@ -211,47 +211,47 @@ class Jaws_Translate
         switch ($type) {
             case JAWS_COMPONENT_GADGET:
                 if ($language == 'en') {
-                    $orig_i18n = JAWS_PATH . "gadgets/$module/Resources/translates.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "gadgets/$module/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/gadgets/$module.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/gadgets/$module.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/gadgets/$module.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$language/gadgets/$module.ini";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
                 if ($language == 'en') {
-                    $orig_i18n = JAWS_PATH . "plugins/$module/Resources/translates.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "plugins/$module/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/plugins/$module.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/plugins/$module.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/plugins/$module.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$language/plugins/$module.ini";
                 break;
 
             case JAWS_COMPONENT_INSTALL:
                 if ($language == 'en') {
-                    $orig_i18n = JAWS_PATH . "install/Resources/translates.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "install/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/Install.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/Install.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/Install.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$language/Install.ini";
                 break;
 
             case JAWS_COMPONENT_UPGRADE:
                 if ($language == 'en') {
-                    $orig_i18n = JAWS_PATH . "upgrade/Resources/translates.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "upgrade/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/Upgrade.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/Upgrade.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/Upgrade.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$language/Upgrade.ini";
                 break;
 
             default:
                 if ($language == 'en') {
-                    $orig_i18n = JAWS_PATH . "include/Jaws/Resources/translates.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "include/Jaws/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/Global.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/Global.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/Global.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$language/Global.ini";
         }
 
         $tmp_orig = array();

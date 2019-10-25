@@ -119,7 +119,7 @@ class Jaws_Session
             define('JAWS_APPTYPE', $apptype);
         }
 
-        $file = JAWS_PATH . 'include/Jaws/Session/'. JAWS_APPTYPE. '.php';
+        $file = ROOT_JAWS_PATH . 'include/Jaws/Session/'. JAWS_APPTYPE. '.php';
         if (file_exists($file)) {
             include_once($file);
             $className = 'Jaws_Session_'. JAWS_APPTYPE;

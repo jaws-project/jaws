@@ -140,7 +140,7 @@ class Jaws_Image
                                           __FUNCTION__);
         }
 
-        $imgDriverFile = JAWS_PATH . 'include/Jaws/Image/'. $imgDriver .'.php';
+        $imgDriverFile = ROOT_JAWS_PATH . 'include/Jaws/Image/'. $imgDriver .'.php';
         if (!file_exists($imgDriverFile)) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loading image driver failed.');
             return Jaws_Error::raiseError('Loading image driver failed.',

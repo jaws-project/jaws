@@ -21,13 +21,13 @@ class Jaws_Response
     static function get($resType, $data)
     {
         $resType = preg_replace('/[^[:alnum:]_\-]/', '', $resType);
-        $drivers = array_map('basename', glob(JAWS_PATH . 'include/Jaws/Response/*.php'));
+        $drivers = array_map('basename', glob(ROOT_JAWS_PATH . 'include/Jaws/Response/*.php'));
         if (false === $driver = array_search(strtolower("$resType.php"), array_map('strtolower', $drivers))) {
             return $data;
         }
 
         $resType = basename($drivers[$driver], '.php');
-        $resTypeFile = JAWS_PATH . "include/Jaws/Response/$resType.php";
+        $resTypeFile = ROOT_JAWS_PATH . "include/Jaws/Response/$resType.php";
         if (!file_exists($resTypeFile)) {
             return $data;
         }

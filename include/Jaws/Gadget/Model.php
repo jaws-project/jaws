@@ -67,13 +67,13 @@ class Jaws_Gadget_Model
         if (!isset($this->objects['Model'][$filename])) {
             if (empty($filename)) {
                 $classname = $this->gadget->name. '_Model';
-                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Model.php';
+                $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Model.php';
                 if (!file_exists($file)) {
                     return $this;
                 }
             } else {
                 $classname = $this->gadget->name. "_Model_$filename";
-                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/$filename.php";
+                $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/$filename.php";
             }
 
             if (!file_exists($file)) {
@@ -110,13 +110,13 @@ class Jaws_Gadget_Model
         if (!isset($this->objects['AdminModel'][$filename])) {
             if (empty($filename)) {
                 $classname = $this->gadget->name. '_AdminModel';
-                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
+                $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
                 if (!file_exists($file)) {
                     return $this;
                 }
             } else {
                 $classname = $this->gadget->name. "_Model_Admin_$filename";
-                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/Admin/$filename.php";
+                $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/Admin/$filename.php";
             }
 
             if (!file_exists($file)) {

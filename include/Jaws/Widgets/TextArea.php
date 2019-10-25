@@ -8,7 +8,7 @@
  * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
+require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
 /**
  * Widget that interacts with piwi to create the Jaws Editor
  */

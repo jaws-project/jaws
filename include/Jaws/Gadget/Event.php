@@ -63,7 +63,7 @@ class Jaws_Gadget_Event
 
         if (!isset($this->objects[$event])) {
             $classname = $this->gadget->name. '_Events_'. $event;
-            $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Events/$event.php";
+            $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Events/$event.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }

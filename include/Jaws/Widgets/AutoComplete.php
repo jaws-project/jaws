@@ -8,7 +8,7 @@
  * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-require_once JAWS_PATH . 'libraries/piwi/Widget/Bin/Entry.php';
+require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Bin/Entry.php';
 
 class Jaws_Widgets_AutoComplete extends Entry
 {

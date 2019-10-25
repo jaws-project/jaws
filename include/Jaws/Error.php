@@ -190,7 +190,7 @@ class Jaws_Error
             $GLOBALS['log']->Log(JAWS_ERROR_FATAL, $message, $backtrace);
         }
         //Get content
-        $content = file_get_contents(JAWS_PATH . 'gadgets/ControlPanel/Templates/FatalError.html');
+        $content = file_get_contents(ROOT_JAWS_PATH . 'gadgets/ControlPanel/Templates/FatalError.html');
         $content = str_replace('{{message}}', $message, $content);
         terminate($content, $http_response_code);
     }

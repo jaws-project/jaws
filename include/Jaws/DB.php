@@ -1,6 +1,6 @@
 <?php
 require_once PEAR_PATH. 'MDB2.php';
-require JAWS_PATH . 'include/Jaws/ORM.php';
+require ROOT_JAWS_PATH . 'include/Jaws/ORM.php';
 
 /**
  * Wrapper of Jaws queries and MDB2
@@ -173,7 +173,7 @@ class Jaws_DB
 
         switch ($this->_dsn['phptype']) {
             case 'ibase':
-                $options['database_path'] = empty($this->_db_path)? JAWS_DATA : $this->_db_path;
+                $options['database_path'] = empty($this->_db_path)? ROOT_DATA_PATH : $this->_db_path;
                 $options['portability'] = $options['portability'] | MDB2_PORTABILITY_FIX_CASE;
                 break;
 
@@ -183,7 +183,7 @@ class Jaws_DB
                 break;
 
             case 'sqlite':
-                $options['database_path'] = empty($this->_db_path)? JAWS_DATA : $this->_db_path;
+                $options['database_path'] = empty($this->_db_path)? ROOT_DATA_PATH : $this->_db_path;
                 break;
 
             case 'mssql':
@@ -783,7 +783,7 @@ class Jaws_DB
         switch ($this->_dsn['phptype']) {
             case 'ibase':
                 $options['portability'] = $options['portability'] | MDB2_PORTABILITY_FIX_CASE;
-                $options['database_path'] = empty($this->_db_path)? JAWS_DATA : $this->_db_path;
+                $options['database_path'] = empty($this->_db_path)? ROOT_DATA_PATH : $this->_db_path;
                 break;
 
             case 'oci8':
@@ -792,7 +792,7 @@ class Jaws_DB
                 break;
 
             case 'sqlite':
-                $options['database_path'] = empty($this->_db_path)? JAWS_DATA : $this->_db_path;
+                $options['database_path'] = empty($this->_db_path)? ROOT_DATA_PATH : $this->_db_path;
                 break;
 
             case 'mssql':

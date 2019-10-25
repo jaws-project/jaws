@@ -1,5 +1,5 @@
 <?php
-define('AVATAR_PATH', JAWS_DATA. 'avatar'. DIRECTORY_SEPARATOR);
+define('AVATAR_PATH', ROOT_DATA_PATH. 'avatar'. DIRECTORY_SEPARATOR);
 
 /**
  * This class is for Jaws_User table operations
@@ -667,7 +667,7 @@ class Jaws_User
     function GetAvatar($avatar, $email, $size = 48, $time = '')
     {
         if (empty($avatar) || !file_exists(AVATAR_PATH . $avatar)) {
-            require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
+            require_once ROOT_JAWS_PATH . 'include/Jaws/Gravatar.php';
             $uAvatar = Jaws_Gravatar::GetGravatar($email, $size);
         } else {
             $uAvatar = $this->app->getDataURL(). "avatar/$avatar";
