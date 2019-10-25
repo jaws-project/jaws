@@ -40,7 +40,7 @@ class Upgrader_160To170 extends JawsUpgraderStage
     function Run()
     {
         // Connect to database
-        require_once JAWS_PATH . 'include/Jaws/DB.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(
@@ -58,8 +58,8 @@ class Upgrader_160To170 extends JawsUpgraderStage
         );
         foreach ($schema_array as $old => $new) {
             // upgrade core database schema
-            $old_schema = JAWS_PATH . "upgrade/Resources/schema/$old.xml";
-            $new_schema = JAWS_PATH . "upgrade/Resources/schema/$new.xml";
+            $old_schema = ROOT_JAWS_PATH . "upgrade/Resources/schema/$old.xml";
+            $new_schema = ROOT_JAWS_PATH . "upgrade/Resources/schema/$new.xml";
             if (!file_exists($old_schema)) {
                 return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', "$old.xml"),0 , JAWS_ERROR_ERROR);
             }
@@ -176,7 +176,7 @@ class Upgrader_160To170 extends JawsUpgraderStage
         }
 
         // Create application
-        include_once JAWS_PATH . 'include/Jaws.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws.php';
         Jaws::getInstance()->registry->init();
 
         // Upgrading core gadgets

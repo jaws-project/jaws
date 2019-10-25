@@ -18,7 +18,7 @@ class Upgrader_Finished extends JawsUpgraderStage
      */
     function Display()
     {
-        require_once JAWS_PATH . 'include/Jaws.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws.php';
         $jawsApp = Jaws::getInstance();
         $jawsApp->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 

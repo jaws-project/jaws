@@ -37,29 +37,38 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
     date_default_timezone_set('UTC');
 }
 
-require dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'config/JawsConfig.php';
+require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config/JawsConfig.php';
+if (!defined('ROOT_JAWS_PATH')) {
+    // old jaws version lower than version 1.7
+    define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR);
+    define('JAWS_PATH_NEW', substr(realpath(JAWS_PATH) . DIRECTORY_SEPARATOR, strlen(ROOT_PATH)));
+    define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH_NEW);
+
+    define('DATA_PATH', JAWS_PATH_NEW . 'data' . DIRECTORY_SEPARATOR);
+    define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
+}
 
 if (!defined('PEAR_PATH')) {
-define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
+define('PEAR_PATH', ROOT_JAWS_PATH . 'libraries/pear/');
 }
 
 // lets setup the include_path
-set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
-// JAWS_DATA
-if (!defined('JAWS_DATA')) {
-    define('JAWS_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
+set_include_path('.' . PATH_SEPARATOR . ROOT_JAWS_PATH . 'libraries/pear');
+// ROOT_DATA_PATH
+if (!defined('ROOT_DATA_PATH')) {
+    define('ROOT_DATA_PATH', ROOT_JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
 } else {
-    $_SESSION['JAWS_BASE_DATA'] = JAWS_DATA;
+    $_SESSION['JAWS_BASE_DATA'] = ROOT_DATA_PATH;
 }
 // JAWS_BASE_DATA
 if (!defined('JAWS_BASE_DATA')) {
-    define('JAWS_BASE_DATA', JAWS_DATA);
+    define('JAWS_BASE_DATA', ROOT_DATA_PATH);
 } else {
     $_SESSION['JAWS_BASE_DATA'] = JAWS_BASE_DATA;
 }
 // JAWS_THEMES
 if (!defined('JAWS_THEMES')) {
-    define('JAWS_THEMES', JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR);
+    define('JAWS_THEMES', ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR);
 } else {
     $_SESSION['JAWS_THEMES'] = JAWS_THEMES;
 }
@@ -71,7 +80,7 @@ if (!defined('JAWS_BASE_THEMES')) {
 }
 // JAWS_CACHE
 if (!defined('JAWS_CACHE')) {
-    define('JAWS_CACHE', JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR);
+    define('JAWS_CACHE', ROOT_DATA_PATH. 'cache'. DIRECTORY_SEPARATOR);
 } else {
     $_SESSION['JAWS_CACHE'] = JAWS_CACHE;
 }
@@ -80,25 +89,25 @@ define('UPGRADE_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 // Initialize the logger
 $_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
 $logger = array('method'  => 'LogToFile',
-                'options' => array('file' => JAWS_DATA . 'logs/.upgrade.log'));
-require JAWS_PATH . 'include/Jaws/Log.php';
+                'options' => array('file' => ROOT_DATA_PATH . 'logs/.upgrade.log'));
+require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
 $GLOBALS['log'] = new Jaws_Log($_SESSION['use_log'], $logger);
 $GLOBALS['log']->Start();
 
 // Lets support older PHP versions so we can use spanking new functions
-require_once JAWS_PATH . 'include/Jaws/Helper.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
 
-require_once JAWS_PATH . 'include/Jaws/Const.php';
-require_once JAWS_PATH . 'include/Jaws/Error.php';
-require_once JAWS_PATH . 'include/Jaws/Utils.php';
-require_once JAWS_PATH . 'include/Jaws/Gadget.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Error.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Gadget.php';
 
 if (!isset($_SESSION['upgrade'])) {
     $_SESSION['upgrade'] = array('stage' => 0, 'lastStage' => array());
 }
 
 // Lets handle our requests
-require JAWS_PATH . 'include/Jaws/Request.php';
+require ROOT_JAWS_PATH . 'include/Jaws/Request.php';
 $request = Jaws_Request::getInstance();
 $lang = $request->fetch('language', 'post');
 if (isset($lang)) {
@@ -107,7 +116,7 @@ if (isset($lang)) {
     $_SESSION['upgrade']['language'] = 'en';
 }
 
-include_once JAWS_PATH . 'include/Jaws/Translate.php';
+include_once ROOT_JAWS_PATH . 'include/Jaws/Translate.php';
 $objTranslate = Jaws_Translate::getInstance(false);
 if (isset($_SESSION['upgrade']['language'])) {
     $objTranslate->SetLanguage($_SESSION['upgrade']['language']);
@@ -150,7 +159,7 @@ if (isset($go_next_step)) {
 // Mark the stage as having been run.
 $_SESSION['upgrade']['lastStage'] = $_SESSION['upgrade']['stage'];
 
-include_once JAWS_PATH . 'include/Jaws/Template.php';
+include_once ROOT_JAWS_PATH . 'include/Jaws/Template.php';
 $tpl = new Jaws_Template(false, false);
 $tpl->Load('page.html', 'templates');
 $tpl->SetBlock('page');

@@ -19,13 +19,13 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
      */
     function BuildConfig()
     {
-        include_once JAWS_PATH . 'include/Jaws/Template.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws/Template.php';
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('JawsConfig.php', 'stages/WriteConfig/templates');
 
         $tpl->SetBlock('JawsConfig');
-        $_SESSION['JAWS_DATA'] = isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : JAWS_DATA;
-        $paths = array('jaws_data', 'jaws_base_data', 'jaws_themes', 'jaws_base_themes', 'jaws_cache');
+        $_SESSION['DATA_PATH'] = isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : DATA_PATH;
+        $paths = array('data_path', 'base_data_path', 'themes_path', 'base_themes_path', 'cache_path');
         foreach ($paths as $path) {
             if (isset($_SESSION[strtoupper($path)])) {
                 $tpl->SetBlock("JawsConfig/$path");
@@ -58,7 +58,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
     function Display()
     {
         // Create application
-        include_once JAWS_PATH . 'include/Jaws.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws.php';
         Jaws::getInstance()->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $tpl = new Jaws_Template(false, false);
@@ -67,7 +67,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         _log(JAWS_LOG_DEBUG,"Preparing configuaration file");
         $tpl->SetBlock('WriteConfig');
 
-        $config_path = JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
+        $config_path = ROOT_JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
         $tpl->setVariable('lbl_info',                _t('UPGRADE_CONFIG_INFO'));
         $tpl->setVariable('lbl_solution',            _t('UPGRADE_CONFIG_SOLUTION'));
         $tpl->setVariable('lbl_solution_permission', _t('UPGRADE_CONFIG_SOLUTION_PERMISSION', $config_path));
@@ -93,10 +93,10 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         $configString = $this->BuildConfig();
         $configMD5 = md5($configString);
 
-        $existsConfig = @file_get_contents(JAWS_PATH. 'config/JawsConfig.php');
+        $existsConfig = @file_get_contents(ROOT_JAWS_PATH. 'config/JawsConfig.php');
         $existsMD5 = md5($existsConfig);
         if ($configMD5 !== $existsMD5) {
-            if (!Jaws_Utils::is_writable(JAWS_PATH . 'config/')) {
+            if (!Jaws_Utils::is_writable(ROOT_JAWS_PATH . 'config/')) {
                 return Jaws_Error::raiseError(
                     _t('UPGRADE_CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'),
                     __FUNCTION__,
@@ -105,7 +105,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
             }
 
             // create/overwrite a new one if the dir is writeable
-            $result = @file_put_contents(JAWS_PATH . 'config/JawsConfig.php', $configString);
+            $result = @file_put_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php', $configString);
             if ($result === false) {
                 return Jaws_Error::raiseError(
                     _t('UPGRADE_CONFIG_RESPONSE_WRITE_FAILED'),
@@ -116,7 +116,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         }
 
         // Connect to database
-        require_once JAWS_PATH . 'include/Jaws/DB.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
@@ -124,7 +124,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         }
 
         // Create application
-        include_once JAWS_PATH . 'include/Jaws.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws.php';
         $jawsApp = Jaws::getInstance();
         $jawsApp->registry->init();
 
@@ -132,7 +132,7 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         $jawsApp->registry->update('version', JAWS_VERSION);
 
         //remove cache directory
-        $path = JAWS_DATA. 'cache';
+        $path = ROOT_DATA_PATH. 'cache';
         if (!Jaws_Utils::delete($path)) {
             _log(JAWS_LOG_DEBUG,"Can't delete $path");
         }

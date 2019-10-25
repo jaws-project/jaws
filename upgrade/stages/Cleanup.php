@@ -19,7 +19,7 @@ class Upgrader_Cleanup extends JawsUpgraderStage
     function Display()
     {
         // Create application
-        include_once JAWS_PATH . 'include/Jaws.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws.php';
         Jaws::getInstance()->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $tpl = new Jaws_Template(false, false);
@@ -30,10 +30,10 @@ class Upgrader_Cleanup extends JawsUpgraderStage
         $tpl->setVariable('lbl_info', _t('UPGRADE_CLEANUP_INFO'));
 
         $cleanup_required = false;
-        $cleanup_items = @file_get_contents(JAWS_PATH. 'upgrade/stages/Cleanup/folders.txt');
+        $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/folders.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(JAWS_PATH. $item)) {
+            if (file_exists(ROOT_JAWS_PATH. $item)) {
                 $cleanup_required = true;
                 $tpl->SetBlock('cleanup/item');
                 $tpl->setVariable('type', '1');
@@ -42,10 +42,10 @@ class Upgrader_Cleanup extends JawsUpgraderStage
             }
         }
 
-        $cleanup_items = @file_get_contents(JAWS_PATH. 'upgrade/stages/Cleanup/files.txt');
+        $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/files.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(JAWS_PATH. $item)) {
+            if (file_exists(ROOT_JAWS_PATH. $item)) {
                 $cleanup_required = true;
                 $tpl->SetBlock('cleanup/item');
                 $tpl->setVariable('type', '0');
@@ -75,21 +75,21 @@ class Upgrader_Cleanup extends JawsUpgraderStage
     function Run()
     {
         $cleanup_error = false;
-        $cleanup_items = @file_get_contents(JAWS_PATH. 'upgrade/stages/Cleanup/folders.txt');
+        $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/folders.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(JAWS_PATH. $item)) {
-                if (!Jaws_Utils::Delete(JAWS_PATH. $item)) {
+            if (file_exists(ROOT_JAWS_PATH. $item)) {
+                if (!Jaws_Utils::Delete(ROOT_JAWS_PATH. $item)) {
                     $cleanup_error = true;
                 }
             }
         }
 
-        $cleanup_items = @file_get_contents(JAWS_PATH. 'upgrade/stages/Cleanup/files.txt');
+        $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/files.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(JAWS_PATH. $item)) {
-                if (!Jaws_Utils::Delete(JAWS_PATH. $item)) {
+            if (file_exists(ROOT_JAWS_PATH. $item)) {
+                if (!Jaws_Utils::Delete(ROOT_JAWS_PATH. $item)) {
                     $cleanup_error = true;
                 }
             }

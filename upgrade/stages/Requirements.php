@@ -279,7 +279,7 @@ class Upgrader_Requirements extends JawsUpgraderStage
     {
         $paths = !is_array($paths)? array($paths) : $paths;
         foreach ($paths as $path) {
-            $path = JAWS_PATH . $path;
+            $path = ROOT_JAWS_PATH . $path;
             if ($properties == 'rw') {
                 if (!is_readable($path) || !Jaws_Utils::is_writable($path)) {
                     return false;
@@ -310,7 +310,7 @@ class Upgrader_Requirements extends JawsUpgraderStage
         $paths = !is_array($paths)? array($paths) : $paths;
         $paths_perms = array();
         foreach ($paths as $path) {
-            $path = JAWS_PATH . $path;
+            $path = ROOT_JAWS_PATH . $path;
             $perms = @decoct(@fileperms($path) & 0777);
             if (strlen($perms) < 3) {
                 $paths_perms[] = '---------';

@@ -20,10 +20,10 @@ class Upgrader_Report extends JawsUpgraderStage
      */
     function Display()
     {
-        include_once JAWS_PATH.'include/Jaws/DB.php';
+        include_once ROOT_JAWS_PATH.'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
 
-        require_once JAWS_PATH . 'include/Jaws.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws.php';
         $jawsApp = Jaws::getInstance();
 
         if (!isset($_SESSION['upgrade']['InstalledVersion'])) {
@@ -115,10 +115,10 @@ class Upgrader_Report extends JawsUpgraderStage
             return Jaws_Error::raiseError(_t('UPGRADE_REPORT_NOT_SUPPORTED'), 0, JAWS_ERROR_WARNING);
         }
 
-        if (is_dir(JAWS_DATA. "languages")) {
+        if (is_dir(ROOT_DATA_PATH. "languages")) {
             // transform customized translated files
             $rootfiles = array('Global.php', 'Date.php', 'Install.php', 'Upgrade.php');
-            $languages = scandir(JAWS_DATA. 'languages');
+            $languages = scandir(ROOT_DATA_PATH. 'languages');
             foreach ($languages as $lang) {
                 if($lang == '.' || $lang == '..') {
                     continue;
@@ -128,40 +128,40 @@ class Upgrader_Report extends JawsUpgraderStage
                 $nstr = "define('_".strtoupper($lang).'_DATA_';
 
                 // gadgets
-                if (is_dir(JAWS_DATA. "languages/$lang/gadgets")) {
-                    $lGadgets = scandir(JAWS_DATA. "languages/$lang/gadgets");
+                if (is_dir(ROOT_DATA_PATH. "languages/$lang/gadgets")) {
+                    $lGadgets = scandir(ROOT_DATA_PATH. "languages/$lang/gadgets");
                     foreach ($lGadgets as $lGadget) {
                         if($lGadget == '.' || $lGadget == '..') {
                             continue;
                         }
 
-                        $fstring = @file_get_contents(JAWS_DATA. "languages/$lang/gadgets/$lGadget");
+                        $fstring = @file_get_contents(ROOT_DATA_PATH. "languages/$lang/gadgets/$lGadget");
                         $fstring = strtr($fstring, array($nstr => $nstr, $ostr => $nstr));
-                        @file_put_contents(JAWS_DATA. "languages/$lang/gadgets/$lGadget", $fstring);
+                        @file_put_contents(ROOT_DATA_PATH. "languages/$lang/gadgets/$lGadget", $fstring);
                     }
                 }
 
                 // plugins
-                if (is_dir(JAWS_DATA. "languages/$lang/plugins")) {
-                    $lPlugins = scandir(JAWS_DATA. "languages/$lang/plugins");
+                if (is_dir(ROOT_DATA_PATH. "languages/$lang/plugins")) {
+                    $lPlugins = scandir(ROOT_DATA_PATH. "languages/$lang/plugins");
                     foreach ($lPlugins as $lPlugin) {
                         if($lPlugin == '.' || $lPlugin == '..') {
                             continue;
                         }
 
-                        $fstring = @file_get_contents(JAWS_DATA. "languages/$lang/plugins/$lPlugin");
+                        $fstring = @file_get_contents(ROOT_DATA_PATH. "languages/$lang/plugins/$lPlugin");
                         $fstring = strtr($fstring, array($nstr => $nstr, $ostr => $nstr));
-                        @file_put_contents(JAWS_DATA. "languages/$lang/plugins/$lPlugin", $fstring);
+                        @file_put_contents(ROOT_DATA_PATH. "languages/$lang/plugins/$lPlugin", $fstring);
                     }
                 }
             }
 
             // others
             foreach ($rootfiles as $rfile) {
-                if (file_exists(JAWS_DATA. "languages/$lang/$rfile")) {
-                    $fstring = @file_get_contents(JAWS_DATA. "languages/$lang/$rfile");
+                if (file_exists(ROOT_DATA_PATH. "languages/$lang/$rfile")) {
+                    $fstring = @file_get_contents(ROOT_DATA_PATH. "languages/$lang/$rfile");
                     $fstring = strtr($fstring, array($nstr => $nstr, $ostr => $nstr));
-                    @file_put_contents(JAWS_DATA. "languages/$lang/$rfile", $fstring);
+                    @file_put_contents(ROOT_DATA_PATH. "languages/$lang/$rfile", $fstring);
                 }
             }
         }

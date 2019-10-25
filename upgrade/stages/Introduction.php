@@ -27,7 +27,7 @@ class Upgrader_Introduction extends JawsUpgraderStage
         $tpl->SetVariable('ftp_info',   _t('UPGRADE_INTRO_FTP'));
         $tpl->SetVariable('language',   _t('GLOBAL_LANGUAGE'));
         $tpl->SetVariable('next',       _t('GLOBAL_NEXT'));
-        if (is_writable(JAWS_PATH . 'data/logs') && is_dir(JAWS_PATH . 'data/logs')) {
+        if (is_writable(ROOT_JAWS_PATH . 'data/logs') && is_dir(ROOT_JAWS_PATH . 'data/logs')) {
             $tpl->SetVariable('log_use', _t('UPGRADE_INTRO_LOG', 'data/logs/upgrade.txt'));
             $tpl->SetBlock('Introduction/logcheckbox');
             $tpl->ParseBlock('Introduction/logcheckbox');

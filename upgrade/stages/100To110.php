@@ -40,7 +40,7 @@ class Upgrader_100To110 extends JawsUpgraderStage
     function Run()
     {
         // Connect to database
-        require_once JAWS_PATH . 'include/Jaws/DB.php';
+        require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
@@ -48,7 +48,7 @@ class Upgrader_100To110 extends JawsUpgraderStage
         }
 
         // Create application
-        include_once JAWS_PATH . 'include/Jaws.php';
+        include_once ROOT_JAWS_PATH . 'include/Jaws.php';
         Jaws::getInstance()->registry->init();
 
         // Upgrading core gadgets
