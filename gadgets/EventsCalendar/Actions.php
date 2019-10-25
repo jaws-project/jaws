@@ -5,7 +5,7 @@
  * @category    GadgetActions
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2008-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 
