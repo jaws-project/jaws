@@ -960,6 +960,7 @@ class Jaws_Session
             // user attributes
             case 'user':
                 if (is_array($value)) {
+                    $this->changed = true;
                     // set given valid user attributes
                     $attributes = array_intersect(array_keys($value), array_keys($this->userAttributes));
                     foreach ($attributes as $attribute) {
@@ -974,6 +975,7 @@ class Jaws_Session
                 break;
 
             case 'webpush':
+                $this->changed = true;
                 $this->session['webpush'] = $value;
                 break;
 
