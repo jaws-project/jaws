@@ -938,7 +938,7 @@ class Jaws_Session
         }
 
         // session
-        if (array_key_exists($property, array_keys($this->session))) {
+        if (array_key_exists($property, $this->session)) {
             //id, type, auth, domain, webpush
             return $this->session[$property];
         }
