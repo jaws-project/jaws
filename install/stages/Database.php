@@ -5,7 +5,7 @@
  * @category   Application
  * @package    InstallStage
  * @author     Jon Wood <jon@substance-it.co.uk>
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author     Helgi ï¿½ormar ï¿½orbjï¿½rnsson <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
@@ -347,8 +347,8 @@ class Installer_Database extends JawsInstallerStage
         }
 
         $gadgets = array(
-            'Settings', 'ControlPanel', 'Components',
-            'UrlMapper', 'Layout', 'Users', 'Policy',
+            'UrlMapper', 'Settings', 'ControlPanel',
+            'Components', 'Layout', 'Users', 'Policy',
         );
 
         foreach ($gadgets as $gadget) {
