@@ -87,6 +87,8 @@ class Jaws_Request
             array_key_exists('HTTP_USER_AGENT', $_SERVER)? $_SERVER['HTTP_USER_AGENT']: '';
         $_SERVER['HTTP_REFERER'] =
             array_key_exists('HTTP_REFERER', $_SERVER)? $_SERVER['HTTP_REFERER']: '';
+        $_SERVER['HTTP_ACCEPT_ENCODING'] = 
+            array_key_exists('HTTP_ACCEPT_ENCODING', $_SERVER)? $_SERVER['HTTP_ACCEPT_ENCODING']: '';
 
         if (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') && isset($_SERVER['UNENCODED_URL'])) {
             $_SERVER['REQUEST_URI'] = $_SERVER['UNENCODED_URL'];
