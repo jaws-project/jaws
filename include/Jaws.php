@@ -106,13 +106,6 @@ class Jaws
     var $_BrowserFlag = '';
 
     /**
-     * Browser HTTP_ACCEPT_ENCODING
-     * @var     string
-     * @access  protected
-     */
-    var $_BrowserEncoding = '';
-
-    /**
      * Should application use layout?
      * @var     bool
      * @access  protected
@@ -631,17 +624,6 @@ class Jaws
     }
 
     /**
-     * Get Browser accept encoding
-     *
-     * @access  public
-     * @return  string The type of browser
-     */
-    function GetBrowserEncoding()
-    {
-        return $this->_BrowserEncoding;
-    }
-
-    /**
      * use native gzip compression?
      *
      * @access  private
@@ -651,8 +633,6 @@ class Jaws
     {
         static $_GZipEnabled;
         if (!isset($_GZipEnabled)) {
-            $this->_BrowserEncoding = (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '');
-            $this->_BrowserEncoding = strtolower($this->_BrowserEncoding);
             $_GZipEnabled = true;
             if (($this->registry->fetch('gzip_compression', 'Settings') != 'true') ||
                 !extension_loaded('zlib') ||
@@ -660,7 +640,7 @@ class Jaws
                 (ini_get('zlib.output_compression_level') > 0) ||
                 (ini_get('output_handler') == 'ob_gzhandler') ||
                 (ini_get('output_handler') == 'mb_output_handler') ||
-                (strpos($this->_BrowserEncoding, 'gzip') === false))
+                (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') === false))
             {
                 $_GZipEnabled = false;
             }
