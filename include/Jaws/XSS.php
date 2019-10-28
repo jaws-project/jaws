@@ -257,7 +257,7 @@ class Jaws_XSS
         $parsedURL = parse_url(htmlspecialchars_decode($url));
         foreach ($parsedURL as $part => $value) {
             if ($deny_remote_url &&
-                in_array($part, array('schema', 'host'))
+                in_array($part, array('schema', 'host', 'port'))
             ) {
                 $parsedURL[$part] = null;
                 continue;
