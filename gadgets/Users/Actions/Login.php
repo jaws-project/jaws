@@ -289,7 +289,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return Jaws_Header::Location('');
         }
 
-        $authtype = $this->gadget->session->auth;
+        $authtype = $this->app->session->auth;
         $classfile = ROOT_JAWS_PATH . "gadgets/Users/Account/$authtype/Logout.php";
         if (!file_exists($classfile)) {
             Jaws_Error::Fatal($authtype. ' logout class doesn\'t exists');
