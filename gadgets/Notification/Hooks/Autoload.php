@@ -25,6 +25,12 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
             $this->gadget->registry->fetch('webpush_pub_key')
         );
 
+        // is webpush subscription available?
+        $this->gadget->define(
+            'webpush_subscription',
+            !empty($this->app->session->webpush)
+        );
+
         // this action must be call by time-based job scheduler
         //$this->SendNotifications();
 

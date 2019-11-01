@@ -17,6 +17,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         array('webpush_enabled', false),
         array('webpush_pvt_key', ''),
         array('webpush_pub_key', ''),
+        array('webpush_anonymouse', false),
         array('processing', 'false'),
         array('last_update', '0'),
         array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
@@ -188,6 +189,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.8.0', '<')) {
             // registry keys
             $this->gadget->registry->insert('webpush_enabled', false);
+        }
+
+        if (version_compare($old, '1.8.0', '<')) {
+            // registry keys
+            $this->gadget->registry->insert('webpush_anonymouse', false);
         }
 
         return true;
