@@ -924,7 +924,7 @@ class Jaws_Session
     /**
      * Overloading __get magic method
      *
-     * @access  private
+     * @access  public
      * @param   string  $property   Property name
      * @return  mixed   Requested property otherwise Jaws_Error
      */
@@ -949,7 +949,7 @@ class Jaws_Session
     /**
      * Overloading __set magic method
      *
-     * @access  private
+     * @access  public
      * @param   string  $property   Property name
      * @param   mixed   $value      Property value
      * @return  void
@@ -985,6 +985,19 @@ class Jaws_Session
         }
 
         return;
+    }
+
+    /**
+     * Overloading __isset magic method
+     * Triggered by calling isset() or empty()on inaccessible (protected or private) or non-existing properties
+     *
+     * @access  public
+     * @param   string  $property   Property name
+     * @return  bool    Requested property otherwise Jaws_Error
+     */
+    function __isset($property)
+    {
+        return array_key_exists($property, $this->session);
     }
 
 }
