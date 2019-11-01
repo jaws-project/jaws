@@ -167,10 +167,7 @@ class Jaws_HTTPRequest
         ) {
             $headers = $this->httpRequest->getHeaders();
             // detect data need url-encoding
-            if (array_key_exists('content-type', $headers)) {
-                $urlencoded = strpos($headers['content-type'], 'application/x-www-form-urlencoded') !== false;
-            } else {
-                $urlencoded = true;
+            if (!array_key_exists('content-type', $headers)) {
                 $this->httpRequest->setHeader('content-type', 'application/x-www-form-urlencoded');
             }
 
@@ -184,7 +181,7 @@ class Jaws_HTTPRequest
 
             // add post data
             foreach($params as $name => $value) {
-                $this->httpRequest->addPostParameter($name, $urlencoded? urlencode($value) : $value);
+                $this->httpRequest->addPostParameter($name, $value);
             }
 
             try {
