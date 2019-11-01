@@ -1239,6 +1239,20 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 /**
+ * Update WebPush Subscription
+ */
+function updateWebPushSubscription(pushSubscription) {
+    pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
+    pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
+    Jaws_Gadget.getInstance('Notification').gadget.ajax.callAsync(
+        'UpdateWebPushSubscription',
+        pushSubscription,
+        false,
+        {baseScript: 'index.php'}
+    );
+}
+
+/**
  * on document ready
  */
 $(document).ready(function() {
@@ -1287,24 +1301,24 @@ $(document).ready(function() {
 
                     serviceWorkerRegistration.pushManager.getSubscription().then(
                         function(pushSubscription) {
-                            if (jaws.Defines.logged && !pushSubscription) {
-                                serviceWorkerRegistration.pushManager.subscribe(options).then(
-                                    function (pushSubscription)
-                                    {
-                                        pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
-                                        pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
-                                        Jaws_Gadget.getInstance('Notification').gadget.ajax.callAsync(
-                                            'UpdateWebPushSubscription',
-                                            pushSubscription,
-                                            false,
-                                            {baseScript: 'index.php'}
-                                        );
-                                    }
-                                ).catch (
-                                    function(error) {
-                                        console.log(error);
-                                    }
-                                );
+                            if (pushSubscription) {
+                                if (!jaws.Notification.Defines.webpush_subscription) {
+                                    // update webpush subscription
+                                    updateWebPushSubscription(pushSubscription);
+                                }
+                            } else {
+                                if (jaws.Notification.Defines.webpush_anonymouse || jaws.Defines.logged) {
+                                    serviceWorkerRegistration.pushManager.subscribe(options).then(
+                                        function (pushSubscription) {
+                                            // update webpush subscription
+                                            updateWebPushSubscription(pushSubscription);
+                                        }
+                                    ).catch (
+                                        function(error) {
+                                            console.log(error);
+                                        }
+                                    );
+                                }
                             }
                         }
                     ).catch (
