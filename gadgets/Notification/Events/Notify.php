@@ -75,6 +75,21 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             }
         }
 
+        // add webpush subscription to users array
+        foreach ($users as $index => $user) {
+            if (array_key_exists('id', $user)) {
+                $sessions = $this->app->session->getSessions($user['id']);
+                if (!Jaws_Error::isError($sessions) && !empty($sessions)) {
+                    $webpush = array();
+                    foreach ($sessions as $session) {
+                        $webpush[] = $session['webpush'];
+                    }
+                    $users[$index]['webpush'] = $webpush;
+                }
+
+            }
+        }
+
         if (empty($users)) {
             return false;
         }
