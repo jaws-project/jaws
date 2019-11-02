@@ -86,29 +86,21 @@ class Jaws_Notification_WebPush extends Jaws_Notification
     function notify($contacts, $title, $summary, $content, $time, $callback_url, $image, $template)
     {
         try {
-            foreach ($contacts as $subscriber) {
-                if (array_key_exists('webpush', $subscriber) &&
-                    is_array($subscriber['webpush']) &&
-                    !empty($subscriber['webpush'])
-                ) {
-                    // it is possible that subscriber has multiple webpush push-subscription
-                    foreach ($subscriber['webpush'] as $pushSubscription) {
-                        $pushSubscription = @unserialize($pushSubscription);
-                        if (!empty($pushSubscription)) {
-                            $objSubscription = Subscription::create($pushSubscription);
-                            $res = $this->webPush->sendNotification(
-                                $objSubscription,
-                                json_encode(
-                                    array(
-                                        'icon'    => $image,
-                                        'title'   => $title,
-                                        'body'    => $summary,
-                                        'vibrate' => [],
-                                    )
-                                )
-                            );
-                        }
-                    }
+            foreach ($contacts as $pushSubscription) {
+                $pushSubscription = @unserialize($pushSubscription);
+                if (!empty($pushSubscription)) {
+                    $objSubscription = Subscription::create($pushSubscription);
+                    $res = $this->webPush->sendNotification(
+                        $objSubscription,
+                        json_encode(
+                            array(
+                                'icon'    => $image,
+                                'title'   => $title,
+                                'body'    => $summary,
+                                'vibrate' => [],
+                            )
+                        )
+                    );
                 }
             }
 
