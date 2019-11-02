@@ -87,20 +87,22 @@ class Jaws_Notification_WebPush extends Jaws_Notification
     {
         try {
             foreach ($contacts as $subscriber) {
-                $subscriber['webpush'] = @unserialize($subscriber['webpush']);
-                if (!empty($subscriber['webpush'])) {
-                    $subscription = Subscription::create($subscriber['webpush']);
-                    $res = $this->webPush->sendNotification(
-                        $subscription,
-                        json_encode(
-                            array(
-                                'icon'    => $image,
-                                'title'   => $title,
-                                'body'    => $summary,
-                                'vibrate' => [],
+                if (array_key_exists('webpush', $subscriber)) {
+                    $subscriber['webpush'] = @unserialize($subscriber['webpush']);
+                    if (!empty($subscriber['webpush'])) {
+                        $subscription = Subscription::create($subscriber['webpush']);
+                        $res = $this->webPush->sendNotification(
+                            $subscription,
+                            json_encode(
+                                array(
+                                    'icon'    => $image,
+                                    'title'   => $title,
+                                    'body'    => $summary,
+                                    'vibrate' => [],
+                                )
                             )
-                        )
-                    );
+                        );
+                    }
                 }
             }
             $this->webPush->flush();
