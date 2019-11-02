@@ -26,7 +26,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $objORM = $objORM->table('notification_mobile');
                 break;
             case Jaws_Notification::WEB_DRIVER:
-                $objORM = $objORM->table('notification_web');
+                $objORM = $objORM->table('notification_webpush');
                 break;
             default:
                 return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
@@ -72,7 +72,11 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     function InsertNotifications(
         $notifications, $key, $title, $summary, $description, $time, $callback, $image, $template
     ) {
-        if (empty($notifications) || (empty($notifications['emails']) && empty($notifications['mobiles']) && empty($notifications['web_pushes']))) {
+        if (empty($notifications) || (
+            empty($notifications['emails']) &&
+            empty($notifications['webpush']) &&
+            empty($notifications['web_pushes'])
+        )) {
             return false;
         }
 
@@ -99,9 +103,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             foreach ($notifications['emails'] as $email) {
                 // FIXME : increase performance by adding upsertAll method in core
                 $res = $objORM->upsert(
-                    array('message' => $messageId, 'contact' => $email, 'time' => $time)
-                )
-                    ->and()
+                        array('message' => $messageId, 'contact' => $email, 'time' => $time)
+                    )->and()
                     ->where('message', $messageId)
                     ->and()
                     ->where('contact', $email)
@@ -119,9 +122,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 // FIXME : increase performance by adding upsertAll method in core
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                    array('message' => $messageId, 'contact' => $mobile, 'time' => $time)
-                )
-                    ->and()
+                        array('message' => $messageId, 'contact' => $mobile, 'time' => $time)
+                    )->and()
                     ->where('message', $messageId)
                     ->and()
                     ->where('contact', $mobile)
@@ -133,18 +135,17 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         // insert web_push items
-        if(!empty($notifications['web_pushes'])) {
-            $objORM = $objORM->table('notification_web');
-            foreach ($notifications['web_pushes'] as $webPush) {
+        if(!empty($notifications['webpush'])) {
+            $objORM = $objORM->table('notification_webpush');
+            foreach ($notifications['webpush'] as $webpush) {
                 // FIXME : increase performance by adding upsertAll method in core
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                    array('message' => $messageId, 'contact' => $webPush, 'time' => $time)
-                )
-                    ->and()
+                        array('message' => $messageId, 'contact' => $webpush, 'time' => $time)
+                    )->and()
                     ->where('message', $messageId)
                     ->and()
-                    ->where('contact', $webPush)
+                    ->where('contact', $webpush)
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;
@@ -231,7 +232,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $objORM = $objORM->table('notification_mobile');
                 break;
             case Jaws_Notification::WEB_DRIVER:
-                $objORM = $objORM->table('notification_web');
+                $objORM = $objORM->table('notification_webpush');
                 break;
             default:
                 return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
@@ -252,7 +253,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         $msgTable = Jaws_ORM::getInstance()->table('notification_messages');
         $emlTable = Jaws_ORM::getInstance()->table('notification_email')->select('message')->distinct();
         $smsTable = Jaws_ORM::getInstance()->table('notification_mobile')->select('message')->distinct();
-        $wpTable = Jaws_ORM::getInstance()->table('notification_web')->select('message')->distinct();
+        $wpTable = Jaws_ORM::getInstance()->table('notification_webpush')->select('message')->distinct();
 
         return $msgTable->delete()
             ->where('id', $emlTable, 'not in')

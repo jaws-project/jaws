@@ -44,6 +44,15 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         }
         $messages[Jaws_Notification::SMS_DRIVER] = $this->GroupByMessages($result);
 
+        $webLimit = (int)$this->gadget->registry->fetch('web_fetch_limit');
+        // fetches WebPush notification
+        $result = $model->GetNotifications(Jaws_Notification::WEB_DRIVER, $webLimit);
+        if (Jaws_Error::IsError($result)) {
+            $this->gadget->registry->update('processing', 'false');
+            return $result;
+        }
+        $messages[Jaws_Notification::WEB_DRIVER] = $this->GroupByMessages($result);
+
         // send notification to drivers
         $objDModel = $this->gadget->model->load('Drivers');
         $drivers = $objDModel->GetNotificationDrivers(true);

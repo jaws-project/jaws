@@ -96,8 +96,9 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         // get gadget driver settings
         $configuration = unserialize($this->gadget->registry->fetch('configuration'));
-        $notificationsEmails = array();
+        $notificationsEmails  = array();
         $notificationsMobiles = array();
+        $notificationsWebPush = array();
 
         // notification for this gadget was disabled
         if (empty($configuration[$gadget])) {
@@ -105,8 +106,9 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if ($configuration[$gadget] == 1) {
-            $notificationsEmails = array_filter(array_column($users, 'email'));
+            $notificationsEmails  = array_filter(array_column($users, 'email'));
             $notificationsMobiles = array_filter(array_column($users, 'mobile_number'));
+            $notificationsWebPush = array_filter(array_column($users, 'webpush'));
         } else {
             $objDModel = $this->gadget->model->load('Drivers');
             $objDriver = $objDModel->LoadNotificationDriver($configuration[$gadget]);
@@ -125,15 +127,23 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                     $notificationsMobiles = array_filter(array_column($users, 'mobile_number'));
                     break;
 
+                case Jaws_Notification::WEB_DRIVER:
+                    // generate webpush array
+                    $notificationsWebPush = array_filter(array_column($users, 'webpush'));
+                    break;
+
                 default:
                     return false;
             }
-            
         }
 
-        if (!empty($notificationsEmails) || !empty($notificationsMobiles)) {
+        if (!empty($notificationsEmails) || !empty($notificationsMobiles) || !empty($notificationsWebPush)) {
             $res = $model->InsertNotifications(
-                array('emails' => $notificationsEmails, 'mobiles' => $notificationsMobiles),
+                array(
+                    'emails'  => $notificationsEmails,
+                    'mobiles' => $notificationsMobiles,
+                    'webpush' => $notificationsWebPush
+                ),
                 $params['key'],
                 strip_tags($params['title']),
                 strip_tags($params['summary']),

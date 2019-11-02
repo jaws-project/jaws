@@ -43,6 +43,7 @@
 
             <field>
                 <name>callback</name>
+                <was>url</was>
                 <description>callback url</description>
                 <type>text</type>
                 <length>128</length>
@@ -196,8 +197,7 @@
     </table>
 
     <table>
-        <name><variable>table_prefix</variable>notification_webpush</name>
-        <was><variable>table_prefix</variable>notification_web</was>
+        <name><variable>table_prefix</variable>notification_web</name>
         <declaration>
 
             <field>
@@ -216,6 +216,7 @@
             <field>
                 <name>contact</name>
                 <type>text</type>
+                <length>128</length>
             </field>
 
             <field>

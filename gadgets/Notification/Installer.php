@@ -23,7 +23,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
         array('eml_fetch_limit', '100'),
         array('sms_fetch_limit', '100'),
-        array('wp_fetch_limit', '100'),
+        array('web_fetch_limit', '100'),
         array('configuration', ''), // array(gadget_name=>(0,1, driver_name))
     );
 
@@ -161,7 +161,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.4.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.3.0.xml');
+            $result = $this->installSchema('1.4.0.xml', array(), '1.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -191,8 +191,15 @@ class Notification_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('webpush_enabled', false);
         }
 
-        if (version_compare($old, '1.8.0', '<')) {
+        if (version_compare($old, '2.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.4.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
             // registry keys
+            $this->gadget->registry->delete('wp_fetch_limit');
+            $this->gadget->registry->insert('web_fetch_limit', '100');
             $this->gadget->registry->insert('webpush_anonymouse', false);
         }
 
