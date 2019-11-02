@@ -87,24 +87,31 @@ class Jaws_Notification_WebPush extends Jaws_Notification
     {
         try {
             foreach ($contacts as $subscriber) {
-                if (array_key_exists('webpush', $subscriber)) {
-                    $subscriber['webpush'] = @unserialize($subscriber['webpush']);
-                    if (!empty($subscriber['webpush'])) {
-                        $subscription = Subscription::create($subscriber['webpush']);
-                        $res = $this->webPush->sendNotification(
-                            $subscription,
-                            json_encode(
-                                array(
-                                    'icon'    => $image,
-                                    'title'   => $title,
-                                    'body'    => $summary,
-                                    'vibrate' => [],
+                if (array_key_exists('webpush', $subscriber) &&
+                    is_array($subscriber['webpush']) &&
+                    !empty($subscriber['webpush'])
+                ) {
+                    // it is possible that subscriber has multiple webpush push-subscription
+                    foreach ($subscriber['webpush'] as $pushSubscription) {
+                        $pushSubscription = @unserialize($pushSubscription);
+                        if (!empty($pushSubscription)) {
+                            $objSubscription = Subscription::create($pushSubscription);
+                            $res = $this->webPush->sendNotification(
+                                $objSubscription,
+                                json_encode(
+                                    array(
+                                        'icon'    => $image,
+                                        'title'   => $title,
+                                        'body'    => $summary,
+                                        'vibrate' => [],
+                                    )
                                 )
-                            )
-                        );
+                            );
+                        }
                     }
                 }
             }
+
             $this->webPush->flush();
         } catch (Exception $error) {
             return $error
