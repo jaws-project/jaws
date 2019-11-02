@@ -114,7 +114,7 @@ class Jaws_Notification_WebPush extends Jaws_Notification
 
             $this->webPush->flush();
         } catch (Exception $error) {
-            return $error
+            return $error;
         }
 
         return true;
