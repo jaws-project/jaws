@@ -241,7 +241,7 @@ class Jaws_Session
                 // concurrent logins
                 if ($this->session['update_time'] < $expTime) {
                     $logins = $this->userAttributes['concurrents'];
-                    $existSessions = $this->getUserSessions($this->session['user'], true);
+                    $existSessions = $this->getUserSessionsCount($this->session['user'], true);
                     if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
                         throw new Exception('Maximum number of concurrent logins reached', JAWS_LOG_NOTICE);
                     }
@@ -697,7 +697,7 @@ class Jaws_Session
      * @param   bool    $onlyOnline Optional only count of online sessions
      * @return  mixed   Sessions    count/False if error occurs when runing query
      */
-    function getUserSessions($user, $onlyOnline = false)
+    function getUserSessionsCount($user, $onlyOnline = false)
     {
         $expired = time() - ($this->app->registry->fetch('session_idle_timeout', 'Policy') * 60);
         $sessTable = Jaws_ORM::getInstance()->table('session');
