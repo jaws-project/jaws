@@ -411,8 +411,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $loginkey['text']
         );
         $params['description'] = $message;
-        $params['emails']   = array($uData['email']);
-        $params['mobiles']  = array($uData['mobile']);
+        $params['user']     = $uData['id'];
         $params['template'] = 'UserLogin';
         $this->gadget->event->shout('Notify', $params);
 
