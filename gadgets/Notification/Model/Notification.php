@@ -102,7 +102,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             $objORM = $objORM->table('notification_email');
             foreach ($notifications['emails'] as $email) {
                 // FIXME : increase performance by adding upsertAll method in core
-                $hash = crc64($email);
+                $hash = hash64($email);
                 $res = $objORM->upsert(
                         array('message' => $messageId, 'contact' => $email, 'hash' => $hash, 'time' => $time)
                     )->and()
@@ -121,7 +121,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             $objORM = $objORM->table('notification_mobile');
             foreach ($notifications['mobiles'] as $mobile) {
                 // FIXME : increase performance by adding upsertAll method in core
-                $hash = crc64($mobile);
+                $hash = hash64($mobile);
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
                         array('message' => $messageId, 'contact' => $mobile, 'hash' => $hash, 'time' => $time)
@@ -141,7 +141,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             $objORM = $objORM->table('notification_webpush');
             foreach ($notifications['webpush'] as $webpush) {
                 // FIXME : increase performance by adding upsertAll method in core
-                $hash = crc64($webpush);
+                $hash = hash64($webpush);
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
                         array('message' => $messageId, 'contact' => $webpush, 'hash' => $hash, 'time' => $time)

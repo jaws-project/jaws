@@ -1527,7 +1527,7 @@ class Jaws_User
         }
 
         $data['owner'] = $uid;
-        $checksum = crc64(json_encode($data));
+        $checksum = hash64(json_encode($data));
         $objORM = Jaws_ORM::getInstance()
             ->table('users_contacts')
             ->select('count(id):integer')

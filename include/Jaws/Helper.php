@@ -28,14 +28,14 @@ if (!function_exists('hex2bin')) {
 }
 
 /**
- * Calculates the crc32 polynomial of a string
- * @see http://www.php.net/crc32
+ * Generate 64bit hash integer
+ * @param   string  $str    The input string
+ * @return  int     64bit integer
  */
-if (!function_exists('crc64')) {
-    function crc64($str)
-    {
-        return (int)base_convert('0x' . hash('crc32', $str) . hash('crc32b', $str), 16, 10);
-    }
+function hash64($str)
+{
+    $u = unpack('N2', sha1($str, true));
+    return abs(($u[1] << 32) | $u[2]);
 }
 
 /**
