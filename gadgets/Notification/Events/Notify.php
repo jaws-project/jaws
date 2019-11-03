@@ -81,9 +81,8 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 $sessions = $this->app->session->getSessions($user['id']);
                 if (!Jaws_Error::isError($sessions) && !empty($sessions)) {
                     foreach ($sessions as $session) {
-                        $pushSubscription = @unserialize($session['webpush']);
-                        if (!empty($pushSubscription)) {
-                            $users[] = array('webpush' => $pushSubscription);
+                        if (!empty(@unserialize($session['webpush']))) {
+                            $users[] = array('webpush' => $session['webpush']);
                         }
                     }
                 }
