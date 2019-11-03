@@ -102,12 +102,13 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             $objORM = $objORM->table('notification_email');
             foreach ($notifications['emails'] as $email) {
                 // FIXME : increase performance by adding upsertAll method in core
+                $hash = crc64($email);
                 $res = $objORM->upsert(
-                        array('message' => $messageId, 'contact' => $email, 'time' => $time)
+                        array('message' => $messageId, 'contact' => $email, 'hash' => $hash, 'time' => $time)
                     )->and()
                     ->where('message', $messageId)
                     ->and()
-                    ->where('contact', $email)
+                    ->where('hash', $hash)
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;
@@ -120,13 +121,14 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             $objORM = $objORM->table('notification_mobile');
             foreach ($notifications['mobiles'] as $mobile) {
                 // FIXME : increase performance by adding upsertAll method in core
+                $hash = crc64($mobile);
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                        array('message' => $messageId, 'contact' => $mobile, 'time' => $time)
+                        array('message' => $messageId, 'contact' => $mobile, 'hash' => $hash, 'time' => $time)
                     )->and()
                     ->where('message', $messageId)
                     ->and()
-                    ->where('contact', $mobile)
+                    ->where('hash', $hash)
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;
@@ -139,13 +141,14 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             $objORM = $objORM->table('notification_webpush');
             foreach ($notifications['webpush'] as $webpush) {
                 // FIXME : increase performance by adding upsertAll method in core
+                $hash = crc64($webpush);
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                        array('message' => $messageId, 'contact' => $webpush, 'time' => $time)
+                        array('message' => $messageId, 'contact' => $webpush, 'hash' => $hash, 'time' => $time)
                     )->and()
                     ->where('message', $messageId)
                     ->and()
-                    ->where('contact', $webpush)
+                    ->where('hash', $hash)
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;

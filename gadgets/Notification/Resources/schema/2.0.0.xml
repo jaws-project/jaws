@@ -91,12 +91,6 @@
             </field>
 
             <field>
-                <name>hash</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
                 <name>time</name>
                 <type>integer</type>
                 <length>8</length>
@@ -128,14 +122,14 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>notification_mh</name>
+                <name><variable>table_prefix</variable>notification_mc</name>
                 <unique>true</unique>
 
                 <field>
                     <name>message</name>
                 </field>
                 <field>
-                    <name>hash</name>
+                    <name>contact</name>
                 </field>
             </index>
 
@@ -165,12 +159,6 @@
                 <name>contact</name>
                 <type>text</type>
                 <length>128</length>
-            </field>
-
-            <field>
-                <name>hash</name>
-                <type>integer</type>
-                <length>8</length>
             </field>
 
             <field>
@@ -204,23 +192,12 @@
                 </field>
             </index>
 
-            <index>
-                <name><variable>table_prefix</variable>notification_m_mh</name>
-                <unique>true</unique>
-
-                <field>
-                    <name>message</name>
-                </field>
-                <field>
-                    <name>hash</name>
-                </field>
-            </index>
-
         </declaration>
     </table>
 
     <table>
         <name><variable>table_prefix</variable>notification_webpush</name>
+        <was><variable>table_prefix</variable>notification_web</was>
         <declaration>
 
             <field>
@@ -239,12 +216,6 @@
             <field>
                 <name>contact</name>
                 <type>text</type>
-            </field>
-
-            <field>
-                <name>hash</name>
-                <type>integer</type>
-                <length>8</length>
             </field>
 
             <field>
@@ -275,19 +246,6 @@
 
                 <field>
                     <name>time</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>notification_w_mh</name>
-                <unique>true</unique>
-
-                <field>
-                    <name>message</name>
-                </field>
-
-                <field>
-                    <name>hash</name>
                 </field>
             </index>
 

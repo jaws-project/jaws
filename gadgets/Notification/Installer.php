@@ -192,7 +192,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.4.0.xml');
+            $result = $this->installSchema('2.0.0.xml', array(), '1.4.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -201,6 +201,13 @@ class Notification_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->delete('wp_fetch_limit');
             $this->gadget->registry->insert('web_fetch_limit', '100');
             $this->gadget->registry->insert('webpush_anonymouse', false);
+        }
+
+        if (version_compare($old, '2.1.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '2.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
