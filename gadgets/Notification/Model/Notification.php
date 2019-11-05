@@ -75,7 +75,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         if (empty($notifications) || (
             empty($notifications['emails']) &&
             empty($notifications['webpush']) &&
-            empty($notifications['web_pushes'])
+            empty($notifications['mobiles'])
         )) {
             return false;
         }
