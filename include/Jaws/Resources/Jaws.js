@@ -1259,6 +1259,11 @@ $(document).ready(function() {
     // detect running in full-screen/standalone mode
     jaws.standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
 
+    // a solution for exit PWA app when press back-button in home page
+    if (jaws.standalone && history.length > 1 && jaws.Defines.requestURL == '') {
+        history.go(-(history.length - 1));
+    }
+
     if (jaws.Defines.service_worker_enabled && ('serviceWorker' in navigator)) {
         navigator.serviceWorker.register('service-worker.js', {}).then(
             function(registration) {
