@@ -154,6 +154,7 @@ class Jaws
     function init()
     {
         $this->define('', 'script', JAWS_SCRIPT);
+        $this->define('', 'requestURL', Jaws_Utils::getRequestURL());
 
         $this->map->init();
         $this->session->init();
