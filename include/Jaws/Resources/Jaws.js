@@ -1257,7 +1257,10 @@ function updateWebPushSubscription(pushSubscription) {
  */
 $(document).ready(function() {
     // detect running in full-screen/standalone mode
-    jaws.standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+    jaws.standalone =
+        window.navigator.standalone ||
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches;
 
     // a solution for exit PWA app when press back-button in home page
     if (jaws.standalone && history.length > 1 && jaws.Defines.requestURL == '') {
