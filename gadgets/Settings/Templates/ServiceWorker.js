@@ -227,10 +227,14 @@ self.addEventListener('push', function(event)
     try {
         var data = event.data.json();
         title = data.title;
+        options.url     = data.url | '/';
         options.body    = data.body;
         options.dir     = data.dir     || 'auto';
         options.icon    = data.icon    || Notification_Default_Icon;
         options.vibrate = data.vibrate || [];
+        options.data    = {
+            'url': data.url || '/'
+        };
     } catch(error) {
         title = event.data.text();
     }
@@ -241,11 +245,35 @@ self.addEventListener('push', function(event)
 /*
  * Service Worker webpush notification click
  */
-self.addEventListener('notificationclick', function (event) {
+self.addEventListener('notificationclick', function(event) {
+    const urlToOpen = event.notification.data.url;
     event.notification.close();
-    if (clients.openWindow) {
-        clients.openWindow('/');
-    }
+
+    const promiseResult = clients.matchAll(
+        {
+            type: 'window',
+            includeUncontrolled: true
+        }
+    ).then(
+        function(windowClients) {
+            let matchedClient = null;
+
+            for (let i = 0; i < windowClients.length; i++) {
+                if (windowClients[i].url === urlToOpen) {
+                    matchedClient = windowClients[i];
+                    break;
+                }
+            }
+
+            if (matchedClient != null) {
+                return matchedClient.focus();
+            } else {
+                return clients.openWindow(urlToOpen);
+            }
+        }
+    );
+
+    event.waitUntil(promiseResult);
 });
 
 /*
