@@ -95,6 +95,7 @@ class Jaws_Notification_WebPush extends Jaws_Notification
                         json_encode(
                             array(
                                 'icon'    => $image,
+                                'url'     => $callback_url,
                                 'title'   => $title,
                                 'body'    => $summary,
                                 'vibrate' => [],
