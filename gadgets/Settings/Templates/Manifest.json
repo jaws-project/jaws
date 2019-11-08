@@ -1,5 +1,4 @@
-<!-- BEGIN Manifest -->
-{
+<!-- BEGIN Manifest -->{
   "name": "{{pwa_fullname}}",
   "short_name": "{{pwa_shortname}}",
   "description": "{{pwa_description}}",

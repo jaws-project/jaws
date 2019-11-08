@@ -227,13 +227,12 @@ self.addEventListener('push', function(event)
     try {
         var data = event.data.json();
         title = data.title;
-        options.url     = data.url | '/';
         options.body    = data.body;
         options.dir     = data.dir     || 'auto';
         options.icon    = data.icon    || Notification_Default_Icon;
         options.vibrate = data.vibrate || [];
         options.data    = {
-            'url': data.url || '/'
+            'url': data.url || ''
         };
     } catch(error) {
         title = event.data.text();
@@ -246,7 +245,7 @@ self.addEventListener('push', function(event)
  * Service Worker webpush notification click
  */
 self.addEventListener('notificationclick', function(event) {
-    const urlToOpen = event.notification.data.url;
+    const urlToOpen = self.location.origin + self.location.base + event.notification.data.url;
     event.notification.close();
 
     const promiseResult = clients.matchAll(
@@ -259,7 +258,7 @@ self.addEventListener('notificationclick', function(event) {
             let matchedClient = null;
 
             for (let i = 0; i < windowClients.length; i++) {
-                if (windowClients[i].url === urlToOpen) {
+                if (windowClients[i].url == urlToOpen) {
                     matchedClient = windowClients[i];
                     break;
                 }
@@ -280,6 +279,7 @@ self.addEventListener('notificationclick', function(event) {
  * Service Worker message listener
  */
 self.addEventListener('message', function(event) {
+    self.location.base = event.data.base;
     event.source.script = event.data.script;
     event.source.standalone = event.data.standalone;
     //---

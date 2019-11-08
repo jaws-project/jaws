@@ -384,6 +384,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('service_worker_enabled', false);
         }
 
+        if (version_compare($old, '2.6.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->update('pwa_version', '3.0.0');
+        }
+
         return true;
     }
 
