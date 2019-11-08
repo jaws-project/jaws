@@ -37,7 +37,7 @@
   ],
   "start_url": "{{base_url}}",
   "scope": "{{base_url}}",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#2196F3",
   "theme_color": "#2196F3"
 }
