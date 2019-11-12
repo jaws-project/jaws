@@ -1311,9 +1311,8 @@ $(document).ready(function() {
             if (reqRedirectURL.indexOf($('base').first().attr('href')) === 0) {
                 reqRedirectURL = reqRedirectURL.substr($('base').first().attr('href').length);
             }
-
-            reqRedirectURL = reqRedirectURL.replace(/^(\/|\\)+/g, "");
-            window.location = reqRedirectURL;
+            // for security reason all slash and backslashed will removed from beginning of url
+            window.location = reqRedirectURL.replace(/^(\/|\\)+/g, "");
         } catch (e) {
             // do nothing
         }
