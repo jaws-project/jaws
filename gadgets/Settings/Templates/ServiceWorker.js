@@ -46,6 +46,20 @@ var baseRequest;
         return (crc ^ (-1)) >>> 0;
     };
 
+    /**
+     * Javascript PHP bin2hex string prototype
+    */
+    this.bin2hex = function(str) {
+        let i = 0, l = str.length, chr, hex = '';
+
+        for (i; i < l; i++) {
+            chr = str.charCodeAt(i).toString(16);
+            hex += chr.length < 2 ? '0' + chr : chr;
+        }
+
+        return hex;
+    };
+
 })(self);
 
 /*
@@ -245,7 +259,6 @@ self.addEventListener('push', function(event)
  * Service Worker webpush notification click
  */
 self.addEventListener('notificationclick', function(event) {
-    const urlToOpen = self.location.origin + self.location.base + event.notification.data.url;
     event.notification.close();
 
     const promiseResult = clients.matchAll(
@@ -255,22 +268,19 @@ self.addEventListener('notificationclick', function(event) {
         }
     ).then(
         function(windowClients) {
-            let matchedClient = null;
+            let urlToOpen = self.location.base + '#' + bin2hex(event.notification.data.url);
 
-            for (let i = 0; i < windowClients.length; i++) {
-                if (windowClients[i].url == urlToOpen) {
-                    matchedClient = windowClients[i];
-                    break;
-                }
-            }
-
-            if (matchedClient != null) {
-                return matchedClient.focus();
+            if (windowClients.length > 0) {
+                return windowClients[0].navigate(urlToOpen);
             } else {
                 return clients.openWindow(urlToOpen);
             }
         }
-    );
+    ).then (
+        function(windowClient) {
+            return windowClient.focus();
+        }
+    )
 
     event.waitUntil(promiseResult);
 });
