@@ -696,6 +696,34 @@ String.prototype.defilter = function(quote_style) {
 };
 
 /**
+ * Javascript PHP hex2bin string prototype
+ *
+ */
+String.prototype.hex2bin = function() {
+    let i = 0, l = this.length - 1, bytes = []
+    for (i; i < l; i += 2) {
+        bytes.push(parseInt(this.substr(i, 2), 16))
+    }
+
+    return String.fromCharCode.apply(String, bytes);
+}
+
+/**
+ * Javascript PHP bin2hex string prototype
+ *
+ */
+String.prototype.bin2hex = function() {
+    let i = 0, l = this.length, chr, hex = '';
+
+    for (i; i < l; i++) {
+        chr = this.charCodeAt(i).toString(16);
+        hex += chr.length < 2 ? '0' + chr : chr;
+    }
+
+    return hex;
+}
+
+/**
  * Implement Object.values for older browsers
  */
 if (!Object.values) {
@@ -1261,6 +1289,35 @@ $(document).ready(function() {
         window.navigator.standalone ||
         window.matchMedia('(display-mode: standalone)').matches ||
         window.matchMedia('(display-mode: fullscreen)').matches;
+
+    jaws.navigated = false;
+    if ('navigation' in window.performance) {
+        jaws.navigated = window.performance.navigation.type == 0;
+    } else {
+        let navigations = window.performance.getEntriesByType('navigation');
+        if (navigations.length > 0) {
+            jaws.navigated = (navigations[0].type == 'navigate') || (navigations[0].type == 'prerender');
+        }
+    }
+
+    if (!window.location.hash.blank() && jaws.navigated) {
+        try {
+            let reqRedirectURL = window.location.hash.substr(1).hex2bin();
+            reqRedirectURL = new URL(
+                reqRedirectURL,
+                window.location.origin + $('base').first().attr('href')
+            ).pathname;
+
+            if (reqRedirectURL.indexOf($('base').first().attr('href')) === 0) {
+                reqRedirectURL = reqRedirectURL.substr($('base').first().attr('href').length);
+            }
+
+            reqRedirectURL = reqRedirectURL.replace(/^(\/|\\)+/g, "");
+            window.location = reqRedirectURL;
+        } catch (e) {
+            // do nothing
+        }
+    }
 
     // a solution for exit PWA app when press back-button in home page
     if (jaws.standalone && history.length > 1 && jaws.Defines.requestURL == '') {
