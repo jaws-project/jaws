@@ -4,9 +4,18 @@ self.importScripts(
 );
 
 /*
+ *  base app server root offset
+*/
+const baseURL = '{{base_url}}';
+
+/*
  *  service worker version
 */
 const ServiceWorkerVersion = '{{pwa_version}}';
+
+/*
+ *  notification default icon
+*/
 const Notification_Default_Icon  = '{{notification_icon}}';
 
 /*
@@ -268,17 +277,17 @@ self.addEventListener('notificationclick', function(event) {
         }
     ).then(
         function(windowClients) {
-            let urlToOpen = self.location.base + '#' + bin2hex(event.notification.data.url);
+            let urlToOpen = baseURL + '#' + bin2hex(event.notification.data.url);
 
             if (windowClients.length > 0) {
-                return windowClients[0].navigate(urlToOpen);
+                return windowClients[0].focus().then(
+                    function(client) {
+                        return client.navigate(urlToOpen)
+                    }
+                );
             } else {
                 return clients.openWindow(urlToOpen);
             }
-        }
-    ).then (
-        function(windowClient) {
-            return windowClient.focus();
         }
     )
 
@@ -289,7 +298,6 @@ self.addEventListener('notificationclick', function(event) {
  * Service Worker message listener
  */
 self.addEventListener('message', function(event) {
-    self.location.base = event.data.base;
     event.source.script = event.data.script;
     event.source.standalone = event.data.standalone;
     //---
