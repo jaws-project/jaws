@@ -700,12 +700,21 @@ String.prototype.defilter = function(quote_style) {
  *
  */
 String.prototype.hex2bin = function() {
-    let i = 0, l = this.length - 1, bytes = []
-    for (i; i < l; i += 2) {
-        bytes.push(parseInt(this.substr(i, 2), 16))
-    }
+    let i = 0, n = 0, l = this.length - 1, bytes = [];
 
-    return String.fromCharCode.apply(String, bytes);
+    try {
+        for (i; i < l; i += 2) {
+            n = parseInt(this.substr(i, 2), 16);
+            if (isNaN(n)) {
+                throw 'invalid hex string!';
+            }
+
+            bytes.push(n);
+        }
+        return String.fromCharCode.apply(String, bytes);
+    } catch (e) {
+        return '';
+    }
 }
 
 /**
@@ -1300,23 +1309,33 @@ $(document).ready(function() {
         }
     }
 
-    if (!window.location.hash.blank() && jaws.navigated) {
-        try {
-            let reqRedirectURL = window.location.hash.substr(1).hex2bin();
-            reqRedirectURL = new URL(
-                reqRedirectURL,
-                window.location.origin + $('base').first().attr('href')
-            ).pathname;
+    // grab hash change event
+    $(window).on('hashchange', function() {
+        if (!window.location.hash.blank() && jaws.Defines.requestURL == '') {
+            try {
+                let reqRedirectURL = window.location.hash.substr(1).hex2bin();
+                if (!reqRedirectURL.blank()) {
+                    reqRedirectURL = new URL(
+                        reqRedirectURL,
+                        window.location.origin + $('base').first().attr('href')
+                    ).pathname;
 
-            if (reqRedirectURL.indexOf($('base').first().attr('href')) === 0) {
-                reqRedirectURL = reqRedirectURL.substr($('base').first().attr('href').length);
+                    if (reqRedirectURL.indexOf($('base').first().attr('href')) === 0) {
+                        reqRedirectURL = reqRedirectURL.substr($('base').first().attr('href').length);
+                    }
+                    // for security reason all slash and backslashed will removed from beginning of url
+                    setTimeout(
+                        function() {
+                            window.location = reqRedirectURL.replace(/^(\/|\\)+/g, "");
+                        },
+                        1000
+                    );
+                }
+            } catch (e) {
+                // do nothing
             }
-            // for security reason all slash and backslashed will removed from beginning of url
-            window.location = reqRedirectURL.replace(/^(\/|\\)+/g, "");
-        } catch (e) {
-            // do nothing
         }
-    }
+    });
 
     // a solution for exit PWA app when press back-button in home page
     if (jaws.standalone && history.length > 1 && jaws.Defines.requestURL == '') {
@@ -1416,4 +1435,15 @@ $(document).ready(function() {
             Jaws_Gadget.getInstance(gadget).action.load(action);
         });
     });
+});
+
+/**
+ * on document loaded
+ */
+$(window).on('load', function() {
+    // if url hash not empty trigger hash change event
+    if (!window.location.hash.blank()) {
+        $(window).trigger('hashchange');
+    }
+
 });
