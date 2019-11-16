@@ -106,29 +106,27 @@ class Jaws_Utils
     }
 
     /**
-     * Get base url
+     * Parse request URL
      *
      * @access  public
-     * @param   string  $suffix     suffix for add to base url
-     * @param   bool    $rel_url    relative url
-     * @return  string  url of base script
+     * @return  array   Parse request URL and return its components
      */
-    static function getBaseURL($suffix = '', $rel_url = true)
+    static function parseRequestURL()
     {
-        static $site_url;
-        if (!isset($site_url)) {
-            $site_url = array();
+        static $parts;
+        if (!isset($parts)) {
+            $parts = array();
             // server schema
             if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-                $site_url['scheme'] = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
+                $parts['scheme'] = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
             } else {
-                $site_url['scheme'] = empty($_SERVER['HTTPS'])? 'http' : 'https';
+                $parts['scheme'] = empty($_SERVER['HTTPS'])? 'http' : 'https';
             }
 
-            //$site_url['host'] = $_SERVER['SERVER_NAME'];
-            $site_url['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
+            //$parts['host'] = $_SERVER['SERVER_NAME'];
+            $parts['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
             // server port
-            $site_url['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
+            $parts['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
 
             $path = strip_tags($_SERVER['PHP_SELF']);
             if (false === stripos($path, BASE_SCRIPT)) {
@@ -145,12 +143,29 @@ class Jaws_Utils
                 }
             }
 
-            $site_url['path'] = substr($path, 0, stripos($path, BASE_SCRIPT)-1);
-            $site_url['path'] = explode('/', $site_url['path']);
-            $site_url['path'] = implode('/', array_map('rawurlencode', $site_url['path']));
-            $site_url['path'] = rtrim($site_url['path'], '/');
+            $parts['path'] = substr($path, 0, stripos($path, BASE_SCRIPT)-1);
+            $parts['path'] = explode('/', $parts['path']);
+            $parts['path'] = implode('/', array_map('rawurlencode', $parts['path']));
+            $parts['path'] = rtrim($parts['path'], '/');
         }
 
+        // FIXME:: add query part
+        // REDIRECT_URL, REDIRECT_QUERY_STRING, REQUEST_URI, QUERY_STRING
+
+        return $parts;
+    }
+
+    /**
+     * Get base url
+     *
+     * @access  public
+     * @param   string  $suffix     suffix for add to base url
+     * @param   bool    $rel_url    relative url
+     * @return  string  url of base script
+     */
+    static function getBaseURL($suffix = '', $rel_url = true)
+    {
+        $site_url = Jaws_Utils::parseRequestURL();
         $url = $site_url['path'];
         if (!$rel_url) {
             $url = $site_url['scheme']. '://'. $site_url['host']. $site_url['port']. $url;
