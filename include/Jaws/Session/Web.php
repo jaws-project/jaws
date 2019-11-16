@@ -26,7 +26,9 @@ class Jaws_Session_Web extends Jaws_Session
     function init()
     {
         parent::init();
-        $session = $this->getCookie(JAWS_SESSION_NAME);
+        $reqParts = Jaws_Utils::parseRequestURL();
+        // concat port to cookie name because cookie not support port
+        $session = $this->getCookie(JAWS_SESSION_NAME . $reqParts['port']);
         if (empty($session) || !$this->load($session)) {
             $this->create();
         }
@@ -90,8 +92,7 @@ class Jaws_Session_Web extends Jaws_Session
         $path    = $this->app->getSiteURL('/', true);
 
         //$this->app->registry->fetch('cookie_domain', 'Settings');
-        $reqParts = Jaws_Utils::parseRequestURL();
-        $domain   = $reqParts['host']. $reqParts['port']; // domain:port
+        $domain = '';
 
         // secure
         $secure = $this->app->registry->fetch('cookie_secure', 'Settings') == 'true';
@@ -100,7 +101,10 @@ class Jaws_Session_Web extends Jaws_Session
         if (is_null($httponly)) {
             $httponly = $this->app->registry->fetch('cookie_httponly', 'Settings') == 'true';
         }
-        setcookie($name, $value, $expires, $path, $domain, $secure, $httponly);
+
+        $reqParts = Jaws_Utils::parseRequestURL();
+        // concat port to cookie name because cookie not support port
+        setcookie($name . $reqParts['port'], $value, $expires, $path, $domain, $secure, $httponly);
     }
 
     /**
