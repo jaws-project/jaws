@@ -126,7 +126,7 @@ class Jaws_Utils
             //$parts['host'] = $_SERVER['SERVER_NAME'];
             $parts['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
             // server port
-            $parts['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
+            $parts['port'] = $_SERVER['SERVER_PORT']==80? '' : $_SERVER['SERVER_PORT'];
 
             $path = strip_tags($_SERVER['PHP_SELF']);
             if (false === stripos($path, BASE_SCRIPT)) {
@@ -166,6 +166,8 @@ class Jaws_Utils
     static function getBaseURL($suffix = '', $rel_url = true)
     {
         $site_url = Jaws_Utils::parseRequestURL();
+        $site_url['port'] = $site_url['port']?: (':'.$_SERVER['SERVER_PORT']);
+
         $url = $site_url['path'];
         if (!$rel_url) {
             $url = $site_url['scheme']. '://'. $site_url['host']. $site_url['port']. $url;
