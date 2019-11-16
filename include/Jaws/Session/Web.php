@@ -88,7 +88,11 @@ class Jaws_Session_Web extends Jaws_Session
         $version = $this->app->registry->fetch('cookie_version', 'Settings');
         $expires = ($minutes == 0)? 0 : (time() + $minutes*60);
         $path    = $this->app->getSiteURL('/', true);
-        $domain  = '';//$this->app->registry->fetch('cookie_domain', 'Settings');
+
+        //$this->app->registry->fetch('cookie_domain', 'Settings');
+        $reqParts = Jaws_Utils::parseRequestURL();
+        $domain   = $reqParts['host']. $reqParts['port']; // domain:port
+
         // secure
         $secure = $this->app->registry->fetch('cookie_secure', 'Settings') == 'true';
         $secure = $secure && !empty($_SERVER['HTTPS']);
