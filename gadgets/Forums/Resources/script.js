@@ -70,7 +70,7 @@ function AddNewForumItem(gid, fid, order)
     var parentNode = $('#group_'+gid);
     var forum_elements = parentNode.children('.forums_group_item');
 
-    var oldOrder = forum_elements.size();
+    var oldOrder = parentNode.children('.forums_group_item').length;
     var mainDiv = $('<div>').attr({'id': "forum_" + fid, 'class': 'forums_group_item'}).append(
         $('<img>').attr({'src': jaws.Forums.Defines.forumImageSrc, 'class': 'icon'}),
         $('<a>').attr({'href': 'javascript:editForum(this, ' + fid + ');', 'class': 'icon'}).html($('#title').val())
