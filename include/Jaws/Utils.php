@@ -589,7 +589,6 @@ class Jaws_Utils
                     continue;
                 }
 
-                $file['type']  = $finfo? finfo_file($finfo, $file['tmp_name']) : '';
                 $user_filename = isset($file['name']) ? $file['name'] : '';
                 $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.\-]/', '', $user_filename));
                 // remove deny_formats extension, even double extension
@@ -597,6 +596,11 @@ class Jaws_Utils
                     '.',
                     array_diff(explode('.', $host_filename), self::$deny_formats)
                 );
+
+                // file mime-type
+                $file['type']  = $finfo?
+                    finfo_file($finfo, $file['tmp_name']) :
+                    Jaws_Utils::mime_extension_type($host_filename);
 
                 $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension'])) {
