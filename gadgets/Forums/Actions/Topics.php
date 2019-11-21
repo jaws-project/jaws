@@ -41,16 +41,14 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $uid = null;
             $private = null;
         } else {
+            $private = $forum['private'];
             $uid = (int)$this->app->session->user->id;
             // anonymous users
             $published = empty($uid) ? true : $published;
 
             // forum is private
-            if ($forum['private']) {
-                $private = true;
-                if (empty($uid)) {
-                    return Jaws_HTTPError::Get(403);
-                }
+            if ($private && empty($uid)) {
+                return Jaws_HTTPError::Get(403);
             }
         }
 
