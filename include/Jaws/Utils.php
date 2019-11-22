@@ -551,10 +551,6 @@ class Jaws_Utils
             $files = array($files);
         }
 
-        $finfo = false;
-        if (extension_loaded('fileinfo')) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type of file extension
-        }
         $dest = rtrim($dest, "\\/"). DIRECTORY_SEPARATOR;
         $allow_formats = array_filter(explode(',', $allow_formats));
         foreach($files as $key => $listFiles) {
@@ -598,9 +594,8 @@ class Jaws_Utils
                 );
 
                 // file mime-type
-                $file['type']  = $finfo?
-                    finfo_file($finfo, $file['tmp_name']) :
-                    Jaws_Utils::mime_extension_type($host_filename);
+                $file['mime'] = @mime_content_type($file['tmp_name']);
+                $file['mime'] = $file['mime']?: Jaws_Utils::mime_extension_type($host_filename);
 
                 $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension'])) {
@@ -666,7 +661,7 @@ class Jaws_Utils
                 Jaws_Utils::chmod($uploadfile);
                 $result[$key][$i]['user_filename'] = $user_filename;
                 $result[$key][$i]['host_filename'] = $host_filename;
-                $result[$key][$i]['host_filetype'] = $file['type'];
+                $result[$key][$i]['host_mimetype'] = $file['mime'];
                 $result[$key][$i]['host_filesize'] = $file['size'];
             }
         }
@@ -1067,7 +1062,7 @@ class Jaws_Utils
      * @return  string  Returns the content type in MIME format
      * @see     https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
      */
-    static function mime_extension_type(string $filename)
+    static function mime_extension_type($filename)
     {
         static $mime_types;
         if (!isset($mime_types)) {
