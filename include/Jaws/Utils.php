@@ -1188,7 +1188,7 @@ class Jaws_Utils
         foreach (JAWS_FILE_TYPE as $type) {
             if (array_key_exists($ext, $mime_types[$type])) {
                 return array(
-                    'mime' => $mime_types[$type],
+                    'mime' => $mime_types[$type][$ext],
                     'type' => $type
                 );
             }
