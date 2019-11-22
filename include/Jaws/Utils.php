@@ -4,8 +4,19 @@
  */
 define('JAWS_OS_WIN', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 
+const JAWS_FILE_TYPE =  array(
+        'FOLDER'  => 0,
+        'TEXT'    => 1,
+        'IMAGE'   => 2,
+        'AUDIO'   => 3,
+        'VIDEO'   => 4,
+        'FONT'    => 5,
+        'ARCHIVE' => 6,
+        'UNKNOWN' => 255,
+);
+
 /**
- * Some utils functions. Random functions
+ * Some useful functions
  *
  * @category   JawsType
  * @package    Core
@@ -593,9 +604,13 @@ class Jaws_Utils
                     array_diff(explode('.', $host_filename), self::$deny_formats)
                 );
 
+                // file category type
+                $fileExtType = Jaws_Utils::mime_extension_type($host_filename);
+                $file['type'] = $fileExtType['type'];
+
                 // file mime-type
                 $file['mime'] = @mime_content_type($file['tmp_name']);
-                $file['mime'] = $file['mime']?: Jaws_Utils::mime_extension_type($host_filename);
+                $file['mime'] = $file['mime']?: $fileExtType['mime'];
 
                 $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension'])) {
@@ -662,6 +677,7 @@ class Jaws_Utils
                 $result[$key][$i]['user_filename'] = $user_filename;
                 $result[$key][$i]['host_filename'] = $host_filename;
                 $result[$key][$i]['host_mimetype'] = $file['mime'];
+                $result[$key][$i]['host_filetype'] = $file['type'];
                 $result[$key][$i]['host_filesize'] = $file['size'];
             }
         }
@@ -1027,7 +1043,8 @@ class Jaws_Utils
             header("Cache-Control: max-age=$expires");
         }
         // content mime type
-        header('Content-Type: '. (empty($mimetype)? Jaws_Utils::mime_extension_type($fpath) : $mimetype));
+        $mimetype = empty($mimetype)? Jaws_Utils::mime_extension_type($fpath)['mime'] : $mimetype;
+        header('Content-Type: '. $mimetype);
         // content disposition and filename
         $disposition = $inline? 'inline' : 'attachment';
         header("Content-Disposition: $disposition; filename=$fname");
@@ -1067,94 +1084,120 @@ class Jaws_Utils
         static $mime_types;
         if (!isset($mime_types)) {
             $mime_types = array(
-                // application
-                'atom'  => 'application/atom+xml',
-                'jar'   => 'application/java-archive',
-                'js'    => 'application/javascript',
-                'json'  => 'application/json',
-                'pdf'   => 'application/pdf',
-                'rss'   => 'application/rss+xml',
-                'apk'   => 'application/vnd.android.package-archive',
-                'wsdl'  => 'application/wsdl+xml',
-                'lnk'   => 'application/x-ms-shortcut',
-                'sql'   => 'application/x-sql',
-                'swf'   => 'application/x-shockwave-flash',
-                'xhtml' => 'application/xhtml+xml',
-                'xml'   => 'application/xml',
-                'xsl'   => 'application/xml',
-                'dtd'   => 'application/xml-dtd',
-                'xslt'  => 'application/xslt+xml',
+                // directory/folder
+                JAWS_FILE_TYPE['FOLDER'] => array(
+                    'folder' => 'inode/directory',
+                ),
                 // archive
-                'tar'   => 'application/x-tar',
-                'zip'   => 'application/zip',
-                'rar'   => 'application/x-rar-compressed',
-                '7z'    => 'application/x-7z-compressed',
-                'bz'    => 'application/x-bzip',
-                'bz2'   => 'application/x-bzip2',
-                'gz'    => 'application/x-gzip',
+                JAWS_FILE_TYPE['ARCHIVE'] => array(
+                    'tar'   => 'application/x-tar',
+                    'zip'   => 'application/zip',
+                    'rar'   => 'application/x-rar-compressed',
+                    '7z'    => 'application/x-7z-compressed',
+                    'bz'    => 'application/x-bzip',
+                    'bz2'   => 'application/x-bzip2',
+                    'gz'    => 'application/x-gzip',
+                ),
                 // audio
-                'mid'   => 'audio/midi',
-                'm4a'   => 'audio/mp4',
-                'mp4a'  => 'audio/mp4',
-                'mp3'   => 'audio/mpeg',
-                'mpga'  => 'audio/mpeg',
-                'ogg'   => 'audio/ogg',
-                'weba'  => 'audio/webm',
-                'aac'   => 'audio/x-aac',
-                'mka'   => 'audio/x-matroska',
-                'wma'   => 'audio/x-ms-wma',
-                'wav'   => 'audio/x-wav',
+                JAWS_FILE_TYPE['AUDIO'] => array(
+                    'mid'   => 'audio/midi',
+                    'm4a'   => 'audio/mp4',
+                    'mp4a'  => 'audio/mp4',
+                    'mp3'   => 'audio/mpeg',
+                    'mpga'  => 'audio/mpeg',
+                    'ogg'   => 'audio/ogg',
+                    'weba'  => 'audio/webm',
+                    'aac'   => 'audio/x-aac',
+                    'mka'   => 'audio/x-matroska',
+                    'wma'   => 'audio/x-ms-wma',
+                    'wav'   => 'audio/x-wav',
+                ),
                 // font
-                'otf'   => 'font/otf',
-                'ttf'   => 'font/ttf',
-                'woff'  => 'font/woff',
-                'woff2' => 'font/woff2',
+                JAWS_FILE_TYPE['FONT'] => array(
+                    'otf'   => 'font/otf',
+                    'ttf'   => 'font/ttf',
+                    'woff'  => 'font/woff',
+                    'woff2' => 'font/woff2',
+                ),
                 // image
-                'bmp'   => 'image/bmp',
-                'gif'   => 'image/gif',
-                'jpeg'  => 'image/jpeg',
-                'jpg'   => 'image/jpeg',
-                'png'   => 'image/png',
-                'svg'   => 'image/svg+xml',
-                'tiff'  => 'image/tiff',
-                'webp'  => 'image/webp',
-                'ico'   => 'image/x-icon',
-                'pcx'   => 'image/x-pcx',
+                JAWS_FILE_TYPE['IMAGE'] => array(
+                    'bmp'   => 'image/bmp',
+                    'gif'   => 'image/gif',
+                    'jpeg'  => 'image/jpeg',
+                    'jpg'   => 'image/jpeg',
+                    'png'   => 'image/png',
+                    'svg'   => 'image/svg+xml',
+                    'tiff'  => 'image/tiff',
+                    'webp'  => 'image/webp',
+                    'ico'   => 'image/x-icon',
+                    'pcx'   => 'image/x-pcx',
+                ),
                 // text
-                'css'   => 'text/css',
-                'csv'   => 'text/csv',
-                'html'  => 'text/html',
-                'htm'   => 'text/html',
-                'txt'   => 'text/plain',
-                'text'  => 'text/plain',
-                'conf'  => 'text/plain',
-                'log'   => 'text/plain',
-                'ini'   => 'text/plain',
-                'php'   => 'text/x-php',
-                'java'  => 'text/x-java-source',
-                'opml'  => 'text/x-opml',
-                'vcf'   => 'text/x-vcard',
+                JAWS_FILE_TYPE['TEXT'] => array(
+                    'css'   => 'text/css',
+                    'csv'   => 'text/csv',
+                    'html'  => 'text/html',
+                    'htm'   => 'text/html',
+                    'txt'   => 'text/plain',
+                    'text'  => 'text/plain',
+                    'conf'  => 'text/plain',
+                    'log'   => 'text/plain',
+                    'ini'   => 'text/plain',
+                    'php'   => 'text/x-php',
+                    'java'  => 'text/x-java-source',
+                    'opml'  => 'text/x-opml',
+                    'vcf'   => 'text/x-vcard',
+                ),
                 // video
-                '3gp'   => 'video/3gpp',
-                'mp4'   => 'video/mp4',
-                'mpg4'  => 'video/mp4',
-                'mpeg'  => 'video/mpeg',
-                'mpg'   => 'video/mpeg',
-                'ogv'   => 'video/ogg',
-                'mov'   => 'video/quicktime',
-                'webm'  => 'video/webm',
-                'flv'   => 'video/x-flv',
-                'mkv'   => 'video/x-matroska',
-                'avi'   => 'video/x-msvideo',
+                JAWS_FILE_TYPE['VIDEO'] => array(
+                    '3gp'   => 'video/3gpp',
+                    'mp4'   => 'video/mp4',
+                    'mpg4'  => 'video/mp4',
+                    'mpeg'  => 'video/mpeg',
+                    'mpg'   => 'video/mpeg',
+                    'ogv'   => 'video/ogg',
+                    'mov'   => 'video/quicktime',
+                    'webm'  => 'video/webm',
+                    'flv'   => 'video/x-flv',
+                    'mkv'   => 'video/x-matroska',
+                    'avi'   => 'video/x-msvideo',
+                ),
+                // unknown
+                JAWS_FILE_TYPE['UNKNOWN'] => array(
+                    'atom'  => 'application/atom+xml',
+                    'jar'   => 'application/java-archive',
+                    'js'    => 'application/javascript',
+                    'json'  => 'application/json',
+                    'pdf'   => 'application/pdf',
+                    'rss'   => 'application/rss+xml',
+                    'apk'   => 'application/vnd.android.package-archive',
+                    'wsdl'  => 'application/wsdl+xml',
+                    'lnk'   => 'application/x-ms-shortcut',
+                    'sql'   => 'application/x-sql',
+                    'swf'   => 'application/x-shockwave-flash',
+                    'xhtml' => 'application/xhtml+xml',
+                    'xml'   => 'application/xml',
+                    'xsl'   => 'application/xml',
+                    'dtd'   => 'application/xml-dtd',
+                    'xslt'  => 'application/xslt+xml',
+                ),
             );
         }
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        if (array_key_exists($ext, $mime_types)) {
-            return $mime_types[$ext];
+        foreach (JAWS_FILE_TYPE as $type) {
+            if (array_key_exists($ext, $mime_types[$type])) {
+                return array(
+                    'mime' => $mime_types[$type],
+                    'type' => $type
+                );
+            }
         }
 
-        return 'application/octet-stream';
+        return array(
+            'mime' => 'application/octet-stream',
+            'type' => JAWS_FILE_TYPE['UNKNOWN']
+        );
     }
 
 }
