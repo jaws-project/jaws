@@ -346,6 +346,20 @@ if (!function_exists('hash_equals')) {
 }
 
 /**
+ * Detect MIME Content-type for a file
+ *
+ * @param   string  $filename   Path to the tested file
+ * @return  mixed   Returns the content type in MIME format,or FALSE on failure
+ * @see     http://www.php.net/mime_content_type
+ */
+if (!function_exists('mime_content_type')) {
+    function mime_content_type($filename)
+    {
+        return false;
+    }
+}
+
+/**
  * Convenience function to translate strings.
  *
  * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
