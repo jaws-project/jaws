@@ -104,7 +104,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             if (isset($files['file'])) {
                 $data['host_filename'] = $files['file'][0]['host_filename'];
                 $data['user_filename'] = $files['file'][0]['user_filename'];
-                $data['mime_type'] = $files['file'][0]['host_filetype'];
+                $data['mime_type'] = $files['file'][0]['host_mimetype'];
                 $data['file_size'] = $files['file'][0]['host_filesize'];
             } elseif (isset($data['host_filename'])) {
                 if ($data['host_filename'] == ':nochange:') {

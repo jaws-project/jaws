@@ -209,7 +209,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
                 $response = array('type' => 'notice',
                                   'user_filename' => $res['file'][0]['user_filename'],
                                   'host_filename' => $res['file'][0]['host_filename'],
-                                  'mime_type' => $res['file'][0]['host_filetype'],
+                                  'mime_type' => $res['file'][0]['host_mimetype'],
                                   'file_size' => $res['file'][0]['host_filesize'],
                                   'upload_type' => $type);
             }
