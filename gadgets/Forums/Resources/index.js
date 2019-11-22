@@ -46,7 +46,7 @@ function removeAttachment(element)
  */
 function newPost()
 {
-    stopAction();
+    stopFroumsAction();
     $('#message').val('');
     $('#captcha_container').show();
     $('#postUIArea').show();
@@ -77,7 +77,7 @@ function editPost(pid)
  */
 function replyPost(pid)
 {
-    stopAction();
+    stopFroumsAction();
     $('#captcha_container').show();
     $('#postUIArea').show();
     $('html, body').animate({
