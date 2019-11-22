@@ -72,7 +72,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
                 $data['title'] = $fileInfo['user_filename'];
                 $data['filename'] = $fileInfo['host_filename'];
                 $data['filesize'] = $fileInfo['host_filesize'];
-                $data['filetype'] = $fileInfo['host_filetype'];
+                $data['filetype'] = $fileInfo['host_mimetype'];
                 $data['hitcount'] = isset($fileInfo['hitcount'])? (int)$fileInfo['hitcount'] : 0;
                 $result = $attachTable->insert($data)->exec();                
             }

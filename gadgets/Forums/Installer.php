@@ -139,7 +139,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
                         'user_filename' => $post['attachment_user_fname'],
                         'host_filename' => $post['attachment_host_fname'],
                         'host_filesize' => @filesize(ROOT_DATA_PATH. 'forums/'. $post['attachment_host_fname']),
-                        'host_filetype' => @mime_content_type(ROOT_DATA_PATH. 'forums/'. $post['attachment_host_fname']),
+                        'host_mimetype' => @mime_content_type(ROOT_DATA_PATH. 'forums/'. $post['attachment_host_fname']),
                         'hitcount' => $post['attachment_hits_count'],
                     ))
                 );
