@@ -74,7 +74,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
                 'filename' => $file['attachment' . $file_num][0]['host_filename'],
                 'filesize_format' =>  Jaws_Utils::FormatSize($file['attachment' . $file_num][0]['host_filesize']),
                 'filesize' => $file['attachment' . $file_num][0]['host_filesize'],
-                'filetype' => $file['attachment' . $file_num][0]['host_filetype']));
+                'filetype' => $file['attachment' . $file_num][0]['host_mimetype']));
         }
 
         $response = Jaws_UTF8::json_encode($response);
