@@ -25,6 +25,11 @@ class Files_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
+        $dir = ROOT_DATA_PATH . 'files' . DIRECTORY_SEPARATOR;
+        if (!Jaws_Utils::mkdir($dir)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $dir));
+        }
+
         $result = $this->installSchema('schema.xml');
         if (Jaws_Error::IsError($result)) {
             return $result;

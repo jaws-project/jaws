@@ -1,0 +1,27 @@
+<!-- BEGIN files -->
+<div>
+  <label>{{lbl_file}}:</label>
+  <div id="files">
+    <div id="file_model" style="display: none;">
+      <input class="form-control-file" type="file" name="files[]" multiple class="file" />
+      <a href="javascript:void(0);"
+        onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
+        title="{{lbl_remove_file}}">
+        {{lbl_remove_file}}
+      </a>
+    </div>
+    <!-- BEGIN file -->
+    <div id="p_attach{{aid}}">
+      <input type="hidden" name="current_files[]" value="{{fid}}" />
+      <input class="form-control" type="text" name="current_files_filename" value="{{lbl_filename}}" disabled="disabled" class="file ltr"/>
+      <a href="javascript:void(0);"
+        onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
+        title="{{lbl_remove_file}}">
+        {{lbl_remove_file}}
+      </a>
+    </div>
+    <!-- END file -->
+    <div id="btn_add_file"><a href="javascript:Jaws_Gadget.getInstance('Files').extraFile();" >{{lbl_extra_file}}</a></div>
+  </div>
+</div>
+<!-- END files -->
