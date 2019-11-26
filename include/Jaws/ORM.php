@@ -550,6 +550,11 @@ class Jaws_ORM
         switch ($opt) {
             case 'in':
             case 'not in':
+                // if value empty do nothing
+                if (empty($value)) {
+                    return $this;
+                }
+
                 if (is_object($value)) {
                     $value = $this->quoteValue($value);
                 } else {
