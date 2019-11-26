@@ -320,26 +320,11 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
         // attachment
         if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
-            $this->gadget->GetPermission('AddPostAttachment'))
-        {
-            $tpl->SetBlock('topic/attachment');
-            $tpl->SetVariable('lbl_attachment',_t('FORUMS_POSTS_ATTACHMENT'));
-            $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
-            $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
-
-            if (!empty($topic['first_post_id'])) {
-                $aModel = $this->gadget->model->load('Attachments');
-                $attachments = $aModel->GetAttachments($topic['first_post_id']);
-
-                foreach ($attachments as $attachment) {
-                    $tpl->SetBlock('topic/attachment/current_attachment');
-                    $tpl->SetVariable('aid', $attachment['id']);
-                    $tpl->SetVariable('lbl_filename', $attachment['title']);
-                    $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
-                    $tpl->ParseBlock('topic/attachment/current_attachment');
-                }
-            }
-            $tpl->ParseBlock('topic/attachment');
+            $this->gadget->GetPermission('AddPostAttachment')
+        ) {
+            Jaws_Gadget::getInstance('Files')->action->load('Files')->loadReferenceFiles(
+                $tpl, $this->gadget->name, 'Post', $topic['first_post_id']
+            );
         }
 
         // update reason
@@ -422,34 +407,6 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             }
         }
 
-        // attachment
-        $topic['attachments'] = null;
-        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
-            $this->gadget->GetPermission('AddPostAttachment'))
-        {
-            $res = Jaws_Utils::UploadFiles(
-                $_FILES,
-                ROOT_DATA_PATH. 'forums',
-                '',
-                null
-            );
-
-            if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(
-                    $res->getMessage(),
-                    RESPONSE_ERROR,
-                    'UpdateTopic',
-                    $topic
-                );
-                // redirect to referrer page
-                Jaws_Header::Referrer();
-            }
-
-            if (!empty($res)) {
-                $topic['attachments'] = $res['attachment'];
-            }
-        }
-
         $send_notification =
             $this->gadget->GetPermission('ForumManage', $topic['fid'])? (bool)$topic['notification'] : true;
         // edit min/max limit time
@@ -462,7 +419,6 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $fModel = $this->gadget->model->load('Forums');
             $result = $fModel->GetForum($topic['fid']);
             if (!Jaws_Error::IsError($result) && !empty($result)) {
-
                 // check topic publish permission
                 $status = $topic['status'];
                 $published = false;
@@ -476,10 +432,10 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                     $topic['fid'],
                     $topic['subject'],
                     $topic['message'],
-                    $topic['attachments'],
                     $published
                 );
             }
+
             $event_type = 'new';
             $error_message = _t('FORUMS_TOPICS_NEW_ERROR');
         } else {
@@ -511,20 +467,6 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 $topic['target'] = $topic['fid'];
             }
 
-            // Update Attachments
-            $remainAttachments = $this->gadget->request->fetch('current_attachments:array');
-            $aModel = $this->gadget->model->load('Attachments');
-            $oldAttachments = $aModel->GetAttachments($oldTopic['first_post_id']);
-            if (count($remainAttachments) == 0) {
-                $aModel->DeletePostAttachments($oldTopic['first_post_id']);
-            } else {
-                foreach ($oldAttachments as $oldAttachment) {
-                    if (!in_array($oldAttachment['id'], $remainAttachments)) {
-                        $aModel->DeleteAttachment($oldAttachment['id']);
-                    }
-                }
-            }
-
             $topic['forum_title'] = $oldTopic['forum_title'];
             $topic['published'] = ($topic['status'] == 'published');
             $result = $tModel->UpdateTopic(
@@ -535,7 +477,6 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 $update_uid,
                 $topic['subject'],
                 $topic['message'],
-                $topic['attachments'],
                 $topic['published'],
                 $topic['update_reason']
             );
@@ -561,6 +502,16 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             // redirect to referrer page
             Jaws_Header::Referrer();
         }
+
+        // attachment
+        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
+            $this->gadget->GetPermission('AddPostAttachment')
+        ) {
+            Jaws_Gadget::getInstance('Files')->action->load('Files')->uploadReferenceFiles(
+                $this->gadget->name, 'Post', $result
+            );
+        }
+
 
         $topic['tid'] = $result;
         $topic_link = $this->gadget->urlMap(

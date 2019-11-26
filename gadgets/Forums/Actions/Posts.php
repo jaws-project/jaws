@@ -131,27 +131,9 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             );
 
             // attachment
-            if ($post['attachments'] > 0) {
-                $aModel = $this->gadget->model->load('Attachments');
-                $attachments = $aModel->GetAttachments($post['id']);
-
-                foreach ($attachments as $attachment) {
-                    $tpl->SetBlock('posts/post/attachment');
-                    $tpl->SetVariable('user_fname', $attachment['title']);
-                    $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
-                    $tpl->SetVariable(
-                        'hitcount',
-                        _t('FORUMS_POSTS_ATTACHMENT_HITS', $attachment['hitcount'])
-                    );
-                    $tpl->SetVariable('url_attachment',
-                            $this->gadget->urlMap(
-                            'Attachment',
-                            array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'], 'attach' => $attachment['id'])
-                        )
-                    );
-                    $tpl->ParseBlock('posts/post/attachment');
-                }
-            }
+            Jaws_Gadget::getInstance('Files')->action->load('Files')->displayReferenceFiles(
+                $tpl, $this->gadget->name, 'Post', $post['id']
+            );
 
             // update information
             if ($post['update_uid'] != 0) {

@@ -186,11 +186,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $fid        Forum ID
      * @param   string  $subject    Topic subject
      * @param   string  $message    Topic first post content
-     * @param   mixed   $attachment Topic first post attachment
      * @param   bool    $published  Must be published?
      * @return  mixed   Topic ID on successfully or Jaws_Error on failure
      */
-    function InsertTopic($uid, $fid, $subject, $message, $attachment = null, $published = true)
+    function InsertTopic($uid, $fid, $subject, $message, $published = true)
     {
         if (!$this->gadget->GetPermission('ForumPublic', $fid)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403, JAWS_ERROR_NOTICE);
@@ -213,7 +212,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $pModel = $this->gadget->model->load('Posts');
         if (!Jaws_Error::IsError($pModel)) {
-            $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $subject, $message, $attachment, true);
+            $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $subject, $message, true);
             if (Jaws_Error::IsError($pid)) {
                 return $pid;
             }
@@ -236,13 +235,11 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $uid            User's ID
      * @param   string  $subject        Topic subject
      * @param   string  $message        First post content
-     * @param   mixed   $attachment     First post attachment
-     * @param   string  $old_attachment First post old attachment
      * @param   bool    $published      Topic publish status
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message, $attachment = null,
+    function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message,
         $published = null, $update_reason = '')
     {
         if (!$this->gadget->GetPermission('ForumPublic', $fid)) {
@@ -263,7 +260,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pModel = $this->gadget->model->load('Posts');
-        $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $update_reason);
+        $result = $pModel->UpdatePost($pid, $uid, $message, $update_reason);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }

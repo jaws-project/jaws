@@ -126,11 +126,10 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $fid                Forum ID
      * @param   string  $subject            Post subject
      * @param   string  $message            Post content
-     * @param   mixed   $attachments        Post attachments
      * @param   bool    $new_topic  Is this first post of topic?
      * @return  mixed   Post ID on successfully or Jaws_Error on failure
      */
-    function InsertPost($uid, $tid, $fid, $subject, $message, $attachments = null, $new_topic = false)
+    function InsertPost($uid, $tid, $fid, $subject, $message, $new_topic = false)
     {
         if (!$this->gadget->GetPermission('ForumPublic', $fid)) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403, JAWS_ERROR_NOTICE);
@@ -145,12 +144,6 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $pid = $table->insert($data)->exec();
         if (Jaws_Error::IsError($pid)) {
             return $pid;
-        }
-
-        if (!is_null($attachments)) {
-            $aModel = $this->gadget->model->load('Attachments');
-            $aModel->InsertAttachments($pid, $attachments);
-            $this->UpdatePostAttachCount($pid);
         }
 
         $tModel = $this->gadget->model->load('Topics');
@@ -218,11 +211,10 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $pid            Post ID
      * @param   int     $uid            User's ID
      * @param   string  $message        Post content
-     * @param   mixed   $attachments     Post attachments
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdatePost($pid, $uid, $message, $attachments = null, $update_reason = '')
+    function UpdatePost($pid, $uid, $message, $update_reason = '')
     {
         $post = $this->GetPost($pid);
         if (Jaws_Error::IsError($post)) {
@@ -232,12 +224,6 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $data['update_time']    = time();
         $data['message']        = $message;
         $data['update_reason']  = $update_reason;
-
-        if (!is_null($attachments)) {
-            $aModel = $this->gadget->model->load('Attachments');
-            $aModel->InsertAttachments($pid, $attachments);
-        }
-        $this->UpdatePostAttachCount($pid);
 
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         $result = $table->update($data)->where('id', $pid)->exec();
