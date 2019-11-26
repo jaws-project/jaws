@@ -15,8 +15,8 @@ function Jaws_Gadget_Files() { return {
     /**
      * remove file
      */
-    extraFile: function() {
-        $('#file_model').clone(true).prependTo("#btn_add_file").show();
+    extraFile: function(element) {
+        $('#file_model').clone(true).prependTo(element).show();
     },
 
     /**

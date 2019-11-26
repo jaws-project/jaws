@@ -21,7 +21,11 @@
       </a>
     </div>
     <!-- END file -->
-    <div id="btn_add_file"><a href="javascript:Jaws_Gadget.getInstance('Files').extraFile();" >{{lbl_extra_file}}</a></div>
+    <div>
+      <a href="javascript:void(0);" onclick="Jaws_Gadget.getInstance('Files').extraFile(this);">
+        {{lbl_extra_file}}
+      </a>
+    </div>
   </div>
 </div>
 <!-- END files -->
