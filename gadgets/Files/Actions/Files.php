@@ -12,34 +12,24 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   object  $tpl        Jaws_Template object
-     * @param   string  $gadget     Gadget name
-     * @param   string  $action     Action name
-     * @param   int     $reference  Reference ID
-     * @param   int     $type       Category type of files
-     * @param   int     $user       User owner of tag(0: for global tags)
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(maxsize, types, labels, ...)
      * @return  void
      */
-    function displayReferenceFiles(&$tpl, $gadget, $action, $reference, $type = 0, $user = 0)
+    function displayReferenceFiles(&$tpl, $interface, $options = array())
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/files");
 
-        if (!empty($reference)) {
-            $files = $this->gadget->model->load('Files')->getFiles(
-                array(
-                    'gadget'    => $gadget,
-                    'action'    => $action,
-                    'reference' => $reference,
-                    'type'      => $type
-                )
-            );
+        if (!empty($interface['reference'])) {
+            $files = $this->gadget->model->load('Files')->getFiles($interface);
 
             foreach ($files as $file) {
                 $tpl->SetBlock("$block/files/file");
                 $tpl->SetVariable('title', $file['title']);
                 $tpl->SetVariable('postname', $file['postname']);
                 $tpl->SetVariable('filehits', $file['filehits']);
-                $tpl->SetVariable('lbl_file', _t('FORUMS_POSTS_ATTACHMENT'));
+                $tpl->SetVariable('lbl_file', $options['labels']['title']);
                 $tpl->SetVariable(
                     'url_file',
                     $this->gadget->urlMap(
@@ -60,38 +50,27 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   object  $tpl        Jaws_Template object
-     * @param   string  $gadget     Gadget name
-     * @param   string  $action     Action name
-     * @param   int     $reference  Reference ID
-     * @param   int     $type       Category type of files
-     * @param   int     $user       User owner of tag(0: for global tags)
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(maxsize, types, labels, ...)
      * @return  void
      */
-    function loadReferenceFiles(&$tpl, $gadget, $action, $reference, $type = 0, $user = 0)
+    function loadReferenceFiles(&$tpl, $interface, $options = array())
     {
         $this->AjaxMe('index.js');
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/files");
 
-        $tpl->SetVariable('lbl_file',_t('FORUMS_POSTS_ATTACHMENT'));
-        $tpl->SetVariable('lbl_extra_file', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
-        $tpl->SetVariable('lbl_remove_file',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
-            
-        if (!empty($reference)) {
-            $files = $this->gadget->model->load('Files')->getFiles(
-                array(
-                    'gadget'    => $gadget,
-                    'action'    => $action,
-                    'reference' => $reference,
-                    'type'      => $type
-                )
-            );
+        $tpl->SetVariable('lbl_file',$options['labels']['title']);
+        $tpl->SetVariable('lbl_extra_file', $options['labels']['extra']);
+        $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
 
+        if (!empty($interface['reference'])) {
+            $files = $this->gadget->model->load('Files')->getFiles($interface);
             foreach ($files as $file) {
                 $tpl->SetBlock("$block/files/file");
                 $tpl->SetVariable('fid', $file['id']);
                 $tpl->SetVariable('lbl_filename', $file['title']);
-                $tpl->SetVariable('lbl_remove_file', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+                $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
                 $tpl->ParseBlock("$block/files/file");
             }
         }
@@ -103,46 +82,23 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      * Upload/Insert/Update reference files
      *
      * @access  public
-     * @param   string  $gadget     Gadget name
-     * @param   string  $action     Action name
-     * @param   int     $reference  Reference ID
-     * @param   int     $type       Category type of files
-     * @param   int     $user       User owner of tag(0: for global tags)
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
      * @return  mixed   TRUE otherwise Jaws_Error on error
      */
-    function uploadReferenceFiles($gadget, $action, $reference, $type = 0, $user = 0)
+    function uploadReferenceFiles($interface)
     {
         $filesModel = $this->gadget->model->load('Files');
-        $oldFiles = $filesModel->getFiles(
-            array(
-                'gadget'    => $gadget,
-                'action'    => $action,
-                'reference' => $reference,
-                'type'      => $type
-            )
-        );
+        $oldFiles = $filesModel->getFiles($interface);
 
         //FIXME: need improvement for multi files delete
         $remainFiles = $this->app->request->fetch('current_files:array');
         if (empty($remainFiles)) {
-            $filesModel->deleteFiles(
-                array(
-                    'gadget'    => $gadget,
-                    'action'    => $action,
-                    'reference' => $reference,
-                    'type'      => $type
-                )
-            );
+            $filesModel->deleteFiles($interface);
         } else {
             foreach ($oldFiles as $file) {
                 if (!in_array($file['id'], $remainFiles)) {
                     $filesModel->deleteFiles(
-                        array(
-                            'gadget'    => $gadget,
-                            'action'    => $action,
-                            'reference' => $reference,
-                            'type'      => $type
-                        ),
+                        $interface,
                         $file['id']
                     );
                 }
@@ -162,12 +118,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         if (!empty($newFiles)) {
             return $filesModel->insertFiles(
-                array(
-                    'gadget'    => $gadget,
-                    'action'    => $action,
-                    'reference' => $reference,
-                    'type'      => $type
-                ),
+                $interface,
                 $newFiles['files']
             );
         }
