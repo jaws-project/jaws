@@ -132,7 +132,17 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
             // attachment
             Jaws_Gadget::getInstance('Files')->action->load('Files')->displayReferenceFiles(
-                $tpl, $this->gadget->name, 'Post', $post['id']
+                $tpl,
+                array(
+                    'gadget' => $this->gadget->name,
+                    'action' => 'Post',
+                    'reference' => $post['id']
+                ),
+                array(
+                    'labels' => array(
+                        'title' => _t('FORUMS_POSTS_ATTACHMENT')
+                    )
+                )
             );
 
             // update information
@@ -356,7 +366,19 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $this->gadget->GetPermission('AddPostAttachment')
         ) {
             Jaws_Gadget::getInstance('Files')->action->load('Files')->loadReferenceFiles(
-                $tpl, $this->gadget->name, 'Post', 0
+                $tpl,
+                array(
+                    'gadget' => $this->gadget->name,
+                    'action' => 'Post',
+                    'reference' => 0
+                ),
+                array(
+                    'labels' => array(
+                        'title'  => _t('FORUMS_POSTS_ATTACHMENT'),
+                        'extra'  => _t('FORUMS_POSTS_EXTRA_ATTACHMENT'),
+                        'remove' => _t('FORUMS_POSTS_ATTACHMENT_REMOVE')
+                    )
+                )
             );
         }
 
@@ -514,7 +536,11 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $this->gadget->GetPermission('AddPostAttachment')
         ) {
             Jaws_Gadget::getInstance('Files')->action->load('Files')->uploadReferenceFiles(
-                $this->gadget->name, 'Post', $result
+                array(
+                    'gadget' => $this->gadget->name,
+                    'action' => 'Post',
+                    'reference' => $result
+                )
             );
         }
 
