@@ -27,6 +27,17 @@ function Jaws_Gadget_Files() { return {
     },
 
     /**
+     * browse file
+     */
+    browseFile: function(fileElement) {
+        let fReader = new FileReader();
+        fReader.readAsDataURL(fileElement.files[0]);
+        fReader.onload = function (event) {
+            $(fileElement).prev().attr('src', event.target.result);
+        }
+    },
+
+    /**
      * initialize gadget actions
      */
     init: function(mainGadget, mainAction) {

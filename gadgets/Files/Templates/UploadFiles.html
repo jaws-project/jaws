@@ -3,7 +3,10 @@
   <label>{{lbl_file}}:</label>
   <div id="files">
     <div id="file_model" style="display: none;">
-      <input class="form-control-file" type="file" name="files[]" multiple class="file" />
+      <img src="gadgets/Blog/Resources/images/no-image.gif" alt="" width="128">
+      <input class="form-control-file" type="file" name="files[]" multiple
+        onchange="Jaws_Gadget.getInstance('Files').browseFile(this);"
+      />
       <a href="javascript:void(0);"
         onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
         title="{{lbl_remove_file}}">
