@@ -323,24 +323,26 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         $tpl->SetVariable('fid', $fid);
         $tpl->SetVariable('tid', $tid);
 
-//        if (!empty($post['id'])) {
-//            // date format
-//            $date_format = $this->gadget->registry->fetch('date_format');
-//            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
-//            // post meta data
-//            $tpl->SetBlock('post/post_meta');
-//            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
-//            $tpl->SetVariable('username', $post['username']);
-//            $tpl->SetVariable('nickname', $post['nickname']);
-//            $tpl->SetVariable(
-//                'user_url',
-//                $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $post['username']))
-//            );
-//            $objDate = Jaws_Date::getInstance();
-//            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
-//            $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
-//            $tpl->ParseBlock('post/post_meta');
-//        }
+        /*
+        if (!empty($post['id'])) {
+            // date format
+            $date_format = $this->gadget->registry->fetch('date_format');
+            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            // post meta data
+            $tpl->SetBlock('post/post_meta');
+            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('username', $post['username']);
+            $tpl->SetVariable('nickname', $post['nickname']);
+            $tpl->SetVariable(
+                'user_url',
+                $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $post['username']))
+            );
+            $objDate = Jaws_Date::getInstance();
+            $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
+            $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
+            $tpl->ParseBlock('post/post_meta');
+        }
+        */
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
@@ -351,13 +353,11 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
         // attachment
         if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
-            $this->gadget->GetPermission('AddPostAttachment'))
-        {
-            $tpl->SetBlock('post/attachment');
-            $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
-            $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
-            $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
-            $tpl->ParseBlock('post/attachment');
+            $this->gadget->GetPermission('AddPostAttachment')
+        ) {
+            Jaws_Gadget::getInstance('Files')->action->load('Files')->loadReferenceFiles(
+                $tpl, $this->gadget->name, 'Post', 0
+            );
         }
 
         $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
@@ -439,33 +439,6 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        // attachment
-        $post['attachments'] = null;
-        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
-            $this->gadget->GetPermission('AddPostAttachment'))
-        {
-            $res = Jaws_Utils::UploadFiles(
-                $_FILES,
-                ROOT_DATA_PATH. 'forums',
-                '',
-                null
-            );
-            if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(
-                    $res->getMessage(),
-                    RESPONSE_ERROR,
-                    'UpdatePost',
-                    $post
-                );
-                // redirect to referrer page
-                Jaws_Header::Referrer();
-            }
-
-            if (!empty($res)) {
-                $post['attachments'] = $res['attachment'];
-            }
-        }
-
         $send_notification =
             $this->gadget->GetPermission('ForumManage', $post['fid'])? (bool)$post['notification'] : true;
         // edit min/max limit time
@@ -483,8 +456,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 $post['tid'],
                 $post['fid'],
                 $post['message'],
-                $post['message'],
-                $post['attachments']
+                $post['message']
             );
             $event_type = 'new';
             $error_message = _t('FORUMS_POSTS_NEW_ERROR');
@@ -513,25 +485,10 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 $post['update_reason'] = '';
             }
 
-            // Update Attachments
-            $remainAttachments = $this->gadget->request->fetch('current_attachments:array');
-            $aModel = $this->gadget->model->load('Attachments');
-            $oldAttachments = $aModel->GetAttachments($oldPost['id']);
-            if (count($remainAttachments) == 0) {
-                $aModel->DeletePostAttachments($oldPost['id']);
-            } else {
-                foreach ($oldAttachments as $oldAttachment) {
-                    if (!in_array($oldAttachment['id'], $remainAttachments)) {
-                        $aModel->DeleteAttachment($oldAttachment['id']);
-                    }
-                }
-            }
-
             $result = $pModel->UpdatePost(
                 $post['pid'],
                 $update_uid,
                 $post['message'],
-                $post['attachments'],
                 $post['update_reason']
             );
             $event_type = 'edit';
@@ -550,6 +507,15 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             );
             // redirect to referrer page
             Jaws_Header::Referrer();
+        }
+
+        // attachment
+        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
+            $this->gadget->GetPermission('AddPostAttachment')
+        ) {
+            Jaws_Gadget::getInstance('Files')->action->load('Files')->uploadReferenceFiles(
+                $this->gadget->name, 'Post', $result
+            );
         }
 
         $post['pid'] = $result;

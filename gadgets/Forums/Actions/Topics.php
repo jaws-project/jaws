@@ -512,7 +512,6 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             );
         }
 
-
         $topic['tid'] = $result;
         $topic_link = $this->gadget->urlMap(
             'Posts',
