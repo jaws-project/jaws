@@ -67,7 +67,10 @@ class Jaws_Template
         $this->app = Jaws::getInstance();
 
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_\-]+';
-        $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
+        $this->BlockRegExp =
+            '@<!--\s+begin\s+('.
+            $this->IdentifierRegExp.
+            ')\s+([^>]*)-->(.+?)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{{\s*('.$this->IdentifierRegExp.')\s*}}@sim';
         $this->IsBlockRegExp = '@##\s*('.$this->IdentifierRegExp.')\s*##@sim';
         $namexp = '[[:digit:][:lower:]_]+';
@@ -208,7 +211,7 @@ class Jaws_Template
     {
         $result = $this->Content;
         foreach ($this->Blocks as $k => $iblock) {
-            $pattern = '@<!--\s+begin\s+'.$iblock->Name.'\s+([^>]*)-->(.*)<!--\s+end\s+'.$iblock->Name.'\s+-->@sim';
+            $pattern = '@<!--\s+begin\s+'.$iblock->Name.'\s+([^>]*)-->(.+?)<!--\s+end\s+'.$iblock->Name.'\s+-->@sim';
             $result = preg_replace($pattern, '##'.$iblock->Name.'##' , $result);
         }
         return $result;
@@ -233,7 +236,12 @@ class Jaws_Template
                 $wblock->RawContent = $this->rawStore? $match[3] : null;
                 $wblock->InnerBlock = $this->GetBlocks($wblock->Content, $wblock->Path);
                 foreach ($wblock->InnerBlock as $k => $iblock) {
-                    $pattern = '@<!--\s+begin\s+'.$iblock->Name.'\s+([^>]*)-->(.*)<!--\s+end\s+'.$iblock->Name.'\s+-->@sim';
+                    $pattern = 
+                        '@<!--\s+begin\s+' .
+                        $iblock->Name .
+                        '\s+([^>]*)-->(.+?)<!--\s+end\s+' .
+                        $iblock->Name .
+                        '\s+-->@sim';
                     $wblock->Content = preg_replace($pattern, '##'.$iblock->Name.'##' , $wblock->Content);
                 }
                 $wblock->Vars = $this->GetVariables($wblock->Content);
@@ -351,9 +359,14 @@ class Jaws_Template
         if (preg_match_all($this->IsBlockRegExp, $result, $regs, PREG_SET_ORDER)) {
             foreach ($regs as $blockToReplace) {
                 $pattern = '@##\s*(' . $blockToReplace[1] . ')\s*##@sim';
-                $result = preg_replace($pattern, str_replace('$', '\$', $this->Blocks[$blockToReplace[1]]->Parsed) , $result);
+                $result = preg_replace(
+                    $pattern,
+                    str_replace('$', '\$', $this->Blocks[$blockToReplace[1]]->Parsed),
+                    $result
+                );
             }
         }
+
         return $result;
     }
 
