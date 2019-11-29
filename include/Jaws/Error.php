@@ -98,9 +98,7 @@ class Jaws_Error
      */
     static function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
-        if ($backtrace >= 0) {
-            $backtrace++;
-        }
+        $backtrace++;
         $objError = new Jaws_Error($message, $code, $level, $backtrace);
         return $objError;
     }
