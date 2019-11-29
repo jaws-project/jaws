@@ -59,6 +59,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         // FIXME:: add registry key for set maximum upload file size
         $defaultOptions = array(
             'maxsize'     => 33554432, // 32MB
+            'maxcount'    => 0,        // unlimited
             'extensions'  => '',
             'preview'     => true,
         );
@@ -71,7 +72,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_file',$options['labels']['title']);
         $tpl->SetVariable('lbl_extra_file', $options['labels']['extra']);
         $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
-        $tpl->SetVariable('maxsize', $options['maxsize']);
+        $tpl->SetVariable('maxsize',  $options['maxsize']);
+        $tpl->SetVariable('maxcount', $options['maxcount']);
         $tpl->SetVariable('extensions', $options['extensions']);
         $tpl->SetVariable('preview', $options['preview']);
 
@@ -80,7 +82,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             foreach ($files as $file) {
                 $tpl->SetBlock("$block/files/file");
                 $tpl->SetVariable('fid', $file['id']);
-                $tpl->SetVariable('lbl_filename', $file['title']);
+                $tpl->SetVariable('filename', $file['title']);
+                $tpl->SetVariable('filesize', $file['filesize']);
                 $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
                 $tpl->ParseBlock("$block/files/file");
             }

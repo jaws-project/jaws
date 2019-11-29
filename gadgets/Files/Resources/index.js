@@ -22,18 +22,20 @@ function Jaws_Gadget_Files() { return {
     /**
      * remove file
      */
-    removeFile: function(element) {
-        // find file index
-        let fileIndex = $(element).parents().eq(3).children().index($(element).parents().eq(2)) - 1;
+    removeFile: function(element, newfile = true) {
+        if (newfile) {
+            // find file index
+            let fileIndex = $(element).parents().eq(3).children().index($(element).parents().eq(2)) - 1;
 
-        let fileElement = $(element).parents().eq(4).find('input').get(0);
-        let fileList = new DataTransfer();
-        for(let i = 0; i < fileElement.files.length; i++) {
-            if (i != fileIndex) {
-                fileList.items.add(fileElement.files[i]);
+            let fileElement = $(element).parents().eq(4).find('input').get(0);
+            let fileList = new DataTransfer();
+            for(let i = 0; i < fileElement.files.length; i++) {
+                if (i != fileIndex) {
+                    fileList.items.add(fileElement.files[i]);
+                }
             }
+            fileElement.files = fileList.files;
         }
-        fileElement.files = fileList.files;
 
         // remove DOM element
         $(element).parents().eq(2).remove();
@@ -45,6 +47,8 @@ function Jaws_Gadget_Files() { return {
     browseFile: function(fileInput) {
         // allow max file size
         let maxsize = Number($(fileInput).data('maxsize'));
+        // allow max files count
+        let maxcount = Number($(fileInput).data('maxcount'));
         // allow file extensions
         let extensions = $(fileInput).data('extensions') || '*';
         extensions = (extensions == '*')? [] : extensions.split(',');
@@ -74,6 +78,12 @@ function Jaws_Gadget_Files() { return {
             // file extensions
             if (extensions.length > 0 && extensions.indexOf(file.extension) < 0) {
                 console.log('File type not valid: ' + file.name);
+                continue;
+            }
+
+            //console.log(ulElement.parents(2).find('li.file_details').length);
+            if (maxcount > 0 && fileList.items.length >= maxcount) {
+                console.log('Files count exceeded!');
                 continue;
             }
 

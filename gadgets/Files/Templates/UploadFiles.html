@@ -3,8 +3,26 @@
   <label>{{lbl_file}}:</label>
   <div id="files">
     <div id="file_model" style="display: none;">
+      <ul>
+        <li class="file_details" style="display: none;">
+          <ul>
+            <li data-type="preview" style="display: none;"></li>
+            <li data-type="name"></li>
+            <li data-type="size"></li>
+            <li data-type="remove">
+              <a href="javascript:void(0);"
+                onclick="Jaws_Gadget.getInstance('Files').removeFile(this, true);"
+                title="{{lbl_remove_file}}">
+                {{lbl_remove_file}}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
       <input class="form-control-file" type="file"
         data-maxsize="{{maxsize}}"
+        data-maxcount="{{maxcount}}"
         data-extensions="{{extensions}}"
         data-preview="{{preview}}"
         name="files[]"
@@ -13,40 +31,43 @@
         style="opacity:0; height:0; width:0;"
       />
       <button class="btn" type="button"
-        title="{{lbl_browse_avatar}}"
+        title="{{lbl_browse_file}}"
         onclick="$(this).prev().click();">
         Browse
       </button>
+    </div>
+
+    <div>
       <ul>
-        <li style="display: none;">
+        <!-- BEGIN file -->
+        <li class="file_details">
+          <input type="hidden" name="current_files[]" value="{{fid}}" />
           <ul>
-            <li data-type="preview" style="display: none;"></li>
-            <li data-type="name"></li>
-            <li data-type="size"></li>
+            <!-- BEGIN preview -->
+            <li data-type="preview">
+              <!-- BEGIN image -->
+              <img src="{{url}}" alt="" width="128"/>
+              <!-- END image -->
+            </li>
+            <!-- END preview -->
+            <li data-type="name">{{filename}}</li>
+            <li data-type="size">{{filesize}}</li>
             <li data-type="remove">
               <a href="javascript:void(0);"
-                onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
+                onclick="Jaws_Gadget.getInstance('Files').removeFile(this, false);"
                 title="{{lbl_remove_file}}">
                 {{lbl_remove_file}}
               </a>
             </li>
           </ul>
         </li>
+        <!-- END file -->
       </ul>
     </div>
-    <!-- BEGIN file -->
-    <div id="p_attach{{fid}}">
-      <input type="hidden" name="current_files[]" value="{{fid}}" />
-      <input class="form-control" type="text" name="current_files_filename" value="{{lbl_filename}}" disabled="disabled" class="file ltr"/>
-      <a href="javascript:void(0);"
-        onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
-        title="{{lbl_remove_file}}">
-        {{lbl_remove_file}}
-      </a>
-    </div>
-    <!-- END file -->
+
     <div>
-      <a href="javascript:void(0);" onclick="Jaws_Gadget.getInstance('Files').extraFile(this);">
+      <a href="javascript:void(0);"
+        onclick="Jaws_Gadget.getInstance('Files').extraFile(this);">
         {{lbl_extra_file}}
       </a>
     </div>

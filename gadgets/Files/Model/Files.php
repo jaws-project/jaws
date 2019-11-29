@@ -75,7 +75,7 @@ class Files_Model_Files extends Jaws_Gadget_Model
             ->table('files')
             ->select(
                 'id:integer', 'type:integer', 'title', 'description', 'public:boolean',
-                'postname', 'filename', 'mimetype', 'filetype:integer', 'filetime:integer',
+                'postname', 'filename', 'mimetype', 'filetype:integer', 'filesize:integer', 'filetime:integer',
                 'filehits:integer', 'filekey'
             )->where('id', (array)$ids, 'in')
             ->and()
