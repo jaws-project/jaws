@@ -56,6 +56,14 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      */
     function loadReferenceFiles(&$tpl, $interface, $options = array())
     {
+        // FIXME:: add registry key for set maximum upload file size
+        $defaultOptions = array(
+            'maxsize'     => 33554432, // 32MB
+            'extensions'  => '',
+            'preview'     => true,
+        );
+        $options = array_merge($defaultOptions, $options);
+
         $this->AjaxMe('index.js');
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/files");
@@ -63,6 +71,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_file',$options['labels']['title']);
         $tpl->SetVariable('lbl_extra_file', $options['labels']['extra']);
         $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
+        $tpl->SetVariable('maxsize', $options['maxsize']);
+        $tpl->SetVariable('extensions', $options['extensions']);
+        $tpl->SetVariable('preview', $options['preview']);
 
         if (!empty($interface['reference'])) {
             $files = $this->gadget->model->load('Files')->getFiles($interface);

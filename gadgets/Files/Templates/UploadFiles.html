@@ -3,15 +3,35 @@
   <label>{{lbl_file}}:</label>
   <div id="files">
     <div id="file_model" style="display: none;">
-      <img src="gadgets/Blog/Resources/images/no-image.gif" alt="" width="128">
-      <input class="form-control-file" type="file" name="files[]" multiple
+      <input class="form-control-file" type="file"
+        data-maxsize="{{maxsize}}"
+        data-extensions="{{extensions}}"
+        data-preview="{{preview}}"
+        name="files[]"
+        multiple
         onchange="Jaws_Gadget.getInstance('Files').browseFile(this);"
       />
-      <a href="javascript:void(0);"
-        onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
-        title="{{lbl_remove_file}}">
-        {{lbl_remove_file}}
-      </a>
+      <button class="btn" type="button"
+        title="{{lbl_browse_avatar}}"
+        onclick="$(this).prev().click();">
+        Browse
+      </button>
+      <ul>
+        <li style="display: none;">
+          <ul>
+            <li data-type="preview" style="display: none;"></li>
+            <li data-type="name"></li>
+            <li data-type="size"></li>
+            <li data-type="remove">
+              <a href="javascript:void(0);"
+                onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
+                title="{{lbl_remove_file}}">
+                {{lbl_remove_file}}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
     <!-- BEGIN file -->
     <div id="p_attach{{fid}}">
