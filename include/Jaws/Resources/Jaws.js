@@ -273,10 +273,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
      * @param   {function}  progress    Progress callback function
      * @return  {boolean}
      */
-    this.uploadFile = function (action, file, done, progress, callOptions) {
-        var fd = new FormData();
+    this.uploadFile = function (action, formData, done, progress, callOptions) {
         var gadget, baseScript;
-        fd.append('file', file);
 
         callOptions = callOptions || {};
         // response message/loading container
@@ -293,7 +291,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         var options = {
             async: true,
             type: 'POST',
-            data: fd,
+            data: formData,
             dataType: 'text',
             url: baseScript + '?gadget=' + gadget + '&restype=json&action=' + action,
             action: action,
