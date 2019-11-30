@@ -65,6 +65,14 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         );
         $options = array_merge($defaultOptions, $options);
 
+        $defaultInterface = array(
+            'gadget'      => '',
+            'action'      => '',
+            'reference'   => 0,
+            'type'        => 0,
+        );
+        $interface = array_merge($defaultInterface, $interface);
+
         $this->AjaxMe('index.js');
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/files");
@@ -72,6 +80,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_file',$options['labels']['title']);
         $tpl->SetVariable('lbl_extra_file', $options['labels']['extra']);
         $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
+        $tpl->SetVariable('interface_type', $interface['type']);
         $tpl->SetVariable('maxsize',  $options['maxsize']);
         $tpl->SetVariable('maxcount', $options['maxcount']);
         $tpl->SetVariable('extensions', $options['extensions']);
