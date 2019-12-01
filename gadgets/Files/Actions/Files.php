@@ -60,8 +60,10 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $defaultOptions = array(
             'maxsize'     => 33554432, // 32MB
             'maxcount'    => 0,        // unlimited
+            'filetype'    => 0,
             'extensions'  => '',
             'preview'     => true,
+            'capture'     => false,
         );
         $options = array_merge($defaultOptions, $options);
 
@@ -84,12 +86,47 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('maxsize',  $options['maxsize']);
         $tpl->SetVariable('maxcount', $options['maxcount']);
         $tpl->SetVariable('extensions', $options['extensions']);
+        $tpl->SetVariable('capture', $options['capture']? 'capture' : '');     
         $tpl->SetVariable('preview', $options['preview']);
+        // set accept file type
+        if ($options['filetype'] > 0) {
+            $tpl->SetBlock("$block/files/accept");
+            switch ($options['filetype']) {
+                case JAWS_FILE_TYPE['TEXT']:
+                    $tpl->SetVariable('type', 'text');
+                    break;
+
+                case JAWS_FILE_TYPE['IMAGE']:
+                    $tpl->SetVariable('type', 'image');
+                    break;
+
+                case JAWS_FILE_TYPE['AUDIO']:
+                    $tpl->SetVariable('type', 'audio');
+                    break;
+
+                case JAWS_FILE_TYPE['VIDEO']:
+                    $tpl->SetVariable('type', 'video');
+                    break;
+
+                default:
+                    $tpl->SetVariable('type', '*');
+            }
+            $tpl->ParseBlock("$block/files/accept");
+        }
 
         if (!empty($interface['reference'])) {
             $files = $this->gadget->model->load('Files')->getFiles($interface);
             foreach ($files as $file) {
                 $tpl->SetBlock("$block/files/file");
+                if ($options['preview']) {
+                    switch (substr($file['mimetype'], 0, strpos($file['mimetype'], '/'))) {
+                        case 'image':
+                            $tpl->SetBlock("$block/files/file/image_preview");
+                            $tpl->SetVariable('src', $this->app->getDataURL('files/'. $file['filename']));
+                            $tpl->ParseBlock("$block/files/file/image_preview");
+                            break;
+                    }
+                }
                 $tpl->SetVariable('fid', $file['id']);
                 $tpl->SetVariable('filename', $file['title']);
                 $tpl->SetVariable('filesize', $file['filesize']);
