@@ -5,13 +5,13 @@
 define('JAWS_OS_WIN', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 
 const JAWS_FILE_TYPE =  array(
-        'FOLDER'  => 0,
-        'TEXT'    => 1,
-        'IMAGE'   => 2,
-        'AUDIO'   => 3,
-        'VIDEO'   => 4,
-        'FONT'    => 5,
-        'ARCHIVE' => 6,
+        'FOLDER'  => 1,
+        'TEXT'    => 2,
+        'IMAGE'   => 3,
+        'AUDIO'   => 4,
+        'VIDEO'   => 5,
+        'FONT'    => 6,
+        'ARCHIVE' => 7,
         'UNKNOWN' => 255,
 );
 
