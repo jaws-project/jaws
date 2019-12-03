@@ -43,6 +43,9 @@ function Jaws_Gadget_Files() { return {
             fileElement.files = fileList.files;
         }
 
+        // show browse button
+        $(element).parents().eq(6).find('.btn_browse').show();
+
         if ($(element).parents().eq(3).children().length <= 2) {
             // if removed file was last one remove other elements too
             $(element).parents().eq(4).remove();
@@ -68,7 +71,7 @@ function Jaws_Gadget_Files() { return {
 
         let ulElement = $(fileInput).parent().find('ul').first();
         // clear file list elements
-        ulElement.children().not(':first').remove();
+        ulElement.children(':visible').remove();
 
         let fileList = new DataTransfer();
         for (let file of fileInput.files) {
@@ -92,10 +95,15 @@ function Jaws_Gadget_Files() { return {
                 continue;
             }
 
-            //console.log(ulElement.parents(2).find('li.file_details').length);
-            if (maxcount > 0 && fileList.items.length >= maxcount) {
-                console.log('Files count exceeded!');
-                continue;
+            if (maxcount > 0) {
+                let filesCount = $(fileInput).parents().eq(2).find('.file_details:visible').length + 1;
+                if (filesCount >= maxcount) {
+                    $(fileInput).parents().eq(2).find('.btn_browse').hide();
+                    if (filesCount > maxcount) {
+                        console.log('Files count exceeded!');
+                        continue;
+                    }
+                }
             }
 
             fileList.items.add(file);
