@@ -13,10 +13,16 @@ function Jaws_Gadget_Files() { return {
     },
 
     /**
-     * remove file
+     * add attachment interface then raise click event
      */
     extraFile: function(element) {
-        $(element).parents().eq(1).children().first().clone(true).insertBefore($(element).parent()).show();
+        let lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
+        if (!lastInput || lastInput.files.length > 0) {
+            $(element).parents().eq(1).children('.new_files').append($('.new_attachments_patern').html());
+            lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
+        }
+
+        $(lastInput).click();
     },
 
     /**
@@ -37,8 +43,13 @@ function Jaws_Gadget_Files() { return {
             fileElement.files = fileList.files;
         }
 
-        // remove DOM element
-        $(element).parents().eq(2).remove();
+        if ($(element).parents().eq(3).children().length <= 2) {
+            // if removed file was last one remove other elements too
+            $(element).parents().eq(4).remove();
+        } else {
+            // remove DOM element
+            $(element).parents().eq(2).remove();
+        }
     },
 
     /**
