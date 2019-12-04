@@ -20,7 +20,7 @@ function Jaws_Gadget_Files() { return {
         let lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
         if (!lastInput || lastInput.files.length > 0) {
             $(element).parents().eq(1).children('.new_files').append(
-                $(element).parents().eq(2).find('.new_attachments_patern').first().html()
+                $(element).parents().eq(2).find('template').first().html()
             );
             lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
         }
