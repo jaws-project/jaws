@@ -168,6 +168,7 @@ class Jaws_Gadget_Action
     public function AjaxMe($file = '')
     {
         if (!empty($file)) {
+            $this->app->define($this->gadget->name, false);
             $this->app->layout->addScript(
                 'gadgets/'.$this->gadget->name.'/Resources/'. $file.'?'.$this->gadget->version
             );
