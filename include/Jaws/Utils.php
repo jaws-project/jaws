@@ -550,8 +550,10 @@ class Jaws_Utils
      * @param   int     $max_size       max size of file
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
-    static function UploadFiles($files, $dest, $allow_formats = '',
-                                $overwrite = true, $move_files = true, $max_size = null)
+    static function UploadFiles(
+        $files, $dest, $allow_formats = '',
+        $overwrite = true, $move_files = true, $max_size = null
+    )
     {
         if (empty($files) || !is_array($files)) {
             return false;
@@ -674,6 +676,17 @@ class Jaws_Utils
                     @unlink($uploadfile);
                     return Jaws_Error::raiseError(
                         _t('GLOBAL_ERROR_UPLOAD_CORRUPTED', $host_filename),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE,
+                        1
+                    );
+                }
+
+                // Check if the file size exceeds defined max file size
+                if (!empty($max_size) && $file['size'] > $max_size) {
+                    @unlink($uploadfile);
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_UPLOAD_2'),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE,
                         1
