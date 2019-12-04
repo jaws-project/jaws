@@ -563,6 +563,13 @@ class Jaws_Utils
         }
 
         $dest = rtrim($dest, "\\/"). DIRECTORY_SEPARATOR;
+        if (!Jaws_Utils::mkdir($dest, 2)) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_FAILED_CREATING_DIR'. $dest),
+                __FUNCTION__
+            );
+        }
+
         $allow_formats = array_filter(explode(',', $allow_formats));
         foreach($files as $key => $listFiles) {
             if (!is_array($listFiles['tmp_name'])) {
