@@ -21,7 +21,6 @@
 
       <input class="form-control-file" type="file"
         data-maxsize="{{maxsize}}"
-        data-maxcount="{{maxcount}}"
         data-extensions="{{extensions}}"
         data-preview="{{preview}}"
         name="files_{{interface_type}}[]"
@@ -68,7 +67,9 @@
 
     <div class="btn_browse">
       <a href="javascript:void(0);"
-        onclick="Jaws_Gadget.getInstance('Files').extraFile(this);">
+        data-maxcount="{{maxcount}}"
+        data-initialize="fileuploader"
+        onclick="Jaws_Gadget.getInstance('Files').uploadMoreFiles(this);">
         {{lbl_extra_file}}
       </a>
     </div>

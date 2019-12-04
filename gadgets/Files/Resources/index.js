@@ -15,7 +15,7 @@ function Jaws_Gadget_Files() { return {
     /**
      * add attachment interface then raise click event
      */
-    extraFile: function(element)
+    uploadMoreFiles: function(element)
     {
         let lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
         if (!lastInput || lastInput.files.length > 0) {
@@ -71,7 +71,14 @@ function Jaws_Gadget_Files() { return {
         // allow max file size
         let maxsize = Number($(fileInput).data('maxsize'));
         // allow max files count
-        let maxcount = Number($(fileInput).data('maxcount'));
+        let maxcount = Number(
+            $(fileInput)
+            .parents()
+            .eq(2)
+            .find('[data-initialize=fileuploader]')
+            .first()
+            .data('maxcount')
+        );
         // allow file extensions
         let extensions = $(fileInput).data('extensions') || '*';
         extensions = (extensions == '*')? [] : extensions.split(',');
@@ -155,7 +162,16 @@ function Jaws_Gadget_Files() { return {
      */
     init: function(mainGadget, mainAction)
     {
-        //
+        // initialize upload files configuration
+        $('[data-initialize=fileuploader]').each(
+            function() {
+                let maxcount = Number($(this).data('maxcount'));
+                let filesCount = $(this).parents().eq(1).find('.file_details:visible').length;
+                if (maxcount > 0 && filesCount >= maxcount) {
+                    $(this).parent().hide();
+                }
+            }
+        );
     },
 
 }};
