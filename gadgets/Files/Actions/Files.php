@@ -80,8 +80,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetBlock("$block/files");
 
         $tpl->SetVariable('lbl_file',$options['labels']['title']);
-        $tpl->SetVariable('lbl_extra_file', $options['labels']['extra']);
-        $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
+        $tpl->SetVariable('lbl_browse', $options['labels']['browse']);
+        $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
         $tpl->SetVariable('interface_type', $interface['type']);
         $tpl->SetVariable('maxsize',  $options['maxsize']);
         $tpl->SetVariable('maxcount', $options['maxcount']);
@@ -144,10 +144,19 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(maxsize, types, ...)
      * @return  mixed   TRUE otherwise Jaws_Error on error
      */
-    function uploadReferenceFiles($interface)
+    function uploadReferenceFiles($interface, $options = array())
     {
+        // FIXME:: add registry key for set maximum upload file size
+        $defaultOptions = array(
+            'maxsize'     => 33554432, // 32MB
+            'maxcount'    => 0,        // unlimited
+            'extensions'  => '',
+        );
+        $options = array_merge($defaultOptions, $options);
+
         $defaultInterface = array(
             'gadget'      => '',
             'action'      => '',
