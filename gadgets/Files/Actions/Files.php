@@ -116,13 +116,14 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         if (!empty($interface['reference'])) {
             $files = $this->gadget->model->load('Files')->getFiles($interface);
+            $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
             foreach ($files as $file) {
                 $tpl->SetBlock("$block/files/file");
                 if ($options['preview']) {
                     switch (substr($file['mimetype'], 0, strpos($file['mimetype'], '/'))) {
                         case 'image':
                             $tpl->SetBlock("$block/files/file/image_preview");
-                            $tpl->SetVariable('src', $this->app->getDataURL('files/'. $file['filename']));
+                            $tpl->SetVariable('src', $this->app->getDataURL($filesPath. $file['filename']));
                             $tpl->ParseBlock("$block/files/file/image_preview");
                             break;
                     }
@@ -147,6 +148,14 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      */
     function uploadReferenceFiles($interface)
     {
+        $defaultInterface = array(
+            'gadget'      => '',
+            'action'      => '',
+            'reference'   => 0,
+            'type'        => 0,
+        );
+        $interface = array_merge($defaultInterface, $interface);
+
         $filesModel = $this->gadget->model->load('Files');
         $oldFiles = $filesModel->getFiles($interface);
 
@@ -167,7 +176,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         $newFiles = Jaws_Utils::UploadFiles(
             $_FILES,
-            ROOT_DATA_PATH. 'files',
+            ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']),
             '',
             null
         );
@@ -179,7 +188,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (!empty($newFiles)) {
             return $filesModel->insertFiles(
                 $interface,
-                $newFiles['files']
+                $newFiles['files_'.$interface['type']]
             );
         }
 
