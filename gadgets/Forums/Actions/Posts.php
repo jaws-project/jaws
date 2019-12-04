@@ -375,7 +375,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 array(
                     'labels' => array(
                         'title'  => _t('FORUMS_POSTS_ATTACHMENT'),
-                        'extra'  => _t('FORUMS_POSTS_EXTRA_ATTACHMENT'),
+                        'browse' => _t('FORUMS_POSTS_EXTRA_ATTACHMENT'),
                         'remove' => _t('FORUMS_POSTS_ATTACHMENT_REMOVE')
                     )
                 )
