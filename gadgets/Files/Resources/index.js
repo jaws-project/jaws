@@ -15,10 +15,13 @@ function Jaws_Gadget_Files() { return {
     /**
      * add attachment interface then raise click event
      */
-    extraFile: function(element) {
+    extraFile: function(element)
+    {
         let lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
         if (!lastInput || lastInput.files.length > 0) {
-            $(element).parents().eq(1).children('.new_files').append($('.new_attachments_patern').html());
+            $(element).parents().eq(1).children('.new_files').append(
+                $(element).parents().eq(2).find('.new_attachments_patern').first().html()
+            );
             lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
         }
 
@@ -28,7 +31,11 @@ function Jaws_Gadget_Files() { return {
     /**
      * remove file
      */
-    removeFile: function(element, newfile = true) {
+    removeFile: function(element, newfile = true)
+    {
+        // count of current files in the list
+        let filesCount = $(element).parents().eq(3).children().length;
+
         if (newfile) {
             // find file index
             let fileIndex = $(element).parents().eq(3).children().index($(element).parents().eq(2)) - 1;
@@ -41,12 +48,13 @@ function Jaws_Gadget_Files() { return {
                 }
             }
             fileElement.files = fileList.files;
+
+            filesCount--;
         }
 
         // show browse button
         $(element).parents().eq(6).find('.btn_browse').show();
-
-        if ($(element).parents().eq(3).children().length <= 2) {
+        if (filesCount < 2) {
             // if removed file was last one remove other elements too
             $(element).parents().eq(4).remove();
         } else {
@@ -58,7 +66,8 @@ function Jaws_Gadget_Files() { return {
     /**
      * browse file
      */
-    browseFile: function(fileInput) {
+    browseFile: function(fileInput)
+    {
         // allow max file size
         let maxsize = Number($(fileInput).data('maxsize'));
         // allow max files count
@@ -144,7 +153,8 @@ function Jaws_Gadget_Files() { return {
     /**
      * initialize gadget actions
      */
-    init: function(mainGadget, mainAction) {
+    init: function(mainGadget, mainAction)
+    {
         //
     },
 
