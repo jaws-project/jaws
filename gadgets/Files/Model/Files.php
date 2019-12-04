@@ -133,9 +133,10 @@ class Files_Model_Files extends Jaws_Gadget_Model
             ->where('public', $interface['public'])
             ->exec();
         if (!Jaws_Error::IsError($result)) {
+            $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
             foreach ($files as $file) {
                 if (!empty($file['filename'])) {
-                    Jaws_Utils::delete(ROOT_DATA_PATH . 'files/' . $file['filename']);
+                    Jaws_Utils::delete(ROOT_DATA_PATH. $filesPath. $file['filename']);
                 }
             }
         }
