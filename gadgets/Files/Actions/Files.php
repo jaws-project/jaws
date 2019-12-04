@@ -131,7 +131,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                 $tpl->SetVariable('fid', $file['id']);
                 $tpl->SetVariable('filename', $file['title']);
                 $tpl->SetVariable('filesize', $file['filesize']);
-                $tpl->SetVariable('lbl_remove_file', $options['labels']['remove']);
+                $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
                 $tpl->ParseBlock("$block/files/file");
             }
         }
@@ -186,8 +186,10 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $newFiles = Jaws_Utils::UploadFiles(
             $_FILES,
             ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']),
-            '',
-            null
+            $options['extensions'],
+            null,
+            true,
+            $options['maxsize']
         );
 
         if (Jaws_Error::IsError($newFiles)) {
