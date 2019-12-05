@@ -9,7 +9,7 @@
 /**
  * Index actions
  */
-$actions['File'] = array(
+$actions['file'] = array(
     'standalone' => true,
     'file'   => 'Files',
 );

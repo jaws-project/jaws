@@ -144,4 +144,31 @@ class Files_Model_Files extends Jaws_Gadget_Model
         return $result;
     }
 
+    /**
+     * Returns array of files details of a reference
+     *
+     * @access  public
+     * @param   int     $id     File ID
+     * @return  array   List of files info or Jaws_Error on error
+     */
+    function getFile($id)
+    {
+        // increase hits
+        $objORM = Jaws_ORM::getInstance()->table('files');
+        $result = $objORM->update(
+            array('filehits' => $objORM->expr('filehits + ?', 1))
+            )->where('id', $id)
+            ->exec();
+        if (Jaws_Error::IsError($result)) {
+            //do nothing
+        }
+
+        return $objORM->table('files')->select(
+                'id:integer', 'gadget', 'action', 'reference', 'type:integer', 'title', 'description',
+                'public:boolean', 'postname', 'filename', 'mimetype', 'filetype:integer',
+                'filesize:integer', 'filetime:integer', 'filehits:integer', 'filekey'
+            )->where('id', $id)
+            ->fetchRow();
+    }
+
 }

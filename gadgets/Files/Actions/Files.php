@@ -33,8 +33,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                 $tpl->SetVariable(
                     'url_file',
                     $this->gadget->urlMap(
-                        'File',
-                        array('id' => $file['id'])
+                        'file',
+                        array('id' => $file['id'], 'key' => $file['filekey'])
                     )
                 );
 
@@ -171,8 +171,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $remainFiles = $this->app->request->fetch('old_files:array');
         $oldFilesCount = empty($remainFiles)? 0 : count($remainFiles);
 
-        $uploadFilesIndex = 'files_'.$interface['type'];
         $newFilesCount = 0;
+        $uploadFilesIndex = 'files_'.$interface['type'];
         if (array_key_exists($uploadFilesIndex, $_FILES)) {
             $newFilesCount = count($_FILES[$uploadFilesIndex]['name']);
         }
@@ -223,4 +223,39 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         return true;
     }
+
+    /**
+     * Download/View file
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(maxsize, maxcount, extensions)
+     * @return  mixed   TRUE otherwise Jaws_Error on error
+     */
+    function file()
+    {
+        $get = $this->gadget->request->fetch(array('id', 'key'), 'get');
+        $file = $this->gadget->model->load('Files')->getFile((int)$get['id']);
+        if (Jaws_Error::IsError($file)) {
+            $this->SetActionMode('file', 'normal', 'standalone');
+            return Jaws_HTTPError::Get(500);
+        }
+
+        if (!empty($file) && $file['filekey'] == $get['key']) {
+            $filePath = strtolower('files/'. $file['gadget']. '/'. $file['action']. '/');
+            if (file_exists(ROOT_DATA_PATH. $filePath . $file['filename'])) {
+                if (Jaws_Utils::Download(
+                    ROOT_DATA_PATH. $filePath . $file['filename'],
+                    $file['postname'],
+                    $file['mimetype']
+                )) {
+                    return;
+                }
+            }
+        }
+
+        $this->SetActionMode('file', 'normal', 'standalone');
+        return Jaws_HTTPError::Get(404);
+    }
+
 }
