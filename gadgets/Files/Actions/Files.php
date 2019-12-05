@@ -182,7 +182,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         ) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_UPLOAD_9'),
-                __FUNCTION__
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
             );
         }
 
