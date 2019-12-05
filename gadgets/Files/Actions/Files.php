@@ -144,7 +144,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
-     * @param   array   $options    User interface control options(maxsize, types, ...)
+     * @param   array   $options    User interface control options(maxsize, maxcount, extensions)
      * @return  mixed   TRUE otherwise Jaws_Error on error
      */
     function uploadReferenceFiles($interface, $options = array())
@@ -168,8 +168,25 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $filesModel = $this->gadget->model->load('Files');
         $oldFiles = $filesModel->getFiles($interface);
 
+        $remainFiles = $this->app->request->fetch('old_files:array');
+        $oldFilesCount = empty($remainFiles)? 0 : count($remainFiles);
+
+        $uploadFilesIndex = 'files_'.$interface['type'];
+        $newFilesCount = 0;
+        if (array_key_exists($uploadFilesIndex, $_FILES)) {
+            $newFilesCount = count($_FILES[$uploadFilesIndex]['name']);
+        }
+        // check max count of files
+        if ($options['maxcount'] > 0 &&
+            ($oldFilesCount + $newFilesCount) > $options['maxcount']
+        ) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_ERROR_UPLOAD_9'),
+                __FUNCTION__
+            );
+        }
+
         //FIXME: need improvement for multi files delete
-        $remainFiles = $this->app->request->fetch('current_files:array');
         if (empty($remainFiles)) {
             $filesModel->deleteFiles($interface);
         } else {
