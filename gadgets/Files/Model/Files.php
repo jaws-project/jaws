@@ -153,22 +153,33 @@ class Files_Model_Files extends Jaws_Gadget_Model
      */
     function getFile($id)
     {
-        // increase hits
-        $objORM = Jaws_ORM::getInstance()->table('files');
-        $result = $objORM->update(
-            array('filehits' => $objORM->expr('filehits + ?', 1))
-            )->where('id', $id)
-            ->exec();
-        if (Jaws_Error::IsError($result)) {
-            //do nothing
-        }
-
-        return $objORM->table('files')->select(
+        return Jaws_ORM::getInstance()
+            ->table('files')
+            ->table('files')->select(
                 'id:integer', 'gadget', 'action', 'reference', 'type:integer', 'title', 'description',
                 'public:boolean', 'postname', 'filename', 'mimetype', 'filetype:integer',
                 'filesize:integer', 'filetime:integer', 'filehits:integer', 'filekey'
             )->where('id', $id)
             ->fetchRow();
+    }
+
+    /**
+     * Increment download hits
+     *
+     * @access  public
+     * @param   int     $id     File ID
+     * @return  bool    True if hits was successfully increment and false on error
+     */
+    function hitDownload($id)
+    {
+        $table = Jaws_ORM::getInstance()->table('files');
+        $result = $table->update(
+            array(
+                'filehits' => $table->expr('filehits + ?', 1)
+            )
+        )->where('id', $id)->exec();
+
+        return !Jaws_Error::IsError($result);
     }
 
 }

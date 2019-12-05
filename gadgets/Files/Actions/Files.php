@@ -244,6 +244,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (!empty($file) && $file['filekey'] == $get['key']) {
             $filePath = strtolower('files/'. $file['gadget']. '/'. $file['action']. '/');
             if (file_exists(ROOT_DATA_PATH. $filePath . $file['filename'])) {
+                // increase file hits
+                $this->gadget->model->load('Files')->hitDownload($file['id']);
+                // download
                 if (Jaws_Utils::Download(
                     ROOT_DATA_PATH. $filePath . $file['filename'],
                     $file['postname'],
