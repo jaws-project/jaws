@@ -82,6 +82,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_file',$options['labels']['title']);
         $tpl->SetVariable('lbl_browse', $options['labels']['browse']);
         $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
+        $tpl->SetVariable('interface_action', strtolower($interface['action']));
+        $tpl->SetVariable('interface_reference', $interface['reference']);
         $tpl->SetVariable('interface_type', $interface['type']);
         $tpl->SetVariable('maxsize',  $options['maxsize']);
         $tpl->SetVariable('maxcount', $options['maxcount']);
@@ -217,7 +219,12 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (!empty($newFiles)) {
             return $filesModel->insertFiles(
                 $interface,
-                $newFiles['files_'.$interface['type']]
+                $newFiles[
+                    'files_'.
+                    strtolower($interface['action']). '_'.
+                    $interface['reference']. '_'.
+                    $interface['type']
+                ]
             );
         }
 
