@@ -74,6 +74,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             'type'        => 0,
         );
         $interface = array_merge($defaultInterface, $interface);
+        // optional input_reference for new record(without reference id)
+        // or update/insert multi references together
+        $interface['input_reference'] = (@$interface['input_reference'])?: $interface['reference'];
 
         $this->AjaxMe('index.js');
         $block = $tpl->GetCurrentBlockPath();
@@ -82,8 +85,10 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_file',$options['labels']['title']);
         $tpl->SetVariable('lbl_browse', $options['labels']['browse']);
         $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
-        $tpl->SetVariable('interface_action', strtolower($interface['action']));
-        $tpl->SetVariable('interface_type', $interface['type']);
+        $tpl->SetVariable(
+            'input_reference',
+            strtolower($interface['action'] . $interface['input_reference']. $interface['type'])
+        );
         $tpl->SetVariable('maxsize',  $options['maxsize']);
         $tpl->SetVariable('maxcount', $options['maxcount']);
         $tpl->SetVariable('extensions', $options['extensions']);
@@ -165,6 +170,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             'type'        => 0,
         );
         $interface = array_merge($defaultInterface, $interface);
+        // optional input_reference for new record(without reference id)
+        // or update/insert multi references together
+        $interface['input_reference'] = (@$interface['input_reference'])?: $interface['reference'];
 
         $filesModel = $this->gadget->model->load('Files');
         $oldFiles = $filesModel->getFiles($interface);
@@ -173,7 +181,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $oldFilesCount = empty($remainFiles)? 0 : count($remainFiles);
 
         $newFilesCount = 0;
-        $uploadFilesIndex = 'files_'.$interface['type'];
+        $uploadFilesIndex = strtolower(
+            'files_'. $interface['action'] . $interface['input_reference']. $interface['type']
+        );
         if (array_key_exists($uploadFilesIndex, $_FILES)) {
             $newFilesCount = count($_FILES[$uploadFilesIndex]['name']);
         }
@@ -202,24 +212,26 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             }
         }
 
-        $newFiles = Jaws_Utils::UploadFiles(
-            $_FILES,
-            ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']),
-            $options['extensions'],
-            null,
-            true,
-            $options['maxsize']
-        );
-
-        if (Jaws_Error::IsError($newFiles)) {
-            return $newFiles;
-        }
-
-        if (!empty($newFiles)) {
-            return $filesModel->insertFiles(
-                $interface,
-                $newFiles['files_'. strtolower($interface['action']). '_'. $interface['type']]
+        if (array_key_exists($uploadFilesIndex, $_FILES)) {
+            $newFiles = Jaws_Utils::UploadFiles(
+                $_FILES[$uploadFilesIndex],
+                ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']),
+                $options['extensions'],
+                null,
+                true,
+                $options['maxsize']
             );
+
+            if (Jaws_Error::IsError($newFiles)) {
+                return $newFiles;
+            }
+
+            if (!empty($newFiles)) {
+                return $filesModel->insertFiles(
+                    $interface,
+                    $newFiles[0]
+                );
+            }
         }
 
         return true;

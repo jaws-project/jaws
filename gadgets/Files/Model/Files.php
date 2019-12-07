@@ -27,6 +27,9 @@ class Files_Model_Files extends Jaws_Gadget_Model
                 'description' => '',
                 'public'      => true,
             );
+            // remove invalid interface keys
+            $interface = array_intersect_key($interface, $data);
+            // set undefined keys by default values
             $data = array_merge($data, $interface);
             $data['user'] = $this->app->session->user->id;
 
