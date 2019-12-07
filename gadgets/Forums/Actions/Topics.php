@@ -449,6 +449,14 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 );
             }
 
+            if (!Jaws_Error::IsError($result)) {
+                $oldTopic = $tModel->GetTopic($result, $topic['fid']);
+                if (Jaws_Error::IsError($oldTopic) || empty($oldTopic)) {
+                    // redirect to referrer page
+                    Jaws_Header::Referrer();
+                }
+            }
+
             $event_type = 'new';
             $error_message = _t('FORUMS_TOPICS_NEW_ERROR');
         } else {
@@ -524,7 +532,8 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
                 array(
                     'gadget' => $this->gadget->name,
                     'action' => 'Post',
-                    'reference' => $result
+                    'reference' => $oldTopic['first_post_id'],
+                    'input_reference' => ($event_type == 'new')? 0 : $oldTopic['first_post_id']
                 )
             );
         }
