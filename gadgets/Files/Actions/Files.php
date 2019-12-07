@@ -85,10 +85,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_file',$options['labels']['title']);
         $tpl->SetVariable('lbl_browse', $options['labels']['browse']);
         $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
-        $tpl->SetVariable(
-            'input_reference',
-            strtolower($interface['action'] . $interface['input_reference']. $interface['type'])
-        );
+        $tpl->SetVariable('input_action', strtolower($interface['action']));
+        $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
+        $tpl->SetVariable('input_type', $interface['type']);
         $tpl->SetVariable('maxsize',  $options['maxsize']);
         $tpl->SetVariable('maxcount', $options['maxcount']);
         $tpl->SetVariable('extensions', $options['extensions']);
@@ -182,7 +181,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         $newFilesCount = 0;
         $uploadFilesIndex = strtolower(
-            'files_'. $interface['action'] . $interface['input_reference']. $interface['type']
+            'files_'. $interface['action'] . '_'. $interface['input_reference']. '_'. $interface['type']
         );
         if (array_key_exists($uploadFilesIndex, $_FILES)) {
             $newFilesCount = count($_FILES[$uploadFilesIndex]['name']);
