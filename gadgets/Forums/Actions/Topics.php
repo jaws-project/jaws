@@ -208,6 +208,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $topic['forum_title'] = $forum['title'];
             $topic['subject'] = '';
             $topic['message'] = '';
+            $topic['first_post_id'] = 0;
             $topic['update_reason'] = '';
             $title = _t('FORUMS_TOPICS_NEW_TITLE');
             $btn_title = _t('FORUMS_TOPICS_NEW_BUTTON');
