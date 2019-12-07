@@ -76,7 +76,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $interface = array_merge($defaultInterface, $interface);
         // optional input_reference for new record(without reference id)
         // or update/insert multi references together
-        $interface['input_reference'] = (@$interface['input_reference'])?: $interface['reference'];
+        if (!array_key_exists('input_reference', $interface)) {
+            $interface['input_reference'] = $interface['reference'];
+        }
 
         $this->AjaxMe('index.js');
         $block = $tpl->GetCurrentBlockPath();
@@ -171,7 +173,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $interface = array_merge($defaultInterface, $interface);
         // optional input_reference for new record(without reference id)
         // or update/insert multi references together
-        $interface['input_reference'] = (@$interface['input_reference'])?: $interface['reference'];
+        if (!array_key_exists('input_reference', $interface)) {
+            $interface['input_reference'] = $interface['reference'];
+        }
 
         $filesModel = $this->gadget->model->load('Files');
         $oldFiles = $filesModel->getFiles($interface);
