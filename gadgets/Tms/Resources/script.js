@@ -22,7 +22,6 @@ var TmsCallback = {
             $('#unshare_button').css('display', 'none');
             $('#share_button').css('display', 'block');
         }
-        TmsAjax.showResponse(response);
     },
 
     unsharetheme: function(response) {
@@ -36,7 +35,6 @@ var TmsCallback = {
             $('#unshare_button').css('display', 'block');
             $('#share_button').css('display', 'none');
         }
-        TmsAjax.showResponse(response);
     },
 
     installtheme: function(response) {
@@ -44,13 +42,11 @@ var TmsCallback = {
             $('#themes_combo').val(selectedTheme);
             editTheme(selectedTheme);
         }
-        TmsAjax.showResponse(response);
     },
 
     uninstalltheme: function(response) {
         if (response['type'] == 'alert-success') {
         }
-        TmsAjax.showResponse(response);
     },
 
     newrepository: function(response) {
@@ -58,7 +54,6 @@ var TmsCallback = {
             $('#repositories_datagrid')[0].addItem();
             $('#repositories_datagrid')[0].setCurrentPage(0);
         }
-        TmsAjax.showResponse(response);
         getDG();
     },
 
@@ -66,7 +61,6 @@ var TmsCallback = {
         if (response['type'] == 'alert-success') {
             $('#repositories_datagrid')[0].deleteItem();
         }
-        TmsAjax.showResponse(response);
         getDG();
     },
 
@@ -75,7 +69,6 @@ var TmsCallback = {
     },
 
     updaterepository: function(response) {
-        TmsAjax.showResponse(response);
         getDG();
     },
 
@@ -84,11 +77,10 @@ var TmsCallback = {
             $('#themes_combo').find('option:selected').remove();
             cleanWorkingArea(true);
         }
-        TmsAjax.showResponse(response);
     },
 
     savesettings: function(response) {
-        TmsAjax.showResponse(response);
+        //
     }
 };
 
