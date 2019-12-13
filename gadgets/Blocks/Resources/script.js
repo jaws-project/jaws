@@ -17,11 +17,10 @@ var BlocksCallback = {
         if (response['type'] == 'alert-success') {
             afterNewBlock(response['data']);
         }
-        BlocksAjax.showResponse(response);
     },
 
     UpdateBlock: function(response) {
-        BlocksAjax.showResponse(response);
+        //
     },
 
     DeleteBlock: function(response) {
@@ -50,7 +49,6 @@ var BlocksCallback = {
         } else {
             createNewBlock();
         }
-        BlocksAjax.showResponse(response);
     },
 
     ParseText: function(response) {
