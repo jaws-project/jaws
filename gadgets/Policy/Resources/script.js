@@ -19,7 +19,6 @@ var PolicyCallback = {
             getDG();
             stopAction();
         }
-        PolicyAjax.showResponse(response);
     },
 
     EditIPRange: function(response) {
@@ -27,7 +26,6 @@ var PolicyCallback = {
             stopAction();
             getDG();
         }
-        PolicyAjax.showResponse(response);
     },
 
     DeleteIPRange: function(response) {
@@ -35,7 +33,6 @@ var PolicyCallback = {
             $('#blocked_ips_datagrid')[0].deleteItem();
             getDG();
         }
-        PolicyAjax.showResponse(response);
     },
 
     AddAgent: function(response) {
@@ -45,7 +42,6 @@ var PolicyCallback = {
             getDG();
             stopAction();
         }
-        PolicyAjax.showResponse(response);
     },
 
     EditAgent: function(response) {
@@ -53,7 +49,6 @@ var PolicyCallback = {
             stopAction();
             getDG();
         }
-        PolicyAjax.showResponse(response);
     },
 
     DeleteAgent: function(response) {
@@ -61,27 +56,26 @@ var PolicyCallback = {
             $('#blocked_agents_datagrid')[0].deleteItem();
             getDG();
         }
-        PolicyAjax.showResponse(response);
     },
 
     IPBlockingBlockUndefined: function(response) {
-        PolicyAjax.showResponse(response);
+        //
     },
 
     AgentBlockingBlockUndefined: function(response) {
-        PolicyAjax.showResponse(response);
+        //
     },
 
     UpdateEncryptionSettings: function(response) {
-        PolicyAjax.showResponse(response);
+        //
     },
 
     UpdateAntiSpamSettings: function(response) {
-        PolicyAjax.showResponse(response);
+        //
     },
 
     UpdateAdvancedPolicies: function(response) {
-        PolicyAjax.showResponse(response);
+        //
     }
 };
 
