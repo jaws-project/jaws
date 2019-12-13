@@ -7,7 +7,7 @@
 var AbuseReporterCallback = {
     SaveReport: function (response) {
         var reportSign = response.data.gadget + '-' + response.data.action + '-' + response.data.reference;
-        AbuseReporterAjax.showResponse(response, $('#report-response-' + reportSign));
+        AbuseReporterAjax.XshowResponse(response, $('#report-response-' + reportSign));
         if (response.type == 'alert-success') {
             $('#reportModal-' + reportSign).modal('hide');
         }

@@ -14,14 +14,12 @@ var AbuseReporterCallback = {
             stopAction();
             $('#reportsGrid').repeater('render');
         }
-        AbuseReporterAjax.showResponse(response);
     },
     UpdateReport: function(response) {
         if (response.type == 'alert-success') {
             stopAction();
             $('#reportsGrid').repeater('render');
         }
-        AbuseReporterAjax.showResponse(response);
     }
 }
 
@@ -161,7 +159,7 @@ function reportsDataSource(options, callback) {
             }
             // pass the datasource back to the repeater
             callback(dataSource);
-            AbuseReporterAjax.showResponse(response);
+            AbuseReporterAjax.XshowResponse(response);
         }
     );
 }
