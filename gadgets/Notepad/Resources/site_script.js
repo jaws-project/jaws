@@ -12,17 +12,13 @@
  */
 var NotepadCallback = {
     DeleteNote: function(response) {
-        if (response.type === 'alert-danger') {
-            NotepadAjax.showResponse(response);
-        } else {
+        if (response.type !== 'alert-danger') {
             window.location = notepad_url;
         }
     },
 
     UpdateShare: function(response) {
-        if (response.type === 'alert-danger') {
-            NotepadAjax.showResponse(response);
-        } else {
+        if (response.type !== 'alert-danger') {
             window.location = notepad_url;
         }
     }
