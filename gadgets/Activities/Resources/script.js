@@ -13,14 +13,12 @@ var ActivitiesCallback = {
             unselectGridRow('datagrid');
             getDG('datagrid', $('#datagrid')[0].getCurrentPage(), true);
         }
-        ActivitiesAjax.showResponse(response);
     },
     DeleteAllActivities: function(response) {
         if (response['type'] == 'alert-success') {
             unselectGridRow('datagrid');
             getDG('datagrid', $('#datagrid')[0].getCurrentPage(), true);
         }
-        ActivitiesAjax.showResponse(response);
     }
 };
 
