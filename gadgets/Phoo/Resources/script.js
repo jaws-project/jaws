@@ -18,7 +18,7 @@ var PhooCallback = {
     },
 
     UpdatePhoto: function(response) {
-        PhooAjax.showResponse(response);
+        //
     }
 }
 
