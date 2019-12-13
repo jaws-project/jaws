@@ -15,21 +15,18 @@ var FeedReaderCallback = {
             $('#feeds-grid').repeater('render');
             stopAction();
         }
-        FeedReaderAjax.showResponse(response);
     },
     UpdateFeed: function (response) {
         if (response['type'] == 'alert-success') {
             $('#feeds-grid').repeater('render');
             stopAction();
         }
-        FeedReaderAjax.showResponse(response);
     },
     DeleteUserFeed: function (response) {
         if (response['type'] == 'alert-success') {
             $('#feeds-grid').repeater('render');
             stopAction();
         }
-        WeatherAjax.showResponse(response);
     }
 
 }
@@ -152,7 +149,7 @@ function feedsDataSource(options, callback) {
             // pass the datasource back to the repeater
             callback(dataSource);
         } else {
-            FeedReaderAjax.showResponse(response);
+            FeedReaderAjax.XshowResponse(response);
         }
     });
 }
