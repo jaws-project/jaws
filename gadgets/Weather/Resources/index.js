@@ -15,21 +15,18 @@ var WeatherCallback = {
             $('#regions-grid').repeater('render');
             stopAction();
         }
-        WeatherAjax.showResponse(response);
     },
     UpdateRegion: function (response) {
         if (response['type'] == 'alert-success') {
             $('#regions-grid').repeater('render');
             stopAction();
         }
-        WeatherAjax.showResponse(response);
     },
     DeleteUserRegion: function (response) {
         if (response['type'] == 'alert-success') {
             $('#regions-grid').repeater('render');
             stopAction();
         }
-        WeatherAjax.showResponse(response);
     }
 }
 
@@ -267,7 +264,7 @@ function regionsDataSource(options, callback) {
             // pass the datasource back to the repeater
             callback(dataSource);
         } else {
-            WeatherAjax.showResponse(response);
+            WeatherAjax.XshowResponse(response);
         }
     });
 }
