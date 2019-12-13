@@ -13,7 +13,6 @@ function Jaws_Gadget_Directory() { return {
             if (response.type === 'alert-success') {
                 window.location.reload();
             }
-            this.gadget.ajax.showResponse(response);
         }
 
     },
@@ -130,7 +129,6 @@ function Jaws_Gadget_Directory() { return {
                 }
                 // pass the datasource back to the repeater
                 callback(dataSource);
-                DirectoryAjax.showResponse(response);
             }
         );
 

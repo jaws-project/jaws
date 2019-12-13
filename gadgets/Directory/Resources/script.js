@@ -14,7 +14,6 @@ var DirectoryCallback = {
             cancel();
             updateFiles(jaws.Directory.Defines.currentDir);
         }
-        DirectoryAjax.showResponse(response);
     },
 
     UpdateDirectory: function(response) {
@@ -22,7 +21,6 @@ var DirectoryCallback = {
             cancel();
             updateFiles(jaws.Directory.Defines.currentDir);
         }
-        DirectoryAjax.showResponse(response);
     },
 
     SaveFile: function(response) {
@@ -30,7 +28,6 @@ var DirectoryCallback = {
             cancel();
             updateFiles(jaws.Directory.Defines.currentDir);
         }
-        DirectoryAjax.showResponse(response);
     },
 
     Delete: function(response) {
@@ -38,7 +35,6 @@ var DirectoryCallback = {
             cancel();
             updateFiles(jaws.Directory.Defines.currentDir);
         }
-        DirectoryAjax.showResponse(response);
     },
 
     Move: function(response) {
@@ -46,7 +42,6 @@ var DirectoryCallback = {
             cancel();
             updateFiles(jaws.Directory.Defines.currentDir);
         }
-        DirectoryAjax.showResponse(response);
     },
 
     Search: function(response) {
@@ -57,7 +52,7 @@ var DirectoryCallback = {
             $('#search_res').html(' > ' + response.text);
             displayFiles(response.data);
         } else {
-            DirectoryAjax.showResponse(response);
+            DirectoryAjax.XshowResponse(response);
         }
     }
 };
