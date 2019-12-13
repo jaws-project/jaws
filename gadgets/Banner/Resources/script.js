@@ -15,7 +15,6 @@ var BannerCallback = {
             $('#banners_datagrid')[0].setCurrentPage(0);
             getDG('banners_datagrid');
         }
-        BannerAjax.showResponse(response);
     },
 
     UpdateBanner: function(response) {
@@ -23,7 +22,6 @@ var BannerCallback = {
             stopAction();
             getDG('banners_datagrid');
         }
-        BannerAjax.showResponse(response);
     },
 
     DeleteBanner: function(response) {
@@ -32,21 +30,18 @@ var BannerCallback = {
             $('#banners_datagrid')[0].deleteItem();
             getDG('banners_datagrid');
         }
-        BannerAjax.showResponse(response);
     },
 
     ResetViews: function(response) {
         if (response['type'] == 'alert-success') {
             getDG('reports_datagrid');
         }
-        BannerAjax.showResponse(response);
     },
 
     ResetClicks: function(response) {
         if (response['type'] == 'alert-success') {
             getDG('reports_datagrid');
         }
-        BannerAjax.showResponse(response);
     },
 
     InsertGroup: function(response) {
@@ -54,7 +49,6 @@ var BannerCallback = {
             getGroups();
             stopAction();
         }
-        BannerAjax.showResponse(response);
     },
 
     UpdateGroup: function(response) {
@@ -62,7 +56,6 @@ var BannerCallback = {
             getGroups();
             stopAction();
         }
-        BannerAjax.showResponse(response);
     },
 
     DeleteGroup: function(response) {
@@ -70,11 +63,10 @@ var BannerCallback = {
             getGroups();
             stopAction();
         }
-        BannerAjax.showResponse(response);
     },
 
     AddBannersToGroup: function(response) {
-        BannerAjax.showResponse(response);
+        //
     }
 }
 
