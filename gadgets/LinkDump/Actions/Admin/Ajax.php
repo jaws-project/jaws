@@ -116,7 +116,7 @@ class LinkDump_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Links');
         $model->InsertLink($gid, $title, $url, $fast_url, $desc, $tags, $rank);
 
-        return $this->gadget->session->pop();
+        return $this->gadget->session->pop('InsertLink');
     }
 
     /**

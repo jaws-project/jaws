@@ -17,7 +17,6 @@ var LinkDumpCallback = {
             $('#group_'+$('#gid').val()).find('a').eq(1).html($('#title').val());
             stopAction();
         }
-        LinkDumpAjax.showResponse(response);
     }
 }
 
@@ -78,7 +77,6 @@ function saveLink()
                 AddNewGroup(gid);
                 stopAction();
             }
-            LinkDumpAjax.showResponse(response);
         } else {
             LinkDumpAjax.callAsync(
                 'UpdateGroup', [
@@ -117,7 +115,6 @@ function saveLink()
                 AddNewLinkItem($('#gid').val(), lid, $('#rank').val());
                 stopAction();
             }
-            LinkDumpAjax.showResponse(response);
         } else {
             var response = LinkDumpAjax.callSync(
                 'UpdateLink', [
@@ -155,7 +152,6 @@ function saveLink()
                 }
                 stopAction();
             }
-            LinkDumpAjax.showResponse(response);
         }
     }
 }
@@ -195,10 +191,8 @@ function AddNewLinkItem(gid, lid, rank)
     );
 
     //set ranking
-    var link_elements = gLinksDiv.find('div');
-    var oldRank = link_elements.size();
-    console.log(link_elements);
-    console.log(oldRank);
+    var link_elements = gLinksDiv.children('div');
+    var oldRank = link_elements.length;
     if (rank < oldRank) {
         mainDiv.insertBefore(link_elements.eq(rank -1));
     } else {
@@ -395,7 +389,6 @@ function delLinks()
                 $('#group_'+gid).remove();
             }
             stopAction();
-            LinkDumpAjax.showResponse(response);
         }
     } else {
         var lid = selectedLink;
@@ -413,7 +406,6 @@ function delLinks()
                 }
             }
             stopAction();
-            LinkDumpAjax.showResponse(response);
         }
     }
 }

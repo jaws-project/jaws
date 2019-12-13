@@ -57,7 +57,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         }
 
         $this->InvalidateFeed($gid);
-        $this->gadget->session->push(_t('LINKDUMP_LINKS_ADDED'), RESPONSE_NOTICE, $lid);
+        $this->gadget->session->push(_t('LINKDUMP_LINKS_ADDED'), RESPONSE_NOTICE, 'InsertLink', $lid);
         return true;
     }
 
