@@ -21,7 +21,6 @@ var VisitCounterCallback = {
             getDG();
             updateStats();
         }
-        VisitCounterAjax.showResponse(response);
     },
     
     ResetCounter: function(response) {
@@ -32,11 +31,10 @@ var VisitCounterCallback = {
             getDG();
             updateStats();
         }
-        VisitCounterAjax.showResponse(response);
     }, 
 
     UpdateProperties: function(response) {
-        VisitCounterAjax.showResponse(response);
+        //
     }
 };
 
