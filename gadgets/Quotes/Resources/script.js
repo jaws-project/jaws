@@ -12,7 +12,7 @@
  */
 var QuotesCallback = {
     AddQuotesToGroup: function(response) {
-        QuotesAjax.showResponse(response);
+        //
     }
 };
 
@@ -104,7 +104,6 @@ function saveQuote()
             }
             stopAction();
         }
-        QuotesAjax.showResponse(response);
     } else {
         var box = $('#quotes_combo')[0];
         var quoteIndex = box.selectedIndex;
@@ -124,7 +123,6 @@ function saveQuote()
             box.options[quoteIndex].text = $('#title').val();
             stopAction();
         }
-        QuotesAjax.showResponse(response);
     }
 }
 
@@ -142,7 +140,6 @@ function deleteQuote()
             box.options[quoteIndex] = null;
             stopAction();
         }
-        QuotesAjax.showResponse(response);
     }
 }
 
@@ -224,7 +221,6 @@ function saveGroup()
                 box.options[box.options.length] = new Option(response['data']['title'], response['data']['id']);
                 stopAction();
             }
-            QuotesAjax.showResponse(response);
         } else {
             var box = $('#groups_combo')[0],
                 groupIndex = box.selectedIndex;
@@ -244,7 +240,6 @@ function saveGroup()
                 box.options[groupIndex].text = $('#title').val();
                 stopAction();
             }
-            QuotesAjax.showResponse(response);
         }
     } else {
         var inputs  = $('#work_area').find('input');
@@ -278,7 +273,6 @@ function deleteGroup()
             box.options[quoteIndex] = null;
             stopAction();
         }
-        QuotesAjax.showResponse(response);
     }
 }
 
