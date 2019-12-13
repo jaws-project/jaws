@@ -11,7 +11,7 @@ function Jaws_Gadget_Subscription() { return {
     // ASync callback method
     AjaxCallback : {
         UpdateSubscription: function(response) {
-            this.gadget.ajax.showResponse(response);
+            //
         },
     },
 

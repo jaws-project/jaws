@@ -13,7 +13,6 @@ var SubscriptionCallback = {
             unselectGridRow('subscription_datagrid');
             getDG('subscription_datagrid', $('#subscription_datagrid')[0].getCurrentPage(), true);
         }
-        SubscriptionAjax.showResponse(response);
     }
 };
 
