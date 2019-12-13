@@ -17,7 +17,6 @@ var PrivateMessageCallback = {
                 setTimeout(function() {window.location.href = response.data.url;}, 1000);
             }
         }
-        PrivateMessageAjax.showResponse(response);
     }
 }
 
