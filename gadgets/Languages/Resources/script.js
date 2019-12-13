@@ -15,14 +15,12 @@ var LanguagesCallback = {
         if (response['type'] == 'alert-success') {
             setTimeout( "refresh()", 1000);
         }
-        LanguagesAjax.showResponse(response);
     },
 
     SetLangData: function(response) {
         if (response['type'] == 'alert-success') {
             changeColorOfTranslatedTerms();
         }
-        LanguagesAjax.showResponse(response);
     }
 }
 
