@@ -29,7 +29,6 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('#posts_datagrid')[0]);
         }
-        BlogAjax.showResponse(response);
     },
 
     ChangeEntryStatus: function(response) {
@@ -42,7 +41,6 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('#posts_datagrid')[0]);
         }
-        BlogAjax.showResponse(response);
     },
 
     DeleteTrackbacks: function(response) {
@@ -62,7 +60,6 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('#trackbacks_datagrid')[0]);
         }
-        BlogAjax.showResponse(response);
     },
 
     TrackbackMarkAs: function(response) {
@@ -78,11 +75,10 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('#trackbacks_datagrid')[0]);
         }
-        BlogAjax.showResponse(response);
     },
 
     SaveSettings: function(response) {
-        BlogAjax.showResponse(response);
+        //
     },
 
     getcategoryform: function(response) {
@@ -90,7 +86,6 @@ var BlogCallback = {
     },
 
     AddCategory2: function(response) {
-        BlogAjax.showResponse(response);
         if (response['type'] == 'alert-success') {
             stopAction();
             resetCategoryCombo();
@@ -98,7 +93,6 @@ var BlogCallback = {
     },
 
     UpdateCategory2: function(response) {
-        BlogAjax.showResponse(response);
         if (response['type'] == 'alert-success') {
             stopAction();
             resetCategoryCombo();
@@ -106,7 +100,6 @@ var BlogCallback = {
     },
 
     DeleteCategory2: function(response) {
-        BlogAjax.showResponse(response);
         if (response['type'] == 'alert-success') {
             stopAction();
             resetCategoryCombo();
@@ -685,7 +678,7 @@ function showSimpleResponse(response)
         }
         autoDraftDone = true;
     }
-    BlogAjax.showResponse(response, false);
+    BlogAjax.XshowResponse(response, false);
 }
 
 /**
@@ -773,7 +766,7 @@ function uploadCategoryImage(fileElem) {
                 return;
             }
             if (response.type !== 'alert-success') {
-                BlogAjax.showResponse(response);
+                BlogAjax.XshowResponse(response);
                 return;
             }
             categoryImageInfo = response.data;
