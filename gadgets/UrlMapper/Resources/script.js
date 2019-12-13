@@ -20,14 +20,13 @@ var UrlMapperCallback = {
             enableMapEditingArea(false);
             showActionMaps();
         }
-        UrlMapperAjax.showResponse(response);
     },
 
     /**
      * Update settings
      */
     UpdateSettings: function(response) {
-        UrlMapperAjax.showResponse(response);
+        //
     },
 
     /**
@@ -37,7 +36,6 @@ var UrlMapperCallback = {
         if (response['type'] == 'alert-success') {
             rebuildAliasCombo();
         }
-        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -47,7 +45,6 @@ var UrlMapperCallback = {
         if (response['type'] == 'alert-success') {
             rebuildAliasCombo();
         }
-        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -57,7 +54,6 @@ var UrlMapperCallback = {
         if (response['type'] == 'alert-success') {
             rebuildAliasCombo();
         }
-        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -70,7 +66,6 @@ var UrlMapperCallback = {
             $('#errormaps_datagrid')[0].lastPage();
             getDG('errormaps_datagrid');
         }
-        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -81,7 +76,6 @@ var UrlMapperCallback = {
             stopErrorMapAction();
             getDG('errormaps_datagrid', $('#errormaps_datagrid')[0].getCurrentPage(), true);
         }
-        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -92,7 +86,6 @@ var UrlMapperCallback = {
             stopErrorMapAction();
             getDG('errormaps_datagrid', $('#errormaps_datagrid')[0].getCurrentPage(), true);
         }
-        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -103,7 +96,6 @@ var UrlMapperCallback = {
             stopErrorMapAction();
             getDG('errormaps_datagrid');
         }
-        UrlMapperAjax.showResponse(response);
     }
 };
 
