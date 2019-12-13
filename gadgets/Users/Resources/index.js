@@ -786,7 +786,6 @@ function uploadVCardFile() {
             function (response, code) {
                 if (response.type == 'alert-success' && code == 200) {
                 }
-                UsersAjax.showResponse(response);
             },
             function (e) {
             }
