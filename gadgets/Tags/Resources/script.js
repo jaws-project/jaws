@@ -14,7 +14,6 @@ var TagsCallback = {
             $('#tags_datagrid')[0].addItem();
             getDG('tags_datagrid');
         }
-        TagsAjax.showResponse(response);
     },
 
     UpdateTag: function(response) {
@@ -22,7 +21,6 @@ var TagsCallback = {
             stopTagAction();
             getDG('tags_datagrid');
         }
-        TagsAjax.showResponse(response);
     },
 
     DeleteTags: function(response) {
@@ -30,7 +28,6 @@ var TagsCallback = {
             stopTagAction();
             getDG('tags_datagrid', $('#tags_datagrid')[0].getCurrentPage(), true);
         }
-        TagsAjax.showResponse(response);
     },
 
     MergeTags: function(response) {
@@ -38,11 +35,10 @@ var TagsCallback = {
             stopTagAction();
             getDG('tags_datagrid', $('#tags_datagrid')[0].getCurrentPage(), true);
         }
-        TagsAjax.showResponse(response);
     },
 
     SaveSettings: function(response) {
-        TagsAjax.showResponse(response);
+        //
     }
 }
 
