@@ -257,11 +257,21 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
         //options.complete = this.onComplete.bind(this, options);
-        var result = $.ajax(options);
+        let result = $.ajax(options);
+        let response = eval('(' + result.responseText + ')');
         // hide loading
         this.callbackObject.gadget.message.loading(false, callOptions.message_container);
 
-        return eval('(' + result.responseText + ')');
+        // response message
+        if (callOptions.hasOwnProperty('showMessage')) {
+            if (callOptions.showMessage) {
+                this.callbackObject.gadget.message.show(response, callOptions.message_container);
+            }
+        } else if (this.defaultOptions.showMessage) {
+            this.callbackObject.gadget.message.show(response, callOptions.message_container);
+        }
+
+        return response;
     };
 
     /**
@@ -382,17 +392,12 @@ function JawsMessage(objOwner)
      * @return  void
      */
     this.show = function (message, container) {
+        if (!message || !$.trim(message.text) || !message.type) {
+            return;
+        }
+
         if (!container || !container.length) {
             container =  this.default_container;
-        }
-
-        if (Array.isArray(message)) {
-            // only show first message
-            message = message[0];
-        }
-
-        if (!$.trim(message.text)) {
-            return;
         }
 
         if (container.length) {
