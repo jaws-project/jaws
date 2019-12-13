@@ -16,26 +16,26 @@ var EventsCalendarCallback = {
         if (response.type && response.type === 'alert-success') {
             $('#eventModal').modal('hide');
             $('#eventsGrid').repeater('render');
-            EventsCalendarAjax.showResponse(response);
+            EventsCalendarAjax.XshowResponse(response);
         } else {
-            EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
+            EventsCalendarAjax.XshowResponse(response, $('.gadget_response > div'));
         }
     },
     UpdateEvent: function(response) {
         if (response.type && response.type === 'alert-success') {
             $('#eventModal').modal('hide');
             $('#eventsGrid').repeater('render');
-            EventsCalendarAjax.showResponse(response);
+            EventsCalendarAjax.XshowResponse(response);
         } else {
-            EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
+            EventsCalendarAjax.XshowResponse(response, $('.gadget_response > div'));
         }
     },
     DeleteEvents: function(response) {
         if (response.type && response.type === 'alert-success') {
             $('#eventsGrid').repeater('render');
-            EventsCalendarAjax.showResponse(response);
+            EventsCalendarAjax.XshowResponse(response);
         } else {
-            EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
+            EventsCalendarAjax.XshowResponse(response, $('.gadget_response > div'));
         }
     }
 };

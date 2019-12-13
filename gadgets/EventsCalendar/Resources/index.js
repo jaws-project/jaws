@@ -9,17 +9,13 @@
  */
 var ECCallback = {
     DeleteEvent: function(response) {
-        if (response.type === 'alert-danger') {
-            ECAjax.showResponse(response);
-        } else {
+        if (response.type !== 'alert-danger') {
             location.assign(jaws.EventsCalendar.Defines.events_url);
         }
     },
 
     UpdateShare: function(response) {
-        if (response.type === 'alert-danger') {
-            ECAjax.showResponse(response);
-        } else {
+        if (response.type !== 'alert-danger') {
             location.assign(jaws.EventsCalendar.Defines.events_url);
         }
     }
