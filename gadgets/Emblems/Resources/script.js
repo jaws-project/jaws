@@ -13,11 +13,10 @@
  */
 var EmblemsCallback = {
     UpdateEmblem: function(response) {
-        EmblemsAjax.showResponse(response);
+        //
     },
 
     DeleteEmblem: function(response) {
-        EmblemsAjax.showResponse(response);
         if (response['type'] == 'alert-success') {
             $('#emblems_datagrid')[0].deleteItem();
             getDG();
