@@ -722,7 +722,7 @@ class Jaws_AtomFeed
         $res .= "\t<pubDate>".$this->Modified->GetRFC2822Date()."</pubDate>\n";
         $res .= "\t<generator>{$this->Generator}</generator>\n";
         $res .= "\t<atom:link href=\"{$this->Link->HRef}\" rel=\"self\" type=\"application/rss+xml\" />\n";
-        if (count($this->Entries) > 0) {
+        if (!empty($this->Entries) && count($this->Entries) > 0) {
             foreach ($this->Entries as $entry) {
                 $res .= "\t<item>\n";
                 if (isset($entry->Categories)) {
