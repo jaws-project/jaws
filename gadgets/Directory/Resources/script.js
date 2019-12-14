@@ -52,7 +52,10 @@ var DirectoryCallback = {
             $('#search_res').html(' > ' + response.text);
             displayFiles(response.data);
         } else {
-            DirectoryAjax.XshowResponse(response);
+            Jaws_Gadget.getInstance('Directory').message.show(
+                response,
+                $('#directory_directory_response')
+            );
         }
     }
 };
@@ -651,7 +654,12 @@ function performSearch()
 {
     var query = $.unserialize($('#frm_search').serialize());
     query.id = jaws.Directory.Defines.currentDir;
-    DirectoryAjax.callAsync('Search', query);
+    DirectoryAjax.callAsync(
+        'Search',
+        query,
+        false,
+        {'showMessage': false}
+    );
 }
 
 /**
