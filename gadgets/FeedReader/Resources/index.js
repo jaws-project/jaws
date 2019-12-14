@@ -149,9 +149,13 @@ function feedsDataSource(options, callback) {
             // pass the datasource back to the repeater
             callback(dataSource);
         } else {
-            FeedReaderAjax.XshowResponse(response);
+            Jaws_Gadget.getInstance('FeedReader').message.show(
+                response,
+                $('#feedreader_userfeedslist_response')
+            );
         }
-    });
+    },
+    {'showMessage': false});
 }
 
 /**
