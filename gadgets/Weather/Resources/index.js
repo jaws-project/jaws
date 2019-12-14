@@ -264,9 +264,13 @@ function regionsDataSource(options, callback) {
             // pass the datasource back to the repeater
             callback(dataSource);
         } else {
-            WeatherAjax.XshowResponse(response);
+            Jaws_Gadget.getInstance('Weather').message.show(
+                response,
+                $('#weather_userregionslist_response')
+            );
         }
-    });
+    }, 
+    {'showMessage': false});
 }
 
 /**
