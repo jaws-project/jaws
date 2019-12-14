@@ -678,7 +678,10 @@ function showSimpleResponse(response)
         }
         autoDraftDone = true;
     }
-    BlogAjax.XshowResponse(response, false);
+    Jaws_Gadget.getInstance('Blog').message.show(
+        response,
+        $('#blog_newentry_response')
+    );
 }
 
 /**
@@ -741,8 +744,6 @@ function previewImage(fileElement) {
  * Uploads a single file using Ajax
  */
 function uploadCategoryImage(fileElem) {
-    var file = $('#image_file').get(0).files[0];
-
     var uploadCanceled = false,
         $col1 = $('<td>'),
         $col2 = $('<td>'),
@@ -757,7 +758,10 @@ function uploadCategoryImage(fileElem) {
     $col2.append($progress, ' ', $cancel);
     $('#category_image').append($row);
 
-    var xhr = BlogAjax.uploadFile('UploadImage', file,
+    let formData = new FormData();
+        formData.append('file[]', $('#image_file').get(0).files[0]);
+
+    var xhr = BlogAjax.uploadFile('UploadImage', formData,
         function (response, code) {
             if (code != 200) {
                 if (code == 0) {
@@ -766,7 +770,10 @@ function uploadCategoryImage(fileElem) {
                 return;
             }
             if (response.type !== 'alert-success') {
-                BlogAjax.XshowResponse(response);
+                Jaws_Gadget.getInstance('Blog').message.show(
+                    response,
+                    $('#blog_managecategories_response')
+                );
                 return;
             }
             categoryImageInfo = response.data;
@@ -784,7 +791,8 @@ function uploadCategoryImage(fileElem) {
             }
             var percentage = Math.round((e.loaded * 100) / e.total) + '%';
             $progressBar.html(percentage).css('width', percentage);
-        }
+        },
+        {'showMessage': false}
     );
 }
 

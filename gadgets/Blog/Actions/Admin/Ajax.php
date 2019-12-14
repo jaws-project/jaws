@@ -345,17 +345,8 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                $timestamp,
                true
             );
-            if (!Jaws_Error::IsError($res)) {
-                $this->gadget->session->pop(); // emptying all responses message
-                $newid = $res;
-                $this->gadget->session->push(
-                    _t('BLOG_ENTRY_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
-                    RESPONSE_NOTICE,
-                    $newid
-                );
-            }
         } else {
-            $model->UpdateEntry(
+            $res = $model->UpdateEntry(
                $id,
                $categories,
                $title,
@@ -376,6 +367,19 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                true
             );
         }
-        return $this->gadget->session->pop();
+
+        $this->gadget->session->pop(); // emptying all responses message
+        if (Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response(
+                $res->getMessage(),
+                RESPONSE_ERROR
+            );
+        } else {
+            return $this->gadget->session->response(
+                _t('BLOG_ENTRY_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
+                RESPONSE_NOTICE,
+                $res
+            );
+        }
     }
 }
