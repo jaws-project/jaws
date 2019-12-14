@@ -159,7 +159,6 @@ function reportsDataSource(options, callback) {
             }
             // pass the datasource back to the repeater
             callback(dataSource);
-            AbuseReporterAjax.XshowResponse(response);
         }
     );
 }

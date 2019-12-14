@@ -7,7 +7,10 @@
 var AbuseReporterCallback = {
     SaveReport: function (response) {
         var reportSign = response.data.gadget + '-' + response.data.action + '-' + response.data.reference;
-        AbuseReporterAjax.XshowResponse(response, $('#report-response-' + reportSign));
+        Jaws_Gadget.getInstance('AbuseReporter').message.show(
+            response,
+            $('#report-response-' + reportSign)
+        );
         if (response.type == 'alert-success') {
             $('#reportModal-' + reportSign).modal('hide');
         }
@@ -52,7 +55,9 @@ function saveReport(gadget, action, reference, url) {
             'comment': $(formId + ' #comment').val(),
             'type': $(formId + ' #type').val(),
             'priority': $(formId + ' #priority').val(),
-        }
+        },
+        false,
+        {'showMessage': false}
     );
 
 }
