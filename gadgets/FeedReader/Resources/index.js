@@ -123,8 +123,9 @@ function feedsDataSource(options, callback) {
         'searchBy': options.search || ''
     };
 
-    FeedReaderAjax.callAsync('GetUserFeeds', options, function (response) {
+    FeedReaderAjax.callAsync('GetUserFeeds', options, function (response, status, callOptions) {
         if (response.type == 'alert-success') {
+            callOptions.showMessage = false;
             var items = response.data.records;
             var totalItems = response.data.total;
             var totalPages = Math.ceil(totalItems / pageSize);
@@ -148,14 +149,8 @@ function feedsDataSource(options, callback) {
 
             // pass the datasource back to the repeater
             callback(dataSource);
-        } else {
-            Jaws_Gadget.getInstance('FeedReader').message.show(
-                response,
-                $('#feedreader_userfeedslist_response')
-            );
         }
-    },
-    {'showMessage': false});
+    });
 }
 
 /**
