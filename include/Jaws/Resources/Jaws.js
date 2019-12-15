@@ -348,7 +348,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         response = eval('(' + jqXHR.responseText + ')');
         // call inline user define function
         if (reqOptions.done) {
-            reqOptions.done(response, jqXHR.status);
+            reqOptions.done(response, jqXHR.status, reqOptions.callOptions);
         }
 
         if (this.callbackFunctions && this.callbackFunctions[reqOptions.action]) {
