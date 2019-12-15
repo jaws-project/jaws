@@ -107,7 +107,15 @@ var BlogCallback = {
     },
 
     AutoDraft: function(response) {
-        showSimpleResponse(response);
+        if (!autoDraftDone) {
+            var actioni   = $('#action').val();
+            if (actioni == 'SaveNewEntry' && response['type'] == 'alert-success') {
+                $('#published').val('0');
+                $('#id').val(response['data']);
+                $('#action').val('SaveEditEntry');
+            }
+            autoDraftDone = true;
+        }
     }
 }
 
@@ -665,26 +673,6 @@ function startAutoDrafting()
 }
 
 /**
- * Auto Draft response
- */
-function showSimpleResponse(response)
-{
-    if (!autoDraftDone) {
-        var actioni   = $('#action').val();
-        if (actioni == 'SaveNewEntry' && response['type'] == 'alert-success') {
-            $('#published').val('0');
-            $('#id').val(response['data']);
-            $('#action').val('SaveEditEntry');
-        }
-        autoDraftDone = true;
-    }
-    Jaws_Gadget.getInstance('Blog').message.show(
-        response,
-        $('#blog_newentry_response')
-    );
-}
-
-/**
  * Toggle advanced
  */
 function toggleAdvanced(checked)
@@ -762,7 +750,7 @@ function uploadCategoryImage(fileElem) {
         formData.append('file[]', $('#image_file').get(0).files[0]);
 
     var xhr = BlogAjax.uploadFile('UploadImage', formData,
-        function (response, code) {
+        function (response, code, callOptions) {
             if (code != 200) {
                 if (code == 0) {
                     // abort
@@ -770,12 +758,9 @@ function uploadCategoryImage(fileElem) {
                 return;
             }
             if (response.type !== 'alert-success') {
-                Jaws_Gadget.getInstance('Blog').message.show(
-                    response,
-                    $('#blog_managecategories_response')
-                );
                 return;
             }
+            callOptions.showMessage = false;
             categoryImageInfo = response.data;
             previewCategoryImage(fileElem);
             deleteCategoryImage = false;
@@ -791,8 +776,7 @@ function uploadCategoryImage(fileElem) {
             }
             var percentage = Math.round((e.loaded * 100) / e.total) + '%';
             $progressBar.html(percentage).css('width', percentage);
-        },
-        {'showMessage': false}
+        }
     );
 }
 
