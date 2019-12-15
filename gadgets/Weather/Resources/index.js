@@ -238,8 +238,9 @@ function regionsDataSource(options, callback) {
         'searchBy': options.search || ''
     };
 
-    WeatherAjax.callAsync('GetUserRegions', options, function (response) {
+    WeatherAjax.callAsync('GetUserRegions', options, function (response, status, callOptions) {
         if (response.type == 'alert-success') {
+            callOptions.showMessage = false;
             var items = response.data.records;
             var totalItems = response.data.total;
             var totalPages = Math.ceil(totalItems / pageSize);
@@ -263,14 +264,8 @@ function regionsDataSource(options, callback) {
 
             // pass the datasource back to the repeater
             callback(dataSource);
-        } else {
-            Jaws_Gadget.getInstance('Weather').message.show(
-                response,
-                $('#weather_userregionslist_response')
-            );
         }
-    }, 
-    {'showMessage': false});
+    });
 }
 
 /**
