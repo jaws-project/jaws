@@ -44,18 +44,14 @@ var DirectoryCallback = {
         }
     },
 
-    Search: function(response) {
+    Search: function(response, status, callOptions) {
         if (response.type === 'alert-success') {
             $('#dir_pathbar').hide();
             $('#dir_searchbar').show();
             $('#btn_search_close').show();
             $('#search_res').html(' > ' + response.text);
             displayFiles(response.data);
-        } else {
-            Jaws_Gadget.getInstance('Directory').message.show(
-                response,
-                $('#directory_directory_response')
-            );
+            callOptions.showMessage = false
         }
     }
 };
@@ -654,12 +650,7 @@ function performSearch()
 {
     var query = $.unserialize($('#frm_search').serialize());
     query.id = jaws.Directory.Defines.currentDir;
-    DirectoryAjax.callAsync(
-        'Search',
-        query,
-        false,
-        {'showMessage': false}
-    );
+    DirectoryAjax.callAsync('Search', query);
 }
 
 /**
