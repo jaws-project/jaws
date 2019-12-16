@@ -136,12 +136,12 @@ function Jaws_Gadget_Files() { return {
                 switch (file.type.substring(0, file.type.indexOf('/'))) {
                     case 'image':
                         let fReader = new FileReader();
-                        fReader.readAsDataURL(file);
                         fReader.onload = function (event) {
                             liElement.find("[data-type='preview']").show().html(
                                 '<img src="'+event.target.result+'" alt="" width="128">'
                             );
                         }
+                        fReader.readAsDataURL(file);
                         break;
 
                     case 'audio':
