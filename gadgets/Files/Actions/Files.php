@@ -201,6 +201,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             );
         }
 
+        $resultFiles = array();
         //FIXME: need improvement for multi files delete
         if (empty($remainFiles)) {
             $filesModel->deleteFiles($interface);
@@ -211,6 +212,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                         $interface,
                         $file['id']
                     );
+                } else {
+                    $resultFiles[] = $file;
                 }
             }
         }
@@ -230,14 +233,17 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             }
 
             if (!empty($newFiles)) {
-                return $filesModel->insertFiles(
+                $result = $filesModel->insertFiles(
                     $interface,
                     $newFiles[0]
                 );
+                if (!Jaws_Error::IsError($result)) {
+                    call_user_func_array('array_push', array_merge(array(&$resultFiles), $result));
+                }
             }
         }
 
-        return true;
+        return $resultFiles;
     }
 
     /**

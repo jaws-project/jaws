@@ -33,6 +33,7 @@ class Files_Model_Files extends Jaws_Gadget_Model
             $data = array_merge($data, $interface);
             $data['user'] = $this->app->session->user->id;
 
+            $resultFiles = array();
             $attachTable = Jaws_ORM::getInstance()->table('files');
             foreach ($files as $fileInfo) {
                 $data['title']    = $data['title']?: $fileInfo['user_filename'];
@@ -45,10 +46,13 @@ class Files_Model_Files extends Jaws_Gadget_Model
                 $data['filehits'] = 0;
                 $data['filekey']  = md5(uniqid('', true));
 
-                $result = $attachTable->insert($data)->exec();                
+                $result = $attachTable->insert($data)->exec();  
+                if (!Jaws_Error::IsError($result)) {
+                    $resultFiles[] = array_merge(array('id' => $result), $data);
+                }
             }
 
-            return true;
+            return $resultFiles;
         }
 
         return false;
