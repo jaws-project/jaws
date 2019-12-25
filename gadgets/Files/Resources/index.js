@@ -90,6 +90,22 @@ function Jaws_Gadget_Files() { return {
         ulElement.children(':visible').remove();
 
         let fileList = new DataTransfer();
+
+        // define setter/getter for new property prepared files
+        Object.defineProperty(fileInput.files, 'prepared', {
+            get() {
+                return this._prepared | 0;
+            },
+            set(value) {
+                this._prepared = value;
+                if (this._prepared >= this.length) {
+                    console.log('!!!!!!!!!!!!');
+                    fileInput.files = fileList.files;
+                }
+            }
+        });
+
+        // preparing all selected files
         for (let file of fileInput.files) {
             let fileName = file.name;
             // file extension
@@ -102,12 +118,14 @@ function Jaws_Gadget_Files() { return {
             // file size
             if (file.size > maxsize) {
                 console.log('File size is to big: ' + file.name);
+                fileInput.files.prepared++;
                 continue;
             }
 
             // file extensions
             if (extensions.length > 0 && extensions.indexOf(file.extension) < 0) {
                 console.log('File type not valid: ' + file.name);
+                fileInput.files.prepared++;
                 continue;
             }
 
@@ -117,12 +135,12 @@ function Jaws_Gadget_Files() { return {
                     $(fileInput).parents().eq(2).find('.btn_browse').hide();
                     if (filesCount > maxcount) {
                         console.log('Files count exceeded!');
+                        fileInput.files.prepared++;
                         continue;
                     }
                 }
             }
 
-            fileList.items.add(file);
             ulElement.append(
                 ulElement.children().first().clone(true).show()
             );
@@ -131,30 +149,81 @@ function Jaws_Gadget_Files() { return {
             liElement.find("[data-type='name']").html(file.name);
             liElement.find("[data-type='size']").html(file.size);
 
-            // show preview
-            if (preview) {
-                switch (file.type.substring(0, file.type.indexOf('/'))) {
-                    case 'image':
-                        let fReader = new FileReader();
-                        fReader.onload = function (event) {
-                            liElement.find("[data-type='preview']").show().html(
-                                '<img src="'+event.target.result+'" alt="" width="128">'
+            switch (file.type.substring(0, file.type.indexOf('/'))) {
+                case 'image':
+                    let fReader = new FileReader();
+                    fReader.onload = function (event) {
+                        let img = new Image();
+                        img.onload = function() {
+                            let canvas = document.createElement("canvas");
+                            let ctx = canvas.getContext("2d");
+
+                            var MAX_WIDTH = 360;
+                            var MAX_HEIGHT = 640;
+                            var width = img.width;
+                            var height = img.height;
+
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            let dataurl = canvas.toDataURL(file.type);
+                            canvas.toBlob(
+                                function(blob) {
+                                    fileList.items.add(new File(
+                                        [blob],
+                                        file.name,
+                                        {
+                                            'type': file.type,
+                                            'lastModified': file.lastModified
+                                        }
+                                    ));
+                                    fileInput.files.prepared++;
+                                },
+                                file.type
                             );
+
+                            // show preview
+                            if (preview) {
+                                liElement.find("[data-type='preview']").show().html(
+                                    '<img src="'+dataurl+'" alt="" width="128">'
+                                );
+                            }
+
                         }
-                        fReader.readAsDataURL(file);
-                        break;
+                        img.src = event.target.result;
+                    }
+                    fReader.readAsDataURL(file);
+                    break;
 
-                    case 'audio':
-                        break;
+                case 'audio':
+                    fileList.items.add(file);
+                    fileInput.files.prepared++;
+                    break;
 
-                    case 'video':
-                        break;
-                }
+                case 'video':
+                    fileList.items.add(file);
+                    fileInput.files.prepared++;
+                    break;
+
+                default:
+                    fileList.items.add(file);
+                    fileInput.files.prepared++;
             }
         }
 
-        // reset file-input element selected files
-        fileInput.files = fileList.files;
     },
 
     /**

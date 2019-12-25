@@ -17,45 +17,44 @@ class Files_Model_Files extends Jaws_Gadget_Model
      */
     function insertFiles($interface, $files)
     {
-        if (is_array($files)) {
-            $data = array(
-                'gadget'      => '',
-                'action'      => '',
-                'reference'   => 0,
-                'type'        => 0,
-                'title'       => '',
-                'description' => '',
-                'public'      => true,
-            );
-            // remove invalid interface keys
-            $interface = array_intersect_key($interface, $data);
-            // set undefined keys by default values
-            $data = array_merge($data, $interface);
-            $data['user'] = $this->app->session->user->id;
-
-            $resultFiles = array();
-            $attachTable = Jaws_ORM::getInstance()->table('files');
-            foreach ($files as $fileInfo) {
-                $data['title']    = $data['title']?: $fileInfo['user_filename'];
-                $data['postname'] = $fileInfo['user_filename'];
-                $data['filename'] = $fileInfo['host_filename'];
-                $data['filesize'] = $fileInfo['host_filesize'];
-                $data['mimetype'] = $fileInfo['host_mimetype'];
-                $data['filetype'] = $fileInfo['host_filetype'];
-                $data['filetime'] = time();
-                $data['filehits'] = 0;
-                $data['filekey']  = md5(uniqid('', true));
-
-                $result = $attachTable->insert($data)->exec();  
-                if (!Jaws_Error::IsError($result)) {
-                    $resultFiles[] = array_merge(array('id' => $result), $data);
-                }
-            }
-
-            return $resultFiles;
+        if (!is_array($files) || empty($files)) {
+            return false;
         }
 
-        return false;
+        $data = array(
+            'gadget'      => '',
+            'action'      => '',
+            'reference'   => 0,
+            'type'        => 0,
+            'description' => '',
+            'public'      => true,
+        );
+        // remove invalid interface keys
+        $interface = array_intersect_key($interface, $data);
+        // set undefined keys by default values
+        $data = array_merge($data, $interface);
+        $data['user'] = $this->app->session->user->id;
+
+        $resultFiles = array();
+        $attachTable = Jaws_ORM::getInstance()->table('files');
+        foreach ($files as $file) {
+            $data['title']    = $file['user_filename'];
+            $data['postname'] = $file['user_filename'];
+            $data['filename'] = $file['host_filename'];
+            $data['filesize'] = $file['host_filesize'];
+            $data['mimetype'] = $file['host_mimetype'];
+            $data['filetype'] = $file['host_filetype'];
+            $data['filetime'] = time();
+            $data['filehits'] = 0;
+            $data['filekey']  = md5(uniqid('', true));
+
+            $result = $attachTable->insert($data)->exec();  
+            if (!Jaws_Error::IsError($result)) {
+                $resultFiles[] = array_merge(array('id' => $result), $data);
+            }
+        }
+
+        return $resultFiles;
     }
 
     /**
