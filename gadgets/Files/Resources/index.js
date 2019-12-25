@@ -70,6 +70,16 @@ function Jaws_Gadget_Files() { return {
     {
         // allow max file size
         let maxsize = Number($(fileInput).data('maxsize'));
+        // max image dimension
+        let dimension = $(fileInput).data('dimension').split(/\*|x|\,/);
+        if (dimension.length == 2) {
+            dimension = {
+                width: Number(dimension[0]),
+                height: Number(dimension[0])
+            };
+        } else {
+            dimension = false;
+        }
         // allow max files count
         let maxcount = Number(
             $(fileInput)
@@ -99,7 +109,6 @@ function Jaws_Gadget_Files() { return {
             set(value) {
                 this._prepared = value;
                 if (this._prepared >= this.length) {
-                    console.log('!!!!!!!!!!!!');
                     fileInput.files = fileList.files;
                 }
             }
@@ -157,21 +166,16 @@ function Jaws_Gadget_Files() { return {
                         img.onload = function() {
                             let canvas = document.createElement("canvas");
                             let ctx = canvas.getContext("2d");
-
-                            var MAX_WIDTH = 360;
-                            var MAX_HEIGHT = 640;
-                            var width = img.width;
-                            var height = img.height;
-
-                            if (width > height) {
-                                if (width > MAX_WIDTH) {
-                                    height *= MAX_WIDTH / width;
-                                    width = MAX_WIDTH;
-                                }
-                            } else {
-                                if (height > MAX_HEIGHT) {
-                                    width *= MAX_HEIGHT / height;
-                                    height = MAX_HEIGHT;
+                            // resize image dimension
+                            let width = img.width;
+                            let height = img.height;
+                            if (dimension) {
+                                if (width > height) {
+                                    height *= dimension.width / width;
+                                    width = dimension.width;
+                                } else {
+                                    width *= dimension.height / height;
+                                    height = dimension.height;
                                 }
                             }
 

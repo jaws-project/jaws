@@ -58,20 +58,21 @@ class Files_Actions_Files extends Jaws_Gadget_Action
     {
         // FIXME:: add registry key for set maximum upload file size
         $defaultOptions = array(
-            'maxsize'     => 33554432, // 32MB
-            'maxcount'    => 0,        // unlimited
-            'filetype'    => 0,
-            'extensions'  => '',
-            'preview'     => true,
-            'capture'     => false,
+            'maxsize'    => 33554432, // 32MB
+            'maxcount'   => 0,        // unlimited
+            'dimension'  => '',
+            'filetype'   => 0,
+            'extensions' => '',
+            'preview'    => true,
+            'capture'    => false,
         );
         $options = array_merge($defaultOptions, $options);
 
         $defaultInterface = array(
-            'gadget'      => '',
-            'action'      => '',
-            'reference'   => 0,
-            'type'        => 0,
+            'gadget'     => '',
+            'action'     => '',
+            'reference'  => 0,
+            'type'       => 0,
         );
         $interface = array_merge($defaultInterface, $interface);
         // optional input_reference for new record(without reference id)
@@ -84,14 +85,15 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/files");
 
-        $tpl->SetVariable('lbl_file',$options['labels']['title']);
+        $tpl->SetVariable('lbl_file',   $options['labels']['title']);
         $tpl->SetVariable('lbl_browse', $options['labels']['browse']);
         $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
-        $tpl->SetVariable('input_action', strtolower($interface['action']));
+        $tpl->SetVariable('input_action',    strtolower($interface['action']));
         $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
         $tpl->SetVariable('input_type', $interface['type']);
-        $tpl->SetVariable('maxsize',  $options['maxsize']);
-        $tpl->SetVariable('maxcount', $options['maxcount']);
+        $tpl->SetVariable('maxsize',    $options['maxsize']);
+        $tpl->SetVariable('maxcount',   $options['maxcount']);
+        $tpl->SetVariable('dimension',  $options['dimension']);
         $tpl->SetVariable('extensions', $options['extensions']);
         $tpl->SetVariable('capture', $options['capture']? 'capture' : '');     
         $tpl->SetVariable('preview', $options['preview']);
