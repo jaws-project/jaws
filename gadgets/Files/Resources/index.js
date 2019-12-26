@@ -99,8 +99,53 @@ function Jaws_Gadget_Files() { return {
         // clear file list elements
         ulElement.children(':visible').remove();
 
-        let fileList = new DataTransfer();
+        try {
+            // pre-check file size/extension/count
 
+            for (let file of fileInput.files) {
+                let fileName = file.name;
+                // file extension
+                if (fileName.lastIndexOf('.') >= 0) {
+                    file.extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+                } else {
+                    file.extension = '';
+                }
+
+                // file size
+                if (file.size > maxsize) {
+                    throw 'File size is to big: ' + file.name;
+                }
+
+                // file extensions
+                if (extensions.length > 0 && extensions.indexOf(file.extension) < 0) {
+                    throw 'File type not valid: ' + file.name;
+                }
+            }
+
+            // max files count
+            if (maxcount > 0) {
+                let filesCount = $(fileInput).parents().eq(2).find('.file_details:visible').length;
+                if ((fileInput.files.length + filesCount) > maxcount) {
+                    throw 'Files count exceeded!';
+                } else if ((fileInput.files.length + filesCount) == maxcount) {
+                    $(fileInput).parents().eq(2).find('.btn_browse').hide();
+                }
+            }
+
+        } catch(error) {
+            // remove dom elements
+            $(fileInput).parent().remove();
+            this.gadget.message.show(
+                {
+                    'text': error,
+                    'type': 'alert-danger'
+                }
+            );
+
+            return;
+        }
+
+        let fileList = new DataTransfer();
         // define setter/getter for new property prepared files
         Object.defineProperty(fileInput.files, 'prepared', {
             get() {
@@ -114,42 +159,8 @@ function Jaws_Gadget_Files() { return {
             }
         });
 
-        // preparing all selected files
+        // client side processing selected files
         for (let file of fileInput.files) {
-            let fileName = file.name;
-            // file extension
-            if (fileName.lastIndexOf('.') >= 0) {
-                file.extension = fileName.substring(fileName.lastIndexOf('.') + 1);
-            } else {
-                file.extension = '';
-            }
-
-            // file size
-            if (file.size > maxsize) {
-                console.log('File size is to big: ' + file.name);
-                fileInput.files.prepared++;
-                continue;
-            }
-
-            // file extensions
-            if (extensions.length > 0 && extensions.indexOf(file.extension) < 0) {
-                console.log('File type not valid: ' + file.name);
-                fileInput.files.prepared++;
-                continue;
-            }
-
-            if (maxcount > 0) {
-                let filesCount = $(fileInput).parents().eq(2).find('.file_details:visible').length + 1;
-                if (filesCount >= maxcount) {
-                    $(fileInput).parents().eq(2).find('.btn_browse').hide();
-                    if (filesCount > maxcount) {
-                        console.log('Files count exceeded!');
-                        fileInput.files.prepared++;
-                        continue;
-                    }
-                }
-            }
-
             ulElement.append(
                 ulElement.children().first().clone(true).show()
             );
