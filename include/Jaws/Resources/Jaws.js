@@ -35,11 +35,13 @@ jQuery.extend({
     },
 
     viewport: function() {
-        var dWidth = $(document).innerWidth();
-        var currentBreakPoint = (dWidth < 700) ? 'xs' : ((dWidth < 992) ? 'sm' : ((dWidth < 1200) ? 'md' : 'lg'));
         return {
+            get: function() {
+                let dWidth = $(document).innerWidth();
+                return (dWidth < 700) ? 'xs' : ((dWidth < 992) ? 'sm' : ((dWidth < 1200) ? 'md' : 'lg'));
+            },
             is: function(breakPoint) {
-                return breakPoint == currentBreakPoint;
+                return breakPoint == this.get();
             }
         };
     }()
@@ -405,7 +407,7 @@ function JawsMessage(objOwner)
             container.stop(true, true).fadeIn().delay(4000).fadeOut(
                 1000,
                 function() {
-                    $(this).removeClass();
+                    //$(this).removeClass();
                 }
             );
         }
