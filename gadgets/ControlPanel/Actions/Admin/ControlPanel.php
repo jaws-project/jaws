@@ -207,7 +207,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                 $tpl->SetVariable('title', _t('LOGS_LOGIN_HISTORY'));
                 foreach ($logs as $log) {
                     $tpl->SetBlock('login_history/item');
-                    $tpl->SetVariable('ip', long2ip($log['ip']));
+                    $tpl->SetVariable('ip', long2ip((int)$log['ip']));
                     $tpl->SetVariable('agent', $log['agent']);
                     $tpl->SetVariable('status_code', $log['status']);
                     $tpl->SetVariable('status_title', _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']));
