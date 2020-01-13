@@ -51,7 +51,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         if (isset($params['mobiles']) && !empty($params['mobiles'])) {
             foreach ($params['mobiles'] as $mobile) {
                 if (!empty($mobile)) {
-                    $users[] = array('mobile_number' => $mobile);
+                    $users[] = array('mobile' => $mobile);
                 }
             }
         }
@@ -106,7 +106,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         if ($configuration[$gadget] == 1) {
             $notificationsEmails  = array_filter(array_column($users, 'email'));
-            $notificationsMobiles = array_filter(array_column($users, 'mobile_number'));
+            $notificationsMobiles = array_filter(array_column($users, 'mobile'));
             $notificationsWebPush = array_filter(array_column($users, 'webpush'));
         } else {
             $objDModel = $this->gadget->model->load('Drivers');
@@ -123,7 +123,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
                 case Jaws_Notification::SMS_DRIVER:
                     // generate mobile array
-                    $notificationsMobiles = array_filter(array_column($users, 'mobile_number'));
+                    $notificationsMobiles = array_filter(array_column($users, 'mobile'));
                     break;
 
                 case Jaws_Notification::WEB_DRIVER:
