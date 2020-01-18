@@ -50,17 +50,18 @@ class Jaws_Notification_Mail extends Jaws_Notification
      * Sends notify to user
      *
      * @access  public
+     * @param   string  $shouter        Shouter(gadget) name
+     * @param   string  $name           Notification type name
      * @param   array   $contacts       Contacts array
-     * @param   string  $title          Notification title
-     * @param   string  $summary        Notification summary
-     * @param   string  $content        Notification content
+     * @param   string  $title          Title
+     * @param   string  $summary        Summary
+     * @param   string  $verbose        Verbose
      * @param   integer $time           Time of notify(timestamps)
      * @param   string  $callback_url   Notification callback URL
      * @param   string  $image          Notification image
-     * @param   string  $template       Notification template
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($contacts, $title, $summary, $content, $time, $callback_url, $image, $template)
+    function notify($shouter, $name, $contacts, $title, $summary, $verbose, $time, $callback_url, $image)
     {
         $this->object->reset();
         $this->object->SetFrom();
@@ -84,7 +85,7 @@ class Jaws_Notification_Mail extends Jaws_Notification
         $tpl->SetVariable('site-copyright', $this->attributes['site_copyright']);
         $tpl->SetVariable('title', $title);
         $tpl->SetVariable('summary', $summary);
-        $tpl->SetVariable('content', $content);
+        $tpl->SetVariable('content', $verbose);
         $tpl->SetVariablesArray(Jaws_Date::getInstance()->GetDateInfo($time));
         $tpl->ParseBlock('notification/eml');
         $tpl->ParseBlock('notification');
