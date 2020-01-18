@@ -381,40 +381,36 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $site_url = $this->app->getSiteURL('/');
         $settings = $this->app->registry->fetchAll('Settings');
 
-        $tpl = $this->gadget->template->load('LoginNotification.html');
-        $tpl->SetBlock('verification');
-        $tpl->SetVariable('nickname', $uData['nickname']);
-        $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
-        $tpl->SetVariable('lbl_key', _t('USERS_LOGIN_KEY'));
-        $tpl->SetVariable('key', $loginkey['text']);
-
-        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('username',       $uData['username']);
-        $tpl->SetVariable('lbl_email',      _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email',          $uData['email']);
-        $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('mobile',         $uData['mobile']);
-        $tpl->SetVariable('lbl_ip',         _t('GLOBAL_IP'));
-        $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
-        $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
-        $tpl->SetVariable('site-name',      $settings['site_name']);
-        $tpl->SetVariable('site-url',       $site_url);
-        $tpl->ParseBlock('verification');
-        $message = $tpl->Get();
-        $subject = _t('GLOBAL_LOGINKEY_TITLE');
-
         $params = array();
         $params['key']     = crc32('Users.Login.Key.' . $uData['id']);
+        $params['name']    = 'LoginVerification';
         $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
-        $params['summary'] = _t(
-            'GLOBAL_LOGINKEY_SUMMARY',
-            $loginkey['text']
+        $params['summary'] = array(
+            'format'    => 'GLOBAL_LOGINKEY_SUMMARY',
+            'arguments' => array(
+                $loginkey['text']
+            )
         );
-        $params['description'] = $message;
-        $params['user']     = $uData['id'];
-        $params['template'] = 'UserLogin';
-        $this->gadget->event->shout('Notify', $params);
 
+        $params['verbose'] = array(
+            'template' => 'UserLogin',
+            'variables' => array(
+                'nickname'     => $uData['nickname'],
+                'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
+                'lbl_username' => _t('USERS_USERS_USERNAME'),
+                'username'     => $uData['username'],
+                'lbl_key'      => _t('USERS_LOGIN_KEY'),
+                'key'          => $loginkey['text'],
+                'lbl_ip'       => _t('GLOBAL_IP'),
+                'ip'           => $_SERVER['REMOTE_ADDR'],
+                'thanks'       => _t('GLOBAL_THANKS'),
+                'site-name'    => $settings['site_name'],
+                'site-url'     => $site_url,
+            )
+        );
+        $params['user'] = $uData['id'];
+
+        $this->gadget->event->shout('Notify', $params);
         // update session login-key
         $this->gadget->session->loginkey = $loginkey;
 
