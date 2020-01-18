@@ -63,14 +63,15 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                 foreach ($messages[$dType] as $msgid => $msgContacts) {
                     $message = $model->GetNotificationMessage($msgid);
                     $res = $objDriver->notify(
+                        $message['shouter'],
+                        $message['name'],
                         $msgContacts['contacts'],
                         $message['title'],
-                        $message['summary'],
-                        $message['description'],
+                        json_decode($message['summary'], true),
+                        json_decode($message['verbose'], true),
                         $msgContacts['time'],
                         $message['callback'],
-                        $message['image'],
-                        $message['template']
+                        $message['image']
                     );
                     if (!Jaws_Error::IsError($res)) {
                         // delete notification

@@ -49,7 +49,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     function GetNotificationMessage($id)
     {
         return Jaws_ORM::getInstance()->table('notification_messages')
-            ->select('title', 'summary', 'description', 'callback', 'image', 'template')
+            ->select('shouter', 'name', 'title', 'summary', 'verbose', 'callback', 'image')
             ->where('id', $id)->fetchRow();
     }
 
@@ -58,19 +58,20 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Insert notifications to db
      *
      * @access  public
-     * @param   array       $notifications      Notifications items (for example array('emails'=>array(...))
      * @param   int         $key                Notifications key
+     * @param   array       $notifications      Notifications items (for example array('emails'=>array(...))
+     * @param   string      $shouter            Shouter(gadget) name
+     * @param   string      $name               Notifications name
      * @param   string      $title              Title
      * @param   string      $summary            Summary
-     * @param   string      $description        Description
+     * @param   string      $verbose            Verbose
      * @param   integer     $time               Publish timestamps
      * @param   string      $callback           Callback URL
      * @param   string      $image              Path of image
-     * @param   string      $template           Notifications template
      * @return  bool        True or error
      */
     function InsertNotifications(
-        $notifications, $key, $title, $summary, $description, $time, $callback, $image, $template
+        $key, $notifications, $shouter, $name, $title, $summary, $verbose, $time, $callback, $image
     ) {
         if (empty($notifications) || (
             empty($notifications['emails']) &&
@@ -84,13 +85,14 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         $mTable = $objORM->table('notification_messages');
         $messageId = $mTable->upsert(
             array(
-                'key' => $key,
-                'title' => $title,
-                'summary' => $summary,
-                'description' => $description,
+                'key'      => $key,
+                'shouter'  => $shouter,
+                'name'     => $name,
+                'title'    => $title,
+                'summary'  => $summary,
+                'verbose'  => $verbose,
                 'callback' => $callback,
-                'image' => $image,
-                'template' => $template
+                'image'    => $image
             )
         )->and()->where('key', $key)->exec();
         if (Jaws_Error::IsError($messageId)) {

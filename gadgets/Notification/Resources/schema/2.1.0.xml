@@ -19,20 +19,6 @@
             </field>
 
             <field>
-                <name>shouter</name>
-                <description>almost gadget name</description>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
-                <name>name</name>
-                <description>notification type name</description>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
                 <name>title</name>
                 <type>text</type>
                 <length>255</length>
@@ -41,11 +27,11 @@
             <field>
                 <name>summary</name>
                 <type>text</type>
+                <length>512</length>
             </field>
 
             <field>
-                <name>verbose</name>
-                <was>description</was>
+                <name>description</name>
                 <type>text</type>
             </field>
 

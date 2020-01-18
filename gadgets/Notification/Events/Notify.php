@@ -12,7 +12,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
      *
      * @access  public
      * @param   string  $shouter    The shouting gadget
-     * @param   array   $params     [user, group, title, summary, description, priority, send]
+     * @param   array   $params     [user, group, title, summary, verbose, priority, send]
      * @return  bool
      */
     function Execute($shouter, $params)
@@ -21,20 +21,24 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return false;
         }
 
+        if (!isset($params['name'])) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Notification name required', 1);
+            return false;
+        }
+
         $model = $this->gadget->model->load('Notification');
-        $gadget = empty($params['gadget']) ? $shouter : $params['gadget'];
+        $shouter = empty($params['gadget'])? $shouter : $params['gadget'];
 
         $params['time'] = !isset($params['time']) ? time() : $params['time'];
 
-        // detect if time = 0 then must delete the notifications
+        // if time = 0 then delete the notifications
         if ($params['time'] < 0) {
             return $model->DeleteNotificationsByKey($params['key']);
         }
 
         $users = array();
-        $jUser = new Jaws_User;
         if (isset($params['group']) && !empty($params['group'])) {
-            $group_users = $jUser->GetGroupUsers($params['group'], true, false, true);
+            $group_users = $this->app->users->GetGroupUsers($params['group'], true, false, true);
             if (!Jaws_Error::IsError($group_users) && !empty($group_users)) {
                 $users = $group_users;
             }
@@ -57,7 +61,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if (isset($params['user']) && !empty($params['user'])) {
-            $user = $jUser->GetUser($params['user'], true, false, true);
+            $user = $this->app->users->GetUser($params['user'], true, false, true);
             if (!Jaws_Error::IsError($user) && !empty($user)) {
                 $users[] = $user;
             }
@@ -67,7 +71,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         if (isset($params['users']) && !empty($params['users'])) {
             foreach ($params['users'] as $userId) {
                 if (!empty($userId)) {
-                    $user = $jUser->GetUser($userId, true, false, true);
+                    $user = $this->app->users->GetUser($userId, true, false, true);
                     if (!Jaws_Error::IsError($user) && !empty($user)) {
                         $users[] = $user;
                     }
@@ -99,18 +103,18 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $notificationsMobiles = array();
         $notificationsWebPush = array();
 
-        // notification for this gadget was disabled
-        if (empty($configuration[$gadget])) {
+        // notification for this shouter was disabled
+        if (empty($configuration[$shouter])) {
             return false;
         }
 
-        if ($configuration[$gadget] == 1) {
+        if ($configuration[$shouter] == 1) {
             $notificationsEmails  = array_filter(array_column($users, 'email'));
             $notificationsMobiles = array_filter(array_column($users, 'mobile'));
             $notificationsWebPush = array_filter(array_column($users, 'webpush'));
         } else {
             $objDModel = $this->gadget->model->load('Drivers');
-            $objDriver = $objDModel->LoadNotificationDriver($configuration[$gadget]);
+            $objDriver = $objDModel->LoadNotificationDriver($configuration[$shouter]);
             if (Jaws_Error::IsError($objDriver)) {
                 return false;
             }
@@ -138,19 +142,20 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         if (!empty($notificationsEmails) || !empty($notificationsMobiles) || !empty($notificationsWebPush)) {
             $res = $model->InsertNotifications(
+                $params['key'],
                 array(
                     'emails'  => $notificationsEmails,
                     'mobiles' => $notificationsMobiles,
                     'webpush' => $notificationsWebPush
                 ),
-                $params['key'],
+                $shouter,
+                $params['name'],
                 strip_tags($params['title']),
-                strip_tags($params['summary']),
-                $params['description'],
+                json_encode($params['summary']),
+                json_encode($params['verbose']),
                 $params['time'],
                 isset($params['callback'])? $params['callback'] : '',
-                isset($params['image'])? $params['image'] : '',
-                isset($params['template'])? $params['template'] : ''
+                isset($params['image'])? $params['image'] : ''
             );
             if (Jaws_Error::IsError($res)) {
                 return $res;
