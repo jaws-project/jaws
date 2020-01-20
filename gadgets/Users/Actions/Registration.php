@@ -260,6 +260,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         // Notify
         $params = array();
         $params['key']     = crc32('Users.Registration.Key' . $uData['id']);
+        $params['name']    = 'UserRegistration';
         $params['title']   = $subject;
         $params['summary'] = _t(
             'USERS_REGISTRATION_USER_SUMMARY',
@@ -272,10 +273,10 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $regkey['text']
         );
 
-        $params['description'] = $this->gadget->plugin->parse($message);
-        $params['emails']      = array($uData['email']);
-        $params['mobiles']     = array($uData['mobile']);
-        $params['template']    = 'UserRegister';
+        $params['verbose']  = $this->gadget->plugin->parse($message);
+        $params['emails']   = array($uData['email']);
+        $params['mobiles']  = array($uData['mobile']);
+        $params['template'] = 'UserRegister';
         $this->gadget->event->shout('Notify', $params);
 
         // update session login-key
