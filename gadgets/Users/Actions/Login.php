@@ -383,7 +383,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         $params = array();
         $params['key']     = crc32('Users.Login.Key.' . $uData['id']);
-        $params['name']    = 'LoginVerification';
+        $params['name']    = 'UserVerification';
         $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
         $params['summary'] = array(
             'format'    => 'GLOBAL_LOGINKEY_SUMMARY',
