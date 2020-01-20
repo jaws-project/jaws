@@ -28,8 +28,8 @@
             <field>
                 <name>name</name>
                 <description>notification type name</description>
-                <type>integer</type>
-                <length>8</length>
+                <type>text</type>
+                <length>32</length>
             </field>
 
             <field>
