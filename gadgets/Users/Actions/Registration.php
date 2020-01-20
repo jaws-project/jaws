@@ -230,50 +230,47 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $site_url = $this->app->getSiteURL('/');
         $settings = $this->app->registry->fetchAll('Settings');
 
-        $tpl = $this->gadget->template->load('RegistrationNotification.html');
-        $tpl->SetBlock('UserNotification');
-        $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $uData['nickname']));
-        $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
-        // verify key
-        $tpl->SetBlock('UserNotification/Activation');
-        $tpl->SetVariable('lbl_key', _t('USERS_REGISTRATION_KEY'));
-        $tpl->SetVariable('key', $regkey['text']);
-        $tpl->ParseBlock('UserNotification/Activation');
-
-        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('username',       $uData['username']);
-        $tpl->SetVariable('lbl_password',   _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('password',       $uData['password']);
-        $tpl->SetVariable('lbl_email',      _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('email',          $uData['email']);
-        $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('mobile',         $uData['mobile']);
-        $tpl->SetVariable('lbl_ip',         _t('GLOBAL_IP'));
-        $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
-        $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
-        $tpl->SetVariable('site-name',      $settings['site_name']);
-        $tpl->SetVariable('site-url',       $site_url);
-        $tpl->ParseBlock('UserNotification');
-        $message = $tpl->Get();
-        $subject = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
-
         // Notify
         $params = array();
         $params['key']     = crc32('Users.Registration.Key' . $uData['id']);
         $params['name']    = 'UserRegistration';
-        $params['title']   = $subject;
-        $params['summary'] = _t(
-            'USERS_REGISTRATION_USER_SUMMARY',
-            $uData['nickname'],
-            $site_url,
-            $uData['username'],
-            $uData['password'],
-            $uData['email'],
-            $uData['mobile'],
-            $regkey['text']
+        $params['title']   = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
+        $params['summary'] = array(
+            'format'    => 'USERS_REGISTRATION_USER_SUMMARY',
+            'arguments' => array(
+                $uData['nickname'],
+                $site_url,
+                $uData['username'],
+                $uData['password'],
+                $uData['email'],
+                $uData['mobile'],
+                $regkey['text']
+            )
         );
 
-        $params['verbose']  = $this->gadget->plugin->parse($message);
+        $params['verbose'] = array(
+            'template' => 'RegistrationNotification',
+            'variables' => array(
+                'say_hello'    => _t('USERS_REGISTRATION_HELLO', $uData['nickname']),
+                'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
+                'lbl_username' => _t('USERS_USERS_PASSWORD'),
+                'username'     => $uData['username'],
+                'lbl_password' => _t('USERS_USERS_PASSWORD'),
+                'password'     => $uData['password'],
+                'lbl_email'    => _t('GLOBAL_EMAIL'),
+                'email'        => $uData['email'],
+                'lbl_mobile'   => _t('USERS_CONTACTS_MOBILE_NUMBER'),
+                'mobile'       => $uData['mobile'],
+                'lbl_key'      => _t('USERS_REGISTRATION_KEY'),
+                'key'          => $regkey['text'],
+                'lbl_ip'       => _t('GLOBAL_IP'),
+                'ip'           => $_SERVER['REMOTE_ADDR'],
+                'thanks'       => _t('GLOBAL_THANKS'),
+                'site-name'    => $settings['site_name'],
+                'site-url'     => $site_url
+            )
+        );
+
         $params['emails']   = array($uData['email']);
         $params['mobiles']  = array($uData['mobile']);
         $params['template'] = 'UserRegister';
