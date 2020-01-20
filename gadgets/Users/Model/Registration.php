@@ -259,6 +259,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         // Notify
         $params = array();
         $params['key']     = crc32('Users.Registration.User' . $user);
+        $params['name']    = 'UserVerification2';
         $params['title']   = $subject;
         $params['summary'] = _t(
             'USERS_REGISTRATION_USER_SUMMARY',
@@ -271,9 +272,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $userInfo['verify_key']
         );
 
-        $params['description'] = $this->gadget->plugin->parse($message);
-        $params['emails']      = array($userInfo['email']);
-        $params['mobiles']     = array($userInfo['mobile']);
+        $params['verbose'] = $this->gadget->plugin->parse($message);
+        $params['emails']  = array($userInfo['email']);
+        $params['mobiles'] = array($userInfo['mobile']);
         $this->gadget->event->shout('Notify', $params);
 
         //Send an email to website owner
