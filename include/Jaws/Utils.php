@@ -1058,7 +1058,8 @@ class Jaws_Utils
 
         // cache control
         if (empty($expires)) {
-            header('Cache-Control: no-store'); // no cache
+            header('Cache-Control: no-store, no-cache, must-revalidate'); // no cache
+            header('Pragma: no-cache');
         } else {
             header("Cache-Control: max-age=$expires");
         }
