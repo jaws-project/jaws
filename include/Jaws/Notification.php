@@ -21,9 +21,9 @@ class Jaws_Notification
     /**
      * Drivers notification type
      */
-    const EML_DRIVER = 0; // Email
-    const SMS_DRIVER = 1; // SMS
-    const WEB_DRIVER = 2; // Web push API
+    const EML_DRIVER = 1; // Email
+    const SMS_DRIVER = 2; // SMS
+    const WEB_DRIVER = 3; // Web push API
 
     /**
      * Driver title
