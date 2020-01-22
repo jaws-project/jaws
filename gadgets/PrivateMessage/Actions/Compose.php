@@ -38,8 +38,23 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $tpl = $this->gadget->template->load('Compose.html');
         $tpl->SetBlock('compose');
 
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Compose'));
+        // Menu navigation
+        for ($i = 1; $i <= 6; $i++) {
+            $url = $this->gadget->urlMap('Messages', array('folder' => $i));
+            $options[$url] = array(
+                'title' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i),
+                'url' => $url,
+                'separator' => ($i == 2 || $i == 6)? true: false,
+            );
+        }
+        $url = $this->gadget->urlMap('Compose');
+        $options[$url] = array(
+            'title' => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
+            'url' => $url,
+            'separator' => true,
+        );
+        $options[Jaws_Utils::getRequestURL()]['active'] = true;
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl, $options);
 
         $body_value = "";
         $recipient_users = array();

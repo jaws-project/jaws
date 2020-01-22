@@ -485,11 +485,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     }
 
                 } else {
-                    // Add sender message Id to pm_message_attachment table
-                    $maData[] = array('message' => $senderMessageId, 'attachment' => $attachment);
-                    // Add recipient message Id to pm_message_attachment table
-                    foreach($messageIds as $messageId) {
-                        $maData[] = array('message' => $messageId, 'attachment' => $attachment);
+                    if (!empty($attachment)) {
+                        // Add sender message Id to pm_message_attachment table
+                        $maData[] = array('message' => $senderMessageId, 'attachment' => $attachment);
+                        // Add recipient message Id to pm_message_attachment table
+                        foreach($messageIds as $messageId) {
+                            $maData[] = array('message' => $messageId, 'attachment' => $attachment);
+                        }
                     }
                 }
 

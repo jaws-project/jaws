@@ -131,8 +131,25 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                 $tpl->ParseBlock('messages/all_action');
         }
-        $tpl->SetVariable('menubar', $menubar);
+
         $tpl->SetVariable('title', $title);
+        // Menu navigation
+        for ($i = 1; $i <= 6; $i++) {
+            $url = $this->gadget->urlMap('Messages', array('folder' => $i));
+            $options[$url] = array(
+                'title'     => _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i),
+                'url'       => $url,
+                'separator' => ($i == 2 || $i == 6)? true: false,
+            );
+        }
+        $url = $this->gadget->urlMap('Compose');
+        $options[$url] = array(
+            'title'     => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
+            'url'       => $url,
+            'separator' => true,
+        );
+        $options[Jaws_Utils::getRequestURL()]['active'] = true;
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl, $options);
 
         $page = empty($page) ? 1 : (int)$page;
         if (empty($post['page_item'])) {
