@@ -114,7 +114,7 @@ class Jaws_Gadget_Actions_MenuNavigation
 
             $tpl->SetBlock("$block/navigation/menu");
             // set separator
-            if (isset($menu['separator'])) {
+            if (isset($menu['separator']) && !empty($menu['separator'])) {
                 $tpl->SetBlock("$block/navigation/menu/separator");
                 $tpl->ParseBlock("$block/navigation/menu/separator");
             }
