@@ -81,8 +81,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'notification_email', 'notification_mobile',
-            'notification_web', 'notification_messages',
+            'notification_message', 'notification_recipient',
             'notification_driver'
         );
         foreach ($tables as $table) {
@@ -211,7 +210,14 @@ class Notification_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.2.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '2.1.0.xml');
+            $result = $this->installSchema('2.2.0.xml', array(), '2.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '2.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '2.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
