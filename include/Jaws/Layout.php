@@ -200,6 +200,19 @@ class Jaws_Layout
                         ) {
                             // set global layout for logged users
                             $layout_file = 'Index.Users.html';
+                        } elseif ($layout_type == 2 &&
+                            $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
+                            @is_file($theme['path']. 'Layout.User.html')
+                        ) {
+                            // set private layout for logged user
+                            $layout_file = 'Layout.User.html';
+                            $layout_user = (int)$this->app->session->user->id;
+                        } elseif (($layout_type == 1  || $layout_type == 2) &&
+                            $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
+                            @is_file($theme['path']. 'Layout.Users.html')
+                        ) {
+                            // set global layout for logged users
+                            $layout_file = 'Layout.Users.html';
                         } elseif (@is_file($theme['path']. 'Index.html')) {
                             $layout_file = 'Index.html';
                         } else {
