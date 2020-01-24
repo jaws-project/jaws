@@ -11,12 +11,34 @@
 class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 {
     /**
+     * Get Messages action params
+     *
+     * @access  public
+     * @return  array    list of Messages action params
+     */
+    function MessagesLayoutParams()
+    {
+        $result = array();
+        $folders = array();
+        for ($i = 1; $i <= 6; $i++) {
+            $folders[$i] = _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i);
+        }
+
+        $result[] = array(
+            'title' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER'),
+            'value' => $folders
+        );
+
+        return $result;
+    }
+
+    /**
      * Display messages list
      *
      * @access  public
      * @return  void
      */
-    function Messages()
+    function Messages($folder = null)
     {
         if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(401);
@@ -31,7 +53,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $post = $this->gadget->request->fetch(array('folder', 'page', 'read', 'term', 'page_item'));
         $page = $post['page'];
-        $folder = (int)$post['folder'];
+        $folder = is_null($folder)? (int)$post['folder'] : $folder;
 
         $tpl->SetVariable('txt_term', $post['term']);
 
@@ -140,6 +162,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 'title'     => _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i),
                 'url'       => $url,
                 'separator' => ($i == 2 || $i == 6)? true: false,
+                'active'    => $i == $folder
             );
         }
         $url = $this->gadget->urlMap('Compose');
@@ -148,7 +171,6 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             'url'       => $url,
             'separator' => true,
         );
-        $options[Jaws_Utils::getRequestURL()]['active'] = true;
         $this->gadget->action->load('MenuNavigation')->navigation($tpl, $options);
 
         $page = empty($page) ? 1 : (int)$page;

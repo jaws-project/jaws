@@ -19,6 +19,8 @@ $actions['PrivateMessage'] = array(
 );
 $actions['Messages'] = array(
     'normal' => true,
+    'layout' => true,
+    'parametric' => true,
     'file' => 'Message',
 );
 $actions['Message'] = array(
