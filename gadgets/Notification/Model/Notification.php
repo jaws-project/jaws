@@ -22,8 +22,9 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         return $objORM->select('id:integer', 'message', 'contact', 'time:integer')
             ->where('driver', $contactType)
-            ->limit($limit)
+            ->and()
             ->where('time', time(), '<=')
+            ->limit($limit)
             ->orderBy('time, message asc')->fetchAll();
     }
 
@@ -214,7 +215,11 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         $objORM = Jaws_ORM::getInstance();
         $objORM = $objORM->table('notification_recipient');
-        return $objORM->delete()->where('id', $ids, 'in')->and()->where('driver', $contactType)->exec();
+        return $objORM->delete()
+            ->where('id', $ids, 'in')
+            ->and()
+            ->where('driver', $contactType)
+            ->exec();
     }
 
 
@@ -228,8 +233,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     {
         $msgTable = Jaws_ORM::getInstance()->table('notification_messages');
         $rcpTable = Jaws_ORM::getInstance()->table('notification_recipient');
-        $rcpTable->select('notification_messages.message')->where(
-            'notification_messages.id', $msgTable->expr('notification_messages.message')
+        $rcpTable->select('notification_recipient.message')->where(
+            'notification_messages.id', $msgTable->expr('notification_recipient.message')
         );
 
         return $msgTable->delete()->where('', $rcpTable, 'not exists')->exec();
