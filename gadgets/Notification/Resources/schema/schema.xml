@@ -50,12 +50,6 @@
             </field>
 
             <field>
-                <name>template</name>
-                <type>text</type>
-                <length>32</length>
-            </field>
-
-            <field>
                 <name>callback</name>
                 <description>callback url</description>
                 <type>text</type>
