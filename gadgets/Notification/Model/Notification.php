@@ -18,21 +18,10 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     function GetNotifications($contactType, $limit)
     {
         $objORM = Jaws_ORM::getInstance();
-        switch ($contactType) {
-            case Jaws_Notification::EML_DRIVER:
-                $objORM = $objORM->table('notification_email');
-                break;
-            case Jaws_Notification::SMS_DRIVER:
-                $objORM = $objORM->table('notification_mobile');
-                break;
-            case Jaws_Notification::WEB_DRIVER:
-                $objORM = $objORM->table('notification_webpush');
-                break;
-            default:
-                return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
-        }
+        $objORM = $objORM->table('notification_recipient');
 
         return $objORM->select('id:integer', 'message', 'contact', 'time:integer')
+            ->where('driver', $contactType)
             ->limit($limit)
             ->where('time', time(), '<=')
             ->orderBy('time, message asc')->fetchAll();
@@ -101,12 +90,15 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         // insert email items
         if (!empty($notifications['emails'])) {
-            $objORM = $objORM->table('notification_email');
+            $objORM = $objORM->table('notification_recipient');
             foreach ($notifications['emails'] as $email) {
                 // FIXME : increase performance by adding upsertAll method in core
                 $hash = hash64($email);
                 $res = $objORM->upsert(
-                        array('message' => $messageId, 'contact' => $email, 'hash' => $hash, 'time' => $time)
+                        array(
+                            'message' => $messageId, 'driver' => Jaws_Notification::EML_DRIVER,
+                            'contact' => $email, 'hash' => $hash, 'time' => $time
+                        )
                     )->and()
                     ->where('message', $messageId)
                     ->and()
@@ -120,13 +112,16 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         // insert mobile items
         if(!empty($notifications['mobiles'])) {
-            $objORM = $objORM->table('notification_mobile');
+            $objORM = $objORM->table('notification_recipient');
             foreach ($notifications['mobiles'] as $mobile) {
                 // FIXME : increase performance by adding upsertAll method in core
                 $hash = hash64($mobile);
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                        array('message' => $messageId, 'contact' => $mobile, 'hash' => $hash, 'time' => $time)
+                        array(
+                            'message' => $messageId, 'driver' => Jaws_Notification::SMS_DRIVER,
+                            'contact' => $mobile, 'hash' => $hash, 'time' => $time
+                        )
                     )->and()
                     ->where('message', $messageId)
                     ->and()
@@ -140,13 +135,16 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         // insert web_push items
         if(!empty($notifications['webpush'])) {
-            $objORM = $objORM->table('notification_webpush');
+            $objORM = $objORM->table('notification_recipient');
             foreach ($notifications['webpush'] as $webpush) {
                 // FIXME : increase performance by adding upsertAll method in core
                 $hash = hash64($webpush);
                 $row['message'] = $messageId;
                 $res = $objORM->upsert(
-                        array('message' => $messageId, 'contact' => $webpush, 'hash' => $hash, 'time' => $time)
+                        array(
+                            'message' => $messageId, 'driver' => Jaws_Notification::WEB_DRIVER,
+                            'contact' => $webpush, 'hash' => $hash, 'time' => $time
+                        )
                     )->and()
                     ->where('message', $messageId)
                     ->and()
@@ -187,23 +185,9 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return false;
         }
 
-        // delete email records
-        $table = $objORM->table('notification_email');
+        // delete recipient records
+        $table = $objORM->table('notification_recipient');
         $res = $table->delete()->where('message', $messageId)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return $res;
-        }
-
-        // delete mobile records
-        $table = $objORM->table('notification_mobile');
-        $res = $table->delete()->where('message', $messageId)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return $res;
-        }
-
-        // delete message
-        $table = $objORM->table('notification_messages');
-        $res = $table->delete()->where('id', $messageId)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -229,21 +213,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         $objORM = Jaws_ORM::getInstance();
-        switch ($contactType) {
-            case Jaws_Notification::EML_DRIVER:
-                $objORM = $objORM->table('notification_email');
-                break;
-            case Jaws_Notification::SMS_DRIVER:
-                $objORM = $objORM->table('notification_mobile');
-                break;
-            case Jaws_Notification::WEB_DRIVER:
-                $objORM = $objORM->table('notification_webpush');
-                break;
-            default:
-                return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
-        }
-
-        return $objORM->delete()->where('id', $ids, 'in')->exec();
+        $objORM = $objORM->table('notification_recipient');
+        return $objORM->delete()->where('id', $ids, 'in')->and()->where('driver', $contactType)->exec();
     }
 
 
@@ -256,17 +227,12 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     function DeleteOrphanedMessages()
     {
         $msgTable = Jaws_ORM::getInstance()->table('notification_messages');
-        $emlTable = Jaws_ORM::getInstance()->table('notification_email')->select('message')->distinct();
-        $smsTable = Jaws_ORM::getInstance()->table('notification_mobile')->select('message')->distinct();
-        $wpTable = Jaws_ORM::getInstance()->table('notification_webpush')->select('message')->distinct();
+        $rcpTable = Jaws_ORM::getInstance()->table('notification_recipient');
+        $rcpTable->select('notification_messages.message')->where(
+            'notification_messages.id', $msgTable->expr('notification_messages.message')
+        );
 
-        return $msgTable->delete()
-            ->where('id', $emlTable, 'not in')
-            ->and()
-            ->where('id', $smsTable, 'not in')
-            ->and()
-            ->where('id', $wpTable, 'not in')
-            ->exec();
+        return $msgTable->delete()->where('', $rcpTable, 'not exists')->exec();
     }
 
 }
