@@ -221,6 +221,17 @@ class Notification_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            $dropTables = array(
+                'notification_messages', 'notification_email',
+                'notification_mobile', 'notification_webpush'
+            );
+            foreach ($dropTables as $table) {
+                $result = Jaws_DB::getInstance()->dropTable($table);
+                if (Jaws_Error::IsError($result)) {
+                    // do nothing
+                }
+            }
         }
 
         return true;
