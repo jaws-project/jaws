@@ -86,4 +86,15 @@ class Jaws_Cache
         return Jaws_Utils::ftok(serialize(func_get_args()));
     }
 
+    /**
+     * Delete expired cached keys
+     *
+     * @access  public
+     * @return  mixed
+     */
+    function deleteExpiredKeys()
+    {
+        return true;
+    }
+
 }

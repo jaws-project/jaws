@@ -143,4 +143,34 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
         return $result;
     }
 
+    /**
+     * Delete expired cached keys
+     *
+     * @access  public
+     * @return  mixed
+     */
+    function deleteExpiredKeys()
+    {
+        if ($this->shmcache->open('w')) {
+            $keyscached = @unserialize($this->shmcache->read());
+            if (!$keyscached) {
+                $keyscached = array();
+            }
+
+            $this->shmcache->lock(true);
+            foreach ($keyscached as $bkey => $block) {
+                if (time() > $block['lifetime']) {
+                    $this->shmcache->delete($block['token']);
+                    unset($keyscached[$bkey]);
+                }
+            }
+            $this->shmcache->write(serialize($keyscached));
+            $this->shmcache->lock(false);
+
+            $this->shmcache->close();
+        }
+
+        return true;
+    }
+
 }

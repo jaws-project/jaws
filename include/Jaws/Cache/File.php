@@ -32,7 +32,7 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function __construct()
     {
-        $this->cacheDirectory = rtrim(sys_get_temp_dir(), '/\\');
+        $this->cacheDirectory = rtrim(sys_get_temp_dir(), '/\\') . '/';
     }
 
     /**
@@ -48,7 +48,7 @@ class Jaws_Cache_File extends Jaws_Cache
     {
         $result = false;
         if (!empty($lifetime)) {
-            $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
+            $file = $this->cacheDirectory . $this->cachePrefix. $key;
             if ($result = Jaws_Utils::file_put_contents($file, $value)) {
                 @touch($file, time() + $lifetime);
             }
@@ -66,7 +66,7 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function get($key)
     {
-        $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
+        $file = $this->cacheDirectory . $this->cachePrefix. $key;
         $ftime = @filemtime($file);
         if ((int)$ftime > time()) {
             return @file_get_contents($file);
@@ -84,8 +84,36 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function delete($key)
     {
-        $file = $this->cacheDirectory . '/'. $this->cachePrefix. $key;
+        $file = $this->cacheDirectory . $this->cachePrefix. $key;
         return Jaws_Utils::delete($file);
+    }
+
+    /**
+     * Delete expired cached keys
+     *
+     * @access  public
+     * @return  mixed
+     */
+    function deleteExpiredKeys()
+    {
+        try {
+            if ($hDir = opendir($this->cacheDirectory)) {
+                while (($fname = readdir($hDir)) !== false) {
+                    if (@is_file($this->cacheDirectory . $fname)) {
+                        $ftime = @filemtime($this->cacheDirectory . $fname);
+                        if ((int)$ftime < time()) {
+                            Jaws_Utils::delete($this->cacheDirectory . $fname)
+                        }
+                    }
+                }
+
+                closedir($hDir);
+            }
+        } catch (Exception $error) {
+            // do nothing
+        }
+
+        return true;
     }
 
 }

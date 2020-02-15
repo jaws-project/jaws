@@ -67,4 +67,15 @@ class Jaws_Cache_Memcached extends Jaws_Cache
         return $this->memcache->delete($key);
     }
 
+    /**
+     * Delete expired cached keys
+     *
+     * @access  public
+     * @return  mixed
+     */
+    function deleteExpiredKeys()
+    {
+        return true;
+    }
+
 }
