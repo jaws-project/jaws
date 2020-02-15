@@ -43,6 +43,10 @@ $actions['Offline'] = array(
     'normal' => true,
     'file'   => 'ServiceWorker',
 );
+$actions['CleanupExpiredCache'] = array(
+    'standalone' => true,
+    'file'       => 'Cache',
+);
 
 /**
  * Admin actions

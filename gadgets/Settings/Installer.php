@@ -389,6 +389,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->update('pwa_version', '3.0.0');
         }
 
+        if (version_compare($old, '2.7.0', '<')) {
+            // do nothing
+        }
+
         return true;
     }
 

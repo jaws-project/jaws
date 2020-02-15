@@ -20,3 +20,7 @@ $maps[] = array(
     array(),
     'json'
 );
+$maps[] = array(
+    'CleanupExpiredCache',
+    'cleanup-expired-cache'
+);
