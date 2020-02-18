@@ -38,7 +38,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function GetNotificationMessage($id)
     {
-        return Jaws_ORM::getInstance()->table('notification_messages')
+        return Jaws_ORM::getInstance()->table('notification_message')
             ->select('shouter', 'name', 'title', 'summary', 'verbose', 'callback', 'image')
             ->where('id', $id)->fetchRow();
     }
@@ -72,7 +72,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
-        $mTable = $objORM->table('notification_messages');
+        $mTable = $objORM->table('notification_message');
         $messageId = $mTable->upsert(
             array(
                 'key'      => $key,
@@ -178,7 +178,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
 
-        $messageId = $objORM->table('notification_messages')->select('id:integer')->where('key', $key)->fetchOne();
+        $messageId = $objORM->table('notification_message')->select('id:integer')->where('key', $key)->fetchOne();
         if (Jaws_Error::IsError($messageId)) {
             return $messageId;
         }
@@ -231,10 +231,10 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function DeleteOrphanedMessages()
     {
-        $msgTable = Jaws_ORM::getInstance()->table('notification_messages');
+        $msgTable = Jaws_ORM::getInstance()->table('notification_message');
         $rcpTable = Jaws_ORM::getInstance()->table('notification_recipient');
         $rcpTable->select('notification_recipient.message')->where(
-            'notification_messages.id', $msgTable->expr('notification_recipient.message')
+            'notification_message.id', $msgTable->expr('notification_recipient.message')
         );
 
         return $msgTable->delete()->where('', $rcpTable, 'not exists')->exec();
