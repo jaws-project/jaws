@@ -59,28 +59,31 @@ class Jaws_Gadget_Actions_MenuNavigation
             $block = $tpl->GetCurrentBlockPath();
         }
         $tpl->SetBlock("$block/navigation");
-        $tpl->SetVariable('label', empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label);
 
         $thisGadget = $this->gadget->name;
         $mainGadget = $this->app->mainGadget;
         $mainAction = $this->app->mainAction;
+
+        $tpl->SetVariable('gadget', $this->gadget->name);
+        $tpl->SetVariable('label', empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label);
+
         if (empty($options)) {
             // use gadget normal actions if navigation index exist
-            foreach ($this->gadget->actions['index'] as $thisAction => $action) {
+            foreach ($this->gadget->actions['index'] as $actionName => $action) {
                 if (!isset($action['normal']) || !$action['normal'] || !isset($action['navigation'])) {
                     continue;
                 }
 
                 $menu = array(
-                    'name'  => $thisAction,
-                    'title' => _t(strtoupper("{$thisGadget}_ACTIONS_{$thisAction}_TITLE")),
+                    'name'  => $actionName,
+                    'title' => _t(strtoupper("{$this->gadget->name}_ACTIONS_{$actionName}_TITLE")),
                     'url' => $this->gadget->urlMap(
-                        $thisAction,
+                        $actionName,
                         isset($action['navigation']['params'])? $action['navigation']['params'] : array()
                     ),
                 );
                 // set active menu
-                if ($mainGadget == $thisGadget && $mainAction == $thisAction) {
+                if ($this->app->mainGadget == $this->gadget->name && $this->app->mainAction == $actionName) {
                     $menu['active'] = true;
                 }
                 // check permissions
