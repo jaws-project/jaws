@@ -639,7 +639,7 @@ class Jaws_Utils
                 if (is_null($overwrite) || empty($fileinfo['filename'])) {
                     $host_filename = time(). mt_rand() . $fileinfo['extension'];
                 } elseif (!$overwrite && file_exists($dest . $host_filename)) {
-                    $host_filename.= $fileinfo['filename']. '_'. time(). mt_rand(). $fileinfo['extension'];
+                    $host_filename = $fileinfo['filename']. '_'. time(). mt_rand(). $fileinfo['extension'];
                 }
 
                 $uploadfile = $dest . $host_filename;
