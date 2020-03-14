@@ -449,11 +449,17 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     // detect Ajax request
     $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+
     if (!empty($next_location) && $XMLHttpRequest) {
-        if (!empty($gadget)) {
-            $data = Jaws_Gadget::getInstance($gadget)->session->pop($data);
+        if (empty($data)) {
+            $data = $next_location;
+            http_response_code($status_code);
         } else {
-            $data = Jaws::getInstance()->session->popResponse($data);
+            if (!empty($gadget)) {
+                $data = Jaws_Gadget::getInstance($gadget)->session->pop($data);
+            } else {
+                $data = Jaws::getInstance()->session->popResponse($data);
+            }
         }
     }
 
@@ -462,15 +468,14 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
         Jaws::getInstance()->session->update();
     }
 
-    if (!empty($next_location) && !$XMLHttpRequest) {
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-        header('Location: '.$next_location, true, $status_code);
-    } else {
-        // set response status code
-        if (!empty($status_code) && !in_array($status_code, array(301, 302))) {
-            http_response_code($status_code);
+    if (!empty($next_location)) {
+        if (!$XMLHttpRequest) {
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Pragma: no-cache');
+            header('Location: '.$next_location, true, $status_code);
         }
+    } else {
+        http_response_code($status_code);
     }
 
     // encode data based on response type

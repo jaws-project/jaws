@@ -348,6 +348,12 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         this.callbackObject.gadget.message.loading(false, reqOptions.callOptions.message_container);
 
         response = eval('(' + jqXHR.responseText + ')');
+        // ajax redirect
+        if ([301, 302].indexOf(jqXHR.status) != -1) {
+            window.location = response;
+            return;
+        }
+
         // call inline user define function
         if (reqOptions.done) {
             reqOptions.done(response, jqXHR.status, reqOptions.callOptions);
