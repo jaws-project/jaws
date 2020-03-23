@@ -104,10 +104,12 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
 
         $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
         $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
-        if (!$objCaptcha->check($cleanup)) {
-            return Jaws_Error::raiseError(_t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
-                'Jaws_Captcha',
-                JAWS_ERROR_NOTICE);
+        if (true !== $matched = $objCaptcha->check($cleanup)) {
+            return Jaws_Error::raiseError(
+                _t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
+                is_null($matched)? 404 : 406,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         return true;

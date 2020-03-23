@@ -123,16 +123,16 @@ class Jaws_Captcha
         $post = $this->app->request->fetch(array('captcha_key', 'entry_value'), 'post');
         list($key, $value) = array_values($post);
 
-        $matched = false;
+        $matched = null;
         $result = $this->fetch((int)$key);
-        if (!Jaws_Error::IsError($result) && is_string($value)) {
-            $matched = !empty($value) && (strtolower($result) === strtolower($value));
-        }
+        if (!Jaws_Error::IsError($result) && !is_null($result)) {
+            $matched = strtolower($result) === strtolower($value);
 
-        if ($cleanup) {
-            $this->delete((int)$key);
-        } else {
-            $this->update((int)$key, Jaws_Utils::RandomText());
+            if ($cleanup) {
+                $this->delete((int)$key);
+            } else {
+                $this->update((int)$key, Jaws_Utils::RandomText());
+            }
         }
 
         return $matched;
