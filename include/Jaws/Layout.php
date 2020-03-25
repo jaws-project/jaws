@@ -229,8 +229,8 @@ class Jaws_Layout
 
                 } else {
                     // nested pages layouts(not first page)
-                    $gadget = $this->app->mainGadget;
-                    $action = $this->app->mainAction;
+                    $gadget = $this->app->mainRequest['gadget'];
+                    $action = $this->app->mainRequest['action'];
                     if (@is_file($theme['path']. "$gadget.$action.html")) {
                         $layout_file = "$gadget.$action.html";
                     } elseif (@is_file($theme['path']. "$gadget.html")) {
@@ -518,13 +518,13 @@ class Jaws_Layout
                 $content = '';
                 $this->_Template->SetBlock($block);
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
-                    $item['gadget'] = $this->app->mainGadget;
-                    $item['action'] = $this->app->mainAction;
+                    $item['gadget'] = $this->app->mainRequest['gadget'];
+                    $item['action'] = $this->app->mainRequest['action'];
                     $item['params'] = array();
                     $content = $req_result;
                 } elseif (!$onlyMainAction) {
-                    if ($this->IsDisplayable($this->app->mainGadget,
-                                             $this->app->mainAction,
+                    if ($this->IsDisplayable($this->app->mainRequest['gadget'],
+                                             $this->app->mainRequest['action'],
                                              $item['when'],
                                              $this->app->mainIndex))
                     {
@@ -663,7 +663,7 @@ class Jaws_Layout
             array(
                 'name'    => 'application-name',
                 'content' => ($use_rewrite? '' : BASE_SCRIPT). ':'.
-                    $this->app->mainGadget. ':'. $this->app->mainAction
+                    $this->app->mainRequest['gadget']. ':'. $this->app->mainRequest['action']
             )
         );
         // add mandatory javascript links
