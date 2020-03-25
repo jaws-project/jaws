@@ -419,8 +419,8 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
 
     // Event logging
     if (Jaws::getInstance(false)) {
-        $gadget = Jaws::getInstance()->mainGadget;
-        $action = Jaws::getInstance()->mainAction;
+        $gadget = Jaws::getInstance()->mainRequest['gadget'];
+        $action = Jaws::getInstance()->mainRequest['action'];
         $sync = property_exists(Jaws::getInstance(), 'session')? $sync : false;
 
         $loglevel = 0;
