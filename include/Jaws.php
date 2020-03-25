@@ -106,13 +106,6 @@ class Jaws
     var $_BrowserFlag = '';
 
     /**
-     * Should application use layout?
-     * @var     bool
-     * @access  protected
-     */
-    var $_UseLayout = false;
-
-    /**
      * Store plugin object for later use so we aren't running
      * around with multiple copies
      * @var array
@@ -210,28 +203,6 @@ class Jaws
 
         // pass preferences to client
         $this->define('', 'preferences', $this->_Preferences);
-    }
-
-    /**
-     * Setup the applications Layout object.
-     *
-     * @return  void
-     * @access  public
-     */
-    function InstanceLayout()
-    {
-        $this->_UseLayout = true;
-    }
-
-    /**
-     * Get the boolean answer if application is using a layout
-     *
-     * @return  bool
-     * @access  public
-     */
-    function IsUsingLayout()
-    {
-        return $this->_UseLayout;
     }
 
     /**

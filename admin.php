@@ -32,8 +32,6 @@ $jawsApp = Jaws::getInstance();
 $ReqGadget = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('gadget', array('post', 'get')));
 $ReqAction = Jaws_Gadget_Action::filter(Jaws::getInstance()->request->fetch('action', array('post', 'get')));
 
-// Init layout
-$jawsApp->instanceLayout();
 // Run auto-load methods before standalone actions too
 $jawsApp->RunAutoload();
 

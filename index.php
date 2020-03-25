@@ -104,9 +104,6 @@ if (empty($ReqError) && $jawsApp->map->Parse()) {
 
 // set requested in front-end first/home page
 $jawsApp->mainIndex = $IsIndex;
-// Init layout...
-$jawsApp->instanceLayout();
-$jawsApp->layout->Load();
 
 // Run auto-load methods before standalone actions too
 $jawsApp->RunAutoload();
@@ -131,6 +128,8 @@ if (empty($ReqError)) {
 }
 
 if (!$IsReqActionStandAlone) {
+    // Init layout...
+    $jawsApp->layout->Load();
     $jawsApp->layout->Populate($ReqResult, $AccessToWebsiteDenied);
     $ReqResult = $jawsApp->layout->Get();
 }
