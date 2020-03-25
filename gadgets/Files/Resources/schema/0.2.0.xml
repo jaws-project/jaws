@@ -77,7 +77,6 @@
             <field>
                 <name>filetype</name>
                 <type>integer</type>
-                <unsigned>true</unsigned>
                 <length>1</length>
                 <description>1:text 2:image 3:audio 4:video 5:archive 254:folder 255:unknown</description>
             </field>
