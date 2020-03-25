@@ -86,7 +86,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
         $tpl->SetBlock('topmenu');
         $model = $this->gadget->model->load('Sitemap');
 
-        if ($this->app->layout->mainGadget == 'Sitemap') {
+        if ($this->app->layout->mainRequest['gadget'] == 'Sitemap') {
             $items = $model->GetItems($this->gadget->request->fetch('path', 'get'));
         } else {
             $items = $model->GetItems(1);
@@ -137,7 +137,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
                 $tpl->SetVariable('url', $item['url']);
                 $tpl->SetVariable('title', $item['title']);
                 $active = '';
-                if (($this->app->mainGadget == 'Sitemap') &&
+                if (($this->app->mainRequest['gadget'] == 'Sitemap') &&
                     ($this->gadget->request->fetch('path', 'get') == $item['path'])) {
                     $active = 'active';
                 }
