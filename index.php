@@ -59,17 +59,19 @@ if (empty($ReqError) && $jawsApp->map->Parse()) {
                 Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
             }
 
+            // set main requested attributes
+            $ReqAction = empty($ReqAction)? $objAction->gadget->default_action : $ReqAction;
+            $jawsApp->mainRequest = $objAction->getAttributes($ReqAction);
+            $jawsApp->mainRequest['gadget'] = $ReqGadget;
+            $jawsApp->mainRequest['action'] = $ReqAction;
+
             // check referrer host for internal action
-            if ($objAction->getAttribute($ReqAction, 'internal') &&
+            if (@$jawsApp->mainRequest['internal'] &&
                 (!$jawsApp->session->extraCheck() || Jaws_Utils::getReferrerHost() != $_SERVER['HTTP_HOST'])
             ) {
                 $ReqError = '403';
             }
 
-            $ReqAction = empty($ReqAction)? $objAction->gadget->default_action : $ReqAction;
-            // set requested gadget/action
-            $jawsApp->mainGadget = $ReqGadget;
-            $jawsApp->mainAction = $ReqAction;
             $jawsApp->define('', 'mainGadget', $ReqGadget);
             $jawsApp->define('', 'mainAction', $ReqAction);
         } else {
@@ -89,10 +91,12 @@ if (empty($ReqError) && $jawsApp->map->Parse()) {
             Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
         }
 
+        // set main requested attributes
+        $jawsApp->mainRequest = $objAction->getAttributes($ReqAction);
+        $jawsApp->mainRequest['gadget'] = $ReqGadget;
+        $jawsApp->mainRequest['action'] = $ReqAction;
+
         $ReqError = '';
-        // set requested gadget
-        $jawsApp->mainGadget = $ReqGadget;
-        $jawsApp->mainAction = $ReqAction;
         $jawsApp->define('', 'mainGadget', $ReqGadget);
         $jawsApp->define('', 'mainAction', $ReqAction);
     }

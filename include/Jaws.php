@@ -28,18 +28,11 @@ class Jaws
     var $mainIndex = false;
 
     /**
-     * The main gadget
+     * The main request attributes
      * @var     string
      * @access  public
      */
-    var $mainGadget = '';
-
-    /**
-     * The main action
-     * @var     string
-     * @access  public
-     */
-    var $mainAction = '';
+    public $mainRequest = array();
 
     /**
      * Main request is running?

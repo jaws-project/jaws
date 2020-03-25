@@ -51,11 +51,20 @@ if (!$jawsApp->session->user->logged) {
             )
         );
     } else {
-        $jawsApp->mainGadget = $ReqGadget;
-        $jawsApp->mainAction = $ReqAction;
+        $objAction = $gdgtUsers->action->loadAdmin();
+        if (Jaws_Error::IsError($objAction)) {
+            Jaws_Error::Fatal($objAction->getMessage());
+        }
+
+        // set main requested attributes
+        $ReqAction = empty($ReqAction)? $objAction->gadget->default_admin_action : $ReqAction;
+        $jawsApp->mainRequest = $objAction->getAttributes($ReqAction);
+        $jawsApp->mainRequest['gadget'] = $ReqGadget;
+        $jawsApp->mainRequest['action'] = $ReqAction;
+
         $jawsApp->define('', 'mainGadget', $ReqGadget);
         $jawsApp->define('', 'mainAction', $ReqAction);
-        $ReqResult = $gdgtUsers->action->loadAdmin()->Execute($ReqAction);
+        $ReqResult = $objAction->Execute($ReqAction);
         if (Jaws_Error::IsError($ReqResult)) {
             Jaws_Error::Fatal($ReqResult->getMessage());
         }
@@ -79,10 +88,12 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
         Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
     }
 
+    // set main requested attributes
     $ReqAction = empty($ReqAction)? $objAction->gadget->default_admin_action : $ReqAction;
-    // set requested gadget/action
-    $jawsApp->mainGadget = $ReqGadget;
-    $jawsApp->mainAction = $ReqAction;
+    $jawsApp->mainRequest = $objAction->getAttributes($ReqAction);
+    $jawsApp->mainRequest['gadget'] = $ReqGadget;
+    $jawsApp->mainRequest['action'] = $ReqAction;
+
     $jawsApp->define('', 'mainGadget', $ReqGadget);
     $jawsApp->define('', 'mainAction', $ReqAction);
 
