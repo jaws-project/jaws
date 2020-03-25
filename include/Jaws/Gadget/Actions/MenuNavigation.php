@@ -61,8 +61,8 @@ class Jaws_Gadget_Actions_MenuNavigation
         $tpl->SetBlock("$block/navigation");
 
         $thisGadget = $this->gadget->name;
-        $mainGadget = $this->app->mainGadget;
-        $mainAction = $this->app->mainAction;
+        $mainGadget = $this->app->mainRequest['gadget'];
+        $mainAction = $this->app->mainRequest['action'];
 
         $tpl->SetVariable('gadget', $this->gadget->name);
         $tpl->SetVariable('label', empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label);
@@ -83,7 +83,9 @@ class Jaws_Gadget_Actions_MenuNavigation
                     ),
                 );
                 // set active menu
-                if ($this->app->mainGadget == $this->gadget->name && $this->app->mainAction == $actionName) {
+                if ($this->app->mainRequest['gadget'] == $this->gadget->name &&
+                    $this->app->mainRequest['action'] == $actionName
+                ) {
                     $menu['active'] = true;
                 }
                 // check permissions
