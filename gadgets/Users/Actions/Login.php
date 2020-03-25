@@ -209,8 +209,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
-            if ($this->app->mainGadget == $this->app->requestedGadget &&
-                $this->app->mainAction == $this->app->requestedAction
+            if ($this->app->mainRequest['gadget'] == $this->app->requestedGadget &&
+                $this->app->mainRequest['action'] == $this->app->requestedAction
             ) {
                 $referrer = '';
             } else {
