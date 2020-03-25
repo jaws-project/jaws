@@ -375,6 +375,19 @@ class Jaws_Gadget_Action
 
 
     /**
+     * Get action attributes
+     *
+     * @access  public
+     * @param   string  $action Action name
+     * @param   string  $script     Action belongs to index or admin
+     * @return  mixed   Action attribute value otherwise NULL
+     */
+    public function getAttributes($action, $script = JAWS_SCRIPT)
+    {
+        return (array)@$this->gadget->actions[$script][$action];
+    }
+
+    /**
      * Get action attribute
      *
      * @access  public
