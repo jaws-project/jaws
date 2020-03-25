@@ -103,8 +103,8 @@ class Jaws_Template
             $this->globalVariables['data_url']    = $this->app->getDataURL();
             $this->globalVariables['.browser']    = empty($browser)? '' : ".$browser";
             $this->globalVariables['main_index']  = $this->app->mainIndex? 'index' : '';
-            $this->globalVariables['main_gadget'] = strtolower($this->app->mainGadget);
-            $this->globalVariables['main_action'] = strtolower($this->app->mainAction);
+            $this->globalVariables['main_gadget'] = strtolower($this->app->mainRequest['gadget']);
+            $this->globalVariables['main_action'] = strtolower($this->app->mainRequest['action']);
         } else {
             $this->loadFromTheme = false;
         }
