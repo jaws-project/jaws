@@ -52,7 +52,7 @@ class Jaws_Gadget_Request
      */
     function fetch($key, $method = '', $filter = true, $xss_strip = false, $json_decode = false)
     {
-        if ($this->gadget->name == $this->app->mainGadget) {
+        if ($this->gadget->name == $this->app->mainRequest['gadget']) {
             return $this->app->request->fetch($key, $method, $filter, $xss_strip, $json_decode);
         } else {
             return is_scalar($key)? null : array_fill_keys($key, null);
@@ -70,7 +70,7 @@ class Jaws_Gadget_Request
      */
     function fetchAll($method = '', $filter = true, $xss_strip = false, $type_validate = true)
     {
-        if ($this->gadget->name == $this->app->mainGadget) {
+        if ($this->gadget->name == $this->app->mainRequest['gadget']) {
             return $this->app->request->fetchAll($method, $filter, $xss_strip, $type_validate);
         } else {
             return array();
