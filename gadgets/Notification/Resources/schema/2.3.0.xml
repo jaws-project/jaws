@@ -102,6 +102,7 @@
             <field>
                 <name>contact</name>
                 <type>text</type>
+                <length>128</length>
             </field>
 
             <field>

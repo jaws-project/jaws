@@ -217,7 +217,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '2.2.0.xml');
+            $result = $this->installSchema('2.3.0.xml', array(), '2.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -231,6 +231,13 @@ class Notification_Installer extends Jaws_Gadget_Installer
                 if (Jaws_Error::IsError($result)) {
                     // do nothing
                 }
+            }
+        }
+
+        if (version_compare($old, '2.4.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '2.3.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
             }
         }
 
