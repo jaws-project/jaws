@@ -32,7 +32,10 @@ class Jaws
      * @var     string
      * @access  public
      */
-    public $mainRequest = array();
+    public $mainRequest = array(
+        'gadget' => '',
+        'action' => '',
+    );
 
     /**
      * Main request is running?
