@@ -77,9 +77,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $dragdrop = $t_item->ParseBlock('drag_drop');
         $t_item->Blocks['drag_drop']->Parsed = '';
 
-        // Init layout
-        $this->app->InstanceLayout();
-
         $fakeLayout = new Jaws_Layout();
         $fakeLayout->Load('', "$layout.html");
         $fakeLayout->addScript('gadgets/Layout/Resources/script.js');
