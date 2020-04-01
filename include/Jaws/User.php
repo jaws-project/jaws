@@ -1076,7 +1076,11 @@ class Jaws_User
         }
 
         // Let everyone know a user has been added
-        $res = $this->app->listener->Shout('Users', 'AddUser', $result);
+        $res = $this->app->listener->Shout(
+            'Users',
+            'UserChanges',
+            array('action' => 'AddUser', 'user' => $result)
+        );
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -1345,8 +1349,12 @@ class Jaws_User
             }
         }
 
-        // Let everyone know a user has been updated
-        $res = $this->app->listener->Shout('Users', 'UpdateUser', $id);
+        // Let everyone know a user has been added
+        $res = $this->app->listener->Shout(
+            'Users',
+            'UserChanges',
+            array('action' => 'UpdateUser', 'user' => $id)
+        );
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -1435,8 +1443,12 @@ class Jaws_User
             }
         }
 
-        // Let everyone know a user has been updated
-        $res = $this->app->listener->Shout('Users', 'UpdateUser', $id);
+        // Let everyone know a user has been added
+        $res = $this->app->listener->Shout(
+            'Users',
+            'UserChanges',
+            array('action' => 'UpdateUser', 'user' => $id)
+        );
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -1591,7 +1603,11 @@ class Jaws_User
         }
 
         // Let everyone know a group has been added
-        $res = $this->app->listener->Shout('Users', 'AddGroup', $result);
+        $res = $this->app->listener->Shout(
+            'Users',
+            'GroupChanges',
+            array('action' => 'AddGroup', 'group' => $result)
+        );
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -1655,8 +1671,12 @@ class Jaws_User
             return $result;
         }
 
-        // Let everyone know a group has been updated
-        $res = $this->app->listener->Shout('Users', 'UpdateGroup', $id);
+        // Let everyone know a group has been added
+        $res = $this->app->listener->Shout(
+            'Users',
+            'GroupChanges',
+            array('action' => 'UpdateGroup', 'group' => $id)
+        );
         if (Jaws_Error::IsError($res)) {
             //do nothing
         }
@@ -1730,8 +1750,12 @@ class Jaws_User
         //Commit Transaction
         $objORM->commit();
 
-        // Let everyone know that a user has been deleted
-        $res = $this->app->listener->Shout('Users', 'DeleteUser', $user);
+        // Let everyone know a user has been deleted
+        $res = $this->app->listener->Shout(
+            'Users',
+            'UserChanges',
+            array('action' => 'DeleteUser', 'user' => $user['id'])
+        );
         if (Jaws_Error::IsError($res)) {
             // nothing
         }
@@ -1776,7 +1800,11 @@ class Jaws_User
         $objORM->commit();
 
         // Let everyone know a group has been deleted
-        $res = $this->app->listener->Shout('Users', 'DeleteGroup', $id);
+        $res = $this->app->listener->Shout(
+            'Users',
+            'GroupChanges',
+            array('action' => 'DeleteGroup', 'group' => $id)
+        );
         if (Jaws_Error::IsError($res)) {
             // nothing
         }
