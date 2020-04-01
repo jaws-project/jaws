@@ -93,6 +93,9 @@ class Users_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Add listener for UserChanges event
+        $this->gadget->event->insert('UserChanges');
+
         return true;
     }
 
@@ -304,6 +307,11 @@ class Users_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '4.0.0', '<')) {
             $this->gadget->acl->insert('AccessUsersProfile', '', true);
+        }
+
+        if (version_compare($old, '4.1.0', '<')) {
+            // Add listener for UserChanges event
+            $this->gadget->event->insert('UserChanges');
         }
 
         return true;
