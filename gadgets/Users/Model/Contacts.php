@@ -19,9 +19,9 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
     {
         $contactData = array();
         $contactData['title'] = $data['title'];
-        $contactData['name'] = $data['name'];
-        $contactData['note'] = $data['note'];
-        $contactData['tel'] = json_encode(
+        $contactData['name']  = $data['name'];
+        $contactData['note']  = isset($data['note'])? $data['note'] : '';
+        $contactData['tel']   = json_encode(
             array(
                 'home' => isset($data['tel_home'])? $data['tel_home'] : '',
                 'work' => isset($data['tel_work'])? $data['tel_work'] : '',
