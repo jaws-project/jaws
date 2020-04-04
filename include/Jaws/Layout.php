@@ -181,80 +181,73 @@ class Jaws_Layout
             if (empty($layout_file)) {
                 $layout_user = 0;
                 $layout_type = (int)Jaws_Gadget::getInstance('Layout')->session->layout_type;
+                $mainRequestGadget = $this->app->mainRequest['gadget'];
+                $mainRequestAction = $this->app->mainRequest['action'];
 
-                $gdgtUsers = Jaws_Gadget::getInstance('Users');
-                if ($this->app->mainIndex) {
-                    // index/first page layout
-                    if ($this->app->session->user->logged) {
-                        // if user logged in
-                        if ($layout_type == 2 &&
-                            $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
-                            @is_file($theme['path']. 'Index.User.html')
-                        ) {
-                            // set private layout for logged user
-                            $layout_file = 'Index.User.html';
-                            $layout_user = (int)$this->app->session->user->id;
-                        } elseif (($layout_type == 1 || $layout_type == 2) &&
-                            $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
-                            @is_file($theme['path']. 'Index.Users.html')
-                        ) {
-                            // set global layout for logged users
-                            $layout_file = 'Index.Users.html';
-                        } elseif ($layout_type == 2 &&
-                            $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
-                            @is_file($theme['path']. 'Layout.User.html')
-                        ) {
-                            // set private layout for logged user
-                            $layout_file = 'Layout.User.html';
-                            $layout_user = (int)$this->app->session->user->id;
-                        } elseif (($layout_type == 1  || $layout_type == 2) &&
-                            $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
-                            @is_file($theme['path']. 'Layout.Users.html')
-                        ) {
-                            // set global layout for logged users
-                            $layout_file = 'Layout.Users.html';
-                        } elseif (@is_file($theme['path']. 'Index.html')) {
-                            $layout_file = 'Index.html';
-                        } else {
-                            $layout_file = 'Layout.html';
-                        }
-                    } else {
-                        // if user not logged in
-                        if (@is_file($theme['path']. 'Index.html')) {
-                            $layout_file = 'Index.html';
-                        } else {
-                            $layout_file = 'Layout.html';
-                        }
+                try {
+                    // layout is global? 
+                    if (empty($layout_type)) {
+                        // select layout file in exception part
+                        throw new Exception();
                     }
 
-                } else {
-                    // nested pages layouts(not first page)
-                    $gadget = $this->app->mainRequest['gadget'];
-                    $action = $this->app->mainRequest['action'];
-                    if (@is_file($theme['path']. "$gadget.$action.html")) {
-                        $layout_file = "$gadget.$action.html";
-                    } elseif (@is_file($theme['path']. "$gadget.html")) {
-                        $layout_file = "$gadget.html";
-                    } else {
-                        if ($this->app->session->user->logged) {
-                            // if user logged in
-                            if ($layout_type == 2 &&
-                                $gdgtUsers->gadget->GetPermission('AccessUserLayout') &&
-                                @is_file($theme['path']. 'Layout.User.html')
-                            ) {
-                                // set private layout for logged user
-                                $layout_file = 'Layout.User.html';
-                                $layout_user = (int)$this->app->session->user->id;
-                            } elseif (($layout_type == 1  || $layout_type == 2) &&
-                                $gdgtUsers->gadget->GetPermission('AccessUsersLayout') &&
-                                @is_file($theme['path']. 'Layout.Users.html')
-                            ) {
-                                // set global layout for logged users
-                                $layout_file = 'Layout.Users.html';
-                            } else {
-                                $layout_file = 'Layout.html';
-                            }
+                    // load users gadget
+                    $usersGadget = Jaws_Gadget::getInstance('Users');
+                    // index/first page?
+                    if ($this->app->mainIndex) {
+                        if ($usersGadget->gadget->GetPermission('AccessUserLayout') &&
+                            @is_file($theme['path']. 'Index.0.html')
+                        ) {
+                            // user index/first/dashboard page layout
+                            $layout_file = 'Index.0.html';
+                            $layout_user = (int)$this->app->session->user->id;
+                        } elseif ($usersGadget->gadget->GetPermission('AccessUsersLayout') &&
+                            @is_file($theme['path']. 'Index.1.html')
+                        ) {
+                            // logged users common index/first page layout
+                            $layout_file = 'Index.1.html';
                         } else {
+                            // select layout file in exception part
+                            throw new Exception();
+                        }
+                    } else {
+                        // nested pages(not index/first)
+                        if (!$usersGadget->gadget->GetPermission('AccessUsersLayout')) {
+                            // select layout file in exception part
+                            throw new Exception();
+                        }
+
+                        // gadget/action layout for logged users
+                        if (@is_file($theme['path']. "$mainRequestGadget.$mainRequestAction.1.html")) {
+                            $layout_file = "$gadget.$action.1.html";
+                        } elseif (@is_file($theme['path']. "$mainRequestGadget.1.html")) {
+                            $layout_file = "$mainRequestGadget.1.html";
+                        } elseif (@is_file($theme['path']. 'Layout.1.html')) {
+                            // logged users common nested pages layout
+                            $layout_file = 'Layout.1.html';
+                        } else {
+                            // select layout file in exception part
+                            throw new Exception();
+                        }
+                    }
+                } catch (Exception $e) {
+                    // index/first page?
+                    if ($this->app->mainIndex) {
+                        if (@is_file($theme['path']. 'Index.html')) {
+                            // index/first page layout
+                            $layout_file = 'Index.html';
+                        } else {
+                            // default pages layout
+                            $layout_file = 'Layout.html';
+                        }
+                    } else {
+                        // gadget/action layout
+                        if (@is_file($theme['path']. "$mainRequestGadget.$mainRequestAction.html")) {
+                            $layout_file = "$gadget.$action.html";
+                        } elseif (@is_file($theme['path']. "$mainRequestGadget.html")) {
+                            $layout_file = "$mainRequestGadget.html";
+                        } else {
+                            // default layout
                             $layout_file = 'Layout.html';
                         }
                     }
