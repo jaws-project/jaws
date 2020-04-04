@@ -22,7 +22,6 @@ class Layout_Hooks_Preferences extends Jaws_Gadget_Hook
             'values' => array(
                 0 => _t('LAYOUT_TYPE_0'),
                 1 => _t('LAYOUT_TYPE_1'),
-                2 => _t('LAYOUT_TYPE_2'),
             ),
         );
 

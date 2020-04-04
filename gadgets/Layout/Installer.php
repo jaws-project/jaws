@@ -25,7 +25,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        array('default_layout_type', 0, true),
+        array('default_layout_type', 1, true),
     );
 
     /**
@@ -171,6 +171,24 @@ class Layout_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->delete('UserLayoutManage');
             $this->gadget->acl->delete('UsersLayoutAccess');
             $this->gadget->acl->delete('UsersLayoutManage');
+        }
+
+        if (version_compare($old, '4.4.0', '<')) {
+            // registry
+            $this->gadget->registry->update('default_layout_type', 1);
+
+            $exchangeLayouts = array(
+                'Index.User'   => 'Index.0',
+                'Index.Users'  => 'Index.1',
+                'Layout.Users' => 'Layout.1',
+            );
+            $lyTable = Jaws_ORM::getInstance()->table('layout');
+            foreach ($exchangeLayouts as $oldName => $newName) {
+                $result = $lyTable->update(array('layout' => $newName))->where('layout', $oldName)->exec();
+                if (Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+            }
         }
 
         return true;

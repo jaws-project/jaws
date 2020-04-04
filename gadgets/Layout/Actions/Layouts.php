@@ -18,23 +18,28 @@ class Layout_Actions_Layouts extends Jaws_Gadget_Action
      */
     function LayoutType()
     {
+        $layouts = array();
         $type = (int)$this->gadget->request->fetch('type');
         switch ($type) {
-            case 2:
-                Jaws_Gadget::getInstance('Users')->gadget->CheckPermission('AccessUserLayout');
-                $user = (int)$this->app->session->user->id;
-                $layouts = array('Index.User', 'Layout.User');
-                break;
-
             case 1:
-                Jaws_Gadget::getInstance('Users')->gadget->CheckPermission('AccessUsersLayout');
-                $user = 0;
-                $layouts = array('Index.Users', 'Layout.Users');
+                // load users gadget
+                $usersGadget = Jaws_Gadget::getInstance('Users');
+                if ($usersGadget->gadget->GetPermission('AccessUserLayout')) {
+                    $layouts[] = array('Index.0' => (int)$this->app->session->user->id);
+                }
+                if ($usersGadget->gadget->GetPermission('AccessUsersLayout')) {
+                    $layouts[] = array('Index.1'  => 0);
+                    $layouts[] = array('Layout.1' => 0);
+                }
                 break;
 
             default:
-                $user = 0;
-                $layouts = array('Index', 'Layout');
+                $layouts[] = array('Index'  => 0);
+                $layouts[] = array('Layout' => 0);
+        }
+
+        if (empty($layouts)) {
+            return Jaws_HTTPError::Get(403);
         }
 
         $theme = $this->app->GetTheme();
@@ -43,7 +48,7 @@ class Layout_Actions_Layouts extends Jaws_Gadget_Action
         }
 
         $layoutModel = $this->gadget->model->load('Layout');
-        foreach ($layouts as $layout) {
+        foreach ($layouts as $layout => $user) {
             if (@is_file($theme['path']. $layout . '.html')) {
                 $layoutModel->InitialLayout($layout, $user);
             }
