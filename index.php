@@ -96,6 +96,11 @@ if (empty($ReqError) && $jawsApp->map->Parse()) {
         $jawsApp->mainRequest['gadget'] = $ReqGadget;
         $jawsApp->mainRequest['action'] = $ReqAction;
 
+        // action mode is standalone?
+        $IsReqActionStandAlone =
+            (bool)@$jawsApp->mainRequest['standalone'] ||
+            $jawsApp->request->fetch('mode') === 'standalone';
+
         $ReqError = '';
         $jawsApp->define('', 'mainGadget', $ReqGadget);
         $jawsApp->define('', 'mainAction', $ReqAction);
@@ -111,6 +116,10 @@ $jawsApp->mainIndex = $IsIndex;
 
 // Run auto-load methods before standalone actions too
 $jawsApp->RunAutoload();
+// Init layout if action mode not standalone
+if (!$IsReqActionStandAlone) {
+    $jawsApp->layout->Load();
+}
 
 if (empty($ReqError)) {
     $ReqResult = '';
@@ -124,16 +133,21 @@ if (empty($ReqError)) {
         $jawsApp->inMainRequest = false;
 
         // we must check type of action after execute, because gadget can change it at runtime
-        $ReqMode = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('mode'));
-        $IsReqActionStandAlone = ($ReqMode == 'standalone') || $objAction->IsStandAlone($ReqAction);
+        if (!$objAction->IsStandAlone($ReqAction) && $jawsApp->request->fetch('mode') !== 'standalone') {
+            // if mode was standalone before action excute, we need init layout
+            if ($IsReqActionStandAlone) {
+                $jawsApp->layout->Load();
+            }
+            $IsReqActionStandAlone = false;
+        } else {
+            $IsReqActionStandAlone = true;
+        }
     }
 } else {
     $ReqResult = Jaws_HTTPError::Get($ReqError);
 }
 
 if (!$IsReqActionStandAlone) {
-    // Init layout...
-    $jawsApp->layout->Load();
     $jawsApp->layout->Populate($ReqResult, $AccessToWebsiteDenied);
     $ReqResult = $jawsApp->layout->Get();
 }
