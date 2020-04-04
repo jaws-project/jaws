@@ -77,44 +77,20 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $tpl->ParseBlock('UserLinks/manage-layout');
             }
 
-            // dashboards
-            $layouts = array();
-            $layout_type = $layoutGadget->session->layout_type;
-            switch ($layout_type) {
-                case 2:
-                    if ($this->gadget->GetPermission('AccessUsersLayout')) {
-                        $layouts[] = 1;
-                    }
-                    $layouts[] = 0;
-                    break;
+            // layout type
+            if ($this->gadget->GetPermission('AccessUserLayout') ||
+                $this->gadget->GetPermission('AccessUsersLayout')
+            ) {
+                $layout = $layoutGadget->session->layout_type? 0 : 1;
 
-                case 1:
-                    if ($this->gadget->GetPermission('AccessUserLayout')) {
-                        $layouts[] = 2;
-                    }
-                    $layouts[] = 0;
-                    break;
-
-                default:
-                    if ($this->gadget->GetPermission('AccessUserLayout')) {
-                        $layouts[] = 2;
-                    }
-                    if ($this->gadget->GetPermission('AccessUsersLayout')) {
-                        $layouts[] = 1;
-                    }
-            }
-
-            if (!empty($layouts)) {
                 $tpl->SetBlock('UserLinks/layouts');
-                foreach ($layouts as $layout) {
-                    $tpl->SetBlock('UserLinks/layouts/layout');
-                    $tpl->SetVariable('layout', _t("USERS_DASHBOARD_$layout"));
-                    $tpl->SetVariable(
-                        'layout_url',
-                        $layoutGadget->urlMap('LayoutType', array('type' => $layout))
-                    );
-                    $tpl->ParseBlock('UserLinks/layouts/layout');
-                }
+                $tpl->SetBlock('UserLinks/layouts/layout');
+                $tpl->SetVariable('layout', _t("USERS_DASHBOARD_$layout"));
+                $tpl->SetVariable(
+                    'layout_url',
+                    $layoutGadget->urlMap('LayoutType', array('type' => $layout))
+                );
+                $tpl->ParseBlock('UserLinks/layouts/layout');
                 $tpl->ParseBlock('UserLinks/layouts');
             }
 
