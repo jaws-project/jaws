@@ -13,6 +13,10 @@ $actions['file'] = array(
     'standalone' => true,
     'file'   => 'Files',
 );
+$actions['displayReferenceFiles'] = array(
+    'standalone' => true,
+    'file'   => 'Files',
+);
 
 /**
  * Admin actions

@@ -16,8 +16,45 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      * @param   array   $options    User interface control options(maxsize, types, labels, ...)
      * @return  void
      */
-    function displayReferenceFiles(&$tpl, $interface, $options = array())
+    function displayReferenceFiles(&$tpl = null, $interface = array(), $options = array())
     {
+        // FIXME: temporary solution
+        if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            $interface = $this->gadget->request->fetchAll('post');
+            if (!empty($interface['reference'])) {
+                $files = $this->gadget->model->load('Files')->getFiles($interface);
+                foreach ($files as $ndx => $file) {
+                    $files[$ndx]['url_file'] = $this->gadget->urlMap(
+                        'file',
+                        array('id' => $file['id'], 'key' => $file['filekey'])
+                    );
+                    unset(
+                        $files[$ndx]['id'], $files[$ndx]['type'], $files[$ndx]['public'],
+                        $files[$ndx]['filename'], $files[$ndx]['mimetype'], $files[$ndx]['filetype'],
+                        $files[$ndx]['filesize'], $files[$ndx]['filetime'], $files[$ndx]['filekey'],
+                    );
+                }
+
+                $tpl = $this->gadget->template->load('Files.html', array('rawStore' => true));
+                $tpl->SetBlock('files/file');
+                $template = $tpl->GetRawBlockContent('', false);
+
+                return $this->gadget->session->response(
+                    '',
+                    RESPONSE_NOTICE,
+                    array(
+                        'files' => $files,
+                        'template' => $template
+                    )
+                );
+            }
+
+            return $this->gadget->session->response(
+                'reference is empty',
+                RESPONSE_ERROR
+            );
+        }
+
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/files");
 

@@ -242,6 +242,30 @@ function Jaws_Gadget_Files() { return {
     },
 
     /**
+     * Get upload reference files interface
+     */
+    displayReferenceFiles: function($tpl, $interface, $options = [])
+    {
+        this.gadget.ajax.callAsync(
+            'displayReferenceFiles',
+            $interface,
+            function(response, status) {
+                if (response['type'] == 'alert-success') {
+                    var regex = new RegExp(
+                        '\{\{(' + Object.keys(response['data'].files[0]).join('|') + ')\}\}',
+                        'g'
+                    );
+
+                    $.each(response['data'].files, function (index, file) {
+                        let tplStr = response['data'].template.replace(regex, (m, $1) => file[$1] || m);
+                        $tpl.append(tplStr.replace(/{{lbl_file}}/g, $options.labels.title));
+                    });
+                }
+            }
+        )
+    },
+
+    /**
      * initialize gadget actions
      */
     init: function(mainGadget, mainAction)
