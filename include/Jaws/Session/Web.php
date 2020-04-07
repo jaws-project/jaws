@@ -96,7 +96,14 @@ class Jaws_Session_Web extends Jaws_Session
 
         // secure
         $secure = $this->app->registry->fetch('cookie_secure', 'Settings') == 'true';
-        $secure = $secure && !empty($_SERVER['HTTPS']);
+        if (empty($_SERVER['HTTPS'])) {
+            if (empty($_SERVER['HTTP_X_FORWARDED_PROTO']) ||
+                (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) != 'https')
+            ) {
+                $secure = false;
+            }
+        }
+
         // http only
         if (is_null($httponly)) {
             $httponly = $this->app->registry->fetch('cookie_httponly', 'Settings') == 'true';
