@@ -268,7 +268,7 @@ class Jaws_XSS
                     // for security reason we must re-encode url
                     $parsedURL[$part] = implode(
                         '/',
-                        array_map('rawurldecode', array_map('rawurlencode', explode('/', $value)))
+                        array_map('rawurlencode', array_map('rawurldecode', explode('/', $value)))
                     );
                 } else {
                     $parsedURL[$part] = implode('/', array_map('rawurlencode', explode('/', $value)));
