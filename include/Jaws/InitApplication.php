@@ -74,7 +74,7 @@ set_include_path('.' . PATH_SEPARATOR . ROOT_JAWS_PATH . 'libraries/pear');
 // Create application
 $jawsApp = Jaws::getInstance();
 // get an instance of Jaws_DB
-$objDatabase = Jaws_DB::getInstance('default', $db);
+$objDatabase = Jaws_DB::getInstance('default', $db, isset($wdb)? $wdb : array());
 if (Jaws_Error::IsError($objDatabase)) {
     Jaws_Error::Fatal($objDatabase->getMessage());
 }

@@ -32,12 +32,20 @@ class Jaws_ORM
     const FETCHMODE_FLIPPED = MDB2_FETCHMODE_FLIPPED;
 
     /**
-     * Jaws_DB  object
+     * Jaws_DB read instance object
      *
      * @var     object
      * @access  public
      */
-    public $jawsdb;
+    public $jawsdbr;
+
+    /**
+     * Jaws_DB write instance object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $jawsdbw;
 
     /**
      * The DB prefix for tables
@@ -291,11 +299,12 @@ class Jaws_ORM
      */
     function __construct($db_instance)
     {
-        $this->jawsdb = Jaws_DB::getInstance($db_instance);
-        $this->_dbDriver   = $this->jawsdb->getDriver();
-        $this->_dbVersion  = $this->jawsdb->getDBVersion();
-        $this->_tbl_prefix = $this->jawsdb->GetPrefix();
-        $this->_identifier_quoting = $this->jawsdb->dbc->identifier_quoting;
+        $this->jawsdbr = Jaws_DB::getInstance($db_instance);
+        $this->jawsdbw = Jaws_DB::getInstance($db_instance.'_write');
+        $this->_dbDriver   = $this->jawsdbr->getDriver();
+        $this->_dbVersion  = $this->jawsdbr->getDBVersion();
+        $this->_tbl_prefix = $this->jawsdbr->GetPrefix();
+        $this->_identifier_quoting = $this->jawsdbr->dbc->identifier_quoting;
     }
 
     /**
@@ -421,18 +430,18 @@ class Jaws_ORM
                 if ($value[1] == 'expr') {
                     $vstr = $this->quoteIdentifier($value[0]);
                 } else {
-                    $vstr = $this->jawsdb->dbc->quote($value[0], $value[1]);
+                    $vstr = $this->jawsdbr->dbc->quote($value[0], $value[1]);
                 }
             } else {
                 // Add "N" character before text field value,
                 // when using FreeTDS as MSSQL driver, to supporting unicode text
-                if ($this->jawsdb->_dsn['phptype'] == 'mssql' &&
+                if ($this->jawsdbr->_dsn['phptype'] == 'mssql' &&
                     is_string($value) &&
-                    $this->jawsdb->Is_FreeTDS_MSSQL_Driver())
+                    $this->jawsdbr->Is_FreeTDS_MSSQL_Driver())
                 {
                     $vstr = 'N' . $this->dbc->quote($value);
                 } else {
-                    $vstr = $this->jawsdb->dbc->quote($value);
+                    $vstr = $this->jawsdbr->dbc->quote($value);
                 }
             }
         }
@@ -573,12 +582,12 @@ class Jaws_ORM
                     $value = $this->quoteValue(
                         Jaws_UTF8::str_replace(
                             '$',
-                            $this->jawsdb->dbc->escapePattern($value[1]),
+                            $this->jawsdbr->dbc->escapePattern($value[1]),
                             $value[0]
                         )
                     );
                 } else {
-                    $value = $this->quoteValue('%' . $this->jawsdb->dbc->escapePattern($value) . '%');
+                    $value = $this->quoteValue('%' . $this->jawsdbr->dbc->escapePattern($value) . '%');
                 }
                 break;
 
@@ -901,27 +910,27 @@ class Jaws_ORM
 
             // Fetch the value from the first column of each row of the result set
             case 'column':
-                $result = $this->jawsdb->dbc->queryCol($sql, $this->_types, (int)$argument);
+                $result = $this->jawsdbr->dbc->queryCol($sql, $this->_types, (int)$argument);
                 break;
 
             // Fetch the value from the first column of the first row of the result
             case 'one':
-                $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
+                $result = $this->jawsdbr->dbc->queryone($sql, $this->_types);
                 break;
 
             // Fetch all the rows of the result set into a two dimensional array
             case 'all':
                 if (!empty($this->_limit)) {
-                    $result = $this->jawsdb->dbc->setLimit($this->_limit, $this->_offset);
+                    $result = $this->jawsdbr->dbc->setLimit($this->_limit, $this->_offset);
                     if (MDB2::isError($result)) {
                         break;
                     }
                 }
-                $result = $this->jawsdb->dbc->queryAll($sql, $this->_types, $this->_fetchmode);
+                $result = $this->jawsdbr->dbc->queryAll($sql, $this->_types, $this->_fetchmode);
                 break;
 
             default:
-                $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
+                $result = $this->jawsdbr->dbc->queryRow($sql, $this->_types);
         }
 
         if (MDB2::isError($result)) {
@@ -960,14 +969,14 @@ class Jaws_ORM
                 $sql = "delete\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->exec($sql);
+                $result = $this->jawsdbw->dbc->exec($sql);
                 break;
 
             case 'igsert':
                 $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->queryone($sql);
+                $result = $this->jawsdbw->dbc->queryone($sql);
                 if (!MDB2::isError($result) && empty($result)) {
                     goto insert;
                 }
@@ -977,7 +986,7 @@ class Jaws_ORM
                 $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->queryone($sql);
+                $result = $this->jawsdbw->dbc->queryone($sql);
                 if (!MDB2::isError($result)) {
                     $upsert_result = $result;
                     if (empty($result)) {
@@ -1000,10 +1009,10 @@ class Jaws_ORM
                     $columns.= ', '. $this->quoteIdentifier($column);
                 }
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
-                $result = $this->jawsdb->dbc->exec($sql);
+                $result = $this->jawsdbw->dbc->exec($sql);
                 if (!MDB2::isError($result)) {
                     if (!empty($result) && !empty($this->_pk_field)) {
-                        $result = $this->jawsdb->dbc->lastInsertID(
+                        $result = $this->jawsdbw->dbc->lastInsertID(
                             $this->_tbl_prefix. $this->_table,
                             $this->_pk_field
                         );
@@ -1023,7 +1032,7 @@ class Jaws_ORM
                 // remove extra comma from end of query
                 $sql = substr_replace($sql, '', -2, 1);
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->exec($sql);
+                $result = $this->jawsdbw->dbc->exec($sql);
                 if (!MDB2::isError($result) && ($this->_query_command == 'upsert')) {
                     // upsert: return record primary key same as insert
                     $result = $upsert_result;
@@ -1068,7 +1077,7 @@ class Jaws_ORM
                     $outer_transaction = self::$in_transaction;
                     $this->beginTransaction();
                     foreach ($vsql as $psql) {
-                        $result = $this->jawsdb->dbc->exec($sql. $psql);
+                        $result = $this->jawsdbw->dbc->exec($sql. $psql);
                         if (MDB2::isError($result)) {
                             break 2;
                         }
@@ -1078,7 +1087,7 @@ class Jaws_ORM
                     }
                 } else {
                     $sql.= $vsql;
-                    $result = $this->jawsdb->dbc->exec($sql);
+                    $result = $this->jawsdbw->dbc->exec($sql);
                 }
                 break;
 
@@ -1119,7 +1128,7 @@ class Jaws_ORM
         if (!self::$in_transaction) {
             self::$in_transaction = true;
             self::$auto_rollback_on_error = $auto_rollback;
-            $this->jawsdb->dbc->beginTransaction();
+            $this->jawsdbw->dbc->beginTransaction();
         }
 
         return $this;
@@ -1135,7 +1144,7 @@ class Jaws_ORM
     {
         if (self::$in_transaction) {
             self::$in_transaction = false;
-            $this->jawsdb->dbc->rollback();
+            $this->jawsdbw->dbc->rollback();
         }
 
         return $this;
@@ -1152,7 +1161,7 @@ class Jaws_ORM
         if (self::$in_transaction) {
             self::$in_transaction = false;
             self::$auto_rollback_on_error = true;
-            $this->jawsdb->dbc->commit();
+            $this->jawsdbw->dbc->commit();
         }
 
         return $this;
@@ -1325,7 +1334,7 @@ class Jaws_ORM_Function
         $this->orm    = $orm;
         $this->method = $method;
         $this->params = $params;
-        $this->orm->jawsdb->dbc->loadModule('Function', null, true);
+        $this->orm->jawsdbr->dbc->loadModule('Function', null, true);
     }
 
     /**
@@ -1388,12 +1397,12 @@ class Jaws_ORM_Function
             case 'upper':
             case 'length':
                 $params[0] = $this->orm->quoteIdentifier($params[0]);
-                $func_str = $this->orm->jawsdb->dbc->function->$method($params[0]);
+                $func_str = $this->orm->jawsdbr->dbc->function->$method($params[0]);
                 break;
 
             case 'now':
             case 'random':
-                $func_str = $this->orm->jawsdb->dbc->function->$method();
+                $func_str = $this->orm->jawsdbr->dbc->function->$method();
                 break;
 
             case 'coalesce':
@@ -1418,12 +1427,12 @@ class Jaws_ORM_Function
                     }
                 }
 
-                $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, $method), $params);
+                $func_str = call_user_func_array(array($this->orm->jawsdbr->dbc->function, $method), $params);
                 break;
 
             case 'substring':
                 $params[0] = $this->orm->quoteIdentifier($params[0]);
-                $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, 'substring'), $params);
+                $func_str = call_user_func_array(array($this->orm->jawsdbr->dbc->function, 'substring'), $params);
                 break;
 
             case 'expr':

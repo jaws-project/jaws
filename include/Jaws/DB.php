@@ -122,11 +122,12 @@ class Jaws_DB
      * Get a Jaws_DB instance
      *
      * @access  public
-     * @param   array  $options  Database connection options
-     * @param   string $instance Jaws_DB instance name
+     * @param   string $instance    Jaws_DB instance name
+     * @param   array  $options     Database connection options
+     * @param   array  $wdb_options Master database connection options for modification
      * @return  object Jaws_DB instance
      */
-    static function getInstance($instance = 'default', $options = array())
+    static function getInstance($instance = 'default', $options = array(), $wdb_options = array())
     {
         static $instances;
         if (!isset($instances)) {
@@ -137,18 +138,36 @@ class Jaws_DB
             if ($instance !== 'default') {
                 // try use default instance options if not passed
                 $default_options = $instances['default']->getDBOptions();
-                if ((!isset($options['driver']) || $options['driver'] == $default_options['driver']) &&
-                    (!isset($options['user']) || $options['user'] == $default_options['user']) &&
-                    (!isset($options['password']) || $options['password'] == $default_options['password']) &&
-                    (!isset($options['host']) || $options['host'] == $default_options['host']) &&
-                    (!isset($options['port']) || $options['port'] == $default_options['port']) &&
-                    (!isset($options['name']) || $options['name'] == $default_options['name']))
-                {
+                if ((!isset($options['driver']) ||
+                        $options['driver'] == $default_options['driver']
+                    ) &&
+                    (!isset($options['user']) ||
+                        $options['user'] == $default_options['user']
+                    ) &&
+                    (!isset($options['password']) ||
+                        $options['password'] == $default_options['password']
+                    ) &&
+                    (!isset($options['host']) ||
+                        $options['host'] == $default_options['host']
+                    ) &&
+                    (!isset($options['port']) ||
+                        $options['port'] == $default_options['port']
+                    ) &&
+                    (!isset($options['name']) ||
+                        $options['name'] == $default_options['name']
+                    )
+                ) {
                     $options = array_merge($default_options, $options);
                 }
             }
 
             $instances[$instance] = new Jaws_DB($options);
+            if (empty($wdb_options)) {
+                $instances[$instance.'_write'] = $instances[$instance];
+            } else {
+                $wdb_options = array_merge($options, $wdb_options);
+                $instances[$instance.'_write'] = new Jaws_DB($wdb_options);
+            }
         }
 
         return $instances[$instance];
