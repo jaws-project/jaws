@@ -538,7 +538,7 @@ class Jaws_DB
      */
     function beginTransaction()
     {
-        return self::$instances[$this->instance . '_write']->beginTransaction();
+        return self::$instances[$this->instance . '_write']->dbc->beginTransaction();
     }
 
     /**
@@ -549,7 +549,7 @@ class Jaws_DB
      */
     function rollback()
     {
-        return self::$instances[$this->instance . '_write']->rollback();
+        return self::$instances[$this->instance . '_write']->dbc->rollback();
     }
 
     /**
@@ -560,7 +560,7 @@ class Jaws_DB
      */
     function commit()
     {
-        return self::$instances[$this->instance . '_write']->commit();
+        return self::$instances[$this->instance . '_write']->dbc->commit();
     }
 
     /**
