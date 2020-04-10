@@ -7,7 +7,7 @@ require ROOT_JAWS_PATH . 'include/Jaws/ORM.php';
  *
  * @category   Database
  * @package    Core
- * @author     Helgi �ormar �orbj�rnsson <dufuz@php.net>
+ * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
