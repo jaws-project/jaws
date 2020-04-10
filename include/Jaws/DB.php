@@ -7,7 +7,7 @@ require ROOT_JAWS_PATH . 'include/Jaws/ORM.php';
  *
  * @category   Database
  * @package    Core
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author     Helgi ï¿½ormar ï¿½orbjï¿½rnsson <dufuz@php.net>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
@@ -333,24 +333,17 @@ class Jaws_DB
      * @return  mixed a result handle or MDB2_OK on success, a MDB2 error on failure
      * @access  public
      */
-    function query($sql, $params = array(), $error_level = JAWS_ERROR_ERROR, $sqlParse = true)
+    function query($sql, $options = array())
     {
-        if ($sqlParse) {
-            $sql = $this->sqlParse($sql, $params);
+        $options['error_level'] = isset($options['error_level'])? $options['error_level'] : JAWS_ERROR_ERROR;
+        if (isset($options['params']) &&
+            (isset($options['parse']) && $options['parse'])
+        ) {
+            $sql = $this->sqlParse($sql, $options['params']);
         }
 
         $result = self::$instances[$this->instance . '_write']->dbc->exec($sql);
-        if (MDB2::isError($result)) {
-            $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
-            return new Jaws_Error(
-                $result->getMessage(),
-                $result->getCode(),
-                $error_level,
-                1
-            );
-        }
-
-        return (string)$result;
+        return MDB2::isError($result)? $result : (string)$result;
     }
 
     /**
@@ -516,30 +509,58 @@ class Jaws_DB
     }
 
     /**
-     * returns the autoincrement ID if supported or $id
+     * returns the auto-increment ID if supported or $id
      *
      * @param   arrayed $id value as returned by getBeforeId()
      * @param   string $table name of the table into which a new row was inserted
      * @return  mixed MDB2 Error Object or id
      * @access  public
      */
-    function lastInsertID($table = null, $field = null)
+    function lastInsertID($table = null, $field = null, $parse = true)
     {
+        if ($parse) {
+            $table = $this->getPrefix() . $table;
+            $field = $field;
+        }
         $result = self::$instances[$this->instance . '_write']->dbc->lastInsertID(
-            $this->getPrefix() . $table,
+            $table,
             $field
         );
-        if (MDB2::isError($result)) {
-            $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error(
-                $result->getMessage(),
-                $result->getCode(),
-                JAWS_ERROR_ERROR,
-                1
-            );
-        }
 
         return $result;
+    }
+
+    /**
+     * Start a transaction
+     *
+     * @access  public
+     * @return  mixed   True on success, a Jaws_Error error on failure
+     */
+    function beginTransaction()
+    {
+        return self::$instances[$this->instance . '_write']->beginTransaction();
+    }
+
+    /**
+     * Cancel any database changes done during a transaction
+     *
+     * @access  public
+     * @return  mixed   True on success, a Jaws_Error error on failure
+     */
+    function rollback()
+    {
+        return self::$instances[$this->instance . '_write']->rollback();
+    }
+
+    /**
+     * Commit the database changes done during a transaction
+     *
+     * @access  public
+     * @return  mixed   True on success, a Jaws_Error error on failure
+     */
+    function commit()
+    {
+        return self::$instances[$this->instance . '_write']->commit();
     }
 
     /**
