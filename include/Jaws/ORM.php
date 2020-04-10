@@ -243,7 +243,7 @@ class Jaws_ORM
     public $alias = '';
 
     /**
-     * separators/splitters query string 
+     * separators/splitters query string
      *
      * @var     array
      * @access  private
@@ -960,7 +960,7 @@ class Jaws_ORM
                 $sql = "delete\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->exec($sql);
+                $result = $this->jawsdb->query($sql);
                 break;
 
             case 'igsert':
@@ -1000,12 +1000,13 @@ class Jaws_ORM
                     $columns.= ', '. $this->quoteIdentifier($column);
                 }
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
-                $result = $this->jawsdb->dbc->exec($sql);
+                $result = $this->jawsdb->query($sql);
                 if (!MDB2::isError($result)) {
                     if (!empty($result) && !empty($this->_pk_field)) {
-                        $result = $this->jawsdb->dbc->lastInsertID(
+                        $result = $this->jawsdb->lastInsertID(
                             $this->_tbl_prefix. $this->_table,
-                            $this->_pk_field
+                            $this->_pk_field,
+                            false
                         );
                     }
                 }
@@ -1023,7 +1024,7 @@ class Jaws_ORM
                 // remove extra comma from end of query
                 $sql = substr_replace($sql, '', -2, 1);
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->exec($sql);
+                $result = $this->jawsdb->query($sql);
                 if (!MDB2::isError($result) && ($this->_query_command == 'upsert')) {
                     // upsert: return record primary key same as insert
                     $result = $upsert_result;
@@ -1055,7 +1056,7 @@ class Jaws_ORM
                             } else {
                                 $vsql[] = " VALUES ($values_str)";
                             }
-                            
+
                             break;
 
                         default:
@@ -1068,7 +1069,7 @@ class Jaws_ORM
                     $outer_transaction = self::$in_transaction;
                     $this->beginTransaction();
                     foreach ($vsql as $psql) {
-                        $result = $this->jawsdb->dbc->exec($sql. $psql);
+                        $result = $this->jawsdb->query($sql. $psql);
                         if (MDB2::isError($result)) {
                             break 2;
                         }
@@ -1078,7 +1079,7 @@ class Jaws_ORM
                     }
                 } else {
                     $sql.= $vsql;
-                    $result = $this->jawsdb->dbc->exec($sql);
+                    $result = $this->jawsdb->query($sql);
                 }
                 break;
 
@@ -1119,7 +1120,7 @@ class Jaws_ORM
         if (!self::$in_transaction) {
             self::$in_transaction = true;
             self::$auto_rollback_on_error = $auto_rollback;
-            $this->jawsdb->dbc->beginTransaction();
+            $this->jawsdb->beginTransaction();
         }
 
         return $this;
@@ -1135,7 +1136,7 @@ class Jaws_ORM
     {
         if (self::$in_transaction) {
             self::$in_transaction = false;
-            $this->jawsdb->dbc->rollback();
+            $this->jawsdb->rollback();
         }
 
         return $this;
@@ -1152,7 +1153,7 @@ class Jaws_ORM
         if (self::$in_transaction) {
             self::$in_transaction = false;
             self::$auto_rollback_on_error = true;
-            $this->jawsdb->dbc->commit();
+            $this->jawsdb->commit();
         }
 
         return $this;
@@ -1232,7 +1233,7 @@ class Jaws_ORM
      * Reset internal variables
      *
      * @access  public
-     * @return  void
+     * @return  object
      */
     function reset()
     {
@@ -1251,6 +1252,8 @@ class Jaws_ORM
         $this->_offset     = null;
         $this->_passed_types  = false;
         $this->_query_command = '';
+
+        return $this;
     }
 
 }
