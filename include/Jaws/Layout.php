@@ -219,7 +219,7 @@ class Jaws_Layout
 
                         // gadget/action layout for logged users
                         if (@is_file($theme['path']. "$mainRequestGadget.$mainRequestAction.1.html")) {
-                            $layout_file = "$gadget.$action.1.html";
+                            $layout_file = "$mainRequestGadget.$mainRequestAction.1.html";
                         } elseif (@is_file($theme['path']. "$mainRequestGadget.1.html")) {
                             $layout_file = "$mainRequestGadget.1.html";
                         } elseif (@is_file($theme['path']. 'Layout.1.html')) {
@@ -243,7 +243,7 @@ class Jaws_Layout
                     } else {
                         // gadget/action layout
                         if (@is_file($theme['path']. "$mainRequestGadget.$mainRequestAction.html")) {
-                            $layout_file = "$gadget.$action.html";
+                            $layout_file = "$mainRequestGadget.$mainRequestAction.html";
                         } elseif (@is_file($theme['path']. "$mainRequestGadget.html")) {
                             $layout_file = "$mainRequestGadget.html";
                         } else {
