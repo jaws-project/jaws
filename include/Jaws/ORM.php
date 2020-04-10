@@ -369,6 +369,9 @@ class Jaws_ORM
                 if (trim($column) !== '') {
                     $prev_is_as = ($column == 'as');
                 }
+                if ($prev_is_as && ($this->_dbDriver == 'oci8')) {
+                    $parts[$idx] = '';
+                }
                 continue;
             }
 
