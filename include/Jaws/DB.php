@@ -79,14 +79,31 @@ class Jaws_DB
      var $_dsn;
 
     /**
+     * Jaws_DB instances
+     *
+     * @var     array
+     * @access  private
+     */
+    private static $instances = array();
+
+    /**
+     * Instance name of loaded object
+     *
+     * @var     string
+     * @access  private
+     */
+    private $instance = '';
+
+    /**
      * Constructor
      *
      * @access  public
      * @param   array  $options  Database connection options
      * @return  void
      */
-    function __construct($options)
+    function __construct($options, $instance)
     {
+        $this->instance = $instance;
         $options['driver'] = strtolower($options['driver']);
         $this->_dsn = array(
             'phptype'  => $options['driver'],
@@ -122,22 +139,16 @@ class Jaws_DB
      * Get a Jaws_DB instance
      *
      * @access  public
-     * @param   string $instance    Jaws_DB instance name
-     * @param   array  $options     Database connection options
-     * @param   array  $wdb_options Master database connection options for modification
+     * @param   array  $options  Database connection options
+     * @param   string $instance Jaws_DB instance name
      * @return  object Jaws_DB instance
      */
     static function getInstance($instance = 'default', $options = array(), $wdb_options = array())
     {
-        static $instances;
-        if (!isset($instances)) {
-            $instances = array();
-        }
-
-        if (!isset($instances[$instance])) {
+        if (!isset(self::$instances[$instance])) {
             if ($instance !== 'default') {
                 // try use default instance options if not passed
-                $default_options = $instances['default']->getDBOptions();
+                $default_options = self::$instances['default']->getDBOptions();
                 if ((!isset($options['driver']) ||
                         $options['driver'] == $default_options['driver']
                     ) &&
@@ -161,16 +172,16 @@ class Jaws_DB
                 }
             }
 
-            $instances[$instance] = new Jaws_DB($options);
+            self::$instances[$instance] = new Jaws_DB($options, $instance);
             if (empty($wdb_options)) {
-                $instances[$instance.'_write'] = $instances[$instance];
+                self::$instances[$instance.'_write'] = self::$instances[$instance];
             } else {
                 $wdb_options = array_merge($options, $wdb_options);
-                $instances[$instance.'_write'] = new Jaws_DB($wdb_options);
+                self::$instances[$instance.'_write'] = new Jaws_DB($wdb_options, $instance);
             }
         }
 
-        return $instances[$instance];
+        return self::$instances[$instance];
     }
 
     /**
@@ -281,12 +292,14 @@ class Jaws_DB
      */
     function getDatabaseInfo()
     {
-        return array('driver'  => $this->_driver,
-                     'version' => $this->getDBVersion(),
-                     'host'    => $this->_dsn['hostspec'],
-                     'port'    => array_key_exists('port', $this->_dsn)? $this->_dsn['port'] : '',
-                     'name'    => $this->_dsn['database'],
-                     'prefix'  => $this->_prefix);
+        return array(
+            'driver'  => $this->_driver,
+            'version' => $this->getDBVersion(),
+            'host'    => $this->_dsn['hostspec'],
+            'port'    => array_key_exists('port', $this->_dsn)? $this->_dsn['port'] : '',
+            'name'    => $this->_dsn['database'],
+            'prefix'  => $this->_prefix
+        );
     }
 
     /**
@@ -325,13 +338,16 @@ class Jaws_DB
         if ($sqlParse) {
             $sql = $this->sqlParse($sql, $params);
         }
-        $result = $this->dbc->exec($sql);
+
+        $result = self::$instances[$this->instance . '_write']->dbc->exec($sql);
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  $error_level,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                $error_level,
+                1
+            );
         }
 
         return (string)$result;
@@ -357,10 +373,12 @@ class Jaws_DB
         $result = $this->dbc->queryOne($sql, $type);
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         if ($type === null) {
@@ -391,10 +409,12 @@ class Jaws_DB
         $result = $this->dbc->queryRow($sql, $types, $fetchmode);
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         return (array)$result;
@@ -430,10 +450,12 @@ class Jaws_DB
         $result = $this->dbc->queryAll($sql, $types, $fetchmode, $rekey, $force_array, $group);
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         return (array)$result;
@@ -459,10 +481,12 @@ class Jaws_DB
         $result = $this->dbc->queryCol($sql, $type, $colnum);
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         return (array)$result;
@@ -501,13 +525,18 @@ class Jaws_DB
      */
     function lastInsertID($table = null, $field = null)
     {
-        $result = $this->dbc->lastInsertID($this->getPrefix() . $table, $field);
+        $result = self::$instances[$this->instance . '_write']->dbc->lastInsertID(
+            $this->getPrefix() . $table,
+            $field
+        );
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         return $result;
@@ -529,11 +558,12 @@ class Jaws_DB
         if ($this->dbc->supports('auto_increment') !== true) {
             $table = $this->getPrefix() . $table;
             $seq = $table . '_' . $field;
-            $id = $this->dbc->nextID($seq, $ondemend);
+            $id = self::$instances[$this->instance . '_write']->dbc->nextID($seq, $ondemend);
             if (!$quote || MDB2::isError($id)) {
                 return $id;
             }
-            return $this->dbc->quote($id, 'integer');
+
+            return self::$instances[$this->instance . '_write']->dbc->quote($id, 'integer');
         } elseif (!$quote) {
             return null;
         }
@@ -633,10 +663,12 @@ class Jaws_DB
         $result = $this->dbc->setLimit($limit, $offset);
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         return $result;
@@ -667,8 +699,10 @@ class Jaws_DB
      */
     function dropTable($table)
     {
-        $this->dbc->loadModule('Manager');
-        $result = $this->dbc->manager->dropTable($this->getPrefix() . $table);
+        self::$instances[$this->instance . '_write']->dbc->loadModule('Manager');
+        $result = self::$instances[$this->instance . '_write']->dbc->manager->dropTable(
+            $this->getPrefix() . $table
+        );
         if (MDB2::isError($result)) {
             if ($result->getCode() !== MDB2_ERROR_NOSUCHTABLE) {
                 return Jaws_Error::raiseError($result->getMessage(), $result->getCode(), JAWS_ERROR_ERROR, 1);
@@ -687,8 +721,10 @@ class Jaws_DB
      */
     function truncateTable($table)
     {
-        $this->dbc->loadModule('Manager');
-        $result = $this->dbc->manager->truncateTable($this->getPrefix() . $table);
+        self::$instances[$this->instance . '_write']->dbc->loadModule('Manager');
+        $result = self::$instances[$this->instance . '_write']->dbc->manager->truncateTable(
+            $this->getPrefix() . $table
+        );
         if (MDB2::isError($result)) {
             if ($result->getCode() !== MDB2_ERROR_NOSUCHTABLE) {
                 return Jaws_Error::raiseError($result->getMessage(), $result->getCode(), JAWS_ERROR_ERROR, 1);
@@ -825,7 +861,10 @@ class Jaws_DB
         }
 
         if (!isset($this->schema)) {
-            $this->schema =& MDB2_Schema::factory($this->dbc, $options);
+            $this->schema =& MDB2_Schema::factory(
+                self::$instances[$this->instance . '_write']->dbc,
+                $options
+            );
             if (MDB2::isError($this->schema)) {
                 return $this->schema;
             }
@@ -837,10 +876,12 @@ class Jaws_DB
             $this->schema->disconnect();
             unset($this->schema);
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
-            return new Jaws_Error($result->getMessage(),
-                                  $result->getCode(),
-                                  JAWS_ERROR_ERROR,
-                                  1);
+            return new Jaws_Error(
+                $result->getMessage(),
+                $result->getCode(),
+                JAWS_ERROR_ERROR,
+                1
+            );
         }
 
         return $result;
