@@ -88,6 +88,14 @@ class Jaws_Layout
     private $attributes = array();
 
     /**
+     * Site modified attributes 
+     *
+     * @access  private
+     * @var     array
+     */
+    private $site_modified_attributes = array();
+
+    /**
      * JavaScript variables
      *
      * @access  private
@@ -349,6 +357,18 @@ class Jaws_Layout
         }
         $pageTitle = implode(' ' . $this->attributes['site_title_separator'].' ', $pageTitle);
         $this->_Template->ResetVariable('site-title', $pageTitle, 'layout');
+    }
+
+    /**
+     * Set site-attributes
+     *
+     * @access  public
+     * @param   array   $attributes     Site Attributes
+     * @return  void
+     */
+    function setAttributes($attributes)
+    {
+        $this->site_modified_attributes = array_merge($this->site_modified_attributes, $attributes);
     }
 
     /**
@@ -707,6 +727,10 @@ class Jaws_Layout
         }
 
         if (JAWS_SCRIPT == 'index') {
+            // set modified site attributes
+            foreach ($this->site_modified_attributes as $key => $value) {
+                $this->_Template->ResetVariable($key, $value, 'layout');
+            }
             $this->PutTitle();
             $this->PutDescription();
             $this->PutMetaKeywords();
