@@ -58,3 +58,7 @@ $admin_actions['UninstallNotificationDriver'] = array(
     'standalone' => true,
     'file' => 'NotificationDrivers',
 );
+$admin_actions['Messages'] = array(
+    'normal' => true,
+    'file' => 'Messages',
+);

@@ -63,7 +63,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
         }
 
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'saveSettings();');
+        $save->AddEvent(ON_CLICK, "javascript:Jaws_Gadget.getInstance('Notification').action.load('Settings').saveSettings();");
         $tpl->SetVariable('btn_save', $save->Get());
 
         $tpl->ParseBlock('settings');

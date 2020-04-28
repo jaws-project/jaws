@@ -40,11 +40,17 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $tpl->SetVariable('enabled', $enabled->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
+        $btnCancel->AddEvent(
+            ON_CLICK,
+            "Jaws_Gadget.getInstance('Notification').action.load('NotificationDrivers').stopAction();"
+        );
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'updateNotificationDriver();');
+        $btnSave->AddEvent(
+            ON_CLICK,
+            "Jaws_Gadget.getInstance('Notification').action.load('NotificationDrivers').updateNotificationDriver();"
+        );
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->ParseBlock('drivers');
@@ -130,16 +136,19 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
 
                 if ($installed === true) {
                     $link =& Piwi::CreateWidget('Link', _t('NOTIFICATION_UNINSTALL'),
-                        "javascript: uninstallDriver(this, '" . $driver['id'] . "');",
+                        "javascript: Jaws_Gadget.getInstance('Notification').action.load('NotificationDrivers')
+                        .uninstallDriver(this, '" . $driver['id'] . "');",
                         STOCK_CANCEL);
                     $actions .= $link->Get() . '&nbsp;';
                     $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                        "javascript: editNotificationDriver(this, '" . $driver['id'] . "');",
+                        "javascript: Jaws_Gadget.getInstance('Notification').action.load('NotificationDrivers').
+                        editNotificationDriver(this, '" . $driver['id'] . "');",
                         STOCK_EDIT);
                     $actions .= $link->Get() . '&nbsp;';
                 } else {
                     $link =& Piwi::CreateWidget('Link', _t('NOTIFICATION_INSTALL'),
-                        "javascript: installDriver(this, '" . $driver['name'] . "');",
+                        "javascript: Jaws_Gadget.getInstance('Notification').action.load('NotificationDrivers').
+                        installDriver(this, '" . $driver['name'] . "');",
                         STOCK_OK);
                     $actions .= $link->Get() . '&nbsp;';
                 }

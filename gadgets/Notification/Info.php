@@ -29,6 +29,6 @@ class Notification_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'NotificationDrivers';
+    var $default_admin_action = 'Messages';
 
 }

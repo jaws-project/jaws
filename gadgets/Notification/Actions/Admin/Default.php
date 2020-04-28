@@ -16,12 +16,19 @@ class Notification_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function MenuBar($action)
     {
-        $actions = array('NotificationDrivers', 'Settings');
+        $actions = array('Messages', 'NotificationDrivers', 'Settings');
         if (!in_array($action, $actions)) {
-            $action = 'NotificationDrivers';
+            $action = 'Messages';
         }
 
         $menubar = new Jaws_Widgets_Menubar();
+
+        if ($this->gadget->GetPermission('Messages')) {
+            $menubar->AddOption('Messages',
+                _t('NOTIFICATION_MESSAGES'),
+                BASE_SCRIPT . '?gadget=Notification&amp;action=Messages',
+                STOCK_OPEN);
+        }
 
         if ($this->gadget->GetPermission('NotificationDrivers')) {
             $menubar->AddOption('NotificationDrivers',

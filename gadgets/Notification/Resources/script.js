@@ -4,133 +4,293 @@
  * @category    Ajax
  * @package     Notification
  */
-/**
- * Use async mode, create Callback
- */
-var NotificationCallback = {
-    InstallNotificationDriver: function(response) {
-        if (response['type'] == 'alert-success') {
-            getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
-            stopAction();
-        }
-    },
-    UninstallNotificationDriver: function(response) {
-        if (response['type'] == 'alert-success') {
-            getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
-            stopAction();
-        }
-    },
-    UpdateNotificationDriver: function(response) {
-        if (response['type'] == 'alert-success') {
-            getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
-            stopAction();
-        }
-    },
-    SaveSettings: function(response) {
-        //
+function Jaws_Gadget_Notification() { return {
+    //------------------------------------------------------------------------------------------------------------------
+    /**
+     * initialize gadget actions
+     */
+    //------------------------------------------------------------------------------------------------------------------
+    init: function (mainGadget, mainAction) {
     }
-};
 
-/**
- * Clears the form
- */
-function stopAction()
-{
-    switch (currentAction) {
-        case "NotificationDrivers":
-            selectedDriver = null;
-            unselectGridRow('notification_drivers_datagrid');
-            $('#driver_settings_ui').hide();
-            $('#title').val('');
-            $('#enabled').val(1);
-            $('#title').focus();
-            break;
+}};
+
+function Jaws_Gadget_Notification_Action_Messages() { return {
+    // ASync callback method
+    AjaxCallback: {
+    },
+
+    /**
+     * Define the data to be displayed in the users datagrid
+     */
+    messagesDataSource: function(options, callback) {
+        var columns = [
+            {
+                'label': this.gadget.defines.lbl_policy_type,
+                'property': 'policy_type',
+                'sortable': true
+            },
+            {
+                'label': this.gadget.defines.lbl_national_code,
+                'property': 'insurer_national_number',
+            },
+            {
+                'label': this.gadget.defines.lbl_insurer_name,
+                'property': 'insurer_name',
+            },
+            {
+                'label': this.gadget.defines.lbl_status,
+                'property': 'status',
+            },
+            {
+                'label': this.gadget.defines.lbl_insert_time,
+                'property': 'insert_time',
+            }
+        ];
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.ajax.callAsync(
+            'GetSoldPolicies', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': {
+                    reference_code: $('#filter_reference_code').val(),
+                    insurer_national_number: $('#filter_insurer_national_number').val(),
+                    insurer_mobile: $('#filter_insurer_mobile').val(),
+                    status: $('#filter_status').val(),
+                    policy_type: $('#filter_policy_type').val(),
+                    insert_date: $('#filter_insert_time').val()
+                }
+            },
+            function (response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total) ? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total / options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end': options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end': 0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * initiate Messages dataGrid
+     */
+    initiateMessagesDG: function() {
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'view',
+                    html: '<span class="glyphicon glyphicon-list-alt"></span> ' + this.gadget.defines.lbl_view_details,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.viewSoldPolicyDetails(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                }
+            ]
+        };
+
+        // initialize the repeater
+        $('#messages-grid').repeater({
+            // setup your custom datasource to handle data retrieval;
+            // responsible for any paging, sorting, filtering, searching logic
+            dataSource: $.proxy(this.messagesDataSource, this),
+            staticHeight: 700,
+            list_actions: list_actions,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $(".datagrid-filters select").change(function () {
+            $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+        $(".datagrid-filters input").keypress(function (e) {
+            if (e.which == 13) {
+                $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        });
+        $("#messages-grid button.btn-refresh").on('click', function (e) {
+            $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    //------------------------------------------------------------------------------------------------------------------
+    /**
+     * initialize gadget actions
+     */
+    //------------------------------------------------------------------------------------------------------------------
+    init: function (mainGadget, mainAction) {
+        // this.ajax.defaultOptions.showMessage = false;
+        this.initiateMessagesDG();
     }
-}
+}};
 
-/**
- * Get product exports items (invoice items)
- *
- */
-function getNotificationDrivers(name, offset, reset) {
-    var result = NotificationAjax.callSync('GetNotificationDrivers');
+function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
+    selectedDriver : null,
+
+    // ASync callback method
+    AjaxCallback: {
+        InstallNotificationDriver: function(response) {
+            if (response['type'] == 'alert-success') {
+                getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
+                this.stopAction();
+            }
+        },
+        UninstallNotificationDriver: function(response) {
+            if (response['type'] == 'alert-success') {
+                getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
+                this.stopAction();
+            }
+        },
+        UpdateNotificationDriver: function(response) {
+            if (response['type'] == 'alert-success') {
+                getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
+                this.stopAction();
+            }
+        },
+    },
+
+    /**
+     * Clears the form
+     */
+    stopAction: function()
+    {
+        this.selectedDriver = null;
+        unselectGridRow('notification_drivers_datagrid');
+        $('#driver_settings_ui').hide();
+        $('#title').val('');
+        $('#enabled').val(1);
+        $('#title').focus();
+    },
+
+    /**
+     * Get product exports items (invoice items)
+     *
+     */
+    getNotificationDrivers: function(name, offset, reset) {
+    var result = this.ajax.callSync('GetNotificationDrivers');
     resetGrid(name, result);
-}
+},
 
-/**
- * Install a notification driver
- */
-function installDriver(rowElement, dName)
-{
-    selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
-    NotificationAjax.callAsync('InstallNotificationDriver', {'driver': dName});
-}
+    /**
+     * Install a notification driver
+     */
+    installDriver: function (rowElement, dName) {
+        selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
+        this.ajax.callAsync('InstallNotificationDriver', {'driver': dName});
+    },
 
-/**
- * Uninstall a notification driver
- */
-function uninstallDriver(rowElement, dName)
-{
-    selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
-    NotificationAjax.callAsync('UninstallNotificationDriver', {'driver': dName});
-}
+    /**
+     * Uninstall a notification driver
+     */
+    uninstallDriver: function (rowElement, dName) {
+        selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
+        this.ajax.callAsync('UninstallNotificationDriver', {'driver': dName});
+    },
 
-/**
- * Edits a notification driver
- */
-function editNotificationDriver(rowElement, id) {
-    $('#driver_settings_ui').show();
+    /**
+     * Edits a notification driver
+     */
+    editNotificationDriver: function (rowElement, id) {
+        $('#driver_settings_ui').show();
 
-    selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
-    selectedDriver = id;
+        selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
+        this.selectedDriver = id;
 
-    var driver = NotificationAjax.callSync('GetNotificationDriver', {'id': id});
-    $('#title').val(driver['title'].defilter());
-    $('#enabled').val(driver['enabled'] ? 1 : 0);
+        var driver = this.ajax.callSync('GetNotificationDriver', {'id': id});
+        $('#title').val(driver['title'].defilter());
+        $('#enabled').val(driver['enabled'] ? 1 : 0);
 
-    var settingsUI = NotificationAjax.callSync('GetNotificationDriverSettingsUI', {'id': id});
-    $('#driver_settings_area').html(settingsUI);
-}
+        var settingsUI = this.ajax.callSync('GetNotificationDriverSettingsUI', {'id': id});
+        $('#driver_settings_area').html(settingsUI);
+    },
+
+    /**
+     * Updates the notification driver
+     */
+    updateNotificationDriver: function () {
+        if ($('#title').val().blank() || this.selectedDriver == null) {
+            alert(this.gadget.defines.incompleteFields);
+            return;
+        }
+
+        var data = $.unserialize($('#driver_form').serialize());
+        var settings = $.unserialize($('#driver_settings_ui').serialize());
+        this.ajax.callAsync('UpdateNotificationDriver', {
+            'id': this.selectedDriver,
+            'data': data,
+            'settings': settings
+        })
+    },
 
 
-/**
- * Updates the notification driver
- */
-function updateNotificationDriver() {
-    if ($('#title').val().blank() || selectedDriver == null) {
-        alert(jaws.Notification.Defines.incompleteFields);
-        return;
+    //------------------------------------------------------------------------------------------------------------------
+    /**
+     * initialize gadget actions
+     */
+    //------------------------------------------------------------------------------------------------------------------
+    init: function (mainGadget, mainAction) {
+        // this.ajax.defaultOptions.showMessage = false;
+        initDataGrid('notification_drivers_datagrid', this.gadget, this.getNotificationDrivers);
     }
+}};
 
-    var data = $.unserialize($('#driver_form').serialize());
-    var settings = $.unserialize($('#driver_settings_ui').serialize());
-    NotificationAjax.callAsync('UpdateNotificationDriver', {'id': selectedDriver, 'data': data, 'settings': settings})
-}
+function Jaws_Gadget_Notification_Action_Settings() { return {
+    // ASync callback method
+    AjaxCallback: {
+    },
 
-/**
- * save gadget settings
- */
-function saveSettings(form) {
-    NotificationAjax.callAsync(
+    /**
+     * save gadget settings
+     */
+    saveSettings: function(form) {
+    this.ajax.callAsync(
         'SaveSettings',
         {
             'gadgets_drivers': $.unserialize($('#gadgets_drivers select').serialize())
         }
     );
-}
+},
 
-$(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
-        case 'NotificationDrivers':
-            currentAction = 'NotificationDrivers';
-            initDataGrid('notification_drivers_datagrid', NotificationAjax, getNotificationDrivers);
-            break;
-
-        case 'Settings':
-            break;
+    //------------------------------------------------------------------------------------------------------------------
+    /**
+     * initialize gadget actions
+     */
+    //------------------------------------------------------------------------------------------------------------------
+    init: function (mainGadget, mainAction) {
+        // this.ajax.defaultOptions.showMessage = false;
     }
-});
-
-var NotificationAjax = new JawsAjax('Notification', NotificationCallback);
-var selectedDriver = null,
-    currentAction;
+}};
