@@ -48,10 +48,9 @@ class Jaws_Error
      * Log trace back level
      *
      * @access  private
-     * @var     int
-     * @see     SetBacktrace()
+     * @var     array
      */
-    private $_Backtrace = 0;
+    private $_Backtrace = array();
 
     /**
      * Constructor
@@ -68,10 +67,10 @@ class Jaws_Error
         $this->_Message = $message;
         $this->_Code    = $code;
         $this->_Level   = $level;
-        if ($backtrace >= 0) {
-            $backtrace++;
-            $this->_Backtrace = $backtrace;
-        }
+
+        // PHP >= 5.4.0
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $backtrace + 1);
+        $this->_Backtrace = @$trace[$backtrace];
     }
 
     /**
@@ -98,8 +97,7 @@ class Jaws_Error
      */
     static function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
-        $backtrace++;
-        $objError = new Jaws_Error($message, $code, $level, $backtrace);
+        $objError = new Jaws_Error($message, $code, $level, $backtrace + 1);
         return $objError;
     }
 

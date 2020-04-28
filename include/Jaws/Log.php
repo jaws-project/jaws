@@ -222,9 +222,9 @@ class Jaws_Log
      * and show a unknown facility message
      *
      * @access  public
-     * @param   string  $priority  The severity level of log
-     * @param   string  $msg       Message to log
-     * @param   int     $backtrace Log trace back level
+     * @param   string  $priority   The severity level of log
+     * @param   string  $msg        Message to log
+     * @param   mixed   $backtrace  Trace array or back trace level
      */
     function Log($priority, $msg, $backtrace = 0)
     {
@@ -232,14 +232,15 @@ class Jaws_Log
             return;
         }
 
-        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+        if (is_array($backtrace)) {
+            $file = $backtrace['file'];
+            $line = $backtrace['line'];
+        } else {
+            // PHP >= 5.4.0
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $backtrace + 1);
-        } else { //PHP >= 5.3.6
-            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            $file = @$trace[$backtrace]['file'];
+            $line = @$trace[$backtrace]['line'];
         }
-
-        $file = @$trace[$backtrace]['file'];
-        $line = @$trace[$backtrace]['line'];
 
         $method = $this->_Method;
         $this->$method($priority, $file, $line, trim($msg), $this->_Options);
