@@ -62,3 +62,7 @@ $admin_actions['Messages'] = array(
     'normal' => true,
     'file' => 'Messages',
 );
+$admin_actions['GetMessages'] = array(
+    'standalone' => true,
+    'file' => 'Messages',
+);

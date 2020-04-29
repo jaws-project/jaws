@@ -28,7 +28,6 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             ->orderBy('time, message asc')->fetchAll();
     }
 
-
     /**
      * Get notification message
      *
@@ -42,7 +41,65 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             ->select('shouter', 'name', 'title', 'summary', 'verbose', 'callback', 'image')
             ->where('id', $id)->fetchRow();
     }
+    /**
+     * Get notification messages
+     *
+     * @access  public
+     * @param   array       $filters
+     * @param   bool|int    $limit     Count of quotes to be returned
+     * @param   int         $offset    Offset of data array
+     * @param   string      $orderBy   Order by
+     * @return bool True or error
+     */
+    function GetNotificationMessages($filters, $limit = false, $offset = null, $orderBy = 'insert_titme')
+    {
+        $mTable = Jaws_ORM::getInstance()->table('notification_message');
+        $mTable->select(
+            'shouter', 'name', 'title', 'summary', 'verbose', 'callback', 'image',
+            'notification_recipient.status:integer', 'notification_recipient.time:integer'
+        )->join('notification_recipient', 'notification_recipient.message', 'notification_message.id');
+        if (!empty($filters) && count($filters) > 0) {
+            // shouter
+            if (isset($filters['shouter']) && !empty($filters['shouter'])) {
+                $mTable->and()->where('shouter', $filters['shouter']);
+            }
+            // driver
+            if (isset($filters['driver']) && !empty($filters['driver'])) {
+                $mTable->and()->where('notification_recipient.driver', (int)$filters['driver']);
+            }
+            // status
+            if (isset($filters['status']) && !empty($filters['status'])) {
+                $mTable->and()->where('notification_recipient.status', (int)$filters['status']);
+            }
+            // recipient
+            if (isset($filters['recipient']) && !empty($filters['recipient'])) {
+                $mTable->and()->where('notification_recipient.status', (int)$filters['status']);
+            }
 
+            // insert_date
+            if (isset($filters['insert_date']) && !empty($filters['insert_date'])) {
+                $objDate = Jaws_Date::getInstance();
+
+                if (is_array($filters['insert_date'])) {
+                    $startTimeStr = $filters['insert_date'][0];
+                    $stopTimeStr = $filters['insert_date'][1];
+                } else {
+                    $startTimeStr = $filters['insert_date'];
+                    $stopTimeStr = $filters['insert_date'];
+                }
+
+                $startTime = $objDate->ToBaseDate(preg_split('/[\/\- :]/', $startTimeStr . ' 0:0:0'));
+                $stopTime = $objDate->ToBaseDate(preg_split('/[\/\- :]/', $stopTimeStr . ' 23:59:59'));
+                $startTime = $this->app->UserTime2UTC($startTime['timestamp']);
+                $stopTime = $this->app->UserTime2UTC($stopTime['timestamp']);
+
+                $mTable->and()->openWhere('notification_recipient.time', $startTime, '>=')->and()
+                    ->closeWhere('notification_recipient.time', $stopTime, '<=');
+            }
+        }
+
+        return $mTable->orderBy($orderBy)->limit((int)$limit, $offset)->fetchAll();
+    }
 
     /**
      * Insert notifications to db

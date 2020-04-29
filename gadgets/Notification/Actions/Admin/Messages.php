@@ -51,19 +51,6 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'filter_to_date'));
         $tpl->ParseBlock('Messages/filter_to_date');
 
-//        $policyTypes = array(
-//            IICBase_Info::NOTIFICATION_PACKAGE_TYPE_FIRE_HAMI => _t('NOTIFICATION_PACKAGE_TYPE_FIRE_HAMI'),
-//            IICBase_Info::NOTIFICATION_PACKAGE_TYPE_FIRE_SAFAR => _t('NOTIFICATION_PACKAGE_TYPE_FIRE_SAFAR'),
-//            IICBase_Info::NOTIFICATION_PACKAGE_TYPE_CAR_THIRDPARTY => _t('NOTIFICATION_PACKAGE_TYPE_CAR_THIRDPARTY'),
-//            IICBase_Info::NOTIFICATION_PACKAGE_TYPE_CAR_HULL => _t('NOTIFICATION_PACKAGE_TYPE_CAR_HULL'),
-//        );
-//        foreach ($policyTypes as $value => $title) {
-//            $tpl->SetBlock('Messages/filter_policy_type');
-//            $tpl->SetVariable('value', $value);
-//            $tpl->SetVariable('title', $title);
-//            $tpl->ParseBlock('Messages/filter_policy_type');
-//        }
-
         $tpl->ParseBlock('Messages');
         return $tpl->Get();
     }
@@ -82,7 +69,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             'post'
         );
 
-        $model = $this->gadget->model->load('Insurance');
+        $model = $this->gadget->model->load('Notification');
         $requests = $model->GetMessages($post['filters'], $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($requests)) {
             return $this->gadget->session->response(
@@ -136,7 +123,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
     {
         $this->gadget->CheckPermission('Messages');
         $id = (int)$this->gadget->request->fetch('id', 'post');
-        $messageInfo = $this->gadget->model->load('Insurance')->GetMessage($id);
+        $messageInfo = $this->gadget->model->load('Messages')->GetMessage($id);
         if (Jaws_Error::IsError($messageInfo)) {
             return $messageInfo;
         }

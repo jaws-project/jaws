@@ -55,7 +55,7 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
         columns = Object.values(columns);
 
         this.ajax.callAsync(
-            'GetSoldPolicies', {
+            'GetMessages', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
                 'sortDirection': options.sortDirection,
@@ -125,8 +125,6 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
 
         // initialize the repeater
         $('#messages-grid').repeater({
-            // setup your custom datasource to handle data retrieval;
-            // responsible for any paging, sorting, filtering, searching logic
             dataSource: $.proxy(this.messagesDataSource, this),
             staticHeight: 700,
             list_actions: list_actions,
