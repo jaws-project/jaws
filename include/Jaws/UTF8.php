@@ -646,24 +646,24 @@ class Jaws_UTF8
     */
     static function chr($codes)
     {
-        if (is_scalar($codes)) $codes= func_get_args();
         $str= '';
+        if (is_scalar($codes)) {
+            $codes= func_get_args();
+        }
         foreach ($codes as $code) {
             if ($code < 128) {
                 $str.= chr($code);
-            }
-            if ($code < 2048) {
+            } elseif ($code < 2048) {
                 $str.= chr(($code >> 6) + 192) . chr(($code & 63) + 128);
-            }
-            if ($code < 65536) {
+            } elseif ($code < 65536) {
                 $str.= chr(($code >> 12) + 224) . chr((($code >> 6) & 63) + 128) .
                        chr(($code & 63) + 128);
-            }
-            if ($code < 2097152) {
+            } elseif ($code < 2097152) {
                 $str.= chr(($code >> 18) + 240) . chr((($code >> 12) & 63) + 128) .
                        chr((($code >> 6) & 63) + 128) . chr(($code & 63) + 128);
             }
         }
+
         return $str;
     }
 
