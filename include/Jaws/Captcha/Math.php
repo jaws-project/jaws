@@ -28,6 +28,21 @@ class Jaws_Captcha_Math extends Jaws_Captcha
     var $_description = 'GLOBAL_CAPTCHA_QUESTION_DESC';
 
     /**
+     * Install captcha driver
+     *
+     * @access  public
+     * @return  mixed   True on success otherwise Jaws_Error on failure
+     */
+    function install()
+    {
+        if (is_null($this->app->registry->fetch('captcha_math_offset', 'Policy'))) {
+            $this->app->registry->insert('captcha_math_offset', 48, false, 'Policy');
+        }
+
+        return true;
+    }
+
+    /**
      * Generate a random mathematics equation
      *
      * @access  private
@@ -38,9 +53,15 @@ class Jaws_Captcha_Math extends Jaws_Captcha
         $fnum = mt_rand(1, 9);
         $snum = mt_rand(1, 9);
         $oprt = mt_rand(0, 2);
+        $utf8_offset = $this->app->registry->fetch('captcha_math_offset', 'Policy');
+        $operations = array(
+            0 => '+',
+            1 => '-',
+            2 => '*'
+        );
+
         switch ($oprt) {
             case 0:
-                $equation = $fnum. '+'. $snum;
                 $result = $fnum + $snum;
                 break;
 
@@ -54,15 +75,14 @@ class Jaws_Captcha_Math extends Jaws_Captcha
                 if ($fnum < $snum) {
                     list($fnum, $snum) = array($snum, $fnum);
                 }
-                $equation = $fnum. '-'. $snum;
                 $result = $fnum - $snum;
                 break;
 
             case 2:
-                $equation = $fnum. '*'. $snum;
                 $result = $fnum * $snum;
         }
 
+        $equation = Jaws_UTF8::chr($utf8_offset + $fnum). $operations[$oprt]. Jaws_UTF8::chr($utf8_offset + $snum);
         return array($equation, $result);
     }
 
@@ -80,26 +100,25 @@ class Jaws_Captcha_Math extends Jaws_Captcha
         } else {
             $value = $value[0];
         }
-        $value .= '=?';
+        $value .= ' = ?';
 
         $bg = dirname(__FILE__) . '/resources/math.bg.png';
         $im = imagecreatefrompng($bg);
         imagecolortransparent($im, imagecolorallocate($im, 255, 255, 255));
-        $font = dirname(__FILE__) . '/resources/comicbd.ttf';
+        $font = dirname(__FILE__) . '/resources/courbd.ttf';
         $grey = imagecolorallocate($im, 0x7f, 0x7f, 0x7f);
         // shadow
         imagettftext($im, 18, 0, 8, 22, $grey, $font, $value);
         // text
-        imagettftext($im, 18, 0, 12, 24, $grey, $font, $value);
-
-        header('Content-Type: image/png');
+        imagettftext($im, 18, 0, 11, 25, $grey, $font, $value);
 
         ob_start();
         imagepng($im);
         $content = ob_get_contents();
         ob_end_clean();
-
         imagedestroy($im);
+
+        header('Content-Type: image/png');
         return $content;
     }
 
