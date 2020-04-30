@@ -106,13 +106,6 @@
             </field>
 
             <field>
-                <name>domain</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <field>
                 <name>result</name>
                 <type>text</type>
                 <length>128</length>
@@ -121,7 +114,7 @@
             <field>
                 <name>updatetime</name>
                 <type>integer</type>
-                <length>8</length>
+                <length>16</length>
                 <default>0</default>
             </field>
 

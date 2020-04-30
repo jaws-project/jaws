@@ -136,10 +136,11 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.2.0.xml');
+            $result = $this->installSchema('1.3.0.xml', array(), '1.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
             if ($this->gadget->registry->fetch('password_complexity') == 'yes') {
                 $this->gadget->registry->update(
                     'password_complexity',
@@ -150,6 +151,13 @@ class Policy_Installer extends Jaws_Gadget_Installer
                     'password_complexity',
                     '/^[[:print:]]{1,24}$/'
                 );
+            }
+        }
+
+        if (version_compare($old, '1.4.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.3.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
             }
         }
 
