@@ -7,6 +7,14 @@
  */
 class Notification_Info extends Jaws_Gadget
 {
+
+    /**
+     * Constants
+     */
+    const NOTIFICATION_MESSAGE_TYPE_EMAIL = 1;
+    const NOTIFICATION_MESSAGE_TYPE_SMS = 2;
+    const NOTIFICATION_MESSAGE_TYPE_WEB = 3;
+
     /**
      * Gadget version
      *

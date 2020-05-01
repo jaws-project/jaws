@@ -26,25 +26,25 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
     messagesDataSource: function(options, callback) {
         var columns = [
             {
-                'label': this.gadget.defines.lbl_policy_type,
-                'property': 'policy_type',
+                'label': this.gadget.defines.lbl_message_title,
+                'property': 'message_title',
                 'sortable': true
             },
             {
-                'label': this.gadget.defines.lbl_national_code,
-                'property': 'insurer_national_number',
+                'label': this.gadget.defines.lbl_message_type,
+                'property': 'message_type',
             },
             {
-                'label': this.gadget.defines.lbl_insurer_name,
-                'property': 'insurer_name',
+                'label': this.gadget.defines.lbl_shouter,
+                'property': 'shouter',
+            },
+            {
+                'label': this.gadget.defines.lbl_insert_time,
+                'property': 'time',
             },
             {
                 'label': this.gadget.defines.lbl_status,
                 'property': 'status',
-            },
-            {
-                'label': this.gadget.defines.lbl_insert_time,
-                'property': 'insert_time',
             }
         ];
 
@@ -61,12 +61,13 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
                 'sortDirection': options.sortDirection,
                 'sortBy': options.sortProperty,
                 'filters': {
-                    reference_code: $('#filter_reference_code').val(),
-                    insurer_national_number: $('#filter_insurer_national_number').val(),
-                    insurer_mobile: $('#filter_insurer_mobile').val(),
                     status: $('#filter_status').val(),
-                    policy_type: $('#filter_policy_type').val(),
-                    insert_date: $('#filter_insert_time').val()
+                    shouter: $('#filter_shouter').val(),
+                    driver: $('#filter_message_type').val(),
+                    from_date: $('#datepicker_filter_from_date_input').val(),
+                    to_date: $('#datepicker_filter_to_date_input').val(),
+                    contact: $('#filter_contact').val(),
+                    verbose: $('#filter_verbose').val(),
                 }
             },
             function (response, status, callOptions) {
@@ -112,13 +113,21 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
             items: [
                 {
                     name: 'view',
-                    html: '<span class="glyphicon glyphicon-list-alt"></span> ' + this.gadget.defines.lbl_view_details,
+                    html: '<span class="glyphicon glyphicon-eye-open"></span> ' + this.gadget.defines.lbl_view,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
-                        this.viewSoldPolicyDetails(helpers.rowData.id);
+                        this.viewMessage(helpers.rowData.id);
                         callback();
                     }, this)
-
+                },
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.lbl_delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.deleteMessage(helpers.rowData.id);
+                        callback();
+                    }, this)
                 }
             ]
         };

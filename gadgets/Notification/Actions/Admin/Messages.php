@@ -17,11 +17,13 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
     {
         $this->gadget->CheckPermission('Messages');
         $this->AjaxMe('script.js');
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('lbl_message_title', _t('GLOBAL_TITLE'));
         $this->gadget->define('lbl_message_type', _t('NOTIFICATION_MESSAGE_TYPE'));
-        $this->gadget->define('lbl_gadget', _t('GLOBAL_GADGET'));
+        $this->gadget->define('lbl_shouter', _t('GLOBAL_GADGET'));
         $this->gadget->define('lbl_insert_time', _t('GLOBAL_CREATETIME'));
         $this->gadget->define('lbl_status', _t('GLOBAL_STATUS'));
+        $this->gadget->define('lbl_view', _t('NOTIFICATION_VIEW'));
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Messages.html');
         $tpl->SetBlock('Messages');
@@ -40,7 +42,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $tpl->SetVariable('lbl_message_type', _t('NOTIFICATION_MESSAGE_TYPE'));
         $tpl->SetVariable('lbl_from_date', _t('NOTIFICATION_FROM_DATE'));
         $tpl->SetVariable('lbl_to_date', _t('NOTIFICATION_TO_DATE'));
-        $tpl->SetVariable('lbl_recipient', _t('NOTIFICATION_RECIPIENT'));
+        $tpl->SetVariable('lbl_contact', _t('NOTIFICATION_CONTACT'));
         $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK'));
 
         $tpl->SetBlock('Messages/filter_from_date');
@@ -50,6 +52,33 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $tpl->SetBlock('Messages/filter_to_date');
         $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'filter_to_date'));
         $tpl->ParseBlock('Messages/filter_to_date');
+
+        $gadgets = $this->gadget->model->load()->recommendedfor();
+        if (!Jaws_Error::IsError($gadgets)) {
+            foreach ($gadgets as $gadget) {
+                $objGadget = Jaws_Gadget::getInstance($gadget);
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
+
+                $tpl->SetBlock('Messages/filter_shouter');
+                $tpl->SetVariable('value', $gadget);
+                $tpl->SetVariable('title', $objGadget->title);
+                $tpl->ParseBlock('Messages/filter_shouter');
+            }
+        }
+
+        $messageTypes = array(
+            Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL => _t('NOTIFICATION_MESSAGE_TYPE_EMAIL'),
+            Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS => _t('NOTIFICATION_MESSAGE_TYPE_SMS'),
+            Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB => _t('NOTIFICATION_MESSAGE_TYPE_WEB'),
+        );
+        foreach ($messageTypes as $value => $title) {
+            $tpl->SetBlock('Messages/filter_message_type');
+            $tpl->SetVariable('value', $value);
+            $tpl->SetVariable('title', $title);
+            $tpl->ParseBlock('Messages/filter_message_type');
+        }
 
         $tpl->ParseBlock('Messages');
         return $tpl->Get();
@@ -68,47 +97,47 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
+        $filters = $post['filters'];
+        if (!empty($filters['from_date']) || !empty($filters['to_date'])) {
+            $filters['insert_date'] = array($filters['from_date'], $filters['to_date']);
+        }
+        unset($filters['from_date'], $filters['to_date']);
 
         $model = $this->gadget->model->load('Notification');
-        $requests = $model->GetMessages($post['filters'], $post['limit'], $post['offset']);
-        if (Jaws_Error::IsError($requests)) {
+        $messages = $model->GetNotificationMessages($filters, $post['limit'], $post['offset']);
+        if (Jaws_Error::IsError($messages)) {
             return $this->gadget->session->response(
-                $requests->GetMessage(),
+                $messages->GetMessage(),
                 RESPONSE_ERROR
             );
         }
 
         $objDate = Jaws_Date::getInstance();
-        foreach ($requests as &$request) {
-            $request['insurer_name'] = $request['insurer_first_name'] . ' ' . $request['insurer_last_name'];
+        foreach ($messages as &$message) {
+            $messageType = '';
+            switch ($message['driver']) {
+                case Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL:
+                    $messageType = _t('NOTIFICATION_MESSAGE_TYPE_EMAIL');
+                    break;
+                case Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS:
+                    $messageType = _t('NOTIFICATION_MESSAGE_TYPE_SMS');
+                    break;
+                case Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB:
+                    $messageType = _t('NOTIFICATION_MESSAGE_TYPE_WEB');
+                    break;
+            }
+            $message['message_type'] = $messageType;
 
-//            $policyType = '';
-//            switch ($request['policy_type']) {
-//                case IICBase_Info::NOTIFICATION_PACKAGE_TYPE_FIRE_HAMI:
-//                    $policyType = _t('NOTIFICATION_PACKAGE_TYPE_FIRE_HAMI');
-//                    break;
-//                case IICBase_Info::NOTIFICATION_PACKAGE_TYPE_FIRE_SAFAR:
-//                    $policyType = _t('NOTIFICATION_PACKAGE_TYPE_FIRE_SAFAR');
-//                    break;
-//                case IICBase_Info::NOTIFICATION_PACKAGE_TYPE_CAR_THIRDPARTY:
-//                    $policyType = _t('NOTIFICATION_PACKAGE_TYPE_CAR_THIRDPARTY');
-//                    break;
-//                case IICBase_Info::NOTIFICATION_PACKAGE_TYPE_CAR_HULL:
-//                    $policyType = _t('NOTIFICATION_PACKAGE_TYPE_CAR_HULL');
-//                    break;
-//            }
-//            $request['policy_type'] = $policyType;
-
-            $request['insert_time'] = $objDate->Format($request['insert_time'], 'Y/m/d H:i:s');
+            $message['time'] = $objDate->Format($message['time'], 'Y/m/d H:i:s');
         }
-        $requestsCount = $model->GetMessagesCount($post['filters']);
+        $messagesCount = $model->GetMessagesCount($post['filters']);
 
         return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
             array(
-                'total' => $requestsCount,
-                'records' => $requests
+                'total' => $messagesCount,
+                'records' => $messages
             )
         );
     }
