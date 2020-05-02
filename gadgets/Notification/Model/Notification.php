@@ -39,7 +39,27 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()->table('notification_message')
             ->select('shouter', 'name', 'title', 'summary', 'verbose', 'callback', 'image')
-            ->where('id', $id)->fetchRow();
+            ->where('id', $id)
+            ->fetchRow();
+    }
+
+    /**
+     * Get notification message details
+     *
+     * @access  public
+     * @param   int     $id      Message id
+     * @return bool True or error
+     */
+    function GetNotificationMessageDetails($id)
+    {
+        return Jaws_ORM::getInstance()->table('notification_message')
+            ->select(
+                'shouter', 'name', 'title', 'summary', 'verbose',
+                'callback', 'image', 'notification_recipient.driver:integer', 'notification_recipient.status:integer',
+                'notification_recipient.contact', 'notification_recipient.time:integer'
+            )->join('notification_recipient', 'notification_recipient.message', 'notification_message.id')
+            ->where('notification_recipient.id', (int)$id)
+            ->fetchRow();
     }
 
     /**
@@ -349,14 +369,14 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             ->exec();
     }
 
-
     /**
      * Delete orphaned messages
      *
      * @access  public
+     * @param   int     $messageId  Message id (if passed we need check and delete only this message)
      * @return  bool    True or error
      */
-    function DeleteOrphanedMessages()
+    function DeleteOrphanedMessages($messageId = 0)
     {
         $msgTable = Jaws_ORM::getInstance()->table('notification_message');
         $rcpTable = Jaws_ORM::getInstance()->table('notification_recipient');
@@ -364,7 +384,47 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             'notification_message.id', $msgTable->expr('notification_recipient.message')
         );
 
-        return $msgTable->delete()->where('', $rcpTable, 'not exists')->exec();
+        $msgTable->delete()->where('', $rcpTable, 'not exists');
+        if ($messageId > 0) {
+            $msgTable->and()->where('id', $messageId);
+        }
+        return $msgTable->exec();
+    }
+
+    /**
+     * Delete message recipient
+     *
+     * @access  public
+     * @param   int     $recipientId            Recipient id
+     * @param   bool    $deleteSimilarMessage   Delete similar messages ?
+     * @return  bool    True or error
+     */
+    function DeleteMessageRecipient($recipientId, $deleteSimilarMessage = false)
+    {
+        $objORM = Jaws_ORM::getInstance();
+        $messageId = $objORM->table('notification_recipient')
+            ->select('message:integer')
+            ->where('id', (int)$recipientId)->fetchOne();
+        if (Jaws_Error::IsError($messageId)) {
+            return $messageId;
+        }
+
+        $rcpTable = $objORM->table('notification_recipient')->delete();
+        if ($deleteSimilarMessage) {
+            $rcpTable->where('message', $messageId);
+        } else {
+            $rcpTable->where('id', (int)$recipientId);
+        }
+        $res = $rcpTable->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        $res = $this->DeleteOrphanedMessages($messageId);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+        return true;
     }
 
 }

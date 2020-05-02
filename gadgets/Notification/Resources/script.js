@@ -121,11 +121,20 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
                     }, this)
                 },
                 {
-                    name: 'delete',
-                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.lbl_delete,
+                    name: 'deleteMessage',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.lbl_delete_message,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
-                        this.deleteMessage(helpers.rowData.id);
+                        this.deleteMessage(helpers.rowData.id, false);
+                        callback();
+                    }, this)
+                },
+                {
+                    name: 'deleteSimilarMessage',
+                    html: '<span class="glyphicon glyphicon-remove"></span> ' + this.gadget.defines.lbl_delete_similar_message,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.deleteMessage(helpers.rowData.id, true);
                         callback();
                     }, this)
                 }
@@ -154,13 +163,58 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
         });
     },
 
+    /**
+     * View message details
+     */
+    viewMessage: function (id) {
+        this.ajax.callAsync(
+            'GetMessage',
+            {'recipient_id': id},
+            function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    $('#notification-message-form span').each(
+                        $.proxy(function (key, elem) {
+                            $(elem).html(response.data[$(elem).data('field')]);
+                        }, this)
+                    );
+
+                    $('#messageModal').modal('show');
+                }
+            });
+    },
+
+    /**
+     * Delete a message
+     */
+    deleteMessage: function (id, deleteSimilar) {
+        var confirmMessage = '';
+        if (deleteSimilar === true) {
+            confirmMessage = this.gadget.defines.confirmDeleteSimilarMessage;
+        } else {
+            confirmMessage = this.gadget.defines.confirmDeleteMessage;
+        }
+        if (!confirm(confirmMessage)) {
+            return false;
+        }
+
+        this.ajax.callAsync(
+            'DeleteMessage',
+            {'recipient_id': id, 'delete_similar': deleteSimilar},
+            function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    $('#messages-grid').repeater('render');
+                }
+            });
+    },
+
     //------------------------------------------------------------------------------------------------------------------
     /**
      * initialize gadget actions
      */
     //------------------------------------------------------------------------------------------------------------------
     init: function (mainGadget, mainAction) {
-        // this.ajax.defaultOptions.showMessage = false;
         this.initiateMessagesDG();
     }
 }};

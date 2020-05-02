@@ -1,3 +1,14 @@
+#notification-message-form div.display-item{
+    margin-bottom: 15px;
+}
+#notification-message-form .display-item .label{
+    font-weight: bold;
+    font-size: 11px;
+    color: #000;
+}
+#notification-message-form .display-item span{
+    color: #6c757d;
+}
 #driver_work_area {
     width: 380px;
     vertical-align: top;

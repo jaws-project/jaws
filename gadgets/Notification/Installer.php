@@ -43,6 +43,8 @@ class Notification_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'NotificationDrivers',
+        'Messages',
+        'DeleteMessage',
         'Settings',
     );
 
@@ -240,6 +242,8 @@ class Notification_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
         }
+
+        //FIXME add new ACLs (Message, DeleteMessage)
 
         return true;
     }

@@ -66,3 +66,11 @@ $admin_actions['GetMessages'] = array(
     'standalone' => true,
     'file' => 'Messages',
 );
+$admin_actions['GetMessage'] = array(
+    'standalone' => true,
+    'file' => 'Messages',
+);
+$admin_actions['DeleteMessage'] = array(
+    'standalone' => true,
+    'file' => 'Messages',
+);

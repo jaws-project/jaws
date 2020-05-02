@@ -15,6 +15,10 @@ class Notification_Info extends Jaws_Gadget
     const NOTIFICATION_MESSAGE_TYPE_SMS = 2;
     const NOTIFICATION_MESSAGE_TYPE_WEB = 3;
 
+    const NOTIFICATION_MESSAGE_STATUS_NOT_SEND = 1;
+    const NOTIFICATION_MESSAGE_STATUS_SENDING = 2;
+    const NOTIFICATION_MESSAGE_STATUS_SENT = 3;
+
     /**
      * Gadget version
      *

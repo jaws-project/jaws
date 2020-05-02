@@ -15,7 +15,7 @@
               <!-- END filter_status -->
             </select></td>
 
-            <td><label for="filter_shouter">{{lbl_gadget}}: </label></td>
+            <td><label for="filter_shouter">{{lbl_shouter}}: </label></td>
             <td><select name="filter_shouter" id="filter_shouter" class="form-control">
               <option value="0" selected>{{lbl_all_items}}</option>
               <!-- BEGIN filter_shouter -->
@@ -129,6 +129,77 @@
     </div>
   </div>
 
+  <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
+    <div class="modal-dialog  modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="messageModalLabel">{{lbl_message_details}}</h4>
+        </div>
+        <div class="modal-body" id="notification-message-form">
+          <div class="row item-info-list">
+
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_shouter}}:</div>
+              <div class="col-xs-6"><span data-field="shouter"></span></div>
+            </div>
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_name}}:</div>
+              <div class="col-xs-6"><span data-field="name"></span></div>
+            </div>
+
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_title}}:</div>
+              <div class="col-xs-6"><span data-field="title"></span></div>
+            </div>
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_message_type}}:</div>
+              <div class="col-xs-6"><span data-field="message_type"></span></div>
+            </div>
+
+            <div class="col-md-12 col-xs-12 display-item">
+              <div class="col-xs-3 label">{{lbl_summary}}:</div>
+              <div class="col-xs-9"><span data-field="summary"></span></div>
+            </div>
+
+            <div class="col-md-12 col-xs-12 display-item">
+              <div class="col-xs-3 label">{{lbl_verbose}}:</div>
+              <div class="col-xs-9"><span data-field="verbose"></span></div>
+            </div>
+
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_callback}}:</div>
+              <div class="col-xs-6"><span data-field="callback"></span></div>
+            </div>
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_image}}:</div>
+              <div class="col-xs-6"><span data-field="image"></span></div>
+            </div>
+
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_contact}}:</div>
+              <div class="col-xs-6"><span data-field="contact"></span></div>
+            </div>
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_status}}:</div>
+              <div class="col-xs-6"><span data-field="status"></span></div>
+            </div>
+
+            <div class="col-md-6 col-xs-12 display-item">
+              <div class="col-xs-6 label">{{lbl_insert_time}}:</div>
+              <div class="col-xs-6"><span data-field="time"></span></div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">{{lbl_back}}</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </div>
 <!-- END Messages -->
