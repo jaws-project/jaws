@@ -59,42 +59,46 @@ class Jaws_Utils
      *
      * @access  public
      * @param   int     $length     String length
-     * @param   bool    $use_lower  Include lower characters
-     * @param   bool    $use_upper  Include upper characters
-     * @param   bool    $use_number Include numbers
+     * @param   array   $complexity Determine which type of characters must include in random text
      * @return  string  Random text
      */
     static function RandomText($length = 5, $complexity = array())
     {
-        // default complexity if not set is: lower & upper
-        if (empty($complexity)) {
-            $complexity = array(
-                'lower' => true,
-                'upper' => true
-            );
-        }
-
-        $possible = array(
-            'lower'   => 'abcdefghijklmnopqrstuvwxyz',
-            'upper'   => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'number'  => '0123456789',
-            'special' => '!@#$%^-,~?*',
-        );
-
         $string = '';
         $lngmin = 0;
-        $allPossibleChars = '';
-        foreach ($complexity as $key => $keyValue) {
-            if ($keyValue) {
-                $lngmin ++;
-                $string.= $possible[$key][mt_rand(0, strlen($possible[$key])-1)];
-                $allPossibleChars.= $possible[$key];
+
+        if (array_key_exists('collection', $complexity) && !empty($complexity['collection'])) {
+            $allPossibleChars = $complexity['collection'];
+        } else {
+            unset($complexity['collection']);
+            // default complexity if not set is: lower & upper
+            if (empty($complexity)) {
+                $complexity = array(
+                    'lower' => true,
+                    'upper' => true
+                );
+            }
+
+            $possible = array(
+                'lower'   => 'abcdefghijklmnopqrstuvwxyz',
+                'upper'   => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                'number'  => '0123456789',
+                'special' => '!@#$%^-,~?*',
+            );
+
+            $allPossibleChars = '';
+            foreach ($complexity as $key => $keyValue) {
+                if ($keyValue) {
+                    $lngmin ++;
+                    $string.= $possible[$key][mt_rand(0, strlen($possible[$key])-1)];
+                    $allPossibleChars.= $possible[$key];
+                }
             }
         }
 
         $length = ($length < $lngmin)? $lngmin : $length;
-        $string.= substr(str_shuffle($allPossibleChars), 0, $length - strlen($string));
-        return str_shuffle($string);
+        $string.= Jaws_UTF8::substr(Jaws_UTF8::str_shuffle($allPossibleChars), 0, $length - strlen($string));
+        return Jaws_UTF8::str_shuffle($string);
     }
 
     /**
