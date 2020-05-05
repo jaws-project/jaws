@@ -623,6 +623,17 @@ class Jaws_UTF8
     }
 
     /**
+     * Randomly shuffles a string
+     * @see http://www.php.net/str_shuffle
+    */
+    static function str_shuffle($str)
+    {
+        $str = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
+        shuffle($str);
+        return join('', $str);
+    }
+
+    /**
      * Encode string by MIME header UTF-8 encoding
     */
     static function encode_mimeheader($str)
