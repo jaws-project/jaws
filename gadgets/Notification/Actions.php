@@ -38,11 +38,7 @@ $admin_actions['GetNotificationDrivers'] = array(
     'standalone' => true,
     'file' => 'NotificationDrivers',
 );
-$admin_actions['GetNotificationDriver'] = array(
-    'standalone' => true,
-    'file' => 'NotificationDrivers',
-);
-$admin_actions['GetNotificationDriverSettingsUI'] = array(
+$admin_actions['GetNotificationDriverSettings'] = array(
     'standalone' => true,
     'file' => 'NotificationDrivers',
 );
