@@ -1,37 +1,133 @@
 <!-- BEGIN drivers -->
 <div class="gadget_menubar">{{menubar}}</div>
-<div id="main" align="left">
-    <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-            <td valign="top" align="left">
-                <div id="datagrid">{{datagrid}}</div>
-            </td>
-            <td id="driver_work_area">
-                <fieldset id="driver_form">
-                    <legend><span id="legend_title">{{legend_title}}</span></legend>
-                    <div>
-                        <table id="driver_box" style="width: 100%">
-                            <tr><th><label for="title">{{lbl_title}}:</label></th><td>{{title}}</td></tr>
-                            <tr><th><label for="enabled">{{lbl_enabled}}:</label></th><td>{{enabled}}</td></tr>
-                        </table>
+<div>
+    <div class="repeater" id="drivers-grid">
+        <div class="repeater-header">
+            <div class="datagrid-filters">
+            </div>
+
+            <div class="repeater-header-right">
+                <button type="button" class="btn btn-success btn-m btn-refresh">
+                    <span class="glyphicon glyphicon-refresh"></span> {{lbl_refresh}}
+                </button>
+            </div>
+        </div>
+        <div class="repeater-viewport">
+            <div class="repeater-canvas"></div>
+            <div class="loader repeater-loader"></div>
+        </div>
+        <div class="repeater-footer">
+            <div class="repeater-footer-left">
+                <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{lbl_to}} <span class="repeater-end"></span>
+            {{lbl_of}} <span class="repeater-count"></span>
+            {{lbl_items}}
+          </span>
+                    <div class="btn-group selectlist dropup" data-resize="auto">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            <span class="selected-label">?</span>
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                            <li data-value="25"><a href="#">25</a></li>
+                            <li data-value="50"><a href="#">50</a></li>
+                        </ul>
+                        <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
                     </div>
-                </fieldset>
+                    <span>{{lbl_per_page}}</span>
+                </div>
+            </div>
+            <div class="repeater-footer-right">
+                <div class="repeater-pagination">
+                    <button type="button" class="btn btn-default btn-sm repeater-prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous Page</span>
+                    </button>
+                    <label class="page-label" id="myPageLabel"></label>
+                    <div class="repeater-primaryPaging active">
+                        <div class="input-group input-append dropdown combobox dropup">
+                            <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+                    <button type="button" class="btn btn-default btn-sm repeater-next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next Page</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <fieldset id="driver_settings_ui" style="display:none">
-                    <legend><span>{{driver_settings_title}}</span></legend>
-                    <div id="driver_settings_area">{{driver_settings_ui}}</div>
-                </fieldset>
+<div class="modal fade" id="driverSettingsModal" tabindex="-1" role="dialog" aria-labelledby="driverSettingsModalLabel">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="driverSettingsModalLabel">{{lbl_driver_details}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row item-info-list">
+                    <form action="#" id="driver-form">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{lbl_title}}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="title" name="title"
+                                           title="{{lbl_title}}">
+                                </div>
+                            </div>
+                        </div>
 
-            </td>
-        </tr>
-        <tr><td class="buttons" colspan="2">{{btn_cancel}}{{btn_save}}</td></tr>
-    </table>
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{lbl_status}}</label>
+                                <div class="col-sm-9">
+                                    <select name="enabled" id="enabled" class="form-control">
+                                        <option value="1">{{lbl_enabled}}</option>
+                                        <option value="0">{{lbl_disabled}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <p></p>
+
+                <div class="row">
+                    <form action="#" id="driver-settings-form">
+                        <div class="col-xs-12">
+                            <fieldset>
+                                <legend><span>{{lbl_driver_settings_title}}</span></legend>
+                                <div id="driver-settings-container">
+
+                                </div>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{lbl_back}}</button>
+                <button type="button" class="btn btn-primary" id="btn-save-notification-driver">{{lbl_save}}</button>
+            </div>
+
+        </div>
+    </div>
 </div>
 <!-- END drivers -->
-<!-- BEGIN DriverSettingsUI -->
-<table style="width: 100%">
-    <!-- BEGIN field -->
-    <tr><td><label for="{{name}}">{{lbl_var}}:</label></td><td>{{var}}</td></tr>
-    <!-- END field -->
-</table>
-<!-- END DriverSettingsUI -->

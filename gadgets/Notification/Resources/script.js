@@ -144,7 +144,7 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
         // initialize the repeater
         $('#messages-grid').repeater({
             dataSource: $.proxy(this.messagesDataSource, this),
-            staticHeight: 700,
+            staticHeight: 650,
             list_actions: list_actions,
             list_direction: $('.repeater-canvas').css('direction')
         });
@@ -224,79 +224,76 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
 
     // ASync callback method
     AjaxCallback: {
-        InstallNotificationDriver: function(response) {
-            if (response['type'] == 'alert-success') {
-                getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
-                this.stopAction();
-            }
-        },
-        UninstallNotificationDriver: function(response) {
-            if (response['type'] == 'alert-success') {
-                getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
-                this.stopAction();
-            }
-        },
-        UpdateNotificationDriver: function(response) {
-            if (response['type'] == 'alert-success') {
-                getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
-                this.stopAction();
-            }
-        },
-    },
-
-    /**
-     * Clears the form
-     */
-    stopAction: function()
-    {
-        this.selectedDriver = null;
-        unselectGridRow('notification_drivers_datagrid');
-        $('#driver_settings_ui').hide();
-        $('#title').val('');
-        $('#enabled').val(1);
-        $('#title').focus();
     },
 
     /**
      * Get product exports items (invoice items)
      *
      */
-    getNotificationDrivers: function(name, offset, reset) {
-    var result = this.ajax.callSync('GetNotificationDrivers');
-    resetGrid(name, result);
-},
+    getNotificationDrivers: function (name, offset, reset) {
+        var result = this.ajax.callSync('GetNotificationDrivers');
+        resetGrid(name, result);
+    },
 
     /**
      * Install a notification driver
      */
-    installDriver: function (rowElement, dName) {
-        selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
-        this.ajax.callAsync('InstallNotificationDriver', {'driver': dName});
+    installDriver: function (dName) {
+        this.ajax.callAsync(
+            'InstallNotificationDriver', {'driver': dName},
+            function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    $('#drivers-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                }
+            });
     },
 
     /**
      * Uninstall a notification driver
      */
-    uninstallDriver: function (rowElement, dName) {
-        selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
-        this.ajax.callAsync('UninstallNotificationDriver', {'driver': dName});
+    uninstallDriver: function (dName) {
+        this.ajax.callAsync(
+            'UninstallNotificationDriver', {'driver': dName},
+            function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    $('#drivers-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                }
+            });
     },
 
     /**
      * Edits a notification driver
      */
-    editNotificationDriver: function (rowElement, id) {
-        $('#driver_settings_ui').show();
+    editNotificationDriver: function (driverInfo) {
+        this.selectedDriver = driverInfo.id;
 
-        selectGridRow('notification_drivers_datagrid', rowElement.parentNode.parentNode);
-        this.selectedDriver = id;
+        $('#title').val(driverInfo.title.defilter());
+        $('#enabled').val(driverInfo.enabled ? 1 : 0);
 
-        var driver = this.ajax.callSync('GetNotificationDriver', {'id': id});
-        $('#title').val(driver['title'].defilter());
-        $('#enabled').val(driver['enabled'] ? 1 : 0);
+        this.ajax.callAsync(
+            'GetNotificationDriverSettings',
+            {'id': driverInfo.id},
+            function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
 
-        var settingsUI = this.ajax.callSync('GetNotificationDriverSettingsUI', {'id': id});
-        $('#driver_settings_area').html(settingsUI);
+                    $('#driver-settings-container').html('');
+                    $.each(response.data, $.proxy(function (optName, optValue) {
+                        $('<div class="col-md-6 col-xs-12">' +
+                            '<div class="form-group">' +
+                            '    <label class="col-sm-3 control-label">' + optName + ':</label>' +
+                            '    <div class="col-sm-9">' +
+                            '        <input type="text" class="form-control ltr" id="' + optName + '" name="' + optName +
+                            '" title="' + optName + '" value="' + optValue + '">' +
+                            '    </div>' +
+                            '</div>' +
+                            '</div>').appendTo($('#driver-settings-container'));
+                        }, this)
+                    );
+                }
+
+                $('#driverSettingsModal').modal('show');
+            });
     },
 
     /**
@@ -308,15 +305,141 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
             return;
         }
 
-        var data = $.unserialize($('#driver_form').serialize());
-        var settings = $.unserialize($('#driver_settings_ui').serialize());
-        this.ajax.callAsync('UpdateNotificationDriver', {
-            'id': this.selectedDriver,
-            'data': data,
-            'settings': settings
-        })
+        var data = $.unserialize($('#driver-form').serialize());
+        var settings = $.unserialize($('#driver-settings-form').serialize());
+        this.ajax.callAsync(
+            'UpdateNotificationDriver', {
+                'id': this.selectedDriver,
+                'data': data,
+                'settings': settings
+            },
+            function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    $('#driverSettingsModal').modal('hide');
+                    $('#drivers-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                    this.selectedDriver = null;
+                }
+            });
     },
 
+    /**
+     * Define the data to be displayed in the users datagrid
+     */
+    driversDataSource: function(options, callback) {
+        var columns = [
+            {
+                'label': this.gadget.defines.lbl_title,
+                'property': 'title',
+            },
+            {
+                'label': this.gadget.defines.lbl_status,
+                'property': 'status',
+            }
+        ];
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.ajax.callAsync(
+            'GetNotificationDrivers', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': {}
+            },
+            function (response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total) ? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total / options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end': options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end': 0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * initiate Drivers dataGrid
+     */
+    initiateDriversDG: function() {
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'install',
+                    html: '<span class="glyphicon glyphicon-ok"></span> ' + this.gadget.defines.lbl_install,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        if (helpers.rowData.installed === true) {
+                            return;
+                        }
+                        this.installDriver(helpers.rowData.name);
+                        callback();
+                    }, this)
+                },
+                {
+                    name: 'edit',
+                    html: '<span class="glyphicon glyphicon-edit"></span> ' + this.gadget.defines.lbl_edit,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editNotificationDriver(helpers.rowData);
+                        callback();
+                    }, this)
+                },
+                {
+                    name: 'uninstall',
+                    html: '<span class="glyphicon glyphicon-remove"></span> ' + this.gadget.defines.lbl_uninstall,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        if (helpers.rowData.installed === false) {
+                            return;
+                        }
+                        this.uninstallDriver(helpers.rowData.id);
+                        callback();
+                    }, this)
+                }
+            ]
+        };
+
+        // initialize the repeater
+        $('#drivers-grid').repeater({
+            dataSource: $.proxy(this.driversDataSource, this),
+            staticHeight: 400,
+            list_actions: list_actions,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        $("#drivers-grid button.btn-refresh").on('click', function (e) {
+            $('#drivers-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
 
     //------------------------------------------------------------------------------------------------------------------
     /**
@@ -324,8 +447,11 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
      */
     //------------------------------------------------------------------------------------------------------------------
     init: function (mainGadget, mainAction) {
-        // this.ajax.defaultOptions.showMessage = false;
-        initDataGrid('notification_drivers_datagrid', this.gadget, this.getNotificationDrivers);
+        this.initiateDriversDG();
+
+        $('#btn-save-notification-driver').on('click', $.proxy(function (e) {
+            this.updateNotificationDriver();
+        }, this));
     }
 }};
 
