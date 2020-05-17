@@ -95,11 +95,11 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('lbl_filter_priority', _t('LOGS_PRIORITY'));
 
         // Status
-        $allStatus = array (200, 301, 302, 401, 403, 404, 410, 500, 503);
+        $allStatus = array (1, 2);
         $statusCombo =& Piwi::CreateWidget('Combo', 'filter_status');
         $statusCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
         foreach($allStatus as $status) {
-            $statusCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_' . $status), $status, false);
+            $statusCombo->AddOption(_t('LOGS_LOG_STATUS_' . $status), $status, false);
         }
         $statusCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
         $statusCombo->SetDefault(0);

@@ -46,7 +46,8 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         $dLog['backend'] = (JAWS_SCRIPT == 'admin');
         $dLog['input']  = isset($dLog['input'])? $dLog['input'] : null;
         $dLog['result'] = isset($dLog['result'])? (int)$dLog['result'] : 0;
-        $dLog['status'] = isset($dLog['status'])? (int)$dLog['status'] : 1;
+        // temporary status 1: true, 2: false
+        $dLog['status'] = isset($dLog['status'])? ((bool)$dLog['status']? 1 : 2) : 1;
         $dLog['time']   = time();
 
         // register logs in syslogs if enabled
