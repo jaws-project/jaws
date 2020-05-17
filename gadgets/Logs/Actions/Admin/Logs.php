@@ -238,7 +238,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             }
             // Action
             $logData['action'] = $log['action'];
-            // Username
+            // auth
             $logData['auth'] = $log['auth'];
             // Username
             $logData['username'] = $log['username'];
@@ -286,7 +286,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $log['time'] = $date->Format($log['time'], 'DN d MN Y H:i:s');
         $log['ip'] = long2ip($log['ip']);
         $log['priority'] = _t('LOGS_PRIORITY_'. $log['priority']);
-        $log['status']   = _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']);
+        $log['status']   = _t('LOGS_LOG_STATUS_'. $log['status']);
         $log['backend']  = $log['backend']? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_INDEX');
 
         // user's profile link

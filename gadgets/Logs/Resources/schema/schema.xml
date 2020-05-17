@@ -29,10 +29,9 @@
             </field>
 
             <field>
-                <name>username</name>
-                <type>text</type>
-                <length>32</length>
-                <notnull>true</notnull>
+                <name>user</name>
+                <type>integer</type>
+                <length>8</length>
             </field>
 
             <field>
@@ -114,7 +113,7 @@
                     <name>domain</name>
                 </field>
                 <field>
-                    <name>username</name>
+                    <name>user</name>
                 </field>
             </index>
 
