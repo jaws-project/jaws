@@ -429,6 +429,7 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
         }
         // shout log event
         if (property_exists(Jaws::getInstance(), 'session')) {
+            $http_response_code = http_response_code();
             Jaws::getInstance()->listener->Shout(
                 'Action',
                 'Log',
@@ -436,7 +437,8 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
                     'gadget'   => $gadget,
                     'action'   => $action,
                     'priority' => $loglevel,
-                    'status'   => http_response_code(),
+                    'result'   => $http_response_code,
+                    'status'   => $http_response_code == 200,
                 )
             );
         }
