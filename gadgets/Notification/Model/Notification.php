@@ -11,11 +11,13 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Get notifications
      *
      * @access  public
-     * @param   string  $contactType        Notification type (email, mobile, ...)
-     * @param   int     $limit              Pop limitation count
+     * @param   string      $contactType    Notification type (email, mobile, ...)
+     * @param   int         $status         Message status(0: all status)
+     * @param   bool|int    $limit          Count of messages to be returned
+     * @param   int         $offset         Offset of data array
      * @return bool True or error
      */
-    function GetNotifications($contactType, $limit)
+    function GetNotifications($contactType, $status = 0, $limit = false, $offset = null)
     {
         $objORM = Jaws_ORM::getInstance();
         $objORM = $objORM->table('notification_recipient');
@@ -23,8 +25,10 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         return $objORM->select('id:integer', 'message', 'contact', 'time:integer')
             ->where('driver', $contactType)
             ->and()
+            ->where('status', (int)$status, '=', empty($status))
+            ->and()
             ->where('time', time(), '<=')
-            ->limit($limit)
+            ->limit((int)$limit, $offset)
             ->orderBy('time, message asc')->fetchAll();
     }
 
@@ -427,4 +431,27 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         return true;
     }
 
+    /**
+     * Update notifications status by id
+     *
+     * @access  public
+     * @param   string  $contactType    Contact type (email, mobile, ...)
+     * @param   array   $ids            Notifications Id
+     * @param   int     $status         Message status(1: not send, 2: sending, 3: sent)
+     * @return  bool    True or error
+     */
+    function UpdateNotificationsStatusById($contactType, $ids, $status = 3)
+    {
+        if (empty($ids)) {
+            return true;
+        }
+
+        $objORM = Jaws_ORM::getInstance();
+        $objORM = $objORM->table('notification_recipient');
+        return $objORM->update(array('status' => (int)$status))
+            ->where('id', $ids, 'in')
+            ->and()
+            ->where('driver', $contactType)
+            ->exec();
+    }
 }

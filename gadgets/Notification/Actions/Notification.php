@@ -15,75 +15,85 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
      */
     function SendNotifications()
     {
-        $processing = $this->gadget->registry->fetch('processing');
-        $lastUpdate = (int)$this->gadget->registry->fetch('last_update');
-        $queueMaxTime = (int)$this->gadget->registry->fetch('queue_max_time');
-        if ($processing == 'true' && $lastUpdate + $queueMaxTime < time()) {
-            return false;
-        }
-
-        $this->gadget->registry->update('last_update', time());
-        $this->gadget->registry->update('processing', 'true');
-
-        $model = $this->gadget->model->load('Notification');
-        $emlLimit = (int)$this->gadget->registry->fetch('eml_fetch_limit');
-        // fetches email notification
-        $result = $model->GetNotifications(Jaws_Notification::EML_DRIVER, $emlLimit);
-        if (Jaws_Error::IsError($result)) {
-            $this->gadget->registry->update('processing', 'false');
-            return $result;
-        }
-        $messages[Jaws_Notification::EML_DRIVER] = $this->GroupByMessages($result);
-
-        $smsLimit = (int)$this->gadget->registry->fetch('sms_fetch_limit');
-        // fetches SMS notification
-        $result = $model->GetNotifications(Jaws_Notification::SMS_DRIVER, $smsLimit);
-        if (Jaws_Error::IsError($result)) {
-            $this->gadget->registry->update('processing', 'false');
-            return $result;
-        }
-        $messages[Jaws_Notification::SMS_DRIVER] = $this->GroupByMessages($result);
-
-        $webLimit = (int)$this->gadget->registry->fetch('web_fetch_limit');
-        // fetches WebPush notification
-        $result = $model->GetNotifications(Jaws_Notification::WEB_DRIVER, $webLimit);
-        if (Jaws_Error::IsError($result)) {
-            $this->gadget->registry->update('processing', 'false');
-            return $result;
-        }
-        $messages[Jaws_Notification::WEB_DRIVER] = $this->GroupByMessages($result);
-
-        // send notification to drivers
-        $objDModel = $this->gadget->model->load('Drivers');
-        $drivers = $objDModel->GetNotificationDrivers(true);
-        foreach ($drivers as $driver) {
-            $objDriver = $objDModel->LoadNotificationDriver($driver['name']);
-            $dType = $objDriver->getType();
-            if (!empty($messages[$dType])) {
-                foreach ($messages[$dType] as $msgid => $msgContacts) {
-                    $message = $model->GetNotificationMessage($msgid);
-                    $res = $objDriver->notify(
-                        $message['shouter'],
-                        $message['name'],
-                        $msgContacts['contacts'],
-                        $message['title'],
-                        json_decode($message['summary'], true),
-                        json_decode($message['verbose'], true),
-                        $msgContacts['time'],
-                        $message['callback'],
-                        $message['image']
-                    );
-                    if (!Jaws_Error::IsError($res)) {
-                        // delete notification
-                        $model->DeleteNotificationsById($dType, $msgContacts['ids']);
-                    }
+        try {
+            // start processing
+            if (!Jaws_Mutex::getInstance()->acquire('Notification', true)) {
+                $lastUpdate = (int)$this->gadget->registry->fetch('last_update');
+                $queueMaxTime = (int)$this->gadget->registry->fetch('queue_max_time');
+                if ($lastUpdate + $queueMaxTime < time()) {
+                    throw new Exception('time out');
                 }
 
+                return false;
             }
+
+            // last entering process
+            $this->gadget->registry->update('last_update', time());
+
+            // send notification to drivers
+            $objDModel = $this->gadget->model->load('Drivers');
+            $drivers = $objDModel->GetNotificationDrivers(true);
+
+            $model = $this->gadget->model->load('Notification');
+            foreach ($drivers as $driver) {
+                $objDriver = $objDModel->LoadNotificationDriver($driver['name']);
+                $dType = $objDriver->getType();
+                switch ($dType) {
+                    case Jaws_Notification::EML_DRIVER:
+                        $limit = (int)$this->gadget->registry->fetch('eml_fetch_limit');
+                        break;
+
+                    case Jaws_Notification::SMS_DRIVER:
+                        $limit = (int)$this->gadget->registry->fetch('sms_fetch_limit');
+                        break;
+
+                    case Jaws_Notification::WEB_DRIVER:
+                        $limit = (int)$this->gadget->registry->fetch('web_fetch_limit');
+                        break;
+                }
+
+                // fetch notifications
+                $result = $model->GetNotifications($dType, 1, $limit);
+                if (Jaws_Error::IsError($result)) {
+                    $this->gadget->registry->update('processing', 'false');
+                    return $result;
+                }
+
+                if (!empty($result)) {
+                    // set notifications status to sending(2)
+                    $model->UpdateNotificationsStatusById($dType, array_column($result, 'id'), 2);
+
+                    // group notifications by message id
+                    $messages[$dType] = $this->GroupByMessages($result);
+                    foreach ($messages[$dType] as $msgid => $msgContacts) {
+                        $message = $model->GetNotificationMessage($msgid);
+                        $res = $objDriver->notify(
+                            $message['shouter'],
+                            $message['name'],
+                            $msgContacts['contacts'],
+                            $message['title'],
+                            json_decode($message['summary'], true),
+                            json_decode($message['verbose'], true),
+                            $msgContacts['time'],
+                            $message['callback'],
+                            $message['image']
+                        );
+
+                        // set notifications status
+                        $model->UpdateNotificationsStatusById(
+                            $dType,
+                            $msgContacts['ids'],
+                            Jaws_Error::IsError($res)? 1 : 3
+                        );
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            //
         }
 
         // finish procession
-        $this->gadget->registry->update('processing', 'false');
+        Jaws_Mutex::getInstance()->release('Notification');
         return true;
     }
 
