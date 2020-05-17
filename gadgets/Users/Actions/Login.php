@@ -242,7 +242,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     'domain'   => (int)$loginData['domain'],
                     'username' => $loginData['username'],
                     'priority' => JAWS_NOTICE,
-                    'status'   => 200,
+                    'result'   => 200,
+                    'status'   => true,
                 )
             );
             // let everyone know a user has been logged in

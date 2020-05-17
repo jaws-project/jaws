@@ -54,7 +54,8 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
                         'domain'   => (int)$loginData['domain'],
                         'username' => $loginData['username'],
                         'priority' => JAWS_WARNING,
-                        'status'   => 403,
+                        'result'   => 403,
+                        'status'   => false,
                     )
                 );
 
@@ -114,7 +115,8 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
                         'domain'   => (int)$user['domain'],
                         'username' => $user['username'],
                         'priority' => JAWS_WARNING,
-                        'status'   => 403,
+                        'result'   => 403,
+                        'status'   => false,
                     )
                 );
 

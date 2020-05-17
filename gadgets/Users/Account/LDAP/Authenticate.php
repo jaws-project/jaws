@@ -43,7 +43,8 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                         'domain'   => (int)$loginData['domain'],
                         'username' => strtolower($loginData['username']),
                         'priority' => JAWS_WARNING,
-                        'status'   => 403,
+                        'result'   => 403,
+                        'status'   => false,
                     )
                 );
                 throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);

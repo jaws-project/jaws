@@ -123,7 +123,8 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                             'domain'   => $loginData['domain'],
                             'username' => strtolower($loginData['username']),
                             'priority' => JAWS_WARNING,
-                            'status'   => 403,
+                            'result'   => 403,
+                            'status'   => false,
                         )
                     );
                     throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
@@ -207,7 +208,8 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                         'domain'   => $user['domain'],
                         'username' => strtolower($user['username']),
                         'priority' => JAWS_WARNING,
-                        'status'   => 403,
+                        'result'   => 403,
+                        'status'   => false,
                     )
                 );
 

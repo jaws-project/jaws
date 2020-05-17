@@ -110,7 +110,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                     'domain'   => (int)$registerData['domain'],
                     'username' => $registerData['username'],
                     'priority' => JAWS_NOTICE,
-                    'status'   => 200,
+                    'result'   => 200,
+                    'status'   => true,
                 )
             );
             // let everyone know a user has been registered
