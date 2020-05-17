@@ -31,7 +31,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
                     );
                 }
-                $logsTable->and()->where('logs.insert_time', $filters['from_date'], '>=');
+                $logsTable->and()->where('logs.time', $filters['from_date'], '>=');
             }
             if (isset($filters['to_date']) && !empty($filters['to_date'])) {
                 if (!is_numeric($filters['to_date'])) {
@@ -40,7 +40,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
                     );
                 }
-                $logsTable->and()->where('logs.insert_time', $filters['to_date'], '<=');
+                $logsTable->and()->where('logs.time', $filters['to_date'], '<=');
             }
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
                 $logsTable->and()->where('logs.gadget', $filters['gadget']);
@@ -71,7 +71,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
             'id:integer', 'auth', 'domain', 'username', 'gadget', 'action', 'priority:integer',
-            'apptype', 'backend:boolean', 'ip', 'agent', 'status:integer', 'insert_time'
+            'apptype', 'backend:boolean', 'ip', 'agent', 'result:integer', 'status:integer', 'time:integer'
         );
         return $logsTable->where('id', (int)$id)->fetchRow();
     }
@@ -110,7 +110,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
                     );
                 }
-                $logsTable->and()->where('logs.insert_time', $filters['from_date'], '>=');
+                $logsTable->and()->where('logs.time', $filters['from_date'], '>=');
             }
             // to_date
             if (isset($filters['to_date']) && !empty($filters['to_date'])) {
@@ -120,7 +120,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                         (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
                     );
                 }
-                $logsTable->and()->where('logs.insert_time', $filters['to_date'], '<=');
+                $logsTable->and()->where('logs.time', $filters['to_date'], '<=');
             }
             // gadget
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
@@ -137,6 +137,10 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             // priority
             if (isset($filters['priority']) && !empty($filters['priority'])) {
                 $logsTable->and()->where('priority', $filters['priority']);
+            }
+            // result
+            if (isset($filters['result']) && !empty($filters['result'])) {
+                $logsTable->and()->where('logs.result', $filters['result']);
             }
             // status
             if (isset($filters['status']) && !empty($filters['status'])) {

@@ -88,7 +88,7 @@ class Logs_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '1.1.0', '<')) {
             Jaws_DB::getInstance()->truncateTable('logs');
-            $result = $this->installSchema('schema.xml', array(), '1.0.0.xml');
+            $result = $this->installSchema('1.2.0.xml', array(), '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -101,6 +101,14 @@ class Logs_Installer extends Jaws_Gadget_Installer
                 'syslog_format',
                 '{insert_time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
             );
+        }
+
+        if (version_compare($old, '1.3.0', '<')) {
+            Jaws_DB::getInstance()->truncateTable('logs');
+            $result = $this->installSchema('schema.xml', array(), '1.2.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;

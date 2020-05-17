@@ -1,102 +1,166 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <database>
 
- <name><variable>database</variable></name>
+    <name><variable>database</variable></name>
 
- <table>
-    <name><variable>table_prefix</variable>logs</name>
-    <declaration>
+    <table>
+        <name><variable>table_prefix</variable>logs</name>
+        <declaration>
 
-        <field>
-            <name>id</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <autoincrement>true</autoincrement>
-        </field>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-        <field>
-            <name>auth</name>
-            <type>text</type>
-            <length>32</length>
-            <notnull>true</notnull>
-        </field>
+            <field>
+                <name>auth</name>
+                <type>text</type>
+                <length>32</length>
+                <notnull>true</notnull>
+            </field>
 
-        <field>
-            <name>domain</name>
-            <type>integer</type>
-            <default>0</default>
-            <notnull>true</notnull>
-        </field>
+            <field>
+                <name>domain</name>
+                <type>integer</type>
+                <default>0</default>
+                <notnull>true</notnull>
+            </field>
 
-        <field>
-            <name>username</name>
-            <type>text</type>
-            <length>32</length>
-            <notnull>true</notnull>
-        </field>
+            <field>
+                <name>username</name>
+                <type>text</type>
+                <length>32</length>
+                <notnull>true</notnull>
+            </field>
 
-        <field>
-            <name>gadget</name>
-            <type>text</type>
-            <length>32</length>
-        </field>
+            <field>
+                <name>gadget</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
 
-        <field>
-            <name>action</name>
-            <type>text</type>
-            <length>32</length>
-        </field>
+            <field>
+                <name>action</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
 
-        <field>
-            <name>priority</name>
-            <type>integer</type>
-            <length>1</length>
-            <default>0</default>
-        </field>
+            <field>
+                <name>priority</name>
+                <type>integer</type>
+                <length>1</length>
+                <default>0</default>
+            </field>
 
-        <field>
-            <name>params</name>
-            <type>text</type>
-        </field>
+            <field>
+                <name>input</name>
+                <type>text</type>
+            </field>
 
-        <field>
-            <name>apptype</name>
-            <type>text</type>
-            <length>32</length>
-        </field>
+            <field>
+                <name>output</name>
+                <type>text</type>
+            </field>
 
-        <field>
-            <name>backend</name>
-            <type>boolean</type>
-            <default>true</default>
-        </field>
+            <field>
+                <name>apptype</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
 
-        <field>
-            <name>ip</name>
-            <type>integer</type>
-            <length>5</length>
-        </field>
+            <field>
+                <name>backend</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
 
-        <field>
-            <name>agent</name>
-            <type>text</type>
-            <length>252</length>
-        </field>
+            <field>
+                <name>ip</name>
+                <type>integer</type>
+                <length>5</length>
+            </field>
 
-        <field>
-            <name>status</name>
-            <type>integer</type>
-            <length>2</length>
-        </field>
+            <field>
+                <name>agent</name>
+                <type>text</type>
+            </field>
 
-        <field>
-            <name>insert_time</name>
-            <type>integer</type>
-            <length>8</length>
-            <default>0</default>
-        </field>
+            <field>
+                <name>result</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
 
-    </declaration>
- </table>
+            <field>
+                <name>status</name>
+                <type>integer</type>
+                <length>2</length>
+                <default>1</default>
+            </field>
+
+            <field>
+                <name>time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>logs_user</name>
+                <field>
+                    <name>domain</name>
+                </field>
+                <field>
+                    <name>username</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>logs_time</name>
+                <field>
+                    <name>time</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>logs_gadget</name>
+                <field>
+                    <name>gadget</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>logs_action</name>
+                <field>
+                    <name>action</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>logs_priority</name>
+                <field>
+                    <name>priority</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>logs_result</name>
+                <field>
+                    <name>result</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>logs_status</name>
+                <field>
+                    <name>status</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
 
 </database>

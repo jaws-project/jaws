@@ -194,6 +194,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('lbl_action', _t('LOGS_ACTION'));
         $tpl->SetVariable('lbl_backend', _t('LOGS_LOG_SCRIPT'));
         $tpl->SetVariable('lbl_priority', _t('LOGS_PRIORITY'));
+        $tpl->SetVariable('lbl_result', _t('LOGS_LOG_RESULT'));
         $tpl->SetVariable('lbl_status', _t('LOGS_LOG_STATUS'));
         $tpl->SetVariable('lbl_apptype', _t('LOGS_LOG_REQUEST_TYPE'));
         $tpl->SetVariable('lbl_auth', _t('GLOBAL_AUTHTYPE'));
@@ -355,7 +356,10 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ExportLogs');
 
-        $filters = $this->gadget->request->fetch(array('from_date', 'to_date', 'gname', 'user', 'priority', 'status'), 'get');
+        $filters = $this->gadget->request->fetch(
+            array('from_date', 'to_date', 'gname', 'user', 'priority', 'result', 'status'),
+            'get'
+        );
         $filters['gadget'] = $filters['gname'];
         unset( $filters['gname']);
 
@@ -380,6 +384,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $exportData .= $log['apptype'] . ',';
             $exportData .= $log['backend'] . ',';
             $exportData .= long2ip($log['ip']) . ',';
+            $exportData .= $log['result'] . ',';
             $exportData .= $log['status'] . ',';
             $exportData .= $date->Format($log['insert_time'], 'Y-m-d H:i:s');
             $exportData .= PHP_EOL;

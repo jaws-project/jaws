@@ -55,13 +55,13 @@ class Logs_Actions_History extends Jaws_Gadget_Action
         $date = Jaws_Date::getInstance();
         $tpl->SetVariable('title', _t('LOGS_LOGIN_HISTORY'));
         foreach ($logs as $log) {
-            $tpl->SetBlock('history/'. $log['status']);
+            $tpl->SetBlock('history/'. $log['result']);
             $tpl->SetVariable('ip', long2ip($log['ip']));
             $tpl->SetVariable('agent', $log['agent']);
-            $tpl->SetVariable('status_title', _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']));
+            $tpl->SetVariable('status_title', _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['result']));
             $tpl->SetVariable('date', $date->Format($log['insert_time'], 'd MN Y H:i'));
             
-            $tpl->ParseBlock('history/'. $log['status']);
+            $tpl->ParseBlock('history/'. $log['result']);
         }
 
         $tpl->ParseBlock('history');

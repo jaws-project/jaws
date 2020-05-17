@@ -52,6 +52,7 @@ function getLogs(name, offset, reset)
         'gadget'    : $('#filter_gadget').val(),
         'user'      : $('#filter_user').val(),
         'priority'  : $('#filter_priority').val(),
+        'result'    : $('#filter_result').val(),
         'status'    : $('#filter_status').val()
     };
 
@@ -81,6 +82,7 @@ function logsDGAction(combo)
         'gadget'    : $('#filter_gadget').val(),
         'user'      : $('#filter_user').val(),
         'priority'  : $('#filter_priority').val(),
+        'result'    : $('#filter_result').val(),
         'status'    : $('#filter_status').val()
     };
 
@@ -111,6 +113,7 @@ function logsDGAction(combo)
         queryString += '&gname=' + filters.gadget;
         queryString += '&user=' + filters.user;
         queryString += '&priority=' + filters.priority;
+        queryString += '&result=' + filters.result;
         queryString += '&status=' + filters.status;
         window.location= LogsAjax.baseScript + '?gadget=Logs&action=ExportLogs' + queryString;
     }
@@ -128,6 +131,7 @@ function viewLog(rowElement, id)
     $('#log_action').html(result['action']);
     $('#log_backend').html(result['backend']);
     $('#log_priority').html(result['priority']);
+    $('#log_result').html(result['result']);
     $('#log_status').html(result['status']);
     $('#log_apptype').html(result['apptype']);
     $('#log_auth').html(result['auth']);
