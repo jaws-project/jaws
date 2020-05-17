@@ -114,7 +114,8 @@ class Jaws_User
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
-                    'status'   => 401,
+                    'result'   => 401,
+                    'status'   => false,
                 )
             );
             return Jaws_Error::raiseError(
@@ -137,7 +138,8 @@ class Jaws_User
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
-                    'status'   => 403,
+                    'result'   => 403,
+                    'status'   => false,
                 )
             );
             return Jaws_Error::raiseError(
@@ -159,7 +161,8 @@ class Jaws_User
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
-                    'status'   => 403,
+                    'result'   => 403,
+                    'status'   => false,
                 )
             );
             return Jaws_Error::raiseError(
@@ -183,7 +186,8 @@ class Jaws_User
                     'domain'   => $result['domain'],
                     'username' => $result['username'],
                     'priority' => JAWS_WARNING,
-                    'status'   => 403,
+                    'result'   => 403,
+                    'status'   => false,
                 )
             );
             return Jaws_Error::raiseError(

@@ -160,7 +160,8 @@ class Jaws_Session
                 'gadget'   => 'Users',
                 'action'   => 'Logout',
                 'priority' => JAWS_NOTICE,
-                'status'   => 200,
+                'result'   => 200,
+                'status'   => true,
             )
         );
         // let everyone know a user has been logout
