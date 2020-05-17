@@ -546,10 +546,15 @@ class Jaws_ORM
      * @param   mixed   $column Column
      * @param   mixed   $value  Column value
      * @param   string  $opt    Operator condition
+     * @param   bool    $ignore Ignore this condition
      * @return  object  Jaws_ORM object
      */
-    function where($column, $value, $opt = '=')
+    function where($column, $value, $opt = '=', $ignore = false)
     {
+        if ($ignore) {
+            return $this;
+        }
+
         switch ($opt) {
             case 'in':
             case 'not in':
