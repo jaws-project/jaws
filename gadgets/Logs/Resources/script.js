@@ -138,7 +138,7 @@ function viewLog(rowElement, id)
     $('#log_username').html('<a href = "' + result['user_url'] + '">' + result['username'] + '</a>');
     $('#log_ip').html(result['ip']);
     $('#log_agent').html(result['agent']);
-    $('#log_date').html(result['insert_time']);
+    $('#log_date').html(result['time']);
 }
 
 /**

@@ -20,7 +20,7 @@ class Logs_Installer extends Jaws_Gadget_Installer
         array('syslog', false),
         array(
             'syslog_format',
-            '{insert_time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
+            '{time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
         ),
         array('log_priority_level', '6'),
         array('log_parameters', 'false'),
@@ -99,7 +99,7 @@ class Logs_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('syslog', false);
             $this->gadget->registry->insert(
                 'syslog_format',
-                '{insert_time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
+                '{time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
             );
         }
 

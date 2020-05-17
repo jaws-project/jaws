@@ -245,7 +245,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             // Date
             $link =& Piwi::CreateWidget(
                 'Link',
-                $date->Format($log['insert_time'], 'Y-m-d H:i:s'),
+                $date->Format($log['time'], 'Y-m-d H:i:s'),
                 "javascript:viewLog(this, '".$log['id']."');"
             );
             $logData['time'] = $link->Get();
@@ -283,7 +283,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         }
 
         $date = Jaws_Date::getInstance();
-        $log['insert_time'] = $date->Format($log['insert_time'], 'DN d MN Y H:i:s');
+        $log['time'] = $date->Format($log['time'], 'DN d MN Y H:i:s');
         $log['ip'] = long2ip($log['ip']);
         $log['priority'] = _t('LOGS_PRIORITY_'. $log['priority']);
         $log['status']   = _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']);
@@ -386,7 +386,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $exportData .= long2ip($log['ip']) . ',';
             $exportData .= $log['result'] . ',';
             $exportData .= $log['status'] . ',';
-            $exportData .= $date->Format($log['insert_time'], 'Y-m-d H:i:s');
+            $exportData .= $date->Format($log['time'], 'Y-m-d H:i:s');
             $exportData .= PHP_EOL;
             fwrite($fp, $exportData);
         }
