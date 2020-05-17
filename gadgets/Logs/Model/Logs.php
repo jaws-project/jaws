@@ -44,11 +44,12 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         // extra data
         $dLog['apptype'] = JAWS_APPTYPE;
         $dLog['backend'] = (JAWS_SCRIPT == 'admin');
-        $dLog['input']  = isset($dLog['input'])? $dLog['input'] : null;
-        $dLog['result'] = isset($dLog['result'])? (int)$dLog['result'] : 0;
+        $dLog['input']   = json_encode(isset($dLog['input'])? $dLog['input'] : null);
+        $dLog['output']  = json_encode(isset($dLog['output'])? $dLog['output'] : null);
+        $dLog['result']  = isset($dLog['result'])? (int)$dLog['result'] : 0;
         // temporary status 1: true, 2: false
-        $dLog['status'] = isset($dLog['status'])? ((bool)$dLog['status']? 1 : 2) : 1;
-        $dLog['time']   = time();
+        $dLog['status']  = isset($dLog['status'])? ((bool)$dLog['status']? 1 : 2) : 1;
+        $dLog['time']    = time();
 
         // register logs in syslogs if enabled
         if ($this->gadget->registry->fetch('syslog')) {

@@ -35,16 +35,16 @@ class Logs_Events_Log extends Jaws_Gadget_Event
             isset($params['domain'])?
             (int)$params['domain'] :
             $this->app->session->user->domain;
-        // username
-        $params['username'] =
-            isset($params['username'])?
-            (string)$params['username'] :
-            $this->app->session->user->username;
+        // user
+        $params['user'] =
+            isset($params['user'])?
+            (int)$params['user'] :
+            $this->app->session->user->id;
         // priority
         $params['priority'] = empty($params['priority'])? JAWS_INFO : (int)$params['priority'];
 
         // log events if user logged
-        if (empty($params['username']) ||
+        if (empty($params['user']) ||
             $params['priority'] > (int)$this->gadget->registry->fetch('log_priority_level')
         ) {
             return false;
