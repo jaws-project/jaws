@@ -50,6 +50,8 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $tpl->SetVariable('lbl_callback', _t('NOTIFICATION_MESSAGE_CALLBACK'));
         $tpl->SetVariable('lbl_image', _t('NOTIFICATION_IMAGE'));
         $tpl->SetVariable('lbl_insert_time', _t('GLOBAL_TIME'));
+        $tpl->SetVariable('lbl_last_try_time', _t('NOTIFICATION_SEND_LAST_TRY_TIME'));
+        $tpl->SetVariable('lbl_try_attempts', _t('NOTIFICATION_SEND_TRY_ATTEMPTS'));
         $tpl->SetVariable('lbl_from_date', _t('NOTIFICATION_FROM_DATE'));
         $tpl->SetVariable('lbl_to_date', _t('NOTIFICATION_TO_DATE'));
         $tpl->SetVariable('lbl_contact', _t('NOTIFICATION_CONTACT'));
@@ -227,7 +229,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $messageInfo['status'] = $sendStatus;
         $messageInfo['summary'] = json_decode($messageInfo['summary'], true);
         $messageInfo['verbose'] = json_decode($messageInfo['verbose'], true);
-        $messageInfo['time'] = $objDate->Format($messageInfo['time'], 'Y/m/d H:i:s');
+        $messageInfo['last_try_time'] = $objDate->Format($messageInfo['last_try_time'], 'Y/m/d H:i:s');
 
         return $this->gadget->session->response(
             '',

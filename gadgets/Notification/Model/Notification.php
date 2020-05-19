@@ -68,7 +68,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             ->select(
                 'shouter', 'name', 'title', 'summary', 'verbose',
                 'callback', 'image', 'notification_recipient.driver:integer', 'notification_recipient.status:integer',
-                'notification_recipient.contact', 'notification_recipient.time:integer'
+                'notification_recipient.contact', 'notification_recipient.time as last_try_time:integer',
+                'notification_recipient.attempts:integer'
             )->join('notification_recipient', 'notification_recipient.message', 'notification_message.id')
             ->where('notification_recipient.id', (int)$id)
             ->fetchRow();
@@ -85,7 +86,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @return bool True or error
      */
     function GetNotificationMessages(
-        $filters, $limit = false, $offset = null, $orderBy = 'notification_message.time'
+        $filters, $limit = false, $offset = null, $orderBy = 'notification_message.time desc'
     ) {
         $mTable = Jaws_ORM::getInstance()->table('notification_message');
         $mTable->select(
