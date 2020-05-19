@@ -22,14 +22,22 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance();
         $objORM = $objORM->table('notification_recipient');
 
-        return $objORM->select('id:integer', 'message', 'contact', 'time:integer')
+        return Jaws_ORM::getInstance()
+            ->table('notification_recipient')
+            ->select(
+                'notification_recipient.id:integer', 'message', 'contact', 'notification_message.time:integer',
+                'notification_message.shouter', 'notification_message.name', 'notification_message.title',
+                'notification_message.summary', 'notification_message.verbose', 'notification_message.callback',
+                'notification_message.image'
+            )
+            ->join('notification_message', 'notification_message.id', 'notification_recipient.message')
             ->where('driver', $contactType)
             ->and()
-            ->where('status', (int)$status, '=', empty($status))
+            ->where('notification_recipient.status', (int)$status, '=', empty($status))
             ->and()
-            ->where('time', time(), '<=')
+            ->where('notification_message.time', time(), '<=')
             ->limit((int)$limit, $offset)
-            ->orderBy('time, message asc')->fetchAll();
+            ->orderBy('notification_message.time, message asc')->fetchAll();
     }
 
     /**
@@ -76,13 +84,14 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @param   string      $orderBy   Order by
      * @return bool True or error
      */
-    function GetNotificationMessages($filters, $limit = false, $offset = null, $orderBy = 'notification_recipient.time')
-    {
+    function GetNotificationMessages(
+        $filters, $limit = false, $offset = null, $orderBy = 'notification_message.time'
+    ) {
         $mTable = Jaws_ORM::getInstance()->table('notification_message');
         $mTable->select(
             'notification_recipient.id:integer','shouter', 'name', 'title as message_title', 'summary', 'verbose',
-            'callback', 'image', 'notification_recipient.driver:integer', 'notification_recipient.status:integer',
-            'notification_recipient.time:integer'
+            'callback', 'image', 'notification_recipient.driver:integer', 'notification_recipient.attempts:integer',
+            'notification_recipient.status:integer', 'notification_message.time:integer'
         )->join('notification_recipient', 'notification_recipient.message', 'notification_message.id');
         if (!empty($filters) && count($filters) > 0) {
             // shouter
@@ -128,8 +137,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                     $stopTime = $objDate->ToBaseDate(preg_split('/[\/\- :]/', $stopTimeStr . ' 23:59:59'));
                     $stopTime = $this->app->UserTime2UTC($stopTime['timestamp']);
                 }
-                $mTable->and()->openWhere('notification_recipient.time', $startTime, '>=')->and()
-                    ->closeWhere('notification_recipient.time', $stopTime, '<=');
+                $mTable->and()->openWhere('notification_message.time', $startTime, '>=')->and()
+                    ->closeWhere('notification_message.time', $stopTime, '<=');
             }
         }
 
@@ -233,7 +242,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 'summary'  => $summary,
                 'verbose'  => $verbose,
                 'callback' => $callback,
-                'image'    => $image
+                'image'    => $image,
+                'time'     => $time
             )
         )->and()->where('key', $key)->exec();
         if (Jaws_Error::IsError($messageId)) {
@@ -249,7 +259,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $res = $objORM->upsert(
                         array(
                             'message' => $messageId, 'driver' => Jaws_Notification::EML_DRIVER,
-                            'contact' => $email, 'hash' => $hash, 'time' => $time
+                            'contact' => $email, 'hash' => $hash
                         )
                     )->and()
                     ->where('message', $messageId)
@@ -272,7 +282,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $res = $objORM->upsert(
                         array(
                             'message' => $messageId, 'driver' => Jaws_Notification::SMS_DRIVER,
-                            'contact' => $mobile, 'hash' => $hash, 'time' => $time
+                            'contact' => $mobile, 'hash' => $hash
                         )
                     )->and()
                     ->where('message', $messageId)
@@ -295,7 +305,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $res = $objORM->upsert(
                         array(
                             'message' => $messageId, 'driver' => Jaws_Notification::WEB_DRIVER,
-                            'contact' => $webpush, 'hash' => $hash, 'time' => $time
+                            'contact' => $webpush, 'hash' => $hash
                         )
                     )->and()
                     ->where('message', $messageId)
@@ -438,17 +448,24 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @param   string  $contactType    Contact type (email, mobile, ...)
      * @param   array   $ids            Notifications Id
      * @param   int     $status         Message status(1: not send, 2: sending, 3: sent)
+     * @param   bool    $incAttempts    Increase attempts count
      * @return  bool    True or error
      */
-    function UpdateNotificationsStatusById($contactType, $ids, $status = 3)
+    function UpdateNotificationsStatusById($contactType, $ids, $status = 3, $incAttempts = false)
     {
         if (empty($ids)) {
             return true;
         }
 
-        $objORM = Jaws_ORM::getInstance();
-        $objORM = $objORM->table('notification_recipient');
-        return $objORM->update(array('status' => (int)$status))
+        return Jaws_ORM::getInstance()
+            ->table('notification_recipient')
+            ->update(
+                array(
+                    'attempts' => Jaws_ORM::getInstance()->expr('attempts + ?', $incAttempts? 1 : 0),
+                    'time'     => time(),
+                    'status'   => (int)$status
+                )
+            )
             ->where('id', $ids, 'in')
             ->and()
             ->where('driver', $contactType)
