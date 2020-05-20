@@ -19,25 +19,22 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function GetNotifications($contactType, $status = 0, $limit = false, $offset = null)
     {
-        $objORM = Jaws_ORM::getInstance();
-        $objORM = $objORM->table('notification_recipient');
-
         return Jaws_ORM::getInstance()
-            ->table('notification_recipient')
+            ->table('notification_recipient', 'nr')
             ->select(
-                'notification_recipient.id:integer', 'message', 'contact', 'notification_message.time:integer',
-                'notification_message.shouter', 'notification_message.name', 'notification_message.title',
-                'notification_message.summary', 'notification_message.verbose', 'notification_message.callback',
-                'notification_message.image'
+                'nr.id:integer', 'message', 'contact', 'nm.time:integer',
+                'nm.shouter', 'nm.name', 'nm.title',
+                'nm.summary', 'nm.verbose', 'nm.callback',
+                'nm.image'
             )
-            ->join('notification_message', 'notification_message.id', 'notification_recipient.message')
+            ->join('notification_message as nm', 'nm.id', 'nr.message')
             ->where('driver', $contactType)
             ->and()
-            ->where('notification_recipient.status', (int)$status, '=', empty($status))
+            ->where('nr.status', (int)$status, '=', empty($status))
             ->and()
-            ->where('notification_message.time', time(), '<=')
+            ->where('nm.time', time(), '<=')
             ->limit((int)$limit, $offset)
-            ->orderBy('notification_message.time, message asc')->fetchAll();
+            ->orderBy('nm.time, message asc')->fetchAll();
     }
 
     /**
@@ -49,14 +46,14 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function GetNotificationMessageDetails($id)
     {
-        return Jaws_ORM::getInstance()->table('notification_message')
+        return Jaws_ORM::getInstance()->table('notification_message', 'nm')
             ->select(
                 'shouter', 'name', 'title', 'summary', 'verbose',
-                'callback', 'image', 'notification_recipient.driver:integer', 'notification_recipient.status:integer',
-                'notification_recipient.contact', 'notification_recipient.time as last_try_time:integer',
-                'notification_recipient.attempts:integer'
-            )->join('notification_recipient', 'notification_recipient.message', 'notification_message.id')
-            ->where('notification_recipient.id', (int)$id)
+                'callback', 'image', 'nr.driver:integer', 'nr.status:integer',
+                'nr.contact', 'nm.time:integer',
+                'nr.attempts:integer', 'nr.time as attempt_time:integer'
+            )->join('notification_recipient as nr', 'nr.message', 'nm.id')
+            ->where('nr.id', (int)$id)
             ->fetchRow();
     }
 
@@ -71,7 +68,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @return bool True or error
      */
     function GetNotificationMessages(
-        $filters, $limit = false, $offset = null, $orderBy = 'notification_message.time desc'
+        $filters, $limit = false, $offset = null, $orderBy = 'nm.time desc'
     ) {
         // from date
         $objDate = Jaws_Date::getInstance();
@@ -90,45 +87,45 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         return Jaws_ORM::getInstance()
-            ->table('notification_message')
+            ->table('notification_message', 'nm')
             ->select(
-                'notification_recipient.id:integer','shouter', 'name', 'title as message_title', 'summary',
-                'verbose', 'callback', 'image', 'notification_recipient.driver:integer',
-                'notification_recipient.attempts:integer', 'notification_recipient.status:integer',
-                'notification_message.time:integer'
-            )->join('notification_recipient', 'notification_recipient.message', 'notification_message.id')
+                'nr.id:integer','shouter', 'name', 'title as message_title', 'summary',
+                'verbose', 'callback', 'image', 'nr.driver:integer',
+                'nr.attempts:integer', 'nr.status:integer',
+                'nm.time:integer'
+            )->join('notification_recipient as nr', 'nr.message', 'nm.id')
             ->and()->where(
                 'shouter',
                 $filters['shouter'],
                 '=',
                 empty($filters['shouter'])
             )->and()->where(
-                'notification_recipient.driver',
+                'nr.driver',
                 (int)$filters['driver'],
                 '=',
                 empty($filters['driver'])
             )->and()->where(
-                'notification_recipient.status',
+                'nr.status',
                 (int)$filters['status'],
                 '=',
                 empty($filters['status'])
             )->and()->where(
-                'notification_recipient.contact',
+                'nr.contact',
                 $filters['contact'],
                 'like',
                 empty($filters['contact'])
             )->and()->where(
-                'notification_message.verbose',
+                'nm.verbose',
                 trim(json_encode($filters['verbose']), '"'),
                 'like',
                 empty($filters['verbose'])
             )->and()->where(
-                'notification_message.time',
+                'nm.time',
                 $filters['from_date'],
                 '>=',
                 empty($filters['from_date'])
             )->and()->where(
-                'notification_message.time',
+                'nm.time',
                 $filters['to_date'],
                 '<=',
                 empty($filters['to_date'])
@@ -163,41 +160,41 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         return Jaws_ORM::getInstance()
-            ->table('notification_message')
-            ->select('count(notification_message.id):integer')
-            ->join('notification_recipient', 'notification_recipient.message', 'notification_message.id')
+            ->table('notification_message', 'nm')
+            ->select('count(nm.id):integer')
+            ->join('notification_recipient as nr', 'nr.message', 'nm.id')
             ->and()->where(
                 'shouter',
                 $filters['shouter'],
                 '=',
                 empty($filters['shouter'])
             )->and()->where(
-                'notification_recipient.driver',
+                'nr.driver',
                 (int)$filters['driver'],
                 '=',
                 empty($filters['driver'])
             )->and()->where(
-                'notification_recipient.status',
+                'nr.status',
                 (int)$filters['status'],
                 '=',
                 empty($filters['status'])
             )->and()->where(
-                'notification_recipient.contact',
+                'nr.contact',
                 $filters['contact'],
                 'like',
                 empty($filters['contact'])
             )->and()->where(
-                'notification_message.verbose',
+                'nm.verbose',
                 trim(json_encode($filters['verbose']), '"'),
                 'like',
                 empty($filters['verbose'])
             )->and()->where(
-                'notification_message.time',
+                'nm.time',
                 $filters['from_date'],
                 '>=',
                 empty($filters['from_date'])
             )->and()->where(
-                'notification_message.time',
+                'nm.time',
                 $filters['to_date'],
                 '<=',
                 empty($filters['to_date'])
