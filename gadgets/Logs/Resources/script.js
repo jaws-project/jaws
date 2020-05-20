@@ -50,7 +50,7 @@ function getLogs(name, offset, reset)
         'from_date' : $('#from_date').val(),
         'to_date'   : $('#to_date').val(),
         'gadget'    : $('#filter_gadget').val(),
-        'user'      : $('#filter_user').val(),
+        'user'      : $('#filter_user').combobox('selectedItem').value,
         'priority'  : $('#filter_priority').val(),
         'result'    : $('#filter_result').val(),
         'status'    : $('#filter_status').val()
@@ -80,7 +80,7 @@ function logsDGAction(combo)
         'from_date' : $('#from_date').val(),
         'to_date'   : $('#to_date').val(),
         'gadget'    : $('#filter_gadget').val(),
-        'user'      : $('#filter_user').val(),
+        'user'      : $('#filter_user').combobox('selectedItem').value,
         'priority'  : $('#filter_priority').val(),
         'result'    : $('#filter_result').val(),
         'status'    : $('#filter_status').val()
@@ -162,6 +162,48 @@ function saveSettings()
     );
 }
 
+/**
+ * initiate User Filter
+ */
+function initiateUserFilter()
+{
+    $('#filter_user').combobox({
+        'filterOnKeypress': true,
+        'showOptionsOnKeypress': true,
+        'noMatchesMessage': jaws.Logs.Defines.msgNoMatches
+    });
+    $('#filter_user').on('changed.fu.combobox', $.proxy(function (evt, data) {
+        this.changeUserFilter(data.text);
+    }, this));
+}
+
+/**
+ * change User Filter
+ */
+function changeUserFilter(term) {
+    if (term == '') {
+        return false;
+    }
+    $('#filter_user ul').empty().append(
+        $('<li>').append($('<a>').attr('href', '#').text( jaws.Logs.Defines.lbl_all_users)).attr('data-value', 0)
+    );
+
+    LogsAjax.callAsync(
+        'GetUser',
+        {'username': term},
+        function (response, status) {
+            console.log(response);
+            if (response['type'] == 'alert-success' && response['data'] != null) {
+                $("#filter_user ul").append(
+                    $('<li>').append($('<a>').attr('href', '#').text(response['data'].username)).attr('data-value', response['data'].id)
+                );
+                searchLogs();
+            }
+        }
+    );
+}
+
+
 $(document).ready(function() {
     switch (jaws.Defines.mainAction) {
         case 'Logs':
@@ -169,6 +211,7 @@ $(document).ready(function() {
             initDatePicker('from_date');
             initDatePicker('to_date');
             initDataGrid('logs_datagrid', LogsAjax, getLogs);
+            initiateUserFilter();
             break;
 
         case 'Settings':
@@ -178,3 +221,4 @@ $(document).ready(function() {
 
 var LogsAjax = new JawsAjax('Logs', LogsCallback);
 cacheContactForm = null;
+pillboxProcessing = null;

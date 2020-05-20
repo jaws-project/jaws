@@ -30,12 +30,17 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
+        $this->gadget->define('msgNoMatches', _t('LOGS_COMBO_NO_MATCH_MESSAGE'));
+        $this->gadget->define('lbl_all_users', _t('GLOBAL_ALL_USERS'));
 
         $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('Logs');
 
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Logs'));
+
+        $tpl->SetVariable('lbl_all_users', _t('GLOBAL_ALL_USERS'));
+        $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
 
         // From Date Filter
         $fromDate =& Piwi::CreateWidget('DatePicker', 'from_date', '');
@@ -64,24 +69,16 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $gadgetsCombo->AddOption($gadget['title'], $gadget['name']);
         }
         $gadgetsCombo->AddEvent(ON_CHANGE, "searchLogs();");
-        $gadgetsCombo->SetDefault(-1);
+        $gadgetsCombo->SetDefault(0);
         $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
         $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
 
-        // Users Filter
-        $usersCombo =& Piwi::CreateWidget('Combo', 'filter_user');
-        $usersCombo->AddOption(_t('GLOBAL_ALL_USERS'), "", false);
-        $userModel = new Jaws_User();
-        $users = $userModel->GetUsers();
-        if (!Jaws_Error::IsError($users)) {
-            foreach ($users as $user) {
-                $usersCombo->AddOption($user['username'] . ' - ' . $user['nickname'], $user['id']);
-            }
-        }
-        $usersCombo->AddEvent(ON_CHANGE, "searchLogs();");
-        $usersCombo->SetDefault(-1);
-        $tpl->SetVariable('filter_user', $usersCombo->Get());
-        $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
+        // Result Filter
+        $filterResult =& Piwi::CreateWidget('Entry', 'filter_result', '');
+        $filterResult->SetID('filter_result');
+        $filterResult->AddEvent(ON_CHANGE, "searchLogs();");
+        $tpl->SetVariable('lbl_filter_result', _t('LOGS_RESULT'));
+        $tpl->SetVariable('filter_result', $filterResult->Get());
 
         // Priority
         $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
@@ -404,6 +401,31 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         }
 
         Jaws_Header::Referrer();
+    }
+
+    /**
+     * Search user (used in pillbox)
+     *
+     * @access  public
+     * @return  void
+     */
+    function GetUser()
+    {
+        $term = $this->gadget->request->fetch('username', 'post');
+        $userModel = new Jaws_User();
+        $user = $userModel->GetUserByTerm(0, $term);
+        if (Jaws_Error::IsError($user)) {
+            return $this->gadget->session->response(
+                $user->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            $user
+        );
     }
 
 }

@@ -13,12 +13,33 @@
             <tr>
                 <td class="filter_label"><label for="filter_to_date">{{lbl_filter_to_date}}:</label></td>
                 <td>{{filter_to_date}}</td>
+
                 <td class="filter_label"><label for="filter_user">{{lbl_filter_user}}:</label></td>
-                <td>{{filter_user}}</td>
+                <td>
+                    <div class="input-group input-append dropdown combobox" id="filter_user">
+                        <input type="text" class="form-control" placeholder="{{lbl_filter_user}}"
+                               data-toggle="tooltip" data-placement="top" title="{{lbl_filter_user}}">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown" title=""><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li data-value="0" data-selected=""><a href="#">{{lbl_all_users}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+
                 <td class="filter_label"><label for="filter_result">{{lbl_filter_result}}:</label></td>
                 <td>{{filter_result}}</td>
+            </tr>
+
+            <tr>
                 <td class="filter_label"><label for="filter_status">{{lbl_filter_status}}:</label></td>
                 <td>{{filter_status}}</td>
+                <td class="filter_label"></td>
+                <td></td>
+                <td class="filter_label"></td>
+                <td></td>
             </tr>
         </table>
 

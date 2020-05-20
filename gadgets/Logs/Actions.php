@@ -52,6 +52,10 @@ $admin_actions['ExportLogs'] = array(
     'file' => 'Logs',
     'loglevel' => JAWS_NOTICE,
 );
+$admin_actions['GetUser'] = array(
+    'standalone' => true,
+    'file' => 'Logs',
+);
 $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
