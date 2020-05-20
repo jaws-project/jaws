@@ -121,11 +121,6 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             'post'
         );
         $filters = $post['filters'];
-        if (!empty($filters['from_date']) || !empty($filters['to_date'])) {
-            $filters['insert_date'] = array($filters['from_date'], $filters['to_date']);
-        }
-        unset($filters['from_date'], $filters['to_date']);
-
         $model = $this->gadget->model->load('Notification');
         $messages = $model->GetNotificationMessages($filters, $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($messages)) {
