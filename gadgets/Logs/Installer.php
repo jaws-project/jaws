@@ -95,7 +95,7 @@ class Logs_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.2.0', '<')) {
-            // Registry keys
+            // registry keys
             $this->gadget->registry->insert('syslog', false);
             $this->gadget->registry->insert(
                 'syslog_format',
@@ -109,6 +109,11 @@ class Logs_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+            // registry keys
+            $this->gadget->registry->update(
+                'syslog_format',
+                '{time}|{status}|{apptype}|{priority}|{ip}|{domain}|{username}|{gadget}|{action}'
+            );
         }
 
         return true;
