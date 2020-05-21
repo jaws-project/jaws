@@ -43,7 +43,7 @@ class Logs_Events_Log extends Jaws_Gadget_Event
         // username
         $params['username'] =
             isset($params['username'])?
-            (int)$params['username'] :
+            $params['username'] :
             $this->app->session->user->username;
         // priority
         $params['priority'] = empty($params['priority'])? JAWS_INFO : (int)$params['priority'];
