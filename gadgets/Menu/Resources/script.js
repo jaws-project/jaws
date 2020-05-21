@@ -89,6 +89,7 @@ function saveMenus()
                 'InsertGroup', [
                     $('#title').val(),
                     $('#title_view').val(),
+                    $('#view_type').val(),
                     $('#published').val()
                 ]
             );
@@ -103,6 +104,7 @@ function saveMenus()
                     $('#gid').val(),
                     $('#title').val(),
                     $('#title_view').val(),
+                    $('#view_type').val(),
                     $('#published').val()
                 ]
             );
@@ -310,6 +312,7 @@ function editGroup(gid)
     $('#gid').val(groupInfo['id']);
     $('#title').val(groupInfo['title'].defilter());
     $('#title_view').val(groupInfo['title_view']);
+    $('#view_type').val(groupInfo['view_type']);
     $('#published').val(Number(groupInfo['published']));
 }
 

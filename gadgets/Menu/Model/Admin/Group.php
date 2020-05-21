@@ -11,12 +11,13 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
      * Inserts a new group
      *
      * @access  public
-     * @param   string   $title
-     * @param   string   $title_view
-     * @param   bool     $published     Published status
-     * @return  bool     True on success or False on failure
+     * @param   string  $title
+     * @param   bool    $title_view
+     * @param   int     $view_type
+     * @param   bool    $published      Published status
+     * @return  bool    True on success or False on failure
      */
-    function InsertGroup($title, $title_view, $published)
+    function InsertGroup($title, $title_view, $view_type, $published)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->fetchOne();
@@ -31,7 +32,8 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         $gData['title']      = $title;
-        $gData['title_view'] = $title_view;
+        $gData['title_view'] = (int)$title_view;
+        $gData['view_type']  = (int)$view_type;
         $gData['published']  = (bool)$published;
         $gid = $mgroupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($gid)) {
@@ -48,13 +50,14 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
      * Updates menu group
      *
      * @access  public
-     * @param    int     $gid           Group ID
-     * @param    string  $title         Group title
-     * @param    string  $title_view
-     * @param    bool    $published     Published status
-     * @return   bool    True on success or False on failure
+     * @param   int     $gid        Group ID
+     * @param   string  $title      Group title
+     * @param   bool    $title_view
+     * @param   int     $view_type
+     * @param   bool    $published     Published status
+     * @return  bool    True on success or False on failure
      */
-    function UpdateGroup($gid, $title, $title_view, $published)
+    function UpdateGroup($gid, $title, $title_view, $view_type, $published)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select('count(id):integer')->where('id', $gid, '<>')->and()->where('title', $title);
@@ -70,8 +73,9 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         $gData['title']      = $title;
-        $gData['title_view'] = $title_view;
-        $gData['published']  = $published;
+        $gData['title_view'] = (int)$title_view;
+        $gData['view_type']  = (int)$view_type;
+        $gData['published']  = (bool)$published;
         $res = $mgroupsTable->update($gData)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);

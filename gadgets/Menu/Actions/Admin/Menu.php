@@ -153,6 +153,14 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title_view', _t('MENU_GROUPS_TITLE_VIEW'));
         $tpl->SetVariable('title_view', $titleview->Get());
 
+        $viewType =& Piwi::CreateWidget('Combo', 'view_type');
+        $viewType->SetID('view_type');
+        $viewType->setStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
+        $viewType->AddOption(_t('MENU_GROUPS_VIEW_TYPE_0'), 0);
+        $viewType->AddOption(_t('MENU_GROUPS_VIEW_TYPE_1'), 1);
+        $tpl->SetVariable('lbl_view_type', _t('MENU_GROUPS_VIEW_TYPE'));
+        $tpl->SetVariable('view_type', $viewType->Get());
+
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
