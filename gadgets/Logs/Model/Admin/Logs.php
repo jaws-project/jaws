@@ -73,11 +73,10 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'auth', 'logs.domain', 'user', 'users.username', 'gadget', 'action',
+            'logs.id:integer', 'auth', 'logs.domain', 'user', 'username', 'gadget', 'action',
             'priority:integer', 'apptype', 'backend:boolean', 'ip', 'agent', 'result:integer',
             'logs.status:integer', 'logs.time:integer'
         );
-        $logsTable->join('users', 'users.id', 'logs.user');
         return $logsTable->where('logs.id', (int)$id)->fetchRow();
     }
 

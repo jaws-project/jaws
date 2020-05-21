@@ -36,13 +36,6 @@
             </field>
 
             <field>
-                <name>username</name>
-                <type>text</type>
-                <length>32</length>
-                <default></default>
-            </field>
-
-            <field>
                 <name>gadget</name>
                 <type>text</type>
                 <length>32</length>

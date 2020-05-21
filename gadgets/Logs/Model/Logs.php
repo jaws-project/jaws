@@ -23,7 +23,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         $invalids = array_diff(
             array_keys($dLog),
             array(
-                'auth', 'domain', 'user', 'gadget', 'action',
+                'auth', 'domain', 'user', 'username', 'gadget', 'action',
                 'priority', 'input', 'output', 'result', 'status'
             )
         );
@@ -85,11 +85,10 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'auth', 'logs.domain', 'user', 'users.username',
+            'logs.id:integer', 'auth', 'logs.domain', 'user', 'username',
             'gadget', 'action', 'priority', 'apptype', 'backend:boolean', 'ip', 'agent',
             'result', 'logs.status', 'logs.time'
         );
-        $logsTable->join('users', 'users.id', 'logs.user', 'left');
         $logsTable->orderBy('logs.id desc');
         $logsTable->limit((int)$limit, $offset);
 
