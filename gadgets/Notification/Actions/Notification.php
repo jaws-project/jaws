@@ -17,7 +17,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
     {
         try {
             // start processing
-            if (!Jaws_Mutex::getInstance()->acquire('Notification', true)) {
+            if (!Jaws_Mutex::getInstance('Notification')->acquire(true)) {
                 $lastUpdate = (int)$this->gadget->registry->fetch('last_update');
                 $queueMaxTime = (int)$this->gadget->registry->fetch('queue_max_time');
                 if ($lastUpdate + $queueMaxTime < time()) {
@@ -91,7 +91,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         }
 
         // finish procession
-        Jaws_Mutex::getInstance()->release('Notification');
+        Jaws_Mutex::getInstance('Notification')->release();
         return true;
     }
 
