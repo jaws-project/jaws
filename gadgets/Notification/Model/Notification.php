@@ -228,7 +228,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return false;
         }
 
-        $key = hash64($name.'.'.(string)$key;
+        $key = hash64($name.'.'.(string)$key);
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
         $mTable = $objORM->table('notification_message');
         $messageId = $mTable->upsert(
