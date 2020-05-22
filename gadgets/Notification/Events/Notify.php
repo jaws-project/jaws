@@ -29,7 +29,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $model = $this->gadget->model->load('Notification');
         $shouter = empty($params['gadget'])? $shouter : $params['gadget'];
 
-        $params['time'] = !isset($params['time']) ? time()+1 : $params['time'];
+        $params['time'] = !isset($params['time']) ? (time() + 1) : $params['time'];
 
         // if time = 0 then delete the notifications
         if ($params['time'] < 0) {

@@ -233,7 +233,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         $mTable = $objORM->table('notification_message');
         $messageId = $mTable->upsert(
             array(
-                'key'      => $key,
+                'hash'     => $key,
                 'shouter'  => $shouter,
                 'name'     => $name,
                 'title'    => $title,
@@ -243,7 +243,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 'image'    => $image,
                 'time'     => $time
             )
-        )->and()->where('key', $key)->and()->where('time', time(), '<')->exec();
+        )->and()->where('hash', $key)->and()->where('time', time(), '>')->exec();
         if (Jaws_Error::IsError($messageId)) {
             return $messageId;
         }
@@ -341,7 +341,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
         $messageId = $objORM->table('notification_message')
             ->select('id:integer')
-            ->where('key', $key)->and()->where('time', time(), '>')
+            ->where('hash', $key)->and()->where('time', time(), '>')
             ->fetchOne();
         if (Jaws_Error::IsError($messageId)) {
             return $messageId;

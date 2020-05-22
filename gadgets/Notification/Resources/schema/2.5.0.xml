@@ -13,7 +13,7 @@
             </field>
 
             <field>
-                <name>hash</name>
+                <name>key</name>
                 <type>integer</type>
                 <length>8</length>
             </field>
@@ -71,9 +71,11 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>notification_hash</name>
+                <name><variable>table_prefix</variable>notification_key</name>
+                <unique>true</unique>
+
                 <field>
-                    <name>hash</name>
+                    <name>key</name>
                 </field>
             </index>
 
