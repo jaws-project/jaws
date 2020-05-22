@@ -258,7 +258,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         // Notify
         $params = array();
-        $params['key']     = crc32('Users.Registration.User' . $user);
+        $params['key']     = $user;
         $params['name']    = 'UserVerification2';
         $params['title']   = $subject;
         $params['summary'] = _t(
