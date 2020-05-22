@@ -28,10 +28,12 @@ class Jaws_Mutex_File extends Jaws_Mutex
      * Constructor
      *
      * @access  public
+     * @param   int     $lkey   Lock identifier
      * @return  void
      */
-    function __construct()
+    function __construct($lkey)
     {
+        parent::__construct($lkey);
         $this->lockPath =
             rtrim(sys_get_temp_dir(), '/\\') . '/' .
             $this->lockPrefix . Jaws::getInstance()->instance . '_';
@@ -41,20 +43,19 @@ class Jaws_Mutex_File extends Jaws_Mutex
      * Acquire exclusive access
      *
      * @access  public
-     * @param   int     $lkey   Lock identifier
      * @param   float   $nowait Wait for the exclusive access to be acquired?
      * @return  bool    True if exclusive access Acquired otherwise False
      */
-    function acquire($lkey, $nowait  = false)
+    function acquire($nowait  = false)
     {
-        if (!isset($this->mutexs[$lkey])) {
-            $this->mutexs[$lkey] = fopen(
-                $this->lockPath. (string)$lkey,
+        if (!isset($this->mutexs[$this->lkey])) {
+            $this->mutexs[$this->lkey] = fopen(
+                $this->lockPath. (string)$this->lkey,
                 'a+'
             );
         }
 
-        while (!($lock = flock($this->mutexs[$lkey], LOCK_EX | LOCK_NB)) && !$nowait) {
+        while (!($lock = flock($this->mutexs[$this->lkey], LOCK_EX | LOCK_NB)) && !$nowait) {
             //Exclusive access not acquired, try again
             usleep(mt_rand(0, 100)); // 0-100 microseconds
         }
@@ -66,15 +67,14 @@ class Jaws_Mutex_File extends Jaws_Mutex
      * Release exclusive access
      *
      * @access  public
-     * @param   int     $lkey   Lock identifier
      * @return  void
      */
-    function release($lkey)
+    function release()
     {
-        if (isset($this->mutexs[$lkey])) {
-            flock($this->mutexs[$lkey], LOCK_UN);
-            fclose($this->mutexs[$lkey]);
-            parent::release($lkey);
+        if (isset($this->mutexs[$this->lkey])) {
+            flock($this->mutexs[$this->lkey], LOCK_UN);
+            fclose($this->mutexs[$this->lkey]);
+            parent::release();
         }
     }
 

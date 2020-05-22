@@ -146,9 +146,9 @@ class Jaws_SharedSegment
     function lock($state = true)
     {
         if ($state) {
-            Jaws_Mutex::getInstance()->acquire($this->ftok);
+            Jaws_Mutex::getInstance($this->ftok)->acquire();
         } else {
-            Jaws_Mutex::getInstance()->release($this->ftok);
+            Jaws_Mutex::getInstance($this->ftok)->release();
         }
     }
 

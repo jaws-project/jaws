@@ -18,25 +18,43 @@ class Jaws_Mutex
     protected $mutexs = array();
 
     /**
+     * file token
+     * @var     int     $lkey   Lock identifier
+     * @access  private
+     */
+    protected $lkey;
+
+    /**
+     * Constructor
+     *
+     * @access  protected
+     * @param   int     $lkey   Lock identifier
+     * @return  void
+     */
+    protected function __construct($lkey)
+    {
+        $this->lkey = $lkey;
+    }
+
+    /**
      * Creates the Jaws_Lock instance if it doesn't exist else it returns the already created one
      *
      * @access  public
+     * @param   int     $lkey   Lock identifier
      * @return  object  Jaws_Lock type object
      */
-    static function getInstance()
+    static function getInstance($lkey)
     {
         static $objMutex;
         if (!isset($objMutex)) {
             if (function_exists('sem_acquire')) {
-                $file = ROOT_JAWS_PATH . 'include/Jaws/Mutex/Semaphore.php';
                 $className = 'Jaws_Mutex_Semaphore';
             } else {
-                $file = ROOT_JAWS_PATH . 'include/Jaws/Mutex/File.php';
                 $className = 'Jaws_Mutex_File';
             }
 
-            include_once($file);
-            $objMutex = new $className();
+            $lkey = is_int($lkey)? $lkey : Jaws_Utils::ftok($lkey, Jaws::getInstance()->instance);
+            $objMutex = new $className($lkey);
         }
 
         return $objMutex;
@@ -46,11 +64,10 @@ class Jaws_Mutex
      * Acquire exclusive access
      *
      * @access  public
-     * @param   int     $lkey   Lock identifier
      * @param   float   $nowait Wait for the exclusive access to be acquired?
      * @return  bool    True if exclusive access Acquired otherwise False
      */
-    function acquire($lkey, $nowait  = false)
+    function acquire($nowait  = false)
     {
         return Jaws_Error::raiseError(
             'acquire() method not supported by driver.',
@@ -62,12 +79,11 @@ class Jaws_Mutex
      * Release exclusive access
      *
      * @access  public
-     * @param   int     $lkey   Lock identifier
      * @return  void
      */
-    function release($lkey)
+    function release()
     {
-        unset($this->mutexs[$lkey]);
+        unset($this->mutexs[$this->lkey]);
     }
 
 }
