@@ -205,10 +205,10 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Insert notifications to db
      *
      * @access  public
-     * @param   int         $key                Notifications key
      * @param   array       $notifications      Notifications items (for example array('emails'=>array(...))
      * @param   string      $shouter            Shouter(gadget) name
      * @param   string      $name               Notifications name
+     * @param   string      $key                Notifications key
      * @param   string      $title              Title
      * @param   string      $summary            Summary
      * @param   string      $verbose            Verbose
@@ -218,7 +218,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @return  bool        True or error
      */
     function InsertNotifications(
-        $key, $notifications, $shouter, $name, $title, $summary, $verbose, $time, $callback, $image
+        $notifications, $shouter, $name, $key, $title, $summary, $verbose, $time, $callback, $image
     ) {
         if (empty($notifications) || (
             empty($notifications['emails']) &&
@@ -228,6 +228,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return false;
         }
 
+        $key = hash64($name.'.'.(string)$key;
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
         $mTable = $objORM->table('notification_message');
         $messageId = $mTable->upsert(
@@ -242,7 +243,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 'image'    => $image,
                 'time'     => $time
             )
-        )->and()->where('key', $key)->exec();
+        )->and()->where('key', $key)->and()->where('time', time(), '<')->exec();
         if (Jaws_Error::IsError($messageId)) {
             return $messageId;
         }
@@ -326,17 +327,22 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Delete notifications by key
      *
      * @access  public
-     * @param   int     $key            Notification key
+     * @param   string  $name   Notification name
+     * @param   string  $key    Notification key
      * @return  bool    True or error
      */
-    function DeleteNotificationsByKey($key)
+    function DeleteNotificationsByKey($name, $key)
     {
         if (empty($key)) {
             return false;
         }
-        $objORM = Jaws_ORM::getInstance()->beginTransaction();
 
-        $messageId = $objORM->table('notification_message')->select('id:integer')->where('key', $key)->fetchOne();
+        $key = hash64($name.'.'.(string)$key);
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+        $messageId = $objORM->table('notification_message')
+            ->select('id:integer')
+            ->where('key', $key)->and()->where('time', time(), '>')
+            ->fetchOne();
         if (Jaws_Error::IsError($messageId)) {
             return $messageId;
         }

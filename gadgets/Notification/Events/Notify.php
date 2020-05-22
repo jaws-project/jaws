@@ -29,11 +29,11 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $model = $this->gadget->model->load('Notification');
         $shouter = empty($params['gadget'])? $shouter : $params['gadget'];
 
-        $params['time'] = !isset($params['time']) ? time() : $params['time'];
+        $params['time'] = !isset($params['time']) ? time()+1 : $params['time'];
 
         // if time = 0 then delete the notifications
         if ($params['time'] < 0) {
-            return $model->DeleteNotificationsByKey($params['key']);
+            return $model->DeleteNotificationsByKey($params['name'], $params['key']);
         }
 
         $users = array();
@@ -142,7 +142,6 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         if (!empty($notificationsEmails) || !empty($notificationsMobiles) || !empty($notificationsWebPush)) {
             $res = $model->InsertNotifications(
-                $params['key'],
                 array(
                     'emails'  => $notificationsEmails,
                     'mobiles' => $notificationsMobiles,
@@ -150,6 +149,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 ),
                 $shouter,
                 $params['name'],
+                $params['key'],
                 strip_tags($params['title']),
                 json_encode($params['summary']),
                 json_encode($params['verbose']),
