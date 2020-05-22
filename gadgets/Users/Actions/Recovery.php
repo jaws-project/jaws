@@ -288,7 +288,8 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
 
         // Notify
         $params = array();
-        $params['key']     = crc32('Users.Recovery.Key' . $uData['id']);
+        $params['name']    = 'UserRecovery';
+        $params['key']     = $uData['id'];
         $params['title']   = $subject;
         $params['summary'] = _t(
             'USERS_FORGOT_LOGIN_SUMMARY',

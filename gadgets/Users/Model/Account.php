@@ -121,7 +121,8 @@ class Users_Model_Account extends Jaws_Gadget_Model
 
         // Notify
         $params = array();
-        $params['key']     = crc32('Users.UpdatePassword.User' . $user['id']);
+        $params['key']     = $user['id'];
+        $params['name']    = $subject;
         $params['title']   = $subject;
         $params['summary'] = _t(
             'USERS_FORGOT_LOGIN_PASSWORD_SUMMARY',

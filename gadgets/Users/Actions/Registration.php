@@ -233,8 +233,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
 
         // Notify
         $params = array();
-        $params['key']     = crc32('Users.Registration.Key' . $uData['id']);
         $params['name']    = 'UserRegistration';
+        $params['key']     = $uData['id'];
         $params['title']   = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
         $params['summary'] = array(
             'format'    => 'USERS_REGISTRATION_USER_SUMMARY',
