@@ -145,13 +145,15 @@ class Jaws_Notification
      * @param   string  $title          Title
      * @param   string  $summary        Summary
      * @param   string  $verbose        Verbose
+     * @param   array   $variables      Variables
      * @param   integer $time           Time of notify(timestamps)
      * @param   string  $callback_url   Notification callback URL
      * @param   string  $image          Notification image
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($shouter, $name, $contacts, $title, $summary, $verbose, $time, $callback_url, $image)
-    {
+    function notify(
+        $shouter, $name, $contacts, $title, $summary, $verbose, $variables, $time, $callback_url, $image
+    ) {
         return Jaws_Error::raiseError('notify() method not supported by this driver.', __CLASS__);
     }
 
