@@ -300,10 +300,9 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             $uData['mobile'],
             $rcvkey['text']
         );
-
-        $params['description'] = $this->gadget->plugin->parse($message);
-        $params['emails']      = array($uData['email']);
-        $params['mobiles']     = array($uData['mobile']);
+        $params['verbose'] = $this->gadget->plugin->parse($message);
+        $params['emails']  = array($uData['email']);
+        $params['mobiles'] = array($uData['mobile']);
         $this->gadget->event->shout('Notify', $params);
 
         // update session login-key

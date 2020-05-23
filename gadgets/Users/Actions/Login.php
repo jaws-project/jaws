@@ -362,28 +362,20 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $params['name']    = 'UserVerification';
         $params['key']     = $uData['id'];
         $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
-        $params['summary'] = array(
-            'format'    => 'GLOBAL_LOGINKEY_SUMMARY',
-            'arguments' => array(
-                $loginkey['text']
-            )
-        );
-
-        $params['verbose'] = array(
-            'template' => 'UserLogin',
-            'variables' => array(
-                'nickname'     => $uData['nickname'],
-                'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
-                'lbl_username' => _t('USERS_USERS_USERNAME'),
-                'username'     => $uData['username'],
-                'lbl_key'      => _t('USERS_LOGIN_KEY'),
-                'key'          => $loginkey['text'],
-                'lbl_ip'       => _t('GLOBAL_IP'),
-                'ip'           => $_SERVER['REMOTE_ADDR'],
-                'thanks'       => _t('GLOBAL_THANKS'),
-                'site-name'    => $settings['site_name'],
-                'site-url'     => $site_url,
-            )
+        $params['summary'] = _t('GLOBAL_LOGINKEY_SUMMARY', $loginkey['text']);
+        $params['verbose'] = _t('GLOBAL_LOGINKEY_SUMMARY', $loginkey['text']);
+        $params['variables'] = array(
+            'nickname'     => $uData['nickname'],
+            'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
+            'lbl_username' => _t('USERS_USERS_USERNAME'),
+            'username'     => $uData['username'],
+            'lbl_key'      => _t('USERS_LOGIN_KEY'),
+            'key'          => $loginkey['text'],
+            'lbl_ip'       => _t('GLOBAL_IP'),
+            'ip'           => $_SERVER['REMOTE_ADDR'],
+            'thanks'       => _t('GLOBAL_THANKS'),
+            'site-name'    => $settings['site_name'],
+            'site-url'     => $site_url,
         );
         $params['user'] = $uData['id'];
 

@@ -122,7 +122,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         // Notify
         $params = array();
         $params['key']     = $user['id'];
-        $params['name']    = $subject;
+        $params['name']    = 'UpdatePassword';
         $params['title']   = $subject;
         $params['summary'] = _t(
             'USERS_FORGOT_LOGIN_PASSWORD_SUMMARY',
@@ -133,9 +133,9 @@ class Users_Model_Account extends Jaws_Gadget_Model
             $user['mobile'],
             $password
         );
-        $params['description'] = $message;
-        $params['emails']      = array($user['email']);
-        $params['mobiles']     = array($user['mobile']);
+        $params['verbose'] = $message;
+        $params['emails']  = array($user['email']);
+        $params['mobiles'] = array($user['mobile']);
         $this->gadget->event->shout('Notify', $params);
         return true;
     }

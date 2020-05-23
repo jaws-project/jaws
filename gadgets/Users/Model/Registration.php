@@ -271,7 +271,6 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $userInfo['mobile'],
             $userInfo['verify_key']
         );
-
         $params['verbose'] = $this->gadget->plugin->parse($message);
         $params['emails']  = array($userInfo['email']);
         $params['mobiles'] = array($userInfo['mobile']);
@@ -303,7 +302,8 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
             // Notify
             $params = array();
-            $params['key']     = crc32('Users.Registration.Owner' . $user);
+            $params['key']     = $user;
+            $params['name']    = 'UserRegistrationOwner';
             $params['title']   = $subject;
             $params['summary'] = _t(
                 'USERS_REGISTRATION_OWNER_SUMMARY',
@@ -313,9 +313,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 $userInfo['email'],
                 $userInfo['mobile']
             );
-            $params['description'] = $this->gadget->plugin->parse($message);
-            $params['emails']      = array($settings['site_email']);
-            $params['mobiles']     = array($settings['site_mobile']);
+            $params['verbose'] = $this->gadget->plugin->parse($message);
+            $params['emails']  = array($settings['site_email']);
+            $params['mobiles'] = array($settings['site_mobile']);
             $this->gadget->event->shout('Notify', $params);
         }
 
@@ -447,7 +447,8 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         // Notify
         $params = array();
-        $params['key']     = crc32('Users.SendLoginRecoveryKey.User' . $user['id']);
+        $params['key']     = $user['id'];
+        $params['name']    = 'UserRecovery2';
         $params['title']   = $subject;
         $params['summary'] = _t(
             'USERS_FORGOT_LOGIN_SUMMARY',
@@ -458,9 +459,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $user['mobile'],
             $recoveryKey
         );
-        $params['description'] = $message;
-        $params['emails']      = array($user['email']);
-        $params['mobiles']     = array($user['mobile']);
+        $params['verbose'] = $this->gadget->plugin->parse($message);
+        $params['emails']  = array($user['email']);
+        $params['mobiles'] = array($user['mobile']);
         $this->gadget->event->shout('Notify', $params);
         return true;
     }

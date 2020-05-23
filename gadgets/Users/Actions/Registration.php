@@ -236,42 +236,36 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $params['name']    = 'UserRegistration';
         $params['key']     = $uData['id'];
         $params['title']   = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
-        $params['summary'] = array(
-            'format'    => 'USERS_REGISTRATION_USER_SUMMARY',
-            'arguments' => array(
-                $uData['nickname'],
-                $site_url,
-                $uData['username'],
-                $uData['password'],
-                $uData['email'],
-                $uData['mobile'],
-                $regkey['text']
-            )
+        $params['summary'] = _t(
+            'USERS_REGISTRATION_USER_SUMMARY',
+            $uData['nickname'],
+            $site_url,
+            $uData['username'],
+            $uData['password'],
+            $uData['email'],
+            $uData['mobile'],
+            $regkey['text']
         );
-
-        $params['verbose'] = array(
-            'template' => 'RegistrationNotification',
-            'variables' => array(
-                'say_hello'    => _t('USERS_REGISTRATION_HELLO', $uData['nickname']),
-                'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
-                'lbl_username' => _t('USERS_USERS_PASSWORD'),
-                'username'     => $uData['username'],
-                'lbl_password' => _t('USERS_USERS_PASSWORD'),
-                'password'     => $uData['password'],
-                'lbl_email'    => _t('GLOBAL_EMAIL'),
-                'email'        => $uData['email'],
-                'lbl_mobile'   => _t('USERS_CONTACTS_MOBILE_NUMBER'),
-                'mobile'       => $uData['mobile'],
-                'lbl_key'      => _t('USERS_REGISTRATION_KEY'),
-                'key'          => $regkey['text'],
-                'lbl_ip'       => _t('GLOBAL_IP'),
-                'ip'           => $_SERVER['REMOTE_ADDR'],
-                'thanks'       => _t('GLOBAL_THANKS'),
-                'site-name'    => $settings['site_name'],
-                'site-url'     => $site_url
-            )
+        $params['verbose'] = $params['summary'];
+        $params['variables'] = array(
+            'say_hello'    => _t('USERS_REGISTRATION_HELLO', $uData['nickname']),
+            'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
+            'lbl_username' => _t('USERS_USERS_PASSWORD'),
+            'username'     => $uData['username'],
+            'lbl_password' => _t('USERS_USERS_PASSWORD'),
+            'password'     => $uData['password'],
+            'lbl_email'    => _t('GLOBAL_EMAIL'),
+            'email'        => $uData['email'],
+            'lbl_mobile'   => _t('USERS_CONTACTS_MOBILE_NUMBER'),
+            'mobile'       => $uData['mobile'],
+            'lbl_key'      => _t('USERS_REGISTRATION_KEY'),
+            'key'          => $regkey['text'],
+            'lbl_ip'       => _t('GLOBAL_IP'),
+            'ip'           => $_SERVER['REMOTE_ADDR'],
+            'thanks'       => _t('GLOBAL_THANKS'),
+            'site-name'    => $settings['site_name'],
+            'site-url'     => $site_url
         );
-
         $params['emails']   = array($uData['email']);
         $params['mobiles']  = array($uData['mobile']);
         $params['template'] = 'UserRegister';
