@@ -70,8 +70,9 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                             $message['name'],
                             $message['contacts'],
                             $message['title'],
-                            json_decode($message['summary'], true),
-                            json_decode($message['verbose'], true),
+                            $message['summary'],
+                            $message['verbose'],
+                            json_decode($message['variables'], true),
                             $message['time'],
                             $message['callback'],
                             $message['image']
@@ -116,6 +117,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                 $groupedMessages[$lastMessage]['title']    = $message['title'];
                 $groupedMessages[$lastMessage]['summary']  = $message['summary'];
                 $groupedMessages[$lastMessage]['verbose']  = $message['verbose'];
+                $groupedMessages[$lastMessage]['variables']= $message['variables'];
                 $groupedMessages[$lastMessage]['callback'] = $message['callback'];
                 $groupedMessages[$lastMessage]['image']    = $message['image'];
             }

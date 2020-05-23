@@ -45,7 +45,6 @@
 
             <field>
                 <name>verbose</name>
-                <was>description</was>
                 <type>text</type>
             </field>
 

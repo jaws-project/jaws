@@ -24,7 +24,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             ->select(
                 'nr.id:integer', 'message', 'contact', 'nm.time:integer',
                 'nm.shouter', 'nm.name', 'nm.title',
-                'nm.summary', 'nm.verbose', 'nm.callback',
+                'nm.summary', 'nm.verbose', 'nm.variables', 'nm.callback',
                 'nm.image'
             )
             ->join('notification_message as nm', 'nm.id', 'nr.message')
@@ -89,8 +89,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()
             ->table('notification_message', 'nm')
             ->select(
-                'nr.id:integer','shouter', 'name', 'title as message_title', 'summary',
-                'verbose', 'callback', 'image', 'nr.driver:integer',
+                'nr.id:integer','shouter', 'name', 'title as message_title',
+                'summary', 'callback', 'image', 'nr.driver:integer',
                 'nr.attempts:integer', 'nr.status:integer',
                 'nm.time:integer'
             )->join('notification_recipient as nr', 'nr.message', 'nm.id')
@@ -116,7 +116,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 empty($filters['contact'])
             )->and()->where(
                 'nm.verbose',
-                trim(json_encode($filters['verbose']), '"'),
+                $filters['verbose'],
                 'like',
                 empty($filters['verbose'])
             )->and()->where(
@@ -185,7 +185,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 empty($filters['contact'])
             )->and()->where(
                 'nm.verbose',
-                trim(json_encode($filters['verbose']), '"'),
+                $filters['verbose'],
                 'like',
                 empty($filters['verbose'])
             )->and()->where(
@@ -212,13 +212,15 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @param   string      $title              Title
      * @param   string      $summary            Summary
      * @param   string      $verbose            Verbose
+     * @param   string      $variables          Variables
      * @param   integer     $time               Publish timestamps
      * @param   string      $callback           Callback URL
      * @param   string      $image              Path of image
      * @return  bool        True or error
      */
     function InsertNotifications(
-        $notifications, $shouter, $name, $key, $title, $summary, $verbose, $time, $callback, $image
+        $notifications, $shouter, $name, $key, $title, $summary,
+        $verbose, $variables, $time, $callback, $image
     ) {
         if (empty($notifications) || (
             empty($notifications['emails']) &&
@@ -239,6 +241,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 'title'    => $title,
                 'summary'  => $summary,
                 'verbose'  => $verbose,
+                'variables'=> $variables,
                 'callback' => $callback,
                 'image'    => $image,
                 'time'     => $time

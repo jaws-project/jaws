@@ -13,7 +13,7 @@
             </field>
 
             <field>
-                <name>key</name>
+                <name>hash</name>
                 <type>integer</type>
                 <length>8</length>
             </field>
@@ -62,12 +62,24 @@
                 <length>128</length>
             </field>
 
-            <index>
-                <name><variable>table_prefix</variable>notification_key</name>
-                <unique>true</unique>
+            <field>
+                <name>time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
 
+            <index>
+                <name><variable>table_prefix</variable>notification_hash</name>
                 <field>
-                    <name>key</name>
+                    <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>notification_time</name>
+                <field>
+                    <name>time</name>
                 </field>
             </index>
 
@@ -101,7 +113,6 @@
             <field>
                 <name>contact</name>
                 <type>text</type>
-                <length>128</length>
             </field>
 
             <field>
@@ -111,9 +122,17 @@
             </field>
 
             <field>
+                <name>attempts</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
                 <name>time</name>
                 <type>integer</type>
                 <length>8</length>
+                <default>0</default>
             </field>
 
             <field>
@@ -122,6 +141,13 @@
                 <length>2</length>
                 <default>1</default>
             </field>
+
+            <index>
+                <name><variable>table_prefix</variable>notification_r_drv</name>
+                <field>
+                    <name>driver</name>
+                </field>
+            </index>
 
             <index>
                 <name><variable>table_prefix</variable>notification_r_msg</name>

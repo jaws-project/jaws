@@ -141,6 +141,11 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if (!empty($notificationsEmails) || !empty($notificationsMobiles) || !empty($notificationsWebPush)) {
+            // initiate variables if not exist
+            if (!array_key_exists('variables', $params)) {
+                $params['variables'] = array();
+            }
+
             $res = $model->InsertNotifications(
                 array(
                     'emails'  => $notificationsEmails,
@@ -151,8 +156,9 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 $params['name'],
                 $params['key'],
                 strip_tags($params['title']),
-                json_encode($params['summary']),
-                json_encode($params['verbose']),
+                $params['summary'],
+                $params['verbose'],
+                json_encode($params['variables']),
                 $params['time'],
                 isset($params['callback'])? $params['callback'] : '',
                 isset($params['image'])? $params['image'] : ''
