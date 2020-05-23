@@ -261,6 +261,8 @@ class Notification_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.7.0', '<')) {
+            Jaws_DB::getInstance()->truncateTable('notification_message');
+            Jaws_DB::getInstance()->truncateTable('notification_recipient');
             $result = $this->installSchema('schema.xml', array(), '2.6.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
