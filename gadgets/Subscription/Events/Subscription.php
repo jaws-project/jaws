@@ -50,17 +50,18 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
         }
 
         $gadgetLogo = $this->app->getSiteURL('/gadgets/' . $shouter . '/Resources/images/logo.png', false);
+        $params['key']   = time();
+        $params['name']  = 'Subscription';
         $params['title'] = _t('SUBSCRIPTION_NOTIFICATION_TITLE');
         $params['summary'] = $params['summary'];
-        $params['description'] = $params['description'];
-        $params['url'] = isset($params['url']) ? $params['url'] : '';
-        $params['icon'] = !empty($params['icon']) ? $params['icon'] : $gadgetLogo;
-        $params['image'] = isset($params['image']) ? $params['image'] : '';
+        $params['verbose'] = $params['description'];
+        //$params['url'] = isset($params['url']) ? $params['url'] : '';
+        //$params['icon'] = !empty($params['icon']) ? $params['icon'] : $gadgetLogo;
+        //$params['image'] = isset($params['image']) ? $params['image'] : '';
         $params['gadget'] = $shouter;
         $params['users'] = $users;
         $params['emails'] = $emails;
         $params['mobiles'] = $mobiles;
-        $params['web_pushes'] = $webPushes;
         $this->gadget->event->shout('Notify', $params);
     }
 }
