@@ -222,8 +222,6 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
 
         $messageInfo['message_type'] = $messageType;
         $messageInfo['status'] = $sendStatus;
-        $messageInfo['summary'] = json_decode($messageInfo['summary'], true);
-        $messageInfo['verbose'] = json_decode($messageInfo['verbose'], true);
         $messageInfo['time'] = $objDate->Format($messageInfo['time'], 'Y/m/d H:i:s');
         $messageInfo['attempt_time'] = $objDate->Format($messageInfo['attempt_time'], 'Y/m/d H:i:s');
 
