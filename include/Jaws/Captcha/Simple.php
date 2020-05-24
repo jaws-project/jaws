@@ -58,7 +58,7 @@ class Jaws_Captcha_Simple extends Jaws_Captcha
         $font = dirname(__FILE__) . '/resources/courbd.ttf';
 
         // shadow
-        $shadow = imagecolorallocate($im, 0xaa, 0xaa, 0xaa);
+        $shadow = imagecolorallocate($im, 0xbb, 0xbb, 0xbb);
         imagettftext($im, 18, 0, 8, 19, $shadow, $font, $fake);
         // text
         $color = imagecolorallocate($im, 0x55, 0x55, 0x55);
