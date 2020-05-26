@@ -23,7 +23,12 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         $tpl->SetBlock('results');
         $tpl->SetVariable('title', _t('SEARCH_RESULTS'));
 
-        $post = $this->gadget->request->fetch(array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'), 'get');
+        $post = $this->gadget->request->fetch(
+            array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'),
+            'get',
+            false
+        );
+
         $page = $this->gadget->request->fetch('page', 'get');
         if (is_null($page) || !is_numeric($page) || $page <= 0 ) {
             $page = 1;
@@ -39,7 +44,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         $query_string = '?gadget=Search&action=Results';
         foreach ($post as $option => $value) {
             if (!empty($value)) {
-                $query_string .= '&' . $option . '=' . $value;
+                $query_string .= '&' . Jaws_XSS::filter($option) . '=' . Jaws_XSS::filter($value);
             }
         }
         $query_string .= '&page=';

@@ -152,12 +152,15 @@ class Search_Model_Search extends Jaws_Gadget_Model
             $resTitle .= ' "' . $terms . '"';
         }
 
-        $terms = implode(' -', is_array($options['exclude'])? $options['exclude'] : explode(' ', $options['exclude']));
+        $terms = implode(
+            ' -',
+            is_array($options['exclude'])? $options['exclude'] : explode(' ', $options['exclude'])
+        );
         if (!empty($terms)) {
             $resTitle .= ' -' . $terms;
         }
 
-        return $resTitle;
+        return Jaws_XSS::filter($resTitle);
     }
 
     /**

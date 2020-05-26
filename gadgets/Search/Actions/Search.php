@@ -22,7 +22,8 @@ class Search_Actions_Search extends Jaws_Gadget_Action
     {
         $post = $this->gadget->request->fetch(
             array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'),
-            'get'
+            'get',
+            false
         );
 
         $tpl = $this->gadget->template->load('Search.html');
@@ -93,8 +94,11 @@ class Search_Actions_Search extends Jaws_Gadget_Action
      */
     function AdvancedBox()
     {
-        $post = $this->gadget->request->fetch(array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'), 'get');
-        $post['all'] = Jaws_XSS::defilter($post['all']);
+        $post = $this->gadget->request->fetch(
+            array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'),
+            'get',
+            false
+        );
 
         $tpl = $this->gadget->template->load('Search.html');
         $tpl->SetBlock('AdvancedBox');
@@ -111,6 +115,10 @@ class Search_Actions_Search extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Search');
         $options = $model->parseSearch($post, $searchable);
+        //$options = array_map('Jaws_XSS::filter', $options);
+        array_walk_recursive($options, function (&$value) {
+            $value = Jaws_XSS::filter($value);
+        });
 
         $wordAll =& Piwi::CreateWidget('Entry', 'all', implode(' ', $options['all']));
         $wordExact =& Piwi::CreateWidget('Entry', 'exact', implode(' ', $options['exact']));
