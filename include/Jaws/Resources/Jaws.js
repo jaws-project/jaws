@@ -167,7 +167,8 @@ jQuery.extend({
             header_class       : 'breadcrumbwrapper',
             speed              : 'slow',
             save_state         : true,
-            icon_class         : 'glyphicon glyphicon-chevron-right',
+            submenu_icon_class : 'glyphicon glyphicon-chevron-right',
+            show_submenu_icon  : true,
             reset_text         : '<span class="glyphicon glyphicon-home"></span>', // All
             default_text       : 'Menu Title',
             show_end_nodes     : true, // drill to final empty nodes
@@ -244,20 +245,16 @@ jQuery.extend({
             // Breadcrumbs
             $('#'+idHeader).on('click', 'a', function(e) {
 
-                if($(this).hasClass('link-back')){
-                    linkIndex = $('#'+idWrapper+' .'+defaults.parent_class_link+'.active').length;
-                    linkIndex = linkIndex-2;
-                    $('a.'+defaults.active_class+':last', $ddObj).removeClass(defaults.active_class);
+                // Get link index
+                var linkIndex = parseInt($(this).index('#'+idHeader+' a'));
+                if(linkIndex == 0){
+                    $('a',$ddObj).removeClass(defaults.active_class);
                 } else {
-                    // Get link index
-                    var linkIndex = parseInt($(this).index('#'+idHeader+' a'));
-                    if(linkIndex == 0){
-                        $('a',$ddObj).removeClass(defaults.active_class);
-                    } else {
-                        // Select equivalent active link
-                        linkIndex = linkIndex-1;
-                        $('a.'+defaults.active_class+':gt('+linkIndex+')',$ddObj).removeClass(defaults.active_class);
-                    }
+                    // Select equivalent active link
+                    linkIndex = linkIndex-1;
+                    $('a.'+defaults.active_class+':gt('+linkIndex+')',$ddObj).removeClass(
+                        defaults.active_class
+                    );
                 }
 
                 resetDrilldown($ddObj, $wrapper);
@@ -274,13 +271,17 @@ jQuery.extend({
 
                 $($ddObj).before($header);
 
-                $arrow = '<span class="'+defaults.icon_class+'"></span>';
+                if (defaults.show_submenu_icon) {
+                    $submenu_icon = '<span class="'+defaults.submenu_icon_class+'"></span>';
+                } else {
+                    $submenu_icon = '';
+                }
 
                 // Set sub menu width and offset
                 $('li',$ddObj).each(function() {
                     if($('> ul',this).length){
                         $(this).addClass(defaults.parent_class);
-                        $('> a',this).addClass(defaults.parent_class_link).append($arrow);
+                        $('> a',this).addClass(defaults.parent_class_link).append($submenu_icon);
                     }
                 });
 
@@ -348,10 +349,10 @@ jQuery.extend({
 
         function updateHeader(obj, html) {
             if(!$(defaults.header_tag,obj).length) {
-                $(obj).append('<'+defaults.header_tag+' class="hidden '+defaults.header_tag_class+'"</'+defaults.header_tag+'>');
+                $('<'+defaults.header_tag+'>').addClass('hidden').appendTo($(obj));
             }
 
-            $(defaults.header_tag,obj).html(html);
+            $(defaults.header_tag, obj).html(html);
         }
 
         // Reset accordion using active links
