@@ -56,10 +56,15 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             return false;
         }
 
+        $this->AjaxMe('index.js');
+        $this->gadget->define('title', $group['title']);
         $this->_ReqURL = Jaws_Utils::getRequestURL();
         $this->_ReqURL = str_replace(BASE_SCRIPT, '', $this->_ReqURL);
 
-        $tpl = $this->gadget->template->load('Menu.html', array('rawStore' => true));
+        $tpl = $this->gadget->template->load(
+            $group['view_type'] == 2? 'Menu2.html' : 'Menu.html',
+            array('rawStore' => true)
+        );
         $tpl_str = $tpl->GetContent();
         $tpl->SetBlock('menu');
         $tpl->SetVariable('gid', $group['id']);
@@ -263,7 +268,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             $objImage = Jaws_Image::factory();
             if (!Jaws_Error::IsError($objImage)) {
                 $objImage->setData($image, true);
-                $res = $objImage->display('', null, 315360000);// cached for 10 years!
+                $res = $objImage->display('', null, 2592000);// cached for a month
                 if (!Jaws_Error::IsError($res)) {
                     return $res;
                 }
