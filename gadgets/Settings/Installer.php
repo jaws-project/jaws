@@ -64,6 +64,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('cookie_session', 'false'),
         array('cookie_secure', 'false'),
         array('cookie_httponly', 'true'),
+        array('cookie_samesite', 'Lax'),
         array('ftp_enabled', 'false'),
         array('ftp_host', '127.0.0.1'),
         array('ftp_port', '21'),
@@ -391,6 +392,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '2.7.0', '<')) {
             // do nothing
+        }
+
+        if (version_compare($old, '2.8.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('cookie_samesite', 'Lax');
         }
 
         return true;
