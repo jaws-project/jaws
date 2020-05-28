@@ -109,9 +109,36 @@ class Jaws_Session_Web extends Jaws_Session
             $httponly = $this->app->registry->fetch('cookie_httponly', 'Settings') == 'true';
         }
 
+        // same site
+        $samesite = $this->app->registry->fetch('cookie_samesite', 'Settings');
+
         $reqParts = Jaws_Utils::parseRequestURL();
         // concat port to cookie name because cookie not support port
-        setcookie($name . $reqParts['port'], $value, $expires, $path, $domain, $secure, $httponly);
+        if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+            setcookie(
+                $name . $reqParts['port'],
+                $value,
+                array(
+                    'expires'  => $expires,
+                    'path'     => $path,
+                    'domain'   => $domain,
+                    'secure'   => $secure,
+                    'httponly' => true,
+                    'samesite' => $samesite,
+                )
+            );
+        } else {
+            // using setcookie bug(before php 7.3) for set samesite
+            setcookie(
+                $name . $reqParts['port'],
+                $value,
+                $expires,
+                $path. '; samesite='. $samesite,
+                $domain,
+                $secure,
+                $httponly
+            );
+        }
     }
 
     /**
