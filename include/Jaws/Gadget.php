@@ -223,6 +223,7 @@ class Jaws_Gadget
     {
         $IsIndex = false;
         $objAction = null;
+        $ReqGadgetVersion = '';
         $IsReqActionStandAlone = false;
         $jawsApp = Jaws::getInstance();
 
@@ -238,8 +239,8 @@ class Jaws_Gadget
         $ReqError = $jawsApp->request->fetch('http_error', 'get');
 
         if (empty($ReqError) && $jawsApp->map->Parse()) {
-            $ReqGadget = Jaws_Gadget::filter($jawsApp->request->fetch('gadget', array('get', 'post')));
-            $ReqAction = Jaws_Gadget::filter($jawsApp->request->fetch('action', array('get', 'post')));
+            $ReqGadget = Jaws_Gadget::filter($jawsApp->request->fetch('gadget'));
+            $ReqAction = Jaws_Gadget::filter($jawsApp->request->fetch('action'));
 
             if (empty($ReqGadget)) {
                 $IsIndex = true;
@@ -272,6 +273,7 @@ class Jaws_Gadget
                         $ReqAction = empty($ReqAction)? $objAction->gadget->default_admin_action : $ReqAction;
                     }
 
+                    $ReqGadgetVersion = $objAction->gadget->version;
                     $jawsApp->mainRequest = $objAction->getAttributes($ReqAction);
                     $jawsApp->mainRequest['gadget'] = $ReqGadget;
                     $jawsApp->mainRequest['action'] = $ReqAction;
@@ -344,11 +346,12 @@ class Jaws_Gadget
         }
 
         return array(
-            'gadget' => $ReqGadget,
-            'action' => $ReqAction,
-            'return' => $ReqResult,
-            'error'  => $ReqError,
-            'access' => $AccessToWebsiteDenied,
+            'gadget'  => $ReqGadget,
+            'action'  => $ReqAction,
+            'return'  => $ReqResult,
+            'error'   => $ReqError,
+            'version' => $ReqGadgetVersion,
+            'access'  => $AccessToWebsiteDenied,
             'standalone' => $IsReqActionStandAlone,
         );
     }
