@@ -220,12 +220,15 @@ class Jaws_URLMapping
      */
     function Parse()
     {
+        if (JAWS_SCRIPT !== 'index') {
+            return true;
+        }
+
         if (!$this->_enabled && !is_array($this->_maps)) {
             return false;
         }
 
         $request = Jaws_Request::getInstance();
-
         // check request uri is based of jaws maps?
         $ReqGadget = $request->fetch('gadget', 'get');
         if (!empty($ReqGadget)) {
