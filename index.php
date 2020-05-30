@@ -30,7 +30,6 @@ require_once ROOT_JAWS_PATH . 'include/Jaws/InitApplication.php';
 $jawsApp = Jaws::getInstance();
 
 $result = Jaws_Gadget::ExecuteMainRequest();
-
 if (!$result['standalone']) {
     $jawsApp->layout->Populate($result['return'], $result['access']);
     $result['return'] = $jawsApp->layout->Get();
