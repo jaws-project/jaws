@@ -29,8 +29,8 @@ if (!file_exists(__DIR__ . '/config/JawsConfig.php')) {
 require_once ROOT_JAWS_PATH . 'include/Jaws/InitApplication.php';
 $jawsApp = Jaws::getInstance();
 
-$ReqGadget = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('gadget', array('post', 'get')));
-$ReqAction = Jaws_Gadget_Action::filter(Jaws::getInstance()->request->fetch('action', array('post', 'get')));
+$ReqGadget = Jaws_Gadget::filter(Jaws::getInstance()->request->fetch('gadget'));
+$ReqAction = Jaws_Gadget_Action::filter(Jaws::getInstance()->request->fetch('action'));
 
 // Run auto-load methods before standalone actions too
 $jawsApp->RunAutoload();
