@@ -264,7 +264,11 @@ class Jaws_Gadget_Action
             return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
         }
 
-        if (!$this->app->session->GetPermission($this->gadget->name, 'default')) {
+        if (!$this->app->session->GetPermission(
+                $this->gadget->name,
+                JAWS_SCRIPT == 'index'? 'default' : 'default_admin'
+            )
+        ) {
             return Jaws_HTTPError::Get($this->app->session->user->logged? 403 : 401);
         }
 
@@ -349,30 +353,13 @@ class Jaws_Gadget_Action
      */
     public function IsStandAlone($action)
     {
-        if ($this->IsValidAction($action, 'index')) {
-            return (isset($this->gadget->actions['index'][$action]['standalone']) &&
-                    $this->gadget->actions['index'][$action]['standalone']);
+        if ($this->IsValidAction($action, JAWS_SCRIPT)) {
+            return (isset($this->gadget->actions[JAWS_SCRIPT][$action]['standalone']) &&
+                    $this->gadget->actions[JAWS_SCRIPT][$action]['standalone']);
         }
+
         return false;
     }
-
-
-    /**
-     * Verifies if action is a standalone of control-panel
-     *
-     * @access  public
-     * @param   string  $action to Verify
-     * @return  bool    True if action is standalone of the control-panel if not, returns false
-     */
-    public function IsStandAloneAdmin($action)
-    {
-        if ($this->IsValidAction($action, 'admin')) {
-            return (isset($this->gadget->actions['admin'][$action]['standalone']) &&
-                    $this->gadget->actions['admin'][$action]['standalone']);
-        }
-        return false;
-    }
-
 
     /**
      * Get action attributes
