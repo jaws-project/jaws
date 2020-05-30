@@ -214,6 +214,146 @@ class Jaws_Gadget
     }
 
     /**
+     * Execute main requested gadget/action
+     *
+     * @access  public
+     * @return  array   Returns result of execution of requested gadget/action
+     */
+    static function ExecuteMainRequest()
+    {
+        $IsIndex = false;
+        $objAction = null;
+        $IsReqActionStandAlone = false;
+        $jawsApp = Jaws::getInstance();
+
+        // Only registered user can access not global website
+        $AccessToWebsiteDenied = !$jawsApp->session->user->logged;
+        if (JAWS_SCRIPT == 'index') {
+            $AccessToWebsiteDenied =
+                $AccessToWebsiteDenied &&
+                $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
+        }
+
+        // Get forwarded error from web-server
+        $ReqError = $jawsApp->request->fetch('http_error', 'get');
+
+        if (empty($ReqError) && $jawsApp->map->Parse()) {
+            $ReqGadget = Jaws_Gadget::filter($jawsApp->request->fetch('gadget', array('get', 'post')));
+            $ReqAction = Jaws_Gadget::filter($jawsApp->request->fetch('action', array('get', 'post')));
+
+            if (empty($ReqGadget)) {
+                $IsIndex = true;
+                if (JAWS_SCRIPT == 'index') {
+                    // FIXME:: there is no layout attribute!
+                    $ReqGadget = $jawsApp->registry->fetchByUser(
+                        $jawsApp->session->user->layout,
+                        'main_gadget',
+                        'Settings'
+                    );
+                } else {
+                    $ReqGadget = 'ControlPanel';
+                }
+            }
+
+            if (!empty($ReqGadget) && $ReqGadget != '-') {
+                if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
+                    // set main requested attributes
+                    if (JAWS_SCRIPT == 'index') {
+                        $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->load();
+                        if (Jaws_Error::IsError($objAction)) {
+                            Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
+                        }
+                        $ReqAction = empty($ReqAction)? $objAction->gadget->default_action : $ReqAction;
+                    } else {
+                        $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->loadAdmin();
+                        if (Jaws_Error::IsError($objAction)) {
+                            Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
+                        }
+                        $ReqAction = empty($ReqAction)? $objAction->gadget->default_admin_action : $ReqAction;
+                    }
+
+                    $jawsApp->mainRequest = $objAction->getAttributes($ReqAction);
+                    $jawsApp->mainRequest['gadget'] = $ReqGadget;
+                    $jawsApp->mainRequest['action'] = $ReqAction;
+
+                    // check referrer host for internal action
+                    if (@$jawsApp->mainRequest['internal'] &&
+                        (!$jawsApp->session->extraCheck() || Jaws_Utils::getReferrerHost() != $_SERVER['HTTP_HOST'])
+                    ) {
+                        $ReqError = '403';
+                    }
+
+                    $jawsApp->define('', 'mainGadget', $ReqGadget);
+                    $jawsApp->define('', 'mainAction', $ReqAction);
+                } else {
+                    $ReqError = '404';
+                    $ReqGadget = null;
+                    $ReqAction = null;
+                }
+            }
+
+            if ($AccessToWebsiteDenied && (empty($objAction) || !$objAction->getAttribute($ReqAction, 'global'))
+            ) {
+                // FIXME: RunAutoload !!!
+                Jaws_Header::Location(
+                    Jaws_Gadget::getInstance('Users')->gadget->url(
+                        'Login',
+                        array('referrer' => bin2hex(Jaws_Utils::getRequestURL()))
+                    )
+                );
+            }
+
+        } else {
+            $ReqError = empty($ReqError)? '404' : $ReqError;
+            $ReqGadget = null;
+            $ReqAction = null;
+        }
+
+        $jawsApp->mainIndex = $IsIndex;
+        // Run auto-load methods before standalone actions too
+        $jawsApp->RunAutoload();
+        // Init layout if action mode not standalone
+        if (!$IsReqActionStandAlone) {
+            $jawsApp->layout->Load();
+        }
+
+        if (empty($ReqError)) {
+            $ReqResult = '';
+            if (!empty($objAction)) {
+                // set in main request
+                $jawsApp->inMainRequest = true;
+                $ReqResult = $objAction->Execute($ReqAction);
+                if (Jaws_Error::isError($ReqResult)) {
+                    $ReqResult = $ReqResult->GetMessage();
+                }
+                $jawsApp->inMainRequest = false;
+
+                // we must check type of action after execute, because gadget can change it at runtime
+                if (!$objAction->IsStandAlone($ReqAction) && $jawsApp->request->fetch('mode') !== 'standalone') {
+                    // if mode was standalone before action execute, we need init layout
+                    if ($IsReqActionStandAlone) {
+                        $jawsApp->layout->Load();
+                    }
+                    $IsReqActionStandAlone = false;
+                } else {
+                    $IsReqActionStandAlone = true;
+                }
+            }
+        } else {
+            $ReqResult = Jaws_HTTPError::Get($ReqError);
+        }
+
+        return array(
+            'gadget' => $ReqGadget,
+            'action' => $ReqAction,
+            'return' => $ReqResult,
+            'error'  => $ReqError,
+            'access' => $AccessToWebsiteDenied,
+            'standalone' => $IsReqActionStandAlone,
+        );
+    }
+
+    /**
      * Sets an attribute
      *
      * @access  public
