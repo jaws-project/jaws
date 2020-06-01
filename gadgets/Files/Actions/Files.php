@@ -31,7 +31,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                     unset(
                         $files[$ndx]['id'], $files[$ndx]['type'], $files[$ndx]['public'],
                         $files[$ndx]['filename'], $files[$ndx]['mimetype'], $files[$ndx]['filetype'],
-                        $files[$ndx]['filesize'], $files[$ndx]['filetime'], $files[$ndx]['filekey'],
+                        $files[$ndx]['filesize'], $files[$ndx]['filetime'], $files[$ndx]['filekey']
                     );
                 }
 
