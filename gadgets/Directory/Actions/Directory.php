@@ -84,7 +84,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         $this->SetTitle(_t('DIRECTORY_ACTIONS_DIRECTORY'));
-        $tpl->SetVariable('gadget_title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
+        $tpl->SetVariable('title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
 
         // parse files, filters, pagination
         $this->ListFiles($tpl, $id, $type, $orderBy, $limit);
