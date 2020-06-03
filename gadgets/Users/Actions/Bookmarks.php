@@ -93,7 +93,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
 
         $tpl = $this->gadget->template->load('Bookmarks.html');
         $tpl->SetBlock('Bookmarks');
-        $tpl->SetVariable('gadget_title', _t('USERS_ACTIONS_BOOKMARKS'));
+        $tpl->SetVariable('title', _t('USERS_ACTIONS_BOOKMARKS'));
         $this->SetTitle(_t('USERS_ACTIONS_BOOKMARKS'));
 
         // Menu navigation

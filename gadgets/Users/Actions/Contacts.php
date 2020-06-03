@@ -41,7 +41,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Contact.html');
         $tpl->SetBlock('contact');
 
-        $tpl->SetVariable('gadget_title', _t('USERS_CONTACTS_INFO'));
+        $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
@@ -215,7 +215,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Contacts.html');
         $tpl->SetBlock('contacts');
 
-        $tpl->SetVariable('gadget_title', _t('USERS_CONTACTS_INFO'));
+        $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
         $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
