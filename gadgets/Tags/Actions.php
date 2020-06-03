@@ -15,9 +15,13 @@ $actions['Similarity'] = array(
     'file'   => 'Tags',
 );
 $actions['TagCloud'] = array(
+    'normal' => true,
     'layout' => true,
     'parametric' => true,
     'file'   => 'Tags',
+    'navigation' => array(
+        'order' => 3
+    ),
 );
 $actions['ViewTag'] = array(
     'normal' => true,
@@ -25,23 +29,26 @@ $actions['ViewTag'] = array(
 );
 $actions['ManageTags'] = array(
     'normal' => true,
-    'file'   => 'ManageTags',
+    'file'   => 'Manage',
+    'navigation' => array(
+        'order' => 0
+    ),
 );
 $actions['EditTagUI'] = array(
     'normal' => true,
-    'file'   => 'ManageTags',
+    'file'   => 'Manage',
 );
 $actions['UpdateTag'] = array(
     'standalone' => true,
-    'file'       => 'ManageTags',
+    'file'       => 'Manage',
 );
 $actions['DeleteTags'] = array(
     'standalone' => true,
-    'file'       => 'ManageTags',
+    'file'       => 'Manage',
 );
 $actions['MergeTags'] = array(
     'standalone' => true,
-    'file'       => 'ManageTags',
+    'file'       => 'Manage',
 );
 
 /**

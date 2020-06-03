@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    Tags
  */
-class Tags_Actions_ManageTags extends Tags_Actions_Default
+class Tags_Actions_Manage extends Jaws_Gadget_Action
 {
 
     /**
@@ -42,9 +42,11 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
         $tpl->SetVariable('title', _t('TAGS_MANAGE_TAGS'));
+        if ($this->app->session->user->logged) {
+            // Menu navigation
+            $this->gadget->action->load('MenuNavigation')->navigation($tpl);
+        }
 
         $page = empty($page) ? 1 : (int)$page;
         if (empty($post['page_item'])) {
@@ -56,7 +58,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
 
         $user = (int)$this->app->session->user->id;
         $model = $this->gadget->model->loadAdmin('Tags');
-        $tags = $model->GetTags($filters, $limit, ($page - 1) * $limit, 0, $user);
+        $tags = $model->GetTags($filters, $limit, ($page - 1) * $limit, $user);
         $tagsTotal = $model->GetTagsCount($filters, $user);
 
         $tpl->SetVariable('txt_term', $post['term']);
@@ -162,9 +164,8 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $tpl->SetVariable('description', $tag['description']);
 
         $tpl->SetVariable('title', _t('TAGS_EDIT_TAG'));
-        $tpl->SetVariable('menubar', $this->MenuBar('ViewTags',
-                                     array('ManageTags', 'ViewTag'),
-                                     array('tag' => $tag['name'], 'user' => $user)));
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
