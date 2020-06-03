@@ -45,7 +45,7 @@ class Forums_Actions_UserPosts extends Jaws_Gadget_Action
             $tpl->SetBlock('userposts');
 
             // title
-            $tpl->SetVariable('action_title', _t('FORUMS_USER_POSTS', $user['nickname']));
+            $tpl->SetVariable('title', _t('FORUMS_USER_POSTS', $user['nickname']));
 
             foreach ($posts as $post) {
                 $tpl->SetBlock('userposts/post');
