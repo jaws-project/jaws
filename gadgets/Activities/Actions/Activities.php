@@ -56,7 +56,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
                 }
 
                 $tpl->SetBlock('Activities/gadget');
-                $tpl->SetVariable('gadget_title', $objGadget->title);
+                $tpl->SetVariable('gadget', $objGadget->title);
                 foreach ($actions as $actionName => $actionTitle) {
                     $tpl->SetBlock('Activities/gadget/action');
                     $tpl->SetVariable('action', $actionTitle);
