@@ -135,7 +135,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
     {
         $tpl = $this->gadget->template->load('Types.html');
         $tpl->SetBlock("types");
-        $tpl->SetVariable('gadget_title', _t('BLOG_ACTIONS_TYPES'));
+        $tpl->SetVariable('title', _t('BLOG_ACTIONS_TYPES'));
         $this->SetTitle(_t('BLOG_ACTIONS_TYPES'));
 
 
