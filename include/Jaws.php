@@ -415,50 +415,7 @@ class Jaws
      */
     function getSiteURL($suffix = '', $rel_url = true)
     {
-        static $site_url;
-        if (!isset($site_url)) {
-            $site_url = array();
-            // server schema
-            if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-                $site_url['scheme'] = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
-            } else {
-                $site_url['scheme'] = empty($_SERVER['HTTPS'])? 'http' : 'https';
-            }
-
-            //$site_url['host'] = $_SERVER['SERVER_NAME'];
-            $site_url['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
-            // server port
-            $site_url['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
-
-            $path = strip_tags($_SERVER['PHP_SELF']);
-            if (false === stripos($path, BASE_SCRIPT)) {
-                $path = strip_tags($_SERVER['SCRIPT_NAME']);
-                if (false === stripos($path, BASE_SCRIPT)) {
-                    $pInfo = isset($_SERVER['PATH_INFO'])? $_SERVER['PATH_INFO'] : '';
-                    $pInfo = (empty($pInfo) && isset($_SERVER['ORIG_PATH_INFO']))? $_SERVER['ORIG_PATH_INFO'] : '';
-                    $pInfo = (empty($pInfo) && isset($_ENV['PATH_INFO']))? $_ENV['PATH_INFO'] : '';
-                    $pInfo = (empty($pInfo) && isset($_ENV['ORIG_PATH_INFO']))? $_ENV['ORIG_PATH_INFO'] : '';
-                    $pInfo = strip_tags($pInfo);
-                    if (!empty($pInfo)) {
-                        $path = substr($path, 0, strpos($path, $pInfo)+1);
-                    }
-                }
-            }
-
-            $site_url['path'] = substr($path, 0, stripos($path, BASE_SCRIPT)-1);
-            $site_url['path'] = explode('/', $site_url['path']);
-            $site_url['path'] = implode('/', array_map('rawurlencode', $site_url['path']));
-        }
-
-        $url = $site_url['path'];
-        if (!$rel_url) {
-            $url = $site_url['scheme']. '://'. $site_url['host']. $site_url['port']. $url;
-        }
-
-        $url = rtrim($url, '/');
-        $suffix = is_bool($suffix)? array() : explode('/', $suffix);
-        $suffix = implode('/', array_map('rawurlencode', $suffix));
-        return $url . $suffix;
+        return Jaws_Utils::getBaseURL($suffix, $rel_url);
     }
 
     /**
@@ -476,7 +433,7 @@ class Jaws
             $url = substr($base_data? JAWS_BASE_DATA : ROOT_DATA_PATH, strlen(ROOT_JAWS_PATH));
             $url = str_replace('\\', '/', $url);
             if (!$rel_url) {
-                $url = $this->getSiteURL('/' . $url);
+                $url = Jaws_Utils::getBaseURL('/' . $url);
             }
         } else {
             $url = ROOT_DATA_PATH_URL;
