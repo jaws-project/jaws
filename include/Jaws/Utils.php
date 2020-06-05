@@ -188,7 +188,8 @@ class Jaws_Utils
             $url = $site_url['scheme']. '://'. $site_url['host']. $site_url['port']. $url;
         }
 
-        return $url . (is_bool($suffix)? '' : $suffix);
+        $suffix = implode('/', array_map('rawurlencode', explode('/', $suffix)));
+        return $url . $suffix;
     }
 
     /**
