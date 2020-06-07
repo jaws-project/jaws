@@ -349,6 +349,7 @@ $actions['ImportVCard'] = array(
  */
 $admin_actions['Login'] = array(
     'standalone' => true,
+    'global' => true,
     'file' => 'Login',
 );
 $admin_actions['Users'] = array(

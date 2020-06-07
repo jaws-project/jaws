@@ -28,6 +28,14 @@ class Users_Installer extends Jaws_Gadget_Installer
     );
 
     /**
+     * Default ACL value of the gadget backend
+     *
+     * @var     bool
+     * @access  protected
+     */
+    var $default_admin_acl = true;
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -312,6 +320,11 @@ class Users_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '4.1.0', '<')) {
             // Add listener for UserChanges event
             $this->gadget->event->insert('UserChanges');
+        }
+
+        if (version_compare($old, '4.2.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->update('default_admin', '', true);
         }
 
         return true;
