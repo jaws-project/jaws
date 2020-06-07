@@ -788,6 +788,7 @@ class Jaws_ORM
     function type($type = '')
     {
         $this->type = $type;
+        return $this;
     }
 
     /**
@@ -800,6 +801,7 @@ class Jaws_ORM
     function alias($alias)
     {
         $this->alias = $alias;
+        return $this;
     }
 
     /**
