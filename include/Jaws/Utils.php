@@ -137,6 +137,12 @@ class Jaws_Utils
             } else {
                 $parts['scheme'] = empty($_SERVER['HTTPS'])? 'http' : 'https';
             }
+            // server port
+            if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+                $parts['port'] = (int)$_SERVER['HTTP_X_FORWARDED_PORT'];
+            } else {
+                $parts['port'] = (int)$_SERVER['SERVER_PORT'];
+            }
 
             //$parts['host'] = $_SERVER['SERVER_NAME'];
             $parts['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
@@ -145,8 +151,6 @@ class Jaws_Utils
                 ($parts['scheme'] == 'https' && $_SERVER['SERVER_PORT'] == 443)
             ) {
                 $parts['port'] = '';
-            } else {
-                $parts['port'] = (int)$_SERVER['SERVER_PORT'];
             }
 
             $path = strip_tags($_SERVER['PHP_SELF']);
