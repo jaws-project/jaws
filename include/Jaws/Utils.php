@@ -147,8 +147,8 @@ class Jaws_Utils
             //$parts['host'] = $_SERVER['SERVER_NAME'];
             $parts['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
             // server port
-            if (($parts['scheme'] == 'http'  && $_SERVER['SERVER_PORT'] == 80) ||
-                ($parts['scheme'] == 'https' && $_SERVER['SERVER_PORT'] == 443)
+            if (($parts['scheme'] == 'http'  && $parts['port'] == 80) ||
+                ($parts['scheme'] == 'https' && $parts['port'] == 443)
             ) {
                 $parts['port'] = '';
             }
