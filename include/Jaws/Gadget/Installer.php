@@ -27,6 +27,14 @@ class Jaws_Gadget_Installer
     public $default_acl = true;
 
     /**
+     * Default ACL value of back-end gadget access
+     *
+     * @var     bool
+     * @access  public
+     */
+    public $default_admin_acl = false;
+
+    /**
      * Gadget Registry keys
      *
      * @var     array
@@ -118,7 +126,7 @@ class Jaws_Gadget_Installer
 
         // Adding common ACL keys
         $result[] = array('default', '', (int)$this->default_acl);
-        $result[] = array('default_admin', '', 0);
+        $result[] = array('default_admin', '', (int)$this->default_admin_acl);
         $result[] = array('default_registry', '', 0);
         return $result;
     }
