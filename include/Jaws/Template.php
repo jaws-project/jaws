@@ -86,6 +86,7 @@ class Jaws_Template
         $this->globalVariables['main_index']  = '';
         $this->globalVariables['main_gadget'] = '';
         $this->globalVariables['main_action'] = '';
+        $this->globalVariables['main_layout'] = '';
 
         $this->globalVariables['.dir'] = _t('GLOBAL_LANG_DIRECTION') == 'rtl'? '.rtl' : '';
         $this->globalVariables['base_url']      = Jaws_Utils::getBaseURL('/');
@@ -95,8 +96,8 @@ class Jaws_Template
         if ($loadGlobalVariables) {
             $this->loadFromTheme = $loadFromTheme;
             $this->theme  = $this->app->GetTheme();
-            $layout = $this->app->layout->GetLayoutName(). '/';
-            $this->layout = @is_dir($this->theme['path'] . $layout)? $layout : '';
+            $layout = $this->app->layout->GetLayoutName();
+            $this->layout = @is_dir($this->theme['path']. '/'. $layout)? $layout : '';
             $browser = $this->app->GetBrowserFlag();
 
             $this->globalVariables['theme_url']   = $this->theme['url'];
@@ -105,6 +106,7 @@ class Jaws_Template
             $this->globalVariables['main_index']  = $this->app->mainIndex? 'index' : '';
             $this->globalVariables['main_gadget'] = strtolower($this->app->mainRequest['gadget']);
             $this->globalVariables['main_action'] = strtolower($this->app->mainRequest['action']);
+            $this->globalVariables['main_layout'] = strtolower(str_replace('.', '_', $this->layout));
         } else {
             $this->loadFromTheme = false;
         }
@@ -139,8 +141,8 @@ class Jaws_Template
         // load from theme?
         if ($this->loadFromTheme) {
             $layout = empty($filePath)? '' : $this->layout;
-            if (file_exists($this->theme['path']. $layout. $filePath. '/'. $fname)) {
-                $filePath = $this->theme['path']. $layout. $filePath;
+            if (file_exists($this->theme['path']. $layout. '/'. $filePath. '/'. $fname)) {
+                $filePath = $this->theme['path']. $layout. '/'. $filePath;
             } else {
                 $filePath = ROOT_JAWS_PATH . $filePath;
             }
@@ -335,6 +337,7 @@ class Jaws_Template
                     case 'base_script':
                     case 'main_gadget':
                     case 'main_action':
+                    case 'main_layout':
                     case 'requested_url':
                         $vars[$match[1]] = $this->globalVariables[$match[1]];
                         break;
