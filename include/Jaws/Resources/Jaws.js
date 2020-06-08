@@ -157,50 +157,36 @@ jQuery.extend({
     $.fn.drilldown = function(options) {
         //set default options
         var defaults = {
-            wrapper_class      : 'drilldown',
-            menu_class         : 'drilldown-menu',
-            submenu_class      : 'nav',
             parent_class       : 'dd-parent',
             parent_class_link  : 'dd-parent-a',
             active_class       : 'active',
-            header_class_list  : 'breadcrumb',
-            header_class       : 'breadcrumbwrapper',
+            header_wrapper     : 'breadcrumbwrapper',
             speed              : 'slow',
             submenu_icon_class : 'glyphicon glyphicon-chevron-right',
             show_submenu_icon  : true,
-            home_url           : '',
-            home_icon_class    : 'glyphicon glyphicon-home',
-            default_text       : 'Menu Title',
-            show_end_nodes     : true, // drill to final empty nodes
-            header_tag         : 'div',// h3
-            header_tag_class   : 'list-group-item active' // hidden list-group-item active
+            show_end_nodes     : true // drill to final empty nodes
         };
 
         //call in the default options
         var options = $.extend(defaults, options);
 
+        history.replaceState(-1, "On page load state, record initial state", "");
+
         //act upon the element that is passed into the design
-        return this.each(function(options) {
+        return this.each(function(index) {
+            var $wrapper = $(this);
 
-            var $ddObj = this;
-            $($ddObj).addClass(defaults.menu_class);
-            $($ddObj).addClass(defaults.submenu_class);
-            $($ddObj).removeClass('hidden');
-            var $wrapperObj = '<div class="'+defaults.wrapper_class+'" />';
-            $($ddObj).wrap($wrapperObj);
-            var $wrapper = $($ddObj).parent();
-            var objIndex = $($wrapper).index('.'+defaults.wrapper_class);
-            var idHeader = defaults.header_class+'-'+objIndex;
-            var idWrapper = defaults.wrapper_class+'-'+objIndex;
-            $($wrapper).attr('id', idWrapper);
-            var $header = '<div id="'+idHeader+'" class="'+defaults.header_class+'"></div>';
+            $(window).on('popstate', function(event) {
+                //console.log(history.state);
+            });
 
+            var $ddObj = $('.drilldown-menu', $wrapper).first();
             setUpDrilldown();
 
             let $li = $('li.active', $ddObj).first();
             // hide menu if not in root and not found selected menu
             if ($li.length == 0 && location.pathname.match(/^.*\//)[0] != jaws.Defines.base) {
-                $wrapper.hide();
+                return false;
             }
 
             // active all parents of selected menu
@@ -211,27 +197,25 @@ jQuery.extend({
 
             resetDrilldown($wrapper, $ddObj);
 
-            $(window).resize(function(){
+            $(window).resize(function() {
                 resizeDrilldown($ddObj, $wrapper);
             });
 
-            $('li a',$ddObj).click(function(e) {
+            $('li a', $ddObj).click(function(e) {
                 $link = this;
                 $activeLi = $(this).parent('li').stop();
                 $siblingsLi = $($activeLi).siblings();
 
-                // Drilldown action
-                if ($('> ul',$activeLi).length || defaults.show_end_nodes) {
-                    if($($link).hasClass(defaults.active_class)){
-                        $('ul a',$activeLi).removeClass(defaults.active_class);
-                        resetDrilldown($wrapper, $ddObj);
-                    } else {
-                        actionDrillDown($activeLi, $wrapper, $ddObj);
-                    }
+                // DrillDown action
+                if ($('> ul', $activeLi).length || defaults.show_end_nodes) {
+                    // push state to history
+                    //$wrapper.indexWrapper
+                    //history.pushState(1, "", "");
+                    actionDrillDown($activeLi, $wrapper, $ddObj);
                 }
 
                 // scroll to top on click
-                $($wrapper,$ddObj).scrollTop(0);
+                $($wrapper, $ddObj).scrollTop(0);
 
                 // Prevent browsing to link if has child links
                 if ($(this).next('ul').length > 0) {
@@ -248,15 +232,15 @@ jQuery.extend({
             });
 
             // Breadcrumbs
-            $('#'+idHeader).on('click', 'a', function(e) {
+            $('.'+defaults.header_wrapper, $wrapper).on('click', 'a', function(e) {
                 // Get link index
-                var linkIndex = parseInt($(this).index('#'+idHeader+' a'));
+                var linkIndex = $('.'+defaults.header_wrapper+' a', $wrapper).index(this);
                 if (linkIndex == 0) {
-                    $('a',$ddObj).removeClass(defaults.active_class);
+                    $('a', $ddObj).removeClass(defaults.active_class);
                 } else {
                     // Select equivalent active link
-                    linkIndex = linkIndex-1;
-                    $('a.'+defaults.active_class+':gt('+linkIndex+')',$ddObj).removeClass(
+                    linkIndex = linkIndex - 1;
+                    $('a.'+defaults.active_class+':gt('+linkIndex+')', $ddObj).removeClass(
                         defaults.active_class
                     );
                 }
@@ -271,12 +255,6 @@ jQuery.extend({
 
             // Set up accordion
             function setUpDrilldown() {
-                $('ul',$ddObj).each(function(){
-                    $(this).addClass(defaults.submenu_class);
-                });
-
-                $($ddObj).before($header);
-
                 if (defaults.show_submenu_icon) {
                     $submenu_icon = '<span class="'+defaults.submenu_icon_class+'"></span>';
                 } else {
@@ -293,7 +271,6 @@ jQuery.extend({
 
                 // Add css class
                 $('ul',$wrapper).each(function() {
-                    //$(this).addClass(defaults.submenu_class);
                     $('li:last',this).addClass('last');
                 });
 
@@ -303,37 +280,17 @@ jQuery.extend({
         });
 
         // Drill Down
-        function actionDrillDown(element, wrapper, obj) {
-            //actionDrillDown($activeLi, $wrapper, $ddObj);
-            // Declare header
-            var $header = $('.'+defaults.header_class, wrapper);
+        function actionDrillDown(element, $wrapper, obj) {
+            // breadcrumb header wrapper
+            let $header = $('.'+defaults.header_wrapper, $wrapper);
 
-            // Get new breadcrumb and header text
-            var getNewBreadcrumb = $(defaults.header_tag,$header).text(); // .html()
-            var getNewHeaderText = $('> a',element).text(); // .html()
-
-            // Add new breadcrumb
-            if (!$('ul',$header).length) {
-                $($header).prepend('<ul class="'+defaults.header_class_list+'"></ul>');
-            }
-            if (getNewBreadcrumb == defaults.default_text) {
+            if ($('ul li', $header).length > 1) {
+                let lastBreadcrumb = $('ul li:last-child', $header).text();
                 $('ul li:last-child', $header).remove();
-                // edit
-                $('ul',$header).append(
-                    $('<li>').addClass('first').append(
-                        $('<a>').attr('href', defaults.home_url).append(
-                            $('<span>').addClass(defaults.home_icon_class)
-                        )
-                    )
-                );
-            } else {
-                $('ul li:last-child',$header).remove();
-                $('ul',$header).append('<li><a href="">'+getNewBreadcrumb+'</a></li>');
+                $('ul', $header).append('<li><a href=""><span>'+lastBreadcrumb+'</span></a></li>');
             }
-            $('ul',$header).append('<li class="active">'+getNewHeaderText+'</li>');
-
-            // Update header text
-            updateHeader($header, getNewHeaderText);
+            let newBreadcrumb = $('> a',element).text();
+            $('ul',$header).append('<li class="active"><span>'+newBreadcrumb+'</span></li>');
 
             // declare child link
             var activeLink = $('> a',element);
@@ -346,59 +303,29 @@ jQuery.extend({
             $($siblingsLi).hide();
 
             $(activeLink).hide();
-            $('> ul li',element).show();
+            $('> ul li', element).show();
             $('> ul',element)
                 .css({'overflow-x':'hidden', 'white-space':'nowrap'})
                 .show()
                 .animate({"margin-right": 0}, defaults.speed);
         }
 
-        function updateHeader(obj, html) {
-            if(!$(defaults.header_tag,obj).length) {
-                $('<'+defaults.header_tag+'>').addClass('hidden').appendTo($(obj));
-            }
-
-            $(defaults.header_tag, obj).html(html);
-        }
-
         // Reset accordion using active links
-        function resetDrilldown(wrapper, obj) {
-            var $header = $('.'+defaults.header_class, wrapper);
-            $('ul',$header).remove();
-            $('a',$header).remove();
-            $('li',obj).show();
-            $('a',obj).show();
-            var menuWidth = $(obj).outerWidth(true);
-            $('ul',obj).hide().css('margin-right', menuWidth + 'px');
+        function resetDrilldown(wrapper, $obj) {
+            var $header = $('.'+defaults.header_wrapper, wrapper);
+            $('ul li', $header).not(':first').remove();
+            $('li', $obj).show();
+            $('a', $obj).show();
+            var menuWidth = $obj.outerWidth(true);
+            $('ul', $obj).hide().css('margin-right', menuWidth + 'px');
 
-            updateHeader($header, defaults.default_text);
-            
-            // Add new breadcrumb
-            var getNewBreadcrumb = $(defaults.header_tag,$header).text(); // .html()
-            if (!$('ul',$header).length) {
-                // edit
-                $($header).prepend('<ul class="'+defaults.header_class_list+'"></ul>');
-            }
-            if (getNewBreadcrumb == defaults.default_text) {
-                // edit
-                $('ul',$header).append('<li class="active">'+defaults.default_text+'</li>');
-            }
-
-            var activeObj = obj;
-            $('a.'+defaults.active_class,obj).each(function(i) {
+            $obj.show();
+            var activeObj = $obj;
+            $('a.'+defaults.active_class, $obj).each(function(i) {
                 var $activeLi = $(this).parent('li').stop();
-                actionDrillDown($activeLi, wrapper, obj);
+                actionDrillDown($activeLi, wrapper, $obj);
                 activeObj = $(this).parent('li');
             });
-
-            var showObj;
-            if ($('> ul', activeObj).length) {
-                showObj = $('> ul', activeObj);
-            }
-            else {
-                // root ul
-                var showObj = activeObj;
-            }
 
         }
 
