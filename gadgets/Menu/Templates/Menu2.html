@@ -1,15 +1,18 @@
 <!-- BEGIN menu -->
-<!-- BEGIN group_title -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
-  </div>
-</div>
-<!-- END group_title -->
 <div class="gadget_container">
     <div class="gadget_content">
       <div class="navbar-thumbnail" id="navbar-{{gid}}">
-        {{menus_tree}}
+        <div class="drilldown">
+          <div class="breadcrumbwrapper">
+            <ul>
+              <li class="first active">
+                <a href="/">
+                  <i class="glyphicon glyphicon-home"></i><!-- BEGIN group_title --><span>{{title}}</span><!-- END group_title -->
+                </a>
+              </li></ul>
+          </div>
+          {{menus_tree}}
+        </div>
       </div>
     </div>
 </div>
@@ -17,7 +20,7 @@
 <!-- END menu -->
 
 <!-- BEGIN mainmenu -->
-<ul class="drilldown">
+<ul class="drilldown-menu nav">
   <!-- BEGIN items -->
   <!-- BEGIN complex -->
   <li class="{{class}}">
@@ -41,11 +44,11 @@
 <!-- END mainmenu -->
 
 <!-- BEGIN submenu -->
-<ul class="">
+<ul class="nav">
   <!-- BEGIN items -->
   <!-- BEGIN complex -->
   <li class="{{class}}">
-    <a class="" href="{{url}}" target="{{target}}">
+    <a href="{{url}}" target="{{target}}">
       <!-- BEGIN symbol --><i class="{{symbol}}"></i><!-- END symbol -->
       {{image}}<span>{{title}}</span>
     </a>

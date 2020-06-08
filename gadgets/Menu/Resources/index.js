@@ -22,11 +22,8 @@ function Jaws_Gadget_Menu() { return {
             parent_class        : '',
             parent_class_link   : '',
             active_class        : 'active',
-            header_class_list   : 'breadcrumb',
-            header_class        : 'breadcrumbwrapper',
-            speed               : 0,
-            default_text        : this.gadget.defines.title,
-            home_url            : '/'
+            header_wrapper      : 'breadcrumbwrapper',
+            speed               : 0
         });
     },
 
