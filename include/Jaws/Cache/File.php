@@ -102,7 +102,7 @@ class Jaws_Cache_File extends Jaws_Cache
                     if (@is_file($this->cacheDirectory . $fname)) {
                         $ftime = @filemtime($this->cacheDirectory . $fname);
                         if ((int)$ftime < time()) {
-                            Jaws_Utils::delete($this->cacheDirectory . $fname)
+                            Jaws_Utils::delete($this->cacheDirectory . $fname);
                         }
                     }
                 }
