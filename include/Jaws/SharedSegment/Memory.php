@@ -18,6 +18,18 @@ class Jaws_SharedSegment_Memory extends Jaws_SharedSegment
     private $hSHMemory;
 
     /**
+     * Constructor
+     *
+     * @access  protected
+     * @param   int     $ftok   File token
+     * @return  void
+     */
+    protected function __construct($ftok)
+    {
+        parent::__construct($ftok);
+    }
+
+    /**
      * Open shared memory block
      *
      * @access  public
