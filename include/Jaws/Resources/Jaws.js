@@ -152,7 +152,7 @@ jQuery.extend({
 
 (function($) {
     /*
-     * https://github.com/mewsoft
+     * https://github.com/aagouda/Bootstrap-DrillDownMenu
     */
     $.fn.drilldown = function(options) {
         //set default options
@@ -160,7 +160,7 @@ jQuery.extend({
             parent_class       : 'dd-parent',
             parent_class_link  : 'dd-parent-a',
             active_class       : 'active',
-            header_wrapper     : 'breadcrumbwrapper',
+            breadcrumb_wrapper : 'breadcrumbwrapper',
             speed              : 'slow',
             submenu_icon_class : 'glyphicon glyphicon-chevron-right',
             show_submenu_icon  : true,
@@ -170,7 +170,7 @@ jQuery.extend({
         //call in the default options
         var options = $.extend(defaults, options);
 
-        history.replaceState(-1, "On page load state, record initial state", "");
+        //history.replaceState(-1, "On page load state, record initial state", "");
 
         //act upon the element that is passed into the design
         return this.each(function(index) {
@@ -228,13 +228,12 @@ jQuery.extend({
                 }
 
                 $($link).trigger('drilldown.linklclick');
-
             });
 
             // Breadcrumbs
-            $('.'+defaults.header_wrapper, $wrapper).on('click', 'a', function(e) {
+            $('.'+defaults.breadcrumb_wrapper, $wrapper).on('click', 'a', function(e) {
                 // Get link index
-                var linkIndex = $('.'+defaults.header_wrapper+' a', $wrapper).index(this);
+                var linkIndex = $('.'+defaults.breadcrumb_wrapper+' a', $wrapper).index(this);
                 if (linkIndex == 0) {
                     $('a', $ddObj).removeClass(defaults.active_class);
                 } else {
@@ -282,7 +281,7 @@ jQuery.extend({
         // Drill Down
         function actionDrillDown(element, $wrapper, obj) {
             // breadcrumb header wrapper
-            let $header = $('.'+defaults.header_wrapper, $wrapper);
+            let $header = $('.'+defaults.breadcrumb_wrapper, $wrapper);
 
             if ($('ul li', $header).length > 1) {
                 let lastBreadcrumb = $('ul li:last-child', $header).text();
@@ -312,7 +311,7 @@ jQuery.extend({
 
         // Reset accordion using active links
         function resetDrilldown(wrapper, $obj) {
-            var $header = $('.'+defaults.header_wrapper, wrapper);
+            var $header = $('.'+defaults.breadcrumb_wrapper, wrapper);
             $('ul li', $header).not(':first').remove();
             $('li', $obj).show();
             $('a', $obj).show();
