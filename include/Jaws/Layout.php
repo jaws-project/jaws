@@ -531,13 +531,11 @@ class Jaws_Layout
                 $content = '';
                 $this->_Template->SetBlock($block);
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
-                    $this->_Template->SetVariable('requested', true);
                     $item['gadget'] = $this->app->mainRequest['gadget'];
                     $item['action'] = $this->app->mainRequest['action'];
                     $item['params'] = array();
                     $content = $req_result;
                 } elseif (!$onlyMainAction) {
-                    $this->_Template->SetVariable('requested', false);
                     if ($this->IsDisplayable($this->app->mainRequest['gadget'],
                                              $this->app->mainRequest['action'],
                                              $item['when'],
@@ -573,6 +571,8 @@ class Jaws_Layout
                     // set action content
                     $this->_Template->SetVariable('ELEMENT', $content."\n");
                 }
+
+                $this->_Template->SetVariable('action_mode', strtolower($this->app->requestedActionMode));
                 $this->_Template->ParseBlock($block, $ignore = empty($content));
             }
 
