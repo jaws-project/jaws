@@ -22,8 +22,13 @@ function Jaws_Gadget_Menu() { return {
             parent_class        : '',
             parent_class_link   : '',
             active_class        : 'active',
-            header_wrapper      : 'breadcrumbwrapper',
+            breadcrumb_wrapper  : 'breadcrumbwrapper',
             speed               : 0
+        });
+
+        $('.drilldown').on('drilldown.linklclick', function(e) {
+            // hide request main action part
+            $('[data-action-mode="normal"]').hide();
         });
     },
 
