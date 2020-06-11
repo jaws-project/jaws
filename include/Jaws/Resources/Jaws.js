@@ -1546,7 +1546,7 @@ $(document).ready(function() {
 
     // grab hash change event
     $(window).on('hashchange', function() {
-        if (!window.location.hash.blank() && jaws.Defines.requestURL == '') {
+        if (!window.location.hash.blank() && jaws.Defines.requestedURL == '') {
             try {
                 let reqRedirectURL = window.location.hash.substr(1).hex2bin();
                 if (!reqRedirectURL.blank()) {
@@ -1573,7 +1573,7 @@ $(document).ready(function() {
     });
 
     // a solution for exit PWA app when press back-button in home page
-    if (jaws.standalone && history.length > 1 && jaws.Defines.requestURL == '') {
+    if (jaws.standalone && history.length > 1 && jaws.Defines.requestedURL == '') {
         history.go(-(history.length - 1));
     }
 
