@@ -45,7 +45,8 @@ $actions['Offline'] = array(
 );
 $actions['CleanupExpiredCache'] = array(
     'standalone' => true,
-    'file'       => 'Cache',
+    'global' => true,
+    'file'   => 'Cache',
 );
 
 /**
