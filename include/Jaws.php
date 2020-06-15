@@ -621,7 +621,7 @@ class Jaws
                            isset($time[2])? $time[2] : 0,
                            $time[0]);
         }
-        $time = is_numeric($time)? $time : strtotime($time);
+        $time = is_numeric($time)? (int)$time : strtotime($time);
 
         // GMT offset
         $timezone = $default_timezone? $this->_Preferences['timezone'] : $this->_Preferences['site_timezone'];
