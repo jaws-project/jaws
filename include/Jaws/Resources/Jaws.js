@@ -401,7 +401,14 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         baseScript = callOptions.hasOwnProperty('baseScript')? callOptions.baseScript : this.baseScript;
 
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
-        options.url  = baseScript + '?gadget=' + gadget + '&restype=json&action=' + action;
+        // url
+        options.url  = baseScript + '?gadget=' + gadget + '&action=' + action;
+        if (callOptions.hasOwnProperty('restype')) {
+            options.url+= '&restype=' + callOptions.restype;
+        } else {
+            options.url+= '&restype=json';
+        }
+
         options.type = 'POST';
         options.async  = true;
         options.action = action;
@@ -439,7 +446,14 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         baseScript = callOptions.hasOwnProperty('baseScript')? callOptions.baseScript : this.baseScript;
 
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
-        options.url  = baseScript + '?gadget=' + gadget + '&restype=json&action=' + action;
+        // url
+        options.url  = baseScript + '?gadget=' + gadget + '&action=' + action;
+        if (callOptions.hasOwnProperty('restype')) {
+            options.url+= '&restype=' + callOptions.restype;
+        } else {
+            options.url+= '&restype=json';
+        }
+
         options.type = 'POST';
         options.async = false;
         options.action = action;
@@ -496,7 +510,6 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             type: 'POST',
             data: formData,
             dataType: 'text',
-            url: baseScript + '?gadget=' + gadget + '&restype=json&action=' + action,
             action: action,
             timeout: 10 * 60 * 1000, /* 10 minutes */
             contentType: false,
@@ -512,6 +525,13 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
                 }
             }
         };
+        // url
+        options.url  = baseScript + '?gadget=' + gadget + '&action=' + action;
+        if (callOptions.hasOwnProperty('restype')) {
+            options.url+= '&restype=' + callOptions.restype;
+        } else {
+            options.url+= '&restype=json';
+        }
 
         options.callOptions = callOptions;
         options.beforeSend = this.onSend.bind(this, options);
