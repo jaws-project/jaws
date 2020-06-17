@@ -193,6 +193,7 @@
             <field>
                 <name>id</name>
                 <type>integer</type>
+                <length>8</length>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
             </field>
