@@ -367,6 +367,52 @@
     </table>
 
     <table>
+        <name><variable>table_prefix</variable>cache</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>key</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>value</name>
+                <type>clob</type>
+            </field>
+
+            <field>
+                <name>lifetime</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>cache_key</name>
+                <unique>true</unique>
+                <field>
+                    <name>key</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>cache_lifetime</name>
+                <field>
+                    <name>lifetime</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+    <table>
         <name><variable>table_prefix</variable>zones</name>
         <declaration>
             <field>
