@@ -226,7 +226,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             unset($loginData['password'], $loginData['chkpassword']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                RESPONSE_ERROR,
+                ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
                 'Login.Response',
                 $loginData
             );
@@ -254,11 +254,16 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
 
         http_response_code($error->getCode());
         if (JAWS_SCRIPT == 'index') {
-            return Jaws_Header::Location($this->gadget->urlMap('Login', $urlParams));
+            return Jaws_Header::Location(
+                $this->gadget->urlMap('Login', $urlParams),
+                'Login.Response'
+            );
         } else {
-            return Jaws_Header::Location($this->gadget->url('Login', $urlParams));
+            return Jaws_Header::Location(
+                $this->gadget->url('Login', $urlParams),
+                'Login.Response'
+            );
         }
-
     }
 
 }
