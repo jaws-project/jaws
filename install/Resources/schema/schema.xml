@@ -367,12 +367,178 @@
     </table>
 
     <table>
+        <name><variable>table_prefix</variable>ip</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>hash</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>addr</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>country</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>province</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>city</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>robot</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_hash</name>
+                <unique>true</unique>
+                <field>
+                    <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_country</name>
+                <field>
+                    <name>country</name>
+                </field>
+
+                <field>
+                    <name>province</name>
+                </field>
+
+                <field>
+                    <name>city</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_robot</name>
+                <field>
+                    <name>robot</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>agent</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>hash</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>agent</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>viewport</name>
+                <comments>1:xs, 2:sm, 3:md, 4:lg, 5:xl, 6:others</comments>
+                <type>integer</type>
+                <length>2</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>os</name>
+                <type>integer</type>
+                <length>2</length>
+            </field>
+
+            <field>
+                <name>os_version</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>browser</name>
+                <type>integer</type>
+                <length>2</length>
+            </field>
+
+            <field>
+                <name>browser_version</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>robot</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>agent_hash</name>
+                <unique>true</unique>
+                <field>
+                    <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>agent_robot</name>
+                <field>
+                    <name>robot</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
         <name><variable>table_prefix</variable>cache</name>
         <declaration>
 
             <field>
                 <name>id</name>
                 <type>integer</type>
+                <length>8</length>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
             </field>
