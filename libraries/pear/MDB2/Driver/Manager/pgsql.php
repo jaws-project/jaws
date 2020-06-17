@@ -409,6 +409,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                             'changing column type for "'.$change_name.'\" requires PostgreSQL 8.0 or above', __FUNCTION__);
                     }
                     $db->loadModule('Datatype', null, true);
+                    // set autoincrement to false because SERIAL/BIGSERIAL not real data type
+                    $field['definition']['autoincrement'] = false;
                     $type = $db->datatype->getTypeDeclaration($field['definition']);
                     $query = "ALTER $field_name TYPE $type USING CAST($field_name AS $type)";
                     $result = $db->exec("ALTER TABLE $name $query");
@@ -416,14 +418,14 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                         return $result;
                     }
                 }
-                if (array_key_exists('default', $field['definition'])) {
+                if (array_key_exists('default', $field)) {
                     $query = "ALTER $field_name SET DEFAULT ".$db->quote($field['definition']['default'], $field['definition']['type']);
                     $result = $db->exec("ALTER TABLE $name $query");
                     if (MDB2::isError($result)) {
                         return $result;
                     }
                 }
-                if (array_key_exists('notnull', $field['definition'])) {
+                if (array_key_exists('notnull', $field)) {
                     $query = "ALTER $field_name ".($field['definition']['notnull'] ? 'SET' : 'DROP').' NOT NULL';
                     $result = $db->exec("ALTER TABLE $name $query");
                     if (MDB2::isError($result)) {
