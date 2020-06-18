@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    Tags
  */
-class Tags_Actions_Tags extends Tags_Actions_Default
+class Tags_Actions_Tags extends Jaws_Gadget_Action
 {
     /**
      * Main request reference
@@ -102,8 +102,11 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL')));
         }
 
-        if ($user) {
-            $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
+        if ($this->app->session->user->logged &&
+            $this->app->requestedActionMode == ACTION_MODE_NORMAL
+        ) {
+            // Menu navigation
+            $this->gadget->action->load('MenuNavigation')->navigation($tpl);
         }
 
         foreach ($tags as $tag) {
@@ -228,6 +231,10 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $tpl = $this->gadget->template->load('Tag.html');
         $tpl->SetBlock('tag');
         $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
+        if ($this->app->session->user->logged) {
+            // Menu navigation
+            $this->gadget->action->load('MenuNavigation')->navigation($tpl);
+        }
         $this->SetTitle(_t('TAGS_VIEW_TAG', $tag));
         $this->AddToMetaKeywords($tagInfo['meta_keywords']);
         $this->SetDescription($tagInfo['meta_description']);
