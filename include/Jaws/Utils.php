@@ -172,10 +172,33 @@ class Jaws_Utils
             $parts['path'] = explode('/', $parts['path']);
             $parts['path'] = implode('/', array_map('rawurlencode', $parts['path']));
             $parts['path'] = rtrim($parts['path'], '/');
-        }
 
-        // FIXME:: add query part
-        // REDIRECT_URL, REDIRECT_QUERY_STRING, REQUEST_URI, QUERY_STRING
+            $parts['resource'] = '';
+            if (isset($_SERVER['REDIRECT_URL']) && !empty($_SERVER['REDIRECT_URL'])) {
+                $parts['resource'] = $_SERVER['REDIRECT_URL'];
+            } elseif (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
+                $parts['resource'] = $_SERVER['REQUEST_URI'];
+            } else {
+                $parts['resource'] = $_SERVER['PHP_SELF'];
+            }
+            $parts['resource'] = strtok($parts['resource'], '?');
+            $parts['resource'] = substr($parts['resource'], strlen($parts['path']));
+            if (1 === stripos($parts['resource'], BASE_SCRIPT)) {
+                $parts['resource'] = substr($parts['resource'], strlen(BASE_SCRIPT) + 1);
+            }
+            //$parts['resource'] = '/'. ltrim($parts['resource'], '/');
+
+            $parts['query'] = '';
+            if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
+                $parts['query'] = $_SERVER['REDIRECT_QUERY_STRING'];
+            } elseif (isset($_SERVER['QUERY_STRING'])) {
+                $parts['query'] = $_SERVER['QUERY_STRING'];
+            }
+            $query = array();
+            parse_str($parts['query'], $query);
+            //_log_var_dump($query);
+            //_log_var_dump($parts);
+        }
 
         return $parts;
     }
@@ -191,12 +214,11 @@ class Jaws_Utils
     static function getBaseURL($suffix = '', $rel_url = true)
     {
         $site_url = Jaws_Utils::parseRequestURL();
-        if (!empty($site_url['port'])) {
-            $site_url['port'] = ':' . $site_url['port'];
-        }
-
         $url = $site_url['path'];
         if (!$rel_url) {
+            if (!empty($site_url['port'])) {
+                $site_url['port'] = ':' . $site_url['port'];
+            }
             $url = $site_url['scheme']. '://'. $site_url['host']. $site_url['port']. $url;
         }
 
