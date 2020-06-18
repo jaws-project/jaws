@@ -391,13 +391,13 @@
             <field>
                 <name>proxy</name>
                 <type>text</type>
-                <length>16</length>
+                <length>22</length>
             </field>
 
             <field>
                 <name>client</name>
                 <type>text</type>
-                <length>16</length>
+                <length>22</length>
             </field>
 
             <field>
