@@ -441,7 +441,7 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>ip_country</name>
+                <name><variable>table_prefix</variable>ip_geo</name>
                 <field>
                     <name>country</name>
                 </field>
