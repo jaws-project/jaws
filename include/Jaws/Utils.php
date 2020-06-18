@@ -877,19 +877,6 @@ class Jaws_Utils
 
             $client = inet_pton($client);
             $direct = inet_pton($direct);
-            $ipv4mapped_prefix_bin = hex2bin('00000000000000000000ffff');
-
-            // cleanup zero prefix
-            if (!empty($client)) {
-                $client = str_replace($ipv4mapped_prefix_bin, '', $client);
-                $client = inet_ntop($client);
-            }
-            // cleanup zero prefix
-            if (!empty($direct)) {
-                $direct = str_replace($ipv4mapped_prefix_bin, '', $direct);
-                $direct = inet_ntop($direct);
-            }
-
             if (empty($client)) {
                 $proxy  = '';
                 $client = $direct;
