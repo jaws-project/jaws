@@ -244,12 +244,15 @@
             <field>
                 <name>ip</name>
                 <type>integer</type>
-                <length>5</length>
+                <length>8</length>
+                <comments>id of ip table</comments>
             </field>
 
             <field>
                 <name>agent</name>
-                <type>text</type>
+                <type>integer</type>
+                <length>8</length>
+                <comments>id of agent table</comments>
             </field>
 
             <field>
@@ -386,7 +389,13 @@
             </field>
 
             <field>
-                <name>addr</name>
+                <name>proxy</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>client</name>
                 <type>text</type>
                 <length>16</length>
             </field>
@@ -406,13 +415,6 @@
             </field>
 
             <field>
-                <name>city</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <field>
                 <name>robot</name>
                 <type>boolean</type>
                 <default>false</default>
@@ -420,9 +422,21 @@
 
             <index>
                 <name><variable>table_prefix</variable>ip_hash</name>
-                <unique>true</unique>
                 <field>
                     <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_addr</name>
+                <unique>true</unique>
+
+                <field>
+                    <name>proxy</name>
+                </field>
+
+                <field>
+                    <name>client</name>
                 </field>
             </index>
 
@@ -434,10 +448,6 @@
 
                 <field>
                     <name>province</name>
-                </field>
-
-                <field>
-                    <name>city</name>
                 </field>
             </index>
 
@@ -476,8 +486,8 @@
             </field>
 
             <field>
-                <name>viewport</name>
-                <comments>1:xs, 2:sm, 3:md, 4:lg, 5:xl, 6:others</comments>
+                <name>device</name>
+                <comments>1:mobile, 2:tablet, 3:pc, 4:others</comments>
                 <type>integer</type>
                 <length>2</length>
                 <default>0</default>
