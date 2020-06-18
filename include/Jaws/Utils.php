@@ -840,9 +840,9 @@ class Jaws_Utils
      */
     static function GetRemoteAddress()
     {
-        static $proxy, $client;
+        static $addr;
 
-        if (!isset($proxy) and !isset($client)) {
+        if (!isset($addr)) {
             if (!empty($_SERVER) && isset($_SERVER['REMOTE_ADDR'])) {
                 $direct = $_SERVER['REMOTE_ADDR'];
             } else if (!empty($_ENV) && isset($_ENV['REMOTE_ADDR'])) {
@@ -875,18 +875,32 @@ class Jaws_Utils
                 }
             }
 
+            $client = inet_pton($client);
+            $direct = inet_pton($direct);
+            $ipv4mapped_prefix_bin = hex2bin('00000000000000000000ffff');
+
+            // cleanup zero prefix
+            if (!empty($client)) {
+                $client = str_replace($ipv4mapped_prefix_bin, '', $client);
+                $client = inet_ntop($client);
+            }
+            // cleanup zero prefix
+            if (!empty($direct)) {
+                $direct = str_replace($ipv4mapped_prefix_bin, '', $direct);
+                $direct = inet_ntop($direct);
+            }
+
             if (empty($client)) {
                 $proxy  = '';
                 $client = $direct;
             } else {
-                $is_ip = preg_match('|^([0-9]{1,3}\.){3,3}[0-9]{1,3}|', $client, $regs);
-                $client = $is_ip? $regs[0] : '';
                 $proxy  = $direct;
             }
 
+            $addr = array('proxy' => $proxy, 'client' => $client);
         }
 
-        return array('proxy' => $proxy, 'client' => $client);
+        return $addr;
     }
 
     /**
