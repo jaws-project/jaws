@@ -897,7 +897,7 @@ class Jaws_Utils
                 $proxy  = $direct;
             }
 
-            $addr = array('proxy' => $proxy, 'client' => $client);
+            $addr = array('proxy' => (string)$proxy, 'client' => (string)$client);
         }
 
         return $addr;
