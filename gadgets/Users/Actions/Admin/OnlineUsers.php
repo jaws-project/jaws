@@ -78,7 +78,8 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
             }
             $usrData['nickname'] = $session['nickname'];
             $usrData['superadmin'] = $session['superadmin']? _t('GLOBAL_YES') : _t('GLOBAL_NO');
-            $usrData['ip'] = "<abbr title='{$session['agent']}'>". long2ip($session['ip']). "</abbr>";
+            $usrData['ip'] = "<abbr title='{$session['agent_text']}'>".
+                $session['proxy']. '('. $session['client']. ")</abbr>";
             $usrData['type'] = $session['type'];
             if ($session['online']) {
                 $usrData['last_activetime'] = "<label class='lastactive' title='"._t('USERS_ONLINE_ACTIVE')."'>".
