@@ -25,7 +25,7 @@ class PrivateMessage_Events_Notify extends Jaws_Gadget_Event
 
         $message = array();
         $message['subject'] = $params['title'];
-        $message['body'] = $params['description'];
+        $message['body'] = @$params['description'];
         $message['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS;
         $message['read'] = false;
         $message['recipient_users'] = isset($params['user'])? $params['user'] : '';
