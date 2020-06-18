@@ -133,7 +133,7 @@ class Jaws_Session
             ->igsert(
                 array(
                     'hash'  => $hash,
-                    'text'  => $agent,
+                    'agent' => $agent,
                     'robot' => false
                 )
             )->where('hash', $hash)
@@ -788,7 +788,7 @@ class Jaws_Session
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
             'session.id', 'domain', 'user', 'type', 'auth', 'longevity',
-            'ip:integer', 'agent:integer', 'ip.proxy', 'ip.client', 'agent.text as agent_text',
+            'ip:integer', 'session.agent:integer', 'ip.proxy', 'ip.client', 'agent.agent as agent_text',
             'user_attributes', 'webpush', 'checksum', 'insert_time', 'update_time:integer'
         );
         $sessTable->join('ip', 'ip.id', 'session.ip');
