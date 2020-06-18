@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+    <name><variable>database</variable></name>
+    <charset><variable>charset</variable></charset>
+    <create>true</create>
+
+    <table>
+        <name><variable>table_prefix</variable>registry</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>user</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>component</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>key_name</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>key_value</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>key_type</name>
+                <type>integer</type>
+                <length>2</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>update_time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>reg_cmpt_key</name>
+                <unique>true</unique>
+                <field>
+                    <name>user</name>
+                </field>
+                <field>
+                    <name>component</name>
+                </field>
+                <field>
+                    <name>key_name</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>reg_cmpt_type</name>
+                <field>
+                    <name>user</name>
+                </field>
+                <field>
+                    <name>component</name>
+                </field>
+                <field>
+                    <name>key_type</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>reg_cmpt</name>
+                <field>
+                    <name>user</name>
+                </field>
+                <field>
+                    <name>component</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>acl</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>component</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>key_name</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>key_subkey</name>
+                <type>text</type>
+                <length>32</length>
+                <default></default>
+            </field>
+
+            <field>
+                <name>key_value</name>
+                <type>integer</type>
+                <length>2</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>max_value</name>
+                <type>integer</type>
+                <length>2</length>
+            </field>
+
+            <field>
+                <name>user</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>group</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>acl_cmpt_key_ug</name>
+                <unique>true</unique>
+                <field>
+                    <name>component</name>
+                </field>
+                <field>
+                    <name>key_name</name>
+                </field>
+                <field>
+                    <name>key_subkey</name>
+                </field>
+                <field>
+                    <name>user</name>
+                </field>
+                <field>
+                    <name>group</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>acl_cmpt</name>
+                <field>
+                    <name>component</name>
+                </field>
+                <field>
+                    <name>key_name</name>
+                </field>
+                <field>
+                    <name>key_subkey</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>session</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>domain</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>user</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>salt</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
+                <name>type</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>auth</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>hidden</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
+                <name>longevity</name>
+                <type>integer</type>
+                <length>16</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>ip</name>
+                <type>integer</type>
+                <length>8</length>
+                <comments>id of ip table</comments>
+            </field>
+
+            <field>
+                <name>user_attributes</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>data</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>webpush</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>checksum</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>insert_time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>update_time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>session_user</name>
+                <field>
+                    <name>domain</name>
+                </field>
+
+                <field>
+                    <name>user</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>session_hidden</name>
+                <field>
+                    <name>hidden</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>session_uptime</name>
+                <field>
+                    <name>update_time</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>listeners</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>gadget</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>event</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>listeners_ge</name>
+                <unique>true</unique>
+                <field>
+                    <name>gadget</name>
+                </field>
+                <field>
+                    <name>event</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>listeners_gadget</name>
+                <field>
+                    <name>gadget</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>listeners_event</name>
+                <field>
+                    <name>event</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>ip</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>hash</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>proxy</name>
+                <type>text</type>
+                <length>22</length>
+            </field>
+
+            <field>
+                <name>client</name>
+                <type>text</type>
+                <length>22</length>
+            </field>
+
+            <field>
+                <name>country</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>province</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>robot</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_hash</name>
+                <field>
+                    <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_addr</name>
+                <unique>true</unique>
+
+                <field>
+                    <name>proxy</name>
+                </field>
+
+                <field>
+                    <name>client</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_geo</name>
+                <field>
+                    <name>country</name>
+                </field>
+
+                <field>
+                    <name>province</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>ip_robot</name>
+                <field>
+                    <name>robot</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>agent</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>hash</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>agent</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>device</name>
+                <comments>1:mobile, 2:tablet, 3:pc, 4:others</comments>
+                <type>integer</type>
+                <length>2</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>os</name>
+                <type>integer</type>
+                <length>2</length>
+            </field>
+
+            <field>
+                <name>os_version</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>browser</name>
+                <type>integer</type>
+                <length>2</length>
+            </field>
+
+            <field>
+                <name>browser_version</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>robot</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>agent_hash</name>
+                <unique>true</unique>
+                <field>
+                    <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>agent_robot</name>
+                <field>
+                    <name>robot</name>
+                </field>
+            </index>
+
+        </declaration>
+
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>cache</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>key</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>value</name>
+                <type>clob</type>
+            </field>
+
+            <field>
+                <name>lifetime</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>cache_key</name>
+                <unique>true</unique>
+                <field>
+                    <name>key</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>cache_lifetime</name>
+                <field>
+                    <name>lifetime</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>zones</name>
+        <declaration>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>location</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>country</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>province</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>city</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>center</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>around</name>
+                <type>text</type>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>zones_location</name>
+                <unique>true</unique>
+                <field>
+                    <name>location</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>zones_cpc</name>
+                <field>
+                    <name>country</name>
+                </field>
+                <field>
+                    <name>province</name>
+                </field>
+                <field>
+                    <name>city</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+</database>

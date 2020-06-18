@@ -1,6 +1,6 @@
 <?php
 /**
- * Jaws Upgrade Stage - From 1.6.0 to 1.7.0
+ * Jaws Upgrade Stage - From 1.7.0 to 1.8.0
  *
  * @category    Application
  * @package     UpgradeStage
@@ -8,7 +8,7 @@
  * @copyright   2019-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_160To170 extends JawsUpgraderStage
+class Upgrader_170To180 extends JawsUpgraderStage
 {
     /**
      * Builds the upgrader page.
@@ -19,14 +19,14 @@ class Upgrader_160To170 extends JawsUpgraderStage
     function Display()
     {
         $tpl = new Jaws_Template(false, false);
-        $tpl->Load('display.html', 'stages/160To170/templates');
-        $tpl->SetBlock('160To170');
+        $tpl->Load('display.html', 'stages/170To180/templates');
+        $tpl->SetBlock('170To180');
 
-        $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.6.0', '1.7.0'));
+        $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.7.0', '1.8.0'));
         $tpl->setVariable('lbl_notes', _t('UPGRADE_VER_NOTES'));
         $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
 
-        $tpl->ParseBlock('160To170');
+        $tpl->ParseBlock('170To180');
         return $tpl->Get();
     }
 
@@ -58,10 +58,8 @@ class Upgrader_160To170 extends JawsUpgraderStage
         }
 
         $schema_array = array(
-            '1.6.0' => '1.6.1',
-            '1.6.1' => '1.6.2',
-            '1.6.2' => '1.6.3',
-            '1.6.3' => 'schema'
+            '1.7.0' => '1.7.1',
+            '1.7.1' => 'schema'
         );
         foreach ($schema_array as $old => $new) {
             // upgrade core database schema
@@ -90,7 +88,7 @@ class Upgrader_160To170 extends JawsUpgraderStage
         Jaws::getInstance()->registry->init();
 
         // Upgrading core gadgets
-        $gadgets = array('Settings', 'Users');
+        $gadgets = array('Settings', 'Policy', 'Users', 'Layout', 'Logs');
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {

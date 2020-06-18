@@ -99,6 +99,11 @@ $stages[] = array(
     'name'  => _t('UPGRADE_VER_TO_VER', '1.6.0', '1.7.0'),
     'file'  => '160To170',
 );
+// Upgrade from 1.7.0 to 1.8.0
+$stages[] = array(
+    'name'  => _t('UPGRADE_VER_TO_VER', '1.7.0', '1.8.0'),
+    'file'  => '170To180',
+);
 // Saves the config file.
 $stages[] = array(
     'name'  => _t('UPGRADE_WRITECONFIG'),
