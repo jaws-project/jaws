@@ -879,12 +879,15 @@ class Jaws_Utils
             $direct = inet_pton($direct);
             if (empty($client)) {
                 $proxy  = '';
-                $client = $direct;
+                $client = (string)$direct;
             } else {
-                $proxy  = $direct;
+                $proxy  = (string)$direct;
             }
 
-            $addr = array('proxy' => (string)$proxy, 'client' => (string)$client);
+            $addr = array(
+                'proxy'  => rtrim(base64_encode($proxy),  '='),
+                'client' => rtrim(base64_encode($client), '=')
+            );
         }
 
         return $addr;
