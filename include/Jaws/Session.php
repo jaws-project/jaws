@@ -49,7 +49,7 @@ class Jaws_Session
         'hidden'    => false,
         'longevity' => 0,
         'ip'        => 0,
-        'agent'     => '',
+        'agent'     => 0,
         'webpush'   => '',
     );
 
@@ -103,6 +103,44 @@ class Jaws_Session
     protected function __construct()
     {
         $this->app = Jaws::getInstance();
+        // get ip record id from database
+        $addr = Jaws_Utils::GetRemoteAddress();
+        $hash = hash64($addr['proxy'] . $addr['client']);
+        $this->app->ip = Jaws_ORM::getInstance()
+            ->table('ip')
+            ->igsert(
+                array(
+                    'hash'   => $hash,
+                    'proxy'  => $addr['proxy'],
+                    'client' => $addr['client'],
+                    'robot'  => false
+                )
+            )->where('hash', $hash)
+            ->and()
+            ->where('proxy', $addr['proxy'])
+            ->and()
+            ->where('client', $addr['client'])
+            ->exec();
+        if (Jaws_Error::IsError($this->app->ip)) {
+            Jaws_Error::Fatal('Internal error(1)!, please try again');
+        }
+
+        // get agent record id from database
+        $agent = Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']);
+        $hash  = hash64($agent);
+        $this->app->agent = Jaws_ORM::getInstance()
+            ->table('agent')
+            ->igsert(
+                array(
+                    'hash'  => $hash,
+                    'text'  => $agent,
+                    'robot' => false
+                )
+            )->where('hash', $hash)
+            ->exec();
+        if (Jaws_Error::IsError($this->app->agent)) {
+            Jaws_Error::Fatal('Internal error(2)!, please try again');
+        }
     }
 
     /**
@@ -197,8 +235,7 @@ class Jaws_Session
             unset($this->session['data'], $this->session['user_attributes']);
 
             // browser agent
-            $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
-            if ($agent !== $this->session['agent']) {
+            if ($this->app->agent != $this->session['agent']) {
                 throw new Exception('Previous session agent has been changed', JAWS_LOG_NOTICE);
             }
 
@@ -313,8 +350,8 @@ class Jaws_Session
             'auth'      => $this->userAttributes['auth'],
             'hidden'    => $this->session['hidden'],
             'longevity' => $remember? (int)$this->app->registry->fetch('session_remember_timeout', 'Policy')*3600 : 0,
-            'ip'        => $ip,
-            'agent'     => Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']),
+            'ip'        => $this->app->ip,
+            'agent'     => $this->app->agent,
             'webpush'   => $this->session['webpush'],
         );
 
@@ -721,8 +758,9 @@ class Jaws_Session
     {
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id:integer', 'salt', 'domain', 'user:integer', 'type', 'auth', 'longevity', 'ip', 'agent',
-            'user_attributes', 'data', 'webpush', 'hidden:boolean', 'checksum', 'update_time:integer'
+            'id:integer', 'salt', 'domain', 'user:integer', 'type', 'auth', 'longevity', 'ip:integer',
+            'agent:integer', 'user_attributes', 'data', 'webpush', 'hidden:boolean', 'checksum',
+            'update_time:integer'
         );
         return $sessTable->where('id', (int)$sid)->fetchRow();
     }
@@ -749,9 +787,12 @@ class Jaws_Session
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id', 'domain', 'user', 'type', 'auth', 'longevity', 'ip', 'agent',
+            'session.id', 'domain', 'user', 'type', 'auth', 'longevity',
+            'ip:integer', 'agent:integer', 'ip.proxy', 'ip.client', 'agent.text as agent_text',
             'user_attributes', 'webpush', 'checksum', 'insert_time', 'update_time:integer'
         );
+        $sessTable->join('ip', 'ip.id', 'session.ip');
+        $sessTable->join('agent', 'agent.id', 'session.agent');
 
         if ($active === true) {
             $sessTable->where('update_time', $onlinetime, '>=');
@@ -776,6 +817,9 @@ class Jaws_Session
         }
 
         foreach ($sessions as $key => $session) {
+            $sessions[$key]['proxy']  = inet_ntop(base64_decode($sessions[$key]['proxy']));
+            $sessions[$key]['client'] = inet_ntop(base64_decode($sessions[$key]['client']));
+
             if ($userAttributes = @unserialize($session['user_attributes'])) {
                 $sessions[$key]['internal']   = $userAttributes['internal'];
                 $sessions[$key]['username']   = $userAttributes['username'];
