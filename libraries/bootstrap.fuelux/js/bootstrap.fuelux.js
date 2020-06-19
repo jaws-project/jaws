@@ -9646,27 +9646,45 @@ if (typeof jQuery === 'undefined') {
 			};
 
 			$.fn.repeater.Constructor.prototype.list_createItemActions = function listCreateItemActions() {
-				var actionsHtml = '';
 				var self = this;
 				var i;
 				var length;
 				var $table = this.$element.find( '.repeater-list .repeater-list-wrapper > table' );
 				var $actionsTable = this.$canvas.find( '.table-actions' );
 
-				for ( i = 0, length = this.viewOptions.list_actions.items.length; i < length; i++ ) {
-					var action = this.viewOptions.list_actions.items[ i ];
-					var html = action.html;
-
-					actionsHtml += '<li><a href="#" data-action="' + action.name + '" class="action-item"> ' + html + '</a></li>';
+				// backward support
+				if (Array.isArray(this.viewOptions.list_actions.items)) {
+					this.viewOptions.list_actions.items = {
+						'common': this.viewOptions.list_actions.items,
+						'default': this.viewOptions.list_actions.items
+					}
 				}
 
-				var actionsDropdown = '<div class="btn-group">' +
-					'<button type="button" class="btn btn-xs btn-default dropdown-toggle repeater-actions-button" data-toggle="dropdown" data-flip="auto" aria-expanded="false">' +
-					'<span class="caret"></span>' +
-					'</button>' +
-					'<ul class="dropdown-menu dropdown-menu-right" role="menu">' +
-					actionsHtml +
-					'</ul></div>';
+				var actionsDropdown = {};
+				$.each( this.viewOptions.list_actions.items, function( index, items ) {
+					var actionsHtml = '';
+					for ( i = 0, length = items.length; i < length; i++ ) {
+						var action = items[ i ];
+						var html = action.html;
+
+						actionsHtml +=
+							'<li><a href="#" ' +
+							'data-action-list="' + index +
+							'" data-action="' + action.name +
+							'" class="action-item"> ' +
+							action.html +
+							'</a></li>';
+					}
+
+					actionsDropdown[index] = '<div class="btn-group">' +
+						'<button type="button" class="btn btn-xs btn-default dropdown-toggle repeater-actions-button"' +
+						'data-toggle="dropdown" data-flip="auto" aria-expanded="false">' +
+						'<span class="caret"></span>' +
+						'</button>' +
+						'<ul class="dropdown-menu dropdown-menu-right" role="menu">' +
+						actionsHtml +
+						'</ul></div>';
+				});
 
 				if ( $actionsTable.length < 1 ) {
 					var $actionsColumnWrapper = $( '<div class="actions-column-wrapper" style="width: ' + this.list_actions_width + 'px"></div>' ).insertBefore( $table );
@@ -9676,7 +9694,9 @@ if (typeof jQuery === 'undefined') {
 
 					// Dont show actions dropdown in header if not multi select
 					if ( this.viewOptions.list_selectable === 'multi' || this.viewOptions.list_selectable === 'action' ) {
-						$actionsColumn.find( 'thead tr' ).html( '<th><div class="repeater-list-heading">' + actionsDropdown + '</div></th>' );
+						$actionsColumn.find( 'thead tr' ).html(
+							'<th><div class="repeater-list-heading">' + actionsDropdown['common'] + '</div></th>'
+						);
 
 						if ( this.viewOptions.list_selectable !== 'action' ) {
 							// disable the header dropdown until an item is selected
@@ -9684,15 +9704,21 @@ if (typeof jQuery === 'undefined') {
 						}
 					} else {
 						var label = this.viewOptions.list_actions.label || '<span class="actions-hidden">a</span>';
-						$actionsColumn.find( 'thead tr' ).addClass( 'empty-heading' ).html( '<th>' + label + '<div class="repeater-list-heading">' + label + '</div></th>' );
+						$actionsColumn.find( 'thead tr' ).addClass( 'empty-heading' ).html( '<th>' + label +
+						'<div class="repeater-list-heading">' + label + '</div></th>' );
 					}
 
 					// Create Actions dropdown for each cell in actions table
 					var $actionsCells = $actionsColumn.find( 'td' );
 
 					$actionsCells.each( function addActionsDropdown( rowNumber ) {
-						$( this ).html( actionsDropdown );
+						let actionList = $table.find( 'tbody tr' ).eq(rowNumber).data( 'action-list' );
+						if (!actionList || !actionsDropdown.hasOwnProperty(actionList)) {
+							actionList = 'default';
+						}
+						$( this ).html( actionsDropdown[actionList] );
 						$( this ).find( 'a' ).attr( 'data-row', rowNumber + 1 );
+						$table.find( 'tbody tr' ).eq(rowNumber).data( 'action-list', actionList);
 					} );
 
 					$actionsColumnWrapper.append( $actionsColumn );
@@ -9705,9 +9731,11 @@ if (typeof jQuery === 'undefined') {
 				// row level actions click
 				this.$element.find( '.table-actions tbody .action-item' ).on( 'click', function onBodyActionItemClick( e ) {
 					if ( !self.isDisabled ) {
+						var actionList = $( this ).data( 'action-list' );
 						var actionName = $( this ).data( 'action' );
 						var row = $( this ).data( 'row' );
-						var selected = {
+							var selected = {
+							actionList: actionList,
 							actionName: actionName,
 							rows: [ row ]
 						};
@@ -9719,6 +9747,7 @@ if (typeof jQuery === 'undefined') {
 					if ( !self.isDisabled ) {
 						var actionName = $( this ).data( 'action' );
 						var selected = {
+							actionList: 'common',
 							actionName: actionName,
 							rows: []
 						};
@@ -9738,7 +9767,7 @@ if (typeof jQuery === 'undefined') {
 
 			$.fn.repeater.Constructor.prototype.list_getActionItems = function listGetActionItems( selected, e ) {
 				var selectedObj = [];
-				var actionObj = $.grep( this.viewOptions.list_actions.items, function matchedActions( actions ) {
+				var actionObj = $.grep( this.viewOptions.list_actions.items[selected.actionList], function matchedActions( actions ) {
 					return actions.name === selected.actionName;
 				} )[ 0 ];
 				for ( var i = 0, selectedRowsL = selected.rows.length; i < selectedRowsL; i++ ) {
@@ -10581,36 +10610,63 @@ if (typeof jQuery === 'undefined') {
 						)
 					);
 
+					if ( this.viewOptions.thumbnail_itemRendered ) {
+						this.viewOptions.thumbnail_itemRendered( {
+							container: helpers.container,
+							item: $thumbnail,
+							itemData: helpers.subset[ helpers.index ]
+						}, function() {} );
+					}
+
 					$thumbnail.data( 'item_data', helpers.data.items[ helpers.index ] );
 
 					if (this.viewOptions.list_actions) {
-						var actionsHtml = '';
-						var i;
-						var length;
-
-						for ( i = 0, length = this.viewOptions.list_actions.items.length; i < length; i++ ) {
-							var action = this.viewOptions.list_actions.items[ i ];
-							var html = action.html;
-
-							actionsHtml += '<li><a href="#" data-action="' + action.name + '" class="action-item"> ' + html + '</a></li>';
+						// backward support
+						if (Array.isArray(this.viewOptions.list_actions.items)) {
+							this.viewOptions.list_actions.items = {
+								'common': this.viewOptions.list_actions.items,
+								'default': this.viewOptions.list_actions.items
+							}
 						}
 
-						var actionsDropdown = '<div class="btn-group">' +
-							'<button type="button" class="btn btn-xs btn-default dropdown-toggle repeater-actions-button" data-toggle="dropdown" data-flip="auto" aria-expanded="false">' +
+						let actionList = $thumbnail.data( 'action-list');
+						if (!actionList || !this.viewOptions.list_actions.items.hasOwnProperty(actionList)) {
+						    actionList = 'default';
+						}
+						$thumbnail.data( 'action-list', actionList );
+
+						var actionsHtml = '';
+						let items = this.viewOptions.list_actions.items[actionList];
+						for ( i = 0, length = items.length; i < length; i++ ) {
+							var action = items[ i ];
+
+							actionsHtml += '<li><a href="#" ' +
+								'data-action-list="' + actionList +
+								'" data-action="' + action.name +
+								'" class="action-item"> ' +
+								action.html +
+								'</a></li>';
+						}
+
+						let actionsDropdown = '<div class="btn-group">' +
+							'<button type="button" class="btn btn-xs btn-default dropdown-toggle repeater-actions-button"' +
+							'data-toggle="dropdown" data-flip="auto" aria-expanded="false">' +
 							'<span class="caret"></span>' +
 							'</button>' +
 							'<ul class="dropdown-menu dropdown-menu-right" role="menu">' +
 							actionsHtml +
 							'</ul></div>';
+
+						$thumbnail.append( actionsDropdown );
 					}
 
-					$thumbnail.append( actionsDropdown );
 					// row level actions click
 					$thumbnail.find( '.action-item' ).on( 'click', function onBodyActionItemClick( e ) {
 						e.preventDefault();
 						if ( !self.isDisabled ) {
 							var actionName = $( this ).data( 'action' );
-							var actionObj = $.grep( self.viewOptions.list_actions.items, function matchedActions( actions ) {
+							var actionList = $( this ).data( 'action-list' );
+							var actionObj = $.grep( self.viewOptions.list_actions.items[actionList], function matchedActions( actions ) {
 								return actions.name === actionName;
 							} )[ 0 ];
 
@@ -10653,14 +10709,6 @@ if (typeof jQuery === 'undefined') {
 					helpers.container.append( $thumbnail );
 					if ( this.thumbnail_injectSpacers ) {
 						$thumbnail.after( '<span class="spacer">&nbsp;</span>' );
-					}
-
-					if ( this.viewOptions.thumbnail_itemRendered ) {
-						this.viewOptions.thumbnail_itemRendered( {
-							container: helpers.container,
-							item: $thumbnail,
-							itemData: helpers.subset[ helpers.index ]
-						}, function() {} );
 					}
 
 					return false;
