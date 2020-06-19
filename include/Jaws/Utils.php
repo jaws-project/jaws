@@ -897,8 +897,8 @@ class Jaws_Utils
                 }
             }
 
-            $client = inet_pton($client);
-            $direct = inet_pton($direct);
+            $client = @inet_pton($client);
+            $direct = @inet_pton($direct);
             if (empty($client)) {
                 $proxy  = '';
                 $client = (string)$direct;
