@@ -38,7 +38,7 @@ jQuery.extend({
         return {
             get: function() {
                 let dWidth = $(document).innerWidth();
-                return (dWidth < 700) ? 'xs' : ((dWidth < 992) ? 'sm' : ((dWidth < 1200) ? 'md' : 'lg'));
+                return (dWidth < 576) ? 'xs' : ((dWidth < 768) ? 'sm' : ((dWidth < 992) ? 'md' : ((dWidth < 1200)? 'lg' : 'xl')));
             },
             is: function(breakPoint) {
                 return breakPoint == this.get();
