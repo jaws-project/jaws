@@ -2923,12 +2923,19 @@ if (typeof jQuery === 'undefined') {
 
 			menuShown: function() {
 				if ( this.options.autoResizeMenu ) {
+					this.$element.trigger(e = $.Event('shown.fu.combobox', this), this.options);
 					this.resizeMenu();
 				}
 			},
 
 			resizeMenu: function() {
-				var width = this.$element.outerWidth();
+				let width;
+				if (this.options.autoResizeTo == 'input') {
+					width = this.$button.outerWidth() + this.$input.outerWidth();
+				} else {
+					width = this.$element.outerWidth();
+				}
+
 				this.$dropMenu.outerWidth( width );
 			},
 
@@ -3149,6 +3156,7 @@ if (typeof jQuery === 'undefined') {
 
 		$.fn.combobox.defaults = {
 			autoResizeMenu: true,
+			autoResizeTo: 'group',
 			filterOnKeypress: false,
 			showOptionsOnKeypress: false,
 			noMatchesMessage: 'No Matches',
