@@ -9765,7 +9765,7 @@ if (typeof jQuery === 'undefined') {
 							selector = '.repeater-list-wrapper > table tr';
 						}
 						self.$element.find( selector ).each( function eachSelector( selectorIndex ) {
-							selected.rows.push( selectorIndex + 1 );
+							selected.rows.push( $( this ).index() + 1 );
 						} );
 
 						self.list_getActionItems( selected, e );
