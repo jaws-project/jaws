@@ -1004,10 +1004,13 @@ class Jaws_ORM
                 break;
 
             case 'upsert':
-                $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
+                if (empty($this->_columns)) {
+                    $this->select($this->_pk_field. ':'. $this->_pk_field_type);
+                }
+                $sql = 'select '. implode(', ', $this->_columns) . "\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->queryone($sql);
+                $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
                 if (!MDB2::isError($result)) {
                     $upsert_result = $result;
                     if (empty($result)) {
