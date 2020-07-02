@@ -108,6 +108,7 @@ class Jaws_Session
         $hash = hash64($addr['proxy'] . $addr['client']);
         $this->app->ip = Jaws_ORM::getInstance()
             ->table('ip')
+            ->select('id:integer', 'robot:boolean')
             ->igsert(
                 array(
                     'hash'   => $hash,
@@ -130,6 +131,7 @@ class Jaws_Session
         $hash  = hash64($agent);
         $this->app->agent = Jaws_ORM::getInstance()
             ->table('agent')
+            ->select('id:integer', 'robot:boolean')
             ->igsert(
                 array(
                     'hash'  => $hash,
@@ -235,7 +237,7 @@ class Jaws_Session
             unset($this->session['data'], $this->session['user_attributes']);
 
             // browser agent
-            if ($this->app->agent != $this->session['agent']) {
+            if ($this->app->agent['id'] != $this->session['agent']) {
                 throw new Exception('Previous session agent has been changed', JAWS_LOG_NOTICE);
             }
 
@@ -350,8 +352,8 @@ class Jaws_Session
             'auth'      => $this->userAttributes['auth'],
             'hidden'    => $this->session['hidden'],
             'longevity' => $remember? (int)$this->app->registry->fetch('session_remember_timeout', 'Policy')*3600 : 0,
-            'ip'        => $this->app->ip,
-            'agent'     => $this->app->agent,
+            'ip'        => $this->app->ip['id'],
+            'agent'     => $this->app->agent['id'],
             'webpush'   => $this->session['webpush'],
         );
 
