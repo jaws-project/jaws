@@ -203,6 +203,14 @@ class Jaws_ORM
     private $_pk_field = '';
 
     /**
+     * Table primary key type
+     *
+     * @var     string
+     * @access  private
+     */
+    private $_pk_field_type = '';
+
+    /**
      * Table(s) quoted/aliased identifier
      *
      * @var     string
@@ -327,16 +335,18 @@ class Jaws_ORM
      * Sets table name/alias
      *
      * @access  public
-     * @param   mixed   $table      Table name
-     * @param   string  $alias      Table alias in query
-     * @param   string  $pk_field   Table primary key
+     * @param   mixed   $table          Table name
+     * @param   string  $alias          Table alias in query
+     * @param   string  $pk_field       Table primary key
+     * @param   string  $pk_field_type  Table primary key type
      * @return  object  Jaws_ORM object
      */
-    function table($table, $alias = '', $pk_field = 'id')
+    function table($table, $alias = '', $pk_field = 'id', $pk_field_type = 'integer')
     {
         $this->_table = $table;
         $this->_alias = $alias;
         $this->_pk_field = $pk_field;
+        $this->_pk_field_type = $pk_field_type;
 
         $alias_str = empty($alias)? '': (' as '. $this->quoteIdentifier($this->_tbl_prefix. $alias));
         if (is_object($table)) {
@@ -464,9 +474,11 @@ class Jaws_ORM
      */
     function select($columns)
     {
-        $this->_columns = is_array($columns)? $columns : func_get_args();
-        foreach($this->_columns as $key => $column) {
+        $this->_columns = array();
+        $columns = is_array($columns)? $columns : func_get_args();
+        foreach($columns as $column) {
             if (is_object($column)) {
+                $key = uniqid('', true);
                 $this->_columns[$key] = '('. $column->get(). ')';
                 $type   = $column->type;
                 $alias  = $column->alias;
@@ -474,10 +486,11 @@ class Jaws_ORM
                 unset($column);
             } else {
                 if ($type = trim(strrchr($column, ':'), ':')) {
-                    $this->_columns[$key] = $this->quoteIdentifier(substr($column, 0, strrpos($column, ':')));
+                    $key = substr($column, 0, strrpos($column, ':'));
                 } else {
-                    $this->_columns[$key] = $this->quoteIdentifier($column);
+                    $key = $column;
                 }
+                $this->_columns[$key] = $this->quoteIdentifier($key);
             }
 
             if (empty($type)) {
@@ -974,10 +987,17 @@ class Jaws_ORM
                 break;
 
             case 'igsert':
-                $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
+                if (empty($this->_columns)) {
+                    $this->select($this->_pk_field. ':'. $this->_pk_field_type);
+                }
+                $sql = 'select '. implode(', ', $this->_columns) . "\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
                 $sql.= $this->_build_where();
-                $result = $this->jawsdb->dbc->queryone($sql);
+                if (count($this->_columns) == 1) {
+                    $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
+                } else {
+                    $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
+                }
                 if (!MDB2::isError($result) && empty($result)) {
                     goto insert;
                 }
@@ -1012,12 +1032,47 @@ class Jaws_ORM
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
                 $result = $this->jawsdb->query($sql);
                 if (!MDB2::isError($result)) {
-                    if (!empty($result) && !empty($this->_pk_field)) {
-                        $result = $this->jawsdb->lastInsertID(
-                            $this->_tbl_prefix. $this->_table,
-                            $this->_pk_field,
-                            false
-                        );
+                    if (!empty($result)) {
+                        if (!empty($this->_pk_field)) {
+                            $result = $this->jawsdb->lastInsertID(
+                                $this->_tbl_prefix. $this->_table,
+                                $this->_pk_field,
+                                false
+                            );
+                            if (!MDB2::isError($result)) {
+                                // result type conversion
+                                if (empty($this->_columns)) {
+                                    // add pk field name and type to result set
+                                    $this->select($this->_pk_field. ':'. $this->_pk_field_type);
+                                }
+                                $insert_result = array();
+                                $this->_values[$this->_pk_field] = $result;
+                                foreach ($this->_columns as $column => $parsed_column) {
+                                    if (array_key_exists($column, $this->_values)) {
+                                        $insert_result[$column] = $this->_values[$column];
+                                        $numindex = array_search($column, array_keys($this->_columns));
+                                        switch ($this->_types[$numindex]) {
+                                            case 'integer':
+                                                $insert_result[$column] = (int)$insert_result[$column];
+                                                break;
+
+                                            case 'boolean':
+                                                $insert_result[$column] = (bool)$insert_result[$column];
+                                                break;
+
+                                            default: //text
+                                                //do nothing
+                                        }
+                                    }
+                                }
+                                // return first value if requested only one column
+                                if (count($this->_columns) == 1) {
+                                    $result = reset($insert_result);
+                                } else {
+                                    $result = $insert_result;
+                                }
+                            }
+                        }
                     }
                 }
                 break;
