@@ -281,6 +281,17 @@ class Jaws_Gadget_Action
             );
         }
 
+        // check predefine permissions
+        if (isset($this->gadget->actions[JAWS_SCRIPT][$action]['acls'])) {
+            if (!call_user_func_array(
+                    array($this->gadget, 'GetPermission'),
+                    $this->gadget->actions[JAWS_SCRIPT][$action]['acls']
+                )
+            ) {
+                return Jaws_HTTPError::Get($this->app->session->user->logged? 403 : 401);
+            }
+        }
+
         if (isset($this->app->layout)) {
             $title = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_TITLE');
             $description = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_DESC');
