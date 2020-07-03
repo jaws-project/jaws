@@ -15153,6 +15153,7 @@ core_defaults._set('global', {
 		labels: {
 			boxWidth: 40,
 			padding: 10,
+			minWidth: 0,
 			// Generates labels shown in the legend
 			// Valid properties to return:
 			// text : text to display
@@ -15385,6 +15386,7 @@ var Legend = core_element.extend({
 			helpers$1.each(me.legendItems, function(legendItem, i) {
 				var boxWidth = getBoxWidth(labelOpts, fontSize);
 				var width = boxWidth + (fontSize / 2) + ctx.measureText(legendItem.text).width;
+				width = Math.max(width, labelOpts.minWidth);
 
 				if (i === 0 || lineWidths[lineWidths.length - 1] + width + 2 * labelOpts.padding > minSize.width) {
 					totalHeight += fontSize + labelOpts.padding;
@@ -15415,6 +15417,7 @@ var Legend = core_element.extend({
 			helpers$1.each(me.legendItems, function(legendItem, i) {
 				var boxWidth = getBoxWidth(labelOpts, fontSize);
 				var itemWidth = boxWidth + (fontSize / 2) + ctx.measureText(legendItem.text).width;
+				itemWidth = Math.max(itemWidth, labelOpts.minWidth);
 
 				// If too tall, go to new column
 				if (i > 0 && currentColHeight + fontSize + 2 * vPadding > minSize.height) {
@@ -15612,7 +15615,7 @@ var Legend = core_element.extend({
 			fillText(realX, y, legendItem, textWidth);
 
 			if (isHorizontal) {
-				cursor.x += width + labelOpts.padding;
+				cursor.x += Math.max(width, labelOpts.minWidth) + labelOpts.padding;
 			} else {
 				cursor.y += itemHeight;
 			}
