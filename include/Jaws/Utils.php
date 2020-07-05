@@ -173,6 +173,9 @@ class Jaws_Utils
             $parts['path'] = implode('/', array_map('rawurlencode', $parts['path']));
             $parts['path'] = rtrim($parts['path'], '/');
 
+            // base-script
+            $parts['script'] = BASE_SCRIPT;
+
             $parts['resource'] = '';
             if (isset($_SERVER['REDIRECT_URL']) && !empty($_SERVER['REDIRECT_URL'])) {
                 $parts['resource'] = $_SERVER['REDIRECT_URL'];
