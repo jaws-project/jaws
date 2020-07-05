@@ -26,7 +26,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->loadAdmin('FileBrowser.html');
         $tpl->SetBlock('filebrowser');
-        $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=FileBrowser&action=Files');
+        $tpl->SetVariable('base_script', BASE_SCRIPT . '?reqGadget=FileBrowser&action=Files');
 
         $path = $this->gadget->request->fetch('path', 'get');
         $path = empty($path)? '/' : $path;
@@ -217,9 +217,9 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         }
 
         if (empty($post['extra_params'])) {
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=Files&path=' . $post['path']);
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=FileBrowser&action=Files&path=' . $post['path']);
         } else {
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
         }
     }
 
@@ -293,7 +293,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
                 if (!empty($dir) && $_path{0} == '/') {
                     $_path = substr($_path, 1);
                 }
-                $url = BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $_path;
+                $url = BASE_SCRIPT . '?reqGadget=FileBrowser&action=BrowseFile&path=' . $_path;
                 if (empty($_path)) {
                     $link =& Piwi::CreateWidget('Link', _t('FILEBROWSER_ROOT'), $url . '/' . $extraParams);
                     $tpl->SetVariable('root', $link->Get());
@@ -327,7 +327,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
                 // Directory / File
                 if ($file['is_dir']) {
-                    $url = BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile&path='. $file['relative']. $extraParams;
+                    $url = BASE_SCRIPT. '?reqGadget=FileBrowser&action=BrowseFile&path='. $file['relative']. $extraParams;
                     $link =& Piwi::CreateWidget('Link', $file['filename'], $url);
                     $link->SetID('');
                     $link->SetTitle($file['title']);
@@ -390,7 +390,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
             $model->DeleteDBFileInfo($post['path'], $post['selected_item']);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
     }
 
 }

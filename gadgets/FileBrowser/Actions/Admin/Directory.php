@@ -163,7 +163,7 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
             $model->DeleteDBFileInfo($post['path'], $post['selected_item']);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=FileBrowser&action=BrowseFile&path=' . $post['path'] . html_entity_decode($post['extra_params']));
     }
 
 }
