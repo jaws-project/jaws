@@ -12,7 +12,7 @@
 
   <form name="tags" id="tags" action="{{requested_url}}" method="post">
       <input type="hidden" name="reqGadget" value="Tags"/>
-      <input type="hidden" name="action" value="ManageTags"/>
+      <input type="hidden" name="reqAction" value="ManageTags"/>
       <input type="hidden" name="new_tag_name" value=""/>
 
       <div class="filters">
@@ -134,7 +134,7 @@
 <div class="gadget_container">
   <form name="groups" id="groups" action="{{base_script}}" method="post">
       <input type="hidden" name="reqGadget" value="Tags"/>
-      <input type="hidden" name="action" value="UpdateTag"/>
+      <input type="hidden" name="reqAction" value="UpdateTag"/>
       <input type="hidden" name="tid" value="{{tid}}"/>
 
       <div class="gadget_content">
