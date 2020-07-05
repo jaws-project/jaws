@@ -22,7 +22,7 @@ class DirExplorer_Plugin extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $url = BASE_SCRIPT. '?gadget=Directory&amp;action=Browse';
+        $url = BASE_SCRIPT. '?reqGadget=Directory&amp;reqAction=Browse';
         $popbutton =& Piwi::CreateWidget('Button',
                                          'popbutton',
                                          '',
