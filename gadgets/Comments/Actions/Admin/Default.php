@@ -29,14 +29,14 @@ class Comments_Actions_Admin_Default extends Jaws_Gadget_Action
             $menubar->AddOption(
                 'Comments',
                 _t('COMMENTS_TITLE'),
-                BASE_SCRIPT . '?gadget=Comments&amp;action=Comments');
+                BASE_SCRIPT . '?reqGadget=Comments&amp;reqAction=Comments');
         }
 
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption(
                 'Settings',
                 _t('GLOBAL_SETTINGS'),
-                BASE_SCRIPT . '?gadget=Comments&amp;action=Settings',
+                BASE_SCRIPT . '?reqGadget=Comments&amp;reqAction=Settings',
                 STOCK_PREFERENCES);
         }
 
