@@ -25,8 +25,8 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
 
         $addform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', 
             'multipart/form-data', 'frm_emblem');
-        $addform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Emblems'));
-        $addform->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'AddEmblem'));
+        $addform->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Emblems'));
+        $addform->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'AddEmblem'));
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fs = new Jaws_Widgets_FieldSet(_t('EMBLEMS_ADD_EMBLEM'));
