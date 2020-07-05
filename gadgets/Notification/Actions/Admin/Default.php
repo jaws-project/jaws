@@ -26,14 +26,14 @@ class Notification_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('Messages')) {
             $menubar->AddOption('Messages',
                 _t('NOTIFICATION_MESSAGES'),
-                BASE_SCRIPT . '?gadget=Notification&amp;action=Messages',
+                BASE_SCRIPT . '?reqGadget=Notification&amp;reqAction=Messages',
                 STOCK_OPEN);
         }
 
         if ($this->gadget->GetPermission('NotificationDrivers')) {
             $menubar->AddOption('NotificationDrivers',
                 _t('NOTIFICATION_DRIVERS'),
-                BASE_SCRIPT . '?gadget=Notification&amp;action=NotificationDrivers',
+                BASE_SCRIPT . '?reqGadget=Notification&amp;reqAction=NotificationDrivers',
                 STOCK_CONNECT);
         }
 
@@ -41,7 +41,7 @@ class Notification_Actions_Admin_Default extends Jaws_Gadget_Action
             $menubar->AddOption(
                 'Settings',
                 _t('GLOBAL_SETTINGS'),
-                BASE_SCRIPT . '?gadget=Notification&amp;action=Settings',
+                BASE_SCRIPT . '?reqGadget=Notification&amp;reqAction=Settings',
                 STOCK_PREFERENCES);
         }
 
