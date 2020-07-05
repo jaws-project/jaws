@@ -22,7 +22,7 @@ class FileExplorer_Plugin extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $url = BASE_SCRIPT. '?gadget=FileBrowser&amp;action=BrowseFile';
+        $url = BASE_SCRIPT. '?reqGadget=FileBrowser&amp;reqAction=BrowseFile';
         $popbutton =& Piwi::CreateWidget('Button',
                                          'popbutton',
                                          '',
