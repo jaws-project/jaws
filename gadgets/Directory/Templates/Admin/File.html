@@ -24,7 +24,7 @@
   <form id="frm_upload" action="{{base_script}}" target="ifrm_upload"
         method="post" enctype="multipart/form-data" onsubmit="return true">
     <input type="hidden" name="reqGadget" value="Directory" />
-    <input type="hidden" name="action" value="UploadFile" />
+    <input type="hidden" name="reqAction" value="UploadFile" />
     <input type="hidden" name="type" value="file" />
     <table>
       <tr><th>{{lbl_file}}:</th><td>
@@ -35,7 +35,7 @@
   <form id="frm_thumbnail_upload" action="{{base_script}}" target="ifrm_upload"
         method="post" enctype="multipart/form-data" onsubmit="return true;">
     <input type="hidden" name="reqGadget" value="Directory" />
-    <input type="hidden" name="action" value="UploadFile" />
+    <input type="hidden" name="reqAction" value="UploadFile" />
     <input type="hidden" name="type" value="thumbnail" />
     <table>
       <tr><th>{{lbl_thumbnail}}:</th><td>
