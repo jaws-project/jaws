@@ -41,7 +41,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
             $items = $model->Search($options);
         }
 
-        $query_string = '?gadget=Search&action=Results';
+        $query_string = '?reqGadget=Search&action=Results';
         foreach ($post as $option => $value) {
             if (!empty($value)) {
                 $query_string .= '&' . Jaws_XSS::filter($option) . '=' . Jaws_XSS::filter($value);
