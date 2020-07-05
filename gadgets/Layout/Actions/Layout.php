@@ -289,7 +289,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
         $url = $this->app->getSiteURL('/').
-            BASE_SCRIPT. '?gadget=Layout&amp;action=AddLayoutElement&amp;layout='. $layout;
+            BASE_SCRIPT. '?reqGadget=Layout&amp;reqAction=AddLayoutElement&amp;layout='. $layout;
         $add->AddEvent(ON_CLICK, "addGadget('".$url."', '"._t('LAYOUT_NEW')."');");
         $tpl->SetVariable('add_gadget', $add->Get());
 

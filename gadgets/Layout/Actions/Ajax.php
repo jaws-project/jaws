@@ -123,7 +123,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             }
 
             $el['eaid'] = 'ea'.$id;
-            $el['eaonclick'] = BASE_SCRIPT. '?gadget=Layout&action=ElementAction&id='.$id.'&layout='.$layout;
+            $el['eaonclick'] = BASE_SCRIPT. '?reqGadget=Layout&action=ElementAction&id='.$id.'&layout='.$layout;
             unset($info);
             $el['icon']      = 'gadgets/'.$gadget.'/Resources/images/logo.png';
             $el['delete']    = "deleteElement('{$id}');";
@@ -132,7 +132,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $el['dwtitle']   = _t('LAYOUT_CHANGE_DW');
             $el['dwdisplay'] = _t('LAYOUT_DISPLAY_IN') . ': ';
             $el['dwid'] = 'dw'.$id;
-            $el['dwonclick'] = BASE_SCRIPT. '?gadget=Layout&action=DisplayWhen&id='.$id.'&layout='.$layout;
+            $el['dwonclick'] = BASE_SCRIPT. '?reqGadget=Layout&action=DisplayWhen&id='.$id.'&layout='.$layout;
             $res = $el;
             $res['success'] = true;
         }
