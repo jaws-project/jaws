@@ -41,7 +41,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             $uAccoun =& Piwi::CreateWidget(
                 'Link',
                 $this->app->session->user->nickname,
-                BASE_SCRIPT . '?gadget=Users&amp;action=MyAccount'
+                $this->app->map->GetRawURL('Users', 'MyAccount')
             );
         } else {
             $uAccoun =& Piwi::CreateWidget('Label', $this->app->session->user->nickname);
@@ -49,7 +49,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
 
         $tpl->SetVariable('my-account', $uAccoun->Get());
         $tpl->SetVariable('logout', _t('GLOBAL_LOGOUT'));
-        $tpl->SetVariable('logout-url', BASE_SCRIPT . '?gadget=Users&amp;action=Logout');
+        $tpl->SetVariable('logout-url', $this->app->map->GetRawURL('Users', 'Logout'));
         $tpl->ParseBlock('layout/login-info');
 
         // Set the header items for each gadget and the response box
@@ -143,7 +143,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                     $tpl->SetVariable('url', $this->app->getSiteURL('/'));
                 } else {
                     $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['name'].'/Resources/images/logo.png'));
-                    $tpl->SetVariable('url', BASE_SCRIPT . '?gadget='.$gadget['name']);
+                    $tpl->SetVariable('url', $this->app->map->GetRawURL($gadget['name']));
                 }
                 $tpl->ParseBlock('main/item');
             }
@@ -163,7 +163,10 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                     $tpl->SetVariable('title', $gadgetCompleteDesc);
                     $tpl->SetVariable('name', $gadget['title']);
                     $tpl->SetVariable('icon', $icon);
-                    $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=InstallGadget&amp;comp='. $key);
+                    $tpl->SetVariable(
+                        'url',
+                        $this->app->map->GetRawURL('Components', 'InstallGadget', array('comp' => $key))
+                    );
                     $tpl->SetVariable('install', _t('COMPONENTS_INSTALL'));
                     $tpl->ParseBlock('notifybox/item');
                 }
@@ -182,7 +185,10 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                     $tpl->SetVariable('title', $gadgetCompleteDesc);
                     $tpl->SetVariable('name', $gadget['title']);
                     $tpl->SetVariable('icon', $icon);
-                    $tpl->SetVariable('url', BASE_SCRIPT. '?gadget=Components&amp;action=UpgradeGadget&amp;comp='. $key);
+                    $tpl->SetVariable(
+                        'url',
+                        $this->app->map->GetRawURL('Components', 'UpgradeGadget', array('comp' => $key))
+                    );
                     $tpl->SetVariable('install', _t('COMPONENTS_UPDATE'));
                     $tpl->ParseBlock('notifybox/item');
                 }
