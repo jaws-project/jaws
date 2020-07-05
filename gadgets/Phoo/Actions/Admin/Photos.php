@@ -219,8 +219,8 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $tpl->SetBlock('phoo/noalbums');
             $tpl->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));
             $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-            $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Phoo'));
-            $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'NewAlbum'));
+            $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Phoo'));
+            $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'NewAlbum'));
             $b =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
             $b->SetSubmit(true);
             $form->Add($b);

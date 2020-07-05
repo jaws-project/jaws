@@ -39,8 +39,8 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
             'post',
             'multipart/form-data');
         $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'MAX_FILE_SIZE', '15000000'));
-        $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Phoo'));
-        $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UploadPhotosStep2'));
+        $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Phoo'));
+        $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'UploadPhotosStep2'));
 
         $albumcombo =& Piwi::CreateWidget('Combo', 'album', _t('PHOO_ALBUM'));
         $albums = $model->GetAlbums('name', 'ASC');

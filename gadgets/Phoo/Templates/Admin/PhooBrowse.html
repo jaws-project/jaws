@@ -16,7 +16,7 @@
             action="{{base_script}}"
             enctype="multipart/form-data">
           <input type="hidden" name="reqGadget" value="Phoo"/>
-          <input type="hidden" name="action" id="action" value="UploadPhotosStep2"/>
+          <input type="hidden" name="reqAction" id="action" value="UploadPhotosStep2"/>
           <input type="hidden" name="album" id="album" value="{{album}}"/>
           <input type="hidden" name="extra_params" id="extra_params" value="{{extra_params}}"/>
 
@@ -68,7 +68,7 @@
 
     <form id="album_form" name="album_form" action="{{base_script}}" method="post">
       <input type="hidden" name="reqGadget" value="Phoo" />
-      <input type="hidden" name="action" value="BrowsePhoo" />
+      <input type="hidden" name="reqAction" value="BrowsePhoo" />
       <input type="hidden" name="extra_params" id="extra_params" value="{{extra_params}}"/>
       <table id="phoo-table">
         <tr>

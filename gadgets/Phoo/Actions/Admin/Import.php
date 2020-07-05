@@ -31,9 +31,9 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
         if (count($items) > 0) {
             $tpl->SetBlock('import/pictures');
             $tpl->SetVariable('ready_to_import', _t('PHOO_READY_TO_IMPORT', count($items)));
-            $gadget =& Piwi::CreateWidget('HiddenEntry', 'gadget', 'Phoo');
+            $gadget =& Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Phoo');
             $tpl->SetVariable ('gadget_hidden', $gadget->Get());
-            $action =& Piwi::CreateWidget('HiddenEntry', 'action', 'FinishImport');
+            $action =& Piwi::CreateWidget('HiddenEntry', 'reqAction', 'FinishImport');
             $tpl->SetVariable ('action_hidden', $action->Get());
             $tpl->SetVariable ('import_message', _t('PHOO_IMPORT_MESSAGE'));
             $albumcombo =& Piwi::CreateWidget('Combo', 'album', _t('PHOO_ALBUM'));

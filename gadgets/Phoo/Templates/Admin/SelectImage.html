@@ -14,7 +14,7 @@
       <!-- BEGIN selected -->
       <form name="AdminPhotos" action="{{base_script}}" method="POST">
         <input type="hidden" name="reqGadget" value="Phoo" />
-        <input type="hidden" name="action" value="BrowsePhoo" />
+        <input type="hidden" name="reqAction" value="BrowsePhoo" />
         <input type="hidden" name="album" value="{{album}}" />
         <input type="hidden" name="extra_params" id="extra_params" value="{{extra_params}}"/>
         <div class="image-box"><table class="image-box_">
@@ -70,7 +70,7 @@
       <!-- BEGIN not_published -->
       <form name="AdminPhotos" action="{{base_script}}" method="POST">
         <input type="hidden" name="reqGadget" value="Phoo" />
-        <input type="hidden" name="action" value="BrowsePhoo" />
+        <input type="hidden" name="reqAction" value="BrowsePhoo" />
         <input type="hidden" name="album" value="{{album}}" />
         <div class="image-box">
           <div class="notice-message">{{not_published_label}}</div> 

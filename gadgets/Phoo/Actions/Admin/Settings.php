@@ -28,8 +28,8 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('menubar',$this->MenuBar('AdditionalSettings'));
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Phoo'));
-        $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'SaveAdditionalSettings'));
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Phoo'));
+        $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'SaveAdditionalSettings'));
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('PHOO_ADDITIONAL_SETTINGS'));
