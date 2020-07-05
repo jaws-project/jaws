@@ -61,9 +61,9 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         }
 
         $data = array();
-        $edit_url  = BASE_SCRIPT . '?gadget=StaticPage&amp;action=EditPage&amp;id=';
-        $add_turl  = BASE_SCRIPT . '?gadget=StaticPage&amp;action=AddNewTranslation&amp;page=';
-        $edit_turl = BASE_SCRIPT . '?gadget=StaticPage&amp;action=EditTranslation&amp;id=';
+        $edit_url  = BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=EditPage&amp;id=';
+        $add_turl  = BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=AddNewTranslation&amp;page=';
+        $edit_turl = BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=EditTranslation&amp;id=';
         $date = Jaws_Date::getInstance();
 
         foreach ($pages as $page) {
@@ -253,7 +253,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $model->AddPage($post['title'], $post['group_id'], $post['show_title'], $post['content'], $post['language'],
             $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=ManagePages');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage&action=ManagePages');
     }
 
     /**
@@ -272,7 +272,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $page = $model->GetPage($id);
         if (Jaws_Error::IsError($page)) {
             $this->gadget->session->push($page->GetMessage(), RESPONSE_ERROR);
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditPage&id=' . $id);
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage&action=EditPage&id=' . $id);
         }
 
         return $this->CreateForm($page['title'], $page['fast_url'], $page['meta_keywords'], $page['meta_description'],
@@ -300,6 +300,6 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
             $post['content'], $post['language'], $post['fast_url'], $post['meta_keys'],
             $post['meta_desc'], $post['tags'], $post['published']);
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditPage&id=' . $id);
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage&action=EditPage&id=' . $id);
     }
 }

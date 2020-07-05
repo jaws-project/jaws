@@ -33,22 +33,22 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('ManagePages', _t('STATICPAGE_MENU_PAGES'),
-                            BASE_SCRIPT . '?gadget=StaticPage&amp;action=ManagePages', STOCK_DOCUMENTS);
+                            BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=ManagePages', STOCK_DOCUMENTS);
 
         if ($this->gadget->GetPermission('AddPage')) {
             $menubar->AddOption('AddNewPage', _t('STATICPAGE_MENU_ADDPAGE'),
-                                BASE_SCRIPT . '?gadget=StaticPage&amp;action=AddNewPage', STOCK_NEW);
+                                BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=AddNewPage', STOCK_NEW);
         }
 
         if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups', _t('STATICPAGE_GROUPS'),
-                                BASE_SCRIPT . '?gadget=StaticPage&amp;action=Groups',
+                                BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=Groups',
                                 'gadgets/StaticPage/Resources/images/groups.png');
         }
 
         if ($this->gadget->GetPermission('Properties')) {
             $menubar->AddOption('Properties', _t('GLOBAL_SETTINGS'),
-                                BASE_SCRIPT . '?gadget=StaticPage&amp;action=Properties',
+                                BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=Properties',
                                 'images/stock/properties.png');
         }
         $menubar->Activate($selected);
@@ -224,7 +224,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         ///FIXME use the proper url stuff
-        $cancel->AddEvent(ON_CLICK, "javascript:window.location = '".BASE_SCRIPT.'?gadget=StaticPage'."';");
+        $cancel->AddEvent(ON_CLICK, "javascript:window.location = '".BASE_SCRIPT.'?reqGadget=StaticPage'."';");
 
         $preview =& Piwi::CreateWidget('Button', 'preview', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
         $preview->AddEvent(ON_CLICK, 'javascript:parseText(this.form);');
