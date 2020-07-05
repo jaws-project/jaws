@@ -10,7 +10,7 @@
     </div>
     <form name="subscription" action="{{base_script}}" method="post" onsubmit="return updateSubscription();">
         <input type="hidden" name="reqGadget" value="Subscription" />
-        <input type="hidden" name="action" value="UpdateSubscription" />
+        <input type="hidden" name="reqAction" value="UpdateSubscription" />
 
         <div class="gadget_content">
             <!-- BEGIN gadget -->
@@ -81,7 +81,7 @@
 <div class="gadget_subscription">
 <form name="subscriptionForm" method="post" action="{{base_script}}">
     <input type="hidden" name="reqGadget" value="Subscription"/>
-    <input type="hidden" name="action" value="UpdateGadgetSubscription"/>
+    <input type="hidden" name="reqAction" value="UpdateGadgetSubscription"/>
 
     <input type="hidden" name="subscription_gadget" value="{{gadget}}"/>
     <input type="hidden" name="subscription_action" value="{{action}}"/>
