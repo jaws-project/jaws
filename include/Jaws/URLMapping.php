@@ -377,7 +377,11 @@ class Jaws_URLMapping
         $extension = isset($options['extension'])? $options['extension'] : true;
         unset($options['absolute'], $options['extension']);
 
-        $url = BASE_SCRIPT. '?reqGadget=' .$gadget . '&reqAction='. $action;
+        if (empty($action)) {
+            $url = BASE_SCRIPT. '?reqGadget=' .$gadget;
+        } else {
+            $url = BASE_SCRIPT. '?reqGadget=' .$gadget . '&reqAction='. $action;
+        }
 
         // merging options and params
         $params = array_merge($params, $options);
