@@ -28,7 +28,7 @@ class PrivateMessage_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageProperties')) {
             $menubar->AddOption('Properties',
                                 _t('GLOBAL_PROPERTIES'),
-                                BASE_SCRIPT . '?gadget=PrivateMessage&amp;action=Properties',
+                                BASE_SCRIPT . '?reqGadget=PrivateMessage&amp;reqAction=Properties',
                                 STOCK_PREFERENCES);
         }
         $menubar->Activate($action);
