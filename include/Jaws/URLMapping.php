@@ -377,7 +377,7 @@ class Jaws_URLMapping
         $extension = isset($options['extension'])? $options['extension'] : true;
         unset($options['absolute'], $options['extension']);
 
-        $url = BASE_SCRIPT. '?gadget=' .$gadget . '&action='. $action;
+        $url = BASE_SCRIPT. '?reqGadget=' .$gadget . '&reqAction='. $action;
 
         // merging options and params
         $params = array_merge($params, $options);
@@ -474,7 +474,7 @@ class Jaws_URLMapping
         }
 
         if (!$this->_enabled) {
-            $url = 'index.php'. '?gadget=' .$gadget . '&action='. $action;
+            $url = 'index.php'. '?reqGadget=' .$gadget . '&reqAction='. $action;
         } elseif ($this->_use_rewrite) {
             $url = $gadget . '/'. $action;
         } else {
