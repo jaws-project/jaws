@@ -29,8 +29,8 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_Actions_Admin_Default
         ///Config properties
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
-            $form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Shoutbox'));
-            $form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
+            $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Shoutbox'));
+            $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'UpdateProperties'));
 
             include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
             $fieldset = new Jaws_Widgets_FieldSet(_t('SHOUTBOX_SETTINGS'));
