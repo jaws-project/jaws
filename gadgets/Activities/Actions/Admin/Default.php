@@ -25,7 +25,7 @@ class Activities_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar->AddOption(
             'Activities',
             _t('ACTIVITIES_ACTIVITIES'),
-            BASE_SCRIPT . '?gadget=Activities&amp;action=Activities',
+            BASE_SCRIPT . '?reqGadget=Activities&amp;reqAction=Activities',
             STOCK_PREFERENCES);
 
         $menubar->Activate($action);
