@@ -29,27 +29,27 @@ class Policy_Actions_Admin_Default extends Jaws_Gadget_Action
         $sidebar = new Jaws_Widgets_Sidebar('policy');
         if ($this->gadget->GetPermission('IPBlocking')) {
             $sidebar->AddOption('IPBlocking', _t('POLICY_IP_BLOCKING'), 
-                                BASE_SCRIPT . '?gadget=Policy&amp;action=IPBlocking',
+                                BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=IPBlocking',
                                 'images/stock/stop.png');
         }
         if ($this->gadget->GetPermission('AgentBlocking')) {
             $sidebar->AddOption('AgentBlocking', _t('POLICY_AGENT_BLOCKING'),
-                                BASE_SCRIPT . '?gadget=Policy&amp;action=AgentBlocking',
+                                BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=AgentBlocking',
                                 'images/stock/stop.png');
         }
         if ($this->gadget->GetPermission('Encryption')) {
             $sidebar->AddOption('Encryption', _t('POLICY_ENCRYPTION'),
-                                BASE_SCRIPT . '?gadget=Policy&amp;action=Encryption',
+                                BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=Encryption',
                                 'gadgets/Policy/Resources/images/encryption.png');
         }
         if ($this->gadget->GetPermission('AntiSpam')) {
             $sidebar->AddOption('AntiSpam', _t('POLICY_ANTISPAM'),
-                                BASE_SCRIPT . '?gadget=Policy&amp;action=AntiSpam',
+                                BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=AntiSpam',
                                 'gadgets/Policy/Resources/images/antispam.png');
         }
         if ($this->gadget->GetPermission('AdvancedPolicies')) {
             $sidebar->AddOption('AdvancedPolicies', _t('POLICY_ADVANCED_POLICIES'),
-                                BASE_SCRIPT . '?gadget=Policy&amp;action=AdvancedPolicies',
+                                BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=AdvancedPolicies',
                                 'gadgets/Policy/Resources/images/policies.png');
         }
 
