@@ -29,7 +29,7 @@ class Quotes_Actions_Admin_Default extends Jaws_Gadget_Action
             $menubar->AddOption(
                 'Quotes',
                 $this->gadget->title,
-                BASE_SCRIPT . '?gadget=Quotes',
+                BASE_SCRIPT . '?reqGadget=Quotes',
                 'gadgets/Quotes/Resources/images/quotes_mini.png'
             );
         }
@@ -37,7 +37,7 @@ class Quotes_Actions_Admin_Default extends Jaws_Gadget_Action
             $menubar->AddOption(
                 'QuoteGroups',
                 _t('QUOTES_GROUPS'),
-                BASE_SCRIPT . '?gadget=Quotes&amp;action=QuoteGroups',
+                BASE_SCRIPT . '?reqGadget=Quotes&amp;reqAction=QuoteGroups',
                 'gadgets/Quotes/Resources/images/groups_mini.png'
             );
         }
