@@ -30,33 +30,33 @@ class Blog_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Summary',_t('BLOG_SUMMARY'),
-                                BASE_SCRIPT . '?gadget=Blog&amp;action=Summary', 'images/stock/new.png');
+                                BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=Summary', 'images/stock/new.png');
         if ($this->gadget->GetPermission('AddEntries')) {
             $menubar->AddOption('NewEntry', _t('BLOG_NEW_ENTRY'),
-                                BASE_SCRIPT . '?gadget=Blog&amp;action=NewEntry', 'images/stock/new.png');
+                                BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=NewEntry', 'images/stock/new.png');
         }
         $menubar->AddOption('ListEntries', _t('BLOG_LIST_ENTRIES'),
-                            BASE_SCRIPT . '?gadget=Blog&amp;action=ListEntries', 'images/stock/edit.png');
+                            BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=ListEntries', 'images/stock/edit.png');
         if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
             $menubar->AddOption('ManageComments', _t('BLOG_MANAGE_COMMENTS'),
-                                BASE_SCRIPT . '?gadget=Blog&amp;action=ManageComments', 'images/stock/stock-comments.png');
+                                BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=ManageComments', 'images/stock/stock-comments.png');
         }
         if ($this->gadget->GetPermission('ManageTrackbacks')) {
             $menubar->AddOption('ManageTrackbacks', _t('BLOG_MANAGE_TRACKBACKS'),
-                                BASE_SCRIPT . '?gadget=Blog&amp;action=ManageTrackbacks', 'images/stock/stock-comments.png');
+                                BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=ManageTrackbacks', 'images/stock/stock-comments.png');
         }
         if ($this->gadget->GetPermission('ManageCategories')) {
             $menubar->AddOption('ManageCategories', _t('BLOG_CATEGORIES'),
-                                BASE_SCRIPT . '?gadget=Blog&amp;action=ManageCategories', 'images/stock/edit.png');
+                                BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=ManageCategories', 'images/stock/edit.png');
         }
         if ($this->gadget->GetPermission('ManageTypes')) {
             $menubar->AddOption('Types', _t('BLOG_TYPES'),
-                                BASE_SCRIPT . '?gadget=Blog&amp;action=Types',
+                                BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=Types',
                                 'gadgets/Blog/Resources/images/categories.png');
         }
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption('AdditionalSettings', _t('BLOG_SETTINGS'),
-                                BASE_SCRIPT . '?gadget=Blog&amp;action=AdditionalSettings', 'images/stock/properties.png');
+                                BASE_SCRIPT . '?reqGadget=Blog&amp;reqAction=AdditionalSettings', 'images/stock/properties.png');
         }
         $menubar->Activate($action_selected);
 

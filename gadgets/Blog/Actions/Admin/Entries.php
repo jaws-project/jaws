@@ -310,7 +310,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ListEntries');
     }
 
     /**
@@ -688,7 +688,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=EditEntry&id=' . $id);
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=EditEntry&id=' . $id);
     }
 
     /**
@@ -713,7 +713,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 $this->gadget->session->push(_t('BLOG_ENTRY_DELETED'), RESPONSE_NOTICE);
             }
 
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ListEntries');
         }
 
         $get = $this->gadget->request->fetch(array('id', 'action'), 'get');
@@ -722,7 +722,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $entry = $bModel->GetEntry($get['id']);
         if (Jaws_Error::IsError($entry)) {
             $this->gadget->session->push(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ListEntries');
         }
 
         $tpl = $this->gadget->template->loadAdmin('EntryDelete.html');
@@ -894,7 +894,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
      */
     function PostsData($cat, $status, $search, $limit = 0)
     {
-        $common_url = BASE_SCRIPT . '?gadget=Blog';
+        $common_url = BASE_SCRIPT . '?reqGadget=Blog';
 
         $model = $this->gadget->model->load('Posts');
         $entries = $model->AdvancedSearch($limit, $cat, $status, $search,
@@ -911,7 +911,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             $post = array();
             $id = $row['id'];
             $post['__KEY__'] = $id;
-            $post['title'] = '<a href="'.$common_url.'&amp;action=EditEntry&amp;id='.$id.'">'.
+            $post['title'] = '<a href="'.$common_url.'&amp;reqAction=EditEntry&amp;id='.$id.'">'.
                 $row['title'].'</a>';
             $post['publishtime'] = $date->Format($row['publishtime']);
             $post['updatetime']  = $date->Format($row['updatetime']);
@@ -920,20 +920,20 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
             $actions = '';
             $link = Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                       $common_url.'&amp;action=EditEntry&amp;id='.$id,
+                                       $common_url.'&amp;reqAction=EditEntry&amp;id='.$id,
                                        STOCK_EDIT);
             $actions = $link->Get().'&nbsp;';
 
             if ($this->gadget->GetPermission('ManageComments')) {
                 $link = Piwi::CreateWidget('Link', _t('BLOG_COMMENTS'),
-                                           $common_url.'&amp;action=ManageComments&amp;filterby=postid&amp;filter='.$id,
+                                           $common_url.'&amp;reqAction=ManageComments&amp;filterby=postid&amp;filter='.$id,
                                            'images/stock/stock-comments.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
             if ($this->gadget->GetPermission('DeleteEntries')) {
                 $link = Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                           $common_url.'&amp;action=DeleteEntry&amp;id='.$id,
+                                           $common_url.'&amp;reqAction=DeleteEntry&amp;id='.$id,
                                            STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }

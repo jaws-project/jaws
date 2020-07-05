@@ -151,13 +151,13 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         // Fetch the trackback
         $trackback = $tModel->GetTrackback($this->gadget->request->fetch('id', 'get'));
         if (Jaws_Error::IsError($trackback)) {
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageTrackbacks');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ManageTrackbacks');
         }
 
         // Fetch the entry
         $entry = $pModel->getEntry($trackback['parent_id']);
         if (Jaws_Error::IsError($entry)) {
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ManageTrackbacks');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ManageTrackbacks');
         }
 
         $tpl = $this->gadget->template->loadAdmin('Trackback.html');
