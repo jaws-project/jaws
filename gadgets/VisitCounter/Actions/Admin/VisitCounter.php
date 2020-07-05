@@ -39,8 +39,8 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
         //Ok, the config..
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $config_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'VisitCounter'));
-            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
+            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'VisitCounter'));
+            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'UpdateProperties'));
 
             include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
             $fieldset_config = new Jaws_Widgets_FieldSet(_t('VISITCOUNTER_PROPERTIES'));
