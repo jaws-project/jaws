@@ -106,8 +106,8 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('AddWebcam')) {
             $cam_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', '', 'webcam_form');
-            $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Webcam'));
-            $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'AddWebcam'));
+            $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Webcam'));
+            $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'AddWebcam'));
             $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'id', ''));
 
             $fieldset_webcam = new Jaws_Widgets_FieldSet($this->gadget->title);
@@ -145,8 +145,8 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $config_form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
-            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Webcam'));
-            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateProperties'));
+            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Webcam'));
+            $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'UpdateProperties'));
 
             $fieldset_config = new Jaws_Widgets_FieldSet(_t('GLOBAL_PROPERTIES'));
             $fieldset_config->SetDirection('vertical');
