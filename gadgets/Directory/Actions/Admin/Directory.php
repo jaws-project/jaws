@@ -33,7 +33,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         if ($standalone) {
             $tpl->SetVariable('standalone', 'standalone');
             $this->gadget->define('currentAction', 'Browse');
-            $tpl->SetVariable('home_url', BASE_SCRIPT . '?gadget=Directory&action=Browse');
+            $tpl->SetVariable('home_url', BASE_SCRIPT . '?reqGadget=Directory&action=Browse');
 
             $tpl->SetBlock('workspace/standalone');
             $tpl->ParseBlock('workspace/standalone');
@@ -52,7 +52,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         } else {
             $tpl->SetVariable('menubar', $this->MenuBar('Directory'));
             $this->gadget->define('currentAction', 'Directory');
-            $tpl->SetVariable('home_url', BASE_SCRIPT . '?gadget=Directory');
+            $tpl->SetVariable('home_url', BASE_SCRIPT . '?reqGadget=Directory');
         }
 
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
@@ -171,7 +171,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $action = $this->gadget->request->fetch('curr_action');
         foreach ($files as &$file) {
             if ($file['is_dir']) {
-                $file['url'] = BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $file['id'];
+                $file['url'] = BASE_SCRIPT . "?reqGadget=Directory&action=$action&id=" . $file['id'];
             } else {
                 $file['link'] = $this->gadget->urlMap(
                     'Directory',
@@ -234,7 +234,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $path = array();
         $this->gadget->model->load('Files')->GetPath($id, $path);
         foreach($path as &$p) {
-            $p['url'] = BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $p['id'];
+            $p['url'] = BASE_SCRIPT . "?reqGadget=Directory&action=$action&id=" . $p['id'];
         }
         return $path;
     }
@@ -477,7 +477,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
             if ($file['is_dir']) {
-                $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&id=' . $file['id'];
+                $file['url'] = BASE_SCRIPT . '?reqGadget=Directory&action=Directory&id=' . $file['id'];
             }
             $file['published_str'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
