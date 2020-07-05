@@ -24,12 +24,12 @@ class Tags_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Tags',
                             _t('TAGS_TITLE'),
-                            BASE_SCRIPT . '?gadget=Tags&amp;action=Tags',
+                            BASE_SCRIPT . '?reqGadget=Tags&amp;reqAction=Tags',
                             STOCK_NEW);
         if ($this->gadget->GetPermission('ManageProperties')) {
             $menubar->AddOption('Properties',
                                 _t('GLOBAL_PROPERTIES'),
-                                BASE_SCRIPT . '?gadget=Tags&amp;action=Properties',
+                                BASE_SCRIPT . '?reqGadget=Tags&amp;reqAction=Properties',
                                 STOCK_PREFERENCES);
         }
         $menubar->Activate($action);
