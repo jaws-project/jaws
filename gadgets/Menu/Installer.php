@@ -191,7 +191,15 @@ class Menu_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.8.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.7.0.xml');
+            $result = $this->installSchema('1.8.0.xml', array(), '1.7.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+        }
+
+        if (version_compare($old, '1.9.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.8.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }

@@ -26,8 +26,7 @@
         </field>
 
         <field>
-            <name>gadget</name>
-            <was>type</was>
+            <name>type</name>
             <type>text</type>
             <length>32</length>
             <default>url</default>

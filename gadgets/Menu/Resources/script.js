@@ -119,7 +119,7 @@ function saveMenus()
                 'InsertMenu', [
                     $('#pid').val(),
                     $('#gid').val(),
-                    $('#type').val(),
+                    $('#gadget').val(),
                     $('#permission').val(),
                     $('#title').val(),
                     $('#url').val(),
@@ -144,7 +144,7 @@ function saveMenus()
                     $('#mid').val(),
                     $('#pid').val(),
                     $('#gid').val(),
-                    $('#type').val(),
+                    $('#gadget').val(),
                     $('#permission').val(),
                     $('#title').val(),
                     $('#url').val(),
@@ -284,7 +284,7 @@ function addMenu(gid, pid)
     $('#pid').val(pid);
     setOrderCombo(gid, pid);
 
-    getReferences($('#type').val());
+    getReferences($('#gadget').val());
     $('#references').prop('selectedIndex', -1);
 }
 
@@ -353,7 +353,7 @@ function editMenu(mid)
     $('#mid').val(menuInfo['id']);
     $('#pid').val(menuInfo['pid']);
     $('#gid').val(menuInfo['gid']);
-    $('#type').val(menuInfo['type']);
+    $('#gadget').val(menuInfo['gadget']);
     $('#title').val(menuInfo['title'].defilter());
     $('#url').val(menuInfo['url']);
     $('#url').prop('disabled', menuInfo['variables'] || !menuInfo['url']);
@@ -365,9 +365,9 @@ function editMenu(mid)
     setOrderCombo($('#gid').val(), $('#pid').val());
     $('#order').val(menuInfo['order']);
     $('#status').val(menuInfo['status']);
-    getReferences($('#type').val());
+    getReferences($('#gadget').val());
     $('#references').val(menuInfo['url']);
-    if ($('#type').val() == 'url' && $('#references').prop('selectedIndex') == -1) {
+    if ($('#gadget').val() == 'url' && $('#references').prop('selectedIndex') == -1) {
         $('#references').prop('selectedIndex', 0);
     }
 
@@ -426,40 +426,42 @@ function getParentMenus(gid, mid) {
 /**
  * Get a list of public URLs
  */
-function changeType(type) {
-    getReferences(type);
+function changeGadget(gadget) {
+    getReferences(gadget);
     $('#references').prop('selectedIndex', -1);
 }
 
 /**
  * Get a list of public URLs
  */
-function getReferences(type)
+function getReferences(gadget)
 {
-    if (cachedMenus[type]) {
+    if (cachedMenus[gadget]) {
         $('#references').empty();
-        for(var i = 0; i < cachedMenus[type].length; i++) {
-            $('#references').append($('<option>').val(cachedMenus[type][i]['url']).text(cachedMenus[type][i]['title']));
+        for(var i = 0; i < cachedMenus[gadget].length; i++) {
+            $('#references').append(
+                $('<option>').val(cachedMenus[gadget][i]['url']).text(cachedMenus[gadget][i]['title'])
+            );
         }
         return;
     }
-    var links = MenuAjax.callSync('GetPublicURList', type);
-    cachedMenus[type] = new Array();
+    var links = MenuAjax.callSync('GetPublicURList', gadget);
+    cachedMenus[gadget] = new Array();
     $('#references').empty();
     $.each(links, function(i, link) {
         $('#references').append($('<option>').val(link['url']).text(link['title']));
-        cachedMenus[type][i] = new Array();
-        cachedMenus[type][i]['url']   = link['url'];
-        cachedMenus[type][i]['options'] = link['options']? link['options'] : '';
-        cachedMenus[type][i]['variables'] = link['variables']? link['variables'] : '';
-        cachedMenus[type][i]['title'] = link['title'];
+        cachedMenus[gadget][i] = new Array();
+        cachedMenus[gadget][i]['url']   = link['url'];
+        cachedMenus[gadget][i]['options'] = link['options']? link['options'] : '';
+        cachedMenus[gadget][i]['variables'] = link['variables']? link['variables'] : '';
+        cachedMenus[gadget][i]['title'] = link['title'];
         if (link['title2']) {
-            cachedMenus[type][i]['title2'] = link['title2'];
+            cachedMenus[gadget][i]['title2'] = link['title2'];
         }
         
-        cachedMenus[type][i]['permission'] = link['permission']? link['permission'] : '';
+        cachedMenus[gadget][i]['permission'] = link['permission']? link['permission'] : '';
         if (link['status']) {
-            cachedMenus[type][i]['status'] = link['status'];
+            cachedMenus[gadget][i]['status'] = link['status'];
         }
     });
 }
@@ -468,26 +470,26 @@ function getReferences(type)
  * change references
  */
 function changeReferences() {
-    var type = $('#type').val();
+    var gadget = $('#gadget').val();
     var selIndex = $('#references').prop('selectedIndex');
-    if (type != 'url') {
-        if (cachedMenus[type][selIndex]['title2']) {
-            $('#title').val(cachedMenus[type][selIndex]['title2']);
+    if (gadget != 'url') {
+        if (cachedMenus[gadget][selIndex]['title2']) {
+            $('#title').val(cachedMenus[gadget][selIndex]['title2']);
         } else {
             $('#title').val($("#references option").eq(selIndex).text());
         }
-        if (cachedMenus[type][selIndex]['status']) {
-            $('#status').val(cachedMenus[type][selIndex]['status']);
+        if (cachedMenus[gadget][selIndex]['status']) {
+            $('#status').val(cachedMenus[gadget][selIndex]['status']);
         } else {
             $('#status').val(1);
         }
     }
 
-    $('#variables').val(cachedMenus[type][selIndex]['variables']);
-    $('#options').val(cachedMenus[type][selIndex]['options']);
-    $('#permission').val(cachedMenus[type][selIndex]['permission']);
+    $('#variables').val(cachedMenus[gadget][selIndex]['variables']);
+    $('#options').val(cachedMenus[gadget][selIndex]['options']);
+    $('#permission').val(cachedMenus[gadget][selIndex]['permission']);
     $('#url').val($('#references').val());
-    $('#url').prop('disabled', cachedMenus[type][selIndex]['variables'] || !cachedMenus[type][selIndex]['url']);
+    $('#url').prop('disabled', cachedMenus[gadget][selIndex]['variables'] || !cachedMenus[gadget][selIndex]['url']);
 }
 
 /**

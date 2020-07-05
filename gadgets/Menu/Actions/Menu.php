@@ -117,12 +117,12 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
 
             // check default ACL
-            if ($menu['type'] != 'url') {
-                if (!Jaws_Gadget::IsGadgetInstalled($menu['type'])) {
+            if ($menu['gadget'] != 'url') {
+                if (!Jaws_Gadget::IsGadgetInstalled($menu['gadget'])) {
                     continue;
                 }
 
-                if (!$this->app->session->getPermission($menu['type'], 'default')) {
+                if (!$this->app->session->getPermission($menu['gadget'], 'default')) {
                     continue;
                 }
 
@@ -134,7 +134,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                             continue;
                         }
                     } else {
-                        $permission['gadget'] = $menu['type'];
+                        $permission['gadget'] = $menu['gadget'];
                     }
 
                     if (!$this->app->session->getPermission(
@@ -149,7 +149,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
 
             // replace menu variables
             if (!empty($menu['variables'])) {
-                $objGadget = Jaws_Gadget::getInstance($menu['type']);
+                $objGadget = Jaws_Gadget::getInstance($menu['gadget']);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }

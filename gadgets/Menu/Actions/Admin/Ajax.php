@@ -320,6 +320,17 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                 if (!Jaws_Error::IsError($objGadget)) {
                     $links = $objGadget->hook->load('Menu')->Execute();
                     if (!Jaws_Error::IsError($links)) {
+                        array_unshift(
+                            $links,
+                            array(
+                                'url'   => '/',
+                                'title' => _t('MENU_REFERENCES_FREE_LINK')
+                            ),
+                            array(
+                                'url'   => '',
+                                'title' => _t('MENU_REFERENCES_NO_LINK')
+                            ),
+                        );
                         foreach ($links as $key => $link) {
                             if (is_array($link['url'])) {
                                 $links[$key]['url'] = serialize($link['url']);

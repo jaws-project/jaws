@@ -150,7 +150,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
     function DeleteGadgetMenus($gadget)
     {
         $menusTable = Jaws_ORM::getInstance()->table('menus');
-        $mids = $menusTable->select('id')->where('type', $gadget)->fetchAll();
+        $mids = $menusTable->select('id')->where('gadget', $gadget)->fetchAll();
         if (Jaws_Error::IsError($mids)) {
             return false;
         }

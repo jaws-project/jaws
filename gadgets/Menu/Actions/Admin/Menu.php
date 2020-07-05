@@ -206,10 +206,10 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_pid', _t('MENU_PARENT'));
         $tpl->SetVariable('pid', $parentCombo->Get());
 
-        $typeCombo =& Piwi::CreateWidget('Combo', 'type');
-        $typeCombo->SetID('type');
-        $typeCombo->setStyle('width: 256px;');
-        $typeCombo->AddOption(_t('GLOBAL_URL'), 'url');
+        $gadgetCombo =& Piwi::CreateWidget('Combo', 'gadget');
+        $gadgetCombo->SetID('gadget');
+        $gadgetCombo->setStyle('width: 256px;');
+        $gadgetCombo->AddOption(_t('GLOBAL_URL'), 'url');
         $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
@@ -226,12 +226,12 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
-            $typeCombo->AddOption($gadget['title'], $gadget['name']);
+            $gadgetCombo->AddOption($gadget['title'], $gadget['name']);
         }
 
-        $typeCombo->AddEvent(ON_CHANGE, 'changeType(this.value);');
-        $tpl->SetVariable('lbl_type', _t('MENU_TYPE'));
-        $tpl->SetVariable('type', $typeCombo->Get());
+        $gadgetCombo->AddEvent(ON_CHANGE, 'changeGadget(this.value);');
+        $tpl->SetVariable('lbl_gadget', _t('GLOBAL_GADGET'));
+        $tpl->SetVariable('gadget', $gadgetCombo->Get());
 
         $rfcCombo =& Piwi::CreateWidget('Combo', 'references');
         $rfcCombo->SetID('references');

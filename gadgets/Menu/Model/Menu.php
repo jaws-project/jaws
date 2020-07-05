@@ -18,7 +18,7 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
     {
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
-            'id:integer', 'pid:integer', 'gid:integer', 'type', 'title', 'url', 'variables', 'options',
+            'id:integer', 'pid:integer', 'gid:integer', 'gadget', 'title', 'url', 'variables', 'options',
             'permission', 'target:integer', 'order:integer', 'symbol', 'status:integer', 'image:boolean'
         );
         return $menusTable->where('id', $mid)->fetchRow();
@@ -38,7 +38,7 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
         // using boolean type for blob to check it empty or not
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
-            'id:integer', 'gid:integer', 'type', 'title', 'url', 'variables', 'options', 'permission',
+            'id:integer', 'gid:integer', 'gadget', 'title', 'url', 'variables', 'options', 'permission',
             'target:integer', 'symbol', 'status:integer', 'image:boolean'
         );
         $menusTable->where('pid', $pid);
