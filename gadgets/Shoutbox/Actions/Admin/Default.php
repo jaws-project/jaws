@@ -30,12 +30,12 @@ class Shoutbox_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar->AddOption(
             'Comments',
             $this->gadget->title,
-            BASE_SCRIPT . '?gadget=Shoutbox&amp;action=Comments');
+            BASE_SCRIPT . '?reqGadget=Shoutbox&amp;reqAction=Comments');
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption(
                 'Settings',
                 _t('GLOBAL_SETTINGS'),
-                BASE_SCRIPT . '?gadget=Shoutbox&amp;action=Settings',
+                BASE_SCRIPT . '?reqGadget=Shoutbox&amp;reqAction=Settings',
                 STOCK_PREFERENCES);
         }
         $menubar->Activate($action);
