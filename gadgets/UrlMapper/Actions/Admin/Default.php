@@ -28,13 +28,13 @@ class UrlMapper_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Maps', _t('URLMAPPER_MAPS'),
-                            BASE_SCRIPT . '?gadget=UrlMapper&amp;action=Maps', STOCK_DOCUMENTS);
+                            BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Maps', STOCK_DOCUMENTS);
         $menubar->AddOption('Aliases', _t('URLMAPPER_ALIASES'),
-                            BASE_SCRIPT . '?gadget=UrlMapper&amp;action=Aliases', 'gadgets/UrlMapper/Resources/images/aliases.png');
+                            BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Aliases', 'gadgets/UrlMapper/Resources/images/aliases.png');
         $menubar->AddOption('ErrorMaps', _t('URLMAPPER_ERRORMAPS'),
-                            BASE_SCRIPT . '?gadget=UrlMapper&amp;action=ErrorMaps', STOCK_DOCUMENTS);
+                            BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=ErrorMaps', STOCK_DOCUMENTS);
         $menubar->AddOption('Properties', _t('GLOBAL_PROPERTIES'),
-                            BASE_SCRIPT . '?gadget=UrlMapper&amp;action=Properties', STOCK_PREFERENCES);
+                            BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Properties', STOCK_PREFERENCES);
         $menubar->Activate($action_selected);
         return $menubar->Get();
     }
