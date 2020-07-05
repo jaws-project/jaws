@@ -29,11 +29,11 @@ class Faq_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Questions', _t('FAQ_LIST'),
-                            BASE_SCRIPT . '?gadget=Faq&amp;action=Questions', STOCK_DOCUMENTS);
+                            BASE_SCRIPT . '?reqGadget=Faq&amp;reqAction=Questions', STOCK_DOCUMENTS);
 
         if ($this->gadget->GetPermission('ManageCategories')) {
             $menubar->AddOption('Categories', _t('FAQ_CATEGORIES'),
-                                BASE_SCRIPT . '?gadget=Faq&amp;action=Categories',
+                                BASE_SCRIPT . '?reqGadget=Faq&amp;reqAction=Categories',
                                 'gadgets/Faq/Resources/images/categories.png');
         }
 
