@@ -9,7 +9,7 @@
         <div id="subscription_subscription_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
     </div>
     <form name="subscription" action="{{base_script}}" method="post" onsubmit="return updateSubscription();">
-        <input type="hidden" name="gadget" value="Subscription" />
+        <input type="hidden" name="reqGadget" value="Subscription" />
         <input type="hidden" name="action" value="UpdateSubscription" />
 
         <div class="gadget_content">
@@ -80,7 +80,7 @@
 <!-- BEGIN inline -->
 <div class="gadget_subscription">
 <form name="subscriptionForm" method="post" action="{{base_script}}">
-    <input type="hidden" name="gadget" value="Subscription"/>
+    <input type="hidden" name="reqGadget" value="Subscription"/>
     <input type="hidden" name="action" value="UpdateGadgetSubscription"/>
 
     <input type="hidden" name="subscription_gadget" value="{{gadget}}"/>
