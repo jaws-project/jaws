@@ -26,7 +26,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Themes', _t('TMS_THEMES'),
-                            BASE_SCRIPT . '?gadget=Tms&amp;action=Themes',
+                            BASE_SCRIPT . '?reqGadget=Tms&amp;reqAction=Themes',
                             'gadgets/Tms/Resources/images/themes.png');
         $menubar->Activate($action);
         return $menubar->Get();
@@ -169,7 +169,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Tms&action=Themes');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Tms&action=Themes');
     }
 
     /**
