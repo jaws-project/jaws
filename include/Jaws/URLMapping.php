@@ -230,8 +230,8 @@ class Jaws_URLMapping
 
         $request = Jaws_Request::getInstance();
         // check request uri is based of jaws maps?
-        $ReqGadget = $request->fetch('gadget', 'get');
-        if (!empty($ReqGadget)) {
+        $reqGadget = $request->fetch('reqGadget', 'get');
+        if (!empty($reqGadget)) {
             return true;
         }
 
@@ -288,8 +288,8 @@ class Jaws_URLMapping
                         }
 
                         // Gadget/Action
-                        $request->update('gadget', $gadget, 'get');
-                        $request->update('action', $map['action'], 'get');
+                        $request->update('reqGadget', $gadget, 'get');
+                        $request->update('reqAction', $map['action'], 'get');
                         foreach ($reqOptions as $key => $value) {
                             $request->update(rawurldecode($key), rawurldecode($value));
                         }
@@ -330,9 +330,9 @@ class Jaws_URLMapping
                 !$this->_enabled || !isset($params[1]) ||
                 !isset($this->_actions_maps[$params[0]][$params[1]]))
             {
-                $request->update('gadget', $params[0], 'get');
+                $request->update('reqGadget', $params[0], 'get');
                 if (isset($params[1])) {
-                    $request->update('action', $params[1], 'get');
+                    $request->update('reqAction', $params[1], 'get');
                 }
 
                 /**
