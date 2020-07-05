@@ -24,7 +24,7 @@ class PhooInsert_Plugin extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $url = BASE_SCRIPT. '?gadget=Phoo&amp;action=BrowsePhoo';
+        $url = BASE_SCRIPT. '?reqGadget=Phoo&amp;reqAction=BrowsePhoo';
 
         $popbutton =& Piwi::CreateWidget('Button', 'popbutton', '', 'plugins/PhooInsert/images/image.png');
         $popbutton->SetTitle(_t('PLUGINS_PHOOINSERT_INSERT_IMAGE'));
