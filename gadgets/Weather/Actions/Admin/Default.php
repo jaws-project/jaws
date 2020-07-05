@@ -29,13 +29,21 @@ class Weather_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageRegions')) {
-            $menubar->AddOption('Regions', _t('WEATHER_REGIONS'),
-                                BASE_SCRIPT . '?gadget=Weather&amp;action=Regions', 'gadgets/Weather/Resources/images/regions.png');
+            $menubar->AddOption(
+                'Regions',
+                _t('WEATHER_REGIONS'),
+                $this->gadget->url('Regions'),
+                'gadgets/Weather/Resources/images/regions.png'
+            );
         }
 
         if ($this->gadget->GetPermission('UpdateProperties')) {
-            $menubar->AddOption('Properties', _t('GLOBAL_PROPERTIES'),
-                                BASE_SCRIPT . '?gadget=Weather&amp;action=Properties', 'gadgets/Weather/Resources/images/properties.png');
+            $menubar->AddOption(
+                'Properties',
+                _t('GLOBAL_PROPERTIES'),
+                $this->gadget->url('Properties'),
+                'gadgets/Weather/Resources/images/properties.png'
+            );
         }
 
         $menubar->Activate($action);
