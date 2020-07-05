@@ -402,7 +402,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
         // url
-        options.url  = baseScript + '?gadget=' + gadget + '&action=' + action;
+        options.url  = baseScript + '?reqGadget=' + gadget + '&reqAction=' + action;
         if (callOptions.hasOwnProperty('restype')) {
             options.url+= '&restype=' + callOptions.restype;
         } else {
@@ -447,7 +447,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
         // url
-        options.url  = baseScript + '?gadget=' + gadget + '&action=' + action;
+        options.url  = baseScript + '?reqGadget=' + gadget + '&reqAction=' + action;
         if (callOptions.hasOwnProperty('restype')) {
             options.url+= '&restype=' + callOptions.restype;
         } else {
@@ -526,7 +526,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             }
         };
         // url
-        options.url  = baseScript + '?gadget=' + gadget + '&action=' + action;
+        options.url  = baseScript + '?reqGadget=' + gadget + '&reqAction=' + action;
         if (callOptions.hasOwnProperty('restype')) {
             options.url+= '&restype=' + callOptions.restype;
         } else {
