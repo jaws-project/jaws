@@ -26,12 +26,12 @@ class Phoo_Actions_Admin_Default extends Jaws_Gadget_Action
             $action_selected = 'Photos';
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('Photos', _t('PHOO_PHOTOS'), BASE_SCRIPT . '?gadget=Phoo', STOCK_IMAGE);
+        $menubar->AddOption('Photos', _t('PHOO_PHOTOS'), BASE_SCRIPT . '?reqGadget=Phoo', STOCK_IMAGE);
         if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
             $menubar->AddOption(
                 'ManageComments',
                 _t('PHOO_COMMENTS'),
-                BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments',
+                BASE_SCRIPT . '?reqGadget=Phoo&amp;reqAction=ManageComments',
                 'images/stock/stock-comments.png'
             );
         }
@@ -39,7 +39,7 @@ class Phoo_Actions_Admin_Default extends Jaws_Gadget_Action
             $menubar->AddOption(
                 'AdditionalSettings',
                 _t('PHOO_ADDITIONAL_SETTINGS'),
-                BASE_SCRIPT . '?gadget=Phoo&amp;action=AdditionalSettings',
+                BASE_SCRIPT . '?reqGadget=Phoo&amp;reqAction=AdditionalSettings',
                 'images/stock/properties.png'
             );
         }
@@ -48,7 +48,7 @@ class Phoo_Actions_Admin_Default extends Jaws_Gadget_Action
             $menubar->AddOption(
                 'Import',
                 _t('PHOO_IMPORT'),
-                BASE_SCRIPT . '?gadget=Phoo&amp;action=Import',
+                BASE_SCRIPT . '?reqGadget=Phoo&amp;reqAction=Import',
                 STOCK_IMAGE
             );
         }

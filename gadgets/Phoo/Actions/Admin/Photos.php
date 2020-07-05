@@ -34,7 +34,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $this->AjaxMe('script.js');
             $objDate = Jaws_Date::getInstance();
             $tpl->SetBlock('phoo/photos');
-            $tpl->SetVariable('base_action', BASE_SCRIPT . '?gadget=Phoo');
+            $tpl->SetVariable('base_action', BASE_SCRIPT . '?reqGadget=Phoo');
 
             $datecombo =& Piwi::CreateWidget('Combo', 'date');
             $datecombo->SetStyle('width: 200px;');
@@ -145,13 +145,13 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                         $tpl->SetVariable('title', $album['name']);
                         $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
                         $tpl->SetVariable('createtime', $objDate->Format($album['createtime']));
-                        $upload_url = BASE_SCRIPT."?gadget=Phoo&amp;action=UploadPhotos&amp;album={$album['id']}";
+                        $upload_url = BASE_SCRIPT."?reqGadget=Phoo&amp;reqAction=UploadPhotos&amp;album={$album['id']}";
                         $manageAlbumActions = "<a href=\"{$upload_url}\">"._t('PHOO_UPLOAD_PHOTOS')."</a>";
-                        $manageAlbumActions.= " | <a href=\"".BASE_SCRIPT."?gadget=Phoo&amp;action=EditAlbum&amp;album={$album['id']}\">".
+                        $manageAlbumActions.= " | <a href=\"".BASE_SCRIPT."?reqGadget=Phoo&amp;reqAction=EditAlbum&amp;album={$album['id']}\">".
                             _t('PHOO_EDIT_DESCRIPTION')."</a>";
                         $manageAlbumActions.= " | <a href=\"javascript:void(0);\" onclick=\"if (confirm('".
                             _t('PHOO_DELETE_ALBUM_CONFIRM').
-                            "')) { window.location = '".BASE_SCRIPT.'?gadget=Phoo&amp;action=DeleteAlbum&amp'.
+                            "')) { window.location = '".BASE_SCRIPT.'?reqGadget=Phoo&amp;reqAction=DeleteAlbum&amp'.
                             ";album={$album['id']}';  }\">"._t('PHOO_DELETE_ALBUM')."</a>";
                         if ($album['id'] != 0) {
                             $tpl->SetVariable('actions', $manageAlbumActions);
@@ -164,7 +164,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                             foreach ($album['images'] as $img) {
                                 $imgData = Jaws_Image::getimagesize(ROOT_DATA_PATH . 'phoo/' . $img['image']);
                                 $tpl->SetBlock('phoo/photos/albums/item');
-                                $tpl->SetVariable('url', BASE_SCRIPT . '?gadget=Phoo&amp;action=EditPhoto&amp;image='.
+                                $tpl->SetVariable('url', BASE_SCRIPT . '?reqGadget=Phoo&amp;reqAction=EditPhoto&amp;image='.
                                     $img['id'].'&amp;album='.$albumId);
                                 if (Jaws_Error::IsError($imgData)) {
                                     $tpl->SetVariable('thumb',  'images/unknown.png');
@@ -249,7 +249,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $image = $pModel->GetImageEntry((int)$get['image']);
         if (Jaws_Error::IsError($image)) {
             $this->gadget->session->push($image->GetMessage(), RESPONSE_ERROR);
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
         }
 
         $id                 = $image['id'];
@@ -265,7 +265,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         $tpl = $this->gadget->template->loadAdmin('EditPhoto.html');
         $tpl->SetBlock('edit_photo');
-        $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
+        $tpl->SetVariable('base_script', BASE_SCRIPT . '?reqGadget=Phoo');
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
         // Tabs titles
@@ -420,7 +420,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $rs2 = $model->SetEntryAlbums($post['image'], $post['album']);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image=' . $post['image'] . '&album='.$post['fromalbum']);
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&action=EditPhoto&image=' . $post['image'] . '&album='.$post['fromalbum']);
     }
 
     /**
@@ -433,6 +433,6 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $post = $this->gadget->request->fetch(array('image', 'fromalbum'), 'post');
         $model = $this->gadget->model->loadAdmin('Photos');
         $model->DeletePhoto($post['image']);
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$post['fromalbum']);
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&album='.$post['fromalbum']);
     }
 }

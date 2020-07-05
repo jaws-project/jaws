@@ -180,7 +180,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                                 $imgData = Jaws_Image::getimagesize(ROOT_DATA_PATH . 'phoo/' . $img['thumb']);
                                 $tpl->SetBlock ('phoo_browse/photos/albums/item');
                                 $tpl->SetVariable ('url',
-                                                 "admin.php?gadget=Phoo&amp;action=SelectImage&amp;".
+                                                 "admin.php?reqGadget=Phoo&amp;reqAction=SelectImage&amp;".
                                                  "image={$img["id"]}&amp;album={$albumId}". $extraParams);
                                 if (Jaws_Error::IsError($imgData)) {
                                     $tpl->SetVariable('thumb',  'images/unknown.png');

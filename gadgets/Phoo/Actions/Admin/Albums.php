@@ -127,13 +127,13 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 $post['meta_description']
             );
             if (!Jaws_Error::IsError($album)) {
-                return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
+                return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&album='.$album);
             }
         } else {
             $this->gadget->session->push(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
     }
 
     /**
@@ -156,12 +156,12 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $album = $model->GetAlbumInfo($id);
         if (Jaws_Error::IsError($album) || empty($album)) {
             ///FIXME the error msg never has a chance to show
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
         }
 
         $tpl = $this->gadget->template->loadAdmin('EditAlbum.html');
         $tpl->SetBlock('edit_album');
-        $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
+        $tpl->SetVariable('base_script', BASE_SCRIPT . '?reqGadget=Phoo');
         $tpl->SetVariable('menubar', $this->MenuBar($get['action']));
 
         $tpl->SetVariable('action', 'SaveEditAlbum');
@@ -254,13 +254,13 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 $post['published'], $post['meta_keywords'], $post['meta_description']
             );
             if (!Jaws_Error::IsError($result)) {
-                return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
+                return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&action=EditAlbum&album='.$id);
             }
         } else {
             $this->gadget->session->push(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
     }
 
     /**
@@ -275,7 +275,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
         $album = (int)$this->gadget->request->fetch('album', 'get');
         $this->gadget->model->loadAdmin('Albums')->DeleteAlbum($album);
-        return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
     }
 
 }

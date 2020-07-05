@@ -35,7 +35,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $phooFieldset->SetDirection('vertical');
         $phooFieldset->SetId('phoo_fieldset');
         $phooForm =& Piwi::CreateWidget('Form',
-            BASE_SCRIPT . '?gadget=Phoo',
+            BASE_SCRIPT . '?reqGadget=Phoo',
             'post',
             'multipart/form-data');
         $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'MAX_FILE_SIZE', '15000000'));
@@ -107,7 +107,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $album_data = $aModel->getAlbumInfo($album);
         if (Jaws_Error::IsError($album_data) || empty($album_data)) {
             $this->gadget->session->push($album_data->getMessage());
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
         }
         for ($i = 1; $i <= count($files); $i++) {
             if (!isset($files['photo'.$i])) {
@@ -134,16 +134,16 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
                 $res = $pModel->AddEntryToAlbum($img, $album);
                 if (Jaws_Error::IsError($res)) {
                     ///FIXME: This is a unacceptable solution
-                    return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
+                    return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
                 }
             }
         }
 
         $this->gadget->session->failures = $failures;
         if (empty($extra_params)) {
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album=' . $album);
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&album=' . $album);
         } else {
-            return Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&action=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
         }
 
     }
