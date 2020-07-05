@@ -25,7 +25,7 @@ class Subscription_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar->AddOption(
             'Subscription',
             _t('SUBSCRIPTION_SUBSCRIPTION'),
-            BASE_SCRIPT . '?gadget=Subscription&amp;action=Subscription',
+            BASE_SCRIPT . '?reqGadget=Subscription&amp;reqAction=Subscription',
             STOCK_PREFERENCES);
 
         $menubar->Activate($action);
