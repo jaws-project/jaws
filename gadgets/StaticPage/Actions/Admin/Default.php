@@ -90,8 +90,8 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $pageform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
 
-        $pageform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'StaticPage'));
-        $pageform->Add(Piwi::CreateWidget('HiddenEntry', 'action', $action));
+        $pageform->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'StaticPage'));
+        $pageform->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', $action));
         if ($action == 'SaveEditTranslation') {
             $pageform->Add(Piwi::CreateWidget('HiddenEntry', 'trans_id', $id));
         } else {
