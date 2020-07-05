@@ -11,7 +11,7 @@
 
 <!-- BEGIN login_step_1 -->
   <form name="loginBox" action="{{base_script}}" onsubmit="return submitLoginForm(this);" method="post">
-    <input type="hidden" name="gadget" value="Users" />
+    <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="action" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
     <input type="hidden" name="loginstep" value="1" />
@@ -84,7 +84,7 @@
 
 <!-- BEGIN login_step_2 -->
   <form name="loginBox" action="{{base_script}}" method="post">
-    <input type="hidden" name="gadget" value="Users" />
+    <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="action" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
     <input type="hidden" name="loginstep" value="2" />
@@ -120,7 +120,7 @@
 
 <!-- BEGIN login_step_3 -->
   <form name="loginBox" action="{{base_script}}" onsubmit="return submitLoginForm(this);" method="post">
-    <input type="hidden" name="gadget" value="Users" />
+    <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="action" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
     <input type="hidden" name="loginstep" value="3" />
