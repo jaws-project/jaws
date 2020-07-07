@@ -934,7 +934,7 @@ class Jaws_Utils
             $files = @scandir($langdir);
             if ($files !== false) {
                 foreach($files as $file) {
-                    if ($file{0} != '.'  && is_dir($langdir . $file)) {
+                    if ($file[0] != '.'  && is_dir($langdir . $file)) {
                         if (is_file($langdir.$file.'/FullName')) {
                             $fullname = implode('', @file($langdir.$file.'/FullName'));
                             if (!empty($fullname)) {
@@ -955,7 +955,7 @@ class Jaws_Utils
                 $files = @scandir($langdir);
                 if ($files !== false) {
                     foreach($files as $file) {
-                        if ($file{0} != '.'  && is_dir($langdir . $file)) {
+                        if ($file[0] != '.'  && is_dir($langdir . $file)) {
                             if (is_file($langdir.$file.'/FullName')) {
                                 $fullname = implode('', @file($langdir.$file.'/FullName'));
                                 if (!empty($fullname)) {
