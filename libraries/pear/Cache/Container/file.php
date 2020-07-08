@@ -109,7 +109,7 @@ class Cache_Container_file extends Cache_Container
         if ($this->cache_dir) {
             // make relative paths absolute for use in deconstructor.
             // it looks like the deconstructor has problems with relative paths
-            if (OS_UNIX && '/' != $this->cache_dir{0}  )
+            if (OS_UNIX && '/' != $this->cache_dir[0]  )
                 $this->cache_dir = realpath( getcwd() . '/' . $this->cache_dir) . '/';
 
             // check if a trailing slash is in cache_dir
