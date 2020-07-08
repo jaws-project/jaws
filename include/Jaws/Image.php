@@ -364,7 +364,7 @@ class Jaws_Image
             if (is_array($color)) {
                 return $color;
             }
-            if ($color{0} == '#') {
+            if ($color[0] == '#') {
                 return $this->_colorhex2colorarray($color);
             }
             static $colornames = array();
