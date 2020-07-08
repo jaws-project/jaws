@@ -180,9 +180,9 @@ class File_Util
             return false;
         }
         if (FILE_WIN32) {
-            return (($path{0} == '/') ||  preg_match('/^[a-zA-Z]:(\\\|\/)/', $path));
+            return (($path[0] == '/') ||  preg_match('/^[a-zA-Z]:(\\\|\/)/', $path));
         }
-        return ($path{0} == '/') || ($path{0} == '~');
+        return ($path[0] == '/') || ($path[0] == '~');
     }
 
     /**
@@ -270,11 +270,11 @@ class File_Util
             } else {
                 $cwd   = getcwd();
                 $drive = substr($cwd, 0, 2);
-                if ($path{0} !== $separator{0}) {
+                if ($path[0] !== $separator[0]) {
                     $path  = substr($cwd, 3) . $separator . $path;
                 }
             }
-        } elseif ($path{0} !== $separator) {
+        } elseif ($path[0] !== $separator) {
             $path = getcwd() . $separator . $path;
         }
 
@@ -349,7 +349,7 @@ class File_Util
 
         $entries = array();
         for ($dir = dir($path); false !== $entry = $dir->read(); ) {
-            if ($list & FILE_LIST_DOTS || $entry{0} !== '.') {
+            if ($list & FILE_LIST_DOTS || $entry[0] !== '.') {
                 $isRef = ($entry === '.' || $entry === '..');
                 $isDir = $isRef || is_dir($path .'/'. $entry);
                 if (    ((!$isDir && $list & FILE_LIST_FILES)   ||
