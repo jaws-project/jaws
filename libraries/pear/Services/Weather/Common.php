@@ -379,8 +379,8 @@ class Services_Weather_Common {
             );
         }
 
-        if (strlen($unitsFormat) && in_array(strtolower($unitsFormat{0}), array("c", "m", "s"))) {
-            $this->_unitsFormat = strtolower($unitsFormat{0});
+        if (strlen($unitsFormat) && in_array(strtolower($unitsFormat[0]), array("c", "m", "s"))) {
+            $this->_unitsFormat = strtolower($unitsFormat[0]);
             if ($this->_unitsFormat == "c" && is_array($customUnitsFormat)) {
                 foreach ($customUnitsFormat as $key => $value) {
                     if (array_key_exists($key, $acceptedFormats) && in_array($value, $acceptedFormats[$key])) {
@@ -466,8 +466,8 @@ class Services_Weather_Common {
     function getUnitsFormat($unitsFormat = "")
     {
         // This is cheap'o stuff
-        if (strlen($unitsFormat) && in_array(strtolower($unitsFormat{0}), array("c", "m", "s"))) {
-            $unitsFormat = strtolower($unitsFormat{0});
+        if (strlen($unitsFormat) && in_array(strtolower($unitsFormat[0]), array("c", "m", "s"))) {
+            $unitsFormat = strtolower($unitsFormat[0]);
         } else {
             $unitsFormat = $this->_unitsFormat;
         }
@@ -529,8 +529,8 @@ class Services_Weather_Common {
             return $temperature;
         }
 
-        $from = strtolower($from{0});
-        $to   = strtolower($to{0});
+        $from = strtolower($from[0]);
+        $to   = strtolower($to[0]);
 
         $result = array(
             "f" => array(
