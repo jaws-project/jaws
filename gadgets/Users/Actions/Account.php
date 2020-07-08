@@ -81,8 +81,10 @@ class Users_Actions_Account extends Users_Actions_Default
 
         $tpl->SetVariablesArray($account);
 
-        $tpl->SetVariable('response_type', $response['type']);
-        $tpl->SetVariable('response_text', $response['text']);
+        if (!empty($response)) {
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+        }
 
         $tpl->ParseBlock('account');
         return $tpl->Get();
