@@ -80,7 +80,7 @@ class Jaws_Header
      */
     static function Expire($date)
     {
-        header('Expires: {$date}');
+        header("Expires: {$date}");
     }
 
     /**
