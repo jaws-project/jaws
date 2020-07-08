@@ -165,7 +165,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $date_obj = Jaws_Date::getInstance();
         foreach ($adr as $file) {
             //we should return only 'visible' files, not hidden files
-            if ($file{0} != '.') {
+            if ($file[0] != '.') {
                 $file_counter++;
                 $filepath = $fModel->GetFileBrowserRootDir(). $path. '/'. $file;
                 if (is_dir($filepath)) {

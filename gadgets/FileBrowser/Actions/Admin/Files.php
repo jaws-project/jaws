@@ -290,7 +290,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($pathArr)) {
             foreach ($pathArr as $_path => $dir)
             {
-                if (!empty($dir) && $_path{0} == '/') {
+                if (!empty($dir) && $_path[0] == '/') {
                     $_path = substr($_path, 1);
                 }
                 $url = BASE_SCRIPT . '?reqGadget=FileBrowser&action=BrowseFile&path=' . $_path;

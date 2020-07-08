@@ -248,7 +248,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $parentPath = '';
         $tpl->SetVariable('location', _t('FILEBROWSER_LOCATION'));
         foreach ($locationTree as $path => $dir) {
-            if (!empty($dir) && $path{0} == '/') {
+            if (!empty($dir) && $path[0] == '/') {
                 $path = substr($path, 1);
             }
 
