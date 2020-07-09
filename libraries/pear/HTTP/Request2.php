@@ -935,10 +935,7 @@ class HTTP_Request2 implements SplSubject
             $response = $this->adapter->sendRequest($this);
         } catch (Exception $e) {
         }
-        // cleanup in either case (poor man's "finally" clause)
-        if ($magicQuotes) {
-            set_magic_quotes_runtime(true);
-        }
+
         if (!empty($oldEncoding)) {
             mb_internal_encoding($oldEncoding);
         }
