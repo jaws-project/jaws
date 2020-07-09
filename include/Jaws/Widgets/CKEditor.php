@@ -210,28 +210,40 @@ class Jaws_Widgets_CKEditor extends Container
                 $this->app->define(
                     '',
                     'editorImageBrowser',
-                    BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=3'
+                    $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '3'))
                 );
                 $this->app->define(
                     '',
                     'editorFileBrowser',
-                    BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=1,6'
+                    $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '1,6'))
                 );
                 $this->app->define(
                     '',
                     'editorMediaBrowser',
-                    BASE_SCRIPT. '?gadget=Directory&action=DirExplorer&type=4,5'
+                    $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '4,5'))
                 );
             }
         } else {
             // Phoo
             if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-                $this->app->define('', 'editorImageBrowser', BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo');
+                $this->app->define(
+                    '',
+                    'editorImageBrowser',
+                    $this->app->map->GetRawURL('Phoo', 'BrowsePhoo')
+                );
             }
             // Directory
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                $this->app->define('', 'editorFileBrowser', BASE_SCRIPT. '?gadget=Directory&action=Browse');
-                $this->app->define('', 'editorMediaBrowser', BASE_SCRIPT. '?gadget=Directory&action=DirExplorer');
+                $this->app->define(
+                    '',
+                    'editorFileBrowser',
+                    $this->app->map->GetRawURL('Directory', 'Browse')
+                );
+                $this->app->define(
+                    '',
+                    'editorMediaBrowser',
+                    $this->app->map->GetRawURL('Directory', 'DirExplorer')
+                );
             }
         }
 
