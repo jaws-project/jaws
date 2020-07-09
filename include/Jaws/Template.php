@@ -516,8 +516,14 @@ class Jaws_Template
         $path = explode('/', $pathString);
         foreach ($path as $b) {
             if ($blockDeep === 1) {
+                if (!isset($this->Blocks[$b])) {
+                    $this->Blocks[$b] = new Jaws_TemplateBlock();
+                }
                 $block = &$this->Blocks[$b];
             } else {
+                if (!isset($block->InnerBlock[$b])) {
+                    $block->InnerBlock[$b] = new Jaws_TemplateBlock();
+                }
                 $block = &$block->InnerBlock[$b];
             }
             $blockDeep++;
