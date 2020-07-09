@@ -191,14 +191,9 @@ class File_Archive_Reader_File extends File_Archive_Reader
         if ($length == -1) {
             $contents = '';
             $blockSize = File_Archive::getOption('blockSize');
-            // Ensure that magic_quote_runtime isn't set,
-            // if we don't want to have corrupted archives.
-            $saveMagicQuotes = get_magic_quotes_runtime();
-            @set_magic_quotes_runtime(0);
             while (!feof($this->handle)) {
                 $contents .= fread($this->handle, $blockSize);
             }
-            @set_magic_quotes_runtime($saveMagicQuotes);
             return $contents;
         } else {
             if ($length == 0) {
