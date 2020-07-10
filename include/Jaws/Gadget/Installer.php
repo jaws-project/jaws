@@ -161,8 +161,8 @@ class Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $requirement = ','. implode($this->gadget->requirement, ','). ',';
-        $recommended = ','. implode($this->gadget->recommended, ','). ',';
+        $requirement = ','. implode(',', $this->gadget->requirement). ',';
+        $recommended = ','. implode(',', $this->gadget->recommended). ',';
         $installer->_RegKeys = array_merge(
             array(
                 array('version', $this->gadget->version),
@@ -314,10 +314,10 @@ class Jaws_Gadget_Installer
         }
 
         // update requirement registry keys
-        $requirement = ','. implode($this->gadget->requirement, ','). ',';
+        $requirement = ','. implode(',', $this->gadget->requirement). ',';
         $this->gadget->registry->update('requirement', $requirement);
         // update recommended registry keys
-        $recommended = ','. implode($this->gadget->recommended, ','). ',';
+        $recommended = ','. implode(',', $this->gadget->recommended). ',';
         $this->gadget->registry->update('recommended', $recommended);
 
         if (method_exists($installer, 'Upgrade')) {
