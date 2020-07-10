@@ -34,6 +34,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
         $tpl->ParseBlock('ServiceWorker');
 
         header('Content-Type: application/javascript');
+        header('Cache-Control: max-age=86400'); // cached for 1 day!
         http_response_code(200);
 
         return $tpl->Get();
@@ -48,7 +49,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
     function Manifest()
     {
         header('Content-Type: application/manifest+json; charset=utf-8');
-        header('Cache-Control: max-age= 604800'); // cached for 7 days!
+        header('Cache-Control: max-age=86400'); // cached for 1 day!
 
         $tpl = $this->gadget->template->load('Manifest.json');
         $tpl->SetBlock('Manifest');
