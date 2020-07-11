@@ -329,7 +329,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                             array(
                                 'url'   => '',
                                 'title' => _t('MENU_REFERENCES_NO_LINK')
-                            ),
+                            )
                         );
                         foreach ($links as $key => $link) {
                             if (is_array($link['url'])) {
