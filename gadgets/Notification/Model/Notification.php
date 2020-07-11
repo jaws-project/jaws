@@ -81,7 +81,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         // to date
         if (!empty($filters['to_date'])) {
             $filters['to_date'] = $objDate->ToBaseDate(
-                preg_split('/[\/\- :]/', $filters['to_date'] . ' 0:0:0')
+                preg_split('/[\/\- :]/', $filters['to_date'] . ' 23:59:59')
             );
             $filters['to_date'] = $this->app->UserTime2UTC($filters['to_date']['timestamp']);
         }
@@ -154,7 +154,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         // to date
         if (!empty($filters['to_date'])) {
             $filters['to_date'] = $objDate->ToBaseDate(
-                preg_split('/[\/\- :]/', $filters['to_date'] . ' 0:0:0')
+                preg_split('/[\/\- :]/', $filters['to_date'] . ' 23:59:59')
             );
             $filters['to_date'] = $this->app->UserTime2UTC($filters['to_date']['timestamp']);
         }
