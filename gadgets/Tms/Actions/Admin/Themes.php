@@ -169,7 +169,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Tms&action=Themes');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Tms&reqAction=Themes');
     }
 
     /**
