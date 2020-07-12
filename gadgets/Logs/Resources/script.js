@@ -106,7 +106,7 @@ function logsDGAction(combo)
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':filters});
         }
     } else if (combo.val() == 'export') {
-        window.location= LogsAjax.baseScript + '?gadget=Logs&action=ExportLogs';
+        window.location= LogsAjax.baseScript + '?reqGadget=Logs&reqAction=ExportLogs';
     } else if (combo.val() == 'exportFiltered') {
         var queryString = '&from_date=' + filters.from_date;
         queryString += '&to_date=' + filters.to_date;
@@ -115,7 +115,7 @@ function logsDGAction(combo)
         queryString += '&priority=' + filters.priority;
         queryString += '&result=' + filters.result;
         queryString += '&status=' + filters.status;
-        window.location= LogsAjax.baseScript + '?gadget=Logs&action=ExportLogs' + queryString;
+        window.location= LogsAjax.baseScript + '?reqGadget=Logs&reqAction=ExportLogs' + queryString;
     }
 }
 
