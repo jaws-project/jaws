@@ -228,7 +228,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
             $newRow['__KEY__'] = $row['id'];
             $newRow['blog_name']    = '<a href="'.Jaws_XSS::filter($row['url']).'">'.Jaws_XSS::filter($row['blog_name']).'</a>';;
 
-            $url = BASE_SCRIPT . '?reqGadget=Blog&action=ViewTrackback&id='.$row['id'];
+            $url = BASE_SCRIPT . '?reqGadget=Blog&reqAction=ViewTrackback&id='.$row['id'];
             $newRow['title']   = '<a href="'.$url.'">'.Jaws_XSS::filter($row['title']).'</a>';
 
             $newRow['created'] = $date->Format($row['createtime']);

@@ -310,7 +310,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ListEntries');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&reqAction=ListEntries');
     }
 
     /**
@@ -688,7 +688,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=EditEntry&id=' . $id);
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&reqAction=EditEntry&id=' . $id);
     }
 
     /**
@@ -713,7 +713,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 $this->gadget->session->push(_t('BLOG_ENTRY_DELETED'), RESPONSE_NOTICE);
             }
 
-            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ListEntries');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&reqAction=ListEntries');
         }
 
         $get = $this->gadget->request->fetch(array('id', 'action'), 'get');
@@ -722,7 +722,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $entry = $bModel->GetEntry($get['id']);
         if (Jaws_Error::IsError($entry)) {
             $this->gadget->session->push(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
-            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&action=ListEntries');
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&reqAction=ListEntries');
         }
 
         $tpl = $this->gadget->template->loadAdmin('EntryDelete.html');

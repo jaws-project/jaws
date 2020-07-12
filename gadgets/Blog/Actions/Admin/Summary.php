@@ -93,7 +93,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
             $date = Jaws_Date::getInstance();
             foreach ($summary['Entries'] as $e) {
                 $tpl->SetBlock('summary/recent/link');
-                $url = BASE_SCRIPT . '?reqGadget=Blog&action=EditEntry&id='.$e['id'];
+                $url = BASE_SCRIPT . '?reqGadget=Blog&reqAction=EditEntry&id='.$e['id'];
                 if ($e['published'] === false) {
                     $extra = '<span style="color: #999; font-size: 10px;"> [' . _t('BLOG_DRAFT') . '] </span>';
                 } else {
