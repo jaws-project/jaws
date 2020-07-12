@@ -13,15 +13,23 @@
    <input type="hidden" name="deleteImage" id="deleteImage" value="false" />
 
       <div id="image_area">
-          <div id="blog_image_beside">
-              <div class="blog_field"><label for="title">{{title}}</label><br/>{{title_field}}</div>
-              <div class="blog_field"><label for="subtitle">{{subtitle}}</label><br/>{{subtitle_field}}</div>
-              <div class="blog_field"><label for="summary_block">{{lbl_summary}}</label><br/>{{summary}}</div>
+        <div id="blog_image_beside">
+            <div class="blog_field"><label for="title">{{title}}</label><br/>{{title_field}}</div>
+            <div class="blog_field"><label for="subtitle">{{subtitle}}</label><br/>{{subtitle_field}}</div>
+            <div class="blog_field"><label for="summary_block">{{lbl_summary}}</label><br/>{{summary}}</div>
+        </div>
+        <div id="blog_image_box">
+          {{blog_image}}
+          <div class="gadget_actions">
+            <button class="btn" type="button" name="btn_upload" id="btn_upload" style="position: relative;">
+              <img src="libraries/piwi/piwidata/art/stock/actions/list-add.png" alt=""
+                height="16" width="16" id="btn_upload_stockimage"/>
+              <input class="form-control-file btnUploadFile" type="file" size="1" name="image_file" id="image_file"
+                onchange="previewImage(this);"/>
+            </button>
+            {{btn_remove}}
           </div>
-          <div id="blog_image_box">
-              {{blog_image}}
-              <div class="gadget_actions">{{btn_upload}} {{btn_remove}}<div class="wrapper">{{upload_image}}</div></div>
-          </div>
+        </div>
       </div>
 
    <div class="blog_field"><label for="text_block">{{text}}</label><br/>{{editor}}</div>

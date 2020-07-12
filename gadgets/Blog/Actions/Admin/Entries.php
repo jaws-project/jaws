@@ -63,16 +63,6 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $blogImage->SetID('blog_image');
         $tpl->SetVariable('blog_image', $blogImage->Get());
 
-        $imageFile =& Piwi::CreateWidget('FileEntry', 'image_file', '');
-        $imageFile->SetID('image_file');
-        $imageFile->SetSize(1);
-        $imageFile->SetStyle('width:110px; padding:0;');
-        $imageFile->AddEvent(ON_CHANGE, 'previewImage(this);');
-        $tpl->SetVariable('upload_image', $imageFile->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_upload', '', STOCK_ADD);
-        $tpl->SetVariable('btn_upload', $button->Get());
-
         $button =& Piwi::CreateWidget('Button', 'btn_remove', '', STOCK_DELETE);
         $button->AddEvent(ON_CLICK, 'removeImage()');
         $tpl->SetVariable('btn_remove', $button->Get());
@@ -492,7 +482,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 $typeCombo->AddOption($type['title'], $type['id']);
             }
         }
-        $typeCombo->SetDefault($entry['type']['id']);
+        $typeCombo->SetDefault(empty($entry['type'])? false : $entry['type']['id']);
         $tpl->SetVariable('type_field', $typeCombo->Get());
 
         // Favorite

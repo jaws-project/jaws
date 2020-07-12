@@ -125,16 +125,13 @@ width:24px;
 height:24px;
 margin:0;
 }
-#blog_image_box .wrapper{
+.btnUploadFile {
+width:40px;
+height:28px;
+padding:0;
 position:absolute;
 top:0;
-width:24px;
-height:24px;
-overflow:hidden;
-}
-#blog_image_box .wrapper input{
-margin:0;
-font-size:30px;
+right:0;
 opacity:0;
 filter:alpha(opacity=0);
 }
