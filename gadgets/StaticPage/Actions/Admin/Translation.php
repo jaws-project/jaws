@@ -59,7 +59,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
             if (Jaws_Error::isError($translation)) {
                 return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage');
             } else {
-                return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage&action=EditTranslation&id=' .
+                return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage&reqAction=EditTranslation&id=' .
                     $translation['translation_id']);
             }
         }
@@ -105,7 +105,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $result = $model->UpdateTranslation($trans, $post['title'], $post['content'], $post['language'],
             $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage&action=EditTranslation&id=' . $trans);
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=StaticPage&reqAction=EditTranslation&id=' . $trans);
     }
 
 

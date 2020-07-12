@@ -145,7 +145,7 @@ function deletePage(id, redirect)
         if (redirect) {
             var response = StaticPageAjax.callSync('DeletePage', id);
             if (response['type'] == 'alert-success') {
-                window.location = StaticPageAjax.baseScript + '?gadget=StaticPage';
+                window.location = StaticPageAjax.baseScript + '?reqGadget=StaticPage';
             }
         } else {
             StaticPageAjax.callAsync('DeletePage', id);
@@ -163,7 +163,7 @@ function deleteTranslation(id, redirect)
         if (redirect) {
             var response = StaticPageAjax.callSync('DeleteTranslation', id);
             if (response['type'] == 'alert-success') {
-                window.location = StaticPageAjax.baseScript + '?gadget=StaticPage';
+                window.location = StaticPageAjax.baseScript + '?reqGadget=StaticPage';
             }
         } else {
             StaticPageAjax.callAsync('DeleteTranslation', id);
