@@ -301,16 +301,6 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>users_domain_status</name>
-                <field>
-                    <name>domain</name>
-                </field>
-                <field>
-                    <name>status</name>
-                </field>
-            </index>
-
-            <index>
                 <name><variable>table_prefix</variable>users_email</name>
                 <field>
                     <name>email</name>
