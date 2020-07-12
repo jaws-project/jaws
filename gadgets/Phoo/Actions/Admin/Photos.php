@@ -420,7 +420,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $rs2 = $model->SetEntryAlbums($post['image'], $post['album']);
         }
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&action=EditPhoto&image=' . $post['image'] . '&album='.$post['fromalbum']);
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&reqAction=EditPhoto&image=' . $post['image'] . '&album='.$post['fromalbum']);
     }
 
     /**

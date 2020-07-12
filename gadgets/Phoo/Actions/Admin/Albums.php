@@ -254,7 +254,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 $post['published'], $post['meta_keywords'], $post['meta_description']
             );
             if (!Jaws_Error::IsError($result)) {
-                return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&action=EditAlbum&album='.$id);
+                return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&reqAction=EditAlbum&album='.$id);
             }
         } else {
             $this->gadget->session->push(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);

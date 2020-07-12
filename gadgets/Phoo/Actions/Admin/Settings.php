@@ -221,7 +221,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
             $post['photos_order_type']
         );
 
-        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&action=AdditionalSettings');
+        return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&reqAction=AdditionalSettings');
     }
 
 }

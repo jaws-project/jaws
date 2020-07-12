@@ -143,7 +143,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         if (empty($extra_params)) {
             return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&album=' . $album);
         } else {
-            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&action=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
+            return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&reqAction=BrowsePhoo&album=' . $album . html_entity_decode($extra_params));
         }
 
     }
