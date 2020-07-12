@@ -185,7 +185,7 @@ function stopAction()
  */
 function export_lang()
 {
-    window.location= LanguagesAjax.baseScript + '?gadget=Languages&action=Export&lang=' + $('#lang').val();
+    window.location= LanguagesAjax.baseScript + '?reqGadget=Languages&reqAction=Export&lang=' + $('#lang').val();
 }
 
 $(document).ready(function() {
