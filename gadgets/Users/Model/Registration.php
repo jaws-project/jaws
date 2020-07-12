@@ -12,9 +12,10 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $uData  User information data
+     * @param   array   $status User account status
      * @return  mixed   User ID on success or Jaws_Error on failure
      */
-    function InsertUser($uData)
+    function InsertUser($uData, $status = 0)
     {
         // unset invalid keys
         $invalids = array_diff(
@@ -53,7 +54,11 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             );
         }
         $uData['verify_key'] = Jaws_Utils::RandomText(5, array('number' => true));
-        $uData['status'] = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
+        if (empty($status)) {
+            $uData['status'] = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
+        } else {
+            $uData['status'] = $status;
+        }
 
         $jawsUser = $this->app->loadObject('Jaws_User');
         $user = $jawsUser->AddUser($uData);
