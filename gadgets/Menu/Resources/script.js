@@ -375,7 +375,7 @@ function editMenu(mid)
     if (!menuInfo['image']) {
         $('#image').attr('src', 'gadgets/Menu/Resources/images/no-image.png?' + $.now());
     } else {
-        $('#image').attr('src', jaws.Menu.Defines.base_script + '?gadget=Menu&action=LoadImage&id=' + menuInfo['id'] + '&' + $.now());
+        $('#image').attr('src', jaws.Menu.Defines.base_script + '?reqGadget=Menu&reqAction=LoadImage&id=' + menuInfo['id'] + '&' + $.now());
     }
 }
 
@@ -533,7 +533,7 @@ function onUpload(response) {
         $('#frm_image')[0].reset();
     } else {
         var filename = encodeURIComponent(response.message) + '&' + $.now();
-        $('#image').attr('src', MenuAjax.baseScript + '?gadget=Menu&action=LoadImage&file=' + filename);
+        $('#image').attr('src', MenuAjax.baseScript + '?reqGadget=Menu&reqAction=LoadImage&file=' + filename);
         $('#imagename').val(response.message);
     }
     $('#ifrm_upload').remove();
