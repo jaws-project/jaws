@@ -915,3 +915,7 @@ background-color:#edf3fe;
 .piwi_option_even{
 background-color:#fff;
 }
+/*-------------------------*/
+.gadget_actions {
+position: relative;
+}
