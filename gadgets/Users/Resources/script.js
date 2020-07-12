@@ -650,7 +650,7 @@ function Jaws_Gadget_Users() { return {
             $('#frm_avatar')[0].reset();
         } else {
             var filename = response.message + '&' + (new Date()).getTime();
-            $('#image').attr('src', this.gadget.ajax.baseScript + '?gadget=Users&action=LoadAvatar&file=' + filename);
+            $('#image').attr('src', this.gadget.ajax.baseScript + '?reqGadget=Users&reqAction=LoadAvatar&file=' + filename);
             $('#avatar').val(response.message);
         }
         $('#ifrm_upload').remove();
