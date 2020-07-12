@@ -230,7 +230,7 @@ function getGoogleMap(ev, element)
  */
 function setGoogleMapImage()
 {
-    $('#gmap').prop('src', jaws.Weather.Defines.base_script + '?gadget=Weather&action=GetGoogleMapImage' +
+    $('#gmap').prop('src', jaws.Weather.Defines.base_script + '?reqGadget=Weather&reqAction=GetGoogleMapImage' +
                     '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
                     '&zoom=' + ZoomLevel + '&size='  + ImageSize);
 }
