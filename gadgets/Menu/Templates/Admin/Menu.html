@@ -51,7 +51,15 @@
               enctype="multipart/form-data" onsubmit="return true">
           <input type="hidden" name="reqGadget" value="Menu" />
           <input type="hidden" name="reqAction" value="UploadImage" />
-          <div class="gadget_actions">{{btn_upload}} {{btn_remove}}<div class="wrapper">{{upload_image}}</div></div>
+          <div class="gadget_actions">
+            <button class="btn" type="button" name="btn_upload" id="btn_upload" style="position: relative;">
+              <img src="libraries/piwi/piwidata/art/stock/actions/list-add.png" alt=""
+                height="16" width="16" id="btn_upload_stockimage"/>
+              <input class="form-control-file btnUploadFile" type="file" size="1" name="upload_image" id="upload_image"
+                onchange="upload();"/>
+            </button>
+            {{btn_remove}}
+          </div>
         </form>
       </td>
     </tr>

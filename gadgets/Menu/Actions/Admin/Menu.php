@@ -285,16 +285,6 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $status->SetDefault(1);
         $tpl->SetVariable('status', $status->Get());
 
-        $entry =& Piwi::CreateWidget('FileEntry', 'upload_image', '');
-        $entry->SetID('upload_image');
-        $entry->SetSize(1);
-        $entry->SetStyle('width:110px; padding:0;');
-        $entry->AddEvent(ON_CHANGE, 'upload();');
-        $tpl->SetVariable('upload_image', $entry->Get());
-
-        $button =& Piwi::CreateWidget('Button', 'btn_upload', '', STOCK_ADD);
-        $tpl->SetVariable('btn_upload', $button->Get());
-
         $button =& Piwi::CreateWidget('Button', 'btn_remove', '', STOCK_DELETE);
         $button->AddEvent(ON_CLICK, 'removeImage()');
         $tpl->SetVariable('btn_remove', $button->Get());
