@@ -475,11 +475,20 @@ class MDB2_Driver_oci8 extends MDB2_Driver_Common
 
         $this->as_keyword = ' ';
         $server_info = $this->getServerVersion();
-        if (is_array($server_info)) {
+        if (!MDB2::isError($server_info)) {
             if ($server_info['major'] >= '10') {
                 $this->as_keyword = ' AS ';
             }
+
+            if ($server_info['major'] >= '12') {
+                $query = 'SELECT value FROM v$parameter WHERE name = \'max_string_size\'';
+                $result = $this->queryOne($query);
+                if (!MDB2::isError($result) && $result == 'EXTENDED') {
+                    $this->options['default_text_field_length'] = 32767;
+                }
+            }
         }
+
         return MDB2_OK;
     }
 

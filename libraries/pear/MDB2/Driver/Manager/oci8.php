@@ -73,6 +73,12 @@ class MDB2_Driver_Manager_oci8 extends MDB2_Driver_Manager_Common
             return $db;
         }
 
+        $query = 'alter session set "_ORACLE_SCRIPT"=true';
+        $result = $db->standaloneQuery($query, null, true);
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+
         $username = $db->options['database_name_prefix'].$name;
         $password = $db->dsn['password'] ? $db->dsn['password'] : $name;
         $tablespace = $db->options['default_tablespace']
@@ -148,7 +154,8 @@ class MDB2_Driver_Manager_oci8 extends MDB2_Driver_Manager_Common
             foreach ($queries as $query) {
                 $result = $db->standaloneQuery($query);
                 if (MDB2::isError($result)) {
-                    return $result;
+                    // do nothing, just break loop
+                    break;
                 }
             }
         }
