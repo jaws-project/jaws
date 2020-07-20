@@ -60,7 +60,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
             'Layout', null, 'main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1
         );
         $elementModel->NewElement(
-            'Layout', null, 'bar1', 'Users', 'LoginBox', null, 'Login', 1
+            'Layout', null, 'bar1', 'Users', 'Login', null, 'Login', 1
         );
 
         if (!empty($input_schema)) {
