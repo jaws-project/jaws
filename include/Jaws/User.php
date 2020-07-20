@@ -1827,23 +1827,34 @@ class Jaws_User
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
      * @param   int     $owner  The owner of group
-     * @return  bool    Returns true if user was sucessfully added to the group, false if not
+     * @return  bool    Returns true if user was successfully added to the group, false if not
      */
     function AddUserToGroup($user, $group, $owner = 0)
     {
         $objORM = Jaws_ORM::getInstance();
-        $result = $objORM->table('groups')
-            ->select('id')
+        $group = $objORM->table('groups')
+            ->select('id:integer', 'name')
             ->where('owner', (int)$owner)
             ->and()
             ->where('id', $group)
-            ->fetchOne();
-        if (Jaws_Error::IsError($result) || empty($result)) {
-            return $result;
+            ->fetchRow();
+        if (Jaws_Error::IsError($group) || empty($group)) {
+            return $group;
         }
 
-        $objORM->table('users_groups');
-        return $objORM->insert(array('user_id' => $user, 'group_id' => $group))->exec();
+        $result = $objORM->table('users_groups')
+            ->insert(array('user_id' => $user, 'group_id' => $group['id']))
+            ->exec();
+        if (!Jaws_Error::IsError($result)) {
+            if ($this->app->session->user->id == $user) {
+                // update logged user session
+                $user_groups = $this->app->session->user->groups;
+                $user_groups[$group['id']] = $group['name'];
+                $this->app->session->user = array('groups' => $user_groups);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -1868,8 +1879,20 @@ class Jaws_User
             return $result;
         }
 
-        $objORM->table('users_groups')->delete();
-        return $objORM->where('user_id', $user)->and()->where('group_id', $group)->exec();
+        $result = $objORM->table('users_groups')
+            ->delete()
+            ->where('user_id', $user)
+            ->and()
+            ->where('group_id', $group)
+            ->exec();
+        if (!Jaws_Error::IsError($result)) {
+            if ($this->app->session->user->id == $user) {
+                // update logged user session
+                $user_groups = $this->app->session->user->groups;
+                unset($user_groups[$group]);
+                $this->app->session->user = array('groups' => $user_groups);
+            }
+        }
     }
 
     /**

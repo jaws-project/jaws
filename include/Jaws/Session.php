@@ -1014,7 +1014,7 @@ class Jaws_Session
                         $this->userAttributes[$attribute] = $value[$attribute];
 
                         // set session attribute those related to user's attributes
-                        if (in_array($attribute, array('domain', 'auth'))) {
+                        if (in_array($attribute, array('domain', 'groups', 'auth'))) {
                             $this->session[$attribute] = $value[$attribute];
                         }
                     }
