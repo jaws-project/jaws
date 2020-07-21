@@ -481,10 +481,13 @@ class MDB2_Driver_oci8 extends MDB2_Driver_Common
             }
 
             if ($server_info['major'] >= '12') {
+                // set default text field length to 32767 if version >= 12
+                $this->options['default_text_field_length'] = 32767;
                 $query = 'SELECT value FROM v$parameter WHERE name = \'max_string_size\'';
                 $result = $this->queryOne($query);
-                if (!MDB2::isError($result) && $result == 'EXTENDED') {
-                    $this->options['default_text_field_length'] = 32767;
+                if (!MDB2::isError($result) && $result == 'STANDARD') {
+                    // set text field length to 4000 if max_string_size is STANDARD
+                    $this->options['default_text_field_length'] = 4000;
                 }
             }
         }
