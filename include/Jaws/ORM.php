@@ -350,9 +350,9 @@ class Jaws_ORM
 
         $alias_str = '';
         if (!empty($alias)) {
-            $alias_str = $this->quoteIdentifier($this->_tbl_prefix . $alias);
+            $alias_str = ' ' . $this->quoteIdentifier($this->_tbl_prefix . $alias);
             if ($this->_dbDriver != 'oci8') {
-                $alias_str = ' as ' . $alias_str;
+                $alias_str = ' as' . $alias_str;
             }
         }
 
