@@ -105,7 +105,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
             if ($this->gadget->GetPermission('ManageAlbums')) {
                 $newalbum =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
-                $newalbum->AddEvent(ON_CLICK, "this.form.action.value='NewAlbum'; this.form.submit();");
+                $newalbum->AddEvent(ON_CLICK, "this.form.reqAction.value='NewAlbum'; this.form.submit();");
                 $tpl->SetVariable('new_album', $newalbum->Get());
             } else {
                 $tpl->SetVariable('new_album','');
@@ -353,18 +353,18 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         // Photo actions
         $comments =& Piwi::CreateWidget('Button', 'comments', '', 'images/stock/stock-comments.png');
-        $comments->AddEvent(ON_CLICK, "this.form.action.value = 'ManageComments'; this.form.submit();");
+        $comments->AddEvent(ON_CLICK, "this.form.reqAction.value = 'ManageComments'; this.form.submit();");
         $tpl->SetVariable('comments', $comments->Get());
         $delete =& Piwi::CreateWidget('Button', 'delete', '', STOCK_DELETE);
         $delete->AddEvent(ON_CLICK, "if (confirm('"._t('PHOO_DELETE_PHOTO_CONFIRM').
-            "')) { this.form.action.value = 'DeletePhoto'; this.form.submit();}");
+            "')) { this.form.reqAction.value = 'DeletePhoto'; this.form.submit();}");
         $tpl->SetVariable('delete', $delete->Get());
         if (function_exists('imagerotate')) {
             $rleft =& Piwi::CreateWidget('Button', 'rotate_left', '', STOCK_ROTATE_LEFT);
-            $rleft->AddEvent(ON_CLICK, "this.form.action.value = 'RotateLeft'; this.form.submit();");
+            $rleft->AddEvent(ON_CLICK, "this.form.reqAction.value = 'RotateLeft'; this.form.submit();");
             $tpl->SetVariable('rotate_left', $rleft->Get());
             $rright =& Piwi::CreateWidget('Button', 'rotate_right', '', STOCK_ROTATE_RIGHT);
-            $rright->AddEvent(ON_CLICK, "this.form.action.value = 'RotateRight'; this.form.submit();");
+            $rright->AddEvent(ON_CLICK, "this.form.reqAction.value = 'RotateRight'; this.form.submit();");
             $tpl->SetVariable('rotate_right', $rright->Get());
         }
         $tpl->SetVariable('photo_name', $title);
