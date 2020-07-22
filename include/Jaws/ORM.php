@@ -349,8 +349,11 @@ class Jaws_ORM
         $this->_pk_field_type = $pk_field_type;
 
         $alias_str = '';
-        if (!empty($alias) && ($this->_dbDriver != 'oci8')) {
-            $alias_str = ' as '. $this->quoteIdentifier($this->_tbl_prefix. $alias);
+        if (!empty($alias)) {
+            $alias_str = $this->quoteIdentifier($this->_tbl_prefix . $alias);
+            if ($this->_dbDriver != 'oci8') {
+                $alias_str = ' as ' . $alias_str;
+            }
         }
 
         if (is_object($table)) {
