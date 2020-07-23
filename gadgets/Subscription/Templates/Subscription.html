@@ -8,47 +8,60 @@
     <div class="gadget_response">
         <div id="subscription_subscription_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
     </div>
-    <form name="subscription" action="{{base_script}}" method="post" onsubmit="return updateSubscription();">
+    <form name="subscription" action="{{base_script}}" method="post"
+        onsubmit="return Jaws_Gadget.getInstance('Subscription').updateSubscription();">
         <input type="hidden" name="reqGadget" value="Subscription" />
         <input type="hidden" name="reqAction" value="UpdateSubscription" />
 
         <div class="gadget_content">
-            <!-- BEGIN gadget -->
-            <fieldset>
-              <legend class="collapse" onclick="toggleLegend(this);">
-                <span>{{gadget_title}}</span>
-              </legend>
-                <div class="subscription_items">
-                  <!-- BEGIN item -->
-                  <fieldset>
-                    <legend class="{{collapse}}" onclick="toggleLegend(this);">
-                      <label class="form-check-label" for="{{id}}" >
-                          <!-- BEGIN checkbox -->
-                          <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
-                          <!-- END checkbox -->
-                          <a href="{{url}}">{{title}}</a>
-                      </label>
-                    </legend>
-                      <div class="subscription_items">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-                      <!-- BEGIN subItem -->
-                      <ul>
-                        <li>
-                          <label class="form-check-label" for="{{id}}">
-                            <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
-                             <a href="{{url}}">{{title}}</a>
-                          </label>
-                        </li>
-                      </ul>
-                      <!-- END subItem -->
-                      </div>
-                  </fieldset>
-                  <!-- END item -->
+              <!-- BEGIN gadget -->
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                  <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion"
+                      href="#collapse{{gadget_name}}" aria-expanded="true" aria-controls="collapse{{gadget_name}}">
+                      {{gadget_title}}
+                    </a>
+                  </h4>
                 </div>
+                <div id="collapse{{gadget_name}}" class="panel-collapse collapse"
+                  role="tabpanel" aria-labelledby="headingOne">
+                  <div class="panel-body">
+                    <!-- BEGIN item -->
+                    <fieldset>
+                      <legend>
+                        <label class="form-check-label" for="{{id}}" >
+                            <!-- BEGIN checkbox -->
+                            <input class="form-check-input" type="checkbox"
+                                name="subscriptionItems[]" id="{{id}}" value="{{id}}" {{checked}} />
+                            <!-- END checkbox -->
+                            <a href="{{url}}">{{title}}</a>
+                        </label>
+                      </legend>
 
-            <!-- BEGIN no_subscription -->{{no_subscription}}<!-- END no_subscription -->
-            </fieldset>
-            <!-- END gadget -->
+                      <div class="subscription_items">
+                        <!-- BEGIN subItem -->
+                        <ul>
+                          <li>
+                            <label class="form-check-label" for="{{id}}">
+                              <input class="form-check-input" type="checkbox"
+                                name="subscriptionItems[]" id="{{id}}" value="{{id}}" {{checked}} />
+                               <a href="{{url}}">{{title}}</a>
+                            </label>
+                          </li>
+                        </ul>
+                        <!-- END subItem -->
+                      </div>
+                    </fieldset>
+                    <!-- END item -->
+                  </div>
+                </div>
+              </div>
+              <!-- END gadget -->
+              
+            </div>
 
             <!-- BEGIN email -->
             <label for="email">{{lbl_email}}:</label>
@@ -66,16 +79,7 @@
 </div>
 
 <div class="gadget_footer"></div>
-
-<script type="text/javascript">
-    function toggleLegend(elem) {
-        if (elem.className != '') {
-            elem.className = elem.className == 'collapse' ? 'uncollapse' : 'collapse';
-        }
-    }
-</script>
 <!-- END subscription -->
-
 
 <!-- BEGIN inline -->
 <div class="gadget_subscription">

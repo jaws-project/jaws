@@ -107,7 +107,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                     $tpl->SetVariable('id', $checkboxName);
 
                     // check selected item
-                    if (in_array($checkboxName, $selectedItems)) {
+                    if (!empty($selectedItems) && in_array($checkboxName, $selectedItems)) {
                         $tpl->SetVariable('checked', 'checked');
                     } else {
                         $tpl->SetVariable('checked', '');
@@ -125,7 +125,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                         $tpl->SetVariable('url', $subItem['url']);
 
                         // check selected item
-                        if(in_array($checkboxName, $selectedItems)) {
+                        if(!empty($selectedItems) && in_array($checkboxName, $selectedItems)) {
                             $tpl->SetVariable('checked', 'checked');
                         } else {
                             $tpl->SetVariable('checked', '');
@@ -154,7 +154,10 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
      */
     function UpdateSubscription()
     {
-        $post = $this->gadget->request->fetch(array('email', 'mobile', 'subscriptionItems:array', 'webPush:array'), 'post');
+        $post = $this->gadget->request->fetch(
+            array('email', 'mobile', 'subscriptionItems:array', 'webPush:array'),
+            'post'
+        );
         $selectedItems = $post['subscriptionItems'];
         if(empty($selectedItems)) {
             $subscriptionItems = $this->gadget->request->fetch('subscriptionItems', 'post');
