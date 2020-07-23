@@ -221,8 +221,8 @@ function savePoll()
             return false;
         }
         for(var i = 0; i < box.length; i++) {
-            answers[i] = [];
-            answers[i]['id']     = box.options[i].value;
+            answers[i] = {};
+            answers[i]['id']    = box.options[i].value;
             answers[i]['title'] = box.options[i].text;
         }
         PollAjax.callAsync('UpdatePollAnswers', [selectedPoll, answers]);
