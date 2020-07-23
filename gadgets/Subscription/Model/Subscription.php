@@ -42,18 +42,12 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      */
     function UpdateSubscription($user, $email, $mobile, $webPush, $selectedItems)
     {
-        if (empty($selectedItems)) {
-            return false;
-        }
-
         if (empty($user) && empty($email) && empty($mobile) && empty($webPush)) {
             return false;
         }
 
-
-        $gadgetActions = array();
         $references = array();
-        $webPush = empty($webPush) ? '' : serialize($webPush);
+        $webPush = empty($webPush)? '' : serialize($webPush);
         foreach ($selectedItems as $item) {
             // explode string like this Forums_forum_1 (gadget_action_reference)
             $itemData = explode('_', $item);
@@ -64,40 +58,30 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
             $action = $itemData['1'];
             $reference = (int)$itemData['2'];
             $references[] = array($user, $email, $mobile, $webPush, $gadget, $action, $reference, time());
-            $gadgetActions[$gadget][$action] = $action;
         }
 
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
-
         // delete old user's subscription data
-        if (count($gadgetActions) > 0) {
-            foreach ($gadgetActions as $gadget => $actions) {
-                foreach ($actions as $action) {
-                    $table = $objORM->table('subscription');
-                    $table->delete()->where('gadget', $gadget)->and()->where('action', $action);
-                    if (!empty($user)) {
-                        $table->and()->where('user', $user);
-                    } else {
-                        $table->and()->where('email', $email);
-                        $table->and()->where('mobile_number', $mobile);
-                    }
-                    $res = $table->exec();
-                    if (Jaws_Error::IsError($res)) {
-                        return $res;
-                    }
-                }
-            }
+        $result = $objORM->table('subscription')->delete()
+            ->where('user', $user, '=', empty($user))
+            ->or()
+            ->where('email', $email, '=', empty($email))
+            ->or()
+            ->where('mobile_number', $mobile, '=', empty($mobile))
+            ->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
         }
 
         // insert user subscription data to DB
-        $table = $objORM->table('subscription');
-        $result = $table->insertAll(
-            array('user', 'email', 'mobile_number', 'web_push', 'gadget', 'action', 'reference', 'insert_time'),
-            $references
-        )->exec();
-
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        if (!empty($references)) {
+            $result = $objORM->table('subscription')->insertAll(
+                array('user', 'email', 'mobile_number', 'web_push', 'gadget', 'action', 'reference', 'insert_time'),
+                $references
+            )->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         //commit transaction

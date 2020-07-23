@@ -158,20 +158,11 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             array('email', 'mobile', 'subscriptionItems:array', 'webPush:array'),
             'post'
         );
+
         $selectedItems = $post['subscriptionItems'];
         if(empty($selectedItems)) {
             $subscriptionItems = $this->gadget->request->fetch('subscriptionItems', 'post');
-            $selectedItems = empty($subscriptionItems) ? null : array($subscriptionItems) ;
-
-            if(empty($selectedItems)) {
-                $this->gadget->session->push(
-                    _t('SUBSCRIPTION_ERROR_NOT_ITEM_SELECTED'),
-                    RESPONSE_ERROR,
-                    'Subscription',
-                    $post
-                );
-                return Jaws_Header::Location($this->gadget->urlMap('Subscription'), 'Subscription');
-            }
+            $selectedItems = empty($subscriptionItems)? array() : array($subscriptionItems) ;
         }
 
         $sModel = $this->gadget->model->load('Subscription');
