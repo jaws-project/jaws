@@ -298,7 +298,7 @@ class Jaws_Gadget
             ) {
                 // FIXME: RunAutoload !!!
                 Jaws_Header::Location(
-                    Jaws_Gadget::getInstance('Users')->gadget->url(
+                    Jaws_Gadget::getInstance('Users')->gadget->urlMap(
                         'Login',
                         array('referrer' => bin2hex(Jaws_Utils::getRequestURL()))
                     )
