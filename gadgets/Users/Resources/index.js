@@ -594,36 +594,58 @@ function usersDataSource(options, callback)
 function initiateUsersDG() {
     var list_actions = {
         width: 50,
-        items: [
-            {
-                name: 'editUser',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.Users.Defines.editUser_title,
-                clickAction: function (helpers, callback, e) {
-                    e.preventDefault();
-                    editUser(helpers.rowData.id);
-                    callback();
+        items: {
+            'common': [
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.Users.Defines.deleteUser_title,
+                    clickAction: function (helpers, callback, e) {
+                        e.preventDefault();
+                        deleteUser(helpers.rowData.id);
+                        callback();
+                    }
+                },
+                {
+                    name: 'userGroup',
+                    html: '<span class="glyphicon glyphicon-user"></span> ' + jaws.Users.Defines.editUserGroups_title,
+                    clickAction: function (helpers, callback, e) {
+                        e.preventDefault();
+                        editUserGroups(helpers.rowData.id);
+                        callback();
+                    }
                 }
+            ],
+            'default': [
+                {
+                    name: 'editUser',
+                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.Users.Defines.editUser_title,
+                    clickAction: function (helpers, callback, e) {
+                        e.preventDefault();
+                        editUser(helpers.rowData.id);
+                        callback();
+                    }
 
-            },
-            {
-                name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.Users.Defines.deleteUser_title,
-                clickAction: function (helpers, callback, e) {
-                    e.preventDefault();
-                    deleteUser(helpers.rowData.id);
-                    callback();
+                },
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.Users.Defines.deleteUser_title,
+                    clickAction: function (helpers, callback, e) {
+                        e.preventDefault();
+                        deleteUser(helpers.rowData.id);
+                        callback();
+                    }
+                },
+                {
+                    name: 'userGroup',
+                    html: '<span class="glyphicon glyphicon-user"></span> ' + jaws.Users.Defines.editUserGroups_title,
+                    clickAction: function (helpers, callback, e) {
+                        e.preventDefault();
+                        editUserGroups(helpers.rowData.id);
+                        callback();
+                    }
                 }
-            },
-            {
-                name: 'userGroup',
-                html: '<span class="glyphicon glyphicon-user"></span> ' + jaws.Users.Defines.editUserGroups_title,
-                clickAction: function (helpers, callback, e) {
-                    e.preventDefault();
-                    editUserGroups(helpers.rowData.id);
-                    callback();
-                }
-            }
-        ]
+            ]
+        }
     };
 
     // initialize the repeater
