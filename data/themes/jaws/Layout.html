@@ -17,37 +17,39 @@
 <body id="main_gadget_{{main_gadget}}" class="fuelux main_layout_{{main_layout}}">
 
   <div id="container" class="wrapper">
-    <div id="header">
-      <div id="title">
-        <h1><a href="{{site-url}}">{{site-name}}</a></h1>
-        <p>{{site-slogan}}</p>
+    <header>
+      <div class="row">
+        <div class="col-sm-5 site-header">
+          <h1><a href="{{site-url}}">{{site-name}}</a></h1>
+          <p>{{site-slogan}}</p>
+        </div>
+        <div class="col-sm-7" id="headbar">
+          <a class="accessibility" href="#mainbar"><img src="images/blank.gif" width="0" height="0" alt="{{skip_to_content}}" /></a>
+          <!-- BEGIN header -->
+            <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
+            {{ELEMENT}}
+            </div>
+          <!-- END header -->
+        </div>
       </div>
-      <div id="headbar">
-        <a class="accessibility" href="#mainbar"><img src="images/blank.gif" width="0" height="0" alt="{{skip_to_content}}" /></a>
-        <!-- BEGIN header -->
-          <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
-          {{ELEMENT}}
-          </div>
-        <!-- END header -->
-      </div>
-    </div>
+    </header>
 
-    <div id="content">
-      <div id="mainbar">
+    <div class="row" id="content">
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-7">
         <!-- BEGIN main -->
         <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}" data-action-mode="{{action_mode}}">
           {{ELEMENT}}
         </div>
         <!-- END main -->
       </div>
-      <div id="bar1" class="sidebar">
+      <div class="hidden-xs hidden-sm col-md-4 col-lg-3 sidebar">
         <!-- BEGIN bar1 -->
         <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
           {{ELEMENT}}
         </div>
         <!-- END bar1 -->
       </div>
-      <div id="bar2" class="sidebar">
+      <div class="hidden-xs hidden-sm hidden-md col-lg-2 sidebar">
         <!-- BEGIN bar2 -->
         <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
           {{ELEMENT}}
@@ -57,11 +59,13 @@
     </div>
   </div>
 
-  <div id="footer">
-    <div class="wrapper">
-      {{site-copyright}} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
+  <footer class="site-footer">
+    <div class="row">
+      <div class="wrapper">
+        {{site-copyright}} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
+      </div>
     </div>
-  </div>
+  </footer>
   <!-- BEGIN scripts -->
   {{elements}}
   <!-- END scripts -->

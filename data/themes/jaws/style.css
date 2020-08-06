@@ -156,10 +156,8 @@ margin:0 auto;
 #container{
 min-height:100%;
 }
-#header{
-color:#fff;
-clear:both;
-height:68px;
+.site-header *{
+color:#fff !important;
 }
 #header #title{
 float:left;
@@ -184,26 +182,7 @@ margin-top:42px;
 #main_gadget_layout #headbar{
 margin-top:4px;
 }
-#content{
-clear:both;
-width:1000px;
-padding-top:20px;
-padding-bottom:30px;
-}
-#mainbar{
-float:left;
-width:560px;
-}
-#bar1{
-width:190px;
-float:right;
-margin-left:15px;
-}
-#bar2{
-width:220px;
-float:right;
-}
-#footer{
+.site-footer{
 clear:both;
 height:28px;
 margin-top:-28px;
@@ -211,7 +190,7 @@ line-height:28px;
 background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAcCAIAAAAvP0KbAAAABGdBTUEAALGPC/xhBQAAAGJJREFUGFcFwbcVwjAAQMG//xrsQUfDCGDic1DOkuVKvuMx37lcb4wxeC6CaZW8NsVbKD5S85WGn7L8tWU2jsV4VuvZXED4iAwRFRI6ZmwquFzwpRJKI9ZGajt575Teqf04AYkzTSrYjbl3AAAAAElFTkSuQmCC) repeat-x;
 position:relative;
 }
-#footer .wrapper{
+.site-footer .wrapper{
 padding-top:8px;
 line-height:120%;
 }
