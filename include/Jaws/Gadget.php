@@ -108,6 +108,14 @@ class Jaws_Gadget
     var $name = '';
 
     /**
+     * Path of the gadget
+     *
+     * @var     string
+     * @access  private
+     */
+    var $path = '';
+
+    /**
      * Default front-end action name
      *
      * @var     string
@@ -156,7 +164,8 @@ class Jaws_Gadget
     {
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
-        $this->app = Jaws::getInstance();
+        $this->path = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR . $gadget + DIRECTORY_SEPARATOR;
+        $this->app  = Jaws::getInstance();
     }
 
     /**
@@ -298,7 +307,7 @@ class Jaws_Gadget
             ) {
                 // FIXME: RunAutoload !!!
                 Jaws_Header::Location(
-                    Jaws_Gadget::getInstance('Users')->gadget->urlMap(
+                    Jaws_Gadget::getInstance('Users')->gadget->url(
                         'Login',
                         array('referrer' => bin2hex(Jaws_Utils::getRequestURL()))
                     )
@@ -708,6 +717,7 @@ class Jaws_Gadget
                 break;
 
             case 'hook':
+            case 'users':
             case 'event':
             case 'model':
             case 'plugin':
