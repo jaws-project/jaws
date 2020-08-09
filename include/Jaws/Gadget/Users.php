@@ -82,17 +82,18 @@ class Jaws_Gadget_Users
     }
 
     /**
-     * Fetch custom user's attributes of gadget
+     * Fetch user's attributes
      *
      * @access  public
-     * @param   int     $user   User ID
-     * @return  mixed   Returns array of attributes or Jaws_Error on Failure
+     * @param   int     $user           User ID
+     * @param   array   $attributes     User's custom/default attributes
+     * @return  mixed   Returns array of user's attributes or Jaws_Error on Failure
      */
-    function fetchAttributes($user, $customAttributes, $defaultAttributes = array())
+    function fetch($user, $attributes)
     {
         $tableName = strtolower('users_'.$this->gadget->name);
         array_walk(
-            $customAttributes,
+            $attributes['custom'],
             function(&$value, $key, $prefix) {
                 $value = $prefix. '.'. $value;
             },
@@ -100,17 +101,60 @@ class Jaws_Gadget_Users
         );
 
         array_walk(
-            $defaultAttributes,
+            $attributes['default'],
             function(&$value, $key) {
                 $value = 'users.'. $value;
             }
         );
 
         return Jaws_ORM::getInstance()->table($tableName)
-            ->select(array_merge($defaultAttributes, $customAttributes))
+            ->select(array_merge($attributes['default'], $attributes['custom']))
             ->join('users', 'users.id', $tableName.'.user')
             ->where('users.id', (int)$user)
             ->fetchRow();
+    }
+
+    /**
+     * Fetch users's attributes
+     *
+     * @access  public
+     * @param   array   $attributes     User's custom/default attributes
+     * @param   array   $filters        Filters
+     * @return  mixed   Returns array of users or Jaws_Error on Failure
+     */
+    function fetchAll($attributes, $filters)
+    {
+        $tableName = strtolower('users_'.$this->gadget->name);
+        array_walk(
+            $attributes['custom'],
+            function(&$value, $key, $prefix) {
+                $value = $prefix. '.'. $value;
+            },
+            $tableName
+        );
+
+        array_walk(
+            $attributes['default'],
+            function(&$value, $key) {
+                $value = 'users.'. $value;
+            }
+        );
+
+        $objORM = Jaws_ORM::getInstance()
+            ->table($tableName)
+            ->select(array_merge($attributes['default'], $attributes['custom']))
+            ->join('users', 'users.id', $tableName.'.user');
+
+        // default attributes filters
+        foreach ($filters['default'] as $filter) {
+            $objORM->and()->where($filter[0], $filter[1]);
+        }
+        // custom attributes filters
+        foreach ($filters['custom'] as $filter) {
+            $objORM->and()->where($filter[0], $filter[1]);
+        }
+
+        return $objORM->fetchAll();
     }
 
 }
