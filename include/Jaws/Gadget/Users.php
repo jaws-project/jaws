@@ -95,13 +95,13 @@ class Jaws_Gadget_Users
             return $result;
         }
 
-        $attrs = $this->gadget->hook->load('Preferences')->Execute();
+        $attrs = $this->gadget->hook->load('UsersAttributes')->Execute();
         if (Jaws_Error::IsError($attrs) || empty($attrs)) {
             return $result;
         }
 
         $attrs = array_keys($attrs);
-        $objORM = Jaws_ORM::getInstance()->table('users_'.$this->gadget->name);
+        $objORM = Jaws_ORM::getInstance()->table(strtolower('users_'.$this->gadget->name));
         return $objORM->select($attrs)->where('user', (int)$user)->fetchRow();
     }
 
