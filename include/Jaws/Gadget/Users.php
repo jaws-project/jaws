@@ -88,21 +88,29 @@ class Jaws_Gadget_Users
      * @param   int     $user   User ID
      * @return  mixed   Returns array of attributes or Jaws_Error on Failure
      */
-    function fetchAttributes($user)
+    function fetchAttributes($user, $customAttributes, $defaultAttributes = array())
     {
-        $result = array();
-        if (!file_exists($this->gadget->path. 'Hooks/UsersAttributes.php')) {
-            return $result;
-        }
+        $tableName = strtolower('users_'.$this->gadget->name);
+        array_walk(
+            $customAttributes,
+            function(&$value, $key, $prefix) {
+                $value = $prefix. '.'. $value;
+            },
+            $tableName
+        );
 
-        $attrs = $this->gadget->hook->load('UsersAttributes')->Execute();
-        if (Jaws_Error::IsError($attrs) || empty($attrs)) {
-            return $result;
-        }
+        array_walk(
+            $defaultAttributes,
+            function(&$value, $key) {
+                $value = 'users.'. $value;
+            }
+        );
 
-        $attrs = array_keys($attrs);
-        $objORM = Jaws_ORM::getInstance()->table(strtolower('users_'.$this->gadget->name));
-        return $objORM->select($attrs)->where('user', (int)$user)->fetchRow();
+        return Jaws_ORM::getInstance()->table($tableName)
+            ->select(array_merge($defaultAttributes, $customAttributes))
+            ->join('users', 'users.id', $tableName.'.user')
+            ->where('users.id', (int)$user)
+            ->fetchRow();
     }
 
 }
