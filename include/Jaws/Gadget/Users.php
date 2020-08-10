@@ -115,14 +115,16 @@ class Jaws_Gadget_Users
     }
 
     /**
-     * Fetch users's attributes
+     * Fetch users include default/custom attributes
      *
      * @access  public
      * @param   array   $attributes     User's custom/default attributes
      * @param   array   $filters        Filters
+     * @param   int     $limit          Count of users to be returned
+     * @param   int     $offset         Offset of data array
      * @return  mixed   Returns array of users or Jaws_Error on Failure
      */
-    function fetchAll($attributes, $filters)
+    function fetchAll($attributes, $filters, $limit = false, $offset = null)
     {
         $tableName = strtolower('users_'.$this->gadget->name);
         array_walk(
@@ -147,14 +149,60 @@ class Jaws_Gadget_Users
 
         // default attributes filters
         foreach ($filters['default'] as $filter) {
-            $objORM->and()->where($filter[0], $filter[1]);
+            $objORM->and()->where(
+                'users.'.$filter[0],
+                $filter[1],
+                array_key_exists(2, $filter)? $filter[2] : '=',
+                array_key_exists(3, $filter)? (bool)$filter[3] : false
+            );
         }
         // custom attributes filters
         foreach ($filters['custom'] as $filter) {
-            $objORM->and()->where($filter[0], $filter[1]);
+            $objORM->and()->where(
+                $tableName. '.'. $filter[0],
+                $filter[1],
+                array_key_exists(2, $filter)? $filter[2] : '=',
+                array_key_exists(3, $filter)? (bool)$filter[3] : false
+            );
         }
 
-        return $objORM->fetchAll();
+        return $objORM->orderBy('users.id')->limit((int)$limit, $offset)->fetchAll();
     }
 
+    /**
+     * Count of users filtered by default/custom filters
+     *
+     * @access  public
+     * @param   array   $filters    Filters
+     * @return  mixed   Returns count of filtered users array or Jaws_Error on Failure
+     */
+    function count($filters)
+    {
+        $tableName = strtolower('users_'.$this->gadget->name);
+        $objORM = Jaws_ORM::getInstance()
+            ->table($tableName)
+            ->select('count(users.id):integer')
+            ->join('users', 'users.id', $tableName.'.user');
+
+        // default attributes filters
+        foreach ($filters['default'] as $filter) {
+            $objORM->and()->where(
+                'users.'.$filter[0],
+                $filter[1],
+                array_key_exists(2, $filter)? $filter[2] : '=',
+                array_key_exists(3, $filter)? (bool)$filter[3] : false
+            );
+        }
+        // custom attributes filters
+        foreach ($filters['custom'] as $filter) {
+            $objORM->and()->where(
+                $tableName. '.'. $filter[0],
+                $filter[1],
+                array_key_exists(2, $filter)? $filter[2] : '=',
+                array_key_exists(3, $filter)? (bool)$filter[3] : false
+            );
+        }
+
+        return $objORM->fetchOne();
+    }
 }
