@@ -49,8 +49,9 @@ class Jaws_Gadget_Users
      */
     function insertAttributes($user, $attrs = array())
     {
-        array_unshift($attrs, array('user' => $user));
-        $objORM = Jaws_ORM::getInstance()->table('users_'.$this->gadget->name);
+        $attrs['user'] = (int)$user;
+        $tableName = strtolower('users_'.$this->gadget->name);
+        $objORM = Jaws_ORM::getInstance()->table($tableName);
         return $objORM->insert($attrs)->exec();
     }
 
@@ -64,7 +65,8 @@ class Jaws_Gadget_Users
      */
     function updateAttributes($user, $attrs = array())
     {
-        $objORM = Jaws_ORM::getInstance()->table('users_'.$this->gadget->name);
+        $tableName = strtolower('users_'.$this->gadget->name);
+        $objORM = Jaws_ORM::getInstance()->table($tableName);
         return $objORM->update($attrs)->where('user', (int)$user)->exec();
     }
 
@@ -77,7 +79,8 @@ class Jaws_Gadget_Users
      */
     function deleteAttributes($user)
     {
-        $objORM = Jaws_ORM::getInstance()->table('users_'.$this->gadget->name);
+        $tableName = strtolower('users_'.$this->gadget->name);
+        $objORM = Jaws_ORM::getInstance()->table($tableName);
         return $objORM->delete()->where('user', (int)$user)->exec();
     }
 
