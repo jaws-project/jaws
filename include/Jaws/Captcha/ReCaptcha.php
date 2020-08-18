@@ -58,9 +58,10 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
      * Check if a captcha value is valid
      *
      * @access  public
+     * @param   bool    $cleanup    Delete captcha key after check
      * @return  bool    return validity of captcha value
      */
-    function check()
+    function check($cleanup = true)
     {
         $recaptcha = $this->app->request->fetch(
             array('recaptcha_challenge_field', 'recaptcha_response_field'),
