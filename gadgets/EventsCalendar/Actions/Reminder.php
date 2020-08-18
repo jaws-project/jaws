@@ -94,9 +94,11 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             }
             $tpl->SetVariable('owner', $owner);
 
-            $url = $this->gadget->urlMap('ViewEvent', array('id' => $event['id']));
-            $tpl->SetVariable('event_url', $url);
+            $url = $user?
+                $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id'])) :
+                $this->gadget->urlMap('ViewEvent', array('event' => $event['id']));
 
+            $tpl->SetVariable('event_url', $url);
             $tpl->ParseBlock('reminder/event');
         }
 
