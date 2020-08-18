@@ -108,18 +108,19 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return false;
         }
 
-        if ($configuration[$shouter] == 1) {
-            $notificationsEmails  = array_filter(array_column($users, 'email'));
-            $notificationsMobiles = array_filter(array_column($users, 'mobile'));
-            $notificationsWebPush = array_filter(array_column($users, 'webpush'));
-        } else {
-            $objDModel = $this->gadget->model->load('Drivers');
-            $objDriver = $objDModel->LoadNotificationDriver($configuration[$shouter]);
-            if (Jaws_Error::IsError($objDriver)) {
-                return false;
+        if (array_key_exists('driver', $params) || $configuration[$shouter] != 1) {
+            if (array_key_exists('driver', $params)) {
+                $driverType = $params['driver'];
+            } else {
+                $objDModel = $this->gadget->model->load('Drivers');
+                $objDriver = $objDModel->LoadNotificationDriver($configuration[$shouter]);
+                if (Jaws_Error::IsError($objDriver)) {
+                    return false;
+                }
+                $driverType = $objDriver->getType();
             }
 
-            switch ($objDriver->getType()) {
+            switch ($driverType) {
                 case Jaws_Notification::EML_DRIVER:
                     // generate email array
                     $notificationsEmails = array_filter(array_column($users, 'email'));
@@ -138,6 +139,10 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 default:
                     return false;
             }
+        } else {
+            $notificationsEmails  = array_filter(array_column($users, 'email'));
+            $notificationsMobiles = array_filter(array_column($users, 'mobile'));
+            $notificationsWebPush = array_filter(array_column($users, 'webpush'));
         }
 
         if (!empty($notificationsEmails) || !empty($notificationsMobiles) || !empty($notificationsWebPush)) {
