@@ -261,7 +261,7 @@ class Jaws_Date_Jalali extends Jaws_Date
     function MonthDays($year, $month = 0)
     {
         $result = $this->_JalaliDaysInMonthes;
-        if ($this->IsJalaliLeapYear($year)) {
+        if ($this->leap_persian($year)) {
             $result[11]++;
         }
         return empty($month)? $result : $result[$month-1];
