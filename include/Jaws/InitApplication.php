@@ -46,8 +46,8 @@ if (!defined('JAWS_THEMES')) {
 if (!defined('JAWS_BASE_THEMES')) {
     define('JAWS_BASE_THEMES', JAWS_BASE_DATA. 'themes'. DIRECTORY_SEPARATOR);
 }
-if (!defined('JAWS_CACHE')) {
-    define('JAWS_CACHE', ROOT_DATA_PATH. 'cache'. DIRECTORY_SEPARATOR);
+if (!defined('JAWS_CACHE_PATH')) {
+    define('JAWS_CACHE_PATH', ROOT_DATA_PATH. 'cache'. DIRECTORY_SEPARATOR);
 }
 
 if (!defined('JAWS_WIKI')) {
