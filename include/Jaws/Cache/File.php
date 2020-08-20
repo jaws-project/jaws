@@ -40,13 +40,18 @@ class Jaws_Cache_File extends Jaws_Cache
      *
      * @access  public
      * @param   string  $key    key
-     * @param   mixed   $value  value 
+     * @param   mixed   $value  value
+     * @param   bool    $serialize
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, $value, $lifetime = 2592000)
+    function set($key, $value, $serialize = false, $lifetime = 2592000)
     {
         $result = false;
+        if ($serialize) {
+            $value = serialize($value);
+        }
+
         if (!empty($lifetime)) {
             $file = $this->cacheDirectory . $this->cachePrefix. $key;
             if ($result = Jaws_Utils::file_put_contents($file, $value)) {
@@ -62,13 +67,18 @@ class Jaws_Cache_File extends Jaws_Cache
      *
      * @access  public
      * @param   string  $key    key
+     * @param   bool    $unserialize
      * @return  mixed   Returns key value
      */
-    function get($key)
+    function get($key, $unserialize = false)
     {
         $file = $this->cacheDirectory . $this->cachePrefix. $key;
         $ftime = @filemtime($file);
         if ((int)$ftime > time()) {
+            if ($unserialize) {
+                return @unserialize(@file_get_contents($file));
+            }
+
             return @file_get_contents($file);
         }
 

@@ -32,13 +32,18 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      *
      * @access  public
      * @param   string  $key    key
-     * @param   mixed   $value  value 
+     * @param   mixed   $value  value
+     * @param   bool    $serialize
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, $value, $lifetime = 2592000)
+    function set($key, $value, $serialize = false, $lifetime = 2592000)
     {
         $result = false;
+        if ($serialize) {
+            $value = serialize($value);
+        }
+
         if (!empty($lifetime)) {
             $this->shmcache->lock(true);
             if ($this->shmcache->open('c', 64*1024)) {
@@ -73,9 +78,10 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      *
      * @access  public
      * @param   string  $key    key
+     * @param   bool    $unserialize
      * @return  mixed   Returns key value
      */
-    function get($key)
+    function get($key, $unserialize = false)
     {
         $value = false;
         if ($this->shmcache->open('w')) {
@@ -106,6 +112,11 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
             $keyFile = Jaws_SharedSegment::getInstance($keyscached[$key]['token']);
             if ($keyFile->open('a')) {
                 $value = $keyFile->read();
+
+                if ($unserialize) {
+                    $value = @unserialize($value);
+                }
+
                 $keyFile->close();
             }
         }

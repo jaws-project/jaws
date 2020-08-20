@@ -34,12 +34,17 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      *
      * @access  public
      * @param   string  $key    key
-     * @param   mixed   $value  value 
+     * @param   mixed   $value  value
+     * @param   bool    $serialize
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, $value, $lifetime = 2592000)
+    function set($key, $value, $serialize = false, $lifetime = 2592000)
     {
+        if ($serialize) {
+            $value = serialize($value);
+        }
+
         return empty($lifetime)? false : $this->memcache->set($key, $value, 0, $lifetime);
     }
 
@@ -48,10 +53,15 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      *
      * @access  public
      * @param   string  $key    key
+     * @param   bool    $unserialize
      * @return  mixed   Returns key value
      */
-    function get($key)
+    function get($key, $unserialize = false)
     {
+        if ($unserialize) {
+            return @unserialize($this->memcache->get($key));
+        }
+
         return $this->memcache->get($key);
     }
 

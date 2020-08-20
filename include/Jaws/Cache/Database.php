@@ -33,13 +33,18 @@ class Jaws_Cache_Database extends Jaws_Cache
      *
      * @access  public
      * @param   int     $key    key
-     * @param   mixed   $value  value 
+     * @param   mixed   $value  value
+     * @param   bool    $serialize
      * @param   int     $lifetime
      * @return  mixed
      */
-    function set($key, $value, $lifetime = 2592000)
+    function set($key, $value, $serialize = false, $lifetime = 2592000)
     {
         $result = false;
+        if ($serialize) {
+            $value = serialize($value);
+        }
+
         if (!empty($lifetime)) {
             $result = $this->dbCacheORM->reset()
                 ->upsert(
@@ -61,9 +66,10 @@ class Jaws_Cache_Database extends Jaws_Cache
      *
      * @access  public
      * @param   int     $key    key
+     * @param   bool    $unserialize
      * @return  mixed   Returns key value
      */
-    function get($key)
+    function get($key, $unserialize = false)
     {
         $result = $this->dbCacheORM->reset()
             ->select(
@@ -81,6 +87,10 @@ class Jaws_Cache_Database extends Jaws_Cache
                     $clob.= fread($result['value'], 8192);
                 }
                 $result['value'] = $clob;
+            }
+
+            if ($unserialize) {
+                return @unserialize($result['value']);
             }
 
             return $result['value'];
