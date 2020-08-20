@@ -119,6 +119,27 @@ class Jaws_Cache_Database extends Jaws_Cache
     }
 
     /**
+     * Checks is cached key exists
+     *
+     * @access  public
+     * @param   int     $key    key
+     * @return  bool
+     */
+    function exists($key)
+    {
+        $lifetime = $this->dbCacheORM->reset()
+            ->select(
+                'lifetime:integer'
+            )->where('key', $key)
+            ->fetchOne();
+        if (Jaws_Error::IsError($lifetime) || empty($lifetime) || $lifetime > time()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Delete expired cached keys
      *
      * @access  public

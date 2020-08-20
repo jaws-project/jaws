@@ -31,7 +31,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      * Store value of given key
      *
      * @access  public
-     * @param   string  $key    key
+     * @param   int     $key    key
      * @param   mixed   $value  value
      * @param   bool    $serialize
      * @param   int     $lifetime
@@ -77,7 +77,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      * Get cached value of given key
      *
      * @access  public
-     * @param   string  $key    key
+     * @param   int     $key    key
      * @param   bool    $unserialize
      * @return  mixed   Returns key value
      */
@@ -128,7 +128,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      * Delete cached key
      *
      * @access  public
-     * @param   string  $key    key
+     * @param   int     $key    key
      * @return  mixed
      */
     function delete($key)
@@ -152,6 +152,32 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
 
         $this->shmcache->lock(false);
         return $result;
+    }
+
+    /**
+     * Checks is cached key exists
+     *
+     * @access  public
+     * @param   int     $key    key
+     * @return  bool
+     */
+    function exists($key)
+    {
+        if ($this->shmcache->open('w')) {
+            $keyscached = @unserialize($this->shmcache->read());
+            if (!$keyscached) {
+                $keyscached = array();
+            }
+            $this->shmcache->close();
+        }
+
+        if (array_key_exists($key, $keyscached) &&
+            ($keyscached[$key]['lifetime'] > time())
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -39,7 +39,7 @@ class Jaws_Cache_File extends Jaws_Cache
      * Store value of given key
      *
      * @access  public
-     * @param   string  $key    key
+     * @param   int     $key    key
      * @param   mixed   $value  value
      * @param   bool    $serialize
      * @param   int     $lifetime
@@ -66,7 +66,7 @@ class Jaws_Cache_File extends Jaws_Cache
      * Get cached value of given key
      *
      * @access  public
-     * @param   string  $key    key
+     * @param   int     $key    key
      * @param   bool    $unserialize
      * @return  mixed   Returns key value
      */
@@ -89,13 +89,31 @@ class Jaws_Cache_File extends Jaws_Cache
      * Delete cached key
      *
      * @access  public
-     * @param   string  $key    key
+     * @param   int     $key    key
      * @return  mixed
      */
     function delete($key)
     {
         $file = $this->cacheDirectory . $this->cachePrefix. $key;
         return Jaws_Utils::delete($file);
+    }
+
+    /**
+     * Checks is cached key exists
+     *
+     * @access  public
+     * @param   int     $key    key
+     * @return  bool
+     */
+    function exists($key)
+    {
+        $file = $this->cacheDirectory . $this->cachePrefix. $key;
+        $ftime = @filemtime($file);
+        if ((int)$ftime > time()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
