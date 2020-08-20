@@ -65,7 +65,7 @@ class Jaws_Soap_Client extends Jaws_Soap
 
         try {
             if ($this->refresh ||
-                false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
+                false === $result = $this->app->cache->get($this->request_cache_key, true)
             ) {
                 $result = call_user_func_array(array($this->SoapClient, $method), $arguments);
                 if (is_soap_fault($result)) {
@@ -75,7 +75,8 @@ class Jaws_Soap_Client extends Jaws_Soap
                 // set cache
                 $this->app->cache->set(
                     $this->request_cache_key,
-                    serialize($result),
+                    $result,
+                    true,
                     $this->expires
                 );
             }
