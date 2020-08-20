@@ -115,7 +115,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url);
         if ($this->refresh ||
-            false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
+            false === $result = $this->app->cache->get($this->request_cache_key, true)
         ) {
             $headers = $this->httpRequest->getHeaders();
             // user agent
@@ -129,13 +129,12 @@ class Jaws_HTTPRequest
                 $result = $this->httpRequest->send();
                 $this->app->cache->set(
                     $this->request_cache_key,
-                    serialize(
-                        $result = array(
-                            'status' => $result->getStatus(),
-                            'header' => $result->getHeader(),
-                            'body'   => $result->getBody()
-                        )
+                    $result = array(
+                        'status' => $result->getStatus(),
+                        'header' => $result->getHeader(),
+                        'body'   => $result->getBody()
                     ),
+                    true,
                     $this->expires
                 );
             } catch (Exception $error) {
@@ -163,7 +162,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url, $params);
         if ($this->refresh ||
-            false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
+            false === $result = $this->app->cache->get($this->request_cache_key, true)
         ) {
             $headers = $this->httpRequest->getHeaders();
             // detect data need url-encoding
@@ -188,13 +187,12 @@ class Jaws_HTTPRequest
                 $result = $this->httpRequest->send();
                 $this->app->cache->set(
                     $this->request_cache_key,
-                    serialize(
-                        $result = array(
-                            'status' => $result->getStatus(),
-                            'header' => $result->getHeader(),
-                            'body'   => $result->getBody()
-                        )
+                    $result = array(
+                        'status' => $result->getStatus(),
+                        'header' => $result->getHeader(),
+                        'body'   => $result->getBody()
                     ),
+                    true,
                     $this->expires
                 );
             } catch (Exception $error) {
@@ -222,7 +220,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url, $data);
         if ($this->refresh ||
-            false === $result = @unserialize($this->app->cache->get($this->request_cache_key))
+            false === $result = $this->app->cache->get($this->request_cache_key, true)
         ) {
             $headers = $this->httpRequest->getHeaders();
             // user agent
@@ -238,13 +236,12 @@ class Jaws_HTTPRequest
                 $result = $this->httpRequest->send();
                 $this->app->cache->set(
                     $this->request_cache_key,
-                    serialize(
-                        $result = array(
-                            'status' => $result->getStatus(),
-                            'header' => $result->getHeader(),
-                            'body'   => $result->getBody()
-                        )
+                    $result = array(
+                        'status' => $result->getStatus(),
+                        'header' => $result->getHeader(),
+                        'body'   => $result->getBody()
                     ),
+                    true,
                     $this->expires
                 );
             } catch (Exception $error) {
