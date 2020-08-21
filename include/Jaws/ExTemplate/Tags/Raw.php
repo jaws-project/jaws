@@ -1,0 +1,37 @@
+<?php
+/**
+ * Class for tag raw
+ * temporarily disables tag processing
+ *
+ * @category    Template
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
+ */
+class Jaws_ExTemplate_Tags_Raw extends Jaws_ExTemplate_Tags_Segmental
+{
+    /**
+     * @param array $tokens
+     */
+    public function parse(array &$tokens)
+    {
+        $tagRegexp = new Jaws_Regexp('/^' . Jaws_ExTemplate::get('TAG_START') . '\s*(\w+)\s*(.*)?' . Jaws_ExTemplate::get('TAG_END') . '$/');
+
+        $this->nodelist = array();
+
+        while (count($tokens)) {
+            $token = array_shift($tokens);
+
+            if ($tagRegexp->match($token)) {
+                // If we found the proper block delimiter just end parsing here and let the outer block proceed
+                if ($tagRegexp->matches[1] == $this->blockDelimiter()) {
+                    break;
+                }
+            }
+
+            $this->nodelist[] = $token;
+        }
+    }
+
+}
