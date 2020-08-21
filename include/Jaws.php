@@ -383,6 +383,10 @@ class Jaws
             $file = ROOT_JAWS_PATH. "gadgets/$classname.php";
         }
         if (!file_exists($file)) {
+            if (false !== strpos($classname, 'Jaws/ExTemplate/Tags/')) {
+                // no log if template tag not found
+                return;
+            }
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Loaded class file: ' . $file);
         } else {
             require_once $file;
