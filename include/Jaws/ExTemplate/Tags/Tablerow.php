@@ -9,7 +9,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_Tags_Tablerow extends Jaws_ExTemplate_Tags_Segmental
+class Jaws_ExTemplate_Tags_Tablerow extends Jaws_ExTemplate_TagSegmental
 {
     /**
      * The variable name of the table tag

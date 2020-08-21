@@ -242,7 +242,7 @@ class Jaws_ExTemplate
         // if no cached version exists
         //if ($this->document === false || $this->document->hasIncludes() == true) {
             $tokens = Jaws_ExTemplate::tokenize($source);
-            $this->document = new Jaws_ExTemplate_Tags_Document($tokens, $this->rootPath);
+            $this->document = new Jaws_ExTemplate_Document($tokens, $this->rootPath);
             /*
             $this->app->cache->set(
                 $hash,

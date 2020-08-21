@@ -8,7 +8,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_Tags_Document extends Jaws_ExTemplate_Tags_Segmental
+class Jaws_ExTemplate_Document extends Jaws_ExTemplate_TagSegmental
 {
     /**
      * Constructor.

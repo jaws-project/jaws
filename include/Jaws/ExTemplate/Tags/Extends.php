@@ -143,7 +143,7 @@ class Jaws_ExTemplate_Tags_Extends extends Jaws_ExTemplate_Tag
         */
 
         //if ($this->document == false || $this->document->hasIncludes() == true) {
-            $this->document = new Jaws_ExTemplate_Tags_Document($rest, $this->rootPath);
+            $this->document = new Jaws_ExTemplate_Document($rest, $this->rootPath);
             /*
             $this->app->cache->set(
                 $this->hash,

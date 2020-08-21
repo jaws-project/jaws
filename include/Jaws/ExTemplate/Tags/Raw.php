@@ -9,7 +9,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_Tags_Raw extends Jaws_ExTemplate_Tags_Segmental
+class Jaws_ExTemplate_Tags_Raw extends Jaws_ExTemplate_TagSegmental
 {
     /**
      * @param array $tokens

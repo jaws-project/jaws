@@ -97,7 +97,7 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
 
         //if ($this->document == false || $this->document->hasIncludes() == true) {
             $templateTokens = Jaws_ExTemplate::tokenize($source);
-            $this->document = new Jaws_ExTemplate_Tags_Document($templateTokens, $this->rootPath);
+            $this->document = new Jaws_ExTemplate_Document($templateTokens, $this->rootPath);
             /*
             $this->app->cache->set(
                 $this->hash,

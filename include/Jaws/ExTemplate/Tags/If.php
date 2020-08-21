@@ -9,7 +9,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_Tags_If extends Jaws_ExTemplate_Tags_Decision
+class Jaws_ExTemplate_Tags_If extends Jaws_ExTemplate_TagConditional
 {
     /**
      * Array holding the nodes to render for each logical block

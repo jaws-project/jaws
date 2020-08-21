@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @see         https://github.com/harrydeluxe/php-liquid
  */
-class Jaws_ExTemplate_Tags_Block extends Jaws_ExTemplate_Tags_Segmental
+class Jaws_ExTemplate_Tags_Block extends Jaws_ExTemplate_TagSegmental
 {
     /**
      * The variable to assign to

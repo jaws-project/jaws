@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @see         https://github.com/harrydeluxe/php-liquid
  */
-class Jaws_ExTemplate_Tags_Segmental extends Jaws_ExTemplate_Tag
+class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
 {
     /**
      * @var AbstractTag[]|Variable[]|string[]
