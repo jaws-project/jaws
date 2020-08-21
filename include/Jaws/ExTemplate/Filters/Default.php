@@ -80,15 +80,30 @@ class Jaws_ExTemplate_Filters_Default
     /**
      * Default
      *
-     * @param string $input
-     * @param string $default_value
+     * @param   string    $input
+     * @param   string    $default_value
      *
-     * @return string
+     * @return  string
      */
     public static function default($input, $default_value)
     {
         $isBlank = $input == '' || $input === false || $input === null;
         return $isBlank ? $default_value : $input;
+    }
+
+    /**
+     * equal
+     *
+     * @param   mixed   $input1
+     * @param   mixed   $input2
+     * @param   mixed   $yesResult
+     * @param   mixed   $noResult
+     *
+     * @return  mixed
+     */
+    public static function equal($input1, $input2, $yesResult, $noResult = null)
+    {
+        return $input1 == $input2 ? $yesResult : $noResult;
     }
 
     /**
