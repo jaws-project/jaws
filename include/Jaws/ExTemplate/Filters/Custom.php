@@ -23,4 +23,28 @@ class Jaws_ExTemplate_Filters_Custom
         return $input;
     }
 
+    /**
+     * Array keys
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public static function keys(array $input)
+    {
+        return array_keys($input);
+    }
+
+    /**
+     * Array values
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public static function values(array $input)
+    {
+        return array_values($input);
+    }
+
 }
