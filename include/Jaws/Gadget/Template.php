@@ -39,6 +39,30 @@ class Jaws_Gadget_Template
      * @param   bool    $backend    Admin template file?
      * @return  object  Jaws_Template object
      */
+    function &exLoad($filename, $options = array(), $backend = false)
+    {
+        $filepath = dirname($filename);
+        $filename = basename($filename);
+        $loadFromTheme = isset($options['loadFromTheme'])? $options['loadFromTheme'] : (JAWS_SCRIPT == 'index');
+        // if dirname returned dot ('.'), indicating no slashes in path(current directory)
+        if ($filepath == '.') {
+            $filepath = 'gadgets/'. $this->gadget->name. '/Templates'. ($backend? '/Admin': '');
+        }
+
+        $tpl = new Jaws_ExTemplate($filepath. DIRECTORY_SEPARATOR);
+        $tpl->parseFile($filename);
+        return $tpl;
+    }
+
+    /**
+     * Loads the gadget template file in question
+     *
+     * @access  public
+     * @param   string  $filename   Template file name
+     * @param   string  $options    Load template options(e.g. loadFromTheme, loadRTLDirection)
+     * @param   bool    $backend    Admin template file?
+     * @return  object  Jaws_Template object
+     */
     function &load($filename, $options = array(), $backend = false)
     {
         $filepath = dirname($filename);
