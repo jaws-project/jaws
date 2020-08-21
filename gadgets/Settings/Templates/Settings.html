@@ -1,93 +1,119 @@
-<!-- BEGIN settings -->
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
+    <div class="col-xs-12"><h2>{{labels.title}}</h2></div>
   </div>
 </div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="settings_settings_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
+    <div id="settings_settings_response" class="alert {{response.type}}" role="alert">{{response.text}}</div>
   </div>
   <form name="settings" action="{{base_script}}" method="post" onsubmit="return updateSettings();">
   <input type="hidden" name="reqGadget" value="Settings" />
   <input type="hidden" name="reqAction" value="UpdateSettings" />
   <div class="gadget_content">
     <fieldset>
-      <div><label for="site_status">{{lbl_site_status}}:</label>
+      <div>
+        <label for="site_status">{{labels.lbl_site_status}}:</label>
+        {% assign enabled_selected = enabled | equal: "enabled", "selected", "" %}
+        {% assign disabled_selected = enabled | equal: "enabled", "", "selected" %}
         <select class="form-control" name="site_status" id="site_status">
-          <option value="enabled" {{enabled_selected}}>{{lbl_enabled}}</option>
-          <option value="disabled" {{disabled_selected}}>{{lbl_disabled}}</option>
+          <option value="enabled" {{enabled_selected}}>{{labels.lbl_enabled}}</option>
+          <option value="disabled" {{disabled_selected}}>{{labels.lbl_disabled}}</option>
         </select>
       </div>
 
-        <div><label for="site_name">{{lbl_site_name}}:</label>
-          <input class="form-control" name="site_name" class="large" id="site_name" value="{{site_name}}" type="text" />
+        <div><label for="site_name">{{labels.lbl_site_name}}:</label>
+          <input class="form-control" name="site_name" id="site_name" value="{{site_name}}" type="text" />
         </div>
 
-        <div><label for="site_slogan">{{lbl_site_slogan}}:</label>
-          <input class="form-control" name="site_slogan" class="large" id="site_slogan" value="{{site_slogan}}" type="text" />
+        <div><label for="site_slogan">{{labels.lbl_site_slogan}}:</label>
+          <input class="form-control" name="site_slogan" id="site_slogan" value="{{site_slogan}}" type="text" />
         </div>
 
-      <div><label for="site_language">{{lbl_site_language}}:</label>
+      <div><label for="site_language">{{labels.lbl_site_language}}:</label>
         <select class="form-control" name="site_language" id="site_language">
-          <!-- BEGIN site_language -->
-          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
-          <!-- END site_language -->
+          {% for language in languages %}
+            {% if selected_language == forloop.key %}
+              <option value="{{ forloop.key }}" selected >{{ language }}</option>
+            {% else %}
+              <option value="{{ forloop.key }}" >{{ language }}</option>
+            {% endif %}
+          {% endfor %}
         </select>
       </div>
 
-      <div><label for="main_gadget">{{lbl_main_gadget}}:</label>
+      <div>
+        <label for="main_gadget">{{labels.lbl_main_gadget}}:</label>
         <select class="form-control" name="main_gadget" id="main_gadget">
-          <!-- BEGIN main_gadget -->
-          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
-          <!-- END main_gadget -->
+          {%- for gadget in gadgets %}
+            <option value="{{forloop.key}}" {{ forloop.key | equal: selected_gadget, "selected" }}>
+              {{- gadget.title -}}
+            </option>
+          {%- endfor %}
         </select>
       </div>
 
-      <div><label for="site_email">{{lbl_site_email}}:</label>
-        <input class="form-control" name="site_email" class="large" id="site_email" value="{{site_email}}" type="text" />
+      <div>
+        <label for="site_email">{{labels.lbl_site_email}}:</label>
+        <input class="form-control" name="site_email" id="site_email" value="{{site_email}}" type="text" />
       </div>
 
-      <div><label for="site_comment">{{lbl_site_comment}}:</label>
-        <textarea class="form-control" name="site_comment" id="site_comment" cols="30" rows="8">{{site_comment}}</textarea>
+      <div>
+        <label for="site_comment">{{labels.lbl_site_comment}}:</label>
+        <textarea class="form-control" name="site_comment" id="site_comment" cols="30" rows="8">
+          {{- site_comment -}}
+        </textarea>
       </div>
 
-      <div><label for="date_format">{{lbl_date_format}}:</label>
+      <div>
+        <label for="date_format">{{labels.lbl_date_format}}:</label>
         <select class="form-control" name="date_format" id="date_format">
-          <!-- BEGIN date_format -->
-          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
-          <!-- END date_format -->
+          {%- for format in dateFormats %}
+            <option value="{{forloop.key}}" {{ forloop.key | equal: selected_dateFormat, "selected" }}>
+              {{- format -}}
+            </option>
+          {%- endfor %}
         </select>
       </div>
 
-      <div><label for="calendar">{{lbl_calendar}}:</label>
+      <div>
+        <label for="calendar">{{labels.lbl_calendar}}:</label>
         <select class="form-control" name="calendar" id="calendar">
-          <!-- BEGIN calendar -->
-          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
-          <!-- END calendar -->
+          {%- for calendar in calendars %}
+            <option value="{{forloop.key}}" {{ forloop.key | equal: selected_calendar, "selected" }}>
+              {{- calendar -}}
+            </option>
+          {%- endfor %}
         </select>
       </div>
 
-      <div><label for="editor">{{lbl_editor}}:</label>
+      <div>
+        <label for="editor">{{labels.lbl_editor}}:</label>
         <select class="form-control" name="editor" id="editor">
-          <!-- BEGIN editor -->
-          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
-          <!-- END editor -->
+          {%- for editor in editors %}
+            <option value="{{forloop.key}}" {{ forloop.key | equal: selected_editor, "selected" }}>
+              {{- editor -}}
+            </option>
+          {%- endfor %}
         </select>
       </div>
 
-      <div><label for="timezone">{{lbl_timezone}}:</label>
+      <div>
+        <label for="timezone">{{labels.lbl_timezone}}:</label>
         <select class="form-control" name="timezone" id="timezone">
-          <!-- BEGIN timezone -->
-          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
-          <!-- END timezone -->
+          {%- for timezone in timezones %}
+            <option value="{{forloop.key}}" {{ forloop.key | equal: selected_timezone, "selected" }}>
+              {{- timezone -}}
+            </option>
+          {%- endfor %}
         </select>
       </div>
 
     </fieldset>
   </div>
-  <div class="gadget_actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>
+  <div class="gadget_actions">
+    <button class="btn btn-primary" type="submit">{{labels.update}}</button>
+  </div>
   </form>
 </div>
 <div class="gadget_footer"></div>
-<!-- END settings -->
