@@ -37,8 +37,20 @@ class Jaws_ExTemplate_Variable
 
         $filterSep = new Jaws_Regexp('/' . Jaws_ExTemplate::get('FILTER_SEPARATOR') . '\s*(.*)/m');
         $syntaxParser = new Jaws_Regexp('/(' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . ')(.*)/m');
-        $filterParser = new Jaws_Regexp('/(?:\s+|' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . '|' . Jaws_ExTemplate::get('ARGUMENT_SEPARATOR') . ')+/');
-        $filterArgsRegex = new Jaws_Regexp('/(?:' . Jaws_ExTemplate::get('FILTER_ARGUMENT_SEPARATOR') . '|' . Jaws_ExTemplate::get('ARGUMENT_SEPARATOR') . ')\s*((?:\w+\s*\:\s*)?' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . ')/');
+        $filterParser = new Jaws_Regexp(
+            '/(?:\s+|' .
+            Jaws_ExTemplate::get('QUOTED_FRAGMENT') . '|' .
+            Jaws_ExTemplate::get('ARGUMENT_SEPARATOR') .
+            ')+/'
+        );
+        $filterArgsRegex = new Jaws_Regexp(
+            '/(?:' .
+            Jaws_ExTemplate::get('FILTER_ARGUMENT_SEPARATOR') . '|' .
+            Jaws_ExTemplate::get('ARGUMENT_SEPARATOR') .
+            ')\s*((?:\w+\s*\:\s*)?' .
+            Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+            ')/'
+        );
 
         $this->filters = [];
         if ($syntaxParser->match($markup)) {
