@@ -127,9 +127,9 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
 
         $index = 0;
         foreach ($segment as $key => $item) {
-            $value = is_numeric($key) ? $item : array($key, $item);
-            $context->set($this->variableName, $value);
+            $context->set($this->variableName, $item);
             $context->set('forloop', array(
+                    'key' => $key,
                     'name' => $this->name,
                     'length' => $length,
                     'index' => $index + 1,
