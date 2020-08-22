@@ -125,26 +125,6 @@ class Jaws_ExTemplate_Variable
     }
 
     /**
-     * Gets the variable name
-     *
-     * @return string The name of the variable
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Gets all Filters
-     *
-     * @return array
-     */
-    public function getFilters()
-    {
-        return $this->filters;
-    }
-
-    /**
      * Renders the variable with the data in the context
      *
      * @param   object  $context
