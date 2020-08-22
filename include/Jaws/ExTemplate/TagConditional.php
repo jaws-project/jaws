@@ -39,8 +39,8 @@ class Jaws_ExTemplate_TagConditional extends Jaws_ExTemplate_TagSegmental
             if (method_exists($value, '__toString')) {
                 $value = (string) $value;
             } else {
-                //$class = get_class($value);
-                //throw new Exception("Value of type $class has no `__toString` methods");
+                $class = get_class($value);
+                throw new Exception("Value of type $class has no `__toString` methods");
             }
         }
 
