@@ -129,15 +129,15 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
         foreach ($segment as $key => $item) {
             $context->set($this->variableName, $item);
             $context->set('forloop', array(
-                    'key' => $key,
-                    'name' => $this->name,
-                    'length' => $length,
-                    'index' => $index + 1,
-                    'index0' => $index,
-                    'rindex' => $length - $index,
+                    'key'     => $key,
+                    'name'    => $this->name,
+                    'length'  => $length,
+                    'index'   => $index + 1,
+                    'index0'  => $index,
+                    'rindex'  => $length - $index,
                     'rindex0' => $length - $index - 1,
-                    'first' => (int)($index == 0),
-                    'last' => (int)($index == $length - 1)
+                    'first'   => (int)($index == 0),
+                    'last'    => (int)($index == $length - 1)
             ));
 
             $result .= $this->renderAll($this->nodelist, $context);
@@ -179,14 +179,15 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
         for ($i = $range[0]; $i <= $range[1]; $i++) {
             $context->set($this->variableName, $i);
             $context->set('forloop', array(
-                'name'        => $this->name,
-                'length'    => $length,
-                'index'        => $index + 1,
-                'index0'    => $index,
-                'rindex'    => $length - $index,
-                'rindex0'    => $length - $index - 1,
-                'first'        => (int)($index == 0),
-                'last'        => (int)($index == $length - 1)
+                'key'     => $index,
+                'name'    => $this->name,
+                'length'  => $length,
+                'index'   => $index + 1,
+                'index0'  => $index,
+                'rindex'  => $length - $index,
+                'rindex0' => $length - $index - 1,
+                'first'   => (int)($index == 0),
+                'last'    => (int)($index == $length - 1)
             ));
 
             $result .= $this->renderAll($this->nodelist, $context);
