@@ -116,7 +116,7 @@ class Jaws_ExTemplate_Filters_Default
      */
     public static function divided_by($input, $operand)
     {
-        return (float)$input / (float)$operand;
+        return ($operand == 0)? (float)$input : ((float)$input / (float)$operand);
     }
 
     /**
