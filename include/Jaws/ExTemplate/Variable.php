@@ -147,9 +147,9 @@ class Jaws_ExTemplate_Variable
     /**
      * Renders the variable with the data in the context
      *
-     * @param Context $context
+     * @param   object  $context
      *
-     * @return mixed|string
+     * @return  mixed|string
      */
     public function render($context)
     {
@@ -174,6 +174,7 @@ class Jaws_ExTemplate_Variable
 
             $output = $context->invoke($filtername, $output, $filterArgValues);
         }
+
         return $output;
     }
 
