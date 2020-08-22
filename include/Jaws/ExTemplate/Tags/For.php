@@ -53,7 +53,13 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
             $this->name = $syntaxRegexp->matches[1] . '-' . $syntaxRegexp->matches[2];
             $this->extractAttributes($markup);
         } else {
-            $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+\((\d+|' . Jaws_ExTemplate::get('VARIABLE_NAME') . ')\s*\.\.\s*(\d+|' . Jaws_ExTemplate::get('VARIABLE_NAME') . ')\)/');
+            $syntaxRegexp = new Jaws_Regexp(
+                '/(\w+)\s+in\s+\((\d+|' .
+                Jaws_ExTemplate::get('VARIABLE_NAME') .
+                ')\s*\.\.\s*(\d+|' .
+                Jaws_ExTemplate::get('VARIABLE_NAME') .
+                ')\)/'
+            );
             if ($syntaxRegexp->match($markup)) {
                 $this->type = 'digit';
                 $this->variableName = $syntaxRegexp->matches[1];
