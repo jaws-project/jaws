@@ -27,6 +27,11 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
     private $variable;
 
     /**
+     * @var mixed The value to pass to the child template as the template name
+     */
+    private $params = array();
+
+    /**
      * @var Document The Document that represents the included template
      */
     private $document;
@@ -47,20 +52,32 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
      */
     public function __construct($markup, array &$tokens, $rootPath = null)
     {
-        $regex = new Jaws_Regexp(
-            '/("[^"]+"|\'[^\']+\'|[^\'"\s]+)(\s+(with|for)\s+(' .
-            Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
-            '+))?/');
+        if (strpos($markup, ',') > 0) {
+            $regex = new Jaws_Regexp(
+                '/("[^"]+"|\'[^\']+\'|[^\'"\s]+)(\s*+(with|for)\s+(' .
+                Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+                '+)\s+(' .
+                Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+                '+))?/'
+            );
+        } else {
+            $regex = new Jaws_Regexp(
+                '/("[^"]+"|\'[^\']+\'|[^\'"\s]+)(\s+(with|for)\s+(' .
+                Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+                '+))?/'
+            );
+        }
 
         if (!$regex->match($markup)) {
-            throw new Exception("Error in tag 'include' - Valid syntax: include '[template]' (with|for) [object|collection]");
+            throw new Exception(
+                "Error in tag 'include' - Valid syntax: include '[template]' (with|for) [object|collection]"
+            );
         }
 
         $unquoted = (strpos($regex->matches[1], '"') === false && strpos($regex->matches[1], "'") === false);
 
         $start = 1;
         $len = strlen($regex->matches[1]) - 2;
-
         if ($unquoted) {
             $start = 0;
             $len = strlen($regex->matches[1]);
@@ -71,6 +88,9 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
         if (isset($regex->matches[1])) {
             $this->collection = (isset($regex->matches[3])) ? ($regex->matches[3] == "for") : null;
             $this->variable = (isset($regex->matches[4])) ? $regex->matches[4] : null;
+        }
+        if (isset($regex->matches[4]) && isset($regex->matches[5])) {
+            $this->params[str_replace(":", "", $regex->matches[4])] = str_replace("'", "", $regex->matches[5]);
         }
 
         $this->extractAttributes($markup);
@@ -146,6 +166,10 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
 
         foreach ($this->attributes as $key => $value) {
             $context->set($key, $context->get($value));
+        }
+
+        foreach ($this->params as $key => $value) {
+            $context->set($key, $value);
         }
 
         if ($this->collection) {
