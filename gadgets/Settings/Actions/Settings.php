@@ -49,7 +49,7 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
         $assigns['timezones'] = $this->gadget->model->load('Settings')->GetTimeZonesList();
         $assigns['selected_timezone'] = $this->gadget->registry->fetch('timezone');
 
-        return $this->gadget->template->exLoad('Settings.html')->render($assigns);
+        return $this->gadget->template->xLoad('Settings.html')->render($assigns);
     }
 
     /**
