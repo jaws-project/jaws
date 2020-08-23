@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @see         https://github.com/harrydeluxe/php-liquid
  */
-class Jaws_ExTemplate_Context
+class Jaws_XTemplate_Context
 {
     /**
      * Local scopes
@@ -53,7 +53,7 @@ class Jaws_ExTemplate_Context
         $files = array_map('basename', glob(__DIR__ . '/Filters/*.php'));
         foreach ($files as $file) {
             $fileName = basename($file, '.php');
-            $reflection = new \ReflectionClass("Jaws_ExTemplate_Filters_$fileName");
+            $reflection = new \ReflectionClass("Jaws_XTemplate_Filters_$fileName");
             foreach ($reflection->getMethods(\ReflectionMethod::IS_STATIC) as $method) {
                 $this->filters[$method->name] = $method->class;
             }
@@ -300,7 +300,7 @@ class Jaws_ExTemplate_Context
             }
         }
 
-        $parts = explode(Jaws_ExTemplate::get('VARIABLE_ATTRIBUTE_SEPARATOR'), $key);
+        $parts = explode(Jaws_XTemplate::get('VARIABLE_ATTRIBUTE_SEPARATOR'), $key);
 
         $object = $this->fetch(array_shift($parts));
 
@@ -331,12 +331,12 @@ class Jaws_ExTemplate_Context
             if (is_array($object)) {
                 // if the last part of the context variable is .first we return the first array element
                 if ($nextPartName == 'first' && count($parts) == 0 && !array_key_exists('first', $object)) {
-                    return Jaws_ExTemplate_Filters_Default::first($object);
+                    return Jaws_XTemplate_Filters_Default::first($object);
                 }
 
                 // if the last part of the context variable is .last we return the last array element
                 if ($nextPartName == 'last' && count($parts) == 0 && !array_key_exists('last', $object)) {
-                    return Jaws_ExTemplate_Filters_Default::last($object);
+                    return Jaws_XTemplate_Filters_Default::last($object);
                 }
 
                 // if the last part of the context variable is .size we just return the count
@@ -367,12 +367,12 @@ class Jaws_ExTemplate_Context
             }
 
             // if it has `get` or `field_exists` methods
-            if (method_exists($object, Jaws_ExTemplate::get('HAS_PROPERTY_METHOD'))) {
-                if (!call_user_func(array($object, Jaws_ExTemplate::get('HAS_PROPERTY_METHOD')), $nextPartName)) {
+            if (method_exists($object, Jaws_XTemplate::get('HAS_PROPERTY_METHOD'))) {
+                if (!call_user_func(array($object, Jaws_XTemplate::get('HAS_PROPERTY_METHOD')), $nextPartName)) {
                     return null;
                 }
 
-                $object = call_user_func(array($object, Jaws_ExTemplate::get('GET_PROPERTY_METHOD')), $nextPartName);
+                $object = call_user_func(array($object, Jaws_XTemplate::get('GET_PROPERTY_METHOD')), $nextPartName);
                 continue;
             }
 

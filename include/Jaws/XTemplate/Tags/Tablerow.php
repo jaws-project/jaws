@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/iteration/
  */
-class Jaws_ExTemplate_Tags_Tablerow extends Jaws_ExTemplate_TagSegmental
+class Jaws_XTemplate_Tags_Tablerow extends Jaws_XTemplate_TagSegmental
 {
     /**
      * The variable name of the table tag
@@ -46,7 +46,7 @@ class Jaws_ExTemplate_Tags_Tablerow extends Jaws_ExTemplate_TagSegmental
     {
         parent::__construct($markup, $tokens, $rootPath);
 
-        $syntax = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_ExTemplate::get('VARIABLE_NAME') . ')/');
+        $syntax = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_XTemplate::get('VARIABLE_NAME') . ')/');
 
         if ($syntax->match($markup)) {
             $this->variableName = $syntax->matches[1];

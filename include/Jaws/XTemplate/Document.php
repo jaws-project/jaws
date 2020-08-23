@@ -8,7 +8,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_Document extends Jaws_ExTemplate_TagSegmental
+class Jaws_XTemplate_Document extends Jaws_XTemplate_TagSegmental
 {
     /**
      * Constructor.
@@ -33,9 +33,9 @@ class Jaws_ExTemplate_Document extends Jaws_ExTemplate_TagSegmental
         $seenBlock = false;
 
         foreach ($this->nodelist as $token) {
-            if ($token instanceof Jaws_ExTemplate_Tags_Extends) {
+            if ($token instanceof Jaws_XTemplate_Tags_Extends) {
                 $seenExtends = true;
-            } elseif ($token instanceof Jaws_ExTemplate_Tags_Block) {
+            } elseif ($token instanceof Jaws_XTemplate_Tags_Block) {
                 $seenBlock = true;
             }
         }
@@ -52,11 +52,11 @@ class Jaws_ExTemplate_Document extends Jaws_ExTemplate_TagSegmental
 
         foreach ($this->nodelist as $token) {
             // check any of the tokens for includes
-            if ($token instanceof Jaws_ExTemplate_Tags_Include && $token->hasIncludes()) {
+            if ($token instanceof Jaws_XTemplate_Tags_Include && $token->hasIncludes()) {
                 return true;
             }
 
-            if ($token instanceof Jaws_ExTemplate_Tags_Extends && $token->hasIncludes()) {
+            if ($token instanceof Jaws_XTemplate_Tags_Extends && $token->hasIncludes()) {
                 return true;
             }
         }

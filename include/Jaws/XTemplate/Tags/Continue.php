@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/iteration/
  */
-class Jaws_ExTemplate_Tags_Continue extends Jaws_ExTemplate_Tag
+class Jaws_XTemplate_Tags_Continue extends Jaws_XTemplate_Tag
 {
     /**
      * Renders the tag

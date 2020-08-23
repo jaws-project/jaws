@@ -9,7 +9,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
+class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
 {
     /**
      * @var string The name of the template
@@ -55,15 +55,15 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
         if (strpos($markup, ',') > 0) {
             $regex = new Jaws_Regexp(
                 '/("[^"]+"|\'[^\']+\'|[^\'"\s]+)(\s*+(with|for)\s+(' .
-                Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+                Jaws_XTemplate::get('QUOTED_FRAGMENT') .
                 '+)\s+(' .
-                Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+                Jaws_XTemplate::get('QUOTED_FRAGMENT') .
                 '+))?/'
             );
         } else {
             $regex = new Jaws_Regexp(
                 '/("[^"]+"|\'[^\']+\'|[^\'"\s]+)(\s+(with|for)\s+(' .
-                Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+                Jaws_XTemplate::get('QUOTED_FRAGMENT') .
                 '+))?/'
             );
         }
@@ -108,7 +108,7 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
     public function parse(array &$tokens)
     {
         // read the source of the template and create a new sub document
-        $source = Jaws_ExTemplate::readTemplateFile($this->templateName, $this->rootPath);
+        $source = Jaws_XTemplate::readTemplateFile($this->templateName, $this->rootPath);
 
         /*
         $this->hash = Jaws_Cache::key($source);
@@ -116,8 +116,8 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
         */
 
         //if ($this->document == false || $this->document->hasIncludes() == true) {
-            $templateTokens = Jaws_ExTemplate::tokenize($source);
-            $this->document = new Jaws_ExTemplate_Document($templateTokens, $this->rootPath);
+            $templateTokens = Jaws_XTemplate::tokenize($source);
+            $this->document = new Jaws_XTemplate_Document($templateTokens, $this->rootPath);
             /*
             $this->app->cache->set(
                 $this->hash,
@@ -140,7 +140,7 @@ class Jaws_ExTemplate_Tags_Include extends Jaws_ExTemplate_Tag
             return true;
         }
 
-        $source = Jaws_ExTemplate::readTemplateFile($this->templateName, $this->rootPath);
+        $source = Jaws_XTemplate::readTemplateFile($this->templateName, $this->rootPath);
         if ($this->app->cache->exists(Jaws_Cache::key($source)) &&
             $this->hash === Jaws_Cache::key($source)
         ) {

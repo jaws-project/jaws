@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/variable/
  */
-class Jaws_ExTemplate_Tags_Assign extends Jaws_ExTemplate_Tag
+class Jaws_XTemplate_Tags_Assign extends Jaws_XTemplate_Tag
 {
     /**
      * @var string The variable to assign from
@@ -36,7 +36,7 @@ class Jaws_ExTemplate_Tags_Assign extends Jaws_ExTemplate_Tag
 
         if ($syntaxRegexp->match($markup)) {
             $this->to = $syntaxRegexp->matches[1];
-            $this->from = new Jaws_ExTemplate_Variable($syntaxRegexp->matches[2]);
+            $this->from = new Jaws_XTemplate_Variable($syntaxRegexp->matches[2]);
         } else {
             throw new Exception("Syntax Error in 'assign' - Valid syntax: assign [var] = [source]");
         }

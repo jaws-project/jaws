@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @see         https://github.com/harrydeluxe/php-liquid
  */
-class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
+class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
 {
     /**
      * @var AbstractTag[]|Variable[]|string[]
@@ -41,9 +41,9 @@ class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
      */
     public function parse(array &$tokens)
     {
-        $startRegexp = new Jaws_Regexp('/^' . Jaws_ExTemplate::get('TAG_START') . '/');
-        $tagRegexp = new Jaws_Regexp('/^' . Jaws_ExTemplate::get('TAG_START') . Jaws_ExTemplate::get('WHITESPACE_CONTROL') . '?\s*(\w+)\s*(.*?)' . Jaws_ExTemplate::get('WHITESPACE_CONTROL') . '?' . Jaws_ExTemplate::get('TAG_END') . '$/');
-        $variableStartRegexp = new Jaws_Regexp('/^' . Jaws_ExTemplate::get('VARIABLE_START') . '/');
+        $startRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '/');
+        $tagRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?\s*(\w+)\s*(.*?)' . Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?' . Jaws_XTemplate::get('TAG_END') . '$/');
+        $variableStartRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('VARIABLE_START') . '/');
 
         $this->nodelist = array();
 
@@ -59,7 +59,7 @@ class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
                         return;
                     }
 
-                    $tagName = 'Jaws_ExTemplate_Tags_' . ucwords($tagRegexp->matches[1]);
+                    $tagName = 'Jaws_XTemplate_Tags_' . ucwords($tagRegexp->matches[1]);
                     $tagName = (class_exists($tagName) === true) ? $tagName : null;
                     if ($tagName !== null) {
                         $this->nodelist[] = new $tagName($tagRegexp->matches[2], $tokens, $this->rootPath);
@@ -100,7 +100,7 @@ class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
          * This assumes that TAG_START is always '{%', and a whitespace control indicator
          * is exactly one character long, on a third position.
          */
-        if (mb_substr($token, 2, 1) === Jaws_ExTemplate::get('WHITESPACE_CONTROL')) {
+        if (mb_substr($token, 2, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL')) {
             $previousToken = end($this->nodelist);
             if (is_string($previousToken)) { // this can also be a tag or a variable
                 $this->nodelist[key($this->nodelist)] = rtrim($previousToken);
@@ -111,7 +111,7 @@ class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
          * This assumes that TAG_END is always '%}', and a whitespace control indicator
          * is exactly one character long, on a third position from the end.
          */
-        self::$trimWhitespace = mb_substr($token, -3, 1) === Jaws_ExTemplate::get('WHITESPACE_CONTROL');
+        self::$trimWhitespace = mb_substr($token, -3, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL');
     }
 
     /**
@@ -221,7 +221,7 @@ class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
      */
     private function blockName()
     {
-        return str_replace('jaws_extemplate_tags_', '', strtolower(get_class($this)));
+        return str_replace('Jaws_XTemplate_tags_', '', strtolower(get_class($this)));
     }
 
     /**
@@ -230,19 +230,19 @@ class Jaws_ExTemplate_TagSegmental extends Jaws_ExTemplate_Tag
      * @param   string  $token
      *
      * @throws  Exception
-     * @return  Jaws_ExTemplate_Variable
+     * @return  Jaws_XTemplate_Variable
      */
     private function createVariable($token)
     {
         $variableRegexp = new Jaws_Regexp(
             '/^' .
-            Jaws_ExTemplate::get('VARIABLE_START') .
-            Jaws_ExTemplate::get('WHITESPACE_CONTROL') . '?(.*?)' .
-            Jaws_ExTemplate::get('WHITESPACE_CONTROL') . '?' .
-            Jaws_ExTemplate::get('VARIABLE_END') .
+            Jaws_XTemplate::get('VARIABLE_START') .
+            Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?(.*?)' .
+            Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?' .
+            Jaws_XTemplate::get('VARIABLE_END') .
             '$/');
         if ($variableRegexp->match($token)) {
-            return new Jaws_ExTemplate_Variable($variableRegexp->matches[1]);
+            return new Jaws_XTemplate_Variable($variableRegexp->matches[1]);
         }
 
         throw new Exception("Variable $token was not properly terminated");

@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/control-flow/
  */
-class Jaws_ExTemplate_Tags_Case extends Jaws_ExTemplate_TagConditional
+class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
 {
     /**
      * Stack of nodelists
@@ -55,7 +55,7 @@ class Jaws_ExTemplate_Tags_Case extends Jaws_ExTemplate_TagConditional
 
         parent::__construct($markup, $tokens, $rootPath);
 
-        $syntaxRegexp = new Jaws_Regexp('/' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . '/');
+        $syntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . '/');
 
         if ($syntaxRegexp->match($markup)) {
             $this->left = $syntaxRegexp->matches[0];
@@ -83,7 +83,7 @@ class Jaws_ExTemplate_Tags_Case extends Jaws_ExTemplate_TagConditional
      */
     public function unknownTag($tag, $params, array $tokens)
     {
-        $whenSyntaxRegexp = new Jaws_Regexp('/' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . '/');
+        $whenSyntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . '/');
 
         switch ($tag) {
             case 'when':

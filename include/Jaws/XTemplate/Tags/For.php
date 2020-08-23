@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/iteration/
  */
-class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
+class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
 {
     /**
      * Stack of nodelists
@@ -60,7 +60,7 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
         $this->nodelists[] = array('for', $markup, &$this->nodelist);
         parent::__construct($markup, $tokens, $rootPath);
 
-        $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_ExTemplate::get('VARIABLE_NAME') . ')/');
+        $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_XTemplate::get('VARIABLE_NAME') . ')/');
 
         if ($syntaxRegexp->match($markup)) {
             $this->variableName = $syntaxRegexp->matches[1];
@@ -70,9 +70,9 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
         } else {
             $syntaxRegexp = new Jaws_Regexp(
                 '/(\w+)\s+in\s+\((\d+|' .
-                Jaws_ExTemplate::get('VARIABLE_NAME') .
+                Jaws_XTemplate::get('VARIABLE_NAME') .
                 ')\s*\.\.\s*(\d+|' .
-                Jaws_ExTemplate::get('VARIABLE_NAME') .
+                Jaws_XTemplate::get('VARIABLE_NAME') .
                 ')\)/'
             );
             if ($syntaxRegexp->match($markup)) {

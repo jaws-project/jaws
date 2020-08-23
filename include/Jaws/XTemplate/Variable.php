@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @see         https://github.com/harrydeluxe/php-liquid
  */
-class Jaws_ExTemplate_Variable
+class Jaws_XTemplate_Variable
 {
     /**
      * @var array The filters to execute on the variable
@@ -35,20 +35,20 @@ class Jaws_ExTemplate_Variable
     {
         $this->markup = $markup;
 
-        $filterSep = new Jaws_Regexp('/' . Jaws_ExTemplate::get('FILTER_SEPARATOR') . '\s*(.*)/m');
-        $syntaxParser = new Jaws_Regexp('/(' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . ')(.*)/m');
+        $filterSep = new Jaws_Regexp('/' . Jaws_XTemplate::get('FILTER_SEPARATOR') . '\s*(.*)/m');
+        $syntaxParser = new Jaws_Regexp('/(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')(.*)/m');
         $filterParser = new Jaws_Regexp(
             '/(?:\s+|' .
-            Jaws_ExTemplate::get('QUOTED_FRAGMENT') . '|' .
-            Jaws_ExTemplate::get('ARGUMENT_SEPARATOR') .
+            Jaws_XTemplate::get('QUOTED_FRAGMENT') . '|' .
+            Jaws_XTemplate::get('ARGUMENT_SEPARATOR') .
             ')+/'
         );
         $filterArgsRegex = new Jaws_Regexp(
             '/(?:' .
-            Jaws_ExTemplate::get('FILTER_ARGUMENT_SEPARATOR') . '|' .
-            Jaws_ExTemplate::get('ARGUMENT_SEPARATOR') .
+            Jaws_XTemplate::get('FILTER_ARGUMENT_SEPARATOR') . '|' .
+            Jaws_XTemplate::get('ARGUMENT_SEPARATOR') .
             ')\s*((?:\w+\s*\:\s*)?' .
-            Jaws_ExTemplate::get('QUOTED_FRAGMENT') .
+            Jaws_XTemplate::get('QUOTED_FRAGMENT') .
             ')/'
         );
 
@@ -72,7 +72,7 @@ class Jaws_ExTemplate_Variable
             }
         }
 
-        if (Jaws_ExTemplate::get('ESCAPE_BY_DEFAULT')) {
+        if (Jaws_XTemplate::get('ESCAPE_BY_DEFAULT')) {
             // if auto_escape is enabled, and
             // - there's no raw filter, and
             // - no escape filter
@@ -107,7 +107,7 @@ class Jaws_ExTemplate_Variable
         $filterArgs = array();
         $keywordArgs = array();
 
-        $justTagAttributes = new Jaws_Regexp('/\A' . trim(Jaws_ExTemplate::get('TAG_ATTRIBUTES'), '/') . '\z/');
+        $justTagAttributes = new Jaws_Regexp('/\A' . trim(Jaws_XTemplate::get('TAG_ATTRIBUTES'), '/') . '\z/');
 
         foreach ($unparsedArgs as $a) {
             if ($justTagAttributes->match($a)) {

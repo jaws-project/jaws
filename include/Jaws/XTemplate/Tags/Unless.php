@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/control-flow/
  */
-class Jaws_ExTemplate_Tags_Unless extends Jaws_ExTemplate_Tags_If
+class Jaws_XTemplate_Tags_Unless extends Jaws_XTemplate_Tags_If
 {
     protected function negateIfUnless($display)
     {

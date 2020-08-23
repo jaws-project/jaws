@@ -8,7 +8,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_TagConditional extends Jaws_ExTemplate_TagSegmental
+class Jaws_XTemplate_TagConditional extends Jaws_XTemplate_TagSegmental
 {
     /**
      * The current left variable to compare

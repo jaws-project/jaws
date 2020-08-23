@@ -8,7 +8,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_ExTemplate_Filters_Math
+class Jaws_XTemplate_Filters_Math
 {
     /**
      * @param mixed $input number

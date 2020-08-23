@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/comment/
  */
-class Jaws_ExTemplate_Tags_Comment extends Jaws_ExTemplate_TagSegmental
+class Jaws_XTemplate_Tags_Comment extends Jaws_XTemplate_TagSegmental
 {
     /**
      * Renders the block

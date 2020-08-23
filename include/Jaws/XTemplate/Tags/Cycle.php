@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/iteration/
  */
-class Jaws_ExTemplate_Tags_Cycle extends Jaws_ExTemplate_Tag
+class Jaws_XTemplate_Tags_Cycle extends Jaws_XTemplate_Tag
 {
     /**
      * @var string The name of the cycle; if none is given one is created using the value list
@@ -33,8 +33,8 @@ class Jaws_ExTemplate_Tags_Cycle extends Jaws_ExTemplate_Tag
      */
     public function __construct($markup, array &$tokens, $rootPath = null)
     {
-        $simpleSyntax = new Jaws_Regexp("/" . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . "/");
-        $namedSyntax = new Jaws_Regexp("/(" . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . ")\s*\:\s*(.*)/");
+        $simpleSyntax = new Jaws_Regexp("/" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . "/");
+        $namedSyntax = new Jaws_Regexp("/(" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ")\s*\:\s*(.*)/");
 
         if ($namedSyntax->match($markup)) {
             $this->variables = $this->variablesFromString($namedSyntax->matches[2]);
@@ -89,7 +89,7 @@ class Jaws_ExTemplate_Tags_Cycle extends Jaws_ExTemplate_Tag
      */
     private function variablesFromString($markup)
     {
-        $regexp = new Jaws_Regexp('/\s*(' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . ')\s*/');
+        $regexp = new Jaws_Regexp('/\s*(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')\s*/');
         $parts = explode(',', $markup);
         $result = array();
 

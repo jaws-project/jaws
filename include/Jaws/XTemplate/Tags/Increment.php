@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/variable/
  */
-class Jaws_ExTemplate_Tags_Increment extends Jaws_ExTemplate_Tag
+class Jaws_XTemplate_Tags_Increment extends Jaws_XTemplate_Tag
 {
     /**
      * Name of the variable to increment
@@ -30,7 +30,7 @@ class Jaws_ExTemplate_Tags_Increment extends Jaws_ExTemplate_Tag
      */
     public function __construct($markup, array &$tokens, $rootPath = null)
     {
-        $syntax = new Jaws_Regexp('/(' . Jaws_ExTemplate::get('VARIABLE_NAME') . ')/');
+        $syntax = new Jaws_Regexp('/(' . Jaws_XTemplate::get('VARIABLE_NAME') . ')/');
 
         if ($syntax->match($markup)) {
             $this->toIncrement = $syntax->matches[0];

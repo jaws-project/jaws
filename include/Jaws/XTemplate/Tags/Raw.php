@@ -10,14 +10,14 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/raw/
  */
-class Jaws_ExTemplate_Tags_Raw extends Jaws_ExTemplate_TagSegmental
+class Jaws_XTemplate_Tags_Raw extends Jaws_XTemplate_TagSegmental
 {
     /**
      * @param array $tokens
      */
     public function parse(array &$tokens)
     {
-        $tagRegexp = new Jaws_Regexp('/^' . Jaws_ExTemplate::get('TAG_START') . '\s*(\w+)\s*(.*)?' . Jaws_ExTemplate::get('TAG_END') . '$/');
+        $tagRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '\s*(\w+)\s*(.*)?' . Jaws_XTemplate::get('TAG_END') . '$/');
 
         $this->nodelist = array();
 

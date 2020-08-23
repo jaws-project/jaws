@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @see         https://github.com/harrydeluxe/php-liquid
  */
-abstract class Jaws_ExTemplate_Tag
+abstract class Jaws_XTemplate_Tag
 {
     /**
      * Jaws app object
@@ -69,7 +69,7 @@ abstract class Jaws_ExTemplate_Tag
     /**
      * Render the tag with the given context.
      *
-     * @param   object  $context    Jaws_ExTemplate_Context object
+     * @param   object  $context    Jaws_XTemplate_Context object
      *
      * @return  string
      */
@@ -86,7 +86,7 @@ abstract class Jaws_ExTemplate_Tag
     {
         $this->attributes = array();
 
-        $attributeRegexp = new Jaws_Regexp(Jaws_ExTemplate::get('TAG_ATTRIBUTES'));
+        $attributeRegexp = new Jaws_Regexp(Jaws_XTemplate::get('TAG_ATTRIBUTES'));
 
         $attributeRegexp->scan($markup);
 

@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/control-flow/
  */
-class Jaws_ExTemplate_Tags_If extends Jaws_ExTemplate_TagConditional
+class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
 {
     /**
      * Array holding the nodes to render for each logical block
@@ -75,7 +75,7 @@ class Jaws_ExTemplate_Tags_If extends Jaws_ExTemplate_TagConditional
         $context->push();
 
         $logicalRegex = new Jaws_Regexp('/\s+(and|or)\s+/');
-        $conditionalRegex = new Jaws_Regexp('/(' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . ')\s*([=!<>a-z_]+)?\s*(' . Jaws_ExTemplate::get('QUOTED_FRAGMENT') . ')?/');
+        $conditionalRegex = new Jaws_Regexp('/(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')\s*([=!<>a-z_]+)?\s*(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')?/');
 
         $result = '';
         foreach ($this->blocks as $block) {
