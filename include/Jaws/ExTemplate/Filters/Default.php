@@ -96,4 +96,23 @@ class Jaws_ExTemplate_Filters_Default
         return strlen($input);
     }
 
+    /**
+     * Convenience function to translate strings
+     *
+     * @param   string   $input
+     *
+     * @return string
+     */
+    public static function t($input)
+    {
+        $args = func_get_args();
+        array_shift($args);
+
+        return Jaws_Translate::getInstance()->Translate(
+            null,
+            strtoupper(str_replace(array(' ', '.'), '_', $input)),
+            $args
+        );
+    }
+
 }
