@@ -11,7 +11,7 @@
  * @see         https://docs.djangoproject.com/en/3.1/topics/templates/
  * @see         https://github.com/harrydeluxe/php-liquid
  */
-class Jaws_ExTemplate
+class Jaws_XTemplate
 {
     /**
      * Jaws app object
@@ -99,7 +99,7 @@ class Jaws_ExTemplate
      *
      * @param   string  $path
      *
-     * @return Jaws_ExTemplate
+     * @return Jaws_XTemplate
      */
     public function __construct($path = null)
     {
@@ -230,7 +230,7 @@ class Jaws_ExTemplate
      *
      * @param   string  $source
      *
-     * @return  Jaws_ExTemplate
+     * @return  Jaws_XTemplate
      */
     public function parse($source)
     {
@@ -241,8 +241,8 @@ class Jaws_ExTemplate
 
         // if no cached version exists
         //if ($this->document === false || $this->document->hasIncludes() == true) {
-            $tokens = Jaws_ExTemplate::tokenize($source);
-            $this->document = new Jaws_ExTemplate_Document($tokens, $this->rootPath);
+            $tokens = Jaws_XTemplate::tokenize($source);
+            $this->document = new Jaws_XTemplate_Document($tokens, $this->rootPath);
             /*
             $this->app->cache->set(
                 $hash,
@@ -259,7 +259,7 @@ class Jaws_ExTemplate
      * Parses the given template file
      *
      * @param   string  $tplPath
-     * @return  Jaws_ExTemplate
+     * @return  Jaws_XTemplate
      */
     public function parseFile($tplPath)
     {
@@ -276,7 +276,7 @@ class Jaws_ExTemplate
      */
     public function render(array $assigns = array(), $filters = null)
     {
-        $context = new Jaws_ExTemplate_Context($assigns);
+        $context = new Jaws_XTemplate_Context($assigns);
 
         if (!is_null($filters)) {
             $this->filters = array_merge($this->filters, $filters);
