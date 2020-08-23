@@ -221,7 +221,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
      */
     private function blockName()
     {
-        return str_replace('Jaws_XTemplate_tags_', '', strtolower(get_class($this)));
+        return str_replace('jaws_xtemplate_tags_', '', strtolower(get_class($this)));
     }
 
     /**
