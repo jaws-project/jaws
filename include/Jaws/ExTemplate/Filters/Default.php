@@ -11,7 +11,7 @@
 class Jaws_ExTemplate_Filters_Default
 {
     /**
-     * Formats a date using strftime
+     * Formats a date using Jaws_Date::Format
      *
      * @param mixed $input
      * @param string $format
@@ -20,15 +20,7 @@ class Jaws_ExTemplate_Filters_Default
      */
     public static function date($input, $format)
     {
-        if (!is_numeric($input)) {
-            $input = strtotime($input);
-        }
-
-        if ($format == 'r') {
-            return date($format, $input);
-        }
-
-        return strftime($format, $input);
+        return Jaws_Date::getInstance()->Format($input, $format);
     }
 
     /**
