@@ -39,7 +39,7 @@ class Jaws_Gadget_Template
      * @param   bool    $backend    Admin template file?
      * @return  object  Jaws_Template object
      */
-    function &exLoad($filename, $options = array(), $backend = false)
+    function &xLoad($filename, $options = array(), $backend = false)
     {
         $filepath = dirname($filename);
         $filename = basename($filename);
@@ -49,7 +49,7 @@ class Jaws_Gadget_Template
             $filepath = 'gadgets/'. $this->gadget->name. '/Templates'. ($backend? '/Admin': '');
         }
 
-        $tpl = new Jaws_ExTemplate($filepath. DIRECTORY_SEPARATOR);
+        $tpl = new Jaws_XTemplate($filepath. DIRECTORY_SEPARATOR);
         $tpl->parseFile($filename);
         return $tpl;
     }
@@ -94,6 +94,19 @@ class Jaws_Gadget_Template
     function &loadAdmin($filename, $options = array())
     {
         return $this->load($filename, $options, true);
+    }
+
+    /**
+     * Loads the gadget template file in question
+     *
+     * @access  public
+     * @param   string  $filename   Template file name
+     * @param   string  $options    Load template options(e.g. loadFromTheme, loadRTLDirection)
+     * @return  object  Jaws_Template object
+     */
+    function &xloadAdmin($filename, $options = array())
+    {
+        return $this->xload($filename, $options, true);
     }
 
 }
