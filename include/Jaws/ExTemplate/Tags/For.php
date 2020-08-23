@@ -13,6 +13,20 @@
 class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
 {
     /**
+     * Stack of nodelists
+     *
+     * @var array
+     */
+    public $nodelists;
+
+    /**
+     * The nodelist for the else nodelist
+     *
+     * @var array
+     */
+    private $elseNodelist;
+
+    /**
      * @var array The collection to loop over
      */
     private $collectionName;
@@ -43,6 +57,7 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
      */
     public function __construct($markup, array &$tokens, $rootPath = null)
     {
+        $this->nodelists[] = array('for', $markup, &$this->nodelist);
         parent::__construct($markup, $tokens, $rootPath);
 
         $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_ExTemplate::get('VARIABLE_NAME') . ')/');
@@ -73,12 +88,22 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
         }
     }
 
+    public function unknownTag($tag, $params, array $tokens)
+    {
+        if ($tag == 'else') {
+            $this->nodelist = & $this->elseNodelist;
+            $this->nodelists[] = array($tag, $params, &$this->elseNodelist);
+        } else {
+            parent::unknownTag($tag, $params, $tokens);
+        }
+    }
+
     /**
      * Renders the tag
      *
-     * @param Context $context
+     * @param   object  $context
      *
-     * @return null|string
+     * @return  null|string
      */
     public function render($context)
     {
@@ -86,24 +111,33 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
             $context->registers['for'] = array();
         }
 
-        if ($this->type == 'digit') {
-            return $this->renderDigit($context);
+        foreach ($this->nodelists as $nodelist) {
+            if ($nodelist[0] == 'for') {
+                if ($this->type == 'digit') {
+                    $result = $this->renderDigit($nodelist[2], $context);
+                } else {
+                    // that's the default
+                    $result = $this->renderCollection($nodelist[2], $context);
+                }
+            } else {
+                if($result == null) {
+                    $result = $this->renderAll($nodelist[2], $context);
+                }
+            }
         }
 
-        // that's the default
-        return $this->renderCollection($context);
+        return $result;
     }
 
-    private function renderCollection($context)
+    private function renderCollection($nodelist, $context)
     {
         $collection = $context->get($this->collectionName);
-
         if ($collection instanceof \Traversable) {
             $collection = iterator_to_array($collection);
         }
 
         if (is_null($collection) || !is_array($collection) || count($collection) == 0) {
-            return '';
+            return null;
         }
 
         $range = array(0, count($collection));
@@ -146,7 +180,7 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
                     'last'    => (int)($index == $length - 1)
             ));
 
-            $result .= $this->renderAll($this->nodelist, $context);
+            $result .= $this->renderAll($nodelist, $context);
 
             $index++;
 
@@ -164,7 +198,7 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
         return $result;
     }
 
-    private function renderDigit($context)
+    private function renderDigit($nodelist, $context)
     {
         $start = $this->start;
         if (!is_integer($this->start)) {
@@ -179,7 +213,7 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
         $range = array($start, $end);
 
         $context->push();
-        $result = '';
+        $result = null;
         $index = 0;
         $length = $range[1] - $range[0];
         for ($i = $range[0]; $i <= $range[1]; $i++) {
@@ -196,7 +230,7 @@ class Jaws_ExTemplate_Tags_For extends Jaws_ExTemplate_TagSegmental
                 'last'    => (int)($index == $length - 1)
             ));
 
-            $result .= $this->renderAll($this->nodelist, $context);
+            $result .= $this->renderAll($nodelist, $context);
 
             $index++;
 
