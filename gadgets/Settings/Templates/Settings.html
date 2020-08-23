@@ -1,6 +1,6 @@
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{labels.title}}</h2></div>
+    <div class="col-xs-12"><h2>{{ "settings.title" | t }}</h2></div>
   </div>
 </div>
 <div class="gadget_container">
@@ -13,24 +13,27 @@
   <div class="gadget_content">
     <fieldset>
       <div>
-        <label for="site_status">{{labels.lbl_site_status}}:</label>
+        <label for="site_status">{{ "settings.site_status" | t }}:</label>
         {% assign enabled_selected = enabled | equal: "enabled", "selected", "" %}
         {% assign disabled_selected = enabled | equal: "enabled", "", "selected" %}
         <select class="form-control" name="site_status" id="site_status">
-          <option value="enabled" {{enabled_selected}}>{{labels.lbl_enabled}}</option>
-          <option value="disabled" {{disabled_selected}}>{{labels.lbl_disabled}}</option>
+          <option value="enabled" {{enabled_selected}}>{{ "global.enabled"|t }}</option>
+          <option value="disabled" {{disabled_selected}}>{{ "global.disabled"|t }}</option>
         </select>
       </div>
 
-        <div><label for="site_name">{{labels.lbl_site_name}}:</label>
-          <input class="form-control" name="site_name" id="site_name" value="{{site_name}}" type="text" />
-        </div>
+      <div>
+        <label for="site_name">{{ "settings.site_name" | t }}:</label>
+        <input class="form-control" name="site_name" id="site_name" value="{{site_name}}" type="text" />
+      </div>
 
-        <div><label for="site_slogan">{{labels.lbl_site_slogan}}:</label>
-          <input class="form-control" name="site_slogan" id="site_slogan" value="{{site_slogan}}" type="text" />
-        </div>
+      <div>
+        <label for="site_slogan">{{ "settings.site_slogan" | t }}:</label>
+        <input class="form-control" name="site_slogan" id="site_slogan" value="{{site_slogan}}" type="text" />
+      </div>
 
-      <div><label for="site_language">{{labels.lbl_site_language}}:</label>
+      <div>
+        <label for="site_language">{{ "settings.default_site_language" | t }}:</label>
         <select class="form-control" name="site_language" id="site_language">
           {% for language in languages %}
             {% if selected_language == forloop.key %}
@@ -43,7 +46,7 @@
       </div>
 
       <div>
-        <label for="main_gadget">{{labels.lbl_main_gadget}}:</label>
+        <label for="main_gadget">{{ "settings.main_gadget" | t }}:</label>
         <select class="form-control" name="main_gadget" id="main_gadget">
           {%- for gadget in gadgets %}
             <option value="{{forloop.key}}" {{ forloop.key | equal: selected_gadget, "selected" }}>
@@ -54,19 +57,19 @@
       </div>
 
       <div>
-        <label for="site_email">{{labels.lbl_site_email}}:</label>
+        <label for="site_email">{{ "settings.site_email" | t }}:</label>
         <input class="form-control" name="site_email" id="site_email" value="{{site_email}}" type="text" />
       </div>
 
       <div>
-        <label for="site_comment">{{labels.lbl_site_comment}}:</label>
+        <label for="site_comment">{{ "settings.site_comment" | t }}:</label>
         <textarea class="form-control" name="site_comment" id="site_comment" cols="30" rows="8">
           {{- site_comment -}}
         </textarea>
       </div>
 
       <div>
-        <label for="date_format">{{labels.lbl_date_format}}:</label>
+        <label for="date_format">{{ "settings.date_format" | t }}:</label>
         <select class="form-control" name="date_format" id="date_format">
           {%- for format in dateFormats %}
             <option value="{{forloop.key}}" {{ forloop.key | equal: selected_dateFormat, "selected" }}>
@@ -77,7 +80,7 @@
       </div>
 
       <div>
-        <label for="calendar">{{labels.lbl_calendar}}:</label>
+        <label for="calendar">{{ "settings.calendar" | t }}:</label>
         <select class="form-control" name="calendar" id="calendar">
           {%- for calendar in calendars %}
             <option value="{{forloop.key}}" {{ forloop.key | equal: selected_calendar, "selected" }}>
@@ -88,7 +91,7 @@
       </div>
 
       <div>
-        <label for="editor">{{labels.lbl_editor}}:</label>
+        <label for="editor">{{ "settings.editor" | t }}:</label>
         <select class="form-control" name="editor" id="editor">
           {%- for editor in editors %}
             <option value="{{forloop.key}}" {{ forloop.key | equal: selected_editor, "selected" }}>
@@ -99,7 +102,7 @@
       </div>
 
       <div>
-        <label for="timezone">{{labels.lbl_timezone}}:</label>
+        <label for="timezone">{{ "global.timezone" | t }}:</label>
         <select class="form-control" name="timezone" id="timezone">
           {%- for timezone in timezones %}
             <option value="{{forloop.key}}" {{ forloop.key | equal: selected_timezone, "selected" }}>
@@ -112,7 +115,7 @@
     </fieldset>
   </div>
   <div class="gadget_actions">
-    <button class="btn btn-primary" type="submit">{{labels.update}}</button>
+    <button class="btn btn-primary" type="submit">{{ "global.update" | t }}</button>
   </div>
   </form>
 </div>

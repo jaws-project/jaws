@@ -20,24 +20,6 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
         $this->SetTitle(_t('SETTINGS_TITLE'));
 
         $assigns = array(
-            'labels' => array(
-                'title'       => _t('SETTINGS_TITLE'),
-                'base_script' => BASE_SCRIPT,
-                'update'      => _t('GLOBAL_UPDATE'),
-                'lbl_site_status' => _t('SETTINGS_SITE_STATUS'),
-                'lbl_enabled'   => _t('GLOBAL_ENABLED'),
-                'lbl_disabled'  => _t('GLOBAL_DISABLED'),
-                'lbl_site_name' => _t('SETTINGS_SITE_NAME'),
-                'lbl_site_slogan' => _t('SETTINGS_SITE_SLOGAN'),
-                'lbl_site_language' => _t('SETTINGS_DEFAULT_SITE_LANGUAGE'),
-                'lbl_main_gadget' => _t('SETTINGS_MAIN_GADGET'),
-                'lbl_site_email' => _t('SETTINGS_SITE_EMAIL'),
-                'lbl_site_comment' => _t('SETTINGS_SITE_COMMENT'),
-                'lbl_date_format' => _t('SETTINGS_DATE_FORMAT'),
-                'lbl_calendar' => _t('SETTINGS_CALENDAR'),
-                'lbl_editor' => _t('SETTINGS_EDITOR'),
-                'lbl_timezone' => _t('GLOBAL_TIMEZONE'),
-            ),
             'response' => $this->gadget->session->pop('Settings'),
             'enabled' => $this->gadget->registry->fetch('site_status'),
             'site_name' => Jaws_XSS::defilter($this->gadget->registry->fetch('site_name')),
