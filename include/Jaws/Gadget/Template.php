@@ -49,8 +49,9 @@ class Jaws_Gadget_Template
             $filepath = 'gadgets/'. $this->gadget->name. '/Templates'. ($backend? '/Admin': '');
         }
 
-        $tpl = new Jaws_XTemplate($filepath. DIRECTORY_SEPARATOR);
-        $tpl->parseFile($filename);
+        unset($options['loadFromTheme']);
+        $tpl = new Jaws_XTemplate($loadFromTheme);
+        $tpl->parseFile($filename, $filepath);
         return $tpl;
     }
 
