@@ -60,10 +60,6 @@ class Jaws_Gadget_Actions_MenuNavigation
         }
         $tpl->SetBlock("$block/navigation");
 
-        $thisGadget = $this->gadget->name;
-        $mainGadget = $this->app->mainRequest['gadget'];
-        $mainAction = $this->app->mainRequest['action'];
-
         $tpl->SetVariable('gadget', $this->gadget->name);
         $tpl->SetVariable('label', empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label);
 
@@ -90,10 +86,9 @@ class Jaws_Gadget_Actions_MenuNavigation
                 }
                 // check permissions
                 if (isset($action['acls'])) {
-                    $menu['visible'] = call_user_func_array(
-                        array($this->gadget, 'GetPermission'),
-                        $action['acls']
-                    );
+                    if (!call_user_func_array(array($this->gadget, 'GetPermission'), $action['acls'])) {
+                        continue;
+                    }
                 }
                 // separator
                 if (isset($action['navigation']['separator'])) {
@@ -113,10 +108,6 @@ class Jaws_Gadget_Actions_MenuNavigation
 
         // put menus in template
         foreach ($options as $menu) {
-            if (isset($menu['visible']) && !$menu['visible']) {
-                continue;
-            }
-
             $tpl->SetBlock("$block/navigation/menu");
             // set separator
             if (isset($menu['separator']) && !empty($menu['separator'])) {
@@ -136,6 +127,66 @@ class Jaws_Gadget_Actions_MenuNavigation
 
         $tpl->ParseBlock("$block/navigation");
         return $tpl->Get();
+    }
+
+    /**
+     * Get menu navigation array
+     *
+     * @access  public
+     * @param   array   $options    (Optional) Menu options
+     * @param   string  $label      (Optional) Menu label
+     * @return  array   Gadget navigation array
+     */
+    function xnavigation($options = array(), $label = '')
+    {
+        if (empty($options)) {
+            // use gadget normal actions if navigation index exist
+            foreach ($this->gadget->actions['index'] as $actionName => $action) {
+                if (!isset($action['normal']) || !$action['normal'] || !isset($action['navigation'])) {
+                    continue;
+                }
+
+                $menu = array(
+                    'name'  => $actionName,
+                    'title' => _t(strtoupper("{$this->gadget->name}_ACTIONS_{$actionName}_TITLE")),
+                    'url' => $this->gadget->urlMap(
+                        $actionName,
+                        isset($action['navigation']['params'])? $action['navigation']['params'] : array()
+                    ),
+                );
+                // set active menu
+                if ($this->app->mainRequest['gadget'] == $this->gadget->name &&
+                    $this->app->mainRequest['action'] == $actionName
+                ) {
+                    $menu['active'] = true;
+                }
+                // check permissions
+                if (isset($action['acls'])) {
+                    if (!call_user_func_array(array($this->gadget, 'GetPermission'), $action['acls'])) {
+                        continue;
+                    }
+                }
+                // separator
+                if (isset($action['navigation']['separator'])) {
+                    $menu['separator'] = true;
+                }
+                // set order
+                $order = isset($action['navigation']['order'])? $action['navigation']['order'] : null;
+                if (isset($order)) {
+                    $options[$order] = $menu;
+                } else {
+                    $options[] = $menu;
+                }
+            }
+
+            ksort($options);
+        }
+
+        return array(
+            'gadget' => $this->gadget->name,
+            'label'  => empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label,
+            'menus'  => $options
+        );
     }
 
 }

@@ -1,0 +1,17 @@
+<div class="dropdown pull-right">
+  <button class="btn btn-default dropdown-toggle" type="button"
+    id="{{navigation.gadget}}-menu-options" data-toggle="dropdown">
+    {{navigation.label}}
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    {%- for menu in navigation.menus %}
+      {% if menu.separator %}
+      <li role="separator" class="divider"></li>
+      {% endif %}
+      <li {{ menu.active | equal: true, 'class="active"' }}>
+        <a href="{{ menu.url }}">{{ menu.title }}</a>
+      </li>
+    {%- endfor %}
+  </ul>
+</div>
