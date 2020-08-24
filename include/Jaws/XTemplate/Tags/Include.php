@@ -82,7 +82,10 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     public function parse(array &$tokens)
     {
         // read the source of the template and create a new sub document
-        $source = Jaws_XTemplate::readTemplateFile($this->templateName, $this->rootPath);
+        $source = Jaws_XTemplate::readTemplateFile(
+            basename($this->templateName),
+            pathinfo($this->templateName, PATHINFO_DIRNAME)
+        );
 
         /*
         $this->hash = Jaws_Cache::key($source);
@@ -114,7 +117,10 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
             return true;
         }
 
-        $source = Jaws_XTemplate::readTemplateFile($this->templateName, $this->rootPath);
+        $source = Jaws_XTemplate::readTemplateFile(
+            basename($this->templateName),
+            pathinfo($this->templateName, PATHINFO_DIRNAME)
+        );
         if ($this->app->cache->exists(Jaws_Cache::key($source)) &&
             $this->hash === Jaws_Cache::key($source)
         ) {
