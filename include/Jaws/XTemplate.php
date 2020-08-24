@@ -78,11 +78,40 @@ class Jaws_XTemplate
     );
 
     /**
+     * load customized template file from theme directory
+     *
+     * @var bool
+     */
+    private static $loadFromTheme = false;
+
+    /**
+     * load RTL template file id exists
+     *
+     * @var bool
+     */
+    private static $loadRTLDirection = null;
+
+    /**
+     * theme information array
+     *
+     * @var array
+     */
+    private static $theme = array();
+
+    /**
+     * theme layout name
+     *
+     * @var string
+     */
+    private static $layout = '';
+
+    /**
      * The root path
      *
      * @var string
      */
     private $rootPath;
+    private static $tplRootPath = '';
 
     /**
      * @var Document The root of the node tree
@@ -97,22 +126,24 @@ class Jaws_XTemplate
     /**
      * Constructor
      *
-     * @param   string  $path
+     * @param   bool    $loadFromTheme          Try to load template from theme
+     * @param   bool    $loadGlobalVariables    Fetch and set global variables 
      *
      * @return Jaws_XTemplate
      */
-    public function __construct($path = null)
+    public function __construct($loadFromTheme = false, $loadGlobalVariables = true)
     {
         $this->app = Jaws::getInstance();
 
-        if (!empty($path)) {
-            $realPath = realpath($path);
-            if ($realPath === false) {
-                throw new Exception("Root path could not be found: '$path'");
-            }
-            $path = $realPath;
+        if ($loadGlobalVariables) {
+            self::$loadFromTheme = $loadFromTheme;
+            self::$theme = $this->app->GetTheme();
+            $layout = $this->app->layout->GetLayoutName();
+            self::$layout = @is_dir(self::$theme['path']. '/'. $layout)? $layout : '';
+        } else {
+            self::$loadFromTheme = false;
         }
-        $this->rootPath = $path;
+
     }
 
     /**
@@ -172,38 +203,59 @@ class Jaws_XTemplate
     /**
      * Retrieve a template file
      *
-     * @param   string  $tplPath
-     * @param   string  $rootPath   The root path for templates
+     * @param   string  $fname  File name
+     * @param   string  $fpath  File path
      *
      * @return  string  template file content
      */
-    public static function readTemplateFile($tplPath, $rootPath = '')
+    public static function readTemplateFile($fname, $fpath = '')
     {
-        if (empty($tplPath)) {
+        if (empty($fname)) {
             throw new Exception("Empty template name");
         }
 
         $nameRegex = new Jaws_Regexp('/^[^.\/][a-zA-Z0-9_\.\/-]+$/');
-        if (!$nameRegex->match($tplPath)) {
-            throw new Exception("Illegal template name '$tplPath'");
+        if (!$nameRegex->match($fname)) {
+            throw new Exception("Illegal template name '$fname'");
         }
 
-        $tplDir  = dirname($tplPath);
-        $tplFile = basename($tplPath);
-
-        $fullPath = join(DIRECTORY_SEPARATOR, array($rootPath, $tplDir, $tplFile));
-        $realFullPath = realpath($fullPath);
-        if ($realFullPath === false) {
-            throw new Exception("File not found: $fullPath");
+        if (empty($fpath) || $fpath == '.') {
+            $fpath = self::$tplRootPath;
         }
 
-        if (strpos($realFullPath, $rootPath) !== 0) {
-            throw new Exception(
-                "Illegal template full path: {$realFullPath} not under {$rootPath}"
-            );
+        $filePath = rtrim($fpath, '/');
+        $fileExtn = strrchr($fname, '.');
+        $fileName = substr($fname, 0, -strlen($fileExtn));
+
+        // load from theme?
+        if (self::$loadFromTheme) {
+            $layout = empty($filePath)? '' : self::$layout;
+            if (file_exists(self::$theme['path']. $layout. '/'. $filePath. '/'. $fname)) {
+                $filePath = self::$theme['path']. $layout. '/'. $filePath;
+            } else {
+                $filePath = ROOT_JAWS_PATH . $filePath;
+            }
         }
 
-        return file_get_contents($realFullPath);
+        $prefix  = '';
+        if (self::$loadRTLDirection ||
+           (is_null(self::$loadRTLDirection) && function_exists('_t') && _t('GLOBAL_LANG_DIRECTION') == 'rtl')
+        ) {
+            $prefix = '.rtl';
+        }
+
+        $tplFile = $filePath. '/'. $fileName. $prefix. $fileExtn;
+        $tplExists = file_exists($tplFile);
+        if (!$tplExists && !empty($prefix)) {
+            $tplFile = $filePath. '/'. $fileName. $fileExtn;
+            $tplExists = file_exists($tplFile);
+        }
+
+        if (!$tplExists) {
+            throw new Exception('Template '. $tplFile. ' doesn\'t exists');
+        }
+
+        return @file_get_contents($tplFile);
     }
 
     /**
@@ -258,12 +310,15 @@ class Jaws_XTemplate
     /**
      * Parses the given template file
      *
+     * @param   string  $tplName
      * @param   string  $tplPath
+     *
      * @return  Jaws_XTemplate
      */
-    public function parseFile($tplPath)
+    public function parseFile($tplName, $tplPath = '')
     {
-        return $this->parse(self::readTemplateFile($tplPath, $this->rootPath));
+        self::$tplRootPath = $tplPath;
+        return $this->parse(self::readTemplateFile($tplName, $tplPath));
     }
 
     /**
