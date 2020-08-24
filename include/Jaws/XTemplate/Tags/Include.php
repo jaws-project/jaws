@@ -22,14 +22,9 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     private $collection;
 
     /**
-     * @var mixed The value to pass to the child template as the template name
+     * @var mixed The variable name passed to the child template
      */
-    private $variable;
-
-    /**
-     * @var mixed The value to pass to the child template as the template name
-     */
-    private $params = array();
+    private $variableName;
 
     /**
      * @var Document The Document that represents the included template
@@ -52,21 +47,14 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
      */
     public function __construct($markup, array &$tokens, $rootPath = null)
     {
-        if (strpos($markup, ',') > 0) {
-            $regex = new Jaws_Regexp(
-                '/("[^"]+"|\'[^\']+\'|[^\'"\s]+)(\s*+(with|for)\s+(' .
-                Jaws_XTemplate::get('QUOTED_FRAGMENT') .
-                '+)\s+(' .
-                Jaws_XTemplate::get('QUOTED_FRAGMENT') .
-                '+))?/'
-            );
-        } else {
-            $regex = new Jaws_Regexp(
-                '/("[^"]+"|\'[^\']+\'|[^\'"\s]+)(\s+(with|for)\s+(' .
-                Jaws_XTemplate::get('QUOTED_FRAGMENT') .
-                '+))?/'
-            );
-        }
+        $regex = new Jaws_Regexp(
+            '/('.Jaws_XTemplate::get('QUOTED_FRAGMENT').'+)' .
+            '(\s+(with|for)\s+(' .
+            Jaws_XTemplate::get('QUOTED_FRAGMENT') .
+            '+))?(\s+(?:as)\s+(' .
+            Jaws_XTemplate::get('VARIABLE_NAME').
+            '+))?/'
+        );
 
         if (!$regex->match($markup)) {
             throw new Exception(
@@ -74,24 +62,10 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
             );
         }
 
-        $unquoted = (strpos($regex->matches[1], '"') === false && strpos($regex->matches[1], "'") === false);
-
-        $start = 1;
-        $len = strlen($regex->matches[1]) - 2;
-        if ($unquoted) {
-            $start = 0;
-            $len = strlen($regex->matches[1]);
-        }
-
-        $this->templateName = substr($regex->matches[1], $start, $len);
-
-        if (isset($regex->matches[1])) {
-            $this->collection = (isset($regex->matches[3])) ? ($regex->matches[3] == "for") : null;
-            $this->variable = (isset($regex->matches[4])) ? $regex->matches[4] : null;
-        }
-        if (isset($regex->matches[4]) && isset($regex->matches[5])) {
-            $this->params[str_replace(":", "", $regex->matches[4])] = str_replace("'", "", $regex->matches[5]);
-        }
+        $this->templateName = trim($regex->matches[1], '\'"');
+        $this->variableName = isset($regex->matches[4])? $regex->matches[4] : null;
+        $this->aliasName    = isset($regex->matches[6])? $regex->matches[6] : null;
+        $this->collection   = isset($regex->matches[3])? ($regex->matches[3] == 'for') : null;
 
         $this->extractAttributes($markup);
 
@@ -153,33 +127,37 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     /**
      * Renders the node
      *
-     * @param Context $context
+     * @param   object  $context
      *
      * @return string
      */
     public function render($context)
     {
         $result = '';
-        $variable = $context->get($this->variable);
 
+        if (!is_null($this->aliasName)) {
+            $contextVarName = $this->aliasName;
+        } elseif (!is_null($this->variableName)) {
+            $contextVarName = $this->variableName;
+        } else {
+            $contextVarName = pathinfo($this->templateName, PATHINFO_FILENAME);
+        }
+
+        $variables = $context->get($this->variableName);
         $context->push();
 
         foreach ($this->attributes as $key => $value) {
             $context->set($key, $context->get($value));
         }
 
-        foreach ($this->params as $key => $value) {
-            $context->set($key, $value);
-        }
-
         if ($this->collection) {
-            foreach ($variable as $item) {
-                $context->set($this->templateName, $item);
+            foreach ($variables as $item) {
+                $context->set($contextVarName, $item);
                 $result .= $this->document->render($context);
             }
         } else {
-            if (!is_null($this->variable)) {
-                $context->set($this->templateName, $variable);
+            if (!is_null($this->variableName)) {
+                $context->set($contextVarName, $variables);
             }
 
             $result .= $this->document->render($context);
