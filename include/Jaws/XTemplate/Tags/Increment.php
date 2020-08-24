@@ -22,13 +22,12 @@ class Jaws_XTemplate_Tags_Increment extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param string $markup
-     * @param array $tokens
-     * @param   string  $rootPath
+     * @param   string  $markup
+     * @param   array   $tokens
      *
-     * * @throws  Exception
+     * @throws    Exception
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
         $syntax = new Jaws_Regexp('/(' . Jaws_XTemplate::get('VARIABLE_NAME') . ')/');
 

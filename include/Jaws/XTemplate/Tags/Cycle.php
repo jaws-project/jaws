@@ -25,13 +25,12 @@ class Jaws_XTemplate_Tags_Cycle extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param string $markup
-     * @param array $tokens
-     * @param   string  $rootPath
+     * @param   string  $markup
+     * @param   array   $tokens
      *
-     * * @throws  Exception
+     * @throws  Exception
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
         $simpleSyntax = new Jaws_Regexp("/" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . "/");
         $namedSyntax = new Jaws_Regexp("/(" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ")\s*\:\s*(.*)/");

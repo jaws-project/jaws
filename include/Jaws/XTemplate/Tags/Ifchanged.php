@@ -21,15 +21,14 @@ class Jaws_XTemplate_Tags_Ifchanged extends Jaws_XTemplate_TagSegmental
     /**
      * Constructor
      *
-     * @param string $markup
-     * @param array $tokens
-     * @param   string  $rootPath
+     * @param   string  $markup
+     * @param   array   $tokens
      *
-     * @throws Exception
+     * @throws  Exception
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
-        parent::__construct($markup, $tokens, $rootPath);
+        parent::__construct($markup, $tokens);
     }
 
     /**

@@ -38,13 +38,12 @@ class Jaws_XTemplate_Tags_Tablerow extends Jaws_XTemplate_TagSegmental
      *
      * @param string $markup
      * @param array $tokens
-     * @param   string  $rootPath
      *
-     * * @throws  Exception
+     * @throws  Exception
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
-        parent::__construct($markup, $tokens, $rootPath);
+        parent::__construct($markup, $tokens);
 
         $syntax = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_XTemplate::get('VARIABLE_NAME') . ')/');
 

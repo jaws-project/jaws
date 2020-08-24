@@ -42,18 +42,17 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
     /**
      * Constructor
      *
-     * @param string $markup
-     * @param array $tokens
-     * @param   string  $rootPath
+     * @param   string  $markup
+     * @param   array   $tokens
      *
-     * * @throws  Exception
+     * @throws  Exception
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
         $this->nodelists = array();
         $this->elseNodelist = array();
 
-        parent::__construct($markup, $tokens, $rootPath);
+        parent::__construct($markup, $tokens);
 
         $syntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . '/');
 
@@ -79,7 +78,7 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
      * @param string $params
      * @param array $tokens
      *
-     * * @throws  Exception
+     * @throws  Exception
      */
     public function unknownTag($tag, $params, array $tokens)
     {

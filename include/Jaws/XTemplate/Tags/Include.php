@@ -39,13 +39,12 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param string $markup
-     * @param array $tokens
-     * @param   string  $rootPath
+     * @param   string  $markup
+     * @param   array   $tokens
      *
-     * @throws Exception
+     * @throws  Exception
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
         $regex = new Jaws_Regexp(
             '/('.Jaws_XTemplate::get('QUOTED_FRAGMENT').'+)' .
@@ -69,7 +68,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
 
         $this->extractAttributes($markup);
 
-        parent::__construct($markup, $tokens, $rootPath);
+        parent::__construct($markup, $tokens);
     }
 
     /**
@@ -94,7 +93,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
 
         //if ($this->document == false || $this->document->hasIncludes() == true) {
             $templateTokens = Jaws_XTemplate::tokenize($source);
-            $this->document = new Jaws_XTemplate_Document($templateTokens, $this->rootPath);
+            $this->document = new Jaws_XTemplate_Document($templateTokens);
             /*
             $this->app->cache->set(
                 $this->hash,

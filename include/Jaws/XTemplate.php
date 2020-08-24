@@ -106,11 +106,10 @@ class Jaws_XTemplate
     private static $layout = '';
 
     /**
-     * The root path
+     * template root path
      *
      * @var string
      */
-    private $rootPath;
     private static $tplRootPath = '';
 
     /**
@@ -294,7 +293,7 @@ class Jaws_XTemplate
         // if no cached version exists
         //if ($this->document === false || $this->document->hasIncludes() == true) {
             $tokens = Jaws_XTemplate::tokenize($source);
-            $this->document = new Jaws_XTemplate_Document($tokens, $this->rootPath);
+            $this->document = new Jaws_XTemplate_Document($tokens);
             /*
             $this->app->cache->set(
                 $hash,

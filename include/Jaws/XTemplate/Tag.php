@@ -27,13 +27,6 @@ abstract class Jaws_XTemplate_Tag
     protected $markup;
 
     /**
-     * The root path
-     *
-     * @var string
-     */
-    protected $rootPath;
-
-    /**
      * Additional attributes
      *
      * @var array
@@ -45,14 +38,12 @@ abstract class Jaws_XTemplate_Tag
      *
      * @param   string  $markup
      * @param   array   $tokens
-     * @param   string  $rootPath
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
         $this->app = Jaws::getInstance();
 
         $this->markup = $markup;
-        $this->rootPath = $rootPath;
         $this->parse($tokens);
     }
 

@@ -29,24 +29,23 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param string $markup
-     * @param array $tokens
-     * @param   string  $rootPath
+     * @param   string  $markup
+     * @param   array   $tokens
      *
-     * * @throws  Exception
+     * @throws  Exception
      */
-    public function __construct($markup, array &$tokens, $rootPath = null)
+    public function __construct($markup, array &$tokens)
     {
         $regex = new Jaws_Regexp('/("[^"]+"|\'[^\']+\')?/');
         if ($regex->match($markup) && isset($regex->matches[1])) {
-            $this->templateName = substr($regex->matches[1], 1, strlen($regex->matches[1]) - 2);
+            $this->templateName = trim($regex->matches[1], '\'"');
         } else {
             throw new Exception(
                 "Error in tag 'extends' - Valid syntax: extends '[template name]'"
             );
         }
 
-        parent::__construct($markup, $tokens, $rootPath);
+        parent::__construct($markup, $tokens);
     }
 
     /**
@@ -56,8 +55,18 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
      */
     private function findBlocks(array $tokens)
     {
-        $blockstartRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '\s*block (\w+)\s*(.*)?' . Jaws_XTemplate::get('TAG_END') . '$/');
-        $blockendRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '\s*endblock\s*?' . Jaws_XTemplate::get('TAG_END') . '$/');
+        $blockstartRegexp = new Jaws_Regexp(
+            '/^' . Jaws_XTemplate::get('TAG_START') .
+            '\s*block (\w+)\s*(.*)?' .
+            Jaws_XTemplate::get('TAG_END') .
+            '$/'
+        );
+        $blockendRegexp = new Jaws_Regexp(
+            '/^' . Jaws_XTemplate::get('TAG_START') .
+            '\s*endblock\s*?' .
+            Jaws_XTemplate::get('TAG_END') .
+            '$/'
+        );
 
         $b = array();
         $name = null;
@@ -88,12 +97,21 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
     public function parse(array &$tokens)
     {
         // read the source of the template and create a new sub document
-        $source = Jaws_XTemplate::readTemplateFile($this->templateName, $this->rootPath);
+        $source = Jaws_XTemplate::readTemplateFile(
+            basename($this->templateName),
+            pathinfo($this->templateName, PATHINFO_DIRNAME)
+        );
 
         // tokens in this new document
         $maintokens = Jaws_XTemplate::tokenize($source);
 
-        $eRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '\s*extends (.*)?' . Jaws_XTemplate::get('TAG_END') . '$/');
+        $eRegexp = new Jaws_Regexp(
+            '/^' . Jaws_XTemplate::get('TAG_START') .
+            '\s*extends (.*)?' .
+            Jaws_XTemplate::get('TAG_END') .
+            '$/'
+        );
+
         foreach ($maintokens as $maintoken) {
             if ($eRegexp->match($maintoken)) {
                 $m = $eRegexp->matches[1];
@@ -106,11 +124,20 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
         } else {
             $childtokens = $this->findBlocks($tokens);
 
-            $blockstartRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '\s*block (\w+)\s*(.*)?' . Jaws_XTemplate::get('TAG_END') . '$/');
-            $blockendRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '\s*endblock\s*?' . Jaws_XTemplate::get('TAG_END') . '$/');
+            $blockstartRegexp = new Jaws_Regexp(
+                '/^' . Jaws_XTemplate::get('TAG_START') .
+                '\s*block (\w+)\s*(.*)?' .
+                Jaws_XTemplate::get('TAG_END') .
+                '$/'
+            );
+            $blockendRegexp = new Jaws_Regexp(
+                '/^' . Jaws_XTemplate::get('TAG_START') .
+                '\s*endblock\s*?' .
+                Jaws_XTemplate::get('TAG_END') .
+                '$/'
+            );
 
             $name = null;
-
             $rest = array();
             $keep = false;
 
@@ -143,7 +170,7 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
         */
 
         //if ($this->document == false || $this->document->hasIncludes() == true) {
-            $this->document = new Jaws_XTemplate_Document($rest, $this->rootPath);
+            $this->document = new Jaws_XTemplate_Document($rest);
             /*
             $this->app->cache->set(
                 $this->hash,
@@ -166,7 +193,10 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
             return true;
         }
 
-        $source = Jaws_XTemplate::readTemplateFile($this->templateName, $this->rootPath);
+        $source = Jaws_XTemplate::readTemplateFile(
+            basename($this->templateName),
+            pathinfo($this->templateName, PATHINFO_DIRNAME)
+        );
         if ($this->app->cache->exists(Jaws_Cache::key($source)) &&
             $this->hash === Jaws_Cache::key($source)
         ) {

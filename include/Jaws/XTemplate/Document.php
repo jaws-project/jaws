@@ -14,11 +14,9 @@ class Jaws_XTemplate_Document extends Jaws_XTemplate_TagSegmental
      * Constructor.
      *
      * @param array $tokens
-     * @param   string  $rootPath
      */
-    public function __construct(array &$tokens, $rootPath = null)
+    public function __construct(array &$tokens)
     {
-        $this->rootPath = $rootPath;
         $this->parse($tokens);
     }
 
