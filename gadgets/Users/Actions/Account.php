@@ -24,7 +24,12 @@ class Users_Actions_Account extends Users_Actions_Default
             );
         }
 
-        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
+        $this->gadget->CheckPermission(
+            'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
+            '',
+            false
+        );
+
         $response = $this->gadget->session->pop('Account');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
@@ -33,61 +38,28 @@ class Users_Actions_Account extends Users_Actions_Default
             $account = $response['data'];
         }
 
-        // Load the template
-        $tpl = $this->gadget->template->load('Account.html');
-        $tpl->SetBlock('account');
-        $tpl->SetVariable('title', _t('USERS_PERSONAL_INFO'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
-
+        $assigns = array();
+        $assigns = array_merge($assigns, $account);  // same as $assigns = $account
         // Menu navigation
-        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
+        $assigns['navigation'] = $this->gadget->action->load('MenuNavigation')->xnavigation();
 
-        $tpl->SetVariable('title', _t('USERS_ACCOUNT_INFO'));
-        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('emptypassword', _t('USERS_NOCHANGE_PASSWORD'));
-        $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
-
-        if (!$this->gadget->GetPermission('EditUserName')) {
-            $tpl->SetVariable('username_disabled', 'disabled="disabled"');
-        }
-        if (!$this->gadget->GetPermission('EditUserNickname')) {
-            $tpl->SetVariable('nickname_disabled', 'disabled="disabled"');
-        }
-        if (!$this->gadget->GetPermission('EditUserEmail')) {
-            $tpl->SetVariable('email_disabled', 'disabled="disabled"');
-        }
-        if (!$this->gadget->GetPermission('EditUserMobile')) {
-            $tpl->SetVariable('mobile_disabled', 'disabled="disabled"');
-        }
-        if (!$this->gadget->GetPermission('EditUserPassword')) {
-            $tpl->SetVariable('password_disabled', 'disabled="disabled"');
-        }
-
+        $assigns['base_script']       = BASE_SCRIPT;
+        $assigns['response']          = $response;
+        $assigns['username_disabled'] = !$this->gadget->GetPermission('EditUserName');
+        $assigns['nickname_disabled'] = !$this->gadget->GetPermission('EditUserNickname');
+        $assigns['email_disabled']    = !$this->gadget->GetPermission('EditUserEmail');
+        $assigns['mobile_disabled']   = !$this->gadget->GetPermission('EditUserMobile');
+        $assigns['password_disabled'] = !$this->gadget->GetPermission('EditUserPassword');
+        // avatar
         if (empty($account['avatar'])) {
             $user_current_avatar = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
         } else {
             $user_current_avatar = $this->app->getDataURL() . "avatar/" . $account['avatar'];
             $user_current_avatar .= !empty($account['last_update']) ? "?" . $account['last_update'] . "" : '';
         }
-        $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
-        $avatar->SetID('avatar');
-        $tpl->SetVariable('avatar', $avatar->Get());
+        $assigns['avatar'] = $user_current_avatar;
 
-        $tpl->SetVariablesArray($account);
-
-        if (!empty($response)) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-        }
-
-        $tpl->ParseBlock('account');
-        return $tpl->Get();
+        return $this->gadget->template->xLoad('Account.html')->render($assigns);
     }
 
     /**

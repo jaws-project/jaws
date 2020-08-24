@@ -1,13 +1,12 @@
-<!-- BEGIN account -->
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-9"><h2>{{title}}</h2></div>
-    <div class="col-xs-3"><!-- INCLUDE MenuNavigation.html include/Jaws/Resources --></div>
+    <div class="col-xs-9"><h2>{{ "users.account_info" | t }}</h2></div>
+    <div class="col-xs-3">{% include 'include/Jaws/Resources/XMenuNavigation.html' with navigation %}</div>
   </div>
 </div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
+    <div class="alert {{response.type}}" role="alert">{{response.text}}</div>
   </div>
 
   <form name="account" action="{{base_script}}" method="post">
@@ -15,34 +14,53 @@
     <input type="hidden" name="reqAction" value="UpdateAccount" />
     <div class="gadget_content">
       <fieldset>
-        <div class="user_avatar">{{avatar}}</div>
-        <div><label for="username">{{lbl_username}}:</label>
-          <input class="form-control" name="username" class="large username ltr" id="username" value="{{username}}" type="text" {{username_disabled}} />
+        <div class="user_avatar">
+          <img src="{{avatar}}" alt="{{username}}" title="{{nickname}}">
+        </div>
+        <div>
+          <label for="username">{{ "users.users_username" | t }}:</label>
+          <input class="form-control ltr" name="username" id="username" value="{{username}}"
+            type="text" {{ username_disabled | equal: true, 'disabled="disabled"' }}
+          />
         </div>
         <hr/>
-        <div><label for="nickname">{{lbl_nickname}}:</label>
-          <input class="form-control" name="nickname" class="large name" id="nickname" value="{{nickname}}" type="text" {{nickname_disabled}} />
+        <div>
+          <label for="nickname">{{ "users.users_nickname" | t }}:</label>
+          <input class="form-control" name="nickname" id="nickname" value="{{nickname}}"
+            type="text" {{ nickname_disabled | equal: true, 'disabled="disabled"' }}
+          />
         </div>
-        <div><label for="email">{{lbl_email}}:</label>
-          <input class="form-control" name="email" class="large email ltr" id="email" value="{{email}}" type="text" {{email_disabled}} />
+        <div>
+          <label for="email">{{ "global.email" | t }}:</label>
+          <input class="form-control ltr" name="email" id="email" value="{{email}}"
+            type="text" {{ email_disabled | equal: true, 'disabled="disabled"' }}
+          />
         </div>
-        <div><label for="mobile">{{lbl_mobile}}:</label>
-          <input class="form-control" name="mobile" class="large mobile ltr" id="mobile" value="{{mobile}}" type="text" {{mobile_disabled}} />
+        <div>
+          <label for="mobile">{{ "users.contacts_mobile_number" | t }}:</label>
+          <input class="form-control ltr" name="mobile" id="mobile" value="{{mobile}}"
+            type="text" {{ mobile_disabled | equal: true, 'disabled="disabled"' }}
+          />
         </div>
         <hr/>
-        <div><label for="password">{{lbl_password}}:</label>
-          <input class="form-control" name="password" class="large password ltr" id="password" type="password" value="" autocomplete="off" {{password_disabled}} />
-          <span><small>{{emptypassword}}</small></span>
+        <div>
+          <label for="password">{{ "users.users_password" | t }}:</label>
+          <input class="form-control ltr" name="password" id="password" type="password" value=""
+            autocomplete="off" {{ password_disabled | equal: true, 'disabled="disabled"' }}
+          />
+          <span><small>{{ "users.nochange_password" | t }}</small></span>
         </div>
-        <div><label for="chkpassword">{{lbl_chkpassword}}:</label>
-          <input class="form-control" name="chkpassword" class="large password ltr" id="chkpassword" type="password" value="" autocomplete="off" {{password_disabled}} />
+        <div>
+          <label for="chkpassword">{{ "users.users_password_verify" | t }}:</label>
+          <input class="form-control ltr" name="chkpassword" id="chkpassword" type="password" value=""
+            autocomplete="off" {{ password_disabled | equal: true, 'disabled="disabled"' }}
+          />
         </div>
       </fieldset>
     </div>
     <div class="gadget_actions">
-    <button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button>
+      <button class="btn btn-primary" type="submit">{{ "users.users_account_update" | t }}</button>
     </div>
   </form>
 </div>
 <div class="gadget_footer"></div>
-<!-- END account -->
