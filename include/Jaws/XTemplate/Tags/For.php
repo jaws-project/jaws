@@ -145,7 +145,9 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
             $offset = 0;
 
             if (isset($this->attributes['offset'])) {
-                $offset = ($this->attributes['offset'] == 'continue') ? $context->registers['for'][$this->name] : $context->get($this->attributes['offset']);
+                $offset = ($this->attributes['offset'] == 'continue') ?
+                    $context->registers['for'][$this->name] :
+                    $context->get($this->attributes['offset']);
             }
 
             $limit = (isset($this->attributes['limit'])) ? $context->get($this->attributes['limit']) : null;
