@@ -169,7 +169,8 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
         $index = 0;
         foreach ($segment as $key => $item) {
             $context->set($this->variableName, $item);
-            $context->set('forloop', array(
+            $context->set(
+                'loop', array(
                     'key'     => $key,
                     'name'    => $this->name,
                     'length'  => $length,
@@ -179,7 +180,8 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
                     'rindex0' => $length - $index - 1,
                     'first'   => (int)($index == 0),
                     'last'    => (int)($index == $length - 1)
-            ));
+                )
+            );
 
             $result .= $this->renderAll($nodelist, $context);
 
@@ -219,7 +221,8 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
         $length = $range[1] - $range[0];
         for ($i = $range[0]; $i <= $range[1]; $i++) {
             $context->set($this->variableName, $i);
-            $context->set('forloop', array(
+            $context->set(
+                'loop', array(
                 'key'     => $index,
                 'name'    => $this->name,
                 'length'  => $length,
@@ -229,7 +232,8 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
                 'rindex0' => $length - $index - 1,
                 'first'   => (int)($index == 0),
                 'last'    => (int)($index == $length - 1)
-            ));
+                )
+            );
 
             $result .= $this->renderAll($nodelist, $context);
 

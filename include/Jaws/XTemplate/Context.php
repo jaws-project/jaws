@@ -143,7 +143,11 @@ class Jaws_XTemplate_Context
      */
     public function push()
     {
-        array_unshift($this->assigns, array());
+        array_unshift(
+            $this->assigns,
+            array('parent' => &$this->assigns[0])
+        );
+
         return true;
     }
 
