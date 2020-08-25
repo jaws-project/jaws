@@ -137,17 +137,23 @@ class Jaws_XTemplate_Context
     }
 
     /**
+     * return previous context reference
+     *
+     * @return  array
+     */
+    public function &parentContext()
+    {
+        return $this->assigns[1];
+    }
+
+    /**
      * Push new local scope on the stack.
      *
      * @return bool
      */
     public function push()
     {
-        array_unshift(
-            $this->assigns,
-            array('parent' => &$this->assigns[0])
-        );
-
+        array_unshift($this->assigns, array());
         return true;
     }
 
