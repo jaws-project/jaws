@@ -170,7 +170,7 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
         foreach ($segment as $key => $item) {
             $context->set($this->variableName, $item);
             $context->set(
-                'loop', array(
+                'forloop', array(
                     'key'     => $key,
                     'name'    => $this->name,
                     'length'  => $length,
@@ -222,7 +222,7 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
         for ($i = $range[0]; $i <= $range[1]; $i++) {
             $context->set($this->variableName, $i);
             $context->set(
-                'loop', array(
+                'forloop', array(
                 'key'     => $index,
                 'name'    => $this->name,
                 'length'  => $length,
