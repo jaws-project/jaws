@@ -179,7 +179,8 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
                     'rindex'  => $length - $index,
                     'rindex0' => $length - $index - 1,
                     'first'   => (int)($index == 0),
-                    'last'    => (int)($index == $length - 1)
+                    'last'    => (int)($index == $length - 1),
+                    'parent'  => $context->parentContext()
                 )
             );
 
@@ -223,15 +224,16 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
             $context->set($this->variableName, $i);
             $context->set(
                 'forloop', array(
-                'key'     => $index,
-                'name'    => $this->name,
-                'length'  => $length,
-                'index'   => $index + 1,
-                'index0'  => $index,
-                'rindex'  => $length - $index,
-                'rindex0' => $length - $index - 1,
-                'first'   => (int)($index == 0),
-                'last'    => (int)($index == $length - 1)
+                    'key'     => $index,
+                    'name'    => $this->name,
+                    'length'  => $length,
+                    'index'   => $index + 1,
+                    'index0'  => $index,
+                    'rindex'  => $length - $index,
+                    'rindex0' => $length - $index - 1,
+                    'first'   => (int)($index == 0),
+                    'last'    => (int)($index == $length - 1),
+                    'parent'  => $context->parentContext()
                 )
             );
 
