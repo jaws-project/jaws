@@ -483,6 +483,42 @@ function Jaws_Gadget_PrivateMessage() { return {
     },
 
     /**
+     * messages Datagrid column renderer
+     */
+    messagesDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'have_attachment':
+                if (helpers.item.text()) {
+                    customMarkup = '<span class="glyphicon glyphicon-paperclip"></span>'
+                } else {
+                    customMarkup = '';
+                }
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+
+        callback();
+    },
+
+    /**
+     * messages Datagrid column renderer
+     */
+    messagesDGRowRenderer: function (helpers, callback) {
+        if (helpers.rowData.read) {
+            helpers.item.css('font-weight', 'bold');
+        }
+        callback();
+    },
+
+    /**
      * initiate messages dataGrid
      */
     initiateMessagesDG: function () {
@@ -588,7 +624,10 @@ function Jaws_Gadget_PrivateMessage() { return {
             dataSource: $.proxy(this.messagesDataSource, this),
             list_actions: list_actions,
             list_selectable: 'multi',
-            list_direction: $('.repeater-canvas').css('direction')
+            list_direction: $('.repeater-canvas').css('direction'),
+            list_columnRendered: $.proxy(this.messagesDGColumnRenderer, this),
+            list_rowRendered: $.proxy(this.messagesDGRowRenderer, this),
+            list_noItemsHTML: this.gadget.defines.datagridNoItems
         });
 
         // monitor required events

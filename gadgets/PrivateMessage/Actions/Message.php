@@ -52,6 +52,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $this->gadget->define('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
         $this->gadget->define('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
         $this->gadget->define('lbl_unarchive', _t('PRIVATEMESSAGE_UNARCHIVE'));
+        $this->gadget->define('datagridNoItems', _t('GLOBAL_NO_ITEMS_FOUND'));
         $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Messages.html');
