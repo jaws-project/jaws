@@ -99,8 +99,8 @@
 
   <div class="gadget_actions">
       <a class="btn btn-default" href="{{back_url}}" id="btn_back">{{lbl_back}}</a>
-      <a class="btn btn-default" href="javascript:sendMessage(true)" id="btn_save_draft">{{lbl_save_draft}}</a>
-      <a class="btn btn-default" href="javascript:sendMessage(false)" id="btn_send">{{lbl_send}}</a>
+      <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').sendMessage(true)" id="btn_save_draft">{{lbl_save_draft}}</a>
+      <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').sendMessage(false)" id="btn_send">{{lbl_send}}</a>
   </div>
 </div>
 <div class="gadget_footer"></div>
@@ -126,7 +126,7 @@
                                                                                      alt="Remove"
                                                                                      src="images/stock/cancel.png"></a>
     </div>
-    <input class="form-control-file" type="file" onchange="uploadFile();" id="attachment1" name="attachment1" size="1"
+    <input class="form-control-file" type="file" onchange="Jaws_Gadget.getInstance('PrivateMessage').uploadFile();" id="attachment1" name="attachment1" size="1"
            style="display: block;" class="file" />
 
                 <span id="attachment_addentry2">
