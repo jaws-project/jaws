@@ -18,7 +18,38 @@ var PrivateMessageCallback = {
             }
         }
         PrivateMessageAjax.showResponse(response);
+    },
+    DeleteMessage: function (response) {
+        if (response.type == 'alert-success') {
+            $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        }
+    },
+    TrashMessage: function (response) {
+        if (response.type == 'alert-success') {
+            $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        }
+    },
+    ArchiveMessage: function (response) {
+        if (response.type == 'alert-success') {
+            $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        }
     }
+}
+
+/**
+ * get Selected DataGrid Items
+ */
+function getSelectedDatagridItems(dgHelpers)
+{
+    var ids = new Array();
+    if (dgHelpers.length > 1) {
+        dgHelpers.forEach(function(entry) {
+            ids.push(entry.rowData.id);
+        });
+    } else {
+        ids.push(dgHelpers.rowData.id);
+    }
+    return ids;
 }
 
 /**
@@ -268,57 +299,6 @@ function toggleCheckboxes(){
 }
 var do_check = false;
 
-function messagesDGAction() {
-    var action = $("#messages_actions_combo").val();
-    if (action == '' || $("input[type=checkbox][name='message_checkbox[]']:checked").length < 1) {
-        return false;
-    }
-
-    if(action == 'unarchive') {
-        $("#privatemessage input[type=hidden][name=action]").val('UnArchiveMessage');
-    } else if(action == 'archive') {
-        $("#privatemessage input[type=hidden][name=action]").val('ArchiveMessage');
-    } else if(action == 'read') {
-        $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
-        $("#privatemessage input[type=hidden][name=status]").val('read');
-    } else if(action == 'unread') {
-        $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
-        $("#privatemessage input[type=hidden][name=status]").val('unread');
-    } else if(action == 'trash') {
-        $("#privatemessage input[type=hidden][name=action]").val('TrashMessage');
-    } else if(action == 'restore_trash') {
-        $("#privatemessage input[type=hidden][name=action]").val('RestoreTrashMessage');
-    } else if(action == 'delete') {
-        if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
-            $("#privatemessage input[type=hidden][name=action]").val('DeleteMessage');
-        } else {
-            return false;
-        }
-    }
-
-    $("#privatemessage").submit();
-    return true;
-}
-
-/**
- * Trash Message
- */
-function trashMessage() {
-    if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
-        window.location.href = "{{trash_url}}";
-    }
-}
-
-/**
- * Delete Message
- */
-function deleteMessage() {
-    if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
-        window.location.href = "{{delete_url}}";
-    }
-}
-
-
 /**
  * initiate Compose action
  */
@@ -397,9 +377,238 @@ function initiateCompose() {
 }
 
 /**
- * initiate Messages action
+ * Delete Message
  */
-function initiateMessages() {
+function deleteMessage(ids) {
+    if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
+        PrivateMessageAjax.callAsync(
+            'DeleteMessage',
+            {'ids': ids}
+        );
+    }
+}
+
+/**
+ * trash Message
+ */
+function trashMessage(ids) {
+    if (confirm(jaws.PrivateMessage.Defines.confirmDelete)) {
+        PrivateMessageAjax.callAsync(
+            'TrashMessage',
+            {'ids': ids}
+        );
+    }
+}
+
+/**
+ * Restore trash message
+ */
+function restoreTrashMessage(ids) {
+    PrivateMessageAjax.callAsync(
+        'RestoreTrashMessage',
+        {'ids': ids}
+    );
+}
+
+/**
+ * Archive Message
+ */
+function archiveMessage(ids, doArchive) {
+    PrivateMessageAjax.callAsync(
+        'ArchiveMessage',
+        {'ids': ids, 'archive': doArchive}
+    );
+}
+
+/**
+ * Mark Message (as read or unread)
+ */
+function markMessage(ids, read) {
+    PrivateMessageAjax.callAsync(
+        'ChangeMessageRead',
+        {'ids': ids, 'read': read}
+    );
+}
+
+/**
+ * Define the data to be displayed in the messages datagrid
+ */
+function messagesDataSource(options, callback) {
+    var columns = jaws.PrivateMessage.Defines.grid.columns;
+
+    // set sort property & direction
+    if (options.sortProperty) {
+        columns[options.sortProperty].sortDirection = options.sortDirection;
+    }
+    columns = Object.values(columns);
+
+    PrivateMessageAjax.callAsync(
+        'GetMessages', {
+            'offset': options.pageIndex * options.pageSize,
+            'limit': options.pageSize,
+            'sortDirection': options.sortDirection,
+            'sortBy': options.sortProperty,
+            'folder': jaws.PrivateMessage.Defines.folder,
+            'filters': {
+                'term': $('#filter_term').val(),
+                'read': ($('#filter_read').val() === undefined) ? null : $('#filter_read').val()
+            }
+        },
+        function (response, status, callOptions) {
+            var dataSource = {};
+            if (response['type'] == 'alert-success') {
+                callOptions.showIP = false;
+
+                // processing end item index of page
+                options.end = options.offset + options.pageSize;
+                options.end = (options.end > response['data'].total) ? response['data'].total : options.end;
+                dataSource = {
+                    'page': options.pageIndex,
+                    'pages': Math.ceil(response['data'].total / options.pageSize),
+                    'count': response['data'].total,
+                    'start': options.offset + 1,
+                    'end': options.end,
+                    'columns': columns,
+                    'items': response['data'].records
+                };
+            } else {
+                dataSource = {
+                    'page': 0,
+                    'pages': 0,
+                    'count': 0,
+                    'start': 0,
+                    'end': 0,
+                    'columns': columns,
+                    'items': {}
+                };
+            }
+            // pass the datasource back to the repeater
+            callback(dataSource);
+        }
+    );
+}
+
+/**
+ * initiate messages dataGrid
+ */
+function initiateMessagesDG() {
+    var menu_items_default = [];
+
+    var menu_item_delete = {
+        name: 'delete',
+        html: '<span class="glyphicon glyphicon-remove"></span> ' + jaws.PrivateMessage.Defines.lbl_delete,
+        clickAction: $.proxy(function (helpers, callback, e) {
+            e.preventDefault();
+            this.deleteMessage(getSelectedDatagridItems(helpers));
+            callback();
+        }, this)
+    };
+    var menu_item_archive = {
+        name: 'archive',
+        html: '<span class="glyphicon glyphicon-folder-close"></span> ' + jaws.PrivateMessage.Defines.lbl_archive,
+        clickAction: $.proxy(function (helpers, callback, e) {
+            e.preventDefault();
+            this.archiveMessage(getSelectedDatagridItems(helpers), true);
+            callback();
+        }, this)
+    };
+    var menu_item_unarchive = {
+        name: 'unArchive',
+        html: '<span class="glyphicon glyphicon-folder-open"></span> ' + jaws.PrivateMessage.Defines.lbl_unarchive,
+        clickAction: $.proxy(function (helpers, callback, e) {
+            e.preventDefault();
+            this.archiveMessage(getSelectedDatagridItems(helpers), false);
+            callback();
+        }, this)
+    };
+    var menu_item_trash = {
+        name: 'trash',
+        html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.PrivateMessage.Defines.lbl_trash,
+        clickAction: $.proxy(function (helpers, callback, e) {
+            e.preventDefault();
+            this.trashMessage(getSelectedDatagridItems(helpers));
+            callback();
+        }, this)
+    };
+    var menu_item_restore_trash = {
+        name: 'trash',
+        html: '<span class="glyphicon glyphicon-check"></span> ' + jaws.PrivateMessage.Defines.lbl_restore_trash,
+        clickAction: $.proxy(function (helpers, callback, e) {
+            e.preventDefault();
+            this.restoreTrashMessage(getSelectedDatagridItems(helpers));
+            callback();
+        }, this)
+    };
+    var menu_item_markAsRead = {
+        name: 'markRead',
+        html: '<span class="glyphicon glyphicon-eye-open"></span> ' + jaws.PrivateMessage.Defines.lbl_mark_as_read,
+        clickAction: $.proxy(function (helpers, callback, e) {
+            e.preventDefault();
+            this.markMessage(getSelectedDatagridItems(helpers), true);
+            callback();
+        }, this)
+    };
+    var menu_item_markAsUnRead = {
+        name: 'markUnRead',
+        html: '<span class="glyphicon glyphicon-eye-close"></span> ' + jaws.PrivateMessage.Defines.lbl_mark_as_unread,
+        clickAction: $.proxy(function (helpers, callback, e) {
+            e.preventDefault();
+            this.markMessage(getSelectedDatagridItems(helpers), false);
+            callback();
+        }, this)
+    };
+
+    switch (jaws.PrivateMessage.Defines.folder) {
+        case jaws.PrivateMessage.Defines.folders.inbox:
+        case jaws.PrivateMessage.Defines.folders.notifications:
+            menu_items_default.push(menu_item_archive);
+            menu_items_default.push(menu_item_markAsRead);
+            menu_items_default.push(menu_item_markAsUnRead);
+            menu_items_default.push(menu_item_trash);
+            break;
+        case jaws.PrivateMessage.Defines.folders.outbox:
+            menu_items_default.push(menu_item_archive);
+            menu_items_default.push(menu_item_trash);
+            break;
+        case jaws.PrivateMessage.Defines.folders.archived:
+            menu_items_default.push(menu_item_unarchive);
+            menu_items_default.push(menu_item_trash);
+            break;
+        case jaws.PrivateMessage.Defines.folders.trash:
+            menu_items_default.push(menu_item_restore_trash);
+            menu_items_default.push(menu_item_delete);
+            break;
+        case jaws.PrivateMessage.Defines.folders.draft:
+        default:
+            menu_items_default.push(menu_item_delete);
+            break;
+    }
+
+    var list_actions = {
+        width: 50,
+        items: menu_items_default
+    };
+
+    // initialize the repeater
+    $('#messages-grid').repeater({
+        dataSource: messagesDataSource,
+        list_actions: list_actions,
+        list_selectable: 'multi',
+        list_direction: $('.repeater-canvas').css('direction')
+    });
+
+    // monitor required events
+    $(".datagrid-filters select").change(function () {
+        $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+    });
+    $(".datagrid-filters input").keypress(function (e) {
+        if (e.which == 13) {
+            $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        }
+    });
+    $("#messages-grid button.btn-refresh").on('click', function (e) {
+        $('#messages-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+    });
 }
 
 
@@ -409,7 +618,7 @@ $(document).ready(function() {
             initiateCompose();
             break;
         case 'Messages':
-            initiateMessages();
+            initiateMessagesDG();
             break;
     }
 });

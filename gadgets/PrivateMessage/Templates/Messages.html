@@ -6,147 +6,106 @@
   </div>
 </div>
 <div class="gadget_container">
-  <div class="gadget_response">
-    <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
+    <div class="gadget_response">
+        <div id="privatemessage_messages_response" class="alert hide {{response_type}}" role="alert">{{response_text}}</div>
+    </div>
+
   <div class="gadget_content">
-    <form name="privatemessage" id="privatemessage" action="{{requested_url}}" method="post">
-      <input type="hidden" name="reqGadget" value="PrivateMessage"/>
-      <input type="hidden" name="reqAction" value="Messages"/>
-      <input type="hidden" name="page" value="{{page}}"/>
-      <input type="hidden" name="folder" value="{{folder}}"/>
-      <input type="hidden" name="status" value=""/>
+      <div class="repeater" id="messages-grid" data-staticheight="500">
+          <div class="repeater-header">
+              <div class="datagrid-filters">
+                  <div class="row">
 
-      <div class="filters">
-          <!-- BEGIN filter_read -->
-          <label for="read">{{lbl_read}}</label>
-          <select class="form-control" id="read" name="read">
-              <option
-              {{opt_read_}} value="">{{lbl_all}}</option>
-              <option
-              {{opt_read_yes}} value="yes">{{lbl_yes}}</option>
-              <option
-              {{opt_read_no}} value="no">{{lbl_no}}</option>
-          </select>
-          <!-- END filter_read -->
+                      <div class="col-xs-2">
+                          <label for="filter_term">{{lbl_term}}: </label>
+                      </div>
+                      <div class="col-xs-4">
+                          <input type="text" class="form-control" name="filter_term" id="filter_term" >
+                      </div>
 
-          <input class="form-control" type="text" id="term" name="term" size="20" value="{{txt_term}}" class="medium">
 
-          <button class="btn btn-primary" value="{{filter}}" id="filter_button" name="filter_button"
-                  type="submit"><img src="{{icon_filter}}" alt="{{filter}}"/>&nbsp;{{filter}}
-          </button>
+                      <!-- BEGIN filter_read -->
+                      <div class="col-xs-2">
+                          <label for="filter_read">{{lbl_read}}: </label>
+                      </div>
+                      <div class="col-xs-4">
+                          <select class="form-control" id="filter_read" name="filter_read">
+                              <option
+                                      {{opt_read_}} value="">{{lbl_all}}</option>
+                              <option
+                                      {{opt_read_yes}} value="yes">{{lbl_yes}}</option>
+                              <option
+                                      {{opt_read_no}} value="no">{{lbl_no}}</option>
+                          </select>
+                      </div>
+                      <!-- END filter_read -->
+
+                  </div>
+              </div>
+
+              <div class="repeater-header-right">
+                  <button type="button" class="btn btn-success btn-m btn-refresh" title="{{lbl_reload}}">
+                      <span class="glyphicon glyphicon-refresh"></span>
+                  </button>
+              </div>
+          </div>
+          <div class="repeater-viewport">
+              <div class="repeater-canvas"></div>
+              <div class="loader repeater-loader"></div>
+          </div>
+          <div class="repeater-footer">
+              <div class="repeater-footer-left">
+                  <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{lbl_to}} <span class="repeater-end"></span>
+            {{lbl_of}} <span class="repeater-count"></span>
+            {{lbl_items}}
+          </span>
+                      <div class="btn-group selectlist dropup" data-resize="auto">
+                          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                              <span class="selected-label">?</span>
+                              <span class="caret"></span>
+                              <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                              <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                              <li data-value="25"><a href="#">25</a></li>
+                              <li data-value="50"><a href="#">50</a></li>
+                          </ul>
+                          <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+                      </div>
+                      <span>{{lbl_per_page}}</span>
+                  </div>
+              </div>
+              <div class="repeater-footer-right">
+                  <div class="repeater-pagination">
+                      <button type="button" class="btn btn-default btn-sm repeater-prev">
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                          <span class="sr-only">Previous Page</span>
+                      </button>
+                      <label class="page-label" id="myPageLabel"></label>
+                      <div class="repeater-primaryPaging active">
+                          <div class="input-group input-append dropdown combobox dropup">
+                              <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                              <div class="input-group-btn">
+                                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                      <span class="caret"></span>
+                                      <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-right"></ul>
+                              </div>
+                          </div>
+                      </div>
+                      <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+                      <button type="button" class="btn btn-default btn-sm repeater-next">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                          <span class="sr-only">Next Page</span>
+                      </button>
+                  </div>
+              </div>
+          </div>
       </div>
-
-      <table class="table table-hover table-bordered">
-          <thead>
-          <tr>
-              <th><input class="form-check-input" type="checkbox" onclick="toggleCheckboxes();"></th>
-
-              <!-- BEGIN folder_th -->
-              <th>{{lbl_folder}}</th>
-              <!-- END folder_th -->
-
-              <th>{{lbl_subject}}</th>
-              <th>&nbsp;</th>
-              <th>{{lbl_from}}</th>
-              <th>{{lbl_recipients}}</th>
-              <th>{{lbl_send_time}}</th>
-          </tr>
-          </thead>
-
-          <tbody>
-          <!-- BEGIN message -->
-          <tr <!-- BEGIN unread -->class="unread"<!-- END unread -->>
-              <td>
-                  <input class="form-check-input" type="checkbox" name="message_checkbox[]" value="{{id}}" class="table-checkbox">
-              </td>
-
-              <!-- BEGIN folder -->
-              <td>{{folder}}</td>
-              <!-- END folder -->
-
-              <td><a href="{{message_url}}">{{subject}}</a></td>
-
-              <!-- BEGIN have_attachment -->
-              <td><img src="{{icon_attachment}}" alt="{{attachment}}"/></td>
-              <!-- END have_attachment -->
-              <!-- BEGIN no_attachment -->
-              <td>&nbsp;</td>
-              <!-- END no_attachment -->
-
-              <td><a href="{{from_url}}">{{from}}</a></td>
-              <td>{{recipients}}</td>
-              <td>{{send_time}}</td>
-
-          </tr>
-          <!-- END message -->
-          </tbody>
-          <tfoot>
-          <tr>
-              <td colspan="7">
-                  {{lbl_page_item}}
-                  <select class="form-control" id="page_item" name="page_item" onchange="this.form.submit();">
-                      <option {{opt_page_item_5}} value="5">5</option>
-                      <option {{opt_page_item_10}} value="10">10</option>
-                      <option {{opt_page_item_20}} value="20">20</option>
-                      <option {{opt_page_item_50}} value="50">50</option>
-                      <option {{opt_page_item_100}} value="100">100</option>
-                  </select>
-              </td>
-          </tr>
-          </tfoot>
-      </table>
-
-      <!-- INCLUDE Navigation.html include/Jaws/Resources -->
-      <div class="gadget_actions">
-          <label for="messages_actions_combo">{{lbl_actions}}:&nbsp;</label>
-          <select class="form-control" title="{{lbl_actions}}" id="messages_actions_combo" name="messages_actions_combo">
-              <option value="">{{lbl_no_action}}</option>
-
-              <!-- BEGIN notifications_action -->
-              <option value="archive">{{lbl_archive}}</option>
-              <option value="trash">{{lbl_trash}}</option>
-              <option value="read">{{lbl_mark_as_read}}</option>
-              <option value="unread">{{lbl_mark_as_unread}}</option>
-              <!-- END notifications_action -->
-
-              <!-- BEGIN inbox_action -->
-              <option value="archive">{{lbl_archive}}</option>
-              <option value="trash">{{lbl_trash}}</option>
-              <option value="read">{{lbl_mark_as_read}}</option>
-              <option value="unread">{{lbl_mark_as_unread}}</option>
-              <!-- END inbox_action -->
-
-              <!-- BEGIN outbox_action -->
-              <option value="archive">{{lbl_archive}}</option>
-              <option value="trash">{{lbl_trash}}</option>
-              <!-- END outbox_action -->
-
-              <!-- BEGIN draft_action -->
-              <option value="delete">{{lbl_delete}}</option>
-              <!-- END draft_action -->
-
-              <!-- BEGIN archive_action -->
-              <option value="unarchive">{{lbl_unarchive}}</option>
-              <option value="trash">{{lbl_trash}}</option>
-              <!-- END archive_action -->
-
-              <!-- BEGIN trash_action -->
-              <option value="restore_trash">{{lbl_restore_trash}}</option>
-              <option value="delete">{{lbl_delete}}</option>
-              <!-- END trash_action -->
-
-              <!-- BEGIN all_action -->
-              <option value="delete">{{lbl_delete}}</option>
-              <!-- END all_action -->
-
-          </select>
-
-          <button class="btn" value="{{lbl_actions}}" id="action_button" name="action_button"
-                  onclick="javascript: return messagesDGAction();" ><img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
-          </button>
-      </div>
-    </form>
   </div>
 </div>
 <div class="gadget_footer"></div>

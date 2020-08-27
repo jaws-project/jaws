@@ -45,27 +45,46 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $this->AjaxMe('index.js');
+        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
+        $this->gadget->define('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
+        $this->gadget->define('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
+        $this->gadget->define('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
+        $this->gadget->define('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
+        $this->gadget->define('lbl_unarchive', _t('PRIVATEMESSAGE_UNARCHIVE'));
         $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
-        $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->template->load('Messages.html');
         $tpl->SetBlock('messages');
 
         $post = $this->gadget->request->fetch(array('folder', 'page', 'read', 'term', 'page_item'));
-        $page = $post['page'];
-        $folder = is_null($folder)? (int)$post['folder'] : $folder;
+        $folder = is_null($folder) ? (int)$post['folder'] : $folder;
+        $this->gadget->define('folder', $folder);
+        $this->gadget->define('folders', array(
+            'inbox' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX,
+            'draft' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT,
+            'outbox' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX,
+            'archived' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED,
+            'trash' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH,
+            'notifications' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS,
+        ));
 
-        $tpl->SetVariable('txt_term', $post['term']);
-
+        $tpl->SetVariable('lbl_term', _t('GLOBAL_TERM'));
+        $tpl->SetVariable('lbl_reload', _t('GLOBAL_RELOAD'));
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
         $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
         $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
 
+        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
+        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+
+        $gridColumns = array();
         switch ($folder) {
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS:
-                $menubar = $this->MenuBar('Notifications');
                 $title = _t('PRIVATEMESSAGE_NOTIFICATIONS');
 
                 $tpl->SetBlock('messages/filter_read');
@@ -74,19 +93,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
-
                 $tpl->ParseBlock('messages/filter_read');
-
-
-                $tpl->SetBlock('messages/notifications_action');
-                $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-                $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
-                $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
-                $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
-                $tpl->ParseBlock('messages/notifications_action');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX:
-                $menubar = $this->MenuBar('Inbox');
                 $title = _t('PRIVATEMESSAGE_INBOX');
 
                 $tpl->SetBlock('messages/filter_read');
@@ -95,64 +104,50 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
-
                 $tpl->ParseBlock('messages/filter_read');
-
-
-                $tpl->SetBlock('messages/inbox_action');
-                $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-                $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
-                $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
-                $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
-                $tpl->ParseBlock('messages/inbox_action');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX:
-                $menubar = $this->MenuBar('Outbox');
                 $title = _t('PRIVATEMESSAGE_OUTBOX');
-
-                $tpl->SetBlock('messages/outbox_action');
-                $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-                $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
-                $tpl->ParseBlock('messages/outbox_action');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT:
-                $menubar = $this->MenuBar('Draft');
                 $title = _t('PRIVATEMESSAGE_DRAFT');
-
-                $tpl->SetBlock('messages/draft_action');
-                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-                $tpl->ParseBlock('messages/draft_action');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED:
-                $menubar = $this->MenuBar('Archived');
                 $title = _t('PRIVATEMESSAGE_ARCHIVED');
-
-                $tpl->SetBlock('messages/archive_action');
-                $tpl->SetVariable('lbl_unarchive', _t('PRIVATEMESSAGE_UNARCHIVE'));
-                $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
-                $tpl->ParseBlock('messages/archive_action');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH:
-                $menubar = $this->MenuBar('Trash');
                 $title = _t('PRIVATEMESSAGE_TRASH');
-
-                $tpl->SetBlock('messages/trash_action');
-                $tpl->SetVariable('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
-                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-                $tpl->ParseBlock('messages/trash_action');
                 break;
             default:
-                $menubar = $this->MenuBar('AllMessages');
+                $gridColumns[] = array(
+                    'label' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER'),
+                    'property' => 'folder',
+                );
                 $title = _t('PRIVATEMESSAGE_ALL_MESSAGES');
-
-                $tpl->SetBlock('messages/folder_th');
-                $tpl->SetVariable('lbl_folder', _t('PRIVATEMESSAGE_MESSAGE_FOLDER'));
-                $tpl->ParseBlock('messages/folder_th');
-
-                $tpl->SetBlock('messages/all_action');
-                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-                $tpl->ParseBlock('messages/all_action');
         }
+
+        $gridColumns[] = array(
+            'label' => _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'),
+            'property' => 'subject',
+        );
+        $gridColumns[] = array(
+            'label' => _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'),
+            'property' => 'have_attachment',
+        );
+        $gridColumns[] = array(
+            'label' => _t('PRIVATEMESSAGE_MESSAGE_FROM'),
+            'property' => 'from_nickname',
+        );
+        $gridColumns[] = array(
+            'label' => _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'),
+            'property' => 'recipients',
+        );
+        $gridColumns[] = array(
+            'label' => _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'),
+            'property' => 'send_time',
+        );
+
+        $this->gadget->define('grid', array('columns' => $gridColumns));
 
         $tpl->SetVariable('title', $title);
         // Menu navigation
@@ -173,99 +168,16 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         );
         $this->gadget->action->load('MenuNavigation')->navigation($tpl, $options);
 
-        $page = empty($page) ? 1 : (int)$page;
-        if (empty($post['page_item'])) {
-            $limit = $this->gadget->registry->fetch('paging_limit');
-            if(empty($limit)) {
-                $limit = 10;
-            }
-        } else {
-            $limit = $post['page_item'];
-        }
-        $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
-
-        $tpl->SetVariable('page', $page);
         $tpl->SetVariable('folder', $folder);
         $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
-        $tpl->SetVariable('icon_filter', STOCK_SEARCH);
-        $tpl->SetVariable('icon_ok', STOCK_OK);
 
-        $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Message');
         $user = $this->app->session->user->id;
-        if ($response = $this->gadget->session->pop('Message')) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-        }
-
-        $messages = $model->GetMessages($user, $folder, $post, $limit, ($page - 1) * $limit);
-        if (!Jaws_Error::IsError($messages) && !empty($messages)) {
-            $i = 0;
-            foreach ($messages as $message) {
-                $i++;
-                $tpl->SetBlock('messages/message');
-                $tpl->SetVariable('rownum', $i);
-                $tpl->SetVariable('id',  $message['id']);
-                $tpl->SetVariable('from', $message['from_nickname']);
-                $from_url = $this->app->map->GetMappedURL(
-                    'Users',
-                    'Profile',
-                    array('user' => $message['from_username']));
-                $tpl->SetVariable('from_url', $from_url);
-
-                // Message is In or Out
-                if (empty($folder)) {
-                    $tpl->SetBlock('messages/message/folder');
-                    $tpl->SetVariable('folder', _t('PRIVATEMESSAGE_MESSAGE_FOLDER_' . $message['folder']));
-                    $tpl->ParseBlock('messages/message/folder');
-                }
-                if (!$message['read']) {
-                    $tpl->SetBlock('messages/message/unread');
-                    $tpl->ParseBlock('messages/message/unread');
-                }
-
-                $tpl->SetVariable('subject', $message['subject']);
-                $msg_url = ($message['folder'] == PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT)?
-                    $this->gadget->urlMap('Compose', array('id' => $message['id'])):
-                    $this->gadget->urlMap('Message', array('id' => $message['id']));
-                $tpl->SetVariable('message_url', $msg_url);
-
-                $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
-
-                if ($message['attachments'] > 0) {
-                    $tpl->SetBlock('messages/message/have_attachment');
-                    $tpl->SetVariable('attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
-                    $tpl->SetVariable('icon_attachment', STOCK_ATTACH);
-                    $tpl->ParseBlock('messages/message/have_attachment');
-                } else {
-                    $tpl->SetBlock('messages/message/no_attachment');
-                    $tpl->ParseBlock('messages/message/no_attachment');
-                }
-
-                $messageInfo = $model->GetMessage($message['id']);
-                $recipients_str = '';
-                if (is_array($messageInfo['users']) > 0) {
-                    // user's profile
-                    $user_url = $this->app->map->GetMappedURL(
-                        'Users',
-                        'Profile',
-                        array('user' => $messageInfo['users'][0]['username']));
-                    $recipients_str = '<a href=' . $user_url . '>' . $messageInfo['users'][0]['nickname'] . '<a/>';
-                    if (count($messageInfo['users']) > 1) {
-                        $recipients_str .= ' , ...';
-                    }
-                }
-                $tpl->SetVariable('recipients', $recipients_str);
-
-                $tpl->ParseBlock('messages/message');
-            }
-        }
 
         // Statistics
-        $msgTotal = $model->GetMessagesStatistics($user, $folder, $post);
         $unreadNotifyCount = $model->GetMessagesStatistics(
             $user,
             PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS,
@@ -281,36 +193,84 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl->SetVariable('unread_inbox_count', ($unreadInboxCount > 0)? $unreadInboxCount : '');
         $tpl->SetVariable('draft_count', ($draftCount > 0)? $draftCount : '');
 
-        $params = array();
-        $params['folder'] = $folder;
-        if (!empty($post['read'])) {
-            $params['read'] = $post['read'];
-        }
-        if (!empty($post['replied'])) {
-            $params['replied'] = $post['replied'];
-        }
-        if (!empty($post['term'])) {
-            $params['term'] = $post['term'];
-        }
-        if (!empty($post['page_item'])) {
-            $params['page_item'] = $post['page_item'];
-        }
-
-        // Pagination
-        $this->gadget->action->load('PageNavigation')->pagination(
-            $tpl,
-            $page,
-            $limit,
-            $msgTotal,
-            'Messages',
-            $params,
-            _t('PRIVATEMESSAGE_MESSAGE_COUNT', $msgTotal)
-        );
-
         $tpl->ParseBlock('messages');
         return $tpl->Get();
     }
 
+    /**
+     * Get messages list
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function GetMessages()
+    {
+        if (!$this->app->session->user->logged) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $post = $this->gadget->request->fetch(
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'folder:integer', 'filters:array'),
+            'post'
+        );
+        $filters = $post['filters'];
+
+        $model = $this->gadget->model->load('Message');
+        $user = $this->app->session->user->id;
+        $messages = $model->GetMessages($user, $post['folder'], $filters, $post['limit'], $post['offset']);
+        if (Jaws_Error::IsError($messages)) {
+            return $this->gadget->session->response(
+                $messages->GetMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        $objDate = Jaws_Date::getInstance();
+        $date_format = $this->gadget->registry->fetch('date_format');
+        if (count($messages) > 0) {
+            foreach ($messages as &$message) {
+                $message['folder'] = _t('PRIVATEMESSAGE_MESSAGE_FOLDER_' . $message['folder']);
+                $message['send_time'] = $objDate->Format($message['insert_time'], $date_format);
+                $message['have_attachment'] = $message['attachments'] > 0;
+
+                $recipientsStr = '';
+                $messageInfo = $model->GetMessage($message['id']);
+                if(!Jaws_Error::IsError($messageInfo)) {
+                    if (is_array($messageInfo['users']) > 0) {
+                        // user's profile
+                        $user_url = $this->app->map->GetMappedURL(
+                            'Users',
+                            'Profile',
+                            array('user' => $messageInfo['users'][0]['username']));
+                        $recipientsStr = '<a href=' . $user_url . '>' . $messageInfo['users'][0]['nickname'] . '<a/>';
+                        if (count($messageInfo['users']) > 1) {
+                            $recipientsStr .= ' , ...';
+                        }
+                    }
+
+                }
+                $message['recipients'] = $recipientsStr;
+
+            }
+        }
+
+        $messagesCount = $model->GetMessagesStatistics($user, $post['folder'], $filters);
+        if (Jaws_Error::IsError($messagesCount)) {
+            return $this->gadget->session->response(
+                $messagesCount->GetMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total' => $messagesCount,
+                'records' => $messages
+            )
+        );
+    }
 
     /**
      * Display a message Info
@@ -489,7 +449,6 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         return $tpl->Get();
     }
 
-
     /**
      * Change message read status
      *
@@ -498,41 +457,15 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
      */
     function ChangeMessageRead()
     {
-        $get = $this->gadget->request->fetch(array('id', 'status'), 'get');
-        $post = $this->gadget->request->fetch(array('message_checkbox:array', 'status'), 'post');
-        $status = $post['status'];
-        if ($status == 'read') {
-            $status = true;
-        } else {
-            $status = false;
-        }
-
-        if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
-            $ids = $post['message_checkbox'];
-        } else {
-            $ids = $get['id'];
-        }
-
+        $post = $this->gadget->request->fetch(array('ids:array', 'read:boolean'), 'post');
         $user = $this->app->session->user->id;
 
-        $model = $this->gadget->model->load('Message');
-        $res = $model->MarkMessages($ids, $status, $user);
-        if ($res === true) {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED'),
-                RESPONSE_NOTICE,
-                'Message'
-            );
-        } else {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'),
-                RESPONSE_ERROR,
-                'Message'
-            );
+        $res = $this->gadget->model->load('Message')->MarkMessages($post['ids'], $post['read'], $user);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $this->gadget->session->response(_t('PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'), RESPONSE_ERROR);
         }
-        Jaws_Header::Referrer();
+        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED'), RESPONSE_NOTICE);
     }
-
 
     /**
      * Archive message
@@ -543,88 +476,24 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     function ArchiveMessage()
     {
         $this->gadget->CheckPermission('ArchiveMessage');
+        $post = $this->gadget->request->fetch(array('ids:array', 'archive:boolean'), 'post');
 
-        $ids = $this->gadget->request->fetch('id', 'get');
-        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
-        if (!empty($messagesSelected) && count($messagesSelected) > 0) {
-            $ids = $messagesSelected;
-        }
-
-        $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->user->id;
-        $res = $model->ArchiveMessage($ids, $user, true);
-        if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(
-                $res->getMessage(),
-                RESPONSE_ERROR,
-                'Message'
+        $res = $this->gadget->model->load('Message')->ArchiveMessage(
+            $post['ids'],
+            $this->app->session->user->id,
+            $post['archive']
+        );
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $this->gadget->session->response(
+                $post['archive'] ? _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED') :
+                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_UNARCHIVED'),
+                RESPONSE_ERROR
             );
         }
-
-        if ($res == true) {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_MESSAGE_ARCHIVED'),
-                RESPONSE_NOTICE,
-                'Message'
-            );
-        } else {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED'),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-        if (count($messagesSelected) > 0) {
-            Jaws_Header::Referrer();
-        } else {
-            return Jaws_Header::Location(
-                $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
-            );
-        }
-    }
-
-
-    /**
-     * UnArchive message
-     *
-     * @access  public
-     * @return  void
-     */
-    function UnArchiveMessage()
-    {
-        $this->gadget->CheckPermission('ArchiveMessage');
-
-        $ids = $this->gadget->request->fetch('id', 'get');
-        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
-        if (!empty($messagesSelected) && count($messagesSelected) > 0) {
-            $ids = $messagesSelected;
-        }
-
-        $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->user->id;
-        $res = $model->ArchiveMessage($ids, $user, false);
-        if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(
-                $res->getMessage(),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-
-        if ($res == true) {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_MESSAGE_UNARCHIVED'),
-                RESPONSE_NOTICE,
-                'Message'
-            );
-        } else {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_UNARCHIVED'),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-        Jaws_Header::Referrer();
+        return $this->gadget->session->response(
+            $post['archive'] ? _t('PRIVATEMESSAGE_MESSAGE_ARCHIVED') : _t('PRIVATEMESSAGE_MESSAGE_UNARCHIVED'),
+            RESPONSE_NOTICE
+        );
     }
 
     /**
@@ -636,44 +505,13 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     function TrashMessage()
     {
         $this->gadget->CheckPermission('DeleteMessage');
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
 
-        $ids = $this->gadget->request->fetch('id', 'get');
-        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
-        if (!empty($messagesSelected) && count($messagesSelected) > 0) {
-            $ids = $messagesSelected;
+        $res = $this->gadget->model->load('Message')->TrashMessage($ids, $this->app->session->user->id, true);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $this->gadget->session->response(_t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASHED'), RESPONSE_ERROR);
         }
-
-        $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->user->id;
-        $res = $model->TrashMessage($ids, $user, true);
-        if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(
-                $res->getMessage(),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-
-        if ($res == true) {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_MESSAGE_TRASHED'),
-                RESPONSE_NOTICE,
-                'Message'
-            );
-        } else {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASHED'),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-        if (count($messagesSelected) > 0) {
-            Jaws_Header::Referrer();
-        } else {
-            return Jaws_Header::Location(
-                $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
-            );
-        }
+        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_TRASHED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -685,38 +523,13 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     function RestoreTrashMessage()
     {
         $this->gadget->CheckPermission('DeleteMessage');
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
 
-        $ids = $this->gadget->request->fetch('id', 'get');
-        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
-        if (!empty($messagesSelected) && count($messagesSelected) > 0) {
-            $ids = $messagesSelected;
+        $res = $this->gadget->model->load('Message')->TrashMessage($ids, $this->app->session->user->id, false);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $this->gadget->session->response(_t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASH_RESTORED'), RESPONSE_ERROR);
         }
-
-        $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->user->id;
-        $res = $model->TrashMessage($ids, $user, false);
-        if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(
-                $res->getMessage(),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-
-        if ($res == true) {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_MESSAGE_TRASH_RESTORED'),
-                RESPONSE_NOTICE,
-                'Message'
-            );
-        } else {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASH_RESTORED'),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-        Jaws_Header::Referrer();
+        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_TRASH_RESTORED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -728,43 +541,12 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     function DeleteMessage()
     {
         $this->gadget->CheckPermission('DeleteMessage');
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
 
-        $ids = $this->gadget->request->fetch('id', 'get');
-        $messagesSelected = $this->gadget->request->fetch('message_checkbox:array', 'post');
-        if (!empty($messagesSelected) && count($messagesSelected) > 0) {
-            $ids = $messagesSelected;
+        $res = $this->gadget->model->load('Message')->DeleteMessage($ids, $this->app->session->user->id);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_NOT_DELETED'), RESPONSE_ERROR);
         }
-
-        $model = $this->gadget->model->load('Message');
-        $user = $this->app->session->user->id;
-        $res = $model->DeleteMessage($ids, $user);
-        if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(
-                $res->getMessage(),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-
-        if ($res == true) {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_MESSAGE_DELETED'),
-                RESPONSE_NOTICE,
-                'Message'
-            );
-        } else {
-            $this->gadget->session->push(
-                _t('PRIVATEMESSAGE_MESSAGE_NOT_DELETED'),
-                RESPONSE_ERROR,
-                'Message'
-            );
-        }
-        if (count($messagesSelected) > 0) {
-            Jaws_Header::Referrer();
-        } else {
-            return Jaws_Header::Location(
-                $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
-            );
-        }
+        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_DELETED'), RESPONSE_NOTICE);
    }
 }

@@ -23,6 +23,10 @@ $actions['Messages'] = array(
     'parametric' => true,
     'file' => 'Message',
 );
+$actions['GetMessages'] = array(
+    'standalone' => true,
+    'file' => 'Message',
+);
 $actions['Message'] = array(
     'normal' => true,
     'file' => 'Message',
