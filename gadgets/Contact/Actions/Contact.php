@@ -71,34 +71,29 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         switch (strtolower($type))
         {
             case 'mini':
-                $items_array = array('name', 'email', 'recipient', 'subject', 'message');
+                $items_array = array(
+                    'name', 'email', 'recipient', 'subject', 'message'
+                );
                 break;
             case 'simple':
-                $items_array = array('name', 'email', 'url',  'tel', 'recipient', 'subject', 'attachment', 'message');
+                $items_array = array(
+                    'name', 'email', 'url',  'tel', 'recipient', 'subject', 'attachment', 'message'
+                );
                 break;
             case 'full':
-                $items_array = array('name', 'email', 'company', 'url', 'tel', 
-                                     'fax', 'mobile', 'address', 'recipient', 'subject', 'attachment', 'message');
+                $items_array = array(
+                    'name', 'email', 'company', 'url', 'tel', 
+                    'fax', 'mobile', 'address', 'recipient', 'subject', 'attachment', 'message'
+                );
                 break;
             default:
-                $items_array = array_filter(explode(',',
-                                            $this->gadget->registry->fetch('default_items')));
+                $items_array = array_filter(
+                    explode(',', $this->gadget->registry->fetch('default_items'))
+                );
                 break;
         }
 
         $this->AjaxMe('index.js');
-        $tpl = $this->gadget->template->load('Contact.html');
-        $tpl->SetBlock('contact');
-
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('title', _t('CONTACT_US'));
-        $comments = $this->gadget->registry->fetch('comments');
-        $tpl->SetVariable('comments', $this->gadget->plugin->parseAdmin($comments));
-        $tpl->SetVariable('send', _t('CONTACT_SEND'));
-
-        $btnSend =& Piwi::CreateWidget('Button', 'send', _t('CONTACT_SEND'));
-        $btnSend->SetSubmit();
-        $tpl->SetVariable('btn_send', $btnSend->Get());
 
         $response = $this->gadget->session->pop('Contact');
         if (isset($response['data'])) {
@@ -118,132 +113,29 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
                 'message'   => '',
             );
         }
+        // remove invalid keys
+        $message = array_intersect_key($message, array_fill_keys($items_array, 0));
 
-        if (!empty($response)) {
-            $tpl->SetVariable('response_text', $response['text']);
-            $tpl->SetVariable('response_type', $response['type']);
-        }
-
-        if (!$this->app->session->user->logged) {
-            //name
-            if (in_array('name', $items_array)) {
-                $tpl->SetBlock('contact/name');
-                $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-                $tpl->SetVariable('name', $message['name']);
-                $tpl->ParseBlock('contact/name');
-            }
-
-            //email
-            if (in_array('email', $items_array)) {
-                $tpl->SetBlock('contact/email');
-                $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-                $tpl->SetVariable('email', $message['email']);
-                $tpl->ParseBlock('contact/email');
-            }
-
-            //url
-            if (in_array('url', $items_array)) {
-                $tpl->SetBlock('contact/url');
-                $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-                $tpl->SetVariable('url', $message['url']);
-                $tpl->ParseBlock('contact/url');
-            }
-        }
-
-        //captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $mPolicy->loadCaptcha($tpl, 'contact');
-
-        //company
-        if (in_array('company', $items_array)) {
-            $tpl->SetBlock('contact/company');
-            $tpl->SetVariable('lbl_company', _t('CONTACT_COMPANY'));
-            $tpl->SetVariable('company', $message['company']);
-            $tpl->ParseBlock('contact/company');
-        }
-
-        //tel
-        if (in_array('tel', $items_array)) {
-            $tpl->SetBlock('contact/tel');
-            $tpl->SetVariable('lbl_tel', _t('CONTACT_TEL'));
-            $tpl->SetVariable('tel', $message['tel']);
-            $tpl->ParseBlock('contact/tel');
-        }
-
-        //fax
-        if (in_array('fax', $items_array)) {
-            $tpl->SetBlock('contact/fax');
-            $tpl->SetVariable('lbl_fax', _t('CONTACT_FAX'));
-            $tpl->SetVariable('fax', $message['fax']);
-            $tpl->ParseBlock('contact/fax');
-        }
-
-        //mobile
-        if (in_array('mobile', $items_array)) {
-            $tpl->SetBlock('contact/mobile');
-            $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
-            $tpl->SetVariable('mobile', $message['mobile']);
-            $tpl->ParseBlock('contact/mobile');
-        }
-
-        //address
-        if (in_array('address', $items_array)) {
-            $tpl->SetBlock('contact/address');
-            $tpl->SetVariable('lbl_address',  _t('CONTACT_ADDRESS'));
-            $tpl->SetVariable('address', $message['address']);
-            $tpl->ParseBlock('contact/address');
-        }
-
-        //recipient
-        if (in_array('recipient', $items_array)) {
-            $model = $this->gadget->model->load('Recipients');
-            $recipients = $model->GetRecipients(true);
-            if (!Jaws_Error::IsError($recipients) && !empty($recipients)) {
-                $tpl->SetBlock('contact/recipient');
-                $tpl->SetVariable('lbl_recipient', _t('CONTACT_RECIPIENT'));
-
-                foreach ($recipients as $recipient) {
-                    $tpl->SetBlock('contact/recipient/item');
-                    $tpl->SetVariable('recipient_id',   $recipient['id']);
-                    $tpl->SetVariable('recipient_name', $recipient['name']);
-                    $tpl->SetVariable(
-                        'selected',
-                        ($message['recipient'] == $recipient['id'])? 'selected="selected"': ''
-                    );
-                    $tpl->ParseBlock('contact/recipient/item');
-                }
-                $tpl->ParseBlock('contact/recipient');
-            }
-        }
-
-        //subject
-        if (in_array('subject', $items_array)) {
-            $tpl->SetBlock('contact/subject');
-            $tpl->SetVariable('lbl_subject',  _t('CONTACT_SUBJECT'));
-            $tpl->SetVariable('subject', $message['subject']);
-            $tpl->ParseBlock('contact/subject');
-        }
+        $assigns = array();
+        $assigns = array_merge($assigns, $message);
+        $assigns['response'] = $this->gadget->session->pop('Contact');
+        $assigns['recipients'] = $this->gadget->model->load('Recipients')->GetRecipients(true);
+        $assigns['selected_recipient'] = $message['recipient'];
 
         //attachment
         if (in_array('attachment', $items_array) &&
             ($this->gadget->registry->fetch('enable_attachment') == 'true') &&
             $this->gadget->GetPermission('AllowAttachment'))
         {
-            $tpl->SetBlock('contact/attachment');
-            $tpl->SetVariable('lbl_attachment',  _t('CONTACT_ATTACHMENT'));
-            $tpl->ParseBlock('contact/attachment');
+            //
         }
+        // captcha
+        $assigns['captcha'] = Jaws_Gadget::getInstance('Policy')
+            ->action
+            ->load('Captcha')
+            ->xloadCaptcha();
 
-        //message
-        if (in_array('message', $items_array)) {
-            $tpl->SetBlock('contact/message');
-            $tpl->SetVariable('lbl_message',  _t('CONTACT_MESSAGE'));
-            $tpl->SetVariable('message', $message['message']);
-            $tpl->ParseBlock('contact/message');
-        }
-
-        $tpl->ParseBlock('contact');
-        return $tpl->Get();
+        return $this->gadget->template->xLoad('Contact.html')->render($assigns);
     }
 
 }

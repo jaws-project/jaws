@@ -1,12 +1,11 @@
-<!-- BEGIN contact -->
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
+    <div class="col-xs-12"><h2>{{ "contact.us" | t }}</h2></div>
   </div>
 </div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
+    <div class="alert {{response.type}}" role="alert">{{response.text}}</div>
   </div>
   <form name="contact" action="{{base_script}}"
     method="post"
@@ -17,72 +16,89 @@
   <input type="hidden" name="reqAction" value="Send" />
   <div class="gadget_content">
     <div class="contact_comments">{{comments}}</div>
-  <!-- BEGIN name -->
-      <div><label>{{lbl_name}}:</label>
-         <input class="form-control" name="name" type="text" value="{{name}}" />
+    {% if name %}
+      <div>
+        <label>{{ "global.name" | t }}:</label>
+        <input class="form-control" name="name" type="text" value="{{name}}" />
       </div>
-  <!-- END name -->
-  <!-- BEGIN email -->
-      <div><label>{{lbl_email}}:</label>
-         <input class="form-control ltr" name="email" type="text" value="{{email}}" />
+    {% endif %}
+    {% if email %}
+      <div>
+        <label>{{ "global.email" | t }}:</label>
+        <input class="form-control ltr" name="email" type="text" value="{{email}}" />
       </div>
-  <!-- END email -->
-  <!-- BEGIN company -->
-      <div><label>{{lbl_company}}:</label>
-         <input class="form-control" name="company" type="text" value="{{company}}" />
+    {% endif %}
+    {% if company %}
+      <div>
+        <label>{{ "contact.company" | t }}:</label>
+        <input class="form-control" name="company" type="text" value="{{company}}" />
       </div>
-  <!-- END company -->
-  <!-- BEGIN url -->
-      <div><label>{{lbl_url}}:</label>
-         <input class="form-control ltr" name="url" type="text" value="{{url}}" />
+    {% endif %}
+    {% if url %}
+      <div>
+        <label>{{ "global.url" | t }}:</label>
+        <input class="form-control ltr" name="url" type="text" value="{{url}}" />
       </div>
-  <!-- END url -->
-  <!-- BEGIN tel -->
-      <div><label>{{lbl_tel}}:</label>
-         <input class="form-control ltr" name="tel" type="text" value="{{tel}}" />
+    {% endif %}
+    {% if tel %}
+      <div>
+        <label>{{ "contact.tel" | t }}:</label>
+        <input class="form-control ltr" name="tel" type="text" value="{{tel}}" />
       </div>
-  <!-- END tel -->
-  <!-- BEGIN fax -->
-      <div><label>{{lbl_fax}}:</label>
-         <input class="form-control ltr" name="fax" type="text" value="{{fax}}" />
+    {% endif %}
+    {% if fax %}
+      <div>
+        <label>{{ "contact.fax" | t }}:</label>
+        <input class="form-control ltr" name="fax" type="text" value="{{fax}}" />
       </div>
-  <!-- END fax -->
-  <!-- BEGIN mobile -->
-      <div><label>{{lbl_mobile}}:</label>
-         <input class="form-control ltr" name="mobile" type="text" value="{{mobile}}" />
+    {% endif %}
+    {% if mobile %}
+      <div>
+        <label>{{ "contact.mobile" | t }}:</label>
+        <input class="form-control ltr" name="mobile" type="text" value="{{mobile}}" />
       </div>
-  <!-- END mobile -->
-  <!-- BEGIN address -->
-      <div><label>{{lbl_address}}:</label>
-         <input class="form-control" name="address" type="text" value="{{address}}" />
+    {% endif %}
+    {% if address %}
+      <div>
+        <label>{{ "contact.address" | t }}:</label>
+        <input class="form-control" name="address" type="text" value="{{address}}" />
       </div>
-  <!-- END address -->
-  <!-- BEGIN recipient -->
-      <div><label>{{lbl_recipient}}:</label>
-          <select class="form-control" name="recipient">
-          <!-- BEGIN item -->
-          <option value="{{recipient_id}}" {{selected}}>{{recipient_name}}</option>
-          <!-- END item -->
-          </select>
+    {% endif %}
+
+    {% if recipients %}
+      <div>
+        <label>{{ "contact.recipient" | t }}:</label>
+        <select class="form-control" name="recipient">
+        {%- for recipient in recipients %}
+          <option value="{{recipient.id}}" {{ recipient.id | equal: selected_recipient, "selected" }}>
+            {{recipient.name}}
+          </option>
+        {%- endfor %}
+        </select>
       </div>
-  <!-- END recipient -->
-  <!-- BEGIN subject -->
-      <div><label>{{lbl_subject}}:</label>
-         <input class="form-control" name="subject" type="text" value="{{subject}}" /></div>
-  <!-- END subject -->
-  <!-- BEGIN message -->
-      <div><label>{{lbl_message}}:</label>
-         <textarea class="form-control" name="message" rows="6">{{message}}</textarea>
+    {% endif %}
+
+      <div>
+        <label>{{ "contact.subject" | t }}:</label>
+        <input class="form-control" name="subject" type="text" value="{{subject}}" />
       </div>
-  <!-- END message -->
-  <!-- BEGIN attachment -->
-      <div><label>{{lbl_attachment}}:</label>
-         <input class="form-control-file" name="attachment" type="file" /></div>
-  <!-- END attachment -->
-  <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+
+      <div>
+        <label>{{ "contact.message" | t }}:</label>
+        <textarea class="form-control" name="message" rows="6">{{message}}</textarea>
+      </div>
+    {% if attachment %}
+      <div>
+        <label>{{ "contact.attachment" | t }}:</label>
+        <input class="form-control-file" name="attachment" type="file" />
+      </div>
+    {% endif %}
+
+    {% include 'gadgets/Policy/Templates/XCaptcha.html' with captcha %}
   </div>
-  <div class="gadget_actions">{{btn_send}}</div>
+  <div class="gadget_actions">
+    <button class="btn btn-primary" type="submit">{{ "contact.send" | t }}</button>
+  </div>
   </form>
 </div>
 <div class="gadget_footer"></div>
-<!-- END contact -->
