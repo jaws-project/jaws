@@ -1,0 +1,40 @@
+{% if captcha.type == 1 %}
+<div class="captcha captcha_text">
+  <input type="hidden" name="captcha_key" id="captcha_key_{{captcha.key}}" value="{{captcha.key}}" />
+  <label for="entry_value_{{captcha.key}}">{{captcha.label}}:</label>
+  <div class="ltr captcha_value">
+    <strong title="{{captcha.title}}">{{captcha.text}}</strong>
+  </div>
+  <div>
+    <label>{{captcha.description}}:</label>
+    <input class="form-control ltr" type="text" name="entry_value" id="entry_value_{{captcha.key}}"
+      title="{{captcha.info}}" value="" autocomplete="off"
+    />
+  </div>
+</div>
+{% elseif captcha.type == 2 %}
+<div class="captcha captcha_image">
+  <input type="hidden" name="captcha_key" id="captcha_key_{{captcha.key}}" value="{{captcha.key}}" />
+  <label for="entry_value_{{captcha.key}}">{{captcha.label}}:</label>
+  <div class="captcha_value">
+    <img id="captcha_image_{{captcha.key}}" class="captcha" alt=""
+      width="128" height="48" title="{{captcha.title}}" src="{{captcha.url}}"
+    />
+    <button class="btn" type="button"
+      onclick="$('#captcha_image_{{captcha.key}}').attr('src', '{{captcha.url}}?'+ new Date().getTime());" >
+      <img alt="reload" src="images/stock/reload.png"/>
+    </button>
+  </div>
+  <div>
+    <label>{{captcha.description}}:</label>
+    <input class="form-control ltr" type="text" name="entry_value" id="entry_value_{{captcha.key}}"
+      title="{{captcha.info}}" value="" autocomplete="off"
+    />
+  </div>
+</div>
+{% else %}
+<div class="captcha captcha_block">
+  <label>{{captcha.label}}:</label>
+  <div class="captcha_value">{{captcha.text}}</div>
+</div>
+{% endif %}

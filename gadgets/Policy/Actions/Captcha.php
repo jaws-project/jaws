@@ -14,6 +14,51 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
      * Load and get captcha
      *
      * @access  public
+     * @param   string  $field
+     * @return  array   captcha template assign array
+     */
+    function xloadCaptcha($field = 'default')
+    {
+        if (!extension_loaded('gd')) {
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'LoadCaptcha error: GD extension not loaded');
+            return false;
+        }
+
+        $status = $this->gadget->registry->fetch($field. '_captcha_status');
+        switch ($field) {
+            case 'login':
+                if ($status == 'DISABLED') {
+                    return false;
+                }
+                break;
+
+            default:
+                if (($status == 'DISABLED') ||
+                    ($status == 'ANONYMOUS' && $this->app->session->user->logged)) {
+                    return false;
+                }
+        }
+
+        $assigns = array();
+
+        $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
+        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
+        $resCaptcha = $objCaptcha->get();
+        if (is_array($resCaptcha)) {
+            $assigns = array_merge($assigns, $resCaptcha);  // same as $assigns = $resCaptcha
+            $assigns['url'] = $this->gadget->urlMap(
+                'Captcha',
+                array('field' => $field, 'key' => $resCaptcha['key'])
+            );
+        }
+
+        return $assigns;
+    }
+
+    /**
+     * Load and get captcha
+     *
+     * @access  public
      * @param   object  $tpl            Jaws_Template object
      * @param   string  $tpl_base_block Template block name
      * @param   string  $field
