@@ -17,6 +17,14 @@ require_once ROOT_JAWS_PATH . 'libraries/php/ReCaptcha.php';
 class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
 {
     /**
+     * Captcha driver type
+     *
+     * @var     int
+     * @access  protected
+     */
+    protected $type = Jaws_Captcha::CAPTCHA_BLOCK;
+
+    /**
      * Install captcha driver
      *
      * @access  public
@@ -47,6 +55,7 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
 
         $res = array();
         $res['key']   = 0;
+        $res['type']  = $this->type;
         $res['text']  = $reCAPTCHA;
         $res['label'] = _t($this->_label);
         $res['title'] = _t($this->_label);

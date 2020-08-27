@@ -11,6 +11,14 @@
 class Jaws_Captcha_TextMath extends Jaws_Captcha
 {
     /**
+     * Captcha driver type
+     *
+     * @var     int
+     * @access  protected
+     */
+    protected $type = Jaws_Captcha::CAPTCHA_TEXT;
+
+    /**
      * Captcha entry label
      *
      * @var     string
@@ -41,9 +49,10 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
 
         $res = array();
         $res['key']   = $key;
+        $res['type']  = $this->type;
         $res['text']  = $value;
-        $res['label'] = _t($this->_label);
         $res['title'] = $title;
+        $res['label'] = _t($this->_label);
         $res['description'] = _t($this->_description);
         return $res;
     }

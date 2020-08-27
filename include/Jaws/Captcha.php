@@ -11,6 +11,16 @@
 class Jaws_Captcha
 {
     /**
+     * Captcha types
+     *
+     * @var     object
+     * @access  public
+     */
+    const CAPTCHA_TEXT  = 1;
+    const CAPTCHA_IMAGE = 2;
+    const CAPTCHA_BLOCK = 3;
+
+    /**
      * Jaws app object
      *
      * @var     object
@@ -19,12 +29,12 @@ class Jaws_Captcha
     public $app = null;
 
     /**
-     * Captcha driver name
+     * Captcha driver type
      *
-     * @var     string
-     * @access  private
+     * @var     int
+     * @access  protected
      */
-    private $_driver;
+    protected $type = Jaws_Captcha::CAPTCHA_IMAGE;
 
     /**
      * Captcha entry label
@@ -46,12 +56,10 @@ class Jaws_Captcha
      * Constructor
      *
      * @access  public
-     * @param   string  $driver Captcha driver name
      * @return  void
      */
-    function __construct($driver)
+    function __construct()
     {
-        $this->_driver = $driver;
         $this->app = Jaws::getInstance();
     }
 
@@ -71,7 +79,7 @@ class Jaws_Captcha
 
         if (!isset($instances[$driver])) {
             $className = 'Jaws_Captcha_'. $driver;
-            $instances[$driver] = new $className($driver);
+            $instances[$driver] = new $className();
         }
 
         // delete expired captcha
@@ -104,6 +112,7 @@ class Jaws_Captcha
         $key = $this->insert();
         $res = array();
         $res['key']   = $key;
+        $res['type']  = $this->type;
         $res['text']  = '';
         $res['label'] = _t($this->_label);
         $res['title'] = _t($this->_label);
