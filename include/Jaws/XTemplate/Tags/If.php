@@ -50,7 +50,7 @@ class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
      */
     public function unknownTag($tag, $params, array $tokens)
     {
-        if ($tag == 'else' || $tag == 'elsif') {
+        if ($tag == 'else' || $tag == 'elseif') {
             // Update reference to nodelistHolder for this block
             $this->nodelist = & $this->nodelistHolders[count($this->blocks) + 1];
             $this->nodelistHolders[count($this->blocks) + 1] = array();
@@ -84,7 +84,7 @@ class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
                 break;
             }
 
-            if ($block[0] == 'if' || $block[0] == 'elsif') {
+            if ($block[0] == 'if' || $block[0] == 'elseif') {
                 // Extract logical operators
                 $logicalRegex->matchAll($block[1]);
 
