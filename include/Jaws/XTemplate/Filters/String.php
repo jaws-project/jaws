@@ -20,7 +20,7 @@ class Jaws_XTemplate_Filters_String
      */
     public static function append($input, $string)
     {
-        return $input . $string;
+        return implode('', func_get_args());
     }
 
     /**
