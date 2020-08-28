@@ -82,25 +82,14 @@ class Jaws_XTemplate_TagConditional extends Jaws_XTemplate_TagSegmental
      */
     protected function interpretCondition($left, $right, $op, $context)
     {
+        $left = new Jaws_XTemplate_Variable($left);
+        $left = $left->render($context);
         if (is_null($op)) {
-            $value = $this->stringValue($context->get($left));
-            return $value;
+            return $left;
         }
 
-        // values of 'empty' have a special meaning in array comparisons
-        if ($right == 'empty' && is_array($context->get($left))) {
-            $left = count($context->get($left));
-            $right = 0;
-        } elseif ($left == 'empty' && is_array($context->get($right))) {
-            $right = count($context->get($right));
-            $left = 0;
-        } else {
-            $left = $context->get($left);
-            $right = $context->get($right);
-
-            $left = $this->stringValue($left);
-            $right = $this->stringValue($right);
-        }
+        $right = new Jaws_XTemplate_Variable($right);
+        $right = $right->render($context);
 
         // special rules for null values
         if (is_null($left) || is_null($right)) {

@@ -74,7 +74,9 @@ class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
         $context->push();
 
         $logicalRegex = new Jaws_Regexp('/\s+(and|or)\s+/');
-        $conditionalRegex = new Jaws_Regexp('/(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')\s*([=!<>a-z_]+)?\s*(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')?/');
+        $compareRegex = new Jaws_Regexp(
+            '/\s*('. Jaws_XTemplate::get('COMPARISON_OPERATOR'). ')\s*/'
+        );
 
         $result = '';
         foreach ($this->blocks as $block) {
@@ -94,35 +96,68 @@ class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
                 $temp = $logicalRegex->split($block[1]);
 
                 $conditions = array();
-
                 foreach ($temp as $condition) {
-                    if ($conditionalRegex->match($condition)) {
-                        $left = (isset($conditionalRegex->matches[1])) ? $conditionalRegex->matches[1] : null;
-                        $operator = (isset($conditionalRegex->matches[2])) ? $conditionalRegex->matches[2] : null;
-                        $right = (isset($conditionalRegex->matches[3])) ? $conditionalRegex->matches[3] : null;
+                    $parts = $compareRegex->split($condition, -1, PREG_SPLIT_DELIM_CAPTURE);
+                    switch (count($parts)) {
+                        case 1:
+                            $left     = $parts[0];
+                            $operator = null;
+                            $right    = null;
+                            break;
 
-                        array_push($conditions, array(
+                        case 3:
+                            $left     = $parts[0];
+                            $operator = $parts[1];
+                            $right    = $parts[2];
+                            break;
+
+                        default:
+                            throw new Exception("Syntax Error in tag 'if' - Valid syntax: if [condition]");
+                    }
+
+                    array_push(
+                        $conditions,
+                        array(
                             'left' => $left,
                             'operator' => $operator,
                             'right' => $right
-                        ));
-                    } else {
-                        throw new Exception("Syntax Error in tag 'if' - Valid syntax: if [condition]");
-                    }
+                        )
+                    );
                 }
+
                 if (count($logicalOperators)) {
                     // If statement contains and/or
-                    $display = $this->interpretCondition($conditions[0]['left'], $conditions[0]['right'], $conditions[0]['operator'], $context);
+                    $display = $this->interpretCondition(
+                        $conditions[0]['left'],
+                        $conditions[0]['right'],
+                        $conditions[0]['operator'],
+                        $context
+                    );
                     foreach ($logicalOperators as $k => $logicalOperator) {
                         if ($logicalOperator == 'and') {
-                            $display = ($display && $this->interpretCondition($conditions[$k + 1]['left'], $conditions[$k + 1]['right'], $conditions[$k + 1]['operator'], $context));
+                            $display = $display && $this->interpretCondition(
+                                $conditions[$k + 1]['left'],
+                                $conditions[$k + 1]['right'],
+                                $conditions[$k + 1]['operator'],
+                                $context
+                            );
                         } else {
-                            $display = ($display || $this->interpretCondition($conditions[$k + 1]['left'], $conditions[$k + 1]['right'], $conditions[$k + 1]['operator'], $context));
+                            $display = $display || $this->interpretCondition(
+                                $conditions[$k + 1]['left'],
+                                $conditions[$k + 1]['right'],
+                                $conditions[$k + 1]['operator'],
+                                $context
+                            );
                         }
                     }
                 } else {
                     // If statement is a single condition
-                    $display = $this->interpretCondition($conditions[0]['left'], $conditions[0]['right'], $conditions[0]['operator'], $context);
+                    $display = $this->interpretCondition(
+                        $conditions[0]['left'],
+                        $conditions[0]['right'],
+                        $conditions[0]['operator'],
+                        $context
+                    );
                 }
 
                 // hook for unless tag
@@ -130,7 +165,6 @@ class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
 
                 if ($display) {
                     $result = $this->renderAll($block[2], $context);
-
                     break;
                 }
             }
