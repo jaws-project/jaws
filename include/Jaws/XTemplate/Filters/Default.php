@@ -38,6 +38,18 @@ class Jaws_XTemplate_Filters_Default
     }
 
     /**
+     * Determine input is different than NULL
+     *
+     * @param   mixed   $input
+     *
+     * @return  bool
+     */
+    public static function isset($input)
+    {
+        return isset($input);
+    }
+
+    /**
      * equal
      *
      * @param   mixed   $input1
