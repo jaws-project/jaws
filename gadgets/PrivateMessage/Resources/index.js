@@ -162,10 +162,10 @@ function Jaws_Gadget_PrivateMessage() { return {
     /**
      * send a message
      */
-    sendMessage: function (isDraft) {
+    sendMessage: function (defaultRecipientUser, isDraft) {
 
         // detect pre load users or groups list
-        if (this.gadget.defines.recipient_user == "" || this.gadget.defines.recipient_user.length == 0) {
+        if (defaultRecipientUser === 0) {
             var recipient_users_array = [];
             var recipient_groups_array = [];
 
@@ -382,6 +382,24 @@ function Jaws_Gadget_PrivateMessage() { return {
     },
 
     /**
+     * Compose message UI
+     */
+    composeMessage: function () {
+        this.ajax.callAsync(
+            'Compose',
+            {},
+            function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    $('#message-form').html(response.data.ui);
+                    $('#messageModal .gadget_header').hide();
+                    $('#messageModal').modal('show');
+
+                    this.initiateCompose();
+                }
+            });
+    },
+
+    /**
      * View message
      */
     viewMessage: function (id) {
@@ -393,6 +411,7 @@ function Jaws_Gadget_PrivateMessage() { return {
                 if (response['type'] == 'alert-success') {
                     $('#message-form').html(response.data.ui);
                     $('#messageModal .gadget_header').hide();
+                    $('#messageModalLabel').html(this.gadget.defines.lbl_view_message);
                     $('#messageModal').modal('show').on('hide.bs.modal', $.proxy(function (e) {
                         this.selectedMessage = null;
                     }, this));
@@ -718,6 +737,11 @@ function Jaws_Gadget_PrivateMessage() { return {
                 break;
             case 'Messages':
                 this.initiateMessagesDG();
+
+                $('#btnCompose').on('click', $.proxy(function (e) {
+                    this.composeMessage();
+                }, this));
+
                 break;
             case 'Message':
                 this.initMessageForm(this.gadget.defines.folder);

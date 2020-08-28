@@ -22,13 +22,18 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             return Jaws_HTTPError::Get(401);
         }
 
+        $resType = Jaws::getInstance()->request->fetch('restype');
+        if ($resType == 'json') {
+            $this->SetActionMode('Compose', 'standalone', 'normal');
+        }
+
         $this->gadget->CheckPermission('SendMessage');
         $user = $this->app->session->user->id;
         $this->AjaxMe('index.js');
         // set default value of javascript variables
         $this->gadget->define('icon_add', STOCK_ADD);
         $this->gadget->define('icon_remove', STOCK_REMOVE);
-        $this->gadget->define('recipient_user', '');
+        $defaultRecipientUser = 0;
 
         $data = $this->gadget->request->fetch(array('id', 'user', 'reply', 'users:array'));
         $id = $data['id'];
@@ -38,24 +43,25 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $tpl = $this->gadget->template->load('Compose.html');
         $tpl->SetBlock('compose');
 
-        // Menu navigation
-        for ($i = 1; $i <= 6; $i++) {
-            $url = $this->gadget->urlMap('Messages', array('folder' => $i));
+        if ($resType != 'json') {
+            // Menu navigation
+            for ($i = 1; $i <= 6; $i++) {
+                $url = $this->gadget->urlMap('Messages', array('folder' => $i));
+                $options[$url] = array(
+                    'title' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i),
+                    'url' => $url,
+                    'separator' => ($i == 2 || $i == 6)? true: false,
+                );
+            }
+            $url = $this->gadget->urlMap('Compose');
             $options[$url] = array(
-                'title' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i),
+                'title' => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
                 'url' => $url,
-                'separator' => ($i == 2 || $i == 6)? true: false,
+                'separator' => true,
             );
+            $options[Jaws_Utils::getRequestURL()]['active'] = true;
+            $this->gadget->action->load('MenuNavigation')->navigation($tpl, $options);
         }
-        $url = $this->gadget->urlMap('Compose');
-        $options[$url] = array(
-            'title' => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
-            'url' => $url,
-            'separator' => true,
-        );
-        $options[Jaws_Utils::getRequestURL()]['active'] = true;
-        $this->gadget->action->load('MenuNavigation')->navigation($tpl, $options);
-
         $body_value = "";
         $recipient_users = array();
         $recipient_groups = array();
@@ -161,7 +167,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
-                $this->gadget->define('recipient_user', $message['from']);
+                $defaultRecipientUser = $message['from'];
                 $recipient_users = array($message['from']);
 
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
@@ -257,8 +263,21 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             'Messages',
             array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)));
 
+        $tpl->SetVariable('default_recipient_user', $defaultRecipientUser);
+
         $tpl->ParseBlock('compose');
-        return $tpl->Get();
+        $htmlUI = $tpl->Get();
+
+        if ($resType == 'json') {
+            return $this->gadget->session->response(
+                '',
+                RESPONSE_NOTICE,
+                array(
+                    'ui' => $htmlUI
+                )
+            );
+        }
+        return $htmlUI;
     }
 
     /**

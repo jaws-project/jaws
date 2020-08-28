@@ -53,6 +53,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $this->gadget->define('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
         $this->gadget->define('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
         $this->gadget->define('lbl_unarchive', _t('PRIVATEMESSAGE_UNARCHIVE'));
+        $this->gadget->define('lbl_view_message', _t('PRIVATEMESSAGE_MESSAGE_VIEW'));
         $this->gadget->define('datagridNoItems', _t('GLOBAL_NOTFOUND'));
         $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
@@ -77,7 +78,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
         $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
-        $tpl->SetVariable('lbl_view_message', _t('PRIVATEMESSAGE_MESSAGE_VIEW'));
+        $tpl->SetVariable('lbl_compose', _t('PRIVATEMESSAGE_COMPOSE'));
         $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK'));
 
         $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));

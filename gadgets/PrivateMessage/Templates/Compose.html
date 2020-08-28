@@ -98,9 +98,8 @@
   </form>
 
   <div class="gadget_actions">
-      <a class="btn btn-default" href="{{back_url}}" id="btn_back">{{lbl_back}}</a>
-      <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').sendMessage(true)" id="btn_save_draft">{{lbl_save_draft}}</a>
-      <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').sendMessage(false)" id="btn_send">{{lbl_send}}</a>
+      <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').sendMessage({{default_recipient_user}}, true)" id="btn_save_draft">{{lbl_save_draft}}</a>
+      <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').sendMessage({{default_recipient_user}}, false)" id="btn_send">{{lbl_send}}</a>
   </div>
 </div>
 <div class="gadget_footer"></div>
