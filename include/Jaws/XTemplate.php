@@ -64,6 +64,9 @@ class Jaws_XTemplate
         // Variable name.
         'VARIABLE_NAME' => '[a-zA-Z_][a-zA-Z_0-9.-]*',
 
+        // Comparison operator
+        'COMPARISON_OPERATOR' => '==|!=|<>|<=?|>=?|contains(?=\s)',
+
         'QUOTED_STRING' => '(?:"[^"]*"|\'[^\']*\')',
         'QUOTED_STRING_FILTER_ARGUMENT' => '"[^"]*"|\'[^\']*\'',
 
