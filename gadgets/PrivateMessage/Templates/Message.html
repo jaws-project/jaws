@@ -6,10 +6,7 @@
 </div>
 <div class="gadget_container">
 
-  <form name="pm" action="{{requested_url}}" method="post">
-      <input type="hidden" name="reqGadget" value="PrivateMessage"/>
-      <input type="hidden" name="reqAction" id="action" value=""/>
-      <input type="hidden" name="id" id="id" value="{{id}}"/>
+  <form name="pm" action="#" method="post">
 
       <div class="gadget_content">
           <div class="user_avatar">
@@ -20,10 +17,6 @@
           <div><b>{{lbl_send_time}}:</b> {{send_time}}</div>
 
           <div class="gadget_actions">
-              <!-- BEGIN back -->
-              <a class="btn btn-default" href="{{back_url}}" title="{{back}}"><img src="{{icon_back}}" alt="{{back}}"/></a>
-              <!-- END back -->
-
               <!-- BEGIN reply -->
               <a class="btn btn-default" href="{{reply_url}}" title="{{reply}}"><img src="{{icon_reply}}" alt="{{reply}}"/></a>
               <!-- END reply -->
@@ -32,25 +25,15 @@
               <a class="btn btn-default" href="{{forward_url}}" title="{{forward}}"><img src="{{icon_forward}}" alt="{{forward}}"/></a>
               <!-- END forward -->
 
-              <!-- BEGIN archive -->
-              <a class="btn btn-default" href="{{archive_url}}" title="{{archive}}"><img src="{{icon_archive}}" alt="{{archive}}"/></a>
-              <!-- END archive -->
+              <a class="btn btn-default" id="btnArchiveMessage" style="display: none" href="javascript:void(0);" title="{{lbl_archive}}"><img src="{{icon_archive}}" alt="{{lbl_archive}}"/></a>
 
-              <!-- BEGIN restore_archive -->
-              <a class="btn btn-default" href="{{restore_archive_url}}" title="{{restore_archive}}"><img src="{{icon_restore_archive}}" alt="{{restore_archive}}"/></a>
-              <!-- END restore_archive -->
+              <a class="btn btn-default" id="btnRestoreArchiveMessage" style="display: none"  href="javascript:void(0);" title="{{lbl_restore_archive}}"><img src="{{icon_restore_archive}}" alt="{{lbl_restore_archive}}"/></a>
 
-              <!-- BEGIN trash -->
-              <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').trashMessage()" title="{{trash}}"><img src="{{icon_trash}}" alt="{{trash}}"/></a>
-              <!-- END trash -->
+              <a class="btn btn-default" id="btnTrashMessage" style="display: none"  href="javascript:void(0);" title="{{lbl_trash}}"><img src="{{icon_trash}}" alt="{{lbl_trash}}"/></a>
 
-              <!-- BEGIN restore_trash -->
-              <a class="btn btn-default" href="{{restore_trash_url}}" title="{{restore_trash}}"><img src="{{icon_restore_trash}}" alt="{{restore_trash}}"/></a>
-              <!-- END restore_trash -->
+              <a class="btn btn-default" id="btnRestoreTrashMessage" style="display: none"  href="javascript:void(0);" title="{{lbl_restore_trash}}"><img src="{{icon_restore_trash}}" alt="{{lbl_restore_trash}}"/></a>
 
-              <!-- BEGIN delete -->
-              <a class="btn btn-default" href="javascript:Jaws_Gadget.getInstance('PrivateMessage').deleteMessage()" title="{{delete}}"><img src="{{icon_delete}}" alt="{{delete}}"/></a>
-              <!-- END delete -->
+              <a class="btn btn-default" id="btnDeleteMessage" style="display: none"  href="javascript:void(0);" title="{{lbl_delete}}"><img src="{{icon_delete}}" alt="{{lbl_delete}}"/></a>
           </div>
 
           <div><b>{{lbl_subject}}:</b> {{subject}}</div>
@@ -100,10 +83,6 @@
           <!-- END recipients -->
 
       </div>
-
-      <!-- BEGIN splitter -->
-      <hr>
-      <!-- END splitter -->
 
   </form>
 </div>
