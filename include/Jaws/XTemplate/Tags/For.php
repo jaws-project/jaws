@@ -20,11 +20,11 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
     public $nodelists;
 
     /**
-     * The nodelist for the empty nodelist
+     * The nodelist for the else nodelist
      *
      * @var array
      */
-    private $emptyNodelist;
+    private $elseNodelist;
 
     /**
      * @var array The collection to loop over
@@ -89,9 +89,9 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
 
     public function unknownTag($tag, $params, array $tokens)
     {
-        if ($tag == 'empty') {
-            $this->nodelist = & $this->emptyNodelist;
-            $this->nodelists[] = array($tag, $params, &$this->emptyNodelist);
+        if ($tag == 'else') {
+            $this->nodelist = & $this->elseNodelist;
+            $this->nodelists[] = array($tag, $params, &$this->elseNodelist);
         } else {
             parent::unknownTag($tag, $params, $tokens);
         }
