@@ -16,49 +16,49 @@
   <input type="hidden" name="reqAction" value="Send" />
   <div class="gadget_content">
     <div class="contact_comments">{{comments}}</div>
-    {% if name %}
+    {% if name | isset %}
       <div>
         <label>{{ "global.name" | t }}:</label>
         <input class="form-control" name="name" type="text" value="{{name}}" />
       </div>
     {% endif %}
-    {% if email %}
+    {% if email | isset %}
       <div>
         <label>{{ "global.email" | t }}:</label>
         <input class="form-control ltr" name="email" type="text" value="{{email}}" />
       </div>
     {% endif %}
-    {% if company %}
+    {% if company | isset %}
       <div>
         <label>{{ "contact.company" | t }}:</label>
         <input class="form-control" name="company" type="text" value="{{company}}" />
       </div>
     {% endif %}
-    {% if url %}
+    {% if url | isset %}
       <div>
         <label>{{ "global.url" | t }}:</label>
         <input class="form-control ltr" name="url" type="text" value="{{url}}" />
       </div>
     {% endif %}
-    {% if tel %}
+    {% if tel | isset %}
       <div>
         <label>{{ "contact.tel" | t }}:</label>
         <input class="form-control ltr" name="tel" type="text" value="{{tel}}" />
       </div>
     {% endif %}
-    {% if fax %}
+    {% if fax | isset %}
       <div>
         <label>{{ "contact.fax" | t }}:</label>
         <input class="form-control ltr" name="fax" type="text" value="{{fax}}" />
       </div>
     {% endif %}
-    {% if mobile %}
+    {% if mobile | isset %}
       <div>
         <label>{{ "contact.mobile" | t }}:</label>
         <input class="form-control ltr" name="mobile" type="text" value="{{mobile}}" />
       </div>
     {% endif %}
-    {% if address %}
+    {% if address | isset %}
       <div>
         <label>{{ "contact.address" | t }}:</label>
         <input class="form-control" name="address" type="text" value="{{address}}" />
@@ -87,6 +87,7 @@
         <label>{{ "contact.message" | t }}:</label>
         <textarea class="form-control" name="message" rows="6">{{message}}</textarea>
       </div>
+
     {% if attachment %}
       <div>
         <label>{{ "contact.attachment" | t }}:</label>
@@ -96,9 +97,11 @@
 
     {% include 'gadgets/Policy/Templates/XCaptcha.html' with captcha %}
   </div>
+
   <div class="gadget_actions">
     <button class="btn btn-primary" type="submit">{{ "contact.send" | t }}</button>
   </div>
+
   </form>
 </div>
 <div class="gadget_footer"></div>
