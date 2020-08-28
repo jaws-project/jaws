@@ -1,0 +1,74 @@
+<div class="datepicker" data-initialize="datepicker"
+  data-calendar="{{datepicker.calendar}}" id="datepicker_{{datepicker.id}}">
+  <div class="input-group">
+    {% if datepicker.label %}
+    <label for="datepicker_{{datepicker.id}}_input" class="input-group-addon text-input">
+      {{datepicker.label}}
+    </label>
+    {% endif %}
+    <input class="form-control ltr" name="{{datepicker.name}}"
+      id="datepicker_{{datepicker.id}}_input" value="{{datepicker.value}}" type="text"
+    />
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-calendar"></span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right datepicker-calendar-wrapper" role="menu">
+        <div class="datepicker-calendar">
+          <div class="datepicker-calendar-header">
+            <button type="button" class="prev"><span class="glyphicon glyphicon-chevron-left"></span></button>
+            <button type="button" class="next"><span class="glyphicon glyphicon-chevron-right"></span></button>
+            <button type="button" class="title">
+                <span class="month">
+                {% for i in (0..11) %}
+                  <span data-month="{{i}}">
+                    {{ "global." | append: datepicker.calendar, "_MONTH_", i | tx }}
+                  </span>
+                {% endfor %}
+                </span> <span class="year"></span>
+            </button>
+          </div>
+          <table class="datepicker-calendar-days">
+            <thead>
+            <tr>
+              {% for i in (0..6) %}
+                <th>
+                  {{ "global." | append: datepicker.calendar, "_DAY_SHORT_", i | t }}
+                </th>
+              {% endfor %}
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="datepicker-calendar-footer">
+            <button type="button" class="datepicker-today">{{ "global.today" | t }}</button>
+          </div>
+        </div>
+        <div class="datepicker-wheels" aria-hidden="true">
+          <div class="datepicker-wheels-month">
+            <h2 class="header">{{ "global.month" | t }}</h2>
+            <ul>
+              {% for i in (0..11) %}
+              <li data-month="{{i}}">
+                <button type="button">
+                  {{ "global." | append: datepicker.calendar, "_MONTH_SHORT_", i | t }}
+                </button>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="datepicker-wheels-year">
+            <h2 class="header">{{ "global.year" | t }}</h2>
+            <ul></ul>
+          </div>
+          <div class="datepicker-wheels-footer clearfix">
+            <button type="button" class="btn datepicker-wheels-back"><span class="glyphicon glyphicon-arrow-left"></span></button>
+            <button type="button" class="btn datepicker-wheels-select">
+              {{ "global.select_month_year" | t }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

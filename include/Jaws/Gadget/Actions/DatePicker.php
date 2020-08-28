@@ -31,7 +31,6 @@ class Jaws_Gadget_Actions_DatePicker
         $this->gadget = $gadget;
     }
 
-
     /**
      * Get DatePicker calendar
      *
@@ -105,6 +104,27 @@ class Jaws_Gadget_Actions_DatePicker
 
         $tpl->ParseBlock("$block/datepicker");
         return $tpl->Get();
+    }
+
+    /**
+     * Get DatePicker calendar assign array
+     *
+     * @access  public
+     * @param   array   $options    (Optional) Menu options
+     * @return  array   DatePicker calendar array
+     */
+    function xcalendar($options = array())
+    {
+        $options['id'] = isset($options['id'])? $options['id'] : $options['name'];
+        // set default calendar if not set
+        if (!isset($options['calendar'])) {
+            $options['calendar'] = $this->gadget->registry->fetch('calendar', 'Settings');
+        }
+        $options['value'] = isset($options['value'])? $options['value'] : '';
+
+        $assigns = array();
+        $assigns = array_merge($assigns, $options);
+        return $assigns;
     }
 
 }
