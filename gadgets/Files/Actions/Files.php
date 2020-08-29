@@ -91,8 +91,38 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      * @param   array   $options    User interface control options(maxsize, types, labels, ...)
      * @return  void
      */
-    function loadReferenceFiles(&$tpl, $interface, $options = array())
+    function loadReferenceFiles(&$tpl = null, $interface = array(), $options = array())
     {
+        // FIXME: temporary solution
+        if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            $interface = $this->gadget->request->fetchAll('post');
+            if (!empty($interface['reference'])) {
+                $files = $this->gadget->model->load('Files')->getFiles($interface);
+                foreach ($files as $ndx => $file) {
+                    $files[$ndx]['url_file'] = $this->gadget->urlMap(
+                        'file',
+                        array('id' => $file['id'], 'key' => $file['filekey'])
+                    );
+                    unset(
+                        $files[$ndx]['id'], $files[$ndx]['type'], $files[$ndx]['public'],
+                        $files[$ndx]['filename'], $files[$ndx]['mimetype'], $files[$ndx]['filetype'],
+                        $files[$ndx]['filesize'], $files[$ndx]['filetime'], $files[$ndx]['filekey']
+                    );
+                }
+
+                return $this->gadget->session->response(
+                    '',
+                    RESPONSE_NOTICE,
+                    $files
+                );
+            }
+
+            return $this->gadget->session->response(
+                'reference is empty',
+                RESPONSE_ERROR
+            );
+        }
+
         // FIXME:: add registry key for set maximum upload file size
         $defaultOptions = array(
             'maxsize'    => 33554432, // 32MB
@@ -289,9 +319,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      * Download/View file
      *
      * @access  public
-     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
-     * @param   array   $options    User interface control options(maxsize, maxcount, extensions)
-     * @return  mixed   TRUE otherwise Jaws_Error on error
+     * @return  string   Requested file content or HTML error page
      */
     function file()
     {

@@ -242,7 +242,7 @@ function Jaws_Gadget_Files() { return {
     },
 
     /**
-     * Get upload reference files interface
+     * Display reference files interface
      */
     displayReferenceFiles: function($tpl, $interface, $options = [])
     {
@@ -260,6 +260,22 @@ function Jaws_Gadget_Files() { return {
                         let tplStr = response['data'].template.replace(regex, (m, $1) => file[$1] || m);
                         $tpl.append(tplStr.replace(/{{lbl_file}}/g, $options.labels.title));
                     });
+                }
+            }
+        )
+    },
+
+    /**
+     * Get upload reference files interface
+     */
+    loadReferenceFiles: function($tpl, $interface, $options = [])
+    {
+        this.gadget.ajax.callAsync(
+            'loadReferenceFiles',
+            $interface,
+            function(response, status) {
+                if (response['type'] == 'alert-success') {
+                    console.log(response['data']);
                 }
             }
         )
