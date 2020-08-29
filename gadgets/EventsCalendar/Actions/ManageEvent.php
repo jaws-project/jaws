@@ -82,6 +82,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $event['id'] = 0;
                 $event['subject'] = '';
                 $event['location'] = '';
+                $event['link'] = '';
                 $event['description'] = '';
                 $event['start_date'] = '';
                 $event['stop_date'] = '';
@@ -95,11 +96,13 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $event['type'] = 1;
                 $event['priority'] = 0;
                 $event['reminder'] = 0;
+                $event['symbol'] = '';
             }
         }
         $tpl->SetVariable('id', isset($event['id'])? $event['id'] : 0);
         $tpl->SetVariable('subject', $event['subject']);
         $tpl->SetVariable('location', $event['location']);
+        $tpl->SetVariable('link', $event['link']);
         $tpl->SetVariable('description', $event['description']);
 
         if (empty($id)) {
@@ -113,6 +116,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
         $tpl->SetVariable('errorIncompleteData', _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'));
@@ -223,6 +227,10 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('month', $combo->Get());
         $tpl->SetVariable('lbl_month', _t('EVENTSCALENDAR_MONTH'));
 
+        // Symbol
+        $tpl->SetVariable('lbl_symbol', _t('EVENTSCALENDAR_SYMBOL'));
+        $tpl->SetVariable('symbol', $event['symbol']);
+
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
@@ -242,8 +250,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
     function CreateEvent()
     {
         $event = $this->gadget->request->fetch(array('subject', 'location',
-            'description', 'public', 'type', 'priority', 'reminder',
-            'recurrence', 'month', 'day', 'wday',
+            'description', 'link', 'public', 'type', 'priority', 'reminder',
+            'recurrence', 'month', 'day', 'wday', 'symbol',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($event['subject']) || empty($event['start_date'])) {
             $this->gadget->session->push(
@@ -295,8 +303,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
     function UpdateEvent()
     {
         $data = $this->gadget->request->fetch(array('id', 'subject', 'location',
-            'description', 'public', 'type', 'priority', 'reminder',
-            'recurrence', 'month', 'day', 'wday',
+            'description', 'link', 'public', 'type', 'priority', 'reminder',
+            'recurrence', 'month', 'day', 'wday', 'symbol',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($data['subject']) || empty($data['start_date'])) {
             $this->gadget->session->push(

@@ -54,6 +54,10 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('location', $event['location']);
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
 
+        // Link
+        $tpl->SetVariable('link', $event['link']);
+        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
+
         // Description
         $tpl->SetVariable('desc', $event['description']);
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
@@ -111,6 +115,9 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         // Shared
         $tpl->SetVariable('shared', $event['shared']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
+
+        // Symbol
+        $tpl->SetVariable('symbol', $event['symbol']);
 
         // Actions
         $siteUrl = $this->app->getSiteURL('/');

@@ -19,6 +19,8 @@
           <td><input class="form-control" id="event_subject" name="subject" value="{{subject}}" /></td></tr>
         <tr><th><label for="event_location">{{lbl_location}}:</label></th>
           <td><input class="form-control" id="event_location" name="location" value="{{location}}" /></td></tr>
+        <tr><th><label for="event_link">{{lbl_link}}:</label></th>
+          <td><input class="form-control" id="event_link" name="link" value="{{link}}" /></td></tr>
         <tr><th><label for="event_desc">{{lbl_desc}}:</label></th>
           <td><textarea class="form-control" id="event_desc" name="description">{{description}}</textarea></td></tr>
         <tr>
@@ -57,6 +59,8 @@
           <td>{{reminder}}</td></tr>
         <tr><th><label for="event_recurrence">{{lbl_recurrence}}:</label></th>
           <td>{{recurrence}} {{month}} {{day}} {{wday}} </td></tr>
+        <tr><th><label for="event_symbol">{{lbl_symbol}}:</label></th>
+          <td><input class="form-control" id="event_symbol" name="symbol" value="{{symbol}}" /></td></tr>
       </table>
       <div class="gadget_actions">
         <button class="btn" type="button" onclick="window.location.assign('{{url_back}}')">{{lbl_cancel}}</button>

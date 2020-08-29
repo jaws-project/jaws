@@ -19,9 +19,14 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
      */
     function CreateEvent()
     {
-        $post = $this->gadget->request->fetch(array('subject', 'location', 'description',
-            'start_date', 'stop_date', 'start_time', 'stop_time', 'type',
-            'priority', 'reminder', 'recurrence', 'month', 'day', 'wday'), 'post');
+        $post = $this->gadget->request->fetch(
+            array(
+                'subject', 'location', 'link', 'description', 'start_date', 'stop_date',
+                'start_time', 'stop_time', 'type', 'priority', 'reminder', 'recurrence',
+                'month', 'day', 'wday', 'symbol'
+            ),
+            'post'
+        );
         if (empty($post['subject']) || empty($post['start_date'])) {
             return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'), RESPONSE_ERROR);
         }
@@ -55,9 +60,14 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
      */
     function UpdateEvent()
     {
-        $post = $this->gadget->request->fetch(array('id:int', 'subject', 'location', 'description',
-            'start_date', 'stop_date', 'start_time', 'stop_time', 'type', 'priority', 'reminder',
-            'recurrence', 'month', 'day', 'wday'), 'post');
+        $post = $this->gadget->request->fetch(
+            array(
+                'id:int', 'subject', 'location', 'description', 'link',
+                'start_date', 'stop_date', 'start_time', 'stop_time', 'type', 'priority',
+                'reminder', 'recurrence', 'month', 'day', 'wday', 'symbol'
+            ),
+            'post'
+        );
         if (empty($post['subject']) || empty($post['start_date'])) {
             return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'), RESPONSE_ERROR);
         }

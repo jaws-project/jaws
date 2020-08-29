@@ -31,12 +31,17 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
             }
         } else {
             if ($params['user'] === 0) {
-                $table->select('event.id', 'event.user', 'subject', 'location', 'description',
-                    'start_time', 'stop_time', 'public:boolean', 'shared:boolean');
+                $table->select(
+                    'event.id', 'event.user', 'subject', 'location', 'description',
+                    'symbol', 'link', 'start_time', 'stop_time', 'public:boolean', 'shared:boolean'
+                );
                 $table->join('ec_users', 'event.id', 'event');
             } else {
-                $table->select('event.id', 'event.user', 'subject', 'location', 'description',
-                    'start_time', 'stop_time', 'event.public:boolean', 'shared:boolean', 'nickname', 'username');
+                $table->select(
+                    'event.id', 'event.user', 'subject', 'location', 'description',
+                    'symbol', 'link', 'start_time', 'stop_time', 'event.public:boolean',
+                    'shared:boolean', 'nickname', 'username'
+                );
                 $table->join('users', 'user', 'users.id');
             }
         }
@@ -97,4 +102,5 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
 
         return $count? $table->fetchOne() : $table->fetchAll();
     }
+
 }

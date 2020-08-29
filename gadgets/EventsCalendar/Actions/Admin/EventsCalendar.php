@@ -98,6 +98,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
@@ -221,6 +222,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
 

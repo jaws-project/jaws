@@ -23,7 +23,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         if (empty($userId)) {
             $table->select(
-                'events.id', 'subject', 'location', 'description',
+                'events.id', 'subject', 'location', 'description', 'symbol', 'link',
                 'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
                 'events.public:boolean', 'type', 'priority', 'symbol', 'link',
                 'reminder', 'shared:boolean', 'createtime', 'updatetime',
@@ -32,7 +32,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             $table->join('ec_users', 'events.id', 'event');
         } else {
             $table->select(
-                'events.id', 'subject', 'location', 'description',
+                'events.id', 'subject', 'location', 'description', 'symbol', 'link',
                 'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
                 'events.public:boolean', 'type', 'priority', 'symbol', 'link',
                 'reminder', 'shared:boolean', 'createtime', 'updatetime',

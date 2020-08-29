@@ -58,6 +58,8 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
 
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
         $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
         $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
         $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
@@ -78,6 +80,13 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         $jDate = Jaws_Date::getInstance();
         foreach ($events as $event) {
             $tpl->SetBlock('reminder/event');
+            $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+            $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+            $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
+            $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
+            $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+            $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+            $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
 
             $tpl->SetVariable('subject', $event['subject']);
             $tpl->SetVariable('type', _t('EVENTSCALENDAR_EVENT_TYPE_' . $event['type']));
