@@ -96,7 +96,7 @@ class File_Util
     {
         if (File_Util::isAbsolute($path)) {
             if (FILE_WIN32) {
-                return substr($path, $path{3} == '\\' ? 4 : 3);
+                return substr($path, $path[3] == '\\' ? 4 : 3);
             }
             return ltrim($path, '/');
         }
