@@ -21,8 +21,10 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
     function GetUserEvents($user = null, $time)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
-        $table->select('events.id', 'subject', 'type', 'priority',
-            'location', 'recs.start_time', 'owner', 'nickname');
+        $table->select(
+            'events.id', 'subject', 'type', 'priority', 'symbol', 'link',
+            'location', 'recs.start_time', 'owner', 'nickname'
+        );
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
         $table->join('ec_users', 'events.id', 'ec_users.event');
         $table->join('users', 'owner', 'users.id');
@@ -47,8 +49,10 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
     function GetPublicEvents($time)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
-        $table->select('events.id', 'subject', 'type', 'priority',
-            'location', 'recs.start_time', 'owner');
+        $table->select(
+            'events.id', 'subject', 'type', 'priority', 'symbol', 'link',
+            'location', 'recs.start_time', 'owner'
+        );
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
         $table->join('ec_users', 'events.id', 'ec_users.event');
         $table->where('ec_users.user', 0)->and();

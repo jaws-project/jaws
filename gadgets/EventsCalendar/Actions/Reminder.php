@@ -83,6 +83,8 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             $tpl->SetVariable('type', _t('EVENTSCALENDAR_EVENT_TYPE_' . $event['type']));
             $tpl->SetVariable('location', $event['location']);
             $tpl->SetVariable('priority', _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $event['priority']));
+            $tpl->SetVariable('symbol', $event['symbol']);
+            $tpl->SetVariable('link', $event['link']);
 
             $date = $this->app->UserTime2UTC($event['start_time']);
             $tpl->SetVariable('date', $jDate->Format($date, 'DN d MN Y - h:i a'));
@@ -105,4 +107,5 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         $tpl->ParseBlock('reminder');
         return $tpl->Get();
     }
+
 }

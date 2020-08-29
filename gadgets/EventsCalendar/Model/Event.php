@@ -22,16 +22,22 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         if (empty($userId)) {
-            $table->select('events.id', 'subject', 'location', 'description',
+            $table->select(
+                'events.id', 'subject', 'location', 'description',
                 'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
-                'events.public:boolean', 'type', 'priority', 'reminder', 'shared:boolean',
-                'createtime', 'updatetime', 'ec_users.user', 'owner');
+                'events.public:boolean', 'type', 'priority', 'symbol', 'link',
+                'reminder', 'shared:boolean', 'createtime', 'updatetime',
+                'ec_users.user', 'owner'
+            );
             $table->join('ec_users', 'events.id', 'event');
         } else {
-            $table->select('events.id', 'subject', 'location', 'description',
+            $table->select(
+                'events.id', 'subject', 'location', 'description',
                 'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
-                'events.public:boolean', 'type', 'priority', 'reminder', 'shared',
-                'createtime', 'updatetime', 'nickname', 'username', 'ec_users.user', 'owner');
+                'events.public:boolean', 'type', 'priority', 'symbol', 'link',
+                'reminder', 'shared:boolean', 'createtime', 'updatetime',
+                'nickname', 'username', 'ec_users.user', 'owner'
+            );
             $table->join('ec_users', 'events.id', 'event');
             $table->join('users', 'owner', 'users.id');
         }

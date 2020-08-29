@@ -1,192 +1,209 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <database>
-  <name><variable>database</variable></name>
+    <name><variable>database</variable></name>
 
-  <table>
-    <name><variable>table_prefix</variable>ec_events</name>
-    <declaration>
+    <table>
+        <name><variable>table_prefix</variable>ec_events</name>
+        <declaration>
 
-      <field>
-        <name>id</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-        <autoincrement>true</autoincrement>
-      </field>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-      <field>
-        <name>user</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-      </field>
+            <field>
+                <name>user</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
 
-      <field>
-        <name>subject</name>
-        <type>text</type>
-        <length>128</length>
-      </field>
+            <field>
+                <name>subject</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
 
-      <field>
-        <name>location</name>
-        <type>text</type>
-        <length>128</length>
-      </field>
+            <field>
+                <name>location</name>
+                <type>text</type>
+                <length>128</length>
+                <default>0</default>
+            </field>
 
-      <field>
-        <name>description</name>
-        <type>text</type>
-        <length>512</length>
-      </field>
+            <field>
+                <name>description</name>
+                <type>text</type>
+            </field>
 
-      <field>
-        <name>type</name>
-        <type>integer</type>
-      </field>
+            <field>
+                <name>type</name>
+                <type>integer</type>
+            </field>
 
-      <field>
-        <name>priority</name>
-        <type>integer</type>
-        <default>0</default>
-      </field>
+            <field>
+                <name>priority</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
 
-      <field>
-        <name>reminder</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
+            <field>
+                <name>symbol</name>
+                <type>text</type>
+                <length>64</length>
+            </field>
 
-      <field>
-        <name>public</name>
-        <type>boolean</type>
-        <default>false</default>
-      </field>
+            <field>
+                <name>link</name>
+                <type>text</type>
+                <length>2048</length>
+            </field>
 
-      <field>
-        <name>shared</name>
-        <type>boolean</type>
-        <default>false</default>
-      </field>
+            <field>
+                <name>reminder</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-      <field>
-        <name>start_time</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
+            <field>
+                <name>public</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
 
-      <field>
-        <name>stop_time</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
+            <field>
+                <name>shared</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
 
-      <field>
-        <name>recurrence</name>
-        <type>integer</type>
-        <length>1</length>
-        <default>0</default>
-        <description>0-4</description>
-      </field>
+            <field>
+                <name>start_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-      <field>
-        <name>month</name>
-        <type>text</type>
-        <length>32</length>
-        <default>0</default>
-        <description>0-12</description>
-      </field>
+            <field>
+                <name>stop_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-      <field>
-        <name>day</name>
-        <type>text</type>
-        <length>32</length>
-        <default>0</default>
-        <description>0-31</description>
-      </field>
+            <field>
+                <name>recurrence</name>
+                <type>integer</type>
+                <length>1</length>
+                <default>0</default>
+                <description>0-4</description>
+            </field>
 
-      <field>
-        <name>wday</name>
-        <type>text</type>
-        <length>16</length>
-        <default>0</default>
-        <description>0-7</description>
-      </field>
+            <field>
+                <name>month</name>
+                <type>text</type>
+                <length>32</length>
+                <default>0</default>
+                <description>0-12</description>
+            </field>
 
-      <field>
-        <name>createtime</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
+            <field>
+                <name>day</name>
+                <type>text</type>
+                <length>32</length>
+                <default>0</default>
+                <description>0-31</description>
+            </field>
 
-      <field>
-        <name>updatetime</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
+            <field>
+                <name>wday</name>
+                <type>text</type>
+                <length>16</length>
+                <default>0</default>
+                <description>0-7</description>
+            </field>
 
-    </declaration>
-  </table>
+            <field>
+                <name>createtime</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-  <table>
-    <name><variable>table_prefix</variable>ec_recurrences</name>
-    <declaration>
+            <field>
+                <name>updatetime</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-      <field>
-        <name>id</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-        <autoincrement>true</autoincrement>
-      </field>
+        </declaration>
+    </table>
 
-      <field>
-        <name>event</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-      </field>
+    <table>
+        <name><variable>table_prefix</variable>ec_recurrences</name>
+        <declaration>
 
-      <field>
-        <name>start_time</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <length>8</length>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-      <field>
-        <name>stop_time</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
+            <field>
+                <name>event</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-    </declaration>
-  </table>
+            <field>
+                <name>start_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-  <table>
-    <name><variable>table_prefix</variable>ec_users</name>
-    <declaration>
+            <field>
+                <name>stop_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-      <field>
-        <name>id</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-        <autoincrement>true</autoincrement>
-      </field>
+        </declaration>
+    </table>
 
-      <field>
-        <name>event</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-      </field>
+    <table>
+        <name><variable>table_prefix</variable>ec_users</name>
+        <declaration>
 
-      <field>
-        <name>user</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-      </field>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-      <field>
-        <name>owner</name>
-        <type>integer</type>
-        <notnull>true</notnull>
-      </field>
+            <field>
+                <name>event</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
 
-    </declaration>
-  </table>
+            <field>
+                <name>user</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>owner</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+        </declaration>
+    </table>
 
 </database>
