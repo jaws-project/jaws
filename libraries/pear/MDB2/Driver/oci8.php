@@ -144,6 +144,7 @@ class MDB2_Driver_oci8 extends MDB2_Driver_Common
                     1401 => MDB2_ERROR_INVALID,
                     1407 => MDB2_ERROR_CONSTRAINT_NOT_NULL,
                     1418 => MDB2_ERROR_NOT_FOUND,
+                    1430 => MDB2_ERROR_ALREADY_EXISTS,
                     1435 => MDB2_ERROR_NOT_FOUND,
                     1476 => MDB2_ERROR_DIVZERO,
                     1722 => MDB2_ERROR_INVALID_NUMBER,

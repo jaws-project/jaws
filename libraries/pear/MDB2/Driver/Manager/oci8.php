@@ -634,7 +634,7 @@ END;
                 $fields[] = $db->getDeclaration($field['type'], $field_name, $field);
             }
             $result = $db->exec("ALTER TABLE $name ADD (". implode(', ', $fields).')');
-            if (MDB2::isError($result)) {
+            if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_ALREADY_EXISTS)) {
                 return $result;
             }
         }
@@ -659,7 +659,7 @@ END;
                 $field_name = $db->quoteIdentifier($field_name, true);
                 $query = "ALTER TABLE $name RENAME COLUMN $field_name TO ".$db->quoteIdentifier($field['name']);
                 $result = $db->exec($query);
-                if (MDB2::isError($result)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHFIELD)) {
                     return $result;
                 }
             }
@@ -671,7 +671,7 @@ END;
                 $fields[] = $db->quoteIdentifier($field_name, true);
             }
             $result = $db->exec("ALTER TABLE $name DROP COLUMN ". implode(', ', $fields));
-            if (MDB2::isError($result)) {
+            if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHFIELD)) {
                 return $result;
             }
         }
@@ -679,7 +679,7 @@ END;
         if (!empty($changes['name'])) {
             $change_name = $db->quoteIdentifier($changes['name'], true);
             $result = $db->exec("ALTER TABLE $name RENAME TO ".$change_name);
-            if (MDB2::isError($result)) {
+            if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHTABLE)) {
                 return $result;
             }
         }
