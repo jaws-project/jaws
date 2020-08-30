@@ -17,12 +17,19 @@ function Jaws_Gadget_Files() { return {
      */
     uploadMoreFiles: function(element)
     {
-        let lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
+        let lastInput = $(element).parents()
+            .eq(1).find('.new_files>div')
+            .last().find('input[type="file"]')
+            .get(0);
+
         if (!lastInput || lastInput.files.length > 0) {
             $(element).parents().eq(1).children('.new_files').append(
                 $(element).parents().eq(2).find('template').first().html()
             );
-            lastInput = $(element).parents().eq(1).find('.new_files>div').last().find('input').get(0);
+            lastInput = $(element).parents()
+                .eq(1).find('.new_files>div')
+                .last().find('input[type="file"]')
+                .get(0);
         }
 
         $(lastInput).click();
@@ -31,16 +38,16 @@ function Jaws_Gadget_Files() { return {
     /**
      * remove file
      */
-    removeFile: function(element, newfile = true)
+    removeFile: function(element)
     {
         // count of current files in the list
         let filesCount = $(element).parents().eq(3).children().length;
 
-        if (newfile) {
+        if ($(element).parents('.new_files').length == 1 ) {
             // find file index
             let fileIndex = $(element).parents().eq(3).children().index($(element).parents().eq(2)) - 1;
 
-            let fileElement = $(element).parents().eq(4).find('input').get(0);
+            let fileElement = $(element).parents().eq(4).find('input[type="file"]').get(0);
             let fileList = new DataTransfer();
             for(let i = 0; i < fileElement.files.length; i++) {
                 if (i != fileIndex) {
@@ -270,12 +277,32 @@ function Jaws_Gadget_Files() { return {
      */
     loadReferenceFiles: function($tpl, $interface, $options = [])
     {
+        let input_name = 'files_' + $interface['action'].toLowerCase() + '_' +
+            $interface['reference'] + '_' + $interface['type'] + '[]';
+        $tpl.find('template').contents().find('input').last().attr('name', input_name);
+
         this.gadget.ajax.callAsync(
             'loadReferenceFiles',
             $interface,
             function(response, status) {
                 if (response['type'] == 'alert-success') {
-                    console.log(response['data']);
+                    $.each(
+                        response['data'],
+                        function (index, file) {
+                            let ulElement = $tpl.find('.old_files ul').first();
+                            ulElement.append(
+                                $tpl.find('template').contents().find('.file_details').parent().html()
+                            );
+                            let liElement = ulElement.children().last();
+                            liElement.find('input').attr('name', 'old_files[]').val(file.id);
+                            liElement.find("[data-type='name']").html(file.title);
+                            liElement.find("[data-type='size']").html(file.filesize);
+                            liElement.find("[data-type='preview']").show().html(
+                                '<img src="'+file.url_file+'" alt="" width="128">'
+                            );
+                            liElement.show();
+                        }
+                    );
                 }
             }
         )

@@ -1,16 +1,17 @@
 <!-- BEGIN files -->
-<div>
+<div class="files_interface">
   <template>
     <div>
       <ul>
         <li class="file_details" style="display: none;">
+          <input type="hidden" />
           <ul>
             <li data-type="preview" style="display: none;"></li>
             <li data-type="name"></li>
             <li data-type="size"></li>
             <li data-type="remove">
               <a href="javascript:void(0);"
-                onclick="Jaws_Gadget.getInstance('Files').removeFile(this, true);"
+                onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
                 title="{{lbl_remove}}">
                 {{lbl_remove}}
               </a>
@@ -51,7 +52,7 @@
               <li data-type="size">{{filesize}}</li>
               <li data-type="remove">
                 <a href="javascript:void(0);"
-                  onclick="Jaws_Gadget.getInstance('Files').removeFile(this, false);"
+                  onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
                   title="{{lbl_remove}}">
                   {{lbl_remove}}
                 </a>
