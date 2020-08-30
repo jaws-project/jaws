@@ -279,7 +279,9 @@ function Jaws_Gadget_Files() { return {
     {
         let input_name = 'files_' + $interface['action'].toLowerCase() + '_' +
             $interface['reference'] + '_' + $interface['type'] + '[]';
-        $tpl.find('template').contents().find('input').last().attr('name', input_name);
+        let $fileInput = $tpl.find('template').contents().find('input[type="file"]').last();
+        $fileInput.attr('name', input_name);
+        let preview = Boolean($fileInput.data('preview'));
 
         this.gadget.ajax.callAsync(
             'loadReferenceFiles',
@@ -297,9 +299,12 @@ function Jaws_Gadget_Files() { return {
                             liElement.find('input').attr('name', 'old_files[]').val(file.id);
                             liElement.find("[data-type='name']").html(file.title);
                             liElement.find("[data-type='size']").html(file.filesize);
-                            liElement.find("[data-type='preview']").show().html(
-                                '<img src="'+file.url_file+'" alt="" width="128">'
-                            );
+                            // show preview
+                            if (preview) {
+                                liElement.find("[data-type='preview']").show().html(
+                                    '<img src="'+file.url_file+'" alt="" width="128">'
+                                );
+                            }
                             liElement.show();
                         }
                     );
