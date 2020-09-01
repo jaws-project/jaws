@@ -141,38 +141,36 @@ class Jaws_Translate
      *
      * @access  public
      * @param   int     $type       Component type
-     * @param   string  $class      Called class name
+     * @param   string  $component  Called component name
+     * @param   string  $string     Statement
      * @param   array   $params     Statement parameters
      * @return  string The translated string, with replacements made.
      */
-    function XTranslate($lang, $type, $class, $params)
+    function XTranslate($lang, $type, $component, $string, $params)
     {
         $lang = empty($lang)? $this->_defaultLanguage : $lang;
 
         switch ($type) {
+            case 'GLOBAL':
+                $type = self::TRANSLATE_GLOBAL;
             case self::TRANSLATE_GLOBAL:
+                $string = strtoupper('GLOBAL_' . $string);
                 break;
 
+            case 'GADGET':
+                $type = self::TRANSLATE_GADGET;
             case self::TRANSLATE_GADGET:
-                $string = array_shift($params);
-                if ($module = strstr($string, '.', true)) {
-                    $string = substr($string, strlen($module) + 1);
-                } else {
-                    $module = strstr($class, '_', true);
-                }
-                $string = strtoupper($module.'_' . str_replace('.', '_', $string));
-
+                $string = strtoupper($component.'_' . $string);
                 break;
         }
 
-
-        // autoload not loaded module language
-        if (!isset($this->translates[$lang][$type][$module])) {
-            $this->LoadTranslation($module, $type, $lang);
+        // autoload not loaded component language
+        if (!isset($this->translates[$lang][$type][$component])) {
+            $this->LoadTranslation($component, $type, $lang);
         }
 
-        if (isset($this->translates[$lang][$type][$module][$string])) {
-            $string = str_replace('\n', "\n", $this->translates[$lang][$type][$module][$string]);
+        if (isset($this->translates[$lang][$type][$component][$string])) {
+            $string = str_replace('\n', "\n", $this->translates[$lang][$type][$component][$string]);
         }
 
         foreach ($params as $key => $value) {

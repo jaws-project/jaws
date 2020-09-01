@@ -689,11 +689,20 @@ class Jaws_Gadget
      */
     public static function t($params)
     {
+        $params = func_get_args();
+        $string = array_shift($params);
+        if ($gadget = strstr($string, '.', true)) {
+            $string = substr($string, strlen($gadget) + 1);
+        } else {
+            $gadget = strstr(get_called_class(), '_', true);
+        }
+
         return Jaws_Translate::getInstance()->XTranslate(
             '',
             Jaws_Translate::TRANSLATE_GADGET,
-            get_called_class(),
-            func_get_args()
+            $gadget,
+            $string,
+            $params
         );
     }
 
