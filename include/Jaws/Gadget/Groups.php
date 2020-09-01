@@ -118,6 +118,34 @@ class Jaws_Gadget_Groups
     }
 
     /**
+     * Build filter conditions query
+     *
+     * @access  public
+     * @param   object  $objORM     Jaws_ORM object
+     * @param   array   $filters    Filters array
+     * @return  void
+     */
+    private function buildFilters(&$objORM, $tableName, &$filters, $op = 'and')
+    {
+        foreach ($filters as $filter) {
+            if (is_array($filter[0])) {
+                $objORM->openWhere();
+                $this->buildFilters($objORM, $tableName, $filter, 'or');
+                $objORM->closeWhere();
+            } else {
+                $objORM->where(
+                    $tableName. '.'. $filter[0],
+                    $filter[1],
+                    array_key_exists(2, $filter)? $filter[2] : '=',
+                    array_key_exists(3, $filter)? (bool)$filter[3] : false
+                );
+            }
+
+            $op == 'and'? $objORM->and() : $objORM->or();
+        }
+    }
+
+    /**
      * Fetch groups include default/custom attributes
      *
      * @access  public
@@ -151,23 +179,9 @@ class Jaws_Gadget_Groups
             ->join($tableName, $tableName.'.group', 'groups.id', 'left');
 
         // default attributes filters
-        foreach ($filters['default'] as $filter) {
-            $objORM->and()->where(
-                'groups.'.$filter[0],
-                $filter[1],
-                array_key_exists(2, $filter)? $filter[2] : '=',
-                array_key_exists(3, $filter)? (bool)$filter[3] : false
-            );
-        }
+        $this->buildFilters($objORM, 'groups', $filters['default']);
         // custom attributes filters
-        foreach ($filters['custom'] as $filter) {
-            $objORM->and()->where(
-                $tableName. '.'. $filter[0],
-                $filter[1],
-                array_key_exists(2, $filter)? $filter[2] : '=',
-                array_key_exists(3, $filter)? (bool)$filter[3] : false
-            );
-        }
+        $this->buildFilters($objORM, $tableName, $filters['custom']);
 
         return $objORM->orderBy('groups.id')->limit((int)$limit, $offset)->fetchAll();
     }
@@ -188,23 +202,9 @@ class Jaws_Gadget_Groups
             ->join($tableName, $tableName.'.group', 'groups.id', 'left');
 
         // default attributes filters
-        foreach ($filters['default'] as $filter) {
-            $objORM->and()->where(
-                'groups.'.$filter[0],
-                $filter[1],
-                array_key_exists(2, $filter)? $filter[2] : '=',
-                array_key_exists(3, $filter)? (bool)$filter[3] : false
-            );
-        }
+        $this->buildFilters($objORM, 'groups', $filters['default']);
         // custom attributes filters
-        foreach ($filters['custom'] as $filter) {
-            $objORM->and()->where(
-                $tableName. '.'. $filter[0],
-                $filter[1],
-                array_key_exists(2, $filter)? $filter[2] : '=',
-                array_key_exists(3, $filter)? (bool)$filter[3] : false
-            );
-        }
+        $this->buildFilters($objORM, $tableName, $filters['custom']);
 
         return $objORM->fetchOne();
     }
