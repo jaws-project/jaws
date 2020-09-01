@@ -21,6 +21,14 @@ class Jaws_Plugin
     public $app = null;
 
     /**
+     * Name of the plugin
+     *
+     * @var     string
+     * @access  private
+     */
+    var $name = '';
+
+    /**
      *  definition plugin types
      */
     const PLUGIN_TYPE_ALLTYPES = 0;
@@ -41,9 +49,10 @@ class Jaws_Plugin
      * @access  protected
      * @return  void
      */
-    protected function __construct()
+    protected function __construct($plugin)
     {
-        $this->app = Jaws::getInstance();
+        $this->name = $plugin;
+        $this->app  = Jaws::getInstance();
     }
 
     /**
@@ -126,7 +135,7 @@ class Jaws_Plugin
 
             require_once $file;
             $classname = $plugin. '_Plugin';
-            $instances[$plugin] = new $classname();
+            $instances[$plugin] = new $classname($plugin);
             // only normal mode actions
             if (!isset($instances[$plugin]->onlyNormalMode)) {
                 $instances[$plugin]->onlyNormalMode = false;
@@ -252,6 +261,58 @@ class Jaws_Plugin
         }
 
         return true;
+    }
+
+    /**
+     * Convenience function to translate strings
+     *
+     * @param   string  $params Method parameters
+     *
+     * @return string
+     */
+    public static function t($params)
+    {
+        $params = func_get_args();
+        $string = array_shift($params);
+        if ($plugin = strstr($string, '.', true)) {
+            $string = substr($string, strlen($plugin) + 1);
+        } else {
+            $plugin = strstr(get_called_class(), '_', true);
+        }
+
+        return Jaws_Translate::getInstance()->XTranslate(
+            '',
+            Jaws_Translate::TRANSLATE_PLUGIN,
+            $plugin,
+            $string,
+            $params
+        );
+    }
+
+    /**
+     * Overloading __get magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @return  mixed   Requested property otherwise Jaws_Error
+     */
+    function __get($property)
+    {
+        switch ($property) {
+            case 'plugin':
+                return $this;
+                break;
+
+            default:
+                break;
+        }
+
+        return Jaws_Error::raiseError(
+            "Property '$property' not exists!",
+            __FUNCTION__,
+            JAWS_ERROR_ERROR,
+            -1
+        );
     }
 
 }
