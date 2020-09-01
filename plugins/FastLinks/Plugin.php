@@ -27,15 +27,15 @@ class FastLinks_Plugin extends Jaws_Plugin
         $linkbutton =& Piwi::CreateWidget('Button', 'linkbutton', '',
                             $this->app->getSiteURL('/plugins/FastLinks/images/stock-fastlink.png', true));
         $linkbutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[url]','[/url]','".
-                              _t('PLUGINS_FASTLINKS_YOURLINK')."');");
-        $linkbutton->SetTitle(_t('PLUGINS_FASTLINKS_ADD_SITE').' ALT+L');
+                              $this->plugin::t('YOURLINK')."');");
+        $linkbutton->SetTitle($this->plugin::t('ADD_SITE').' ALT+L');
         $linkbutton->SetAccessKey('L');
 
         $emailbutton =& Piwi::CreateWidget('Button', 'emailbutton', '',
                             $this->app->getSiteURL('/plugins/FastLinks/images/stock-fastemail.png', true));
         $emailbutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[email]','[/email]','".
-                               _t('PLUGINS_FASTLINKS_YOUREMAIL')."');");
-        $emailbutton->SetTitle(_t('PLUGINS_FASTLINKS_ADD_EMAIL').' ALT+E');
+                               $this->plugin::t('YOUREMAIL')."');");
+        $emailbutton->SetTitle($this->plugin::t('ADD_EMAIL').' ALT+E');
         $emailbutton->SetAccessKey('E');
 
         $buttonbox->PackStart($linkbutton);
