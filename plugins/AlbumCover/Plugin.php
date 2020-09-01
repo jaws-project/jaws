@@ -25,7 +25,7 @@ class AlbumCover_Plugin extends Jaws_Plugin
     {
         $new_dir = ROOT_DATA_PATH . 'AlbumCover' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), $this->_Name);
+            return new Jaws_Error($this->app::t('ERROR_FAILED_CREATING_DIR', $new_dir), $this->_Name);
         }
 
         // Registry key
@@ -57,7 +57,7 @@ class AlbumCover_Plugin extends Jaws_Plugin
     {
         $button =& Piwi::CreateWidget('Button', 'addalbumcover', '',
                         $this->app->getSiteURL('/plugins/AlbumCover/images/stock-album.png', true));
-        $button->SetTitle(_t('PLUGINS_ALBUMCOVER_ADD').' ALT+A');
+        $button->SetTitle($this->plugin::t('ADD').' ALT+A');
         $button->AddEvent(ON_CLICK, "javascript: insertTags('$textarea','[AlbumCover Artist=\'\' Album=\'\']','','');");
         $button->SetAccessKey('A');
         return $button;
