@@ -681,6 +681,18 @@ class Jaws_Gadget
     }
 
     /**
+     * Convenience function to translate strings
+     *
+     * @param   string  $params Method parameters
+     *
+     * @return string
+     */
+    public static function t($params)
+    {
+        return Jaws_Translate::getInstance()->XTranslate(get_called_class(), func_get_args());
+    }
+
+    /**
      * Overloading __call magic method
      *
      * @access  private

@@ -133,6 +133,31 @@ class Jaws_Translate
      * @param   array   $parameters An array replacements to make in the string.
      * @return  string The translated string, with replacements made.
      */
+    function XTranslate($class, $params)
+    {
+        $string = array_shift($params);
+        if ($gadget = strstr($string, '.', true)) {
+            $string = substr($string, strlen($gadget) + 1);
+        } else {
+            $gadget = strstr($class, '_', true);
+        }
+
+        return $this->Translate(
+            null,
+            strtoupper($gadget.'_' . str_replace('.', '_', $string)),
+            $params
+        );
+    }
+
+    /**
+     * Translate a string.
+     *
+     * @access  public
+     * @param   string  $lang       Language code
+     * @param   string  $string     The ID of the string to translate.
+     * @param   array   $parameters An array replacements to make in the string.
+     * @return  string The translated string, with replacements made.
+     */
     function Translate($lang, $string, $parameters = array())
     {
         $lang = empty($lang)? $this->_defaultLanguage : $lang;

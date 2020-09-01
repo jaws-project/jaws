@@ -9,26 +9,8 @@
  * @copyright   2005-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Action
+class Jaws_Gadget_Action extends Jaws_Gadget_Class
 {
-    /**
-     * Jaws app object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $app = null;
-
-
-    /**
-     * Jaws_Gadget object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $gadget = null;
-
-
     /**
      * Constructor
      *
@@ -38,8 +20,7 @@ class Jaws_Gadget_Action
      */
     public function __construct($gadget)
     {
-        $this->gadget = $gadget;
-        $this->app = Jaws::getInstance();
+        parent::__construct($gadget);
 
         // fetch gadget actions
         $this->fetchAll();
