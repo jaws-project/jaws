@@ -148,7 +148,7 @@ class Jaws_Gadget_Users
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join($tableName, $tableName.'.user', 'users.id', 'left')
+            ->join($tableName, $tableName.'.user', 'users.id', 'left');
 
         // default attributes filters
         foreach ($filters['default'] as $filter) {
@@ -185,7 +185,7 @@ class Jaws_Gadget_Users
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select('count(users.id):integer')
-            ->join($tableName, $tableName.'.user', 'users.id', 'left')
+            ->join($tableName, $tableName.'.user', 'users.id', 'left');
 
         // default attributes filters
         foreach ($filters['default'] as $filter) {
