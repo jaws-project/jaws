@@ -33,10 +33,10 @@ class SyntaxHighlight_Plugin extends Jaws_Plugin
                           'SQL', 'VB', 'VisualFoxPro', 'XML');
 
         $combo =& Piwi::CreateWidget('Combo', 'languages');
-        $combo->SetTitle(_t('PLUGINS_SYNTAXHIGHLIGHT_ADD'));
+        $combo->SetTitle($this->plugin::t('ADD'));
         $combo->AddEvent(ON_CHANGE, "javascript: if (this[this.selectedIndex].value != '-1') ".
                          "insertTags('$textarea', '[code=\'' + this[this.selectedIndex].value + '\']\\n', '\\n[/code]\\n','');");
-        $combo->AddOption(_t('PLUGINS_SYNTAXHIGHLIGHT_YOUR_CODE'), '-1');
+        $combo->AddOption($this->plugin::t('YOUR_CODE'), '-1');
 
         foreach ($langsmap as $language) {
             $combo->AddOption(ucfirst($language), ucfirst($language));
@@ -44,9 +44,9 @@ class SyntaxHighlight_Plugin extends Jaws_Plugin
 
         $button_terminal =& Piwi::CreateWidget('Button', 'addcode', '',
                                 $this->app->getSiteURL('/images/stock/stock-terminal.png', true));
-        $button_terminal->SetTitle(_t('PLUGINS_SYNTAXHIGHLIGHT_ADD_TERMINAL').' ALT+T');
+        $button_terminal->SetTitle($this->plugin::t('ADD_TERMINAL').' ALT+T');
         $button_terminal->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[terminal]\\n','\\n[/terminal]\\n','".
-                                   _t('PLUGINS_SYNTAXHIGHLIGHT_YOUR_TERMINAL')."');");
+                                   $this->plugin::t('YOUR_TERMINAL')."');");
         $button_terminal->SetAccessKey('T');
 
         $buttonbox->PackStart($combo);
