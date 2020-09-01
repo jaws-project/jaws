@@ -24,7 +24,7 @@ class SpellNumber_Plugin extends Jaws_Plugin
     {
         $button =& Piwi::CreateWidget('Button', 'addspellnumber', '',
                         $this->app->getSiteURL('/plugins/SpellNumber/images/stock-spell_number.png', true));
-        $button->SetTitle(_t('PLUGINS_SPELLNUMBER_ADD').' ALT+N');
+        $button->SetTitle($this->plugin::t('ADD').' ALT+N');
         $button->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[number]','[/number]','');");
         $button->SetAccessKey('N');
 
@@ -93,19 +93,19 @@ class SpellNumber_Plugin extends Jaws_Plugin
                 case 2:
                     if ($sub_num[0] == '1') {
                         $ret_sub_str = $ret_sub_str.
-                                       (($ret_sub_str=='')?'':(_t('PLUGINS_SPELLNUMBER_SEPARATOR').' ')).
+                                       (($ret_sub_str=='')?'':($this->plugin::t('SEPARATOR').' ')).
                                        $this->TwoDigitName($sub_num);
                         $sub_num = '';
                     } else  {
                         $ret_sub_str = $ret_sub_str.
-                                       (($ret_sub_str=='')?'':(_t('PLUGINS_SPELLNUMBER_SEPARATOR').' ')).
+                                       (($ret_sub_str=='')?'':($this->plugin::t('SEPARATOR').' ')).
                                        $this->DigitName($sub_num[0], 1);
                         $sub_num = substr($sub_num, 1);
                     }
                     break;
                 case 1:
                     $ret_sub_str = $ret_sub_str.
-                                   (($ret_sub_str=='')?'':(_t('PLUGINS_SPELLNUMBER_SEPARATOR').' ')).
+                                   (($ret_sub_str=='')?'':($this->plugin::t('SEPARATOR').' ')).
                                    $this->DigitName($sub_num, 0);
                     $sub_num = '';
                     break;
@@ -114,12 +114,12 @@ class SpellNumber_Plugin extends Jaws_Plugin
                 }
             }
             $ret_str = $ret_str.
-                       ((($ret_sub_str!='') && ($ret_str != ''))?(_t('PLUGINS_SPELLNUMBER_SEPARATOR').' ') : '').
+                       ((($ret_sub_str!='') && ($ret_str != ''))?($this->plugin::t('SEPARATOR').' ') : '').
                        $ret_sub_str.
                        (($ret_sub_str=='') ? '' : (' ' . $this->GroupName($part)));
         }
         if ($ret_str=='') {
-            $ret_str = _t('PLUGINS_SPELLNUMBER_0');
+            $ret_str = $this->plugin::t('0');
         }
 
         return $ret_str;
@@ -143,9 +143,9 @@ class SpellNumber_Plugin extends Jaws_Plugin
             $g_str = $g_str . '000';
             $g_num = $g_num - 1;
         }
-        $g_str = 'PLUGINS_SPELLNUMBER_1' . $g_str;
+        $g_str = '1' . $g_str;
 
-        return _t($g_str);
+        return $this->plugin::t($g_str);
     }
 
     /**
@@ -158,13 +158,13 @@ class SpellNumber_Plugin extends Jaws_Plugin
      */
     function DigitName($digit, $order)
     {
-        $d_str = 'PLUGINS_SPELLNUMBER_' . $digit;
+        $d_str = $digit;
         while ($order > 0) {
             $d_str = $d_str . '0';
-            $order = $order - 1;
+            $order--;
         }
 
-        return _t($d_str);
+        return $this->plugin::t($d_str);
     }
 
     /**
@@ -176,8 +176,7 @@ class SpellNumber_Plugin extends Jaws_Plugin
      */
     function TwoDigitName($digits)
     {
-        $td_str = 'PLUGINS_SPELLNUMBER_' . $digits;
-        return _t($td_str);
+        return $this->plugin::t($digits);
     }
 
 }
