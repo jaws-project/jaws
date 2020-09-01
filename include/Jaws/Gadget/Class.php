@@ -48,7 +48,12 @@ class Jaws_Gadget_Class
      */
     public static function t($params)
     {
-        return Jaws_Translate::getInstance()->XTranslate(get_called_class(), func_get_args());
+        return Jaws_Translate::getInstance()->XTranslate(
+            '',
+            Jaws_Translate::TRANSLATE_GADGET,
+            get_called_class(),
+            func_get_args()
+        );
     }
 
 }

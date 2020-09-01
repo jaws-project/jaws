@@ -14,6 +14,18 @@
 class Jaws_Translate
 {
     /**
+     * Translate types
+     *
+     * @const   int     
+     * @access  public
+     */
+    const TRANSLATE_GLOBAL  = 0;
+    const TRANSLATE_GADGET  = 1;
+    const TRANSLATE_PLUGIN  = 2;
+    const TRANSLATE_INSTALL = 4;
+    const TRANSLATE_UPGRADE = 5;
+
+    /**
      * Gadgets list array
      *
      * @access  private
@@ -128,25 +140,50 @@ class Jaws_Translate
      * Translate a string.
      *
      * @access  public
-     * @param   string  $lang       Language code
-     * @param   string  $string     The ID of the string to translate.
-     * @param   array   $parameters An array replacements to make in the string.
+     * @param   int     $type       Component type
+     * @param   string  $class      Called class name
+     * @param   array   $params     Statement parameters
      * @return  string The translated string, with replacements made.
      */
-    function XTranslate($class, $params)
+    function XTranslate($lang, $type, $class, $params)
     {
-        $string = array_shift($params);
-        if ($gadget = strstr($string, '.', true)) {
-            $string = substr($string, strlen($gadget) + 1);
-        } else {
-            $gadget = strstr($class, '_', true);
+        $lang = empty($lang)? $this->_defaultLanguage : $lang;
+
+        switch ($type) {
+            case self::TRANSLATE_GLOBAL:
+                break;
+
+            case self::TRANSLATE_GADGET:
+                $string = array_shift($params);
+                if ($module = strstr($string, '.', true)) {
+                    $string = substr($string, strlen($module) + 1);
+                } else {
+                    $module = strstr($class, '_', true);
+                }
+                $string = strtoupper($module.'_' . str_replace('.', '_', $string));
+
+                break;
         }
 
-        return $this->Translate(
-            null,
-            strtoupper($gadget.'_' . str_replace('.', '_', $string)),
-            $params
-        );
+
+        // autoload not loaded module language
+        if (!isset($this->translates[$lang][$type][$module])) {
+            $this->LoadTranslation($module, $type, $lang);
+        }
+
+        if (isset($this->translates[$lang][$type][$module][$string])) {
+            $string = str_replace('\n', "\n", $this->translates[$lang][$type][$module][$string]);
+        }
+
+        foreach ($params as $key => $value) {
+            $string = str_replace('{' . $key . '}', $value, $string);
+        }
+
+        if (strpos($string, '{') !== false) {
+            $string = preg_replace('/\s*{[0-9]+\}/u', '', $string);
+        }
+
+        return $string;
     }
 
     /**
@@ -220,11 +257,11 @@ class Jaws_Translate
      *
      * @access  public
      * @param   string  $module The translation to load
-     * @param   string  $type   Type of module(JAWS_COMPONENT_OTHERS, JAWS_COMPONENT_GADGET, JAWS_COMPONENT_PLUGIN)
+     * @param   string  $type   Type of module(TRANSLATE_GLOBAL, TRANSLATE_GADGET, TRANSLATE_PLUGIN)
      * @param   string  $lang   Optional language code
      * @return  void
      */
-    function LoadTranslation($module, $type = JAWS_COMPONENT_OTHERS, $lang = null)
+    function LoadTranslation($module, $type = self::TRANSLATE_GLOBAL, $lang = null)
     {
         $language = empty($lang) ? $this->_defaultLanguage : $lang;
 
@@ -234,7 +271,7 @@ class Jaws_Translate
         }
 
         switch ($type) {
-            case JAWS_COMPONENT_GADGET:
+            case self::TRANSLATE_GADGET:
                 if ($language == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "gadgets/$module/Resources/translates.ini";
                 } else {
@@ -243,7 +280,7 @@ class Jaws_Translate
                 $data_i18n = ROOT_DATA_PATH . "languages/$language/gadgets/$module.ini";
                 break;
 
-            case JAWS_COMPONENT_PLUGIN:
+            case self::TRANSLATE_PLUGIN:
                 if ($language == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "plugins/$module/Resources/translates.ini";
                 } else {
@@ -252,7 +289,7 @@ class Jaws_Translate
                 $data_i18n = ROOT_DATA_PATH . "languages/$language/plugins/$module.ini";
                 break;
 
-            case JAWS_COMPONENT_INSTALL:
+            case self::TRANSLATE_INSTALL:
                 if ($language == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "install/Resources/translates.ini";
                 } else {
@@ -261,7 +298,7 @@ class Jaws_Translate
                 $data_i18n = ROOT_DATA_PATH . "languages/$language/Install.ini";
                 break;
 
-            case JAWS_COMPONENT_UPGRADE:
+            case self::TRANSLATE_UPGRADE:
                 if ($language == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "upgrade/Resources/translates.ini";
                 } else {
@@ -303,11 +340,11 @@ class Jaws_Translate
      * @param   string  $module     Module name
      * @param   string  $key_name   Key name
      * @param   string  $key_value  Key value
-     * @param   string  $type       Type of module(JAWS_COMPONENT_OTHERS, JAWS_COMPONENT_GADGET, JAWS_COMPONENT_PLUGIN)
+     * @param   string  $type       Type of module(TRANSLATE_GLOBAL, TRANSLATE_GADGET, TRANSLATE_PLUGIN)
      * @param   string  $lang       Optional language code
      * @return  void
      */
-    function AddTranslation($module, $key_name, $key_value, $type = JAWS_COMPONENT_OTHERS, $lang = null)
+    function AddTranslation($module, $key_name, $key_value, $type = self::TRANSLATE_GLOBAL, $lang = null)
     {
         $language = empty($lang)? $this->_defaultLanguage : $lang;
         $this->translates[$language][$type][$module][strtoupper($key_name)] = $key_value;
