@@ -62,7 +62,7 @@ class AccessLimiter_Plugin extends Jaws_Plugin
                         $tpl = new Jaws_Template();
                         $tpl->Load('AccessLimiter.html', 'plugins/AccessLimiter/Templates/');
                         $tpl->SetBlock('AccessLimiter');
-                        $tpl->SetVariable('message', _t('GLOBAL_ERROR_ACCESS_DENIED'));
+                        $tpl->SetVariable('message', $this->app::t('ERROR_ACCESS_DENIED'));
                         $tpl->ParseBlock('AccessLimiter');
                         return $tpl->Get();
                     }
@@ -77,7 +77,7 @@ class AccessLimiter_Plugin extends Jaws_Plugin
         $tpl->SetBlock('AccessLimiter');
         $login_url    = $this->app->map->GetMappedURL('Users', 'Login');
         $register_url = $this->app->map->GetMappedURL('Users', 'Registration');
-        $tpl->SetVariable('message', _t('GLOBAL_ERROR_ACCESS_RESTRICTED', $login_url, $register_url));
+        $tpl->SetVariable('message', $this->app::t('ERROR_ACCESS_RESTRICTED', $login_url, $register_url));
         $tpl->ParseBlock('AccessLimiter');
         return $tpl->Get();
     }
