@@ -27,49 +27,49 @@ class BBCode_Plugin extends Jaws_Plugin
 
         $bold =& Piwi::CreateWidget('Button', 'bold', '<strong>B</strong>');
         $bold->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[b]','[/b]','');");
-        $bold->SetTitle(_t('PLUGINS_BBCODE_BOLD_SAMPLE'));
+        $bold->SetTitle($this->plugin::t('BOLD_SAMPLE'));
         $bold->SetId('');
         $bold->SetName('');
 
         $italic =& Piwi::CreateWidget('Button', 'italic', '<em>i</em>');
         $italic->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[i]','[/i]','');");
-        $italic->SetTitle(_t('PLUGINS_BBCODE_ITALIC_SAMPLE'));
+        $italic->SetTitle($this->plugin::t('ITALIC_SAMPLE'));
         $italic->SetId('');
         $italic->SetName('');
 
         $underline =& Piwi::CreateWidget('Button', 'underline', '<u>u</u>');
         $underline->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[u]','[/u]','');");
-        $underline->SetTitle(_t('PLUGINS_BBCODE_UNDERLINE_SAMPLE'));
+        $underline->SetTitle($this->plugin::t('UNDERLINE_SAMPLE'));
         $underline->SetId('');
         $underline->SetName('');
 
         $strike =& Piwi::CreateWidget('Button', 'strike', '<s>s</s>');
         $strike->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[s]','[/s]','');");
-        $strike->SetTitle(_t('PLUGINS_BBCODE_STRIKE_SAMPLE'));
+        $strike->SetTitle($this->plugin::t('STRIKE_SAMPLE'));
         $strike->SetId('');
         $strike->SetName('');
 
         $quote =& Piwi::CreateWidget('Button', 'quote', 'Quote');
         $quote->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[quote]','[/quote]','');");
-        $quote->SetTitle(_t('PLUGINS_BBCODE_QUOTE_SAMPLE'));
+        $quote->SetTitle($this->plugin::t('QUOTE_SAMPLE'));
         $quote->SetId('');
         $quote->SetName('');
 
         $code =& Piwi::CreateWidget('Button', 'code', 'Code');
         $code->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[code]','[/code]','');");
-        $code->SetTitle(_t('PLUGINS_BBCODE_CODE_SAMPLE'));
+        $code->SetTitle($this->plugin::t('CODE_SAMPLE'));
         $code->SetId('');
         $code->SetName('');
 
         $image =& Piwi::CreateWidget('Button', 'image', 'Image');
         $image->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[img]','[/img]','');");
-        $image->SetTitle(_t('PLUGINS_BBCODE_IMAGE_SAMPLE'));
+        $image->SetTitle($this->plugin::t('IMAGE_SAMPLE'));
         $image->SetId('');
         $image->SetName('');
 
         $url =& Piwi::CreateWidget('Button', 'url', 'URL');
         $url->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[url]','[/url]','');");
-        $url->SetTitle(_t('PLUGINS_BBCODE_URL_SAMPLE'));
+        $url->SetTitle($this->plugin::t('URL_SAMPLE'));
         $url->SetId('');
         $url->SetName('');
 
@@ -78,12 +78,12 @@ class BBCode_Plugin extends Jaws_Plugin
             ON_CHANGE,
             "javascript:insertTags('$textarea', '[size='+this[this.selectedIndex].value+']','[/size]','');"
         );
-        $size->SetTitle(_t('PLUGINS_BBCODE_SIZE_SAMPLE'));
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_TINY'),    8);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_SMALL'),   11);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_NORMALL'), 13);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_LARGE'),   16);
-        $size->AddOption(_t('PLUGINS_BBCODE_SIZE_HUGE'),    18);
+        $size->SetTitle($this->plugin::t('SIZE_SAMPLE'));
+        $size->AddOption($this->plugin::t('SIZE_TINY'),    8);
+        $size->AddOption($this->plugin::t('SIZE_SMALL'),   11);
+        $size->AddOption($this->plugin::t('SIZE_NORMALL'), 13);
+        $size->AddOption($this->plugin::t('SIZE_LARGE'),   16);
+        $size->AddOption($this->plugin::t('SIZE_HUGE'),    18);
         $size->SetDefault(13);
         $size->SetId('');
         $size->SetName('');
@@ -93,15 +93,15 @@ class BBCode_Plugin extends Jaws_Plugin
             ON_CHANGE,
             "javascript:insertTags('$textarea', '[color='+this[this.selectedIndex].value+']','[/color]','');"
         );
-        $color->SetTitle(_t('PLUGINS_BBCODE_COLOR_SAMPLE'));
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_000000'), '#000000');
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_0000FF'), '#0000FF');
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_00FFFF'), '#00FFFF');
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_00FF00'), '#00FF00');
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FFFF00'), '#FFFF00');
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FF0000'), '#FF0000');
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FF00FF'), '#FF00FF');
-        $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FFFFFF'), '#FFFFFF');
+        $color->SetTitle($this->plugin::t('COLOR_SAMPLE'));
+        $color->AddOption($this->plugin::t('COLOR_000000'), '#000000');
+        $color->AddOption($this->plugin::t('COLOR_0000FF'), '#0000FF');
+        $color->AddOption($this->plugin::t('COLOR_00FFFF'), '#00FFFF');
+        $color->AddOption($this->plugin::t('COLOR_00FF00'), '#00FF00');
+        $color->AddOption($this->plugin::t('COLOR_FFFF00'), '#FFFF00');
+        $color->AddOption($this->plugin::t('COLOR_FF0000'), '#FF0000');
+        $color->AddOption($this->plugin::t('COLOR_FF00FF'), '#FF00FF');
+        $color->AddOption($this->plugin::t('COLOR_FFFFFF'), '#FFFFFF');
         $color->SetDefault('#0000FF');
         $color->SetId('');
         $color->SetName('');
