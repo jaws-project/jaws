@@ -34,10 +34,10 @@ class AbuseReport_Plugin extends Jaws_Plugin
         $tpl->SetBlock('Report');
         $tpl->SetVariable('content', $html);
 
-        $tpl->SetVariable('lbl_title', _t('PLUGINS_ABUSEREPORT_REPORT'));
-        $tpl->SetVariable('lbl_report', _t('PLUGINS_ABUSEREPORT_REPORT'));
-        $tpl->SetVariable('lbl_send', _t('PLUGINS_ABUSEREPORT_SEND'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_title', $this->plugin::t('REPORT'));
+        $tpl->SetVariable('lbl_report', $this->plugin::t('REPORT'));
+        $tpl->SetVariable('lbl_send', $this->plugin::t('SEND'));
+        $tpl->SetVariable('lbl_cancel', $this->app::t('CANCEL'));
 
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
