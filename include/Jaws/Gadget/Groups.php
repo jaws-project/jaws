@@ -110,9 +110,9 @@ class Jaws_Gadget_Groups
             }
         );
 
-        return Jaws_ORM::getInstance()->table($tableName)
+        return Jaws_ORM::getInstance()->table('groups')
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join('groups', 'groups.id', $tableName.'.group')
+            ->join($tableName, $tableName.'.group', 'groups.id', 'left')
             ->where('groups.id', (int)$group)
             ->fetchRow();
     }
@@ -148,7 +148,7 @@ class Jaws_Gadget_Groups
         $objORM = Jaws_ORM::getInstance()
             ->table($tableName)
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join('groups', 'groups.id', $tableName.'.group');
+            ->join($tableName, $tableName.'.group', 'groups.id', 'left');
 
         // default attributes filters
         foreach ($filters['default'] as $filter) {
@@ -183,9 +183,9 @@ class Jaws_Gadget_Groups
     {
         $tableName = strtolower('groups_'.$this->gadget->name);
         $objORM = Jaws_ORM::getInstance()
-            ->table($tableName)
+            ->table('groups')
             ->select('count(groups.id):integer')
-            ->join('groups', 'groups.id', $tableName.'.group');
+            ->join($tableName, $tableName.'.group', 'groups.id', 'left');
 
         // default attributes filters
         foreach ($filters['default'] as $filter) {
