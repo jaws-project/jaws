@@ -27,7 +27,7 @@ class FileExplorer_Plugin extends Jaws_Plugin
                                          'popbutton',
                                          '',
                                          'plugins/FileExplorer/images/file-explorer.png');
-        $popbutton->SetTitle(_t('PLUGINS_FILEEXPLORER_BROWSE_SERVER'));
+        $popbutton->SetTitle($this->plugin::t('BROWSE_SERVER'));
         $popbutton->AddEvent(ON_CLICK, "browse('$textarea', '$url')");
         $popbutton->AddFile('plugins/FileExplorer/Resources/file-explorer.js');
 
