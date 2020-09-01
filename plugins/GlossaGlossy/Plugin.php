@@ -26,8 +26,8 @@ class GlossaGlossy_Plugin extends Jaws_Plugin
             $glossarybutton =& Piwi::CreateWidget('Button', 'glossarybutton', '',
                                 $this->app->getSiteURL('/plugins/GlossaGlossy/images/stock-glossary.png', true));
             $glossarybutton->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[term]','[/term]','".
-                                      _t('PLUGINS_GLOSSAGLOSSY_YOURTERM')."');");
-            $glossarybutton->SetTitle(_t('PLUGINS_GLOSSAGLOSSY_ADD').' ALT+G');
+                                      $this->plugin::t('YOURTERM')."');");
+            $glossarybutton->SetTitle($this->plugin::t('ADD').' ALT+G');
             $glossarybutton->SetAccessKey('G');
 
             return $glossarybutton;
