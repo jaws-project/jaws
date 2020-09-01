@@ -160,7 +160,13 @@ class Jaws_Translate
             case 'GADGET':
                 $type = self::TRANSLATE_GADGET;
             case self::TRANSLATE_GADGET:
-                $string = strtoupper($component.'_' . $string);
+                $string = strtoupper($component . '_'. $string);
+                break;
+
+            case 'PLUGIN':
+                $type = self::TRANSLATE_PLUGIN;
+            case self::TRANSLATE_PLUGIN:
+                $string = strtoupper('PLUGINS_' . $component . '_' . $string);
                 break;
         }
 
