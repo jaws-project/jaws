@@ -40,7 +40,7 @@ class Emoticons_Plugin extends Jaws_Plugin
         );
 
         $combo =& Piwi::CreateWidget('Combo', 'emoticons');
-        $combo->SetTitle(_t('PLUGINS_EMOTICONS_ADD'));
+        $combo->SetTitle($this->plugin::t('ADD'));
         $combo->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', this[this.selectedIndex].value,'','');");
 
         $theme = $this->app->GetTheme();
