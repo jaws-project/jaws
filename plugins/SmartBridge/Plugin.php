@@ -32,9 +32,9 @@ class SmartBridge_Plugin extends Jaws_Plugin
     {
         $button =& Piwi::CreateWidget('Button', 'addbridge', '',
                         $this->app->getSiteURL('/plugins/SmartBridge/images/smart-bridge-stock.png', true));
-        $button->SetTitle(_t('PLUGINS_SMARTBRIDGE_ADD').' ALT+B');
+        $button->SetTitle($this->plugin::t('ADD').' ALT+B');
         $button->AddEvent(ON_CLICK, "javascript: insertTags('$textarea','[a:Gadget:FastURL]','[/a]','".
-                          _t('PLUGINS_SMARTBRIDGE_SAMPLE')."');");
+                          $this->plugin::t('SAMPLE')."');");
         $button->SetAccessKey('B');
         
         return $button;
