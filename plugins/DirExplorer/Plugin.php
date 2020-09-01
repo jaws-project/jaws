@@ -27,7 +27,7 @@ class DirExplorer_Plugin extends Jaws_Plugin
                                          'popbutton',
                                          '',
                                          'plugins/DirExplorer/images/media.png');
-        $popbutton->SetTitle(_t('PLUGINS_DIREXPLORER_BROWSE_SERVER'));
+        $popbutton->SetTitle($this->plugin::t('BROWSE_SERVER'));
         $popbutton->AddEvent(ON_CLICK, "browse('$textarea', '$url')");
         $popbutton->AddFile('plugins/DirExplorer/Resources/dir-explorer.js');
 
