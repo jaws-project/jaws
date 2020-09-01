@@ -110,9 +110,9 @@ class Jaws_Gadget_Users
             }
         );
 
-        return Jaws_ORM::getInstance()->table($tableName)
+        return Jaws_ORM::getInstance()->table('users')
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join('users', 'users.id', $tableName.'.user')
+            ->join($tableName, $tableName.'.user', 'users.id', 'left')
             ->where('users.id', (int)$user)
             ->fetchRow();
     }
@@ -146,9 +146,9 @@ class Jaws_Gadget_Users
         );
 
         $objORM = Jaws_ORM::getInstance()
-            ->table($tableName)
+            ->table('users')
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join('users', 'users.id', $tableName.'.user');
+            ->join($tableName, $tableName.'.user', 'users.id', 'left')
 
         // default attributes filters
         foreach ($filters['default'] as $filter) {
@@ -183,9 +183,9 @@ class Jaws_Gadget_Users
     {
         $tableName = strtolower('users_'.$this->gadget->name);
         $objORM = Jaws_ORM::getInstance()
-            ->table($tableName)
+            ->table('users')
             ->select('count(users.id):integer')
-            ->join('users', 'users.id', $tableName.'.user');
+            ->join($tableName, $tableName.'.user', 'users.id', 'left')
 
         // default attributes filters
         foreach ($filters['default'] as $filter) {
