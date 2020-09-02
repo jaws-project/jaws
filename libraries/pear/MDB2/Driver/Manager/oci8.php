@@ -289,8 +289,8 @@ END;
             return $db;
         }
 
-        $table = strtoupper($table);
-        $trigger_name = $table . '_AI_PK';
+        $table_uppercase = strtoupper($table);
+        $trigger_name = $table_uppercase . '_AI_PK';
         $trigger_name_quoted = $db->quote($trigger_name, 'text');
         $query = 'SELECT trigger_name FROM user_triggers';
         $query.= ' WHERE trigger_name='.$trigger_name_quoted.' OR trigger_name='.strtoupper($trigger_name_quoted);
@@ -300,7 +300,7 @@ END;
         }
 
         if ($trigger) {
-            $trigger_name  = $db->quoteIdentifier($table . '_AI_PK', true);
+            $trigger_name  = $db->quoteIdentifier($table_uppercase . '_AI_PK', true);
             $trigger_sql = 'DROP TRIGGER ' . $trigger_name;
             $result = $db->exec($trigger_sql);
             if (MDB2::isError($result)) {
@@ -314,7 +314,7 @@ END;
                     'sequence for autoincrement PK could not be dropped', __FUNCTION__);
             }
 
-            $index_name = $table . '_AI_PK';
+            $index_name = $table_uppercase . '_AI_PK';
             $idxname_format = $db->getOption('idxname_format');
             $db->setOption('idxname_format', '%s');
             $result1 = $this->dropConstraint($table, $index_name);
