@@ -94,4 +94,24 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
 
         return $count? $table->fetchOne() : $table->fetchAll();
     }
+
+    /**
+     * Deletes user's events
+     *
+     * @access  public
+     * @param   int     $user  User ID
+     * @param   int     $type  Event type
+     * @return  mixed   Query result
+     */
+    function DeleteUserEvents($user, $type = null)
+    {
+        return Jaws_ORM::getInstance()
+            ->table('ec_events')
+            ->delete()
+            ->where('user', $user)
+            ->and()
+            ->where('type', $type, '=', empty($type))
+            ->exec();
+    }
+
 }

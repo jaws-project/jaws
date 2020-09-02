@@ -195,18 +195,11 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
      */
     function DeleteEvents($idSet)
     {
-        $table = Jaws_ORM::getInstance()->table('ec_events');
-        $res = $table->delete()->where('id', $idSet, 'in')->exec();
-        if (Jaws_Error::IsError($res)) {
-            return $res;
-        }
-
-        // Delete recurrences
-        $this->DeleteRecurrences($idSet);
-
-        // Delete shares
-        $table = Jaws_ORM::getInstance()->table('ec_users');
-        return $table->delete()->where('event', $idSet, 'in')->exec();
+        return Jaws_ORM::getInstance()
+            ->table('ec_events')
+            ->delete()
+            ->where('id', $idSet, 'in')
+            ->exec();
     }
 
     /**
