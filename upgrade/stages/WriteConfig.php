@@ -9,7 +9,7 @@
  * @copyright  2005-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_WriteConfig extends JawsUpgraderStage
+class Upgrader_WriteConfig extends JawsUpgrader
 {
     /**
      * Sets up a JawsConfig

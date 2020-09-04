@@ -9,7 +9,7 @@
  * @copyright  2005-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_Authentication extends JawsUpgraderStage
+class Upgrader_Authentication extends JawsUpgrader
 {
     /**
      * Constructor

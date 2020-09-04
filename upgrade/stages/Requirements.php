@@ -10,7 +10,7 @@ define('MIN_PHP_VERSION', '5.3.20');
  * @copyright  2007-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_Requirements extends JawsUpgraderStage
+class Upgrader_Requirements extends JawsUpgrader
 {
     // Supported databases
     var $_db_drivers = array('mysql'     => 'MySQL',

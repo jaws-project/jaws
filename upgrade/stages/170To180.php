@@ -8,7 +8,7 @@
  * @copyright   2019-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_170To180 extends JawsUpgraderStage
+class Upgrader_170To180 extends JawsUpgrader
 {
     /**
      * Builds the upgrader page.

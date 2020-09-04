@@ -8,7 +8,7 @@
  * @copyright   2008-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_Cleanup extends JawsUpgraderStage
+class Upgrader_Cleanup extends JawsUpgrader
 {
     /**
      * Builds the upgrader page.
