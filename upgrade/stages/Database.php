@@ -32,8 +32,10 @@ class Upgrader_Database extends JawsUpgrader
      *
      * @param array The database configuration
      */
-    function __construct($db_config)
+    protected function __construct($stage, $db_config = null)
     {
+        parent::__construct($stage, $db_config);
+
         $this->_Defaults['host']   = $db_config['host'];
         $this->_Defaults['driver'] = $db_config['driver'];
         $this->_Defaults['user']   = $db_config['user'];

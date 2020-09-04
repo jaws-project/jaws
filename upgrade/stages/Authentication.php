@@ -16,8 +16,10 @@ class Upgrader_Authentication extends JawsUpgrader
      *
      * @access public
      */
-    function __construct()
+    protected function __construct($stage, $db_config = null)
     {
+        parent::__construct($stage, $db_config);
+
         if (!isset($_SESSION['upgrade']['Authentication'])) {
             $_SESSION['secure']= false;
             $_SESSION['upgrade']['Authentication'] = array(

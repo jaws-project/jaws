@@ -126,7 +126,7 @@ $objTranslate->LoadTranslation('Upgrade', JAWS_COMPONENT_UPGRADE);
 
 require_once 'JawsUpgrader.php';
 JawsUpgrader::loadStages();
-$objStage = JawsUpgrader::loadStage($_SESSION['upgrade']['stage']);
+$objStage = JawsUpgrader::loadStage($_SESSION['upgrade']['stage'], $db);
 
 $go_next_step = $request->fetch('next_stage', 'post');
 // Only attempt to validate if the next button has been hit.
