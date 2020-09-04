@@ -42,27 +42,14 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             return '';
         }
 
-        $this->app->layout->addLink('gadgets/EventsCalendar/Resources/index.css');
-        $tpl = $this->gadget->template->load('Reminder.html');
-        $tpl->SetBlock('reminder');
-
         $this->SetTitle(_t('EVENTSCALENDAR_EVENTS'));
-        if ($user === 'public') {
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_PUBLIC_EVENTS') . ' - ' . _t('EVENTSCALENDAR_ACTIONS_REMINDER'));
-        } else {
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_USER_EVENTS') . ' - ' . _t('EVENTSCALENDAR_ACTIONS_REMINDER'));
-        }
+
+        $assigns = array();
 
         // Menu navigation
-        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
+        $assigns['navigation'] = $this->gadget->action->load('MenuNavigation')->xnavigation();
 
-        $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
-        $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
-        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
-        $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
-        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
-        $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
-        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
+        $assigns['user'] = $user;
 
         // Fetch events
         $model = $this->gadget->model->load('Reminder');
@@ -76,45 +63,14 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             $events = array();
         }
 
-        // Display events
-        $jDate = Jaws_Date::getInstance();
-        foreach ($events as $event) {
-            $tpl->SetBlock('reminder/event');
-            $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
-            $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
-            $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
-            $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
-            $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
-            $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
-            $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
-
-            $tpl->SetVariable('subject', $event['subject']);
-            $tpl->SetVariable('type', _t('EVENTSCALENDAR_EVENT_TYPE_' . $event['type']));
-            $tpl->SetVariable('location', $event['location']);
-            $tpl->SetVariable('priority', _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $event['priority']));
-            $tpl->SetVariable('symbol', $event['symbol']);
-            $tpl->SetVariable('link', $event['link']);
-
-            $date = $this->app->UserTime2UTC($event['start_time']);
-            $tpl->SetVariable('date', $jDate->Format($date, 'DN d MN Y - h:i a'));
-
-            if ($user === 'public') {
-                $owner = '';
-            } else {
-                $owner = ($event['owner'] == $user) ? '' : $event['nickname'] || '';
-            }
-            $tpl->SetVariable('owner', $owner);
-
-            $url = $user?
+        foreach ($events as &$event) {
+            $event['event_url'] = $user ?
                 $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id'])) :
                 $this->gadget->urlMap('ViewEvent', array('event' => $event['id']));
-
-            $tpl->SetVariable('event_url', $url);
-            $tpl->ParseBlock('reminder/event');
         }
+        $assigns['events'] = $events;
 
-        $tpl->ParseBlock('reminder');
-        return $tpl->Get();
+        return $this->gadget->template->xLoad('Reminder.html')->render($assigns);
     }
 
 }
