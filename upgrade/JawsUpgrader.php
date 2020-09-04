@@ -108,4 +108,26 @@ class JawsUpgrader
             }
         }
     }
+
+    /**
+     * Convenience function to translate strings
+     *
+     * @param   string  $params Method parameters
+     *
+     * @return string
+     */
+    public static function t($params)
+    {
+        $params = func_get_args();
+        $string = array_shift($params);
+
+        return Jaws_Translate::getInstance()->XTranslate(
+            '',
+            Jaws_Translate::TRANSLATE_UPGRADE,
+            '',
+            $string,
+            $params
+        );
+    }
+
 }

@@ -14,104 +14,106 @@ $stages = array();
 
 // Displays a brief introduction
 $stages[] = array(
-    'name'  => _t('UPGRADE_INTRODUCTION'),
-    'file'  => 'Introduction',
+    'file' => 'Introduction',
 );
 
 // Authenticate user.
 $stages[] = array(
-    'name'  => _t('UPGRADE_AUTHENTICATION'),
-    'file'  => 'Authentication',
+    'file' => 'Authentication',
 );
 
-// Filesystem permission checks.
+// Requirements checks.
 $stages[] = array(
-    'name'  => _t('UPGRADE_REQUIREMENTS'),
-    'file'  => 'Requirements',
+    'file' => 'Requirements',
 );
 
 // Database setup and population.
 $stages[] = array(
-    'name'    => _t('UPGRADE_DATABASE'),
     'file'    => 'Database',
     'options' => $db,
 );
 
 // cleanup files & directories
 $stages[] = array(
-    'name'  => _t('UPGRADE_CLEANUP'),
-    'file'  => 'Cleanup',
+    'file' => 'Cleanup',
 );
 
 // Report.
 $stages[] = array(
-    'name'  => _t('UPGRADE_REPORT'),
-    'file'  => 'Report',
+    'file' => 'Report',
 );
 
 // Upgrade from 0.9 to 1.0.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.9', '1.0.0'),
-    'file'  => '09To100',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('0.9', '1.0.0'),
+    'file' => '09To100',
 );
 
 // Upgrade from 1.0.0 to 1.1.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.0.0', '1.1.0'),
-    'file'  => '100To110',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.0.0', '1.1.0'),
+    'file' => '100To110',
 );
 
 // Upgrade from 1.1.0 to 1.1.1
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.1.0', '1.1.1'),
-    'file'  => '110To111',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.1.0', '1.1.1'),
+    'file' => '110To111',
 );
 
 // Upgrade from 1.1.1 to 1.2.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.1.1', '1.2.0'),
-    'file'  => '111To120',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.1.1', '1.2.0'),
+    'file' => '111To120',
 );
 
 // Upgrade from 1.2.0 to 1.3.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.2.0', '1.3.0'),
-    'file'  => '120To130',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.2.0', '1.3.0'),
+    'file' => '120To130',
 );
 
 // Upgrade from 1.3.0 to 1.4.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.3.0', '1.4.0'),
-    'file'  => '130To140',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.3.0', '1.4.0'),
+    'file' => '130To140',
 );
 // Upgrade from 1.4.0 to 1.5.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.4.0', '1.5.0'),
-    'file'  => '140To150',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.4.0', '1.5.0'),
+    'file' => '140To150',
 );
 // Upgrade from 1.5.0 to 1.6.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.5.0', '1.6.0'),
-    'file'  => '150To160',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.5.0', '1.6.0'),
+    'file' => '150To160',
 );
 // Upgrade from 1.6.0 to 1.7.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.6.0', '1.7.0'),
-    'file'  => '160To170',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.6.0', '1.7.0'),
+    'file' => '160To170',
 );
 // Upgrade from 1.7.0 to 1.8.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '1.7.0', '1.8.0'),
-    'file'  => '170To180',
+    'name' => 'UPGRADE_VER_TO_VER',
+    'vars' => array('1.7.0', '1.8.0'),
+    'file' => '170To180',
 );
 // Saves the config file.
 $stages[] = array(
-    'name'  => _t('UPGRADE_WRITECONFIG'),
-    'file'  => 'WriteConfig',
+    'file' => 'WriteConfig',
 );
 
 // Everything done! Go log in :)
 $stages[] = array(
-    'name'  => _t('UPGRADE_FINISHED'),
-    'file'  => 'Finished',
+    'file' => 'Finished',
 );
