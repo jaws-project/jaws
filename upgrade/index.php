@@ -124,29 +124,21 @@ if (isset($_SESSION['upgrade']['language'])) {
 $objTranslate->LoadTranslation('Global');
 $objTranslate->LoadTranslation('Upgrade', JAWS_COMPONENT_UPGRADE);
 
-require_once 'stagelist.php';
 require_once 'JawsUpgrader.php';
-require_once 'JawsUpgraderStage.php';
-
-$upgrader = new JawsUpgrader($db);
-$upgrader->loadStages($stages);
-$stages = $upgrader->getStages();
-$stage = $stages[$_SESSION['upgrade']['stage']];
-
-$stageobj = $upgrader->loadStage($stage);
-$stages_count = count($stages);
+JawsUpgrader::loadStages();
+$objStage = JawsUpgrader::loadStage($_SESSION['upgrade']['stage']);
 
 $go_next_step = $request->fetch('next_stage', 'post');
 // Only attempt to validate if the next button has been hit.
 if (isset($go_next_step)) {
-    $result = $stageobj->validate();
+    $result = $objStage->validate();
     if (!Jaws_Error::isError($result)) {
-        $result = $stageobj->run();
+        $result = $objStage->run();
 
         if (!Jaws_Error::isError($result)) {
-            if ($_SESSION['upgrade']['stage'] < $stages_count - 1) {
+            if ($_SESSION['upgrade']['stage'] < $objStage->countStages() - 1) {
                 $_SESSION['upgrade']['stage']++;
-                $stageobj = $upgrader->loadStage($stages[$_SESSION['upgrade']['stage']]);
+                header('Location: index.php');
             }
 
             $result = null;
@@ -163,11 +155,11 @@ include_once ROOT_JAWS_PATH . 'include/Jaws/Template.php';
 $tpl = new Jaws_Template(false, false);
 $tpl->Load('page.html', 'templates');
 $tpl->SetBlock('page');
-$tpl->SetVariable('title', $stages[$_SESSION['upgrade']['stage']]['name']);
-$tpl->SetVariable('body',  $stageobj->display());
-$tpl->SetVariable('stage', $stages[$_SESSION['upgrade']['stage']]['file']);
+$tpl->SetVariable('title', $objStage->name);
+$tpl->SetVariable('body',  $objStage->display());
+$tpl->SetVariable('stage', $objStage->file);
 
-foreach ($stages as $key => $stage) {
+foreach ($objStage->getStages() as $key => $stage) {
     if ($key < $_SESSION['upgrade']['stage']) {
         $tpl->SetBlock('page/completed_stage');
         $tpl->SetVariable('name', $stage['name']);
@@ -184,7 +176,7 @@ foreach ($stages as $key => $stage) {
 }
 
 // Check if we are on the last stage, Key + 1 because an array starts with 0 :-)
-if (($_SESSION['upgrade']['stage'] + 1) == $stages_count) {
+if (($_SESSION['upgrade']['stage'] + 1) == $objStage->countStages()) {
     // Kill of the session cookie (path cookie in FF)
     unset($_SESSION['upgrade']);
 }

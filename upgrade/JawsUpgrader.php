@@ -13,6 +13,16 @@
 class JawsUpgrader
 {
     /**
+     * Stage name
+     */
+    var $name;
+
+    /**
+     * stage file name
+     */
+    var $file;
+
+    /**
      * The filesystem path the upgrader is running from.
      * @var string
      */
@@ -29,8 +39,11 @@ class JawsUpgrader
      *
      * @param string The path this upgrader is running from.
      */
-    function __construct($db_config)
+    private function __construct($stage, $db_config = null)
     {
+        $this->name = $stage['name'];
+        $this->file = $stage['file'];
+
         $this->_db_file_config = $db_config;
     }
 
@@ -107,6 +120,70 @@ class JawsUpgrader
                 $this->LoadStage($stage, false);
             }
         }
+    }
+
+    /**
+     * Loads the list of stages available from a stage list file.
+     *
+     * @access  public
+     * @return  bool|Jaws_Error
+     */
+    static function loadStages()
+    {
+        require_once 'stagelist.php';
+
+        foreach ($stages as $stage) {
+            $file = 'stages/' . $stage['file'] . '.php';
+            if (!file_exists($file)) {
+                Jaws_Error::Fatal(
+                    'The ' . $stage['file'] .
+                    " stage couldn't be loaded, because " .
+                    $stage['file'] . ".php doesn't exist.",
+                    __FILE__,
+                    __LINE__
+                );
+            }
+
+            self::$stages[] = array(
+                'name' => self::t($stage['file']),
+                'file' => $stage['file']
+            );
+        }
+    }
+
+    /**
+     * Builds the upgrader page.
+     *
+     * @access  public
+     * @return  string      A block of valid XHTML to display an introduction and form.
+     */
+    function Display()
+    {
+        return '';
+    }
+
+    /**
+     * Validates any data provided to the stage.
+     *
+     * @access  public
+     * @return  bool|Jaws_Error  Returns either true on success, or a Jaws_Error
+     *                          containing the reason for failure.
+     */
+    function Validate()
+    {
+        return true;
+    }
+
+    /**
+     * Does any actions required to finish the stage, such as DB queries.
+     *
+     * @access  public
+     * @return  bool|Jaws_Error  Either true on success, or a Jaws_Error
+     *                          containing the reason for failure.
+     */
+    function Run()
+    {
+        return true;
     }
 
     /**
