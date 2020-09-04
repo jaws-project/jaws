@@ -210,7 +210,7 @@ if (isset($GLOBALS['message'])) {
 $tpl->ParseBlock('page');
 
 // Defines where the layout template should be loaded from.
-$direction = _t('GLOBAL_LANG_DIRECTION');
+$direction = Jaws::t('LANG_DIRECTION');
 $dir  = $direction == 'rtl' ? '.' . $direction : '';
 
 // Display the layout

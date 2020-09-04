@@ -46,11 +46,11 @@ class Upgrader_Authentication extends JawsUpgrader
         $tpl->Load('display.html', 'stages/Authentication/templates');
         $tpl->SetBlock('Authentication');
 
-        $tpl->SetVariable('key_path_info', _t('UPGRADE_AUTH_PATH_INFO', 'key.txt', UPGRADE_PATH));
-        $tpl->SetVariable('rsa_security',  _t('UPGRADE_AUTH_ENABLE_SECURITY'));
-        $tpl->SetVariable('auth_upload',   _t('UPGRADE_AUTH_UPLOAD'));
-        $tpl->SetVariable('key_file_info', _t('UPGRADE_AUTH_KEY_INFO'));
-        $tpl->SetVariable('next',          _t('GLOBAL_NEXT'));
+        $tpl->SetVariable('key_path_info', $this->t('AUTH_PATH_INFO', 'key.txt', UPGRADE_PATH));
+        $tpl->SetVariable('rsa_security',  $this->t('AUTH_ENABLE_SECURITY'));
+        $tpl->SetVariable('auth_upload',   $this->t('AUTH_UPLOAD'));
+        $tpl->SetVariable('key_file_info', $this->t('AUTH_KEY_INFO'));
+        $tpl->SetVariable('next',          Jaws::t('NEXT'));
         $tpl->SetVariable('key', $_SESSION['upgrade']['Authentication']['key']);
         $tpl->SetVariable('checked',  $_SESSION['secure']? 'checked="checked"' : '');
 
@@ -79,7 +79,7 @@ class Upgrader_Authentication extends JawsUpgrader
                 $_SESSION['pub_key'] = $pkey['pub_key'];
                 $_SESSION['pvt_key'] = $pkey['pvt_key'];
             } else {
-                return new Jaws_Error(_t('UPGRADE_AUTH_ERROR_RSA_KEY_GENERATION'), 0, JAWS_ERROR_WARNING);
+                return new Jaws_Error($this->t('AUTH_ERROR_RSA_KEY_GENERATION'), 0, JAWS_ERROR_WARNING);
             }
         }
 
@@ -91,9 +91,9 @@ class Upgrader_Authentication extends JawsUpgrader
                 return true;
             }
             _log(JAWS_LOG_DEBUG,"The key found doesn't match the one below, please check that you entered the key correctly.");
-            return new Jaws_Error(_t('UPGRADE_AUTH_ERROR_KEY_MATCH', 'key.txt'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this->t('AUTH_ERROR_KEY_MATCH', 'key.txt'), 0, JAWS_ERROR_WARNING);
         }
         _log(JAWS_LOG_DEBUG,"Your key file was not found, please make sure you created it, and the web server is able to read it.");
-        return new Jaws_Error(_t('UPGRADE_AUTH_ERROR_KEY_FILE', 'key.txt'), 0, JAWS_ERROR_WARNING);
+        return new Jaws_Error($this->t('AUTH_ERROR_KEY_FILE', 'key.txt'), 0, JAWS_ERROR_WARNING);
     }
 }

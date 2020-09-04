@@ -27,10 +27,10 @@ class Upgrader_Finished extends JawsUpgrader
         $tpl->SetBlock('Finished');
 
         $base_url = $jawsApp->getSiteURL();
-        $tpl->setVariable('lbl_info',    _t('UPGRADE_FINISH_INFO'));
-        $tpl->setVariable('lbl_choices', _t('UPGRADE_FINISH_CHOICES', "$base_url/", "$base_url/admin.php"));
-        $tpl->setVariable('lbl_thanks',  _t('UPGRADE_FINISH_THANKS'));
-        $tpl->SetVariable('move_log',    _t('UPGRADE_FINISH_MOVE_LOG'));
+        $tpl->setVariable('lbl_info',    $this->t('FINISH_INFO'));
+        $tpl->setVariable('lbl_choices', $this->t('FINISH_CHOICES', "$base_url/", "$base_url/admin.php"));
+        $tpl->setVariable('lbl_thanks',  $this->t('FINISH_THANKS'));
+        $tpl->SetVariable('move_log',    $this->t('FINISH_MOVE_LOG'));
 
         $tpl->ParseBlock('Finished');
         return $tpl->Get();

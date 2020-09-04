@@ -68,11 +68,11 @@ class Upgrader_WriteConfig extends JawsUpgrader
         $tpl->SetBlock('WriteConfig');
 
         $config_path = ROOT_JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
-        $tpl->setVariable('lbl_info',                _t('UPGRADE_CONFIG_INFO'));
-        $tpl->setVariable('lbl_solution',            _t('UPGRADE_CONFIG_SOLUTION'));
-        $tpl->setVariable('lbl_solution_permission', _t('UPGRADE_CONFIG_SOLUTION_PERMISSION', $config_path));
-        $tpl->setVariable('lbl_solution_upload',     _t('UPGRADE_CONFIG_SOLUTION_UPLOAD', $config_path. 'JawsConfig.php'));
-        $tpl->SetVariable('next',                    _t('GLOBAL_NEXT'));
+        $tpl->setVariable('lbl_info',                $this->t('CONFIG_INFO'));
+        $tpl->setVariable('lbl_solution',            $this->t('CONFIG_SOLUTION'));
+        $tpl->setVariable('lbl_solution_permission', $this->t('CONFIG_SOLUTION_PERMISSION', $config_path));
+        $tpl->setVariable('lbl_solution_upload',     $this->t('CONFIG_SOLUTION_UPLOAD', $config_path. 'JawsConfig.php'));
+        $tpl->SetVariable('next',                    Jaws::t('NEXT'));
 
         $tpl->SetVariable('config', $this->BuildConfig());
         $tpl->ParseBlock('WriteConfig');
@@ -98,7 +98,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
         if ($configMD5 !== $existsMD5) {
             if (!Jaws_Utils::is_writable(ROOT_JAWS_PATH . 'config/')) {
                 return Jaws_Error::raiseError(
-                    _t('UPGRADE_CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'),
+                    $this->t('CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'),
                     __FUNCTION__,
                     JAWS_ERROR_WARNING
                 );
@@ -108,7 +108,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
             $result = @file_put_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php', $configString);
             if ($result === false) {
                 return Jaws_Error::raiseError(
-                    _t('UPGRADE_CONFIG_RESPONSE_WRITE_FAILED'),
+                    $this->t('CONFIG_RESPONSE_WRITE_FAILED'),
                     __FUNCTION__,
                     JAWS_ERROR_WARNING
                 );
@@ -120,7 +120,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
-            return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         // Create application

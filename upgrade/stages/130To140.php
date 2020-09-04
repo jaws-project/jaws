@@ -22,9 +22,9 @@ class Upgrader_130To140 extends JawsUpgrader
         $tpl->Load('display.html', 'stages/130To140/templates');
         $tpl->SetBlock('130To140');
 
-        $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.3.0', '1.4.0'));
-        $tpl->setVariable('lbl_notes', _t('UPGRADE_VER_NOTES'));
-        $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
+        $tpl->setVariable('lbl_info',  $this->t('VER_INFO', '1.3.0', '1.4.0'));
+        $tpl->setVariable('lbl_notes', $this->t('VER_NOTES'));
+        $tpl->SetVariable('next',      Jaws::t('NEXT'));
 
         $tpl->ParseBlock('130To140');
         return $tpl->Get();
@@ -47,7 +47,7 @@ class Upgrader_130To140 extends JawsUpgrader
                 JAWS_LOG_DEBUG,
                 "There was a problem connecting to the database, please check the details and try again"
             );
-            return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         // upgrade core database schema
@@ -55,15 +55,15 @@ class Upgrader_130To140 extends JawsUpgrader
         $mid_schema = ROOT_JAWS_PATH . 'upgrade/Resources/schema/1.3.5.xml';
         $new_schema = ROOT_JAWS_PATH . 'upgrade/Resources/schema/1.4.0.xml';
         if (!file_exists($old_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.3.0.xml'),0 , JAWS_ERROR_ERROR);
+            return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', '1.3.0.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         if (!file_exists($mid_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.3.5.xml'),0 , JAWS_ERROR_ERROR);
+            return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', '1.3.5.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         if (!file_exists($new_schema)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.4.0.xml'),0 , JAWS_ERROR_ERROR);
+            return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', '1.4.0.xml'),0 , JAWS_ERROR_ERROR);
         }
 
         _log(JAWS_LOG_DEBUG,"Upgrading core schema");

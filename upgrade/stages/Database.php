@@ -69,8 +69,8 @@ class Upgrader_Database extends JawsUpgrader
         $tpl->Load('display.html', 'stages/Database/templates');
         $tpl->SetBlock('Database');
 
-        $tpl->setVariable('db_info',   _t('UPGRADE_DB_INFO'));
-        $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
+        $tpl->setVariable('db_info',   $this->t('DB_INFO'));
+        $tpl->SetVariable('next',      Jaws::t('NEXT'));
 
         if ($_SESSION['secure']) {
             $JCrypt = Jaws_Crypt::getInstance(
@@ -96,8 +96,8 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['host'])) {
             $fields++;
             $tpl->SetBlock('Database/host');
-            $tpl->setVariable('lbl_host',  _t('UPGRADE_DB_HOST'));
-            $tpl->setVariable('host_info', _t('UPGRADE_DB_HOST_INFO', 'localhost'));
+            $tpl->setVariable('lbl_host',  $this->t('DB_HOST'));
+            $tpl->setVariable('host_info', $this->t('DB_HOST_INFO', 'localhost'));
             $tpl->SetVariable('host', $values['host']);
             $tpl->ParseBlock('Database/host');
         }
@@ -105,8 +105,8 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['user'])) {
             $fields++;
             $tpl->SetBlock('Database/user');
-            $tpl->setVariable('lbl_user',    _t('UPGRADE_DB_USER'));
-            $tpl->setVariable('is_db_admin', _t('UPGRADE_DB_IS_ADMIN'));
+            $tpl->setVariable('lbl_user',    $this->t('DB_USER'));
+            $tpl->setVariable('is_db_admin', $this->t('DB_IS_ADMIN'));
             $tpl->SetVariable('user', $values['user']);
             $tpl->SetVariable('isdba_checked', (empty($values['isdba']) || $values['isdba'] == 'false')? '' : 'checked="checked"');
             $tpl->ParseBlock('Database/user');
@@ -115,7 +115,7 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['password'])) {
             $fields++;
             $tpl->SetBlock('Database/password');
-            $tpl->setVariable('lbl_pass', _t('UPGRADE_DB_PASS'));
+            $tpl->setVariable('lbl_pass', $this->t('DB_PASS'));
             $tpl->SetVariable('dbpass', '');
             $tpl->ParseBlock('Database/password');
         }
@@ -123,7 +123,7 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['name'])) {
             $fields++;
             $tpl->SetBlock('Database/name');
-            $tpl->setVariable('lbl_db_name',  _t('UPGRADE_DB_NAME'));
+            $tpl->setVariable('lbl_db_name',  $this->t('DB_NAME'));
             $tpl->SetVariable('name', $values['name']);
             $tpl->ParseBlock('Database/name');
         }
@@ -131,8 +131,8 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['path'])) {
             $fields++;
             $tpl->SetBlock('Database/path');
-            $tpl->setVariable('lbl_db_path', _t('UPGRADE_DB_PATH'));
-            $tpl->setVariable('path_info',   _t('UPGRADE_DB_PATH_INFO'));
+            $tpl->setVariable('lbl_db_path', $this->t('DB_PATH'));
+            $tpl->setVariable('path_info',   $this->t('DB_PATH_INFO'));
             $tpl->SetVariable('path', $values['path']);
             $tpl->ParseBlock('Database/path');
         }
@@ -140,8 +140,8 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['port'])) {
             $fields++;
             $tpl->SetBlock('Database/port');
-            $tpl->setVariable('lbl_port',  _t('UPGRADE_DB_PORT'));
-            $tpl->setVariable('port_info', _t('UPGRADE_DB_PORT_INFO'));
+            $tpl->setVariable('lbl_port',  $this->t('DB_PORT'));
+            $tpl->setVariable('port_info', $this->t('DB_PORT_INFO'));
             $tpl->SetVariable('port', $values['port']);
             $tpl->ParseBlock('Database/port');
         }
@@ -149,8 +149,8 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['prefix'])) {
             $fields++;
             $tpl->SetBlock('Database/prefix');
-            $tpl->setVariable('lbl_prefix',  _t('UPGRADE_DB_PREFIX'));
-            $tpl->setVariable('prefix_info', _t('UPGRADE_DB_PREFIX_INFO'));
+            $tpl->setVariable('lbl_prefix',  $this->t('DB_PREFIX'));
+            $tpl->setVariable('prefix_info', $this->t('DB_PREFIX_INFO'));
             $tpl->SetVariable('prefix', $values['prefix']);
             $tpl->ParseBlock('Database/prefix');
         }
@@ -159,7 +159,7 @@ class Upgrader_Database extends JawsUpgrader
         if (!isset($data['driver'])) {
             $fields++;
             $tpl->SetBlock('Database/drivers');
-            $tpl->setVariable('lbl_driver', _t('UPGRADE_DB_DRIVER'));
+            $tpl->setVariable('lbl_driver', $this->t('DB_DRIVER'));
 
             $drivers = array(
                 'mysqli' => array('ext' => 'mysqli',    'title' => 'MySQLi (4.1.3 and above)'),
@@ -233,12 +233,12 @@ class Upgrader_Database extends JawsUpgrader
 
         if (isset($post['path']) && $post['path'] !== '' && !is_dir($post['path'])) {
             _log(JAWS_LOG_DEBUG,"The database path must be exists");
-            return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_PATH'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this->t('DB_RESPONSE_PATH'), 0, JAWS_ERROR_WARNING);
         }
 
         if (isset($post['port']) && $post['port'] !== '' && !is_numeric($post['port'])) {
             _log(JAWS_LOG_DEBUG,"The port can only be a numeric value");
-            return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_PORT'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this->t('DB_RESPONSE_PORT'), 0, JAWS_ERROR_WARNING);
         }
 
         if (!empty($post['host']) && !empty($post['user']) && !empty($post['name'])) {
@@ -246,7 +246,7 @@ class Upgrader_Database extends JawsUpgrader
         }
 
         _log(JAWS_LOG_DEBUG,"You must fill in all the fields apart from table prefix and port");
-        return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
+        return new Jaws_Error($this->t('DB_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
     }
 
     /**
@@ -318,7 +318,7 @@ class Upgrader_Database extends JawsUpgrader
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
-            return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         _log(JAWS_LOG_DEBUG,"Checking current database");
