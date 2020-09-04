@@ -136,7 +136,7 @@ $stage = $stages[$_SESSION['upgrade']['stage']];
 $stageobj = $upgrader->loadStage($stage);
 $stages_count = count($stages);
 
-$go_next_step = $request->fetch($stage['file'] . '_complete', 'post');
+$go_next_step = $request->fetch('next_stage', 'post');
 // Only attempt to validate if the next button has been hit.
 if (isset($go_next_step)) {
     $result = $stageobj->validate();
