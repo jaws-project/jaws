@@ -25,8 +25,10 @@ class Installer_Settings extends JawsInstaller
      *
      * @access public
      */
-    function __construct()
+    protected function __construct($stage, $config = null)
     {
+        parent::__construct($stage, $config);
+
         $this->_Fields = array(
             'site_name'     => 'Jaws ' . JAWS_VERSION,
             'site_slogan'   => JAWS_VERSION_CODENAME,

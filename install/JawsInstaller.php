@@ -32,7 +32,7 @@ class JawsInstaller
      * The complete stage list.
      * @var array
      */
-    static private $stages = array();
+    private static $stages = array();
 
     /**
      * Predefined data
@@ -48,7 +48,7 @@ class JawsInstaller
      *
      * @param string The path this installer is running from.
      */
-    private function __construct($stage, $config = null)
+    protected function __construct($stage, $config = null)
     {
         $this->name = $stage['name'];
         $this->file = $stage['file'];
@@ -96,8 +96,7 @@ class JawsInstaller
                 self::$stages[$stage]['obj'] = new $classname(self::$stages[$stage]);
             } catch (Exception $e) {
                 Jaws_Error::Fatal(
-                    "The ".$stage['name']." stage couldn't be loaded, because the class ".
-                    $stage['file']." couldn't be found.",
+                    "The ".$stage['file']." stage couldn't be loaded",
                     __FILE__,
                     __LINE__
                 );

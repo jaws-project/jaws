@@ -16,8 +16,10 @@ class Installer_Authentication extends JawsInstaller
      *
      * @access public
      */
-    function __construct()
+    protected function __construct($stage, $config = null)
     {
+        parent::__construct($stage, $config);
+
         if (!isset($_SESSION['install']['Authentication']) && 
            (!isset($_SESSION['install']['predefined']) || !$_SESSION['install']['predefined']))
         {
