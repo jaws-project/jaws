@@ -8,7 +8,7 @@
  * @copyright   2005-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Installer_WriteConfig extends JawsInstallerStage
+class Installer_WriteConfig extends JawsInstaller
 {
     /**
      * Sets up a JawsConfig
@@ -62,12 +62,12 @@ class Installer_WriteConfig extends JawsInstallerStage
         $tpl->SetBlock('WriteConfig');
 
         $config_path = ROOT_JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
-        $tpl->setVariable('lbl_info',                _t('INSTALL_CONFIG_INFO'));
-        $tpl->setVariable('lbl_solution',            _t('INSTALL_CONFIG_SOLUTION'));
-        $tpl->setVariable('lbl_solution_permission', _t('INSTALL_CONFIG_SOLUTION_PERMISSION', $config_path));
-        $tpl->setVariable('lbl_solution_upload',     _t('INSTALL_CONFIG_SOLUTION_UPLOAD', $config_path. 'JawsConfig.php'));
-        $tpl->SetVariable('lbl_loglevel',            _t('INSTALL_CONFIG_LOGLEVEL'));
-        $tpl->SetVariable('next',                    _t('GLOBAL_NEXT'));
+        $tpl->setVariable('lbl_info',                $this->t('CONFIG_INFO'));
+        $tpl->setVariable('lbl_solution',            $this->t('CONFIG_SOLUTION'));
+        $tpl->setVariable('lbl_solution_permission', $this->t('CONFIG_SOLUTION_PERMISSION', $config_path));
+        $tpl->setVariable('lbl_solution_upload',     $this->t('CONFIG_SOLUTION_UPLOAD', $config_path. 'JawsConfig.php'));
+        $tpl->SetVariable('lbl_loglevel',            $this->t('CONFIG_LOGLEVEL'));
+        $tpl->SetVariable('next',                    Jaws::t('NEXT'));
 
         $request = Jaws_Request::getInstance();
         $loglevel = $request->fetch('loglevel', 'post');
@@ -121,9 +121,9 @@ class Installer_WriteConfig extends JawsInstallerStage
                 return true;
             }
             _log(JAWS_LOG_DEBUG,"Configuration file couldn't be created/updated");
-            return new Jaws_Error(_t('INSTALL_CONFIG_RESPONSE_WRITE_FAILED'), 0, JAWS_ERROR_ERROR);
+            return new Jaws_Error($this->t('CONFIG_RESPONSE_WRITE_FAILED'), 0, JAWS_ERROR_ERROR);
         }
         
-        return new Jaws_Error(_t('INSTALL_CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'), 0, JAWS_ERROR_WARNING);
+        return new Jaws_Error($this->t('CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'), 0, JAWS_ERROR_WARNING);
   }
 }

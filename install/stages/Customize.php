@@ -8,7 +8,7 @@
  * @copyright  2014-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Installer_Customize extends JawsInstallerStage
+class Installer_Customize extends JawsInstaller
 {
     /**
      * Builds the installer page.
@@ -30,7 +30,7 @@ class Installer_Customize extends JawsInstallerStage
         $tpl->Load('display.html', 'stages/Customize/templates');
         $tpl->SetBlock('Customize');
 
-        $tpl->SetVariable('customize_info', _t('INSTALL_CUSTOMIZE_INFO'));
+        $tpl->SetVariable('customize_info', $this->t('CUSTOMIZE_INFO'));
 
         $paths = array('data_path', 'base_data_path', 'themes_path', 'base_themes_path', 'cache_path');
         foreach ($paths as $path) {
@@ -40,7 +40,7 @@ class Installer_Customize extends JawsInstallerStage
             $tpl->SetVariable("disabled_$path", isset($_SESSION[$upper_path])? '' : 'disabled="disabled"');
         }
 
-        $tpl->SetVariable('next', _t('GLOBAL_NEXT'));
+        $tpl->SetVariable('next', Jaws::t('NEXT'));
         $tpl->ParseBlock('Customize');
         return $tpl->Get();
     }

@@ -9,7 +9,7 @@
  * @copyright   2005-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Installer_CreateUser extends JawsInstallerStage
+class Installer_CreateUser extends JawsInstaller
 {
     /**
      * Default values
@@ -47,17 +47,17 @@ class Installer_CreateUser extends JawsInstallerStage
         $tpl->Load('display.html', 'stages/CreateUser/templates');
         $tpl->SetBlock('CreateUser');
 
-        $tpl->setVariable('lbl_info',     _t('INSTALL_USER_INFO'));
-        $tpl->setVariable('lbl_notice',   _t('INSTALL_USER_NOTICE'));
-        $tpl->setVariable('lbl_user',     _t('INSTALL_USER_USER'));
-        $tpl->setVariable('user_info',    _t('INSTALL_USER_USER_INFO'));
-        $tpl->setVariable('lbl_pass',     _t('INSTALL_USER_PASS'));
-        $tpl->setVariable('lbl_repeat',   _t('INSTALL_USER_REPEAT'));
-        $tpl->setVariable('repeat_info',  _t('INSTALL_USER_REPEAT_INFO'));
-        $tpl->setVariable('lbl_nickname', _t('INSTALL_USER_NAME'));
-        $tpl->setVariable('name_info',    _t('INSTALL_USER_NAME_INFO'));
-        $tpl->setVariable('lbl_email',    _t('INSTALL_USER_EMAIL'));
-        $tpl->SetVariable('next',         _t('GLOBAL_NEXT'));
+        $tpl->setVariable('lbl_info',     $this->t('USER_INFO'));
+        $tpl->setVariable('lbl_notice',   $this->t('USER_NOTICE'));
+        $tpl->setVariable('lbl_user',     $this->t('USER_USER'));
+        $tpl->setVariable('user_info',    $this->t('USER_USER_INFO'));
+        $tpl->setVariable('lbl_pass',     $this->t('USER_PASS'));
+        $tpl->setVariable('lbl_repeat',   $this->t('USER_REPEAT'));
+        $tpl->setVariable('repeat_info',  $this->t('USER_REPEAT_INFO'));
+        $tpl->setVariable('lbl_nickname', $this->t('USER_NAME'));
+        $tpl->setVariable('name_info',    $this->t('USER_NAME_INFO'));
+        $tpl->setVariable('lbl_email',    $this->t('USER_EMAIL'));
+        $tpl->SetVariable('next',         Jaws::t('NEXT'));
 
         if ($_SESSION['secure']) {
             $JCrypt = Jaws_Crypt::getInstance(
@@ -130,14 +130,14 @@ class Installer_CreateUser extends JawsInstallerStage
 
             if ($post['password'] !== $post['repeat']) {
                 _log(JAWS_LOG_DEBUG,"The password and repeat boxes don't match, please try again.");
-                return new Jaws_Error(_t('INSTALL_USER_RESPONSE_PASS_MISMATCH'), 0, JAWS_ERROR_WARNING);
+                return new Jaws_Error($this->t('USER_RESPONSE_PASS_MISMATCH'), 0, JAWS_ERROR_WARNING);
             }
 
             return true;
         }
 
         _log(JAWS_LOG_DEBUG,"You must complete the username, nickname, password, and repeat boxes.");
-        return new Jaws_Error(_t('INSTALL_USER_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
+        return new Jaws_Error($this->t('USER_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
     }
 
     /**
@@ -224,7 +224,7 @@ class Installer_CreateUser extends JawsInstallerStage
         if (Jaws_Error::IsError($res)) {
             _log(JAWS_LOG_DEBUG,"There was a problem while creating your user:");
             _log(JAWS_LOG_DEBUG,$res->GetMessage());
-            return new Jaws_Error(_t('INSTALL_USER_RESPONSE_CREATE_FAILED'), 0, JAWS_ERROR_ERROR);
+            return new Jaws_Error($this->t('USER_RESPONSE_CREATE_FAILED'), 0, JAWS_ERROR_ERROR);
         }
 
         return true;

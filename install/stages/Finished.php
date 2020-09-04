@@ -8,7 +8,7 @@
  * @copyright   2005-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Installer_Finished extends JawsInstallerStage
+class Installer_Finished extends JawsInstaller
 {
     /**
      * Builds the installer page.
@@ -23,10 +23,10 @@ class Installer_Finished extends JawsInstallerStage
         $tpl->SetBlock('Finished');
 
         $base_url = Jaws_Utils::getBaseURL('', true);
-        $tpl->setVariable('lbl_info',    _t('INSTALL_FINISH_INFO'));
-        $tpl->setVariable('lbl_choices', _t('INSTALL_FINISH_CHOICES', "$base_url/", "$base_url/admin.php"));
-        $tpl->setVariable('lbl_thanks',  _t('INSTALL_FINISH_THANKS'));
-        $tpl->SetVariable('move_log',    _t('INSTALL_FINISH_MOVE_LOG'));
+        $tpl->setVariable('lbl_info',    $this->t('FINISH_INFO'));
+        $tpl->setVariable('lbl_choices', $this->t('FINISH_CHOICES', "$base_url/", "$base_url/admin.php"));
+        $tpl->setVariable('lbl_thanks',  $this->t('FINISH_THANKS'));
+        $tpl->SetVariable('move_log',    $this->t('FINISH_MOVE_LOG'));
 
         $tpl->ParseBlock('Finished');
 

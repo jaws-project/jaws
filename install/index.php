@@ -116,22 +116,23 @@ if (isset($_SESSION['install']['language'])) {
 $objTranslate->LoadTranslation('Global');
 $objTranslate->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 
-require_once 'stagelist.php';
+// go to previous stage
+$go_prev_step = $request->fetch('prev_stage', 'post');
+if (isset($go_prev_step)) {
+    // Go to back if the previous button has been hit
+    $_SESSION['install']['stage']--;
+    $GLOBALS['message'] = null;
+}
+
 require_once 'JawsInstaller.php';
-require_once 'JawsInstallerStage.php';
+JawsInstaller::loadStages();
+$objStage = JawsInstaller::loadStage($_SESSION['install']['stage']);
 
-$installer = new JawsInstaller();
-$installer->loadStages($stages);
-$stages = $installer->getStages();
-$stage  = $stages[$_SESSION['install']['stage']];
-
-$stageobj = $installer->loadStage($stage);
-$stages_count = count($stages);
-
+$skip = false;
+/*
 $_SESSION['install']['predefined'] = $predefined = $installer->hasPredefined();
 $_SESSION['install']['data'] = $data = $installer->getPredefinedData();
 
-$skip = false;
 if (
     ($predefined && isset($data[$stage['file']]['skip']) && $data[$stage['file']]['skip'] === '1')
     || (isset($_SESSION['install'][$stage['file']]['skip']) && $_SESSION['install'][$stage['file']]['skip'] === '1')
@@ -140,33 +141,26 @@ if (
     // Fake a next button push
     $auto_next_step = true;
 }
+*/
 
-$go_prev_step = $request->fetch($stage['file'] . '_prev', 'post');
-if (isset($go_prev_step)) {
-    // Go to back if the previous button has been hit
-    $_SESSION['install']['stage']--;
-    $stageobj = $installer->loadStage($stages[$_SESSION['install']['stage']]);
-    $GLOBALS['message'] = null;
-} else {
-    $go_next_step = $request->fetch($stage['file'] . '_next', 'post');
-    // Only attempt to validate if the next button has been hit
-    if (isset($go_next_step) || isset($auto_next_step)) {
-        $result = $stageobj->validate();
+$go_next_step = $request->fetch('next_stage', 'post');
+// Only attempt to validate if the next button has been hit
+if (isset($go_next_step) || isset($auto_next_step)) {
+    $result = $objStage->validate();
+    if (!Jaws_Error::isError($result)) {
+        $result = $objStage->run();
+
         if (!Jaws_Error::isError($result)) {
-            $result = $stageobj->run();
-
-            if (!Jaws_Error::isError($result)) {
-                if ($_SESSION['install']['stage'] < $stages_count - 1) {
-                    $_SESSION['install']['stage']++;
-                    header('Location: index.php');
-                }
-
-                $result = null;
+            if ($_SESSION['install']['stage'] < $objStage->countStages() - 1) {
+                $_SESSION['install']['stage']++;
+                header('Location: index.php');
             }
-        }
 
-        $GLOBALS['message'] = $result;
+            $result = null;
+        }
     }
+
+    $GLOBALS['message'] = $result;
 }
 
 // Mark the stage as having been run.
@@ -180,11 +174,11 @@ include_once ROOT_JAWS_PATH . 'include/Jaws/Template.php';
 $tpl = new Jaws_Template(false, false);
 $tpl->Load('page.html', 'templates');
 $tpl->SetBlock('page');
-$tpl->SetVariable('title', $stages[$_SESSION['install']['stage']]['name']);
-$tpl->SetVariable('body',  $stageobj->display());
-$tpl->SetVariable('stage', $stages[$_SESSION['install']['stage']]['file']);
+$tpl->SetVariable('title', $objStage->name);
+$tpl->SetVariable('body',  $objStage->display());
+$tpl->SetVariable('stage', $objStage->file);
 
-foreach ($stages as $key => $stage) {
+foreach ($objStage->getStages() as $key => $stage) {
     if ($key < $_SESSION['install']['stage']) {
         $tpl->SetBlock('page/completed_stage');
         $tpl->SetVariable('name', $stage['name']);
@@ -221,7 +215,7 @@ if (isset($GLOBALS['message'])) {
 $tpl->ParseBlock('page');
 
 // Defines where the layout template should be loaded from.
-$direction = _t('GLOBAL_LANG_DIRECTION');
+$direction = Jaws::t('LANG_DIRECTION');
 $dir  = $direction == 'rtl' ? '.' . $direction : '';
 
 // Display the layout

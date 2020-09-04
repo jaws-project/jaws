@@ -9,7 +9,7 @@
  * @copyright  2005-2020 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Installer_Introduction extends JawsInstallerStage
+class Installer_Introduction extends JawsInstaller
 {
     /**
      * Builds the installer page.
@@ -22,13 +22,13 @@ class Installer_Introduction extends JawsInstallerStage
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Introduction/templates');
         $tpl->SetBlock('Introduction');
-        $tpl->SetVariable('welcome',    _t('INSTALL_INTRO_WELCOME'));
-        $tpl->SetVariable('title_info', _t('INSTALL_INTRO_INSTALLER'));
-        $tpl->SetVariable('db_info',    _t('INSTALL_INTRO_DATABASE'));
-        $tpl->SetVariable('ftp_info',   _t('INSTALL_INTRO_FTP'));
-        $tpl->SetVariable('mail_info',  _t('INSTALL_INTRO_MAIL'));
-        $tpl->SetVariable('language',   _t('GLOBAL_LANGUAGE'));
-        $tpl->SetVariable('next',       _t('GLOBAL_NEXT'));
+        $tpl->SetVariable('welcome',    $this->t('INTRO_WELCOME'));
+        $tpl->SetVariable('title_info', $this->t('INTRO_INSTALLER'));
+        $tpl->SetVariable('db_info',    $this->t('INTRO_DATABASE'));
+        $tpl->SetVariable('ftp_info',   $this->t('INTRO_FTP'));
+        $tpl->SetVariable('mail_info',  $this->t('INTRO_MAIL'));
+        $tpl->SetVariable('language',   Jaws::t('LANGUAGE'));
+        $tpl->SetVariable('next',       Jaws::t('NEXT'));
 
         $langs = Jaws_Utils::GetLanguagesList();
         $selected_lang = isset($_SESSION['install']['language'])? $_SESSION['install']['language'] : 'en';
