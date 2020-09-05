@@ -17,7 +17,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $result[] = array('title' => _t('DIRECTORY_FILE_TYPE'), 'value' =>
             array(
-                0 => _t('GLOBAL_ALL'),
+                0 => Jaws::t('ALL'),
                 Directory_Info::FILE_TYPE_FOLDER  => _t('DIRECTORY_FILE_TYPE_FOLDER'),
                 Directory_Info::FILE_TYPE_TEXT    => _t('DIRECTORY_FILE_TYPE_TEXT'),
                 Directory_Info::FILE_TYPE_IMAGE   => _t('DIRECTORY_FILE_TYPE_IMAGE'),
@@ -28,15 +28,15 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             ));
 
         $result[] = array(
-            'title' => _t('GLOBAL_ORDERBY'),
+            'title' => Jaws::t('ORDERBY'),
             'value' => array(
-                1 => _t('GLOBAL_CREATETIME') . ' &uarr;',
-                2 => _t('GLOBAL_CREATETIME') . ' &darr;',
+                1 => Jaws::t('CREATETIME') . ' &uarr;',
+                2 => Jaws::t('CREATETIME') . ' &darr;',
             )
         );
 
         $result[] = array(
-            'title' => _t('GLOBAL_COUNT'),
+            'title' => Jaws::t('COUNT'),
             'value' =>  $this->gadget->registry->fetch('files_limit')
         );
 
@@ -109,8 +109,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
             $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC'));
             $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
-            $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-            $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
+            $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+            $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
 
             $description = '';
             $descriptionEditor =& $this->app->loadEditor(
@@ -124,7 +124,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('referrer', bin2hex(Jaws_Utils::getRequestURL(true)));
             if ($this->gadget->GetPermission('PublishFiles')) {
                 $tpl->SetBlock('directory/upload_form/published');
-                $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+                $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
                 if (isset($fileInfo['published']) && $fileInfo['published']) {
                     $tpl->SetVariable('published_checked', 'checked');
                 }
@@ -243,9 +243,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_from_date', _t('DIRECTORY_FILE_FROM_DATE'));
         $tpl->SetVariable('lbl_to_date', _t('DIRECTORY_FILE_TO_DATE'));
-        $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
-        $tpl->SetVariable('lbl_order', _t('GLOBAL_ORDERBY'));
-        $tpl->SetVariable('lbl_create_time', _t('GLOBAL_CREATETIME'));
+        $tpl->SetVariable('lbl_search', Jaws::t('SEARCH'));
+        $tpl->SetVariable('lbl_order', Jaws::t('ORDERBY'));
+        $tpl->SetVariable('lbl_create_time', Jaws::t('CREATETIME'));
 
         $tpl->SetVariable('lbl_folder', _t('DIRECTORY_FILE_TYPE_FOLDER'));
         $tpl->SetVariable('lbl_text', _t('DIRECTORY_FILE_TYPE_TEXT'));
@@ -257,7 +257,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         // file type
         $fileTypes = array();
-        $fileTypes[] = array('id' => 0, 'title' => _t('GLOBAL_ALL'));
+        $fileTypes[] = array('id' => 0, 'title' => Jaws::t('ALL'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_FOLDER, 'title' => _t('DIRECTORY_FILE_TYPE_FOLDER'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
@@ -279,7 +279,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         // file size
         $fileSizes = array();
-        $fileSizes[] = array('id' => '0', 'title' => _t('GLOBAL_ALL'));
+        $fileSizes[] = array('id' => '0', 'title' => Jaws::t('ALL'));
         $fileSizes[] = array('id' => '0,10', 'title' => '0 - 10 KB');
         $fileSizes[] = array('id' => '10,100', 'title' => '10 - 100 KB');
         $fileSizes[] = array('id' => '100,1024', 'title' => '100 KB - 1 MB');
@@ -338,7 +338,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-        $tpl->SetVariable('lbl_action', _t('GLOBAL_ACTIONS'));
+        $tpl->SetVariable('lbl_action', Jaws::t('ACTIONS'));
 
         $tpl->SetVariable('site_url', $this->app->getSiteURL('/'));
         $theme = $this->app->GetTheme();
@@ -371,9 +371,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
             if (!$file['public']) {
                 $tpl->SetBlock("$block/files/file/action");
-                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+                $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
                 $tpl->SetVariable('id', $file['id']);
-                $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+                $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
                 $tpl->SetVariable('id',  $file['id']);
                 $tpl->SetVariable('parent',  $parent);
                 $tpl->ParseBlock("$block/files/file/action");

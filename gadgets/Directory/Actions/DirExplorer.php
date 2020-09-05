@@ -34,8 +34,8 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_description', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
 
         $description =& $this->app->loadEditor('Directory', 'description', '', false);
         $description->setId('description');

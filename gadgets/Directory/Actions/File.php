@@ -123,7 +123,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('GLOBAL_ERROR_FILE_DOES_NOT_EXIST'),
+            Jaws::t('ERROR_FILE_DOES_NOT_EXIST'),
             RESPONSE_ERROR
         );
     }

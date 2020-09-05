@@ -22,16 +22,16 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
         $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         if ($mode === 'edit') {
             $editor =& $this->app->loadEditor('Directory', 'description');
             $editor->TextArea->SetStyle('width:100%; height:60px;');
             $tpl->SetVariable('description', $editor->get());
             $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
-            $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
+            $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
         } else {
             $tpl->SetVariable('lbl_filename', _t('DIRECTORY_FILE_FILENAME'));
             $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));

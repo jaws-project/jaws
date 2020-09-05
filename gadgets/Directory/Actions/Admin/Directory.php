@@ -55,13 +55,13 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             $tpl->SetVariable('home_url', BASE_SCRIPT . '?reqGadget=Directory');
         }
 
-        $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('lbl_search', Jaws::t('SEARCH'));
         $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));
         $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
         $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
         $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
+        $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
         $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
         $tpl->SetVariable('lbl_dl', _t('DIRECTORY_DOWNLOAD'));
         $tpl->SetVariable('lbl_folder', _t('DIRECTORY_FILE_TYPE_FOLDER'));
@@ -99,9 +99,9 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_FROM_DATE'));
         $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_TO_DATE'));
@@ -184,7 +184,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                 'Profile',
                 array('user' => $file['username'])
             );
-            $file['published_str'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
+            $file['published_str'] = $file['published'] ? Jaws::t('YES'): Jaws::t('NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
             $file['thumbnail'] = $modelFiles->GetThumbnailURL($file['host_filename']);
@@ -254,8 +254,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         $tpl = $this->gadget->template->loadAdmin('Move.html');
         $tpl->SetBlock('tree');
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('tree', $tree);
         $tpl->ParseBlock('tree');
         return $tpl->Get();
@@ -479,7 +479,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             if ($file['is_dir']) {
                 $file['url'] = BASE_SCRIPT . '?reqGadget=Directory&reqAction=Directory&id=' . $file['id'];
             }
-            $file['published_str'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
+            $file['published_str'] = $file['published'] ? Jaws::t('YES'): Jaws::t('NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
             $file['thumbnail'] = $model->GetThumbnailURL($file['host_filename']);
