@@ -44,41 +44,41 @@ class Jaws_HTTPError
                     'Login',
                     array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
                 );
-                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_401') : $title;
-                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_401', $urlLogin) : $message;
+                $title   = empty($title)? Jaws::t('HTTP_ERROR_TITLE_401') : $title;
+                $message = empty($message)? Jaws::t('HTTP_ERROR_CONTENT_401', $urlLogin) : $message;
                 break;
 
             case 403:
                 Jaws::getInstance()->http_response_code(403);
-                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_403') : $title;
-                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_403') : $message;
+                $title   = empty($title)? Jaws::t('HTTP_ERROR_TITLE_403') : $title;
+                $message = empty($message)? Jaws::t('HTTP_ERROR_CONTENT_403') : $message;
                 break;
 
             case 404:
                 $uri = Jaws_XSS::filter(Jaws_Utils::getRequestURL(false));
                 if (empty($message)) {
-                    $message = _t('GLOBAL_HTTP_ERROR_CONTENT_404', $uri);
+                    $message = Jaws::t('HTTP_ERROR_CONTENT_404', $uri);
                 }
                 Jaws::getInstance()->http_response_code(404);
-                $title = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_404') : $title;
+                $title = empty($title)? Jaws::t('HTTP_ERROR_TITLE_404') : $title;
                 break;
 
             case 410:
                 Jaws::getInstance()->http_response_code(410);
-                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_410') : $title;
-                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_410') : $message;
+                $title   = empty($title)? Jaws::t('HTTP_ERROR_TITLE_410') : $title;
+                $message = empty($message)? Jaws::t('HTTP_ERROR_CONTENT_410') : $message;
                 break;
 
             case 500:
                 Jaws::getInstance()->http_response_code(500);
-                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_500') : $title;
-                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_500') : $message;
+                $title   = empty($title)? Jaws::t('HTTP_ERROR_TITLE_500') : $title;
+                $message = empty($message)? Jaws::t('HTTP_ERROR_CONTENT_500') : $message;
                 break;
 
             case 503:
                 Jaws::getInstance()->http_response_code(503);
-                $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_503') : $title;
-                $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_503') : $message;
+                $title   = empty($title)? Jaws::t('HTTP_ERROR_TITLE_503') : $title;
+                $message = empty($message)? Jaws::t('HTTP_ERROR_CONTENT_503') : $message;
                 break;
 
             default:
@@ -95,7 +95,7 @@ class Jaws_HTTPError
             $tpl->SetBlock($code);
 
             //set global site config
-            $direction = _t('GLOBAL_LANG_DIRECTION');
+            $direction = Jaws::t('LANG_DIRECTION');
             $dir  = $direction == 'rtl' ? '.' . $direction : '';
             $brow = Jaws::getInstance()->getBrowserFlag();
             $brow = empty($brow)? '' : '.'.$brow;
@@ -111,8 +111,8 @@ class Jaws_HTTPError
 
             $tpl->SetVariable('title',   $title);
             $tpl->SetVariable('content', $message);
-            $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK'));
-            $tpl->SetVariable('lbl_reload', _t('GLOBAL_RELOAD'));
+            $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
+            $tpl->SetVariable('lbl_reload', Jaws::t('RELOAD'));
 
             $tpl->ParseBlock($code);
             return $tpl->Get();

@@ -84,7 +84,7 @@ class Jaws_HTTPAuth
 
         // This code is only executed if the user hits the cancel button
         // or in some browsers user enters wrong data 3 times.
-        $data = _t('GLOBAL_ERROR_ACCESS_DENIED');
+        $data = Jaws::t('ERROR_ACCESS_DENIED');
         terminate($data, 401);
     }
 
