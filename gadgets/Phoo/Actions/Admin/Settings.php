@@ -39,7 +39,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $save->SetSubmit();
 
         // Reset Button
-        $reset =& Piwi::CreateWidget('Button', 'reset', _t('GLOBAL_RESET'), STOCK_RESET);
+        $reset =& Piwi::CreateWidget('Button', 'reset', Jaws::t('RESET'), STOCK_RESET);
         $reset->setReset(true);
 
         $sModel = $this->gadget->model->load('Settings');
@@ -91,32 +91,32 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $commCombo =& Piwi::CreateWidget('Combo', 'allow_comments');
         $commCombo->setContainerClass('oneline');
         $commCombo->SetTitle(_t('PHOO_COMMENTS'));
-        $commCombo->AddOption(_t('GLOBAL_ENABLED'), 'true');
-        $commCombo->AddOption(_t('GLOBAL_DISABLED'), 'false');
+        $commCombo->AddOption(Jaws::t('ENABLED'), 'true');
+        $commCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $commCombo->SetDefault($settings['allow_comments']);
 
         // Moderate comments
         $moderateCombo =& Piwi::CreateWidget('Combo', 'comment_status');
         $moderateCombo->setContainerClass('oneline');
         $moderateCombo->SetTitle(_t('PHOO_MODERATE_COMMENTS'));
-        $moderateCombo->AddOption(_t('GLOBAL_YES'), 'waiting');
-        $moderateCombo->AddOption(_t('GLOBAL_NO'), 'approved');
+        $moderateCombo->AddOption(Jaws::t('YES'), 'waiting');
+        $moderateCombo->AddOption(Jaws::t('NO'), 'approved');
         $moderateCombo->SetDefault($settings['comment_status']);
 
         // Keep original
         $keepCombo =& Piwi::CreateWidget('Combo', 'keep_original');
         $keepCombo->setContainerClass('oneline');
         $keepCombo->SetTitle(_t('PHOO_KEEP_ORIGINAL'));
-        $keepCombo->AddOption(_t('GLOBAL_ENABLED'), 'true');
-        $keepCombo->AddOption(_t('GLOBAL_DISABLED'), 'false');
+        $keepCombo->AddOption(Jaws::t('ENABLED'), 'true');
+        $keepCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $keepCombo->SetDefault($settings['keep_original']);
 
         // Show EXIF info
         $exifCombo =& Piwi::CreateWidget('Combo', 'show_exif_info');
         $exifCombo->setContainerClass('oneline');
         $exifCombo->SetTitle(_t('PHOO_SHOW_EXIF_INFO'));
-        $exifCombo->AddOption(_t('GLOBAL_ENABLED'), 'true');
-        $exifCombo->AddOption(_t('GLOBAL_DISABLED'), 'false');
+        $exifCombo->AddOption(Jaws::t('ENABLED'), 'true');
+        $exifCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $exifCombo->SetDefault($settings['show_exif_info']);
 
         // Moblog
@@ -178,7 +178,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $form->Add($fieldset);
 
         $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($reset);
         $buttonbox->PackStart($save);
 

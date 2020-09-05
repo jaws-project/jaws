@@ -69,7 +69,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $addEntry =& Piwi::CreateWidget('StaticEntry', $addEntryArea);
         $phooFieldset->Add($addEntry);
         $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;'); //hig style
+        $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;'); //hig style
         $submit =& Piwi::CreateWidget('Button', 'uploadphotos', _t('PHOO_UPLOAD_PHOTOS'), STOCK_SAVE);
         $submit->SetSubmit();
         $buttonbox->Add($submit);

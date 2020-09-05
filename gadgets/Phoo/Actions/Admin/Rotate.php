@@ -59,7 +59,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                     if (Jaws_Error::IsError($res)) {
                         $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
                     } else {
-                        $this->gadget->session->push(_t('GLOBAL_IMAGE_ROTATED_LEFT'), RESPONSE_NOTICE);
+                        $this->gadget->session->push(Jaws::t('IMAGE_ROTATED_LEFT'), RESPONSE_NOTICE);
                     }
                 }
             }
@@ -116,7 +116,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
                     if (Jaws_Error::IsError($res)) {
                         $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
                     } else {
-                        $this->gadget->session->push(_t('GLOBAL_IMAGE_ROTATED_RIGHT'), RESPONSE_NOTICE);
+                        $this->gadget->session->push(Jaws::t('IMAGE_ROTATED_RIGHT'), RESPONSE_NOTICE);
                     }
                 }
             }

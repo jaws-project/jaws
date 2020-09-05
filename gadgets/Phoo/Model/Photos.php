@@ -441,7 +441,7 @@ class Phoo_Model_Photos extends Phoo_Model
         if (Jaws_Error::IsError($res)) {
             return $res;
         } elseif (empty($res)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'));
+            return new Jaws_Error(Jaws::t('ERROR_UPLOAD_4'));
         }
         $filename = $res[0][0]['host_filename'];
         $uploadfile = $uploaddir . $filename;

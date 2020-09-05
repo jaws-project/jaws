@@ -71,7 +71,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
 
         $desc = isset($description) ? $description : '';
         $editor =& $this->app->loadEditor('Phoo', 'description', $desc, false);
-        $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
+        $editor->_Container->setStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
@@ -81,16 +81,16 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
         $metaKeywords->SetStyle('width: 100%;');
-        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('lbl_meta_keywords', Jaws::t('META_KEYWORDS'));
         $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
 
         // Meta Description
         $metaDesc =& Piwi::CreateWidget('Entry', 'meta_description', '');
         $metaDesc->SetStyle('width: 100%;');
-        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('lbl_meta_description', Jaws::t('META_DESCRIPTION'));
         $tpl->SetVariable('meta_description', $metaDesc->Get());
 
-        $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel =& Piwi::CreateWidget('Button', 'cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, 'history.go(-1)');
         $tpl->SetVariable('cancel', $cancel->Get());
         $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
@@ -130,7 +130,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&album='.$album);
             }
         } else {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
         return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');
@@ -199,7 +199,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('status_field', $statCombo->get());
 
         $editor =& $this->app->loadEditor('Phoo', 'description', $album['description'], false);
-        $editor->_Container->setStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
+        $editor->_Container->setStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'text-align: right;' : 'text-align: left;');
         $editor->TextArea->setStyle('width: 100%;');
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
@@ -209,16 +209,16 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $album['meta_keywords']);
         $metaKeywords->SetStyle('width: 100%;');
-        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('lbl_meta_keywords', Jaws::t('META_KEYWORDS'));
         $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
 
         // Meta Description
         $metaDesc =& Piwi::CreateWidget('Entry', 'meta_description', $album['meta_description']);
         $metaDesc->SetStyle('width: 100%;');
-        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('lbl_meta_description', Jaws::t('META_DESCRIPTION'));
         $tpl->SetVariable('meta_description', $metaDesc->Get());
 
-        $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel =& Piwi::CreateWidget('Button', 'cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "gotoLocation({$get['album']})");
         $tpl->SetVariable('cancel', $cancel->Get());
         $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
@@ -257,7 +257,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                 return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo&reqAction=EditAlbum&album='.$id);
             }
         } else {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
         return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Phoo');

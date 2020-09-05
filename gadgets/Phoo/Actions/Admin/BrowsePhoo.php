@@ -26,7 +26,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
         $tpl->SetBlock('phoo_browse');
         $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_GALLERY'));
 
-        $dir = _t('GLOBAL_LANG_DIRECTION');
+        $dir = Jaws::t('LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
         $album   = $this->gadget->request->fetch('album', 'get');
@@ -126,7 +126,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                 $r_album = isset($album) ? $album : $firstAlbum;
             }
 
-            $tpl->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+            $tpl->SetVariable('incompleteFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
             // Use for uploading image
             if (is_array($r_album)) {
                 $tpl->SetVariable('defaultAlbum', $r_album[0]);

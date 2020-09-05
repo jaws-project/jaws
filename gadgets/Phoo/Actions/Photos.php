@@ -263,7 +263,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
 
             if (!empty($image['exif']['datetime'])) {
                 $date = Jaws_Date::getInstance();
-                $datatext .= _t('GLOBAL_DATE') . ': ' . $date->Format($image['exif']['datetime']) . '<br />';
+                $datatext .= Jaws::t('DATE') . ': ' . $date->Format($image['exif']['datetime']) . '<br />';
             }
 
             if (!empty($image['exif']['aperture'])) {
@@ -324,15 +324,15 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $this->SetTitle(_t('PHOO_UPLOAD_PHOTO'));
         $tpl->SetVariable('title', _t('PHOO_UPLOAD_PHOTO'));
 
-        $tpl->SetVariable('lbl_file', _t('GLOBAL_FILE'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_file', Jaws::t('FILE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
         if ($this->gadget->GetPermission('PublishFiles')) {
             $tpl->SetBlock('uploadUI/published');
-            $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+            $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
             if (isset($fileInfo['published']) && $fileInfo['published']) {
                 $tpl->SetVariable('published_checked', 'checked');
             }

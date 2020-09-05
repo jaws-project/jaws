@@ -155,8 +155,8 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         } elseif (empty($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'));
+            $this->gadget->session->push(Jaws::t('ERROR_UPLOAD_4'), RESPONSE_ERROR);
+            return new Jaws_Error(Jaws::t('ERROR_UPLOAD_4'));
         }
         $filename = $res[0][0]['host_filename'];
         $uploadfile = $uploaddir . $filename;

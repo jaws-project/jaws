@@ -30,7 +30,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
         $tpl->SetBlock('ImageSelect');
         $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_SELECT'));
 
-        $dir = _t('GLOBAL_LANG_DIRECTION');
+        $dir = Jaws::t('LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
 
         $extraParams = '';
@@ -83,7 +83,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
                 $tpl->SetVariable('album',$r_album);
             }
             $tpl->SetVariable('t_title',            _t('PHOO_PHOTO_TITLE'));
-            $tpl->SetVariable('t_desc',             _t('GLOBAL_DESCRIPTION'));
+            $tpl->SetVariable('t_desc',             Jaws::t('DESCRIPTION'));
             $tpl->SetVariable('t_size',             _t('PHOO_SIZE'));
             $tpl->SetVariable('t_thumb',            _t('PHOO_THUMB'));
             $tpl->SetVariable('t_medium',           _t('PHOO_MEDIUM'));
