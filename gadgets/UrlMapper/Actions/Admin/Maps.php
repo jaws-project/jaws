@@ -34,7 +34,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
             $mapData['map'] = $map['map'];
             $actions = '';
             if ($this->gadget->GetPermission('ManageMaps')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editMap(this, '".$map['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
@@ -57,7 +57,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $datagrid->setID('maps_datagrid');
 
         $datagrid->addColumn(Piwi::CreateWidget('Column', _t('URLMAPPER_MAPS'), null, false));
-        $colActions = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $colActions = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $colActions->SetStyle('width: 60px; white-space:nowrap;');
         $datagrid->addColumn($colActions);
 
@@ -89,7 +89,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
             $comboGadgets->AddOption($gadget['title'], $gadget['name']);
         }
         $comboGadgets->AddEvent(ON_CHANGE, 'javascript:rebuildActionCombo();');
-        $tpl->SetVariable('lbl_gadgets', _t('GLOBAL_GADGETS'));
+        $tpl->SetVariable('lbl_gadgets', Jaws::t('GADGETS'));
         $tpl->SetVariable('combo_gadgets', $comboGadgets->Get());
 
         //Combo for actions
@@ -97,7 +97,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $comboActions->SetSize(20);
         $comboActions->SetStyle('width: 200px; height: 280px;');
         $comboActions->AddEvent(ON_CHANGE, 'javascript:showActionMaps();');
-        $tpl->SetVariable('lbl_actions', _t('GLOBAL_GADGET_ACTIONS'));
+        $tpl->SetVariable('lbl_actions', Jaws::t('GADGET_ACTIONS'));
         $tpl->SetVariable('combo_actions', $comboActions->Get());
 
         $tpl->SetVariable('lbl_maps',    _t('URLMAPPER_MAPS'));
@@ -132,12 +132,12 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $tpl->SetVariable('lbl_custom_map_route', _t('URLMAPPER_MAPS_ROUTE'));
         $tpl->SetVariable('custom_map_route', $custom_route->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->SetEnabled(false);
         $btnCancel->AddEvent(ON_CLICK, "javascript:enableMapEditingArea(false);");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->SetEnabled(false);
         $btnSave->AddEvent(ON_CLICK, "javascript:saveMap();");
         $tpl->SetVariable('btn_save', $btnSave->Get());

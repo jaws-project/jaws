@@ -27,25 +27,25 @@ class UrlMapper_Actions_Admin_Properties extends UrlMapper_Actions_Admin_Default
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('GLOBAL_PROPERTIES'));
+        $fieldset = new Jaws_Widgets_FieldSet(Jaws::t('PROPERTIES'));
         $fieldset->SetDirection('vertical');
 
         $useMapCombo =& Piwi::CreateWidget('Combo', 'enabled');
         $useMapCombo->SetTitle(_t('URLMAPPER_SETTINGS_MAP_ENABLED'));
-        $useMapCombo->AddOption(_t('GLOBAL_YES'), 'true');
-        $useMapCombo->AddOption(_t('GLOBAL_NO'), 'false');
+        $useMapCombo->AddOption(Jaws::t('YES'), 'true');
+        $useMapCombo->AddOption(Jaws::t('NO'), 'false');
         $useMapCombo->SetDefault($this->gadget->registry->fetch('map_enabled'));
 
         $precedence =& Piwi::CreateWidget('Combo', 'custom_precedence');
         $precedence->SetTitle(_t('URLMAPPER_CUSTOM_MAP_PRECEDENCE'));
-        $precedence->AddOption(_t('GLOBAL_YES'), 'true');
-        $precedence->AddOption(_t('GLOBAL_NO'), 'false');
+        $precedence->AddOption(Jaws::t('YES'), 'true');
+        $precedence->AddOption(Jaws::t('NO'), 'false');
         $precedence->SetDefault($this->gadget->registry->fetch('map_custom_precedence'));
 
         $useAliasesCombo =& Piwi::CreateWidget('Combo', 'use_aliases');
         $useAliasesCombo->SetTitle(_t('URLMAPPER_SETTINGS_MAP_USE_ALIASES'));
-        $useAliasesCombo->AddOption(_t('GLOBAL_YES'), 'true');
-        $useAliasesCombo->AddOption(_t('GLOBAL_NO'), 'false');
+        $useAliasesCombo->AddOption(Jaws::t('YES'), 'true');
+        $useAliasesCombo->AddOption(Jaws::t('NO'), 'false');
         $useAliasesCombo->SetDefault($this->gadget->registry->fetch('map_use_aliases'));
 
         $extension =& Piwi::CreateWidget('Entry', 'extension',
@@ -58,11 +58,11 @@ class UrlMapper_Actions_Admin_Properties extends UrlMapper_Actions_Admin_Default
         $fieldset->Add($precedence);
         $fieldset->Add($extension);
 
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($save);
 
         $form->Add($fieldset);

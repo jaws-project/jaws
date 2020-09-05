@@ -138,7 +138,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $codeCombo =& Piwi::CreateWidget('Combo', 'filter_code');
         $codeCombo->SetID('filter_code');
         $codeCombo->SetStyle('width: 150px;');
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_404'), 404);
         $codeCombo->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('lbl_filter_code', _t('URLMAPPER_ERRORMAPS_CODE'));
         $tpl->SetVariable('filter_code', $codeCombo->Get());
@@ -147,11 +147,11 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $codeCombo =& Piwi::CreateWidget('Combo', 'filter_new_code');
         $codeCombo->SetID('filter_new_code');
         $codeCombo->SetStyle('width: 150px;');
-        $codeCombo->AddOption(_t('GLOBAL_ALL'), 0);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_301'), 301);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_302'), 302);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_410'), 410);
+        $codeCombo->AddOption(Jaws::t('ALL'), 0);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_301'), 301);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_302'), 302);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_404'), 404);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_410'), 410);
         $codeCombo->SetDefault(0);
         $codeCombo->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('lbl_filter_new_code', _t('URLMAPPER_ERRORMAPS_NEW_CODE'));
@@ -159,8 +159,8 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
 
         // Order
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
-        $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &darr;', 'id');
-        $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &uarr;', 'id desc');
+        $orderType->AddOption(Jaws::t('CREATETIME'). ' &darr;', 'id');
+        $orderType->AddOption(Jaws::t('CREATETIME'). ' &uarr;', 'id desc');
         $orderType->AddOption(_t('URLMAPPER_ERRORMAPS_HITS'). ' &darr;', 'hits');
         $orderType->AddOption(_t('URLMAPPER_ERRORMAPS_HITS'). ' &uarr;', 'hits desc');
         $orderType->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
@@ -171,9 +171,9 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'errormaps_actions');
         $actions->SetID('errormaps_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(Jaws::t('DELETE'), 'delete');
         $actions->AddOption(_t('URLMAPPER_ERRORMAPS_DELETE_ALL'), 'deleteAll');
         $actions->AddOption(_t('URLMAPPER_ERRORMAPS_DELETE_FILTERED'), 'deleteFiltered');
         $tpl->SetVariable('actions_combo', $actions->Get());
@@ -193,7 +193,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $codeCombo =& Piwi::CreateWidget('Combo', 'code');
         $codeCombo->SetID('code');
         $codeCombo->SetStyle('width: 200px;');
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_404'), 404);
         $tpl->SetVariable('lbl_code', _t('URLMAPPER_ERRORMAPS_CODE'));
         $tpl->SetVariable('code', $codeCombo->Get());
 
@@ -209,10 +209,10 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $codeCombo->SetID('new_code');
         $codeCombo->SetStyle('width: 200px;');
         $codeCombo->AddOption('', 0);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_301'), 301);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_302'), 302);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
-        $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_410'), 410);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_301'), 301);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_302'), 302);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_404'), 404);
+        $codeCombo->AddOption(Jaws::t('HTTP_ERROR_TITLE_410'), 410);
         $codeCombo->SetDefault(404);
         $codeCombo->AddEvent(ON_CHANGE, "javascript:changeCode();");
         $tpl->SetVariable('lbl_new_code', _t('URLMAPPER_ERRORMAPS_NEW_CODE'));
@@ -223,16 +223,16 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $insertTime->SetID('insert_time');
         $insertTime->SetEnabled(false);
         $insertTime->SetStyle('width: 250px;');
-        $tpl->SetVariable('lbl_insert_time', _t('GLOBAL_CREATETIME'));
+        $tpl->SetVariable('lbl_insert_time', Jaws::t('CREATETIME'));
         $tpl->SetVariable('insert_time', $insertTime->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->SetID('btn_cancel');
         $btnCancel->SetStyle('visibility: hidden;');
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopErrorMapAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "javascript:saveErrorMap();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 

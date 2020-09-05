@@ -46,17 +46,17 @@ class UrlMapper_Actions_Admin_Aliases extends UrlMapper_Actions_Admin_Default
         $fieldset->Add($alias);
 
         $hbox =& Piwi::CreateWidget('HBox');
-        $hbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;'); //hig style
-        $delete =& Piwi::CreateWidget('Button', 'delete', _t('GLOBAL_DELETE'), STOCK_DELETE);
+        $hbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;'); //hig style
+        $delete =& Piwi::CreateWidget('Button', 'delete', Jaws::t('DELETE'), STOCK_DELETE);
         $delete->AddEvent(ON_CLICK, 'deleteCurrentAlias();');
         $delete->SetId('delete_button');
         $delete->SetStyle('visibility: hidden;');
         $hbox->Add($delete);
-        $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel =& Piwi::CreateWidget('Button', 'cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, 'stopAction();');
         $cancel->SetId('cancel_button');
         $hbox->Add($cancel);
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->SetId('save_button');
         $save->AddEvent(ON_CLICK, 'javascript:saveAlias();');
 

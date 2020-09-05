@@ -33,7 +33,7 @@ class UrlMapper_Actions_Admin_Default extends Jaws_Gadget_Action
                             BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Aliases', 'gadgets/UrlMapper/Resources/images/aliases.png');
         $menubar->AddOption('ErrorMaps', _t('URLMAPPER_ERRORMAPS'),
                             BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=ErrorMaps', STOCK_DOCUMENTS);
-        $menubar->AddOption('Properties', _t('GLOBAL_PROPERTIES'),
+        $menubar->AddOption('Properties', Jaws::t('PROPERTIES'),
                             BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Properties', STOCK_PREFERENCES);
         $menubar->Activate($action_selected);
         return $menubar->Get();
