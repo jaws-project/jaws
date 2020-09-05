@@ -31,7 +31,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
         $this->gadget->define('msgNoMatches', _t('LOGS_COMBO_NO_MATCH_MESSAGE'));
-        $this->gadget->define('lbl_all_users', _t('GLOBAL_ALL_USERS'));
+        $this->gadget->define('lbl_all_users', Jaws::t('ALL_USERS'));
 
         $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('Logs');
@@ -39,7 +39,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Logs'));
 
-        $tpl->SetVariable('lbl_all_users', _t('GLOBAL_ALL_USERS'));
+        $tpl->SetVariable('lbl_all_users', Jaws::t('ALL_USERS'));
         $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
 
         // From Date Filter
@@ -71,7 +71,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $gadgetsCombo->AddEvent(ON_CHANGE, "searchLogs();");
         $gadgetsCombo->SetDefault(0);
         $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
-        $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
+        $tpl->SetVariable('lbl_filter_gadget', Jaws::t('GADGETS'));
 
         // Result Filter
         $filterResult =& Piwi::CreateWidget('Entry', 'filter_result', '');
@@ -82,7 +82,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 
         // Priority
         $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
-        $priorityCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
+        $priorityCombo->AddOption(Jaws::t('ALL'), 0, false);
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_5'), JAWS_WARNING, false);
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_6'), JAWS_NOTICE, false);
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_7'), JAWS_INFO, false);
@@ -94,7 +94,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         // Status
         $allStatus = array (1, 2);
         $statusCombo =& Piwi::CreateWidget('Combo', 'filter_status');
-        $statusCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
+        $statusCombo->AddOption(Jaws::t('ALL'), 0, false);
         foreach($allStatus as $status) {
             $statusCombo->AddOption(_t('LOGS_LOG_STATUS_' . $status), $status, false);
         }
@@ -112,10 +112,10 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
         $actions->SetID('logs_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
         if ($this->gadget->GetPermission('DeleteLogs')) {
-            $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+            $actions->AddOption(Jaws::t('DELETE'), 'delete');
             $actions->AddOption(_t('LOGS_DELETE_ALL'), 'deleteAll');
             $actions->AddOption(_t('LOGS_DELETE_FILTERED'), 'deleteFiltered');
         }
@@ -130,7 +130,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
@@ -153,7 +153,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $grid->useMultipleSelection();
         $grid->pageBy(15);
 
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_GADGETS'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('GADGETS'), null, false);
         $column1->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column1);
 
@@ -161,15 +161,15 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $column2->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column2);
 
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_AUTHTYPE'), null, false);
+        $column3 = Piwi::CreateWidget('Column', Jaws::t('AUTHTYPE'), null, false);
         $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
+        $column4 = Piwi::CreateWidget('Column', Jaws::t('USERNAME'), null, false);
         $column4->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
-        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
+        $column5 = Piwi::CreateWidget('Column', Jaws::t('DATE'), null, false);
         $column5->SetStyle('width:128px; white-space:nowrap;');
         $grid->AddColumn($column5);
 
@@ -187,18 +187,18 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('LogUI');
 
-        $tpl->SetVariable('lbl_gadget', _t('GLOBAL_GADGETS'));
+        $tpl->SetVariable('lbl_gadget', Jaws::t('GADGETS'));
         $tpl->SetVariable('lbl_action', _t('LOGS_ACTION'));
         $tpl->SetVariable('lbl_backend', _t('LOGS_LOG_SCRIPT'));
         $tpl->SetVariable('lbl_priority', _t('LOGS_PRIORITY'));
         $tpl->SetVariable('lbl_result', _t('LOGS_LOG_RESULT'));
         $tpl->SetVariable('lbl_status', _t('LOGS_LOG_STATUS'));
         $tpl->SetVariable('lbl_apptype', _t('LOGS_LOG_REQUEST_TYPE'));
-        $tpl->SetVariable('lbl_auth', _t('GLOBAL_AUTHTYPE'));
-        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_auth', Jaws::t('AUTHTYPE'));
+        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
+        $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
         $tpl->SetVariable('lbl_agent', _t('LOGS_AGENT'));
-        $tpl->SetVariable('lbl_date', _t('GLOBAL_DATE'));
+        $tpl->SetVariable('lbl_date', Jaws::t('DATE'));
 
         $tpl->ParseBlock('LogUI');
         return $tpl->Get();

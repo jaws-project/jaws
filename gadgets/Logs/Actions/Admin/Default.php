@@ -31,7 +31,7 @@ class Logs_Actions_Admin_Default extends Jaws_Gadget_Action
                             STOCK_NEW);
         if ($this->gadget->GetPermission('ManageSettings')) {
             $menubar->AddOption('Settings',
-                                _t('GLOBAL_PROPERTIES'),
+                                Jaws::t('PROPERTIES'),
                                 BASE_SCRIPT . '?reqGadget=Logs&amp;reqAction=Settings',
                                 STOCK_PREFERENCES);
         }

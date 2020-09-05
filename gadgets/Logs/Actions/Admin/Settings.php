@@ -36,13 +36,13 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
         // Log Parameters?
         $log_parameters = (int)$this->gadget->registry->fetch('log_parameters');
         $logParametersCombo =& Piwi::CreateWidget('Combo', 'log_parameters');
-        $logParametersCombo->AddOption(_t('GLOBAL_YES'), 1, false);
-        $logParametersCombo->AddOption(_t('GLOBAL_NO'), 0, false);
+        $logParametersCombo->AddOption(Jaws::t('YES'), 1, false);
+        $logParametersCombo->AddOption(Jaws::t('NO'), 0, false);
         $logParametersCombo->SetDefault($log_parameters);
         $tpl->SetVariable('lbl_log_parameters', _t('LOGS_SETTINGS_LOG_PARAMETERS'));
         $tpl->SetVariable('log_parameters', $logParametersCombo->Get());
 
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript:saveSettings();');
         $tpl->SetVariable('btn_save', $save->Get());
 

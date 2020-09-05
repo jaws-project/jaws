@@ -19,7 +19,7 @@ class Logs_Actions_History extends Jaws_Gadget_Action
     function LoginHistoryLayoutParams()
     {
         $result[] = array(
-            'title' => _t('GLOBAL_COUNT'),
+            'title' => Jaws::t('COUNT'),
             'value' => 5
         );
 
