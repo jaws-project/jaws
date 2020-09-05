@@ -22,10 +22,10 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
     {
         $perm = $this->gadget->GetPermission('ForumPublic', $fid);
         if(is_null($perm)) {
-            return Jaws_Error::raiseError(_t('GLOBAL_HTTP_ERROR_CONTENT_404'), 404, JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(Jaws::t('HTTP_ERROR_CONTENT_404'), 404, JAWS_ERROR_NOTICE);
         }
         if (!$perm) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403, JAWS_ERROR_NOTICE);
+            return Jaws_Error::raiseError(Jaws::t('ERROR_ACCESS_DENIED'), 403, JAWS_ERROR_NOTICE);
         }
 
         $table = Jaws_ORM::getInstance()->table('forums');

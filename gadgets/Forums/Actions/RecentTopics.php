@@ -34,7 +34,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
             );
 
             $result[] = array(
-                'title' => _t('GLOBAL_COUNT'),
+                'title' => Jaws::t('COUNT'),
                 'value' => 5
             );
         }

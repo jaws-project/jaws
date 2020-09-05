@@ -24,12 +24,12 @@ class Forums_Actions_Admin_Group extends Jaws_Gadget_Action
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
         $title->SetID('title');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         $description =& Piwi::CreateWidget('TextArea', 'description', '');
         $description->SetID('description');
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('description', $description->Get());
 
         $fasturl =& Piwi::CreateWidget('Entry', 'fast_url', '');
@@ -44,18 +44,18 @@ class Forums_Actions_Admin_Group extends Jaws_Gadget_Action
 
         $locked =& Piwi::CreateWidget('Combo', 'locked');
         $locked->SetID('locked');
-        $locked->AddOption(_t('GLOBAL_NO'),  0);
-        $locked->AddOption(_t('GLOBAL_YES'), 1);
+        $locked->AddOption(Jaws::t('NO'),  0);
+        $locked->AddOption(Jaws::t('YES'), 1);
         $locked->SetDefault(0);
         $tpl->SetVariable('lbl_locked', _t('FORUMS_LOCKED'));
         $tpl->SetVariable('locked', $locked->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault(1);
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('GroupsUI');

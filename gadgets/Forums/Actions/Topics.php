@@ -241,7 +241,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             $topic['message'] = $rqst['message'];
             $topic['update_reason'] = $rqst['update_reason'];
             $tpl->SetBlock('topic/preview');
-            $tpl->SetVariable('lbl_preview', _t('GLOBAL_PREVIEW'));
+            $tpl->SetVariable('lbl_preview', Jaws::t('PREVIEW'));
             $tpl->SetVariable('message', $this->gadget->plugin->parse($topic['message']));
             $tpl->ParseBlock('topic/preview');
         }
@@ -313,9 +313,9 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         // status (published or draft)
         if ($this->gadget->GetPermission('PublishTopic')) {
             $tpl->SetBlock('topic/status');
-            $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
-            $tpl->SetVariable('lbl_draft', _t('GLOBAL_DRAFT'));
-            $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+            $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
+            $tpl->SetVariable('lbl_draft', Jaws::t('DRAFT'));
+            $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
             $tpl->ParseBlock('topic/status');
         }
 
@@ -367,8 +367,8 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
         // buttons
         $tpl->SetVariable('btn_update_title', $btn_title);
-        $tpl->SetVariable('btn_preview_title', _t('GLOBAL_PREVIEW'));
-        $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('btn_preview_title', Jaws::t('PREVIEW'));
+        $tpl->SetVariable('btn_cancel_title', Jaws::t('CANCEL'));
 
         $tpl->ParseBlock('topic');
         return $tpl->Get();
@@ -396,7 +396,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
         if (empty($topic['subject']) ||  empty($topic['message'])) {
             $this->gadget->session->push(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                 RESPONSE_ERROR,
                 'UpdateTopic',
                 $topic
@@ -689,7 +689,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
             }
 
             $tpl->SetVariable('btn_submit_title', _t('FORUMS_TOPICS_DELETE_BUTTON'));
-            $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
+            $tpl->SetVariable('btn_cancel_title', Jaws::t('CANCEL'));
             $tpl->ParseBlock('topic');
             return $tpl->Get();
         }

@@ -390,8 +390,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         $htmlPolicy->loadCaptcha($tpl, 'post');
 
         // buttons
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
         $tpl->ParseBlock('post');
         return $tpl->Get();
@@ -430,7 +430,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
         if (empty($post['message'])) {
             $this->gadget->session->push(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                 RESPONSE_ERROR,
                 'UpdatePost',
                 $post
@@ -703,7 +703,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             }
 
             $tpl->SetVariable('btn_submit_title', _t('FORUMS_POSTS_DELETE_BUTTON'));
-            $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
+            $tpl->SetVariable('btn_cancel_title', Jaws::t('CANCEL'));
             $tpl->ParseBlock('post');
             return $tpl->Get();
         }
