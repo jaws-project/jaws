@@ -38,13 +38,13 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $tpl->SetVariable('unit', $unit->Get());
 
         $period =& Piwi::CreateWidget('Combo', 'update_period');
-        $period->AddOption(_t('GLOBAL_DISABLE'),              0);
-        $period->AddOption(_t('GLOBAL_DATE_MINUTES', 30),  1800);
-        $period->AddOption(_t('GLOBAL_DATE_HOURS',   1),   3600);
-        $period->AddOption(_t('GLOBAL_DATE_HOURS',   3),  10800);
-        $period->AddOption(_t('GLOBAL_DATE_HOURS',   6),  21600);
-        $period->AddOption(_t('GLOBAL_DATE_HOURS',   8),  28800);
-        $period->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
+        $period->AddOption(Jaws::t('DISABLE'),              0);
+        $period->AddOption(Jaws::t('DATE_MINUTES', 30),  1800);
+        $period->AddOption(Jaws::t('DATE_HOURS',   1),   3600);
+        $period->AddOption(Jaws::t('DATE_HOURS',   3),  10800);
+        $period->AddOption(Jaws::t('DATE_HOURS',   6),  21600);
+        $period->AddOption(Jaws::t('DATE_HOURS',   8),  28800);
+        $period->AddOption(Jaws::t('DATE_DAYS',    1),  86400);
         $period->SetDefault($this->gadget->registry->fetch('update_period'));
         $tpl->SetVariable('lbl_update_period', _t('WEATHER_UPDATE_PERIOD'));
         $tpl->SetVariable('update_period', $period->Get());
@@ -69,7 +69,7 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $tpl->SetVariable('api_key', $apikey->Get());
 
         if ($this->gadget->GetPermission('UpdateSetting')) {
-            $btnupdate =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnupdate =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
             $btnupdate->AddEvent(ON_CLICK, 'updateProperties();');
             $tpl->SetVariable('btn_save', $btnupdate->Get());
         }

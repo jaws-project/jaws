@@ -40,7 +40,7 @@ class Weather_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $menubar->AddOption(
                 'Properties',
-                _t('GLOBAL_PROPERTIES'),
+                Jaws::t('PROPERTIES'),
                 $this->gadget->url('Properties'),
                 'gadgets/Weather/Resources/images/properties.png'
             );

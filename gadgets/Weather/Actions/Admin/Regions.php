@@ -37,7 +37,7 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
         $tpl->SetVariable('map_title', _t('WEATHER_MAP_HINT'));
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         $fasturl =& Piwi::CreateWidget('Entry', 'fast_url', '');
@@ -55,17 +55,17 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
         $tpl->SetVariable('longitude', $longitude->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->AddOption(_t('GLOBAL_YES'), 1);
-        $published->AddOption(_t('GLOBAL_NO'), 0);
+        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NO'), 0);
         $published->setStyle('width:50px');
         $tpl->SetVariable('lbl_published', _t('WEATHER_PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'updateRegion();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
@@ -92,9 +92,9 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->TotalRows($total);
         $datagrid->SetID('weather_datagrid');
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $datagrid->AddColumn($column1);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column4->SetStyle('width:40px; white-space:nowrap;');
         $datagrid->AddColumn($column4);
 
@@ -122,11 +122,11 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
             $posData['title'] = $region['title'];
             $actions = '';
             if ($this->gadget->GetPermission('ManageRegions')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editRegion(this, '".$region['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deleteRegion(this, '".$region['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';

@@ -278,33 +278,33 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
         $this->gadget->define('lbl_published', _t('WEATHER_PUBLISHED'));
-        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
         $this->gadget->define('lbl_geo_position', _t('WEATHER_GEOPOSITION'));
-        $this->gadget->define('lbl_search', _t('GLOBAL_SEARCH'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_search', Jaws::t('SEARCH'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
         $this->gadget->define('base_script', BASE_SCRIPT);
 
         $tpl = $this->gadget->template->load('UserRegions.html');
         $tpl->SetBlock('UserRegions');
         $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
         $tpl->SetVariable('lbl_fast_url', _t('WEATHER_FASTURL'));
         $tpl->SetVariable('lbl_latitude', _t('WEATHER_LATITUDE'));
         $tpl->SetVariable('lbl_longitude', _t('WEATHER_LONGITUDE'));
         $tpl->SetVariable('lbl_published', _t('WEATHER_PUBLISHED'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
         $tpl->ParseBlock('UserRegions');
         return $tpl->Get();
@@ -337,7 +337,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $total = $model->GetRegionsCount($filters, $user);
 
         foreach ($regions as $key => $region) {
-            $region['published'] = ($region['published']) ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
+            $region['published'] = ($region['published']) ? Jaws::t('YES') : Jaws::t('NO');
             $regions[$key] = $region;
         }
         return $this->gadget->session->response(
