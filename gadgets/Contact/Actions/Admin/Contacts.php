@@ -56,12 +56,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         //ContactUI
         $tpl->SetVariable('contact_ui', $this->ContactUI());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->SetEnabled($this->gadget->GetPermission('ManageContacts'));
         $btnSave->AddEvent(ON_CLICK, 'updateContact();');
         $btnSave->SetStyle('display:none;');
@@ -99,15 +99,15 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $grid->SetID('contacts_datagrid');
         $grid->TotalRows($total);
         $grid->pageBy(12);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_NAME'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('NAME'), null, false);
         $grid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', '', null, false);
         $grid->AddColumn($column2);
         $column2->SetStyle('width:16px;');
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
+        $column3 = Piwi::CreateWidget('Column', Jaws::t('DATE'), null, false);
         $column3->SetStyle('width:72px; white-space:nowrap;');
         $grid->AddColumn($column3);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column4->SetStyle('width:64px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
@@ -170,7 +170,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             // Actions
             $actions = '';
             if ($this->gadget->GetPermission('ManageContacts')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                                             "javascript:editContact(this, '".$contact['id']."');",
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
@@ -180,7 +180,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
                                             'gadgets/Contact/Resources/images/contact_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                                             "javascript:deleteContact(this, '".$contact['id']."');",
                                             STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
@@ -203,16 +203,16 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl->SetBlock('ContactUI');
 
         //IP
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
 
         //name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('name', $nameEntry->Get());
 
         //email
         $nameEntry =& Piwi::CreateWidget('Entry', 'email', '');
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('email', $nameEntry->Get());
 
         //company
@@ -222,7 +222,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
 
         //url
         $nameEntry =& Piwi::CreateWidget('Entry', 'url', '');
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('url', $nameEntry->Get());
 
         //tel
@@ -289,13 +289,13 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         //name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
         $nameEntry->SetReadOnly(true);
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('name', $nameEntry->Get());
 
         //email
         $nameEntry =& Piwi::CreateWidget('Entry', 'email', '');
         $nameEntry->SetReadOnly(true);
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('email', $nameEntry->Get());
 
         //subject
@@ -334,9 +334,9 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Contacts');
         $contact = $model->GetReply($cid);
         if (Jaws_Error::IsError($contact)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'),
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'),
                                                        RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
+            return new Jaws_Error(Jaws::t('ERROR_QUERY_FAILED'));
         }
 
         if (!isset($contact['id'])) {
@@ -353,9 +353,9 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             $rModel = $this->gadget->model->load('Recipients');
             $recipient = $rModel->GetRecipient($rid);
             if (Jaws_Error::IsError($recipient)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'),
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'),
                                                            RESPONSE_ERROR);
-                return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
+                return new Jaws_Error(Jaws::t('ERROR_QUERY_FAILED'));
             }
             if (!isset($recipient['id'])) {
                 $this->gadget->session->push(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),

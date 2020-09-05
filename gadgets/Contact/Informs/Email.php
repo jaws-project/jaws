@@ -34,10 +34,10 @@ class Contact_Informs_Email extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('SendToRecipient.html');
         $tpl->SetBlock($format);
-        $tpl->SetVariable('lbl_name',      _t('GLOBAL_NAME'));
-        $tpl->SetVariable('lbl_email',     _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_name',      Jaws::t('NAME'));
+        $tpl->SetVariable('lbl_email',     Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_company',   _t('CONTACT_COMPANY'));
-        $tpl->SetVariable('lbl_url',       _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url',       Jaws::t('URL'));
         $tpl->SetVariable('lbl_tel',       _t('CONTACT_TEL'));
         $tpl->SetVariable('lbl_fax',       _t('CONTACT_FAX'));
         $tpl->SetVariable('lbl_mobile',    _t('CONTACT_MOBILE'));

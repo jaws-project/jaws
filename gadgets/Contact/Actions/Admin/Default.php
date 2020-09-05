@@ -46,7 +46,7 @@ class Contact_Actions_Admin_Default extends Jaws_Gadget_Action
         }
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $menubar->AddOption('Properties',
-                                _t('GLOBAL_PROPERTIES'),
+                                Jaws::t('PROPERTIES'),
                                 BASE_SCRIPT . '?reqGadget=Contact&amp;reqAction=Properties',
                                 'gadgets/Contact/Resources/images/properties_mini.png');
         }

@@ -63,7 +63,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         if (!empty($post['email'])) {
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    Jaws::t('ERROR_INVALID_EMAIL_ADDRESS'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -72,7 +72,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
             if (false !== strpos($blockedDomains, "\n".substr(strrchr($post['email'], '@'), 1))) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($post['email'], '@'), 1)),
+                    Jaws::t('ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($post['email'], '@'), 1)),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -85,7 +85,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             if (!empty($post['mobile'])) {
                 if (!preg_match("/^[00|\+|0]\d{10,16}$/", $post['mobile'])) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
+                        Jaws::t('ERROR_INVALID_MOBILE_NUMBER'),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE
                     );
