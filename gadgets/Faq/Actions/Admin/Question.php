@@ -45,16 +45,16 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $tpl->SetVariable('question_ui', $this->QuestionUI());
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "javascript:saveQuestion();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->SetVariable('legend_title',                              _t('FAQ_ADD_QUESTION'));
-        $this->gadget->define('incompleteQuestionFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incompleteQuestionFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
         $this->gadget->define('confirmQuestionDelete',    _t('FAQ_CONFIRM_DELETE_QUESTION'));
         $this->gadget->define('addQuestion_title',        _t('FAQ_ADD_QUESTION'));
         $this->gadget->define('editQuestion_title',       _t('FAQ_EDIT_QUESTION'));
@@ -107,21 +107,21 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
 
         // meta_keywords
         $entry =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
-        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('lbl_meta_keywords', Jaws::t('META_KEYWORDS'));
         $tpl->SetVariable('meta_keywords', $entry->Get());
 
         // meta_description
         $entry =& Piwi::CreateWidget('Entry', 'meta_description', '');
-        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('lbl_meta_description', Jaws::t('META_DESCRIPTION'));
         $tpl->SetVariable('meta_description', $entry->Get());
 
         //published
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault('1');
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('QuestionInfo');
@@ -142,9 +142,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $grid->SetID('questions_datagrid');
         $grid->TotalRows($total);
         $grid->pageBy(18);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column2->SetStyle('width: 80px; white-space:nowrap;');
         $grid->AddColumn($column2);
         $grid->SetStyle('margin-top: 0px; width: 100%;');
@@ -174,7 +174,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
             $questionData['question'] = $question['question'];
             $actions = '';
             if ($this->gadget->GetPermission('EditQuestion')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editQuestion(this, '".$question['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
@@ -190,7 +190,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
                 $actions .= $link->Get() . '&nbsp;';
             }
             if ($this->gadget->GetPermission('DeleteQuestion')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deleteQuestion(this, '" . $question['id'] . "');",
                     STOCK_DELETE);
                 $actions .= $link->Get() . '&nbsp;';

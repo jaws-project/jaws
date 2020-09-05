@@ -33,7 +33,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $tpl->SetVariable('grid', $this->CategoriesDataGrid());
 
         $entry =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE').':');
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE').':');
         $tpl->SetVariable('title', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'fast_url', '');
@@ -42,24 +42,24 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $tpl->SetVariable('fast_url', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
-        $tpl->SetVariable('lbl_meta_keys', _t('GLOBAL_META_KEYWORDS').':');
+        $tpl->SetVariable('lbl_meta_keys', Jaws::t('META_KEYWORDS').':');
         $tpl->SetVariable('meta_keys', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_description', '');
-        $tpl->SetVariable('lbl_meta_desc', _t('GLOBAL_META_DESCRIPTION').':');
+        $tpl->SetVariable('lbl_meta_desc', Jaws::t('META_DESCRIPTION').':');
         $tpl->SetVariable('meta_desc', $entry->Get());
 
         $description =& Piwi::CreateWidget('TextArea', 'description', '');
         $description->SetID('description');
         $description->SetRows(6);
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('description', $description->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button','btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveCategory();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
@@ -68,7 +68,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $this->gadget->define('addCategory_title',     _t('FAQ_ADD_CATEGORY'));
         $this->gadget->define('editCategory_title',    _t('FAQ_EDIT_CATEGORY'));
         $this->gadget->define('confirmCategoryDelete', _t('FAQ_CONFIRM_DELETE_CATEGORY'));
-        $this->gadget->define('incomplete_fields',     _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incomplete_fields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('Categories');
         return $tpl->Get();
@@ -86,11 +86,11 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $grid->SetID('categories_datagrid');
         //$grid->TotalRows(25);
         $grid->pageBy(10);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $column1->SetStyle('white-space:nowrap;');
         $grid->AddColumn($column1);
 
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column2->SetStyle('width:80px;');
         $grid->AddColumn($column2);
         $grid->SetStyle('margin-top: 0px; width: 100%;');
@@ -123,7 +123,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
 
             $actions = '';
             if ($this->gadget->GetPermission('ManageCategories')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editCategory(this, '".$category['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
@@ -138,7 +138,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
                     STOCK_DOWN);
                 $actions .= $link->Get() . '&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deleteCategory(this, '".$category['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
