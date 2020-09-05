@@ -36,7 +36,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
         $form->SetId('frm_settings');
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('GLOBAL_PROPERTIES'));
+        $fieldset = new Jaws_Widgets_FieldSet(Jaws::t('PROPERTIES'));
 
         //Default page (combo)
         $defaultPage =& Piwi::CreateWidget('Combo', 'default_page');
@@ -54,18 +54,18 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
         // Use multilanguage pages?
         $multiLanguage =& Piwi::CreateWidget('Combo', 'multilanguage');
         $multiLanguage->setTitle(_t('STATICPAGE_USE_MULTILANGUAGE'));
-        $multiLanguage->addOption(_t('GLOBAL_YES'), 'yes');
-        $multiLanguage->addOption(_t('GLOBAL_NO'), 'no');
+        $multiLanguage->addOption(Jaws::t('YES'), 'yes');
+        $multiLanguage->addOption(Jaws::t('NO'), 'no');
         $multiLanguage->setDefault($this->gadget->registry->fetch('multilanguage'));
         $fieldset->add($multiLanguage);
 
         // Save Button
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript:updateSettings(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetClass('actions');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($save);
 
         $form->Add($fieldset);

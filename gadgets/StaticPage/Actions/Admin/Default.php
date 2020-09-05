@@ -47,7 +47,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         }
 
         if ($this->gadget->GetPermission('Properties')) {
-            $menubar->AddOption('Properties', _t('GLOBAL_SETTINGS'),
+            $menubar->AddOption('Properties', Jaws::t('SETTINGS'),
                                 BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=Properties',
                                 'images/stock/properties.png');
         }
@@ -80,7 +80,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                         $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
+        $this->gadget->define('confirmPageDelete', Jaws::t('CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
 
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('pageform');
@@ -103,7 +103,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         $vBox->SetStyle('display:inline;');
 
         $titleentry =& Piwi::CreateWidget('Entry', 'title', $title);
-        $titleentry->SetTitle(_t('GLOBAL_TITLE'));
+        $titleentry->SetTitle(Jaws::t('TITLE'));
         $vBox->Add($titleentry);
 
         // Group
@@ -135,8 +135,8 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
             //show title
             $show_title = ($show_title == true) ? 1 : 0;
             $titleShowCombo =& Piwi::CreateWidget('Combo', 'show_title');
-            $titleShowCombo->AddOption(_t('GLOBAL_YES'), '1');
-            $titleShowCombo->AddOption(_t('GLOBAL_NO'),  '0');
+            $titleShowCombo->AddOption(Jaws::t('YES'), '1');
+            $titleShowCombo->AddOption(Jaws::t('NO'),  '0');
             $titleShowCombo->SetDefault($show_title);
             $titleShowCombo->setTitle(_t('STATICPAGE_SHOW_TITLE'));
             $vBox->Add($titleShowCombo);
@@ -171,18 +171,18 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         // Meta Keywords
         $metaKeysEntry =& Piwi::CreateWidget('Entry', 'meta_keys', $meta_keys);
-        $metaKeysEntry->SetTitle(_t('GLOBAL_META_KEYWORDS'));
+        $metaKeysEntry->SetTitle(Jaws::t('META_KEYWORDS'));
         $advBox->Add($metaKeysEntry);
 
         // Meta Description
         $metaDescEntry =& Piwi::CreateWidget('Entry', 'meta_desc', $meta_desc);
-        $metaDescEntry->SetTitle(_t('GLOBAL_META_DESCRIPTION'));
+        $metaDescEntry->SetTitle(Jaws::t('META_DESCRIPTION'));
         $advBox->Add($metaDescEntry);
 
         // Tags
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $tagsEntry =& Piwi::CreateWidget('Entry', 'tags', $tags);
-            $tagsEntry->SetTitle(_t('GLOBAL_TAGS'));
+            $tagsEntry->SetTitle(Jaws::t('TAGS'));
             $advBox->Add($tagsEntry);
         }
 
@@ -207,7 +207,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                 $submit =& Piwi::CreateWidget('Button', 'newpage', _t('STATICPAGE_ADD_PAGE'), STOCK_SAVE);
             } else {
                 $submit =& Piwi::CreateWidget('Button', 'editpage', _t('STATICPAGE_UPDATE_PAGE'), STOCK_SAVE);
-                $btnDelete =& Piwi::CreateWidget('Button', 'delpage', _t('GLOBAL_DELETE'), STOCK_DELETE);
+                $btnDelete =& Piwi::CreateWidget('Button', 'delpage', Jaws::t('DELETE'), STOCK_DELETE);
                 $btnDelete->AddEvent(ON_CLICK, "javascript:deletePage($id, true);");
             }
         } else {
@@ -215,23 +215,23 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                 $submit =& Piwi::CreateWidget('Button', 'newpagetrans', _t('STATICPAGE_ADD_TRANSLATION'), STOCK_SAVE);
             } else {
                 $submit =& Piwi::CreateWidget('Button', 'editpagetrans', _t('STATICPAGE_UPDATE_TRANSLATION'), STOCK_SAVE);
-                $btnDelete =& Piwi::CreateWidget('Button', 'delpagetrans', _t('GLOBAL_DELETE'), STOCK_DELETE);
+                $btnDelete =& Piwi::CreateWidget('Button', 'delpagetrans', Jaws::t('DELETE'), STOCK_DELETE);
                 $btnDelete->AddEvent(ON_CLICK, "javascript:deleteTranslation($id, true);");
             }
         }
 
         $submit->SetSubmit();
 
-        $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel =& Piwi::CreateWidget('Button', 'cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         ///FIXME use the proper url stuff
         $cancel->AddEvent(ON_CLICK, "javascript:window.location = '".BASE_SCRIPT.'?reqGadget=StaticPage'."';");
 
-        $preview =& Piwi::CreateWidget('Button', 'preview', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
+        $preview =& Piwi::CreateWidget('Button', 'preview', Jaws::t('PREVIEW'), STOCK_PRINT_PREVIEW);
         $preview->AddEvent(ON_CLICK, 'javascript:parseText(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetClass('actions');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($preview);
         $buttonbox->PackStart($cancel);
         if (isset($btnDelete) && $this->gadget->GetPermission('DeletePage')) {
@@ -240,7 +240,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         $buttonbox->PackStart($submit);
         $pageform->Add($buttonbox);
 
-        $tpl->setVariable('preview_header', _t('GLOBAL_PREVIEW'));
+        $tpl->setVariable('preview_header', Jaws::t('PREVIEW'));
         $tpl->SetVariable('form', $pageform->Get());
 
         $tpl->ParseBlock('pageform');

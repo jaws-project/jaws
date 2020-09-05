@@ -152,8 +152,8 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
         $result = $sptTable->delete()->where('base_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            return new Jaws_Error(Jaws::t('ERROR_QUERY_FAILED'));
         }
 
         $spTable = Jaws_ORM::getInstance()->table('static_pages');

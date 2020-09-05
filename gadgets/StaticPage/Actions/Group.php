@@ -29,24 +29,24 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('GLOBAL_GROUP'),
+                'title' => Jaws::t('GROUP'),
                 'value' => $pgroups
             );
 
             $result[] = array(
-                'title' => _t('GLOBAL_ORDERBY'),
+                'title' => Jaws::t('ORDERBY'),
                 'value' => array(
-                    0 => _t('GLOBAL_CREATETIME'). ' &uarr;',
-                    1 => _t('GLOBAL_CREATETIME'). ' &darr;',
-                    2 => _t('GLOBAL_TITLE'). ' &uarr;',
-                    3 => _t('GLOBAL_TITLE'). ' &darr;',
-                    4 => _t('GLOBAL_UPDATETIME'). ' &uarr;',
-                    5 => _t('GLOBAL_UPDATETIME'). ' &darr;',
+                    0 => Jaws::t('CREATETIME'). ' &uarr;',
+                    1 => Jaws::t('CREATETIME'). ' &darr;',
+                    2 => Jaws::t('TITLE'). ' &uarr;',
+                    3 => Jaws::t('TITLE'). ' &darr;',
+                    4 => Jaws::t('UPDATETIME'). ' &uarr;',
+                    5 => Jaws::t('UPDATETIME'). ' &darr;',
                 )
             );
 
             $result[] = array(
-                'title' => _t('GLOBAL_COUNT'),
+                'title' => Jaws::t('COUNT'),
                 'value' => $this->gadget->registry->fetch('group_pages_limit')
             );
 

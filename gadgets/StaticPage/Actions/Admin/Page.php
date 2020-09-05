@@ -29,13 +29,13 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $grid->SetStyle('width: 100%;');
         $grid->SetID('pages_datagrid');
         $grid->useMultipleSelection();
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_TITLE')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_FASTURL')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_GROUP')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_PAGE_TRANSLATION')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_STATUS')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_LAST_UPDATE')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
 
         return $grid->Get();
     }
@@ -102,14 +102,14 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
             $pageData['date']  = $date->Format($page['updated'], 'Y-m-d H:i:s');
             $actions = '';
             if ($this->gadget->GetPermission('EditPage')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     $edit_url.$page['page_id'],
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
 
             if ($this->gadget->GetPermission('DeletePage')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deletePage('{$page['page_id']}');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
@@ -131,7 +131,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
     function ManagePages()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
+        $this->gadget->define('confirmPageDelete', Jaws::t('CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
         $this->gadget->define('confirmMassiveDelete', _t('STATICPAGE_CONFIRM_MASIVE_DELETE_PAGE'));
 
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
@@ -145,7 +145,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
 
         $toolBar   =& Piwi::CreateWidget('HBox');
         $deleteAll =& Piwi::CreateWidget('Button', 'deleteAllPages',
-            _t('GLOBAL_DELETE'),
+            Jaws::t('DELETE'),
             STOCK_DELETE);
         $deleteAll->AddEvent(ON_CLICK, "javascript:massiveDelete();");
         $toolBar->Add($deleteAll);
@@ -194,19 +194,19 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $status = '';
         $orderCombo =& Piwi::CreateWidget('Combo', 'orderby');
         $orderCombo->setId('orderby');
-        $orderCombo->AddOption(_t('GLOBAL_CREATETIME'). ' &uarr;', 0);
-        $orderCombo->AddOption(_t('GLOBAL_CREATETIME'). ' &darr;', 1);
-        $orderCombo->AddOption(_t('GLOBAL_TITLE'). ' &uarr;',      2);
-        $orderCombo->AddOption(_t('GLOBAL_TITLE'). ' &darr;',      3);
-        $orderCombo->AddOption(_t('GLOBAL_UPDATETIME'). ' &uarr;', 4);
-        $orderCombo->AddOption(_t('GLOBAL_UPDATETIME'). ' &darr;', 5);
+        $orderCombo->AddOption(Jaws::t('CREATETIME'). ' &uarr;', 0);
+        $orderCombo->AddOption(Jaws::t('CREATETIME'). ' &darr;', 1);
+        $orderCombo->AddOption(Jaws::t('TITLE'). ' &uarr;',      2);
+        $orderCombo->AddOption(Jaws::t('TITLE'). ' &darr;',      3);
+        $orderCombo->AddOption(Jaws::t('UPDATETIME'). ' &uarr;', 4);
+        $orderCombo->AddOption(Jaws::t('UPDATETIME'). ' &darr;', 5);
         $orderCombo->SetDefault(1);
         $orderCombo->AddEvent(ON_CHANGE, 'javascript:searchPage();');
         $tpl->SetVariable('orderby', _t('STATICPAGE_ORDERBY'));
         $tpl->SetVariable('orderby_field', $orderCombo->Get());
 
         // Free text search
-        $searchButton =& Piwi::CreateWidget('Button', 'searchButton', _t('GLOBAL_SEARCH'), STOCK_SEARCH);
+        $searchButton =& Piwi::CreateWidget('Button', 'searchButton', Jaws::t('SEARCH'), STOCK_SEARCH);
         $searchButton->AddEvent(ON_CLICK, 'javascript:searchPage();');
         $tpl->SetVariable('search', $searchButton->Get());
 

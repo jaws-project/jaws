@@ -39,7 +39,7 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $tpl->SetVariable('grid', $this->GroupsDataGrid());
 
         $entry =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE').':');
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE').':');
         $tpl->SetVariable('title', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'fast_url', '');
@@ -48,25 +48,25 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $tpl->SetVariable('fast_url', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_keys', '');
-        $tpl->SetVariable('lbl_meta_keys', _t('GLOBAL_META_KEYWORDS').':');
+        $tpl->SetVariable('lbl_meta_keys', Jaws::t('META_KEYWORDS').':');
         $tpl->SetVariable('meta_keys', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_desc', '');
-        $tpl->SetVariable('lbl_meta_desc', _t('GLOBAL_META_DESCRIPTION').':');
+        $tpl->SetVariable('lbl_meta_desc', Jaws::t('META_DESCRIPTION').':');
         $tpl->SetVariable('meta_desc', $entry->Get());
 
         $combo =& Piwi::CreateWidget('Combo', 'visible');
-        $combo->AddOption(_t('GLOBAL_NO'),  'false');
-        $combo->AddOption(_t('GLOBAL_YES'), 'true');
+        $combo->AddOption(Jaws::t('NO'),  'false');
+        $combo->AddOption(Jaws::t('YES'), 'true');
         $combo->SetDefault('true');
         $tpl->SetVariable('visible', $combo->Get());
-        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE').':');
+        $tpl->SetVariable('lbl_visible', Jaws::t('VISIBLE').':');
 
-        $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button','btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveGroup();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
         $tpl->SetVariable('legend_title',         _t('STATICPAGE_GROUP_ADD'));
@@ -87,11 +87,11 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $grid->SetID('groups_datagrid');
         //$grid->TotalRows(25);
         $grid->pageBy(10);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $column1->SetStyle('white-space:nowrap;');
         $grid->AddColumn($column1);
 
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column2->SetStyle('width:40px;');
         $grid->AddColumn($column2);
         $grid->SetStyle('margin-top: 0px; width: 100%;');
@@ -125,12 +125,12 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
 
             $actions = '';
             if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editGroup(this, '".$group['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deleteGroup(this, '".$group['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
