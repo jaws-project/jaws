@@ -264,7 +264,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             ($oldFilesCount + $newFilesCount) > $options['maxcount']
         ) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_UPLOAD_9'),
+                Jaws::t('ERROR_UPLOAD_9'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );

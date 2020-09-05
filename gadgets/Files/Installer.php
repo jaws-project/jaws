@@ -27,7 +27,7 @@ class Files_Installer extends Jaws_Gadget_Installer
     {
         $dir = ROOT_DATA_PATH . 'files' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $dir));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $dir));
         }
 
         $result = $this->installSchema('schema.xml');
@@ -55,7 +55,7 @@ class Files_Installer extends Jaws_Gadget_Installer
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
-                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
+                $errMsg = Jaws::t('ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
                 return new Jaws_Error($errMsg);
             }
         }
