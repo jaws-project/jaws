@@ -34,7 +34,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
         $result = array();
         $model = $this->gadget->model->load('Tags');
         $gadgets = $model->GetTagableGadgets();
-        array_unshift($gadgets, _t('GLOBAL_ALL'));
+        array_unshift($gadgets, Jaws::t('ALL'));
         $result[] = array(
             'title' => _t('TAGS_GADGET'),
             'value' => $gadgets
@@ -99,7 +99,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
         if(!empty($gadget)) {
             $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_TITLE')));
         } else {
-            $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL')));
+            $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', Jaws::t('ALL')));
         }
 
         if ($this->app->session->user->logged &&
@@ -166,7 +166,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
             }
 
             $tpl->SetBlock("$tpl_base_block/tags");
-            $tpl->SetVariable('lbl_tags', _t('GLOBAL_TAGS'));
+            $tpl->SetVariable('lbl_tags', Jaws::t('TAGS'));
             foreach($tags as $tag) {
                 $tpl->SetBlock("$tpl_base_block/tags/tag");
                 $tpl->SetVariable('name', $tag['name']);
@@ -330,7 +330,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
         $result = array();
         $model = $this->gadget->model->load('Tags');
         $gadgets = $model->GetTagableGadgets();
-        array_unshift($gadgets, _t('GLOBAL_ALL'));
+        array_unshift($gadgets, Jaws::t('ALL'));
         $result[] = array(
             'title' => _t('TAGS_GADGET'),
             'value' => $gadgets

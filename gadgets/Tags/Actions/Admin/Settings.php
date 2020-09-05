@@ -34,7 +34,7 @@ class Tags_Actions_Admin_Settings extends Tags_Actions_Admin_Default
         $tpl->SetVariable('lbl_tag_results_limit', _t('TAGS_RESULT_LIMIT'));
         $tpl->SetVariable('tag_results_limit', $limitCombo->Get());
 
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript:saveSettings();');
         $tpl->SetVariable('btn_save', $save->Get());
 

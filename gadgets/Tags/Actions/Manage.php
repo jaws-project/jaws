@@ -62,18 +62,18 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         $tagsTotal = $model->GetTagsCount($filters, $user);
 
         $tpl->SetVariable('txt_term', $post['term']);
-        $tpl->SetVariable('lbl_gadgets', _t('GLOBAL_GADGETS'));
-        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
+        $tpl->SetVariable('lbl_gadgets', Jaws::t('GADGETS'));
+        $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $tpl->SetVariable('lbl_tag_name', _t('TAGS_TAG_NAME'));
         $tpl->SetVariable('lbl_tag_title', _t('TAGS_TAG_TITLE'));
         $tpl->SetVariable('lbl_tag_usage_count', _t('TAGS_TAG_USAGE_COUNT'));
-        $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('filter', Jaws::t('SEARCH'));
         $tpl->SetVariable('lbl_page_item', _t('TAGS_ITEMS_PER_PAGE'));
-        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_actions', Jaws::t('ACTIONS'));
+        $tpl->SetVariable('lbl_no_action', Jaws::t('NO_ACTION'));
+        $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
         $tpl->SetVariable('lbl_merge', _t('TAGS_MERGE'));
         $tpl->SetVariable('selectMoreThanOneTags',  _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
         $tpl->SetVariable('enterNewTagName',  _t('TAGS_ENTER_NEW_TAG_NAME'));
@@ -86,7 +86,7 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Tags');
         $gadgets = $model->GetTagableGadgets();
         $tagGadgets = array();
-        $tagGadgets[''] = _t('GLOBAL_ALL');
+        $tagGadgets[''] = Jaws::t('ALL');
         $objTranslate = Jaws_Translate::getInstance();
         foreach ($gadgets as $gadget => $title) {
             $tpl->SetBlock('tags/gadget');
@@ -167,10 +167,10 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
+        $tpl->SetVariable('save', Jaws::t('SAVE'));
 
         $tpl->ParseBlock('edit_tag');
         return $tpl->Get();
