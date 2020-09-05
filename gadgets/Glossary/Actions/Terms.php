@@ -92,8 +92,8 @@ class Glossary_Actions_Terms extends Jaws_Gadget_Action
             $tid = empty($term['fast_url']) ? $term['id'] : $term['fast_url'];
             $tpl->SetVariable('url', $this->gadget->urlMap('ViewTerm', array('term' => $tid)));
             $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($term['description']));
-            $tpl->SetVariable('created_in', _t('GLOBAL_CREATETIME'));
-            $tpl->SetVariable('updated_in', _t('GLOBAL_UPDATETIME'));
+            $tpl->SetVariable('created_in', Jaws::t('CREATETIME'));
+            $tpl->SetVariable('updated_in', Jaws::t('UPDATETIME'));
             $tpl->SetVariable('createtime', $date->Format($term['createtime']));
             $tpl->SetVariable('updatetime', $date->Format($term['updatetime']));
             $tpl->ParseBlock('definition/term');
