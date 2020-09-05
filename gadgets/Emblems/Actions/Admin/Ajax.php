@@ -24,7 +24,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Emblems');
         $res = $model->UpdateEmblem($id, $data);
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
@@ -47,7 +47,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Emblems');
         $res = $model->DeleteEmblem($id);
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 

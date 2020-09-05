@@ -33,15 +33,15 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $fs->SetDirection('vertical');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $title->SetTitle(_t('GLOBAL_TITLE'));
+        $title->SetTitle(Jaws::t('TITLE'));
         $fs->Add($title);
 
         $url =& Piwi::CreateWidget('Entry', 'url', 'http://');
-        $url->SetTitle(_t('GLOBAL_URL'));
+        $url->SetTitle(Jaws::t('URL'));
         $fs->Add($url);
 
         $image =& Piwi::CreateWidget('FileEntry', 'image', '');
-        $image->SetTitle(_t('GLOBAL_FILE'));
+        $image->SetTitle(Jaws::t('FILE'));
         $fs->Add($image);
 
         $type =& Piwi::CreateWidget('Combo', 'type');
@@ -55,9 +55,9 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $fs->Add($type);
 
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->SetTitle(_t('GLOBAL_PUBLISHED'));
-        $published->AddOption(_t('GLOBAL_YES'), 1);
-        $published->AddOption(_t('GLOBAL_NO'), 0);
+        $published->SetTitle(Jaws::t('PUBLISHED'));
+        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NO'), 0);
         $fs->Add($published);
 
         $addsubmit =& Piwi::CreateWidget('Button', 'submitadd', _t('EMBLEMS_ADD_EMBLEM'), STOCK_NEW);
@@ -94,19 +94,19 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $typecol =& Piwi::CreateWidget('Column', _t('EMBLEMS_TYPE'));
         $datagrid->AddColumn($typecol);
 
-        $titlecol =& Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'));
+        $titlecol =& Piwi::CreateWidget('Column', Jaws::t('TITLE'));
         $datagrid->AddColumn($titlecol);
 
-        $urlcol =& Piwi::CreateWidget('Column', _t('GLOBAL_URL'));
+        $urlcol =& Piwi::CreateWidget('Column', Jaws::t('URL'));
         $datagrid->AddColumn($urlcol);
 
         $imgcol =& Piwi::CreateWidget('Column', _t('EMBLEMS_RESULT'));
         $datagrid->AddColumn($imgcol);
 
-        $statuscol =& Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'));
+        $statuscol =& Piwi::CreateWidget('Column', Jaws::t('PUBLISHED'));
         $datagrid->AddColumn($statuscol);
 
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
 
         return $datagrid->Get();
     }
@@ -171,13 +171,13 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
             $actions = '';
             $link =& Piwi::CreateWidget(
                 'Link',
-                _t('GLOBAL_SAVE'),
+                Jaws::t('SAVE'),
                 "javascript:updateEmblem({$e['id']}, this);",
                 STOCK_SAVE);
             $actions .= $link->Get().'&nbsp;';
 
             $link =& Piwi::CreateWidget(
-                'Link', _t('GLOBAL_DELETE'),
+                'Link', Jaws::t('DELETE'),
                 "javascript:deleteEmblem({$e['id']});",
                 STOCK_DELETE);
             $actions .= $link->Get().'&nbsp;';
