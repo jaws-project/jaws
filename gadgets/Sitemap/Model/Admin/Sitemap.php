@@ -221,7 +221,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         // Check gadget directory in sitemap
         $gadget_dir = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget);
         if (!Jaws_Utils::mkdir($gadget_dir, 1)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }
 
         $cache_file = $gadget_dir . '/sitemap.xml';
@@ -270,7 +270,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         // Check gadget directory in sitemap
         $gadget_dir = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget);
         if (!Jaws_Utils::mkdir($gadget_dir, 1)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }
 
         $cache_file = $gadget_dir . '/sitemap.bin';

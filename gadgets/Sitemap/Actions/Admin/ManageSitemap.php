@@ -36,12 +36,12 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         $tpl->SetVariable('gadgets_tree', $this->GetGadgetTreeUI());
 
-        $save_btn =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save_btn =& Piwi::CreateWidget('Button','btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $save_btn->SetStyle('display: none;');
         $save_btn->AddEvent(ON_CLICK, 'javascript:saveProperties();');
         $tpl->SetVariable('save', $save_btn->Get());
 
-        $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel_btn->SetStyle('display: none;');
         $cancel_btn->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
@@ -174,7 +174,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         // Status
         $changeFreq =& Piwi::CreateWidget('Combo', 'status');
-        $changeFreq->SetTitle(_t('GLOBAL_STATUS'));
+        $changeFreq->SetTitle(Jaws::t('STATUS'));
         $changeFreq->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), 0);
         $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_NONE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_NONE);
         $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_XML'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_XML);
@@ -183,7 +183,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $changeFreq->SetDefault(0);
         $changeFreq->SetId('status');
         $changeFreq->SetStyle('width: 330px;');
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $tpl->SetVariable('status', $changeFreq->Get());
 
         $tpl->ParseBlock('sitemap/categoryUI');
@@ -237,7 +237,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         // Status
         $changeFreq =& Piwi::CreateWidget('Combo', 'status');
-        $changeFreq->SetTitle(_t('GLOBAL_STATUS'));
+        $changeFreq->SetTitle(Jaws::t('STATUS'));
         $changeFreq->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), 0);
         $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_NONE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_NONE);
         $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_XML'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_XML);
@@ -246,11 +246,11 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $changeFreq->SetDefault(0);
         $changeFreq->SetId('status');
         $changeFreq->SetStyle('width: 330px;');
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $tpl->SetVariable('status', $changeFreq->Get());
 
         // Last update
-        $tpl->SetVariable('lbl_last_update', _t('GLOBAL_UPDATETIME'));
+        $tpl->SetVariable('lbl_last_update', Jaws::t('UPDATETIME'));
         $tpl->SetVariable('last_update', _t('SITEMAP_NEVER'));
 
 

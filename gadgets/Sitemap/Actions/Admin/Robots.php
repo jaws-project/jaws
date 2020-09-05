@@ -33,7 +33,7 @@ class Sitemap_Actions_Admin_Robots extends Sitemap_Actions_Admin_Default
 
         $save =& Piwi::CreateWidget('Button',
                                     'save',
-                                    _t('GLOBAL_SAVE'),
+                                    Jaws::t('SAVE'),
                                     STOCK_SAVE);
         $save->AddEvent(ON_CLICK, "javascript:updateRobots();");
         $tpl->SetVariable('save', $save->Get());
