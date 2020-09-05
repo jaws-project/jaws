@@ -167,7 +167,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
             $pgroups = array('0' => _t('POLL_LAYOUT_POLLS_ALL')) + $pgroups;
             $result[] = array(
-                'title' => _t('GLOBAL_CATEGORY'),
+                'title' => Jaws::t('CATEGORY'),
                 'value' => $pgroups
             );
         }

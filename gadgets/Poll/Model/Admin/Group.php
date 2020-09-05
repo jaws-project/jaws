@@ -24,7 +24,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $count = $table->select('COUNT([id])')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($count)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -39,7 +39,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table->reset();
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_ADDED'));
         }
 
@@ -63,7 +63,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
             ->where('id', $gid, '!=')->and()
             ->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -78,7 +78,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table->reset();
         $result = $table->update($data)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_UPDATED'));
         }
 
@@ -102,7 +102,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
 
         $group = $this->GetPollGroup($gid);
         if (Jaws_Error::IsError($group)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -117,7 +117,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $result = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_DELETED'));
         }
 

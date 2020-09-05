@@ -120,14 +120,14 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $table = Jaws_ORM::getInstance()->table('poll');
         $res = $table->delete()->where('id', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_DELETED'));
         }
 
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $res = $table->delete()->where('poll', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_EXCEPTION_ANSWER_NOT_DELETED'));
         }
 

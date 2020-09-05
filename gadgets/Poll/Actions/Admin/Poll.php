@@ -31,13 +31,13 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
             $pollData = array();
             $pollData['title'] = $poll['title'];
             if ($poll['published'] == true) {
-                $pollData['published'] = _t('GLOBAL_YES');
+                $pollData['published'] = Jaws::t('YES');
             } else {
-                $pollData['published'] = _t('GLOBAL_NO');
+                $pollData['published'] = Jaws::t('NO');
             }
             $actions = '';
             if ($this->gadget->GetPermission('ManagePolls')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editPoll(this, '".$poll['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
@@ -47,7 +47,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
                     'gadgets/Poll/Resources/images/polls_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deletePoll(this, '".$poll['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
@@ -74,10 +74,10 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $grid->pageBy(12);
         $column1 = Piwi::CreateWidget('Column', _t('POLL_POLLS_QUESTION'), null, false);
         $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('PUBLISHED'), null, false);
         $column2->SetStyle('width:56px; white-space:nowrap;');
         $grid->AddColumn($column2);
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column3 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column3->SetStyle('width:60px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
@@ -120,11 +120,11 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl->SetVariable('grid', $this->PollsDatagrid());
         $tpl->SetVariable('poll_ui', $this->PollUI());
 
-        $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button','btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:savePoll();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
@@ -175,8 +175,8 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
 
         $resultView =& Piwi::CreateWidget('Combo', 'result_view');
         $resultView->SetID('result_view');
-        $resultView->AddOption(_t('GLOBAL_NO'),  0);
-        $resultView->AddOption(_t('GLOBAL_YES'), 1);
+        $resultView->AddOption(Jaws::t('NO'),  0);
+        $resultView->AddOption(Jaws::t('YES'), 1);
         $resultView->SetDefault(1);
         $tpl->SetVariable('lbl_result_view', _t('POLL_POLLS_RESULT_VIEW'));
         $tpl->SetVariable('result_view', $resultView->Get());
@@ -186,7 +186,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $startTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $startTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
+        $tpl->SetVariable('lbl_start_time', Jaws::t('START_TIME'));
         $tpl->SetVariable('start_time', $startTime->Get());
 
         $stopTime =& Piwi::CreateWidget('DatePicker', 'stop_time', '');
@@ -194,15 +194,15 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $stopTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
+        $tpl->SetVariable('lbl_stop_time', Jaws::t('STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault(1);
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('PollUI');

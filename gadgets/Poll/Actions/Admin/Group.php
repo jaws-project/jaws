@@ -31,13 +31,13 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
             $groupData = array();
             $groupData['title'] = $group['title'];
             if ($group['published'] == true) {
-                $groupData['published'] = _t('GLOBAL_YES');
+                $groupData['published'] = Jaws::t('YES');
             } else {
-                $groupData['published'] = _t('GLOBAL_NO');
+                $groupData['published'] = Jaws::t('NO');
             }
             $actions = '';
             if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editPollGroup(this, '" . $group['id'] . "');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
@@ -47,7 +47,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
                     'gadgets/Poll/Resources/images/polls_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deletePollGroup(this, '". $group['id'] ."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
@@ -72,12 +72,12 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $grid->SetID('pollgroups_datagrid');
         $grid->TotalRows($total);
         $grid->pageBy(12);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('PUBLISHED'), null, false);
         $column2->SetStyle('width:56px; white-space:nowrap;');
         $grid->AddColumn($column2);
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column3 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column3->SetStyle('width:60px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
@@ -108,11 +108,11 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $tpl->SetVariable('grid', $this->PollGroupsDatagrid());
         $tpl->SetVariable('pollgroup_ui', $this->PollGroupUI());
 
-        $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button','btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:savePollGroup();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
         $tpl->SetVariable('legend_title',             _t('POLL_GROUPS_ADD_TITLE'));
@@ -133,15 +133,15 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $tpl->SetBlock('PollGroupUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault(1);
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('PollGroupUI');
@@ -162,7 +162,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
         $title->SetEnabled(false);
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         $model = $this->gadget->model->load('Poll');
