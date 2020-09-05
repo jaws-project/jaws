@@ -15,7 +15,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
     function Subscription()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmSubscriptionDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('confirmSubscriptionDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Subscription.html');
         $tpl->SetBlock('Subscription');
@@ -25,7 +25,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
 
         // Users Filter
         $usersCombo =& Piwi::CreateWidget('Combo', 'filter_user');
-        $usersCombo->AddOption(_t('GLOBAL_ALL_USERS'), "", false);
+        $usersCombo->AddOption(Jaws::t('ALL_USERS'), "", false);
         $userModel = new Jaws_User();
         $users = $userModel->GetUsers();
         if (!Jaws_Error::IsError($users)) {
@@ -42,24 +42,24 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $email =& Piwi::CreateWidget('Entry', 'filter_email');
         $email->AddEvent(ON_CHANGE, "javascript:searchSubscription();");
         $tpl->SetVariable('filter_email', $email->Get());
-        $tpl->SetVariable('lbl_filter_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_filter_email', Jaws::t('EMAIL'));
 
         // Gadgets Filter
         $gadgets = $this->gadget->model->load('Subscription')->GetSubscriptionGadgets();
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
-        $gadgetsCombo->AddOption(_t('GLOBAL_ALL'), "", false);
+        $gadgetsCombo->AddOption(Jaws::t('ALL'), "", false);
         foreach ($gadgets as $name=>$title) {
             $gadgetsCombo->AddOption($title, $name);
         }
         $gadgetsCombo->AddEvent(ON_CHANGE, "javascript:searchSubscription();");
         $gadgetsCombo->SetDefault(-1);
         $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
-        $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
+        $tpl->SetVariable('lbl_filter_gadget', Jaws::t('GADGETS'));
 
         // Order
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
-        $orderType->AddOption(_t('GLOBAL_DATE'). ' &darr;', 'insert_time');
-        $orderType->AddOption(_t('GLOBAL_DATE'). ' &uarr;', 'insert_time desc');
+        $orderType->AddOption(Jaws::t('DATE'). ' &darr;', 'insert_time');
+        $orderType->AddOption(Jaws::t('DATE'). ' &uarr;', 'insert_time desc');
         $orderType->AddEvent(ON_CHANGE, "javascript:searchSubscription();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
@@ -71,10 +71,10 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'subscriptions_actions');
         $actions->SetID('subscriptions_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
         if ($this->gadget->GetPermission('DeleteSubscription')) {
-            $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+            $actions->AddOption(Jaws::t('DELETE'), 'delete');
         }
         $tpl->SetVariable('actions_combo', $actions->Get());
 
@@ -83,7 +83,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
@@ -109,7 +109,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $column1->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column1);
 
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_EMAIL'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('EMAIL'), null, false);
         $grid->AddColumn($column2);
 
         $column3 = Piwi::CreateWidget('Column', _t('SUBSCRIPTION_MOBILE_NUMBER'), null, false);
@@ -124,7 +124,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $column5->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column5);
 
-        $column6 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
+        $column6 = Piwi::CreateWidget('Column', Jaws::t('DATE'), null, false);
         $column6->SetStyle('width:128px; white-space:nowrap;');
         $grid->AddColumn($column6);
 

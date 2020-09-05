@@ -53,7 +53,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         if (empty($currentUser)) {
             $tpl->SetBlock('subscription/email');
             $tpl->SetVariable('email', $email);
-            $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+            $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
             $tpl->ParseBlock('subscription/email');
 
             $tpl->SetBlock('subscription/mobile');
@@ -210,7 +210,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
         $tpl->SetVariable('lbl_subscription', _t('SUBSCRIPTION_SUBSCRIPTION'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
         // check user current subscription
         $sModel = $this->gadget->model->load('Subscription');
