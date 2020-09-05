@@ -49,8 +49,8 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         $tpl->SetVariable('note_content', $editor->Get());
 
         // Actions
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
 
         $tpl->ParseBlock('form');
         return $tpl->Get();

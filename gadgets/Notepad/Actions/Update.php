@@ -58,8 +58,8 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_content', _t('NOTEPAD_NOTE_CONTENT'));
 
         // Actions
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('url_back', $this->gadget->urlMap('Notepad'));
 
         $tpl->ParseBlock('form');

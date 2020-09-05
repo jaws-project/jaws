@@ -108,7 +108,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
 
         // Actions
         $tpl->SetVariable('lbl_new_note', _t('NOTEPAD_NEW_NOTE'));
-        $tpl->SetVariable('lbl_del_note', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_del_note', Jaws::t('DELETE'));
         $tpl->SetVariable('confirmDelete', _t('NOTEPAD_WARNING_DELETE_NOTES'));
         $tpl->SetVariable('errorShortQuery', _t('NOTEPAD_ERROR_SHORT_QUERY'));
         $tpl->SetVariable('url_new', $this->gadget->urlMap('NewNote'));
