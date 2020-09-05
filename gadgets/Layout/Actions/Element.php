@@ -32,7 +32,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('AddGadget.html');
         $tpl->SetBlock('template');
 
-        $direction = _t('GLOBAL_LANG_DIRECTION');
+        $direction = Jaws::t('LANG_DIRECTION');
         $dir  = $direction == 'rtl' ? '.' . $direction : '';
         $brow = $this->app->getBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
@@ -112,7 +112,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('EditGadget.html');
         $tpl->SetBlock('template');
 
-        $direction = _t('GLOBAL_LANG_DIRECTION');
+        $direction = Jaws::t('LANG_DIRECTION');
         $dir  = $direction == 'rtl' ? '.' . $direction : '';
         $brow = $this->app->getBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
@@ -132,7 +132,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget_name', $gInfo->title);
         $tpl->SetVariable('gadget_description', $gInfo->description);
 
-        $btnSave =& Piwi::CreateWidget('Button', 'ok',_t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'ok',Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "parent.parent.editGetAction(document, '{$id}', '{$layoutElement['gadget']}');");
         $tpl->SetVariable('save', $btnSave->Get());
 

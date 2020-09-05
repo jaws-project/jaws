@@ -128,7 +128,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $el['icon']      = 'gadgets/'.$gadget.'/Resources/images/logo.png';
             $el['delete']    = "deleteElement('{$id}');";
             $el['deleteimg'] = 'gadgets/Layout/Resources/images/delete-item.gif';
-            $el['dwalways']  = _t('GLOBAL_ALWAYS');
+            $el['dwalways']  = Jaws::t('ALWAYS');
             $el['dwtitle']   = _t('LAYOUT_CHANGE_DW');
             $el['dwdisplay'] = _t('LAYOUT_DISPLAY_IN') . ': ';
             $el['dwid'] = 'dw'.$id;

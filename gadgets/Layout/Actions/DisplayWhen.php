@@ -33,7 +33,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('DisplayWhen.html');
         $tpl->SetBlock('template');
 
-        $direction = _t('GLOBAL_LANG_DIRECTION');
+        $direction = Jaws::t('LANG_DIRECTION');
         $dir  = $direction == 'rtl' ? '.' . $direction : '';
         $brow = $this->app->getBrowserFlag();
         $brow = empty($brow)? '' : '.'.$brow;
@@ -76,7 +76,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         }
         $tpl->SetVariable('selected_gadgets', $gadget_field->Get());
 
-        $saveButton =& Piwi::CreateWidget('Button', 'ok',_t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'ok',Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(
             ON_CLICK,
             "parent.parent.saveChangeDW(".$layoutElement['id'].", parent.parent.getSelectedGadgets(document));"

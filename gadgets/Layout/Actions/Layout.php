@@ -138,12 +138,12 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetVariable('icon', 'gadgets/Layout/Resources/images/requested-gadget.png');
                     $t_item->SetVariable('description', _t('LAYOUT_REQUESTED_GADGET_DESC'));
                     $t_item->SetVariable('lbl_when', _t('LAYOUT_DISPLAY_IN'));
-                    $t_item->SetVariable('when', _t('GLOBAL_ALWAYS'));
+                    $t_item->SetVariable('when', Jaws::t('ALWAYS'));
                     $t_item->SetVariable('void_link', 'return;');
                     $t_item->SetVariable('section_name', $name);
                     $t_item->SetVariable('delete', 'void(0);');
                     $t_item->SetVariable('delete-img', 'gadgets/Layout/Resources/images/no-delete.gif');
-                    $t_item->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+                    $t_item->SetVariable('lbl_delete', Jaws::t('DELETE'));
                     $t_item->SetVariable('item_status', 'none');
                     $t_item->ParseBlock('item');
                 } else {
@@ -159,7 +159,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                         "deleteElement('{$gadget['id']}');"
                     );
                     $t_item->SetVariable('delete-img', 'gadgets/Layout/Resources/images/delete-item.gif');
-                    $t_item->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+                    $t_item->SetVariable('lbl_delete', Jaws::t('DELETE'));
 
                     $actions = $eModel->GetGadgetLayoutActions($gadget['gadget'], true);
                     if (isset($actions[$gadget['action']]) &&
@@ -185,7 +185,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetVariable('void_link', '');
                     $t_item->SetVariable('lbl_when', _t('LAYOUT_DISPLAY_IN'));
                     if ($gadget['when'] == '*') {
-                        $t_item->SetVariable('when', _t('GLOBAL_ALWAYS'));
+                        $t_item->SetVariable('when', Jaws::t('ALWAYS'));
                     } elseif (empty($gadget['when'])) {
                         $t_item->SetVariable('when', _t('LAYOUT_NEVER'));
                     } else {
@@ -217,8 +217,8 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
-        $tpl->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
+        $tpl->SetVariable('cp-title', Jaws::t('CONTROLPANEL'));
+        $tpl->SetVariable('cp-title-separator', Jaws::t('CONTROLPANEL_TITLE_SEPARATOR'));
         if ($this->gadget->GetPermission('default_admin', '', false, 'ControlPanel')) {
             $tpl->SetVariable('admin_script', 'admin.php');
         } else {
@@ -297,7 +297,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         if (!empty($docurl) && !is_null($docurl)) {
             $tpl->SetBlock('controls/documentation');
             $tpl->SetVariable('src', 'images/stock/help-browser.png');
-            $tpl->SetVariable('alt', _t('GLOBAL_HELP'));
+            $tpl->SetVariable('alt', Jaws::t('HELP'));
             $tpl->SetVariable('url', $docurl);
             $tpl->ParseBlock('controls/documentation');
         }
