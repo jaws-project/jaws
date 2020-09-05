@@ -39,7 +39,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         }
         $tpl->SetVariable('combo_groups', $comboGroups->Get());
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $tpl->SetVariable('title', $titleEntry->Get());
 
@@ -59,8 +59,8 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('view_type', $viewType->Get());
 
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
-        $showTitle->AddOption(_t('GLOBAL_NO'),  'false');
-        $showTitle->AddOption(_t('GLOBAL_YES'), 'true');
+        $showTitle->AddOption(Jaws::t('NO'),  'false');
+        $showTitle->AddOption(Jaws::t('YES'), 'true');
         $showTitle->SetDefault('true');
         $tpl->SetVariable('lbl_show_title', _t('QUOTES_SHOW_TITLE'));
         $tpl->SetVariable('show_title', $showTitle->Get());
@@ -70,20 +70,20 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('limit_count', $limitcount->Get());
 
         $randomly =& Piwi::CreateWidget('Combo', 'random');
-        $randomly->AddOption(_t('GLOBAL_NO'),  'false');
-        $randomly->AddOption(_t('GLOBAL_YES'), 'true');
+        $randomly->AddOption(Jaws::t('NO'),  'false');
+        $randomly->AddOption(Jaws::t('YES'), 'true');
         $randomly->SetDefault('true');
         $tpl->SetVariable('lbl_random', _t('QUOTES_GROUPS_RANDOM'));
         $tpl->SetVariable('random', $randomly->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->AddOption(_t('GLOBAL_NO'),  'false');
-        $published->AddOption(_t('GLOBAL_YES'), 'true');
+        $published->AddOption(Jaws::t('NO'),  'false');
+        $published->AddOption(Jaws::t('YES'), 'true');
         $published->SetDefault('true');
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
-        $saveGroup =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveGroup =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveGroup->AddEvent(ON_CLICK, "javascript:saveGroup();");
         $tpl->SetVariable('btn_save', $saveGroup->Get());
 
@@ -92,11 +92,11 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $GroupQuotes->SetStyle('display:none;');
         $tpl->SetVariable('add_quotes', $GroupQuotes->Get());
 
-        $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $cancelAction->Get());
 
-        $deleteGroup =& Piwi::CreateWidget('Button', 'btn_del', _t('GLOBAL_DELETE', _t('QUOTES_GROUP')), STOCK_DELETE);
+        $deleteGroup =& Piwi::CreateWidget('Button', 'btn_del', Jaws::t('DELETE', _t('QUOTES_GROUP')), STOCK_DELETE);
         $deleteGroup->AddEvent(ON_CLICK, "javascript:deleteGroup();");
         $deleteGroup->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $deleteGroup->Get());

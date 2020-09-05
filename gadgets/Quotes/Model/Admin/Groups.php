@@ -28,7 +28,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $gc = $table->select('count(id)')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -48,7 +48,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $result = $table->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -80,7 +80,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $gc = $table->select('count(id)')->where('title', $title)->and()->where('id', $gid, '!=')->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -100,7 +100,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $res = $table->update($params)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
         $this->gadget->session->push(_t('QUOTES_GROUPS_UPDATED', $gid), RESPONSE_NOTICE);
@@ -123,7 +123,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroups($gid);
         if (Jaws_Error::IsError($group)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -137,7 +137,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $res = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 

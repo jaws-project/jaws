@@ -67,7 +67,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
 
         // title
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         // quotes groups
@@ -85,7 +85,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $startTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $startTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
+        $tpl->SetVariable('lbl_start_time', Jaws::t('START_TIME'));
         $tpl->SetVariable('start_time', $startTime->Get());
 
         // stop time
@@ -93,23 +93,23 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $stopTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $stopTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
+        $tpl->SetVariable('lbl_stop_time', Jaws::t('STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 
         // show_title
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
-        $showTitle->AddOption(_t('GLOBAL_NO'),  'false');
-        $showTitle->AddOption(_t('GLOBAL_YES'), 'true');
+        $showTitle->AddOption(Jaws::t('NO'),  'false');
+        $showTitle->AddOption(Jaws::t('YES'), 'true');
         $showTitle->SetDefault('true');
         $tpl->SetVariable('lbl_show_title', _t('QUOTES_SHOW_TITLE'));
         $tpl->SetVariable('show_title', $showTitle->Get());
 
         // published
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->AddOption(_t('GLOBAL_NO'),  'false');
-        $published->AddOption(_t('GLOBAL_YES'), 'true');
+        $published->AddOption(Jaws::t('NO'),  'false');
+        $published->AddOption(Jaws::t('YES'), 'true');
         $published->SetDefault('true');
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
         // quotation editor
@@ -117,16 +117,16 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('lbl_quotation', _t('QUOTES_QUOTE_QUOTATION'));
         $tpl->SetVariable('quotation', $quotation->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "javascript:saveQuote();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnDel =& Piwi::CreateWidget('Button', 'btn_del', _t('GLOBAL_DELETE', _t('QUOTES_QUOTE')), STOCK_DELETE);
+        $btnDel =& Piwi::CreateWidget('Button', 'btn_del', Jaws::t('DELETE', _t('QUOTES_QUOTE')), STOCK_DELETE);
         $btnDel->AddEvent(ON_CLICK, "javascript:deleteQuote();");
         $btnDel->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $btnDel->Get());
 
-        $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $cancelAction->Get());
 
