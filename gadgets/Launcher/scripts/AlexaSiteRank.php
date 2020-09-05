@@ -102,7 +102,7 @@ function AlexaSiteRank()
 {
     $cache_dir = ROOT_DATA_PATH . 'launcher' . DIRECTORY_SEPARATOR;
     if (!Jaws_Utils::mkdir($cache_dir)) {
-        return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $cache_dir),  __FUNCTION__);
+        return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $cache_dir),  __FUNCTION__);
     }
 
     $url = Jaws::getInstance()->getSiteURL('/');
