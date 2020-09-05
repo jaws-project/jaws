@@ -50,8 +50,8 @@ class ServerTime_Actions_Admin_ServerTime extends Jaws_Gadget_Action
         $fieldset->Add($dFormat);
 
         $form->Add($fieldset);
-        $submit =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_UPDATE', _t('GLOBAL_SETTINGS')), STOCK_SAVE);
-        $submit->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $submit =& Piwi::CreateWidget('Button', 'save', Jaws::t('UPDATE', Jaws::t('SETTINGS')), STOCK_SAVE);
+        $submit->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $submit->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
         $form->Add($submit);
 
