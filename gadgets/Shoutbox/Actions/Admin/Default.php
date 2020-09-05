@@ -34,7 +34,7 @@ class Shoutbox_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption(
                 'Settings',
-                _t('GLOBAL_SETTINGS'),
+                Jaws::t('SETTINGS'),
                 BASE_SCRIPT . '?reqGadget=Shoutbox&amp;reqAction=Settings',
                 STOCK_PREFERENCES);
         }

@@ -65,14 +65,14 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_Actions_Admin_Default
             //Anonymous post authority
             $authority =& Piwi::CreateWidget('Combo', 'authority');
             $authority->SetTitle(_t('SHOUTBOX_ANON_POST_AUTHORITY'));
-            $authority->AddOption(_t('GLOBAL_DISABLED'), 'false');
-            $authority->AddOption(_t('GLOBAL_ENABLED'),  'true');
+            $authority->AddOption(Jaws::t('DISABLED'), 'false');
+            $authority->AddOption(Jaws::t('ENABLED'),  'true');
             $anon_authority = $this->gadget->registry->fetch('anon_post_authority');
             $authority->SetDefault($anon_authority == 'true'? 'true' : 'false');
             $fieldset->Add($authority);
 
             $form->Add($fieldset);
-            $submit =& Piwi::CreateWidget('Button', 'saveproperties', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $submit =& Piwi::CreateWidget('Button', 'saveproperties', Jaws::t('SAVE'), STOCK_SAVE);
             $submit->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
 
             $form->Add($submit);
