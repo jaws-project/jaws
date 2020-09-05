@@ -40,12 +40,12 @@ class Languages_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
         $new_dir = ROOT_DATA_PATH . 'languages' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         return true;
@@ -62,12 +62,12 @@ class Languages_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
         $new_dir = ROOT_DATA_PATH . 'languages' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         // Registry keys

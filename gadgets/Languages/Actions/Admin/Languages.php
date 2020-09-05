@@ -121,13 +121,13 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetVariable('checkbox_filter', $check_filter->Get());
 
         $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel',
-                                        _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+                                        Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel_btn->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $cancel_btn->SetStyle('visibility: hidden;');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $save_btn =& Piwi::CreateWidget('Button','btn_save',
-                                        _t('GLOBAL_SAVE', _t('LANGUAGES_CHANGES')), STOCK_SAVE);
+                                        Jaws::t('SAVE', _t('LANGUAGES_CHANGES')), STOCK_SAVE);
         $save_btn->AddEvent(ON_CLICK, 'javascript:save_lang_data();');
         $save_btn->SetStyle('visibility: hidden;');
         $tpl->SetVariable('save', $save_btn->Get());

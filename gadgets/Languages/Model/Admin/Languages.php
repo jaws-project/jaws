@@ -38,14 +38,14 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                     $lang_dir = $jaws_lang_dir. DIRECTORY_SEPARATOR. $lang_code;
                     if (!Jaws_Utils::mkdir($lang_dir, 2)) {
                         $this->gadget->session->push(
-                                            _t('GLOBAL_ERROR_FAILED_CREATING_DIR'),
+                                            Jaws::t('ERROR_FAILED_CREATING_DIR'),
                                             RESPONSE_ERROR);
                         return false;
                     }
 
                     if (!Jaws_Utils::is_writable($jaws_lang_dir)) {
                         $this->gadget->session->push(
-                                            _t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE'),
+                                            Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE'),
                                             RESPONSE_ERROR);
                         return false;
                     }
