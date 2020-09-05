@@ -49,13 +49,13 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $webcamData['url']   = $this->ShowShortURL($webcam['url']);
             $actions = '';
             if ($this->gadget->GetPermission('EditWebcam')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editWebcam('".$webcam['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
             if ($this->gadget->GetPermission('DeleteWebcam')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:if (confirm('"._t('WEBCAM_CONFIRM_DELETE_WEBCAM')."')) ".
                     "deleteWebcam('".$webcam['id']."');",
                     STOCK_DELETE);
@@ -81,9 +81,9 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->SetID('webcam_datagrid');
         $datagrid->SetStyle('width: 100%;');
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_TITLE')));
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_URL')));
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('URL')));
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
 
         return $datagrid->Get();
     }
@@ -97,7 +97,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
     function ManageWebcams()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteWebcamFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incompleteWebcamFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Webcam.html');
         $tpl->SetBlock('webcam');
@@ -113,11 +113,11 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $fieldset_webcam = new Jaws_Widgets_FieldSet($this->gadget->title);
 
             $titleentry =& Piwi::CreateWidget('Entry', 'title', '');
-            $titleentry->SetTitle(_t('GLOBAL_TITLE'));
+            $titleentry->SetTitle(Jaws::t('TITLE'));
             $fieldset_webcam->Add($titleentry);
 
             $urlentry =& Piwi::CreateWidget('Entry', 'url', 'http://');
-            $urlentry->SetTitle(_t('GLOBAL_URL'));
+            $urlentry->SetTitle(Jaws::t('URL'));
             $fieldset_webcam->Add($urlentry);
 
             $refresh =& Piwi::CreateWidget('SpinButton', 'refresh', 60, '', 5);
@@ -128,10 +128,10 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $buttonbox =& Piwi::CreateWidget('HBox');
             $buttonbox->SetStyle('float: right;'); //hig style
             $submit =& Piwi::CreateWidget('Button', 'addnewwebcam',
-                _t('GLOBAL_SAVE', $this->gadget->title), STOCK_SAVE);
+                Jaws::t('SAVE', $this->gadget->title), STOCK_SAVE);
             $submit->AddEvent(ON_CLICK, 'javascript:submitForm(this.form);');
 
-            $cancel =& Piwi::CreateWidget('Button', 'cancelform', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+            $cancel =& Piwi::CreateWidget('Button', 'cancelform', Jaws::t('CANCEL'), STOCK_CANCEL);
             $cancel->AddEvent(ON_CLICK, 'javascript:cleanForm(this.form);');
 
             $buttonbox->Add($cancel);
@@ -148,7 +148,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Webcam'));
             $config_form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'UpdateProperties'));
 
-            $fieldset_config = new Jaws_Widgets_FieldSet(_t('GLOBAL_PROPERTIES'));
+            $fieldset_config = new Jaws_Widgets_FieldSet(Jaws::t('PROPERTIES'));
             $fieldset_config->SetDirection('vertical');
             $fieldset_config->SetStyle('width: 200px;');
 
@@ -170,7 +170,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
 
             $config_form->Add($fieldset_config);
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
-                _t('GLOBAL_UPDATE', _t('GLOBAL_PROPERTIES')), STOCK_SAVE);
+                Jaws::t('UPDATE', Jaws::t('PROPERTIES')), STOCK_SAVE);
             $submit_config->SetStyle('float: right;');
             $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
 
