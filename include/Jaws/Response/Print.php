@@ -39,7 +39,7 @@ class Jaws_Response_Print
             $tpl->SetVariable('encoding',    'utf-8');
             $tpl->SetVariable('site-name',   $site_name);
             $tpl->SetVariable('site-title',  $site_name);
-            $tpl->SetVariable('site-direction',   _t('GLOBAL_LANG_DIRECTION'));
+            $tpl->SetVariable('site-direction',   Jaws::t('LANG_DIRECTION'));
             $tpl->SetVariable('site-slogan',      $siteAttributes['site_slogan']);
             $tpl->SetVariable('site-comment',     $siteAttributes['site_comment']);
             $tpl->SetVariable('site-author',      $siteAttributes['site_author']);

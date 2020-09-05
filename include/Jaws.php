@@ -219,7 +219,7 @@ class Jaws
         ) {
             // Check if valid theme name
             if (!preg_match('/^[[:alnum:]_\.-]+$/', $currentTheme['name'])) {
-                return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_NAME', 'Theme'));
+                return Jaws_Error::raiseError(Jaws::t('ERROR_INVALID_NAME', 'Theme'));
             }
 
             $theme = array();
@@ -266,7 +266,7 @@ class Jaws
             strpos($language, '%') !== false ||
             strpos($language, '\\') !== false ||
             strpos($language, '/') !== false) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_INVALID_NAME', 'getLanguage'),
+                return new Jaws_Error(Jaws::t('ERROR_INVALID_NAME', 'getLanguage'),
                                       'Getting language name');
         }
         return $language;
