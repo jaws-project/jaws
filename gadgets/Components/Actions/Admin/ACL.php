@@ -22,11 +22,11 @@ class Components_Actions_Admin_ACL extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->loadAdmin('ACL.html');
         $tpl->SetBlock('acl');
 
-        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $button =& Piwi::CreateWidget('Button', '', Jaws::t('SAVE'), STOCK_SAVE);
         $button->AddEvent(ON_CLICK, 'javascript:saveACL();');
         $tpl->SetVariable('save', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_RESET'), STOCK_REFRESH);
+        $button =& Piwi::CreateWidget('Button', '', Jaws::t('RESET'), STOCK_REFRESH);
         $button->AddEvent(ON_CLICK, 'componentACL(true);');
         $tpl->SetVariable('reset', $button->Get());
 

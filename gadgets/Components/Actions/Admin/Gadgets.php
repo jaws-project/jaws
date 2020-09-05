@@ -97,7 +97,7 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $tpl->SetVariable('description', $objGadget->description);
         $tpl->SetVariable('image', "gadgets/$gadget/Resources/images/logo.png");
 
-        $tpl->SetVariable('lbl_version', _t('GLOBAL_VERSION').':');
+        $tpl->SetVariable('lbl_version', Jaws::t('VERSION').':');
         $tpl->SetVariable('version', $objGadget->version);
 
         $tpl->SetVariable('lbl_jaws_version', _t('COMPONENTS_JAWS_VERSION').':');
