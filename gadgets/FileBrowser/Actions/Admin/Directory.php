@@ -49,13 +49,13 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
 
                 if ($this->gadget->GetPermission('ManageDirectories')) {
                     //edit directory properties
-                    $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                    $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                         "javascript:editDir(this, '{$file['filename']}');",
                         STOCK_EDIT);
                     $actions.= $link->Get().'&nbsp;';
 
                     //delete directory
-                    $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                    $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                         "javascript:delDir(this, '{$file['filename']}');",
                         STOCK_DELETE);
                     $actions.= $link->Get().'&nbsp;';
@@ -74,13 +74,13 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
 
                 if ($this->gadget->GetPermission('ManageFiles')) {
                     //edit file properties
-                    $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                    $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                         "javascript:editFile(this, '{$file['filename']}');",
                         STOCK_EDIT);
                     $actions.= $link->Get().'&nbsp;';
 
                     //delete file
-                    $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                    $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                         "javascript:delFile(this, '{$file['filename']}');",
                         STOCK_DELETE);
                     $actions.= $link->Get().'&nbsp;';
@@ -115,7 +115,7 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_dirname', _t('FILEBROWSER_DIR_NAME'));
         $tpl->SetVariable('dirname', $dirname->Get());
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $title =& Piwi::CreateWidget('Entry', 'dir_title', '');
         $title->SetStyle('width: 270px;');
         $tpl->SetVariable('title', $title->Get());
@@ -124,7 +124,7 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
         $desc->SetID('dir_description');
         $desc->SetRows(5);
         $desc->SetStyle('width: 270px;');
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('description', $desc->Get());
 
         $tpl->SetVariable('lbl_fast_url', _t('FILEBROWSER_FASTURL'));
@@ -133,12 +133,12 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
         if ($this->gadget->GetPermission('ManageDirectories')) {
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript:saveDir();");
             $tpl->SetVariable('btn_save', $btnSave->Get());
         }
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction('dir');");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 

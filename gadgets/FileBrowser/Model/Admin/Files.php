@@ -42,7 +42,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $fModel = $this->gadget->model->load('Files');
         $dbFile = $fModel->DBFileInfo($path, $oldname);
         if (Jaws_Error::IsError($dbFile)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -54,7 +54,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             $table = Jaws_ORM::getInstance()->table('filebrowser');
             $res = $table->update($params)->where('path', $path)->and()->where('filename', $oldname)->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
@@ -68,7 +68,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             $fileTable = Jaws_ORM::getInstance()->table('filebrowser');
             $res = $fileTable->insert($params)->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
@@ -107,7 +107,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             }
         }
 
-        $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+        $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
         return false;
     }
 

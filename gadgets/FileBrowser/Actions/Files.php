@@ -27,9 +27,9 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
 
         if (!$this->gadget->GetPermission('OutputAccess')) {
             if ($this->app->session->user->logged) {
-                return _t('GLOBAL_ERROR_ACCESS_DENIED');
+                return Jaws::t('ERROR_ACCESS_DENIED');
             } else {
-                return _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
+                return Jaws::t('ERROR_ACCESS_RESTRICTED',
                     $this->app->map->GetMappedURL('Users', 'Login'),
                     $this->app->map->GetMappedURL('Users', 'Registration'));
             }
@@ -160,25 +160,25 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
                 if ($k == 'next') {
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/next');
-                        $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXT'));
+                        $tpl->SetVariable('lbl_next', Jaws::t('NEXT'));
                         $url = $this->gadget->urlMap($action, $params);
                         $tpl->SetVariable('url_next', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/next');
                     } else {
                         $tpl->SetBlock('pager/numbered-navigation/item/no_next');
-                        $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXT'));
+                        $tpl->SetVariable('lbl_next', Jaws::t('NEXT'));
                         $tpl->ParseBlock('pager/numbered-navigation/item/no_next');
                     }
                 } elseif ($k == 'previous') {
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/previous');
-                        $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUS'));
+                        $tpl->SetVariable('lbl_previous', Jaws::t('PREVIOUS'));
                         $url = $this->gadget->urlMap($action, $params);
                         $tpl->SetVariable('url_previous', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/previous');
                     } else {
                         $tpl->SetBlock('pager/numbered-navigation/item/no_previous');
-                        $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUS'));
+                        $tpl->SetVariable('lbl_previous', Jaws::t('PREVIOUS'));
                         $tpl->ParseBlock('pager/numbered-navigation/item/no_previous');
                     }
                 } elseif ($k == 'separator1' || $k == 'separator2') {
