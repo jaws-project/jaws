@@ -35,7 +35,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->SetVariable('email',    $this->app->session->user->email);
         $tpl->SetVariable('avatar',   $this->app->session->user->avatar);
         $tpl->SetVariable('site-url', $this->app->getSiteURL());
-        $tpl->SetVariable('view-site', _t('GLOBAL_VIEW_SITE'));
+        $tpl->SetVariable('view-site', Jaws::t('VIEW_SITE'));
 
         if ($this->app->session->getPermission('Users', 'default_admin, EditAccountInformation')) {
             $uAccoun =& Piwi::CreateWidget(
@@ -48,7 +48,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         }
 
         $tpl->SetVariable('my-account', $uAccoun->Get());
-        $tpl->SetVariable('logout', _t('GLOBAL_LOGOUT'));
+        $tpl->SetVariable('logout', Jaws::t('LOGOUT'));
         $tpl->SetVariable('logout-url', $this->app->map->GetRawURL('Users', 'Logout'));
         $tpl->ParseBlock('layout/login-info');
 
@@ -62,8 +62,8 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             $gname = _t(strtoupper($ReqGadget) . '_TITLE');
             $tpl->SetBlock('layout/cptitle');
             $tpl->SetVariable('admin-script', BASE_SCRIPT);
-            $tpl->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
-            $tpl->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
+            $tpl->SetVariable('cp-title', Jaws::t('CONTROLPANEL'));
+            $tpl->SetVariable('cp-title-separator', Jaws::t('CONTROLPANEL_TITLE_SEPARATOR'));
             $tpl->SetVariable('title-name', $gname);
             $tpl->SetVariable('icon-gadget', 'gadgets/'.$ReqGadget.'/Resources/images/logo.png');
             $tpl->SetVariable('title-gadget', $ReqGadget);
@@ -72,7 +72,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             if (!empty($docurl) && !is_null($docurl)) {
                 $tpl->SetBlock('layout/cptitle/documentation');
                 $tpl->SetVariable('src', 'gadgets/ControlPanel/Resources/images/help.png');
-                $tpl->SetVariable('alt', _t('GLOBAL_HELP'));
+                $tpl->SetVariable('alt', Jaws::t('HELP'));
                 $tpl->SetVariable('url', $docurl);
                 $tpl->ParseBlock('layout/cptitle/documentation');
             }
@@ -83,7 +83,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $site_status = $this->gadget->registry->fetch('site_status', 'Settings');
         if ($site_status == 'disabled') {
             $tpl->SetBlock('layout/warning');
-            $tpl->SetVariable('warning', _t('GLOBAL_WARNING_OFFLINE'));
+            $tpl->SetVariable('warning', Jaws::t('WARNING_OFFLINE'));
             $tpl->ParseBlock('layout/warning');
         }
 
@@ -124,8 +124,8 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
 
         if ($this->gadget->registry->fetch('show_viewsite', 'Settings') == 'true') {
             $gadgetsections['general'][] = array('name'  => 'Index',
-                                                 'tname' => _t('GLOBAL_VIEW_SITE'),
-                                                 'desc'  => _t('GLOBAL_VIEW_SITE'));
+                                                 'tname' => Jaws::t('VIEW_SITE'),
+                                                 'desc'  => Jaws::t('VIEW_SITE'));
         }
 
         // Load the template
@@ -133,7 +133,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $this->AjaxMe('script.js');
         foreach ($gadgetsections as $section  => $gadgets) {
             $tpl->SetBlock('main');
-            $tpl->SetVariable('title', _t('GLOBAL_GI_' . strtoupper($section)));
+            $tpl->SetVariable('title', Jaws::t('GI_' . strtoupper($section)));
             foreach ($gadgets as $gadget) {
                 $tpl->SetBlock('main/item');
                 $tpl->SetVariable('name', $gadget['tname']);
@@ -216,7 +216,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                     $tpl->SetVariable('ip', long2ip((int)$log['ip']));
                     $tpl->SetVariable('agent', $log['agent']);
                     $tpl->SetVariable('status_code', $log['status']);
-                    $tpl->SetVariable('status_title', _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']));
+                    $tpl->SetVariable('status_title', Jaws::t('HTTP_ERROR_TITLE_'. $log['status']));
                     $tpl->SetVariable('icon', 'images/stock/'. ($log['status'] == 200 ?  'info.png' : 'stop.png'));
                     $tpl->SetVariable('date', $date->Format($log['time'], 'd MN Y H:i'));
                     $tpl->ParseBlock('login_history/item');
