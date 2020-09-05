@@ -107,7 +107,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
                     $this->gadget->urlMap('Captcha', array('field' => $field, 'key' => $resCaptcha['key']))
                 );
                 $tpl->SetVariable('description', $resCaptcha['description']);
-                $tpl->SetVariable('entry_title', _t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
+                $tpl->SetVariable('entry_title', Jaws::t('CAPTCHA_CASE_INSENSITIVE'));
                 $tpl->ParseBlock("$tpl_base_block/image_captcha");
             } else {
                 $tpl->SetBlock("$tpl_base_block/text_captcha");
@@ -116,7 +116,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
                 $tpl->SetVariable('captcha_title', $resCaptcha['title']);
                 $tpl->SetVariable('captcha_text', $resCaptcha['text']);
                 $tpl->SetVariable('description', $resCaptcha['description']);
-                $tpl->SetVariable('entry_title', _t('GLOBAL_CAPTCHA_CASE_INSENSITIVE'));
+                $tpl->SetVariable('entry_title', Jaws::t('CAPTCHA_CASE_INSENSITIVE'));
                 $tpl->ParseBlock("$tpl_base_block/text_captcha");
             }
         }
@@ -151,7 +151,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
         $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
         if (true !== $matched = $objCaptcha->check($cleanup)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
+                Jaws::t('CAPTCHA_ERROR_DOES_NOT_MATCH'),
                 is_null($matched)? 404 : 406,
                 JAWS_ERROR_NOTICE
             );

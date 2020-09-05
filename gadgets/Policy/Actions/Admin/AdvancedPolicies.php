@@ -51,22 +51,22 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
 
         $badCount =& Piwi::CreateWidget('Combo', 'password_bad_count');
         $badCount->setID('password_bad_count');
-        $badCount->AddOption(_t('GLOBAL_TIMES', 1), '1');
-        $badCount->AddOption(_t('GLOBAL_TIMES', 3), '3');
-        $badCount->AddOption(_t('GLOBAL_TIMES', 5), '5');
-        $badCount->AddOption(_t('GLOBAL_TIMES', 7), '7');
+        $badCount->AddOption(Jaws::t('TIMES', 1), '1');
+        $badCount->AddOption(Jaws::t('TIMES', 3), '3');
+        $badCount->AddOption(Jaws::t('TIMES', 5), '5');
+        $badCount->AddOption(Jaws::t('TIMES', 7), '7');
         $badCount->SetDefault($this->gadget->registry->fetch('password_bad_count'));
         $tpl->SetVariable('lbl_password_bad_count', _t('POLICY_PASSWORD_BAD_COUNT'));
         $tpl->SetVariable('password_bad_count', $badCount->Get());
 
         $lockedout =& Piwi::CreateWidget('Combo', 'password_lockedout_time');
         $lockedout->setID('password_lockedout_time');
-        $lockedout->AddOption(_t('GLOBAL_DISABLED'), '0');
-        $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES',  1),  60);
-        $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES',  3), 180);
-        $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES',  5), 300);
-        $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES', 10), 600);
-        $lockedout->AddOption(_t('GLOBAL_DATE_MINUTES', 15), 900);
+        $lockedout->AddOption(Jaws::t('DISABLED'), '0');
+        $lockedout->AddOption(Jaws::t('DATE_MINUTES',  1),  60);
+        $lockedout->AddOption(Jaws::t('DATE_MINUTES',  3), 180);
+        $lockedout->AddOption(Jaws::t('DATE_MINUTES',  5), 300);
+        $lockedout->AddOption(Jaws::t('DATE_MINUTES', 10), 600);
+        $lockedout->AddOption(Jaws::t('DATE_MINUTES', 15), 900);
         $lockedout->SetDefault($this->gadget->registry->fetch('password_lockedout_time'));
         $tpl->SetVariable('lbl_password_lockedout_time', _t('POLICY_PASSWORD_LOCKEDOUT_TIME'));
         $tpl->SetVariable('password_lockedout_time', $lockedout->Get());
@@ -74,14 +74,14 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $maxAge =& Piwi::CreateWidget('Combo', 'password_max_age');
         $maxAge->setID('password_max_age');
         $maxAge->AddOption(_t('POLICY_PASSWORD_RESISTANT'), 0);
-        $maxAge->AddOption(_t('GLOBAL_DATE_DAYS',  1), 24);
-        $maxAge->AddOption(_t('GLOBAL_DATE_DAYS',  3), 3*24);
-        $maxAge->AddOption(_t('GLOBAL_DATE_WEEKS', 1), 7*24);
-        $maxAge->AddOption(_t('GLOBAL_DATE_WEEKS', 2), 14*24);
-        $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 1), 30*24);
-        $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 3), 90*24);
-        $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 6), 180*24);
-        $maxAge->AddOption(_t('GLOBAL_DATE_MONTH', 12), 365*24);
+        $maxAge->AddOption(Jaws::t('DATE_DAYS',  1), 24);
+        $maxAge->AddOption(Jaws::t('DATE_DAYS',  3), 3*24);
+        $maxAge->AddOption(Jaws::t('DATE_WEEKS', 1), 7*24);
+        $maxAge->AddOption(Jaws::t('DATE_WEEKS', 2), 14*24);
+        $maxAge->AddOption(Jaws::t('DATE_MONTH', 1), 30*24);
+        $maxAge->AddOption(Jaws::t('DATE_MONTH', 3), 90*24);
+        $maxAge->AddOption(Jaws::t('DATE_MONTH', 6), 180*24);
+        $maxAge->AddOption(Jaws::t('DATE_MONTH', 12), 365*24);
         $maxAge->SetDefault($this->gadget->registry->fetch('password_max_age'));
         $tpl->SetVariable('lbl_password_max_age', _t('POLICY_PASSWORD_MAX_AGE'));
         $tpl->SetVariable('password_max_age', $maxAge->Get());
@@ -100,8 +100,8 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
 
         //Login captcha
         $captcha =& Piwi::CreateWidget('Combo', 'login_captcha');
-        $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
-        $captcha->AddOption(_t('GLOBAL_ALWAYS'), '0');
+        $captcha->AddOption(Jaws::t('DISABLED'), 'DISABLED');
+        $captcha->AddOption(Jaws::t('ALWAYS'), '0');
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 1), '1');
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 2), '2');
         $captcha->AddOption(_t('POLICY_LOGIN_CAPTCHA_AFTER_WRONG', 3), '3');
@@ -132,29 +132,29 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
 
         $idleTimeout =& Piwi::CreateWidget('Combo', 'session_idle_timeout');
         $idleTimeout->setID('session_idle_timeout');
-        $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES',  5),  5);
-        $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES', 10), 10);
-        $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES', 15), 15);
-        $idleTimeout->AddOption(_t('GLOBAL_DATE_MINUTES', 30), 30);
-        $idleTimeout->AddOption(_t('GLOBAL_DATE_HOURS',    1), 60);
+        $idleTimeout->AddOption(Jaws::t('DATE_MINUTES',  5),  5);
+        $idleTimeout->AddOption(Jaws::t('DATE_MINUTES', 10), 10);
+        $idleTimeout->AddOption(Jaws::t('DATE_MINUTES', 15), 15);
+        $idleTimeout->AddOption(Jaws::t('DATE_MINUTES', 30), 30);
+        $idleTimeout->AddOption(Jaws::t('DATE_HOURS',    1), 60);
         $idleTimeout->SetDefault($this->gadget->registry->fetch('session_idle_timeout'));
         $tpl->SetVariable('lbl_session_idle_timeout', _t('POLICY_SESSION_IDLE_TIMEOUT'));
         $tpl->SetVariable('session_idle_timeout', $idleTimeout->Get());
 
         $rememberTimeout =& Piwi::CreateWidget('Combo', 'session_remember_timeout');
         $rememberTimeout->setID('session_remember_timeout');
-        $rememberTimeout->AddOption(_t('GLOBAL_DATE_DAYS',   1),   24);
-        $rememberTimeout->AddOption(_t('GLOBAL_DATE_DAYS',   3),   72);
-        $rememberTimeout->AddOption(_t('GLOBAL_DATE_WEEKS',  1),  168);
-        $rememberTimeout->AddOption(_t('GLOBAL_DATE_WEEKS',  2),  336);
-        $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH',  1),  720);
-        $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH',  6), 4320);
-        $rememberTimeout->AddOption(_t('GLOBAL_DATE_MONTH', 12), 8640);
+        $rememberTimeout->AddOption(Jaws::t('DATE_DAYS',   1),   24);
+        $rememberTimeout->AddOption(Jaws::t('DATE_DAYS',   3),   72);
+        $rememberTimeout->AddOption(Jaws::t('DATE_WEEKS',  1),  168);
+        $rememberTimeout->AddOption(Jaws::t('DATE_WEEKS',  2),  336);
+        $rememberTimeout->AddOption(Jaws::t('DATE_MONTH',  1),  720);
+        $rememberTimeout->AddOption(Jaws::t('DATE_MONTH',  6), 4320);
+        $rememberTimeout->AddOption(Jaws::t('DATE_MONTH', 12), 8640);
         $rememberTimeout->SetDefault($this->gadget->registry->fetch('session_remember_timeout'));
         $tpl->SetVariable('lbl_session_remember_timeout', _t('POLICY_SESSION_REMEMBER_TIMEOUT'));
         $tpl->SetVariable('session_remember_timeout', $rememberTimeout->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveAdvancedPolicies();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 

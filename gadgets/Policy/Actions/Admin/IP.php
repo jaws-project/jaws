@@ -35,13 +35,13 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
 
             $actions = '';
             if ($this->gadget->GetPermission('ManageIPs')) {
-                $ipWidget =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $ipWidget =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editIPRange(this, '".$ipRange['id']."');",
                     STOCK_EDIT);
                 $actions.= $ipWidget->Get().'&nbsp;';
 
                 $ipWidget =& Piwi::CreateWidget('Link',
-                    _t('GLOBAL_DELETE', _t('POLICY_IP_RANGE')),
+                    Jaws::t('DELETE', _t('POLICY_IP_RANGE')),
                     "javascript:deleteIPRange(this, '".$ipRange['id']."');",
                     STOCK_DELETE);
                 $actions.= $ipWidget->Get();
@@ -67,11 +67,11 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $grid->SetID('blocked_ips_datagrid');
         $grid->TotalRows($totalIPs);
         $grid->pageBy(12);
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_FROM')));
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_TO'), null, false);
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('FROM')));
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('TO'), null, false);
         $column2->SetStyle('width: 120px;');
         $grid->AddColumn($column2);
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column3 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column3->SetStyle('width: 60px;');
         $grid->AddColumn($column3);
 
@@ -88,7 +88,7 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('IPBlocking');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteFields',     _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incompleteFields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
         $this->gadget->define('confirmIPRangeDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_IP'));
 
         $tpl = $this->gadget->template->loadAdmin('IPBlocking.html');
@@ -110,12 +110,12 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $tpl->SetVariable('legend_title', _t('POLICY_IP_RANGE'));
         $fromIPAddress =& Piwi::CreateWidget('Entry', 'from_ipaddress', '');
         $fromIPAddress->setSize(24);
-        $tpl->SetVariable('lbl_from_ipaddress', _t('GLOBAL_FROM'));
+        $tpl->SetVariable('lbl_from_ipaddress', Jaws::t('FROM'));
         $tpl->SetVariable('from_ipaddress', $fromIPAddress->Get());
 
         $toIPAddress =& Piwi::CreateWidget('Entry', 'to_ipaddress', '');
         $toIPAddress->setSize(24);
-        $tpl->SetVariable('lbl_to_ipaddress', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_to_ipaddress', Jaws::t('TO'));
         $tpl->SetVariable('to_ipaddress', $toIPAddress->Get());
 
         $script =& Piwi::CreateWidget('Combo', 'script');
@@ -136,18 +136,18 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $blocked =& Piwi::CreateWidget('Combo', 'blocked');
         $blocked->SetID('blocked');
         $blocked->setStyle('width: 120px;');
-        $blocked->AddOption(_t('GLOBAL_NO'),  0);
-        $blocked->AddOption(_t('GLOBAL_YES'), 1);
+        $blocked->AddOption(Jaws::t('NO'),  0);
+        $blocked->AddOption(Jaws::t('YES'), 1);
         $blocked->SetDefault('1');
         $tpl->SetVariable('lbl_blocked', _t('POLICY_BLOCKED'));
         $tpl->SetVariable('blocked', $blocked->Get());
 
         if ($this->gadget->GetPermission('ManageIPs')) {
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, 'javascript:saveIPRange();');
             $tpl->SetVariable('btn_save', $btnSave->Get());
 
-            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
             $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
         }

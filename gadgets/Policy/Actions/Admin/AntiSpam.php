@@ -33,7 +33,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
 
         //Filter
         $filters =& Piwi::CreateWidget('Combo', 'filter');
-        $filters->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
+        $filters->AddOption(Jaws::t('DISABLED'), 'DISABLED');
         $fs = $model->GetFilters();
         foreach ($fs as $f) {
             $filters->AddOption($f, $f);
@@ -44,7 +44,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
 
         //Captcha
         $captcha =& Piwi::CreateWidget('Combo', 'default_captcha');
-        $captcha->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
+        $captcha->AddOption(Jaws::t('DISABLED'), 'DISABLED');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ALWAYS'), 'ALWAYS');
         $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ANONYMOUS'), 'ANONYMOUS');
         $captchaValue = $this->gadget->registry->fetch('default_captcha_status');
@@ -67,7 +67,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
 
         //Email Protector
         $useEmailProtector =& Piwi::CreateWidget('Combo', 'obfuscator');
-        $useEmailProtector->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
+        $useEmailProtector->AddOption(Jaws::t('DISABLED'), 'DISABLED');
         $os = $model->GetObfuscators();
         foreach ($os as $o) {
             $useEmailProtector->AddOption($o, $o);
@@ -87,7 +87,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
         $tpl->SetVariable('lbl_blocked_domains', _t('POLICY_ANTISPAM_BLOCKED_DOMAINS'));
         $tpl->SetVariable('blocked_domains', $blockedDomains->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveAntiSpamSettings();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 

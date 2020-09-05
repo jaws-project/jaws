@@ -31,19 +31,19 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
 
         $useEncryption =& Piwi::CreateWidget('Combo', 'enabled');
         $useEncryption->setID('enabled');
-        $useEncryption->AddOption(_t('GLOBAL_NO'),  'false');
-        $useEncryption->AddOption(_t('GLOBAL_YES'), 'true');
+        $useEncryption->AddOption(Jaws::t('NO'),  'false');
+        $useEncryption->AddOption(Jaws::t('YES'), 'true');
         $useEncryption->SetDefault($this->gadget->registry->fetch('crypt_enabled'));
-        $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
+        $tpl->SetVariable('lbl_enabled', Jaws::t('ENABLED'));
         $tpl->SetVariable('enabled', $useEncryption->Get());
 
         $keyAge =& Piwi::CreateWidget('Combo', 'key_age');
         $keyAge->setID('key_age');
-        $keyAge->AddOption(_t('GLOBAL_DATE_MINUTES', 10),   600);
-        $keyAge->AddOption(_t('GLOBAL_DATE_HOURS',   1),   3600);
-        $keyAge->AddOption(_t('GLOBAL_DATE_HOURS',   5),  18000);
-        $keyAge->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
-        $keyAge->AddOption(_t('GLOBAL_DATE_WEEKS',   1), 604800);
+        $keyAge->AddOption(Jaws::t('DATE_MINUTES', 10),   600);
+        $keyAge->AddOption(Jaws::t('DATE_HOURS',   1),   3600);
+        $keyAge->AddOption(Jaws::t('DATE_HOURS',   5),  18000);
+        $keyAge->AddOption(Jaws::t('DATE_DAYS',    1),  86400);
+        $keyAge->AddOption(Jaws::t('DATE_WEEKS',   1), 604800);
         $keyAge->SetDefault($this->gadget->registry->fetch('crypt_key_age'));
         $keyAge->SetEnabled($this->gadget->GetPermission('ManageEncryptionKey'));
         $tpl->SetVariable('lbl_key_age', _t('POLICY_ENCRYPTION_KEY_AGE'));
@@ -68,7 +68,7 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
         $tpl->SetVariable('lbl_key_start_date', _t('POLICY_ENCRYPTION_KEY_START_DATE'));
         $tpl->SetVariable('key_start_date', $keyStartDate->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveEncryptionSettings();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 

@@ -33,13 +33,13 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
 
             $actions = '';
             if ($this->gadget->GetPermission('ManageAgents')) {
-                $ipWidget =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $ipWidget =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editAgent(this, '".$agent['id']."');",
                     STOCK_EDIT);
                 $actions.= $ipWidget->Get().'&nbsp;';
 
                 $agWidget =& Piwi::CreateWidget('Link',
-                    _t('GLOBAL_DELETE' ,_t('POLICY_AGENT')),
+                    Jaws::t('DELETE' ,_t('POLICY_AGENT')),
                     "javascript:deleteAgent(this, '".$agent['id']."');",
                     STOCK_DELETE);
                 $actions .= $agWidget->Get();
@@ -68,7 +68,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
         $grid->pageBy(12);
         $column1 = Piwi::CreateWidget('Column', _t('POLICY_AGENT'));
         $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'));
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'));
         $column2->SetStyle('width: 60px; white-space:nowrap;');
         $grid->AddColumn($column2);
 
@@ -85,7 +85,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('AgentBlocking');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteFields',   _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incompleteFields',   Jaws::t('ERROR_INCOMPLETE_FIELDS'));
         $this->gadget->define('confirmAgentDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_AGENT'));
 
         $tpl = $this->gadget->template->loadAdmin('AgentBlocking.html');
@@ -123,18 +123,18 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
         $blocked =& Piwi::CreateWidget('Combo', 'blocked');
         $blocked->SetID('blocked');
         $blocked->setStyle('width: 120px;');
-        $blocked->AddOption(_t('GLOBAL_NO'),  0);
-        $blocked->AddOption(_t('GLOBAL_YES'), 1);
+        $blocked->AddOption(Jaws::t('NO'),  0);
+        $blocked->AddOption(Jaws::t('YES'), 1);
         $blocked->SetDefault('1');
         $tpl->SetVariable('lbl_blocked', _t('POLICY_BLOCKED'));
         $tpl->SetVariable('blocked', $blocked->Get());
 
         if ($this->gadget->GetPermission('ManageAgents')) {
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, 'javascript:saveAgent();');
             $tpl->SetVariable('btn_save', $btnSave->Get());
 
-            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
             $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
         }
