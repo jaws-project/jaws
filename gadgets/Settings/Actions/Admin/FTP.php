@@ -28,19 +28,19 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $tpl->SetVariable('sidebar', $this->SideBar('FTP'));
         $tpl->SetVariable('legend', _t('SETTINGS_FTP_SETTINGS'));
 
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitFTPSettingsForm();");
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // Use Enabled?
         $useFTP =& Piwi::CreateWidget('Combo', 'ftp_enabled');
         $useFTP->setID('ftp_enabled');
-        $useFTP->AddOption(_t('GLOBAL_NO'),  'false');
-        $useFTP->AddOption(_t('GLOBAL_YES'), 'true');
+        $useFTP->AddOption(Jaws::t('NO'),  'false');
+        $useFTP->AddOption(Jaws::t('YES'), 'true');
         $useFTP->SetDefault($this->gadget->registry->fetch('ftp_enabled'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'ftp_enabled');
-        $tpl->SetVariable('label', _t('GLOBAL_ENABLED'));
+        $tpl->SetVariable('label', Jaws::t('ENABLED'));
         $tpl->SetVariable('field', $useFTP->Get());
         $tpl->SetVariable('style', 'padding-bottom:8px;');
         $tpl->ParseBlock('settings/item');

@@ -35,7 +35,7 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         $tpl->SetVariable('addButton', $addButton->Get());
 
         // Save Button
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitMetaForm();");
         $tpl->SetVariable('saveButton', $saveButton->Get());
 

@@ -28,7 +28,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $tpl->SetVariable('sidebar', $this->SideBar('Basic'));
         $tpl->SetVariable('legend', _t('SETTINGS_BASIC_SETTINGS'));
 
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(
             ON_CLICK,
             "Jaws_Gadget.getInstance('Settings').action.load('BasicSettings').submitBasicForm();"
@@ -39,8 +39,8 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $site_status =& Piwi::CreateWidget('Combo', 'site_status');
         $site_status->setID('site_status');
         $tpl->SetBlock('settings/item');
-        $site_status->AddOption(_t('GLOBAL_DISABLED'), 'disabled');
-        $site_status->AddOption(_t('GLOBAL_ENABLED'), 'enabled');
+        $site_status->AddOption(Jaws::t('DISABLED'), 'disabled');
+        $site_status->AddOption(Jaws::t('ENABLED'), 'enabled');
         $site_status->SetDefault($this->gadget->registry->fetch('site_status'));
         $site_status->SetEnabled($this->gadget->GetPermission('ManageSiteStatus'));
         $tpl->SetVariable('field-name', 'site_status');
@@ -104,7 +104,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $gdt->setID('main_gadget');
 
         $tpl->SetBlock('settings/item');
-        $gdt->AddOption(_t('GLOBAL_NOGADGET'), '-');
+        $gdt->AddOption(Jaws::t('NOGADGET'), '-');
         foreach ($installedgadgets as $g => $tg) {
             $gdt->AddOption($tg['title'], $g);
         }

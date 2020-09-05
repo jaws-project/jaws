@@ -34,7 +34,7 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
         $assigns['gadgets'] = Jaws_Gadget::getInstance('Components')
             ->model->load('Gadgets')
             ->GetGadgetsList(null, true, true, true);
-        $assigns['gadgets'] = array('-' => array('title' => _t('GLOBAL_NOGADGET'))) + $assigns['gadgets'];
+        $assigns['gadgets'] = array('-' => array('title' => Jaws::t('NOGADGET'))) + $assigns['gadgets'];
         $assigns['selected_gadget'] = $this->gadget->registry->fetch('main_gadget');
         // date formats
         $assigns['dateFormats'] = $this->gadget->model->load('Settings')->GetDateFormatList();

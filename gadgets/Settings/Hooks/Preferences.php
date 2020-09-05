@@ -24,7 +24,7 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $objComponents = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $objComponents->GetGadgetsList(null, true, true, null, true);
         $gadgets = array_column(array_values($gadgets), 'title', 'name');
-        $gadgets = array('-' => _t('GLOBAL_NOGADGET')) + $gadgets;
+        $gadgets = array('-' => Jaws::t('NOGADGET')) + $gadgets;
 
         $result['admin_language'] = array(
             'type'  => 'select',
@@ -60,7 +60,7 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         );
         $result['timezone'] = array(
             'type'  => 'select',
-            'title' => _t('GLOBAL_TIMEZONE'),
+            'title' => Jaws::t('TIMEZONE'),
             'values' => $objSettings->GetTimeZonesList(),
             'ltr' => true,
         );

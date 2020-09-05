@@ -28,14 +28,14 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $tpl->SetVariable('sidebar', $this->SideBar('Mail'));
         $tpl->SetVariable('legend', _t('SETTINGS_MAIL_SETTINGS'));
 
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitMailSettingsForm();");
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // Mailer
         $mailer =& Piwi::CreateWidget('Combo', 'mailer');
         $mailer->setID('mailer');
-        $mailer->AddOption(_t('GLOBAL_DISABLED'), 'DISABLED');
+        $mailer->AddOption(Jaws::t('DISABLED'), 'DISABLED');
         $mailer->AddOption('PHP mail()', 'phpmail');
         $mailer->AddOption('sendmail',   'sendmail');
         $mailer->AddOption('SMTP',       'smtp');
@@ -70,8 +70,8 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         // SMTP Verification
         $smtpVrfy =& Piwi::CreateWidget('Combo', 'smtp_vrfy');
         $smtpVrfy->setID('smtp_vrfy');
-        $smtpVrfy->AddOption(_t('GLOBAL_NO'),  'false');
-        $smtpVrfy->AddOption(_t('GLOBAL_YES'), 'true');
+        $smtpVrfy->AddOption(Jaws::t('NO'),  'false');
+        $smtpVrfy->AddOption(Jaws::t('YES'), 'true');
         $smtpVrfy->SetDefault($this->gadget->registry->fetch('smtp_vrfy'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_vrfy');
@@ -113,8 +113,8 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         // SMTP Auth
         $smtpAuth =& Piwi::CreateWidget('Combo', 'smtp_auth');
         $smtpAuth->setID('smtp_auth');
-        $smtpAuth->AddOption(_t('GLOBAL_NO'),  'false');
-        $smtpAuth->AddOption(_t('GLOBAL_YES'), 'true');
+        $smtpAuth->AddOption(Jaws::t('NO'),  'false');
+        $smtpAuth->AddOption(Jaws::t('YES'), 'true');
         $smtpAuth->SetDefault($this->gadget->registry->fetch('smtp_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_auth');

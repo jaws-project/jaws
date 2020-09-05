@@ -28,19 +28,19 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $tpl->SetVariable('sidebar', $this->SideBar('Proxy'));
         $tpl->SetVariable('legend', _t('SETTINGS_PROXY_SETTINGS'));
 
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitProxySettingsForm();");
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // Use Enabled?
         $useProxy =& Piwi::CreateWidget('Combo', 'proxy_enabled');
         $useProxy->setID('proxy_enabled');
-        $useProxy->AddOption(_t('GLOBAL_NO'),  'false');
-        $useProxy->AddOption(_t('GLOBAL_YES'), 'true');
+        $useProxy->AddOption(Jaws::t('NO'),  'false');
+        $useProxy->AddOption(Jaws::t('YES'), 'true');
         $useProxy->SetDefault($this->gadget->registry->fetch('proxy_enabled'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'proxy_enabled');
-        $tpl->SetVariable('label', _t('GLOBAL_ENABLED'));
+        $tpl->SetVariable('label', Jaws::t('ENABLED'));
         $tpl->SetVariable('field', $useProxy->Get());
         $tpl->SetVariable('style', 'padding-bottom: 8px;');
         $tpl->ParseBlock('settings/item');
@@ -69,8 +69,8 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         // Proxy Auth
         $proxyAuth =& Piwi::CreateWidget('Combo', 'proxy_auth');
         $proxyAuth->setID('proxy_auth');
-        $proxyAuth->AddOption(_t('GLOBAL_NO'),  'false');
-        $proxyAuth->AddOption(_t('GLOBAL_YES'), 'true');
+        $proxyAuth->AddOption(Jaws::t('NO'),  'false');
+        $proxyAuth->AddOption(Jaws::t('YES'), 'true');
         $proxyAuth->SetDefault($this->gadget->registry->fetch('proxy_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'proxy_auth');

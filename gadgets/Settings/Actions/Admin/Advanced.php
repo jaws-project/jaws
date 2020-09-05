@@ -28,7 +28,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $tpl->SetVariable('sidebar', $this->SideBar('Advanced'));
         $tpl->SetVariable('legend', _t('SETTINGS_ADVANCED_SETTINGS'));
 
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitAdvancedForm();");
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
@@ -70,8 +70,8 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $use_gravatar = $this->gadget->registry->fetch('use_gravatar');
         $gravatar =& Piwi::CreateWidget('Combo', 'use_gravatar');
         $gravatar->setID('use_gravatar');
-        $gravatar->AddOption(_t('GLOBAL_YES'), 'yes');
-        $gravatar->AddOption(_t('GLOBAL_NO'), 'no');
+        $gravatar->AddOption(Jaws::t('YES'), 'yes');
+        $gravatar->AddOption(Jaws::t('NO'), 'no');
         $gravatar->SetDefault($use_gravatar);
         $gravatar->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Settings').toggleGR();");
         $tpl->SetBlock('settings/item');
@@ -98,8 +98,8 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         // show view site icon on CP
         $viewSite =& Piwi::CreateWidget('Combo', 'show_viewsite');
         $viewSite->setID('show_viewsite');
-        $viewSite->AddOption(_t('GLOBAL_YES'), 'true');
-        $viewSite->AddOption(_t('GLOBAL_NO'), 'false');
+        $viewSite->AddOption(Jaws::t('YES'), 'true');
+        $viewSite->AddOption(Jaws::t('NO'), 'false');
         $viewSite->SetDefault($this->gadget->registry->fetch('show_viewsite'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'show_viewsite');
@@ -146,7 +146,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $timezone->SetDefault($this->gadget->registry->fetch('timezone'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'timezone');
-        $tpl->SetVariable('label', _t('GLOBAL_TIMEZONE'));
+        $tpl->SetVariable('label', Jaws::t('TIMEZONE'));
         $tpl->SetVariable('field', $timezone->Get());
         $tpl->ParseBlock('settings/item');
 
