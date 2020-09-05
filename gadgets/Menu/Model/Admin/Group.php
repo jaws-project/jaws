@@ -22,7 +22,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -37,7 +37,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $gData['published']  = (bool)$published;
         $gid = $mgroupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($gid)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -63,7 +63,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $mgroupsTable->select('count(id):integer')->where('id', $gid, '<>')->and()->where('title', $title);
         $gc = $mgroupsTable->fetchOne();
         if (Jaws_Error::IsError($gc)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -78,7 +78,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $gData['published']  = (bool)$published;
         $res = $mgroupsTable->update($gData)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -102,7 +102,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Group');
         $group = $model->GetGroups($gid);
         if (Jaws_Error::IsError($group)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -114,13 +114,13 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance();
         $res = $objORM->delete()->table('menus')->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $res = $objORM->delete()->table('menus_groups')->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 

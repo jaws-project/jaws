@@ -34,17 +34,17 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $add_btn->AddEvent(ON_CLICK, 'javascript:addGroup();');
         $tpl->SetVariable('add', $add_btn->Get());
 
-        $save_btn =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save_btn =& Piwi::CreateWidget('Button','btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $save_btn->SetStyle('display: none;');
         $save_btn->AddEvent(ON_CLICK, 'javascript:saveMenus();');
         $tpl->SetVariable('save', $save_btn->Get());
 
-        $del_btn =& Piwi::CreateWidget('Button','btn_del', _t('GLOBAL_DELETE'), STOCK_DELETE);
+        $del_btn =& Piwi::CreateWidget('Button','btn_del', Jaws::t('DELETE'), STOCK_DELETE);
         $del_btn->SetStyle('display: none;');
         $del_btn->AddEvent(ON_CLICK, 'javascript:delMenus();');
         $tpl->SetVariable('del', $del_btn->Get());
 
-        $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel_btn->SetStyle('display: none;');
         $cancel_btn->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
@@ -140,7 +140,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetBlock('menus');
         $tpl->SetBlock('menus/GroupsUI');
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleEntry->SetStyle('width: 300px; margin-top:2px; margin-bottom:5px;');
         $tpl->SetVariable('title', $titleEntry->Get());
@@ -148,8 +148,8 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $titleview =& Piwi::CreateWidget('Combo', 'title_view');
         $titleview->SetID('title_view');
         $titleview->setStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
-        $titleview->AddOption(_t('GLOBAL_NO'),  '0');
-        $titleview->AddOption(_t('GLOBAL_YES'), '1');
+        $titleview->AddOption(Jaws::t('NO'),  '0');
+        $titleview->AddOption(Jaws::t('YES'), '1');
         $tpl->SetVariable('lbl_title_view', _t('MENU_GROUPS_TITLE_VIEW'));
         $tpl->SetVariable('title_view', $titleview->Get());
 
@@ -161,12 +161,12 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_view_type', _t('MENU_GROUPS_VIEW_TYPE'));
         $tpl->SetVariable('view_type', $viewType->Get());
 
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->SetStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault(1);
         $tpl->SetVariable('published', $published->Get());
 
@@ -209,7 +209,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $gadgetCombo =& Piwi::CreateWidget('Combo', 'gadget');
         $gadgetCombo->SetID('gadget');
         $gadgetCombo->setStyle('width: 256px;');
-        $gadgetCombo->AddOption(_t('GLOBAL_URL'), 'url');
+        $gadgetCombo->AddOption(Jaws::t('URL'), 'url');
         $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
@@ -230,7 +230,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         }
 
         $gadgetCombo->AddEvent(ON_CHANGE, 'changeGadget(this.value);');
-        $tpl->SetVariable('lbl_gadget', _t('GLOBAL_GADGET'));
+        $tpl->SetVariable('lbl_gadget', Jaws::t('GADGET'));
         $tpl->SetVariable('gadget', $gadgetCombo->Get());
 
         $rfcCombo =& Piwi::CreateWidget('Combo', 'references');
@@ -240,12 +240,12 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_references', _t('MENU_REFERENCES'));
         $tpl->SetVariable('references', $rfcCombo->Get());
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleEntry->SetStyle('width: 256px;');
         $tpl->SetVariable('title', $titleEntry->Get());
 
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $urlEntry =& Piwi::CreateWidget('Entry', 'url', 'http://');
         $urlEntry->SetStyle('direction: ltr;width: 256px;');
         $tpl->SetVariable('url', $urlEntry->Get());
@@ -274,12 +274,12 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_order', _t('MENU_ORDER'));
         $tpl->SetVariable('order', $order->Get());
 
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $status =& Piwi::CreateWidget('Combo', 'status');
         $status->SetID('status');
         $status->SetStyle('width: 128px;');
-        $status->AddOption(_t('GLOBAL_DISABLED'),  0);
-        $status->AddOption(_t('GLOBAL_PUBLISHED'), 1);
+        $status->AddOption(Jaws::t('DISABLED'),  0);
+        $status->AddOption(Jaws::t('PUBLISHED'), 1);
         $status->AddOption(_t('MENU_ANONYMOUS'),   2);
         $status->AddOption(_t('MENU_RESTRICTED'),  3);
         $status->SetDefault(1);
@@ -308,7 +308,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
                               'message' => $res->getMessage());
         } elseif (empty($res)) {
             $response = array('type'    => 'error',
-                              'message' => _t('GLOBAL_ERROR_UPLOAD_4'));
+                              'message' => Jaws::t('ERROR_UPLOAD_4'));
         } else {
             $response = array('type'    => 'notice',
                               'message' => $res['upload_image'][0]['host_filename']);
