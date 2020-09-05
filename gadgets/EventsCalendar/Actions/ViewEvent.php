@@ -56,7 +56,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
 
         // Link
         $tpl->SetVariable('link', $event['link']);
-        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_link', Jaws::t('URL'));
 
         // Description
         $tpl->SetVariable('desc', $event['description']);
@@ -109,11 +109,11 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
         // Public
-        $tpl->SetVariable('public', $event['public']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
+        $tpl->SetVariable('public', $event['public']? Jaws::t('YES') : Jaws::t('NO'));
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
 
         // Shared
-        $tpl->SetVariable('shared', $event['shared']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
+        $tpl->SetVariable('shared', $event['shared']? Jaws::t('YES') : Jaws::t('NO'));
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
 
         // Symbol
@@ -123,7 +123,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $siteUrl = $this->app->getSiteURL('/');
         $tpl->SetVariable('url_edit', $siteUrl . $this->gadget->urlMap('EditEvent',
                 array('user' => $user, 'event' => $eventId)));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
         $tpl->SetVariable('url_share', $siteUrl . $this->gadget->urlMap('ShareEvent',
                 array('user' => $user, 'event' => $eventId)));
         $tpl->SetVariable('lbl_share', _t('EVENTSCALENDAR_SHARE'));

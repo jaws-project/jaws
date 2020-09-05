@@ -94,8 +94,8 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_event_users', _t('EVENTSCALENDAR_SHARED_FOR'));
 
         // Actions
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('url_back', $this->gadget->urlMap('ViewEvent', array('user' => $userId, 'event' => $id)));
 
         $tpl->ParseBlock('share');

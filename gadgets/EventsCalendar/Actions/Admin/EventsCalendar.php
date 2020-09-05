@@ -74,12 +74,12 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['newEvent'] = _t('EVENTSCALENDAR_NEW_EVENT');
         $const['viewEvent'] = _t('EVENTSCALENDAR_VIEW_EVENT');
         $const['editEvent'] = _t('EVENTSCALENDAR_EDIT_EVENT');
-        $const['yes'] = _t('GLOBAL_YES');
-        $const['no'] = _t('GLOBAL_NO');
-        $const['edit'] = _t('GLOBAL_EDIT');
-        $const['delete'] = _t('GLOBAL_DELETE');
-        $const['confirmDelete'] = _t('GLOBAL_CONFIRM_DELETE');
-        $const['incompleteFields'] = _t('GLOBAL_ERROR_INCOMPLETE_FIELDS');
+        $const['yes'] = Jaws::t('YES');
+        $const['no'] = Jaws::t('NO');
+        $const['edit'] = Jaws::t('EDIT');
+        $const['delete'] = Jaws::t('DELETE');
+        $const['confirmDelete'] = Jaws::t('CONFIRM_DELETE');
+        $const['incompleteFields'] = Jaws::t('ERROR_INCOMPLETE_FIELDS');
         $const['types'] = array();
         for ($i = 1; $i <= 5; $i++) {
             $const['types'][$i] = _t('EVENTSCALENDAR_EVENT_TYPE_' . $i);
@@ -92,23 +92,23 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         if ($mode == 'public') {
             $tpl->SetBlock('ec/addBtn');
-            $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+            $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
             $tpl->ParseBlock('ec/addBtn');
         }
 
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
-        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_link', Jaws::t('URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('lbl_addEvent', _t('EVENTSCALENDAR_NEW_EVENT'));
 
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
         $tpl->ParseBlock('ec');
         return $tpl->Get();
@@ -155,9 +155,9 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Shared
         $sharedCombo =& Piwi::CreateWidget('Combo', 'filter_shared');
-        $sharedCombo->AddOption(_t('GLOBAL_ALL'), -1, false);
-        $sharedCombo->AddOption(_t('GLOBAL_YES'), 1);
-        $sharedCombo->AddOption(_t('GLOBAL_NO'), 0);
+        $sharedCombo->AddOption(Jaws::t('ALL'), -1, false);
+        $sharedCombo->AddOption(Jaws::t('YES'), 1);
+        $sharedCombo->AddOption(Jaws::t('NO'), 0);
         $sharedCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $sharedCombo->SetDefault(-1);
         $tpl->SetVariable('filter_shared', $sharedCombo->Get());
@@ -165,7 +165,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Type
         $typeCombo =& Piwi::CreateWidget('Combo', 'filter_type');
-        $typeCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
+        $typeCombo->AddOption(Jaws::t('ALL'), 0, false);
         for ($i = 1; $i <= 5; $i++) {
             $typeCombo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_' . $i), $i, false);
         }
@@ -222,7 +222,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
-        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_link', Jaws::t('URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
 
@@ -247,11 +247,11 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
         $tpl->SetBlock('eventForm/public');
         $tpl->SetVariable('value', 0);
-        $tpl->SetVariable('title', _t('GLOBAL_NO'));
+        $tpl->SetVariable('title', Jaws::t('NO'));
         $tpl->ParseBlock('eventForm/public');
         $tpl->SetBlock('eventForm/public');
         $tpl->SetVariable('value', 1);
-        $tpl->SetVariable('title', _t('GLOBAL_YES'));
+        $tpl->SetVariable('title', Jaws::t('YES'));
         $tpl->ParseBlock('eventForm/public');
 
         // Priority

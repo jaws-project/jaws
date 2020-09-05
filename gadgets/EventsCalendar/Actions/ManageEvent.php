@@ -116,7 +116,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
-        $tpl->SetVariable('lbl_link', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_link', Jaws::t('URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
         $tpl->SetVariable('errorIncompleteData', _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'));
@@ -147,8 +147,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Public
         $combo =& Piwi::CreateWidget('Combo', 'public');
         $combo->SetId('event_type');
-        $combo->AddOption(_t('GLOBAL_YES'), 1);
-        $combo->AddOption(_t('GLOBAL_NO'), 0);
+        $combo->AddOption(Jaws::t('YES'), 1);
+        $combo->AddOption(Jaws::t('NO'), 0);
         $combo->SetDefault($event['public']? 1 : 0);
         $tpl->SetVariable('public', $combo->Get());
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
@@ -232,8 +232,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('symbol', $event['symbol']);
 
         // Actions
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('url_back', $this->app->getSiteURL('/') .
             $this->gadget->urlMap('ManageEvents', array('user' => $this->app->session->user->id)));
 
