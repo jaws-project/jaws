@@ -163,7 +163,7 @@ class Jaws_Widgets_CKEditor extends Container
         $this->TextArea->setData('editor', 'ckeditor');
 
         $this->_Language = $this->app->getLanguage();
-        $this->_Direction = _t('GLOBAL_LANG_DIRECTION');
+        $this->_Direction = Jaws::t('LANG_DIRECTION');
 
         $this->_Container =& Piwi::CreateWidget('Division');
         $this->_Container->setClass('jaws_editor');

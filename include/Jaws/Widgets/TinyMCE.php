@@ -124,7 +124,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $alreadyLoaded = isset($alreadyLoaded)? true : false;
 
         // set editor configuration
-        $this->TextArea->setData('direction', _t('GLOBAL_LANG_DIRECTION'));
+        $this->TextArea->setData('direction', Jaws::t('LANG_DIRECTION'));
         $this->TextArea->setData('language', $this->app->getLanguage());
 
 
