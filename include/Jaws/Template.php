@@ -88,7 +88,7 @@ class Jaws_Template
         $this->globalVariables['main_action'] = '';
         $this->globalVariables['main_layout'] = '';
 
-        $this->globalVariables['.dir'] = _t('GLOBAL_LANG_DIRECTION') == 'rtl'? '.rtl' : '';
+        $this->globalVariables['.dir'] = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
         $this->globalVariables['base_url']      = Jaws_Utils::getBaseURL('/');
         $this->globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
         $this->globalVariables['base_script']   = BASE_SCRIPT;
@@ -150,7 +150,7 @@ class Jaws_Template
 
         $prefix  = '';
         if ($this->loadRTLDirection ||
-           (is_null($this->loadRTLDirection) && function_exists('_t') && _t('GLOBAL_LANG_DIRECTION') == 'rtl'))
+           (is_null($this->loadRTLDirection) && function_exists('_t') && Jaws::t('LANG_DIRECTION') == 'rtl'))
         {
             $prefix = '.rtl';
         }

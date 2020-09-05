@@ -241,7 +241,7 @@ class Jaws_XTemplate
 
         $prefix  = '';
         if (self::$loadRTLDirection ||
-           (is_null(self::$loadRTLDirection) && function_exists('_t') && _t('GLOBAL_LANG_DIRECTION') == 'rtl')
+           (is_null(self::$loadRTLDirection) && function_exists('_t') && Jaws::t('LANG_DIRECTION') == 'rtl')
         ) {
             $prefix = '.rtl';
         }

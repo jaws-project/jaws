@@ -609,7 +609,7 @@ class Jaws_Utils
         $dest = rtrim($dest, "\\/"). DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($dest, 2)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_FAILED_CREATING_DIR'. $dest),
+                Jaws::t('ERROR_FAILED_CREATING_DIR'. $dest),
                 __FUNCTION__
             );
         }
@@ -636,7 +636,7 @@ class Jaws_Utils
 
                 if (isset($file['error']) && !empty($file['error']) && $file['error'] != 4) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
+                        Jaws::t('ERROR_UPLOAD_'.$file['error']),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE,
                         1
@@ -667,7 +667,7 @@ class Jaws_Utils
                 if (isset($fileinfo['extension'])) {
                     if (!empty($allow_formats) && !in_array($fileinfo['extension'], $allow_formats)) {
                         return Jaws_Error::raiseError(
-                            _t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
+                            Jaws::t('ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
                             __FUNCTION__,
                             JAWS_ERROR_NOTICE,
                             1
@@ -688,7 +688,7 @@ class Jaws_Utils
                 if (is_uploaded_file($file['tmp_name'])) {
                     if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
                         return Jaws_Error::raiseError(
-                            _t('GLOBAL_ERROR_UPLOAD', $host_filename),
+                            Jaws::t('ERROR_UPLOAD', $host_filename),
                             __FUNCTION__,
                             JAWS_ERROR_NOTICE,
                             1
@@ -705,7 +705,7 @@ class Jaws_Utils
                         @copy($file['tmp_name'], $uploadfile);
                     if (!$res) {
                         return Jaws_Error::raiseError(
-                            _t('GLOBAL_ERROR_UPLOAD', $host_filename),
+                            Jaws::t('ERROR_UPLOAD', $host_filename),
                             __FUNCTION__,
                             JAWS_ERROR_NOTICE,
                             1
@@ -717,7 +717,7 @@ class Jaws_Utils
                 if (filesize($uploadfile) != $file['size']) {
                     @unlink($uploadfile);
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_UPLOAD_CORRUPTED', $host_filename),
+                        Jaws::t('ERROR_UPLOAD_CORRUPTED', $host_filename),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE,
                         1
@@ -728,7 +728,7 @@ class Jaws_Utils
                 if (!empty($max_size) && $file['size'] > $max_size) {
                     @unlink($uploadfile);
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_UPLOAD_2'),
+                        Jaws::t('ERROR_UPLOAD_2'),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE,
                         1
@@ -761,7 +761,7 @@ class Jaws_Utils
     static function ExtractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
     {
         if (empty($files) || !is_array($files)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD'),
+            return new Jaws_Error(Jaws::t('ERROR_UPLOAD'),
                                      __FUNCTION__);
         }
 
@@ -772,7 +772,7 @@ class Jaws_Utils
         require_once PEAR_PATH. 'File/Archive.php';
         foreach($files as $key => $file) {
             if ((isset($file['error']) && !empty($file['error'])) || !isset($file['name'])) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
+                return new Jaws_Error(Jaws::t('ERROR_UPLOAD_'.$file['error']),
                                       __FUNCTION__);
             }
 
@@ -801,7 +801,7 @@ class Jaws_Utils
 
             $ext = strtolower(substr($ext, 1));
             if (!File_Archive::isKnownExtension($ext)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $file['name']),
+                return new Jaws_Error(Jaws::t('ERROR_UPLOAD_INVALID_FORMAT', $file['name']),
                                       __FUNCTION__);
             }
 
@@ -810,12 +810,12 @@ class Jaws_Utils
             }
 
             if ($extractToDir && !Jaws_Utils::mkdir($dest)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $dest),
+                return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $dest),
                                       __FUNCTION__);
             }
 
             if (!Jaws_Utils::is_writable($dest)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', $dest),
+                return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', $dest),
                                       __FUNCTION__);
             }
 

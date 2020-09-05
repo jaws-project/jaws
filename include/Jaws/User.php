@@ -95,7 +95,7 @@ class Jaws_User
             ->fetchRow();
         if (Jaws_Error::IsError($result) || empty($result)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_LOGIN_WRONG'),
+                Jaws::t('ERROR_LOGIN_WRONG'),
                 401,
                 JAWS_ERROR_NOTICE
             );
@@ -120,7 +120,7 @@ class Jaws_User
                 )
             );
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_LOGIN_WRONG'),
+                Jaws::t('ERROR_LOGIN_WRONG'),
                 401,
                 JAWS_ERROR_NOTICE
             );
@@ -145,7 +145,7 @@ class Jaws_User
                 )
             );
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_LOGIN_STATUS_'. $result['status']),
+                Jaws::t('ERROR_LOGIN_STATUS_'. $result['status']),
                 403,
                 JAWS_ERROR_NOTICE
             );
@@ -169,7 +169,7 @@ class Jaws_User
                 )
             );
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_LOGIN_EXPIRED'),
+                Jaws::t('ERROR_LOGIN_EXPIRED'),
                 403,
                 JAWS_ERROR_NOTICE
             );
@@ -195,7 +195,7 @@ class Jaws_User
                 )
             );
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_LOGIN_LOGON_HOURS'),
+                Jaws::t('ERROR_LOGIN_LOGON_HOURS'),
                 403,
                 JAWS_ERROR_NOTICE
             );
@@ -833,7 +833,7 @@ class Jaws_User
     {
         $fields  = array('id', 'name', 'title');
         if (!in_array($orderBy, $fields)) {
-            $GLOBALS['log']->Log(JAWS_LOG_WARNING, _t('GLOBAL_ERROR_UNKNOWN_COLUMN'));
+            $GLOBALS['log']->Log(JAWS_LOG_WARNING, Jaws::t('ERROR_UNKNOWN_COLUMN'));
             $orderBy = 'name';
         }
 
@@ -913,7 +913,7 @@ class Jaws_User
         $uData['username'] = trim($uData['username'], '-_.@');
         if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_USERNAME'),
+                Jaws::t('ERROR_INVALID_USERNAME'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -924,7 +924,7 @@ class Jaws_User
         $reservedUsers = preg_split("/\n|\r|\n\r/", $this->app->registry->fetch('reserved_users', 'Users'));
         if (in_array($uData['username'], $reservedUsers)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
+                Jaws::t('ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -934,7 +934,7 @@ class Jaws_User
         $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
         if (empty($uData['nickname'])) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -945,7 +945,7 @@ class Jaws_User
         if (!empty($uData['email'])) {
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    Jaws::t('ERROR_INVALID_EMAIL_ADDRESS'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -954,7 +954,7 @@ class Jaws_User
             $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
             if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                    Jaws::t('ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -967,7 +967,7 @@ class Jaws_User
             if (!empty($uData['mobile'])) {
                 if (!preg_match("/^[00|\+|0]\d{10,16}$/", $uData['mobile'])) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
+                        Jaws::t('ERROR_INVALID_MOBILE_NUMBER'),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE
                     );
@@ -977,7 +977,7 @@ class Jaws_User
 
         if (empty($uData['email']) && empty($uData['mobile'])) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -990,7 +990,7 @@ class Jaws_User
             !preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])
         ) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
+                Jaws::t('ERROR_INVALID_PASSWORD', $min),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -1000,7 +1000,7 @@ class Jaws_User
                 $uData['password'])
         ) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
+                Jaws::t('ERROR_INVALID_COMPLEXITY'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -1067,7 +1067,7 @@ class Jaws_User
         $howmany = $objORM->fetchOne();
         if (Jaws_Error::IsError($howmany) || !empty($howmany)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_USERS_ALREADY_EXISTS'),
+                Jaws::t('USERS_ALREADY_EXISTS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -1122,7 +1122,7 @@ class Jaws_User
             $uData['username'] = trim($uData['username'], '-_.@');
             if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_USERNAME'),
+                    Jaws::t('ERROR_INVALID_USERNAME'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1135,7 +1135,7 @@ class Jaws_User
             $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
             if (empty($uData['nickname'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                    Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1148,7 +1148,7 @@ class Jaws_User
             if (!empty($uData['email'])) {
                 if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                        Jaws::t('ERROR_INVALID_EMAIL_ADDRESS'),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE
                     );
@@ -1157,7 +1157,7 @@ class Jaws_User
                 $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
                 if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                        Jaws::t('ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE
                     );
@@ -1170,7 +1170,7 @@ class Jaws_User
             $uData['new_email'] = trim($uData['new_email']);
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['new_email'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    Jaws::t('ERROR_INVALID_EMAIL_ADDRESS'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1178,7 +1178,7 @@ class Jaws_User
             $uData['new_email'] = strtolower($uData['new_email']);
             if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['new_email'], '@'), 1))) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['new_email'], '@'), 1)),
+                    Jaws::t('ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['new_email'], '@'), 1)),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1192,7 +1192,7 @@ class Jaws_User
                 if (!empty($uData['mobile'])) {
                     if (!preg_match("/^[00|\+|0]\d{10,16}$/", $uData['mobile'])) {
                         return Jaws_Error::raiseError(
-                            _t('GLOBAL_ERROR_INVALID_MOBILE_NUMBER'),
+                            Jaws::t('ERROR_INVALID_MOBILE_NUMBER'),
                             __FUNCTION__,
                             JAWS_ERROR_NOTICE
                         );
@@ -1207,7 +1207,7 @@ class Jaws_User
                 $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
                 if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_PASSWORD', $min),
+                        Jaws::t('ERROR_INVALID_PASSWORD', $min),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE
                     );
@@ -1217,7 +1217,7 @@ class Jaws_User
                         $uData['password'])
                 ) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_INVALID_COMPLEXITY'),
+                        Jaws::t('ERROR_INVALID_COMPLEXITY'),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE
                     );
@@ -1245,7 +1245,7 @@ class Jaws_User
             (!array_key_exists('mobile', $uData) && empty($user['mobile'])))
         ) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -1257,7 +1257,7 @@ class Jaws_User
             // other users can't modify the god user
             if (JAWS_GODUSER == $user['id'] && $this->app->session->user->id != $user['id']) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                    Jaws::t('ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1269,7 +1269,7 @@ class Jaws_User
                 // non-superadmin user can't change properties of superadmin users
                 if ($user['superadmin']) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                        Jaws::t('ERROR_ACCESS_DENIED'),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE
                     );
@@ -1282,7 +1282,7 @@ class Jaws_User
             $reservedUsers = preg_split("/\n|\r|\n\r/", $this->app->registry->fetch('reserved_users', 'Users'));
             if (in_array($uData['username'], $reservedUsers)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
+                    Jaws::t('ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1405,7 +1405,7 @@ class Jaws_User
                 $this->app->session->user->id != $user['id']
             ) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                    Jaws::t('ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1494,7 +1494,7 @@ class Jaws_User
                 $this->app->session->user->id != $user['id']
             ) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                    Jaws::t('ERROR_ACCESS_DENIED'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1581,7 +1581,7 @@ class Jaws_User
         $gData['name'] = trim($gData['name'], '-_.@');
         if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $gData['name'])) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
+                Jaws::t('ERROR_INVALID_GROUPNAME'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -1593,7 +1593,7 @@ class Jaws_User
         $gData['title'] = Jaws_UTF8::trim($gData['title']);
         if (empty($gData['title'])) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -1645,7 +1645,7 @@ class Jaws_User
             $gData['name'] = trim($gData['name'], '-_.@');
             if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $gData['name'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
+                    Jaws::t('ERROR_INVALID_GROUPNAME'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
@@ -1659,7 +1659,7 @@ class Jaws_User
             $gData['title'] = Jaws_UTF8::trim($gData['title']);
             if (empty($gData['title'])) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                    Jaws::t('ERROR_INCOMPLETE_FIELDS'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
