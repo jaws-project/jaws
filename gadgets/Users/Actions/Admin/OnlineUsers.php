@@ -19,7 +19,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $datagrid->pageBy(50);
         $datagrid->useMultipleSelection();
         $datagrid->SetID('onlineusers_datagrid');
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'));
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('USERNAME'));
         $column1->SetStyle('width:100px;');
         $datagrid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', _t('USERS_USERS_NICKNAME'), false, null);
@@ -27,7 +27,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $column3 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_ADMIN'), false, null);
         $column3->SetStyle('width:80px;');
         $datagrid->AddColumn($column3);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_IP'), false, null);
+        $column4 = Piwi::CreateWidget('Column', Jaws::t('IP'), false, null);
         $column4->SetStyle('width:100px;');
         $datagrid->AddColumn($column4);
         $column5 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_SESSION_TYPE'), false, null);
@@ -77,7 +77,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
                 $usrData['username'] = $uProfile->Get();
             }
             $usrData['nickname'] = $session['nickname'];
-            $usrData['superadmin'] = $session['superadmin']? _t('GLOBAL_YES') : _t('GLOBAL_NO');
+            $usrData['superadmin'] = $session['superadmin']? Jaws::t('YES') : Jaws::t('NO');
             $usrData['ip'] = "<abbr title='{$session['agent_text']}'>".
                 $session['proxy']. '('. $session['client']. ")</abbr>";
             $usrData['type'] = $session['type'];
@@ -138,7 +138,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         // Active
         $active =& Piwi::CreateWidget('Combo', 'active');
         $active->setID('filter_active');
-        $active->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $active->AddOption(Jaws::t('ALL'), -1, false);
         $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_ACTIVE'), 1);
         $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_INACTIVE'), 0);
         $active->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchOnlineUsers();");
@@ -149,7 +149,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         // Logged
         $logged =& Piwi::CreateWidget('Combo', 'logged');
         $logged->setID('filter_logged');
-        $logged->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $logged->AddOption(Jaws::t('ALL'), -1, false);
         $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_MEMBERS'), 1);
         $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_ANONYMOUS'), 0);
         $logged->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchOnlineUsers();");
@@ -160,7 +160,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         // Session type
         $logged =& Piwi::CreateWidget('Combo', 'session_type');
         $logged->setID('filter_session_type');
-        $logged->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $logged->AddOption(Jaws::t('ALL'), -1, false);
         $sessionTypes = $this->GetSessionTypes();
         if (count($sessionTypes) > 0) {
             foreach ($sessionTypes as $type) {
@@ -178,9 +178,9 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'online_users_actions');
         $actions->SetID('online_users_actions');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(Jaws::t('DELETE'), 'delete');
         $actions->AddOption(_t('USERS_ONLINE_BLOCKING_IP'), 'block_ip');
         $actions->AddOption(_t('USERS_ONLINE_BLOCKING_AGENT'), 'block_agent');
         $tpl->SetVariable('actions_combo', $actions->Get());

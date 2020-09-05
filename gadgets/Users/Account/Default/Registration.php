@@ -58,7 +58,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
 
             $tpl->SetVariable('register', _t('USERS_REGISTER'));
             $tpl->SetVariable('url_back', $referrer);
-            $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+            $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
 
             $tpl->ParseBlock('registration/request');
         }
@@ -97,9 +97,9 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('lbl_account_info',  _t('USERS_ACCOUNT_INFO'));
         $tpl->SetVariable('lbl_username',      _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('validusernames',    _t('USERS_REGISTRATION_VALID_USERNAMES'));
-        $tpl->SetVariable('lbl_email',         _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email',         Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_mobile',        _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_url',           _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url',           Jaws::t('URL'));
         $tpl->SetVariable('lbl_nickname',       _t('USERS_USERS_NICKNAME'));
         $tpl->SetVariable('lbl_password',      _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('sendpassword',      _t('USERS_USERS_SEND_AUTO_PASSWORD'));
@@ -114,7 +114,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
         $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
         $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
-        $tpl->SetVariable('lbl_remember',      _t('GLOBAL_REMEMBER_ME'));
+        $tpl->SetVariable('lbl_remember',      Jaws::t('REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/reg_step_1");
     }
@@ -135,11 +135,11 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('mobile',   isset($reqpost['mobile'])? $reqpost['mobile'] : '');
         $tpl->SetVariable('mobile',   isset($reqpost['remember'])? $reqpost['remember'] : '0');
 
-        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('lbl_email',    _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
+        $tpl->SetVariable('lbl_email',    Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_mobile',   _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_regkey',   _t('USERS_REGISTRATION_KEY'));
-        $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
+        $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/reg_step_2");
     }

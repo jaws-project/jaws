@@ -248,13 +248,13 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $tpl->SetVariable('username',       $userInfo['username']);
         $tpl->SetVariable('lbl_password',   _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('password',       $password);
-        $tpl->SetVariable('lbl_email',      _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email',      Jaws::t('EMAIL'));
         $tpl->SetVariable('email',          $userInfo['email']);
         $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile',         $userInfo['mobile']);
-        $tpl->SetVariable('lbl_ip',         _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_ip',         Jaws::t('IP'));
         $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
-        $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('thanks',         Jaws::t('THANKS'));
         $tpl->SetVariable('site-name',      $settings['site_name']);
         $tpl->SetVariable('site-url',       $site_url);
         $tpl->ParseBlock('UserNotification');
@@ -291,14 +291,14 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->SetVariable('username', $userInfo['username']);
             $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
             $tpl->SetVariable('nickname', $userInfo['nickname']);
-            $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+            $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
             $tpl->SetVariable('email', $userInfo['email']);
             $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
             $tpl->SetVariable('mobile',      $userInfo['mobile']);
-            $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+            $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
             $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
 
-            $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+            $tpl->SetVariable('thanks', Jaws::t('THANKS'));
             $tpl->SetVariable('site-name', $settings['site_name']);
             $tpl->SetVariable('site-url', $site_url);
             $tpl->ParseBlock('OwnerNotification');
@@ -440,9 +440,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
         $tpl->SetVariable('key',      $recoveryKey);
         $tpl->ParseBlock('verification/key');
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
         $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-        $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('thanks', Jaws::t('THANKS'));
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);
         $tpl->ParseBlock('verification');

@@ -25,7 +25,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->define('editUserGroups_title', _t('USERS_USERS_GROUPS'));
         $this->gadget->define('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
         $this->gadget->define('wrongPassword', _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Users.html');
         $tpl->SetBlock('Users');
@@ -45,7 +45,7 @@ class Users_Actions_Users extends Users_Actions_Default
 
         $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_superadmin', _t('USERS_USERS_TYPE_SUPERADMIN'));
         $tpl->SetVariable('lbl_pass1', _t('USERS_USERS_PASSWORD'));
@@ -53,7 +53,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_concurrents', _t('USERS_USERS_CONCURRENTS'));
         $tpl->SetVariable('lbl_expiry_date', _t('USERS_USERS_EXPIRY_DATE'));
 
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $statusItems = array(
             0 => _t('USERS_USERS_STATUS_0'),
             1 => _t('USERS_USERS_STATUS_1'),
@@ -66,15 +66,15 @@ class Users_Actions_Users extends Users_Actions_Default
             $tpl->ParseBlock('Users/status');
         }
 
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
-        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+        $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
 
         $tpl->SetVariable('addUser_title', _t('USERS_USERS_ADD'));
         $tpl->SetVariable('lbl_userGroups', _t('USERS_USERS_GROUPS'));
@@ -94,10 +94,10 @@ class Users_Actions_Users extends Users_Actions_Default
         // datagrid  filters
         $tpl->SetVariable('lbl_filter_group', _t('USERS_GROUPS_GROUP'));
         $tpl->SetVariable('lbl_filter_type', _t('USERS_USERS_TYPE'));
-        $tpl->SetVariable('lbl_filter_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_filter_status', Jaws::t('STATUS'));
         $tpl->SetVariable('lbl_filter_term', _t('USERS_USERS_SEARCH_TERM'));
         if (!Jaws_Error::IsError($groups)) {
-            array_unshift($groups, array('id' => 0, 'title' => _t('GLOBAL_ALL')));
+            array_unshift($groups, array('id' => 0, 'title' => Jaws::t('ALL')));
             foreach ($groups as $group) {
                 $tpl->SetBlock('Users/filterGroup');
                 $tpl->SetVariable('value', $group['id']);
@@ -107,7 +107,7 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $filterTypes = array(
-            0 => _t('GLOBAL_ALL'),
+            0 => Jaws::t('ALL'),
             1 => _t('USERS_USERS_TYPE_SUPERADMIN'),
             2 => _t('USERS_USERS_TYPE_NORMAL'),
         );
@@ -124,7 +124,7 @@ class Users_Actions_Users extends Users_Actions_Default
         );
 
         $filterTypes = array(
-            -1 => _t('GLOBAL_ALL'),
+            -1 => Jaws::t('ALL'),
             0 => _t('USERS_USERS_STATUS_0'),
             1 => _t('USERS_USERS_STATUS_1'),
             2 => _t('USERS_USERS_STATUS_2'),

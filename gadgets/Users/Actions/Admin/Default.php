@@ -80,7 +80,7 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageSettings')) {
             $menubar->AddOption(
                 'Settings',
-                _t('GLOBAL_SETTINGS'),
+                Jaws::t('SETTINGS'),
                 $this->gadget->url('Settings'),
                 STOCK_PREFERENCES
             );

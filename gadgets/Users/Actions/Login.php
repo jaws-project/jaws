@@ -19,7 +19,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         if ($this->app->session->user->logged) {
             $tpl->SetBlock('UserLinks');
-            $tpl->SetVariable('title', _t('GLOBAL_MY_ACCOUNT'));
+            $tpl->SetVariable('title', Jaws::t('MY_ACCOUNT'));
 
             // welcome
             $tpl->SetVariable('welcome', _t('USERS_WELCOME'));
@@ -104,7 +104,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
 
             // Logout
-            $tpl->SetVariable('logout', _t('GLOBAL_LOGOUT'));
+            $tpl->SetVariable('logout', Jaws::t('LOGOUT'));
             $tpl->SetVariable('logout_url', $this->gadget->urlMap('Logout'));
 
             $tpl->ParseBlock('UserLinks');
@@ -369,9 +369,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $params = array();
         $params['name']    = 'UserVerification';
         $params['key']     = $uData['id'];
-        $params['title']   = _t('GLOBAL_LOGINKEY_TITLE');
-        $params['summary'] = _t('GLOBAL_LOGINKEY_SUMMARY', $loginkey['text']);
-        $params['verbose'] = _t('GLOBAL_LOGINKEY_SUMMARY', $loginkey['text']);
+        $params['title']   = Jaws::t('LOGINKEY_TITLE');
+        $params['summary'] = Jaws::t('LOGINKEY_SUMMARY', $loginkey['text']);
+        $params['verbose'] = Jaws::t('LOGINKEY_SUMMARY', $loginkey['text']);
         $params['variables'] = array(
             'nickname'     => $uData['nickname'],
             'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
@@ -379,9 +379,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             'username'     => $uData['username'],
             'lbl_key'      => _t('USERS_LOGIN_KEY'),
             'key'          => $loginkey['text'],
-            'lbl_ip'       => _t('GLOBAL_IP'),
+            'lbl_ip'       => Jaws::t('IP'),
             'ip'           => $_SERVER['REMOTE_ADDR'],
-            'thanks'       => _t('GLOBAL_THANKS'),
+            'thanks'       => Jaws::t('THANKS'),
             'site-name'    => $settings['site_name'],
             'site-url'     => $site_url,
         );

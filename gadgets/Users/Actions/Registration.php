@@ -190,7 +190,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));
         if ($anon_activation == 'user') {
             $tpl->SetBlock('Notification/IP');
-            $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+            $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
             $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
             $tpl->ParseBlock('Notification/IP');
         }
@@ -198,7 +198,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username', $user['username']);
 
-        $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('thanks', Jaws::t('THANKS'));
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url', $site_url);
         $tpl->ParseBlock('Notification');
@@ -254,15 +254,15 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             'username'     => $uData['username'],
             'lbl_password' => _t('USERS_USERS_PASSWORD'),
             'password'     => $uData['password'],
-            'lbl_email'    => _t('GLOBAL_EMAIL'),
+            'lbl_email'    => Jaws::t('EMAIL'),
             'email'        => $uData['email'],
             'lbl_mobile'   => _t('USERS_CONTACTS_MOBILE_NUMBER'),
             'mobile'       => $uData['mobile'],
             'lbl_key'      => _t('USERS_REGISTRATION_KEY'),
             'key'          => $regkey['text'],
-            'lbl_ip'       => _t('GLOBAL_IP'),
+            'lbl_ip'       => Jaws::t('IP'),
             'ip'           => $_SERVER['REMOTE_ADDR'],
-            'thanks'       => _t('GLOBAL_THANKS'),
+            'thanks'       => Jaws::t('THANKS'),
             'site-name'    => $settings['site_name'],
             'site-url'     => $site_url
         );

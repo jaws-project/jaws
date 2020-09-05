@@ -22,12 +22,12 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $datagrid->TotalRows($total);
         $datagrid->pageBy(12);
         $datagrid->SetID('groups_datagrid');
-        $col = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $col = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $datagrid->AddColumn($col);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_NAME'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('NAME'), null, false);
         $column1->SetStyle('width: 120px;');
         $datagrid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column2->SetStyle('width: 120px;');
         $datagrid->AddColumn($column2);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
@@ -61,7 +61,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
-                    _t('GLOBAL_EDIT'),
+                    Jaws::t('EDIT'),
                     "javascript:Jaws_Gadget.getInstance('Users').editGroup(this, '".$group['id']."');",
                     STOCK_EDIT
                 );
@@ -132,14 +132,14 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
 
         $save =& Piwi::CreateWidget('Button',
                                     'save',
-                                    _t('GLOBAL_SAVE'),
+                                    Jaws::t('SAVE'),
                                     STOCK_SAVE);
         $save->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').saveGroup();");
         $tpl->SetVariable('save', $save->Get());
 
         $cancel =& Piwi::CreateWidget('Button',
                                       'cancel',
-                                      _t('GLOBAL_CANCEL'),
+                                      Jaws::t('CANCEL'),
                                       STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').stopGroupAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
@@ -162,13 +162,13 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         // name
         $name =& Piwi::CreateWidget('Entry', 'name');
         $name->SetID('name');
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('name', $name->Get());
 
         // title
         $title =& Piwi::CreateWidget('Entry', 'title');
         $title->SetID('title');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         // description
@@ -176,16 +176,16 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $description->SetID('description');
         $description->SetRows(5);
         $description->SetColumns(32);
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('description', $description->Get());
 
         // enabled
         $enabled =& Piwi::CreateWidget('Combo', 'enabled');
         $enabled->SetID('enabled');
-        $enabled->AddOption(_t('GLOBAL_NO'),  0);
-        $enabled->AddOption(_t('GLOBAL_YES'), 1);
+        $enabled->AddOption(Jaws::t('NO'),  0);
+        $enabled->AddOption(Jaws::t('YES'), 1);
         $enabled->SetDefault(1);
-        $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
+        $tpl->SetVariable('lbl_enabled', Jaws::t('ENABLED'));
         $tpl->SetVariable('enabled', $enabled->Get());
 
         $tpl->ParseBlock('group');

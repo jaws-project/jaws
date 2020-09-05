@@ -74,7 +74,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         $tpl->SetVariable('dob_sample', _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
         // website
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('url',     empty($personal['url'])? 'http://' : $personal['url']);
 
         // upload/delete avatar

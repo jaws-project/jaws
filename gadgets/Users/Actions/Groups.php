@@ -17,15 +17,15 @@ class Users_Actions_Groups extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->define('lbl_name', _t('GLOBAL_NAME'));
-        $this->gadget->define('lbl_add', _t('GLOBAL_ADD'));
-        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->define('lbl_name', Jaws::t('NAME'));
+        $this->gadget->define('lbl_add', Jaws::t('ADD'));
+        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
         $this->gadget->define('addGroup_title', _t('USERS_GROUPS_ADD'));
         $this->gadget->define('editGroup_title', _t('USERS_GROUPS_EDIT'));
         $this->gadget->define('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
         $this->gadget->define('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('ManageGroups.html');
         $tpl->SetBlock('Groups');
@@ -37,17 +37,17 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $tpl->SetVariable('grid_header', _t('USERS_GROUPS'));
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
+        $tpl->SetVariable('lbl_enabled', Jaws::t('ENABLED'));
 
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
-        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+        $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
 
         // Users
         $uModel = new Jaws_User();

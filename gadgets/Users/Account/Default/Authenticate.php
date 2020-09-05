@@ -90,12 +90,12 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 ) {
                     // send notification to user
                     $this->gadget->action->load('Login')->NotifyLoginKey($user);
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
                 }
 
                 // check verification key
                 if ($loginkey['text'] != $loginData['loginkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
                 }
 
                 // remove login key
@@ -127,12 +127,12 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                             'status'   => false,
                         )
                     );
-                    throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
+                    throw new Exception(Jaws::t('ERROR_LOGIN_LOCKED_OUT'), 403);
                 }
 
                 $this->gadget->session->temp_login_user = '';
                 if ($loginData['username'] === '') {
-                    throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'), 401);
+                    throw new Exception(Jaws::t('ERROR_LOGIN_WRONG'), 401);
                 }
 
                 if ($loginData['usecrypt']) {
@@ -181,7 +181,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     // send notification to user
                     $this->gadget->action->load('Login')->NotifyLoginKey($user);
 
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
                 }
             } // end of login step
 
@@ -191,7 +191,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                (($user['last_password_update'] + $password_max_age) < time())
             ) {
                 $loginData['loginstep'] = 3;
-                throw new Exception(_t('GLOBAL_ERROR_PASSWORD_EXPIRED'), 206);
+                throw new Exception(Jaws::t('ERROR_PASSWORD_EXPIRED'), 206);
             }
 
             // check user concurrents logins
@@ -213,7 +213,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     )
                 );
 
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'), 409);
+                throw new Exception(Jaws::t('ERROR_LOGIN_CONCURRENT_REACHED'), 409);
             }
 
             // remove temp user data

@@ -83,19 +83,19 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/template");
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('lbl_home', _t('USERS_CONTACTS_HOME'));
         $tpl->SetVariable('lbl_work', _t('USERS_CONTACTS_WORK'));
         $tpl->SetVariable('lbl_other', _t('USERS_CONTACTS_OTHER'));
         $tpl->SetVariable('lbl_tel', _t('USERS_CONTACTS_PHONE_NUMBER'));
         $tpl->SetVariable('lbl_fax', _t('USERS_CONTACTS_FAX_NUMBER'));
         $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_country', _t('GLOBAL_COUNTRY'));
-        $tpl->SetVariable('lbl_province', _t('GLOBAL_PROVINCE'));
-        $tpl->SetVariable('lbl_city', _t('GLOBAL_CITY'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
+        $tpl->SetVariable('lbl_country', Jaws::t('COUNTRY'));
+        $tpl->SetVariable('lbl_province', Jaws::t('PROVINCE'));
+        $tpl->SetVariable('lbl_city', Jaws::t('CITY'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
@@ -203,13 +203,13 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_name', _t('GLOBAL_NAME'));
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_name', Jaws::t('NAME'));
+        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
         $this->gadget->define('lbl_addContact', _t('USERS_CONTACTS_ADD'));
         $this->gadget->define('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
-        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
 
         // Load the template
         $tpl = $this->gadget->template->load('Contacts.html');
@@ -218,15 +218,15 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
-        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
         $tpl->SetVariable('lbl_export_vcard', _t('USERS_EXPORT_VCARD'));
         $tpl->SetVariable('lbl_import_vcard', _t('USERS_IMPORT_VCARD'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
         $tpl->SetVariable('export_url', $this->gadget->urlMap('ExportVCard'));
 
         // Menu navigation

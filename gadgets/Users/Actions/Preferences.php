@@ -133,7 +133,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
 
                 $tpl->ParseBlock('preferences/gadget/key');
             }
-            $tpl->SetVariable('update', _t('GLOBAL_UPDATE'));
+            $tpl->SetVariable('update', Jaws::t('UPDATE'));
             $tpl->ParseBlock('preferences/gadget');
         }
 

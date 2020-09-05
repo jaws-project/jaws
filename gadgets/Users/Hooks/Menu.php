@@ -76,7 +76,7 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
 
         $urls[] = array(
             'url'    => $this->gadget->urlMap('Logout'),
-            'title'  => _t('GLOBAL_LOGOUT'),
+            'title'  => Jaws::t('LOGOUT'),
             'status' => Menu_Info::STATUS_LOGGED_IN,
         );
         return $urls;

@@ -51,7 +51,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         // email
         $email =& Piwi::CreateWidget('Entry', 'email', $uInfo['email']);
         $email->SetID('email');
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('email', $email->Get());
 
         // mobile
@@ -84,7 +84,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
 
         $btnSave =& Piwi::CreateWidget('Button',
                                        'SubmitButton',
-                                       _t('GLOBAL_UPDATE'),
+                                       Jaws::t('UPDATE'),
                                        STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').updateMyAccount();");
         $tpl->SetVariable('save', $btnSave->Get());

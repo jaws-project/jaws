@@ -111,7 +111,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
                 $tpl->ParseBlock('forgot/captcha');
                 // action
                 $tpl->SetBlock('forgot/action');
-                $tpl->SetVariable('remember', _t('GLOBAL_REQUEST'));
+                $tpl->SetVariable('remember', Jaws::t('REQUEST'));
                 $tpl->ParseBlock('forgot/action');
         }
 
@@ -273,13 +273,13 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
 
         $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username',       $uData['username']);
-        $tpl->SetVariable('lbl_email',      _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email',      Jaws::t('EMAIL'));
         $tpl->SetVariable('email',          $uData['email']);
         $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile',         $uData['mobile']);
-        $tpl->SetVariable('lbl_ip',         _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_ip',         Jaws::t('IP'));
         $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
-        $tpl->SetVariable('thanks',         _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('thanks',         Jaws::t('THANKS'));
         $tpl->SetVariable('site-name',      $settings['site_name']);
         $tpl->SetVariable('site-url',       $site_url);
         $tpl->ParseBlock('Notification');

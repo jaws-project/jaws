@@ -26,13 +26,13 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         $this->gadget->CheckPermission('ManageFriends');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->define('lbl_name', _t('GLOBAL_NAME'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->define('lbl_name', Jaws::t('NAME'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
         $this->gadget->define('lbl_addFriend', _t('USERS_FRIENDS_ADD'));
         $this->gadget->define('lbl_editFriend', _t('USERS_FRIENDS_EDIT'));
-        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
+        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
         $this->gadget->define('lbl_manageFriends', _t('USERS_FRIENDS_MANAGE'));
 
         $response = $this->gadget->session->pop('Groups');
@@ -64,23 +64,23 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         $tpl->SetVariable('lbl_addFriend', _t('USERS_FRIENDS_ADD'));
         $tpl->SetVariable('lbl_manageFriends', _t('USERS_FRIENDS_MANAGE'));
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
-        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
+        $tpl->SetVariable('lbl_actions', Jaws::t('ACTIONS'));
+        $tpl->SetVariable('lbl_no_action', Jaws::t('NO_ACTION'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
         $tpl->SetVariable('lbl_add_group', _t('USERS_ADD_GROUP'));
         $tpl->SetVariable('url_add_group', $this->gadget->urlMap('FriendsGroupUI'));
 
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
         $tpl->ParseBlock('groups');
         return $tpl->Get();

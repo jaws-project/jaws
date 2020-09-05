@@ -47,12 +47,12 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                         'status'   => false,
                     )
                 );
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'), 403);
+                throw new Exception(Jaws::t('ERROR_LOGIN_LOCKED_OUT'), 403);
             }
 
             $loginData['loginstep'] = 0;
             if ($loginData['username'] === '' && $loginData['password'] === '') {
-                throw new Exception(_t('GLOBAL_ERROR_LOGIN_WRONG'));
+                throw new Exception(Jaws::t('ERROR_LOGIN_WRONG'));
             }
 
             if ($loginData['usecrypt']) {

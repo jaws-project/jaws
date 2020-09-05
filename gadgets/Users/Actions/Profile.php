@@ -102,7 +102,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             'lbl_ssn'         => _t('USERS_USERS_SSN'),
             'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
             'lbl_public'      => _t('USERS_USERS_PUBLIC'),
-            'lbl_url'         => _t('GLOBAL_URL'),
+            'lbl_url'         => Jaws::t('URL'),
             'lbl_about'       => _t('USERS_USERS_ABOUT'),
             'lbl_experiences' => _t('USERS_USERS_EXPERIENCES'),
             'lbl_occupations' => _t('USERS_USERS_OCCUPATIONS'),
@@ -112,7 +112,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         if (!$this->app->session->user->superadmin &&
             $this->app->session->user->id != $user['id'])
         {
-            $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
+            $user['ssn'] = Jaws::t('ERROR_ACCESS_DENIED');
         }
 
         $tpl->SetVariablesArray($user);
@@ -195,7 +195,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             'lbl_ssn'         => _t('USERS_USERS_SSN'),
             'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
             'lbl_public'      => _t('USERS_USERS_PUBLIC'),
-            'lbl_url'         => _t('GLOBAL_URL'),
+            'lbl_url'         => Jaws::t('URL'),
             'lbl_about'       => _t('USERS_USERS_ABOUT'),
             'lbl_experiences' => _t('USERS_USERS_EXPERIENCES'),
             'lbl_occupations' => _t('USERS_USERS_OCCUPATIONS'),
@@ -205,7 +205,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         if (!$this->app->session->user->superadmin &&
             $this->app->session->user->id != $user['id'])
         {
-            $user['ssn'] = _t('GLOBAL_ERROR_ACCESS_DENIED');
+            $user['ssn'] = Jaws::t('ERROR_ACCESS_DENIED');
         }
 
         // set about item data

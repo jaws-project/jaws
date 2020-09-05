@@ -59,7 +59,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 // send notification to user
                 $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
 
-                throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
 
             }
 
@@ -76,12 +76,12 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             ) {
                 // send recovery key notification to user
                 $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
-                throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
             }
 
             // check verification key
             if ($rcvkey['text'] != $rcvryData['rcvkey']) {
-                throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
             }
 
             $user = $this->app->users->GetUserNew(

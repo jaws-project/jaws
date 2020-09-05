@@ -29,12 +29,12 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         }
         $authtype->SetDefault($this->gadget->registry->fetch('authtype'));
         $authtype->SetEnabled($this->gadget->GetPermission('ManageAuthenticationMethod'));
-        $tpl->SetVariable('lbl_authtype', _t('GLOBAL_AUTHTYPE'));
+        $tpl->SetVariable('lbl_authtype', Jaws::t('AUTHTYPE'));
         $tpl->SetVariable('authtype', $authtype->Get());
 
         $anonRegister =& Piwi::CreateWidget('Combo', 'anon_register');
-        $anonRegister->AddOption(_t('GLOBAL_YES'), 'true');
-        $anonRegister->AddOption(_t('GLOBAL_NO'), 'false');
+        $anonRegister->AddOption(Jaws::t('YES'), 'true');
+        $anonRegister->AddOption(Jaws::t('NO'), 'false');
         $anonRegister->SetDefault($this->gadget->registry->fetch('anon_register'));
         $tpl->SetVariable('lbl_anon_register', _t('USERS_PROPERTIES_ANON_REGISTER'));
         $tpl->SetVariable('anon_register', $anonRegister->Get());
@@ -61,8 +61,8 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         $tpl->SetVariable('anon_group', $anonGroup->Get());
 
         $passRecovery =& Piwi::CreateWidget('Combo', 'password_recovery');
-        $passRecovery->AddOption(_t('GLOBAL_YES'), 'true');
-        $passRecovery->AddOption(_t('GLOBAL_NO'), 'false');
+        $passRecovery->AddOption(Jaws::t('YES'), 'true');
+        $passRecovery->AddOption(Jaws::t('NO'), 'false');
         $passRecovery->SetDefault($this->gadget->registry->fetch('password_recovery'));
         $tpl->SetVariable('lbl_password_recovery', _t('USERS_PROPERTIES_PASS_RECOVERY'));
         $tpl->SetVariable('password_recovery', $passRecovery->Get());
@@ -78,7 +78,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         $tpl->SetVariable('lbl_reserved_users', _t('USERS_PROPERTIES_RESERVED_USERS'));
         $tpl->SetVariable('reserved_users', $reservedUsers->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').updateSettings();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 

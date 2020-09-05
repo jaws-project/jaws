@@ -48,9 +48,9 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
             $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
 
-            $tpl->SetVariable('recovery', _t('GLOBAL_REQUEST'));
+            $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
             $tpl->SetVariable('url_back', $referrer);
-            $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+            $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
 
             $tpl->ParseBlock('forgot/request');
         }
@@ -78,8 +78,8 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('domain',   $reqpost['domain']);
         $tpl->SetVariable('account',  $reqpost['account']);
         $tpl->SetVariable('remember', $reqpost['remember']);
-        $tpl->SetVariable('lbl_account',  _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
+        $tpl->SetVariable('lbl_account',  Jaws::t('EMAIL'));
+        $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/forgot_step_1");
     }
@@ -100,11 +100,11 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('mobile',   isset($reqpost['mobile'])? $reqpost['mobile'] : '');
         $tpl->SetVariable('mobile',   isset($reqpost['remember'])? $reqpost['remember'] : '0');
 
-        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('lbl_email',    _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
+        $tpl->SetVariable('lbl_email',    Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_mobile',   _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_regkey',   _t('USERS_REGISTRATION_KEY'));
-        $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
+        $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/forgot_step_2");
     }

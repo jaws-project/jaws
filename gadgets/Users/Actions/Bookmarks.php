@@ -24,8 +24,8 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         $tpl->SetVariable('action', $post['bookmark_action']);
         $tpl->SetVariable('reference', $post['bookmark_reference']);
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
 
         $tpl->ParseBlock('Bookmark');
         return $tpl->Get();
@@ -84,12 +84,12 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_gadget', _t('GLOBAL_GADGET'));
-        $this->gadget->define('lbl_action', _t('GLOBAL_ACTION'));
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_gadget', Jaws::t('GADGET'));
+        $this->gadget->define('lbl_action', Jaws::t('ACTION'));
+        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Bookmarks.html');
         $tpl->SetBlock('Bookmarks');
@@ -99,30 +99,30 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
         $tpl->SetVariable('lbl_action', _t('ABUSEREPORTER_ACTION'));
         $tpl->SetVariable('lbl_reference', _t('ABUSEREPORTER_REFERENCE'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_update', _t('GLOBAL_UPDATE'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
+        $tpl->SetVariable('lbl_update', Jaws::t('UPDATE'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
         // Gadgets Filter
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList();
-        array_unshift($gadgetList, array('name' => 0, 'title' => _t('GLOBAL_ALL')));
+        array_unshift($gadgetList, array('name' => 0, 'title' => Jaws::t('ALL')));
         foreach ($gadgetList as $gadget) {
             $tpl->SetBlock('Bookmarks/filterGadget');
             $tpl->SetVariable('title', $gadget['title']);
             $tpl->SetVariable('value', $gadget['name']);
             $tpl->ParseBlock('Bookmarks/filterGadget');
         }
-        $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
+        $tpl->SetVariable('lbl_filter_gadget', Jaws::t('GADGETS'));
         $tpl->SetVariable('lbl_filter_term', _t('USERS_USERS_SEARCH_TERM'));
 
         $tpl->ParseBlock('Bookmarks');

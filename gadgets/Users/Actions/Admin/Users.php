@@ -24,10 +24,10 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $datagrid->SetID('users_datagrid');
         $col = Piwi::CreateWidget('Column', _t('USERS_USERS_NICKNAME'), null, false);
         $datagrid->AddColumn($col);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('USERNAME'), null, false);
         $column1->SetStyle('width: 180px;');
         $datagrid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column2->SetStyle('width: 160px;');
         $datagrid->AddColumn($column2);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
@@ -66,7 +66,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
-                    _t('GLOBAL_EDIT'),
+                    Jaws::t('EDIT'),
                     "javascript:Jaws_Gadget.getInstance('Users').editUser(this, '".$user['id']."');",
                     STOCK_EDIT
                 );
@@ -223,7 +223,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         // Type Filter
         $filterType =& Piwi::CreateWidget('Combo', 'filter_type');
-        $filterType->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $filterType->AddOption(Jaws::t('ALL'), -1, false);
         $filterType->AddOption(_t('USERS_USERS_TYPE_SUPERADMIN'), 1);
         $filterType->AddOption(_t('USERS_USERS_TYPE_NORMAL'),     0);
         $filterType->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchUser();");
@@ -233,14 +233,14 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         // Status Filter
         $filterStatus =& Piwi::CreateWidget('Combo', 'filter_status');
-        $filterStatus->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $filterStatus->AddOption(Jaws::t('ALL'), -1, false);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_0'), 0);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_1'), 1);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_2'), 2);
         $filterStatus->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Users').searchUser();");
         $filterStatus->SetDefault(-1);
         $tpl->SetVariable('filter_status', $filterStatus->Get());
-        $tpl->SetVariable('lbl_filter_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_filter_status', Jaws::t('STATUS'));
 
         // Term
         $filterTerm =& Piwi::CreateWidget('Entry', 'filter_term', '');
@@ -269,14 +269,14 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $save =& Piwi::CreateWidget('Button',
                                     'save',
-                                    _t('GLOBAL_SAVE'),
+                                    Jaws::t('SAVE'),
                                     STOCK_SAVE);
         $save->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').saveUser();");
         $tpl->SetVariable('save', $save->Get());
 
         $cancel =& Piwi::CreateWidget('Button',
                                       'cancel',
-                                      _t('GLOBAL_CANCEL'),
+                                      Jaws::t('CANCEL'),
                                       STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').stopUserAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
@@ -330,7 +330,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         // email
         $email =& Piwi::CreateWidget('Entry', 'email');
         $email->SetID('email');
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('email', $email->Get());
 
         // mobile
@@ -342,8 +342,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         // superadmin
         $superadmin =& Piwi::CreateWidget('Combo', 'superadmin');
         $superadmin->SetID('superadmin');
-        $superadmin->AddOption(_t('GLOBAL_NO'),  0);
-        $superadmin->AddOption(_t('GLOBAL_YES'), 1);
+        $superadmin->AddOption(Jaws::t('NO'),  0);
+        $superadmin->AddOption(Jaws::t('YES'), 1);
         $superadmin->SetDefault(0);
         $tpl->SetVariable('lbl_superadmin', _t('USERS_USERS_TYPE_SUPERADMIN'));
         $tpl->SetVariable('superadmin', $superadmin->Get());
@@ -384,7 +384,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $status->AddOption(_t('USERS_USERS_STATUS_1'), 1);
         $status->AddOption(_t('USERS_USERS_STATUS_2'), 2);
         $status->SetDefault(1);
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $tpl->SetVariable('status', $status->Get());
 
         $tpl->ParseBlock('user');
@@ -431,8 +431,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         // privacy
         $privacy =& Piwi::CreateWidget('Combo', 'privacy');
         $privacy->SetID('privacy');
-        $privacy->AddOption(_t('GLOBAL_DISABLED'), 0);
-        $privacy->AddOption(_t('GLOBAL_ENABLED'),  1);
+        $privacy->AddOption(Jaws::t('DISABLED'), 0);
+        $privacy->AddOption(Jaws::t('ENABLED'),  1);
         $privacy->SetDefault(1);
         $tpl->SetVariable('lbl_privacy', _t('USERS_USERS_PRIVACY'));
         $tpl->SetVariable('privacy', $privacy->Get());
@@ -494,7 +494,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         // url
         $url =& Piwi::CreateWidget('Entry', 'url');
         $url->SetID('url');
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('url', $url->Get());
 
         // about
@@ -520,18 +520,18 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Contacts.html');
         $tpl->SetBlock('contacts');
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('lbl_home', _t('USERS_CONTACTS_HOME'));
         $tpl->SetVariable('lbl_work', _t('USERS_CONTACTS_WORK'));
         $tpl->SetVariable('lbl_other', _t('USERS_CONTACTS_OTHER'));
         $tpl->SetVariable('lbl_tel', _t('USERS_CONTACTS_PHONE_NUMBER'));
         $tpl->SetVariable('lbl_fax', _t('USERS_CONTACTS_FAX_NUMBER'));
         $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_province', _t('GLOBAL_PROVINCE'));
-        $tpl->SetVariable('lbl_city', _t('GLOBAL_CITY'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
+        $tpl->SetVariable('lbl_province', Jaws::t('PROVINCE'));
+        $tpl->SetVariable('lbl_city', Jaws::t('CITY'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));

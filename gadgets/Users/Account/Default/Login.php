@@ -80,7 +80,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         $this->app->layout->Load('gadgets/Users/Templates/Admin', 'Login.html');
         $ltpl =& $this->app->layout->_Template;
         $ltpl->SetVariable('admin-script', BASE_SCRIPT);
-        $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
+        $ltpl->SetVariable('control-panel', Jaws::t('CONTROLPANEL'));
 
         $response = $this->gadget->session->pop('Login.Response');
         if (!isset($response['data'])) {
@@ -105,7 +105,7 @@ class Users_Account_Default_Login extends Users_Account_Default
             $this->LoginBoxStep1($ltpl, $reqpost, $referrer);
         }
 
-        $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $ltpl->SetVariable('login', Jaws::t('LOGIN'));
         $ltpl->SetVariable('url_back', $this->app->getSiteURL('/'));
         $ltpl->SetVariable('lbl_back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
 
@@ -139,7 +139,7 @@ class Users_Account_Default_Login extends Users_Account_Default
 
             // usecrypt
             $tpl->SetBlock("$block/login_step_1/usecrypt");
-            $tpl->SetVariable('lbl_usecrypt', _t('GLOBAL_LOGIN_SECURE'));
+            $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
             if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
                 $tpl->SetBlock("$block/login_step_1/usecrypt/selected");
                 $tpl->ParseBlock("$block/login_step_1/usecrypt/selected");
@@ -165,13 +165,13 @@ class Users_Account_Default_Login extends Users_Account_Default
             }
         }
 
-        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
+        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
-        $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
+        $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
 
         // remember
         $tpl->SetBlock("$block/login_step_1/remember");
-        $tpl->SetVariable('lbl_remember', _t('GLOBAL_REMEMBER_ME'));
+        $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
         if (!empty($reqpost['remember'])) {
             $tpl->SetBlock("$block/login_step_1/remember/selected");
             $tpl->ParseBlock("$block/login_step_1/remember/selected");
@@ -186,9 +186,9 @@ class Users_Account_Default_Login extends Users_Account_Default
         }
 
         // global variables
-        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $tpl->SetVariable('login', Jaws::t('LOGIN'));
         $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
 
         // anon_register
         if ($this->gadget->registry->fetch('anon_register') == 'true') {
@@ -230,17 +230,17 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('remember', $reqpost['remember']);
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
 
-        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('lbl_loginkey', _t('GLOBAL_LOGINKEY'));
+        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
+        $tpl->SetVariable('lbl_loginkey', Jaws::t('LOGINKEY'));
 
         // display captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $mPolicy->loadCaptcha($tpl, "$block/login_step_2", 'login');
 
         // global variables
-        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $tpl->SetVariable('login', Jaws::t('LOGIN'));
         $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
 
         $tpl->ParseBlock("$block/login_step_2");
     }
@@ -262,14 +262,14 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('remember', $reqpost['remember']);
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
 
-        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
-        $tpl->SetVariable('lbl_password', _t('GLOBAL_PASSWORD'));
+        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
+        $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
         $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
 
         // global variables
-        $tpl->SetVariable('login', _t('GLOBAL_LOGIN'));
+        $tpl->SetVariable('login', Jaws::t('LOGIN'));
         $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK_TO', _t('GLOBAL_PREVIOUSPAGE')));
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
 
         $tpl->ParseBlock("$block/login_step_3");
     }

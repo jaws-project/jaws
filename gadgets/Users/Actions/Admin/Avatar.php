@@ -22,7 +22,7 @@ class Users_Actions_Admin_Avatar extends Users_Actions_Admin_Default
                               'message' => $res->getMessage());
         } elseif (empty($res)) {
             $response = array('type'    => 'error',
-                              'message' => _t('GLOBAL_ERROR_UPLOAD_4'));
+                              'message' => Jaws::t('ERROR_UPLOAD_4'));
         } else {
             $response = array('type'    => 'notice',
                               'message' => $res['upload_avatar'][0]['host_filename']);

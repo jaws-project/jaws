@@ -109,9 +109,9 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('password', $password);
         $tpl->ParseBlock('recovery/password');
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
         $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
-        $tpl->SetVariable('thanks', _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('thanks', Jaws::t('THANKS'));
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url',  $site_url);
         $tpl->ParseBlock('recovery');

@@ -110,7 +110,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
             if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
                 return $this->gadget->session->response(
-                    _t('GLOBAL_ERROR_UPLOAD'),
+                    Jaws::t('ERROR_UPLOAD'),
                     RESPONSE_ERROR
                 );
             }

@@ -74,7 +74,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                     // send notification to user
                     $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
 
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
                 }
             } else {
                 // fetch user data from session
@@ -90,12 +90,12 @@ class Users_Account_Default_Register extends Users_Account_Default
                 ) {
                     // send notification to user
                     $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
                 }
 
                 // check verification key
                 if ($regkey['text'] != $rgstrData['regkey']) {
-                    throw new Exception(_t('GLOBAL_LOGINKEY_REQUIRED'), 206);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
                 }
 
                 // update user status(enabled)

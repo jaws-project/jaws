@@ -205,14 +205,14 @@ class Users_Actions_Account extends Users_Actions_Default
         $tpl->SetVariable('message', _t('USERS_EMAIL_REPLACEMENT_MSG'));
 
         $tpl->SetBlock('Notification/IP');
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
         $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
         $tpl->ParseBlock('Notification/IP');
 
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username', $username);
 
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('email', $old_email);
 
         $jUser = new Jaws_User;
@@ -237,7 +237,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url',  $site_url);
-        $tpl->SetVariable('thanks',    _t('GLOBAL_THANKS'));
+        $tpl->SetVariable('thanks',    Jaws::t('THANKS'));
 
         $tpl->ParseBlock('Notification');
         $body = $tpl->Get();
