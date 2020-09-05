@@ -49,7 +49,7 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageUsers')) {
             $menubar->AddOption(
                 'Users',
-                _t('USERS_TITLE'),
+                $this::t('TITLE'),
                 $this->gadget->url('Users'),
                 'gadgets/Users/Resources/images/users_mini.png'
             );
@@ -57,14 +57,14 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption(
                 'Groups',
-                _t('USERS_GROUPS_GROUPS'),
+                $this::t('GROUPS_GROUPS'),
                 $this->gadget->url('Groups'),
                 'gadgets/Users/Resources/images/groups_mini.png'
             );
         }
         $menubar->AddOption(
             'ACLs',
-            _t('USERS_ACLS'),
+            $this::t('ACLS'),
             $this->gadget->url('ACLs'),
             'gadgets/Users/Resources/images/acls.png'
         );
@@ -72,7 +72,7 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageOnlineUsers')) {
             $menubar->AddOption(
                 'OnlineUsers',
-                _t('USERS_ONLINE_USERS'),
+                $this::t('ONLINE_USERS'),
                 $this->gadget->url('OnlineUsers'),
                 STOCK_PREFERENCES
             );

@@ -21,22 +21,22 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->gadget->define('lbl_name', Jaws::t('NAME'));
         $this->gadget->define('lbl_add', Jaws::t('ADD'));
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('addGroup_title', _t('USERS_GROUPS_ADD'));
-        $this->gadget->define('editGroup_title', _t('USERS_GROUPS_EDIT'));
-        $this->gadget->define('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
-        $this->gadget->define('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('addGroup_title', $this::t('GROUPS_ADD'));
+        $this->gadget->define('editGroup_title', $this::t('GROUPS_EDIT'));
+        $this->gadget->define('editGroupUsers_title', $this::t('GROUPS_MEMBERS'));
+        $this->gadget->define('incompleteGroupFields', $this::t('GROUPS_INCOMPLETE_FIELDS'));
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('ManageGroups.html');
         $tpl->SetBlock('Groups');
 
-        $this->SetTitle(_t('USERS_GROUPS'));
-        $tpl->SetVariable('title', _t('USERS_GROUPS'));
+        $this->SetTitle($this::t('GROUPS'));
+        $tpl->SetVariable('title', $this::t('GROUPS'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        $tpl->SetVariable('grid_header', _t('USERS_GROUPS'));
+        $tpl->SetVariable('grid_header', $this::t('GROUPS'));
         $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
@@ -135,7 +135,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_GROUPS_CREATED', $gData['title']), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('GROUPS_CREATED', $gData['title']), RESPONSE_NOTICE);
         }
     }
 
@@ -157,7 +157,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_GROUPS_UPDATED', $gData['title']), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('GROUPS_UPDATED', $gData['title']), RESPONSE_NOTICE);
         }
     }
 
@@ -174,10 +174,10 @@ class Users_Actions_Groups extends Users_Actions_Default
         $uModel = new Jaws_User();
         $groupinfo = $uModel->GetGroup((int)$gid);
         if (!$uModel->DeleteGroup($gid)) {
-            return $this->gadget->session->response(_t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),
+            return $this->gadget->session->response($this::t('GROUPS_CANT_DELETE', $groupinfo['name']),
                 RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_GROUPS_DELETED', $groupinfo['name']),
+            return $this->gadget->session->response($this::t('GROUPS_DELETED', $groupinfo['name']),
                 RESPONSE_NOTICE);
         }
     }
@@ -215,7 +215,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         if (Jaws_Error::IsError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
         }
     }
 

@@ -19,7 +19,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         // Load the template
         $tpl = $this->gadget->template->load('LoginForgot.html');
         $tpl->SetBlock('forgot');
-        $tpl->SetVariable('title', _t('USERS_FORGOT_REMEMBER'));
+        $tpl->SetVariable('title', $this::t('FORGOT_REMEMBER'));
 
         $response = $this->gadget->session->pop('Recovery.Response');
         if (!isset($response['data'])) {
@@ -102,8 +102,8 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
 
         $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
         $tpl->SetVariable('lbl_email',    Jaws::t('EMAIL'));
-        $tpl->SetVariable('lbl_mobile',   _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_regkey',   _t('USERS_REGISTRATION_KEY'));
+        $tpl->SetVariable('lbl_mobile',   $this::t('CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_regkey',   $this::t('REGISTRATION_KEY'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/forgot_step_2");
@@ -122,15 +122,15 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $anon_activation = $this->gadget->registry->fetch('anon_activation');
         switch ($anon_activation) {
             case 'admin':
-                $message = _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
+                $message = $this::t('REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
                 break;
 
             case 'user':
-                $message = _t('USERS_REGISTRATION_ACTIVATED_BY_USER');
+                $message = $this::t('REGISTRATION_ACTIVATED_BY_USER');
                 break;
 
             default:
-                $message = _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO');
+                $message = $this::t('REGISTRATION_ACTIVATED_BY_AUTO');
                 break;
         }
         

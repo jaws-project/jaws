@@ -35,7 +35,7 @@ class Users_Account_Default_Register extends Users_Account_Default
             if (empty($rgstrData['regstep']) || $rgstrData['regstep'] == 1) {
                 $this->gadget->session->delete('temp_register_user');
                 if ($rgstrData['password'] !== $rgstrData['password_check']) {
-                    throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 401);
+                    throw new Exception($this::t('USERS_PASSWORDS_DONT_MATCH'), 401);
                 }
 
                 if ($rgstrData['usecrypt']) {
@@ -81,7 +81,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 $userData = $this->gadget->session->temp_register_user;
                 if (empty($userData)) {
                     $rgstrData['regstep'] = 1;
-                    throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
+                    throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
                 }
 
                 $regkey = $this->gadget->session->regkey;
@@ -120,7 +120,7 @@ class Users_Account_Default_Register extends Users_Account_Default
             }
 
             $rgstrData['regstep'] = 2;
-            throw new Exception(_t('USERS_REGISTRATION_REGISTERED'), 201);
+            throw new Exception($this::t('REGISTRATION_REGISTERED'), 201);
 
         } catch (Exception $error) {
             unset($rgstrData['password'], $rgstrData['password_check']);

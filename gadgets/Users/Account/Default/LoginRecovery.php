@@ -50,7 +50,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
 
                 $userData = $this->app->users->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
                 if (Jaws_Error::IsError($userData) || empty($userData)) {
-                    throw new Exception(_t('USERS_USER_NOT_EXIST'), 401);
+                    throw new Exception($this::t('USER_NOT_EXIST'), 401);
                 }
 
                 $rcvryData['rcvstep'] = 1;
@@ -67,7 +67,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             $userData = $this->gadget->session->temp_recovery_user;
             if (empty($userData)) {
                 $rcvryData['rcvstep'] = 0;
-                throw new Exception(_t('USERS_USERS_INCOMPLETE_FIELDS'), 401);
+                throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
             }
 
             $rcvkey = $this->gadget->session->rcvkey;
@@ -91,7 +91,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             );
             if (Jaws_Error::IsError($user) || empty($user)) {
                 $rcvryData['rcvstep'] = 0;
-                throw new Exception(_t('USERS_USER_NOT_EXIST'), 401);
+                throw new Exception($this::t('USER_NOT_EXIST'), 401);
             }
 
             // fetch user groups

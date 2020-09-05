@@ -21,8 +21,8 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         // Load the template
         $tpl = $this->gadget->template->load('NoPermission.html');
         $tpl->SetBlock('NoPermission');
-        $tpl->SetVariable('nopermission', _t('USERS_NO_PERMISSION_TITLE'));
-        $tpl->SetVariable('description', _t('USERS_NO_PERMISSION_DESC', $gadget, $action));
+        $tpl->SetVariable('nopermission', $this::t('NO_PERMISSION_TITLE'));
+        $tpl->SetVariable('description', $this::t('NO_PERMISSION_DESC', $gadget, $action));
         if ($this->app->session->user->logged) {
             $tpl->SetBlock('NoPermission/known');
             $logoutLink = $this->gadget->urlMap('Logout');
@@ -30,7 +30,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
                 $this->app->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
             $tpl->SetVariable(
                 'known_description',
-                _t('USERS_NO_PERMISSION_KNOWN_DESC', $logoutLink, $referLink));
+                $this::t('NO_PERMISSION_KNOWN_DESC', $logoutLink, $referLink));
             $tpl->ParseBlock('NoPermission/known');
         } else {
             $tpl->SetBlock('NoPermission/anon');
@@ -42,7 +42,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
                 $this->app->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
             $tpl->SetVariable(
                 'anon_description',
-                _t('USERS_NO_PERMISSION_ANON_DESC', $loginLink, $referLink));
+                $this::t('NO_PERMISSION_ANON_DESC', $loginLink, $referLink));
             $tpl->ParseBlock('NoPermission/anon');
         }
         $tpl->ParseBlock('NoPermission');
@@ -65,7 +65,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Profile',
-            _t('USERS_PROFILE'),
+            $this::t('PROFILE'),
             $this->gadget->urlMap('Profile', array('user' => $this->app->session->user->username)),
             STOCK_ABOUT
         );
@@ -73,7 +73,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageFriends')) {
             $menubar->AddOption(
                 'FriendsGroups',
-                _t('USERS_FRIENDS'),
+                $this::t('FRIENDS'),
                 $this->gadget->urlMap('FriendsGroups'),
                 'gadgets/Users/Resources/images/groups_mini.png'
             );
@@ -106,7 +106,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         $menubar->setClass('gadget_submenubar');
         if (in_array('Profile', $actions)) {
             $menubar->AddOption('Profile',
-                _t('USERS_PROFILE'),
+                $this::t('PROFILE'),
                 $this->gadget->urlMap(
                     'Profile',
                     array('user' => $this->app->session->user->username)
@@ -117,20 +117,20 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         if (in_array('FriendsGroups', $actions)) {
             $menubar->AddOption(
                 'FriendsGroups',
-                _t('USERS_USER_GROUPS'),
+                $this::t('USER_GROUPS'),
                 $this->gadget->urlMap('FriendsGroups')
             );
         }
 
         if (in_array('AddFriendsGroup', $actions)) {
-            $menubar->AddOption('AddFriendsGroup', _t('USERS_ADD_GROUP'),
+            $menubar->AddOption('AddFriendsGroup', $this::t('ADD_GROUP'),
                 $this->gadget->urlMap('FriendsGroupUI'), STOCK_ADD);
         }
 
         if (in_array('Friends', $actions)) {
             $menubar->AddOption(
                 'Friends',
-                _t('USERS_GROUPS_MEMBERS'),
+                $this::t('GROUPS_MEMBERS'),
                 $this->gadget->urlMap('ManageFriendsGroup', $params)
             );
         }
@@ -138,7 +138,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         if (in_array('EditGroup', $actions)) {
             $menubar->AddOption(
                 'EditFriendsGroup',
-                _t('USERS_EDIT_GROUP'),
+                $this::t('EDIT_GROUP'),
                 $this->gadget->urlMap('EditFriendsGroup', $params)
             );
         }
@@ -151,7 +151,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             )) {
                 $menubar->AddOption(
                     'Account',
-                    _t('USERS_EDIT_ACCOUNT'),
+                    $this::t('EDIT_ACCOUNT'),
                     $this->gadget->urlMap('Account')
                 );
             }
@@ -161,7 +161,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             if ($this->gadget->GetPermission('EditUserPersonal')) {
                 $menubar->AddOption(
                     'Personal',
-                    _t('USERS_EDIT_PERSONAL'),
+                    $this::t('EDIT_PERSONAL'),
                     $this->gadget->urlMap('Personal')
                 );
             }
@@ -171,7 +171,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             if ($this->gadget->GetPermission('EditUserPreferences')) {
                 $menubar->AddOption(
                     'Preferences',
-                    _t('USERS_EDIT_PREFERENCES'),
+                    $this::t('EDIT_PREFERENCES'),
                     $this->gadget->urlMap('Preferences')
                 );
             }
@@ -181,7 +181,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             if ($this->gadget->GetPermission('EditUserBookmarks')) {
                 $menubar->AddOption(
                     'Bookmarks',
-                    _t('USERS_EDIT_BOOKMARKS'),
+                    $this::t('EDIT_BOOKMARKS'),
                     $this->gadget->urlMap('Bookmarks')
                 );
             }
@@ -191,7 +191,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             if ($this->gadget->GetPermission('EditUserContacts')) {
                 $menubar->AddOption(
                     'Contact',
-                    _t('USERS_EDIT_CONTACT'),
+                    $this::t('EDIT_CONTACT'),
                     $this->gadget->urlMap('Contact')
                 );
             }
@@ -201,7 +201,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             if ($this->gadget->GetPermission('EditUserContacts')) {
                 $menubar->AddOption(
                     'Contacts',
-                    _t('USERS_EDIT_CONTACTS'),
+                    $this::t('EDIT_CONTACTS'),
                     $this->gadget->urlMap('Contacts')
                 );
             }

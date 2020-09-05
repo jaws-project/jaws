@@ -17,21 +17,21 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_nickname', _t('USERS_USERS_NICKNAME'));
-        $this->gadget->define('lbl_username', _t('USERS_USERS_USERNAME'));
-        $this->gadget->define('addUser_title', _t('USERS_USERS_ADD'));
-        $this->gadget->define('editUser_title', _t('USERS_USERS_EDIT'));
-        $this->gadget->define('deleteUser_title', _t('USERS_USERS_DELETE'));
-        $this->gadget->define('editUserGroups_title', _t('USERS_USERS_GROUPS'));
-        $this->gadget->define('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
-        $this->gadget->define('wrongPassword', _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
+        $this->gadget->define('lbl_nickname', $this::t('USERS_NICKNAME'));
+        $this->gadget->define('lbl_username', $this::t('USERS_USERNAME'));
+        $this->gadget->define('addUser_title', $this::t('USERS_ADD'));
+        $this->gadget->define('editUser_title', $this::t('USERS_EDIT'));
+        $this->gadget->define('deleteUser_title', $this::t('USERS_DELETE'));
+        $this->gadget->define('editUserGroups_title', $this::t('USERS_GROUPS'));
+        $this->gadget->define('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
+        $this->gadget->define('wrongPassword', $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Users.html');
         $tpl->SetBlock('Users');
 
-        $this->SetTitle(_t('USERS_USERS'));
-        $tpl->SetVariable('title', _t('USERS_USERS'));
+        $this->SetTitle($this::t('USERS'));
+        $tpl->SetVariable('title', $this::t('USERS'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -43,21 +43,21 @@ class Users_Actions_Users extends Users_Actions_Default
             $tpl->ParseBlock('Users/encryption');
         }
 
-        $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_nickname', $this::t('USERS_NICKNAME'));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_superadmin', _t('USERS_USERS_TYPE_SUPERADMIN'));
-        $tpl->SetVariable('lbl_pass1', _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('lbl_pass2', _t('USERS_USERS_PASSWORD_VERIFY'));
-        $tpl->SetVariable('lbl_concurrents', _t('USERS_USERS_CONCURRENTS'));
-        $tpl->SetVariable('lbl_expiry_date', _t('USERS_USERS_EXPIRY_DATE'));
+        $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_superadmin', $this::t('USERS_TYPE_SUPERADMIN'));
+        $tpl->SetVariable('lbl_pass1', $this::t('USERS_PASSWORD'));
+        $tpl->SetVariable('lbl_pass2', $this::t('USERS_PASSWORD_VERIFY'));
+        $tpl->SetVariable('lbl_concurrents', $this::t('USERS_CONCURRENTS'));
+        $tpl->SetVariable('lbl_expiry_date', $this::t('USERS_EXPIRY_DATE'));
 
         $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $statusItems = array(
-            0 => _t('USERS_USERS_STATUS_0'),
-            1 => _t('USERS_USERS_STATUS_1'),
-            2 => _t('USERS_USERS_STATUS_2')
+            0 => $this::t('USERS_STATUS_0'),
+            1 => $this::t('USERS_STATUS_1'),
+            2 => $this::t('USERS_STATUS_2')
         );
         foreach ($statusItems as $val => $title) {
             $tpl->SetBlock('Users/status');
@@ -76,8 +76,8 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_to', Jaws::t('TO'));
         $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
 
-        $tpl->SetVariable('addUser_title', _t('USERS_USERS_ADD'));
-        $tpl->SetVariable('lbl_userGroups', _t('USERS_USERS_GROUPS'));
+        $tpl->SetVariable('addUser_title', $this::t('USERS_ADD'));
+        $tpl->SetVariable('lbl_userGroups', $this::t('USERS_GROUPS'));
 
         // Groups
         $uModel = new Jaws_User();
@@ -92,10 +92,10 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         // datagrid  filters
-        $tpl->SetVariable('lbl_filter_group', _t('USERS_GROUPS_GROUP'));
-        $tpl->SetVariable('lbl_filter_type', _t('USERS_USERS_TYPE'));
+        $tpl->SetVariable('lbl_filter_group', $this::t('GROUPS_GROUP'));
+        $tpl->SetVariable('lbl_filter_type', $this::t('USERS_TYPE'));
         $tpl->SetVariable('lbl_filter_status', Jaws::t('STATUS'));
-        $tpl->SetVariable('lbl_filter_term', _t('USERS_USERS_SEARCH_TERM'));
+        $tpl->SetVariable('lbl_filter_term', $this::t('USERS_SEARCH_TERM'));
         if (!Jaws_Error::IsError($groups)) {
             array_unshift($groups, array('id' => 0, 'title' => Jaws::t('ALL')));
             foreach ($groups as $group) {
@@ -108,8 +108,8 @@ class Users_Actions_Users extends Users_Actions_Default
 
         $filterTypes = array(
             0 => Jaws::t('ALL'),
-            1 => _t('USERS_USERS_TYPE_SUPERADMIN'),
-            2 => _t('USERS_USERS_TYPE_NORMAL'),
+            1 => $this::t('USERS_TYPE_SUPERADMIN'),
+            2 => $this::t('USERS_TYPE_NORMAL'),
         );
         foreach ($filterTypes as $key => $type) {
             $tpl->SetBlock('Users/filterType');
@@ -125,9 +125,9 @@ class Users_Actions_Users extends Users_Actions_Default
 
         $filterTypes = array(
             -1 => Jaws::t('ALL'),
-            0 => _t('USERS_USERS_STATUS_0'),
-            1 => _t('USERS_USERS_STATUS_1'),
-            2 => _t('USERS_USERS_STATUS_2'),
+            0 => $this::t('USERS_STATUS_0'),
+            1 => $this::t('USERS_STATUS_1'),
+            2 => $this::t('USERS_STATUS_2'),
         );
         foreach ($filterTypes as $key => $type) {
             $tpl->SetBlock('Users/filterStatus');
@@ -273,7 +273,7 @@ class Users_Actions_Users extends Users_Actions_Default
             if (!empty($guid)) {
                 $uModel->AddUserToGroup($res, (int)$guid);
             }
-            return $this->gadget->session->response(_t('USERS_USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
         }
     }
 
@@ -315,7 +315,7 @@ class Users_Actions_Users extends Users_Actions_Default
                 $uRegistration = $this->gadget->action->load('Registration');
                 $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
             }
-            return $this->gadget->session->response(_t('USERS_USERS_UPDATED', $uData['username']), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('USERS_UPDATED', $uData['username']), RESPONSE_NOTICE);
         }
     }
 
@@ -331,7 +331,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $uid = $this->gadget->request->fetch('id', 'post');
         if ($uid == $this->app->session->user->id) {
             return $this->gadget->session->response(
-                _t('USERS_USERS_CANT_DELETE_SELF'),
+                $this::t('USERS_CANT_DELETE_SELF'),
                 RESPONSE_ERROR
             );
         }
@@ -340,19 +340,19 @@ class Users_Actions_Users extends Users_Actions_Default
         $profile = $uModel->GetUser((int)$uid);
         if (!$this->app->session->user->superadmin && $profile['superadmin']) {
             return $this->gadget->session->response(
-                _t('USERS_USERS_CANT_DELETE', $profile['username']),
+                $this::t('USERS_CANT_DELETE', $profile['username']),
                 RESPONSE_ERROR
             );
         }
 
         if (!$uModel->DeleteUser($uid)) {
             return $this->gadget->session->response(
-                _t('USERS_USERS_CANT_DELETE', $profile['username']),
+                $this::t('USERS_CANT_DELETE', $profile['username']),
                 RESPONSE_ERROR
             );
         } else {
             return $this->gadget->session->response(
-                _t('USERS_USER_DELETED', $profile['username']),
+                $this::t('USER_DELETED', $profile['username']),
                 RESPONSE_NOTICE
             );
         }
@@ -405,7 +405,7 @@ class Users_Actions_Users extends Users_Actions_Default
                 $uModel->DeleteUserFromGroup($post['uid'], $group);
             }
 
-            return $this->gadget->session->response(_t('USERS_GROUPS_UPDATED_USERS'),
+            return $this->gadget->session->response($this::t('GROUPS_UPDATED_USERS'),
                 RESPONSE_NOTICE);
         } else {
             return $this->gadget->session->response($oldGroups->GetMessage(),

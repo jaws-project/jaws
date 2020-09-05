@@ -44,14 +44,14 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
 
                 // changing expired password
                 if ($loginData['password'] !== $loginData['chkpassword']) {
-                    throw new Exception(_t('USERS_USERS_PASSWORDS_DONT_MATCH'), 206);
+                    throw new Exception($this::t('USERS_PASSWORDS_DONT_MATCH'), 206);
                 }
 
                 // fetch user data from session
                 $user = $this->gadget->session->temp_login_user;
                 if (empty($user)) {
                     $loginData['loginstep'] = 1;
-                    throw new Exception(_t('USERS_USER_NOT_EXIST'), 404);
+                    throw new Exception($this::t('USER_NOT_EXIST'), 404);
                 }
 
                 // trying change password
@@ -81,7 +81,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $user = $this->gadget->session->temp_login_user;
                 if (empty($user)) {
                     $loginData['loginstep'] = 1;
-                    throw new Exception(_t('USERS_USER_NOT_EXIST'), 404);
+                    throw new Exception($this::t('USER_NOT_EXIST'), 404);
                 }
 
                 $loginkey = $this->gadget->session->loginkey;

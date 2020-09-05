@@ -16,7 +16,7 @@ class Users_Hooks_Activities extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['AddUser'] = _t('USERS_ACTIVITIES_ACTION_ADDUSER');
+        $items['AddUser'] = $this::t('ACTIVITIES_ACTION_ADDUSER');
 
         return $items;
     }

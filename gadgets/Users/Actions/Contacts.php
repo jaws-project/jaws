@@ -41,9 +41,9 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Contact.html');
         $tpl->SetBlock('contact');
 
-        $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
+        $tpl->SetVariable('title', $this::t('CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+        $tpl->SetVariable('update', $this::t('USERS_ACCOUNT_UPDATE'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -85,20 +85,20 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
-        $tpl->SetVariable('lbl_home', _t('USERS_CONTACTS_HOME'));
-        $tpl->SetVariable('lbl_work', _t('USERS_CONTACTS_WORK'));
-        $tpl->SetVariable('lbl_other', _t('USERS_CONTACTS_OTHER'));
-        $tpl->SetVariable('lbl_tel', _t('USERS_CONTACTS_PHONE_NUMBER'));
-        $tpl->SetVariable('lbl_fax', _t('USERS_CONTACTS_FAX_NUMBER'));
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_home', $this::t('CONTACTS_HOME'));
+        $tpl->SetVariable('lbl_work', $this::t('CONTACTS_WORK'));
+        $tpl->SetVariable('lbl_other', $this::t('CONTACTS_OTHER'));
+        $tpl->SetVariable('lbl_tel', $this::t('CONTACTS_PHONE_NUMBER'));
+        $tpl->SetVariable('lbl_fax', $this::t('CONTACTS_FAX_NUMBER'));
+        $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_country', Jaws::t('COUNTRY'));
         $tpl->SetVariable('lbl_province', Jaws::t('PROVINCE'));
         $tpl->SetVariable('lbl_city', Jaws::t('CITY'));
-        $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
-        $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
-        $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
+        $tpl->SetVariable('lbl_address', $this::t('CONTACTS_ADDRESS'));
+        $tpl->SetVariable('lbl_postal_code', $this::t('CONTACTS_POSTAL_CODE'));
+        $tpl->SetVariable('lbl_note', $this::t('CONTACTS_NOTE'));
         $tpl->SetVariable('img_add', STOCK_ADD);
         $tpl->SetVariable('img_del', STOCK_REMOVE);
 
@@ -176,7 +176,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_USERS_CONTACTINFO_UPDATED'),
+                $this::t('USERS_CONTACTINFO_UPDATED'),
                 RESPONSE_NOTICE,
                 'Contact'
             );
@@ -206,8 +206,8 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->define('lbl_name', Jaws::t('NAME'));
         $this->gadget->define('lbl_title', Jaws::t('TITLE'));
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_addContact', _t('USERS_CONTACTS_ADD'));
-        $this->gadget->define('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
+        $this->gadget->define('lbl_addContact', $this::t('CONTACTS_ADD'));
+        $this->gadget->define('lbl_editContact', $this::t('CONTACTS_EDIT'));
         $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
 
@@ -215,12 +215,12 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Contacts.html');
         $tpl->SetBlock('contacts');
 
-        $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
+        $tpl->SetVariable('title', $this::t('CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+        $tpl->SetVariable('update', $this::t('USERS_ACCOUNT_UPDATE'));
         $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
-        $tpl->SetVariable('lbl_export_vcard', _t('USERS_EXPORT_VCARD'));
-        $tpl->SetVariable('lbl_import_vcard', _t('USERS_IMPORT_VCARD'));
+        $tpl->SetVariable('lbl_export_vcard', $this::t('EXPORT_VCARD'));
+        $tpl->SetVariable('lbl_import_vcard', $this::t('IMPORT_VCARD'));
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('lbl_of', Jaws::t('OF'));
@@ -338,7 +338,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_USERS_CONTACTINFO_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('USERS_CONTACTINFO_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -361,7 +361,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_USERS_CONTACTINFO_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('USERS_CONTACTINFO_DELETED'), RESPONSE_NOTICE);
         }
     }
 }

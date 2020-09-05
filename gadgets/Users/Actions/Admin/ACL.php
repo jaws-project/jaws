@@ -18,11 +18,11 @@ class Users_Actions_Admin_ACL extends Users_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('ACL.html');
         $tpl->SetBlock('acl');
 
-        $tpl->SetVariable('lbl_permissions', _t('USERS_ACLS').':');
-        $tpl->SetVariable('lbl_components', _t('USERS_ACLS_COMPONENTS').':');
-        $tpl->SetVariable('lbl_allow', _t('USERS_ACLS_ALLOW'));
-        $tpl->SetVariable('lbl_deny', _t('USERS_ACLS_DENY'));
-        $tpl->SetVariable('lbl_default', _t('USERS_ACLS_DEFAULT'));
+        $tpl->SetVariable('lbl_permissions', $this::t('ACLS').':');
+        $tpl->SetVariable('lbl_components', $this::t('ACLS_COMPONENTS').':');
+        $tpl->SetVariable('lbl_allow', $this::t('ACLS_ALLOW'));
+        $tpl->SetVariable('lbl_deny', $this::t('ACLS_DENY'));
+        $tpl->SetVariable('lbl_default', $this::t('ACLS_DEFAULT'));
 
         // Components
         $model = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');

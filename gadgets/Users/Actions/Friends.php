@@ -29,11 +29,11 @@ class Users_Actions_Friends extends Users_Actions_Default
         $this->gadget->define('lbl_title', Jaws::t('TITLE'));
         $this->gadget->define('lbl_name', Jaws::t('NAME'));
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_addFriend', _t('USERS_FRIENDS_ADD'));
-        $this->gadget->define('lbl_editFriend', _t('USERS_FRIENDS_EDIT'));
+        $this->gadget->define('lbl_addFriend', $this::t('FRIENDS_ADD'));
+        $this->gadget->define('lbl_editFriend', $this::t('FRIENDS_EDIT'));
         $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_manageFriends', _t('USERS_FRIENDS_MANAGE'));
+        $this->gadget->define('lbl_manageFriends', $this::t('FRIENDS_MANAGE'));
 
         $response = $this->gadget->session->pop('Groups');
         // Load the template
@@ -47,7 +47,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        $tpl->SetVariable('title', _t('USERS_FRIENDS'));
+        $tpl->SetVariable('title', $this::t('FRIENDS'));
 
         // Users
         $uModel = new Jaws_User();
@@ -62,8 +62,8 @@ class Users_Actions_Friends extends Users_Actions_Default
             }
         }
 
-        $tpl->SetVariable('lbl_addFriend', _t('USERS_FRIENDS_ADD'));
-        $tpl->SetVariable('lbl_manageFriends', _t('USERS_FRIENDS_MANAGE'));
+        $tpl->SetVariable('lbl_addFriend', $this::t('FRIENDS_ADD'));
+        $tpl->SetVariable('lbl_manageFriends', $this::t('FRIENDS_MANAGE'));
         $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
@@ -74,7 +74,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
         $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
-        $tpl->SetVariable('lbl_add_group', _t('USERS_ADD_GROUP'));
+        $tpl->SetVariable('lbl_add_group', $this::t('ADD_GROUP'));
         $tpl->SetVariable('url_add_group', $this->gadget->urlMap('FriendsGroupUI'));
 
         $tpl->SetVariable('lbl_of', Jaws::t('OF'));
@@ -159,7 +159,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_GROUPS_CREATED', $post['data']['title']), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('GROUPS_CREATED', $post['data']['title']), RESPONSE_NOTICE);
         }
     }
 
@@ -194,7 +194,7 @@ class Users_Actions_Friends extends Users_Actions_Default
             if (Jaws_Error::isError($res)) {
                 return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
             } else {
-                return $this->gadget->session->response(_t('USERS_GROUP_DELETED'), RESPONSE_NOTICE);
+                return $this->gadget->session->response($this::t('GROUP_DELETED'), RESPONSE_NOTICE);
             }
         }
     }
@@ -215,9 +215,9 @@ class Users_Actions_Friends extends Users_Actions_Default
         $res = $uModel->AddUsersToGroup((int)$post['gid'], $post['users'], $user);
 
         if (Jaws_Error::IsError($res)) {
-            return $this->gadget->session->response(_t('USERS_GROUP_CANNOT_ADD_USER'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('GROUP_CANNOT_ADD_USER'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('USERS_GROUP_ADDED_USER'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('GROUP_ADDED_USER'), RESPONSE_NOTICE);
         }
     }
 }

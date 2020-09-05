@@ -30,7 +30,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
         // Load the template
         $tpl = $this->gadget->template->load('Preferences.html');
         $tpl->SetBlock('preferences');
-        $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
+        $tpl->SetVariable('title', $this::t('PREFERENCES_INFO'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -87,7 +87,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
                         $tpl->SetVariable('class', $options[$key_name]['class']);
 
                         $options[$key_name]['values'] =
-                            array('' => _t('USERS_ADVANCED_OPTS_NOT_YET')) +
+                            array('' => $this::t('ADVANCED_OPTS_NOT_YET')) +
                             $options[$key_name]['values'];
                         foreach ($options[$key_name]['values'] as $value => $text) {
                             $tpl->SetBlock('preferences/gadget/key/select/option');
@@ -189,7 +189,7 @@ class Users_Actions_Preferences extends Users_Actions_Default
         );
         if (!Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
-                _t('USERS_PREFERENCES_UPDATED'),
+                $this::t('PREFERENCES_UPDATED'),
                 RESPONSE_NOTICE,
                 'Preferences'
             );

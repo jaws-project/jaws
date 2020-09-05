@@ -18,7 +18,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         // Load the template
         $tpl = $this->gadget->template->load('Statistics.html');
         $tpl->SetBlock('OnlineUsers');
-        $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINEUSERS'));
+        $tpl->SetVariable('title', $this::t('ACTIONS_ONLINEUSERS'));
 
         $uniqueOnline = array();
         $sessions = $this->app->session->getSessions();
@@ -39,7 +39,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
 
         if (empty($uniqueOnline)) {
             $tpl->SetBlock('OnlineUsers/no_online');
-            $tpl->SetVariable('no_online', _t('USERS_ONLINE_NO_ONLINE'));
+            $tpl->SetVariable('no_online', $this::t('ONLINE_NO_ONLINE'));
             $tpl->ParseBlock('OnlineUsers/no_online');
         }
 
@@ -58,9 +58,9 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         // Load the template
         $tpl = $this->gadget->template->load('Statistics.html');
         $tpl->SetBlock('OnlineStatistics');
-        $tpl->SetVariable('title', _t('USERS_ACTIONS_ONLINESTATISTICS'));
-        $tpl->SetVariable('lbl_registered_users', _t('USERS_ONLINE_REGISTERED_COUNT'));
-        $tpl->SetVariable('lbl_guests_users', _t('USERS_ONLINE_GUESTS_COUNT'));
+        $tpl->SetVariable('title', $this::t('ACTIONS_ONLINESTATISTICS'));
+        $tpl->SetVariable('lbl_registered_users', $this::t('ONLINE_REGISTERED_COUNT'));
+        $tpl->SetVariable('lbl_guests_users', $this::t('ONLINE_GUESTS_COUNT'));
 
         $sessions = $this->app->session->getSessions();
         $registered = count(array_filter(array_map(
@@ -88,7 +88,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         // Load the template
         $tpl = $this->gadget->template->load('Statistics.html');
         $tpl->SetBlock('LatestRegistered');
-        $tpl->SetVariable('title', _t('USERS_ACTIONS_LATESTREGISTERED'));
+        $tpl->SetVariable('title', $this::t('ACTIONS_LATESTREGISTERED'));
 
         // latest registered users limit
         $limit = (int)$this->gadget->registry->fetch('latest_limit');

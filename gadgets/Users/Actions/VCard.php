@@ -129,7 +129,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             );
             if (count($vCard) == 0) {
                 return $this->gadget->session->response(
-                    _t('USERS_ERROR_VCARD_DATA_NOT_FOUND'),
+                    $this::t('ERROR_VCARD_DATA_NOT_FOUND'),
                     RESPONSE_ERROR
                 );
             }
@@ -164,7 +164,7 @@ class Users_Actions_VCard extends Users_Actions_Default
         }
 
         return $this->gadget->session->response(
-            _t('USERS_VCARD_IMPORT_COMPLETED'),
+            $this::t('VCARD_IMPORT_COMPLETED'),
             RESPONSE_NOTICE
         );
     }

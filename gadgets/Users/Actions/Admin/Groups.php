@@ -71,7 +71,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageGroupACLs')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
-                    _t('USERS_ACLS'),
+                    $this::t('ACLS'),
                     "javascript:Jaws_Gadget.getInstance('Users').editACL(this, '".$group['id']."', 'GroupACL');",
                     'gadgets/Users/Resources/images/acls.png'
                 );
@@ -81,7 +81,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
-                    _t('USERS_GROUPS_MEMBERS'),
+                    $this::t('GROUPS_MEMBERS'),
                     "javascript:Jaws_Gadget.getInstance('Users').editGroupUsers(this, '".$group['id']."');",
                     'gadgets/Users/Resources/images/groups_mini.png'
                 );
@@ -91,7 +91,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget(
                     'Link',
-                    _t('USERS_GROUPS_DELETE'),
+                    $this::t('GROUPS_DELETE'),
                     "javascript:Jaws_Gadget.getInstance('Users').deleteGroup(this, '".$group['id']."');",
                     STOCK_DELETE
                 );
@@ -116,12 +116,12 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->define('addGroup_title', _t('USERS_GROUPS_ADD'));
-        $this->gadget->define('editGroup_title', _t('USERS_GROUPS_EDIT'));
-        $this->gadget->define('editACL_title', _t('USERS_ACLS'));
-        $this->gadget->define('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
-        $this->gadget->define('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
+        $this->gadget->define('addGroup_title', $this::t('GROUPS_ADD'));
+        $this->gadget->define('editGroup_title', $this::t('GROUPS_EDIT'));
+        $this->gadget->define('editACL_title', $this::t('ACLS'));
+        $this->gadget->define('editGroupUsers_title', $this::t('GROUPS_MEMBERS'));
+        $this->gadget->define('incompleteGroupFields', $this::t('GROUPS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmGroupDelete', $this::t('GROUPS_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');
@@ -214,7 +214,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
                                     'user_'. $user['id']);
         }
 
-        $tpl->SetVariable('lbl_group_users', _t('USERS_GROUPS_MARK_USERS'));
+        $tpl->SetVariable('lbl_group_users', $this::t('GROUPS_MARK_USERS'));
         $tpl->SetVariable('group_users', $group_users->Get());
         $tpl->ParseBlock('group_users');
         return $tpl->Get();

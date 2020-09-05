@@ -36,9 +36,9 @@ class Users_Actions_Personal extends Users_Actions_Default
         // Load the template
         $tpl = $this->gadget->template->load('Personal.html');
         $tpl->SetBlock('personal');
-        $tpl->SetVariable('title', _t('USERS_PERSONAL_INFO'));
+        $tpl->SetVariable('title', $this::t('PERSONAL_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+        $tpl->SetVariable('update', $this::t('USERS_ACCOUNT_UPDATE'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -53,56 +53,56 @@ class Users_Actions_Personal extends Users_Actions_Default
         $avatar->SetID('avatar');
         $tpl->SetVariable('avatar', $avatar->Get());
 
-        $tpl->SetVariable('lbl_fname',  _t('USERS_USERS_FIRSTNAME'));
+        $tpl->SetVariable('lbl_fname',  $this::t('USERS_FIRSTNAME'));
         $tpl->SetVariable('fname',      $personal['fname']);
-        $tpl->SetVariable('lbl_lname',  _t('USERS_USERS_LASTNAME'));
+        $tpl->SetVariable('lbl_lname',  $this::t('USERS_LASTNAME'));
         $tpl->SetVariable('lname',      $personal['lname']);
-        $tpl->SetVariable('lbl_gender', _t('USERS_USERS_GENDER'));
-        $tpl->SetVariable('gender_0',   _t('USERS_USERS_GENDER_0'));
-        $tpl->SetVariable('gender_1',   _t('USERS_USERS_GENDER_1'));
-        $tpl->SetVariable('gender_2',   _t('USERS_USERS_GENDER_2'));
+        $tpl->SetVariable('lbl_gender', $this::t('USERS_GENDER'));
+        $tpl->SetVariable('gender_0',   $this::t('USERS_GENDER_0'));
+        $tpl->SetVariable('gender_1',   $this::t('USERS_GENDER_1'));
+        $tpl->SetVariable('gender_2',   $this::t('USERS_GENDER_2'));
         $tpl->SetVariable('selected_gender_'.(int)$personal['gender'], 'selected="selected"');
-        $tpl->SetVariable('lbl_ssn',    _t('USERS_USERS_SSN'));
+        $tpl->SetVariable('lbl_ssn',    $this::t('USERS_SSN'));
         $tpl->SetVariable('ssn',        $personal['ssn']);
 
         if (!empty($personal['dob'])) {
             $personal['dob'] = Jaws_Date::getInstance()->Format($personal['dob'], 'Y-m-d');
         }
 
-        $tpl->SetVariable('lbl_dob', _t('USERS_USERS_BIRTHDAY'));
+        $tpl->SetVariable('lbl_dob', $this::t('USERS_BIRTHDAY'));
         $tpl->SetVariable('dob',     $personal['dob']);
-        $tpl->SetVariable('dob_sample', _t('USERS_USERS_BIRTHDAY_SAMPLE'));
+        $tpl->SetVariable('dob_sample', $this::t('USERS_BIRTHDAY_SAMPLE'));
 
         // website
         $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('url',     empty($personal['url'])? 'http://' : $personal['url']);
 
         // upload/delete avatar
-        $tpl->SetVariable('lbl_upload_avatar', _t('USERS_USERS_AVATAR_UPLOAD'));
-        $tpl->SetVariable('lbl_delete_avatar', _t('USERS_USERS_AVATAR_DELETE'));
+        $tpl->SetVariable('lbl_upload_avatar', $this::t('USERS_AVATAR_UPLOAD'));
+        $tpl->SetVariable('lbl_delete_avatar', $this::t('USERS_AVATAR_DELETE'));
 
         // pgpkey
-        $tpl->SetVariable('lbl_pgpkey', _t('USERS_USERS_PGPKEY'));
+        $tpl->SetVariable('lbl_pgpkey', $this::t('USERS_PGPKEY'));
         $tpl->SetVariable('pgpkey',     $personal['pgpkey']);
 
         // signature
-        $tpl->SetVariable('lbl_signature', _t('USERS_USERS_SIGNATURE'));
+        $tpl->SetVariable('lbl_signature', $this::t('USERS_SIGNATURE'));
         $tpl->SetVariable('signature',     $personal['signature']);
 
         // about
-        $tpl->SetVariable('lbl_about', _t('USERS_USERS_ABOUT'));
+        $tpl->SetVariable('lbl_about', $this::t('USERS_ABOUT'));
         $tpl->SetVariable('about',     $personal['about']);
 
         // experiences
-        $tpl->SetVariable('lbl_experiences', _t('USERS_USERS_EXPERIENCES'));
+        $tpl->SetVariable('lbl_experiences', $this::t('USERS_EXPERIENCES'));
         $tpl->SetVariable('experiences',     $personal['experiences']);
 
         // occupations
-        $tpl->SetVariable('lbl_occupations', _t('USERS_USERS_OCCUPATIONS'));
+        $tpl->SetVariable('lbl_occupations', $this::t('USERS_OCCUPATIONS'));
         $tpl->SetVariable('occupations',     $personal['occupations']);
 
         // interests
-        $tpl->SetVariable('lbl_interests', _t('USERS_USERS_INTERESTS'));
+        $tpl->SetVariable('lbl_interests', $this::t('USERS_INTERESTS'));
         $tpl->SetVariable('interests',     $personal['interests']);
 
         if (!empty($response)) {
@@ -186,7 +186,7 @@ class Users_Actions_Personal extends Users_Actions_Default
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_USERS_PERSONALINFO_UPDATED'),
+                $this::t('USERS_PERSONALINFO_UPDATED'),
                 RESPONSE_NOTICE,
                 'Personal'
             );

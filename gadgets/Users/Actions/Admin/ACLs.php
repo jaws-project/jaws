@@ -23,9 +23,9 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
         $tpl->SetBlock('ACLs');
         $tpl->SetVariable('menubar', $this->MenuBar('ACLs'));
 
-        $tpl->SetVariable('lbl_permissions', _t('USERS_ACL_PERMISSIONS'));
-        $tpl->SetVariable('lbl_groups', _t('USERS_GROUPS_GROUPS'));
-        $tpl->SetVariable('lbl_users', _t('USERS_USERS'));
+        $tpl->SetVariable('lbl_permissions', $this::t('ACL_PERMISSIONS'));
+        $tpl->SetVariable('lbl_groups', $this::t('GROUPS_GROUPS'));
+        $tpl->SetVariable('lbl_users', $this::t('USERS'));
 
         $tpl->ParseBlock('ACLs');
         return $tpl->Get();

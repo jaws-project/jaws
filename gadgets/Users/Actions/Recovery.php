@@ -76,28 +76,28 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('LoginForgot.html');
         $tpl->SetBlock('forgot');
         $tpl->SetVariable('step', (int)$post['step']);
-        $tpl->SetVariable('title', _t('USERS_FORGOT_REMEMBER'));
+        $tpl->SetVariable('title', $this::t('FORGOT_REMEMBER'));
 
         switch ($post['step']) {
             case 2:
                 $tpl->SetBlock('forgot/success');
                 $tpl->SetVariable(
                     'message',
-                    _t('USERS_FORGOT_RECOVERY_SUCCESS', $this->gadget->urlMap('Login'))
+                    $this::t('FORGOT_RECOVERY_SUCCESS', $this->gadget->urlMap('Login'))
                 );
                 $tpl->ParseBlock('forgot/success');
                 break;
 
             case 1:
                 $tpl->SetBlock('forgot/key');
-                $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
+                $tpl->SetVariable('lbl_key', $this::t('FORGOT_RECOVERY_KEY'));
                 $tpl->SetVariable('key', $post['key']);
                 $tpl->ParseBlock('forgot/key');
                 // without break
 
             default:
                 $tpl->SetBlock('forgot/email');
-                $tpl->SetVariable('lbl_term', _t('USERS_FORGOT_TERM'));
+                $tpl->SetVariable('lbl_term', $this::t('FORGOT_TERM'));
                 $tpl->SetVariable('email', $post['email']);
                 if ($post['step']) {
                     $tpl->SetBlock('forgot/email/readonly');
@@ -182,7 +182,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             $this->gadget->event->shout('LoginUser', $recoveryData);
 
             $this->gadget->session->push(
-                _t('USERS_REGISTRATION_ACTIVATED'),
+                $this::t('REGISTRATION_ACTIVATED'),
                 RESPONSE_NOTICE,
                 'Login.Response'
             );
@@ -216,7 +216,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             } else {
                 $post['step'] = 1;
                 $this->gadget->session->push(
-                    _t('USERS_FORGOT_REQUEST_SENT'),
+                    $this::t('FORGOT_REQUEST_SENT'),
                     RESPONSE_NOTICE,
                     'LoginForgot',
                     $post
@@ -234,7 +234,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             } else {
                 $post['step'] = 2;
                 $this->gadget->session->push(
-                    _t('USERS_FORGOT_PASSWORD_CHANGED'),
+                    $this::t('FORGOT_PASSWORD_CHANGED'),
                     RESPONSE_NOTICE,
                     'LoginForgot',
                     $post
@@ -265,17 +265,17 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('LoginForgotNotification.html');
         $tpl->SetBlock('Notification');
-        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $uData['nickname']));
-        $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
+        $tpl->SetVariable('say_hello', $this::t('EMAIL_REPLACEMENT_HELLO', $uData['nickname']));
+        $tpl->SetVariable('message', $this::t('FORGOT_MAIL_MESSAGE'));
         // recovery key
-        $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
+        $tpl->SetVariable('lbl_key', $this::t('FORGOT_RECOVERY_KEY'));
         $tpl->SetVariable('key', $rcvkey['text']);
 
-        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username',   $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username',       $uData['username']);
         $tpl->SetVariable('lbl_email',      Jaws::t('EMAIL'));
         $tpl->SetVariable('email',          $uData['email']);
-        $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_mobile',     $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile',         $uData['mobile']);
         $tpl->SetVariable('lbl_ip',         Jaws::t('IP'));
         $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
@@ -284,7 +284,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $tpl->SetVariable('site-url',       $site_url);
         $tpl->ParseBlock('Notification');
         $message = $tpl->Get();
-        $subject = _t('USERS_FORGOT_REMEMBER', $settings['site_name']);
+        $subject = $this::t('FORGOT_REMEMBER', $settings['site_name']);
 
         // Notify
         $params = array();

@@ -19,7 +19,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
         // Load the template
         $tpl = $this->gadget->template->load('Registration.html');
         $tpl->SetBlock('registration');
-        $tpl->SetVariable('title', _t('USERS_REGISTER'));
+        $tpl->SetVariable('title', $this::t('REGISTER'));
 
         $response = $this->gadget->session->pop('Registration.Response');
         if (!isset($response['data'])) {
@@ -56,7 +56,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
             $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $mPolicy->loadCaptcha($tpl, 'LoginBox');
 
-            $tpl->SetVariable('register', _t('USERS_REGISTER'));
+            $tpl->SetVariable('register', $this::t('REGISTER'));
             $tpl->SetVariable('url_back', $referrer);
             $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
 
@@ -94,26 +94,26 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('dob',       $reqpost['dob']);
         $tpl->SetVariable('remember',  $reqpost['remember']);
         $tpl->SetVariable("selected_gender_{$reqpost['gender']}", 'selected="selected"');
-        $tpl->SetVariable('lbl_account_info',  _t('USERS_ACCOUNT_INFO'));
-        $tpl->SetVariable('lbl_username',      _t('USERS_USERS_USERNAME'));
-        $tpl->SetVariable('validusernames',    _t('USERS_REGISTRATION_VALID_USERNAMES'));
+        $tpl->SetVariable('lbl_account_info',  $this::t('ACCOUNT_INFO'));
+        $tpl->SetVariable('lbl_username',      $this::t('USERS_USERNAME'));
+        $tpl->SetVariable('validusernames',    $this::t('REGISTRATION_VALID_USERNAMES'));
         $tpl->SetVariable('lbl_email',         Jaws::t('EMAIL'));
-        $tpl->SetVariable('lbl_mobile',        _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_mobile',        $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_url',           Jaws::t('URL'));
-        $tpl->SetVariable('lbl_nickname',       _t('USERS_USERS_NICKNAME'));
-        $tpl->SetVariable('lbl_password',      _t('USERS_USERS_PASSWORD'));
-        $tpl->SetVariable('sendpassword',      _t('USERS_USERS_SEND_AUTO_PASSWORD'));
-        $tpl->SetVariable('lbl_checkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
-        $tpl->SetVariable('lbl_personal_info', _t('USERS_PERSONAL_INFO'));
-        $tpl->SetVariable('lbl_fname',         _t('USERS_USERS_FIRSTNAME'));
-        $tpl->SetVariable('lbl_lname',         _t('USERS_USERS_LASTNAME'));
-        $tpl->SetVariable('lbl_gender',        _t('USERS_USERS_GENDER'));
-        $tpl->SetVariable('lbl_ssn',           _t('USERS_USERS_SSN'));
-        $tpl->SetVariable('gender_0',          _t('USERS_USERS_GENDER_0'));
-        $tpl->SetVariable('gender_1',          _t('USERS_USERS_GENDER_1'));
-        $tpl->SetVariable('gender_2',          _t('USERS_USERS_GENDER_2'));
-        $tpl->SetVariable('lbl_dob',           _t('USERS_USERS_BIRTHDAY'));
-        $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
+        $tpl->SetVariable('lbl_nickname',       $this::t('USERS_NICKNAME'));
+        $tpl->SetVariable('lbl_password',      $this::t('USERS_PASSWORD'));
+        $tpl->SetVariable('sendpassword',      $this::t('USERS_SEND_AUTO_PASSWORD'));
+        $tpl->SetVariable('lbl_checkpassword', $this::t('USERS_PASSWORD_VERIFY'));
+        $tpl->SetVariable('lbl_personal_info', $this::t('PERSONAL_INFO'));
+        $tpl->SetVariable('lbl_fname',         $this::t('USERS_FIRSTNAME'));
+        $tpl->SetVariable('lbl_lname',         $this::t('USERS_LASTNAME'));
+        $tpl->SetVariable('lbl_gender',        $this::t('USERS_GENDER'));
+        $tpl->SetVariable('lbl_ssn',           $this::t('USERS_SSN'));
+        $tpl->SetVariable('gender_0',          $this::t('USERS_GENDER_0'));
+        $tpl->SetVariable('gender_1',          $this::t('USERS_GENDER_1'));
+        $tpl->SetVariable('gender_2',          $this::t('USERS_GENDER_2'));
+        $tpl->SetVariable('lbl_dob',           $this::t('USERS_BIRTHDAY'));
+        $tpl->SetVariable('dob_sample',        $this::t('USERS_BIRTHDAY_SAMPLE'));
         $tpl->SetVariable('lbl_remember',      Jaws::t('REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/reg_step_1");
@@ -137,8 +137,8 @@ class Users_Account_Default_Registration extends Users_Account_Default
 
         $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
         $tpl->SetVariable('lbl_email',    Jaws::t('EMAIL'));
-        $tpl->SetVariable('lbl_mobile',   _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_regkey',   _t('USERS_REGISTRATION_KEY'));
+        $tpl->SetVariable('lbl_mobile',   $this::t('CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_regkey',   $this::t('REGISTRATION_KEY'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         $tpl->ParseBlock("$block/reg_step_2");
@@ -157,15 +157,15 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $anon_activation = $this->gadget->registry->fetch('anon_activation');
         switch ($anon_activation) {
             case 'admin':
-                $message = _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
+                $message = $this::t('REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
                 break;
 
             case 'user':
-                $message = _t('USERS_REGISTRATION_ACTIVATED_BY_USER');
+                $message = $this::t('REGISTRATION_ACTIVATED_BY_USER');
                 break;
 
             default:
-                $message = _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO');
+                $message = $this::t('REGISTRATION_ACTIVATED_BY_AUTO');
                 break;
         }
         

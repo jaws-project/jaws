@@ -36,7 +36,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
            (empty($uData['email']) && empty($uData['mobile']))
         ) {
             return Jaws_Error::raiseError(
-                _t('USERS_USERS_INCOMPLETE_FIELDS'),
+                $this::t('USERS_INCOMPLETE_FIELDS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -105,7 +105,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         if (empty($username) || empty($nickname) || (empty($user_email) && empty($user_mobile)))
         {
             return Jaws_Error::raiseError(
-                _t('USERS_USERS_INCOMPLETE_FIELDS'),
+                $this::t('USERS_INCOMPLETE_FIELDS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -127,7 +127,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         // this username already exists in the DB?
         if ($jUser->UsernameExists($username)) {
             return Jaws_Error::raiseError(
-                _t('USERS_USERS_ALREADY_EXISTS', $username),
+                $this::t('USERS_ALREADY_EXISTS', $username),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -135,7 +135,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         // this email address already exists in the DB?
         if ($jUser->UserEmailExists($user_email)) {
             return Jaws_Error::raiseError(
-                _t('USERS_EMAIL_ALREADY_EXISTS', $user_email),
+                $this::t('EMAIL_ALREADY_EXISTS', $user_email),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -143,7 +143,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         // this mobile number already exists in the DB?
         if ($jUser->UserMobileExists($user_mobile)) {
             return Jaws_Error::raiseError(
-                _t('USERS_MOBILE_ALREADY_EXISTS', $user_mobile),
+                $this::t('MOBILE_ALREADY_EXISTS', $user_mobile),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -217,18 +217,18 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         //Send notification to the user
         $tpl = $this->gadget->template->load('RegistrationNotification.html');
         $tpl->SetBlock('UserNotification');
-        $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $userInfo['nickname']));
+        $tpl->SetVariable('say_hello', $this::t('REGISTRATION_HELLO', $userInfo['nickname']));
 
         switch ($activation) {
             case 'admin':
-                $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN'));
+                $tpl->SetVariable('message', $this::t('REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN'));
                 break;
 
             case 'user':
-                $tpl->SetVariable('message', _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
+                $tpl->SetVariable('message', $this::t('REGISTRATION_ACTIVATION_REQUIRED_BY_USER'));
                 // verify key
                 $tpl->SetBlock('UserNotification/Activation');
-                $tpl->SetVariable('lbl_key', _t('USERS_REGISTRATION_KEY'));
+                $tpl->SetVariable('lbl_key', $this::t('REGISTRATION_KEY'));
                 $tpl->SetVariable('key', $userInfo['verify_key']);
                 $tpl->ParseBlock('UserNotification/Activation');
                 break;
@@ -236,7 +236,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             default:
                 $tpl->SetVariable(
                     'message',
-                    _t('USERS_REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap(
+                    $this::t('REGISTRATION_ACTIVATED_BY_AUTO', $this->gadget->urlMap(
                         'Login',
                         array(),
                         array('absolute'=>true)
@@ -244,13 +244,13 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 );
         }
 
-        $tpl->SetVariable('lbl_username',   _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username',   $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username',       $userInfo['username']);
-        $tpl->SetVariable('lbl_password',   _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('lbl_password',   $this::t('USERS_PASSWORD'));
         $tpl->SetVariable('password',       $password);
         $tpl->SetVariable('lbl_email',      Jaws::t('EMAIL'));
         $tpl->SetVariable('email',          $userInfo['email']);
-        $tpl->SetVariable('lbl_mobile',     _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_mobile',     $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile',         $userInfo['mobile']);
         $tpl->SetVariable('lbl_ip',         Jaws::t('IP'));
         $tpl->SetVariable('ip',             $_SERVER['REMOTE_ADDR']);
@@ -259,7 +259,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $tpl->SetVariable('site-url',       $site_url);
         $tpl->ParseBlock('UserNotification');
         $message = $tpl->Get();
-        $subject = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
+        $subject = $this::t('REGISTRATION_USER_SUBJECT', $settings['site_name']);
 
         // Notify
         $params = array();
@@ -285,15 +285,15 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         if ($firstNotification && $this->gadget->registry->fetch('register_notification') == 'true') {
             $tpl = $this->gadget->template->load('RegistrationNotification.html');
             $tpl->SetBlock('OwnerNotification');
-            $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $settings['site_author']));
-            $tpl->SetVariable('message', _t('USERS_REGISTRATION_ADMIN_MAIL_MSG'));
-            $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+            $tpl->SetVariable('say_hello', $this::t('REGISTRATION_HELLO', $settings['site_author']));
+            $tpl->SetVariable('message', $this::t('REGISTRATION_ADMIN_MAIL_MSG'));
+            $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
             $tpl->SetVariable('username', $userInfo['username']);
-            $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+            $tpl->SetVariable('lbl_nickname', $this::t('USERS_NICKNAME'));
             $tpl->SetVariable('nickname', $userInfo['nickname']);
             $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
             $tpl->SetVariable('email', $userInfo['email']);
-            $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+            $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
             $tpl->SetVariable('mobile',      $userInfo['mobile']);
             $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
             $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
@@ -303,7 +303,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->SetVariable('site-url', $site_url);
             $tpl->ParseBlock('OwnerNotification');
             $message = $tpl->Get();
-            $subject = _t('USERS_REGISTRATION_OWNER_SUBJECT', $settings['site_name']);
+            $subject = $this::t('REGISTRATION_OWNER_SUBJECT', $settings['site_name']);
 
             // Notify
             $params = array();
@@ -399,7 +399,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
     {
         if (empty($term)) {
             return Jaws_Error::raiseError(
-                _t('USERS_USER_NOT_EXIST'),
+                $this::t('USER_NOT_EXIST'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -413,7 +413,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         if (empty($user)) {
             return Jaws_Error::raiseError(
-                _t('USERS_USER_NOT_EXIST'),
+                $this::t('USER_NOT_EXIST'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -429,15 +429,15 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         $tpl = $this->gadget->template->load('LoginNotification.html');
         $tpl->SetBlock('verification');
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username', $user['username']);
         $tpl->SetVariable('nickname', $user['nickname']);
-        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $user['nickname']));
-        $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('say_hello', $this::t('EMAIL_REPLACEMENT_HELLO', $user['nickname']));
+        $tpl->SetVariable('message', $this::t('FORGOT_MAIL_MESSAGE'));
+        $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile',     $user['mobile']);
         $tpl->SetBlock('verification/key');
-        $tpl->SetVariable('lbl_key', _t('USERS_FORGOT_RECOVERY_KEY'));
+        $tpl->SetVariable('lbl_key', $this::t('FORGOT_RECOVERY_KEY'));
         $tpl->SetVariable('key',      $recoveryKey);
         $tpl->ParseBlock('verification/key');
         $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
@@ -448,7 +448,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $tpl->ParseBlock('verification');
 
         $message = $tpl->Get();
-        $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
+        $subject = $this::t('FORGOT_REMEMBER', $site_name);
 
         // Notify
         $params = array();

@@ -121,7 +121,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $this->gadget->event->shout('LoginUser', $registerData);
 
             $this->gadget->session->push(
-                _t('USERS_REGISTRATION_ACTIVATED'),
+                $this::t('REGISTRATION_ACTIVATED'),
                 RESPONSE_NOTICE,
                 'Login.Response'
             );
@@ -151,7 +151,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $jUser = new Jaws_User;
         $user = $jUser->GetUserByEmailVerifyKey($key);
         if (Jaws_Error::IsError($user) || empty($user)) {
-            return _t('USERS_ACTIVATION_KEY_NOT_VALID');
+            return $this::t('ACTIVATION_KEY_NOT_VALID');
         }
 
         $result = $jUser->UpdateUser(
@@ -168,7 +168,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             return $result;
         }
 
-        return _t('USERS_EMAIL_REPLACEMENT_REPLACED');
+        return $this::t('EMAIL_REPLACEMENT_REPLACED');
     }
 
     /**
@@ -186,8 +186,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('UserNotification.txt');
         $tpl->SetBlock('Notification');
-        $tpl->SetVariable('say_hello', _t('USERS_REGISTRATION_HELLO', $user['nickname']));
-        $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));
+        $tpl->SetVariable('say_hello', $this::t('REGISTRATION_HELLO', $user['nickname']));
+        $tpl->SetVariable('message', $this::t('ACTIVATE_ACTIVATED_MAIL_MSG'));
         if ($anon_activation == 'user') {
             $tpl->SetBlock('Notification/IP');
             $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
@@ -195,7 +195,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $tpl->ParseBlock('Notification/IP');
         }
 
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username', $user['username']);
 
         $tpl->SetVariable('thanks', Jaws::t('THANKS'));
@@ -204,7 +204,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $tpl->ParseBlock('Notification');
 
         $body = $tpl->Get();
-        $subject = _t('USERS_REGISTRATION_SUBJECT', $site_name);
+        $subject = $this::t('REGISTRATION_SUBJECT', $site_name);
 
         $mail = Jaws_Mail::getInstance();
         $mail->SetFrom();
@@ -235,7 +235,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $params = array();
         $params['name']    = 'UserRegistration';
         $params['key']     = $uData['id'];
-        $params['title']   = _t('USERS_REGISTRATION_USER_SUBJECT', $settings['site_name']);
+        $params['title']   = $this::t('REGISTRATION_USER_SUBJECT', $settings['site_name']);
         $params['summary'] = _t(
             'USERS_REGISTRATION_USER_SUMMARY',
             $uData['nickname'],
@@ -248,17 +248,17 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         );
         $params['verbose'] = $params['summary'];
         $params['variables'] = array(
-            'say_hello'    => _t('USERS_REGISTRATION_HELLO', $uData['nickname']),
-            'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
-            'lbl_username' => _t('USERS_USERS_PASSWORD'),
+            'say_hello'    => $this::t('REGISTRATION_HELLO', $uData['nickname']),
+            'message'      => $this::t('REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
+            'lbl_username' => $this::t('USERS_PASSWORD'),
             'username'     => $uData['username'],
-            'lbl_password' => _t('USERS_USERS_PASSWORD'),
+            'lbl_password' => $this::t('USERS_PASSWORD'),
             'password'     => $uData['password'],
             'lbl_email'    => Jaws::t('EMAIL'),
             'email'        => $uData['email'],
-            'lbl_mobile'   => _t('USERS_CONTACTS_MOBILE_NUMBER'),
+            'lbl_mobile'   => $this::t('CONTACTS_MOBILE_NUMBER'),
             'mobile'       => $uData['mobile'],
-            'lbl_key'      => _t('USERS_REGISTRATION_KEY'),
+            'lbl_key'      => $this::t('REGISTRATION_KEY'),
             'key'          => $regkey['text'],
             'lbl_ip'       => Jaws::t('IP'),
             'ip'           => $_SERVER['REMOTE_ADDR'],

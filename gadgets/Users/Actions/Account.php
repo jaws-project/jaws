@@ -142,7 +142,7 @@ class Users_Actions_Account extends Users_Actions_Default
             // unset unnecessary account data
             unset($post['password'], $post['chkpassword']);
             if (!Jaws_Error::IsError($result)) {
-                $message = _t('USERS_MYACCOUNT_UPDATED');
+                $message = $this::t('MYACCOUNT_UPDATED');
                 if (!empty($post['new_email'])) {
                     $mResult = $this->ReplaceEmailNotification(
                         $this->app->session->user->id,
@@ -155,7 +155,7 @@ class Users_Actions_Account extends Users_Actions_Default
                     if (Jaws_Error::IsError($mResult)) {
                         $message = $message. "\n" . $mResult->getMessage();
                     } else {
-                        $message = $message. "\n" . _t('USERS_EMAIL_REPLACEMENT_SENT');
+                        $message = $message. "\n" . $this::t('EMAIL_REPLACEMENT_SENT');
                     }
                 }
                 $this->gadget->session->push(
@@ -175,7 +175,7 @@ class Users_Actions_Account extends Users_Actions_Default
             // unset unnecessary account data
             unset($post['password'], $post['chkpassword']);
             $this->gadget->session->push(
-                _t('USERS_USERS_PASSWORDS_DONT_MATCH'),
+                $this::t('USERS_PASSWORDS_DONT_MATCH'),
                 RESPONSE_ERROR,
                 'Account',
                 $post
@@ -201,15 +201,15 @@ class Users_Actions_Account extends Users_Actions_Default
         $tpl = $this->gadget->template->load('NewEmail.txt');
         $tpl->SetBlock('Notification');
         $tpl->SetVariable('nickname', $nickname);
-        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $nickname));
-        $tpl->SetVariable('message', _t('USERS_EMAIL_REPLACEMENT_MSG'));
+        $tpl->SetVariable('say_hello', $this::t('EMAIL_REPLACEMENT_HELLO', $nickname));
+        $tpl->SetVariable('message', $this::t('EMAIL_REPLACEMENT_MSG'));
 
         $tpl->SetBlock('Notification/IP');
         $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
         $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
         $tpl->ParseBlock('Notification/IP');
 
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username', $username);
 
         $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
@@ -221,7 +221,7 @@ class Users_Actions_Account extends Users_Actions_Default
             return $verifyKey;
         } else {
             $tpl->SetBlock('Notification/Activation');
-            $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
+            $tpl->SetVariable('lbl_activation_link', $this::t('ACTIVATE_ACTIVATION_LINK'));
             $tpl->SetVariable(
                 'activation_link',
                 $this->gadget->urlMap(
@@ -242,7 +242,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $tpl->ParseBlock('Notification');
         $body = $tpl->Get();
 
-        $subject = _t('USERS_EMAIL_REPLACEMENT_SUBJECT', $site_name);
+        $subject = $this::t('EMAIL_REPLACEMENT_SUBJECT', $site_name);
         $mail = Jaws_Mail::getInstance();
         $mail->SetFrom();
         $mail->AddRecipient($new_email);

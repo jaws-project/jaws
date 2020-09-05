@@ -95,7 +95,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         }
 
         //
-        $ltpl->SetVariable('legend_title', _t('CONTROLPANEL_LOGIN_TITLE'));
+        $ltpl->SetVariable('legend_title', Jaws_Gadget::t('CONTROLPANEL.LOGIN_TITLE'));
 
         if ($reqpost['loginstep'] == 3) {
             $this->LoginBoxStep3($ltpl, $reqpost, $referrer);
@@ -107,7 +107,7 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         $ltpl->SetVariable('login', Jaws::t('LOGIN'));
         $ltpl->SetVariable('url_back', $this->app->getSiteURL('/'));
-        $ltpl->SetVariable('lbl_back', _t('CONTROLPANEL_LOGIN_BACK_TO_SITE'));
+        $ltpl->SetVariable('lbl_back', Jaws_Gadget::t('CONTROLPANEL.LOGIN_BACK_TO_SITE'));
 
         if (!empty($response)) {
             $ltpl->SetVariable('response_type', $response['type']);
@@ -128,7 +128,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_1");
 
-        $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
+        $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $JCrypt = Jaws_Crypt::getInstance();
@@ -152,8 +152,8 @@ class Users_Account_Default_Login extends Users_Account_Default
             $domains = $this->gadget->model->load('Domains')->getDomains();
             if (!Jaws_Error::IsError($domains) && !empty($domains)) {
                 $tpl->SetBlock("$block/login_step_1/multi_domain");
-                $tpl->SetVariable('lbl_domain', _t('USERS_DOMAIN'));
-                array_unshift($domains, array('id' => 0, 'title' => _t('USERS_NODOMAIN')));
+                $tpl->SetVariable('lbl_domain', $this::t('DOMAIN'));
+                array_unshift($domains, array('id' => 0, 'title' => $this::t('NODOMAIN')));
                 foreach ($domains as $domain) {
                     $tpl->SetBlock("$block/login_step_1/multi_domain/domain");
                     $tpl->SetVariable('id', $domain['id']);
@@ -194,7 +194,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         if ($this->gadget->registry->fetch('anon_register') == 'true') {
             $link =& Piwi::CreateWidget(
                 'Link',
-                _t('USERS_REGISTER'),
+                $this::t('REGISTER'),
                 $this->gadget->urlMap('Registration')
             );
             $tpl->SetVariable('user-register', $link->Get());
@@ -204,7 +204,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         if ($this->gadget->registry->fetch('password_recovery') == 'true') {
             $link =& Piwi::CreateWidget(
                 'Link',
-                _t('USERS_FORGOT_LOGIN'),
+                $this::t('FORGOT_LOGIN'),
                 $this->gadget->urlMap('LoginForgot')
             );
             $tpl->SetVariable('forgot-password', $link->Get());
@@ -224,7 +224,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_2");
 
-        $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
+        $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('remember', $reqpost['remember']);
@@ -256,7 +256,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_3");
 
-        $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
+        $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('remember', $reqpost['remember']);
@@ -264,7 +264,7 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
         $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
-        $tpl->SetVariable('lbl_chkpassword', _t('USERS_USERS_PASSWORD_VERIFY'));
+        $tpl->SetVariable('lbl_chkpassword', $this::t('USERS_PASSWORD_VERIFY'));
 
         // global variables
         $tpl->SetVariable('login', Jaws::t('LOGIN'));

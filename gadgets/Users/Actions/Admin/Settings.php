@@ -36,20 +36,20 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         $anonRegister->AddOption(Jaws::t('YES'), 'true');
         $anonRegister->AddOption(Jaws::t('NO'), 'false');
         $anonRegister->SetDefault($this->gadget->registry->fetch('anon_register'));
-        $tpl->SetVariable('lbl_anon_register', _t('USERS_PROPERTIES_ANON_REGISTER'));
+        $tpl->SetVariable('lbl_anon_register', $this::t('PROPERTIES_ANON_REGISTER'));
         $tpl->SetVariable('anon_register', $anonRegister->Get());
 
         $anonactivate =& Piwi::CreateWidget('Combo', 'anon_activation');
-        $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_AUTO'), 'auto');
-        $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_BY_USER'), 'user');
-        $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_BY_ADMIN'), 'admin');
+        $anonactivate->AddOption($this::t('PROPERTIES_ACTIVATION_AUTO'), 'auto');
+        $anonactivate->AddOption($this::t('PROPERTIES_ACTIVATION_BY_USER'), 'user');
+        $anonactivate->AddOption($this::t('PROPERTIES_ACTIVATION_BY_ADMIN'), 'admin');
         $anonactivate->SetDefault($this->gadget->registry->fetch('anon_activation'));
-        $tpl->SetVariable('lbl_anon_activation', _t('USERS_PROPERTIES_ANON_ACTIVATION'));
+        $tpl->SetVariable('lbl_anon_activation', $this::t('PROPERTIES_ANON_ACTIVATION'));
         $tpl->SetVariable('anon_activation', $anonactivate->Get());
 
         $anonGroup =& Piwi::CreateWidget('Combo', 'anon_group');
         $anonGroup->SetID('anon_group');
-        $anonGroup->AddOption(_t('USERS_GROUPS_NOGROUP'), 0);
+        $anonGroup->AddOption($this::t('GROUPS_NOGROUP'), 0);
         $groups = $this->app->users->GetGroups(null, 'title');
         if (!Jaws_Error::IsError($groups)) {
             foreach ($groups as $group) {
@@ -57,14 +57,14 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
             }
         }
         $anonGroup->SetDefault($this->gadget->registry->fetch('anon_group'));
-        $tpl->SetVariable('lbl_anon_group', _t('USERS_PROPERTIES_ANON_GROUP'));
+        $tpl->SetVariable('lbl_anon_group', $this::t('PROPERTIES_ANON_GROUP'));
         $tpl->SetVariable('anon_group', $anonGroup->Get());
 
         $passRecovery =& Piwi::CreateWidget('Combo', 'password_recovery');
         $passRecovery->AddOption(Jaws::t('YES'), 'true');
         $passRecovery->AddOption(Jaws::t('NO'), 'false');
         $passRecovery->SetDefault($this->gadget->registry->fetch('password_recovery'));
-        $tpl->SetVariable('lbl_password_recovery', _t('USERS_PROPERTIES_PASS_RECOVERY'));
+        $tpl->SetVariable('lbl_password_recovery', $this::t('PROPERTIES_PASS_RECOVERY'));
         $tpl->SetVariable('password_recovery', $passRecovery->Get());
 
         // reserved users
@@ -75,7 +75,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         );
         $reservedUsers->SetRows(8);
         $reservedUsers->setID('reserved_users');
-        $tpl->SetVariable('lbl_reserved_users', _t('USERS_PROPERTIES_RESERVED_USERS'));
+        $tpl->SetVariable('lbl_reserved_users', $this::t('PROPERTIES_RESERVED_USERS'));
         $tpl->SetVariable('reserved_users', $reservedUsers->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
@@ -103,13 +103,13 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
 
         if ($this->gadget->model->loadAdmin('Settings')->UpdateSettings($settings)) {
             return $this->gadget->session->response(
-                _t('USERS_PROPERTIES_UPDATED'),
+                $this::t('PROPERTIES_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
 
         return $this->gadget->session->response(
-            _t('USERS_PROPERTIES_CANT_UPDATE'),
+            $this::t('PROPERTIES_CANT_UPDATE'),
             RESPONSE_ERROR
         );
     }

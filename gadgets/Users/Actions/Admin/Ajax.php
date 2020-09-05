@@ -169,7 +169,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
                 $this->_UserModel->AddUserToGroup($res, (int)$guid);
             }
             $this->gadget->session->push(
-                _t('USERS_USERS_CREATED', $uData['username']),
+                $this::t('USERS_CREATED', $uData['username']),
                 RESPONSE_NOTICE
             );
         }
@@ -214,7 +214,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
                 $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
             }
             $this->gadget->session->push(
-                _t('USERS_USERS_UPDATED', $uData['username']),
+                $this::t('USERS_UPDATED', $uData['username']),
                 RESPONSE_NOTICE
             );
         }
@@ -234,14 +234,14 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($uid) = $this->gadget->request->fetchAll('post');
         if ($uid == $this->app->session->user->id) {
             $this->gadget->session->push(
-                _t('USERS_USERS_CANT_DELETE_SELF'),
+                $this::t('USERS_CANT_DELETE_SELF'),
                 RESPONSE_ERROR
             );
         } else {
             $profile = $this->_UserModel->GetUser((int)$uid);
             if (!$this->app->session->user->superadmin && $profile['superadmin']) {
                 $this->gadget->session->push(
-                    _t('USERS_USERS_CANT_DELETE', $profile['username']),
+                    $this::t('USERS_CANT_DELETE', $profile['username']),
                     RESPONSE_ERROR
                 );
                 return $this->gadget->session->pop();
@@ -249,12 +249,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
             if (!$this->_UserModel->DeleteUser($uid)) {
                 $this->gadget->session->push(
-                    _t('USERS_USERS_CANT_DELETE', $profile['username']),
+                    $this::t('USERS_CANT_DELETE', $profile['username']),
                     RESPONSE_ERROR
                 );
             } else {
                 $this->gadget->session->push(
-                    _t('USERS_USER_DELETED', $profile['username']),
+                    $this::t('USER_DELETED', $profile['username']),
                     RESPONSE_NOTICE
                 );
             }
@@ -274,12 +274,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $sid = $this->gadget->request->fetchAll('post');
         if ($this->app->session->delete($sid)) {
             $this->gadget->session->push(
-                _t('USERS_ONLINE_SESSION_DELETED'),
+                $this::t('ONLINE_SESSION_DELETED'),
                 RESPONSE_NOTICE
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_ONLINE_SESSION_NOT_DELETED'),
+                $this::t('ONLINE_SESSION_NOT_DELETED'),
                 RESPONSE_ERROR
             );
         }
@@ -305,12 +305,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
             if ($mPolicy->AddIPRange($session['ip'], null, true)) {
                 $this->gadget->session->push(
-                    _t('POLICY_RESPONSE_IP_ADDED'),
+                    Jaws_Gadget::t('POLICY.RESPONSE_IP_ADDED'),
                     RESPONSE_NOTICE
                 );
             } else {
                 $this->gadget->session->push(
-                    _t('POLICY_RESPONSE_IP_NOT_ADDED'),
+                    Jaws_Gadget::t('POLICY.RESPONSE_IP_NOT_ADDED'),
                     RESPONSE_ERROR
                 );
             }
@@ -337,12 +337,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
             if ($mPolicy->AddAgent($session['agent'], true)) {
                 $this->gadget->session->push(
-                    _t('POLICY_RESPONSE_AGENT_ADDED'),
+                    Jaws_Gadget::t('POLICY.RESPONSE_AGENT_ADDED'),
                     RESPONSE_NOTICE
                 );
             } else {
                 $this->gadget->session->push(
-                    _t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'),
+                    Jaws_Gadget::t('POLICY.RESPONSE_AGENT_NOT_ADDEDD'),
                     RESPONSE_ERROR
                 );
             }
@@ -369,12 +369,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         if ($res) {
             $this->gadget->session->push(
-                _t('USERS_USER_ACL_UPDATED'),
+                $this::t('USER_ACL_UPDATED'),
                 RESPONSE_NOTICE
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_USER_ACL_NOT_UPDATED'),
+                $this::t('USER_ACL_NOT_UPDATED'),
                 RESPONSE_ERROR
             );
         }
@@ -400,12 +400,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         if ($res) {
             $this->gadget->session->push(
-                _t('USERS_GROUP_ACL_UPDATED'),
+                $this::t('GROUP_ACL_UPDATED'),
                 RESPONSE_NOTICE
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_GROUP_ACL_NOT_UPDATED'),
+                $this::t('GROUP_ACL_NOT_UPDATED'),
                 RESPONSE_ERROR
             );
         }
@@ -441,7 +441,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             }
 
             $this->gadget->session->push(
-                _t('USERS_GROUPS_UPDATED_USERS'),
+                $this::t('GROUPS_UPDATED_USERS'),
                 RESPONSE_NOTICE
             );
         } else {
@@ -470,7 +470,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('USERS_GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('GROUPS_UPDATED_USERS'), RESPONSE_NOTICE);
         }
         return $this->gadget->session->pop();
     }
@@ -566,7 +566,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_MYACCOUNT_UPDATED'),
+                $this::t('MYACCOUNT_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
@@ -689,12 +689,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $res = $this->_UserModel->UpdatePersonal($uid, $pData);
         if ($res === false) {
             $this->gadget->session->push(
-                _t('USERS_USERS_PERSONALINFO_NOT_UPDATED'),
+                $this::t('USERS_PERSONALINFO_NOT_UPDATED'),
                 RESPONSE_ERROR
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_USERS_PERSONALINFO_UPDATED'),
+                $this::t('USERS_PERSONALINFO_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
@@ -738,12 +738,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         );
         if ($res === false) {
             $this->gadget->session->push(
-                _t('USERS_USERS_NOT_ADVANCED_UPDATED'),
+                $this::t('USERS_NOT_ADVANCED_UPDATED'),
                 RESPONSE_ERROR
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_USERS_ADVANCED_UPDATED'),
+                $this::t('USERS_ADVANCED_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
@@ -784,12 +784,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         );
         if ($res === false) {
             $this->gadget->session->push(
-                _t('USERS_USERS_NOT_CONTACTINFO_UPDATED'),
+                $this::t('USERS_NOT_CONTACTINFO_UPDATED'),
                 RESPONSE_ERROR
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_USERS_CONTACTINFO_UPDATED'),
+                $this::t('USERS_CONTACTINFO_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
@@ -822,12 +822,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         );
         if ($res === false) {
             $this->gadget->session->push(
-                _t('USERS_USERS_NOT_EXTRAINFO_UPDATED'),
+                $this::t('USERS_NOT_EXTRAINFO_UPDATED'),
                 RESPONSE_ERROR
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_USERS_EXTRAINFO_UPDATED'),
+                $this::t('USERS_EXTRAINFO_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
@@ -888,7 +888,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
             $this->gadget->session->push(
-                _t('USERS_GROUPS_CREATED', $title),
+                $this::t('GROUPS_CREATED', $title),
                 RESPONSE_NOTICE
             );
         }
@@ -919,7 +919,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
             $this->gadget->session->push(
-                _t('USERS_GROUPS_UPDATED', $title),
+                $this::t('GROUPS_UPDATED', $title),
                 RESPONSE_NOTICE
             );
         }
@@ -942,12 +942,12 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $groupinfo = $this->_UserModel->GetGroup((int)$guid);
         if (!$this->_UserModel->DeleteGroup($guid)) {
             $this->gadget->session->push(
-                _t('USERS_GROUPS_CANT_DELETE', $groupinfo['name']),
+                $this::t('GROUPS_CANT_DELETE', $groupinfo['name']),
                 RESPONSE_ERROR
             );
         } else {
             $this->gadget->session->push(
-                _t('USERS_GROUPS_DELETED', $groupinfo['name']),
+                $this::t('GROUPS_DELETED', $groupinfo['name']),
                 RESPONSE_NOTICE
             );
         }

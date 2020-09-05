@@ -36,7 +36,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $jUser  = new Jaws_User;
         if ($jUser->UserEmailExists($new_email)) {
             return Jaws_Error::raiseError(
-                _t('USERS_EMAIL_ALREADY_EXISTS', $new_email),
+                $this::t('EMAIL_ALREADY_EXISTS', $new_email),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -44,7 +44,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
 
         if ($jUser->UserMobileExists($mobile, $uid)) {
             return Jaws_Error::raiseError(
-                _t('USERS_MOBILE_ALREADY_EXISTS', $mobile),
+                $this::t('MOBILE_ALREADY_EXISTS', $mobile),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -71,7 +71,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
 
         if (empty($user)) {
             return Jaws_Error::raiseError(
-                _t('USERS_FORGOT_KEY_NOT_VALID'),
+                $this::t('FORGOT_KEY_NOT_VALID'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -98,15 +98,15 @@ class Users_Model_Account extends Jaws_Gadget_Model
 
         $tpl = $this->gadget->template->load('LoginNotification.html');
         $tpl->SetBlock('recovery');
-        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $user['nickname']));
+        $tpl->SetVariable('say_hello', $this::t('EMAIL_REPLACEMENT_HELLO', $user['nickname']));
         $tpl->SetVariable('nickname', $user['nickname']);
-        $tpl->SetVariable('message',  _t('USERS_FORGOT_PASSWORD_CHANGED_MESSAGE', $user['username']));
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('message',  $this::t('FORGOT_PASSWORD_CHANGED_MESSAGE', $user['username']));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username', $user['username']);
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile',     $user['mobile']);
         $tpl->SetBlock('recovery/password');
-        $tpl->SetVariable('lbl_password', _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('lbl_password', $this::t('USERS_PASSWORD'));
         $tpl->SetVariable('password', $password);
         $tpl->ParseBlock('recovery/password');
         $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
@@ -117,7 +117,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $tpl->ParseBlock('recovery');
 
         $message = $tpl->Get();            
-        $subject = _t('USERS_FORGOT_PASSWORD_CHANGED_SUBJECT');
+        $subject = $this::t('FORGOT_PASSWORD_CHANGED_SUBJECT');
 
         // Notify
         $params = array();

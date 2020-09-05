@@ -67,7 +67,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
             return $this->gadget->session->response(
-                _t('USERS_BOOKMARK_UPDATED'),
+                $this::t('BOOKMARK_UPDATED'),
                 RESPONSE_NOTICE,
                 array('gadget' => $data['gadget'], 'action' => $data['action'], 'reference' => $data['reference'])
             );
@@ -93,16 +93,16 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
 
         $tpl = $this->gadget->template->load('Bookmarks.html');
         $tpl->SetBlock('Bookmarks');
-        $tpl->SetVariable('title', _t('USERS_ACTIONS_BOOKMARKS'));
-        $this->SetTitle(_t('USERS_ACTIONS_BOOKMARKS'));
+        $tpl->SetVariable('title', $this::t('ACTIONS_BOOKMARKS'));
+        $this->SetTitle($this::t('ACTIONS_BOOKMARKS'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
         $tpl->SetVariable('lbl_url', Jaws::t('URL'));
-        $tpl->SetVariable('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
-        $tpl->SetVariable('lbl_action', _t('ABUSEREPORTER_ACTION'));
-        $tpl->SetVariable('lbl_reference', _t('ABUSEREPORTER_REFERENCE'));
+        $tpl->SetVariable('lbl_gadget', Jaws_Gadget::t('ABUSEREPORTER.GADGET'));
+        $tpl->SetVariable('lbl_action', Jaws_Gadget::t('ABUSEREPORTER.ACTION'));
+        $tpl->SetVariable('lbl_reference',Jaws_Gadget::t('ABUSEREPORTER.REFERENCE'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('lbl_update', Jaws::t('UPDATE'));
@@ -123,7 +123,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
             $tpl->ParseBlock('Bookmarks/filterGadget');
         }
         $tpl->SetVariable('lbl_filter_gadget', Jaws::t('GADGETS'));
-        $tpl->SetVariable('lbl_filter_term', _t('USERS_USERS_SEARCH_TERM'));
+        $tpl->SetVariable('lbl_filter_term', $this::t('USERS_SEARCH_TERM'));
 
         $tpl->ParseBlock('Bookmarks');
         return $tpl->Get();
@@ -186,7 +186,7 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
             return $this->gadget->session->response(
-                _t('USERS_BOOKMARK_DELETED'),
+                $this::t('BOOKMARK_DELETED'),
                 RESPONSE_NOTICE
             );
         }

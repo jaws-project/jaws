@@ -22,17 +22,17 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $tpl->SetVariable('title', Jaws::t('MY_ACCOUNT'));
 
             // welcome
-            $tpl->SetVariable('welcome', _t('USERS_WELCOME'));
+            $tpl->SetVariable('welcome', $this::t('WELCOME'));
 
             $response = $this->gadget->session->pop('Login.Response');
             if (empty($response)) {
                 $response['type'] = RESPONSE_NOTICE;
-                $response['text'] = _t('USERS_WELCOME');
+                $response['text'] = $this::t('WELCOME');
             }
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
 
-            $tpl->SetVariable('profile', _t('USERS_PROFILE'));
+            $tpl->SetVariable('profile', $this::t('PROFILE'));
             // username
             $tpl->SetVariable('username', $this->app->session->user->username);
             // nickname
@@ -51,7 +51,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             // manage friends
             if ($this->gadget->GetPermission('ManageFriends')) {
                 $tpl->SetBlock('UserLinks/groups');
-                $tpl->SetVariable('user_groups', _t('USERS_FRIENDS'));
+                $tpl->SetVariable('user_groups', $this::t('FRIENDS'));
                 $tpl->SetVariable('groups_url', $this->gadget->urlMap('FriendsGroups'));
                 $tpl->ParseBlock('UserLinks/groups');
             }
@@ -60,7 +60,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             if ($layoutGadget->GetPermission('MainLayoutManage')) {
                 // link to manage global layout
                 $tpl->SetBlock('UserLinks/manage-layout');
-                $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
+                $tpl->SetVariable('layout', Jaws_Gadget::t('LAYOUT.TITLE'));
                 $tpl->SetVariable(
                     'layout_url',
                     $layoutGadget->urlMap('Layout')
@@ -69,7 +69,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             } elseif ($this->gadget->GetPermission('ManageUserLayout')) {
                 // link to manage personal layout
                 $tpl->SetBlock('UserLinks/manage-layout');
-                $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
+                $tpl->SetVariable('layout', Jaws_Gadget::t('LAYOUT.TITLE'));
                 $tpl->SetVariable(
                     'layout_url',
                     $layoutGadget->urlMap('Layout', array('layout' => 'Index.User'))
@@ -97,7 +97,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             // ControlPanel
             if ($this->gadget->GetPermission('default_admin', '', array(), 'ControlPanel')) {
                 $tpl->SetBlock('UserLinks/cpanel');
-                $tpl->SetVariable('cpanel', _t('USERS_CONTROLPANEL'));
+                $tpl->SetVariable('cpanel', $this::t('CONTROLPANEL'));
                 $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
                 $tpl->SetVariable('cpanel_url', empty($admin_script)? 'admin.php' : $admin_script);
                 $tpl->ParseBlock('UserLinks/cpanel');
@@ -114,19 +114,19 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $login_url = $this->gadget->urlMap('Login', array('referrer'  => $referrer));
 
             $tpl->SetBlock('LoginLinks');
-            $tpl->SetVariable('title', _t('USERS_LOGINLINKS'));
+            $tpl->SetVariable('title', $this::t('LOGINLINKS'));
 
             // welcome
-            $tpl->SetVariable('welcome', _t('USERS_WELCOME'));
+            $tpl->SetVariable('welcome', $this::t('WELCOME'));
 
             // login
-            $tpl->SetVariable('user_login', _t('USERS_LOGIN_TITLE'));
+            $tpl->SetVariable('user_login', $this::t('LOGIN_TITLE'));
             $tpl->SetVariable('login_url', $login_url);
 
             // registration
             if ($this->gadget->registry->fetch('anon_register') == 'true') {
                 $tpl->SetBlock('LoginLinks/registration');
-                $tpl->SetVariable('user_registeration', _t('USERS_REGISTER'));
+                $tpl->SetVariable('user_registeration', $this::t('REGISTER'));
                 $tpl->SetVariable('registeration_url',  $this->gadget->urlMap('Registration'));
                 $tpl->ParseBlock('LoginLinks/registration');
             }
@@ -134,7 +134,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             // forget user/password
             if ($this->gadget->registry->fetch('password_recovery') == 'true') {
                 $tpl->SetBlock('LoginLinks/forgot');
-                $tpl->SetVariable('user_forgot', _t('USERS_FORGOT_LOGIN'));
+                $tpl->SetVariable('user_forgot', $this::t('FORGOT_LOGIN'));
                 $tpl->SetVariable('forgot_url',  $this->gadget->urlMap('LoginForgot'));
                 $tpl->ParseBlock('LoginLinks/forgot');
             }
@@ -253,7 +253,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $this->gadget->event->shout('LoginUser', $loginData);
 
             $this->gadget->session->push(
-                _t('USERS_LOGIN_SUCCESS'),
+                $this::t('LOGIN_SUCCESS'),
                 RESPONSE_NOTICE,
                 'Login.Response'
             );
@@ -374,10 +374,10 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $params['verbose'] = Jaws::t('LOGINKEY_SUMMARY', $loginkey['text']);
         $params['variables'] = array(
             'nickname'     => $uData['nickname'],
-            'message'      => _t('USERS_REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
-            'lbl_username' => _t('USERS_USERS_USERNAME'),
+            'message'      => $this::t('REGISTRATION_ACTIVATION_REQUIRED_BY_USER'),
+            'lbl_username' => $this::t('USERS_USERNAME'),
             'username'     => $uData['username'],
-            'lbl_key'      => _t('USERS_LOGIN_KEY'),
+            'lbl_key'      => $this::t('LOGIN_KEY'),
             'key'          => $loginkey['text'],
             'lbl_ip'       => Jaws::t('IP'),
             'ip'           => $_SERVER['REMOTE_ADDR'],

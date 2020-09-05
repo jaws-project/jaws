@@ -27,7 +27,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('MyAccount.html');
         $tpl->SetBlock('MyAccount');
         $tpl->SetVariable('uid', $uInfo['id']);
-        $tpl->SetVariable('legend_title', _t('USERS_USERS_ACCOUNT'));
+        $tpl->SetVariable('legend_title', $this::t('USERS_ACCOUNT'));
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
@@ -39,13 +39,13 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         // username
         $username =& Piwi::CreateWidget('Entry', 'username', $uInfo['username']);
         $username->SetID('username');
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username', $username->Get());
 
         // nickname
         $nickname =& Piwi::CreateWidget('Entry', 'nickname', $uInfo['nickname']);
         $nickname->SetID('nickname');
-        $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+        $tpl->SetVariable('lbl_nickname', $this::t('USERS_NICKNAME'));
         $tpl->SetVariable('nickname', $nickname->Get());
 
         // email
@@ -57,19 +57,19 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         // mobile
         $mobile =& Piwi::CreateWidget('Entry', 'mobile', $uInfo['mobile']);
         $mobile->SetID('mobile');
-        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('mobile', $mobile->Get());
 
         // pass1
         $pass1 =& Piwi::CreateWidget('PasswordEntry', 'pass1', '');
         $pass1->SetID('pass1');
-        $tpl->SetVariable('lbl_pass1', _t('USERS_USERS_PASSWORD'));
+        $tpl->SetVariable('lbl_pass1', $this::t('USERS_PASSWORD'));
         $tpl->SetVariable('pass1', $pass1->Get());
 
         // pass2
         $pass2 =& Piwi::CreateWidget('PasswordEntry', 'pass2', '');
         $pass2->SetID('pass2');
-        $tpl->SetVariable('lbl_pass2', _t('USERS_USERS_PASSWORD_VERIFY'));
+        $tpl->SetVariable('lbl_pass2', $this::t('USERS_PASSWORD_VERIFY'));
         $tpl->SetVariable('pass2', $pass2->Get());
 
         $avatar =& Piwi::CreateWidget('Image',
@@ -89,8 +89,8 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Users').updateMyAccount();");
         $tpl->SetVariable('save', $btnSave->Get());
 
-        $tpl->SetVariable('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('wrongPassword',        _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
+        $tpl->SetVariable('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('wrongPassword',        $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
 
         $tpl->ParseBlock('MyAccount');
         return $tpl->Get();

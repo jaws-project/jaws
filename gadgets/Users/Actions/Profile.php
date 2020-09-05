@@ -20,13 +20,13 @@ class Users_Actions_Profile extends Users_Actions_Default
         $users = $usrModel->GetUsers(false, false, true);
         if (!Jaws_Error::IsError($users)) {
             $pusers = array();
-            $pusers[0] = _t('USERS_LOGGED_USER');
+            $pusers[0] = $this::t('LOGGED_USER');
             foreach ($users as $user) {
                 $pusers[$user['username']] = $user['nickname'];
             }
 
             $result[] = array(
-                'title' => _t('USERS_USERS'),
+                'title' => $this::t('USERS'),
                 'value' => $pusers
             );
         }
@@ -65,7 +65,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         );
 
         // Gender
-        $user['gender'] = _t('USERS_USERS_GENDER_'.$user['gender']);
+        $user['gender'] = $this::t('USERS_GENDER_'.$user['gender']);
 
         // Date of birth
         $objDate = Jaws_Date::getInstance();
@@ -80,33 +80,33 @@ class Users_Actions_Profile extends Users_Actions_Default
         // Load the template
         $tpl = $this->gadget->template->load('AboutUser.html');
         $tpl->SetBlock('aboutuser');
-        $tpl->SetVariable('title',  _t('USERS_ACTIONS_ABOUTUSER'));
+        $tpl->SetVariable('title',  $this::t('ACTIONS_ABOUTUSER'));
         $tpl->SetVariable('avatar', $user['avatar']);
         // username
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username',     $user['username']);
         // nickname
-        $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+        $tpl->SetVariable('lbl_nickname', $this::t('USERS_NICKNAME'));
         $tpl->SetVariable('nickname',     $user['nickname']);
         // registered_date
-        $tpl->SetVariable('lbl_registered_date', _t('USERS_USERS_REGISTRATION_DATE'));
+        $tpl->SetVariable('lbl_registered_date', $this::t('USERS_REGISTRATION_DATE'));
         $tpl->SetVariable('registered_date',     $user['registered_date']);
 
         // auto paragraph content
         $user['about'] = Jaws_String::AutoParagraph($user['about']);
         $user = $user + array(
-            'lbl_private'     => _t('USERS_USERS_PRIVATE'),
-            'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
-            'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
-            'lbl_gender'      => _t('USERS_USERS_GENDER'),
-            'lbl_ssn'         => _t('USERS_USERS_SSN'),
-            'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
-            'lbl_public'      => _t('USERS_USERS_PUBLIC'),
+            'lbl_private'     => $this::t('USERS_PRIVATE'),
+            'lbl_fname'       => $this::t('USERS_FIRSTNAME'),
+            'lbl_lname'       => $this::t('USERS_LASTNAME'),
+            'lbl_gender'      => $this::t('USERS_GENDER'),
+            'lbl_ssn'         => $this::t('USERS_SSN'),
+            'lbl_dob'         => $this::t('USERS_BIRTHDAY'),
+            'lbl_public'      => $this::t('USERS_PUBLIC'),
             'lbl_url'         => Jaws::t('URL'),
-            'lbl_about'       => _t('USERS_USERS_ABOUT'),
-            'lbl_experiences' => _t('USERS_USERS_EXPERIENCES'),
-            'lbl_occupations' => _t('USERS_USERS_OCCUPATIONS'),
-            'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
+            'lbl_about'       => $this::t('USERS_ABOUT'),
+            'lbl_experiences' => $this::t('USERS_EXPERIENCES'),
+            'lbl_occupations' => $this::t('USERS_OCCUPATIONS'),
+            'lbl_interests'   => $this::t('USERS_INTERESTS'),
         );
 
         if (!$this->app->session->user->superadmin &&
@@ -154,7 +154,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         );
 
         // Gender
-        $user['gender'] = _t('USERS_USERS_GENDER_'.$user['gender']);
+        $user['gender'] = $this::t('USERS_GENDER_'.$user['gender']);
 
         // Date of birth
         $objDate = Jaws_Date::getInstance();
@@ -169,37 +169,37 @@ class Users_Actions_Profile extends Users_Actions_Default
         // Load the template
         $tpl = $this->gadget->template->load('Profile.html');
         $tpl->SetBlock('profile');
-        $tpl->SetVariable('title',  _t('USERS_PROFILE_INFO'));
+        $tpl->SetVariable('title',  $this::t('PROFILE_INFO'));
         if ($user['id'] == $this->app->session->user->id) {
             // Menu navigation
             $this->gadget->action->load('MenuNavigation')->navigation($tpl);
         }
         $tpl->SetVariable('avatar', $user['avatar']);
         // username
-        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
         $tpl->SetVariable('username',     $user['username']);
         // nickname
-        $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
+        $tpl->SetVariable('lbl_nickname', $this::t('USERS_NICKNAME'));
         $tpl->SetVariable('nickname',     $user['nickname']);
         // registered_date
-        $tpl->SetVariable('lbl_registered_date', _t('USERS_USERS_REGISTRATION_DATE'));
+        $tpl->SetVariable('lbl_registered_date', $this::t('USERS_REGISTRATION_DATE'));
         $tpl->SetVariable('registered_date',     $user['registered_date']);
 
         // auto paragraph content
         $user['about'] = Jaws_String::AutoParagraph($user['about']);
         $user = $user + array(
-            'lbl_private'     => _t('USERS_USERS_PRIVATE'),
-            'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
-            'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
-            'lbl_gender'      => _t('USERS_USERS_GENDER'),
-            'lbl_ssn'         => _t('USERS_USERS_SSN'),
-            'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
-            'lbl_public'      => _t('USERS_USERS_PUBLIC'),
+            'lbl_private'     => $this::t('USERS_PRIVATE'),
+            'lbl_fname'       => $this::t('USERS_FIRSTNAME'),
+            'lbl_lname'       => $this::t('USERS_LASTNAME'),
+            'lbl_gender'      => $this::t('USERS_GENDER'),
+            'lbl_ssn'         => $this::t('USERS_SSN'),
+            'lbl_dob'         => $this::t('USERS_BIRTHDAY'),
+            'lbl_public'      => $this::t('USERS_PUBLIC'),
             'lbl_url'         => Jaws::t('URL'),
-            'lbl_about'       => _t('USERS_USERS_ABOUT'),
-            'lbl_experiences' => _t('USERS_USERS_EXPERIENCES'),
-            'lbl_occupations' => _t('USERS_USERS_OCCUPATIONS'),
-            'lbl_interests'   => _t('USERS_USERS_INTERESTS'),
+            'lbl_about'       => $this::t('USERS_ABOUT'),
+            'lbl_experiences' => $this::t('USERS_EXPERIENCES'),
+            'lbl_occupations' => $this::t('USERS_OCCUPATIONS'),
+            'lbl_interests'   => $this::t('USERS_INTERESTS'),
         );
  
         if (!$this->app->session->user->superadmin &&
@@ -225,7 +225,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         }
 
         $tpl->SetBlock('profile/activity');
-        $tpl->SetVariable('lbl_activities', _t('USERS_USER_ACTIVITIES'));
+        $tpl->SetVariable('lbl_activities', $this::t('USER_ACTIVITIES'));
         $this->Activity($tpl, $user['id'], $user['username']);
         $tpl->ParseBlock('profile/activity');
 
@@ -267,7 +267,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             }
 
             $tpl->SetBlock('profile/activity/gadget');
-            $tpl->SetVariable('gadget', _t('USERS_USER_ACTIVITIES_IN_GADGET', $gInfo['title']));
+            $tpl->SetVariable('gadget', $this::t('USER_ACTIVITIES_IN_GADGET', $gInfo['title']));
             foreach ($activities as $activity) {
                 $tpl->SetBlock('profile/activity/gadget/item');
                 if (isset($activity['count'])) {
@@ -285,7 +285,7 @@ class Users_Actions_Profile extends Users_Actions_Default
 
         if (!$activity) {
             $tpl->SetBlock('profile/activity/no_activity');
-            $tpl->SetVariable('message', _t('USERS_USER_ACTIVITIES_EMPTY'));
+            $tpl->SetVariable('message', $this::t('USER_ACTIVITIES_EMPTY'));
             $tpl->ParseBlock('profile/activity/no_activity');
         }
     }
