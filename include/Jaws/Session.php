@@ -647,7 +647,7 @@ class Jaws_Session
             if ($activeSessions >= $max_active_sessions) {
                 // remove expired session
                 $this->deleteExpiredSessions();
-                Jaws_Error::Fatal(_t('GLOBAL_HTTP_ERROR_CONTENT_503_OVERLOAD'), 0, 503);
+                Jaws_Error::Fatal(Jaws::t('HTTP_ERROR_CONTENT_503_OVERLOAD'), 0, 503);
             }
         }
 

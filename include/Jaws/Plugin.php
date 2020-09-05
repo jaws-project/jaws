@@ -105,7 +105,7 @@ class Jaws_Plugin
         if (!isset($instances[$plugin])) {
             if (!is_dir(ROOT_JAWS_PATH . "plugins/$plugin")) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
+                    Jaws::t('ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
                     __FUNCTION__
                 );
             }
@@ -113,7 +113,7 @@ class Jaws_Plugin
             $file = ROOT_JAWS_PATH . "plugins/$plugin/Plugin.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
+                    Jaws::t('ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
                     __FUNCTION__
                 );
             }
@@ -127,7 +127,7 @@ class Jaws_Plugin
 
                 if (!in_array($plugin, $available_plugins)) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_PLUGIN_NOT_AVAILABLE', $plugin),
+                        Jaws::t('ERROR_PLUGIN_NOT_AVAILABLE', $plugin),
                         'Plugin availability check'
                     );
                 }
@@ -149,7 +149,7 @@ class Jaws_Plugin
 
         if ($onlyInstalled && !self::IsPluginInstalled($plugin)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_PLUGIN_NOT_INSTALLED', $plugin),
+                Jaws::t('ERROR_PLUGIN_NOT_INSTALLED', $plugin),
                 __FUNCTION__
             );
         }

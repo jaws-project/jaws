@@ -24,16 +24,16 @@ if (!Jaws::classExists('Piwi')) {
 
     $config = array(
                 'LINK_PRIFIX'                => '',
-                'DATAGRID_ACTION_LABEL'      => _t('GLOBAL_ACTIONS'),
+                'DATAGRID_ACTION_LABEL'      => Jaws::t('ACTIONS'),
                 'DATAGRID_PAGER_PAGEBY'      => 10,
                 'DATAGRID_PAGER_MODE'        => 'PIWI_PAGER_NORMAL',
                 'CLASS_ODD'                  => 'piwi_option_odd',
                 'CLASS_EVEN'                 => 'piwi_option_even',
                 'DATAGRID_CLASS_CSS'         => 'jawsDatagrid',
-                'DATAGRID_PAGER_LABEL_FIRST' => _t('GLOBAL_FIRST'),
-                'DATAGRID_PAGER_LABEL_PREV'  => _t('GLOBAL_PREVIOUS'),
-                'DATAGRID_PAGER_LABEL_NEXT'  => _t('GLOBAL_NEXT'),
-                'DATAGRID_PAGER_LABEL_LAST'  => _t('GLOBAL_LAST'),
+                'DATAGRID_PAGER_LABEL_FIRST' => Jaws::t('FIRST'),
+                'DATAGRID_PAGER_LABEL_PREV'  => Jaws::t('PREVIOUS'),
+                'DATAGRID_PAGER_LABEL_NEXT'  => Jaws::t('NEXT'),
+                'DATAGRID_PAGER_LABEL_LAST'  => Jaws::t('LAST'),
                 'PIWI_NAME_AS_ID'            => true,
             );
     Piwi::exportConf($config);

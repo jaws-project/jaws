@@ -135,8 +135,8 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $this->app->GetLanguage();
-        $this->app->define('', 'loadingMessage', _t('GLOBAL_LOADING'));
-        $this->app->define('', 'reloadMessage', _t('GLOBAL_RELOAD_MESSAGE'));
+        $this->app->define('', 'loadingMessage', Jaws::t('LOADING'));
+        $this->app->define('', 'reloadMessage', Jaws::t('RELOAD_MESSAGE'));
         $this->app->define('', 'logged', (bool)$this->app->session->user->logged);
         $this->app->define(
             '',
@@ -270,14 +270,14 @@ class Jaws_Layout
         $this->_Template->Load($layout_file, $layout_path);
         $this->_Template->SetBlock('layout');
 
-        $direction = _t('GLOBAL_LANG_DIRECTION');
+        $direction = Jaws::t('LANG_DIRECTION');
         $dir  = $direction == 'rtl' ? ".$direction" : '';
         $browser  = $this->app->GetBrowserFlag();
         $browser  = empty($browser)? '' : ".$browser";
         $base_url = $this->app->GetSiteURL('/');
 
         $this->_Template->SetVariable('base_url', $base_url);
-        $this->_Template->SetVariable('skip_to_content', _t('GLOBAL_SKIP_TO_CONTENT'));
+        $this->_Template->SetVariable('skip_to_content', Jaws::t('SKIP_TO_CONTENT'));
         $this->_Template->SetVariable('.dir', $dir);
         $this->_Template->SetVariable('.browser', $browser);
         $this->_Template->SetVariable('site-url', $base_url);
