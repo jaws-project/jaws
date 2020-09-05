@@ -322,9 +322,9 @@ class Jaws_Date_Jalali extends Jaws_Date
                         $i = $i + 2;
                     } else {
                         if (date('a', $date['date']) == 'pm') {
-                            $return .= _t('GLOBAL_HOURS_PM');
+                            $return .= Jaws::t('HOURS_PM');
                         } else {
-                            $return .= _t('GLOBAL_HOURS_AM');
+                            $return .= Jaws::t('HOURS_AM');
                         }
                     }
                     break;
@@ -434,13 +434,13 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         if (!isset($this->_Days['long'])) {
             $days = array(
-                _t('GLOBAL_DAY_SATURDAY'),
-                _t('GLOBAL_DAY_SUNDAY'),
-                _t('GLOBAL_DAY_MONDAY'),
-                _t('GLOBAL_DAY_TUESDAY'),
-                _t('GLOBAL_DAY_WEDNESDAY'),
-                _t('GLOBAL_DAY_THURSDAY'),
-                _t('GLOBAL_DAY_FRIDAY'),
+                Jaws::t('DAY_SATURDAY'),
+                Jaws::t('DAY_SUNDAY'),
+                Jaws::t('DAY_MONDAY'),
+                Jaws::t('DAY_TUESDAY'),
+                Jaws::t('DAY_WEDNESDAY'),
+                Jaws::t('DAY_THURSDAY'),
+                Jaws::t('DAY_FRIDAY'),
             );
             $this->_Days['long'] =& $days;
         }
@@ -463,13 +463,13 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         if (!isset($this->_Days['short'])) {
             $days = array(
-                _t('GLOBAL_DAY_SHORT_SATURDAY'),
-                _t('GLOBAL_DAY_SHORT_SUNDAY'),
-                _t('GLOBAL_DAY_SHORT_MONDAY'),
-                _t('GLOBAL_DAY_SHORT_TUESDAY'),
-                _t('GLOBAL_DAY_SHORT_WEDNESDAY'),
-                _t('GLOBAL_DAY_SHORT_THURSDAY'),
-                _t('GLOBAL_DAY_SHORT_FRIDAY'),
+                Jaws::t('DAY_SHORT_SATURDAY'),
+                Jaws::t('DAY_SHORT_SUNDAY'),
+                Jaws::t('DAY_SHORT_MONDAY'),
+                Jaws::t('DAY_SHORT_TUESDAY'),
+                Jaws::t('DAY_SHORT_WEDNESDAY'),
+                Jaws::t('DAY_SHORT_THURSDAY'),
+                Jaws::t('DAY_SHORT_FRIDAY'),
             );
             $this->_Days['short'] =& $days;
         }
@@ -492,18 +492,18 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         if (!isset($this->_Months['long'])) {
             $months = array(
-                _t('GLOBAL_JALALI_MONTH_FIRST'),
-                _t('GLOBAL_JALALI_MONTH_SECOND'),
-                _t('GLOBAL_JALALI_MONTH_THIRD'),
-                _t('GLOBAL_JALALI_MONTH_FOURTH'),
-                _t('GLOBAL_JALALI_MONTH_FIFTH'),
-                _t('GLOBAL_JALALI_MONTH_SIXTH'),
-                _t('GLOBAL_JALALI_MONTH_SEVENTH'),
-                _t('GLOBAL_JALALI_MONTH_EIGHTH'),
-                _t('GLOBAL_JALALI_MONTH_NINTH'),
-                _t('GLOBAL_JALALI_MONTH_TENTH'),
-                _t('GLOBAL_JALALI_MONTH_ELEVENTH'),
-                _t('GLOBAL_JALALI_MONTH_TWELFTH'),
+                Jaws::t('JALALI_MONTH_FIRST'),
+                Jaws::t('JALALI_MONTH_SECOND'),
+                Jaws::t('JALALI_MONTH_THIRD'),
+                Jaws::t('JALALI_MONTH_FOURTH'),
+                Jaws::t('JALALI_MONTH_FIFTH'),
+                Jaws::t('JALALI_MONTH_SIXTH'),
+                Jaws::t('JALALI_MONTH_SEVENTH'),
+                Jaws::t('JALALI_MONTH_EIGHTH'),
+                Jaws::t('JALALI_MONTH_NINTH'),
+                Jaws::t('JALALI_MONTH_TENTH'),
+                Jaws::t('JALALI_MONTH_ELEVENTH'),
+                Jaws::t('JALALI_MONTH_TWELFTH'),
             );
             $this->_Months['long'] =& $months;
         }
@@ -527,18 +527,18 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         if (!isset($this->_Months['short'])) {
             $months = array(
-                _t('GLOBAL_JALALI_MONTH_SHORT_FIRST'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_SECOND'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_THIRD'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_FOURTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_FIFTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_SIXTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_SEVENTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_EIGHTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_NINTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_TENTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_ELEVENTH'),
-                _t('GLOBAL_JALALI_MONTH_SHORT_TWELFTH'),
+                Jaws::t('JALALI_MONTH_SHORT_FIRST'),
+                Jaws::t('JALALI_MONTH_SHORT_SECOND'),
+                Jaws::t('JALALI_MONTH_SHORT_THIRD'),
+                Jaws::t('JALALI_MONTH_SHORT_FOURTH'),
+                Jaws::t('JALALI_MONTH_SHORT_FIFTH'),
+                Jaws::t('JALALI_MONTH_SHORT_SIXTH'),
+                Jaws::t('JALALI_MONTH_SHORT_SEVENTH'),
+                Jaws::t('JALALI_MONTH_SHORT_EIGHTH'),
+                Jaws::t('JALALI_MONTH_SHORT_NINTH'),
+                Jaws::t('JALALI_MONTH_SHORT_TENTH'),
+                Jaws::t('JALALI_MONTH_SHORT_ELEVENTH'),
+                Jaws::t('JALALI_MONTH_SHORT_TWELFTH'),
             );
             $this->_Months['short'] =& $months;
         }

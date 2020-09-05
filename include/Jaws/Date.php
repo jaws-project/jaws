@@ -167,17 +167,17 @@ class Jaws_Date
         $diff = (time() - $date);
         if ($diff <= 3600) {
             $mins  = round($diff / 60);
-            $since = ($mins <= 1) ?($mins == 1) ? _t('GLOBAL_DATE_1_MINUTE') : _t('GLOBAL_DATE_FEW_SECONDS') :
-                _t('GLOBAL_DATE_MINUTES', $mins);
+            $since = ($mins <= 1) ?($mins == 1) ? Jaws::t('DATE_1_MINUTE') : Jaws::t('DATE_FEW_SECONDS') :
+                Jaws::t('DATE_MINUTES', $mins);
         } elseif (($diff <= 86400) &&($diff > 3600)) {
             $hours = round($diff / 3600);
-            $since = ($hours <= 1) ? _t('GLOBAL_DATE_1_HOUR') : _t('GLOBAL_DATE_HOURS', $hours);
+            $since = ($hours <= 1) ? Jaws::t('DATE_1_HOUR') : Jaws::t('DATE_HOURS', $hours);
         } elseif ($diff >= 86400) {
             $days  = round($diff / 86400);
-            $since = ($days <= 1) ? _t('GLOBAL_DATE_1_DAY') : _t('GLOBAL_DATE_DAYS', $days);
+            $since = ($days <= 1) ? Jaws::t('DATE_1_DAY') : Jaws::t('DATE_DAYS', $days);
         }
 
-        return _t('GLOBAL_DATE_AGO', $since);
+        return Jaws::t('DATE_AGO', $since);
     }
 
     /**
@@ -191,13 +191,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['long'])) {
             $days = array(
-                _t('GLOBAL_DAY_SUNDAY'),
-                _t('GLOBAL_DAY_MONDAY'),
-                _t('GLOBAL_DAY_TUESDAY'),
-                _t('GLOBAL_DAY_WEDNESDAY'),
-                _t('GLOBAL_DAY_THURSDAY'),
-                _t('GLOBAL_DAY_FRIDAY'),
-                _t('GLOBAL_DAY_SATURDAY'),
+                Jaws::t('DAY_SUNDAY'),
+                Jaws::t('DAY_MONDAY'),
+                Jaws::t('DAY_TUESDAY'),
+                Jaws::t('DAY_WEDNESDAY'),
+                Jaws::t('DAY_THURSDAY'),
+                Jaws::t('DAY_FRIDAY'),
+                Jaws::t('DAY_SATURDAY'),
             );
             $this->_Days['long'] =& $days;
         }
@@ -220,13 +220,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['short'])) {
             $days = array(
-                _t('GLOBAL_DAY_SHORT_SUNDAY'),
-                _t('GLOBAL_DAY_SHORT_MONDAY'),
-                _t('GLOBAL_DAY_SHORT_TUESDAY'),
-                _t('GLOBAL_DAY_SHORT_WEDNESDAY'),
-                _t('GLOBAL_DAY_SHORT_THURSDAY'),
-                _t('GLOBAL_DAY_SHORT_FRIDAY'),
-                _t('GLOBAL_DAY_SHORT_SATURDAY'),
+                Jaws::t('DAY_SHORT_SUNDAY'),
+                Jaws::t('DAY_SHORT_MONDAY'),
+                Jaws::t('DAY_SHORT_TUESDAY'),
+                Jaws::t('DAY_SHORT_WEDNESDAY'),
+                Jaws::t('DAY_SHORT_THURSDAY'),
+                Jaws::t('DAY_SHORT_FRIDAY'),
+                Jaws::t('DAY_SHORT_SATURDAY'),
             );
             $this->_Days['short'] =& $days;
         }
