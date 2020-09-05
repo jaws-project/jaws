@@ -90,12 +90,12 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             if (!$this->app->session->user->logged) {
                 $tpl->SetBlock('comment_form/info-box');
                 $url_value = empty($data['url'])? 'http://' : $data['url'];
-                $tpl->SetVariable('url', _t('GLOBAL_URL'));
+                $tpl->SetVariable('url', Jaws::t('URL'));
                 $tpl->SetVariable('urlvalue', $url_value);
                 $tpl->SetVariable('rand', $rand);
-                $tpl->SetVariable('name', _t('GLOBAL_NAME'));
+                $tpl->SetVariable('name', Jaws::t('NAME'));
                 $tpl->SetVariable('namevalue', $data['name']);
-                $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
+                $tpl->SetVariable('email', Jaws::t('EMAIL'));
                 $tpl->SetVariable('emailvalue', $data['email']);
                 $tpl->ParseBlock('comment_form/info-box');
             }
@@ -106,13 +106,13 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         } else {
             $tpl->SetBlock('comment_form/unregistered');
-            $tpl->SetVariable('msg', _t('GLOBAL_ERROR_ACCESS_RESTRICTED',
+            $tpl->SetVariable('msg', Jaws::t('ERROR_ACCESS_RESTRICTED',
                 $this->app->map->GetMappedURL('Users', 'Login'),
                 $this->app->map->GetMappedURL('Users', 'Registration')));
             $tpl->ParseBlock('comment_form/unregistered');
         }
 
-        $tpl->SetVariable('url2', _t('GLOBAL_SPAMCHECK_EMPTY'));
+        $tpl->SetVariable('url2', Jaws::t('SPAMCHECK_EMPTY'));
         $tpl->SetVariable('url2_value', $data['url2']);
         $tpl->SetVariable('message', $data['message']);
 
@@ -543,7 +543,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('EmailComment.html');
         $tpl->SetBlock('notification');
         $tpl->SetVariable('comment', $message);
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
 
         $tpl->SetVariable('url',   $reference['reference_link']);
         $tpl->SetVariable('title', $reference['reference_title']);

@@ -29,7 +29,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
         $result[] = array(
             'title' => _t('COMMENTS_GADGETS'),
             'value' => array(
-                '' => _t('GLOBAL_ALL') ,
+                '' => Jaws::t('ALL') ,
                 'Blog' => _t('BLOG_TITLE') ,
                 'Phoo' => _t('PHOO_TITLE') ,
                 'Shoutbox' => _t('SHOUTBOX_TITLE') ,
@@ -39,7 +39,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
 
 
         $result[] = array(
-            'title' => _t('GLOBAL_COUNT'),
+            'title' => Jaws::t('COUNT'),
             'value' => $this->gadget->registry->fetch('recent_comment_limit')
         );
 
@@ -79,7 +79,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
         $objTranslate = Jaws_Translate::getInstance();
         $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
 
-        $gadget_name = (empty($gadget)) ? _t('GLOBAL_ALL') : _t(strtoupper($gadget) . '_TITLE');
+        $gadget_name = (empty($gadget)) ? Jaws::t('ALL') : _t(strtoupper($gadget) . '_TITLE');
         $tpl = $this->gadget->template->load('MostCommented.html');
         $tpl->SetBlock($baseBlock);
         $tpl->SetVariable('title', _t('COMMENTS_MOST_COMMENTED', $gadget_name));
@@ -110,7 +110,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
             } else {
                 if ($mostCount > $limit) {
                     $tpl->SetBlock("$baseBlock/more");
-                    $tpl->SetVariable('lbl_more', _t('GLOBAL_MORE'));
+                    $tpl->SetVariable('lbl_more', Jaws::t('MORE'));
                     $tpl->SetVariable('url_more', $this->gadget->urlMap('MostCommented'));
                     $tpl->ParseBlock("$baseBlock/more");
                 }

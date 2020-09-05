@@ -26,9 +26,9 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
         // comments site wide
         $comments =& Piwi::CreateWidget('Combo', 'allow_comments');
         $comments->setID('allow_comments');
-        $comments->AddOption(_t('GLOBAL_YES'), 'true');
+        $comments->AddOption(Jaws::t('YES'), 'true');
         $comments->AddOption(_t('COMMENTS_ALLOW_COMMENTS_RESTRICTED'), 'restricted');
-        $comments->AddOption(_t('GLOBAL_NO'), 'false');
+        $comments->AddOption(Jaws::t('NO'), 'false');
         $comments->SetDefault($this->gadget->registry->fetch('allow_comments'));
         $tpl->SetVariable('lbl_allow_comments', _t('COMMENTS_ALLOW_COMMENTS'));
         $tpl->SetVariable('allow_comments', $comments->Get());
@@ -44,13 +44,13 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
 
         //Order by option
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
-        $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &uarr;', '1');
-        $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &darr;', '2');
+        $orderType->AddOption(Jaws::t('CREATETIME'). ' &uarr;', '1');
+        $orderType->AddOption(Jaws::t('CREATETIME'). ' &darr;', '2');
         $orderType->SetDefault($this->gadget->registry->fetch('order_type'));
-        $tpl->SetVariable('lbl_order_type', _t('GLOBAL_ORDERBY'));
+        $tpl->SetVariable('lbl_order_type', Jaws::t('ORDERBY'));
         $tpl->SetVariable('order_type', $orderType->Get());
 
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript:SaveSettings();');
         $tpl->SetVariable('btn_save', $save->Get());
 

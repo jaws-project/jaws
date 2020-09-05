@@ -38,7 +38,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             $filterGadgets->SetID('gadgets_filter');
             $filterGadgets->setStyle('width: 100px;');
             $filterGadgets->AddEvent(ON_CHANGE, "searchComment()");
-            $filterGadgets->AddOption(_t('GLOBAL_ALL'), '');
+            $filterGadgets->AddOption(Jaws::t('ALL'), '');
             $filterGadgets->AddOption(_t('COMMENTS_TITLE'), 'Comments');
             $gadgets = $this->gadget->model->load()->recommendedfor();
             if (!Jaws_Error::IsError($gadgets)) {
@@ -55,14 +55,14 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
 
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
-        $status->AddOption(_t('GLOBAL_ALL'), 0);
+        $status->AddOption(Jaws::t('ALL'), 0);
         $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
         $status->AddOption(_t('COMMENTS_STATUS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
         $status->AddOption(_t('COMMENTS_STATUS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
         $status->AddOption(_t('COMMENTS_STATUS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
         $status->SetDefault(0);
         $status->AddEvent(ON_CHANGE, 'searchComment();');
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $tpl->SetVariable('status', $status->Get());
 
         // filter
@@ -84,9 +84,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'comments_actions');
         $actions->SetID('comments_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(Jaws::t('DELETE'), 'delete');
         $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
         $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
         $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
@@ -98,12 +98,12 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
         if ($this->gadget->GetPermission('ManageComments')) {
-            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
             $btnCancel->AddEvent(ON_CLICK, 'stopCommentAction();');
             $btnCancel->SetStyle('display: none;');
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "updateComment(false);");
             $btnSave->SetStyle('display: none;');
             $tpl->SetVariable('btn_save', $btnSave->Get());
@@ -133,10 +133,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetBlock('CommentUI');
 
         //IP
-        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
 
         //Date
-        $tpl->SetVariable('lbl_date', _t('GLOBAL_DATE'));
+        $tpl->SetVariable('lbl_date', Jaws::t('DATE'));
 
         //Reference Date
         $tpl->SetVariable('lbl_reference_link', _t('COMMENTS_REFERENCE_LINK'));
@@ -144,19 +144,19 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         //name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
         $nameEntry->setStyle('width: 160px;');
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('name', $nameEntry->Get());
 
         //email
         $nameEntry =& Piwi::CreateWidget('Entry', 'email', '');
         $nameEntry->setStyle('width: 160px;');
-        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('email', $nameEntry->Get());
 
         //url
         $nameEntry =& Piwi::CreateWidget('Entry', 'url', '');
         $nameEntry->setStyle('width: 270px;');
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('url', $nameEntry->Get());
 
         //Status
@@ -167,7 +167,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $status->AddOption(_t('COMMENTS_STATUS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
         $status->AddOption(_t('COMMENTS_STATUS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
         $status->SetDefault('various');
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $tpl->SetVariable('status', $status->Get());
 
         //message
@@ -260,9 +260,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_GADGETS')), null, false);
         }
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_COMMENT')), null, false);
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME')), null, false);
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')), null, false);
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')), null, false);
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('USERNAME')), null, false);
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('CREATED')), null, false);
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('STATUS')), null, false);
         return $grid->Get();
     }
 

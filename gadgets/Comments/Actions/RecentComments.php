@@ -29,7 +29,7 @@ class Comments_Actions_RecentComments extends Jaws_Gadget_Action
         $result[] = array(
             'title' => _t('COMMENTS_GADGETS'),
             'value' => array(
-                '' => _t('GLOBAL_ALL') ,
+                '' => Jaws::t('ALL') ,
                 'Blog' => _t('BLOG_TITLE') ,
                 'Phoo' => _t('PHOO_TITLE') ,
                 'Shoutbox' => _t('SHOUTBOX_TITLE') ,
@@ -39,15 +39,15 @@ class Comments_Actions_RecentComments extends Jaws_Gadget_Action
 
 
         $result[] = array(
-            'title' => _t('GLOBAL_ORDERBY'),
+            'title' => Jaws::t('ORDERBY'),
             'value' => array(
-                1 => _t('GLOBAL_CREATETIME'). ' &uarr;',
-                2 => _t('GLOBAL_CREATETIME'). ' &darr;',
+                1 => Jaws::t('CREATETIME'). ' &uarr;',
+                2 => Jaws::t('CREATETIME'). ' &darr;',
             )
         );
 
         $result[] = array(
-            'title' => _t('GLOBAL_COUNT'),
+            'title' => Jaws::t('COUNT'),
             'value' => $this->gadget->registry->fetch('recent_comment_limit')
         );
 
@@ -70,7 +70,7 @@ class Comments_Actions_RecentComments extends Jaws_Gadget_Action
         $objTranslate = Jaws_Translate::getInstance();
         $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
 
-        $gadget_name = (empty($gadget)) ? _t('GLOBAL_ALL') : _t(strtoupper($gadget) . '_TITLE');
+        $gadget_name = (empty($gadget)) ? Jaws::t('ALL') : _t(strtoupper($gadget) . '_TITLE');
         $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
         $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', $gadget_name));
