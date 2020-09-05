@@ -55,7 +55,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             );
 
             $result[] = array(
-                'title' => _t('GLOBAL_COUNT'),
+                'title' => Jaws::t('COUNT'),
                 'value' => 10
             );
         }
@@ -311,30 +311,30 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->define('lbl_alias', _t('GLOBAL_ALIAS'));
-        $this->gadget->define('lbl_published', _t('GLOBAL_PUBLISHED'));
-        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
-        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->define('lbl_alias', Jaws::t('ALIAS'));
+        $this->gadget->define('lbl_published', Jaws::t('PUBLISHED'));
+        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('UserFeeds.html');
         $tpl->SetBlock('UserFeeds');
         $tpl->SetVariable('title', _t('FEEDREADER_USER_FEEDS'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
+        $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
 
         $tpl->SetVariable('lbl_cache_time', _t('FEEDREADER_CACHE_TIME'));
-        $tpl->SetVariable('lbl_disable', _t('GLOBAL_DISABLE'));
-        $tpl->SetVariable('lbl_minutes_10', _t('GLOBAL_DATE_MINUTES', 10));
-        $tpl->SetVariable('lbl_minutes_30', _t('GLOBAL_DATE_MINUTES', 30));
-        $tpl->SetVariable('lbl_hours_1', _t('GLOBAL_DATE_HOURS', 1));
-        $tpl->SetVariable('lbl_hours_5', _t('GLOBAL_DATE_HOURS', 5));
-        $tpl->SetVariable('lbl_hours_10', _t('GLOBAL_DATE_HOURS', 10));
-        $tpl->SetVariable('lbl_days_1', _t('GLOBAL_DATE_DAYS', 1));
-        $tpl->SetVariable('lbl_weeks_1', _t('GLOBAL_DATE_WEEKS', 1));
+        $tpl->SetVariable('lbl_disable', Jaws::t('DISABLE'));
+        $tpl->SetVariable('lbl_minutes_10', Jaws::t('DATE_MINUTES', 10));
+        $tpl->SetVariable('lbl_minutes_30', Jaws::t('DATE_MINUTES', 30));
+        $tpl->SetVariable('lbl_hours_1', Jaws::t('DATE_HOURS', 1));
+        $tpl->SetVariable('lbl_hours_5', Jaws::t('DATE_HOURS', 5));
+        $tpl->SetVariable('lbl_hours_10', Jaws::t('DATE_HOURS', 10));
+        $tpl->SetVariable('lbl_days_1', Jaws::t('DATE_DAYS', 1));
+        $tpl->SetVariable('lbl_weeks_1', Jaws::t('DATE_WEEKS', 1));
 
         $tpl->SetVariable('lbl_view_type', _t('FEEDREADER_VIEW_TYPE'));
         $tpl->SetVariable('lbl_view_type_simple', _t('FEEDREADER_VIEW_TYPE_SIMPLE'));
@@ -349,13 +349,13 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title_view_external', _t('FEEDREADER_TITLE_VIEW_EXTERNAL'));
 
         $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
-        $tpl->SetVariable('lbl_alias', _t('GLOBAL_ALIAS'));
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_alias', Jaws::t('ALIAS'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
 
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
         $tpl->ParseBlock('UserFeeds');
         return $tpl->Get();
@@ -389,7 +389,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $total = $model->GetFeedsCount($filters, $user);
 
         foreach ($feeds as $key => $feed) {
-            $feed['published'] = ($feed['published'])? _t('GLOBAL_YES') : _t('GLOBAL_NO');
+            $feed['published'] = ($feed['published'])? Jaws::t('YES') : Jaws::t('NO');
             $feeds[$key] = $feed;
         }
         return $this->gadget->session->response(

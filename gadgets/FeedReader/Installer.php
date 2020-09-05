@@ -29,12 +29,12 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
         $new_dir = ROOT_DATA_PATH . 'feedcache' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         $result = $this->installSchema('schema.xml');
@@ -55,7 +55,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
     {
         $result = Jaws_DB::getInstance()->dropTable('feeds');
         if (Jaws_Error::IsError($result)) {
-            $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
+            $errMsg = Jaws::t('ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
             return new Jaws_Error($errMsg);
         }
 
@@ -81,7 +81,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
             $new_feed_dir = ROOT_DATA_PATH. 'feedcache'. DIRECTORY_SEPARATOR;
             $old_feed_dir = ROOT_DATA_PATH. 'rsscache'.  DIRECTORY_SEPARATOR;
             if (!Jaws_Utils::mkdir($new_feed_dir)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_feed_dir));
+                return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_feed_dir));
             }
 
             Jaws_Utils::delete($old_feed_dir);

@@ -34,14 +34,14 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
             $siteData['id']    = $site['id'];
             $siteData['title'] = '<span style="white-space: nowrap;"><a href="'.$site['url'].'" title="'.$site['url'];
             $siteData['title'].= '" target="_blank" style="text-decoration: none;">'.$site['title'].'</a></span>';
-            $siteData['published'] = ($site['published']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
+            $siteData['published'] = ($site['published']? Jaws::t('YES') : Jaws::t('NO'));
 
             $actions = '';
-            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+            $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                 "javascript:editFeed(this, '".$site['id']."');",
                 STOCK_EDIT);
             $actions.= $link->Get().'&nbsp;';
-            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+            $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                 "javascript:deleteFeed(this, '".$site['id']."');",
                 STOCK_DELETE);
             $actions.= $link->Get().'&nbsp;';
@@ -68,14 +68,14 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $datagrid->TotalRows($total);
         $datagrid->pageBy(12);
         $datagrid->SetID('feedsites_datagrid');
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_ID'));
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('ID'));
         $column1->SetStyle('width: 32px; white-space:nowrap;');
         $datagrid->AddColumn($column1);
-        $datagrid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_TITLE')));
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'), null, false);
+        $datagrid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
+        $column3 = Piwi::CreateWidget('Column', Jaws::t('PUBLISHED'), null, false);
         $column3->SetStyle('width: 56px; white-space:nowrap;');
         $datagrid->AddColumn($column3);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column4->SetStyle('width: 60px; white-space:nowrap;');
         $datagrid->AddColumn($column4);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
@@ -96,34 +96,34 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $tpl->SetBlock('feedreader');
 
         $tpl->SetVariable('grid', $this->DataGrid());
-        $tpl->SetVariable('dir', _t('GLOBAL_LANG_DIRECTION'));
+        $tpl->SetVariable('dir', Jaws::t('LANG_DIRECTION'));
 
         // Tabs titles
-        $tpl->SetVariable('legend_title', _t('GLOBAL_PROPERTIES'));
+        $tpl->SetVariable('legend_title', Jaws::t('PROPERTIES'));
 
         $titleentry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleentry->SetID('title');
         $titleentry->setStyle('width: 270px;');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $titleentry->Get());
 
         $urlentry =& Piwi::CreateWidget('Entry', 'url', 'http://');
         $urlentry->SetID('url');
         $urlentry->setStyle('width: 270px;');
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('url', $urlentry->Get());
 
         $cachecombo =& Piwi::CreateWidget('Combo', 'cache_time');
         $cachecombo->SetID('cache_time');
         $cachecombo->setStyle('width: 128px;');
-        $cachecombo->AddOption(_t('GLOBAL_DISABLE'),              0);
-        $cachecombo->AddOption(_t('GLOBAL_DATE_MINUTES', 10),   600);
-        $cachecombo->AddOption(_t('GLOBAL_DATE_MINUTES', 30),  1800);
-        $cachecombo->AddOption(_t('GLOBAL_DATE_HOURS',   1),   3600);
-        $cachecombo->AddOption(_t('GLOBAL_DATE_HOURS',   5),  18000);
-        $cachecombo->AddOption(_t('GLOBAL_DATE_HOURS',   10), 36000);
-        $cachecombo->AddOption(_t('GLOBAL_DATE_DAYS',    1),  86400);
-        $cachecombo->AddOption(_t('GLOBAL_DATE_WEEKS',   1), 604800);
+        $cachecombo->AddOption(Jaws::t('DISABLE'),              0);
+        $cachecombo->AddOption(Jaws::t('DATE_MINUTES', 10),   600);
+        $cachecombo->AddOption(Jaws::t('DATE_MINUTES', 30),  1800);
+        $cachecombo->AddOption(Jaws::t('DATE_HOURS',   1),   3600);
+        $cachecombo->AddOption(Jaws::t('DATE_HOURS',   5),  18000);
+        $cachecombo->AddOption(Jaws::t('DATE_HOURS',   10), 36000);
+        $cachecombo->AddOption(Jaws::t('DATE_DAYS',    1),  86400);
+        $cachecombo->AddOption(Jaws::t('DATE_WEEKS',   1), 604800);
         $cachecombo->SetDefault(3600);
         $tpl->SetVariable('lbl_cache_time', _t('FEEDREADER_CACHE_TIME'));
         $tpl->SetVariable('cache_time', $cachecombo->Get());
@@ -155,25 +155,25 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
 
         $alias =& Piwi::CreateWidget('Entry', 'alias', '');
         $alias->setStyle('width: 120px;');
-        $tpl->SetVariable('lbl_alias', _t('GLOBAL_ALIAS'));
+        $tpl->SetVariable('lbl_alias', Jaws::t('ALIAS'));
         $tpl->SetVariable('alias', $alias->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->setStyle('width: 128px;');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault(1);
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
-        $btncancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btncancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btncancel->SetStyle('visibility: hidden;');
         $btncancel->AddEvent(ON_CLICK, 'stopAction();');
         $tpl->SetVariable('btn_cancel', $btncancel->Get());
 
         $btnsave =& Piwi::CreateWidget('Button', 'btn_save',
-            _t('GLOBAL_SAVE'), STOCK_SAVE);
+            Jaws::t('SAVE'), STOCK_SAVE);
         $btnsave->AddEvent(ON_CLICK, 'updateFeed();');
         $tpl->SetVariable('btn_save', $btnsave->Get());
 
