@@ -87,7 +87,7 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
         $datagrid->pageBy(18);
         $datagrid->SetID('reports_datagrid');
 
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $datagrid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', _t('BANNER_BANNERS_VIEWS'), null, false);
         $column2->SetStyle('width: 64px; white-space:nowrap;');
@@ -95,17 +95,17 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
         $column3 = Piwi::CreateWidget('Column', _t('BANNER_BANNERS_CLICKS'), null, false);
         $column3->SetStyle('width: 64px; white-space:nowrap;');
         $datagrid->AddColumn($column3);
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_START_TIME'), null, false);
+        $column4 = Piwi::CreateWidget('Column', Jaws::t('START_TIME'), null, false);
         $column4->SetStyle('width: 80px; white-space:nowrap;');
         $datagrid->AddColumn($column4);
-        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_STOP_TIME'), null, false);
+        $column5 = Piwi::CreateWidget('Column', Jaws::t('STOP_TIME'), null, false);
         $column5->SetStyle('width: 80px; white-space:nowrap;');
         $datagrid->AddColumn($column5);
-        $column6 = Piwi::CreateWidget('Column', _t('GLOBAL_STATUS'), null, false);
+        $column6 = Piwi::CreateWidget('Column', Jaws::t('STATUS'), null, false);
         $column6->SetStyle('width: 120px; white-space:nowrap;');
         $datagrid->AddColumn($column6);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
-        $column7 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column7 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column7->SetStyle('width: 60px; white-space:nowrap;');
         $datagrid->AddColumn($column7);
 

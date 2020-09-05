@@ -26,7 +26,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $addGroup->AddEvent(ON_CLICK, "javascript:addGroup();");
         $tpl->SetVariable('add_group', $addGroup->Get());
 
-        $saveGroup =& Piwi::CreateWidget('Button', 'save_group', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveGroup =& Piwi::CreateWidget('Button', 'save_group', Jaws::t('SAVE'), STOCK_SAVE);
         $saveGroup->AddEvent(ON_CLICK, "javascript:saveGroup();");
         $saveGroup->SetStyle('display: none;');
         $tpl->SetVariable('save_group', $saveGroup->Get());
@@ -36,7 +36,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $GroupBanners->SetStyle('display: none;');
         $tpl->SetVariable('add_banners', $GroupBanners->Get());
 
-        $cancelAction =& Piwi::CreateWidget('Button', 'cancel_action', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancelAction =& Piwi::CreateWidget('Button', 'cancel_action', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $cancelAction->SetStyle('display: none;');
         $tpl->SetVariable('cancel', $cancelAction->Get());
@@ -79,7 +79,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('GroupBanners.html');
         $tpl->SetBlock('GroupInfo');
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleEntry->SetStyle('width: 300px;');
         $tpl->SetVariable('title', $titleEntry->Get());
@@ -93,8 +93,8 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl->SetVariable('lbl_show_title', _t('BANNER_GROUPS_SHOW_TITLE'));
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
         $showTitle->SetStyle('width: 128px;');
-        $showTitle->AddOption(_t('GLOBAL_NO'),  0);
-        $showTitle->AddOption(_t('GLOBAL_YES'), 1);
+        $showTitle->AddOption(Jaws::t('NO'),  0);
+        $showTitle->AddOption(Jaws::t('YES'), 1);
         $showTitle->SetDefault('1');
         $tpl->SetVariable('show_title', $showTitle->Get());
         $tpl->SetVariable('lbl_show_title', _t('BANNER_GROUPS_SHOW_TITLE'));
@@ -108,12 +108,12 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $showType->SetDefault(0);
         $tpl->SetVariable('show_type', $showType->Get());
 
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->SetStyle('width: 128px;');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault(true);
         $tpl->SetVariable('published', $published->Get());
 

@@ -20,7 +20,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -36,7 +36,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         $result = $bannersTable->update($bgData)->where('id', $bid)->exec();
 
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -56,7 +56,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -71,7 +71,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $result = $bannersTable->update($bgData)->where('id', $bid)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 

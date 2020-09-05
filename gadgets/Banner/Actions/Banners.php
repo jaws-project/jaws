@@ -42,7 +42,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
                 }
 
                 $result[] = array(
-                    'title' => _t('GLOBAL_DOMAIN'),
+                    'title' => Jaws::t('DOMAIN'),
                     'value' => $pdomains
                 );
             }

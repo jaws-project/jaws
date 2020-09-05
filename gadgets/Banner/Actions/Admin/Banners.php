@@ -87,11 +87,11 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $tpl->SetVariable('banner_ui', $this->BannerUI());
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "javascript:saveBanner();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
@@ -137,11 +137,11 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         }
 
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $titleEntry->Get());
 
         $urlEntry =& Piwi::CreateWidget('Entry', 'url', 'http://');
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $tpl->SetVariable('url', $urlEntry->Get());
 
         $group_combo =& Piwi::CreateWidget('Combo', 'gid');
@@ -207,32 +207,32 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $tpl->SetVariable('lbl_clicks_limit', _t('BANNER_BANNERS_CLICKS'));
         $tpl->SetVariable('clicks_limit', $clicksLimitEntry->Get());
 
-        $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
+        $tpl->SetVariable('lbl_start_time', Jaws::t('START_TIME'));
         $tpl->SetBlock('BannerInfo/start_time');
         $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'start_time'));
         $tpl->ParseBlock('BannerInfo/start_time');
 
-        $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
+        $tpl->SetVariable('lbl_stop_time', Jaws::t('STOP_TIME'));
         $tpl->SetBlock('BannerInfo/stop_time');
         $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'stop_time'));
         $tpl->ParseBlock('BannerInfo/stop_time');
 
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $randomType =& Piwi::CreateWidget('Combo', 'random');
         $randomType->SetID('random');
         $randomType->setStyle('width: 85px;');
-        $randomType->AddOption(_t('GLOBAL_NO'),  '0');
-        $randomType->AddOption(_t('GLOBAL_YES'), '1');
+        $randomType->AddOption(Jaws::t('NO'),  '0');
+        $randomType->AddOption(Jaws::t('YES'), '1');
         $tpl->SetVariable('lbl_random', _t('BANNER_BANNERS_RANDOM'));
         $tpl->SetVariable('random', $randomType->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->setStyle('width: 85px;');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->AddOption(Jaws::t('NO'),  0);
+        $published->AddOption(Jaws::t('YES'), 1);
         $published->SetDefault('1');
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('BannerInfo');
@@ -262,12 +262,12 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             $bannerData['title'] = $banner['title'];
             $actions = '';
             if ($this->gadget->GetPermission('ManageBanners')) {
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                     "javascript:editBanner(this, '".$banner['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                     "javascript:deleteBanner(this, '".$banner['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
@@ -292,9 +292,9 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $grid->SetID('banners_datagrid');
         $grid->TotalRows($total);
         $grid->pageBy(18);
-        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column2->SetStyle('width: 60px; white-space:nowrap;');
         $grid->AddColumn($column2);
         $grid->SetStyle('margin-top: 0px; width: 100%;');
@@ -330,7 +330,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_UPLOAD_4'), RESPONSE_ERROR);
         } else {
             if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
                 $post['domain'] = 0;

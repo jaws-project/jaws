@@ -29,12 +29,12 @@ class Banner_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
         $new_dir = ROOT_DATA_PATH . $this->gadget->DataDirectory;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         $result = $this->installSchema('schema.xml');
@@ -65,7 +65,7 @@ class Banner_Installer extends Jaws_Gadget_Installer
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
-                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
+                $errMsg = Jaws::t('ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
                 return new Jaws_Error($errMsg);
             }
         }

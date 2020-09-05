@@ -60,7 +60,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $res = $bannersTable->insert($bData)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
         $this->gadget->session->push(_t('BANNER_BANNERS_CREATED', $title), RESPONSE_NOTICE);
@@ -117,7 +117,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $res = $bannersTable->update($bData)->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -221,7 +221,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -233,7 +233,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $res = $bannersTable->delete()->where('id', $bid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 

@@ -30,7 +30,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         $res = $bgroupsTable->insert($bgData)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
         $this->gadget->session->push(_t('BANNER_GROUPS_CREATED', $title), RESPONSE_NOTICE);
@@ -62,7 +62,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         $res = $bgroupsTable->update($bgData)->where('id', $gid)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
         $this->gadget->session->push(_t('BANNER_GROUPS_UPDATED', $title), RESPONSE_NOTICE);
@@ -87,7 +87,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -103,7 +103,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         $res = $bannersTable->delete()->where('id', $gid)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
