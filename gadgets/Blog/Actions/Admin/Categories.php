@@ -78,29 +78,29 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
 
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
         $metaKeywords->setStyle('width: 300px;');
-        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('lbl_meta_keywords', Jaws::t('META_KEYWORDS'));
         $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
 
         $metaDesc =& Piwi::CreateWidget('Entry', 'meta_desc', '');
         $metaDesc->setStyle('width: 300px;');
-        $tpl->SetVariable('lbl_meta_desc', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('lbl_meta_desc', Jaws::t('META_DESCRIPTION'));
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         $catDescription =& Piwi::CreateWidget('TextArea', 'description', '');
         $catDescription->setStyle('width: 300px;');
-        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('description', $catDescription->Get());
 
-        $btnDelete =& Piwi::CreateWidget('Button', 'btn_delete', _t('GLOBAL_DELETE'), STOCK_DELETE);
+        $btnDelete =& Piwi::CreateWidget('Button', 'btn_delete', Jaws::t('DELETE'), STOCK_DELETE);
         $btnDelete->AddEvent(ON_CLICK, 'javascript:deleteCategory();');
         $btnDelete->SetStyle('display: none;');
         $tpl->SetVariable('btn_delete', $btnDelete->Get());
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save',_t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save',Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveCategory(this.form);');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
@@ -167,11 +167,11 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     function UploadImage()
     {
         if (!isset($_FILES['file'])) {
-            return $this->gadget->session->response(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
+            return $this->gadget->session->response(Jaws::t('ERROR_UPLOAD'), RESPONSE_ERROR);
         }
         $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
         if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
-            return $this->gadget->session->response(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
+            return $this->gadget->session->response(Jaws::t('ERROR_UPLOAD'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(

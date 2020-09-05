@@ -149,7 +149,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
                         )
                     );
                     $navtpl->SetVariable('title', $prev['title']);
-                    $navtpl->SetVariable('previous', _t('GLOBAL_PREVIOUS'));
+                    $navtpl->SetVariable('previous', Jaws::t('PREVIOUS'));
                     $navtpl->ParseBlock('entry-navigation/previous');
                 }
 
@@ -163,7 +163,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
                         )
                     );
                     $navtpl->SetVariable('title', $next['title']);
-                    $navtpl->SetVariable('next', _t('GLOBAL_NEXT'));
+                    $navtpl->SetVariable('next', Jaws::t('NEXT'));
                     $navtpl->ParseBlock('entry-navigation/next');
                 }
                 $navtpl->ParseBlock('entry-navigation');

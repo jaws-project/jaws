@@ -117,12 +117,12 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             }
 
             $result[] = array(
-                'title' => _t('GLOBAL_CATEGORY'),
+                'title' => Jaws::t('CATEGORY'),
                 'value' => $pcats
             );
 
             $result[] = array(
-                'title' => _t('GLOBAL_COUNT'),
+                'title' => Jaws::t('COUNT'),
                 'value' => $this->gadget->registry->fetch('last_entries_limit')
             );
         }
@@ -199,7 +199,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $tpl->SetVariable('createtime-time', $date->Format($e['publishtime'], 'g:ia'));
 
             if(empty($e['image'])) {
-                $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+                $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
                 $tpl->SetVariable('url_image', 'data:image/png;base64,');
             } else {
                 $tpl->SetVariable('image', $e['image']);
@@ -223,7 +223,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
     {
         $result = array();
         $result[] = array(
-            'title' => _t('GLOBAL_COUNT'),
+            'title' => Jaws::t('COUNT'),
             'value' => 5
         );
 
@@ -276,7 +276,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
 
                 if(empty($entry['image'])) {
-                    $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+                    $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
                     $tpl->SetVariable('url_image', 'data:image/png;base64,');
                 } else {
                     $tpl->SetVariable('image', $entry['image']);

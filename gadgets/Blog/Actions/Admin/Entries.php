@@ -47,7 +47,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleEntry->SetStyle('width: 750px');
         $titleEntry->setId('title');
-        $tpl->SetVariable('title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('title', Jaws::t('TITLE'));
         $tpl->SetVariable('title_field', $titleEntry->Get());
 
         // sub-title
@@ -89,13 +89,13 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $catChecks->SetDefault($catDefault);
         $catChecks->SetColumns(3);
 
-        $tpl->SetVariable('category', _t('GLOBAL_CATEGORY'));
+        $tpl->SetVariable('category', Jaws::t('CATEGORY'));
         $tpl->SetVariable('category_field', $catChecks->Get());
 
         // check dynamic ACL for access to at least one category
         if(!$canAddNewItem) {
             $menu  = $this->MenuBar('NewEntry');
-            return $menu . _t('GLOBAL_ERROR_ACCESS_DENIED');
+            return $menu . Jaws::t('ERROR_ACCESS_DENIED');
         }
 
         // Summary
@@ -121,7 +121,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
-        $tpl->SetVariable('status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('status', Jaws::t('STATUS'));
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
         $statCombo->setId('published');
         $statCombo->AddOption(_t('BLOG_DRAFT'), '0');
@@ -154,13 +154,13 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Save
         $tpl->SetVariable('missing_title', _t('BLOG_MISSING_TITLE'));
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->SetSubmit();
         $tpl->SetVariable('save_button', $saveButton->Get());
 
         // Preview
         // TODO: We need a different stock icon for this.
-        $previewButton =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
+        $previewButton =& Piwi::CreateWidget('Button', 'previewButton', Jaws::t('PREVIEW'), STOCK_PRINT_PREVIEW);
         $previewButton->AddEvent(ON_CLICK, "javascript:parseText(this.form);");
 
         $tpl->SetVariable('preview_button', $previewButton->Get());
@@ -199,19 +199,19 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $fastUrlEntry->SetStyle('width: 100%; direction: ltr;');
         $tpl->SetVariable('fasturl_field', $fastUrlEntry->Get());
 
-        $tpl->SetVariable('meta_keywords_label', _t('GLOBAL_META_KEYWORDS'), '');
+        $tpl->SetVariable('meta_keywords_label', Jaws::t('META_KEYWORDS'), '');
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
         $metaKeywords->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
 
-        $tpl->SetVariable('meta_desc_label', _t('GLOBAL_META_DESCRIPTION'), '');
+        $tpl->SetVariable('meta_desc_label', Jaws::t('META_DESCRIPTION'), '');
         $metaDesc =& Piwi::CreateWidget('Entry', 'meta_desc', '');
         $metaDesc->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $tpl->SetBlock('edit_entry/advanced/tags');
-            $tpl->SetVariable('tags_label', _t('GLOBAL_TAGS'));
+            $tpl->SetVariable('tags_label', Jaws::t('TAGS'));
             $tags =& Piwi::CreateWidget('Entry', 'tags', '');
             $tags->SetStyle('width: 100%;');
             $tpl->SetVariable('tags', $tags->Get());
@@ -275,7 +275,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             if (Jaws_Error::IsError($res)) {
                 $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             } elseif (empty($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_UPLOAD_4'), RESPONSE_ERROR);
             } else {
                 $image = $res['image_file'][0]['host_filename'];
             }
@@ -363,7 +363,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('id', $id);
 
         // Title
-        $tpl->SetVariable('title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('title', Jaws::t('TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', $entry['title']);
         $titleEntry->SetStyle('width: 750px');
         $tpl->SetVariable('title_field', $titleEntry->Get());
@@ -419,7 +419,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $catChecks->SetDefault($catDefault);
         $catChecks->SetColumns(3);
 
-        $tpl->SetVariable('category', _t('GLOBAL_CATEGORY'));
+        $tpl->SetVariable('category', Jaws::t('CATEGORY'));
         $tpl->SetVariable('category_field', $catChecks->Get());
 
         // for compatibility with old versions
@@ -459,7 +459,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
-        $tpl->SetVariable('status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('status', Jaws::t('STATUS'));
         $entry['published'] = ($entry['published'] === true) ? 1 : 0;
         $statData = $entry['published'];
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
@@ -499,7 +499,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Preview
         // TODO: We need a different stock icon for this.
         $previewButton =& Piwi::CreateWidget('Button', 'preview',
-                                                _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
+                                                Jaws::t('PREVIEW'), STOCK_PRINT_PREVIEW);
         $previewButton->SetID('preview_button');
         $previewButton->AddEvent(ON_CLICK, "javascript:parseText(this.form);");
         $tpl->SetVariable('preview_button', $previewButton->Get());
@@ -541,19 +541,19 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $fastUrlEntry->SetStyle('width: 100%');
         $tpl->SetVariable('fasturl_field', $fastUrlEntry->Get());
 
-        $tpl->SetVariable('meta_keywords_label', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('meta_keywords_label', Jaws::t('META_KEYWORDS'));
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $entry['meta_keywords']);
         $metaKeywords->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
 
-        $tpl->SetVariable('meta_desc_label', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('meta_desc_label', Jaws::t('META_DESCRIPTION'));
         $metaDesc =& Piwi::CreateWidget('Entry', 'meta_desc', $entry['meta_description']);
         $metaDesc->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $tpl->SetBlock('edit_entry/advanced/tags');
-            $tpl->SetVariable('tags_label', _t('GLOBAL_TAGS'));
+            $tpl->SetVariable('tags_label', Jaws::t('TAGS'));
             $postTags = implode(', ', $entry['tags']);
             $tags =& Piwi::CreateWidget('Entry', 'tags', $postTags);
             $tags->SetStyle('width: 100%;');
@@ -637,7 +637,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 if (Jaws_Error::IsError($res)) {
                     $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
                 } elseif (empty($res)) {
-                    $this->gadget->session->push(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                    $this->gadget->session->push(Jaws::t('ERROR_UPLOAD_4'), RESPONSE_ERROR);
                 } else {
                     $image = $res['image_file'][0]['host_filename'];
 
@@ -724,13 +724,13 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('delete_message', _t('BLOG_DELETE_CONFIRM_ENTRY'));
         // Delete
         $deleteButton =& Piwi::CreateWidget('Button', 'delete',
-                                            _t('GLOBAL_DELETE'), STOCK_DELETE);
+                                            Jaws::t('DELETE'), STOCK_DELETE);
         $deleteButton->SetSubmit();
         $tpl->SetVariable('delete_button', $deleteButton->Get());
 
         // Cancel
         $cancelButton =& Piwi::CreateWidget('Button', 'cancel',
-                                            _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+                                            Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancelButton->AddEvent(ON_CLICK, "javascript:this.form.action.value = 'ListEntries'; this.form.submit(); ");
         $tpl->SetVariable('cancel_button', $cancelButton->Get());
 
@@ -808,7 +808,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $statusCombo->AddOption(_t('BLOG_DRAFT'), '0');
         $statusCombo->SetDefault($status);
         $statusCombo->AddEvent(ON_CHANGE, 'javascript:searchPost();');
-        $tpl->SetVariable('status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('status', Jaws::t('STATUS'));
         $tpl->SetVariable('status_field', $statusCombo->Get());
 
         $catCombo->SetDefault($category);
@@ -817,7 +817,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('category_field', $catCombo->Get());
 
         // Free text search
-        $searchButton =& Piwi::CreateWidget('Button', 'searchButton', _t('GLOBAL_SEARCH'), STOCK_SEARCH);
+        $searchButton =& Piwi::CreateWidget('Button', 'searchButton', Jaws::t('SEARCH'), STOCK_SEARCH);
         $searchButton->AddEvent(ON_CLICK, 'javascript:searchPost();');
         $tpl->SetVariable('search', $searchButton->Get());
 
@@ -834,12 +834,12 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $grid->SetStyle('width: 100%;');
         $grid->TotalRows($pModel->TotalOfPosts());
         $grid->useMultipleSelection();
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_TITLE')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('BLOG_EDIT_TIMESTAMP')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_UPDATETIME')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('UPDATETIME')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('BLOG_AUTHOR')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('STATUS')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
 
         //Tools
         $gridForm =& Piwi::CreateWidget('Form');
@@ -850,9 +850,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $actions =& Piwi::CreateWidget('Combo', 'entries_actions');
         $actions->SetID('entries_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'),  'delete');
+        $actions->AddOption(Jaws::t('DELETE'),  'delete');
         $actions->AddOption(_t('BLOG_DRAFT'),     '0');
         $actions->AddOption(_t('BLOG_PUBLISHED'), '1');
 
@@ -909,7 +909,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             $post['published']   = ($row['published'] === true) ? _t('BLOG_PUBLISHED') : _t('BLOG_DRAFT');
 
             $actions = '';
-            $link = Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+            $link = Piwi::CreateWidget('Link', Jaws::t('EDIT'),
                                        $common_url.'&amp;reqAction=EditEntry&amp;id='.$id,
                                        STOCK_EDIT);
             $actions = $link->Get().'&nbsp;';
@@ -922,7 +922,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
 
             if ($this->gadget->GetPermission('DeleteEntries')) {
-                $link = Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                $link = Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                                            $common_url.'&amp;reqAction=DeleteEntry&amp;id='.$id,
                                            STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';

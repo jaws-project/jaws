@@ -21,7 +21,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
         $result = array();
 
         $result[] = array(
-            'title' => _t('GLOBAL_TIME'),
+            'title' => Jaws::t('TIME'),
             'value' => array(
                 0 => _t('BLOG_POPULAR_POSTS_ALLTIME'),
                 1 => _t('BLOG_POPULAR_POSTS_TODAY'),
@@ -29,7 +29,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
         );
 
         $result[] = array(
-            'title' => _t('GLOBAL_COUNT'),
+            'title' => Jaws::t('COUNT'),
             'value' => $this->gadget->registry->fetch('popular_limit')
         );
         return $result;
@@ -91,7 +91,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
                 $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
 
                 if(empty($entry['image'])) {
-                    $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+                    $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
                     $tpl->SetVariable('url_image', 'data:image/png;base64,');
                 } else {
                     $tpl->SetVariable('image', $entry['image']);
@@ -116,7 +116,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
         } else {
             if ($entriesCount > $limit) {
                 $tpl->SetBlock("$baseBlock/more");
-                $tpl->SetVariable('lbl_more', _t('GLOBAL_MORE'));
+                $tpl->SetVariable('lbl_more', Jaws::t('MORE'));
                 $tpl->SetVariable('url_more', $this->gadget->urlMap('PopularPosts'));
                 $tpl->ParseBlock("$baseBlock/more");
             }

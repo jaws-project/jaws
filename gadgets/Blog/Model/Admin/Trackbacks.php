@@ -121,7 +121,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
         $result = Jaws_ORM::getInstance()->table('blog_trackback')->delete()->where('id', $id)->exec();
 
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('GLOBAL_TRACKBACKS_ERROR_NOT_DELETED'));
+            return new Jaws_Error(Jaws::t('TRACKBACKS_ERROR_NOT_DELETED'));
         }
 
         return true;
@@ -198,7 +198,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
 
         $rows = $table->orderBy('createtime desc')->fetchAll();
         if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'));
+            return new Jaws_Error(Jaws::t('COMMENT_ERROR_GETTING_FILTERED_COMMENTS'));
         }
 
         return $rows;
@@ -244,10 +244,10 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
                     break;
             }
 
-            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $url, STOCK_EDIT);
+            $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'), $url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
 
-            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+            $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
                 "javascript:trackbackDelete('".$row['id']."');",
                 STOCK_DELETE);
             $actions.= $link->Get().'&nbsp;';
@@ -326,7 +326,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
 
         $howmany = $table->fetchOne();
         if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'));
+            return new Jaws_Error(Jaws::t('COMMENT_ERROR_GETTING_FILTERED_COMMENTS'));
         }
 
         return $howmany;

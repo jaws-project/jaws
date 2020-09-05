@@ -45,7 +45,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTrackbacks'));
 
         $tpl->SetVariable('trackbacks_where', _t('BLOG_TRACKBACK_WHERE'));
-        $tpl->SetVariable('status_label', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('status_label', Jaws::t('STATUS'));
         $this->gadget->define('deleteConfirm', _t('BLOG_DELETE_MASSIVE_TRACKBACKS'));
 
         //Status
@@ -97,10 +97,10 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $grid->TotalRows($total);
         $grid->useMultipleSelection();
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('BLOG_TRACKBACK_BLOGNAME')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_TITLE')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('CREATED')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('STATUS')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
 
         //Tools
         $gridForm =& Piwi::CreateWidget('Form');
@@ -111,9 +111,9 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
 
         $actions =& Piwi::CreateWidget('Combo', 'trackbacks_actions');
         $actions->SetID('trackbacks_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(Jaws::t('DELETE'), 'delete');
         $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), 'approved');
         $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), 'waiting');
         $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), 'spam');
@@ -177,26 +177,26 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
 
         $url =& Piwi::CreateWidget('Entry', 'url', Jaws_XSS::filter($trackback['url']));
         $url->SetStyle('direction: ltr;');
-        $url->SetTitle(_t('GLOBAL_URL'));
+        $url->SetTitle(Jaws::t('URL'));
         $url->SetStyle('width: 400px;');
 
         $createTime =& Piwi::CreateWidget('Entry', 'create_time', $date->Format($trackback['createtime']));
-        $createTime->SetTitle(_t('GLOBAL_CREATETIME'));
+        $createTime->SetTitle(Jaws::t('CREATETIME'));
         $createTime->SetStyle('direction: ltr;');
         $createTime->SetEnabled(false);
 
         $updateTime =& Piwi::CreateWidget('Entry', 'update_time', $date->Format($trackback['updatetime']));
-        $updateTime->SetTitle(_t('GLOBAL_UPDATETIME'));
+        $updateTime->SetTitle(Jaws::t('UPDATETIME'));
         $updateTime->SetStyle('direction: ltr;');
         $updateTime->SetEnabled(false);
 
         $ip =& Piwi::CreateWidget('Entry', 'ip', $trackback['ip']);
-        $ip->SetTitle(_t('GLOBAL_IP'));
+        $ip->SetTitle(Jaws::t('IP'));
         $ip->SetStyle('direction: ltr;');
         $ip->SetEnabled(false);
 
         $subject =& Piwi::CreateWidget('Entry', 'title', Jaws_XSS::filter($trackback['title']));
-        $subject->SetTitle(_t('GLOBAL_TITLE'));
+        $subject->SetTitle(Jaws::t('TITLE'));
         $subject->SetStyle('width: 400px;');
 
         $excerpt =& Piwi::CreateWidget('TextArea', 'excerpt', $trackback['excerpt']);
@@ -205,11 +205,11 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $excerpt->SetStyle('width: 400px;');
         $excerpt->SetTitle(_t('BLOG_TRACKBACK_EXCERPT'));
 
-        $cancelButton =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancelButton =& Piwi::CreateWidget('Button', 'previewButton', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancelButton->AddEvent(ON_CLICK, 'history.go(-1);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($cancelButton);
 
         $fieldset->Add($staticText);

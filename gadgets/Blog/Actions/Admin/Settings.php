@@ -38,7 +38,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // $fieldset =& Piwi::CreateWidget('FieldSet', _t('BLOG_ADDITIONAL_SETTINGS'));
 
         // Save Button
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript:saveSettings(this.form);');
 
         $sModel = $this->gadget->model->loadAdmin('Settings');
@@ -128,16 +128,16 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         $commCombo =& Piwi::CreateWidget('Combo', 'comments');
         $commCombo->setContainerClass('oneline');
         $commCombo->SetTitle(_t('BLOG_COMMENTS'));
-        $commCombo->AddOption(_t('GLOBAL_ENABLED'), 'true');
-        $commCombo->AddOption(_t('GLOBAL_DISABLED'), 'false');
+        $commCombo->AddOption(Jaws::t('ENABLED'), 'true');
+        $commCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $commCombo->SetDefault(isset($settings['comments']) ? $settings['comments'] : '');
 
         // Trackback
         $tbCombo =& Piwi::CreateWidget('Combo', 'trackback');
         $tbCombo->setContainerClass('oneline');
         $tbCombo->SetTitle(_t('BLOG_TRACKBACK'));
-        $tbCombo->AddOption(_t('GLOBAL_ENABLED'), 'true');
-        $tbCombo->AddOption(_t('GLOBAL_DISABLED'), 'false');
+        $tbCombo->AddOption(Jaws::t('ENABLED'), 'true');
+        $tbCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $tbCombo->SetDefault($settings['trackback']);
 
         // Trackback status
@@ -152,8 +152,8 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         $pbCombo =& Piwi::CreateWidget('Combo', 'pingback');
         $pbCombo->setContainerClass('oneline');
         $pbCombo->SetTitle(_t('BLOG_PINGBACK'));
-        $pbCombo->AddOption(_t('GLOBAL_ENABLED'), 'true');
-        $pbCombo->AddOption(_t('GLOBAL_DISABLED'), 'false');
+        $pbCombo->AddOption(Jaws::t('ENABLED'), 'true');
+        $pbCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $pbCombo->SetDefault($settings['pingback']);
 
         $fieldset->Add($viewCombo);
@@ -173,7 +173,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         $form->Add($fieldset);
 
         $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
+        $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
         $buttonbox->PackStart($save);
 
         $form->Add($buttonbox);

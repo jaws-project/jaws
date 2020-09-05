@@ -109,7 +109,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
     function UpdateCategory($cid, $name, $description, $fast_url, $meta_keywords, $meta_desc, $image_info, $delete_image)
     {
         if(!$this->gadget->GetPermission('CategoryManage', $cid)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
             return false;
         }
 

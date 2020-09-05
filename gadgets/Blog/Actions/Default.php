@@ -116,7 +116,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
 
         if(empty($entry['image'])) {
-            $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+            $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
             $tpl->SetVariable('url_image', 'data:image/png;base64,');
         } else {
             $tpl->SetVariable('image', $entry['image']);
