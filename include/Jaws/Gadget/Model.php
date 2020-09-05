@@ -10,45 +10,14 @@
  * @copyright   2005-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Model
+class Jaws_Gadget_Model extends Jaws_Gadget_Class
 {
-    /**
-     * Jaws app object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $app = null;
-
-    /**
-     * Jaws_Gadget object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $gadget = null;
-
     /**
      * Store models objects for later use so we aren't running around with multiple copies
      * @var     array
      * @access  private
      */
     private $objects = array();
-
-
-    /**
-     * constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    public function __construct($gadget)
-    {
-        $this->gadget = $gadget;
-        $this->app = Jaws::getInstance();
-    }
-
 
     /**
      * Loads the gadget model file in question, makes a instance and

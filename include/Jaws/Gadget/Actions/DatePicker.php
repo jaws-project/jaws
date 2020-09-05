@@ -8,29 +8,8 @@
  * @copyright   2017-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Actions_DatePicker
+class Jaws_Gadget_Actions_DatePicker extends Jaws_Gadget_Class
 {
-    /**
-     * Jaws_Gadget object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $gadget = null;
-
-
-    /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    public function __construct($gadget)
-    {
-        $this->gadget = $gadget;
-    }
-
     /**
      * Get DatePicker calendar
      *

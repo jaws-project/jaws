@@ -2,22 +2,14 @@
 /**
  * Jaws gadget installer class
  *
- * @category   Gadget
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012-2020 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2012-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Installer
+class Jaws_Gadget_Installer extends Jaws_Gadget_Class
 {
-    /**
-     * Jaws app object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $app = null;
-
     /**
      * Default ACL value of front-end gadget access
      *
@@ -49,27 +41,6 @@ class Jaws_Gadget_Installer
      * @access  public
      */
     public $_ACLKeys = array();
-
-    /**
-     * Jaws_Gadget object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $gadget = null;
-
-    /**
-     * constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    public function __construct($gadget)
-    {
-        $this->gadget = $gadget;
-        $this->app = Jaws::getInstance();
-    }
 
     /**
      * Loads the Installer class object

@@ -2,34 +2,14 @@
 /**
  * Jaws Gadget Translate
  *
- * @category   Gadget
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2020 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2008-2020 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Translate
+class Jaws_Gadget_Translate extends Jaws_Gadget_Class
 {
-    /**
-     * Jaws_Gadget object
-     *
-     * @var     object
-     * @access  protected
-     */
-    var $gadget = null;
-
-    /**
-     * constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    function __construct($gadget)
-    {
-        $this->gadget = $gadget;
-    }
-
     /**
      * Insert a new translation statement
      *

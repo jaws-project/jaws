@@ -8,37 +8,8 @@
  * @copyright   2017-2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_Actions_Editor
+class Jaws_Gadget_Actions_Editor extends Jaws_Gadget_Class
 {
-    /**
-     * Jaws app object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $app = null;
-
-    /**
-     * Jaws_Gadget object
-     *
-     * @var     object
-     * @access  public
-     */
-    public $gadget = null;
-
-    /**
-     * Constructor
-     *
-     * @access  public
-     * @param   object $gadget Jaws_Gadget object
-     * @return  void
-     */
-    public function __construct($gadget)
-    {
-        $this->gadget = $gadget;
-        $this->app = Jaws::getInstance();
-    }
-
     /**
      * Prepares the jaws Editor
      *
