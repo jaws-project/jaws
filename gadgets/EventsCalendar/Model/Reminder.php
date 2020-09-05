@@ -23,7 +23,7 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         $table->select(
             'events.id', 'subject', 'type', 'priority', 'symbol', 'link',
-            'location', 'recs.start_time', 'owner', 'nickname'
+            'location', 'recs.start_time', 'owner', 'nickname', 'description'
         );
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
         $table->join('ec_users', 'events.id', 'ec_users.event');
