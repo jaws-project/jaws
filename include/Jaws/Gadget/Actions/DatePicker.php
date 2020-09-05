@@ -61,10 +61,10 @@ class Jaws_Gadget_Actions_DatePicker
         $tpl->SetVariable('name', $options['name']);
         $tpl->SetVariable('value', isset($options['value'])? $options['value'] : '');
         $tpl->SetVariable('calendar', strtolower($calendar));
-        $tpl->SetVariable('lbl_today', _t('GLOBAL_TODAY'));
-        $tpl->SetVariable('lbl_month', _t('GLOBAL_MONTH'));
-        $tpl->SetVariable('lbl_year', _t('GLOBAL_YEAR'));
-        $tpl->SetVariable('lbl_select_month_year', _t('GLOBAL_SELECT_MONTH_YEAR'));
+        $tpl->SetVariable('lbl_today', Jaws::t('TODAY'));
+        $tpl->SetVariable('lbl_month', Jaws::t('MONTH'));
+        $tpl->SetVariable('lbl_year', Jaws::t('YEAR'));
+        $tpl->SetVariable('lbl_select_month_year', Jaws::t('SELECT_MONTH_YEAR'));
         if (isset($options['label'])) {
             $tpl->SetBlock("$block/datepicker/label");
             $tpl->SetVariable('label', $options['label']);

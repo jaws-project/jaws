@@ -182,7 +182,7 @@ class Jaws_Gadget
         if (!isset($instances[$gadget])) {
             if (!is_dir(ROOT_JAWS_PATH . "gadgets/$gadget")) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
+                    Jaws::t('ERROR_GADGET_DOES_NOT_EXIST', $gadget),
                     __FUNCTION__
                 );
             }
@@ -190,7 +190,7 @@ class Jaws_Gadget
             $file = ROOT_JAWS_PATH . "gadgets/$gadget/Info.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
+                    Jaws::t('ERROR_GADGET_DOES_NOT_EXIST', $gadget),
                     __FUNCTION__
                 );
             }
@@ -204,7 +204,7 @@ class Jaws_Gadget
 
                 if (!in_array($gadget, $available_gadgets)) {
                     return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_GADGET_NOT_AVAILABLE', $gadget),
+                        Jaws::t('ERROR_GADGET_NOT_AVAILABLE', $gadget),
                         __FUNCTION__,
                         JAWS_ERROR_INFO
                     );

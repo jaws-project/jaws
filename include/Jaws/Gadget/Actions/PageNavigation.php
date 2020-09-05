@@ -61,7 +61,7 @@ class Jaws_Gadget_Actions_PageNavigation
             $block = $tpl->GetCurrentBlockPath();
         }
         $tpl->SetBlock("$block/pagination");
-        //$tpl->SetVariable('total', _t('GLOBAL_PAGINATION_COUNT', $pager['total']));
+        //$tpl->SetVariable('total', Jaws::t('PAGINATION_COUNT', $pager['total']));
 
         foreach ($pager as $k => $v) {
             $tpl->SetBlock("$block/pagination/page");
@@ -70,23 +70,23 @@ class Jaws_Gadget_Actions_PageNavigation
             if ($k == 'next') {
                 if ($v) {
                     $tpl->SetBlock("$block/pagination/page/next");
-                    $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_NEXT'));
+                    $tpl->SetVariable('lbl', Jaws::t('PAGINATION_NEXT'));
                     $tpl->SetVariable('url', $pageURL);
                     $tpl->ParseBlock("$block/pagination/page/next");
                 } else {
                     $tpl->SetBlock("$block/pagination/page/stop");
-                    $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_NEXT'));
+                    $tpl->SetVariable('lbl', Jaws::t('PAGINATION_NEXT'));
                     $tpl->ParseBlock("$block/pagination/page/stop");
                 }
             } elseif ($k == 'previous') {
                 if ($v) {
                     $tpl->SetBlock("$block/pagination/page/previous");
-                    $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_PREVIOUS'));
+                    $tpl->SetVariable('lbl', Jaws::t('PAGINATION_PREVIOUS'));
                     $tpl->SetVariable('url', $pageURL);
                     $tpl->ParseBlock("$block/pagination/page/previous");
                 } else {
                     $tpl->SetBlock("$block/pagination/page/start");
-                    $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_PREVIOUS'));
+                    $tpl->SetVariable('lbl', Jaws::t('PAGINATION_PREVIOUS'));
                     $tpl->ParseBlock("$block/pagination/page/start");
                 }
             } elseif ($k == 'separator1' || $k == 'separator2') {

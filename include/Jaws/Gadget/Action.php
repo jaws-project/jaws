@@ -242,7 +242,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
     public function Execute($action, $params = null, $section = '', $mode = ACTION_MODE_NORMAL)
     {
         if (false === $action) {
-            return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
+            return Jaws_Error::raiseError(Jaws::t('ACTION_NO_DEFAULT'), __FUNCTION__);
         }
 
         if (!$this->app->session->GetPermission(

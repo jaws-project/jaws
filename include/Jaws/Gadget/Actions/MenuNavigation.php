@@ -61,7 +61,7 @@ class Jaws_Gadget_Actions_MenuNavigation
         $tpl->SetBlock("$block/navigation");
 
         $tpl->SetVariable('gadget', $this->gadget->name);
-        $tpl->SetVariable('label', empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label);
+        $tpl->SetVariable('label', empty($label)? Jaws::t('GADGET_ACTIONS_MENUS') : $label);
 
         if (empty($options)) {
             // use gadget normal actions if navigation index exist
@@ -184,7 +184,7 @@ class Jaws_Gadget_Actions_MenuNavigation
 
         return array(
             'gadget' => $this->gadget->name,
-            'label'  => empty($label)? _t('GLOBAL_GADGET_ACTIONS_MENUS') : $label,
+            'label'  => empty($label)? Jaws::t('GADGET_ACTIONS_MENUS') : $label,
             'menus'  => $options
         );
     }

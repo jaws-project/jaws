@@ -154,7 +154,7 @@ class Jaws_Gadget_Installer
         foreach ($this->gadget->requirement as $req) {
             if (!Jaws_Gadget::IsGadgetInstalled($req)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
+                    Jaws::t('GI_GADGET_REQUIRES', $req, $this->gadget->name),
                     __FUNCTION__
                 );
             }
@@ -307,7 +307,7 @@ class Jaws_Gadget_Installer
         foreach ($this->gadget->requirement as $req) {
             if (!Jaws_Gadget::IsGadgetInstalled($req)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
+                    Jaws::t('GI_GADGET_REQUIRES', $req, $this->gadget->name),
                     __FUNCTION__
                 );
             }
@@ -375,7 +375,7 @@ class Jaws_Gadget_Installer
         foreach ($this->gadget->requirement as $req) {
             if (!Jaws_Gadget::IsGadgetEnabled($req)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
+                    Jaws::t('GI_GADGET_REQUIRES', $req, $this->gadget->name),
                     __FUNCTION__
                 );
             }
@@ -496,7 +496,7 @@ class Jaws_Gadget_Installer
         }
         if (!file_exists($main_file)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $new_schema),
+                Jaws::t('ERROR_SQLFILE_NOT_EXISTS', $new_schema),
                 __FUNCTION__,
                 JAWS_ERROR_ERROR,
                 1
@@ -511,7 +511,7 @@ class Jaws_Gadget_Installer
             }
             if (!file_exists($base_file)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $old_schema),
+                    Jaws::t('ERROR_SQLFILE_NOT_EXISTS', $old_schema),
                     __FUNCTION__,
                     JAWS_ERROR_ERROR,
                     1
@@ -522,7 +522,7 @@ class Jaws_Gadget_Installer
         $result = Jaws_DB::getInstance()->installSchema($main_file, $variables, $base_file, $init_data);
         if (Jaws_Error::IsError($result)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_FAILED_QUERY_FILE',$new_schema . (empty($old_schema)? '': "/$old_schema")),
+                Jaws::t('ERROR_FAILED_QUERY_FILE',$new_schema . (empty($old_schema)? '': "/$old_schema")),
                 __FUNCTION__,
                 JAWS_ERROR_ERROR,
                 1
