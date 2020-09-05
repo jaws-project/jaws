@@ -18,9 +18,9 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
         $result = array();
         $model = $this->gadget->model->load('Rating');
         $gadgets = $model->GetRateableGadgets();
-        array_unshift($gadgets, _t('GLOBAL_ALL'));
+        array_unshift($gadgets, Jaws::t('ALL'));
         $result[] = array(
-            'title' => _t('GLOBAL_GADGET'),
+            'title' => Jaws::t('GADGET'),
             'value' => $gadgets
         );
 

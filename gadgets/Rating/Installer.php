@@ -58,7 +58,7 @@ class Rating_Installer extends Jaws_Gadget_Installer
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
-                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
+                $errMsg = Jaws::t('ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
                 return new Jaws_Error($errMsg);
             }
         }
