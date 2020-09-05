@@ -457,7 +457,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
                     if (!file_exists($pm_dir)) {
                         if (!Jaws_Utils::mkdir($pm_dir)) {
-                            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', ROOT_DATA_PATH));
+                            return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', ROOT_DATA_PATH));
                         }
                     }
 

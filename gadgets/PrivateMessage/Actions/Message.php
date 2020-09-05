@@ -45,8 +45,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_delete', _t('GLOBAL_DELETE'));
-        $this->gadget->define('lbl_view', _t('GLOBAL_VIEW'));
+        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->define('lbl_view', Jaws::t('VIEW'));
         $this->gadget->define('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
         $this->gadget->define('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
         $this->gadget->define('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
@@ -54,8 +54,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $this->gadget->define('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
         $this->gadget->define('lbl_unarchive', _t('PRIVATEMESSAGE_UNARCHIVE'));
         $this->gadget->define('lbl_view_message', _t('PRIVATEMESSAGE_MESSAGE_VIEW'));
-        $this->gadget->define('datagridNoItems', _t('GLOBAL_NOTFOUND'));
-        $this->gadget->define('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
+        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Messages.html');
         $tpl->SetBlock('messages');
@@ -72,19 +72,19 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             'notifications' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS,
         ));
 
-        $tpl->SetVariable('lbl_term', _t('GLOBAL_TERM'));
-        $tpl->SetVariable('lbl_reload', _t('GLOBAL_RELOAD'));
+        $tpl->SetVariable('lbl_term', Jaws::t('TERM'));
+        $tpl->SetVariable('lbl_reload', Jaws::t('RELOAD'));
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
         $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
         $tpl->SetVariable('lbl_compose', _t('PRIVATEMESSAGE_COMPOSE'));
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK'));
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
 
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
         $gridColumns = array();
         switch ($folder) {
@@ -92,9 +92,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $title = _t('PRIVATEMESSAGE_NOTIFICATIONS');
 
                 $tpl->SetBlock('messages/filter_read');
-                $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
-                $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-                $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+                $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
+                $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
+                $tpl->SetVariable('lbl_no', Jaws::t('NO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
                 $tpl->ParseBlock('messages/filter_read');
@@ -103,9 +103,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $title = _t('PRIVATEMESSAGE_INBOX');
 
                 $tpl->SetBlock('messages/filter_read');
-                $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
-                $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-                $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+                $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
+                $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
+                $tpl->SetVariable('lbl_no', Jaws::t('NO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
                 $tpl->ParseBlock('messages/filter_read');
@@ -173,10 +173,10 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $this->gadget->action->load('MenuNavigation')->navigation($tpl, $options);
 
         $tpl->SetVariable('folder', $folder);
-        $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('filter', Jaws::t('SEARCH'));
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
-        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
+        $tpl->SetVariable('lbl_actions', Jaws::t('ACTIONS'));
+        $tpl->SetVariable('lbl_no_action', Jaws::t('NO_ACTION'));
 
         $model = $this->gadget->model->load('Message');
         $user = $this->app->session->user->id;
@@ -340,7 +340,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
         $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
         $tpl->SetVariable('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
         $tpl->SetVariable('icon_archive', 'gadgets/PrivateMessage/Resources/images/archive-mini.png');
         $tpl->SetVariable('icon_restore_archive', 'gadgets/PrivateMessage/Resources/images/unarchive-mini.png');
         $tpl->SetVariable('icon_trash', 'gadgets/PrivateMessage/Resources/images/trash-mini.png');
