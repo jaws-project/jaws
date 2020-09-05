@@ -161,25 +161,25 @@ class Search_Actions_Results extends Jaws_Gadget_Action
                 if ($k == 'next') {
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/next');
-                        $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXTPAGE'));
+                        $tpl->SetVariable('lbl_next', Jaws::t('NEXTPAGE'));
                         $url = $query_string . $v;
                         $tpl->SetVariable('url_next', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/next');
                     } else {
                         $tpl->SetBlock('pager/numbered-navigation/item/no_next');
-                        $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXTPAGE'));
+                        $tpl->SetVariable('lbl_next', Jaws::t('NEXTPAGE'));
                         $tpl->ParseBlock('pager/numbered-navigation/item/no_next');
                     }
                 } elseif ($k == 'previous') {
                     if ($v) {
                         $tpl->SetBlock('pager/numbered-navigation/item/previous');
-                        $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUSPAGE'));
+                        $tpl->SetVariable('lbl_previous', Jaws::t('PREVIOUSPAGE'));
                         $url = $query_string . $v;
                         $tpl->SetVariable('url_previous', $url);
                         $tpl->ParseBlock('pager/numbered-navigation/item/previous');
                     } else {
                         $tpl->SetBlock('pager/numbered-navigation/item/no_previous');
-                        $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUSPAGE'));
+                        $tpl->SetVariable('lbl_previous', Jaws::t('PREVIOUSPAGE'));
                         $tpl->ParseBlock('pager/numbered-navigation/item/no_previous');
                     }
                 } elseif ($k == 'separator1' || $k == 'separator2') {

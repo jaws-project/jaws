@@ -23,7 +23,7 @@ class Search_Actions_Admin_Settings extends Jaws_Gadget_Action
         $tpl->SetBlock('admin');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('settings', _t('GLOBAL_SETTINGS'));
+        $tpl->SetVariable('settings', Jaws::t('SETTINGS'));
 
         $model = $this->gadget->model->load('Search');
         $gadgetList = $model->GetSearchableGadgets();
@@ -58,7 +58,7 @@ class Search_Actions_Admin_Settings extends Jaws_Gadget_Action
             $tpl->SetVariable('display', 'block');
         }
 
-        $saveButton =& Piwi::CreateWidget('Button', 'Save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $saveButton =& Piwi::CreateWidget('Button', 'Save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, 'javascript:saveChanges(this.form);');
 
         $tpl->SetVariable('save_button', $saveButton->Get());

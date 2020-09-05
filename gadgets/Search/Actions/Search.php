@@ -52,7 +52,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
 
             foreach ($searchableGadgets as $gadget) {
                 if ($gadget == '*') {
-                    $title = _t('GLOBAL_ALL');
+                    $title = Jaws::t('ALL');
                 } else {
                     $gInfo = Jaws_Gadget::getInstance($gadget);
                     if (Jaws_Error::IsError($gInfo)) {
@@ -135,7 +135,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
 
         $gchk =& Piwi::CreateWidget('Combo', 'gadgets');
-        $gchk->addOption(_t('GLOBAL_ALL'), '');
+        $gchk->addOption(Jaws::t('ALL'), '');
         foreach ($searchableGadgets as $gadget) {
             $info = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($info)) {
