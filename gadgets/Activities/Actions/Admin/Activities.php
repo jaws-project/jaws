@@ -55,7 +55,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
 
         // Gadgets Filter
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
-        $gadgetsCombo->AddOption(_t('GLOBAL_ALL'), "", false);
+        $gadgetsCombo->AddOption(Jaws::t('ALL'), "", false);
         $gadgets = $model->GetHookedGadgets();
         foreach ($gadgets as $name => $title) {
             $gadgetsCombo->AddOption($title, $name);
@@ -63,12 +63,12 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $gadgetsCombo->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $gadgetsCombo->SetDefault(-1);
         $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
-        $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
+        $tpl->SetVariable('lbl_filter_gadget', Jaws::t('GADGETS'));
 
         // Domains
         $allDomains = $model->GetAllDomains();
         $domainCombo =& Piwi::CreateWidget('Combo', 'filter_domain');
-        $domainCombo->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $domainCombo->AddOption(Jaws::t('ALL'), -1, false);
         foreach ($allDomains as $domain) {
             if (empty($domain)) {
                 $domainCombo->AddOption(_t('ACTIVITIES_MY_DOMAIN'), '', false);
@@ -83,8 +83,8 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
 
         // Order
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
-        $orderType->AddOption(_t('GLOBAL_DATE'). ' &darr;', 'date');
-        $orderType->AddOption(_t('GLOBAL_DATE'). ' &uarr;', 'date desc');
+        $orderType->AddOption(Jaws::t('DATE'). ' &darr;', 'date');
+        $orderType->AddOption(Jaws::t('DATE'). ' &uarr;', 'date desc');
         $orderType->AddOption(_t('ACTIVITIES_HITS'). ' &darr;', 'hits');
         $orderType->AddOption(_t('ACTIVITIES_HITS'). ' &uarr;', 'hits desc');
         $orderType->AddEvent(ON_CHANGE, "javascript:searchActivities();");
@@ -98,10 +98,10 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'sa_actions');
         $actions->SetID('sa_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
         if ($this->gadget->GetPermission('DeleteActivities')) {
-            $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+            $actions->AddOption(Jaws::t('DELETE'), 'delete');
             $actions->AddOption(_t('ACTIVITIES_DELETE_ALL'), 'deleteAll');
         }
         $tpl->SetVariable('actions_combo', $actions->Get());
@@ -111,12 +111,12 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $this->gadget->define('confirmActivitiesDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $this->gadget->define('confirmActivitiesDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl->ParseBlock('Activities');
         return $tpl->Get();
@@ -139,10 +139,10 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $column1->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column1);
 
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_GADGETS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', Jaws::t('GADGETS'), null, false);
         $grid->AddColumn($column2);
 
-        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column3 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
@@ -150,7 +150,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $column4->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
-        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
+        $column5 = Piwi::CreateWidget('Column', Jaws::t('DATE'), null, false);
         $column5->SetStyle('width:128px; white-space:nowrap;');
         $grid->AddColumn($column5);
 
