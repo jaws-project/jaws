@@ -53,7 +53,7 @@ class LinkDump_Actions_Admin_Groups extends Jaws_Gadget_Action
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/GroupsUI');
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleEntry->SetStyle('width: 200px;');
         $tpl->SetVariable('title', $titleEntry->Get());

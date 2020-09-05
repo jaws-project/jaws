@@ -144,7 +144,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
                 )
             )->where('gid', $old_gid)->and()->where('rank', $old_rank, '>')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
 
@@ -155,7 +155,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif (empty($old_rank)) {
@@ -165,7 +165,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
                 )
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank > $old_rank) {
@@ -177,7 +177,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $old_rank, '>');
             $res = $linksTable->and()->where('rank', $new_rank, '<=')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         } elseif ($new_rank < $old_rank) {
@@ -188,7 +188,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
             )->where('id', $lid, '<>')->and()->where('gid', $new_gid)->and()->where('rank', $new_rank, '>=');
             $res = $linksTable->and()->where('rank', $old_rank, '<')->exec();
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
         }

@@ -29,7 +29,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('GLOBAL_CATEGORY'),
+                'title' => Jaws::t('CATEGORY'),
                 'value' => $pgroups
             );
         }

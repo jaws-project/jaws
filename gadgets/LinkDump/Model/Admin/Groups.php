@@ -36,7 +36,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
         $gid = $groupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($gid)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -70,7 +70,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         $groupsTable = Jaws_ORM::getInstance()->table('linkdump_groups');
         $res = $groupsTable->update($gData)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -96,7 +96,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -111,7 +111,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             foreach ($links as $link) {
                 $res = $model->DeleteReferenceTags('LinkDump', 'link', $link['id']);
                 if (Jaws_Error::IsError($res)) {
-                    $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                    $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                     return false;
                 }
             }
@@ -120,13 +120,13 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->table('linkdump_links');
         $res = $objORM->delete()->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
         $res = $objORM->delete()->table('linkdump_groups')->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+            $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 

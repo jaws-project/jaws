@@ -68,12 +68,12 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_gid', _t('LINKDUMP_GROUPS_GROUP'));
         $tpl->SetVariable('gid', $groupCombo->Get());
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
         $titleEntry->SetStyle('width: 356px;');
         $tpl->SetVariable('title', $titleEntry->Get());
 
-        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
         $urlEntry =& Piwi::CreateWidget('Entry', 'url', 'http://');
         $urlEntry->SetStyle('direction: ltr;width: 356px;');
         $tpl->SetVariable('url', $urlEntry->Get());
@@ -87,7 +87,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
         $linkdesc->SetRows(4);
         $linkdesc->SetStyle('width: 356px;');
         $tpl->SetVariable('desc', $linkdesc->Get());
-        $tpl->SetVariable('lbl_desc', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('lbl_desc', Jaws::t('DESCRIPTION'));
 
         $rank =& Piwi::CreateWidget('Combo', 'rank');
         $rank->SetID('rank');

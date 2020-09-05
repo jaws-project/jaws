@@ -30,17 +30,17 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_Action
         $add_btn->AddEvent(ON_CLICK, 'javascript:addGroup();');
         $tpl->SetVariable('add', $add_btn->Get());
 
-        $save_btn =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save_btn =& Piwi::CreateWidget('Button','btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $save_btn->SetStyle('display: none;');
         $save_btn->AddEvent(ON_CLICK, 'javascript:saveLink();');
         $tpl->SetVariable('save', $save_btn->Get());
 
-        $del_btn =& Piwi::CreateWidget('Button','btn_del', _t('GLOBAL_DELETE'), STOCK_DELETE);
+        $del_btn =& Piwi::CreateWidget('Button','btn_del', Jaws::t('DELETE'), STOCK_DELETE);
         $del_btn->SetStyle('display: none;');
         $del_btn->AddEvent(ON_CLICK, 'javascript:delLinks();');
         $tpl->SetVariable('del', $del_btn->Get());
 
-        $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel_btn->SetStyle('display: none;');
         $cancel_btn->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
