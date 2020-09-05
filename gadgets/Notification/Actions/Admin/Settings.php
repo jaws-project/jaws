@@ -47,7 +47,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
 
                 $driverOpt =& Piwi::CreateWidget('Combo', $gadget);
                 $driverOpt->AddOption(_t('NOTIFICATION_ALL_DRIVERS'), 1);
-                $driverOpt->AddOption(_t('GLOBAL_DISABLED'), 0);
+                $driverOpt->AddOption(Jaws::t('DISABLED'), 0);
                 foreach($driversInfo as $driver) {
                     $driverOpt->AddOption($driver, $driver);
                 }
@@ -62,7 +62,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
             }
         }
 
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, "javascript:Jaws_Gadget.getInstance('Notification').action.load('Settings').saveSettings();");
         $tpl->SetVariable('btn_save', $save->Get());
 

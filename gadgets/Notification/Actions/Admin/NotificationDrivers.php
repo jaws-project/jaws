@@ -18,11 +18,11 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $this->gadget->CheckPermission('NotificationDrivers');
         $this->AjaxMe('script.js');
         $this->gadget->define('incompleteFields', _t('NOTIFICATION_INCOMPLETE_FIELDS'));
-        $this->gadget->define('lbl_title', _t('GLOBAL_TITLE'));
-        $this->gadget->define('lbl_status', _t('GLOBAL_STATUS'));
+        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->define('lbl_status', Jaws::t('STATUS'));
         $this->gadget->define('lbl_install', _t('NOTIFICATION_INSTALL'));
         $this->gadget->define('lbl_uninstall', _t('NOTIFICATION_UNINSTALL'));
-        $this->gadget->define('lbl_edit', _t('GLOBAL_EDIT'));
+        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
 
         $tpl = $this->gadget->template->loadAdmin('NotificationDrivers.html');
         $tpl->SetBlock('drivers');
@@ -30,18 +30,18 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $tpl->SetVariable('menubar', $this->MenuBar('NotificationDrivers'));
         $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('lbl_driver_details', _t('NOTIFICATION_DRIVER_DETAILS'));
-        $tpl->SetVariable('lbl_driver_settings_title', _t('GLOBAL_SETTINGS'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK'));
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
-        $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
-        $tpl->SetVariable('lbl_disabled', _t('GLOBAL_DISABLED'));
-        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_driver_settings_title', Jaws::t('SETTINGS'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
+        $tpl->SetVariable('lbl_enabled', Jaws::t('ENABLED'));
+        $tpl->SetVariable('lbl_disabled', Jaws::t('DISABLED'));
+        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
         $tpl->ParseBlock('drivers');
         return $tpl->Get();
@@ -96,9 +96,9 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             if ($installed == false) {
                 $finalData['status'] = _t('NOTIFICATION_NOT_INSTALLED');
             } else if ($driver['status'] == true) {
-                $finalData['status'] = _t('GLOBAL_ENABLED');
+                $finalData['status'] = Jaws::t('ENABLED');
             } else {
-                $finalData['status'] = _t('GLOBAL_DISABLED');
+                $finalData['status'] = Jaws::t('DISABLED');
             }
 
             $newData[] = $finalData;

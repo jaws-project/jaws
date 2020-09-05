@@ -17,16 +17,16 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
     {
         $this->gadget->CheckPermission('Messages');
         $this->AjaxMe('script.js');
-        $this->gadget->define('lbl_message_title', _t('GLOBAL_TITLE'));
+        $this->gadget->define('lbl_message_title', Jaws::t('TITLE'));
         $this->gadget->define('lbl_message_type', _t('NOTIFICATION_MESSAGE_TYPE'));
-        $this->gadget->define('lbl_shouter', _t('GLOBAL_GADGET'));
-        $this->gadget->define('lbl_insert_time', _t('GLOBAL_CREATETIME'));
-        $this->gadget->define('lbl_status', _t('GLOBAL_STATUS'));
+        $this->gadget->define('lbl_shouter', Jaws::t('GADGET'));
+        $this->gadget->define('lbl_insert_time', Jaws::t('CREATETIME'));
+        $this->gadget->define('lbl_status', Jaws::t('STATUS'));
         $this->gadget->define('lbl_view', _t('NOTIFICATION_VIEW'));
         $this->gadget->define('lbl_delete_message', _t('NOTIFICATION_DELETE_MESSAGE'));
         $this->gadget->define('lbl_delete_similar_message', _t('NOTIFICATION_DELETE_SIMILAR_MESSAGE'));
-        $this->gadget->define('confirmDeleteMessage', _t('GLOBAL_CONFIRM_DELETE', _t('NOTIFICATION_MESSAGE')));
-        $this->gadget->define('confirmDeleteSimilarMessage', _t('GLOBAL_CONFIRM_DELETE', _t('NOTIFICATION_MESSAGES_SIMILAR')));
+        $this->gadget->define('confirmDeleteMessage', Jaws::t('CONFIRM_DELETE', _t('NOTIFICATION_MESSAGE')));
+        $this->gadget->define('confirmDeleteSimilarMessage', Jaws::t('CONFIRM_DELETE', _t('NOTIFICATION_MESSAGES_SIMILAR')));
 
         $tpl = $this->gadget->template->loadAdmin('Messages.html');
         $tpl->SetBlock('Messages');
@@ -34,29 +34,29 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Messages'));
 
-        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
-        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
-        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
-        $tpl->SetVariable('lbl_per_page', _t('GLOBAL_PERPAGE'));
+        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
+        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
+        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
+        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
         $tpl->SetVariable('lbl_message', _t('NOTIFICATION_MESSAGE'));
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
-        $tpl->SetVariable('lbl_shouter', _t('GLOBAL_GADGET'));
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
+        $tpl->SetVariable('lbl_shouter', Jaws::t('GADGET'));
+        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_summary', _t('NOTIFICATION_MESSAGE_SUMMARY'));
         $tpl->SetVariable('lbl_verbose', _t('NOTIFICATION_MESSAGE_VERBOSE'));
         $tpl->SetVariable('lbl_message_type', _t('NOTIFICATION_MESSAGE_TYPE'));
         $tpl->SetVariable('lbl_callback', _t('NOTIFICATION_MESSAGE_CALLBACK'));
         $tpl->SetVariable('lbl_image', _t('NOTIFICATION_IMAGE'));
-        $tpl->SetVariable('lbl_insert_time', _t('GLOBAL_TIME'));
+        $tpl->SetVariable('lbl_insert_time', Jaws::t('TIME'));
         $tpl->SetVariable('lbl_attempts', _t('NOTIFICATION_MESSAGE_ATTEMPTS'));
         $tpl->SetVariable('lbl_attempt_time', _t('NOTIFICATION_MESSAGE_ATTEMPT_TIME'));
         $tpl->SetVariable('lbl_from_date', _t('NOTIFICATION_FROM_DATE'));
         $tpl->SetVariable('lbl_to_date', _t('NOTIFICATION_TO_DATE'));
         $tpl->SetVariable('lbl_contact', _t('NOTIFICATION_CONTACT'));
         $tpl->SetVariable('lbl_message_details', _t('NOTIFICATION_MESSAGE_DETAILS'));
-        $tpl->SetVariable('lbl_back', _t('GLOBAL_BACK'));
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
 
         $tpl->SetBlock('Messages/filter_from_date');
         $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'filter_from_date'));
