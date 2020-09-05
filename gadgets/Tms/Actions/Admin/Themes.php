@@ -82,7 +82,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
 
         $btnDelete =& Piwi::CreateWidget('Button',
                                            'delete_button',
-                                           _t('GLOBAL_DELETE'),
+                                           Jaws::t('DELETE'),
                                            STOCK_DELETE);
         $btnDelete->AddEvent(ON_CLICK, 'javascript:deleteTheme();');
         $btnDelete->SetStyle('display: none');

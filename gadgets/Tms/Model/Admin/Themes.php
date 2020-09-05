@@ -34,7 +34,7 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
         }
 
         if (!Jaws_Utils::is_writable($destDir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', $destDir),
+            return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', $destDir),
                                   $this->gadget->name);
         }
 
