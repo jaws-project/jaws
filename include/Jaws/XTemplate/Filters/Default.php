@@ -149,4 +149,17 @@ class Jaws_XTemplate_Filters_Default
         );
     }
 
+    /**
+     * prints a variable in a human readable form to the jaws log specified
+     *
+     * @param   mixed   $input
+     *
+     * @return string
+     */
+    public static function log($input)
+    {
+        _log_var_dump($input);
+        return '';
+    }
+
 }
