@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-9">
       <h2>
-        {% if user == "public" %}
+        {% if user == 0 %}
           {{ "eventscalendar.public_events" | t }} - {{ "eventscalendar.actions_reminder" | t }}
         {% else %}
           {{ "eventscalendar.user_events" | t }} - {{ "eventscalendar.actions_reminder" | t }}
@@ -27,13 +27,23 @@
 
       {% for event in events %}
       <tr>
-        <td><a href="{{event.event_url}}">{{event.subject}}</a></td>
+        <td>
+          {% if user != 0 %}
+          <a href="{{ 'user, event' | urlmap: 'EventsCalendar', 'ViewEvent', user, event.id }}">
+            {{event.subject}}
+          </a>
+          {% else %}
+          <a href="{{ 'event' | urlmap: 'EventsCalendar', 'ViewEvent', event.id }}">
+            {{event.subject}}
+          </a>
+          {% endif %}
+        </td>
         <td>{{ "eventscalendar.event_type_" | append: event.type | t }}</td>
         <td>{{event.location}}</td>
         <td>{{ "eventscalendar.event_priority_" | append: event.priority | t }}</td>
         <td>{{event.start_time | date: "DN d MN Y - h:i a"}}</td>
         <td>
-          {% if user != "public" %}
+          {% if user != 0 %}
             {% if event.owner != user %}
               {{ event.nickname }}
             {% endif %}

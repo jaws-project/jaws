@@ -49,25 +49,19 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         // Menu navigation
         $assigns['navigation'] = $this->gadget->action->load('MenuNavigation')->xnavigation();
 
-        $assigns['user'] = $user;
+        $assigns['user'] = $this->app->session->user->id;
 
         // Fetch events
         $model = $this->gadget->model->load('Reminder');
-        if ($user === 'public') {
-            $events = $model->GetPublicEvents(time());
+        if ($this->app->session->user->logged) {
+            $events = $model->GetUserEvents($this->app->session->user->id, time());
         } else {
-            $user = (int)$this->app->session->user->id;
-            $events = $model->GetUserEvents($user, time());
+            $events = $model->GetPublicEvents(time());
         }
         if (Jaws_Error::IsError($events)) {
             $events = array();
         }
 
-        foreach ($events as &$event) {
-            $event['event_url'] = $user ?
-                $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id'])) :
-                $this->gadget->urlMap('ViewEvent', array('event' => $event['id']));
-        }
         $assigns['events'] = $events;
 
         return $this->gadget->template->xLoad('Reminder.html')->render($assigns);
