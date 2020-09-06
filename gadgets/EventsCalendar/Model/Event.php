@@ -94,9 +94,18 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $owner = $event['owner'];
         unset($event['owner']);
 
+        // hash
+        $event['hash'] = isset($event['key'])? hash64($event['key']) : 0;
+        unset($event['key']);
+
         $table = Jaws_ORM::getInstance()->table('ec_events');
         $table->beginTransaction();
-        $id = $table->insert($event)->exec();
+
+        if (empty($event['hash'])) {
+            $id = $table->insert($event)->exec();
+        } else {
+            $id = $table->upsert($event)->where('hash', $event['hash'])->exec();
+        }
         if (Jaws_Error::IsError($id)) {
             return $id;
         }
@@ -108,11 +117,18 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             'owner' => $owner,
         );
         $table = Jaws_ORM::getInstance()->table('ec_users');
-        $res = $table->insert($data)->exec();
+        $res = $table->delete()->where('event', $id)->exec()
+            ->reset()
+            ->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
+        // delete old recurrences id exists
+        $res = $this->DeleteRecurrences($id);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
         // create recurrences
         $res = $this->InsertRecurrences($id, $event);
         if (Jaws_Error::IsError($res)) {
@@ -195,11 +211,23 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
      */
     function DeleteEvents($idSet)
     {
-        return Jaws_ORM::getInstance()
-            ->table('ec_events')
-            ->delete()
-            ->where('id', $idSet, 'in')
-            ->exec();
+        // Delete recurrences
+        $this->DeleteRecurrences($idSet);
+
+        // Delete shares
+        $table = Jaws_ORM::getInstance()->table('ec_users');
+        $res = $table->delete()->where('event', $idSet, 'in')->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        $table = Jaws_ORM::getInstance()->table('ec_events');
+        $res = $table->delete()->where('id', $idSet, 'in')->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return true;
     }
 
     /**
@@ -304,7 +332,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         foreach ($recs as $rec) {
             $notify = array(
                 'id' => $rec['id'],
-                'key' => crc32('Event' . $rec['id']),
+                'key' => 'Event' . $rec['id'],
+                'user' => $rec['user'],
                 'subject' => $event['subject'],
                 'description' => $event['description'],
                 'time' => $rec['start_time'] - $event['reminder'],
@@ -340,7 +369,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         foreach ($recs as $rec) {
             $notify = array(
                 'id' => $rec['id'],
-                'key' => crc32('Event' . $rec['id']),
+                'key' => 'Event' . $rec['id'],
+                'user' => $rec['user'],
                 'subject' => 'removing event',
                 'description' => '',
                 'time' => -1,
@@ -373,8 +403,10 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
      */
     function GetRecurrences($eventId)
     {
-        $table = Jaws_ORM::getInstance()->table('ec_recurrences');
-        $table->select('id', 'start_time');
+        $table = Jaws_ORM::getInstance()
+            ->table('ec_recurrences')
+            ->select('ec_recurrences.id:integer', 'ec_recurrences.start_time:integer', 'ec_events.user:integer')
+            ->join('ec_events', 'ec_events.id', 'ec_recurrences.event');
         if (is_array($eventId)) {
             return $table->where('event', $eventId, 'in')->fetchAll();
         } else {
@@ -390,15 +422,30 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
      */
     function Notify($event)
     {
+        $params = array();
+        $params['name']    = 'EventNotification';
+        $params['key']     = $event['user'].'-'.$event['id'];
+        $params['title']   = $this::t('EVENT_NOTIFICATION');
+        $params['summary'] = $event['subject'];
+        $params['verbose'] = $event['description'];
+        $params['variables'] = array();
+        $params['time'] = $event['time'];
+        $params['user'] = $event['user'];
+
+        $this->gadget->event->shout('Notify', $params);
+        /*
+        // Notify to Subscription gadget
         $subscriptionParams = array(
             'action' => 'ViewYear',
             'reference' => $event['id'],
             'key' => $event['key'],
             'summary' => $event['subject'],
             'description' => $event['description'],
-            'publish_time' => ($event['time'] == -1)? -1 : strtotime($event['time']),
+            'publish_time' => $event['time'],
             'url' => $event['url']
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
+        */
     }
+
 }

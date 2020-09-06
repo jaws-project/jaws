@@ -24,7 +24,15 @@ class EventsCalendar_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.4.0';
+    var $version = '1.5.0';
+
+    /**
+     * Recommended gadgets
+     *
+     * @var     array
+     * @access  public
+     */
+    var $recommended = array('Notification');
 
     /**
      * Default front-end action name

@@ -15,12 +15,6 @@
             </field>
 
             <field>
-                <name>hash</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
                 <name>user</name>
                 <type>integer</type>
                 <length>8</length>
@@ -141,13 +135,6 @@
                 <type>integer</type>
                 <length>8</length>
             </field>
-
-            <index>
-                <name><variable>table_prefix</variable>ec_events_hash</name>
-                <field>
-                    <name>hash</name>
-                </field>
-            </index>
 
             <index>
                 <name><variable>table_prefix</variable>ec_events_user</name>
