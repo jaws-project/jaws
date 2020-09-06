@@ -203,6 +203,27 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     }
 
     /**
+     * Deletes am event by key/hhash
+     *
+     * @access  public
+     * @param   string  $key
+     * @return  mixed   Query result
+     */
+    function DeleteEventByKey($key)
+    {
+        $id = Jaws_ORM::getInstance()
+            ->table('ec_events')
+            ->select('id:integer')
+            ->where('hash', hash64($key))
+            ->fetchOne();
+        if (Jaws_Error::IsError($id) || empty($id)) {
+            return false;
+        }
+
+        return $this->DeleteEvents(array($id));
+    }
+
+    /**
      * Deletes events
      *
      * @access  public
