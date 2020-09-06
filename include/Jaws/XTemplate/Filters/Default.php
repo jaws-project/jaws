@@ -109,6 +109,28 @@ class Jaws_XTemplate_Filters_Default
     }
 
     /**
+     * Get map version of url if found
+     *
+     * @param   string   $args      Map arguments(comma seprated)
+     * @param   string   $gadget    Gadget name
+     * @param   string   $action    Action name
+     * @param   array    $params    Map parameters
+     *
+     * @return string
+     */
+    public static function urlmap($args, $gadget, $action, ...$params)
+    {
+        $args = array_filter(array_map('trim', explode(',', $args)));
+        $params = array_combine($args, $params);
+
+        return Jaws::getInstance()->map->GetMappedURL(
+            $gadget,
+            $action,
+            $params
+        );
+    }
+
+    /**
      * Convenience function to translate strings
      *
      * @param   string   $input
