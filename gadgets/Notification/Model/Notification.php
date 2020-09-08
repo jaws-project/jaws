@@ -354,8 +354,19 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         // delete recipient records
-        $table = $objORM->table('notification_recipient');
-        $res = $table->delete()->where('message', $messageId)->exec();
+        $res = $objORM->table('notification_recipient')
+            ->delete()
+            ->where('message', $messageId)
+            ->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        // delete notification message
+        $res = $objORM->table('notification_message')
+            ->delete()
+            ->where('id', $messageId)
+            ->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
