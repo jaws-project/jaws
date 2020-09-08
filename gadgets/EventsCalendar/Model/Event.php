@@ -117,9 +117,11 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             'owner' => $owner,
         );
         $table = Jaws_ORM::getInstance()->table('ec_users');
-        $res = $table->delete()->where('event', $id)->exec()
-            ->reset()
-            ->insert($data)->exec();
+        $res = $table->delete()->where('event', $id)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+        $res = $table->reset()->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
