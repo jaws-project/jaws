@@ -151,23 +151,28 @@ class Jaws_Translate
         $lang = empty($lang)? $this->_defaultLanguage : $lang;
 
         switch ($type) {
-            case 'GLOBAL':
-                $type = self::TRANSLATE_GLOBAL;
             case self::TRANSLATE_GLOBAL:
                 $string = strtoupper('GLOBAL_' . $string);
                 break;
 
-            case 'GADGET':
-                $type = self::TRANSLATE_GADGET;
             case self::TRANSLATE_GADGET:
                 $string = strtoupper($component . '_'. $string);
                 break;
 
-            case 'PLUGIN':
-                $type = self::TRANSLATE_PLUGIN;
             case self::TRANSLATE_PLUGIN:
                 $string = strtoupper('PLUGINS_' . $component . '_' . $string);
                 break;
+
+            case self::TRANSLATE_INSTALL:
+                $string = strtoupper('INSTALL_' . $string);
+                break;
+
+            case self::TRANSLATE_UPGRADE:
+                $string = strtoupper('UPGRADE_' . $string);
+                break;
+
+            default:
+                return $string;
         }
 
         // autoload not loaded component language
