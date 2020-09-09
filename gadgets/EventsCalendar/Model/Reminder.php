@@ -22,7 +22,7 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         $table->select(
-            'events.id:integer', 'summary', 'type:integer', 'priority:integer', 'symbol', 'link',
+            'events.id:integer', 'title', 'summary', 'type:integer', 'priority:integer', 'symbol', 'link',
             'location', 'recs.start_time:integer', 'owner:integer', 'nickname', 'verbose'
         );
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
@@ -50,7 +50,7 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         $table->select(
-            'events.id:integer', 'summary', 'type:integer', 'priority:integer', 'symbol', 'link',
+            'events.id:integer', 'title', 'summary', 'type:integer', 'priority:integer', 'symbol', 'link',
             'location', 'recs.start_time:integer', 'owner:integer', 'verbose'
         );
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');

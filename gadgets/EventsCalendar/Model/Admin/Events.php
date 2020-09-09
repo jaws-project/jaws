@@ -32,13 +32,13 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
         } else {
             if ($params['user'] === 0) {
                 $table->select(
-                    'event.id', 'event.user', 'summary', 'location', 'verbose',
+                    'event.id', 'event.user', 'title', 'summary', 'location', 'verbose',
                     'symbol', 'link', 'start_time', 'stop_time', 'public:boolean', 'shared:boolean'
                 );
                 $table->join('ec_users', 'event.id', 'event');
             } else {
                 $table->select(
-                    'event.id', 'event.user', 'summary', 'location', 'verbose',
+                    'event.id', 'event.user', 'title', 'summary', 'location', 'verbose',
                     'symbol', 'link', 'start_time', 'stop_time', 'event.public:boolean',
                     'shared:boolean', 'nickname', 'username'
                 );
@@ -68,6 +68,9 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
                     );
                 }
                 $table->and()->where('stop_time', $filters['stop_time'], '<=');
+            }
+            if (isset($filters['title']) && !empty($filters['title'])) {
+                $table->and()->where('title', $filters['title'], 'like');
             }
             if (isset($filters['summary']) && !empty($filters['summary'])) {
                 $table->and()->where('summary', $filters['summary'], 'like');
