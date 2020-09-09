@@ -32,11 +32,11 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
             }
         } else {
             if ($params['user'] === 0) {
-                $table->select('event.id', 'event.user', 'subject', 'location', 'description',
+                $table->select('event.id', 'event.user', 'summary', 'location', 'verbose',
                     'start_time', 'stop_time', 'public:boolean', 'shared:boolean');
                 $table->join('ec_users', 'event.id', 'event');
             } else {
-                $table->select('event.id', 'event.user', 'subject', 'location', 'description',
+                $table->select('event.id', 'event.user', 'summary', 'location', 'verbose',
                     'start_time', 'stop_time', 'event.public:boolean', 'shared:boolean', 'nickname', 'username');
                 $table->join('ec_users', 'event.id', 'event');
                 $table->join('users', 'owner', 'users.id');
@@ -50,9 +50,9 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
             foreach ($search as $key => $value) {
                 switch ($key) {
                     case 'term':
-                        $table->openWhere('subject', $value, 'like')->or();
+                        $table->openWhere('summary', $value, 'like')->or();
                         $table->where('location', $value, 'like')->or();
-                        $table->closeWhere('description', $value, 'like')->and();
+                        $table->closeWhere('verbose', $value, 'like')->and();
                         break;
 
                     case 'public':
@@ -88,7 +88,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
             if (!empty($params['sort'])){
                 $orderBy = $params['sort'][0]['field'] . ' ' . $params['sort'][0]['direction'];
             }
-            $table->orderBy($orderBy, 'subject asc');
+            $table->orderBy($orderBy, 'summary asc');
             $table->limit($params['limit'], $params['offset']);
         }
 

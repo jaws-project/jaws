@@ -28,21 +28,9 @@
             </field>
 
             <field>
-                <name>title</name>
-                <was>subject</was>
+                <name>subject</name>
                 <type>text</type>
                 <length>128</length>
-            </field>
-
-            <field>
-                <name>summary</name>
-                <type>text</type>
-            </field>
-
-            <field>
-                <name>verbose</name>
-                <was>description</was>
-                <type>text</type>
             </field>
 
             <field>
@@ -50,6 +38,11 @@
                 <type>text</type>
                 <length>128</length>
                 <default>0</default>
+            </field>
+
+            <field>
+                <name>description</name>
+                <type>text</type>
             </field>
 
             <field>

@@ -61,9 +61,9 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['user'] = (int)$this->app->session->user->id;
         $const['calendar'] = $this->gadget->registry->fetch('calendar', 'Settings');
         $const['eventsLimit'] = $this->gadget->registry->fetch('events_limit');
-        $const['subject'] = _t('EVENTSCALENDAR_EVENT_SUBJECT');
+        $const['summary'] = _t('EVENTSCALENDAR_EVENT_SUMMARY');
         $const['location'] = _t('EVENTSCALENDAR_EVENT_LOCATION');
-        $const['description'] = _t('EVENTSCALENDAR_EVENT_DESC');
+        $const['verbose'] = _t('EVENTSCALENDAR_EVENT_DESC');
         $const['type'] = _t('EVENTSCALENDAR_EVENT_TYPE');
         $const['priority'] = _t('EVENTSCALENDAR_EVENT_PRIORITY');
         $const['shared'] = _t('EVENTSCALENDAR_SHARED');
@@ -96,7 +96,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
             $tpl->ParseBlock('ec/addBtn');
         }
 
-        $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
@@ -135,11 +135,11 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl = $this->gadget->template->loadAdmin('Events.html');
         $tpl->SetBlock('filters');
 
-        // Subject
-        $subject =& Piwi::CreateWidget('Entry', 'filter_subject');
-        $subject->AddEvent(ON_CHANGE, "javascript:searchEvents();");
-        $tpl->SetVariable('filter_subject', $subject->Get());
-        $tpl->SetVariable('lbl_filter_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+        // summary
+        $summary =& Piwi::CreateWidget('Entry', 'filter_summary');
+        $summary->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $tpl->SetVariable('filter_summary', $summary->Get());
+        $tpl->SetVariable('lbl_filter_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
 
         // Location
         $location =& Piwi::CreateWidget('Entry', 'filter_location');
@@ -147,11 +147,11 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->SetVariable('filter_location', $location->Get());
         $tpl->SetVariable('lbl_filter_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
 
-        // Description
-        $description =& Piwi::CreateWidget('Entry', 'filter_description');
-        $description->AddEvent(ON_CHANGE, "javascript:searchEvents();");
-        $tpl->SetVariable('filter_description', $description->Get());
-        $tpl->SetVariable('lbl_filter_description', _t('EVENTSCALENDAR_EVENT_DESC'));
+        // verbose
+        $verbose =& Piwi::CreateWidget('Entry', 'filter_verbose');
+        $verbose->AddEvent(ON_CHANGE, "javascript:searchEvents();");
+        $tpl->SetVariable('filter_verbose', $verbose->Get());
+        $tpl->SetVariable('lbl_filter_verbose', _t('EVENTSCALENDAR_EVENT_DESC'));
 
         // Shared
         $sharedCombo =& Piwi::CreateWidget('Combo', 'filter_shared');
@@ -220,7 +220,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl = $this->gadget->template->loadAdmin('Events.html');
         $tpl->SetBlock('eventForm');
 
-        $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));

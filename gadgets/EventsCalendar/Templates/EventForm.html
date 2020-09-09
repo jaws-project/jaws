@@ -15,14 +15,16 @@
       <input type="hidden" name="reqAction" value="{{form_action}}" />
       <input type="hidden" name="id" value="{{id}}" />
       <table class="table table-hover table-bordered">
-        <tr><th><label for="event_subject">{{lbl_subject}}:</label></th>
-          <td><input class="form-control" id="event_subject" name="subject" value="{{subject}}" /></td></tr>
+        <tr><th><label for="event_title">{{lbl_title}}:</label></th>
+          <td><input class="form-control" id="event_title" name="title" value="{{title}}" /></td></tr>
+        <tr><th><label for="event_summary">{{lbl_summary}}:</label></th>
+          <td><input class="form-control" id="event_summary" name="summary" value="{{summary}}" /></td></tr>
         <tr><th><label for="event_location">{{lbl_location}}:</label></th>
           <td><input class="form-control" id="event_location" name="location" value="{{location}}" /></td></tr>
         <tr><th><label for="event_link">{{lbl_link}}:</label></th>
           <td><input class="form-control" id="event_link" name="link" value="{{link}}" /></td></tr>
         <tr><th><label for="event_desc">{{lbl_desc}}:</label></th>
-          <td><textarea class="form-control" id="event_desc" name="description">{{description}}</textarea></td></tr>
+          <td><textarea class="form-control" id="event_desc" name="verbose">{{verbose}}</textarea></td></tr>
         <tr>
           <th><label for="event_start_date">{{lbl_date}}:</label></th>
           <td>
@@ -72,7 +74,7 @@
 <div class="gadget_footer"></div>
 <script>
 var errorIncompleteData = "{{errorIncompleteData}}";
-$('event_subject').focus();
+$('event_summary').focus();
 updateRepeatUI('{{recurrence_value}}');
 </script>
 <!-- END form -->

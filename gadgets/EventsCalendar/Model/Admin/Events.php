@@ -32,13 +32,13 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
         } else {
             if ($params['user'] === 0) {
                 $table->select(
-                    'event.id', 'event.user', 'subject', 'location', 'description',
+                    'event.id', 'event.user', 'summary', 'location', 'verbose',
                     'symbol', 'link', 'start_time', 'stop_time', 'public:boolean', 'shared:boolean'
                 );
                 $table->join('ec_users', 'event.id', 'event');
             } else {
                 $table->select(
-                    'event.id', 'event.user', 'subject', 'location', 'description',
+                    'event.id', 'event.user', 'summary', 'location', 'verbose',
                     'symbol', 'link', 'start_time', 'stop_time', 'event.public:boolean',
                     'shared:boolean', 'nickname', 'username'
                 );
@@ -69,14 +69,14 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
                 }
                 $table->and()->where('stop_time', $filters['stop_time'], '<=');
             }
-            if (isset($filters['subject']) && !empty($filters['subject'])) {
-                $table->and()->where('subject', $filters['subject'], 'like');
+            if (isset($filters['summary']) && !empty($filters['summary'])) {
+                $table->and()->where('summary', $filters['summary'], 'like');
             }
             if (isset($filters['location']) && !empty($filters['location'])) {
                 $table->and()->where('location', $filters['location'], 'like');
             }
-            if (isset($filters['description']) && !empty($filters['description'])) {
-                $table->and()->where('description', $filters['description'], 'like');
+            if (isset($filters['verbose']) && !empty($filters['verbose'])) {
+                $table->and()->where('verbose', $filters['verbose'], 'like');
             }
             if (isset($filters['shared']) && $filters['shared'] >= 0) {
                 $table->and()->where('shared', $filters['shared']);
@@ -96,7 +96,7 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
             if (!empty($params['sort'])){
                 $orderBy = $params['sort'][0]['field'] . ' ' . $params['sort'][0]['direction'];
             }
-            $table->orderBy($orderBy, 'subject asc');
+            $table->orderBy($orderBy, 'summary asc');
             $table->limit($params['limit'], $params['offset']);
         }
 

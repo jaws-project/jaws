@@ -15,7 +15,7 @@ class EventsCalendar_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-            'eventscalendar' => array('subject', 'location', 'description'),
+            'eventscalendar' => array('summary', 'location', 'verbose'),
         );
     }
 
@@ -30,7 +30,7 @@ class EventsCalendar_Hooks_Search extends Jaws_Gadget_Hook
     function Execute($table, &$objORM)
     {
         $objORM->table('ec_events');
-        $objORM->select('id', 'subject', 'description', 'updatetime:integer');
+        $objORM->select('id', 'summary', 'verbose', 'updatetime:integer');
         $objORM->where('user', 0);
         $objORM->and()->loadWhere('search.terms');
         $result = $objORM->orderBy('id desc')->fetchAll();
@@ -41,10 +41,10 @@ class EventsCalendar_Hooks_Search extends Jaws_Gadget_Hook
         $events = array();
         foreach ($result as $p) {
             $event = array();
-            $event['title']   = $p['subject'];
+            $event['title']   = $p['summary'];
             $event['url']     = $this->gadget->urlMap('ViewEvent', array('event'  => $p['id']));
             $event['image']   = 'gadgets/EventsCalendar/Resources/images/logo.png';
-            $event['snippet'] = $p['description'];
+            $event['snippet'] = $p['verbose'];
             $event['date']    = $p['updatetime'];
             $stamp            = $p['updatetime'];
             $events[$stamp]   = $event;

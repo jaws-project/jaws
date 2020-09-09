@@ -23,7 +23,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         if (empty($userId)) {
             $table->select(
-                'events.id', 'subject', 'location', 'description', 'symbol', 'link',
+                'events.id', 'summary', 'location', 'verbose', 'symbol', 'link',
                 'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
                 'events.public:boolean', 'type', 'priority', 'symbol', 'link',
                 'reminder', 'shared:boolean', 'createtime', 'updatetime',
@@ -32,7 +32,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             $table->join('ec_users', 'events.id', 'event');
         } else {
             $table->select(
-                'events.id', 'subject', 'location', 'description', 'symbol', 'link',
+                'events.id', 'summary', 'location', 'verbose', 'symbol', 'link',
                 'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
                 'events.public:boolean', 'type', 'priority', 'symbol', 'link',
                 'reminder', 'shared:boolean', 'createtime', 'updatetime',
@@ -357,8 +357,9 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                 'id' => $rec['id'],
                 'key' => 'Event' . $rec['id'],
                 'user' => $rec['user'],
-                'subject' => $event['subject'],
-                'description' => $event['description'],
+                'title' => $event['title'],
+                'summary' => $event['summary'],
+                'verbose' => $event['verbose'],
                 'time' => $rec['start_time'] - $event['reminder'],
                 'url' => $event['user'] ?
                     $this->gadget->urlMap(
@@ -394,8 +395,9 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                 'id' => $rec['id'],
                 'key' => 'Event' . $rec['id'],
                 'user' => $rec['user'],
-                'subject' => 'removing event',
-                'description' => '',
+                'title' => '',
+                'summary' => '',
+                'verbose' => '',
                 'time' => -1,
                 'url' => ''
             );
@@ -428,8 +430,10 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()
             ->table('ec_recurrences')
-            ->select('ec_recurrences.id:integer', 'ec_recurrences.start_time:integer', 'ec_events.user:integer')
-            ->join('ec_events', 'ec_events.id', 'ec_recurrences.event');
+            ->select(
+                'ec_recurrences.id:integer', 'ec_recurrences.start_time:integer',
+                'ec_events.user:integer', 'ec_events.title'
+            )->join('ec_events', 'ec_events.id', 'ec_recurrences.event');
         if (is_array($eventId)) {
             return $table->where('event', $eventId, 'in')->fetchAll();
         } else {
@@ -448,9 +452,9 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $params = array();
         $params['name']    = 'EventNotification';
         $params['key']     = $event['user'].'-'.$event['id'];
-        $params['title']   = $this::t('EVENT_NOTIFICATION');
-        $params['summary'] = $event['subject'];
-        $params['verbose'] = $event['description'];
+        $params['title']   = $event['title'];
+        $params['summary'] = $event['summary'];
+        $params['verbose'] = $event['verbose'];
         $params['variables'] = array();
         $params['time'] = $event['time'];
         $params['user'] = $event['user'];
@@ -462,8 +466,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             'action' => 'ViewYear',
             'reference' => $event['id'],
             'key' => $event['key'],
-            'summary' => $event['subject'],
-            'description' => $event['description'],
+            'summary' => $event['summary'],
+            'verbose' => $event['verbose'],
             'publish_time' => $event['time'],
             'url' => $event['url']
         );

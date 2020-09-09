@@ -80,10 +80,10 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             } else {
                 $event = array();
                 $event['id'] = 0;
-                $event['subject'] = '';
+                $event['summary'] = '';
                 $event['location'] = '';
                 $event['link'] = '';
-                $event['description'] = '';
+                $event['verbose'] = '';
                 $event['start_date'] = '';
                 $event['stop_date'] = '';
                 $event['start_time'] = '';
@@ -100,10 +100,10 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             }
         }
         $tpl->SetVariable('id', isset($event['id'])? $event['id'] : 0);
-        $tpl->SetVariable('subject', $event['subject']);
+        $tpl->SetVariable('summary', $event['summary']);
         $tpl->SetVariable('location', $event['location']);
         $tpl->SetVariable('link', $event['link']);
-        $tpl->SetVariable('description', $event['description']);
+        $tpl->SetVariable('verbose', $event['verbose']);
 
         if (empty($id)) {
             $tpl->SetVariable('title', _t('EVENTSCALENDAR_NEW_EVENT'));
@@ -114,7 +114,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             $tpl->SetVariable('action', 'editevent');
             $tpl->SetVariable('form_action', 'UpdateEvent');
         }
-        $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
@@ -249,11 +250,11 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function CreateEvent()
     {
-        $event = $this->gadget->request->fetch(array('subject', 'location',
-            'description', 'link', 'public', 'type', 'priority', 'reminder',
+        $event = $this->gadget->request->fetch(array('summary', 'location',
+            'verbose', 'link', 'public', 'type', 'priority', 'reminder',
             'recurrence', 'month', 'day', 'wday', 'symbol',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
-        if (empty($event['subject']) || empty($event['start_date'])) {
+        if (empty($event['summary']) || empty($event['start_date'])) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
                 RESPONSE_ERROR,
@@ -302,11 +303,11 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function UpdateEvent()
     {
-        $data = $this->gadget->request->fetch(array('id', 'subject', 'location',
-            'description', 'link', 'public', 'type', 'priority', 'reminder',
+        $data = $this->gadget->request->fetch(array('id', 'summary', 'location',
+            'verbose', 'link', 'public', 'type', 'priority', 'reminder',
             'recurrence', 'month', 'day', 'wday', 'symbol',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
-        if (empty($data['subject']) || empty($data['start_date'])) {
+        if (empty($data['summary']) || empty($data['start_date'])) {
             $this->gadget->session->push(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
                 RESPONSE_ERROR,

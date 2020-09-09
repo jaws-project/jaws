@@ -103,8 +103,8 @@
 <!-- BEGIN eventForm -->
 <form action="#" id="events-form">
   <div>
-    <label for="subject">{{lbl_subject}}:</label>
-    <input class="form-control" name="subject" id="subject" type="text"/>
+    <label for="summary">{{lbl_summary}}:</label>
+    <input class="form-control" name="summary" id="summary" type="text"/>
   </div>
 
   <div>
@@ -118,8 +118,8 @@
   </div>
 
   <div>
-    <label for="description">{{lbl_desc}}:</label>
-    <textarea name="description" id="description" rows="4" class="form-control"></textarea>
+    <label for="verbose">{{lbl_desc}}:</label>
+    <textarea name="verbose" id="verbose" rows="4" class="form-control"></textarea>
   </div>
 
   <div class="row">
@@ -207,9 +207,9 @@
 <!-- BEGIN filters -->
 <table id="events_filter">
   <tr>
-    <td class="filter_label"><label for="filter_subject">{{lbl_filter_subject}}:</label></td><td>{{filter_subject}}</td>
+    <td class="filter_label"><label for="filter_summary">{{lbl_filter_summary}}:</label></td><td>{{filter_summary}}</td>
     <td class="filter_label"><label for="filter_location">{{lbl_filter_location}}:</label></td><td>{{filter_location}}</td>
-    <td class="filter_label"><label for="filter_description">{{lbl_filter_description}}:</label></td><td>{{filter_description}}</td>
+    <td class="filter_label"><label for="filter_verbose">{{lbl_filter_verbose}}:</label></td><td>{{filter_verbose}}</td>
   </tr>
   <tr>
     <td class="filter_label"><label for="filter_shared">{{lbl_filter_shared}}:</label></td><td>{{filter_shared}}</td>

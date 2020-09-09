@@ -37,8 +37,8 @@ function eventsDataSource(options, callback) {
     // define the columns for the grid
     var columns = [
         {
-            'label': CONST.subject,
-            'property': 'subject',
+            'label': CONST.summary,
+            'property': 'summary',
             'sortable': true
         },
         {
@@ -59,9 +59,9 @@ function eventsDataSource(options, callback) {
     ];
 
     var filters = {
-        'subject'       : $('#filter_subject').val(),
+        'summary'       : $('#filter_summary').val(),
         'location'      : $('#filter_location').val(),
-        'description'   : $('#filter_description').val(),
+        'verbose'       : $('#filter_verbose').val(),
         'shared'        : $('#filter_shared').val(),
         'type'          : $('#filter_type').val(),
         'priority'      : $('#filter_priority').val(),
@@ -193,7 +193,7 @@ function searchEvents() {
  * Add or update an event
  */
 function saveEvent() {
-    if (!$('#events-form #subject').val() || !$('#events-form #location').val() ||
+    if (!$('#events-form #summary').val() || !$('#events-form #location').val() ||
          !$('#events-form #start_date').val() || !$('#events-form #stop_date').val()) {
         alert(CONST.incompleteFields);
         return;

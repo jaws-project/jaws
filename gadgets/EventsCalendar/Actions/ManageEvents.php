@@ -48,7 +48,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl->SetBlock('events');
 
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENTS_MANAGE'));
-        $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
         $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
@@ -89,7 +89,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         foreach ($events as $event) {
             $tpl->SetBlock('events/event');
             $tpl->SetVariable('id', $event['id']);
-            $tpl->SetVariable('subject', $event['subject']);
+            $tpl->SetVariable('summary', $event['summary']);
             $tpl->SetVariable('public', $event['public']? _t('EVENTSCALENDAR_EVENT_PUBLIC') : '');
 
             $startDate = $jDate->Format($event['start_time'], 'Y/m/d');

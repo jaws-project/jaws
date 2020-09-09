@@ -46,9 +46,9 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        // Subject
-        $tpl->SetVariable('title', $event['subject']);
-        $this->SetTitle($event['subject']);
+        // summary
+        $tpl->SetVariable('title', $event['summary']);
+        $this->SetTitle($event['summary']);
 
         // Location
         $tpl->SetVariable('location', $event['location']);
@@ -58,8 +58,8 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('link', $event['link']);
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
 
-        // Description
-        $tpl->SetVariable('desc', $event['description']);
+        // verbose
+        $tpl->SetVariable('desc', $event['verbose']);
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
 
         // Start Date/Time
