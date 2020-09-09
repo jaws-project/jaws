@@ -127,7 +127,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
                 $e = $eventsById[$eventId];
                 $tpl->SetBlock('month/day/event');
 
-                $tpl->SetVariable('event', $e['subject']);
+                $tpl->SetVariable('event', $e['title']);
                 $tpl->SetVariable('type', $e['type']);
 
                 if ($e['priority'] > 0) {

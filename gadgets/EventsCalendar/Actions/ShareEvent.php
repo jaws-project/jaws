@@ -60,7 +60,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_SHARE'));
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('UID', $userId);
-        $tpl->SetVariable('subject', $event['subject']);
+        $tpl->SetVariable('title', $event['title']);
         $tpl->SetVariable('lbl_users', _t('EVENTSCALENDAR_USERS'));
         $tpl->SetVariable('events_url', $this->gadget->urlMap('ManageEvents', array('user' => $userId)));
 

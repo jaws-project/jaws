@@ -83,9 +83,9 @@ function resetSearch(form)
  */
 function submitEvent(form)
 {
-    if (form.subject.value === '') {
+    if (form.title.value === '') {
         alert(errorIncompleteData);
-        form.subject.focus();
+        form.title.focus();
         return;
     }
     if (form.start_date.value === '') {

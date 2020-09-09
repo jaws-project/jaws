@@ -22,8 +22,10 @@ class EventsCalendar_Model_Today extends Jaws_Gadget_Model
     function GetUserEvents($user, $start, $stop)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
-        $table->select('events.id', 'subject', 'shared:boolean', 'type', 'priority', 'events.public',
-            'recs.start_time', 'recs.stop_time', 'ec_users.user', 'owner', 'location');
+        $table->select(
+            'events.id', 'title', 'shared:boolean', 'type', 'priority', 'events.public',
+            'recs.start_time', 'recs.stop_time', 'ec_users.user', 'owner', 'location'
+        );
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
         $table->join('ec_users', 'events.id', 'ec_users.event');
         $table->join('users', 'ec_users.user', 'users.id');
@@ -46,8 +48,10 @@ class EventsCalendar_Model_Today extends Jaws_Gadget_Model
     function GetPublicEvents($start, $stop)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
-        $table->select('events.id', 'subject', 'shared:boolean', 'type', 'priority', 'events.public',
-            'recs.start_time', 'recs.stop_time', 'ec_users.user', 'owner', 'location');
+        $table->select(
+            'events.id', 'title', 'shared:boolean', 'type', 'priority', 'events.public',
+            'recs.start_time', 'recs.stop_time', 'ec_users.user', 'owner', 'location'
+        );
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
         $table->join('ec_users', 'events.id', 'ec_users.event');
         $table->where('ec_users.owner', 0)->and();

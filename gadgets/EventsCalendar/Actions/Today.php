@@ -65,7 +65,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         } else {
             $tpl->SetVariable('title', _t('EVENTSCALENDAR_USER_EVENTS'));
         }
-        $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
         $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
@@ -92,7 +92,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         foreach ($events as $event) {
             $tpl->SetBlock('today/event');
 
-            $tpl->SetVariable('subject', $event['subject']);
+            $tpl->SetVariable('title', $event['title']);
             $tpl->SetVariable('type', _t('EVENTSCALENDAR_EVENT_TYPE_' . $event['type']));
             $tpl->SetVariable('location', $event['location']);
             $tpl->SetVariable('priority', _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $event['priority']));

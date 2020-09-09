@@ -16,7 +16,7 @@
   <div class="gadget_content">
     <table class="table table-hover table-bordered">
       <thead><tr>
-        <th>{{ "eventscalendar.event_subject" | t }}</th>
+        <th>{{ "eventscalendar.event_title" | t }}</th>
         <th>{{ "eventscalendar.event_type" | t }}</th>
         <th>{{ "eventscalendar.event_location" | t }}</th>
         <th>{{ "eventscalendar.event_priority" | t }}</th>
@@ -30,11 +30,11 @@
         <td>
           {% if user != 0 %}
           <a href="{{ 'user, event' | urlmap: 'EventsCalendar', 'ViewEvent', user, event.id }}">
-            {{event.subject}}
+            {{event.title}}
           </a>
           {% else %}
           <a href="{{ 'event' | urlmap: 'EventsCalendar', 'ViewEvent', event.id }}">
-            {{event.subject}}
+            {{event.title}}
           </a>
           {% endif %}
         </td>
