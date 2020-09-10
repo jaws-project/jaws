@@ -65,6 +65,11 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
      */
     function fetch($user, $attributes)
     {
+        $attributes = array(
+            'default' => (array)@$attributes['default'],
+            'custom'  => (array)@$attributes['custom']
+        );
+
         $tableName = strtolower('users_'.$this->gadget->name);
         array_walk(
             $attributes['custom'],
@@ -128,6 +133,11 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
      */
     function fetchAll($attributes, $filters, $limit = false, $offset = null)
     {
+        $attributes = array(
+            'default' => (array)@$attributes['default'],
+            'custom'  => (array)@$attributes['custom']
+        );
+
         $tableName = strtolower('users_'.$this->gadget->name);
         array_walk(
             $attributes['custom'],
