@@ -95,4 +95,16 @@ class Jaws_Gadget_Session extends Jaws_Gadget_Class
         return $this->app->session->setAttribute($property, $value, false, $this->gadget->name);
     }
 
+    /**
+     * Overloading __isset magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @return  bool
+     */
+    function __isset($property)
+    {
+        return !is_null($this->app->session->getAttribute($property, $this->gadget->name));
+    }
+
 }
