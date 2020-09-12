@@ -819,8 +819,8 @@ class Jaws_Session
         }
 
         foreach ($sessions as $key => $session) {
-            $sessions[$key]['proxy']  = inet_ntop(base64_decode($sessions[$key]['proxy']));
-            $sessions[$key]['client'] = inet_ntop(base64_decode($sessions[$key]['client']));
+            $sessions[$key]['proxy']  = (string)@inet_ntop(base64_decode($sessions[$key]['proxy']));
+            $sessions[$key]['client'] = (string)@inet_ntop(base64_decode($sessions[$key]['client']));
 
             if ($userAttributes = @unserialize($session['user_attributes'])) {
                 $sessions[$key]['internal']   = $userAttributes['internal'];
