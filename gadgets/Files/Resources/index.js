@@ -317,6 +317,31 @@ function Jaws_Gadget_Files() { return {
     },
 
     /**
+     * Preparing FormData object of old/new files 
+     */
+    prepareFormDataFiles: function($tpl, formData)
+    {
+        //var formDataX = new FormData();
+        // old files
+        $tpl.find('.old_files input[type="hidden"]').each(
+            function (key, el) {
+                formData.append(el.name, el.value);
+            }
+        );
+        // new files
+        $tpl.find('.new_files input[type="file"]').each(
+            function (key, elFile) {
+                $.each(
+                    elFile.files,
+                    function(key, file) {
+                        formData.append(elFile.name, file);
+                    }
+                );
+            }
+        );
+    },
+
+    /**
      * initialize file uploader
      */
     initFileUploader: function($fileuploader)
