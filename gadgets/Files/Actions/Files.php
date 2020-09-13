@@ -204,6 +204,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                             break;
                     }
                 }
+                $tpl->SetVariable('input_action', strtolower($interface['action']));
+                $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
+                $tpl->SetVariable('input_type', $interface['type']);
                 $tpl->SetVariable('fid', $file['id']);
                 $tpl->SetVariable('filename', $file['title']);
                 $tpl->SetVariable('filesize', $file['filesize']);
@@ -249,15 +252,19 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $filesModel = $this->gadget->model->load('Files');
         $oldFiles = $filesModel->getFiles($interface);
 
-        $remainFiles = $this->app->request->fetch('old_files:array');
+        // unique name of upload action/reference interface
+        $uploadFilesIndex = strtolower(
+            $interface['action'] . '_'. $interface['input_reference']. '_'. $interface['type']
+        );
+
+        $oldFilesIndex = 'old_files_'. $uploadFilesIndex;
+        $remainFiles = $this->app->request->fetch("$oldFilesIndex:array");
         $oldFilesCount = empty($remainFiles)? 0 : count($remainFiles);
 
         $newFilesCount = 0;
-        $uploadFilesIndex = strtolower(
-            'files_'. $interface['action'] . '_'. $interface['input_reference']. '_'. $interface['type']
-        );
-        if (array_key_exists($uploadFilesIndex, $_FILES)) {
-            $newFilesCount = count($_FILES[$uploadFilesIndex]['name']);
+        $newFilesIndex = 'new_files_'. $uploadFilesIndex;
+        if (array_key_exists($newFilesIndex, $_FILES)) {
+            $newFilesCount = count($_FILES[$newFilesIndex]['name']);
         }
         // check max count of files
         if ($options['maxcount'] > 0 &&
@@ -287,9 +294,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             }
         }
 
-        if (array_key_exists($uploadFilesIndex, $_FILES)) {
+        if (array_key_exists($newFilesIndex, $_FILES)) {
             $newFiles = Jaws_Utils::UploadFiles(
-                $_FILES[$uploadFilesIndex],
+                $_FILES[$newFilesIndex],
                 ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']),
                 $options['extensions'],
                 null,
