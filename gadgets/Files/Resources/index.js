@@ -131,11 +131,11 @@ function Jaws_Gadget_Files() { return {
 
             // max files count
             if (maxcount > 0) {
-                let filesCount = $(fileInput).parents().eq(1).find('.file_details').length;
+                let filesCount = $(fileInput).parents().eq(2).find('.file_details:visible').length;
                 if ((fileInput.files.length + filesCount) > maxcount) {
                     throw 'Files count exceeded!';
                 } else if ((fileInput.files.length + filesCount) == maxcount) {
-                    $(fileInput).parents().eq(1).find('.btn_browse').hide();
+                    $(fileInput).parents().eq(2).find('.btn_browse').hide();
                 }
             }
 
