@@ -309,8 +309,23 @@ function Jaws_Gadget_Files() { return {
                         }
                     );
                 }
+
+                //initialize file uploader
+                this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
             }
         )
+    },
+
+    /**
+     * initialize file uploader
+     */
+    initFileUploader: function($fileuploader)
+    {
+        let maxcount = Number($fileuploader.data('maxcount'));
+        let filesCount = $fileuploader.parents().eq(1).find('.file_details:visible').length;
+        if (maxcount > 0 && filesCount >= maxcount) {
+            $fileuploader.parent().hide();
+        }
     },
 
     /**
@@ -320,13 +335,12 @@ function Jaws_Gadget_Files() { return {
     {
         // initialize upload files configuration
         $('[data-initialize=fileuploader]').each(
-            function() {
-                let maxcount = Number($(this).data('maxcount'));
-                let filesCount = $(this).parents().eq(1).find('.file_details:visible').length;
-                if (maxcount > 0 && filesCount >= maxcount) {
-                    $(this).parent().hide();
-                }
-            }
+            $.proxy(
+                function(index, elFileUloader) {
+                    this.initFileUploader($(elFileUloader));
+                },
+                this
+            )
         );
     },
 
