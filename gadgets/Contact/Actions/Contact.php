@@ -121,6 +121,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         $assigns['response'] = $this->gadget->session->pop('Contact');
         $assigns['recipients'] = $this->gadget->model->load('Recipients')->GetRecipients(true);
         $assigns['selected_recipient'] = $message['recipient'];
+        $assigns['comments'] = $this->gadget->registry->fetch('comments');
 
         //attachment
         if (in_array('attachment', $items_array) &&
