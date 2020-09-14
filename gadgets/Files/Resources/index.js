@@ -277,43 +277,50 @@ function Jaws_Gadget_Files() { return {
      */
     loadReferenceFiles: function($tpl, $interface, $options = [])
     {
+        if (!$interface.hasOwnProperty('input_reference')) {
+            $interface['input_reference'] = $interface['reference'];
+        }
+
         let inputIndexName = $interface['action'].toLowerCase() + '_' +
-            $interface['reference'] + '_' + $interface['type'] + '[]';
+            $interface['input_reference'] + '_' + $interface['type'] + '[]';
+
         let $fileInput = $tpl.find('template').contents().find('input[type="file"]').last();
         $fileInput.attr('name', 'new_files_' + inputIndexName);
         let preview = Boolean($fileInput.data('preview'));
 
-        this.gadget.ajax.callAsync(
-            'loadReferenceFiles',
-            $interface,
-            function(response, status) {
-                if (response['type'] == 'alert-success') {
-                    $.each(
-                        response['data'],
-                        function (index, file) {
-                            let ulElement = $tpl.find('.old_files ul').first();
-                            ulElement.append(
-                                $tpl.find('template').contents().find('.file_details').parent().html()
-                            );
-                            let liElement = ulElement.children().last();
-                            liElement.find('input').attr('name', 'old_files_' + inputIndexName).val(file.id);
-                            liElement.find("[data-type='name']").html(file.title);
-                            liElement.find("[data-type='size']").html(file.filesize);
-                            // show preview
-                            if (preview) {
-                                liElement.find("[data-type='preview']").show().html(
-                                    '<img src="'+file.url_file+'" alt="" width="128">'
+        if ($interface['reference'] != 0) {
+            this.gadget.ajax.callAsync(
+                'loadReferenceFiles',
+                $interface,
+                function(response, status) {
+                    if (response['type'] == 'alert-success') {
+                        $.each(
+                            response['data'],
+                            function (index, file) {
+                                let ulElement = $tpl.find('.old_files ul').first();
+                                ulElement.append(
+                                    $tpl.find('template').contents().find('.file_details').parent().html()
                                 );
+                                let liElement = ulElement.children().last();
+                                liElement.find('input').attr('name', 'old_files_' + inputIndexName).val(file.id);
+                                liElement.find("[data-type='name']").html(file.title);
+                                liElement.find("[data-type='size']").html(file.filesize);
+                                // show preview
+                                if (preview) {
+                                    liElement.find("[data-type='preview']").show().html(
+                                        '<img src="'+file.url_file+'" alt="" width="128">'
+                                    );
+                                }
+                                liElement.show();
                             }
-                            liElement.show();
-                        }
-                    );
-                }
+                        );
+                    }
 
-                //initialize file uploader
-                this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
-            }
-        )
+                    //initialize file uploader
+                    this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
+                }
+            );
+        }
     },
 
     /**
@@ -321,10 +328,11 @@ function Jaws_Gadget_Files() { return {
      */
     prepareFormDataFiles: function($tpl, formData)
     {
-        //var formDataX = new FormData();
+        let filesCount = 0;
         // old files
         $tpl.find('.old_files input[type="hidden"]').each(
             function (key, el) {
+                filesCount++;
                 formData.append(el.name, el.value);
             }
         );
@@ -334,11 +342,14 @@ function Jaws_Gadget_Files() { return {
                 $.each(
                     elFile.files,
                     function(key, file) {
+                        filesCount++;
                         formData.append(elFile.name, file);
                     }
                 );
             }
         );
+
+        return filesCount;
     },
 
     /**
