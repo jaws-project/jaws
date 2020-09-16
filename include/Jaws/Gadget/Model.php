@@ -46,12 +46,22 @@ class Jaws_Gadget_Model extends Jaws_Gadget_Class
             }
 
             if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    "File [$file] not exists!",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
 
             include_once($file);
             if (!Jaws::classExists($classname)) {
-                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    "Class [$classname] not exists!",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
 
             $this->objects['Model'][$filename] = new $classname($this->gadget);
@@ -89,12 +99,22 @@ class Jaws_Gadget_Model extends Jaws_Gadget_Class
             }
 
             if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    "File [$file] not exists!",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
 
             include_once($file);
             if (!Jaws::classExists($classname)) {
-                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    "Class [$classname] not exists!",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
 
             $this->objects['AdminModel'][$filename] = new $classname($this->gadget);
