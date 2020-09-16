@@ -131,6 +131,69 @@ class Jaws_XTemplate_Filters_Default
     }
 
     /**
+     * get session variables/attributes(user, global, gadget)
+     *
+     * @param   string    $var
+     * @param   string    $component
+     *
+     * @return  string
+     */
+    public static function session($var, $component = '')
+    {
+        if (empty($component)) {
+            if (false !== $property = strstr($var, '.')) {
+                $var = strstr($var, '.', true);
+                $property = substr($property, 1);
+                $objKey = Jaws::getInstance()->session->$var;
+                if (is_object($objKey) && property_exists($objKey, $property)) {
+                    return Jaws::getInstance()->session->$var->$property;
+                }
+
+                return null;
+            }
+
+            return Jaws::getInstance()->session->$var;
+        } else {
+            return Jaws::getInstance()->session->getAttribute($var, $component);
+        }
+    }
+
+    /**
+     * get global variables(theme_url, data_url, .dir, .browser, ...)
+     *
+     * @param   string    $var
+     *
+     * @return  string
+     */
+    public static function global($var)
+    {
+        static $globalVariables = array();
+        if (empty($globalVariables)) {
+            $thisApp = Jaws::getInstance();
+            $globalVariables['.dir']     = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
+            $globalVariables['base_url'] = Jaws_Utils::getBaseURL('/');
+            $globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
+            $globalVariables['base_script']   = BASE_SCRIPT;
+            $globalVariables['data_url']    = $thisApp->getDataURL();
+            $globalVariables['main_index']  = $thisApp->mainIndex? 'index' : '';
+            $globalVariables['main_gadget'] = strtolower($thisApp->mainRequest['gadget']);
+            $globalVariables['main_action'] = strtolower($thisApp->mainRequest['action']);
+            // browser flag
+            $browser = $thisApp->GetBrowserFlag();
+            $globalVariables['.browser'] = empty($browser)? '' : ".$browser";
+            // theme
+            $theme = $thisApp->GetTheme();
+            $globalVariables['theme_url'] = $theme['url'];
+            // layout
+            $layout = $thisApp->layout->GetLayoutName();
+            $layout = @is_dir($theme['path']. '/'. $layout)? $layout : '';
+            $globalVariables['main_layout'] = strtolower(str_replace('.', '_', $layout));
+        }
+
+        return array_key_exists($var, $globalVariables)? $globalVariables[$var] : '';
+    }
+
+    /**
      * Convenience function to translate strings
      *
      * @param   string   $input
