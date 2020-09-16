@@ -990,7 +990,7 @@ class Jaws_Session
             return $this->session[$property];
         }
 
-        return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
+        return null;
     }
 
     /**
