@@ -118,10 +118,10 @@ class Jaws_XTemplate_Filters_Default
      *
      * @return string
      */
-    public static function urlmap($args, $gadget, $action, ...$params)
+    public static function urlmap($gadget, $action, ...$params)
     {
-        $args = array_filter(array_map('trim', explode(',', $args)));
-        $params = array_combine($args, $params);
+        $pairs = array_chunk(array_pad($params, round(count($params)/2)*2, null), 2);
+        $params = array_combine(array_column($pairs, 0), array_column($pairs, 1));
 
         return Jaws::getInstance()->map->GetMappedURL(
             $gadget,
