@@ -29,11 +29,11 @@
       <tr>
         <td>
           {% if user != 0 %}
-          <a href="{{ 'user, event' | urlmap: 'EventsCalendar', 'ViewEvent', user, event.id }}">
+          <a href="{{ 'EventsCalendar' | urlmap: 'ViewEvent', 'user', user, 'event', event.id, 'rrrrr' }}">
             {{event.title}}
           </a>
           {% else %}
-          <a href="{{ 'event' | urlmap: 'EventsCalendar', 'ViewEvent', event.id }}">
+          <a href="{{ 'EventsCalendar' | urlmap: 'ViewEvent', 'event', event.id }}">
             {{event.title}}
           </a>
           {% endif %}
