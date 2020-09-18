@@ -670,7 +670,7 @@ END;
             foreach ($changes['remove'] as $field_name => $field) {
                 $fields[] = $db->quoteIdentifier($field_name, true);
             }
-            $result = $db->exec("ALTER TABLE $name DROP COLUMN ". implode(', ', $fields));
+            $result = $db->exec("ALTER TABLE $name DROP (". implode(', ', $fields) . ")");
             if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOSUCHFIELD)) {
                 return $result;
             }
