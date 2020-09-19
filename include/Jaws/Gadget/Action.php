@@ -51,13 +51,23 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
                 $classname = "Jaws_Gadget_Actions_$filename";
                 $file = ROOT_JAWS_PATH. "include/Jaws/Gadget/Actions/$filename.php";
                 if (!file_exists($file)) {
-                    return Jaws_Error::raiseError("Actions filename [$filename] not exists!", __FUNCTION__);
+                    return Jaws_Error::raiseError(
+                        "Actions filename [$filename] not exists!",
+                        __FUNCTION__,
+                        JAWS_ERROR_ERROR,
+                        1
+                    );
                 }
             }
 
             include_once($file);
             if (!Jaws::classExists($classname)) {
-                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    "Class [$classname] not exists!",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
 
             $this->gadget->objects['Actions'][$filename] = new $classname($this->gadget);
@@ -90,12 +100,22 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
             $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
 
             if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    "File [$file] not exists!",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
 
             include_once($file);
             if (!Jaws::classExists($classname)) {
-                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    "Class [$classname] not exists!",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
             }
 
             $this->gadget->objects['AdminActions'][$filename] = new $classname($this->gadget);
