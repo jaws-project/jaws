@@ -53,7 +53,7 @@ class EventsCalendar_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $tables = array('ec_events', 'ec_recurrences', 'ec_users');
+        $tables = array('ec_users', 'ec_recurrences', 'ec_events');
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
