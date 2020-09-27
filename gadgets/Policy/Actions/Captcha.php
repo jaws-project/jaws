@@ -59,12 +59,11 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
      * Load and get captcha
      *
      * @access  public
-     * @param   object  $tpl            Jaws_Template object
-     * @param   string  $tpl_base_block Template block name
+     * @param   object  $tpl    Jaws_Template object
      * @param   string  $field
      * @return  bool    True if captcha loaded successfully
      */
-    function loadCaptcha(&$tpl, $tpl_base_block, $field = 'default')
+    function loadCaptcha(&$tpl, $field = 'default')
     {
         if (!extension_loaded('gd')) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'LoadCaptcha error: GD extension not loaded');
@@ -89,6 +88,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
         $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
         $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
 
+        $tpl_base_block = $tpl->GetCurrentBlockPath();
         $resCaptcha = $objCaptcha->get();
         if (empty($resCaptcha['key'])) {
             $tpl->SetBlock("$tpl_base_block/block_captcha");
