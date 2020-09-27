@@ -155,7 +155,7 @@ class Jaws_Gadget_Groups extends Jaws_Gadget_Class
         );
 
         $objORM = Jaws_ORM::getInstance()
-            ->table($tableName)
+            ->table('groups')
             ->select(array_merge($attributes['default'], $attributes['custom']))
             ->join($tableName, $tableName.'.group', 'groups.id', 'left');
 
