@@ -362,7 +362,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         // check captcha only in new topic action
         if (empty($topic['id'])) {
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $htmlPolicy->loadCaptcha($tpl, 'topic');
+            $htmlPolicy->loadCaptcha($tpl);
         }
 
         // buttons

@@ -387,7 +387,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
         // display captcha
         $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $htmlPolicy->loadCaptcha($tpl, 'post');
+        $htmlPolicy->loadCaptcha($tpl);
 
         // buttons
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
