@@ -46,7 +46,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
 
             //captcha
             $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
+            $mPolicy->loadCaptcha($tpl, 'login');
 
             $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
             $tpl->SetVariable('url_back', $referrer);

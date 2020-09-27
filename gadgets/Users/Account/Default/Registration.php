@@ -54,7 +54,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
 
             //captcha
             $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, 'LoginBox');
+            $mPolicy->loadCaptcha($tpl);
 
             $tpl->SetVariable('register', $this::t('REGISTER'));
             $tpl->SetVariable('url_back', $referrer);

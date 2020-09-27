@@ -182,7 +182,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
         if ($this->gadget->action->load('Login')->BadLogins($reqpost['username']) >= $max_captcha_login_bad_count) {
             $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, "$block/login_step_1", 'login');
+            $mPolicy->loadCaptcha($tpl, 'login');
         }
 
         // global variables
@@ -235,7 +235,7 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         // display captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $mPolicy->loadCaptcha($tpl, "$block/login_step_2", 'login');
+        $mPolicy->loadCaptcha($tpl, 'login');
 
         // global variables
         $tpl->SetVariable('login', Jaws::t('LOGIN'));

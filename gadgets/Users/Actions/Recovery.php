@@ -107,7 +107,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
                 //captcha
                 $tpl->SetBlock('forgot/captcha');
                 $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-                $mPolicy->loadCaptcha($tpl, 'forgot/captcha');
+                $mPolicy->loadCaptcha($tpl);
                 $tpl->ParseBlock('forgot/captcha');
                 // action
                 $tpl->SetBlock('forgot/action');
