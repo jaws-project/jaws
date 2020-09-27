@@ -102,7 +102,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
             //captcha
             $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, 'comment_form');
+            $mPolicy->loadCaptcha($tpl);
 
         } else {
             $tpl->SetBlock('comment_form/unregistered');
