@@ -31,28 +31,24 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
             );
         } else {
             $reqpost = $response['data'];
+            $reqpost['rcvstep'] = (int)$reqpost['rcvstep'];
         }
 
-        if ($reqpost['rcvstep'] == 2) {
-            $this->LoginForgotStep3($tpl, $reqpost);
-        } else {
-            $tpl->SetBlock('forgot/request');
+        switch ($reqpost['rcvstep']) {
+            case 2:
+                $this->LoginForgotStep2($tpl, $reqpost, $referrer);
+                break;
 
-            if (empty($reqpost['rcvstep'])) {
-                $this->LoginForgotStep1($tpl, $reqpost);
-            } else {
-                $this->LoginForgotStep2($tpl, $reqpost);
-            }
+            case 3:
+                $this->LoginForgotStep3($tpl, $reqpost, $referrer);
+                break;
 
-            //captcha
-            $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, 'login');
+            case 4:
+                $this->LoginForgotStep4($tpl, $reqpost, $referrer);
+                break;
 
-            $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
-            $tpl->SetVariable('url_back', $referrer);
-            $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-            $tpl->ParseBlock('forgot/request');
+            default:
+                $this->LoginForgotStep1($tpl, $reqpost, $referrer);
         }
 
         if (!empty($response)) {
@@ -70,7 +66,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template
      */
-    private function LoginForgotStep1(&$tpl, $reqpost)
+    private function LoginForgotStep1(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/forgot_step_1");
@@ -81,6 +77,14 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('lbl_account',  Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
+        //captcha
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+        $mPolicy->loadCaptcha($tpl, 'login');
+
+        $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+
         $tpl->ParseBlock("$block/forgot_step_1");
     }
 
@@ -90,7 +94,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template
      */
-    private function LoginForgotStep2(&$tpl, $reqpost)
+    private function LoginForgotStep2(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/forgot_step_2");
@@ -106,19 +110,72 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('lbl_regkey',   $this::t('REGISTRATION_KEY'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
+        //captcha
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+        $mPolicy->loadCaptcha($tpl, 'login');
+
+        $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+
         $tpl->ParseBlock("$block/forgot_step_2");
     }
 
     /**
-     * Get HTML registration step 3
+     * Get HTML registration step 3 form
      *
      * @access  public
      * @return  string  XHTML template
      */
-    private function LoginForgotStep3(&$tpl, $reqpost)
+    private function LoginForgotStep3(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/reg_step_3");
+        $tpl->SetBlock("$block/forgot_step_3");
+
+        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
+        $tpl->SetVariable('email',    isset($reqpost['email'])? $reqpost['email'] : '');
+        $tpl->SetVariable('mobile',   isset($reqpost['mobile'])? $reqpost['mobile'] : '');
+        $tpl->SetVariable('mobile',   isset($reqpost['remember'])? $reqpost['remember'] : '0');
+
+        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
+        $tpl->SetVariable('lbl_email',    Jaws::t('EMAIL'));
+        $tpl->SetVariable('lbl_mobile',   $this::t('CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_regkey',   $this::t('REGISTRATION_KEY'));
+        $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $tpl->SetBlock("$block/forgot_step_3/encryption");
+            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
+            $tpl->ParseBlock("$block/forgot_step_3/encryption");
+
+            // usecrypt
+            $tpl->SetBlock("$block/forgot_step_3/usecrypt");
+            $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
+            if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
+                $tpl->SetBlock("$block/forgot_step_3/usecrypt/selected");
+                $tpl->ParseBlock("$block/forgot_step_3/usecrypt/selected");
+            }
+            $tpl->ParseBlock("$block/forgot_step_3/usecrypt");
+        }
+
+        $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+
+        $tpl->ParseBlock("$block/forgot_step_3");
+    }
+
+    /**
+     * Get HTML registration step 4
+     *
+     * @access  public
+     * @return  string  XHTML template
+     */
+    private function LoginForgotStep4(&$tpl, $reqpost)
+    {
+        $block = $tpl->GetCurrentBlockPath();
+        $tpl->SetBlock("$block/reg_step_4");
         $anon_activation = $this->gadget->registry->fetch('anon_activation');
         switch ($anon_activation) {
             case 'admin':
@@ -135,7 +192,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         }
         
         $tpl->SetVariable('message', $message);
-        $tpl->ParseBlock("$block/reg_step_3");
+        $tpl->ParseBlock("$block/reg_step_4");
     }
 
 }

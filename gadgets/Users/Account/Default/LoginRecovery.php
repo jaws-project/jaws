@@ -17,70 +17,84 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
     {
         $rcvryData = $this->gadget->request->fetch(
             array(
-                'domain', 'account', 'rcvstep', 'resend', 'rcvkey', 'usecrypt', 'remember'
+                'domain', 'account', 'rcvstep', 'resend', 'rcvkey',
+                'old_password', 'password', 'usecrypt', 'remember'
             ),
             'post'
         );
+        $rcvryData['rcvstep'] = (int)$rcvryData['rcvstep'];
+
+        // set default domain if not set
+        if (is_null($rcvryData['domain'])) {
+            $rcvryData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+        }
 
         try {
-            // check captcha
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $resCheck = $htmlPolicy->checkCaptcha('login');
-            if (Jaws_Error::IsError($resCheck)) {
-                throw new Exception($resCheck->getMessage(), 401);
-            }
-
-            if (empty($rcvryData['rcvstep'])) {
-                /*
-                $this->gadget->session->delete('temp_recovery_user');
-                if ($rcvryData['usecrypt']) {
-                    $JCrypt = Jaws_Crypt::getInstance();
-                    if (!Jaws_Error::IsError($JCrypt)) {
-                        $rcvryData['password'] = $JCrypt->decrypt($rcvryData['password']);
-                    }
-                } else {
-                    $rcvryData['password'] = Jaws_XSS::defilter($rcvryData['password']);
+            if ($rcvryData['rcvstep'] == 4) { // user forgot successful message step
+                //
+            } elseif ($rcvryData['rcvstep'] == 3) { // user forgot set password step
+                // fetch user data from session
+                $userData = $this->gadget->session->temp_recovery_user;
+                if (empty($userData)) {
+                    $rcvryData['rcvstep'] = 1;
+                    throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
                 }
-                */
 
-                // set default domain if not set
-                if (is_null($rcvryData['domain'])) {
-                    $rcvryData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+                _log_var_dump($rcvryData);
+                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
+
+            } elseif ($rcvryData['rcvstep'] == 2) { // user forgot verification step
+                // check captcha
+                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                $resCheck = $htmlPolicy->checkCaptcha('login');
+                if (Jaws_Error::IsError($resCheck)) {
+                    throw new Exception($resCheck->getMessage(), 401);
+                }
+
+                // fetch user data from session
+                $userData = $this->gadget->session->temp_recovery_user;
+                if (empty($userData)) {
+                    $rcvryData['rcvstep'] = 1;
+                    throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
+                }
+
+                $rcvkey = $this->gadget->session->rcvkey;
+                if (!isset($rcvkey['text']) || ($rcvkey['time'] < (time() - 300)) ||
+                   (!empty($rcvryData['resend']) && ($rcvkey['time'] < (time() - 90)))
+                ) {
+                    // send recovery key notification to user
+                    $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
+                }
+
+                // check verification key
+                if ($rcvkey['text'] != $rcvryData['rcvkey']) {
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
+                }
+
+                // goto next step
+                $rcvryData['rcvstep'] = 3;
+                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
+
+            } else { // user forgot first step
+                // check captcha
+                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                $resCheck = $htmlPolicy->checkCaptcha('login');
+                if (Jaws_Error::IsError($resCheck)) {
+                    throw new Exception($resCheck->getMessage(), 401);
                 }
 
                 $userData = $this->app->users->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
                 if (Jaws_Error::IsError($userData) || empty($userData)) {
                     throw new Exception($this::t('USER_NOT_EXIST'), 401);
                 }
-
-                $rcvryData['rcvstep'] = 1;
                 $this->gadget->session->temp_recovery_user = $userData;
+
+                // goto next step
+                $rcvryData['rcvstep'] = 2;
 
                 // send notification to user
                 $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
-
-                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
-
-            }
-
-            // fetch user data from session
-            $userData = $this->gadget->session->temp_recovery_user;
-            if (empty($userData)) {
-                $rcvryData['rcvstep'] = 0;
-                throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
-            }
-
-            $rcvkey = $this->gadget->session->rcvkey;
-            if (!isset($rcvkey['text']) || ($rcvkey['time'] < (time() - 300)) ||
-               (!empty($rcvryData['resend']) && ($rcvkey['time'] < (time() - 90)))
-            ) {
-                // send recovery key notification to user
-                $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
-                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
-            }
-
-            // check verification key
-            if ($rcvkey['text'] != $rcvryData['rcvkey']) {
                 throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
             }
 
@@ -90,7 +104,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 array('account' => true)
             );
             if (Jaws_Error::IsError($user) || empty($user)) {
-                $rcvryData['rcvstep'] = 0;
+                $rcvryData['rcvstep'] = 1;
                 throw new Exception($this::t('USER_NOT_EXIST'), 401);
             }
 

@@ -8,14 +8,14 @@
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-<!-- BEGIN request -->
+
+<!-- BEGIN forgot_step_1 -->
   <form name="forgotBox" action="{{base_script}}" method="post">
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="LoginRecovery" />
+    <input type="hidden" name="rcvstep" value="1" />
     <div class="gadget_content">
       <fieldset>
-        <!-- BEGIN forgot_step_1 -->
-        <input type="hidden" name="rcvstep" value="0" />
         <!-- BEGIN multi_domain -->
         <div>
           <label for="domain">{{lbl_domain}}:</label>
@@ -34,9 +34,24 @@
                  required
           />
         </div>
-        <!-- END forgot_step_1 -->
-        <!-- BEGIN forgot_step_2 -->
-        <input type="hidden" name="rcvstep" value="1" />
+        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+      </fieldset>
+    </div>
+
+    <div class="gadget_actions">
+      <button class="btn btn-primary" type="submit">{{recovery}}</button>
+      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+    </div>
+  </form>
+<!-- END forgot_step_1 -->
+
+<!-- BEGIN forgot_step_2 -->
+  <form name="forgotBox" action="{{base_script}}" method="post">
+    <input type="hidden" name="reqGadget" value="Users" />
+    <input type="hidden" name="reqAction" value="LoginRecovery" />
+    <input type="hidden" name="rcvstep" value="2" />
+    <div class="gadget_content">
+      <fieldset>
         <div>
           <label for="forgot_account">{{lbl_term}}:</label>
           <input class="form-control ltr" name="account" id="forgot_account"
@@ -54,7 +69,6 @@
                  required
           />
         </div>
-        <!-- END forgot_step_2 -->
         <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
       </fieldset>
     </div>
@@ -63,14 +77,80 @@
       <button class="btn btn-primary" type="submit">{{recovery}}</button>
       <div><a href="{{url_back}}">{{lbl_back}}</a></div>
     </div>
-
   </form>
-<!-- END request -->
+<!-- END forgot_step_2 -->
+
 <!-- BEGIN forgot_step_3 -->
+  <form name="forgotBox" action="{{base_script}}" method="post">
+    <input type="hidden" name="reqGadget" value="Users" />
+    <input type="hidden" name="reqAction" value="LoginRecovery" />
+    <input type="hidden" name="rcvstep" value="3" />
+    <!-- BEGIN encryption -->
+    <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
+    <!-- END encryption -->
+    <div class="gadget_content">
+      <fieldset>
+
+        <div class="form-group">
+          <label for="username">{{lbl_username}}:</label>
+          <input class="form-control ltr" type="text"
+            name="username" id="username"
+            value="{{username}}" required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="old_password">{{lbl_old_password}}:</label>
+          <div class="input-group">
+            <input class="form-control ltr" type="password"
+              name="old_password" id="old_password"
+              autocomplete="off" data-toggle="password" required
+            />
+            <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
+              <i class="glyphicon glyphicon-eye-open"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">{{lbl_password}}:</label>
+          <div class="input-group">
+            <input class="form-control ltr" type="password"
+              name="password" id="password"
+              autocomplete="off" data-toggle="password" required
+            />
+            <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
+              <i class="glyphicon glyphicon-eye-open"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- BEGIN usecrypt -->
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input"
+            id="usecrypt" name="usecrypt" value="true"
+            <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+          />
+          <label class="form-check-label" for="usecrypt">{{lbl_usecrypt}}</label>
+        </div>
+        <!-- END usecrypt -->
+
+      </fieldset>
+    </div>
+
+    <div class="gadget_actions">
+      <button class="btn btn-primary" type="submit">{{recovery}}</button>
+      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+    </div>
+  </form>
+<!-- END forgot_step_3 -->
+
+<!-- BEGIN forgot_step_4 -->
   <div class="gadget_content">
     <p>{{message}}</p>
   </div>
-<!-- END forgot_step_3 -->
+<!-- END forgot_step_4 -->
+
 </div>
 <div class="gadget_footer"></div>
 <!-- END forgot -->
