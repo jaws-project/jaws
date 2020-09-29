@@ -206,13 +206,13 @@ class Entry extends Bin
     {
         $this->_XHTML = '<input';
         if ($this->_type == 'password') {
-            $this->_XHTML .= ' class="form-control" type="password"';
+            $this->_XHTML .= ' class="form-control '.$this->_class.'" type="password"';
         } elseif ($this->_type == 'hidden') {
             $this->_XHTML .= ' type="hidden"';
         } elseif ($this->_type == 'file') {
-            $this->_XHTML .= ' class="form-control-file" type="file"';
+            $this->_XHTML .= ' class="form-control-file '.$this->_class.'" type="file"';
         } else {
-            $this->_XHTML .= ' class="form-control" type="text"';
+            $this->_XHTML .= ' class="form-control '.$this->_class.'" type="text"';
             if ($this->_isReadOnly) {
                 $this->_XHTML .= ' readonly="readonly"';
             }
