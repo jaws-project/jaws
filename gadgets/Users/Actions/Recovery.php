@@ -59,69 +59,6 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $classname = "Users_Account_{$authtype}_LoginForgot";
         $objAccount = new $classname($this->gadget);
         return $objAccount->LoginForgot(Jaws_XSS::filterURL(hex2bin($referrer), true, true));
-/*
-        $response = $this->gadget->session->pop('LoginForgot');
-        if (!isset($response['data'])) {
-            $post = array(
-                'step'  => 0,
-                'email' => '',
-                'key'   => '',
-            );
-        } else {
-            $post = $response['data'];
-            $post['step'] = (int)$post['step'];
-        }
-
-        // Load the template
-        $tpl = $this->gadget->template->load('LoginForgot.html');
-        $tpl->SetBlock('forgot');
-        $tpl->SetVariable('step', (int)$post['step']);
-        $tpl->SetVariable('title', $this::t('FORGOT_REMEMBER'));
-
-        switch ($post['step']) {
-            case 2:
-                $tpl->SetBlock('forgot/success');
-                $tpl->SetVariable(
-                    'message',
-                    $this::t('FORGOT_RECOVERY_SUCCESS', $this->gadget->urlMap('Login'))
-                );
-                $tpl->ParseBlock('forgot/success');
-                break;
-
-            case 1:
-                $tpl->SetBlock('forgot/key');
-                $tpl->SetVariable('lbl_key', $this::t('FORGOT_RECOVERY_KEY'));
-                $tpl->SetVariable('key', $post['key']);
-                $tpl->ParseBlock('forgot/key');
-                // without break
-
-            default:
-                $tpl->SetBlock('forgot/email');
-                $tpl->SetVariable('lbl_term', $this::t('FORGOT_TERM'));
-                $tpl->SetVariable('email', $post['email']);
-                if ($post['step']) {
-                    $tpl->SetBlock('forgot/email/readonly');
-                    $tpl->ParseBlock('forgot/email/readonly');
-                }
-                $tpl->ParseBlock('forgot/email');
-                //captcha
-                $tpl->SetBlock('forgot/captcha');
-                $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-                $mPolicy->loadCaptcha($tpl);
-                $tpl->ParseBlock('forgot/captcha');
-                // action
-                $tpl->SetBlock('forgot/action');
-                $tpl->SetVariable('remember', Jaws::t('REQUEST'));
-                $tpl->ParseBlock('forgot/action');
-        }
-
-        if ($response = $this->gadget->session->pop('LoginForgot')) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-        }
-        $tpl->ParseBlock('forgot');
-        return $tpl->Get();
-*/
     }
 
     /**
@@ -189,61 +126,6 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         }
 
         return Jaws_Header::Location($this->gadget->urlMap('Account'));
-/*
-        $post = $this->gadget->request->fetch(array('step', 'email', 'key'), 'post');
-
-        $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $resCheck = $htmlPolicy->checkCaptcha();
-        if (Jaws_Error::IsError($resCheck)) {
-            $this->gadget->session->push(
-                $resCheck->GetMessage(),
-                RESPONSE_ERROR,
-                'LoginForgot',
-                $post
-            );
-            return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
-        }
-
-        if (empty($post['step'])) {
-            $result = $this->gadget->model->load('Registration')->SendLoginRecoveryKey($post['email']);
-            if (Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(
-                    $result->GetMessage(),
-                    RESPONSE_ERROR,
-                    'LoginForgot',
-                    $post
-                );
-            } else {
-                $post['step'] = 1;
-                $this->gadget->session->push(
-                    $this::t('FORGOT_REQUEST_SENT'),
-                    RESPONSE_NOTICE,
-                    'LoginForgot',
-                    $post
-                );
-            }
-        } else {
-            $result = $this->gadget->model->load('Account')->UpdatePassword($post['email'], $post['key']);
-            if (Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(
-                    $result->getMessage(),
-                    RESPONSE_ERROR,
-                    'LoginForgot',
-                    $post
-                );
-            } else {
-                $post['step'] = 2;
-                $this->gadget->session->push(
-                    $this::t('FORGOT_PASSWORD_CHANGED'),
-                    RESPONSE_NOTICE,
-                    'LoginForgot',
-                    $post
-                );
-            }
-        }
-
-        return Jaws_Header::Location($this->gadget->urlMap('LoginForgot'));
-*/
     }
 
     /**

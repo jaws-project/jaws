@@ -30,9 +30,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
         }
 
         try {
-            if ($rcvryData['rcvstep'] == 4) { // user forgot successful message step
-                //
-            } elseif ($rcvryData['rcvstep'] == 3) { // user forgot set password step
+            if ($rcvryData['rcvstep'] == 3) { // user forgot set password step
                 // fetch user data from session
                 $userData = $this->gadget->session->temp_recovery_user;
                 if (empty($userData)) {
@@ -40,8 +38,47 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                     throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
                 }
 
-                _log_var_dump($rcvryData);
-                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
+                $result = $this->app->users->UpdatePassword(
+                    (int)$userData['id'],
+                    $rcvryData['password'],
+                    $rcvryData['old_password']
+                );
+                if (Jaws_Error::IsError($result)) {
+                    throw new Exception($result->getMessage(), 206);
+                }
+
+                // remove temp user data
+                $this->gadget->session->delete('temp_recovery_user');
+
+                $user = $this->app->users->GetUserNew(
+                    (int)$userData['id'],
+                    array('account' => true),
+                    $userData['domain']
+                );
+                if (Jaws_Error::IsError($user) || empty($user)) {
+                    $rcvryData['rcvstep'] = 1;
+                    throw new Exception($this::t('USER_NOT_EXIST'), 401);
+                }
+
+                // fetch user groups
+                $groups = $this->app->users->GetGroupsOfUser($user['id']);
+                if (Jaws_Error::IsError($groups)) {
+                    $groups = array();
+                }
+
+                $user['groups'] = $groups;
+                $user['avatar'] = $this->app->users->GetAvatar(
+                    $user['avatar'],
+                    $user['email'],
+                    48,
+                    $user['last_update']
+                );
+                $user['internal'] = true;
+                $user['remember'] = false;
+                // force user to change his password
+                $user['last_password_update'] = time();
+
+                return $user;
 
             } elseif ($rcvryData['rcvstep'] == 2) { // user forgot verification step
                 // check captcha
@@ -75,58 +112,28 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 // goto next step
                 $rcvryData['rcvstep'] = 3;
                 throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
-
-            } else { // user forgot first step
-                // check captcha
-                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-                $resCheck = $htmlPolicy->checkCaptcha('login');
-                if (Jaws_Error::IsError($resCheck)) {
-                    throw new Exception($resCheck->getMessage(), 401);
-                }
-
-                $userData = $this->app->users->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
-                if (Jaws_Error::IsError($userData) || empty($userData)) {
-                    throw new Exception($this::t('USER_NOT_EXIST'), 401);
-                }
-                $this->gadget->session->temp_recovery_user = $userData;
-
-                // goto next step
-                $rcvryData['rcvstep'] = 2;
-
-                // send notification to user
-                $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
-                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
             }
 
-            $user = $this->app->users->GetUserNew(
-                $userData['domain'],
-                (int)$userData['id'],
-                array('account' => true)
-            );
-            if (Jaws_Error::IsError($user) || empty($user)) {
-                $rcvryData['rcvstep'] = 1;
+            // user forgot first step
+            // check captcha
+            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+            $resCheck = $htmlPolicy->checkCaptcha('login');
+            if (Jaws_Error::IsError($resCheck)) {
+                throw new Exception($resCheck->getMessage(), 401);
+            }
+
+            $userData = $this->app->users->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
+            if (Jaws_Error::IsError($userData) || empty($userData)) {
                 throw new Exception($this::t('USER_NOT_EXIST'), 401);
             }
+            $this->gadget->session->temp_recovery_user = $userData;
 
-            // fetch user groups
-            $groups = $this->app->users->GetGroupsOfUser($user['id']);
-            if (Jaws_Error::IsError($groups)) {
-                $groups = array();
-            }
+            // goto next step
+            $rcvryData['rcvstep'] = 2;
 
-            $user['groups'] = $groups;
-            $user['avatar'] = $this->app->users->GetAvatar(
-                $user['avatar'],
-                $user['email'],
-                48,
-                $user['last_update']
-            );
-            $user['internal'] = true;
-            $user['remember'] = false;
-            // force user to change his password
-            $user['last_password_update'] = -1;
-
-            return $user;
+            // send notification to user
+            $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
+            throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
 
         } catch (Exception $error) {
             unset($rcvryData['password'], $rcvryData['password_check']);
