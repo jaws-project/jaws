@@ -127,11 +127,12 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
      * @access  public
      * @param   array   $attributes     User's custom/default attributes
      * @param   array   $filters        Filters
+     * @param   string  $join           Join type(left, inner, right, ...)
      * @param   int     $limit          Count of users to be returned
      * @param   int     $offset         Offset of data array
      * @return  mixed   Returns array of users or Jaws_Error on Failure
      */
-    function fetchAll($attributes, $filters, $limit = false, $offset = null)
+    function fetchAll($attributes, $filters, $join = 'left', $limit = false, $offset = null)
     {
         $attributes = array(
             'default' => (array)@$attributes['default'],
@@ -157,7 +158,7 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join($tableName, $tableName.'.user', 'users.id', 'left');
+            ->join($tableName, $tableName.'.user', 'users.id', $join);
 
         // default attributes filters
         $this->buildFilters($objORM, 'users', $filters['default']);
@@ -172,15 +173,16 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
      *
      * @access  public
      * @param   array   $filters    Filters
+     * @param   string  $join       Join type(left, inner, right, ...)
      * @return  mixed   Returns count of filtered users array or Jaws_Error on Failure
      */
-    function count($filters)
+    function count($filters, $join = 'left')
     {
         $tableName = strtolower('users_'.$this->gadget->name);
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select('count(users.id):integer')
-            ->join($tableName, $tableName.'.user', 'users.id', 'left');
+            ->join($tableName, $tableName.'.user', 'users.id', $join);
 
         // default attributes filters
         $this->buildFilters($objORM, 'users', $filters['default']);
