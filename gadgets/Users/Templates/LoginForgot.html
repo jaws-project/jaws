@@ -27,7 +27,7 @@
         </div>
         <!-- END multi_domain -->
         <div>
-          <label for="forgot_account">{{lbl_account}}:</label>
+          <label for="forgot_account">{{lbl_account}}({{lbl_account_hint}}):</label>
           <input class="form-control ltr" name="account" id="forgot_account"
                  type="text"
                  value="{{account}}"
@@ -52,15 +52,16 @@
     <input type="hidden" name="rcvstep" value="2" />
     <div class="gadget_content">
       <fieldset>
-        <div>
-          <label for="forgot_account">{{lbl_term}}:</label>
-          <input class="form-control ltr" name="account" id="forgot_account"
-                 type="text"
-                 value="{{account}}"
-                 readonly
+        <div class="form-group">
+          <label for="account">{{lbl_account}}:</label>
+          <input class="form-control ltr" type="text"
+            name="account" id="account"
+            value="{{account}}"
+            readonly
           />
         </div>
-        <div>
+
+        <div class="form-group">
           <label for="forgot_key">{{lbl_key}}:</label>
           <input class="form-control ltr" name="rcvkey" id="forgot_key"
                  type="text"
@@ -92,10 +93,11 @@
       <fieldset>
 
         <div class="form-group">
-          <label for="username">{{lbl_username}}:</label>
+          <label for="account">{{lbl_account}}:</label>
           <input class="form-control ltr" type="text"
-            name="username" id="username"
-            value="{{username}}" required
+            name="account" id="account"
+            value="{{account}}"
+            readonly
           />
         </div>
 

@@ -74,7 +74,8 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('domain',   $reqpost['domain']);
         $tpl->SetVariable('account',  $reqpost['account']);
         $tpl->SetVariable('remember', $reqpost['remember']);
-        $tpl->SetVariable('lbl_account',  Jaws::t('EMAIL'));
+        $tpl->SetVariable('lbl_account',  Jaws::t('ACCOUNT'));
+        $tpl->SetVariable('lbl_account_hint',  Jaws::t('ACCOUNT_HINT'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         //captcha
@@ -99,16 +100,9 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/forgot_step_2");
 
-        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
-        $tpl->SetVariable('email',    isset($reqpost['email'])? $reqpost['email'] : '');
-        $tpl->SetVariable('mobile',   isset($reqpost['mobile'])? $reqpost['mobile'] : '');
-        $tpl->SetVariable('mobile',   isset($reqpost['remember'])? $reqpost['remember'] : '0');
-
-        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
-        $tpl->SetVariable('lbl_email',    Jaws::t('EMAIL'));
-        $tpl->SetVariable('lbl_mobile',   $this::t('CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_regkey',   $this::t('REGISTRATION_KEY'));
-        $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
+        $tpl->SetVariable('lbl_account', Jaws::t('ACCOUNT'));
+        $tpl->SetVariable('account', $reqpost['account']);
+        $tpl->SetVariable('lbl_key', $this::t('REGISTRATION_KEY'));
 
         //captcha
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
@@ -132,15 +126,10 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/forgot_step_3");
 
-        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
-        $tpl->SetVariable('email',    isset($reqpost['email'])? $reqpost['email'] : '');
-        $tpl->SetVariable('mobile',   isset($reqpost['mobile'])? $reqpost['mobile'] : '');
-        $tpl->SetVariable('mobile',   isset($reqpost['remember'])? $reqpost['remember'] : '0');
-
-        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
-        $tpl->SetVariable('lbl_email',    Jaws::t('EMAIL'));
-        $tpl->SetVariable('lbl_mobile',   $this::t('CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_regkey',   $this::t('REGISTRATION_KEY'));
+        $tpl->SetVariable('lbl_account', Jaws::t('ACCOUNT'));
+        $tpl->SetVariable('account', $reqpost['account']);
+        $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
+        $tpl->SetVariable('lbl_old_password', $this::t('USERS_PASSWORD_OLD'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         $JCrypt = Jaws_Crypt::getInstance();
@@ -152,7 +141,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
             // usecrypt
             $tpl->SetBlock("$block/forgot_step_3/usecrypt");
             $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
-            if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
+            if (!empty($reqpost['usecrypt'])) {
                 $tpl->SetBlock("$block/forgot_step_3/usecrypt/selected");
                 $tpl->ParseBlock("$block/forgot_step_3/usecrypt/selected");
             }
