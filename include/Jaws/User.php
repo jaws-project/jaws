@@ -1394,7 +1394,7 @@ class Jaws_User
         if ($old_password !== false) {
             if ($user['password'] !== Jaws_User::GetHashedPassword($old_password, $user['password'])) {
                 return Jaws_Error::raiseError(
-                    Jaws::t('USERS_USERS_PASSWORD_OLD_DONT_MATCH'),
+                    Jaws_Gadget::t('Users.USERS_PASSWORD_OLD_DONT_MATCH'),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
