@@ -233,12 +233,12 @@ class Jaws_User
      * Get the info of an user by the username or ID
      *
      * @access  public
-     * @param   int     $domain     Domain Id
      * @param   mixed   $user       The username or ID
-     * @param   array   $fieldsets  Fieldsets(account, personal, password)
+     * @param   array   $fieldsets  Fieldsets(default, account, personal, password)
+     * @param   int     $domain     Domain Id
      * @return  mixed   Returns an array with the info of the user and false on error
      */
-    function GetUserNew($domain, $user, $fieldsets = array())
+    function GetUserNew($user, $fieldsets = array(), $domain = null)
     {
         $columns = array(
             'default'  => array(
@@ -264,9 +264,10 @@ class Jaws_User
             }
         }
 
-        $objORM = Jaws_ORM::getInstance()->table('users');
-        $objORM->select($selectedColumns);
-        $objORM->where('domain', (int)$domain);
+        $objORM = Jaws_ORM::getInstance()
+            ->table('users')
+            ->select($selectedColumns)
+            ->where('domain', (int)$domain, '=', is_null($domain));
         if (is_int($user)) {
             $objORM->and()->where('users.id', $user);
         } else {
@@ -1365,6 +1366,80 @@ class Jaws_User
         );
         if (Jaws_Error::IsError($res)) {
             return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Update user password
+     *
+     * @access  public
+     * @param   int     $uid            User's ID
+     * @param   string  $new_password   New password
+     * @param   string  $old_password   Old password
+     * @return  mixed   Returns true if user was successfully updated, false if not
+     */
+    function UpdatePassword($uid, $new_password, $old_password = false)
+    {
+        $user = $this->GetUserNew(
+            $uid,
+            array('default' => true, 'account' => true, 'password' => true)
+        );
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
+
+        // check old password
+        if ($old_password !== false) {
+            if ($user['password'] !== Jaws_User::GetHashedPassword($old_password, $user['password'])) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('USERS_USERS_PASSWORD_OLD_DONT_MATCH'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
+        // password & complexity
+        $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
+        if (!preg_match("/^[[:print:]]{{$min},24}$/", $new_password)) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INVALID_PASSWORD', $min),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        if (!preg_match($this->app->registry->fetch('password_complexity', 'Policy'), $new_password))
+        {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INVALID_COMPLEXITY'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        $last_password_update = time();
+        $result = Jaws_ORM::getInstance()
+            ->table('users')->update(
+                array(
+                    'password' => Jaws_User::GetHashedPassword($new_password),
+                    'last_password_update' => $last_password_update,
+                )
+            )
+            ->where('id', $uid)
+            ->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        // update last password update time in current session
+        if (isset($this->app) &&
+            property_exists($this->app, 'session') &&
+            $this->app->session->user->id == $uid
+        ) {
+            $this->app->session->user = array('last_password_update' => $last_password_update);
         }
 
         return true;
