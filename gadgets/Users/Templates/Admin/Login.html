@@ -25,10 +25,8 @@
         </div>
       </div>
 <!-- BEGIN login_step_1 -->
-      <form name="loginBox" action="{{base_script}}"
-        onsubmit="return Jaws_Gadget.getInstance('Users').submitLoginForm(this);"
-        method="post"
-      >
+      <form name="loginBox" action="{{base_script}}" method="post"
+        onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password']);">
         <input type="hidden" name="reqGadget" value="Users" />
         <input type="hidden" name="reqAction" value="Authenticate" />
         <input type="hidden" name="referrer" value="{{referrer}}" />
@@ -60,22 +58,23 @@
           <div>
             <label for="password">{{lbl_password}}:</label>
             <input class="form-control ltr" name="password" id="password"
-                   type="password"
-                   autocomplete="off"
-                   value=""
-                   required
+               type="password"
+               autocomplete="off"
+               value=""
+               required
             />
           </div>
           <!-- BEGIN remember -->
           <div>
             <label class="form-check-label" for="remember">
               <input class="form-check-input" type="checkbox"
-                    name="remember"
-                    id="remember"
-                    <!-- BEGIN selected -->
-                    checked="checked"
-                    <!-- END selected -->
-                    value="true" />
+                name="remember"
+                id="remember"
+                value="true"
+                <!-- BEGIN selected -->
+                checked="checked"
+                <!-- END selected -->
+              />
               {{lbl_remember}}
             </label>
           </div>
@@ -84,12 +83,13 @@
           <div>
             <label class="form-check-label" for="usecrypt">
               <input class="form-check-input" type="checkbox"
-                     name="usecrypt"
-                     id="usecrypt"
-                     <!-- BEGIN selected -->
-                     checked="checked"
-                     <!-- END selected -->
-                     value="true" />
+                name="usecrypt"
+                id="usecrypt"
+                value="true"
+                <!-- BEGIN selected -->
+                checked="checked"
+                <!-- END selected -->
+              />
               {{lbl_usecrypt}}
              </label>
           </div>
@@ -106,10 +106,7 @@
 <!-- END login_step_1 -->
 
 <!-- BEGIN login_step_2 -->
-      <form name="loginBox" action="{{base_script}}"
-        onsubmit="return Jaws_Gadget.getInstance('Users').submitLoginForm(this);"
-        method="post"
-      >
+      <form name="loginBox" action="{{base_script}}" method="post">
         <input type="hidden" name="reqGadget" value="Users" />
         <input type="hidden" name="reqAction" value="Authenticate" />
         <input type="hidden" name="referrer" value="{{referrer}}" />
@@ -146,10 +143,8 @@
 <!-- END login_step_2 -->
 
 <!-- BEGIN login_step_3 -->
-      <form name="loginBox" action="{{base_script}}"
-        onsubmit="return Jaws_Gadget.getInstance('Users').submitLoginForm(this);"
-        method="post"
-      >
+      <form name="loginBox" action="{{base_script}}" method="post"
+        onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password', 'chkpassword']);">
         <input type="hidden" name="reqGadget" value="Users" />
         <input type="hidden" name="reqAction" value="Authenticate" />
         <input type="hidden" name="referrer" value="{{referrer}}" />

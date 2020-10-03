@@ -10,7 +10,8 @@
   </div>
 
 <!-- BEGIN login_step_1 -->
-  <form name="loginBox" action="{{base_script}}" onsubmit="return submitLoginForm(this);" method="post">
+  <form name="loginBox" action="{{base_script}}" method="post"
+    onsubmit="return encryptFormSubmit(this, ['password']);" >
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
@@ -116,7 +117,8 @@
 <!-- END login_step_2 -->
 
 <!-- BEGIN login_step_3 -->
-  <form name="loginBox" action="{{base_script}}" onsubmit="return submitLoginForm(this);" method="post">
+  <form name="loginBox" action="{{base_script}}" method="post"
+    onsubmit="return encryptFormSubmit(this, ['password', 'chkpassword']);" >
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />

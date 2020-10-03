@@ -40,7 +40,7 @@
 
     <div class="gadget_actions">
       <button class="btn btn-primary" type="submit">{{recovery}}</button>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+      <a class="btn btn-default" href="{{url_back}}">{{lbl_back}}</a>
     </div>
   </form>
 <!-- END forgot_step_1 -->
@@ -76,13 +76,14 @@
 
     <div class="gadget_actions">
       <button class="btn btn-primary" type="submit">{{recovery}}</button>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+      <a class="btn btn-default" href="{{url_back}}">{{lbl_back}}</a>
     </div>
   </form>
 <!-- END forgot_step_2 -->
 
 <!-- BEGIN forgot_step_3 -->
-  <form name="forgotBox" action="{{base_script}}" method="post">
+  <form name="forgotBox" action="{{base_script}}" method="post"
+    onsubmit="return encryptFormSubmit(this, ['old_password', 'password']);">
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="LoginRecovery" />
     <input type="hidden" name="rcvstep" value="3" />
@@ -104,8 +105,7 @@
         <div class="form-group">
           <label for="old_password">{{lbl_old_password}}:</label>
           <div class="input-group">
-            <input class="form-control ltr" type="password"
-              name="old_password" id="old_password"
+            <input class="form-control ltr" type="password" name="old_password"
               autocomplete="off" data-toggle="password" required
             />
             <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
@@ -117,8 +117,7 @@
         <div class="form-group">
           <label for="password">{{lbl_password}}:</label>
           <div class="input-group">
-            <input class="form-control ltr" type="password"
-              name="password" id="password"
+            <input class="form-control ltr" type="password" name="password"
               autocomplete="off" data-toggle="password" required
             />
             <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
@@ -142,7 +141,7 @@
 
     <div class="gadget_actions">
       <button class="btn btn-primary" type="submit">{{recovery}}</button>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+      <a class="btn btn-default" href="{{url_back}}">{{lbl_back}}</a>
     </div>
   </form>
 <!-- END forgot_step_3 -->
@@ -150,6 +149,9 @@
 <!-- BEGIN forgot_step_4 -->
   <div class="gadget_content">
     <p>{{message}}</p>
+  </div>
+  <div class="gadget_actions">
+    <a class="btn btn-primary" href="{{url_back}}">{{lbl_back}}</a>
   </div>
 <!-- END forgot_step_4 -->
 

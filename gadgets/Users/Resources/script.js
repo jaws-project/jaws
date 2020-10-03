@@ -939,16 +939,17 @@ function Jaws_Gadget_Users() { return {
     /**
      *
      */
-    submitLoginForm: function(form) {
-        if ($('#usecrypt').prop('checked')) {
+    encryptFormSubmit: function(form, elements)
+    {
+        if ($('#usecrypt').prop('checked') && (elements.length > 0) && form.pubkey) {
             $.loadScript('libraries/js/jsencrypt.min.js', function() {
-                if (!$('#loginkey').length) {
-                    var objRSACrypt = new JSEncrypt();
-                    objRSACrypt.setPublicKey(form.pubkey.value);
-                    form.password.value = objRSACrypt.encrypt(form.password.value);
-                }
+                var objRSACrypt = new JSEncrypt();
+                objRSACrypt.setPublicKey(form.pubkey.value);
+                $.each(elements, function( k, el ) {
+                    form.elements[el].value = objRSACrypt.encrypt(form.elements[el].value);
+                });
                 form.submit();
-            }, this.gadget);
+            });
 
             return false;
         }
@@ -956,7 +957,6 @@ function Jaws_Gadget_Users() { return {
         return true;
     },
 
-    //-------------------------------
     /**
      * initialize gadget actions
      */

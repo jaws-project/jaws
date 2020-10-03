@@ -15,10 +15,6 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
      */
     function LoginForgot()
     {
-        if ($this->app->session->user->logged) {
-            return Jaws_Header::Location('');
-        }
-
         if ($this->gadget->registry->fetch('password_recovery') !== 'true') {
             return Jaws_HTTPError::Get(404);
         }
@@ -86,14 +82,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $classname = "Users_Account_{$authtype}_LoginRecovery";
         $objAccount = new $classname($this->gadget);
         $recoveryData = $objAccount->LoginRecovery();
-        if (Jaws_Error::IsError($recoveryData)) {
-            $default_authtype = $this->gadget->registry->fetch('authtype');
-            return $objAccount->LoginRecoveryError(
-                $recoveryData,
-                ($authtype != $default_authtype)? $authtype : '',
-                bin2hex($referrer)
-            );
-        } else {
+        if (!Jaws_Error::IsError($recoveryData)) {
             // 201 http code for auto login
             http_response_code(201);
 
@@ -117,15 +106,14 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
             );
             // let everyone know a user has been logged in
             $this->gadget->event->shout('LoginUser', $recoveryData);
-
-            $this->gadget->session->push(
-                $this::t('REGISTRATION_ACTIVATED'),
-                RESPONSE_NOTICE,
-                'Login.Response'
-            );
         }
 
-        return Jaws_Header::Location($this->gadget->urlMap('Account'));
+        $default_authtype = $this->gadget->registry->fetch('authtype');
+        return $objAccount->LoginRecoveryError(
+            $recoveryData,
+            ($authtype != $default_authtype)? $authtype : '',
+            bin2hex($referrer)
+        );
     }
 
     /**

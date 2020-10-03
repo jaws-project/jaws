@@ -34,6 +34,11 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
             $reqpost['rcvstep'] = (int)$reqpost['rcvstep'];
         }
 
+        // redirect to home page if user logged and action called directly
+        if ($this->app->session->user->logged && $reqpost['rcvstep'] != 4) {
+            return Jaws_Header::Location('');
+        }
+
         switch ($reqpost['rcvstep']) {
             case 2:
                 $this->LoginForgotStep2($tpl, $reqpost, $referrer);
@@ -51,7 +56,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
                 $this->LoginForgotStep1($tpl, $reqpost, $referrer);
         }
 
-        if (!empty($response)) {
+        if (!empty($response['text'])) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -141,7 +146,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
             // usecrypt
             $tpl->SetBlock("$block/forgot_step_3/usecrypt");
             $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
-            if (!empty($reqpost['usecrypt'])) {
+            if (empty($reqpost['pubkey']) || !empty($reqpost['usecrypt'])) {
                 $tpl->SetBlock("$block/forgot_step_3/usecrypt/selected");
                 $tpl->ParseBlock("$block/forgot_step_3/usecrypt/selected");
             }
@@ -161,27 +166,14 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template
      */
-    private function LoginForgotStep4(&$tpl, $reqpost)
+    private function LoginForgotStep4(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/reg_step_4");
-        $anon_activation = $this->gadget->registry->fetch('anon_activation');
-        switch ($anon_activation) {
-            case 'admin':
-                $message = $this::t('REGISTRATION_ACTIVATION_REQUIRED_BY_ADMIN');
-                break;
-
-            case 'user':
-                $message = $this::t('REGISTRATION_ACTIVATED_BY_USER');
-                break;
-
-            default:
-                $message = $this::t('REGISTRATION_ACTIVATED_BY_AUTO');
-                break;
-        }
-        
-        $tpl->SetVariable('message', $message);
-        $tpl->ParseBlock("$block/reg_step_4");
+        $tpl->SetBlock("$block/forgot_step_4");
+        $tpl->SetVariable('message', $this::t('FORGOT_RECOVERY_SUCCESS'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+        $tpl->ParseBlock("$block/forgot_step_4");
     }
 
 }

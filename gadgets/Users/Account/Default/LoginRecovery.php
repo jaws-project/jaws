@@ -18,7 +18,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
         $rcvryData = $this->gadget->request->fetch(
             array(
                 'domain', 'account', 'rcvstep', 'resend', 'rcvkey',
-                'old_password', 'password', 'usecrypt', 'remember'
+                'pubkey', 'old_password', 'password', 'usecrypt', 'remember'
             ),
             'post'
         );
@@ -36,6 +36,17 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 if (empty($userData)) {
                     $rcvryData['rcvstep'] = 1;
                     throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
+                }
+
+                if ($rcvryData['usecrypt']) {
+                    $JCrypt = Jaws_Crypt::getInstance();
+                    if (!Jaws_Error::IsError($JCrypt)) {
+                        $rcvryData['password'] = $JCrypt->decrypt($rcvryData['password']);
+                        $rcvryData['old_password'] = $JCrypt->decrypt($rcvryData['old_password']);
+                    }
+                } else {
+                    $rcvryData['password'] = Jaws_XSS::defilter($rcvryData['password']);
+                    $rcvryData['old_password'] = Jaws_XSS::defilter($rcvryData['old_password']);
                 }
 
                 $result = $this->app->users->UpdatePassword(
@@ -78,6 +89,15 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 // force user to change his password
                 $user['last_password_update'] = time();
 
+                $rcvryData['rcvstep'] = 4;
+                unset($rcvryData['password'], $rcvryData['old_password']);
+                $this->gadget->session->push(
+                    '',
+                    RESPONSE_NOTICE,
+                    'Recovery.Response',
+                    $rcvryData
+                );
+
                 return $user;
 
             } elseif ($rcvryData['rcvstep'] == 2) { // user forgot verification step
@@ -111,7 +131,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
 
                 // goto next step
                 $rcvryData['rcvstep'] = 3;
-                throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
+                throw new Exception('', 206);
             }
 
             // user forgot first step
@@ -154,7 +174,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
      * @access  public
      * @return  string  XHTML content
      */
-    function LoginRecoveryError($error, $authtype, $referrer)
+    function LoginRecoveryError($result, $authtype, $referrer)
     {
         $urlParams = array();
         if (!empty($authtype)) {
@@ -164,7 +184,13 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             $urlParams['referrer'] = $referrer;
         }
 
-        http_response_code($error->getCode());
+        if (Jaws_Error::IsError($result)) {
+            http_response_code($result->getCode());
+        } else {
+            // 201 http code for success login
+            http_response_code(201);
+        }
+
         return Jaws_Header::Location($this->gadget->urlMap('LoginForgot', $urlParams));
     }
 

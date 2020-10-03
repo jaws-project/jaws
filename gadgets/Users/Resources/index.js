@@ -1354,15 +1354,18 @@ function updateBookmark() {
 /**
  *
  */
-function submitLoginForm(form)
+function encryptFormSubmit(form, elements)
 {
-    if ($('#usecrypt').prop('checked')) {
+    if ($('#usecrypt').prop('checked') && (elements.length > 0) && form.pubkey) {
         $.loadScript('libraries/js/jsencrypt.min.js', function() {
             var objRSACrypt = new JSEncrypt();
             objRSACrypt.setPublicKey(form.pubkey.value);
-            form.password.value = objRSACrypt.encrypt(form.password.value);
+            $.each(elements, function( k, el ) {
+                form.elements[el].value = objRSACrypt.encrypt(form.elements[el].value);
+            });
             form.submit();
         });
+
         return false;
     }
 
