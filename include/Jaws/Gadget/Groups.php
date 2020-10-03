@@ -54,7 +54,7 @@ class Jaws_Gadget_Groups extends Jaws_Gadget_Class
         $attrs['group'] = (int)$group;
         $tableName = strtolower('groups_'.$this->gadget->name);
         $objORM = Jaws_ORM::getInstance()->table($tableName);
-        return $objORM->usert($attrs)->where('group', (int)$group)->exec();
+        return $objORM->upsert($attrs)->where('group', (int)$group)->exec();
     }
 
     /**
