@@ -54,7 +54,7 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
         $attrs['user'] = (int)$user;
         $tableName = strtolower('users_'.$this->gadget->name);
         $objORM = Jaws_ORM::getInstance()->table($tableName);
-        return $objORM->update($attrs)->where('user', (int)$user)->exec();
+        return $objORM->upsert($attrs)->where('user', (int)$user)->exec();
     }
 
     /**
