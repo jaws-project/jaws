@@ -42,6 +42,22 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
     }
 
     /**
+     * Insert/Update custom user's attributes of gadget
+     *
+     * @access  public
+     * @param   int     $user   User ID
+     * @param   array   $attrs  User's attributes
+     * @return  bool    Returns True or Jaws_Error on Failure
+     */
+    function upsertAttributes($user, $attrs = array())
+    {
+        $attrs['user'] = (int)$user;
+        $tableName = strtolower('users_'.$this->gadget->name);
+        $objORM = Jaws_ORM::getInstance()->table($tableName);
+        return $objORM->update($attrs)->where('user', (int)$user)->exec();
+    }
+
+    /**
      * delete custom user's attributes of gadget
      *
      * @access  public

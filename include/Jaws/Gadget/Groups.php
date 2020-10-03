@@ -42,6 +42,22 @@ class Jaws_Gadget_Groups extends Jaws_Gadget_Class
     }
 
     /**
+     * Insert/Update custom group's attributes of gadget
+     *
+     * @access  public
+     * @param   int     $group  Group ID
+     * @param   array   $attrs  Group's attributes
+     * @return  bool    Returns True or Jaws_Error on Failure
+     */
+    function upsertAttributes($group, $attrs = array())
+    {
+        $attrs['group'] = (int)$group;
+        $tableName = strtolower('groups_'.$this->gadget->name);
+        $objORM = Jaws_ORM::getInstance()->table($tableName);
+        return $objORM->usert($attrs)->where('group', (int)$group)->exec();
+    }
+
+    /**
      * delete custom group's attributes of gadget
      *
      * @access  public
