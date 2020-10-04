@@ -1927,6 +1927,16 @@ class Jaws_User
                 $user_groups[$group['id']] = $group['name'];
                 $this->app->session->user = array('groups' => $user_groups);
             }
+
+            // Let everyone know user added to a group
+            $res = $this->app->listener->Shout(
+                'Users',
+                'UserGroupsChanges',
+                array('action' => 'AddUserToGroup', 'user' => $user,'group' => $group['id'])
+            );
+            if (Jaws_Error::IsError($res)) {
+                // nothing
+            }
         }
 
         return $result;
@@ -1966,6 +1976,16 @@ class Jaws_User
                 $user_groups = $this->app->session->user->groups;
                 unset($user_groups[$group]);
                 $this->app->session->user = array('groups' => $user_groups);
+            }
+
+            // Let everyone know user added to a group
+            $res = $this->app->listener->Shout(
+                'Users',
+                'UserGroupsChanges',
+                array('action' => 'DeleteUserFromGroup', 'user' => $user, 'group' => $group)
+            );
+            if (Jaws_Error::IsError($res)) {
+                // nothing
             }
         }
     }
