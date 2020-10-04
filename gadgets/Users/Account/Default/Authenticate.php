@@ -186,9 +186,10 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             } // end of login step
 
             // check password was expired
-            $password_max_age = (int)$this->gadget->registry->fetch('password_max_age', 'Policy');
-            if (($password_max_age > 0) &&
-               (($user['last_password_update'] + $password_max_age) < time())
+            // if last_password_update = 0 then password must be change even password expiry is disabled
+            $password_max_age = (int)$this->gadget->registry->fetch('password_max_age', 'Policy') * 3600;
+            if ($user['last_password_update'] == 0 ||
+                ($password_max_age > 0 && ($user['last_password_update'] + $password_max_age < time()))
             ) {
                 $loginData['loginstep'] = 3;
                 throw new Exception(Jaws::t('ERROR_PASSWORD_EXPIRED'), 206);
