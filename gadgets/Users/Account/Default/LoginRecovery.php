@@ -18,7 +18,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
         $rcvryData = $this->gadget->request->fetch(
             array(
                 'domain', 'account', 'rcvstep', 'resend', 'rcvkey',
-                'pubkey', 'old_password', 'password', 'usecrypt', 'remember'
+                'pubkey', 'password', 'usecrypt', 'remember'
             ),
             'post'
         );
@@ -42,17 +42,15 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                     $JCrypt = Jaws_Crypt::getInstance();
                     if (!Jaws_Error::IsError($JCrypt)) {
                         $rcvryData['password'] = $JCrypt->decrypt($rcvryData['password']);
-                        $rcvryData['old_password'] = $JCrypt->decrypt($rcvryData['old_password']);
                     }
                 } else {
                     $rcvryData['password'] = Jaws_XSS::defilter($rcvryData['password']);
-                    $rcvryData['old_password'] = Jaws_XSS::defilter($rcvryData['old_password']);
                 }
 
                 $result = $this->app->users->UpdatePassword(
                     (int)$userData['id'],
                     $rcvryData['password'],
-                    $rcvryData['old_password']
+                    false
                 );
                 if (Jaws_Error::IsError($result)) {
                     throw new Exception($result->getMessage(), 206);

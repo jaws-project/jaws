@@ -134,7 +134,6 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('lbl_account', Jaws::t('ACCOUNT'));
         $tpl->SetVariable('account', $reqpost['account']);
         $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
-        $tpl->SetVariable('lbl_old_password', $this::t('USERS_PASSWORD_OLD'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
         $JCrypt = Jaws_Crypt::getInstance();

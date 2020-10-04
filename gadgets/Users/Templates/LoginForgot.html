@@ -83,7 +83,7 @@
 
 <!-- BEGIN forgot_step_3 -->
   <form name="forgotBox" action="{{base_script}}" method="post"
-    onsubmit="return encryptFormSubmit(this, ['old_password', 'password']);">
+    onsubmit="return encryptFormSubmit(this, ['password']);">
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="LoginRecovery" />
     <input type="hidden" name="rcvstep" value="3" />
@@ -100,18 +100,6 @@
             value="{{account}}"
             readonly
           />
-        </div>
-
-        <div class="form-group">
-          <label for="old_password">{{lbl_old_password}}:</label>
-          <div class="input-group">
-            <input class="form-control ltr" type="password" name="old_password"
-              autocomplete="off" data-toggle="password" required
-            />
-            <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
-              <i class="glyphicon glyphicon-eye-open"></i>
-            </span>
-          </div>
         </div>
 
         <div class="form-group">
