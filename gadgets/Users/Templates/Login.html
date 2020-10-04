@@ -75,7 +75,7 @@
       <button class="btn btn-primary" type="submit">{{login}}</button>
       <div>{{forgot-password}}</div>
       <div>{{user-register}}</div>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+      <a class="btn btn-default" href="{{url_back}}">{{lbl_back}}</a>
     </div>
   </form>
 <!-- END login_step_1 -->
@@ -111,14 +111,14 @@
     </div>
     <div class="gadget_actions">
       <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+      <a class="btn btn-default" href="{{url_back}}">{{lbl_back}}</a>
     </div>
   </form>
 <!-- END login_step_2 -->
 
 <!-- BEGIN login_step_3 -->
   <form name="loginBox" action="{{base_script}}" method="post"
-    onsubmit="return encryptFormSubmit(this, ['password', 'chkpassword']);" >
+    onsubmit="return encryptFormSubmit(this, ['password', 'old_password']);" >
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
@@ -128,48 +128,54 @@
     <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
     <!-- END encryption -->
     <div class="gadget_content">
-      <div>
-        <label for="login_username">{{lbl_username}}:</label>
-        <input class="form-control ltr" name="username" id="username"
-               type="text"
-               value="{{username}}"
-               readonly
+
+      <div class="form-group">
+        <label for="username">{{lbl_username}}:</label>
+        <input class="form-control ltr" type="text"
+          name="username"
+          value="{{username}}"
+          readonly
         />
       </div>
-      <div>
+
+      <div class="form-group">
+        <label for="old_password">{{lbl_old_password}}:</label>
+        <div class="input-group">
+          <input class="form-control ltr" type="password" name="old_password"
+            autocomplete="off" data-toggle="password" required
+          />
+          <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
+            <i class="glyphicon glyphicon-eye-open"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label for="password">{{lbl_password}}:</label>
-        <input class="form-control ltr" name="password" id="password"
-               type="password"
-               autocomplete="off"
-               value=""
-               required
-        />
+        <div class="input-group">
+          <input class="form-control ltr" type="password" name="password"
+            autocomplete="off" data-toggle="password" required
+          />
+          <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
+            <i class="glyphicon glyphicon-eye-open"></i>
+          </span>
+        </div>
       </div>
-      <div>
-        <label for="chkpassword">{{lbl_chkpassword}}:</label>
-        <input class="form-control ltr" name="chkpassword" id="chkpassword"
-               type="password"
-               autocomplete="off"
-               value=""
-               required
-        />
-      </div>
+
       <!-- BEGIN usecrypt -->
-      <div>
-        <label class="form-check-label" for="usecrypt">
-        <input class="form-check-input" type="checkbox"
-               name="usecrypt"
-               id="usecrypt"
-               <!-- BEGIN selected --> checked="checked"<!-- END selected -->
-               value="true" />
-          {{lbl_usecrypt}}
-        </label>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input"
+          id="usecrypt" name="usecrypt" value="true"
+          <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+        />
+        <label class="form-check-label" for="usecrypt">{{lbl_usecrypt}}</label>
       </div>
       <!-- END usecrypt -->
+
     </div>
     <div class="gadget_actions">
-      <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+      <button class="btn btn-primary" type="submit">{{login}}</button>
+      <a class="btn btn-default" href="{{url_back}}">{{lbl_back}}</a>
     </div>
   </form>
 <!-- END login_step_3 -->

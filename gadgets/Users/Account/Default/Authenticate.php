@@ -17,7 +17,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
     {
         $loginData = $this->gadget->request->fetch(
             array(
-                'domain', 'username', 'password', 'chkpassword',
+                'domain', 'username', 'password', 'old_password',
                 'usecrypt', 'resend', 'loginkey', 'loginstep', 'remember', 'defaults:array'
             ),
             'post'
@@ -31,22 +31,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
 
         try {
             if ($loginData['loginstep'] == 3) { // user password expired try to change it
-                if ($loginData['usecrypt']) {
-                    $JCrypt = Jaws_Crypt::getInstance();
-                    if (!Jaws_Error::IsError($JCrypt)) {
-                        $loginData['password'] = $JCrypt->decrypt($loginData['password']);
-                        $loginData['chkpassword'] = $JCrypt->decrypt($loginData['chkpassword']);
-                    }
-                } else {
-                    $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
-                    $loginData['chkpassword'] = Jaws_XSS::defilter($loginData['chkpassword']);
-                }
-
-                // changing expired password
-                if ($loginData['password'] !== $loginData['chkpassword']) {
-                    throw new Exception($this::t('USERS_PASSWORDS_DONT_MATCH'), 206);
-                }
-
                 // fetch user data from session
                 $user = $this->gadget->session->temp_login_user;
                 if (empty($user)) {
@@ -54,16 +38,30 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                     throw new Exception($this::t('USER_NOT_EXIST'), 404);
                 }
 
+                if ($loginData['usecrypt']) {
+                    $JCrypt = Jaws_Crypt::getInstance();
+                    if (!Jaws_Error::IsError($JCrypt)) {
+                        $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+                        $loginData['old_password'] = $JCrypt->decrypt($loginData['old_password']);
+                    }
+                } else {
+                    $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+                    $loginData['old_password'] = Jaws_XSS::defilter($loginData['old_password']);
+                }
+
+                // changing expired password
+                if ($loginData['password'] === $loginData['old_password']) {
+                    throw new Exception($this::t('USERS_PASSWORDS_OLD_EQUAL'), 206);
+                }
+
                 // trying change password
-                $userModel = $this->app->loadObject('Jaws_User');
-                $result = $userModel->UpdateUser(
-                    $user['id'],
-                    array(
-                        'password' => $loginData['password'],
-                    )
+                $result = $this->app->users->UpdatePassword(
+                    (int)$user['id'],
+                    $loginData['password'],
+                    $loginData['old_password']
                 );
                 if (Jaws_Error::IsError($result)) {
-                    throw new Exception($result->getMessage(), 500);
+                    throw new Exception($result->getMessage(), 206);
                 }
 
                 // set password update time

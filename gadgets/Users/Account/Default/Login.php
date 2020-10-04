@@ -260,11 +260,27 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('remember', $reqpost['remember']);
-        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
+        $tpl->SetVariable('username', $reqpost['username']);
 
         $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
         $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
-        $tpl->SetVariable('lbl_chkpassword', $this::t('USERS_PASSWORD_VERIFY'));
+        $tpl->SetVariable('lbl_old_password', $this::t('USERS_PASSWORD_OLD'));
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $tpl->SetBlock("$block/login_step_3/encryption");
+            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
+            $tpl->ParseBlock("$block/login_step_3/encryption");
+
+            // usecrypt
+            $tpl->SetBlock("$block/login_step_3/usecrypt");
+            $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
+            if (empty($reqpost['pubkey']) || !empty($reqpost['usecrypt'])) {
+                $tpl->SetBlock("$block/login_step_3/usecrypt/selected");
+                $tpl->ParseBlock("$block/login_step_3/usecrypt/selected");
+            }
+            $tpl->ParseBlock("$block/login_step_3/usecrypt");
+        }
 
         // global variables
         $tpl->SetVariable('login', Jaws::t('LOGIN'));
