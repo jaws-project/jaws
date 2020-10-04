@@ -400,44 +400,30 @@
             </field>
 
             <field>
-                <name>user</name>
-                <was>user_id</was>
+                <name>user_id</name>
                 <type>integer</type>
                 <notnull>true</notnull>
             </field>
 
             <field>
-                <name>group</name>
-                <was>group_id</was>
+                <name>group_id</name>
                 <type>integer</type>
                 <notnull>true</notnull>
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>users_groups_user</name>
+                <name><variable>table_prefix</variable>users_groups_ui</name>
                 <field>
-                    <name>user</name>
+                    <name>user_id</name>
                 </field>
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>users_groups_group</name>
+                <name><variable>table_prefix</variable>users_groups_gi</name>
                 <field>
-                    <name>group</name>
+                    <name>group_id</name>
                 </field>
             </index>
-
-            <index>
-                <name><variable>table_prefix</variable>users_groups_usrgrp</name>
-                <unique>true</unique>
-                <field>
-                    <name>user</name>
-                </field>
-                <field>
-                    <name>group</name>
-                </field>
-            </index>
-
         </declaration>
     </table>
 
