@@ -499,8 +499,8 @@ class Jaws_User
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select($columns);
-        $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
-        $usersTable->where('group_id', (int)$group);
+        $usersTable->join('users_groups', 'users_groups.user', 'users.id');
+        $usersTable->where('group', (int)$group);
         return $usersTable->fetchAll();
     }
 
@@ -742,8 +742,8 @@ class Jaws_User
             'fname', 'lname', 'superadmin:boolean', 'users.status:integer'
         );
         if ($group !== false) {
-            $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
-            $usersTable->where('group_id', (int)$group);
+            $usersTable->join('users_groups', 'users_groups.user', 'users.id');
+            $usersTable->where('group', (int)$group);
         }
 
         if ($domain !== false) {
@@ -787,8 +787,8 @@ class Jaws_User
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('count(users.id):integer');
         if ($group !== false) {
-            $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
-            $usersTable->where('group_id', (int)$group);
+            $usersTable->join('users_groups', 'users_groups.user', 'users.id');
+            $usersTable->where('group', (int)$group);
         }
 
         if ($domain !== false) {
@@ -884,8 +884,8 @@ class Jaws_User
     {
         $ugroupsTable = Jaws_ORM::getInstance()->table('users_groups');
         $ugroupsTable->select('groups.id:integer', 'groups.name');
-        $ugroupsTable->join('users',  'users.id',  'users_groups.user_id');
-        $ugroupsTable->join('groups', 'groups.id', 'users_groups.group_id');
+        $ugroupsTable->join('users',  'users.id',  'users_groups.user');
+        $ugroupsTable->join('groups', 'groups.id', 'users_groups.group');
         $ugroupsTable->where('groups.owner', (int)$owner);
         if (is_int($user)) {
             $ugroupsTable->and()->where('users.id', $user);
@@ -1806,7 +1806,7 @@ class Jaws_User
             return false;
         }
 
-        $result = $objORM->delete()->table('users_groups')->where('user_id', $user['id'])->exec();
+        $result = $objORM->delete()->table('users_groups')->where('user', $user['id'])->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -1872,7 +1872,7 @@ class Jaws_User
             return false;
         }
 
-        $result = $objORM->delete()->table('users_groups')->where('group_id', $id);
+        $result = $objORM->delete()->table('users_groups')->where('group', $id);
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -1918,7 +1918,7 @@ class Jaws_User
         }
 
         $result = $objORM->table('users_groups')
-            ->insert(array('user_id' => $user, 'group_id' => $group['id']))
+            ->insert(array('user' => $user, 'group' => $group['id']))
             ->exec();
         if (!Jaws_Error::IsError($result)) {
             if ($this->app->session->user->id == $user) {
@@ -1966,9 +1966,9 @@ class Jaws_User
 
         $result = $objORM->table('users_groups')
             ->delete()
-            ->where('user_id', $user)
+            ->where('user', $user)
             ->and()
-            ->where('group_id', $group)
+            ->where('group', $group)
             ->exec();
         if (!Jaws_Error::IsError($result)) {
             if ($this->app->session->user->id == $user) {
@@ -2001,8 +2001,8 @@ class Jaws_User
     function UserIsInGroup($user, $group)
     {
         $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
-        $usrgrpTable->select('count(user_id):integer');
-        $usrgrpTable->where('user_id', $user)->and()->where('group_id', $group);
+        $usrgrpTable->select('count(user):integer');
+        $usrgrpTable->where('user', $user)->and()->where('group', $group);
         $howmany = $usrgrpTable->fetchOne();
         if (Jaws_Error::IsError($howmany)) {
             return false;
