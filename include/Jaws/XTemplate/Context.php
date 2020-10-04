@@ -331,7 +331,7 @@ class Jaws_XTemplate_Context
             if (is_string($object)) {
                 if ($nextPartName == 'size') {
                     // if the last part of the context variable is .size we return the string length
-                    return mb_strlen($object);
+                    return Jaws_UTF8::strlen($object);
                 }
 
                 // no other special properties for strings, yet

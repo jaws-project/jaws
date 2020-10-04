@@ -100,7 +100,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
          * This assumes that TAG_START is always '{%', and a whitespace control indicator
          * is exactly one character long, on a third position.
          */
-        if (mb_substr($token, 2, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL')) {
+        if (Jaws_UTF8::substr($token, 2, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL')) {
             $previousToken = end($this->nodelist);
             if (is_string($previousToken)) { // this can also be a tag or a variable
                 $this->nodelist[key($this->nodelist)] = rtrim($previousToken);
@@ -111,7 +111,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
          * This assumes that TAG_END is always '%}', and a whitespace control indicator
          * is exactly one character long, on a third position from the end.
          */
-        self::$trimWhitespace = mb_substr($token, -3, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL');
+        self::$trimWhitespace = Jaws_UTF8::substr($token, -3, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL');
     }
 
     /**
