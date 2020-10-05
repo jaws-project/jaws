@@ -22,7 +22,7 @@
                 <span class="month">
                 {% for i in (0..11) %}
                   <span data-month="{{i}}">
-                    {{ "global." | append: datepicker.calendar, "_MONTH_", i | tx }}
+                    {{ "global." | append: datepicker.calendar, "_MONTH_", i | t }}
                   </span>
                 {% endfor %}
                 </span> <span class="year"></span>
