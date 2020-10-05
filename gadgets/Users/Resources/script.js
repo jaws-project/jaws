@@ -450,6 +450,8 @@ function Jaws_Gadget_Users() { return {
                 }
             }
         );
+        $("#pass1").prop('disabled', true);
+        $("#pass2").prop('disabled', true);
         $('#prev_status').val(userInfo['status']);
     },
 

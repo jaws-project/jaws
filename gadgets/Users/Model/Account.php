@@ -17,17 +17,15 @@ class Users_Model_Account extends Jaws_Gadget_Model
      * @param   string   $email     User's email
      * @param   string   $new_email User's new_email
      * @param   string   $mobile    User's mobile number
-     * @param   string   $password  Password
      * @return  mixed    True on success or Jaws_Error on failure
      */
-    function UpdateAccount($uid, $username, $nickname, $email, $new_email, $mobile, $password)
+    function UpdateAccount($uid, $username, $nickname, $email, $new_email, $mobile)
     {
         $uData = array(
             'username' => $username,
             'nickname' => $nickname,
             'email'    => $email,
             'mobile'   => $mobile,
-            'password' => $password,
         );
         if (!empty($new_email)) {
             $uData['new_email'] = $new_email;

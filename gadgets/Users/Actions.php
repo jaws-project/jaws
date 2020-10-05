@@ -85,7 +85,7 @@ $actions['Account'] = array(
     'normal' => true,
     'file' => 'Account',
     'acls' => array(
-        'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
+        'EditUserName,EditUserNickname,EditUserEmail',
         '',
         false
     ),
@@ -99,12 +99,28 @@ $actions['UpdateAccount'] = array(
     'file' => 'Account',
     'loglevel' => JAWS_NOTICE,
 );
+$actions['Password'] = array(
+    'normal' => true,
+    'file' => 'Account',
+    'acls' => array(
+        'EditUserPassword',
+    ),
+    'navigation' => array(
+        'order' => 2
+    ),
+);
+$actions['UpdatePassword'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Account',
+    'loglevel' => JAWS_NOTICE,
+);
 $actions['Personal'] = array(
     'normal' => true,
     'file' => 'Personal',
     'acls' => array('EditUserPersonal'),
     'navigation' => array(
-        'order' => 2
+        'order' => 3
     ),
 );
 $actions['UpdatePersonal'] = array(
@@ -117,7 +133,7 @@ $actions['Preferences'] = array(
     'file' => 'Preferences',
     'acls' => array('EditUserPreferences'),
     'navigation' => array(
-        'order' => 3
+        'order' => 4
     ),
 );
 $actions['UpdatePreferences'] = array(
@@ -130,7 +146,7 @@ $actions['Contact'] = array(
     'file' => 'Contacts',
     'acls' => array('EditUserContact'),
     'navigation' => array(
-        'order' => 4
+        'order' => 5
     ),
 );
 $actions['UpdateContact'] = array(
@@ -159,7 +175,7 @@ $actions['Bookmarks'] = array(
     'acls' => array('EditUserBookmarks'),
     'navigation' => array(
         'separator' => true,
-        'order' => 5
+        'order' => 6
     ),
 );
 $actions['GetBookmarks'] = array(
@@ -187,7 +203,7 @@ $actions['Contacts'] = array(
     'file' => 'Contacts',
     'acls' => array('EditUserContacts'),
     'navigation' => array(
-        'order' => 6
+        'order' => 7
     ),
 );
 $actions['GetContacts'] = array(
@@ -201,7 +217,7 @@ $actions['FriendsGroups'] = array(
     'acls' => array('ManageFriends'),
     'navigation' => array(
         'separator' => true,
-        'order' => 7
+        'order' => 8
     ),
 );
 $actions['GetFriendGroups'] = array(
@@ -259,7 +275,7 @@ $actions['Users'] = array(
     'acls' => array('ManageUsers'),
     'navigation' => array(
         'separator' => true,
-        'order' => 8
+        'order' => 9
     ),
 );
 $actions['GetUsers'] = array(
@@ -300,7 +316,7 @@ $actions['Groups'] = array(
     'file' => 'Groups',
     'acls' => array('ManageGroups'),
     'navigation' => array(
-        'order' => 9
+        'order' => 10
     ),
 );
 $actions['GetGroups'] = array(

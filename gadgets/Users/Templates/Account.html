@@ -43,19 +43,6 @@
           />
         </div>
         <hr/>
-        <div>
-          <label for="password">{{ "users.users_password" | t }}:</label>
-          <input class="form-control ltr" name="password" id="password" type="password" value=""
-            autocomplete="off" {{ password_disabled | equal: true, 'disabled="disabled"' }}
-          />
-          <span><small>{{ "users.nochange_password" | t }}</small></span>
-        </div>
-        <div>
-          <label for="chkpassword">{{ "users.users_password_verify" | t }}:</label>
-          <input class="form-control ltr" name="chkpassword" id="chkpassword" type="password" value=""
-            autocomplete="off" {{ password_disabled | equal: true, 'disabled="disabled"' }}
-          />
-        </div>
       </fieldset>
     </div>
     <div class="gadget_actions">

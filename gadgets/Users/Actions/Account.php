@@ -8,7 +8,7 @@
 class Users_Actions_Account extends Users_Actions_Default
 {
     /**
-     * Builds a simple form to update user account info(nickname, email, password)
+     * Builds a simple form to update user account info(nickname, email)
      *
      * @access  public
      * @return  string  XHTML form
@@ -25,7 +25,7 @@ class Users_Actions_Account extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission(
-            'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
+            'EditUserName,EditUserNickname,EditUserEmail',
             '',
             false
         );
@@ -49,7 +49,6 @@ class Users_Actions_Account extends Users_Actions_Default
         $assigns['nickname_disabled'] = !$this->gadget->GetPermission('EditUserNickname');
         $assigns['email_disabled']    = !$this->gadget->GetPermission('EditUserEmail');
         $assigns['mobile_disabled']   = !$this->gadget->GetPermission('EditUserMobile');
-        $assigns['password_disabled'] = !$this->gadget->GetPermission('EditUserPassword');
         // avatar
         if (empty($account['avatar'])) {
             $user_current_avatar = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
@@ -80,102 +79,83 @@ class Users_Actions_Account extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission(
-            'EditUserName,EditUserNickname,EditUserEmail,EditUserMobile,EditUserPassword',
+            'EditUserName,EditUserNickname,EditUserEmail,EditUserMobile',
             '',
             false
         );
         $post = $this->gadget->request->fetch(
-            array('username', 'nickname', 'email', 'mobile', 'password', 'chkpassword'),
+            array('username', 'nickname', 'email', 'mobile'),
             'post'
         );
-        if ($post['password'] === $post['chkpassword']) {
-            // check edit username permission
-            if (empty($post['username']) ||
-                !$this->gadget->GetPermission('EditUserName'))
-            {
-                $post['username'] = $this->app->session->user->username;
-            }
-            // check edit nickname permission
-            if (empty($post['nickname']) ||
-                !$this->gadget->GetPermission('EditUserNickname'))
-            {
-                $post['nickname'] = $this->app->session->user->nickname;
-            }
-            // check edit email permission
-            if (empty($post['email']) ||
-                !$this->gadget->GetPermission('EditUserEmail'))
-            {
-                $post['email'] = $this->app->session->user->email;
-            }
 
-            // set new email
-            $post['new_email'] = '';
-            if ($post['email'] != $this->app->session->user->email) {
-                $post['new_email'] = $post['email'];
-                $post['email'] = $this->app->session->user->email;
-            }
+        // check edit username permission
+        if (empty($post['username']) ||
+            !$this->gadget->GetPermission('EditUserName'))
+        {
+            $post['username'] = $this->app->session->user->username;
+        }
+        // check edit nickname permission
+        if (empty($post['nickname']) ||
+            !$this->gadget->GetPermission('EditUserNickname'))
+        {
+            $post['nickname'] = $this->app->session->user->nickname;
+        }
+        // check edit email permission
+        if (empty($post['email']) ||
+            !$this->gadget->GetPermission('EditUserEmail'))
+        {
+            $post['email'] = $this->app->session->user->email;
+        }
 
-            // check edit mobile permission
-            if (empty($post['mobile']) ||
-                !$this->gadget->GetPermission('EditUserMobile'))
-            {
-                $post['mobile'] = $this->app->session->user->mobile;
-            }
+        // set new email
+        $post['new_email'] = '';
+        if ($post['email'] != $this->app->session->user->email) {
+            $post['new_email'] = $post['email'];
+            $post['email'] = $this->app->session->user->email;
+        }
 
-            // check edit password permission
-            if (empty($post['password']) ||
-                !$this->gadget->GetPermission('EditUserPassword'))
-            {
-                $post['password'] = null;
-            }
+        // check edit mobile permission
+        if (empty($post['mobile']) ||
+            !$this->gadget->GetPermission('EditUserMobile'))
+        {
+            $post['mobile'] = $this->app->session->user->mobile;
+        }
 
-            $model  = $this->gadget->model->load('Account');
-            $result = $model->UpdateAccount(
-                $this->app->session->user->id,
-                $post['username'],
-                $post['nickname'],
-                $post['email'],
-                $post['new_email'],
-                $post['mobile'],
-                $post['password']
-            );
-            // unset unnecessary account data
-            unset($post['password'], $post['chkpassword']);
-            if (!Jaws_Error::IsError($result)) {
-                $message = $this::t('MYACCOUNT_UPDATED');
-                if (!empty($post['new_email'])) {
-                    $mResult = $this->ReplaceEmailNotification(
-                        $this->app->session->user->id,
-                        $post['username'],
-                        $post['nickname'],
-                        $post['new_email'],
-                        $post['email'],
-                        $post['mobile']
-                    );
-                    if (Jaws_Error::IsError($mResult)) {
-                        $message = $message. "\n" . $mResult->getMessage();
-                    } else {
-                        $message = $message. "\n" . $this::t('EMAIL_REPLACEMENT_SENT');
-                    }
+        $model  = $this->gadget->model->load('Account');
+        $result = $model->UpdateAccount(
+            $this->app->session->user->id,
+            $post['username'],
+            $post['nickname'],
+            $post['email'],
+            $post['new_email'],
+            $post['mobile']
+        );
+
+        if (!Jaws_Error::IsError($result)) {
+            $message = $this::t('MYACCOUNT_UPDATED');
+            if (!empty($post['new_email'])) {
+                $mResult = $this->ReplaceEmailNotification(
+                    $this->app->session->user->id,
+                    $post['username'],
+                    $post['nickname'],
+                    $post['new_email'],
+                    $post['email'],
+                    $post['mobile']
+                );
+                if (Jaws_Error::IsError($mResult)) {
+                    $message = $message. "\n" . $mResult->getMessage();
+                } else {
+                    $message = $message. "\n" . $this::t('EMAIL_REPLACEMENT_SENT');
                 }
-                $this->gadget->session->push(
-                    $message,
-                    RESPONSE_NOTICE,
-                    'Account'
-                );
-            } else {
-                $this->gadget->session->push(
-                    $result->GetMessage(),
-                    RESPONSE_ERROR,
-                    'Account',
-                    $post
-                );
             }
-        } else {
-            // unset unnecessary account data
-            unset($post['password'], $post['chkpassword']);
             $this->gadget->session->push(
-                $this::t('USERS_PASSWORDS_DONT_MATCH'),
+                $message,
+                RESPONSE_NOTICE,
+                'Account'
+            );
+        } else {
+            $this->gadget->session->push(
+                $result->GetMessage(),
                 RESPONSE_ERROR,
                 'Account',
                 $post
@@ -183,6 +163,93 @@ class Users_Actions_Account extends Users_Actions_Default
         }
 
         return Jaws_Header::Location($this->gadget->urlMap('Account'));
+    }
+
+    /**
+     * Builds a simple form to update user password
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function Password()
+    {
+        if (!$this->app->session->user->logged) {
+            return Jaws_Header::Location(
+                $this->gadget->urlMap(
+                    'Login',
+                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
+                )
+            );
+        }
+
+        // Check Permission
+        $this->gadget->CheckPermission('EditUserPassword');
+
+        $assigns = array();
+        $assigns['base_script'] = BASE_SCRIPT;
+        $assigns['response']    = $this->gadget->session->pop('Password');
+        // Menu navigation
+        $assigns['navigation']  = $this->gadget->action->load('MenuNavigation')->xnavigation();
+
+
+        return $this->gadget->template->xLoad('Password.html')->render($assigns);
+    }
+
+    /**
+     * Updates user account information
+     *
+     * @access  public
+     * @return  void
+     */
+    function UpdatePassword()
+    {
+        if (!$this->app->session->user->logged) {
+            return Jaws_Header::Location(
+                $this->gadget->urlMap(
+                    'Login',
+                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
+                )
+            );
+        }
+
+        $this->gadget->CheckPermission('EditUserPassword');
+        $post = $this->gadget->request->fetch(
+            array('password', 'old_password', 'usecrypt'),
+            'post'
+        );
+
+        if ($loginData['usecrypt']) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $loginData['password'] = $JCrypt->decrypt($loginData['password']);
+                $loginData['old_password'] = $JCrypt->decrypt($loginData['old_password']);
+            }
+        } else {
+            $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
+            $loginData['old_password'] = Jaws_XSS::defilter($loginData['old_password']);
+        }
+
+        // trying change password
+        $result = $this->app->users->UpdatePassword(
+            (int)$user['id'],
+            $loginData['password'],
+            $loginData['old_password']
+        );
+        if (!Jaws_Error::IsError($result)) {
+            $this->gadget->session->push(
+                $this::t('USERS_PASSWORD_UPDATED'),
+                RESPONSE_NOTICE,
+                'Password'
+            );
+        } else {
+            $this->gadget->session->push(
+                $result->GetMessage(),
+                RESPONSE_ERROR,
+                'Password'
+            );
+        }
+
+        return Jaws_Header::Location($this->gadget->urlMap('Password'));
     }
 
     /**
