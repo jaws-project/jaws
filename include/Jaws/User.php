@@ -567,28 +567,6 @@ class Jaws_User
     }
 
     /**
-     * Get the info of an user(s) by the password recovery key
-     *
-     * @access  public
-     * @param   string  $user   User name/email/mobile
-     * @param   string  $key    Recovery key
-     * @return  mixed   Returns an array with the info of the user(s) and false on error
-     */
-    function VerifyPasswordRecoveryKey($user, $key)
-    {
-        return Jaws_ORM::getInstance()->table('users')
-            ->select('id:integer', 'domain:integer', 'username', 'nickname', 'email', 'mobile', 'status:integer')
-            ->openWhere('lower(username)', Jaws_UTF8::strtolower($user))
-            ->or()
-            ->where('lower(email)', Jaws_UTF8::strtolower($user))
-            ->or()
-            ->closeWhere('mobile', $user)
-            ->and()
-            ->where('recovery_key', trim($key))
-            ->fetchRow();
-    }
-
-    /**
      * Check username already exists
      *
      * @access  public
@@ -1110,7 +1088,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($uData),
-            array('domain', 'username', 'nickname', 'email', 'new_email', 'mobile', 'password',
+            array('domain', 'username', 'nickname', 'email', 'new_email', 'mobile',
                 'superadmin', 'status', 'concurrents', 'logon_hours', 'expiry_date',
             )
         );
@@ -1199,37 +1177,6 @@ class Jaws_User
                         );
                     }
                 }
-            }
-        }
-
-        // password & complexity
-        if (array_key_exists('password', $uData)) {
-            if (!empty($uData['password'])) {
-                $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
-                if (!preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])) {
-                    return Jaws_Error::raiseError(
-                        Jaws::t('ERROR_INVALID_PASSWORD', $min),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
-                }
-
-                if (!preg_match($this->app->registry->fetch('password_complexity', 'Policy'),
-                        $uData['password'])
-                ) {
-                    return Jaws_Error::raiseError(
-                        Jaws::t('ERROR_INVALID_COMPLEXITY'),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
-                }
-
-                // password hash
-                $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
-                $uData['recovery_key'] = '';
-                $uData['last_password_update'] = time();
-            } else {
-                unset($uData['password']);
             }
         }
 
@@ -1352,10 +1299,6 @@ class Jaws_User
                     'avatar' => $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
                 );
             }
-            // update last password update time in current session
-            if (isset($uData['last_password_update'])) {
-                $this->app->session->user = array('last_password_update' => $uData['last_password_update']);
-            }
         }
 
         // Let everyone know a user has been added
@@ -1377,10 +1320,11 @@ class Jaws_User
      * @access  public
      * @param   int     $uid            User's ID
      * @param   string  $new_password   New password
-     * @param   string  $old_password   Old password
-     * @return  mixed   Returns true if user was successfully updated, false if not
+     * @param   mixed   $old_password   Old password
+     * @param   bool    $expired        Password age expired
+     * @return  mixed   Returns true if user was successfully updated, Jaws_Error if not
      */
-    function UpdatePassword($uid, $new_password, $old_password = false)
+    function UpdatePassword($uid, $new_password, $old_password = false, $expired = false)
     {
         $user = $this->GetUserNew(
             $uid,
@@ -1420,7 +1364,7 @@ class Jaws_User
             );
         }
 
-        $last_password_update = time();
+        $last_password_update = $expired? 0 : time();
         $result = Jaws_ORM::getInstance()
             ->table('users')->update(
                 array(
@@ -2009,44 +1953,6 @@ class Jaws_User
         }
 
         return (bool)$howmany;
-    }
-
-    /**
-     * Update the user verification key
-     *
-     * @access  public
-     * @param   int     $uid  User's ID
-     * @return  mixed   Generated key if success or Jaws_Error on failure
-     */
-    function UpdateUserVerifyKey($uid)
-    {
-        $key = Jaws_Utils::RandomText(5, array('number' => true));
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('verify_key' => $key))->where('id', (int)$uid)->exec();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        return $key;
-    }
-
-    /**
-     * Update password recovery key of a certain user
-     *
-     * @access  public
-     * @param   int     $uid  User's ID
-     * @return  mixed   Generated key if success or Jaws_Error on failure
-     */
-    function UpdatePasswordRecoveryKey($uid)
-    {
-        $key = Jaws_Utils::RandomText(5, array('number' => true));
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('recovery_key' => $key))->where('id', (int)$uid)->exec();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        return $key;
     }
 
 }
