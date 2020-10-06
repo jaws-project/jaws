@@ -1816,7 +1816,7 @@ class Jaws_User
             return false;
         }
 
-        $result = $objORM->delete()->table('users_groups')->where('group', $id);
+        $result = $objORM->delete()->table('users_groups')->where('group', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
