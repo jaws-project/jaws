@@ -184,13 +184,32 @@ class Users_Actions_Account extends Users_Actions_Default
 
         // Check Permission
         $this->gadget->CheckPermission('EditUserPassword');
+        // load js file
+        $this->AjaxMe('index.js');
+
+        $response = $this->gadget->session->pop('Password');
+        if (!isset($response['data'])) {
+            $reqpost = array(
+                'pubkey'   => '',
+                'usecrypt' => false,
+            );
+        } else {
+            $reqpost = $response['data'];
+        }
 
         $assigns = array();
         $assigns['base_script'] = BASE_SCRIPT;
-        $assigns['response']    = $this->gadget->session->pop('Password');
+        $assigns['username']    = $this->app->session->user->username;
+        $assigns['response']    = $response;
         // Menu navigation
         $assigns['navigation']  = $this->gadget->action->load('MenuNavigation')->xnavigation();
 
+        // usecrypt
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $assigns['pubkey'] = $JCrypt->getPublic();
+            $assigns['usecrypt_selected'] = empty($reqpost['pubkey']) || !empty($reqpost['usecrypt']);
+        }
 
         return $this->gadget->template->xLoad('Password.html')->render($assigns);
     }
@@ -213,40 +232,51 @@ class Users_Actions_Account extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission('EditUserPassword');
-        $post = $this->gadget->request->fetch(
-            array('password', 'old_password', 'usecrypt'),
+        $postedData = $this->gadget->request->fetch(
+            array('password', 'old_password', 'usecrypt', 'pubkey'),
             'post'
         );
 
-        if ($loginData['usecrypt']) {
-            $JCrypt = Jaws_Crypt::getInstance();
-            if (!Jaws_Error::IsError($JCrypt)) {
-                $loginData['password'] = $JCrypt->decrypt($loginData['password']);
-                $loginData['old_password'] = $JCrypt->decrypt($loginData['old_password']);
-            }
+        $JCrypt = Jaws_Crypt::getInstance();
+        if ($postedData['usecrypt'] && !Jaws_Error::IsError($JCrypt)) {
+            $new_password = $JCrypt->decrypt($postedData['password']);
+            $old_password = $JCrypt->decrypt($postedData['old_password']);
         } else {
-            $loginData['password'] = Jaws_XSS::defilter($loginData['password']);
-            $loginData['old_password'] = Jaws_XSS::defilter($loginData['old_password']);
+            $new_password = Jaws_XSS::defilter($postedData['password']);
+            $old_password = Jaws_XSS::defilter($postedData['old_password']);
         }
+        unset($postedData['password'], $postedData['old_password']);
 
-        // trying change password
-        $result = $this->app->users->UpdatePassword(
-            (int)$user['id'],
-            $loginData['password'],
-            $loginData['old_password']
-        );
-        if (!Jaws_Error::IsError($result)) {
+        // compare old/new passwords
+        if ($new_password === $old_password) {
             $this->gadget->session->push(
-                $this::t('USERS_PASSWORD_UPDATED'),
-                RESPONSE_NOTICE,
-                'Password'
+                $this::t('USERS_PASSWORDS_OLD_EQUAL'),
+                RESPONSE_ERROR,
+                'Password',
+                $postedData
             );
         } else {
-            $this->gadget->session->push(
-                $result->GetMessage(),
-                RESPONSE_ERROR,
-                'Password'
+            // trying change password
+            $result = $this->app->users->UpdatePassword(
+                $this->app->session->user->id,
+                $new_password,
+                $old_password
             );
+            if (!Jaws_Error::IsError($result)) {
+                $this->gadget->session->push(
+                    $this::t('USERS_PASSWORD_UPDATED'),
+                    RESPONSE_NOTICE,
+                    'Password',
+                    $postedData
+                );
+            } else {
+                $this->gadget->session->push(
+                    $result->GetMessage(),
+                    RESPONSE_ERROR,
+                    'Password',
+                    $postedData
+                );
+            }
         }
 
         return Jaws_Header::Location($this->gadget->urlMap('Password'));
