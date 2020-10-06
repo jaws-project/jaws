@@ -146,22 +146,30 @@
                     <option value="1">{{lbl_yes}}</option>
                   </select>
                 </td></tr>
-                <tr><td><label for="pass1">{{lbl_pass1}}:</label></td><td>
-                  <input type="password" id="pass1" name="pass1" class="form-control"></td>
-                </tr>
-                <tr><td><label for="pass2">{{lbl_pass2}}:</label></td><td>
-                  <input type="password" id="pass2" name="pass2" class="form-control"></td>
+                <tr>
+                  <td><label for="password">{{lbl_password}}:</label></td>
+                  <td>
+                    <div class="input-group">
+                      <input class="form-control ltr" type="password"
+                        name="password" id="password"
+                        autocomplete="off" data-toggle="password" required
+                      />
+                      <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
+                        <i class="glyphicon glyphicon-eye-open"></i>
+                      </span>
+                    </div>
+                  </td>
                 </tr>
                 <tr><td><label for="concurrents">{{lbl_concurrents}}:</label></td><td>
                   <input type="text" id="concurrents" name="concurrents" class="form-control"></td>
                 </tr>
                 <tr>
-                  <td><label for="expiry_date">{{lbl_expiry_date}}:</label></td>
+                  <td><label for="datepicker_expiry_date_input">{{lbl_expiry_date}}:</label></td>
                   <td>
                   <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
                   </td>
                 </tr>
-                <tr><td><label for="superadmin">{{lbl_status}}:</label></td><td>
+                <tr><td><label for="status">{{lbl_status}}:</label></td><td>
                   <select class="form-control" name="status" id="status">
                     <!-- BEGIN status -->
                     <option value="{{value}}">{{title}}</option>
@@ -177,6 +185,48 @@
               {{lbl_cancel}}
             </button>
             <button type="button" class="btn btn-primary" onclick="javascript:saveUser()">{{lbl_save}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="passModal" tabindex="-1" role="dialog" aria-labelledby="passModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="passModalLabel">{{updatePassword_title}}</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" name="password-form" id="password-form">
+              <table class="table" cellpadding="0" cellspacing="2">
+                <tr><td><label for="username">{{lbl_username}}:</label></td><td>
+                  <input type="text" id="username" name="username" class="form-control"></td>
+                </tr>
+                <tr>
+                  <td><label for="password">{{lbl_password}}:</label></td>
+                  <td>
+                    <div class="input-group">
+                      <input class="form-control ltr" type="password"
+                        name="password" id="password"
+                        autocomplete="off" data-toggle="password" required
+                      />
+                      <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
+                        <i class="glyphicon glyphicon-eye-open"></i>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+              {{lbl_cancel}}
+            </button>
+            <button type="button" class="btn btn-primary" onclick="updatePassword()">{{lbl_save}}</button>
           </div>
         </div>
       </div>

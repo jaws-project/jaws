@@ -118,6 +118,11 @@ function stopAction() {
             $('form#users-form')[0].reset();
             $('#usersGrid').repeater('render', {clearInfinite: true,pageIncrement: null});
             break;
+        case 'UserPassword':
+            selectedUser = null;
+            $('#passModal').modal('hide');
+            $('form#password-form')[0].reset();
+            break;
         case 'UserGroups':
             selectedUser = null;
             $('#userGroupsModal').modal('hide');
@@ -282,8 +287,21 @@ function editUser(id)
                 }
             }
         );
+        $("#password").prop('disabled', true);
         $('#userModal').modal('show');
     }
+}
+
+/**
+ * Edit a user
+ */
+function editPassword(id, username)
+{
+    currentAction = "UserPassword";
+    selectedUser = id;
+    $('#passModalLabel').html(jaws.Users.Defines.updatePassword_title);
+
+    $('#passModal').modal('show');
 }
 
 /**
@@ -364,7 +382,7 @@ function saveUser()
 {
     switch (currentAction) {
         case 'UserAccount':
-            if ($('#users-form #pass1').val() != "" && $('#users-form #pass1').val() != $('#users-form #pass2').val()) {
+            if ($('#users-form #password').val() != "" ) {
                 alert(jaws.Users.Defines.wrongPassword);
                 return false;
             }
@@ -377,31 +395,33 @@ function saveUser()
                 return false;
             }
 
-            var password = $('#users-form #pass1').val();
+            var password = $('#users-form #password').val();
             $.loadScript('libraries/js/jsencrypt.min.js', function() {
                 if ($('#pubkey').length) {
                     var objRSACrypt = new JSEncrypt();
                     objRSACrypt.setPublicKey($('#pubkey').val());
-                    password = objRSACrypt.encrypt($('#users-form #pass1').val());
+                    password = objRSACrypt.encrypt($('#users-form #password').val());
                 }
 
                 if (selectedUser == null) {
-                    if (!$('#users-form #pass1').val()) {
+                    if (!$('#users-form #password').val()) {
                         alert(jaws.Users.Defines.incompleteUserFields);
                         return false;
                     }
 
-                    var formData = $.unserialize($('#users-form input, #users-form select,#users-form textarea').serialize());
+                    var formData = $.unserialize(
+                        $('#users-form input, #users-form select,#users-form textarea').serialize()
+                    );
                     formData['password'] = password;
                     delete formData['prev_status'];
-                    delete formData['pass1'];
-                    delete formData['pass2'];
+                    delete formData['password'];
                     UsersAjax.callAsync('AddUser', {'data': formData});
                 } else {
-                    var formData = $.unserialize($('#users-form input, #users-form select, #users-form textarea').serialize());
+                    var formData = $.unserialize(
+                        $('#users-form input, #users-form select, #users-form textarea').serialize()
+                    );
                     formData['password'] = password;
-                    delete formData['pass1'];
-                    delete formData['pass2'];
+                    delete formData['password'];
                     UsersAjax.callAsync('UpdateUser', {'uid': selectedUser, 'data': formData});
                 }
             });
@@ -627,6 +647,15 @@ function initiateUsersDG() {
 
                 },
                 {
+                    name: 'editPassword',
+                    html: '<span class="glyphicon glyphicon-lock"></span> ' + jaws.Users.Defines.updatePassword_title,
+                    clickAction: function (helpers, callback, e) {
+                        e.preventDefault();
+                        editPassword(helpers.rowData.id, helpers.rowData.username);
+                        callback();
+                    }
+                },
+                {
                     name: 'delete',
                     html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.Users.Defines.deleteUser_title,
                     clickAction: function (helpers, callback, e) {
@@ -681,6 +710,7 @@ function initiateUsersDG() {
     $('#userModal').on('hidden.bs.modal', function (e) {
         $('form#users-form')[0].reset();
         selectedUser = null;
+        $("#password").prop('disabled', false);
     });
 }
 

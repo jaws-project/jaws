@@ -21,6 +21,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->define('lbl_username', $this::t('USERS_USERNAME'));
         $this->gadget->define('addUser_title', $this::t('USERS_ADD'));
         $this->gadget->define('editUser_title', $this::t('USERS_EDIT'));
+        $this->gadget->define('updatePassword_title', $this::t('USERS_PASSWORD'));
         $this->gadget->define('deleteUser_title', $this::t('USERS_DELETE'));
         $this->gadget->define('editUserGroups_title', $this::t('USERS_GROUPS'));
         $this->gadget->define('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
@@ -48,8 +49,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_superadmin', $this::t('USERS_TYPE_SUPERADMIN'));
-        $tpl->SetVariable('lbl_pass1', $this::t('USERS_PASSWORD'));
-        $tpl->SetVariable('lbl_pass2', $this::t('USERS_PASSWORD_VERIFY'));
+        $tpl->SetVariable('lbl_password', $this::t('USERS_PASSWORD'));
         $tpl->SetVariable('lbl_concurrents', $this::t('USERS_CONCURRENTS'));
         $tpl->SetVariable('lbl_expiry_date', $this::t('USERS_EXPIRY_DATE'));
 
@@ -255,23 +255,24 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $uData = $this->gadget->request->fetch('data:array', 'post');
-        $uData['concurrents'] = (int)$uData['concurrents'];
-        $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
+
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        $uData['status'] = (int)$uData['status'];
+        $uData['concurrents'] = (int)$uData['concurrents'];
+        $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
-        $uModel = new Jaws_User();
-        $res = $uModel->AddUser($uData);
+        $uData['status'] = (int)$uData['status'];
+
+        $res = $this->app->users->AddUser($uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
             $guid = $this->gadget->registry->fetch('anon_group');
             if (!empty($guid)) {
-                $uModel->AddUserToGroup($res, (int)$guid);
+                $this->app->users->AddUserToGroup($res, (int)$guid);
             }
             return $this->gadget->session->response($this::t('USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
         }
@@ -291,11 +292,6 @@ class Users_Actions_Users extends Users_Actions_Default
         $uData['concurrents'] = (int)$uData['concurrents'];
         $uData['superadmin'] = ($uData['superadmin'] == 1) ? true : false;
 
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
-            $uData['password'] = $JCrypt->decrypt($uData['password']);
-        }
-
         if ($post['uid'] == $this->app->session->user->id) {
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
@@ -305,8 +301,7 @@ class Users_Actions_Users extends Users_Actions_Default
             }
         }
 
-        $uModel = new Jaws_User();
-        $res = $uModel->UpdateUser($post['uid'], $uData);
+        $res = $this->app->users->UpdateUser($post['uid'], $uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
