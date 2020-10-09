@@ -473,11 +473,11 @@ function updatePassword()
             {
                 'uid': selectedUser,
                 'password': password,
-                'expired': false
+                'expired': $('#password-form #expired').prop('checked')
             }
         );
     });
-                
+
 }
 
 /**
