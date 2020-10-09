@@ -50,6 +50,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_mobile', $this::t('CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_superadmin', $this::t('USERS_TYPE_SUPERADMIN'));
         $tpl->SetVariable('lbl_password', $this::t('USERS_PASSWORD'));
+        $tpl->SetVariable('lbl_password_expired', $this::t('USERS_PASSWORD_EXPIRED'));
         $tpl->SetVariable('lbl_concurrents', $this::t('USERS_CONCURRENTS'));
         $tpl->SetVariable('lbl_expiry_date', $this::t('USERS_EXPIRY_DATE'));
 
@@ -312,6 +313,35 @@ class Users_Actions_Users extends Users_Actions_Default
             }
             return $this->gadget->session->response($this::t('USERS_UPDATED', $uData['username']), RESPONSE_NOTICE);
         }
+    }
+
+    /**
+     * Updates user password
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateUserPassword()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $postedData = $this->gadget->request->fetch(array('uid', 'password', 'expired'), 'post');
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $postedData['password'] = $JCrypt->decrypt($postedData['password']);
+        }
+
+        $result = $this->app->users->UpdatePassword(
+            (int)$postedData['uid'],
+            $postedData['password'],
+            false,
+            (bool)$postedData['expired']
+        );
+        if (Jaws_Error::isError($result)) {
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response($this::t('USERS_PASSWORD_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**

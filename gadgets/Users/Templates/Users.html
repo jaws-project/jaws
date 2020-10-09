@@ -129,16 +129,16 @@
 
               <table class="table" cellpadding="0" cellspacing="2">
                 <tr><td><label for="username">{{lbl_username}}:</label></td><td>
-                  <input type="text" id="username" name="username" class="form-control"></td>
+                  <input type="text" id="username" name="username" class="form-control ltr"></td>
                 </tr>
                 <tr><td><label for="nickname">{{lbl_nickname}}:</label></td><td>
                   <input type="text" id="nickname" name="nickname" class="form-control"></td>
                 </tr>
                 <tr><td><label for="email">{{lbl_email}}:</label></td><td>
-                  <input type="text" id="email" name="email" class="form-control"></td>
+                  <input type="text" id="email" name="email" class="form-control ltr"></td>
                 </tr>
                 <tr><td><label for="mobile">{{lbl_mobile}}:</label></td><td>
-                  <input type="text" id="mobile" name="mobile" class="form-control"></td>
+                  <input type="text" id="mobile" name="mobile" class="form-control ltr"></td>
                 </tr>
                 <tr><td><label for="superadmin">{{lbl_superadmin}}:</label></td><td>
                   <select class="form-control" name="superadmin" id="superadmin">
@@ -181,10 +181,10 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="stopAction()">
               {{lbl_cancel}}
             </button>
-            <button type="button" class="btn btn-primary" onclick="javascript:saveUser()">{{lbl_save}}</button>
+            <button type="button" class="btn btn-primary" onclick="saveUser()">{{lbl_save}}</button>
           </div>
         </div>
       </div>
@@ -202,7 +202,7 @@
             <form action="#" name="password-form" id="password-form">
               <table class="table" cellpadding="0" cellspacing="2">
                 <tr><td><label for="username">{{lbl_username}}:</label></td><td>
-                  <input type="text" id="username" name="username" class="form-control"></td>
+                  <input type="text" id="username" name="username" class="form-control ltr"></td>
                 </tr>
                 <tr>
                   <td><label for="password">{{lbl_password}}:</label></td>
@@ -219,11 +219,26 @@
                   </td>
                 </tr>
 
+                <tr>
+                  <td></td>
+                  <td>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input"
+                        id="expired" name="expired" value="true"
+                      />
+                      <label class="form-check-label" for="expired">{{lbl_password_expired}}</label>
+                    </div>
+                  </td>
+                </tr>
+
+
+
+
               </table>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="stopAction()">
               {{lbl_cancel}}
             </button>
             <button type="button" class="btn btn-primary" onclick="updatePassword()">{{lbl_save}}</button>

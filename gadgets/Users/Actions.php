@@ -288,16 +288,25 @@ $actions['GetUser'] = array(
 );
 $actions['AddUser'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['UpdateUser'] = array(
     'standalone' => true,
+    'internal' => true,
+    'file' => 'Users',
+    'loglevel' => JAWS_NOTICE,
+);
+$actions['UpdateUserPassword'] = array(
+    'standalone' => true,
+    'internal' => true,
     'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['DeleteUser'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Users',
     'loglevel' => JAWS_WARNING,
 );
@@ -307,6 +316,7 @@ $actions['GetUserGroups'] = array(
 );
 $actions['AddUserToGroups'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
@@ -334,11 +344,13 @@ $actions['AddGlobalGroup'] = array(
 );
 $actions['UpdateGlobalGroup'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['DeleteGlobalGroup'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
@@ -348,6 +360,7 @@ $actions['GetGroupUsers'] = array(
 );
 $actions['AddUsersToGroup'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );

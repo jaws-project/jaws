@@ -33,6 +33,12 @@ var UsersCallback = {
         }
     },
 
+    UpdateUserPassword: function (response) {
+        if (response.type == 'alert-success') {
+            stopAction();
+        }
+    },
+
     DeleteUser: function (response) {
         if (response.type == 'alert-success') {
             stopAction();
@@ -300,6 +306,7 @@ function editPassword(id, username)
     currentAction = "UserPassword";
     selectedUser = id;
     $('#passModalLabel').html(jaws.Users.Defines.updatePassword_title);
+    $('#password-form #username').prop('disabled', true).val(username);
 
     $('#passModal').modal('show');
 }
@@ -382,11 +389,6 @@ function saveUser()
 {
     switch (currentAction) {
         case 'UserAccount':
-            if ($('#users-form #password').val() != "" ) {
-                alert(jaws.Users.Defines.wrongPassword);
-                return false;
-            }
-
             if (!$('#users-form #username').val() ||
                 !$('#users-form #nickname').val() ||
                 (!$('#users-form #email').val() && !$('#users-form #mobile').val())
@@ -395,18 +397,18 @@ function saveUser()
                 return false;
             }
 
-            var password = $('#users-form #password').val();
-            $.loadScript('libraries/js/jsencrypt.min.js', function() {
-                if ($('#pubkey').length) {
-                    var objRSACrypt = new JSEncrypt();
-                    objRSACrypt.setPublicKey($('#pubkey').val());
-                    password = objRSACrypt.encrypt($('#users-form #password').val());
+            if (selectedUser == null) {
+                if ($('#users-form #password').val().blank()) {
+                    alert(jaws.Users.Defines.wrongPassword);
+                    return false;
                 }
 
-                if (selectedUser == null) {
-                    if (!$('#users-form #password').val()) {
-                        alert(jaws.Users.Defines.incompleteUserFields);
-                        return false;
+                var password = $('#users-form #password').val();
+                $.loadScript('libraries/js/jsencrypt.min.js', function() {
+                    if ($('#pubkey').length) {
+                        var objRSACrypt = new JSEncrypt();
+                        objRSACrypt.setPublicKey($('#pubkey').val());
+                        password = objRSACrypt.encrypt($('#users-form #password').val());
                     }
 
                     var formData = $.unserialize(
@@ -414,17 +416,16 @@ function saveUser()
                     );
                     formData['password'] = password;
                     delete formData['prev_status'];
-                    delete formData['password'];
                     UsersAjax.callAsync('AddUser', {'data': formData});
-                } else {
-                    var formData = $.unserialize(
-                        $('#users-form input, #users-form select, #users-form textarea').serialize()
-                    );
-                    formData['password'] = password;
-                    delete formData['password'];
-                    UsersAjax.callAsync('UpdateUser', {'uid': selectedUser, 'data': formData});
-                }
-            });
+                });
+
+            } else {
+                var formData = $.unserialize(
+                    $('#users-form input, #users-form select, #users-form textarea').serialize()
+                );
+                delete formData['password'];
+                UsersAjax.callAsync('UpdateUser', {'uid': selectedUser, 'data': formData});
+            }
 
             break;
 
@@ -447,6 +448,36 @@ function saveUser()
 
     }
 
+}
+
+/**
+ * Update user password
+ */
+function updatePassword()
+{
+    if ($('#password-form #password').val().blank()) {
+        alert(jaws.Users.Defines.wrongPassword);
+        return false;
+    }
+
+    var password = $('#password-form #password').val();
+    $.loadScript('libraries/js/jsencrypt.min.js', function() {
+        if ($('#pubkey').length) {
+            var objRSACrypt = new JSEncrypt();
+            objRSACrypt.setPublicKey($('#pubkey').val());
+            password = objRSACrypt.encrypt($('#password-form #password').val());
+        }
+
+        UsersAjax.callAsync(
+            'UpdateUserPassword',
+            {
+                'uid': selectedUser,
+                'password': password,
+                'expired': false
+            }
+        );
+    });
+                
 }
 
 /**
