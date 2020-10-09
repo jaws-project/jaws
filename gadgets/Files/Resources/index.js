@@ -303,12 +303,19 @@ function Jaws_Gadget_Files() { return {
                                 );
                                 let liElement = ulElement.children().last();
                                 liElement.find('input').attr('name', 'old_files_' + inputIndexName).val(file.id);
-                                liElement.find("[data-type='name']").html(file.title);
+                                liElement.find("[data-type='name']").html(
+                                    '<a href="'+file.url_file +
+                                    '" target="_blank">' + file.title +
+                                    '</a>'
+                                );
                                 liElement.find("[data-type='size']").html(file.filesize);
                                 // show preview
                                 if (preview) {
                                     liElement.find("[data-type='preview']").show().html(
-                                        '<img src="'+file.url_file+'" alt="" width="128">'
+                                        '<a href="'+file.url_file+
+                                        '" target="_blank"><img src="'+
+                                        file.src_file+
+                                        '" alt="" width="128"></a>'
                                     );
                                 }
                                 liElement.show();

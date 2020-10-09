@@ -97,12 +97,14 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             $interface = $this->gadget->request->fetchAll('post');
             if (!empty($interface['reference'])) {
+                $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
                 $files = $this->gadget->model->load('Files')->getFiles($interface);
                 foreach ($files as $ndx => $file) {
                     $files[$ndx]['url_file'] = $this->gadget->urlMap(
                         'file',
                         array('id' => $file['id'], 'key' => $file['filekey'])
                     );
+                    $files[$ndx]['src_file'] = $this->app->getDataURL($filesPath. $file['filename']);
                     unset(
                         $files[$ndx]['type'], $files[$ndx]['public'],
                         $files[$ndx]['mimetype'], $files[$ndx]['filetype'],
@@ -195,15 +197,27 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
             foreach ($files as $file) {
                 $tpl->SetBlock("$block/files/file");
+
+                $url_file = $this->gadget->urlMap(
+                    'file',
+                    array('id' => $file['id'], 'key' => $file['filekey'])
+                );
+                $src_file = $this->app->getDataURL($filesPath. $file['filename']);
+
                 if ($options['preview']) {
                     switch (substr($file['mimetype'], 0, strpos($file['mimetype'], '/'))) {
                         case 'image':
                             $tpl->SetBlock("$block/files/file/image_preview");
-                            $tpl->SetVariable('src', $this->app->getDataURL($filesPath. $file['filename']));
+                            $tpl->SetVariable('src', $src_file);
+                            $tpl->SetVariable('url_file', $url_file);
+                            $tpl->SetVariable('src_file', $src_file);
                             $tpl->ParseBlock("$block/files/file/image_preview");
                             break;
                     }
                 }
+
+                $tpl->SetVariable('url_file', $url_file);
+                $tpl->SetVariable('src_file', $src_file);
                 $tpl->SetVariable('input_action', strtolower($interface['action']));
                 $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
                 $tpl->SetVariable('input_type', $interface['type']);

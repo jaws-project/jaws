@@ -50,10 +50,10 @@
             <ul>
               <!-- BEGIN image_preview -->
               <li data-type="preview">
-                <img src="{{src}}" alt="" width="128"/>
+                <a href="{{url_file}}" target="_blank"><img src="{{src_file}}" alt="" width="128"/></a>
               </li>
               <!-- END image_preview -->
-              <li data-type="name">{{filename}}</li>
+              <li data-type="name"><a href="{{url_file}}" target="_blank">{{filename}}</a></li>
               <li data-type="size">{{filesize}}</li>
               <li data-type="remove">
                 <a href="javascript:void(0);"
