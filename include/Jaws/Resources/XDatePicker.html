@@ -8,6 +8,9 @@
     {% endif %}
     <input class="form-control ltr" name="{{datepicker.name}}"
       id="datepicker_{{datepicker.id}}_input" value="{{datepicker.value}}" type="text"
+      {{ datepicker.required | empty | not: "required" }}
+      pattern="\d{4}[/|-]\d{1,2}[/|-]\d{1,2}"
+      placeholder="YYYY/MM/DD" autocomplete="off"
     />
     <div class="input-group-btn">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

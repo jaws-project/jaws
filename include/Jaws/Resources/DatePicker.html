@@ -4,7 +4,9 @@
     <!-- BEGIN label -->
     <label for="datepicker_{{id}}_input" class="input-group-addon text-input">{{label}}</label>
     <!-- END label -->
-    <input class="form-control" name="{{name}}" id="datepicker_{{id}}_input" value="{{value}}" type="text" dir="ltr"/>
+    <input class="form-control ltr" name="{{name}}" id="datepicker_{{id}}_input"
+      value="{{value}}" type="text" autocomplete="off"
+      placeholder="YYYY/MM/DD" pattern="\d{4}[/|-]\d{1,2}[/|-]\d{1,2}" {{required}} />
     <div class="input-group-btn">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-calendar"></span>
