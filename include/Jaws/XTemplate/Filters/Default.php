@@ -41,12 +41,51 @@ class Jaws_XTemplate_Filters_Default
      * Determine input is different than NULL
      *
      * @param   mixed   $input
+     * @param   mixed   $output
      *
-     * @return  bool
+     * @return  mixed
      */
-    public static function isset($input)
+    public static function isset($input, $output = null)
     {
+        if (isset($output)) {
+            return isset($input)? $output : false;
+        }
+
         return isset($input);
+    }
+
+    /**
+     * Determine input is empty(equal PHP empty function)
+     *
+     * @param   mixed   $input
+     * @param   mixed   $output
+     *
+     * @return  mixed
+     */
+    public static function empty($input, $output = null)
+    {
+        if (isset($output)) {
+            return empty($input)? $output : false;
+        }
+
+        return empty($input);
+    }
+
+    /**
+     * Logical not
+     *
+     * @param   mixed   $input
+     * @param   mixed   $output
+     *
+     * @return  mixed
+     */
+    public static function not($input, $output = null)
+    {
+        if (isset($output)) {
+            return (bool)$input? false : $output;
+        }
+
+        return !(bool)$input;
     }
 
     /**
