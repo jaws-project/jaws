@@ -986,6 +986,12 @@ class Jaws_User
         }
 
         $uData['last_update'] = time();
+        if (!array_key_exists('last_password_update', $uData)) {
+            $uData['last_password_update'] = time();
+        } else {
+            $uData['last_password_update'] = (int)$uData['last_password_update'];
+        }
+
         $uData['registered_date'] = time();
         $uData['superadmin'] = isset($uData['superadmin'])? (bool)$uData['superadmin'] : false;
         $uData['status'] = isset($uData['status'])? (int)$uData['status'] : 1;
