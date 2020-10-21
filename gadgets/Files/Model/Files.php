@@ -50,7 +50,15 @@ class Files_Model_Files extends Jaws_Gadget_Model
 
             $result = $attachTable->insert($data)->exec();  
             if (!Jaws_Error::IsError($result)) {
-                $resultFiles[] = array_merge(array('id' => $result), $data);
+                $resultFiles[] = array_merge(
+                    array(
+                        'id' => $result,
+                        'filepath' => strtolower(
+                            'files/'. $interface['gadget']. '/'. $interface['action']. '/'. $data['filename']
+                        )
+                    ),
+                    $data
+                );
             }
         }
 
