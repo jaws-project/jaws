@@ -33,59 +33,56 @@ class Jaws_XTemplate_Filters_Default
      */
     public static function default($input, $default_value)
     {
-        $isBlank = $input == '' || $input === false || $input === null;
-        return $isBlank ? $default_value : $input;
+        return empty($input)? $default_value : $input;
     }
 
     /**
      * Determine input is different than NULL
      *
      * @param   mixed   $input
-     * @param   mixed   $output
+     * @param   mixed   $trueResult     Is set result
+     * @param   mixed   $falseResult    Is not set result
      *
      * @return  mixed
      */
-    public static function isset($input, $output = null)
+    public static function isset($input, $trueResult = null, $falseResult = null)
     {
-        if (isset($output)) {
-            return isset($input)? $output : false;
-        }
-
-        return isset($input);
+        $trueResult = isset($trueResult)?: true;
+        $falseResult = isset($falseResult)?: false;
+        return isset($input)? $trueResult : $falseResult;
     }
 
     /**
      * Determine input is empty(equal PHP empty function)
      *
      * @param   mixed   $input
-     * @param   mixed   $output
+     * @param   mixed   $trueResult     Is empty result
+     * @param   mixed   $falseResult    Is not empty result
      *
      * @return  mixed
      */
-    public static function empty($input, $output = null)
+    public static function empty($input, $trueResult = null, $falseResult = null)
     {
-        if (isset($output)) {
-            return empty($input)? $output : false;
-        }
-
-        return empty($input);
+        $trueResult = isset($trueResult)?: true;
+        $falseResult = isset($falseResult)?: false;
+        return empty($input)? $trueResult : $falseResult;
     }
 
     /**
      * Logical not
      *
      * @param   mixed   $input
-     * @param   mixed   $output
+     * @param   mixed   $trueResult     If true result
+     * @param   mixed   $falseResult    If false result
      *
      * @return  mixed
      */
-    public static function not($input, $output = null)
+    public static function not($input, $trueResult = null, $falseResult = null)
     {
-        if (isset($output)) {
-            return (bool)$input? false : $output;
-        }
+        $trueResult = isset($trueResult)?: true;
+        $falseResult = isset($falseResult)?: false;
 
-        return !(bool)$input;
+        return !(bool)$input? $trueResult : $falseResult;
     }
 
     /**
