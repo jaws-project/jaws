@@ -233,6 +233,67 @@ class Files_Actions_Files extends Jaws_Gadget_Action
     }
 
     /**
+     * Get upload reference files interface(new template engine version)
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(maxsize, types, labels, ...)
+     * @return  void
+     */
+    function xloadReferenceFiles($interface = array(), $options = array())
+    {
+        // FIXME:: add registry key for set maximum upload file size
+        $defaultOptions = array(
+            'maxsize'    => 33554432, // 32MB
+            'maxcount'   => 0,        // unlimited
+            'dimension'  => '',
+            'filetype'   => 0,
+            'extensions' => '',
+            'preview'    => true,
+            'capture'    => false,
+        );
+        $options = array_merge($defaultOptions, $options);
+
+        $defaultInterface = array(
+            'gadget'     => '',
+            'action'     => '',
+            'reference'  => 0,
+            'type'       => 0,
+        );
+        $interface = array_merge($defaultInterface, $interface);
+        // optional input_reference for new record(without reference id)
+        // or update/insert multi references together
+        if (!array_key_exists('input_reference', $interface)) {
+            $interface['input_reference'] = $interface['reference'];
+        }
+
+        $this->AjaxMe('index.js');
+
+        // initiate assign with option array 
+        $assigns = $options;
+        // file type
+        if (in_array($options['filetype'], array(2, 3, 4, 5))) {
+            $assigns['mimetype'] = strtolower(array_flip(JAWS_FILE_TYPE)[$options['filetype']]). '/*';
+        }
+
+        $assigns['interface'] = $interface;
+        $assigns['input_action'] = strtolower($interface['action']);
+        $assigns['input_reference'] = strtolower($interface['input_reference']);
+        $assigns['input_type'] = $interface['type'];
+
+        // files
+        $assigns['files'] = array();
+        if (!empty($interface['reference'])) {
+            $files = $this->gadget->model->load('Files')->getFiles($interface);
+            if (!Jaws_Error::IsError($files)) {
+                $assigns['files'] = $files;
+            }
+        }
+
+        return $assigns;
+    }
+
+    /**
      * Upload/Insert/Update reference files
      *
      * @access  public
