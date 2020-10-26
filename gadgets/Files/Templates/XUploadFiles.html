@@ -4,7 +4,7 @@
       <ul>
         <li class="file_details" style="display: none;">
           <input type="hidden"
-            name="old_files_{{ input_action }}_{{ input_reference }}_{{ input_type }}[]"
+            name="old_files_{{ files.input_action }}_{{ files.input_reference }}_{{ files.input_type }}[]"
           />
           <ul>
             <li data-type="preview" style="display: none;"></li>
@@ -13,8 +13,8 @@
             <li data-type="remove">
               <a href="javascript:void(0);"
                 onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
-                title="{{ labels.remove }}">
-                {{ labels.remove }}
+                title="{{ files.labels.remove }}">
+                {{ files.labels.remove }}
               </a>
             </li>
           </ul>
@@ -22,28 +22,28 @@
       </ul>
 
       <input class="form-control-file" type="file"
-        data-maxsize="{{ maxsize }}"
-        data-dimension="{{ dimension }}"
-        data-extensions="{{ extensions }}"
-        data-preview="{{ preview }}"
-        name="new_files_{{ input_action }}_{{ input_reference }}_{{ input_type }}[]"
+        data-maxsize="{{ files.maxsize }}"
+        data-dimension="{{ files.dimension }}"
+        data-extensions="{{ files.extensions }}"
+        data-preview="{{ files.preview }}"
+        name="new_files_{{ files.input_action }}_{{ files.input_reference }}_{{ files.input_type }}[]"
         multiple="multiple"
-        accept="{{ mimetype | default: '*' }}"
-        {{ capture | isset: "capture", "" }}
+        accept="{{ files.mimetype | default: '*' }}"
+        {{ files.capture | isset: "capture", "" }}
         onchange="Jaws_Gadget.getInstance('Files').browseFile(this);"
         style="opacity:0; height:0; width:0;"
       />
     </div>
   </template>
-  <label>{{ labels.title }}:</label>
+  <label>{{ files.labels.title }}:</label>
   <div>
     <div class="old_files">
       <div>
         <ul>
-          {% for file in files %}
+          {% for file in files.files %}
           <li class="file_details">
             <input type="hidden"
-                name="old_files_{{ input_action }}_{{ input_reference }}_{{ input_type }}[]"
+                name="old_files_{{ files.input_action }}_{{ files.input_reference }}_{{ files.input_type }}[]"
                 value="{{ file.id }}"
             />
             <ul>
@@ -51,7 +51,7 @@
               <li data-type="preview">
                 <a href="{{ 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey }}" target="_blank">
                   <img
-                    src="{{ 'files/' | append: interface.gadget, '/', interface.action, '/' | downcase | dataURL: file.filename }}"
+                    src="{{ 'files/' | append: files.interface.gadget, '/', files.interface.action, '/' | downcase | dataURL: file.filename }}"
                     alt="" width="128"
                   />
                 </a>
@@ -66,8 +66,8 @@
               <li data-type="remove">
                 <a href="javascript:void(0);"
                   onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
-                  title="{{ labels.remove }}">
-                  {{ labels.remove }}
+                  title="{{ files.labels.remove }}">
+                  {{ files.labels.remove }}
                 </a>
               </li>
             </ul>
@@ -82,10 +82,10 @@
 
     <div class="btn_browse">
       <a href="javascript:void(0);"
-        data-maxcount="{{ maxcount }}"
+        data-maxcount="{{ files.maxcount }}"
         data-initialize="fileuploader"
         onclick="Jaws_Gadget.getInstance('Files').uploadMoreFiles(this);">
-        {{ labels.browse }}
+        {{ files.labels.browse }}
       </a>
     </div>
   </div>
