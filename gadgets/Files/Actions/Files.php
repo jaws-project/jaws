@@ -8,7 +8,7 @@
 class Files_Actions_Files extends Jaws_Gadget_Action
 {
     /**
-     * Get upload reference files interface
+     * Get display uploaded reference files interface
      *
      * @access  public
      * @param   object  $tpl        Jaws_Template object
@@ -80,6 +80,31 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         }
 
         $tpl->ParseBlock("$block/files");
+    }
+
+    /**
+     * Get display uploaded reference files interface(new template engine version)
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(maxsize, types, labels, ...)
+     * @return  array   Files array
+     */
+    function xdisplayReferenceFiles($interface = array(), $options = array())
+    {
+        // initiate assign with option array 
+        $assigns = $options;
+        $assigns['interface'] = $interface;
+
+        $assigns['files'] = array();
+        if (!empty($interface['reference'])) {
+            $files = $this->gadget->model->load('Files')->getFiles($interface);
+            if (!Jaws_Error::IsError($files)) {
+                $assigns['files'] = $files;
+            }
+        }
+
+        return $assigns;
     }
 
     /**
@@ -238,7 +263,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      * @access  public
      * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
      * @param   array   $options    User interface control options(maxsize, types, labels, ...)
-     * @return  void
+     * @return  array   Array of upload files interface data & options
      */
     function xloadReferenceFiles($interface = array(), $options = array())
     {
