@@ -47,11 +47,11 @@
                 value="{{ file.id }}"
             />
             <ul>
-              {% if preview and file.mimetype contains "image/" %}
+              {% if files.preview and file.mimetype contains "image/" %}
               <li data-type="preview">
                 <a href="{{ 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey }}" target="_blank">
                   <img
-                    src="{{ 'files/' | append: files.interface.gadget, '/', files.interface.action, '/' | downcase | dataURL: file.filename }}"
+                    src="{{ 'files/' | append: files.interface.gadget, '/', files.interface.action, '/', file.filename | downcase | dataURL }}"
                     alt="" width="128"
                   />
                 </a>
