@@ -167,6 +167,20 @@ class Jaws_XTemplate_Filters_Default
     }
 
     /**
+     * Get data url of given file/path
+     *
+     * @param   string  $suffix     suffix part of url
+     * @param   bool    $rel_url    relative url
+     * @param   bool    $base_data  use JAWS_BASE_DATA instead of ROOT_DATA_PATH
+     *
+     * @return string
+     */
+    public static function dataURL($suffixt = '', $rel_url = true, $base_data = false)
+    {
+        return Jaws::getInstance()->getDataURL($suffixt, $rel_url, $base_data);
+    }
+
+    /**
      * get session variables/attributes(user, global, gadget)
      *
      * @param   string    $var
