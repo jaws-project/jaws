@@ -46,14 +46,17 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         switch ($reqpost['loginstep']) {
             case 2:
+                $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
                 $this->LoginBoxStep2($tpl, $reqpost, $referrer);
                 break;
 
             case 3:
+                $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
                 $this->LoginBoxStep3($tpl, $reqpost, $referrer);
                 break;
 
             default:
+                $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
                 $this->LoginBoxStep1($tpl, $reqpost, $referrer);
         }
 
@@ -127,8 +130,6 @@ class Users_Account_Default_Login extends Users_Account_Default
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_1");
-
-        $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $JCrypt = Jaws_Crypt::getInstance();
@@ -223,8 +224,6 @@ class Users_Account_Default_Login extends Users_Account_Default
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_2");
-
-        $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('remember', $reqpost['remember']);
@@ -255,8 +254,6 @@ class Users_Account_Default_Login extends Users_Account_Default
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_3");
-
-        $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('remember', $reqpost['remember']);
