@@ -21,16 +21,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $tpl->SetBlock('UserLinks');
             $tpl->SetVariable('title', Jaws::t('MY_ACCOUNT'));
 
-            // welcome
-            $tpl->SetVariable('welcome', $this::t('WELCOME'));
-
             $response = $this->gadget->session->pop('Login.Response');
-            if (empty($response)) {
-                $response['type'] = RESPONSE_NOTICE;
-                $response['text'] = $this::t('WELCOME');
+            if (!empty($response)) {
+                $tpl->SetVariable('response_type', $response['type']);
+                $tpl->SetVariable('response_text', $response['text']);
             }
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
 
             $tpl->SetVariable('profile', $this::t('PROFILE'));
             // username
@@ -115,9 +110,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
             $tpl->SetBlock('LoginLinks');
             $tpl->SetVariable('title', $this::t('LOGINLINKS'));
-
-            // welcome
-            $tpl->SetVariable('welcome', $this::t('WELCOME'));
 
             // login
             $tpl->SetVariable('user_login', $this::t('LOGIN_TITLE'));
