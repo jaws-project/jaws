@@ -24,6 +24,8 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('reserved_users', ''),
         array('multi_domain', 'false'),
         array('default_domain', '0'),
+        array('login_transfer_gadget_index', ''),
+        array('login_transfer_gadget_admin', 'ControlPanel'),
         array('two_step_verification', false, true),
     );
 
@@ -339,6 +341,12 @@ class Users_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '4.4.5', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert('login_transfer_gadget_index', '');
+            $this->gadget->registry->insert('login_transfer_gadget_admin', 'ControlPanel');
         }
 
         return true;

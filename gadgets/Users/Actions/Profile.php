@@ -130,8 +130,11 @@ class Users_Actions_Profile extends Users_Actions_Default
     function Profile()
     {
         $user = $this->gadget->request->fetch('user', 'get');
+        $user = $user?: $this->app->session->user->username;
         if (empty($user)) {
-            return Jaws_HTTPError::Get(404);
+            return Jaws_Header::Location(
+                $this->gadget->urlMap('Login', array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true))))
+            );
         }
 
         if ($this->app->session->user->username != $user &&

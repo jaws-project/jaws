@@ -35,7 +35,7 @@ $maps[] = array('LoginForgot', 'users/forget');
 $maps[] = array('ReplaceUserEmail', 'users/replace_email[/{key}]');
 $maps[] = array(
     'Profile',
-    'users/{user}',
+    'users/profile[/{user}]',
     array('user' => '[[:alnum:]\-_.@]+')
 );
 $maps[] = array('Users', 'users');

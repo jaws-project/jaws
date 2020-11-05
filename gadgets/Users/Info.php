@@ -13,7 +13,7 @@ class Users_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '4.4.0';
+    var $version = '4.5.0';
 
     /**
      * Recommended gadgets
@@ -37,7 +37,7 @@ class Users_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'Login';
+    var $default_action = 'Profile';
 
     /**
      * Default back-end action name

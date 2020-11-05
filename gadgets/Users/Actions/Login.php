@@ -184,6 +184,22 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             } else {
                 $referrer = bin2hex(Jaws_Utils::getRequestURL());
             }
+
+            // overwrite referrer to default login transfer gadget
+            if (JAWS_SCRIPT == 'index') {
+                $defaultActionAttribute = 'default_action';
+                $default_transfer_gadget = $this->gadget->registry->fetch('login_transfer_gadget_index');
+            } else {
+                $defaultActionAttribute = 'default_admin_action';
+                $default_transfer_gadget = $this->gadget->registry->fetch('login_transfer_gadget_admin');
+            }
+
+            if (!empty($default_transfer_gadget)) {
+                $defaultAction = Jaws_Gadget::getInstance($default_transfer_gadget)->$defaultActionAttribute;
+                if (!Jaws_Error::IsError($defaultAction) && !empty($defaultAction)) {
+                    $referrer = bin2hex(Jaws_Gadget::getInstance($default_transfer_gadget)->urlMap($defaultAction));
+                }
+            }
         }
         $this->gadget->session->referrer = $referrer;
 
