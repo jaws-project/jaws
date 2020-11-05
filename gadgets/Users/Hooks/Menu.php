@@ -39,7 +39,63 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
                     'scope'  => SESSION_SCOPE_USER,
                     'name'   => 'username'
                 )
-            )
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Account'),
+            'title' => $this::t('ACTIONS_ACCOUNT_TITLE'),
+            'permission'  => array(
+                'key'     => 'EditUserName,EditUserNickname,EditUserEmail,EditUserMobile',
+                'together' => false,
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Password'),
+            'title' => $this::t('ACTIONS_PASSWORD_TITLE'),
+            'permission'  => array(
+                'key'     => 'EditUserPassword',
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Personal'),
+            'title' => $this::t('ACTIONS_PERSONAL_TITLE'),
+            'permission'  => array(
+                'key'     => 'EditUserPersonal',
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Preferences'),
+            'title' => $this::t('ACTIONS_PREFERENCES_TITLE'),
+            'permission'  => array(
+                'key'     => 'EditUserPreferences',
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Bookmarks'),
+            'title' => $this::t('ACTIONS_BOOKMARKS_TITLE'),
+            'permission'  => array(
+                'key'     => 'EditUserBookmarks',
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Contact'),
+            'title' => $this::t('ACTIONS_CONTACT_TITLE'),
+            'permission'  => array(
+                'key'     => 'EditUserContact',
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
         );
 
         $urls[] = array(
@@ -47,8 +103,26 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
             'title'      => $this::t('FRIENDS'),
             'permission' => array(
                 'key'    => 'ManageFriends',
-                'subkey' => ''
-            )
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Users'),
+            'title' => $this::t('ACTIONS_USERS_TITLE'),
+            'permission'  => array(
+                'key'     => 'ManageUsers',
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
+        );
+
+        $urls[] = array(
+            'url' => $this->gadget->urlMap('Groups'),
+            'title' => $this::t('ACTIONS_GROUPS_TITLE'),
+            'permission'  => array(
+                'key'     => 'ManageGroups',
+            ),
+            'status' => Menu_Info::STATUS_LOGGED_IN,
         );
 
         $urls[] = array(
@@ -56,7 +130,6 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
             'title'      => $this::t('DASHBOARD_USER'),
             'permission' => array(
                 'key'    => 'AccessUserLayout',
-                'subkey' => ''
             )
         );
 
@@ -65,7 +138,6 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
             'title'      => $this::t('DASHBOARD_USERS'),
             'permission' => array(
                 'key'    => 'AccessUsersLayout',
-                'subkey' => ''
             )
         );
 

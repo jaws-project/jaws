@@ -85,7 +85,7 @@ $actions['Account'] = array(
     'normal' => true,
     'file' => 'Account',
     'acls' => array(
-        'EditUserName,EditUserNickname,EditUserEmail',
+        'EditUserName,EditUserNickname,EditUserEmail,EditUserMobile',
         '',
         false
     ),
