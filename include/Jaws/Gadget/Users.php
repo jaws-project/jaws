@@ -77,9 +77,10 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
      * @access  public
      * @param   int     $user           User ID
      * @param   array   $attributes     User's custom/default attributes
+     * @param   string  $join           Join type(left, inner, right, ...)
      * @return  mixed   Returns array of user's attributes or Jaws_Error on Failure
      */
-    function fetch($user, $attributes)
+    function fetch($user, $attributes, $join = 'left')
     {
         $attributes = array(
             'default' => (array)@$attributes['default'],
@@ -104,7 +105,7 @@ class Jaws_Gadget_Users extends Jaws_Gadget_Class
 
         return Jaws_ORM::getInstance()->table('users')
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join($tableName, $tableName.'.user', 'users.id', 'left')
+            ->join($tableName, $tableName.'.user', 'users.id', $join)
             ->where('users.id', (int)$user)
             ->fetchRow();
     }
