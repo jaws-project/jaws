@@ -54,7 +54,7 @@
         </fieldset>
 
         <fieldset>
-          <legend data-toggle="collapse" data-target="#user_public_profile">
+          <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_public_profile">
             {{lbl_public}}
           </legend>
           <div class="collapse in" id="user_public_profile">
@@ -92,36 +92,39 @@
         </fieldset>
         <!-- END public -->
 
+        <!-- BEGIN activity -->
+        <fieldset>
+          <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_activities">
+            {{lbl_activities}}
+          </legend>
+          <div class="collapse in" id="user_activities">
+            <!-- BEGIN gadget -->
+            <dl class="row">
+              <dt class="col-xs-12">{{gadget}}:</dt>
+              <dd class="col-xs-12 pt-xs-2">
+                <ul>
+                <!-- BEGIN item -->
+                  <li><a href="{{url}}"><!-- BEGIN count -->{{count}} <!-- END count -->{{title}}</a></li>
+                <!-- END item -->
+                </ul>
+              </dd>
+            </dl>
+            <!-- END gadget -->
+            <!-- BEGIN no_activity -->
+            <dl class="row">
+              <dd class="col-xs-12 pt-xs-2">{{no_activity}}</dd>
+            </dl>
+            <!-- END no_activity -->
+          </div>
+        </fieldset>
+        <!-- END activity -->
+
       </div>
       <div class="col-xs-4">
         <img class="user_avatar" src="{{avatar}}" alt="{{username}}" title="{{nickname}}" />
       </div>
     </div>
 
-    <!-- BEGIN gadget -->
-
-    <!-- END gadget -->
-
-    <!-- BEGIN activity -->
-    <fieldset>
-      <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
-        <span>{{lbl_activities}}</span>
-      </legend>
-      <div>
-        <!-- BEGIN gadget -->
-        <div>
-          <label>{{gadget}}: </label>
-          <ul>
-          <!-- BEGIN item -->
-            <li><a href="{{url}}"><!-- BEGIN count -->{{count}} <!-- END count -->{{title}}</a></li>
-          <!-- END item -->
-          </ul>
-        </div>
-        <!-- END gadget -->
-        <!-- BEGIN no_activity -->{{no_activity}}<!-- END no_activity -->
-      </div>
-    </fieldset>
-    <!-- END activity -->
   </div>
 </div>
 <div class="gadget_footer"></div>
