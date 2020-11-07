@@ -7,38 +7,101 @@
 </div>
 <div class="gadget_container">
   <div class="gadget_content">
-    <div class="user_avatar"><img src="{{avatar}}" alt="{{username}}" title="{{nickname}}" /></div>
-    <div><label>{{lbl_username}}: </label><p>{{username}}</p></div>
-    <div><label>{{lbl_nickname}}: </label><p>{{nickname}}</p></div>
-    <div><label>{{lbl_registered_date}}: </label><p>{{registered_date}}</p></div>
-    <!-- BEGIN public -->
-    <fieldset>
-      <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
-        <span>{{lbl_private}}</span>
-      </legend>
-      <div>
-        <div><label>{{lbl_fname}}: </label><p>{{fname}}</p></div>
-        <div><label>{{lbl_lname}}: </label><p>{{lname}}</p></div>
-        <div><label>{{lbl_gender}}: </label><p>{{gender}}</p></div>
-        <div><label>{{lbl_ssn}}: </label><p>{{ssn}}</p></div>
-        <div><label>{{lbl_dob}}: </label><p>{{dob}}</p></div>
+    <div class="row">
+      <div class="col-xs-8">
+        <dl class="row mb-xs-2">
+          <dt class="col-xs-4">{{lbl_username}}:</dt>
+          <dd class="col-xs-8">{{username}}</dd>
+        </dl>
+
+        <dl class="row mb-xs-2">
+          <dt class="col-xs-4">{{lbl_nickname}}:</dt>
+          <dd class="col-xs-8">{{nickname}}</dd>
+        </dl>
+
+        <dl class="row mb-xs-2">
+          <dt class="col-xs-4">{{lbl_registered_date}}:</dt>
+          <dd class="col-xs-8">{{registered_date}}</dd>
+        </dl>
+
+        <!-- BEGIN public -->
+        <fieldset>
+          <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_private_profile">
+            {{lbl_private}}
+          </legend>
+          <div class="collapse in" id="user_private_profile">
+            <dl class="row mb-xs-2">
+              <dt class="col-xs-4">{{lbl_fname}}:</dt>
+              <dd class="col-xs-8">{{fname}}</dd>
+            </dl>
+            <dl class="row mb-xs-2">
+              <dt class="col-xs-4">{{lbl_lname}}:</dt>
+              <dd class="col-xs-8">{{lname}}</dd>
+            </dl>
+            <dl class="row mb-xs-2">
+              <dt class="col-xs-4">{{lbl_gender}}:</dt>
+              <dd class="col-xs-8">{{gender}}</dd>
+            </dl>
+            <dl class="row mb-xs-2">
+              <dt class="col-xs-4">{{lbl_ssn}}:</dt>
+              <dd class="col-xs-8">{{ssn}}</dd>
+            </dl>
+            <dl class="row mb-xs-2">
+              <dt class="col-xs-4">{{lbl_dob}}:</dt>
+              <dd class="col-xs-8">{{dob}}</dd>
+            </dl>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend data-toggle="collapse" data-target="#user_public_profile">
+            {{lbl_public}}
+          </legend>
+          <div class="collapse in" id="user_public_profile">
+            <dl class="row">
+              <dt class="col-xs-12">{{lbl_url}}:</dt>
+              <dd class="col-xs-12 pt-xs-2">
+                <!-- BEGIN website --><a href="{{url}}" target="_blank" rel="nofollow">{{url}}</a><!-- END website -->
+              </dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-xs-12">{{lbl_about}}:</dt>
+              <dd class="col-xs-12 pt-xs-2">
+                {{about}}
+              </dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-xs-12">{{lbl_experiences}}:</dt>
+              <dd class="col-xs-12 pt-xs-2">
+                {{experiences}}
+              </dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-xs-12">{{lbl_occupations}}:</dt>
+              <dd class="col-xs-12 pt-xs-2">
+                {{occupations}}
+              </dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-xs-12">{{lbl_interests}}:</dt>
+              <dd class="col-xs-12 pt-xs-2">
+                {{interests}}
+              </dd>
+            </dl>
+          </div>
+        </fieldset>
+        <!-- END public -->
+
       </div>
-    </fieldset>
-    <fieldset>
-      <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
-        <span>{{lbl_public}}</span>
-      </legend>
-      <div>
-        <div><label>{{lbl_url}}: </label>
-          <p><!-- BEGIN website --><a href="{{url}}" target="_blank" rel="nofollow">{{url}}</a><!-- END website --></p>
-        </div>
-        <div><label>{{lbl_about}}: </label><p>{{about}}</p></div>
-        <div><label>{{lbl_experiences}}: </label><p>{{experiences}}</p></div>
-        <div><label>{{lbl_occupations}}: </label><p>{{occupations}}</p></div>
-        <div><label>{{lbl_interests}}: </label><p>{{interests}}</p></div>
+      <div class="col-xs-4">
+        <img class="user_avatar" src="{{avatar}}" alt="{{username}}" title="{{nickname}}" />
       </div>
-    </fieldset>
-    <!-- END public -->
+    </div>
+
+    <!-- BEGIN gadget -->
+
+    <!-- END gadget -->
+
     <!-- BEGIN activity -->
     <fieldset>
       <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
