@@ -77,9 +77,10 @@ class Jaws_Gadget_Groups extends Jaws_Gadget_Class
      * @access  public
      * @param   int     $group          Group ID
      * @param   array   $attributes     Group's custom/default attributes
+     * @param   string  $join           Join type(left, inner, right, ...)
      * @return  mixed   Returns array of group's attributes or Jaws_Error on Failure
      */
-    function fetch($group, $attributes)
+    function fetch($group, $attributes, $join = 'left')
     {
         $attributes = array(
             'default' => (array)@$attributes['default'],
@@ -104,7 +105,7 @@ class Jaws_Gadget_Groups extends Jaws_Gadget_Class
 
         return Jaws_ORM::getInstance()->table('groups')
             ->select(array_merge($attributes['default'], $attributes['custom']))
-            ->join($tableName, $tableName.'.group', 'groups.id', 'left')
+            ->join($tableName, $tableName.'.group', 'groups.id', $join)
             ->where('groups.id', (int)$group)
             ->fetchRow();
     }
