@@ -76,6 +76,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $data['published'] = $data['published']? true : false;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
+            $data['file_type'] = Directory_Info::FILE_TYPE_FOLDER;
             $result = $this->gadget->model->loadAdmin('Files')->InsertFile($data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
