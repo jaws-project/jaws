@@ -33,7 +33,7 @@ class Directory_Hooks_Tags extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $file = array();
             $file['title']   = $r['title'];
-            $file['url']     = $this->gadget->urlMap('Directory', array('id' => $r['id']));
+            $file['url']     = $this->gadget->urlMap('File', array('id' => $r['id']));
             $file['outer']   = false;
             $file['image']   = 'gadgets/Directory/Resources/images/logo.png';
             $file['snippet'] = $r['description'];
