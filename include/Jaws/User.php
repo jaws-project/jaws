@@ -1392,6 +1392,16 @@ class Jaws_User
             $this->app->session->user = array('last_password_update' => $last_password_update);
         }
 
+        // Let everyone know a password has been changed
+        $res = $this->app->listener->Shout(
+            'Users',
+            'UserChanges',
+            array('action' => 'UpdatePassword', 'user' => $uid, 'password' => $new_password)
+        );
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
         return true;
     }
 
