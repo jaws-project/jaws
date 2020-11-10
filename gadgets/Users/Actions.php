@@ -141,6 +141,16 @@ $actions['UpdatePreferences'] = array(
     'internal' => true,
     'file' => 'Preferences',
 );
+$actions['Attributes'] = array(
+    'normal' => true,
+    'file' => 'Attributes',
+    'acls' => array('EditUserAttributes'),
+);
+$actions['UpdateAttributes'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Attributes',
+);
 $actions['Contact'] = array(
     'normal' => true,
     'file' => 'Contacts',

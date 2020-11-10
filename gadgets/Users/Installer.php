@@ -64,6 +64,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         'EditUserPersonal',
         'EditUserContacts',
         'EditUserPreferences',
+        'EditUserAttributes',
         'EditUserBookmarks',
         'AccessUsersProfile',
     );
@@ -347,6 +348,10 @@ class Users_Installer extends Jaws_Gadget_Installer
             // Registry keys
             $this->gadget->registry->insert('login_transfer_gadget_index', '');
             $this->gadget->registry->insert('login_transfer_gadget_admin', 'ControlPanel');
+        }
+
+        if (version_compare($old, '4.7.0', '<')) {
+            // do nothing!
         }
 
         return true;

@@ -20,6 +20,7 @@ $maps[] = array('Logout', 'users/logout');
 $maps[] = array('Account', 'users/account');
 $maps[] = array('Password', 'users/password');
 $maps[] = array('Personal', 'users/personal');
+$maps[] = array('Attributes', 'users/attributes/{gadget}');
 $maps[] = array('Preferences', 'users/preferences');
 $maps[] = array('Bookmarks', 'users/bookmarks');
 $maps[] = array('Contact', 'users/contact');

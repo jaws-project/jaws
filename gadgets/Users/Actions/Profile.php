@@ -265,7 +265,7 @@ class Users_Actions_Profile extends Users_Actions_Default
                 continue;
             }
 
-            $attrs = $objHook->Execute($uid, $uname);
+            $attrs = $objHook->Execute();
             if (Jaws_Error::IsError($attrs) || empty($attrs)) {
                 continue;
             }
