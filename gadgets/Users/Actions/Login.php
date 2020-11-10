@@ -256,12 +256,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             );
             // let everyone know a user has been logged in
             $this->gadget->event->shout('LoginUser', $loginData);
-
-            $this->gadget->session->push(
-                $this::t('LOGIN_SUCCESS'),
-                RESPONSE_NOTICE,
-                'Login.Response'
-            );
         }
 
         return Jaws_Header::Location($referrer, 'Login.Response');
