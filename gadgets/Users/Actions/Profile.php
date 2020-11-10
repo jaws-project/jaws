@@ -275,7 +275,16 @@ class Users_Actions_Profile extends Users_Actions_Default
                 continue;
             }
 
-            _log_var_dump($result);
+            $tpl->SetBlock('profile/attributes/gadget');
+            $tpl->SetVariable('gadget', $gadget);
+            $tpl->SetVariable('lbl_gadget', Jaws_Gadget::t("$gadget.TITLE"));
+            foreach ($result as $attr => $value) {
+                $tpl->SetBlock('profile/attributes/gadget/item');
+                $tpl->SetVariable('title', $attrs[$attr]['title']);
+                $tpl->SetVariable('value',  $value);
+                $tpl->ParseBlock('profile/attributes/gadget/item');
+            }
+            $tpl->ParseBlock('profile/attributes/gadget');
         }
     }
 

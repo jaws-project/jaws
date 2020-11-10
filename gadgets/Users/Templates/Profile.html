@@ -94,6 +94,19 @@
 
         <!-- BEGIN attributes -->
           <!-- BEGIN gadget -->
+          <fieldset>
+            <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_{{gadget}}_profile">
+              {{lbl_gadget}}
+            </legend>
+            <div class="collapse in" id="user_{{gadget}}_profile">
+              <!-- BEGIN item -->
+              <dl class="row mb-xs-2">
+                <dt class="col-xs-4">{{title}}:</dt>
+                <dd class="col-xs-8">{{value}}</dd>
+              </dl>
+              <!-- END item -->
+            </div>
+          </fieldset>
           <!-- END gadget -->
         <!-- END attributes -->
 
