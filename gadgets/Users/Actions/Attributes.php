@@ -69,7 +69,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
         // load js files
         $this->AjaxMe('index.js');
         // Load the template
-        $tpl = $this->gadget->template->load('Attributes.html');
+        $tpl = $this->gadget->template->load('UserAttributes.html');
         $tpl->SetBlock('attributes');
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('title', Jaws_Gadget::t("$gadget.TITLE"));
