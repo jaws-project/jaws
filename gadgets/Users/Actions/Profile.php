@@ -232,10 +232,12 @@ class Users_Actions_Profile extends Users_Actions_Default
         $this->Activity($tpl, $user['id'], $user['username']);
         $tpl->ParseBlock('profile/activity');
 
-        $tpl->SetBlock('profile/attributes');
-        $tpl->SetVariable('lbl_attributes', $this::t('USER_ATTRIBUTES'));
-        $this->UsersAttributes($tpl, $user['id'], $user['username']);
-        $tpl->ParseBlock('profile/attributes');
+        if ($this->gadget->GetPermission('AccessUserAttributes')) {
+            $tpl->SetBlock('profile/attributes');
+            $tpl->SetVariable('lbl_attributes', $this::t('USER_ATTRIBUTES'));
+            $this->UserAttributes($tpl, $user['id'], $user['username']);
+            $tpl->ParseBlock('profile/attributes');
+        }
 
         $tpl->ParseBlock('profile');
         return $tpl->Get();
@@ -249,18 +251,18 @@ class Users_Actions_Profile extends Users_Actions_Default
      * @param   int     $uname  User's name
      * @return  string  XHTML template content
      */
-    function UsersAttributes(&$tpl, $uid, $uname)
+    function UserAttributes(&$tpl, $uid, $uname)
     {
         $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
-        $hooks = glob($gDir . '*/Hooks/UsersAttributes.php');
+        $hooks = glob($gDir . '*/Hooks/UserAttributes.php');
         $gadgets = preg_replace(
-            '@'.preg_quote($gDir, '@'). '(\w*)/Hooks/UsersAttributes.php@',
+            '@'.preg_quote($gDir, '@'). '(\w*)/Hooks/UserAttributes.php@',
             '${1}',
             $hooks
         );
 
         foreach ($gadgets as $gadget) {
-            $objHook = Jaws_Gadget::getInstance($gadget)->hook->load('UsersAttributes');
+            $objHook = Jaws_Gadget::getInstance($gadget)->hook->load('UserAttributes');
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
@@ -269,6 +271,12 @@ class Users_Actions_Profile extends Users_Actions_Default
             if (Jaws_Error::IsError($attrs) || empty($attrs)) {
                 continue;
             }
+
+            // check access to this gadget custom attributes
+            if (!$objHook->gadget->GetPermission('AccessUserAttributes')) {
+                continue;
+            }
+
             // fetch user custom attributes
             $result = $objHook->gadget->users->fetch($uid, array('custom' => array_keys($attrs)), 'inner');
             if (Jaws_Error::IsError($result) || empty($result)) {

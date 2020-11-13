@@ -64,7 +64,8 @@ class Users_Installer extends Jaws_Gadget_Installer
         'EditUserPersonal',
         'EditUserContacts',
         'EditUserPreferences',
-        'EditUserAttributes',
+        'AccessUserAttributes',
+        'ModifyUserAttributes',
         'EditUserBookmarks',
         'AccessUsersProfile',
     );
@@ -352,6 +353,12 @@ class Users_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '4.7.0', '<')) {
             // do nothing!
+        }
+
+        if (version_compare($old, '4.8.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('AccessUserAttributes');
+            $this->gadget->acl->insert('ModifyUserAttributes');
         }
 
         return true;
