@@ -397,7 +397,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
         }
 
         return Jaws_Header::Location(
-            $this->gadget->urlMap('Attributes', array('gadget' => $objHook->gadget->name)),
+            $this->gadget->urlMap('UserAttributes', array('gadget' => $objHook->gadget->name)),
             'UserAttributes'
         );
     }
