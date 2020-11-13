@@ -141,12 +141,12 @@ $actions['UpdatePreferences'] = array(
     'internal' => true,
     'file' => 'Preferences',
 );
-$actions['Attributes'] = array(
+$actions['UserAttributes'] = array(
     'normal' => true,
     'file' => 'Attributes',
     'acls' => array('ModifyUserAttributes'),
 );
-$actions['UpdateAttributes'] = array(
+$actions['UpdateUserAttributes'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'Attributes',

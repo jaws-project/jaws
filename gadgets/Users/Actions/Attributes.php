@@ -13,7 +13,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
      * @access  public
      * @return  string  XHTML template of a form
      */
-    function Attributes()
+    function UserAttributes()
     {
         if (!$this->app->session->user->logged) {
             return Jaws_Header::Location(
@@ -287,7 +287,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
         }
 
         $tpl->SetVariable('update', Jaws::t('UPDATE'));
-        if ($response = $this->gadget->session->pop('Attributes')) {
+        if ($response = $this->gadget->session->pop('UserAttributes')) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -302,7 +302,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
      * @access  public
      * @return  void
      */
-    function UpdateAttributes()
+    function UpdateUserAttributes()
     {
         if (!$this->app->session->user->logged) {
             return Jaws_Header::Location(
@@ -386,19 +386,19 @@ class Users_Actions_Attributes extends Users_Actions_Default
             $this->gadget->session->push(
                 $this::t('ATTRIBUTES_UPDATED'),
                 RESPONSE_NOTICE,
-                'Attributes'
+                'UserAttributes'
             );
         } catch (Exception $error) {
             $this->gadget->session->push(
                 $error->getMessage(),
                 RESPONSE_ERROR,
-                'Attributes'
+                'UserAttributes'
             );
         }
 
         return Jaws_Header::Location(
             $this->gadget->urlMap('Attributes', array('gadget' => $objHook->gadget->name)),
-            'Attributes'
+            'UserAttributes'
         );
     }
 
