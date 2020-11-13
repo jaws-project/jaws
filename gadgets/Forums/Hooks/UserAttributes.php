@@ -8,7 +8,7 @@
  * @copyright   2020 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Hooks_UsersAttributes extends Jaws_Gadget_Hook
+class Forums_Hooks_UserAttributes extends Jaws_Gadget_Hook
 {
     /**
      * Gets user's attributes extension

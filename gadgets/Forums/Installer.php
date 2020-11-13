@@ -45,6 +45,8 @@ class Forums_Installer extends Jaws_Gadget_Installer
         'AddPostAttachment',
         'EditPost',
         'DeletePost',
+        'AccessUserAttributes',
+        'ModifyUserAttributes',
     );
 
     /**
@@ -219,6 +221,11 @@ class Forums_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
         }
+
+        if (version_compare($old, '1.8.0', '<')) {
+            // do nothing            // ACL keys
+            $this->gadget->acl->insert('AccessUserAttributes');
+            $this->gadget->acl->insert('ModifyUserAttributes');        }
 
         return true;
     }
