@@ -931,6 +931,12 @@ class Jaws_ORM
 
             // Fetch the value from the first column of each row of the result set
             case 'column':
+                if (!empty($this->_limit)) {
+                    $result = $this->jawsdb->dbc->setLimit($this->_limit, $this->_offset);
+                    if (MDB2::isError($result)) {
+                        break;
+                    }
+                }
                 $result = $this->jawsdb->dbc->queryCol($sql, $this->_types, (int)$argument);
                 break;
 
