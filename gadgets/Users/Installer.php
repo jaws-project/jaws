@@ -345,7 +345,7 @@ class Users_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        if (version_compare($old, '4.4.5', '<')) {
+        if (version_compare($old, '4.5', '<')) {
             // Registry keys
             $this->gadget->registry->insert('login_transfer_gadget_index', '');
             $this->gadget->registry->insert('login_transfer_gadget_admin', 'ControlPanel');
