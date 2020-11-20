@@ -268,20 +268,12 @@ class Jaws_ORM
     private $reserved_words = array('as', 'desc', 'asc');
 
     /**
-     * Determine if there is an open transaction
+     * save nested transactions and auto rollback state for each levels
      *
-     * @var     bool
+     * @var     array
      * @access  private
      */
-    static private $in_transaction = false;
-
-    /**
-     * Auto rollback changes on error
-     *
-     * @var     bool
-     * @access  private
-     */
-    static private $auto_rollback_on_error = true;
+    static private $transactions = array();
 
     /**
      * Auto log on error
@@ -962,7 +954,7 @@ class Jaws_ORM
 
         if (MDB2::isError($result)) {
             // auto rollback
-            if (self::$in_transaction && self::$auto_rollback_on_error) {
+            if (!empty(self::$transactions) && end(self::$transactions)) {
                 $this->rollback();
             }
 
@@ -1147,7 +1139,6 @@ class Jaws_ORM
                 }
 
                 if (is_array($vsql)) {
-                    $outer_transaction = self::$in_transaction;
                     $this->beginTransaction();
                     foreach ($vsql as $psql) {
                         $result = $this->jawsdb->query($sql. $psql);
@@ -1155,9 +1146,7 @@ class Jaws_ORM
                             break 2;
                         }
                     }
-                    if (!$outer_transaction) {
-                        $this->commit();
-                    }
+                    $this->commit();
                 } else {
                     $sql.= $vsql;
                     $result = $this->jawsdb->query($sql);
@@ -1170,7 +1159,7 @@ class Jaws_ORM
 
         if (MDB2::isError($result)) {
             // auto rollback
-            if (self::$in_transaction && self::$auto_rollback_on_error) {
+            if (!empty(self::$transactions) && end(self::$transactions)) {
                 $this->rollback();
             }
 
@@ -1198,11 +1187,8 @@ class Jaws_ORM
      */
     function beginTransaction($auto_rollback = true)
     {
-        if (!self::$in_transaction) {
-            self::$in_transaction = true;
-            self::$auto_rollback_on_error = $auto_rollback;
-            $this->jawsdb->beginTransaction();
-        }
+        array_push(self::$transactions, $auto_rollback);
+        $this->jawsdb->beginTransaction();
 
         return $this;
     }
@@ -1215,8 +1201,8 @@ class Jaws_ORM
      */
     function rollback()
     {
-        if (self::$in_transaction) {
-            self::$in_transaction = false;
+        if (!empty(self::$transactions)) {
+            array_pop(self::$transactions);
             $this->jawsdb->rollback();
         }
 
@@ -1231,9 +1217,8 @@ class Jaws_ORM
      */
     function commit()
     {
-        if (self::$in_transaction) {
-            self::$in_transaction = false;
-            self::$auto_rollback_on_error = true;
+        if (!empty(self::$transactions)) {
+            array_pop(self::$transactions);
             $this->jawsdb->commit();
         }
 
