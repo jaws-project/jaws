@@ -475,8 +475,10 @@ class Jaws_User
      * @param   bool    $password   Returns password
      * @return  mixed   Returns an array with the info of the user and false on error
      */
-    function GetGroupUsers($group, $account = true, $personal = false, $contacts = false, $password = false)
-    {
+    function GetGroupUsers(
+        $group, $account = true, $personal = false, $contacts = false, $password = false,
+        $limit = 0, $offset = null
+    ) {
         $columns = array('users.id:integer', 'domain:integer', 'avatar');
         // account information
         if ($account) {
@@ -501,7 +503,7 @@ class Jaws_User
         $usersTable->select($columns);
         $usersTable->join('users_groups', 'users_groups.user', 'users.id');
         $usersTable->where('group', (int)$group);
-        return $usersTable->fetchAll();
+        return $usersTable->limit($limit, $offset)->fetchAll();
     }
 
 
