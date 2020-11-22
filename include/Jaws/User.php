@@ -506,6 +506,20 @@ class Jaws_User
         return $usersTable->limit($limit, $offset)->fetchAll();
     }
 
+    /**
+     * Get count of group users
+     *
+     * @access  public
+     * @param   int     $group  Group ID
+     * @return  mixed   Returns count of users or Jaws_Error on error
+     */
+    function GetGroupUsersCount($group) {
+        return Jaws_ORM::getInstance()->table('users')
+            ->select('count(users.id)')
+            ->join('users_groups', 'users_groups.user', 'users.id')
+            ->where('users_groups.group', (int)$group)
+            ->fetchOne();
+    }
 
     /**
      * Get the info of an user(s) by the email address
