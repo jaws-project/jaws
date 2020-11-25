@@ -138,11 +138,12 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                     }
 
                     if (!$this->app->session->getPermission(
-                        $permission['gadget'],
-                        $permission['key'],
-                        isset($permission['subkey'])? $permission['subkey'] : '',
-                        isset($permission['together'])? (bool)$permission['together'] : true,
-                    )) {
+                            $permission['gadget'],
+                            $permission['key'],
+                            isset($permission['subkey'])? $permission['subkey'] : '',
+                            isset($permission['together'])? (bool)$permission['together'] : true
+                        )
+                    ) {
                         continue;
                     }
                 }
