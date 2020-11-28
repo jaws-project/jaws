@@ -229,15 +229,15 @@ function initContactForm(contact)
     $('#country_home').val(contact.country_home);
     $('#country_work').val(contact.country_work);
     $('#country_other').val(contact.country_other);
-    changeCountry(contact.country_home,  'province_home');
-    changeCountry(contact.country_work,  'province_work');
-    changeCountry(contact.country_other, 'province_other');
+    changeCountry(contact.country_home,  $('#province_home'));
+    changeCountry(contact.country_work,  $('#province_work'));
+    changeCountry(contact.country_other, $('#province_other'));
     $('#province_home').val(contact.province_home);
     $('#province_work').val(contact.province_work);
     $('#province_other').val(contact.province_other);
-    changeProvince(contact.province_home,  'city_home',  'country_home');
-    changeProvince(contact.province_work,  'city_work',  'country_work');
-    changeProvince(contact.province_other, 'city_other', 'country_other');
+    changeProvince(contact.province_home,  $('#city_home'),  $('#country_home'));
+    changeProvince(contact.province_work,  $('#city_work'),  $('#country_work'));
+    changeProvince(contact.province_other, $('#city_other'), $('#country_other'));
     $('fieldset#contact .form-control').each(function () {
         $(this).val(contact[$(this).attr('name')]);
     });
@@ -524,27 +524,27 @@ function saveGroup()
 /**
  * change country combo
  */
-function changeCountry(country, provinceElement)
+function changeCountry(country, elProvince)
 {
-    $('#' + provinceElement ).html('');
+    elProvince.html('');
     var provinces = SettingsInUsersAjax.callSync('GetProvinces', {'country': country});
     $.each(provinces, function (index, province) {
-        $("#" + provinceElement).append('<option value="' + province.province + '">' + province.title + '</option>');
+        elProvince.append('<option value="' + province.province + '">' + province.title + '</option>');
     });
 }
 
 /**
  * change province combo
  */
-function changeProvince(province, cityElement, countryElement)
+function changeProvince(province, elCity, elCountry)
 {
-    $('#' + cityElement ).html('');
+    elCity.html('');
     var cities = SettingsInUsersAjax.callSync(
         'GetCities',
-        {'province': province, 'country': $("#" + countryElement).val()}
+        {'province': province, 'country': elCountry.val()}
     );
     $.each(cities, function (index, city) {
-        $("#" + cityElement).append('<option value="' + city.city + '">' + city.title + '</option>');
+        elCity.append('<option value="' + city.city + '">' + city.title + '</option>');
     });
 }
 
@@ -1476,6 +1476,20 @@ $(document).ready(function() {
             currentAction = "FriendsGroups";
             initiateFriendsDG();
             break;
+
+        case 'UserAttributes':
+            $('select[data-field-type="country"]').change($.proxy(function (e, data) {
+                changeCountry($(e.target).val(), $('select[data-field-type="province"]').first());
+            }, this));
+
+            $('select[data-field-type="province"]').change($.proxy(function (e, data) {
+                changeProvince(
+                    $(e.target).val(),
+                    $('select[data-field-type="city"]').first(),
+                    $('select[data-field-type="country"]').first());
+            }, this));
+            break;
+
     }
 });
 

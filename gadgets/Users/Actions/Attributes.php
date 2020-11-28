@@ -191,25 +191,80 @@ class Users_Actions_Attributes extends Users_Actions_Default
                     $tpl->ParseBlock('attributes/attribute/date');
                     break;
 
+                case 'country':
+                    $tpl->SetBlock('attributes/attribute/country');
+                    $tpl->SetVariable('attribute_name', $attrName);
+                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
+                    try {
+                        $this->selectedCountry = 0;
+                        $countries = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCountries();
+                        if (Jaws_Error::IsError($countries) || empty($countries)) {
+                            throw new Exception('');
+                        }
+
+                        // default value
+                        $defaultValue = isset($attrOptions['value'])? $attrOptions['value'] : 840;
+                        if (!empty($attrValues) && !empty($attrValues[$attrName])) {
+                            $defaultValue = $attrValues[$attrName];
+                        }
+                        $this->selectedCountry = $defaultValue;
+
+                        foreach ($countries as $country) {
+                            $tpl->SetBlock('attributes/attribute/country/option');
+                            $tpl->SetVariable('value', $country['country']);
+                            $tpl->SetVariable('text', $country['title']);
+                            if ($defaultValue == $country['country']) {
+                                $tpl->SetBlock('attributes/attribute/country/option/selected');
+                                $tpl->ParseBlock('attributes/attribute/country/option/selected');
+                            }
+                            $tpl->ParseBlock('attributes/attribute/country/option');
+                        }
+                    } catch (Exception $error) {
+                        // don nothing
+                    }
+
+                    $tpl->ParseBlock('attributes/attribute/country');
+                    break;
+
                 case 'province':
-                    $this->defaultCountry = 364;
                     $tpl->SetBlock('attributes/attribute/province');
                     $tpl->SetVariable('attribute_name', $attrName);
                     $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    $provinces = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetProvinces(
-                        $this->defaultCountry
-                    );
-                    if (Jaws_Error::IsError($provinces)) {
-                        return $provinces;
-                    }
-                    if (!empty($provinces)) {
-                        $this->lastSelectedProvince = $provinces[0]['province'];
+
+                    try {
+                        $this->selectedProvince = 0;
+                        if (empty($this->selectedCountry)) {
+                            throw new Exception('');
+                        }
+
+                        $provinces = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetProvinces(
+                            $this->selectedCountry
+                        );
+                        if (Jaws_Error::IsError($provinces) || empty($provinces)) {
+                            throw new Exception('');
+                        }
+
+                        // default value
+                        $defaultValue = isset($attrOptions['value']) ?
+                            $attrOptions['value'] :
+                            $provinces[0]['province'];
+                        if (!empty($attrValues) && !empty($attrValues[$attrName])) {
+                            $defaultValue = $attrValues[$attrName];
+                        }
+                        $this->selectedProvince = $defaultValue;
+
                         foreach ($provinces as $province) {
                             $tpl->SetBlock('attributes/attribute/province/option');
                             $tpl->SetVariable('value', $province['province']);
                             $tpl->SetVariable('text', $province['title']);
+                            if ($defaultValue == $province['province']) {
+                                $tpl->SetBlock('attributes/attribute/province/option/selected');
+                                $tpl->ParseBlock('attributes/attribute/province/option/selected');
+                            }
                             $tpl->ParseBlock('attributes/attribute/province/option');
                         }
+                    } catch (Exception $error) {
+                        // don nothing
                     }
 
                     $tpl->ParseBlock('attributes/attribute/province');
@@ -219,22 +274,39 @@ class Users_Actions_Attributes extends Users_Actions_Default
                     $tpl->SetBlock('attributes/attribute/city');
                     $tpl->SetVariable('attribute_name', $attrName);
                     $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    if ($this->lastSelectedProvince > 0) {
+                    try {
+                        if (empty($this->selectedCountry) || empty($this->selectedProvince)) {
+                            throw new Exception('');
+                        }
+
                         $cities = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCities(
-                            [$this->lastSelectedProvince],
-                            $this->defaultCountry
+                            $this->selectedProvince,
+                            $this->selectedCountry
                         );
-                        if (Jaws_Error::IsError($cities)) {
-                            return $cities;
+                        if (Jaws_Error::IsError($cities) || empty($cities)) {
+                            throw new Exception('');
                         }
-                        if (count($cities) > 0) {
-                            foreach ($cities as $city) {
-                                $tpl->SetBlock('attributes/attribute/city/option');
-                                $tpl->SetVariable('value', $city['province']);
-                                $tpl->SetVariable('text', $city['title']);
-                                $tpl->ParseBlock('attributes/attribute/city/option');
+
+                        // default value
+                        $defaultValue = isset($attrOptions['value']) ?
+                            $attrOptions['value'] :
+                            $cities[0]['city'];
+                        if (!empty($attrValues) && !empty($attrValues[$attrName])) {
+                            $defaultValue = $attrValues[$attrName];
+                        }
+
+                        foreach ($cities as $city) {
+                            $tpl->SetBlock('attributes/attribute/city/option');
+                            $tpl->SetVariable('value', $city['city']);
+                            $tpl->SetVariable('text', $city['title']);
+                            if ($defaultValue == $city['city']) {
+                                $tpl->SetBlock('attributes/attribute/city/option/selected');
+                                $tpl->ParseBlock('attributes/attribute/city/option/selected');
                             }
+                            $tpl->ParseBlock('attributes/attribute/city/option');
                         }
+                    } catch (Exception $error) {
+                        // don nothing
                     }
 
                     $tpl->ParseBlock('attributes/attribute/city');
