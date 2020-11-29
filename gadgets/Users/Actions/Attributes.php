@@ -206,10 +206,8 @@ class Users_Actions_Attributes extends Users_Actions_Default
         // check access to edit this gadget custom attributes
         $objHook->gadget->CheckPermission('ModifyGroupAttributes');
 
-        $group = (int)$this->gadget->request->fetch('group', 'get');
-        if (empty($group)) {
-            $group = (int)$objHook->Group();
-        }
+        $fetchedGroup = (int)$this->gadget->request->fetch('group', 'get');
+        $group = (int)$objHook->AttributesGroup($fetchedGroup);
         if (empty($group)) {
             return Jaws_HTTPError::Get(404);
         }
@@ -281,15 +279,10 @@ class Users_Actions_Attributes extends Users_Actions_Default
         $objHook->gadget->CheckPermission('ModifyGroupAttributes');
 
         $fetchedGroup = (int)$this->gadget->request->fetch('group', 'get');
-        if (empty($fetchedGroup)) {
-            $group = (int)$objHook->Group();
-            if (empty($group)) {
-                return Jaws_HTTPError::Get(404);
-            }
-        } else {
-            $group = $fetchedGroup;
+        $group = (int)$objHook->AttributesGroup($fetchedGroup);
+        if (empty($group)) {
+            return Jaws_HTTPError::Get(404);
         }
-        
 
         // remove invalid attributes
         $inputAttrs = array_intersect_key($postedData, $attrs);
@@ -322,7 +315,8 @@ class Users_Actions_Attributes extends Users_Actions_Default
 
         $actionParams = array('gadget' => $objHook->gadget->name);
         if (!empty($fetchedGroup)) {
-            $actionParams['group'] = $fetchedGroup;
+            // check "fetchedGroup" but must use "group" variable
+            $actionParams['group'] = $group;
         }
 
         return Jaws_Header::Location(
