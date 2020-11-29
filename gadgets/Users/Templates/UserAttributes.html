@@ -19,7 +19,9 @@
         <div class="form-group col-md-6">
           <label>{{attribute_title}}:</label>
           <!-- BEGIN select -->
-          <select class="form-control {{class}}" name="{{attribute_name}}" {{required}} {{readonly}}>
+          <select class="form-control {{class}}" name="{{attribute_name}}"
+            {{required}} {{readonly}} {{disabled}}
+          >
             <!-- BEGIN option -->
             <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
             <!-- END option -->
@@ -27,7 +29,9 @@
           <!-- END select -->
 
           <!-- BEGIN country -->
-          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="country">
+          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="country"
+            {{required}} {{readonly}} {{disabled}}
+          >
             <!-- BEGIN option -->
             <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
             <!-- END option -->
@@ -35,7 +39,9 @@
           <!-- END country -->
 
           <!-- BEGIN province -->
-          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="province">
+          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="province"
+            {{required}} {{readonly}} {{disabled}}
+          >
             <!-- BEGIN option -->
             <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
             <!-- END option -->
@@ -43,7 +49,9 @@
           <!-- END province -->
 
           <!-- BEGIN city -->
-          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="city">
+          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="city"
+            {{required}} {{readonly}} {{disabled}}
+          >
             <!-- BEGIN option -->
             <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
             <!-- END option -->
@@ -53,7 +61,7 @@
           <!-- BEGIN number -->
           <input class="form-control {{class}}" type="number" name="{{attribute_name}}" value="{{value}}"
             placeholder="{{placeholder}}" min="{{min}}" max="{{max}}"
-            {{required}} {{readonly}}
+            {{required}} {{readonly}} {{disabled}}
             <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
           />
           <!-- END number -->
@@ -63,18 +71,18 @@
           <!-- END date -->
 
           <!-- BEGIN checkbox -->
-          <input class="form-control {{class}}"
-                 type="checkbox"
-                 name="{{attribute_name}}"
-                 value="1"
-          <!-- BEGIN checked --> checked<!-- END checked -->
+          <input class="form-control {{class}}" type="checkbox"
+            name="{{attribute_name}}"
+            value="1"
+            {{readonly}} {{disabled}}
+            <!-- BEGIN checked --> checked<!-- END checked -->
           />
           <!-- END checkbox -->
 
           <!-- BEGIN text -->
           <input class="form-control {{class}}" type="text" name="{{attribute_name}}" value="{{value}}"
             placeholder="{{placeholder}}" minlength="{{minlength}}" maxlength="{{maxlength}}"
-            {{required}} {{readonly}}
+            {{required}} {{readonly}} {{disabled}}
             <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
           />
           <!-- END text -->

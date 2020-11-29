@@ -75,288 +75,8 @@ class Users_Actions_Attributes extends Users_Actions_Default
         $tpl->SetVariable('title', Jaws_Gadget::t("$gadget.TITLE"));
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
-
-        foreach ($attrs as $attrName => $attrOptions) {
-            $tpl->SetBlock('attributes/attribute');
-
-            $tpl->SetVariable('attribute_title', $attrOptions['title']);
-            switch ($attrOptions['type']) {
-                case 'select':
-                    $tpl->SetBlock('attributes/attribute/select');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    $tpl->SetVariable('required', '');
-                    if (isset($attrOptions['required']) && $attrOptions['required']) {
-                        $tpl->SetVariable('required', 'required');
-                    }
-
-                    foreach ($attrOptions['values'] as $value => $text) {
-                        $tpl->SetBlock('attributes/attribute/select/option');
-                        $tpl->SetVariable('value', $value);
-                        $tpl->SetVariable('text', $text);
-                        // select option
-                        if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
-                            if ($attrValues[$attrName] == $value) {
-                                $tpl->SetBlock('attributes/attribute/select/option/selected');
-                                $tpl->ParseBlock('attributes/attribute/select/option/selected');
-                            }
-                        } elseif (isset($attrOptions['value'])) {
-                            if ($attrOptions['value'] == $value) {
-                                $tpl->SetBlock('attributes/attribute/select/option/selected');
-                                $tpl->ParseBlock('attributes/attribute/select/option/selected');
-                            }
-                        }
-                        $tpl->ParseBlock('attributes/attribute/select/option');
-                    }
-
-                    $tpl->ParseBlock('attributes/attribute/select');
-                    break;
-
-                case 'user':
-                    $tpl->SetBlock('attributes/attribute/user');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    $tpl->ParseBlock('attributes/attribute/user');
-                    break;
-
-                case 'checkbox':
-                    $tpl->SetBlock('attributes/attribute/checkbox');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
-                        if (!empty($attrValues[$attrName])) {
-                            $tpl->SetBlock('attributes/attribute/checkbox/checked');
-                            $tpl->ParseBlock('attributes/attribute/checkbox/checked');
-                        }
-                    } elseif (isset($attrOptions['value'])) {
-                        if ($attrOptions['value']) {
-                            $tpl->SetBlock('attributes/attribute/checkbox/checked');
-                            $tpl->ParseBlock('attributes/attribute/checkbox/checked');
-                        }
-                    }
-                    $tpl->ParseBlock('attributes/attribute/checkbox');
-                    break;
-
-                case 'number':
-                    $tpl->SetBlock('attributes/attribute/number');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    $tpl->SetVariable('placeholder', '');
-                    $tpl->SetVariable('required', '');
-                    $tpl->SetVariable('min', '');
-                    $tpl->SetVariable('max', '');
-                    // set value
-                    if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
-                        $tpl->SetVariable('value', $attrValues[$attrName]);
-                    } else {
-                        $tpl->SetVariable('value', isset($attrOptions['value'])? $attrOptions['value'] : '');
-                    }
-
-                    if (isset($attrOptions['required']) && $attrOptions['required']) {
-                        $tpl->SetVariable('required', 'required');
-                    }
-                    if (isset($attrOptions['min'])) {
-                        $tpl->SetVariable('min', $attrOptions['min']);
-                    }
-                    if (isset($attrOptions['max'])) {
-                        $tpl->SetVariable('max', $attrOptions['max']);
-                    }
-
-                    if (isset($attrOptions['placeholder'])) {
-                        $tpl->SetVariable('placeholder', $attrOptions['placeholder']);
-                    }
-
-                    $tpl->ParseBlock('attributes/attribute/number');
-                    break;
-
-                case 'date':
-                    $tpl->SetBlock('attributes/attribute/date');
-                    $required = false;
-                    if (isset($attrOptions['required']) && $attrOptions['required']) {
-                        $required = true;
-                    }
-
-                    $this->gadget->action->load('DatePicker')->calendar(
-                        $tpl,
-                        array(
-                            'name' => $attrName,
-                            'value' => isset($attrOptions['value']) ? $attrOptions['value'] : '',
-                            'required' => $required
-                        )
-                    );
-
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('value', isset($attrOptions['value'])? $attrOptions['value'] : '');
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    $tpl->ParseBlock('attributes/attribute/date');
-                    break;
-
-                case 'country':
-                    $tpl->SetBlock('attributes/attribute/country');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    try {
-                        $this->selectedCountry = 0;
-                        $countries = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCountries();
-                        if (Jaws_Error::IsError($countries) || empty($countries)) {
-                            throw new Exception('');
-                        }
-
-                        // default value
-                        $defaultValue = isset($attrOptions['value'])? $attrOptions['value'] : 840;
-                        if (!empty($attrValues) && !empty($attrValues[$attrName])) {
-                            $defaultValue = $attrValues[$attrName];
-                        }
-                        $this->selectedCountry = $defaultValue;
-
-                        foreach ($countries as $country) {
-                            $tpl->SetBlock('attributes/attribute/country/option');
-                            $tpl->SetVariable('value', $country['country']);
-                            $tpl->SetVariable('text', $country['title']);
-                            if ($defaultValue == $country['country']) {
-                                $tpl->SetBlock('attributes/attribute/country/option/selected');
-                                $tpl->ParseBlock('attributes/attribute/country/option/selected');
-                            }
-                            $tpl->ParseBlock('attributes/attribute/country/option');
-                        }
-                    } catch (Exception $error) {
-                        // don nothing
-                    }
-
-                    $tpl->ParseBlock('attributes/attribute/country');
-                    break;
-
-                case 'province':
-                    $tpl->SetBlock('attributes/attribute/province');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-
-                    try {
-                        $this->selectedProvince = 0;
-                        if (empty($this->selectedCountry)) {
-                            throw new Exception('');
-                        }
-
-                        $provinces = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetProvinces(
-                            $this->selectedCountry
-                        );
-                        if (Jaws_Error::IsError($provinces) || empty($provinces)) {
-                            throw new Exception('');
-                        }
-
-                        // default value
-                        $defaultValue = isset($attrOptions['value']) ?
-                            $attrOptions['value'] :
-                            $provinces[0]['province'];
-                        if (!empty($attrValues) && !empty($attrValues[$attrName])) {
-                            $defaultValue = $attrValues[$attrName];
-                        }
-                        $this->selectedProvince = $defaultValue;
-
-                        foreach ($provinces as $province) {
-                            $tpl->SetBlock('attributes/attribute/province/option');
-                            $tpl->SetVariable('value', $province['province']);
-                            $tpl->SetVariable('text', $province['title']);
-                            if ($defaultValue == $province['province']) {
-                                $tpl->SetBlock('attributes/attribute/province/option/selected');
-                                $tpl->ParseBlock('attributes/attribute/province/option/selected');
-                            }
-                            $tpl->ParseBlock('attributes/attribute/province/option');
-                        }
-                    } catch (Exception $error) {
-                        // don nothing
-                    }
-
-                    $tpl->ParseBlock('attributes/attribute/province');
-                    break;
-
-                case 'city':
-                    $tpl->SetBlock('attributes/attribute/city');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    try {
-                        if (empty($this->selectedCountry) || empty($this->selectedProvince)) {
-                            throw new Exception('');
-                        }
-
-                        $cities = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCities(
-                            $this->selectedProvince,
-                            $this->selectedCountry
-                        );
-                        if (Jaws_Error::IsError($cities) || empty($cities)) {
-                            throw new Exception('');
-                        }
-
-                        // default value
-                        $defaultValue = isset($attrOptions['value']) ?
-                            $attrOptions['value'] :
-                            $cities[0]['city'];
-                        if (!empty($attrValues) && !empty($attrValues[$attrName])) {
-                            $defaultValue = $attrValues[$attrName];
-                        }
-
-                        foreach ($cities as $city) {
-                            $tpl->SetBlock('attributes/attribute/city/option');
-                            $tpl->SetVariable('value', $city['city']);
-                            $tpl->SetVariable('text', $city['title']);
-                            if ($defaultValue == $city['city']) {
-                                $tpl->SetBlock('attributes/attribute/city/option/selected');
-                                $tpl->ParseBlock('attributes/attribute/city/option/selected');
-                            }
-                            $tpl->ParseBlock('attributes/attribute/city/option');
-                        }
-                    } catch (Exception $error) {
-                        // don nothing
-                    }
-
-                    $tpl->ParseBlock('attributes/attribute/city');
-                    break;
-
-                default:
-                    $tpl->SetBlock('attributes/attribute/text');
-                    $tpl->SetVariable('attribute_name', $attrName);
-                    $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
-                    $tpl->SetVariable('placeholder', '');
-                    $tpl->SetVariable('required', '');
-                    $tpl->SetVariable('readonly', '');
-                    $tpl->SetVariable('minlength', '');
-                    $tpl->SetVariable('maxlength', '');
-                    // set value
-                    if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
-                        $tpl->SetVariable('value', $attrValues[$attrName]);
-                    } else {
-                        $tpl->SetVariable('value', isset($attrOptions['value'])? $attrOptions['value'] : '');
-                    }
-
-                    if (isset($attrOptions['pattern'])) {
-                        $tpl->SetBlock('attributes/attribute/text/pattern');
-                        $tpl->SetVariable('pattern', $attrOptions['pattern']);
-                        $tpl->ParseBlock('attributes/attribute/text/pattern');
-                    }
-
-                    if (isset($attrOptions['required']) && $attrOptions['required']) {
-                        $tpl->SetVariable('required', 'required');
-                    }
-                    if (isset($attrOptions['readonly']) && $attrOptions['readonly']) {
-                        $tpl->SetVariable('readonly', 'readonly');
-                    }
-                    if (isset($attrOptions['minlength'])) {
-                        $tpl->SetVariable('minlength', $attrOptions['minlength']);
-                    }
-                    if (isset($attrOptions['maxlength'])) {
-                        $tpl->SetVariable('maxlength', $attrOptions['maxlength']);
-                    }
-
-                    if (isset($attrOptions['placeholder'])) {
-                        $tpl->SetVariable('placeholder', $attrOptions['placeholder']);
-                    }
-
-                    $tpl->ParseBlock('attributes/attribute/text');
-                    break;
-            }
-
-            $tpl->ParseBlock('attributes/attribute');
-        }
+        // load attributes interface
+        $this->interfaceAttributes($tpl, $attrs, $attrValues);
 
         $tpl->SetVariable('update', Jaws::t('UPDATE'));
         if ($response = $this->gadget->session->pop('UserAttributes')) {
@@ -472,6 +192,231 @@ class Users_Actions_Attributes extends Users_Actions_Default
             $this->gadget->urlMap('UserAttributes', array('gadget' => $objHook->gadget->name)),
             'UserAttributes'
         );
+    }
+
+    /**
+     * Generate attributes edit interface
+     *
+     * @access  public
+     * @param   object  $tpl    Jaws Template object
+     * @param   array   $attrs  Attributes options
+     * @param   array   $values Attributes values
+     * @return  string  XHTML template of a form
+     */
+    function interfaceAttributes(&$tpl, $attrs, $attrValues)
+    {
+        foreach ($attrs as $attrName => $attrOptions) {
+            $tpl->SetBlock('attributes/attribute');
+
+            $tpl->SetVariable('attribute_title', $attrOptions['title']);
+
+            // default value
+            $defaultValue = isset($attrOptions['value'])? $attrOptions['value'] : null;
+            if (!empty($attrValues) && !empty($attrValues[$attrName])) {
+                $defaultValue = $attrValues[$attrName];
+            }
+
+            $tpl->SetBlock('attributes/attribute/'. $attrOptions['type']);
+            $tpl->SetVariable('attribute_name', $attrName);
+            $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
+            // required
+            $tpl->SetVariable('required', '');
+            if (isset($attrOptions['required']) && $attrOptions['required']) {
+                $tpl->SetVariable('required', 'required');
+            }
+            // disabled
+            $tpl->SetVariable('disabled', '');
+            if (isset($attrOptions['disabled']) && $attrOptions['disabled']) {
+                $tpl->SetVariable('disabled', 'disabled');
+            }
+            // readonly
+            $tpl->SetVariable('readonly', '');
+            if (isset($attrOptions['readonly']) && $attrOptions['readonly']) {
+                $tpl->SetVariable('readonly', 'readonly');
+            }
+            // placeholder
+            $tpl->SetVariable('placeholder', '');
+            if (isset($attrOptions['placeholder'])) {
+                $tpl->SetVariable('placeholder', $attrOptions['placeholder']);
+            }
+
+            switch ($attrOptions['type']) {
+                case 'select':
+                    foreach ($attrOptions['values'] as $value => $text) {
+                        $tpl->SetBlock('attributes/attribute/select/option');
+                        $tpl->SetVariable('value', $value);
+                        $tpl->SetVariable('text', $text);
+                        if ($defaultValue == $value) {
+                            $tpl->SetBlock('attributes/attribute/select/option/selected');
+                            $tpl->ParseBlock('attributes/attribute/select/option/selected');
+                        }
+                        $tpl->ParseBlock('attributes/attribute/select/option');
+                    }
+
+                    break;
+
+                case 'user':
+                    break;
+
+                case 'checkbox':
+                    if (!empty($defaultValue)) {
+                        $tpl->SetBlock('attributes/attribute/checkbox/checked');
+                        $tpl->ParseBlock('attributes/attribute/checkbox/checked');
+                    }
+                    break;
+
+                case 'number':
+                    $tpl->SetVariable('min', '');
+                    $tpl->SetVariable('max', '');
+                    // set value
+                    if (!is_null($defaultValue)) {
+                        $tpl->SetVariable('value', $defaultValue);
+                    }
+
+                    if (isset($attrOptions['min'])) {
+                        $tpl->SetVariable('min', $attrOptions['min']);
+                    }
+                    if (isset($attrOptions['max'])) {
+                        $tpl->SetVariable('max', $attrOptions['max']);
+                    }
+
+                    break;
+
+                case 'date':
+                    $this->gadget->action->load('DatePicker')->calendar(
+                        $tpl,
+                        array(
+                            'name' => $attrName,
+                            'value' => isset($defaultValue) ? $defaultValue : '',
+                            'required' => isset($attrOptions['required'])? $attrOptions['required'] : false,
+                            'readonly' => isset($attrOptions['readonly'])? $attrOptions['readonly'] : false,
+                            'disabled' => isset($attrOptions['disabled'])? $attrOptions['disabled'] : false,
+                        )
+                    );
+                    break;
+
+                case 'country':
+                    try {
+                        $this->selectedCountry = $defaultValue;
+                        $countries = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCountries();
+                        if (Jaws_Error::IsError($countries) || empty($countries)) {
+                            throw new Exception('');
+                        }
+
+                        foreach ($countries as $country) {
+                            $tpl->SetBlock('attributes/attribute/country/option');
+                            $tpl->SetVariable('value', $country['country']);
+                            $tpl->SetVariable('text', $country['title']);
+                            if ($defaultValue == $country['country']) {
+                                $tpl->SetBlock('attributes/attribute/country/option/selected');
+                                $tpl->ParseBlock('attributes/attribute/country/option/selected');
+                            }
+                            $tpl->ParseBlock('attributes/attribute/country/option');
+                        }
+                    } catch (Exception $error) {
+                        // don nothing
+                    }
+
+                    break;
+
+                case 'province':
+                    try {
+                        $this->selectedProvince = $defaultValue;
+                        if (empty($this->selectedCountry)) {
+                            throw new Exception('');
+                        }
+
+                        $provinces = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetProvinces(
+                            $this->selectedCountry
+                        );
+                        if (Jaws_Error::IsError($provinces) || empty($provinces)) {
+                            throw new Exception('');
+                        }
+
+                        foreach ($provinces as $province) {
+                            $tpl->SetBlock('attributes/attribute/province/option');
+                            $tpl->SetVariable('value', $province['province']);
+                            $tpl->SetVariable('text', $province['title']);
+                            if ($defaultValue == $province['province']) {
+                                $tpl->SetBlock('attributes/attribute/province/option/selected');
+                                $tpl->ParseBlock('attributes/attribute/province/option/selected');
+                            }
+                            $tpl->ParseBlock('attributes/attribute/province/option');
+                        }
+                    } catch (Exception $error) {
+                        // don nothing
+                    }
+
+                    break;
+
+                case 'city':;
+                    try {
+                        if (empty($this->selectedCountry) || empty($this->selectedProvince)) {
+                            throw new Exception('');
+                        }
+
+                        $cities = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCities(
+                            $this->selectedProvince,
+                            $this->selectedCountry
+                        );
+                        if (Jaws_Error::IsError($cities) || empty($cities)) {
+                            throw new Exception('');
+                        }
+
+                        // default value
+                        $defaultValue = isset($attrOptions['value']) ?
+                            $attrOptions['value'] :
+                            $cities[0]['city'];
+                        if (!empty($attrValues) && !empty($attrValues[$attrName])) {
+                            $defaultValue = $attrValues[$attrName];
+                        }
+
+                        foreach ($cities as $city) {
+                            $tpl->SetBlock('attributes/attribute/city/option');
+                            $tpl->SetVariable('value', $city['city']);
+                            $tpl->SetVariable('text', $city['title']);
+                            if ($defaultValue == $city['city']) {
+                                $tpl->SetBlock('attributes/attribute/city/option/selected');
+                                $tpl->ParseBlock('attributes/attribute/city/option/selected');
+                            }
+                            $tpl->ParseBlock('attributes/attribute/city/option');
+                        }
+                    } catch (Exception $error) {
+                        // don nothing
+                    }
+
+                    break;
+
+                default:
+                    $tpl->SetVariable('minlength', '');
+                    $tpl->SetVariable('maxlength', '');
+                    // set value
+                    if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
+                        $tpl->SetVariable('value', $attrValues[$attrName]);
+                    } else {
+                        $tpl->SetVariable('value', isset($attrOptions['value'])? $attrOptions['value'] : '');
+                    }
+
+                    if (isset($attrOptions['pattern'])) {
+                        $tpl->SetBlock('attributes/attribute/text/pattern');
+                        $tpl->SetVariable('pattern', $attrOptions['pattern']);
+                        $tpl->ParseBlock('attributes/attribute/text/pattern');
+                    }
+
+                    if (isset($attrOptions['minlength'])) {
+                        $tpl->SetVariable('minlength', $attrOptions['minlength']);
+                    }
+                    if (isset($attrOptions['maxlength'])) {
+                        $tpl->SetVariable('maxlength', $attrOptions['maxlength']);
+                    }
+
+                    break;
+            }
+
+            $tpl->ParseBlock('attributes/attribute/'. $attrOptions['type']);
+            $tpl->ParseBlock('attributes/attribute');
+        }
+
     }
 
 }
