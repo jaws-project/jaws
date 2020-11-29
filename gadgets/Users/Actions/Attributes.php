@@ -158,6 +158,180 @@ class Users_Actions_Attributes extends Users_Actions_Default
     }
 
     /**
+     * Prepares a simple form to update group's custom attributes
+     *
+     * @access  public
+     * @return  string  XHTML template of a form
+     */
+    function GroupAttributes()
+    {
+        if (!$this->app->session->user->logged) {
+            return Jaws_Header::Location(
+                $this->gadget->urlMap(
+                    'Login',
+                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
+                )
+            );
+        }
+
+        $gadget = $this->gadget->request->fetch('gadget', 'get');
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', (string)$gadget);
+        if (empty($gadget)) {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        // find real gadget name
+        $gPath = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $hooks = glob($gPath . '*/Hooks/GroupAttributes.php');
+        $gadgets = preg_replace(
+            '@'.preg_quote($gPath, '@'). '(\w*)/Hooks/GroupAttributes.php@',
+            '${1}',
+            $hooks
+        );
+        if (false === $indx = array_search(strtolower($gadget), array_map('strtolower', $gadgets))) {
+            return Jaws_HTTPError::Get(404);
+        }
+        $gadget = $gadgets[$indx];
+
+        $objHook = Jaws_Gadget::getInstance($gadget)->hook->load('GroupAttributes');
+        if (Jaws_Error::IsError($objHook)) {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        $attrs = $objHook->Execute();
+        if (Jaws_Error::IsError($options) || empty($attrs)) {
+            return Jaws_HTTPError::Get(500);
+        }
+
+        // check access to edit this gadget custom attributes
+        $objHook->gadget->CheckPermission('ModifyGroupAttributes');
+
+        $group = (int)$this->gadget->request->fetch('group', 'get');
+        if (empty($group)) {
+            $group = (int)$objHook->Group();
+        }
+        if (empty($group)) {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        // fetch user custom attributes
+        $attrValues = $objHook->gadget->groups->fetch(
+            $group,
+            array('custom' => array_keys($attrs)),
+            'inner'
+        );
+        if (Jaws_Error::IsError($result)) {
+            return Jaws_HTTPError::Get(500);
+        }
+
+        // load js files
+        $this->AjaxMe('index.js');
+        // Load the template
+        $tpl = $this->gadget->template->load('GroupAttributes.html');
+        $tpl->SetBlock('attributes');
+        $tpl->SetVariable('gadget', $gadget);
+        $tpl->SetVariable('title', Jaws_Gadget::t("$gadget.TITLE"));
+        // Menu navigation
+        $this->gadget->action->load('MenuNavigation')->navigation($tpl);
+        // load attributes interface
+        $this->interfaceAttributes($tpl, $attrs, $attrValues);
+
+        $tpl->SetVariable('update', Jaws::t('UPDATE'));
+        if ($response = $this->gadget->session->pop('GroupAttributes')) {
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+        }
+
+        $tpl->ParseBlock('attributes');
+        return $tpl->Get();
+    }
+
+    /**
+     * Updates user information
+     *
+     * @access  public
+     * @return  void
+     */
+    function UpdateGroupAttributes()
+    {
+        if (!$this->app->session->user->logged) {
+            return Jaws_Header::Location(
+                $this->gadget->urlMap(
+                    'Login',
+                    array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
+                )
+            );
+        }
+
+        // fetch all posted data
+        $postedData = $this->gadget->request->fetchAll('post');
+
+        $objHook = Jaws_Gadget::getInstance($postedData['gadget'])->hook->load('GroupAttributes');
+        if (Jaws_Error::IsError($objHook)) {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        // get custom user's attributes 
+        $attrs = $objHook->Execute();
+        if (Jaws_Error::IsError($options) || empty($attrs)) {
+            return Jaws_HTTPError::Get(500);
+        }
+
+        // check access to edit this gadget custom attributes
+        $objHook->gadget->CheckPermission('ModifyGroupAttributes');
+
+        $fetchedGroup = (int)$this->gadget->request->fetch('group', 'get');
+        if (empty($fetchedGroup)) {
+            $group = (int)$objHook->Group();
+            if (empty($group)) {
+                return Jaws_HTTPError::Get(404);
+            }
+        } else {
+            $group = $fetchedGroup;
+        }
+        
+
+        // remove invalid attributes
+        $inputAttrs = array_intersect_key($postedData, $attrs);
+
+        try {
+            // validate attributes
+            $this->validateAttributes($attrs, $inputAttrs);
+
+            // update user's custom attributes
+            $result = $objHook->gadget->groups->upsertAttributes(
+                $group,
+                $inputAttrs
+            );
+            if (Jaws_Error::IsError($result)) {
+                throw new Exception($result->GetMessage(), 500);
+            }
+
+            $this->gadget->session->push(
+                $this::t('ATTRIBUTES_UPDATED'),
+                RESPONSE_NOTICE,
+                'GroupAttributes'
+            );
+        } catch (Exception $error) {
+            $this->gadget->session->push(
+                $error->getMessage(),
+                RESPONSE_ERROR,
+                'GroupAttributes'
+            );
+        }
+
+        $actionParams = array('gadget' => $objHook->gadget->name);
+        if (!empty($fetchedGroup)) {
+            $actionParams['group'] = $fetchedGroup;
+        }
+
+        return Jaws_Header::Location(
+            $this->gadget->urlMap('GroupAttributes', $actionParams),
+            'GroupAttributes'
+        );
+    }
+
+    /**
      * Generate attributes edit interface
      *
      * @access  public

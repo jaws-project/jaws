@@ -1478,6 +1478,7 @@ $(document).ready(function() {
             break;
 
         case 'UserAttributes':
+        case 'GroupAttributes':
             $('select[data-field-type="country"]').change($.proxy(function (e, data) {
                 changeCountry($(e.target).val(), $('select[data-field-type="province"]').first());
             }, this));

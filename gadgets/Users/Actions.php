@@ -152,6 +152,17 @@ $actions['UpdateUserAttributes'] = array(
     'file' => 'Attributes',
     'acls' => array('ModifyUserAttributes'),
 );
+$actions['GroupAttributes'] = array(
+    'normal' => true,
+    'file' => 'Attributes',
+    'acls' => array('ModifyGroupAttributes'),
+);
+$actions['UpdateGroupAttributes'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Attributes',
+    'acls' => array('ModifyGroupAttributes'),
+);
 $actions['Contact'] = array(
     'normal' => true,
     'file' => 'Contacts',

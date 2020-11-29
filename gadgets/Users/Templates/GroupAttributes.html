@@ -1,0 +1,101 @@
+<!-- BEGIN attributes -->
+<div class="gadget_header">
+  <div class="row">
+    <div class="col-xs-9"><h2>{{title}}</h2></div>
+    <div class="col-xs-3"><!-- INCLUDE MenuNavigation.html include/Jaws/Resources --></div>
+  </div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_response">
+    <div id="users_preferences_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
+  </div>
+  <div class="gadget_content">
+    <form name="preferencesBox" method="post">
+      <input type="hidden" name="reqGadget" value="Users" />
+      <input type="hidden" name="reqAction" value="UpdateGroupAttributes" />
+      <input type="hidden" name="gadget" value="{{gadget}}" />
+      <div class="row">
+        <!-- BEGIN attribute -->
+        <div class="form-group col-md-6">
+          <label>{{attribute_title}}:</label>
+          <!-- BEGIN select -->
+          <select class="form-control {{class}}" name="{{attribute_name}}"
+            {{required}} {{readonly}} {{disabled}}
+          >
+            <!-- BEGIN option -->
+            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+            <!-- END option -->
+          </select>
+          <!-- END select -->
+
+          <!-- BEGIN country -->
+          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="country"
+            {{required}} {{readonly}} {{disabled}}
+          >
+            <!-- BEGIN option -->
+            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+            <!-- END option -->
+          </select>
+          <!-- END country -->
+
+          <!-- BEGIN province -->
+          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="province"
+            {{required}} {{readonly}} {{disabled}}
+          >
+            <!-- BEGIN option -->
+            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+            <!-- END option -->
+          </select>
+          <!-- END province -->
+
+          <!-- BEGIN city -->
+          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="city"
+            {{required}} {{readonly}} {{disabled}}
+          >
+            <!-- BEGIN option -->
+            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+            <!-- END option -->
+          </select>
+          <!-- END city -->
+
+          <!-- BEGIN number -->
+          <input class="form-control {{class}}" type="number" name="{{attribute_name}}" value="{{value}}"
+            placeholder="{{placeholder}}" min="{{min}}" max="{{max}}"
+            {{required}} {{readonly}} {{disabled}}
+            <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
+          />
+          <!-- END number -->
+
+          <!-- BEGIN date -->
+          <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
+          <!-- END date -->
+
+          <!-- BEGIN checkbox -->
+          <input class="form-control {{class}}" type="checkbox"
+            name="{{attribute_name}}"
+            value="1"
+            {{readonly}} {{disabled}}
+            <!-- BEGIN checked --> checked<!-- END checked -->
+          />
+          <!-- END checkbox -->
+
+          <!-- BEGIN text -->
+          <input class="form-control {{class}}" type="text" name="{{attribute_name}}" value="{{value}}"
+            placeholder="{{placeholder}}" minlength="{{minlength}}" maxlength="{{maxlength}}"
+            {{required}} {{readonly}} {{disabled}}
+            <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
+          />
+          <!-- END text -->
+        </div>
+        <!-- END attribute -->
+      </div>
+      <div class="gadget_actions">
+        <button class="btn btn-primary" type="submit">
+          {{update}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="gadget_footer"></div>
+<!-- END attributes -->
