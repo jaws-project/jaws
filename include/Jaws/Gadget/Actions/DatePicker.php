@@ -40,6 +40,8 @@ class Jaws_Gadget_Actions_DatePicker extends Jaws_Gadget_Class
         $tpl->SetVariable('name', $options['name']);
         $tpl->SetVariable('value', isset($options['value'])? $options['value'] : '');
         $tpl->SetVariable('required', empty($options['required'])? '' : 'required');
+        $tpl->SetVariable('readonly', empty($options['readonly'])? '' : 'readonly');
+        $tpl->SetVariable('disabled', empty($options['disabled'])? '' : 'disabled');
         $tpl->SetVariable('calendar', strtolower($calendar));
         $tpl->SetVariable('lbl_today', Jaws::t('TODAY'));
         $tpl->SetVariable('lbl_month', Jaws::t('MONTH'));
