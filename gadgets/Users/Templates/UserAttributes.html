@@ -10,7 +10,7 @@
     <div id="users_preferences_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
   <div class="gadget_content">
-    <form name="preferencesBox" action="{{base_script}}" method="post" onsubmit="return updateUserAttributes(this);">
+    <form name="preferencesBox" method="post" onsubmit="return updateUserAttributes(this);">
       <input type="hidden" name="reqGadget" value="Users" />
       <input type="hidden" name="reqAction" value="UpdateUserAttributes" />
       <input type="hidden" name="gadget" value="{{gadget}}" />

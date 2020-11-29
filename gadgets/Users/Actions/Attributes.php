@@ -126,45 +126,8 @@ class Users_Actions_Attributes extends Users_Actions_Default
         $inputAttrs = array_intersect_key($postedData, $attrs);
 
         try {
-            // typecast & validate input attributes value
-            foreach ($attrs as $attrName => $attrOptions) {
-                // unset read-only attribute
-                if (isset($attrOptions['readonly']) && $attrOptions['readonly']) {
-                    unset($inputAttrs[$attrName]);
-                    continue;
-                }
-
-                if (isset($attrOptions['required']) && $attrOptions['required'] &&
-                    empty($inputAttrs[$attrName])
-                ) {
-                    throw new Exception($this::t('FIELD_REQUIRED', $attrOptions['title']), 200);
-                    break;
-                }
-
-                switch ($attrOptions['type']) {
-                    case 'number':
-                        $inputAttrs[$attrName] = (int)$inputAttrs[$attrName];
-                        break;
-
-                    case 'checkbox':
-                        $inputAttrs[$attrName] = (bool)$inputAttrs[$attrName];
-                        break;
-
-                    case 'date':
-                        if (!empty($inputAttrs[$attrName])) {
-                            $tmpDate = Jaws_Date::getInstance()->ToBaseDate(
-                                preg_split('/[\/\- :]/', $attributes[$aName] . ' 0:0:0')
-                            );
-                            $inputAttrs[$attrName] = $this->app->UserTime2UTC($tmpDate['timestamp']);
-                        } else {
-                            $inputAttrs[$attrName] = 0;
-                        }
-                        break;
-
-                    default:
-                        // nothing
-                }
-            }
+            // validate attributes
+            $this->validateAttributes($attrs, $inputAttrs);
 
             // update user's custom attributes
             $result = $objHook->gadget->users->upsertAttributes(
@@ -207,12 +170,11 @@ class Users_Actions_Attributes extends Users_Actions_Default
     {
         foreach ($attrs as $attrName => $attrOptions) {
             $tpl->SetBlock('attributes/attribute');
-
             $tpl->SetVariable('attribute_title', $attrOptions['title']);
 
             // default value
             $defaultValue = isset($attrOptions['value'])? $attrOptions['value'] : null;
-            if (!empty($attrValues) && !empty($attrValues[$attrName])) {
+            if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
                 $defaultValue = $attrValues[$attrName];
             }
 
@@ -287,7 +249,9 @@ class Users_Actions_Attributes extends Users_Actions_Default
                         $tpl,
                         array(
                             'name' => $attrName,
-                            'value' => isset($defaultValue) ? $defaultValue : '',
+                            'value' => isset($defaultValue)?
+                                Jaws_Date::getInstance()->Format($defaultValue, 'Y/m/d') :
+                                '',
                             'required' => isset($attrOptions['required'])? $attrOptions['required'] : false,
                             'readonly' => isset($attrOptions['readonly'])? $attrOptions['readonly'] : false,
                             'disabled' => isset($attrOptions['disabled'])? $attrOptions['disabled'] : false,
@@ -349,7 +313,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
 
                     break;
 
-                case 'city':;
+                case 'city':
                     try {
                         if (empty($this->selectedCountry) || empty($this->selectedProvince)) {
                             throw new Exception('');
@@ -417,6 +381,57 @@ class Users_Actions_Attributes extends Users_Actions_Default
             $tpl->ParseBlock('attributes/attribute');
         }
 
+    }
+
+    /**
+     * Validate attributes values
+     *
+     * @access  public
+     * @param   array   $attrs      Attributes options
+     * @param   array   $inputAttrs Attributes values
+     * @return  void
+     */
+    function validateAttributes(&$attrs, &$inputAttrs)
+    {
+        // typecast & validate input attributes value
+        foreach ($attrs as $attrName => $attrOptions) {
+            // unset read-only attribute
+            if (isset($attrOptions['readonly']) && $attrOptions['readonly']) {
+                unset($inputAttrs[$attrName]);
+                continue;
+            }
+
+            if (isset($attrOptions['required']) && $attrOptions['required'] &&
+                empty($inputAttrs[$attrName])
+            ) {
+                throw new Exception($this::t('FIELD_REQUIRED', $attrOptions['title']), 200);
+                break;
+            }
+
+            switch ($attrOptions['type']) {
+                case 'number':
+                    $inputAttrs[$attrName] = (int)$inputAttrs[$attrName];
+                    break;
+
+                case 'checkbox':
+                    $inputAttrs[$attrName] = array_key_exists($attrName, $inputAttrs);
+                    break;
+
+                case 'date':
+                    if (!empty($inputAttrs[$attrName])) {
+                        $tmpDate = Jaws_Date::getInstance()->ToBaseDate(
+                            preg_split('/[\/\- :]/', $inputAttrs[$attrName])
+                        );
+                        $inputAttrs[$attrName] = $this->app->UserTime2UTC($tmpDate['timestamp']);
+                    } else {
+                        $inputAttrs[$attrName] = 0;
+                    }
+                    break;
+
+                default:
+                    // nothing
+            }
+        }
     }
 
 }
