@@ -1479,15 +1479,15 @@ $(document).ready(function() {
 
         case 'UserAttributes':
         case 'GroupAttributes':
-            $('select[data-field-type="country"]').change($.proxy(function (e, data) {
-                changeCountry($(e.target).val(), $('select[data-field-type="province"]').first());
+            $('[data-field-type="country"]').change($.proxy(function (e, data) {
+                changeCountry($(e.target).val(), $('[data-field-type="province"]').first());
             }, this));
 
-            $('select[data-field-type="province"]').change($.proxy(function (e, data) {
+            $('[data-field-type="province"]').change($.proxy(function (e, data) {
                 changeProvince(
                     $(e.target).val(),
-                    $('select[data-field-type="city"]').first(),
-                    $('select[data-field-type="country"]').first());
+                    $('[data-field-type="city"]').first(),
+                    $('[data-field-type="country"]').first());
             }, this));
             break;
 

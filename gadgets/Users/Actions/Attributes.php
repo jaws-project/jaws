@@ -337,18 +337,26 @@ class Users_Actions_Attributes extends Users_Actions_Default
     function interfaceAttributes(&$tpl, $attrs, $attrValues)
     {
         foreach ($attrs as $attrName => $attrOptions) {
-            $tpl->SetBlock('attributes/attribute');
-            $tpl->SetVariable('attribute_title', $attrOptions['title']);
-
-            // default value
+            // set default value
             $defaultValue = isset($attrOptions['value'])? $attrOptions['value'] : null;
             if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
                 $defaultValue = $attrValues[$attrName];
             }
 
-            $tpl->SetBlock('attributes/attribute/'. $attrOptions['type']);
+            // set attribute block name
+            $blockName = $attrOptions['type'];
+            if (isset($attrOptions['hidden']) && $attrOptions['hidden']) {
+                $blockName = 'hidden';
+            }
+
+            $tpl->SetBlock('attributes/attribute');
+            $tpl->SetBlock('attributes/attribute/'. $blockName);
+            $tpl->SetVariable('attribute_title', $attrOptions['title']);
             $tpl->SetVariable('attribute_name', $attrName);
+            $tpl->SetVariable('attribute_type', $attrOptions['type']);
             $tpl->SetVariable('class', isset($attrOptions['class'])? $attrOptions['class'] : '');
+            $tpl->SetVariable('value', $defaultValue);
+
             // required
             $tpl->SetVariable('required', '');
             if (isset($attrOptions['required']) && $attrOptions['required']) {
@@ -430,6 +438,10 @@ class Users_Actions_Attributes extends Users_Actions_Default
                 case 'country':
                     try {
                         $this->selectedCountry = $defaultValue;
+                        if (isset($attrOptions['hidden']) && $attrOptions['hidden']) {
+                            throw new Exception('');
+                        }
+
                         $countries = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCountries();
                         if (Jaws_Error::IsError($countries) || empty($countries)) {
                             throw new Exception('');
@@ -545,7 +557,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
                     break;
             }
 
-            $tpl->ParseBlock('attributes/attribute/'. $attrOptions['type']);
+            $tpl->ParseBlock('attributes/attribute/'. $blockName);
             $tpl->ParseBlock('attributes/attribute');
         }
 
