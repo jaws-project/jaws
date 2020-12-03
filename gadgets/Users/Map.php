@@ -30,6 +30,7 @@ $maps[] = array('ImportVCard', 'users/contacts/import[/restype/{restype}]');
 $maps[] = array('Friends', 'users/friends');
 $maps[] = array('FriendsGroups', 'users/friends/groups');
 $maps[] = array('UserGroupUI', 'users/groups/new');
+$maps[] = array('GroupAttributes', 'users/groups/attributes/{gadget}[/{group}]');
 $maps[] = array('EditUserGroup', 'users/groups/{gid}/edit');
 $maps[] = array('ManageGroup', 'users/groups/{gid}/manage');
 $maps[] = array('LoginForgot', 'users/forget');
