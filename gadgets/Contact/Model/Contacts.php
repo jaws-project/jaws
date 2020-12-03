@@ -80,6 +80,9 @@ class Contact_Model_Contacts extends Jaws_Gadget_Model
         $this->app->session->setCookie('visitor_email', $email, 60*24*150);
         $this->app->session->setCookie('visitor_url',   $url,   60*24*150);
 
+        // shout Activity event
+        $this->gadget->event->shout('Activities', array('action' => 'Contact'));
+
         return $result;
     }
 }
