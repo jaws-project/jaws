@@ -47,6 +47,10 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
                 $saTable->and()->where('gadget', $filters['gadget']);
             }
+            // gadget
+            if (isset($filters['action']) && !empty($filters['action'])) {
+                $saTable->and()->where('action', $filters['action']);
+            }
             // domain
             if ($filters['domain'] != '-1') {
                 $saTable->and()->where('domain', $filters['domain']);
