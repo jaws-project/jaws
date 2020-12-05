@@ -24,59 +24,22 @@ class Users_Account_Default_Register extends Users_Account_Default
             'post'
         );
 
+        $rgstrData['regstep'] = (int)$rgstrData['regstep'];
+
+        // set default domain if not set
+        if (is_null($rgstrData['domain'])) {
+            $rgstrData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+        }
+
         try {
-            // check captcha
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $resCheck = $htmlPolicy->checkCaptcha();
-            if (Jaws_Error::IsError($resCheck)) {
-                throw new Exception($resCheck->getMessage(), 401);
-            }
-
-            if (empty($rgstrData['regstep']) || $rgstrData['regstep'] == 1) {
-                $this->gadget->session->delete('temp_register_user');
-                if ($rgstrData['password'] !== $rgstrData['password_check']) {
-                    throw new Exception($this::t('USERS_PASSWORDS_DONT_MATCH'), 401);
+            if ($rgstrData['regstep'] == 2) {
+                // check captcha
+                $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+                $resCheck = $htmlPolicy->checkCaptcha();
+                if (Jaws_Error::IsError($resCheck)) {
+                    throw new Exception($resCheck->getMessage(), 401);
                 }
 
-                if ($rgstrData['usecrypt']) {
-                    $JCrypt = Jaws_Crypt::getInstance();
-                    if (!Jaws_Error::IsError($JCrypt)) {
-                        $rgstrData['password'] = $JCrypt->decrypt($rgstrData['password']);
-                    }
-                } else {
-                    $rgstrData['password'] = Jaws_XSS::defilter($rgstrData['password']);
-                }
-
-                // set default domain if not set
-                if (is_null($rgstrData['domain'])) {
-                    $rgstrData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
-                }
-
-                $dob = null;
-                if (!empty($rgstrData['dob'])) {
-                    $dob = Jaws_Date::getInstance()->ToBaseDate(explode('-', $rgstrData['dob']), 'Y-m-d');
-                    $dob = $this->app->UserTime2UTC($dob, 'Y-m-d');
-                }
-                $rgstrData['dob'] = $dob;
-
-                $userData = $this->gadget->model->load('Registration')->InsertUser($rgstrData);
-                if (Jaws_Error::IsError($userData)) {
-                    throw new Exception($userData->getMessage(), 401);
-                }
-                // user define default data for pass to user register listener gadgets
-                $userData['defaults'] = $rgstrData['defaults'];
-
-                if ($this->gadget->registry->fetch('anon_activation') == 'user')
-                {
-                    $rgstrData['regstep'] = 2;
-                    $this->gadget->session->temp_register_user = $userData;
-
-                    // send notification to user
-                    $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
-
-                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
-                }
-            } else {
                 // fetch user data from session
                 $userData = $this->gadget->session->temp_register_user;
                 if (empty($userData)) {
@@ -100,9 +63,62 @@ class Users_Account_Default_Register extends Users_Account_Default
 
                 // update user status(enabled)
                 $this->gadget->model->load('Registration')->updateUserStatus($userData['id'], 1);
+
+            } else {
+                $rgstrData['regstep'] = 1;
+                if ($rgstrData['password'] !== $rgstrData['password_check']) {
+                    throw new Exception($this::t('USERS_PASSWORDS_DONT_MATCH'), 401);
+                }
+
+                if (empty($rgstrData['password'])) {
+                    throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
+                }
+
+                if ($rgstrData['usecrypt']) {
+                    $JCrypt = Jaws_Crypt::getInstance();
+                    if (!Jaws_Error::IsError($JCrypt)) {
+                        $rgstrData['password'] = $JCrypt->decrypt($rgstrData['password']);
+                    }
+                } else {
+                    $rgstrData['password'] = Jaws_XSS::defilter($rgstrData['password']);
+                }
+                // birthday
+                $dob = null;
+                if (!empty($rgstrData['dob'])) {
+                    $dob = Jaws_Date::getInstance()->ToBaseDate(explode('-', $rgstrData['dob']), 'Y-m-d');
+                    $dob = $this->app->UserTime2UTC($dob, 'Y-m-d');
+                }
+                $rgstrData['dob'] = $dob;
+
+                $userData = $this->gadget->model->load('Registration')->InsertUser($rgstrData);
+                if (Jaws_Error::IsError($userData)) {
+                    throw new Exception($userData->getMessage(), 401);
+                }
+                // user define default data for pass to user register listener gadgets
+                $userData['defaults'] = $rgstrData['defaults'];
+                // store user data in session
+                $this->gadget->session->temp_register_user = $userData;
+
+                if ($this->gadget->registry->fetch('anon_activation') == 'user')
+                {
+                    $rgstrData['regstep'] = 2;
+                    // send notification to user
+                    $this->gadget->action->load('Registration')->NotifyRegistrationKey($userData);
+                    throw new Exception(Jaws::t('LOGINKEY_REQUIRED'), 206);
+                }
             }
 
+            $rgstrData['regstep'] = 3;
+            // remove temp user date from session
             $this->gadget->session->delete('temp_register_user');
+
+            $this->gadget->session->push(
+                $this::t('REGISTRATION_ACTIVATED'),
+                RESPONSE_NOTICE,
+                'Registration.Response',
+                $rgstrData
+            );
+
             // auto login if user activated
             if ($this->gadget->registry->fetch('anon_activation') != 'admin') {
                 unset($userData['password'], $userData['verify_key']);
@@ -119,7 +135,6 @@ class Users_Account_Default_Register extends Users_Account_Default
                 return $userData;
             }
 
-            $rgstrData['regstep'] = 2;
             throw new Exception($this::t('REGISTRATION_REGISTERED'), 201);
 
         } catch (Exception $error) {
@@ -151,7 +166,13 @@ class Users_Account_Default_Register extends Users_Account_Default
             $urlParams['referrer'] = $referrer;
         }
 
-        http_response_code($error->getCode());
+        if (Jaws_Error::IsError($result)) {
+            http_response_code($result->getCode());
+        } else {
+            // 201 http code for success login
+            http_response_code(201);
+        }
+
         return Jaws_Header::Location(
             $this->gadget->urlMap('Registration', $urlParams),
             'Registration.Response'

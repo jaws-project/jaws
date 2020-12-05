@@ -15,10 +15,6 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
      */
     function Registration()
     {
-        if ($this->app->session->user->logged) {
-            return Jaws_Header::Location('');
-        }
-
         if ($this->gadget->registry->fetch('anon_register') !== 'true') {
             return Jaws_HTTPError::Get(404);
         }
@@ -85,14 +81,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $classname = "Users_Account_{$authtype}_Register";
         $objAccount = new $classname($this->gadget);
         $registerData = $objAccount->Register();
-        if (Jaws_Error::IsError($registerData)) {
-            $default_authtype = $this->gadget->registry->fetch('authtype');
-            return $objAccount->RegisterError(
-                $registerData,
-                ($authtype != $default_authtype)? $authtype : '',
-                bin2hex($referrer)
-            );
-        } else {
+        if (!Jaws_Error::IsError($registerData)) {
             // 201 http code for auto login
             http_response_code(201);
 
@@ -114,22 +103,18 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                     'status'   => true,
                 )
             );
+
             // let everyone know a user has been registered
             $this->gadget->event->shout('RegisterUser', $registerData);
-
             // let everyone know a user has been logged in
             $this->gadget->event->shout('LoginUser', $registerData);
-
-            $this->gadget->session->push(
-                $this::t('REGISTRATION_ACTIVATED'),
-                RESPONSE_NOTICE,
-                'Login.Response'
-            );
         }
 
-        return Jaws_Header::Location(
-            empty($referrer)? $this->gadget->urlMap('Login') : $referrer,
-            'Login.Response'
+        $default_authtype = $this->gadget->registry->fetch('authtype');
+        return $objAccount->RegisterError(
+            $registerData,
+            ($authtype != $default_authtype)? $authtype : '',
+            bin2hex($referrer)
         );
     }
 

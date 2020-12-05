@@ -39,31 +39,28 @@ class Users_Account_Default_Registration extends Users_Account_Default
             );
         } else {
             $reqpost = $response['data'];
+            $reqpost['regstep'] = (int)$reqpost['regstep'];
         }
 
-        if ($reqpost['regstep'] == 2) {
-            $this->RegistrationStep3($tpl, $reqpost);
-        } else {
-            $tpl->SetBlock('registration/request');
-
-            if (empty($reqpost['regstep'])) {
-                $this->RegistrationStep1($tpl, $reqpost);
-            } else {
-                $this->RegistrationStep2($tpl, $reqpost);
-            }
-
-            //captcha
-            $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl);
-
-            $tpl->SetVariable('register', $this::t('REGISTER'));
-            $tpl->SetVariable('url_back', $referrer);
-            $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-            $tpl->ParseBlock('registration/request');
+        // redirect to home page if user logged and action called directly
+        if ($this->app->session->user->logged && $reqpost['regstep'] != 3) {
+            return Jaws_Header::Location('');
         }
 
-        if (!empty($response)) {
+        switch ($reqpost['regstep']) {
+            case 2:
+                $this->RegistrationStep2($tpl, $reqpost, $referrer);
+                break;
+
+            case 3:
+                $this->RegistrationStep3($tpl, $reqpost, $referrer);
+                break;
+
+            default:
+                $this->RegistrationStep1($tpl, $reqpost, $referrer);
+        }
+
+        if (!empty($response['text'])) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
         }
@@ -78,7 +75,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template
      */
-    private function RegistrationStep1(&$tpl, $reqpost)
+    private function RegistrationStep1(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/reg_step_1");
@@ -116,6 +113,14 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('dob_sample',        $this::t('USERS_BIRTHDAY_SAMPLE'));
         $tpl->SetVariable('lbl_remember',      Jaws::t('REMEMBER_ME'));
 
+        //captcha
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+        $mPolicy->loadCaptcha($tpl);
+
+        $tpl->SetVariable('register', $this::t('REGISTER'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+
         $tpl->ParseBlock("$block/reg_step_1");
     }
 
@@ -125,7 +130,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template
      */
-    private function RegistrationStep2(&$tpl, $reqpost)
+    private function RegistrationStep2(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/reg_step_2");
@@ -141,6 +146,14 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('lbl_regkey',   $this::t('REGISTRATION_KEY'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
 
+        //captcha
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
+        $mPolicy->loadCaptcha($tpl);
+
+        $tpl->SetVariable('register', $this::t('REGISTER'));
+        $tpl->SetVariable('url_back', $referrer);
+        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+
         $tpl->ParseBlock("$block/reg_step_2");
     }
 
@@ -150,7 +163,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template
      */
-    private function RegistrationStep3(&$tpl, $reqpost)
+    private function RegistrationStep3(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/reg_step_3");
