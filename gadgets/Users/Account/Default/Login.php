@@ -128,6 +128,8 @@ class Users_Account_Default_Login extends Users_Account_Default
      */
     private function LoginBoxStep1(&$tpl, $reqpost, $referrer)
     {
+        http_response_code(401);
+
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_1");
         $tpl->SetVariable('base_script', BASE_SCRIPT);

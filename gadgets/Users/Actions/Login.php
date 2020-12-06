@@ -149,7 +149,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return $this->LoginLinks();
         }
 
-        http_response_code(401);
         // get/check given authentication type
         $authtype = $this->gadget->request->fetch('authtype');
         if (empty($authtype)) {
@@ -386,7 +385,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         );
         $params['user'] = $uData['id'];
 
-        $this->gadget->event->shout('Notify', $params);
+        //$this->gadget->event->shout('Notify', $params);
         // update session login-key
         $this->gadget->session->loginkey = $loginkey;
 

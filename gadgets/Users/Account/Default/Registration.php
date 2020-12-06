@@ -77,6 +77,8 @@ class Users_Account_Default_Registration extends Users_Account_Default
      */
     private function RegistrationStep1(&$tpl, $reqpost, $referrer)
     {
+        http_response_code(401);
+
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/reg_step_1");
 

@@ -19,7 +19,6 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
-        http_response_code(401);
         // get/check given registration driver type
         $authtype = $this->gadget->request->fetch('authtype');
         if (empty($authtype)) {
