@@ -20,9 +20,12 @@ class Jaws_Image_Imagick extends Jaws_Image
     function __construct()
     {
         if (!extension_loaded('imagick')) {
-            return Jaws_Error::raiseError('Imagick library is not available.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Imagick library is not available.',
+                __FUNCTION__
+            );
         }
+
         $this->_supported_image_types = array(
             'bmp'  => 'rw',
             'gif'  => 'rw',
@@ -37,7 +40,6 @@ class Jaws_Image_Imagick extends Jaws_Image
             'xbm'  => 'rw'
         );
 
-        return true;
     }
 
     /**
@@ -60,12 +62,14 @@ class Jaws_Image_Imagick extends Jaws_Image
             try {
                 $this->_hImage->readImage($filename);
             } catch (ImagickException $error) {
-                return Jaws_Error::raiseError('Could not load image: '. $error->getMessage(),
-                                              __FUNCTION__);
+                return Jaws_Error::raiseError(
+                    'Could not load image: '. $error->getMessage(),
+                    __FUNCTION__
+                );
             }
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -124,13 +128,16 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->resizeImage($new_w, $new_h, imagick::FILTER_UNDEFINED, $blur);
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Could not resize image.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Could not resize image.',
+                __FUNCTION__
+            );
         }
 
         $this->_img_w = $new_w;
         $this->_img_h = $new_h;
-        return true;
+
+        return $this;
     }
 
     /**
@@ -165,7 +172,8 @@ class Jaws_Image_Imagick extends Jaws_Image
 
         $this->_img_w = $width;
         $this->_img_h = $height;
-       return true;
+
+       return $this;
     }
 
     /**
@@ -184,9 +192,11 @@ class Jaws_Image_Imagick extends Jaws_Image
             return true;
         }
 
-        $color_mask = $this->_getColor('canvasColor',
-                                       $options,
-                                       array(255, 255, 255));
+        $color_mask = $this->_getColor(
+            'canvasColor',
+            $options,
+            array(255, 255, 255)
+        );
         if (is_array($color_mask)) {
             $color_mask = $this->_colorarray2colorhex($color_mask);
         }
@@ -195,14 +205,17 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->rotateImage($pixel, $angle);
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Cannot create a new imagick image for the rotation: '. $error->getMessage(),
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Cannot create a new imagick image for the rotation: '. $error->getMessage(),
+                __FUNCTION__
+            );
         }
 
         $info = $this->_hImage->getImageGeometry();
         $this->_img_w = $info['width'];
         $this->_img_h = $info['height'];
-        return true;
+
+        return $this;
     }
 
     /**
@@ -217,11 +230,13 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->gammaImage($gamma);
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Failed transformation: gamma().',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Failed transformation: gamma().',
+                __FUNCTION__
+            );
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -235,11 +250,13 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->flopImage();
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Could not mirror the image.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Could not mirror the image.',
+                __FUNCTION__
+            );
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -253,11 +270,13 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->flipImage();
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Could not flip the image.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Could not flip the image.',
+                __FUNCTION__
+            );
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -271,11 +290,13 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->setImageType(Imagick::IMGTYPE_GRAYSCALE);
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Failed transformation: grayscale().',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Failed transformation: grayscale().',
+                __FUNCTION__
+            );
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -298,8 +319,10 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->setImageCompression($quality);
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Could not set image compression.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Could not set image compression.',
+                __FUNCTION__
+            );
         }
 
         $type = ($type == 'jpg')? 'jpeg' : $type;
@@ -308,19 +331,23 @@ class Jaws_Image_Imagick extends Jaws_Image
         try {
             $this->_hImage->setImageFormat($type);
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Could not save image to file (conversion failed).',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Could not save image to file (conversion failed).',
+                __FUNCTION__
+            );
         }
 
         $filename = empty($filename)? $this->_ifname : $filename;
         try {
             $this->_hImage->writeImage($filename);
         } catch (ImagickException $error) {
-            return Jaws_Error::raiseError('Could not save image to file: '. $error->getMessage(),
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Could not save image to file: '. $error->getMessage(),
+                __FUNCTION__
+            );
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -393,7 +420,7 @@ class Jaws_Image_Imagick extends Jaws_Image
             $this->_hImage->destroy();
         }
  
-        parent::free();
+        return parent::free();
     }
 
 }
