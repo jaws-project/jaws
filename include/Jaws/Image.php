@@ -136,21 +136,42 @@ class Jaws_Image
         $imgDriver = preg_replace('/[^[:alnum:]_\-]/', '', $imgDriver);
 
         if (empty($imgDriver) || !in_array($imgDriver, $extensions)) {
-            return Jaws_Error::raiseError('No image library specified and none can be found.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'No image library specified and none can be found.',
+                __FUNCTION__
+            );
         }
 
         $imgDriverFile = ROOT_JAWS_PATH . 'include/Jaws/Image/'. $imgDriver .'.php';
         if (!file_exists($imgDriverFile)) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loading image driver failed.');
-            return Jaws_Error::raiseError('Loading image driver failed.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Loading image driver failed.',
+                __FUNCTION__
+            );
         }
 
         include_once $imgDriverFile;
         $className = 'Jaws_Image_' . $imgDriver;
         $obj = new $className();
         return $obj;
+    }
+
+    /**
+     * Creates the Jaws_Image instance
+     *
+     * @access  public
+     * @param   string  $imgDriver  Image Driver name
+     * @return  object returns the instance
+     */
+    static function getInstance($imgDriver = '')
+    {
+        static $objImageDriver;
+        if (!isset($objImageDriver)) {
+            $objImageDriver = Jaws_Image::factory($imgDriver);
+        }
+
+        return $objImageDriver;
     }
 
     /**
@@ -207,8 +228,10 @@ class Jaws_Image
     {
         $data = @getimagesize($image);
         if (!is_array($data)) {
-            return Jaws_Error::raiseError('Cannot fetch image or images details.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Cannot fetch image or images details.',
+                __FUNCTION__
+            );
         }
 
         return $data;
@@ -327,6 +350,7 @@ class Jaws_Image
         $r = hexdec(substr($colorhex, 1, 2));
         $g = hexdec(substr($colorhex, 3, 2));
         $b = hexdec(substr($colorhex, 5, 2));
+
         return array($r, $g, $b, 'type' => 'RGB');
     }
 
@@ -371,6 +395,7 @@ class Jaws_Image
             include_once 'Image/Transform/Driver/ColorsDefs.php';
             return (isset($colornames[$color])) ? $colornames[$color] : $default;
         }
+
         return $default;
     }
 
@@ -428,7 +453,8 @@ class Jaws_Image
 
         $this->_iData  = '';
         $this->_readonly = $readonly;
-        return true;
+
+        return $this;
     }
 
     /**
@@ -465,8 +491,10 @@ class Jaws_Image
      */
     function &getHandle()
     {
-        return Jaws_Error::raiseError('getHandle() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'getHandle() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -482,8 +510,10 @@ class Jaws_Image
      */
     function resize($new_w = 0, $new_h = 0, $options = null)
     {
-        return Jaws_Error::raiseError('resize() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'resize() method not supported by driver.',
+             __FUNCTION__
+        );
     }
 
     /**
@@ -498,8 +528,10 @@ class Jaws_Image
      **/
     function crop($width, $height, $x = 0, $y = 0)
     {
-        return Jaws_Error::raiseError('crop() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'crop() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -512,8 +544,10 @@ class Jaws_Image
      */
     function rotate($angle, $options = null)
     {
-        return Jaws_Error::raiseError('rotate() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'rotate() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -525,8 +559,10 @@ class Jaws_Image
      */
     function gamma($gamma = 1.0)
     {
-        return Jaws_Error::raiseError('gamma() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'gamma() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -537,8 +573,10 @@ class Jaws_Image
      */
     function mirror()
     {
-        return Jaws_Error::raiseError('mirror() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'mirror() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -549,8 +587,10 @@ class Jaws_Image
      */
     function flip()
     {
-        return Jaws_Error::raiseError('flip() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'flip() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -561,8 +601,10 @@ class Jaws_Image
      */
     function grayscale()
     {
-        return Jaws_Error::raiseError('grayscale() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'grayscale() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -576,8 +618,10 @@ class Jaws_Image
      */
     function save($filename, $type, $quality = null)
     {
-        return Jaws_Error::raiseError('save() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'save() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -607,8 +651,10 @@ class Jaws_Image
             return $this->_iData;
         }
 
-        return Jaws_Error::raiseError('display() method not supported by driver.',
-                                      __FUNCTION__);
+        return Jaws_Error::raiseError(
+            'display() method not supported by driver.',
+            __FUNCTION__
+        );
     }
 
     /**
@@ -657,6 +703,8 @@ class Jaws_Image
         $this->_hImage   = null;
         $this->_iData    = '';
         $this->_readonly = false;
+
+        return $this;
     }
 
 }
