@@ -590,13 +590,13 @@ class Jaws_Utils
      *                                  null: random, true/false: overwrite?
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
      * @param   int     $max_size       max size of file
+     * @param   string  $dimension      resize image file to given dimension
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
     static function UploadFiles(
         $files, $dest, $allow_formats = '',
-        $overwrite = true, $move_files = true, $max_size = null
-    )
-    {
+        $overwrite = true, $move_files = true, $max_size = null, $dimension = ''
+    ) {
         if (empty($files) || !is_array($files)) {
             return false;
         }
@@ -684,40 +684,50 @@ class Jaws_Utils
                     $host_filename = $fileinfo['filename']. '_'. time(). mt_rand(). $fileinfo['extension'];
                 }
 
-                $uploadfile = $dest . $host_filename;
-                if (is_uploaded_file($file['tmp_name'])) {
-                    if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
-                        return Jaws_Error::raiseError(
-                            Jaws::t('ERROR_UPLOAD', $host_filename),
-                            __FUNCTION__,
-                            JAWS_ERROR_NOTICE,
-                            1
-                        );
-                    }
-                } else {
-                    // On windows-systems we can't rename a file to an existing destination,
-                    // So we first delete destination file
-                    if (file_exists($uploadfile)) {
-                        @unlink($uploadfile);
-                    }
-                    $res = $move_files?
-                        @rename($file['tmp_name'], $uploadfile):
-                        @copy($file['tmp_name'], $uploadfile);
-                    if (!$res) {
-                        return Jaws_Error::raiseError(
-                            Jaws::t('ERROR_UPLOAD', $host_filename),
-                            __FUNCTION__,
-                            JAWS_ERROR_NOTICE,
-                            1
-                        );
-                    }
-                }
-
                 // Check if the file has been altered or is corrupted
-                if (filesize($uploadfile) != $file['size']) {
-                    @unlink($uploadfile);
+                if (filesize($file['tmp_name']) != $file['size']) {
+                    @unlink($file['tmp_name']);
                     return Jaws_Error::raiseError(
                         Jaws::t('ERROR_UPLOAD_CORRUPTED', $host_filename),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE,
+                        1
+                    );
+                }
+
+                // resize image file
+                if (!empty($dimension) && strpos($file['mime'], 'image/') !== false) {
+                    $dimension = explode('x', $dimension);
+                    $res = Jaws_Image::getInstance()
+                        ->load($file['tmp_name'])
+                        ->resize($dimension[0], $dimension[1])
+                        ->save($file['tmp_name'])
+                        ->free();
+                    if (Jaws_Error::IsError($res)) {
+                        return Jaws_Error::raiseError(
+                            $res->getMessage(),
+                            __FUNCTION__,
+                            JAWS_ERROR_NOTICE,
+                            1
+                        );
+                    }
+
+                    // set new file size
+                    $file['size'] = filesize($file['tmp_name']);
+                }
+
+                $uploadfile = $dest . $host_filename;
+                // On windows-systems can't rename a file to an existing destination,
+                // So we must delete destination file
+                if (file_exists($uploadfile)) {
+                    @unlink($uploadfile);
+                }
+                $res = $move_files?
+                    @rename($file['tmp_name'], $uploadfile):
+                    @copy($file['tmp_name'], $uploadfile);
+                if (!$res) {
+                    return Jaws_Error::raiseError(
+                        Jaws::t('ERROR_UPLOAD', $host_filename),
                         __FUNCTION__,
                         JAWS_ERROR_NOTICE,
                         1
