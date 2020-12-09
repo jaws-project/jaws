@@ -368,6 +368,8 @@ function Jaws_Gadget_Files() { return {
         let filesCount = $fileuploader.parents().eq(1).find('.file_details').length;
         if (maxcount > 0 && filesCount >= maxcount) {
             $fileuploader.parent().hide();
+        } else {
+            $fileuploader.parent().show();
         }
     },
 
