@@ -614,6 +614,7 @@ class Jaws_Utils
             );
         }
 
+        $dimension = empty($dimension)? '': explode('x', $dimension);
         $allow_formats = array_filter(explode(',', $allow_formats));
         foreach($files as $key => $listFiles) {
             if (!is_array($listFiles['tmp_name'])) {
@@ -697,7 +698,6 @@ class Jaws_Utils
 
                 // resize image file
                 if (!empty($dimension) && strpos($file['mime'], 'image/') !== false) {
-                    $dimension = explode('x', $dimension);
                     $res = Jaws_Image::getInstance()
                         ->load($file['tmp_name'])
                         ->resize($dimension[0], $dimension[1])
