@@ -27,6 +27,7 @@
 
         <field>
             <name>gadget</name>
+            <was>type</was>
             <type>text</type>
             <length>32</length>
             <default>url</default>
@@ -118,12 +119,6 @@
         </field>
 
         <field>
-            <name>home</name>
-            <type>integer</type>
-            <default>0</default>
-        </field>
-
-        <field>
             <name>title_view</name>
             <type>integer</type>
             <length>1</length>
@@ -149,6 +144,13 @@
             <type>boolean</type>
             <default>true</default>
         </field>
+
+        <index>
+            <name><variable>table_prefix</variable>menus_groups_title</name>
+            <field>
+                <name>title</name>
+            </field>
+        </index>
 
     </declaration>
  </table>
