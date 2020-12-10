@@ -18,7 +18,7 @@ class Menu_Model_Group extends Jaws_Gadget_Model
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select(
-            'id:integer', 'title', 'title_view:integer', 'view_type:integer',
+            'id:integer', 'title', 'home:integer', 'title_view:integer', 'view_type:integer',
             'order:integer', 'published:boolean'
         );
         $mgroupsTable->orderBy('order desc');

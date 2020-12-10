@@ -145,6 +145,26 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $titleEntry->SetStyle('width: 300px; margin-top:2px; margin-bottom:5px;');
         $tpl->SetVariable('title', $titleEntry->Get());
 
+        // home
+        $groups = $this->gadget->model->load('Group')->GetGroups();
+        $groups = array_column($groups, 'title', 'id');
+        $menus = $this->gadget->model->load('Menu')->GetLevelsMenus(0, null, true);
+        array_unshift($menus, array('id' => 0, 'gid' => 0, 'title' => '/'));
+
+        $homeCombo =& Piwi::CreateWidget('Combo', 'home');
+        $homeCombo->SetID('home');
+        $homeCombo->setStyle('width: 256px;');
+        foreach ($menus as $menu) {
+            if (empty($menu['gid'])) {
+                $homeCombo->AddOption($menu['title'], $menu['id']);
+            } else {
+                $homeCombo->AddOption($groups[$menu['gid']]. ' / '. $menu['title'], $menu['id']);
+            }
+        }
+        $tpl->SetVariable('lbl_home', _t('MENU_HOME'));
+        $tpl->SetVariable('home', $homeCombo->Get());
+
+        // title view
         $titleview =& Piwi::CreateWidget('Combo', 'title_view');
         $titleview->SetID('title_view');
         $titleview->setStyle('width: 96px; margin-top:2px; margin-bottom:5px;');

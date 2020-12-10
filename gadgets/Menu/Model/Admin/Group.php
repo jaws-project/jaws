@@ -12,12 +12,13 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $title
+     * @param   int     $home
      * @param   bool    $title_view
      * @param   int     $view_type
      * @param   bool    $published      Published status
      * @return  bool    True on success or False on failure
      */
-    function InsertGroup($title, $title_view, $view_type, $published)
+    function InsertGroup($title, $home, $title_view, $view_type, $published)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $gc = $mgroupsTable->select('count(id):integer')->where('title', $title)->fetchOne();
@@ -32,6 +33,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         $gData['title']      = $title;
+        $gData['home']       = (int)$home;
         $gData['title_view'] = (int)$title_view;
         $gData['view_type']  = (int)$view_type;
         $gData['published']  = (bool)$published;
@@ -52,12 +54,13 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $gid        Group ID
      * @param   string  $title      Group title
+     * @param   int     $home
      * @param   bool    $title_view
      * @param   int     $view_type
      * @param   bool    $published     Published status
      * @return  bool    True on success or False on failure
      */
-    function UpdateGroup($gid, $title, $title_view, $view_type, $published)
+    function UpdateGroup($gid, $title, $home, $title_view, $view_type, $published)
     {
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select('count(id):integer')->where('id', $gid, '<>')->and()->where('title', $title);
@@ -73,6 +76,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         $gData['title']      = $title;
+        $gData['home']       = (int)$home;
         $gData['title_view'] = (int)$title_view;
         $gData['view_type']  = (int)$view_type;
         $gData['published']  = (bool)$published;

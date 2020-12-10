@@ -51,7 +51,7 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
             $menusTable->and()->where('status', 0, '>');
         }
 
-        return $menusTable->orderBy('order asc')->fetchAll();
+        return $menusTable->orderBy('gid asc', 'order asc')->fetchAll();
     }
 
     /**

@@ -104,9 +104,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($title, $title_view, $view_type, $published) = $this->gadget->request->fetchAll('post');
+        @list($title, $home, $title_view, $view_type, $published) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Group');
-        $model->InsertGroup($title, $title_view, $view_type, (bool)$published);
+        $model->InsertGroup($title, $home, $title_view, $view_type, (bool)$published);
 
         return $this->gadget->session->pop();
     }
@@ -171,9 +171,11 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid, $title, $title_view, $view_type, $published) = $this->gadget->request->fetchAll('post');
+        @list(
+            $gid, $title, $home, $title_view, $view_type, $published
+        ) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Group');
-        $model->UpdateGroup($gid, $title, $title_view, $view_type, (bool)$published);
+        $model->UpdateGroup($gid, $title, $home, $title_view, $view_type, (bool)$published);
 
         return $this->gadget->session->pop();
     }
