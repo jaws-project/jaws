@@ -68,14 +68,31 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $tpl_str = $tpl->GetContent();
         $tpl->SetBlock('menu');
         $tpl->SetVariable('gid', $group['id']);
-        $tpl->SetVariable('home', _t('MENU_HOME'));
-        $tpl->SetVariable('menus_tree', $this->GetNextLevel($tpl_str, $group['id'], 0, -1));
+
+        // home/brand menu
         if ($group['title_view'] == 1) {
-            $tpl->SetBlock("menu/group_title");
-            $tpl->SetVariable('title', $group['title']);
-            $tpl->ParseBlock("menu/group_title");
+            if (!empty($group['home'])) {
+                $homeMenu = $this->gadget->model->load('Menu')->GetMenu($group['home']);
+                if (!$this->ParseMenu($homeMenu)) {
+                    $homeMenu = array();
+                }
+            } else {
+                $homeMenu = array();
+                $homeMenu['symbol'] = 'glyphicon glyphicon-home';
+                $homeMenu['url']    = '/';
+                $homeMenu['title']  = _t('MENU_HOME');
+            }
+
+            if (!empty($homeMenu)) {
+                $tpl->SetBlock('menu/home');
+                $tpl->SetVariable('symbol', $homeMenu['symbol']);
+                $tpl->SetVariable('url',    $homeMenu['url']);
+                $tpl->SetVariable('title',  $homeMenu['title']);
+                $tpl->ParseBlock('menu/home');
+            }
         }
 
+        $tpl->SetVariable('menus_tree', $this->GetNextLevel($tpl_str, $group['id'], 0, -1));
         $tpl->ParseBlock('menu');
         return $tpl->Get();
     }
@@ -106,101 +123,9 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $len = count($menus);
         $logged = $this->app->session->user->logged;
         foreach ($menus as $i => $menu) {
-            // is menu viewable?
-            if ($menu['status'] == 0) {
+            // parse menu
+            if (!$this->ParseMenu($menu)) {
                 continue;
-            }
-            if ($menu['status'] != 1) {
-                if ($logged xor $menu['status'] == Menu_Info::STATUS_LOGGED_IN) {
-                    continue;
-                }
-            }
-
-            // check default ACL
-            if ($menu['gadget'] != 'url') {
-                if (!Jaws_Gadget::IsGadgetInstalled($menu['gadget'])) {
-                    continue;
-                }
-
-                if (!$this->app->session->getPermission($menu['gadget'], 'default')) {
-                    continue;
-                }
-
-                // check permission
-                if (!empty($menu['permission'])) {
-                    $permission = unserialize($menu['permission']);
-                    if (isset($permission['gadget'])) {
-                        if (!$this->app->session->getPermission($permission['gadget'], 'default')) {
-                            continue;
-                        }
-                    } else {
-                        $permission['gadget'] = $menu['gadget'];
-                    }
-
-                    if (!$this->app->session->getPermission(
-                            $permission['gadget'],
-                            $permission['key'],
-                            isset($permission['subkey'])? $permission['subkey'] : '',
-                            isset($permission['together'])? (bool)$permission['together'] : true
-                        )
-                    ) {
-                        continue;
-                    }
-                }
-            }
-
-            // replace menu variables
-            if (!empty($menu['variables'])) {
-                $objGadget = Jaws_Gadget::getInstance($menu['gadget']);
-                if (Jaws_Error::IsError($objGadget)) {
-                    continue;
-                }
-
-                $params = array();
-                $vars = unserialize($menu['variables']);
-                $url  = unserialize($menu['url']);
-                foreach ($vars as $var => $val) {
-                    switch (@$val['scope']) {
-                        case SESSION_SCOPE_APP:
-                            $val = $this->app->session->{$val['name']};
-                            break;
-
-                        case SESSION_SCOPE_USER:
-                            $val = $this->app->session->user->{$val['name']};
-                            break;
-
-                        case SESSION_SCOPE_GADGET:
-                            $val = $objGadget->session->{$val['name']};
-                            break;
-
-                        default:
-                            $val = null;
-                    }
-
-                    if (is_null($val)) {
-                        continue 2;
-                    }
-                    // set url variables
-                    foreach ($url['params'] as $param => $str) {
-                        $params[$param] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $str);
-                    }
-                    // set title variables
-                    $menu['title'] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $menu['title']);
-                }
-
-                // menu options
-                $menu['options'] = @unserialize($menu['options']);
-                if (empty($menu['options'])) {
-                    $menu['options'] = array();
-                }
-
-                // generate url map
-                $menu['url'] = $objGadget->urlMap(
-                    $url['action'],
-                    $params,
-                    $menu['options'],
-                    isset($url['gadget'])? $url['gadget'] : ''
-                );
             }
 
             //get sub level menus
@@ -215,12 +140,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             $tpl->SetVariable('title', $menu['title']);
             $tpl->SetVariable('url', $menu['url']);
             $tpl->SetVariable('target', ($menu['target']==0)? '_self': '_blank');
-
-            if (!empty($menu['symbol'])) {
-                $tpl->SetBlock("$block/items/$innerBlock/symbol");
-                $tpl->SetVariable('symbol', $menu['symbol']);
-                $tpl->ParseBlock("$block/items/$innerBlock/symbol");
-            }
+            $tpl->SetVariable('symbol', $menu['symbol']);
 
             if (!empty($menu['image'])) {
                 $src = $this->gadget->urlMap('LoadImage', array('id' => $menu['id']));
@@ -253,6 +173,122 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
 
         $tpl->ParseBlock("$block");
         return $tpl->Get();
+    }
+
+    /**
+     * Displays/Parse a menu
+     *
+     * @access  public
+     * @param   array   $menu   Menu attributes
+     * @return  bool    True if parsed otherwise False
+     */
+    function ParseMenu(&$menu)
+    {
+        $logged = $this->app->session->user->logged;
+
+        // is menu viewable?
+        if ($menu['status'] == 0) {
+            return false;
+        }
+
+        if ($menu['status'] != 1) {
+            if ($logged xor $menu['status'] == Menu_Info::STATUS_LOGGED_IN) {
+                return false;
+            }
+        }
+
+        // check default ACL
+        if ($menu['gadget'] != 'url') {
+            if (!Jaws_Gadget::IsGadgetInstalled($menu['gadget'])) {
+                return false;
+            }
+
+            if (!$this->app->session->getPermission($menu['gadget'], 'default')) {
+                return false;
+            }
+
+            // check permission
+            if (!empty($menu['permission'])) {
+                $permission = unserialize($menu['permission']);
+                if (isset($permission['gadget'])) {
+                    if (!$this->app->session->getPermission($permission['gadget'], 'default')) {
+                        return false;
+                    }
+                } else {
+                    $permission['gadget'] = $menu['gadget'];
+                }
+
+                if (!$this->app->session->getPermission(
+                        $permission['gadget'],
+                        $permission['key'],
+                        isset($permission['subkey'])? $permission['subkey'] : '',
+                        isset($permission['together'])? (bool)$permission['together'] : true
+                    )
+                ) {
+                    return false;
+                }
+            }
+        }
+
+        // replace menu variables
+        if (!empty($menu['variables'])) {
+            $objGadget = Jaws_Gadget::getInstance($menu['gadget']);
+            if (Jaws_Error::IsError($objGadget)) {
+                return false;
+            }
+
+            $params = array();
+            $vars = unserialize($menu['variables']);
+            $url  = unserialize($menu['url']);
+            foreach ($vars as $var => $val) {
+                switch (@$val['scope']) {
+                    case SESSION_SCOPE_APP:
+                        $val = $this->app->session->{$val['name']};
+                        break;
+
+                    case SESSION_SCOPE_USER:
+                        $val = $this->app->session->user->{$val['name']};
+                        break;
+
+                    case SESSION_SCOPE_GADGET:
+                        $val = $objGadget->session->{$val['name']};
+                        break;
+
+                    default:
+                        $val = null;
+                }
+
+                if (is_null($val)) {
+                    return false;
+                }
+                // set url variables
+                foreach ($url['params'] as $param => $str) {
+                    $params[$param] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $str);
+                }
+                // set title variables
+                $menu['title'] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $menu['title']);
+            }
+
+            // menu options
+            $menu['options'] = @unserialize($menu['options']);
+            if (empty($menu['options'])) {
+                $menu['options'] = array();
+            }
+
+            // generate url map
+            $menu['url'] = $objGadget->urlMap(
+                $url['action'],
+                $params,
+                $menu['options'],
+                isset($url['gadget'])? $url['gadget'] : ''
+            );
+        }
+        // symbol
+        if (empty($menu['symbol'])) {
+            $menu['symbol'] = 'hide';
+        }
+
+        return true;
     }
 
     /**

@@ -1,15 +1,19 @@
 <!-- BEGIN menu -->
+<div class="gadget_header"></div>
 <div class="gadget_container">
     <div class="gadget_content">
       <div class="navbar-thumbnail" id="navbar-{{gid}}">
         <div class="drilldown">
           <div class="breadcrumbwrapper">
             <ul>
+              <!-- BEGIN home -->
               <li class="first active">
-                <a href="/">
-                  <i class="glyphicon glyphicon-home"></i><!-- BEGIN group_title --><span>{{title}}</span><!-- END group_title -->
+                <a href="{{url}}">
+                  <i class="{{symbol}}"></i><span>{{title}}</span>
                 </a>
-              </li></ul>
+              </li>
+              <!-- END home -->
+            </ul>
           </div>
           {{menus_tree}}
         </div>
@@ -25,8 +29,7 @@
   <!-- BEGIN complex -->
   <li class="{{class}}">
     <a href="{{url}}" target="{{target}}">
-      <!-- BEGIN symbol --><i class="{{symbol}}"></i><!-- END symbol -->
-      {{image}}<span>{{title}}</span>
+      <i class="{{symbol}}"></i>{{image}}<span>{{title}}</span>
     </a>
     {{submenu}}
   </li>
@@ -34,8 +37,7 @@
   <!-- BEGIN simple -->
   <li class="{{class}}">
     <a href="{{url}}" target="{{target}}">
-      <!-- BEGIN symbol --><i class="{{symbol}}"></i><!-- END symbol -->
-      {{image}}<span>{{title}}</span>
+      <i class="{{symbol}}"></i>{{image}}<span>{{title}}</span>
     </a>
   </li>
   <!-- END simple -->
@@ -49,8 +51,7 @@
   <!-- BEGIN complex -->
   <li class="{{class}}">
     <a href="{{url}}" target="{{target}}">
-      <!-- BEGIN symbol --><i class="{{symbol}}"></i><!-- END symbol -->
-      {{image}}<span>{{title}}</span>
+      <i class="{{symbol}}"></i>{{image}}<span>{{title}}</span>
     </a>
     {{submenu}}
   </li>
@@ -58,8 +59,7 @@
   <!-- BEGIN simple -->
   <li class="{{class}}">
     <a href="{{url}}" target="{{target}}">
-      <!-- BEGIN symbol --><i class="{{symbol}}"></i><!-- END symbol -->
-      {{image}}<span>{{title}}</span>
+      <i class="{{symbol}}"></i>{{image}}<span>{{title}}</span>
     </a>
   </li>
   <!-- END simple -->
