@@ -20,7 +20,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
     function xloadCaptcha($field = 'default')
     {
         if (!extension_loaded('gd')) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'LoadCaptcha error: GD extension not loaded');
+            $GLOBALS['log']->Log(JAWS_ERROR, 'LoadCaptcha error: GD extension not loaded');
             return false;
         }
 
@@ -66,7 +66,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
     function loadCaptcha(&$tpl, $field = 'default')
     {
         if (!extension_loaded('gd')) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'LoadCaptcha error: GD extension not loaded');
+            $GLOBALS['log']->Log(JAWS_ERROR, 'LoadCaptcha error: GD extension not loaded');
             return false;
         }
 

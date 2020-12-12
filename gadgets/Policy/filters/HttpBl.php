@@ -51,7 +51,7 @@ class HttpBl
         $this->Version = '0.1';
         if (!$this->VerifyKey()) {
             $this->IsKeyValid = false;
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Invalid ProjectHoneyPot Key, please check your Registry: '.
+            $GLOBALS['log']->Log(JAWS_ERROR, 'Invalid ProjectHoneyPot Key, please check your Registry: '.
                                  '/gadgets/Policy/prjhoneypot_key');
         } else {
             $this->IsKeyValid = true;

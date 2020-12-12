@@ -113,7 +113,7 @@ class TypePad
         $jaws_version    = $this->app->registry->fetch('version');
         $this->userAgent = "Jaws/{$jaws_version} | TypePad/{$this->apiVersion}";
         if (!$this->apiKeyIsValid = $this->IsApiKeyValid()) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR,
+            $GLOBALS['log']->Log(JAWS_ERROR,
                                  'Invalid TypePad Key, please check your Registry: '.
                                  '/gadgets/Policy/typepad_key');
         }
