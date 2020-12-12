@@ -162,7 +162,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
                 $tpl->ParseBlock('weather/forecast');
             }
         } else {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, $rWeather->getMessage());
+            $GLOBALS['log']->Log(JAWS_ERROR, $rWeather->getMessage());
         }
 
         $tpl->ParseBlock('weather');
