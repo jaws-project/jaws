@@ -5,7 +5,7 @@
  * - metaweblog
  *    http://www.xmlrpc.com/metaWeblogApi
  *
- * @author     Helgi �ormar �orbj�rnsson <dufuz@php.net>
+ * @author     Helgi Þormar <dufuz@php.net>
  * @author     Jonathan Hernandez  <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2020 Jaws Development Group
@@ -35,7 +35,7 @@ function userAuthentication($username, $password)
     $authFile = ROOT_JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
     if (empty($authType) || !file_exists($authFile)) {
         $GLOBALS['log']->Log(
-            JAWS_LOG_NOTICE,
+            JAWS_NOTICE,
             $authFile. ' file doesn\'t exists, using default authentication type'
         );
         $authType = 'Default';
