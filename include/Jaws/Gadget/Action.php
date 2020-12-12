@@ -71,7 +71,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
             }
 
             $this->gadget->objects['Actions'][$filename] = new $classname($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget action class: [$classname]");
         }
 
         return $this->gadget->objects['Actions'][$filename];
@@ -119,7 +119,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
             }
 
             $this->gadget->objects['AdminActions'][$filename] = new $classname($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget action class: [$classname]");
         }
 
         return $this->gadget->objects['AdminActions'][$filename];

@@ -328,15 +328,15 @@ class Jaws_Translate
         $tmp_orig = array();
         if (file_exists($orig_i18n)) {
             $tmp_orig = parse_ini_file($orig_i18n, false, INI_SCANNER_RAW);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded translation for $module, language $language");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded translation for $module, language $language");
         } else {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "No translation could be found for $module for language $language");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "No translation could be found for $module for language $language");
         }
 
         $tmp_data = array();
         if ($this->_load_user_translated && file_exists($data_i18n)) {
             $tmp_data = parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded data translation for $module, language $language");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded data translation for $module, language $language");
         }
 
         $this->translates[$language][$type][$module] = array_merge($tmp_orig, $tmp_data);

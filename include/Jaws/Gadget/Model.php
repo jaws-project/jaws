@@ -65,7 +65,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget_Class
             }
 
             $this->objects['Model'][$filename] = new $classname($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$classname]");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget model: [$classname]");
         }
 
         return $this->objects['Model'][$filename];
@@ -118,7 +118,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget_Class
             }
 
             $this->objects['AdminModel'][$filename] = new $classname($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$classname]");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget model: [$classname]");
         }
 
         return $this->objects['AdminModel'][$filename];

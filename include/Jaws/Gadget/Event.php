@@ -44,7 +44,7 @@ class Jaws_Gadget_Event extends Jaws_Gadget_Class
             }
 
             $this->objects[$event] = new $classname($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget event: [$classname]");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget event: [$classname]");
         }
 
         return $this->objects[$event];

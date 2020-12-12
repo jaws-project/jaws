@@ -811,7 +811,7 @@ class Jaws_DB
             }
         }
 
-        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Query:\n".$sql, 2);
+        $GLOBALS['log']->Log(JAWS_DEBUG, "Query:\n".$sql, 2);
         return $sql;
     }
 

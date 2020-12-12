@@ -387,10 +387,10 @@ class Jaws
                 // no log if template tag not found
                 return;
             }
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Loaded class file: ' . $file);
+            $GLOBALS['log']->Log(JAWS_ERROR, 'Loaded class file: ' . $file);
         } else {
             require_once $file;
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded class file: ' . $file);
+            $GLOBALS['log']->Log(JAWS_DEBUG, 'Loaded class file: ' . $file);
         }
     }
 

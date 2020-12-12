@@ -595,13 +595,13 @@ class Jaws_Layout
         $output = '';
         $enabled = Jaws_Gadget::IsGadgetEnabled($gadget);
         if (Jaws_Error::isError($enabled) || $enabled != 'true') {
-            $GLOBALS['log']->Log(JAWS_LOG_NOTICE, "Gadget $gadget is not enabled");
+            $GLOBALS['log']->Log(JAWS_NOTICE, "Gadget $gadget is not enabled");
             return $output;
         }
 
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
             $GLOBALS['log']->Log(
-                JAWS_LOG_NOTICE,
+                JAWS_NOTICE,
                 'Trying to populate '. $gadget.
                 ' in layout, but looks that it is not installed/upgraded'
             );
@@ -614,7 +614,7 @@ class Jaws_Layout
             ->load()
             ->Execute($action, $params, $section, ACTION_MODE_LAYOUT);
         if (Jaws_Error::isError($output)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'In '.$gadget.'::'.$action.','.$output->GetMessage());
+            $GLOBALS['log']->Log(JAWS_ERROR, 'In '.$gadget.'::'.$action.','.$output->GetMessage());
             $output = '';
         } elseif ($this->app->http_response_code() !== 200) {
             $output = '';

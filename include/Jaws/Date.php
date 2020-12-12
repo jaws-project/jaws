@@ -59,7 +59,7 @@ class Jaws_Date
         }
         $calendar = preg_replace('/[^[:alnum:]_]/', '', empty($calendar)? $dbCalendar : $calendar);
         if (!file_exists(ROOT_JAWS_PATH . 'include/Jaws/Date/'. $calendar .'.php')) {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
+            $GLOBALS['log']->Log(JAWS_DEBUG,
                                  'Loading calendar '.$calendar.' failed, Attempting to load default calendar');
             $calendar = 'Gregorian';
         }

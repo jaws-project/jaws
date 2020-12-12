@@ -828,7 +828,7 @@ class Jaws_User
     {
         $fields  = array('id', 'name', 'title');
         if (!in_array($orderBy, $fields)) {
-            $GLOBALS['log']->Log(JAWS_LOG_WARNING, Jaws::t('ERROR_UNKNOWN_COLUMN'));
+            $GLOBALS['log']->Log(JAWS_WARNING, Jaws::t('ERROR_UNKNOWN_COLUMN'));
             $orderBy = 'name';
         }
 

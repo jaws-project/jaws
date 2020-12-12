@@ -207,7 +207,7 @@ class Jaws_Session
         // let everyone know a user has been logout
         $this->app->listener->Shout('Session', 'LogoutUser', $this->attributes);
         $this->reset();
-        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
+        $GLOBALS['log']->Log(JAWS_DEBUG, 'Session logout');
     }
 
     /**
@@ -226,7 +226,7 @@ class Jaws_Session
         try {
             // session exists
             if (Jaws_Error::IsError($session) || empty($session)) {
-                throw new Exception('No previous session exists', JAWS_LOG_INFO);
+                throw new Exception('No previous session exists', JAWS_INFO);
             }
 
             $this->session = $session;
@@ -238,13 +238,13 @@ class Jaws_Session
 
             // browser agent
             if ($this->app->agent['id'] != $this->session['agent']) {
-                throw new Exception('Previous session agent has been changed', JAWS_LOG_NOTICE);
+                throw new Exception('Previous session agent has been changed', JAWS_NOTICE);
             }
 
             // session longevity
             $expTime = time() - 60 * (int)$this->app->registry->fetch('session_idle_timeout', 'Policy');
             if ($this->session['update_time'] < ($expTime - $this->session['longevity'])) {
-                throw new Exception('Previous session has expired', JAWS_LOG_INFO);
+                throw new Exception('Previous session has expired', JAWS_INFO);
             }
 
             // salt
@@ -253,19 +253,19 @@ class Jaws_Session
                 // no permission for execution all actions
                 define('SESSION_RESTRICTED_GADGETS', '');
                 $this->reset();
-                $GLOBALS['log']->Log(JAWS_LOG_INFO, 'Session salt has been changed');
+                $GLOBALS['log']->Log(JAWS_INFO, 'Session salt has been changed');
             }
 
             // checksum
             if ($checksum !== $this->session['checksum']) {
-                throw new Exception('Session checksum has been changed', JAWS_LOG_NOTICE);
+                throw new Exception('Session checksum has been changed', JAWS_NOTICE);
             }
 
             if (!empty($this->session['user'])) {
                 // user expiry date
                 $expiry_date = $this->userAttributes['expiry_date'];
                 if (!empty($expiry_date) && $expiry_date <= time()) {
-                    throw new Exception('This username is expired', JAWS_LOG_NOTICE);
+                    throw new Exception('This username is expired', JAWS_NOTICE);
                 }
 
                 // logon hours
@@ -274,7 +274,7 @@ class Jaws_Session
                     $wdhour = explode(',', $this->app->UTC2UserTime(time(), 'w,G', true));
                     $lhByte = hexdec($logon_hours[$wdhour[0]*6 + intval($wdhour[1]/4)]);
                     if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
-                        throw new Exception('Logon hours terminated', JAWS_LOG_NOTICE);
+                        throw new Exception('Logon hours terminated', JAWS_NOTICE);
                     }
                 }
 
@@ -283,12 +283,12 @@ class Jaws_Session
                     $logins = $this->userAttributes['concurrents'];
                     $existSessions = $this->getUserSessionsCount($this->session['user'], true);
                     if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
-                        throw new Exception('Maximum number of concurrent logins reached', JAWS_LOG_NOTICE);
+                        throw new Exception('Maximum number of concurrent logins reached', JAWS_NOTICE);
                     }
                 }
             }
 
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session was OK');
+            $GLOBALS['log']->Log(JAWS_DEBUG, 'Session was OK');
             return true;
         } catch (Exception $error) {
             $GLOBALS['log']->Log($error->getCode(), $error->getMessage());
@@ -376,7 +376,7 @@ class Jaws_Session
     function extraCheck()
     {
         if (isset($_SERVER['ORIGIN'])) {
-            $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'cross-origin resource sharing detected');
+            $GLOBALS['log']->Log(JAWS_NOTICE, 'cross-origin resource sharing detected');
             return false;
         }
 
@@ -626,7 +626,7 @@ class Jaws_Session
         $sessTable->update($updData);
         $result = $sessTable->where('id', $this->session['id'])->exec();
         if (!Jaws_Error::IsError($result)) {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized successfully');
+            $GLOBALS['log']->Log(JAWS_DEBUG, 'Session synchronized successfully');
             return $this->session['id'];
         }
 

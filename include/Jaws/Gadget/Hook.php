@@ -44,7 +44,7 @@ class Jaws_Gadget_Hook extends Jaws_Gadget_Class
             }
 
             $this->objects[$hook] = new $classname($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget hook: [$classname]");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget hook: [$classname]");
         }
 
         return $this->objects[$hook];

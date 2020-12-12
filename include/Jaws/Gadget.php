@@ -215,7 +215,7 @@ class Jaws_Gadget
             $classname = $gadget. '_Info';
             $instances[$gadget] = new $classname($gadget);
             if (!Jaws_Error::IsError($instances[$gadget])) {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget: $gadget");
+                $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget: $gadget");
             }
         }
 
@@ -623,7 +623,7 @@ class Jaws_Gadget
     function url($action='', $params = array(), $options = array(), $gadget = '')
     {
         if (!is_array($options)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'use options["absolute"] = true|false for set absolute url', 1);
+            $GLOBALS['log']->Log(JAWS_ERROR, 'use options["absolute"] = true|false for set absolute url', 1);
             $absolute = (bool)$options;
             $options = array();
             $options['absolute'] = $absolute;
@@ -650,7 +650,7 @@ class Jaws_Gadget
     function urlMap($action='', $params = array(), $options = array(), $gadget = '')
     {
         if (!is_array($options)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'use options["absolute"] = true|false for set absolute url', 1);
+            $GLOBALS['log']->Log(JAWS_ERROR, 'use options["absolute"] = true|false for set absolute url', 1);
             $absolute = (bool)$options;
             $options = array();
             $options['absolute'] = $absolute;

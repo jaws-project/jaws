@@ -144,7 +144,7 @@ class Jaws_Plugin
             if (!isset($instances[$plugin]->pluginType)) {
                 $instances[$plugin]->pluginType = self::PLUGIN_TYPE_MODIFIER;
             }
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded plugin: $plugin");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded plugin: $plugin");
         }
 
         if ($onlyInstalled && !self::IsPluginInstalled($plugin)) {

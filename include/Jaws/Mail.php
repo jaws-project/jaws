@@ -265,7 +265,7 @@ class Jaws_Mail
     function SetBody($body, $options = array())
     {
         if (!is_array($options)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'use options["format"] = html|text|... for set date format', 1);
+            $GLOBALS['log']->Log(JAWS_ERROR, 'use options["format"] = html|text|... for set date format', 1);
             $format = (string)$options;
             $options = array();
             $options['format'] = $format;

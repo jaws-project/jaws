@@ -45,7 +45,7 @@ class Jaws_SharedSegment
         }
         
         if (!extension_loaded('shmop')) {
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loading 'shmop' shared segment driver failed.");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loading 'shmop' shared segment driver failed.");
             $segmentDriver = 'File';
         }
         $className = "Jaws_SharedSegment_$segmentDriver";
