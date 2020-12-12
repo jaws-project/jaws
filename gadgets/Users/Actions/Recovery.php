@@ -29,7 +29,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $drivers = array_map('basename', glob(ROOT_JAWS_PATH . 'gadgets/Users/Account/*', GLOB_ONLYDIR));
         if (false === $dIndex = array_search(strtolower($authtype), array_map('strtolower', $drivers))) {
             $GLOBALS['log']->Log(
-                JAWS_LOG_NOTICE,
+                JAWS_NOTICE,
                 $authtype. ' login recovery driver doesn\'t exists, switched to default driver'
             );
             $authtype = 'Default';
