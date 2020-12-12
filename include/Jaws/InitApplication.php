@@ -19,14 +19,14 @@ if (!defined('PEAR_PATH')) {
     define('PEAR_PATH', ROOT_JAWS_PATH . 'libraries/pear/');
 }
 
+// initial common constants like version number
+require ROOT_JAWS_PATH . 'include/Jaws/Const.php';
+
 // Initialize the logger
 require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
 $GLOBALS['log'] = new Jaws_Log(defined('LOG_ACTIVATED')? LOG_ACTIVATED : false,
                                isset($GLOBALS['logger'])? $GLOBALS['logger'] : null);
 $GLOBALS['log']->Start();
-
-// initial common constants like version number
-require ROOT_JAWS_PATH . 'include/Jaws/Const.php';
 
 // for availability Jaws_Utils methods
 require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
