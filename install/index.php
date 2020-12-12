@@ -78,21 +78,20 @@ define('ROOT_CACHE_PATH', ROOT_PATH . CACHE_PATH);
 // install path
 define('INSTALL_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
+require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Error.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/Gadget.php';
 // Lets support older PHP versions so we can use spanking new functions
 require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
 
 // Initialize the logger
 $_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
-$logger = array('method'  => 'LogToFile',
-                'options' => array('file' => ROOT_DATA_PATH . 'logs/.install.log'));
+define('LOGGER_METHOD', 'LogToFile');
+define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
 require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
-$GLOBALS['log'] = new Jaws_Log($_SESSION['use_log'], $logger);
+$GLOBALS['log'] = new Jaws_Log($_SESSION['use_log']);
 $GLOBALS['log']->Start();
-
-require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
-require_once ROOT_JAWS_PATH . 'include/Jaws/Error.php';
-require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
-require_once ROOT_JAWS_PATH . 'include/Jaws/Gadget.php';
 
 if (!isset($_SESSION['install'])) {
     $_SESSION['install'] = array('stage' => 0, 'lastStage' => array());

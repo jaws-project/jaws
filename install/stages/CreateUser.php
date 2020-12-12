@@ -129,14 +129,14 @@ class Installer_CreateUser extends JawsInstaller
             }
 
             if ($post['password'] !== $post['repeat']) {
-                _log(JAWS_LOG_DEBUG,"The password and repeat boxes don't match, please try again.");
+                _log(JAWS_DEBUG,"The password and repeat boxes don't match, please try again.");
                 return new Jaws_Error($this->t('USER_RESPONSE_PASS_MISMATCH'), 0, JAWS_ERROR_WARNING);
             }
 
             return true;
         }
 
-        _log(JAWS_LOG_DEBUG,"You must complete the username, nickname, password, and repeat boxes.");
+        _log(JAWS_DEBUG,"You must complete the username, nickname, password, and repeat boxes.");
         return new Jaws_Error($this->t('USER_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
     }
 
@@ -195,7 +195,7 @@ class Installer_CreateUser extends JawsInstaller
         if (!Jaws_Error::IsError($userInfo)) {
             //username exists
             if (isset($userInfo['username'])) {
-                _log(JAWS_LOG_DEBUG,"Update existing user");
+                _log(JAWS_DEBUG,"Update existing user");
                 $res = $userModel->UpdateUser(
                     $userInfo['id'],
                     array(
@@ -206,7 +206,7 @@ class Installer_CreateUser extends JawsInstaller
                     )
                 );
             } else {
-                _log(JAWS_LOG_DEBUG,"Adding first/new admin user to Jaws");
+                _log(JAWS_DEBUG,"Adding first/new admin user to Jaws");
                 $res = $userModel->AddUser(
                     array(
                         'username' => $post['username'],
@@ -222,8 +222,8 @@ class Installer_CreateUser extends JawsInstaller
         }
 
         if (Jaws_Error::IsError($res)) {
-            _log(JAWS_LOG_DEBUG,"There was a problem while creating your user:");
-            _log(JAWS_LOG_DEBUG,$res->GetMessage());
+            _log(JAWS_DEBUG,"There was a problem while creating your user:");
+            _log(JAWS_DEBUG,$res->GetMessage());
             return new Jaws_Error($this->t('USER_RESPONSE_CREATE_FAILED'), 0, JAWS_ERROR_ERROR);
         }
 

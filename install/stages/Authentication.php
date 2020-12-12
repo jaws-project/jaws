@@ -93,13 +93,13 @@ class Installer_Authentication extends JawsInstaller
         if (file_exists($key_file)) {
             $key = trim(file_get_contents($key_file));
             if ($key === $_SESSION['install']['Authentication']['key']) {
-                _log(JAWS_LOG_DEBUG,"Input log and session key match");
+                _log(JAWS_DEBUG,"Input log and session key match");
                 return true;
             }
-            _log(JAWS_LOG_DEBUG,"The key found doesn't match the one below, please check that you entered the key correctly");
+            _log(JAWS_DEBUG,"The key found doesn't match the one below, please check that you entered the key correctly");
             return new Jaws_Error($this->t('AUTH_ERROR_KEY_MATCH', 'key.txt'), 0, JAWS_ERROR_WARNING);
         }
-        _log(JAWS_LOG_DEBUG,"Your key file was not found, please make sure you created it, and the web server is able to read it.");
+        _log(JAWS_DEBUG,"Your key file was not found, please make sure you created it, and the web server is able to read it.");
         return new Jaws_Error($this->t('AUTH_ERROR_KEY_FILE', 'key.txt'), 0, JAWS_ERROR_WARNING);
     }
 

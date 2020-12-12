@@ -56,7 +56,7 @@ class Installer_WriteConfig extends JawsInstaller
      */
     function Display()
     {
-        _log(JAWS_LOG_DEBUG,"Preparing configuration file");
+        _log(JAWS_DEBUG,"Preparing configuration file");
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
         $tpl->SetBlock('WriteConfig');
@@ -71,7 +71,7 @@ class Installer_WriteConfig extends JawsInstaller
 
         $request = Jaws_Request::getInstance();
         $loglevel = $request->fetch('loglevel', 'post');
-        $loglevel = is_null($loglevel)? JAWS_LOG_ERROR : (int)$loglevel;
+        $loglevel = is_null($loglevel)? JAWS_ERROR : (int)$loglevel;
         $_SESSION['install']['LogLevel'] = $loglevel;
         $tpl->SetVariable('config', $this->BuildConfig());
 
@@ -107,20 +107,20 @@ class Installer_WriteConfig extends JawsInstaller
             $existsConfig = file_get_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php');
             $existsMD5    = md5($existsConfig);
             if ($configMD5 == $existsMD5) {
-                _log(JAWS_LOG_DEBUG,"Previous and new configuration files have the same content, everything is ok");
+                _log(JAWS_DEBUG,"Previous and new configuration files have the same content, everything is ok");
                 return true;
             }
-            _log(JAWS_LOG_DEBUG,"Previous and new configuration files have different content, trying to update content");
+            _log(JAWS_DEBUG,"Previous and new configuration files have different content, trying to update content");
         }
 
         // create a new one if the dir is writeable
         if (Jaws_Utils::is_writable(ROOT_JAWS_PATH . 'config/')) {
             $result = file_put_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php', $configString);
             if ($result) {
-                _log(JAWS_LOG_DEBUG,"Configuration file has been created/updated");
+                _log(JAWS_DEBUG,"Configuration file has been created/updated");
                 return true;
             }
-            _log(JAWS_LOG_DEBUG,"Configuration file couldn't be created/updated");
+            _log(JAWS_DEBUG,"Configuration file couldn't be created/updated");
             return new Jaws_Error($this->t('CONFIG_RESPONSE_WRITE_FAILED'), 0, JAWS_ERROR_ERROR);
         }
         

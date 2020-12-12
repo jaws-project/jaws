@@ -138,7 +138,7 @@ class Installer_Settings extends JawsInstaller
             $post = $_SESSION['install']['data']['Settings'] + $post;
         }
 
-        _log(JAWS_LOG_DEBUG,"Setting up main settings (site name, description, languages, copyrights, etc");
+        _log(JAWS_DEBUG,"Setting up main settings (site name, description, languages, copyrights, etc");
         $settings = array();
         $settings['site_name']      = $post['site_name'];
         $settings['site_slogan']    = $post['site_slogan'];
@@ -207,8 +207,8 @@ class Installer_Settings extends JawsInstaller
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
-                _log(JAWS_LOG_DEBUG, "There was a problem while loading sample gadget: $gadget");
-                _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
+                _log(JAWS_DEBUG, "There was a problem while loading sample gadget: $gadget");
+                _log(JAWS_DEBUG, $objGadget->getMessage());
             } else {
                 $installer = $objGadget->installer->load();
                 $input_schema = ROOT_JAWS_PATH. "install/stages/Settings/Sample/$gadget/insert.xml";
@@ -217,10 +217,10 @@ class Installer_Settings extends JawsInstaller
                 }
                 $res = $installer->InstallGadget($input_schema, $variables[$gadget]);
                 if (Jaws_Error::IsError($res)) {
-                    _log(JAWS_LOG_DEBUG, "There was a problem while installing sample gadget $gadget");
-                    _log(JAWS_LOG_DEBUG, $res->getMessage());
+                    _log(JAWS_DEBUG, "There was a problem while installing sample gadget $gadget");
+                    _log(JAWS_DEBUG, $res->getMessage());
                 } else {
-                    _log(JAWS_LOG_DEBUG, "Sample gadget $gadget installed successfully.");
+                    _log(JAWS_DEBUG, "Sample gadget $gadget installed successfully.");
                 }
             }
         }
@@ -228,8 +228,8 @@ class Installer_Settings extends JawsInstaller
         // Inserts layout sample itemes
         $objGadget = Jaws_Gadget::getInstance('Layout');
         if (Jaws_Error::IsError($objGadget)) {
-            _log(JAWS_LOG_DEBUG, "There was a problem while loading gadget: Layout");
-            _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
+            _log(JAWS_DEBUG, "There was a problem while loading gadget: Layout");
+            _log(JAWS_DEBUG, $objGadget->getMessage());
         } else {
             $base_schema  = ROOT_JAWS_PATH. "gadgets/Layout/Resources/schema/schema.xml";
             $input_schema = ROOT_JAWS_PATH. "install/stages/Settings/Sample/Layout/insert.xml";
@@ -237,10 +237,10 @@ class Installer_Settings extends JawsInstaller
             $installer = $objGadget->installer->load();
             $res = $installer->installSchema($input_schema, '', $base_schema, true);
             if (Jaws_Error::IsError($res)) {
-                _log(JAWS_LOG_DEBUG, "There was a problem while inserting sample itemes into gadget $gadget");
-                _log(JAWS_LOG_DEBUG, $res->getMessage());
+                _log(JAWS_DEBUG, "There was a problem while inserting sample itemes into gadget $gadget");
+                _log(JAWS_DEBUG, $res->getMessage());
             } else {
-                _log(JAWS_LOG_DEBUG,"Sample itemes inserted into gadget $gadget.");
+                _log(JAWS_DEBUG,"Sample itemes inserted into gadget $gadget.");
             }
         }
 
@@ -251,9 +251,9 @@ class Installer_Settings extends JawsInstaller
         $source = ROOT_JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';
         $destination = ROOT_DATA_PATH. 'phoo/'. $variables['Phoo']['folder-path']. '/';
         if (Jaws_Utils::copy($source, $destination)) {
-            _log(JAWS_LOG_DEBUG, "Sample data of gadget Phoo copied successfully.");
+            _log(JAWS_DEBUG, "Sample data of gadget Phoo copied successfully.");
         } else {
-            _log(JAWS_LOG_DEBUG, "There was a problem while copying sample data of gadget Phoo");
+            _log(JAWS_DEBUG, "There was a problem while copying sample data of gadget Phoo");
         }
 
         return true;

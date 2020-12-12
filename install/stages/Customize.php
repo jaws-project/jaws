@@ -22,9 +22,9 @@ class Installer_Customize extends JawsInstaller
         $use_log = $request->fetch('use_log', 'post');
         //Set main session-log vars
         if (isset($use_log)) {
-            $_SESSION['use_log'] = $use_log === 'yes'? JAWS_LOG_DEBUG : false;
+            $_SESSION['use_log'] = $use_log === 'yes'? JAWS_DEBUG : false;
         }
-        _log(JAWS_LOG_DEBUG,"Generating new installation key");
+        _log(JAWS_DEBUG,"Generating new installation key");
 
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Customize/templates');

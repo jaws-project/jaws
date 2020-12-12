@@ -171,7 +171,7 @@ class Installer_Database extends JawsInstaller
             $modules = get_loaded_extensions();
             $modules = array_map('strtolower', $modules);
             foreach ($drivers as $driver => $driver_info) {
-                _log(JAWS_LOG_DEBUG,"Checking if ".$driver_info['title']. "(".$driver_info['ext'].") driver is available");
+                _log(JAWS_DEBUG,"Checking if ".$driver_info['title']. "(".$driver_info['ext'].") driver is available");
                 if (!in_array($driver_info['ext'], $modules)) {
                     $available = false;
                     //However... mssql support exists in some Linux distros with the sybase package
@@ -180,11 +180,11 @@ class Installer_Database extends JawsInstaller
                     }
                     
                     if ($available === false) {
-                        _log(JAWS_LOG_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is NOT available");
+                        _log(JAWS_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is NOT available");
                         continue;
                     }
                 }
-                _log(JAWS_LOG_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is available");
+                _log(JAWS_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is available");
                 $tpl->setBlock('Database/drivers/driver');
                 $tpl->setVariable('d_name', $driver);
                 $tpl->setVariable('d_realname', $driver_info['title']);
@@ -225,12 +225,12 @@ class Installer_Database extends JawsInstaller
         }
 
         if (isset($post['path']) && $post['path'] !== '' && !is_dir($post['path'])) {
-            _log(JAWS_LOG_DEBUG,"The database path must be exists");
+            _log(JAWS_DEBUG,"The database path must be exists");
             return new Jaws_Error($this->t('DB_RESPONSE_PATH'), 0, JAWS_ERROR_WARNING);
         }
 
         if (isset($post['port']) && $post['port'] !== '' && !is_numeric($post['port'])) {
-            _log(JAWS_LOG_DEBUG,"The port can only be a numeric value");
+            _log(JAWS_DEBUG,"The port can only be a numeric value");
             return new Jaws_Error($this->t('DB_RESPONSE_PORT'), 0, JAWS_ERROR_WARNING);
         }
 
@@ -238,7 +238,7 @@ class Installer_Database extends JawsInstaller
             return true;
         }
 
-        _log(JAWS_LOG_DEBUG,"You must fill in all the fields apart from table prefix and port");
+        _log(JAWS_DEBUG,"You must fill in all the fields apart from table prefix and port");
         return new Jaws_Error($this->t('DB_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
     }
 
@@ -310,7 +310,7 @@ class Installer_Database extends JawsInstaller
         require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['install']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
-            _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database.");
+            _log(JAWS_DEBUG,"There was a problem connecting to the database.");
             return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
@@ -318,9 +318,9 @@ class Installer_Database extends JawsInstaller
         $variables['timestamp'] = Jaws_DB::getInstance()->date();
 
         $result = Jaws_DB::getInstance()->installSchema('Resources/schema/schema.xml', $variables);
-        _log(JAWS_LOG_DEBUG,"Installing core schema");
+        _log(JAWS_DEBUG,"Installing core schema");
         if (Jaws_Error::isError($result)) {
-            _log(JAWS_LOG_DEBUG,$result->getMessage());
+            _log(JAWS_DEBUG,$result->getMessage());
             return $result;
         }
 
@@ -343,7 +343,7 @@ class Installer_Database extends JawsInstaller
         );
 
         if (Jaws_Error::isError($result)) {
-            _log(JAWS_LOG_DEBUG,$result->getMessage());
+            _log(JAWS_DEBUG,$result->getMessage());
         }
 
         $gadgets = array(
@@ -354,14 +354,14 @@ class Installer_Database extends JawsInstaller
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
+                _log(JAWS_DEBUG,"There was a problem installing core gadget: ".$gadget);
                 return $objGadget;
             }
 
             $installer = $objGadget->installer->load();
             $result = $installer->InstallGadget();
             if (Jaws_Error::IsError($result)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
+                _log(JAWS_DEBUG,"There was a problem installing core gadget: ".$gadget);
                 return $result;
             }
         }
