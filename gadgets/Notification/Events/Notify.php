@@ -22,7 +22,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if (!isset($params['name'])) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'Notification name required', 1);
+            $GLOBALS['log']->Log(JAWS_ERROR, 'Notification name required', 1);
             return false;
         }
 
