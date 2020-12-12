@@ -44,7 +44,7 @@ class Upgrader_170To180 extends JawsUpgrader
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(
-                JAWS_LOG_DEBUG,
+                JAWS_DEBUG,
                 "There was a problem connecting to the database, please check the details and try again"
             );
             return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
@@ -53,7 +53,7 @@ class Upgrader_170To180 extends JawsUpgrader
         // delete old sessions
         $result = Jaws_ORM::getInstance()->table('session')->delete()->exec();
         if (Jaws_Error::IsError($result)) {
-            _log(JAWS_LOG_DEBUG, $result->getMessage());
+            _log(JAWS_DEBUG, $result->getMessage());
             // do nothing
         }
 
@@ -73,10 +73,10 @@ class Upgrader_170To180 extends JawsUpgrader
                 return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', "$new.xml"),0 , JAWS_ERROR_ERROR);
             }
 
-            _log(JAWS_LOG_DEBUG,"Upgrading core schema");
+            _log(JAWS_DEBUG,"Upgrading core schema");
             $result = Jaws_DB::getInstance()->installSchema($new_schema, array(), $old_schema);
             if (Jaws_Error::isError($result)) {
-                _log(JAWS_LOG_ERROR, $result->getMessage());
+                _log(JAWS_ERROR, $result->getMessage());
                 if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
                     return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
                 }
@@ -92,13 +92,13 @@ class Upgrader_170To180 extends JawsUpgrader
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem loading core gadget: ".$gadget);
+                _log(JAWS_DEBUG,"There was a problem loading core gadget: ".$gadget);
                 return $objGadget;
             }
 
             $installer = $objGadget->installer->load();
             if (Jaws_Error::IsError($installer)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem loading installer of core gadget: $gadget");
+                _log(JAWS_DEBUG,"There was a problem loading installer of core gadget: $gadget");
                 return $installer;
             }
 
@@ -110,7 +110,7 @@ class Upgrader_170To180 extends JawsUpgrader
             }
 
             if (Jaws_Error::IsError($result)) {
-                _log(JAWS_LOG_DEBUG,"There was a problem installing/upgrading core gadget: $gadget");
+                _log(JAWS_DEBUG,"There was a problem installing/upgrading core gadget: $gadget");
                 return $result;
             }
         }

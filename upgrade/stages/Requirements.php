@@ -46,17 +46,17 @@ class Upgrader_Requirements extends JawsUpgrader
         $modules = get_loaded_extensions();
         $modules = array_map('strtolower', $modules);
 
-        _log(JAWS_LOG_DEBUG,"Checking requirements...");
+        _log(JAWS_DEBUG,"Checking requirements...");
         // PHP version
         $tpl->setBlock('Requirements/req_item');
         $tpl->setVariable('item', $this->t('REQ_PHP_VERSION'));
         $tpl->setVariable('item_requirement', $this->t('REQ_GREATER_THAN', MIN_PHP_VERSION));
         $tpl->setVariable('item_actual', phpversion());
         if (version_compare(phpversion(), MIN_PHP_VERSION, ">=") == 1) {
-            _log(JAWS_LOG_DEBUG,"PHP installed version looks ok (>= ".MIN_PHP_VERSION.")");
+            _log(JAWS_DEBUG,"PHP installed version looks ok (>= ".MIN_PHP_VERSION.")");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"PHP installed version (".phpversion().") is not supported");
+            _log(JAWS_DEBUG,"PHP installed version (".phpversion().") is not supported");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -69,10 +69,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $tpl->setVariable('item_requirement', $this->t('REQ_READABLE'));
         $tpl->setVariable('item_actual', $this->_get_perms('config'));
         if ($result) {
-            _log(JAWS_LOG_DEBUG,"config directory has read-permission privileges");
+            _log(JAWS_DEBUG,"config directory has read-permission privileges");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"config directory doesn't have read-permission privileges");
+            _log(JAWS_DEBUG,"config directory doesn't have read-permission privileges");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -85,10 +85,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $tpl->setVariable('item_requirement', $this->t('REQ_WRITABLE'));
         $tpl->setVariable('item_actual', $this->_get_perms('data'));
         if ($result) {
-            _log(JAWS_LOG_DEBUG,"data directory has read and write permission privileges");
+            _log(JAWS_DEBUG,"data directory has read and write permission privileges");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"data directory doesn't have read and write permission privileges");
+            _log(JAWS_DEBUG,"data directory doesn't have read and write permission privileges");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -106,10 +106,10 @@ class Upgrader_Requirements extends JawsUpgrader
         }
         $tpl->setVariable('item_actual', $actual);
         if ($db_state) {
-            _log(JAWS_LOG_DEBUG,"Available database drivers: $actual");
+            _log(JAWS_DEBUG,"Available database drivers: $actual");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"No database driver found");
+            _log(JAWS_DEBUG,"No database driver found");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -121,10 +121,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $tpl->setVariable('item_requirement', Jaws::t('YES'));
         $tpl->setVariable('item_actual', (in_array('xml', $modules)? Jaws::t('YES') : Jaws::t('NO')));
         if (in_array('xml', $modules)) {
-            _log(JAWS_LOG_DEBUG,"xml support is enabled");
+            _log(JAWS_DEBUG,"xml support is enabled");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"xml support is not enabled");
+            _log(JAWS_DEBUG,"xml support is not enabled");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -137,10 +137,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $check = (bool) ini_get('file_uploads');
         $tpl->setVariable('item_actual', ($check ? Jaws::t('YES'): Jaws::t('NO')));
         if ($check) {
-            _log(JAWS_LOG_DEBUG,"PHP accepts file uploads");
+            _log(JAWS_DEBUG,"PHP accepts file uploads");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"PHP doesn't accept file uploads");
+            _log(JAWS_DEBUG,"PHP doesn't accept file uploads");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -153,10 +153,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $safe_mode = (bool) ini_get('safe_mode');
         $tpl->setVariable('item_actual', ($safe_mode ? $this->t('REQ_ON'): $this->t('REQ_OFF')));
         if ($safe_mode) {
-            _log(JAWS_LOG_DEBUG,"PHP has safe-mode turned on");
+            _log(JAWS_DEBUG,"PHP has safe-mode turned on");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"PHP has safe-mode turned off");
+            _log(JAWS_DEBUG,"PHP has safe-mode turned off");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -171,10 +171,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $actual = empty($actual)? 'No' : $actual;
         $tpl->setVariable('item_actual', $actual);
         if (in_array('gd', $modules) || in_array('magickwand', $modules)) {
-            _log(JAWS_LOG_DEBUG,"PHP has GD or ImageMagick turned on");
+            _log(JAWS_DEBUG,"PHP has GD or ImageMagick turned on");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"PHP has GD or ImageMagick turned off");
+            _log(JAWS_DEBUG,"PHP has GD or ImageMagick turned off");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -186,10 +186,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $tpl->setVariable('item_requirement', Jaws::t('YES'));
         $tpl->setVariable('item_actual', (in_array('exif', $modules)? Jaws::t('YES') : Jaws::t('NO')));
         if (in_array('exif', $modules)) {
-            _log(JAWS_LOG_DEBUG,"exif support is enabled");
+            _log(JAWS_DEBUG,"exif support is enabled");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"exif support is not enabled");
+            _log(JAWS_DEBUG,"exif support is not enabled");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -201,10 +201,10 @@ class Upgrader_Requirements extends JawsUpgrader
         $tpl->setVariable('item_requirement', Jaws::t('YES'));
         $tpl->setVariable('item_actual', (in_array('openssl', $modules)? Jaws::t('YES') : Jaws::t('NO')));
         if (in_array('openssl', $modules)) {
-            _log(JAWS_LOG_DEBUG,"openssl extension is loaded");
+            _log(JAWS_DEBUG,"openssl extension is loaded");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
         } else {
-            _log(JAWS_LOG_DEBUG,"openssl extension is not loaded");
+            _log(JAWS_DEBUG,"openssl extension is not loaded");
             $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
@@ -225,7 +225,7 @@ class Upgrader_Requirements extends JawsUpgrader
         if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<') == 1) {
             $text = $this->t('REQ_RESPONSE_PHP_VERSION', MIN_PHP_VERSION);
             $type = JAWS_ERROR_ERROR;
-            _log(JAWS_LOG_DEBUG,$text);
+            _log(JAWS_DEBUG,$text);
             return new Jaws_Error($text, 0, $type);
         }
 
@@ -253,14 +253,14 @@ class Upgrader_Requirements extends JawsUpgrader
         if (!$db_state) {
             $text = $this->t('REQ_RESPONSE_EXTENSION', implode(' | ', array_keys($this->_db_drivers)));
             $type = JAWS_ERROR_ERROR;
-            _log(JAWS_LOG_DEBUG,$text);
+            _log(JAWS_DEBUG,$text);
             return new Jaws_Error($text, 0, $type);
         }
 
         if (!in_array('xml', $modules)) {
             $text = $this->t('REQ_RESPONSE_EXTENSION', 'XML');
             $type = JAWS_ERROR_ERROR;
-            _log(JAWS_LOG_DEBUG,$text);
+            _log(JAWS_DEBUG,$text);
             return new Jaws_Error($text, 0, $type);
         }
 

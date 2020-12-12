@@ -48,7 +48,7 @@ class Upgrader_Report extends JawsUpgrader
             array('version' => '0.9.0', 'stage' => null),
         );
 
-        _log(JAWS_LOG_DEBUG,"Checking/Reporting previous missed installations");
+        _log(JAWS_DEBUG,"Checking/Reporting previous missed installations");
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Report/templates');
         $tpl->SetBlock('Report');
@@ -74,17 +74,17 @@ class Upgrader_Report extends JawsUpgrader
             if (version_compare($supported['version'], $_SESSION['upgrade']['InstalledVersion'], '<=')) {
                 if ($supported['version'] == JAWS_VERSION) {
                     $tpl->SetVariable('status', $this->t('REPORT_NO_NEED_CURRENT'));
-                    _log(JAWS_LOG_DEBUG,$supported['version']." does not requires upgrade(is current)");
+                    _log(JAWS_DEBUG,$supported['version']." does not requires upgrade(is current)");
                 } else {
                     $tpl->SetVariable('status', $this->t('REPORT_NO_NEED'));
-                    _log(JAWS_LOG_DEBUG,$supported['version']." does not requires upgrade");
+                    _log(JAWS_DEBUG,$supported['version']." does not requires upgrade");
                 }
                 $_SESSION['upgrade']['versions'][$supported['version']]['status'] = true;
             } else {
                 $tpl->SetVariable('status', $this->t('REPORT_NEED'));
                 $_SESSION['upgrade']['versions'][$supported['version']]['status'] = false;
                 $versions_to_upgrade++;
-                _log(JAWS_LOG_DEBUG,$supported['version']." requires upgrade");
+                _log(JAWS_DEBUG,$supported['version']." requires upgrade");
                 $_SESSION['upgrade']['versions'][$supported['version']]['status'] = false;
             }
 

@@ -64,7 +64,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
 
-        _log(JAWS_LOG_DEBUG,"Preparing configuaration file");
+        _log(JAWS_DEBUG,"Preparing configuaration file");
         $tpl->SetBlock('WriteConfig');
 
         $config_path = ROOT_JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
@@ -119,7 +119,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
         require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
-            _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
+            _log(JAWS_DEBUG,"There was a problem connecting to the database, please check the details and try again");
             return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
@@ -128,16 +128,16 @@ class Upgrader_WriteConfig extends JawsUpgrader
         $jawsApp = Jaws::getInstance();
         $jawsApp->registry->init();
 
-        _log(JAWS_LOG_DEBUG,"Setting ".JAWS_VERSION." as the current installed version");
+        _log(JAWS_DEBUG,"Setting ".JAWS_VERSION." as the current installed version");
         $jawsApp->registry->update('version', JAWS_VERSION);
 
         //remove cache directory
         $path = ROOT_DATA_PATH. 'cache';
         if (!Jaws_Utils::delete($path)) {
-            _log(JAWS_LOG_DEBUG,"Can't delete $path");
+            _log(JAWS_DEBUG,"Can't delete $path");
         }
 
-        _log(JAWS_LOG_DEBUG,"Configuration file has been created/updated");
+        _log(JAWS_DEBUG,"Configuration file has been created/updated");
         return true;
     }
 }

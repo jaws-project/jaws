@@ -40,9 +40,9 @@ class Upgrader_Authentication extends JawsUpgrader
         $use_log = $request->fetch('use_log', 'post');
         //Set main session-log vars
         if (isset($use_log)) {
-            $_SESSION['use_log'] = $use_log === 'yes'? JAWS_LOG_DEBUG : false;
+            $_SESSION['use_log'] = $use_log === 'yes'? JAWS_DEBUG : false;
         }
-        _log(JAWS_LOG_DEBUG,"Generating new installation key");
+        _log(JAWS_DEBUG,"Generating new installation key");
 
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Authentication/templates');
@@ -89,13 +89,13 @@ class Upgrader_Authentication extends JawsUpgrader
         if (file_exists($key_file)) {
             $key = trim(file_get_contents($key_file));
             if ($key === $_SESSION['upgrade']['Authentication']['key']) {
-                _log(JAWS_LOG_DEBUG,"Input log and session key match");
+                _log(JAWS_DEBUG,"Input log and session key match");
                 return true;
             }
-            _log(JAWS_LOG_DEBUG,"The key found doesn't match the one below, please check that you entered the key correctly.");
+            _log(JAWS_DEBUG,"The key found doesn't match the one below, please check that you entered the key correctly.");
             return new Jaws_Error($this->t('AUTH_ERROR_KEY_MATCH', 'key.txt'), 0, JAWS_ERROR_WARNING);
         }
-        _log(JAWS_LOG_DEBUG,"Your key file was not found, please make sure you created it, and the web server is able to read it.");
+        _log(JAWS_DEBUG,"Your key file was not found, please make sure you created it, and the web server is able to read it.");
         return new Jaws_Error($this->t('AUTH_ERROR_KEY_FILE', 'key.txt'), 0, JAWS_ERROR_WARNING);
     }
 }

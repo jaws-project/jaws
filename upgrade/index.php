@@ -86,21 +86,22 @@ if (!defined('JAWS_CACHE')) {
 }
 define('UPGRADE_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
-// Initialize the logger
-$_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
-$logger = array('method'  => 'LogToFile',
-                'options' => array('file' => ROOT_DATA_PATH . 'logs/.upgrade.log'));
-require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
-$GLOBALS['log'] = new Jaws_Log($_SESSION['use_log'], $logger);
-$GLOBALS['log']->Start();
-
-// Lets support older PHP versions so we can use spanking new functions
-require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
-
 require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Error.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Gadget.php';
+// Lets support older PHP versions so we can use spanking new functions
+require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
+
+// Initialize the logger
+$_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
+if (!defined('LOGGER_METHOD')) {
+    define('LOGGER_METHOD', 'LogToFile');
+    define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
+}
+require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
+$GLOBALS['log'] = new Jaws_Log($_SESSION['use_log']);
+$GLOBALS['log']->Start();
 
 if (!isset($_SESSION['upgrade'])) {
     $_SESSION['upgrade'] = array('stage' => 0, 'lastStage' => array());

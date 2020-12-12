@@ -25,7 +25,7 @@ class Upgrader_Cleanup extends JawsUpgrader
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Cleanup/templates');
 
-        _log(JAWS_LOG_DEBUG,"Preparing cleanup stage");
+        _log(JAWS_DEBUG,"Preparing cleanup stage");
         $tpl->SetBlock('cleanup');
         $tpl->setVariable('lbl_info', $this->t('CLEANUP_INFO'));
 

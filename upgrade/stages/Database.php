@@ -180,7 +180,7 @@ class Upgrader_Database extends JawsUpgrader
             $modules = get_loaded_extensions();
             $modules = array_map('strtolower', $modules);
             foreach ($drivers as $driver => $driver_info) {
-                _log(JAWS_LOG_DEBUG,"Checking if ".$driver_info['title']. "(".$driver_info['ext'].") driver is available");
+                _log(JAWS_DEBUG,"Checking if ".$driver_info['title']. "(".$driver_info['ext'].") driver is available");
                 if (!in_array($driver_info['ext'], $modules)) {
                     $available = false;
                     //However... mssql support exists in some Linux distros with the sybase package
@@ -189,11 +189,11 @@ class Upgrader_Database extends JawsUpgrader
                     }
                     
                     if ($available === false) {
-                        _log(JAWS_LOG_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is NOT available");
+                        _log(JAWS_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is NOT available");
                         continue;
                     }
                 }
-                _log(JAWS_LOG_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is available");
+                _log(JAWS_DEBUG,"Driver ".$driver_info['title']. "(".$driver_info['ext'].") is available");
                 $tpl->setBlock('Database/drivers/driver');
                 $tpl->setVariable('d_name', $driver);
                 $tpl->setVariable('d_realname', $driver_info['title']);
@@ -234,12 +234,12 @@ class Upgrader_Database extends JawsUpgrader
         }
 
         if (isset($post['path']) && $post['path'] !== '' && !is_dir($post['path'])) {
-            _log(JAWS_LOG_DEBUG,"The database path must be exists");
+            _log(JAWS_DEBUG,"The database path must be exists");
             return new Jaws_Error($this->t('DB_RESPONSE_PATH'), 0, JAWS_ERROR_WARNING);
         }
 
         if (isset($post['port']) && $post['port'] !== '' && !is_numeric($post['port'])) {
-            _log(JAWS_LOG_DEBUG,"The port can only be a numeric value");
+            _log(JAWS_DEBUG,"The port can only be a numeric value");
             return new Jaws_Error($this->t('DB_RESPONSE_PORT'), 0, JAWS_ERROR_WARNING);
         }
 
@@ -247,7 +247,7 @@ class Upgrader_Database extends JawsUpgrader
             return true;
         }
 
-        _log(JAWS_LOG_DEBUG,"You must fill in all the fields apart from table prefix and port");
+        _log(JAWS_DEBUG,"You must fill in all the fields apart from table prefix and port");
         return new Jaws_Error($this->t('DB_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
     }
 
@@ -319,11 +319,11 @@ class Upgrader_Database extends JawsUpgrader
         require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
-            _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
+            _log(JAWS_DEBUG,"There was a problem connecting to the database, please check the details and try again");
             return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
-        _log(JAWS_LOG_DEBUG,"Checking current database");
+        _log(JAWS_DEBUG,"Checking current database");
 
         // json encode all registry key value
         $tblReg = Jaws_ORM::getInstance()->table('registry');
@@ -338,13 +338,13 @@ class Upgrader_Database extends JawsUpgrader
                     ->where('id', $reg['id'])
                     ->exec();
                 if (Jaws_Error::isError($result)) {
-                    _log(JAWS_LOG_ERROR, $result->getMessage());
+                    _log(JAWS_ERROR, $result->getMessage());
                     return $result;
                 }
             }
         }
 
-        _log(JAWS_LOG_DEBUG,"Connected to ".$_SESSION['upgrade']['Database']['driver']." database driver successfully.");
+        _log(JAWS_DEBUG,"Connected to ".$_SESSION['upgrade']['Database']['driver']." database driver successfully.");
         return true;
     }
 }
