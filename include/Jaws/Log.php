@@ -66,22 +66,6 @@ class Jaws_Log
     var $_StartTime = 0;
 
     /**
-     * The logger
-     *
-     * @var     string
-     * @access  private
-     */
-    var $_Method;
-
-    /**
-     * The logger options
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_Options;
-
-    /**
      * The stack of messages
      *
      * @var     string
@@ -102,21 +86,10 @@ class Jaws_Log
     {
         $this->_MessageStack = '';
         $this->_LogActivated = (int)$activated;
-        if (!empty($logger)) {
-            $this->_Method = $logger['method'];
-            if (isset($logger['options'])) {
-                $this->_Options = $logger['options'];
-            }
-        }
 
-        if (empty($this->_Method)) {
-            $this->_Method = Jaws_LogDefaultMethod;
+        if (!defined('LOGGER_METHOD')) {
+            define('LOGGER_METHOD', 'LogToWindow');
         }
-
-        if (empty($this->_Options)) {
-            $this->_Options = Jaws_LogDefaultOption;
-        }
-
     }
 
     /**
@@ -199,8 +172,9 @@ class Jaws_Log
             $line = @$trace[$backtrace]['line'];
         }
 
-        $method = $this->_Method;
-        $this->$method($priority, $file, $line, trim($msg), $this->_Options);
+        $logLevel = array_search($priority, self::level);
+        $method = LOGGER_METHOD;
+        $this->$method($logLevel, $file, $line, trim($msg));
     }
 
     /**
@@ -230,37 +204,35 @@ class Jaws_Log
         call_user_func_array('var_dump', func_get_args());
         $content = ob_get_contents();
         ob_end_clean();
-        $method = $this->_Method;
-        $this->$method(JAWS_LOG_DEBUG, $file, $line, trim($content), $this->_Options);
+        $method = LOGGER_METHOD;
+        $this->$method('debug', $file, $line, trim($content));
     }
 
     /**
      * Logs the message to a file specified on the dest parameter
      *
      * @access  public
-     * @param   string  $priority   How to log
+     * @param   string  $logLevel   Log level string
      * @param   string  $file       Filename
      * @param   string  $line       File line number
      * @param   string  $msg        Message to log
-     * @param   string  $opts       Options(log file name, ...)
      * @return  void
      */
-    function LogToFile($priority, $file, $line, $msg, $opts)
+    function LogToFile($logLevel, $file, $line, $msg)
     {
-        if (isset($opts['file'])) {
-            $logfile = $opts['file'];
-        } else {
-            trigger_error("You need to set at least the filename for Jaws_Log::LogToFile", E_USER_ERROR);
+        if (!defined('LOGGER_METHOD_FILE_PATH')) {
+            define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
         }
 
+        $logfile = LOGGER_METHOD_FILE_PATH . ".jaws.$logLevel";
+
         // log file rotation
-        if (isset($opts['size']) && @filesize($logfile) >= $opts['size']) {
+        if (defined('LOGGER_METHOD_FILE_SIZE') && @filesize($logfile) >= LOGGER_METHOD_FILE_SIZE) {
             Jaws_Utils::rename($logfile, $logfile. '.'. time());
         }
 
-
         if (false !== $fh = @fopen($logfile, 'a+')) {
-            fwrite($fh, $this->getLogString($priority, $file, $line, $msg) . "\n");
+            fwrite($fh, $this->getLogString($logLevel, $file, $line, $msg) . "\n");
             fclose($fh);
         }
     }
@@ -269,20 +241,19 @@ class Jaws_Log
      * Logs the message to syslog
      *
      * @access  public
-     * @param   string  $priority   How to log
+     * @param   string  $logLevel   Log level string
      * @param   string  $file       Filename
      * @param   string  $line       File line number
      * @param   string  $msg        Message to log
-     * @param   string  $opt        Some options
      */
-    function LogToSyslog($priority, $file, $line, $msg, $opt)
+    function LogToSyslog($logLevel, $file, $line, $msg)
     {
-        $indent = 'Jaws_Log';
-        if (isset($opt['indent'])) {
-            $indent = $opt['indent'];
+        if (!defined('LOGGER_METHOD_SYSLOG_INDENT')) {
+            define('LOGGER_METHOD_SYSLOG_INDENT', 'Jaws_Log');
         }
-        openlog($indent, LOG_PID | LOG_PERROR, LOG_LOCAL0);
-        syslog((int)$priority, $msg);
+
+        openlog(LOGGER_METHOD_SYSLOG_INDENT, LOG_PID | LOG_PERROR, LOG_LOCAL0);
+        syslog(self::level[$logLevel], $msg);
         closelog();
     }
 
@@ -290,30 +261,32 @@ class Jaws_Log
      * dump the messages into the FireBug extension
      *
      * @access  public
-     * @param   string  $priority   How to log
+     * @param   string  $logLevel   Log level string
      * @param   string  $file       Filename
      * @param   string  $line       File line number
      * @param   string  $msg        Message to log
-     * @param   string  $opt        Some options
      * @return  void
      */
-    function LogToFirebug($priority, $file, $line, $msg, $opt)
+    function LogToFirebug($logLevel, $file, $line, $msg)
     {
-        switch($priority) {
-            case JAWS_LOG_EMERG:
-            case JAWS_LOG_ALERT:
-            case JAWS_LOG_CRIT:
-            case JAWS_LOG_ERROR:
+        switch($logLevel) {
+            case 'emergency':
+            case 'alert':
+            case 'critical':
+            case 'error':
                 $console_method = 'error';
                 break;
-            case JAWS_LOG_NOTICE:
-            case JAWS_LOG_INFO:
+
+            case 'notice':
+            case 'info':
                 $console_method = 'info';
                 break;
-            case JAWS_LOG_WARNING:
+
+            case 'warning':
                 $console_method = 'warn';
                 break;
-            case JAWS_LOG_DEBUG:
+
+            case 'debug':
                 $console_method = 'debug';
                 break;
         }
@@ -331,25 +304,25 @@ class Jaws_Log
      * prints the message to the apache error log file
      *
      * @access  public
-     * @param   string  $priority   How to log
+     * @param   string  $logLevel   Log level string
      * @param   string  $file       Filename
      * @param   string  $line       File line number
      * @param   string  $msg        Message to log
-     * @param   string  $opt        Some options
      * @return  void
      */
-    function LogToApache($priority, $file, $line, $msg, $opt)
+    function LogToApache($logLevel, $file, $line, $msg)
     {
         switch ($priority){
-            case JAWS_LOG_ERROR:
-            case JAWS_LOG_WARNING:
+            case 'error':
+            case 'warning':
                 $error_level = E_USER_WARNING;
                 break;
+
             default:
                 $error_level = E_USER_NOTICE;
                 break;
         }
-        trigger_error($this->getLogString($priority, $file, $line, $msg), $error_level);
+        trigger_error($this->getLogString($logLevel, $file, $line, $msg), $error_level);
     }
 
 
@@ -359,16 +332,15 @@ class Jaws_Log
      * flat variable should do
      *
      * @access  public
-     * @param   string  $priority   How to log
+     * @param   string  $logLevel   Log level string
      * @param   string  $file       Filename
      * @param   string  $line       File line number
      * @param   string  $msg        Message to log
-     * @param   string  $opt        Some options
      * @return  void
      */
-    function LogToWindow($priority, $file, $line, $msg, $opt)
+    function LogToWindow($logLevel, $file, $line, $msg)
     {
-        $this->_MessageStack = $this->_MessageStack . "\n" . $this->getLogString($priority, $file, $line, $msg);
+        $this->_MessageStack = $this->_MessageStack . "\n" . $this->getLogString($logLevel, $file, $line, $msg);
     }
 
     /**
@@ -389,18 +361,20 @@ class Jaws_Log
      * appends the date and the priority to the message
      *
      * @access  private
-     * @param   string  $priority  How to log
-     * @param   string  $msg       Message to log
+     * @param   string  $logLevel   Log level string
+     * @param   string  $file       Filename
+     * @param   string  $line       File line number
+     * @param   string  $msg        Message to log
      * @return  string  The message already prepared to be logged(parsed)
      */
-    private function getLogString($priority, $file, $line, $msg)
+    private function getLogString($logLevel, $file, $line, $msg)
     {
         $time = date('Y-m-d H:i:s');
         $exec = substr($this->ExecTime(), 0, 10);
         $tmem = $this->MemUsage().'KB';
-        return '['. $this->_Log_Priority_Str[$priority - 1].']'.
-        '['. JAWS_SCRIPT.",{$_SERVER['REQUEST_METHOD']}]".
-        "[$time, $exec, $tmem][$file,$line]:\n".$msg;
+        return '['. strtoupper($logLevel).']'.
+            '['. JAWS_SCRIPT.",{$_SERVER['REQUEST_METHOD']}]".
+            "[$time, $exec, $tmem][$file,$line]:\n".$msg;
     }
 
     /**
@@ -454,7 +428,7 @@ class Jaws_Log
     function LogStackToScreen()
     {
         if (!empty($this->_MessageStack)) {
-            switch($this->_Method) {
+            switch(LOGGER_METHOD) {
                 case 'LogToWindow':
                     $this->StackToWindow();
                     break;
