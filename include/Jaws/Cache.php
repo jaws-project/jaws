@@ -27,7 +27,7 @@ class Jaws_Cache
         if (!empty($cacheDriver) &&
             !file_exists(ROOT_JAWS_PATH . "include/Jaws/Cache/{$cacheDriver}.php")
         ) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERR, "Loading '$cacheDriver' cache driver failed.");
+            $GLOBALS['log']->Log(JAWS_ERROR, "Loading '$cacheDriver' cache driver failed.");
             $cacheDriver = '';
         }
 

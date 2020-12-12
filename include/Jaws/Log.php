@@ -127,7 +127,7 @@ class Jaws_Log
     function Start()
     {
         $this->_StartTime = microtime(true);
-        $this->Log(JAWS_LOG_INFO, '[Jaws Log Start]');
+        $this->Log(JAWS_INFO, '[Jaws Log Start]');
     }
 
     /**
@@ -138,9 +138,9 @@ class Jaws_Log
      */
     function End()
     {
-        $this->Log(JAWS_LOG_INFO, 'Memory Usage: ' . $this->MemUsage() . ' KB');
-        $this->Log(JAWS_LOG_INFO, 'Page was generated in '. $this->ExecTime() . ' seconds');
-        $this->Log(JAWS_LOG_INFO, '[Jaws Log End]');
+        $this->Log(JAWS_INFO, 'Memory Usage: ' . $this->MemUsage() . ' KB');
+        $this->Log(JAWS_INFO, 'Page was generated in '. $this->ExecTime() . ' seconds');
+        $this->Log(JAWS_INFO, '[Jaws Log End]');
         $this->LogStackToScreen();
     }
 
@@ -346,7 +346,7 @@ class Jaws_Log
     /**
      * Get the message stack
      * whe should use it like this:
-     * $this->Log(JAWS_LOG_DEBUG,$this->GetMessageStack);
+     * $this->Log(JAWS_DEBUG,$this->GetMessageStack);
      *
      * @access  public
      * @return  string the Stack of messages
