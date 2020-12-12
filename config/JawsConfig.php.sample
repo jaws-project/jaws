@@ -63,39 +63,34 @@ define('LOG_ACTIVATED', 0);
  *
  *    LogToFile: Logs the message to a specified file.
  *     Options:
- *      file (required): File where you want to save data, IMPORTANT. PHP needs write-access to that file
- *      maxlines (optional): How many lines will contain the file. Default = 500
- *      rotatelimit (optional): How many rotated files will be created (i.e. jaws.log.1, jaws.log.2 etc). Default = 1
+ *      path (required): File where you want to save data, IMPORTANT. PHP needs write-access to that path
+ *      size (optional): Max file size before rotated
  *     Example:
- *        $GLOBALS['logger']['method'] = 'LogToFile';
- *        $GLOBALS['logger']['options'] = array();
- *        $GLOBALS['logger']['options']['file'] = "/tmp/jaws.log";
- *        $GLOBALS['logger']['options']['size'] = 2097152;
- *
+ *        define('LOGGER_METHOD', 'LogToFile');
+ *        define('LOGGER_METHOD_FILE_PATH', "/tmp/");
+ *        define('LOGGER_METHOD_FILE_SIZE', 2097152); // 2MB
  *
  *    LogToSyslog: Logs the message to the syslog, you can find the log of this blog just by looking to the tag you
  *    define
  *      Options:
  *       indent: String ident is added to each message. Default: "Jaws_Log"
  *      Example:
- *        $GLOBALS['logger']['method'] = 'LogToSyslog';
- *        $GLOBALS['logger']['options'] = array();
- *        $GLOBALS['logger']['options']['indent'] = 'Jaws_Log';
+ *        define('LOGGER_METHOD', 'LogToSyslog');
+ *        define('LOGGER_METHOD_SYSLOG_INDENT', 'Jaws_Log');
  *
  *    LogToWindow: All log messages are printed to new window
  *       Example:
- *        $GLOBALS['logger']['method'] = 'LogToWindow';
+ *        define('LOGGER_METHOD', 'LogToWindow');
  *
  *    LogToApache': Prints the message to the apache error log file
  *       Example:
- *        $GLOBALS['logger']['method'] = 'LogToApache';
+ *        define('LOGGER_METHOD', 'LogToApache');
  *
  *    LogToFirebug: Prints the messages into the Firebugs console (The firebug extensions is required)
  *       Example:
- *        $GLOBALS['logger']['method'] = 'LogToFirebug';
+ *        define('LOGGER_METHOD', 'LogToFirebug');
  */
 
-$GLOBALS['logger']['method'] = 'LogToFile';
-$GLOBALS['logger']['options'] = array();
-$GLOBALS['logger']['options']['file'] = ROOT_DATA_PATH . 'logs/.jaws.log';
-$GLOBALS['logger']['options']['size'] = 2097152;
+define('LOGGER_METHOD', 'LogToFile');
+define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
+define('LOGGER_METHOD_FILE_SIZE', 2097152); // 2MB
