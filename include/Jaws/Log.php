@@ -1,59 +1,5 @@
 <?php
 /**
- * System is unusable
- */
-define('JAWS_LOG_EMERG',   1);
-
-/**
- * Immediate action required
- */
-define('JAWS_LOG_ALERT',   2);
-
-/**
- * Critical conditions
- */
-define('JAWS_LOG_CRIT',    3);
-
-/**
- * Error conditions
- */
-define('JAWS_LOG_ERR',     4);
-
-/**
- * Error conditions
- */
-define('JAWS_LOG_ERROR',   4);
-
-/**
- * Warning conditions
- */
-define('JAWS_LOG_WARNING', 5);
-
-/**
- * Normal but significant condition
- */
-define('JAWS_LOG_NOTICE',  6);
-
-/**
- * Informational
- */
-define('JAWS_LOG_INFO',    7);
-
-/**
- *
- */
-define('JAWS_LOG_DEBUG',   8); /* debug-level messages */
-
-/**
- * Default log method
- */
-define('Jaws_LogDefaultMethod', 'LogToWindow');
-/**
- * Default log option
- */
-define('Jaws_LogDefaultOption', '');
-
-/**
  * Class to save entries in the log (screen, syslog, logdb, etc)
  *
  * @category   Log
@@ -66,6 +12,17 @@ define('Jaws_LogDefaultOption', '');
  */
 class Jaws_Log
 {
+    const level = array(
+        'emergency' => JAWS_EMERGENCY,
+        'alert'     => JAWS_ALERT,
+        'critical'  => JAWS_CRITICAL,
+        'error'     => JAWS_ERROR,
+        'warning'   => JAWS_WARNING,
+        'notice'    => JAWS_NOTICE,
+        'info'      => JAWS_INFO,
+        'debug'     => JAWS_DEBUG,
+    );
+
     /**
      * Log activated and level value
      *  0   Disabled
