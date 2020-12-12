@@ -163,7 +163,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         $res = $parser->fetch(Jaws_XSS::defilter($site['url']));
         if (Jaws_Error::IsError($res)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['.$this->gadget->title.']: ',
+            $GLOBALS['log']->Log(JAWS_ERROR, '['.$this->gadget->title.']: ',
                 _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::refilter($site['url'])), '');
         }
 
