@@ -191,7 +191,10 @@ class Users_Actions_Profile extends Users_Actions_Default
         // auto paragraph content
         $user['about'] = Jaws_String::AutoParagraph($user['about']);
         $user = $user + array(
+            'lbl_account'     => $this::t('USERS_ACCOUNT'),
             'lbl_private'     => $this::t('USERS_PRIVATE'),
+            'lbl_email'       => Jaws::t('EMAIL'),
+            'lbl_mobile'      => $this::t('CONTACTS_MOBILE_NUMBER'),
             'lbl_fname'       => $this::t('USERS_FIRSTNAME'),
             'lbl_lname'       => $this::t('USERS_LASTNAME'),
             'lbl_gender'      => $this::t('USERS_GENDER'),
@@ -229,8 +232,8 @@ class Users_Actions_Profile extends Users_Actions_Default
 
         $tpl->SetBlock('profile/activity');
         $tpl->SetVariable('lbl_activities', $this::t('USER_ACTIVITIES'));
-        $this->Activity($tpl, $user['id'], $user['username']);
-        $tpl->ParseBlock('profile/activity');
+        $parsed = $this->Activity($tpl, $user['id'], $user['username']);
+        $tpl->ParseBlock('profile/activity', !$parsed);
 
         if ($this->gadget->GetPermission('AccessUserAttributes')) {
             $tpl->SetBlock('profile/attributes');
@@ -306,7 +309,7 @@ class Users_Actions_Profile extends Users_Actions_Default
      */
     function Activity(&$tpl, $uid, $uname)
     {
-        $activity = false;
+        $parsed = false;
         $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
@@ -342,15 +345,11 @@ class Users_Actions_Profile extends Users_Actions_Default
                 $tpl->SetVariable('url',   $activity['url']);
                 $tpl->ParseBlock('profile/activity/gadget/item');
             }
-            $activity = true;
+            $parsed = true;
             $tpl->ParseBlock('profile/activity/gadget');
         }
 
-        if (!$activity) {
-            $tpl->SetBlock('profile/activity/no_activity');
-            $tpl->SetVariable('message', $this::t('USER_ACTIVITIES_EMPTY'));
-            $tpl->ParseBlock('profile/activity/no_activity');
-        }
+        return $parsed;
     }
 
 }

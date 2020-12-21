@@ -9,134 +9,177 @@
   <div class="gadget_content">
     <div class="row">
       <div class="col-xs-8">
-        <dl class="row mb-xs-2">
-          <dt class="col-xs-4">{{lbl_username}}:</dt>
-          <dd class="col-xs-8">{{username}}</dd>
-        </dl>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading mb-xs-2" role="tab">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#user_account_profile" aria-expanded="true" aria-controls="user_account_profile">
+                  {{lbl_account}}
+                </a>
+              </h4>
+            </div>
+            <div id="user_account_profile" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_username}}:</dt>
+                  <dd class="col-xs-8">{{username}}</dd>
+                </dl>
 
-        <dl class="row mb-xs-2">
-          <dt class="col-xs-4">{{lbl_nickname}}:</dt>
-          <dd class="col-xs-8">{{nickname}}</dd>
-        </dl>
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_nickname}}:</dt>
+                  <dd class="col-xs-8">{{nickname}}</dd>
+                </dl>
 
-        <dl class="row mb-xs-2">
-          <dt class="col-xs-4">{{lbl_registered_date}}:</dt>
-          <dd class="col-xs-8">{{registered_date}}</dd>
-        </dl>
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_email}}:</dt>
+                  <dd class="col-xs-8">{{email}}</dd>
+                </dl>
+
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_mobile}}:</dt>
+                  <dd class="col-xs-8">{{mobile}}</dd>
+                </dl>
+
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_registered_date}}:</dt>
+                  <dd class="col-xs-8">{{registered_date}}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
 
         <!-- BEGIN public -->
-        <fieldset>
-          <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_private_profile">
-            {{lbl_private}}
-          </legend>
-          <div class="collapse in" id="user_private_profile">
-            <dl class="row mb-xs-2">
-              <dt class="col-xs-4">{{lbl_fname}}:</dt>
-              <dd class="col-xs-8">{{fname}}</dd>
-            </dl>
-            <dl class="row mb-xs-2">
-              <dt class="col-xs-4">{{lbl_lname}}:</dt>
-              <dd class="col-xs-8">{{lname}}</dd>
-            </dl>
-            <dl class="row mb-xs-2">
-              <dt class="col-xs-4">{{lbl_gender}}:</dt>
-              <dd class="col-xs-8">{{gender}}</dd>
-            </dl>
-            <dl class="row mb-xs-2">
-              <dt class="col-xs-4">{{lbl_ssn}}:</dt>
-              <dd class="col-xs-8">{{ssn}}</dd>
-            </dl>
-            <dl class="row mb-xs-2">
-              <dt class="col-xs-4">{{lbl_dob}}:</dt>
-              <dd class="col-xs-8">{{dob}}</dd>
-            </dl>
+          <div class="panel panel-default">
+            <div class="panel-heading mb-xs-2" role="tab">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#user_private_profile" aria-expanded="true" aria-controls="user_private_profile">
+                  {{lbl_private}}
+                </a>
+              </h4>
+            </div>
+            <div id="user_private_profile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_fname}}:</dt>
+                  <dd class="col-xs-8">{{fname}}</dd>
+                </dl>
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_lname}}:</dt>
+                  <dd class="col-xs-8">{{lname}}</dd>
+                </dl>
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_gender}}:</dt>
+                  <dd class="col-xs-8">{{gender}}</dd>
+                </dl>
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_ssn}}:</dt>
+                  <dd class="col-xs-8">{{ssn}}</dd>
+                </dl>
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{lbl_dob}}:</dt>
+                  <dd class="col-xs-8">{{dob}}</dd>
+                </dl>
+              </div>
+            </div>
           </div>
-        </fieldset>
 
-        <fieldset>
-          <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_public_profile">
-            {{lbl_public}}
-          </legend>
-          <div class="collapse in" id="user_public_profile">
-            <dl class="row">
-              <dt class="col-xs-12">{{lbl_url}}:</dt>
-              <dd class="col-xs-12 pt-xs-2">
-                <!-- BEGIN website --><a href="{{url}}" target="_blank" rel="nofollow">{{url}}</a><!-- END website -->
-              </dd>
-            </dl>
-            <dl class="row">
-              <dt class="col-xs-12">{{lbl_about}}:</dt>
-              <dd class="col-xs-12 pt-xs-2">
-                {{about}}
-              </dd>
-            </dl>
-            <dl class="row">
-              <dt class="col-xs-12">{{lbl_experiences}}:</dt>
-              <dd class="col-xs-12 pt-xs-2">
-                {{experiences}}
-              </dd>
-            </dl>
-            <dl class="row">
-              <dt class="col-xs-12">{{lbl_occupations}}:</dt>
-              <dd class="col-xs-12 pt-xs-2">
-                {{occupations}}
-              </dd>
-            </dl>
-            <dl class="row">
-              <dt class="col-xs-12">{{lbl_interests}}:</dt>
-              <dd class="col-xs-12 pt-xs-2">
-                {{interests}}
-              </dd>
-            </dl>
+          <div class="panel panel-default">
+            <div class="panel-heading mb-xs-2" role="tab">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#user_public_profile" aria-expanded="true" aria-controls="user_public_profile">
+                  {{lbl_public}}
+                </a>
+              </h4>
+            </div>
+            <div id="user_public_profile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <dl class="row">
+                  <dt class="col-xs-12">{{lbl_url}}:</dt>
+                  <dd class="col-xs-12 pt-xs-2">
+                    <!-- BEGIN website --><a href="{{url}}" target="_blank" rel="nofollow">{{url}}</a><!-- END website -->
+                  </dd>
+                </dl>
+                <dl class="row">
+                  <dt class="col-xs-12">{{lbl_about}}:</dt>
+                  <dd class="col-xs-12 pt-xs-2">
+                    {{about}}
+                  </dd>
+                </dl>
+                <dl class="row">
+                  <dt class="col-xs-12">{{lbl_experiences}}:</dt>
+                  <dd class="col-xs-12 pt-xs-2">
+                    {{experiences}}
+                  </dd>
+                </dl>
+                <dl class="row">
+                  <dt class="col-xs-12">{{lbl_occupations}}:</dt>
+                  <dd class="col-xs-12 pt-xs-2">
+                    {{occupations}}
+                  </dd>
+                </dl>
+                <dl class="row">
+                  <dt class="col-xs-12">{{lbl_interests}}:</dt>
+                  <dd class="col-xs-12 pt-xs-2">
+                    {{interests}}
+                  </dd>
+                </dl>
+              </div>
+            </div>
           </div>
-        </fieldset>
         <!-- END public -->
 
         <!-- BEGIN attributes -->
           <!-- BEGIN gadget -->
-          <fieldset>
-            <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_{{gadget}}_profile">
-              {{lbl_gadget}}
-            </legend>
-            <div class="collapse in" id="user_{{gadget}}_profile">
-              <!-- BEGIN item -->
-              <dl class="row mb-xs-2">
-                <dt class="col-xs-4">{{title}}:</dt>
-                <dd class="col-xs-8">{{value}}</dd>
-              </dl>
-              <!-- END item -->
+          <div class="panel panel-default">
+            <div class="panel-heading mb-xs-2" role="tab">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#user_{{gadget}}_profile" aria-expanded="true" aria-controls="user_{{gadget}}_profile">
+                  {{lbl_gadget}}
+                </a>
+              </h4>
             </div>
-          </fieldset>
+            <div id="user_{{gadget}}_profile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <!-- BEGIN item -->
+                <dl class="row mb-xs-2">
+                  <dt class="col-xs-4">{{title}}:</dt>
+                  <dd class="col-xs-8">{{value}}</dd>
+                </dl>
+                <!-- END item -->
+              </div>
+            </div>
+          </div>
           <!-- END gadget -->
         <!-- END attributes -->
 
         <!-- BEGIN activity -->
-        <fieldset>
-          <legend class="mb-xs-2" data-toggle="collapse" data-target="#user_activities">
-            {{lbl_activities}}
-          </legend>
-          <div class="collapse in" id="user_activities">
-            <!-- BEGIN gadget -->
-            <dl class="row">
-              <dt class="col-xs-12">{{gadget}}:</dt>
-              <dd class="col-xs-12 pt-xs-2">
-                <ul>
-                <!-- BEGIN item -->
-                  <li><a href="{{url}}"><!-- BEGIN count -->{{count}} <!-- END count -->{{title}}</a></li>
-                <!-- END item -->
-                </ul>
-              </dd>
-            </dl>
-            <!-- END gadget -->
-            <!-- BEGIN no_activity -->
-            <dl class="row">
-              <dd class="col-xs-12 pt-xs-2">{{no_activity}}</dd>
-            </dl>
-            <!-- END no_activity -->
+          <div class="panel panel-default">
+            <div class="panel-heading mb-xs-2" role="tab">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#user_activities" aria-expanded="true" aria-controls="user_activities">
+                  {{lbl_activities}}
+                </a>
+              </h4>
+            </div>
+            <div id="user_activities" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <!-- BEGIN gadget -->
+                <dl class="row">
+                  <dt class="col-xs-12">{{gadget}}:</dt>
+                  <dd class="col-xs-12 pt-xs-2">
+                    <ul>
+                    <!-- BEGIN item -->
+                      <li><a href="{{url}}"><!-- BEGIN count -->{{count}} <!-- END count -->{{title}}</a></li>
+                    <!-- END item -->
+                    </ul>
+                  </dd>
+                </dl>
+                <!-- END gadget -->
+              </div>
+            </div>
           </div>
-        </fieldset>
         <!-- END activity -->
-
+        </div>
       </div>
       <div class="col-xs-4">
         <img class="user_avatar" src="{{avatar}}" alt="{{username}}" title="{{nickname}}" />
