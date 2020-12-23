@@ -137,6 +137,9 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $idleTimeout->AddOption(Jaws::t('DATE_MINUTES', 15), 15);
         $idleTimeout->AddOption(Jaws::t('DATE_MINUTES', 30), 30);
         $idleTimeout->AddOption(Jaws::t('DATE_HOURS',    1), 60);
+        $idleTimeout->AddOption(Jaws::t('DATE_HOURS',    6), 360);
+        $idleTimeout->AddOption(Jaws::t('DATE_DAYS',     1), 1440);
+        $idleTimeout->AddOption(Jaws::t('DATE_WEEKS',    1), 10080);
         $idleTimeout->SetDefault($this->gadget->registry->fetch('session_idle_timeout'));
         $tpl->SetVariable('lbl_session_idle_timeout', _t('POLICY_SESSION_IDLE_TIMEOUT'));
         $tpl->SetVariable('session_idle_timeout', $idleTimeout->Get());
