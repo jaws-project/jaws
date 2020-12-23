@@ -1011,7 +1011,10 @@ class Jaws_User
         $uData['registered_date'] = time();
         $uData['superadmin'] = isset($uData['superadmin'])? (bool)$uData['superadmin'] : false;
         $uData['status'] = isset($uData['status'])? (int)$uData['status'] : 1;
-        $uData['concurrents'] = isset($uData['concurrents'])? (int)$uData['concurrents'] : 0;
+        $uData['concurrents'] =
+            isset($uData['concurrents'])?
+            (int)$uData['concurrents'] :
+            (int)$this->app->registry->fetch('default_concurrents', 'Users');
         $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
         $uData['logon_hours'] = empty($uData['logon_hours'])? str_pad('', 42, 'F') : $uData['logon_hours'];
         if (isset($uData['expiry_date'])) {
