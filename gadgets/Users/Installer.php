@@ -24,6 +24,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('reserved_users', ''),
         array('multi_domain', 'false'),
         array('default_domain', '0'),
+        array('default_concurrents', 0),
         array('login_transfer_gadget_index', ''),
         array('login_transfer_gadget_admin', 'ControlPanel'),
         array('two_step_verification', false, true),
@@ -367,6 +368,11 @@ class Users_Installer extends Jaws_Gadget_Installer
             // ACL keys
             $this->gadget->acl->insert('AccessGroupAttributes');
             $this->gadget->acl->insert('ModifyGroupAttributes');
+        }
+
+        if (version_compare($old, '5.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert('default_concurrents', 0);
         }
 
         return true;
