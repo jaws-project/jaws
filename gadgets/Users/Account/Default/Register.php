@@ -166,8 +166,8 @@ class Users_Account_Default_Register extends Users_Account_Default
             $urlParams['referrer'] = $referrer;
         }
 
-        if (Jaws_Error::IsError($result)) {
-            http_response_code($result->getCode());
+        if (Jaws_Error::IsError($error)) {
+            http_response_code($error->getCode());
         } else {
             // 201 http code for success login
             http_response_code(201);
