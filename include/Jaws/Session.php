@@ -242,8 +242,7 @@ class Jaws_Session
             }
 
             // session longevity
-            $expTime = time() - 60 * (int)$this->app->registry->fetch('session_idle_timeout', 'Policy');
-            if ($this->session['update_time'] < ($expTime - $this->session['longevity'])) {
+            if ($this->session['update_time'] < (time() - $this->session['longevity'])) {
                 throw new Exception('Previous session has expired', JAWS_INFO);
             }
 
@@ -351,7 +350,10 @@ class Jaws_Session
             'type'      => JAWS_APPTYPE,
             'auth'      => $this->userAttributes['auth'],
             'hidden'    => $this->session['hidden'],
-            'longevity' => $remember? (int)$this->app->registry->fetch('session_remember_timeout', 'Policy')*3600 : 0,
+            'longevity' => (int)$this->app->registry->fetch(
+                $remember? 'session_login_remember_timeout' : 'session_anony_remember_timeout',
+                'Policy'
+            ) * 60,
             'ip'        => $this->app->ip['id'],
             'agent'     => $this->app->agent['id'],
             'webpush'   => $this->session['webpush'],
@@ -721,10 +723,10 @@ class Jaws_Session
      */
     function deleteExpiredSessions()
     {
-        $expired = time() - ($this->app->registry->fetch('session_idle_timeout', 'Policy') * 60);
-        $sessTable = Jaws_ORM::getInstance()->table('session');
-        $result = $sessTable->delete()
-            ->where('update_time', $sessTable->expr('? - longevity', $expired), '<')
+        $result = Jaws_ORM::getInstance()
+            ->table('session')
+            ->delete()
+            ->where('update_time', $sessTable->expr('? - longevity', time()), '<')
             ->exec();
         return Jaws_Error::IsError($result)? false : true;
     }
@@ -739,11 +741,13 @@ class Jaws_Session
      */
     function getUserSessionsCount($user, $onlyOnline = false)
     {
-        $expired = time() - ($this->app->registry->fetch('session_idle_timeout', 'Policy') * 60);
+        // online timeout gap
+        $onlineTimeout = time() - ((int)$this->app->registry->fetch('session_online_timeout', 'Policy') * 60);
+
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select('count(user)')->where('user', (int)$user);
         if ($onlyOnline) {
-            $sessTable->and()->where('update_time', $expired, '>=');
+            $sessTable->and()->where('update_time', $onlineTimeout, '>=');
         }
         $result = $sessTable->fetchOne();
         return Jaws_Error::isError($result)? false : (int)$result;
@@ -783,9 +787,8 @@ class Jaws_Session
     {
         // remove expired session
         $this->deleteExpiredSessions();
-
-        $idle_timeout = (int)$this->app->registry->fetch('session_idle_timeout', 'Policy');
-        $onlinetime = time() - ($idle_timeout * 60);
+        // online timeout gap
+        $onlineTimeout = time() - ((int)$this->app->registry->fetch('session_online_timeout', 'Policy') * 60);
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
@@ -797,9 +800,9 @@ class Jaws_Session
         $sessTable->join('agent', 'agent.id', 'session.agent');
 
         if ($active === true) {
-            $sessTable->where('update_time', $onlinetime, '>=');
+            $sessTable->where('update_time', $onlineTimeout, '>=');
         } elseif ($active === false) {
-            $sessTable->where('update_time', $onlinetime, '<');
+            $sessTable->where('update_time', $onlineTimeout, '<');
         }
 
         if ($logged === true) {
@@ -831,7 +834,7 @@ class Jaws_Session
                 $sessions[$key]['email']      = $userAttributes['email'];
                 $sessions[$key]['mobile']     = $userAttributes['mobile'];
                 $sessions[$key]['avatar']     = $userAttributes['avatar'];
-                $sessions[$key]['online']     = $session['update_time'] > (time() - ($idle_timeout * 60));
+                $sessions[$key]['online']     = $session['update_time'] > $onlineTimeout;
             }
 
             unset($sessions[$key]['userAttributes'], $sessions[$key]['data']);
@@ -852,16 +855,16 @@ class Jaws_Session
      */
     function getSessionsCount($logged = null, $active = null, $type = null)
     {
-        $idle_timeout = (int)$this->app->registry->fetch('session_idle_timeout', 'Policy');
-        $onlinetime = time() - ($idle_timeout * 60);
+        // online timeout gap
+        $onlineTimeout = time() - ((int)$this->app->registry->fetch('session_online_timeout', 'Policy') * 60);
 
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select('count(id):integer');
 
         if ($active === true) {
-            $sessTable->where('update_time', $onlinetime, '>=');
+            $sessTable->where('update_time', $onlineTimeout, '>=');
         } elseif ($active === false) {
-            $sessTable->where('update_time', $onlinetime, '<');
+            $sessTable->where('update_time', $onlineTimeout, '<');
         }
         if ($logged === true) {
             $sessTable->and()->where('user', 0, '<>');
