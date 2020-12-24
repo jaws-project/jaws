@@ -235,13 +235,13 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('AdvancedPolicies');
         @list($passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
             $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
-            $xss_parsing_level, $session_idle_timeout, $session_remember_timeout
+            $xss_parsing_level, $session_online_timeout, $session_login_remember_timeout
         ) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('AdvancedPolicies');
         $model->UpdateAdvancedPolicies(
             $passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
             $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
-            $xss_parsing_level, $session_idle_timeout, $session_remember_timeout
+            $xss_parsing_level, $session_online_timeout, $session_login_remember_timeout
         );
         return $this->gadget->session->pop();
     }

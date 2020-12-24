@@ -130,8 +130,8 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $tpl->SetVariable('lbl_xss_parsing_level', _t('POLICY_XSS_PARSING_LEVEL'));
         $tpl->SetVariable('xss_parsing_level', $parsingLevel->Get());
 
-        $idleTimeout =& Piwi::CreateWidget('Combo', 'session_idle_timeout');
-        $idleTimeout->setID('session_idle_timeout');
+        $idleTimeout =& Piwi::CreateWidget('Combo', 'session_online_timeout');
+        $idleTimeout->setID('session_online_timeout');
         $idleTimeout->AddOption(Jaws::t('DATE_MINUTES',  5),  5);
         $idleTimeout->AddOption(Jaws::t('DATE_MINUTES', 10), 10);
         $idleTimeout->AddOption(Jaws::t('DATE_MINUTES', 15), 15);
@@ -140,12 +140,12 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $idleTimeout->AddOption(Jaws::t('DATE_HOURS',    6), 360);
         $idleTimeout->AddOption(Jaws::t('DATE_DAYS',     1), 1440);
         $idleTimeout->AddOption(Jaws::t('DATE_WEEKS',    1), 10080);
-        $idleTimeout->SetDefault($this->gadget->registry->fetch('session_idle_timeout'));
-        $tpl->SetVariable('lbl_session_idle_timeout', _t('POLICY_SESSION_IDLE_TIMEOUT'));
-        $tpl->SetVariable('session_idle_timeout', $idleTimeout->Get());
+        $idleTimeout->SetDefault($this->gadget->registry->fetch('session_online_timeout'));
+        $tpl->SetVariable('lbl_session_online_timeout', _t('POLICY_session_online_timeout'));
+        $tpl->SetVariable('session_online_timeout', $idleTimeout->Get());
 
-        $rememberTimeout =& Piwi::CreateWidget('Combo', 'session_remember_timeout');
-        $rememberTimeout->setID('session_remember_timeout');
+        $rememberTimeout =& Piwi::CreateWidget('Combo', 'session_login_remember_timeout');
+        $rememberTimeout->setID('session_login_remember_timeout');
         $rememberTimeout->AddOption(Jaws::t('DATE_DAYS',   1),   24);
         $rememberTimeout->AddOption(Jaws::t('DATE_DAYS',   3),   72);
         $rememberTimeout->AddOption(Jaws::t('DATE_WEEKS',  1),  168);
@@ -153,9 +153,9 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $rememberTimeout->AddOption(Jaws::t('DATE_MONTH',  1),  720);
         $rememberTimeout->AddOption(Jaws::t('DATE_MONTH',  6), 4320);
         $rememberTimeout->AddOption(Jaws::t('DATE_MONTH', 12), 8640);
-        $rememberTimeout->SetDefault($this->gadget->registry->fetch('session_remember_timeout'));
-        $tpl->SetVariable('lbl_session_remember_timeout', _t('POLICY_SESSION_REMEMBER_TIMEOUT'));
-        $tpl->SetVariable('session_remember_timeout', $rememberTimeout->Get());
+        $rememberTimeout->SetDefault($this->gadget->registry->fetch('session_login_remember_timeout'));
+        $tpl->SetVariable('lbl_session_login_remember_timeout', _t('POLICY_session_login_remember_timeout'));
+        $tpl->SetVariable('session_login_remember_timeout', $rememberTimeout->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveAdvancedPolicies();');

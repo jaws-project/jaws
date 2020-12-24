@@ -40,9 +40,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('login_captcha_status', '3'),
         array('login_captcha_driver', 'Math'),
         array('xss_parsing_level', 'paranoid'),
-        array('max_active_sessions', '0'),         // 0 for unlimited
-        array('session_idle_timeout', '30'),       // per minute
-        array('session_remember_timeout', '720'),  // per hours 720 = 1 month
+        array('max_active_sessions', '0'),       // 0 for unlimited
+        array('session_online_timeout', 30),     // per minute
+        array('session_anony_remember_timeout', 1440),  // per minute 1440  = 1 day
+        array('session_login_remember_timeout', 43200), // per minute 43200 = 1 month
     );
 
     /**
@@ -159,6 +160,18 @@ class Policy_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '1.5.0', '<')) {
+            // add/rename/delete some registry key related to session timeout management
+            $old_session_remember_timeout = (int)$this->gadget->registry->fetch('session_remember_timeout');
+            $this->gadget->registry->insert('session_anony_remember_timeout', 1440);
+            $this->gadget->registry->insert(
+                'session_login_remember_timeout',
+                $old_session_remember_timeout * 60
+            );
+            $this->gadget->registry->delete('session_remember_timeout');
+            $this->gadget->registry->rename('session_idle_timeout', 'session_online_timeout');
         }
 
         return true;

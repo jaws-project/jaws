@@ -23,13 +23,13 @@ class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
      * @param   string  $login_captcha
      * @param   string  $login_captcha_driver
      * @param   string  $xss_parsing_level
-     * @param   int     $session_idle_timeout
-     * @param   int     $session_remember_timeout
+     * @param   int     $session_online_timeout
+     * @param   int     $session_login_remember_timeout
      * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAdvancedPolicies($password_complexity, $password_bad_count, $password_lockedout_time,
                                     $password_max_age, $password_min_length, $login_captcha, $login_captcha_driver,
-                                    $xss_parsing_level, $session_idle_timeout, $session_remember_timeout)
+                                    $xss_parsing_level, $session_online_timeout, $session_login_remember_timeout)
     {
         $this->gadget->registry->update('password_complexity',     $password_complexity);
         $this->gadget->registry->update('password_bad_count',      (int)$password_bad_count);
@@ -39,8 +39,8 @@ class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
         $this->gadget->registry->update('login_captcha_status',  $login_captcha);
         $this->gadget->registry->update('login_captcha_driver',  $login_captcha_driver);
         $this->gadget->registry->update('xss_parsing_level',     ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal');
-        $this->gadget->registry->update('session_idle_timeout',     (int)$session_idle_timeout);
-        $this->gadget->registry->update('session_remember_timeout', (int)$session_remember_timeout);
+        $this->gadget->registry->update('session_online_timeout',     (int)$session_online_timeout);
+        $this->gadget->registry->update('session_login_remember_timeout', (int)$session_login_remember_timeout);
 
         // install captcha driver
         $objCaptcha = Jaws_Captcha::getInstance($login_captcha_driver);
