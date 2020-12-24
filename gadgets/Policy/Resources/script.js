@@ -312,8 +312,9 @@ function saveAdvancedPolicies()
                 $('#login_captcha').val(),
                 $('#login_captcha_driver').val(),
                 $('#xss_parsing_level').val(),
-                $('#session_idle_timeout').val(),
-                $('#session_remember_timeout').val()
+                $('#session_online_timeout').val(),
+                $('#session_anony_remember_timeout').val(),
+                $('#session_login_remember_timeout').val()
             ]
         );
     } catch(e) {
