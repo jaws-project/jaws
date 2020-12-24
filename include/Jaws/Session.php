@@ -277,8 +277,9 @@ class Jaws_Session
                     }
                 }
 
-                // concurrent logins
-                if ($this->session['update_time'] < $expTime) {
+                // online timeout gap
+                $onlineTimeout = time() - ((int)$this->app->registry->fetch('session_online_timeout', 'Policy') * 60);
+                if ($this->session['update_time'] < $onlineTimeout) {
                     $logins = $this->userAttributes['concurrents'];
                     $existSessions = $this->getUserSessionsCount($this->session['user'], true);
                     if (!empty($existSessions) && !empty($logins) && $existSessions >= $logins) {
