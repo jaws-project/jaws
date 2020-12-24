@@ -727,7 +727,7 @@ class Jaws_Session
         $result = Jaws_ORM::getInstance()
             ->table('session')
             ->delete()
-            ->where('update_time', $sessTable->expr('? - longevity', time()), '<')
+            ->where('update_time', Jaws_ORM::getInstance()->expr('? - longevity', time()), '<')
             ->exec();
         return Jaws_Error::IsError($result)? false : true;
     }
