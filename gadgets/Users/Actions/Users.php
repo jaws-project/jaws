@@ -159,14 +159,15 @@ class Users_Actions_Users extends Users_Actions_Default
             'post'
         );
 
-        $orderBy = 'id asc';
+        $orderBy = array();
         if (isset($post['sortBy'])) {
-            $orderBy = trim($post['sortBy'] . ' ' . $post['sortDirection']);
+            $orderBy[] = array($post['sortBy'] => $post['sortDirection'] == 'asc');
         }
 
         $group = !empty($post['filters']['group']) ? $post['filters']['group'] : false;
         $domain = !empty($post['filters']['domain']) ? $post['filters']['domain'] : false;
-        $status = isset($post['filters']['status']) && $post['filters']['status'] >= 0 ? $post['filters']['status'] : null;
+        $status = isset($post['filters']['status']) &&
+            $post['filters']['status'] >= 0 ? $post['filters']['status'] : null;
         $term = !empty($post['filters']['term']) ? $post['filters']['term'] : null;
         $superadmin = null;
         if (!empty($post['filters']['type'])) {
@@ -177,15 +178,34 @@ class Users_Actions_Users extends Users_Actions_Default
             }
         }
 
-        $uModel = new Jaws_User();
-        $users = $uModel->GetUsers($group, $domain, $superadmin, $status, $term, $orderBy, $post['limit'], $post['offset']);
+        $users = $this->gadget->model->load('Users')->getUsers(
+            $domain, $group,
+            array(
+                'term' => $term,
+                'status' => $status,
+                'superadmin' => $superadmin,
+            ),
+            array(
+                'default' => true,
+                'account' => true,
+            ),
+            $orderBy,
+            $post['limit'], $post['offset']
+        );
         if (Jaws_Error::IsError($users)) {
             return $this->gadget->session->response(
                 $users->getMessage(),
                 RESPONSE_ERROR
             );
         }
-        $total = $uModel->GetUsersCount($group, $domain, $superadmin, $status, $term);
+        $total = $this->gadget->model->load('Users')->getUsersCount(
+            $domain, $group,
+            array(
+                'term' => $term,
+                'status' => $status,
+                'superadmin' => $superadmin,
+            )
+        );
         if (Jaws_Error::IsError($total)) {
             return $this->gadget->session->response(
                 $total->getMessage(),
