@@ -257,7 +257,7 @@ class Users_Actions_Account extends Users_Actions_Default
             );
         } else {
             // trying change password
-            $result = $this->app->users->UpdatePassword(
+            $result = $this->gadget->model->load('User')->updatePassword(
                 $this->app->session->user->id,
                 $new_password,
                 $old_password

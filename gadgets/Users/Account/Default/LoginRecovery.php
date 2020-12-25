@@ -47,7 +47,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                     $rcvryData['password'] = Jaws_XSS::defilter($rcvryData['password']);
                 }
 
-                $result = $this->app->users->UpdatePassword(
+                $result = $this->gadget->model->load('User')->updatePassword(
                     (int)$userData['id'],
                     $rcvryData['password'],
                     false

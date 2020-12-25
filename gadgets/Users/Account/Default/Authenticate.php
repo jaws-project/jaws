@@ -55,7 +55,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 // trying change password
-                $result = $this->app->users->UpdatePassword(
+                $result = $this->gadget->model->load('User')->updatePassword(
                     (int)$user['id'],
                     $loginData['password'],
                     $loginData['old_password']
