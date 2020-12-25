@@ -36,10 +36,10 @@ class Users_Model_Users extends Jaws_Gadget_Model
     ) {
         $columns = array(
             'default'  => array(
-                'users.domain:integer', 'users.id:integer', 'contact:integer', 'avatar', 'status:integer'
+                'users.domain:integer', 'users.id:integer', 'username', 'users.email', 'users.mobile',
+                'nickname', 'contact:integer', 'avatar', 'status:integer'
             ),
             'account'  => array(
-                'username', 'nickname', 'users.email', 'users.mobile',
                 'superadmin:boolean', 'concurrents:integer', 'logon_hours',
                 'expiry_date:integer', 'registered_date:integer', 'bad_password_count:integer', 
                 'last_update:integer', 'last_password_update:integer',

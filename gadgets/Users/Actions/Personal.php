@@ -172,8 +172,7 @@ class Users_Actions_Personal extends Users_Actions_Default
             $post['avatar'] = '';
         }
 
-        $model  = $this->gadget->model->load('Personal');
-        $result = $model->UpdatePersonal(
+        $result = $this->gadget->model->load('User')->UpdatePersonal(
             $this->app->session->user->id,
             $post
         );

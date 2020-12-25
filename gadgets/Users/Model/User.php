@@ -8,6 +8,56 @@
 class Users_Model_User extends Jaws_Gadget_Model
 {
     /**
+     * Get the info of an user by the username or ID
+     *
+     * @access  public
+     * @param   mixed   $user       The username or ID
+     * @param   int     $domain     Domain ID // 0: don't check domain
+     * @param   array   $fieldsets  Users fields sets // default, account, personal, password
+     * @return  mixed   Returns an array with the info of the user and false on error
+     */
+    function getUser($user, $domain = 0, $fieldsets = array())
+    {
+        $columns = array(
+            'default'  => array(
+                'users.domain:integer', 'users.id:integer', 'username', 'users.email', 'users.mobile',
+                'nickname', 'contact:integer', 'avatar', 'status:integer'
+            ),
+            'account'  => array(
+                'superadmin:boolean', 'concurrents:integer', 'logon_hours',
+                'expiry_date:integer', 'registered_date:integer', 'bad_password_count:integer', 
+                'last_update:integer', 'last_password_update:integer',
+                'last_access:integer', 'verify_key'
+            ),
+            'personal' => array(
+                'fname', 'lname', 'gender', 'ssn', 'dob:integer', 'extra', 'public:boolean', 'privacy:boolean',
+                'pgpkey', 'signature', 'about', 'experiences', 'occupations', 'interests'
+            ),
+            'password' => array('password'),
+        );
+        $fieldsets['default'] = true;
+
+        $selectedColumns = array();
+        foreach ($fieldsets as $key => $keyValue) {
+            if ($keyValue) {
+                $selectedColumns = array_merge($selectedColumns, $columns[$key]);
+            }
+        }
+
+        $objORM = Jaws_ORM::getInstance()
+            ->table('users')
+            ->select($selectedColumns)
+            ->where('domain', (int)$domain, '=', empty($domain));
+        if (is_int($user)) {
+            $objORM->and()->where('users.id', $user);
+        } else {
+            $objORM->and()->where('lower(username)', Jaws_UTF8::strtolower($user));
+        }
+
+        return $objORM->fetchRow();
+    }
+
+    /**
      * Updates user profile
      *
      * @access  public
@@ -30,7 +80,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         // get user information
-        $user = $this->getUser((int)$id, true, true);
+        $user = $this->getUser((int)$id);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
         }
@@ -71,12 +121,15 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         $pData['last_update'] = time();
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($pData)->where('id', $id)->exec();
+        $result = $usersTable->update($pData)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user->id == $id) {
+        if (isset($this->app) &&
+            property_exists($this->app, 'session') &&
+            $this->app->session->user->id == (int)$id
+        ) {
             foreach($pData as $k => $v) {
                 if ($k == 'avatar') {
                     $this->app->session->user = array(
@@ -91,7 +144,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         // Let everyone know a user has been added
         $res = $this->gadget->event->shout(
             'UserChanges',
-            array('action' => 'UpdateUser', 'user' => $id)
+            array('action' => 'UpdateUser', 'user' => (int)$id)
         );
         if (Jaws_Error::IsError($res)) {
             return false;
