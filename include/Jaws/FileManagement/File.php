@@ -191,13 +191,13 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * Renames/Moves a file or directory
      *
      * @access  public
-     * @param   string  $source     Path to the source file or directory
-     * @param   string  $dest       The destination path
+     * @param   string  $src    Path to the source file or directory
+     * @param   string  $dst    The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
-    static function rename($source, $dest, $overwrite = true)
+    static function rename($src, $dst, $overwrite = true)
     {
         $result = false;
         if (file_exists($source)) {
@@ -209,8 +209,8 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
                                 continue;
                             }
                             $result = self::rename(
-                                $source. DIRECTORY_SEPARATOR . $file,
-                                $dest. DIRECTORY_SEPARATOR . $file,
+                                $source. '/' . $file,
+                                $dest. '/' . $file,
                                 $overwrite
                             );
                             if (!$result) {
@@ -224,7 +224,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
                 } else {
                     if (!$overwrite) {
                         $destinfo = pathinfo($dest);
-                        $dest = $destinfo['dirname']. DIRECTORY_SEPARATOR .
+                        $dest = $destinfo['dirname']. '/' .
                             $destinfo['filename']. '_'. uniqid(floor(microtime()*1000));
                         if (isset($destinfo['extension']) && !empty($destinfo['extension'])) {
                             $dest.= '.'. $destinfo['extension'];
@@ -251,14 +251,14 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * Makes a copy of the source file or directory to dest
      *
      * @access  public
-     * @param   string  $source     Path to the source file or directory
-     * @param   string  $dest       The destination path
+     * @param   string  $src    Path to the source file or directory
+     * @param   string  $dst    The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @param   int     $mode       see php chmod() function
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    static function copy($source, $dest, $overwrite = true, $mode = null)
+    static function copy($src, $dst, $overwrite = true, $mode = null)
     {
         $result = false;
         if (file_exists($source)) {
@@ -271,8 +271,8 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
                             }
 
                             $result = self::copy(
-                                $source. DIRECTORY_SEPARATOR . $file,
-                                $dest. DIRECTORY_SEPARATOR . $file,
+                                $source. '/' . $file,
+                                $dest. '/' . $file,
                                 $overwrite,
                                 $mode
                             );
@@ -287,7 +287,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
             } else {
                 if (file_exists($dest) && !$overwrite) {
                     $destinfo = pathinfo($dest);
-                    $dest = $destinfo['dirname']. DIRECTORY_SEPARATOR .
+                    $dest = $destinfo['dirname']. '/' .
                         $destinfo['filename']. '_'. uniqid(floor(microtime()*1000));
                     if (isset($destinfo['extension']) && !empty($destinfo['extension'])) {
                         $dest.= '.'. $destinfo['extension'];
@@ -337,7 +337,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
                     continue;
                 }
 
-                if (!self::delete($path. DIRECTORY_SEPARATOR. $file, true)) {
+                if (!self::delete($path. '/'. $file, true)) {
                     return false;
                 }
             }
