@@ -304,29 +304,92 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * Renames/Moves a file or directory
      *
      * @access  public
-     * @param   string  $source     Path to the source file or directory
-     * @param   string  $dest       The destination path
+     * @param   string  $src    Path to the source file or directory
+     * @param   string  $dst    The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
-    static function rename($source, $dest, $overwrite = true)
+    static function rename($src, $dst, $overwrite = true)
     {
-        return true;
+        // source
+        $srcPath = dirname($src);
+        $srcName = basename($src);
+        $src_hash_path = hash64($srcPath);
+        $src_hash_name = hash64($srcName);
+        // destination
+        $dstPath = dirname($dst);
+        $dstName = basename($dst);
+        $dst_hash_path = hash64($dstPath);
+        $dst_hash_name = hash64($dstName);
+
+        if ($overwrite) {
+            // delete destination if exists
+            $result = Jaws_ORM::getInstance()
+                ->table('dbfs')
+                ->delete()
+                ->where('hash_path', $dst_hash_path)
+                ->and()
+                ->where('hash_name', $dst_hash_name)
+                ->and()
+                ->where('path', $dstPath)
+                ->and()
+                ->where('name', $dstName)
+                ->exec();
+            if (Jaws_Error::IsError($result)) {
+                return false;
+            }
+        } else {
+            $result = Jaws_ORM::getInstance()
+                ->table('dbfs')
+                ->select('count(id):integer')
+                ->where('hash_path', $dst_hash_path)
+                ->and()
+                ->where('hash_name', $dst_hash_name)
+                ->and()
+                ->where('path', $dstPath)
+                ->and()
+                ->where('name', $dstName)
+                ->fetchOne();
+            // if destination exist return false
+            if (Jaws_Error::IsError($result) || !empty($result)) {
+                return false;
+            }
+        }
+
+        $result = Jaws_ORM::getInstance()
+            ->table('dbfs')
+            ->update(
+                array(
+                    'hash_path' => $dst_hash_path,
+                    'hash_name' => $dst_hash_name,
+                    'path'      => $dstPath,
+                    'name'      => $dstName
+                )
+            )->where('hash_path', $src_hash_path)
+            ->and()
+            ->where('hash_name', $src_hash_name)
+            ->and()
+            ->where('path', $srcPath)
+            ->and()
+            ->where('name', $srcName)
+            ->exec();
+
+        return (Jaws_Error::IsError($result) || empty($result))? false : true;
     }
 
     /**
      * Makes a copy of the source file or directory to dest
      *
      * @access  public
-     * @param   string  $source     Path to the source file or directory
-     * @param   string  $dest       The destination path
+     * @param   string  $src    Path to the source file or directory
+     * @param   string  $dst    The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @param   int     $mode       see php chmod() function
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    static function copy($source, $dest, $overwrite = true, $mode = null)
+    static function copy($src, $dst, $overwrite = true, $mode = null)
     {
         return true;
     }
@@ -347,30 +410,26 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $hash_path = hash64($path);
         $hash_name = hash64($name);
 
-        $internalQuery = Jaws_ORM::getInstance()
-            ->table('dbfs', 'slave')
-            ->select('id')
-            ->where('slave.hash_path', hash64($filename))
+        $files = Jaws_ORM::getInstance()
+            ->table('dbfs')
+            ->select('id:integer', 'name')
+            ->where('hash_path', hash64($filename))
             ->and()
-            ->where('slave.path', $filename);
+            ->where('path', $filename)
+            ->fetchAll();
+        if (Jaws_Error::IsError($files)) {
+            return false;
+        }
 
-        $externalQuery = Jaws_ORM::getInstance()
-            ->table('dbfs', 'master')
-            ->delete()
-            ->where('hash_path', $hash_path)
-            ->and()
-            ->where('hash_name', $hash_name)
-            ->and()
-            ->where('path', $path)
-            ->and()
-            ->where('name', $name)
-            ->and()
-            ->where('', $internalQuery, 'not exists')
-            ->exec()
+        foreach ($files as $file) {
+            if (false === self::delete($filename. '/' . $file, $itself)) {
+                return false;
+            }
+        }
 
-        if (self::is_file($filename)) {
+        if ($itself) {
             $result = Jaws_ORM::getInstance()
-                ->table('dbfs')
+                ->table('dbfs', 'master')
                 ->delete()
                 ->where('hash_path', $hash_path)
                 ->and()
@@ -380,14 +439,8 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
                 ->and()
                 ->where('name', $name)
                 ->exec();
-        } else {
-            $result = Jaws_ORM::getInstance()
-                ->table('dbfs')
-                ->delete()
-                ->where('hash_path', hash64($filename))
-                ->and()
-                ->where('path', $filename)
-                ->exec();
+
+            return (Jaws_Error::IsError($result) || empty($result))? false : true;
         }
 
         return true;
