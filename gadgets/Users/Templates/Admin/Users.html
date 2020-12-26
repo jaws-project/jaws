@@ -1,40 +1,241 @@
-<!-- BEGIN Users -->
 <div class="gadget_menubar">{{menubar}}</div>
-<table class="full_width">
-  <tr>
-    <td style="vertical-align: top;">
-      <table id="users_filter">
-        <tr>
-          <td class="filter_label"><label>{{lbl_filter_group}}:</label></td><td>{{filter_group}}</td>
-          <!-- BEGIN single-domain -->
-          <td class="filter_label"></td><td><input type="hidden" name="filter_domain" id="filter_domain" value="" /></td>
-          <!-- END single-domain -->
-          <!-- BEGIN multi-domain -->
-          <td class="filter_label"><label>{{lbl_filter_domain}}:</label></td><td>{{filter_domain}}</td>
-          <!-- END multi-domain -->
-        </tr>
-        <tr>
-          <td class="filter_label"><label>{{lbl_filter_type}}:</label></td><td>{{filter_type}}</td>
-          <td class="filter_label"><label>{{lbl_filter_status}}:</label></td><td>{{filter_status}}</td>
-        </tr>
-        <tr>
-          <td class="filter_label"><label>{{lbl_filter_term}}:</label></td><td>{{filter_term}}</td>
-          <td class="filter_label"><label>{{lbl_order_type}}:</label></td><td>{{order_type}}</td>
-        </tr>
-      </table>
-      {{users_datagrid}}
-    </td>
-    <td class="workarea">
-      <input type="hidden" name="uid" id="uid" value="0" />
-      <!-- BEGIN encryption -->
-      <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
-      <!-- END encryption -->
-      <fieldset>
-        <legend><span id="legend_title">{{legend_title}}</span></legend>
-        <div id="workarea">{{workarea}}</div>
-      </fieldset>
-    </td>
-  </tr>
-  <tr><td class="buttons" colspan="2">{{cancel}}{{save}}</td></tr>
-</table>
-<!-- END Users -->
+<div class="repeater" id="users-grid" data-staticheight="500">
+  <div class="repeater-header">
+    <div class="datagrid-filters">
+
+
+      <div class="row">
+        <form action="#">
+
+        <div class="col-xs-2">
+          <label for="filter_group" class="">{{ "users.groups_group" | t }}</label>
+        </div>
+        <div class="col-xs-4">
+          <div class="input-group input-append dropdown combobox" id="filter_group">
+            <input type="text" class="form-control" placeholder=""
+            data-toggle="tooltip" data-placement="top" title="{{ "global.username" | t }}">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right"></ul>
+            </div>
+          </div>
+        </div>
+
+        {% if domains | isset %}
+        <div class="col-xs-2">
+          <label for="filter_domain">{{ "users.domain" | t }}: </label>
+        </div>
+        <div class="col-xs-4">
+          <select class="form-control" name="filter_domain" id="filter_domain">
+            <option value="0">{{ "global.all" | t }}</option>
+            {%- for domain in domains %}
+            <option value="{{domain.id}}">
+              {{- domain.title -}}
+            </option>
+            {%- endfor %}
+          </select>
+        </div>
+        {% else %}
+        <input type="hidden" name="filter_domain" id="filter_domain" value="" />
+        {% endif %}
+
+        <div class="col-xs-2">
+          <label for="filter_type">{{ "users.users_type" | t }}: </label>
+        </div>
+        <div class="col-xs-4">
+          <select class="form-control" name="filter_type" id="filter_type">
+            <option value="-1">{{ "global.all" | t }}</option>
+            {%- for type in types %}
+            <option value="{{forloop.key}}">
+              {{- type -}}
+            </option>
+            {%- endfor %}
+          </select>
+        </div>
+
+        <div class="col-xs-2">
+          <label for="filter_status">{{ "global.status" | t }}: </label>
+        </div>
+        <div class="col-xs-4">
+          <select class="form-control" name="filter_status" id="filter_status">
+            <option value="-1">{{ "global.all" | t }}</option>
+            {%- for status in statusItems %}
+            <option value="{{forloop.key}}">
+              {{- status -}}
+            </option>
+            {%- endfor %}
+          </select>
+        </div>
+
+        <div class="col-xs-2">
+          <label for="filter_status">{{ "users.users_search_term" | t }}: </label>
+        </div>
+        <div class="col-xs-4">
+          <input type="text" class="form-control ltr" name="filter_term" id="filter_term" >
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <div class="repeater-header-right">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
+        <span class="glyphicon glyphicon-plus"></span> {{ "users.users_add" | t }}
+      </button>
+
+      <button type="button" class="btn btn-success btn-m btn-refresh">
+          <span class="glyphicon glyphicon-refresh"></span> {{ "global.refresh" | t }}
+        </button>
+      </div>
+  </div>
+
+    <div class="repeater-viewport">
+      <div class="repeater-canvas"></div>
+      <div class="loader repeater-loader"></div>
+    </div>
+    <div class="repeater-footer">
+      <div class="repeater-footer-left">
+        <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
+          </span>
+          <div class="btn-group selectlist dropup" data-resize="auto">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+              <span class="selected-label">?</span>
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li data-value="10" data-selected="true"><a href="#">10</a></li>
+              <li data-value="25"><a href="#">25</a></li>
+              <li data-value="50"><a href="#">50</a></li>
+            </ul>
+            <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+          </div>
+          <span>{{ "global.perpage" | t }}</span>
+        </div>
+      </div>
+      <div class="repeater-footer-right">
+        <div class="repeater-pagination">
+          <button type="button" class="btn btn-default btn-sm repeater-prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous Page</span>
+          </button>
+          <label class="page-label" id="myPageLabel"></label>
+          <div class="repeater-primaryPaging active">
+            <div class="input-group input-append dropdown combobox dropup">
+              <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right"></ul>
+              </div>
+            </div>
+          </div>
+          <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+          <button type="button" class="btn btn-default btn-sm repeater-next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next Page</span>
+          </button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "users.users_add" | t }}</h4>
+      </div>
+      <div class="modal-body">
+        <form id="users-form" action="#">
+          <div class="row">
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="username">{{ "global.username" | t }}:</label>
+              <input type="text" class="form-control ltr" name="username" id="username">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="nickname">{{ "users.users_nickname" | t }}:</label>
+              <input type="text" class="form-control" name="nickname" id="nickname">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="email">{{ "global.email" | t }}:</label>
+              <input type="text" class="form-control ltr" name="email" id="email">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="mobile">{{ "users.contacts_mobile_number" | t }}:</label>
+              <input type="text" class="form-control ltr" name="mobile" id="mobile">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="superadmin">{{ "users.users_type_superadmin" | t }}:</label>
+              <select class="form-control" name="superadmin" id="superadmin">
+                <option value="0">{{ "global.no" | t }}</option>
+                <option value="1">{{ "global.yes" | t }}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="password">{{ "users.users_password" | t }}:</label>
+              <div class="input-group">
+                <input class="form-control ltr" type="password" name="password" id="password" autocomplete="off" data-toggle="password">
+                <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
+                          <i class="glyphicon glyphicon-eye-open"></i>
+                        </span>
+              </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="concurrents">{{ "users.users_concurrents" | t }}:</label>
+              <input type="text" class="form-control ltr" name="concurrents" id="concurrents" value="0">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="users_expiry_date">{{ "users.users_expiry_date" | t }}:</label>
+              {% include 'include/Jaws/Resources/XDatePicker.html' with expiry_date as datepicker %}
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="concurrents">{{ "global.status" | t }}:</label>
+              <select class="form-control" name="status" id="status">
+                {%- for status in statusItems %}
+                <option value="{{forloop.key}}" {{ forloop.key | equal: 1, "selected" }}>
+                  {{- status -}}
+                </option>
+                {%- endfor %}
+              </select>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btnSaveUser">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'gadgets/Users/Templates/Admin/ACL.html' with components %}
+
+{% include 'gadgets/Users/Templates/Admin/UserGroups.html' with components %}
+

@@ -8,6 +8,49 @@
 class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
 {
     /**
+     * Get groups list
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function GetGroups()
+    {
+        $post = $this->gadget->request->fetch(
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
+            'post'
+        );
+        $groups = $this->app->users->GetGroups(
+            0,
+            null,
+            $post['sortBy'],
+            $post['limit'],
+            $post['offset']
+        );
+        if (Jaws_Error::IsError($groups)) {
+            return $this->gadget->session->response(
+                $groups->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+        $groupsCount = $this->app->users->GetGroupsCount(0, null);
+        if (Jaws_Error::IsError($groupsCount)) {
+            return $this->gadget->session->response(
+                $groupsCount->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total' => $groupsCount,
+                'records' => $groups
+            )
+        );
+    }
+
+    /**
      * Builds groups datagrid
      *
      * @access  public
@@ -35,75 +78,6 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         return $datagrid->Get();
     }
 
-    /**
-     * Prepares list of groups for datagrid
-     *
-     * @access  public
-     * @param   bool    $enabled    Status of the group
-     * @param   int     $offset     Offset of data array
-     * @return  array   Grid data
-     */
-    function GetGroups($enabled, $offset = null)
-    {
-        $uModel = new Jaws_User();
-        $groups = $uModel->GetGroups(0, $enabled, 'title', 12, $offset);
-        if (Jaws_Error::IsError($groups)) {
-            return array();
-        }
-
-        $retData = array();
-        foreach ($groups as $group) {
-            $grpData = array();
-            $grpData['title'] = $group['title'];
-            $grpData['name']  = $group['name'];
-
-            $actions = '';
-            if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget(
-                    'Link',
-                    Jaws::t('EDIT'),
-                    "javascript:Jaws_Gadget.getInstance('Users').editGroup(this, '".$group['id']."');",
-                    STOCK_EDIT
-                );
-                $actions.= $link->Get().'&nbsp;';
-            }
-
-            if ($this->gadget->GetPermission('ManageGroupACLs')) {
-                $link =& Piwi::CreateWidget(
-                    'Link',
-                    $this::t('ACLS'),
-                    "javascript:Jaws_Gadget.getInstance('Users').editACL(this, '".$group['id']."', 'GroupACL');",
-                    'gadgets/Users/Resources/images/acls.png'
-                );
-                $actions.= $link->Get().'&nbsp;';
-            }
-
-            if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget(
-                    'Link',
-                    $this::t('GROUPS_MEMBERS'),
-                    "javascript:Jaws_Gadget.getInstance('Users').editGroupUsers(this, '".$group['id']."');",
-                    'gadgets/Users/Resources/images/groups_mini.png'
-                );
-                $actions.= $link->Get().'&nbsp;';
-            }
-
-            if ($this->gadget->GetPermission('ManageGroups')) {
-                $link =& Piwi::CreateWidget(
-                    'Link',
-                    $this::t('GROUPS_DELETE'),
-                    "javascript:Jaws_Gadget.getInstance('Users').deleteGroup(this, '".$group['id']."');",
-                    STOCK_DELETE
-                );
-                $actions.= $link->Get().'&nbsp;';
-            }
-
-            $grpData['actions'] = $actions;
-            $retData[] = $grpData;
-        }
-
-        return $retData;
-    }
 
     /**
      * Builds the group management UI

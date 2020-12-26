@@ -1,5 +1,30 @@
-<!-- BEGIN user_groups -->
-<div id="user_groups_checkbox">
-  <tr><td><label for="user_groups">{{lbl_user_groups}}:</label><br />{{user_groups}}</td></tr>
+
+
+<div class="modal fade" id="userGroupsModal" tabindex="-1" role="dialog" aria-labelledby="userGroupsModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "users.users_groups" | t }}</h4>
+      </div>
+      <div class="modal-body">
+        <form id="acl-form" action="#">
+
+          <div id="user_groups_checkbox">
+            <tr><td><label for="user_groups">{{lbl_user_groups}}:</label><br />{{user_groups}}</td></tr>
+          </div>
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btnSaveUserGroups">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- END user_groups -->

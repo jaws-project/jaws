@@ -1,12 +1,45 @@
-<!-- BEGIN acl -->
-<div id="acl">
-  <div>
-    <strong>{{lbl_permissions}}</strong> 
-    <img src="gadgets/Users/Resources/images/check-deny.png" alt="deny" />{{lbl_deny}} 
-    <img src="gadgets/Users/Resources/images/check-allow.png" alt="allow" />{{lbl_allow}} 
-    <img src="gadgets/Users/Resources/images/checkbox.png" alt="default" />{{lbl_default}} 
+<div class="modal fade" id="aclModal" tabindex="-1" role="dialog" aria-labelledby="aclModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "users.acls" | t }}</h4>
+      </div>
+      <div class="modal-body">
+        <form id="acl-form" action="#">
+
+          <div id="acl">
+            <div>
+              <strong>{{ "users.acl_permissions" | t}}</strong>
+              <img src="gadgets/Users/Resources/images/check-deny.png" alt="deny" />{{ "users.acls_deny" | t }}
+              <img src="gadgets/Users/Resources/images/check-allow.png" alt="allow" />{{ "users.acls_allow" | t }}
+              <img src="gadgets/Users/Resources/images/checkbox.png" alt="default" />{{ "users.acls_default" | t }}
+            </div>
+            <div><label for="components">{{ "users.acls_components" | t }}</label>
+
+              <select class="form-control" name="components" id="components">
+                <option value="-1">{{ "global.all" | t }}</option>
+                {%- for component in components %}
+                <option value="{{component.name}}">
+                  {{- component.title -}}
+                </option>
+                {%- endfor %}
+              </select>
+
+            </div>
+            <div id="acl_form"></div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btnSaveACL">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
   </div>
-  <div><label for="components">{{lbl_components}}</label>{{components}}</div>
-  <div id="acl_form"></div>
 </div>
-<!-- END acl -->

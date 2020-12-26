@@ -1,3 +1,10 @@
+.modal-body form div[class*="col-md"]{
+    min-height: 60px;
+}
+
+
+
+
 .workarea{
 width:290px;
 padding-right:8px;

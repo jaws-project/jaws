@@ -12,18 +12,12 @@ function Jaws_Gadget_Users() { return {
 
     // selected user/group ID
     selectedId : null,
+    selectedUser : 0,
 
     // checkbox, allow & deny icons
     chkImages : [],
 
     //Cached form variables
-    cachedPersonalForm : null,
-    cachedContactsForm : null,
-    cachedUserGroupsForm : null,
-    cachedGroupUsersForm : null,
-    cachedACLForm : null,
-    cachedUserForm : '',
-    cachedGroupForm : '',
     SettingsInUsersAjax: null,
 
     // ASync callback method
@@ -31,16 +25,14 @@ function Jaws_Gadget_Users() { return {
         AddUser: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
-                $('#users_datagrid')[0].addItem();
-                $('#users_datagrid')[0].lastPage();
-                getDG('users_datagrid');
+                $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         UpdateUser: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
-                getDG('users_datagrid');
+                $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
@@ -275,20 +267,15 @@ function Jaws_Gadget_Users() { return {
     saveUser: function() {
         switch (this.currentAction) {
             case 'UserAccount':
-                if ($('#pass1').val() != $('#pass2').val()) {
-                    alert(this.gadget.defines.wrongPassword);
-                    return false;
-                }
-
                 if (!$('#username').val() ||
                     !$('#nickname').val() ||
                     (!$('#email').val() && !$('#mobile').val())
                 ) {
-                    alert(this.gadget.defines.incompleteUserFields);
+                    alert(this.gadget.defines.LANGUAGE.incompleteUserFields);
                     return false;
                 }
 
-                var password = $('#pass1').val();
+                var password = $('#password').val();
                 $.loadScript('libraries/js/jsencrypt.min.js', function() {
                     if ($('#pubkey').length) {
                         var objRSACrypt = new JSEncrypt();
@@ -296,9 +283,9 @@ function Jaws_Gadget_Users() { return {
                         password = objRSACrypt.encrypt($('#pass1').val());
                     }
 
-                    if ($('#uid').val() == 0) {
-                        if (!$('#pass1').val()) {
-                            alert(this.gadget.defines.incompleteUserFields);
+                    if (this.selectedUser == 0) {
+                        if (!$('#password').val()) {
+                            alert(this.gadget.defines.LANGUAGE.incompleteUserFields);
                             return false;
                         }
 
@@ -306,12 +293,8 @@ function Jaws_Gadget_Users() { return {
                             $('#users-form input, #users-form select,#users-form textarea').serialize()
                         );
                         formData['password'] = password;
-                        delete formData['prev_status'];
-                        delete formData['pass1'];
-                        delete formData['pass2'];
-                        delete formData['length'];
-                        delete formData['modulus'];
-                        delete formData['exponent'];
+                        // delete formData['modulus'];
+                        // delete formData['exponent'];
                         this.gadget.ajax.callAsync('AddUser', {'data': formData});
                     } else {
                         var formData = $.unserialize(
@@ -426,33 +409,48 @@ function Jaws_Gadget_Users() { return {
     /**
      * Edit user
      */
-    editUser: function(rowElement, uid) {
-        $('#uid').val(uid);
-        this.currentAction = 'UserAccount';
-        $('#legend_title').html(this.gadget.defines.editUser_title);
-        $('#workarea').html(this.cachedUserForm);
-        initDatePicker('expiry_date');
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
+    editUser: function(uid) {
+        // $('#legend_title').html(this.gadget.defines.editUser_title);
+        this.selectedUser = uid;
 
-        var userInfo = this.gadget.ajax.callSync('GetUser', [uid, true]);
-        $('#users-form input, #users-form select, #users-form textarea').each(
-            function () {
-                if ($(this).is('select')) {
-                    if (userInfo[$(this).attr('name')] === true) {
-                        $(this).val('1');
-                    } else if (userInfo[$(this).attr('name')] === false) {
-                        $(this).val('0');
-                    } else {
-                        $(this).val(userInfo[$(this).attr('name')]);
+        this.ajax.callAsync('GetUser', {
+                'id': this.selectedUser,
+            }, function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+                    var userInfo = response.data;
+                    console.log(userInfo);
+                    if (userInfo) {
+                        $('#users-form input, #users-form select, #users-form textarea').each(
+                            function () {
+                                if ($(this).is('select')) {
+                                    if (userInfo[$(this).attr('name')] === true) {
+                                        $(this).val('1');
+                                    } else if (userInfo[$(this).attr('name')] === false) {
+                                        $(this).val('0');
+                                    } else {
+                                        $(this).val(userInfo[$(this).attr('name')]);
+                                    }
+                                } else {
+                                    $(this).val(userInfo[$(this).attr('name')]);
+                                }
+                            }
+                        );
+                        $("#password").prop('disabled', true);
+
+                        $('#userModal').modal('show');
                     }
-                } else {
-                    $(this).val(userInfo[$(this).attr('name')]);
                 }
             }
         );
-        $("#pass1").prop('disabled', true);
-        $("#pass2").prop('disabled', true);
-        $('#prev_status').val(userInfo['status']);
+    },
+
+    /**
+     * Edit user ACL
+     */
+    editUserACL: function (uid) {
+        this.selectedUser = uid;
+        $('#aclModal').modal('show');
     },
 
     /**
@@ -528,49 +526,48 @@ function Jaws_Gadget_Users() { return {
     /**
      * Edit the groups of user
      */
-    editUserGroups: function(rowElement, uid) {
-        $('#uid').val(uid);
+    editUserGroups: function(uid) {
+        this.selectedUser = uid;
         this.currentAction = 'UserGroups';
-        $('#legend_title').html(this.gadget.defines.editUserGroups_title);
-        if (this.cachedUserGroupsForm == null) {
-            this.cachedUserGroupsForm = this.gadget.ajax.callSync('UserGroupsUI');
-        }
-        $('#workarea').html(this.cachedUserGroupsForm);
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
-
-        var uGroups = this.gadget.ajax.callSync('GetUserGroups', uid);
-        $.each(uGroups, function(index, gid) {
-            if ($('#group_' + gid).length) {
-                $('#group_' + gid).prop('checked', true);
-            }
-        });
+        $('#userGroupsModal').modal('show');
     },
 
     /**
      * Edit user's personal information
      */
-    editPersonal: function(rowElement, uid) {
-        $('#uid').val(uid);
+    editPersonal: function(uid) {
+        this.selectedUser = uid;
         this.currentAction = 'UserPersonal';
-        $('#legend_title').html(this.gadget.defines.editPersonal_title);
-        if (this.cachedPersonalForm == null) {
-            this.cachedPersonalForm = this.gadget.ajax.callSync('PersonalUI');
-        }
-        $('#workarea').html(this.cachedPersonalForm);
-        initDatePicker('dob');
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-        var uInfo = this.gadget.ajax.callSync('GetUser', [uid, false, true]);
-        $('#fname').val(uInfo['fname']);
-        $('#lname').val(uInfo['lname']);
-        $('#gender').val(Number(uInfo['gender']));
-        $('#ssn').val(uInfo['ssn']);
-        $('#dob').val(uInfo['dob']);
-        $('#url').val(uInfo['url']);
-        $('#about').val(uInfo['about']);
-        $('#avatar').val('false');
-        $('#image').attr('src', uInfo['avatar']+ '?'+ (new Date()).getTime());
-        $('#privacy').val(Number(uInfo['privacy']));
+        this.ajax.callAsync('GetUser', {
+                'id': id,
+            }, function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    var syncError = response.data;
+                    $('#sync-error-details-form span').each($.proxy(function (i, elem) {
+                            if ($(elem).data('field') == 'data') {
+                                $(elem).html(this.gadget.syntaxHighlightJson(syncError[$(elem).data('field')]));
+                            } else {
+                                $(elem).html(syncError[$(elem).data('field')]);
+                            }
+                        }, this)
+                    );
+
+                    $('#fname').val(uInfo['fname']);
+                    $('#lname').val(uInfo['lname']);
+                    $('#gender').val(Number(uInfo['gender']));
+                    $('#ssn').val(uInfo['ssn']);
+                    $('#dob').val(uInfo['dob']);
+                    $('#url').val(uInfo['url']);
+                    $('#about').val(uInfo['about']);
+                    $('#avatar').val('false');
+                    $('#image').attr('src', uInfo['avatar']+ '?'+ (new Date()).getTime());
+                    $('#privacy').val(Number(uInfo['privacy']));
+
+                    $('#userGroupsModal').modal('show');
+                }
+            }
+        );
     },
 
     /**
@@ -671,12 +668,9 @@ function Jaws_Gadget_Users() { return {
      * Stops doing a certain action
      */
     stopUserAction: function() {
-        $('#uid').val(0);
-        this.currentAction = 'UserAccount';
-        unselectGridRow('users_datagrid');
-        $('#legend_title').html(this.gadget.defines.addUser_title);
-        $('#workarea').html(this.cachedUserForm);
-        initDatePicker('expiry_date');
+        this.selectedUser = 0;
+        $('#users-form')[0].reset();
+        // this.currentAction = 'UserAccount';
     },
 
     /**
@@ -959,6 +953,257 @@ function Jaws_Gadget_Users() { return {
         return true;
     },
 
+
+
+    /**
+     * view user info
+     */
+    viewUser: function (id) {
+        this.ajax.callAsync('GetSyncError', {
+                'id': id,
+            }, function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    var syncError = response.data;
+                    $('#sync-error-details-form span').each($.proxy(function (i, elem) {
+                            if ($(elem).data('field') == 'data') {
+                                $(elem).html(this.gadget.syntaxHighlightJson(syncError[$(elem).data('field')]));
+                            } else {
+                                $(elem).html(syncError[$(elem).data('field')]);
+                            }
+                        }, this)
+                    );
+
+                    $('#userModal').modal('show');
+                }
+            }
+        );
+    },
+
+    /**
+     * Define the data to be displayed in the user datagrid
+     */
+    usersDataSource: function (options, callback) {
+        var columns = {
+            'nickname': {
+                'label': this.gadget.defines.LANGUAGE.nickname,
+                'property': 'nickname'
+            },
+            'username': {
+                'label': this.gadget.defines.LANGUAGE.username,
+                'property': 'username'
+            },
+            'email': {
+                'label': this.gadget.defines.LANGUAGE.email,
+                'property': 'email'
+            },
+            'mobile': {
+                'label': this.gadget.defines.LANGUAGE.mobile,
+                'property': 'mobile'
+            },
+            'status': {
+                'label': this.gadget.defines.LANGUAGE.status,
+                'property': 'status'
+            },
+        };
+
+        var filters = $.unserialize($('#users-grid .datagrid-filters form').serialize());
+        filters.filter_group = $('#filter_group').combobox('selectedItem').value === undefined ? 0 :
+            $('#filter_group').combobox('selectedItem').value;
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.gadget.ajax.callAsync(
+            'GetUsers', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': filters
+            },
+            function(response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total/options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end':   options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end':   0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * users Datagrid column renderer
+     */
+    usersDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'status':
+                customMarkup = this.gadget.defines.statusItems[rowData.status];
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+        callback();
+    },
+
+    /**
+     * initiate User dataGrid
+     */
+    initiateUsersDG: function() {
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'edit',
+                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.gadget.defines.LANGUAGE.edit,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        this.editUser(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'acl',
+                    html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.acl,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editUserACL(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'users_groups',
+                    html: '<span class="glyphicon glyphicon-user"></span> ' + this.gadget.defines.LANGUAGE.users_groups,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editUserGroups(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'personal',
+                    html: '<span class="glyphicon glyphicon-user"></span> ' + this.gadget.defines.LANGUAGE.personal,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editPersonal(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.LANGUAGE.delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = new Array();
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.deleteUsers(ids);
+                        callback();
+                    }, this)
+
+                },
+            ]
+        };
+
+        // initialize the repeater
+        $('#users-grid').repeater({
+            dataSource: $.proxy(this.usersDataSource, this),
+            list_actions: list_actions,
+            list_columnRendered: $.proxy(this.usersDGColumnRenderer, this),
+            list_selectable: 'multi',
+            list_noItemsHTML: this.gadget.defines.datagridNoItems,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $("#users-grid select").change(function () {
+            $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+        $("#users-grid input").keypress(function (e) {
+            if (e.which == 13) {
+                $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        });
+        $("#users-grid button.btn-refresh").on('click', function (e) {
+            $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    /**
+     * Add option to combo box
+     */
+    addOptionToCombo: function (comboElement, data, emptyCombo = false) {
+        if (emptyCombo) {
+            $(comboElement).find('div.input-group-btn ul.dropdown-menu').html('');
+        }
+        $(comboElement).find('div.input-group-btn ul.dropdown-menu').append(
+            '<li data-value="' + data.value + '"><a href="#">' + data.title + '</a></li>'
+        );
+    },
+
+    /**
+     * Search groups and fill combo
+     */
+    searchGroupsAndFillCombo: function (comboElm) {
+        this.ajax.callAsync(
+            'GetGroups',
+            {'filters': {'title': $(comboElm).find('>input').val()}, 'limit': 10},
+            $.proxy(function (response, status) {
+                $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
+                if (response['type'] == 'alert-success' && response.data.total > 0) {
+                    $.each(response.data.records, $.proxy(function (key, group) {
+                        this.addOptionToCombo(comboElm, {'value': group.id, 'title': group.title});
+                    }, this));
+                }
+            }, this)
+        );
+    },
+
     /**
      * initialize gadget actions
      */
@@ -977,15 +1222,46 @@ function Jaws_Gadget_Users() { return {
 
         // init users action
         if (this.gadget.actions.indexOf('Users') >= 0) {
-            this.cachedUserForm  = $('#workarea').html();
+            this.currentAction = 'UserAccount';
             $('#filter_term').val('');
-            $('#filter_group').prop('selectedIndex', 0);
             $('#filter_type').prop('selectedIndex', 0);
             $('#filter_status').prop('selectedIndex', 0);
-            $('#order_type').prop('selectedIndex', 0);
-            this.currentAction = 'UserAccount';
             this.stopUserAction();
-            initDataGrid('users_datagrid', this.gadget, this.getUsers);
+            this.initiateUsersDG();
+
+            $('#filter_group').combobox({
+                'showOptionsOnKeypress': true,
+                'noMatchesMessage': this.gadget.defines.noMatchesMessage
+            }).combobox('enable')
+                .find('>input').val('')
+                .on('keyup.fu.combobox', $.proxy(function (evt, data) {
+                    this.searchGroupsAndFillCombo($('#filter_group'));
+                }, this));
+            $("#filter_group").trigger('keyup.fu.combobox');
+
+            $('#userModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopUserAction()
+            }, this));
+
+            $('#components').on('click', $.proxy(function (e) {
+                this.getACL();
+            }, this));
+
+            $('#btnSaveUser').on('click', $.proxy(function (e) {
+                this.saveUser();
+            }, this));
+
+            // toggle password between hide and show
+            $("input[type='password']+span.input-group-addon").click(
+                function() {
+                    if ($(this).prev().attr('type') == 'password') {
+                        $(this).prev().attr('type', 'text');
+                    } else {
+                        $(this).prev().attr('type', 'password');
+                    }
+                    $(this).find('i').toggleClass('glyphicon-eye-open glyphicon-eye-close');
+                }
+            );
         }
 
         // init groups action

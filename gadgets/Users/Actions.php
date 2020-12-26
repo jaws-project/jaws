@@ -442,7 +442,7 @@ $admin_actions['UploadAvatar'] = array(
 );
 $admin_actions['GetUser'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['GetUserContact'] = array(
     'standalone' => true,
@@ -454,7 +454,7 @@ $admin_actions['GetUserExtra'] = array(
 );
 $admin_actions['GetUsers'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['GetOnlineUsers'] = array(
     'standalone' => true,
@@ -470,7 +470,7 @@ $admin_actions['GetUsersCount'] = array(
 );
 $admin_actions['AddUser'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateUser'] = array(
@@ -522,10 +522,6 @@ $admin_actions['UpdateSettings'] = array(
     'file' => 'Settings',
     'loglevel' => JAWS_WARNING,
 );
-$admin_actions['GetACLUI'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
 $admin_actions['GetACLKeys'] = array(
     'standalone' => true,
     'file' => 'Ajax',
@@ -534,10 +530,6 @@ $admin_actions['UpdateMyAccount'] = array(
     'standalone' => true,
     'file' => 'Ajax',
     'loglevel' => JAWS_NOTICE,
-);
-$admin_actions['UserGroupsUI'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
 );
 $admin_actions['GetUserGroups'] = array(
     'standalone' => true,
@@ -581,7 +573,7 @@ $admin_actions['GetGroup'] = array(
 );
 $admin_actions['GetGroups'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Groups',
 );
 $admin_actions['AddGroup'] = array(
     'standalone' => true,
