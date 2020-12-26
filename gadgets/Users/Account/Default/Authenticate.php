@@ -241,7 +241,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
      * @access  public
      * @return  string  XHTML content
      */
-    function AuthenticateError($error, $authtype, $referrer)
+    function AuthenticateError($result, $authtype, $referrer)
     {
         $urlParams = array();
         if (!empty($authtype)) {
@@ -251,7 +251,13 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             $urlParams['referrer'] = $referrer;
         }
 
-        http_response_code($error->getCode());
+        if (Jaws_Error::IsError($result)) {
+            http_response_code($result->getCode());
+        } else {
+            // 201 http code for success login
+            http_response_code(201);
+        }
+
         if (JAWS_SCRIPT == 'index') {
             return Jaws_Header::Location(
                 $this->gadget->urlMap('Login', $urlParams),

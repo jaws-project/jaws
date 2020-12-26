@@ -83,9 +83,6 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         $objAccount = new $classname($this->gadget);
         $recoveryData = $objAccount->LoginRecovery();
         if (!Jaws_Error::IsError($recoveryData)) {
-            // 201 http code for auto login
-            http_response_code(201);
-
             // add required attributes for auto login into jaws
             $recoveryData['auth'] = $authtype;
 

@@ -81,9 +81,6 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $objAccount = new $classname($this->gadget);
         $registerData = $objAccount->Register();
         if (!Jaws_Error::IsError($registerData)) {
-            // 201 http code for auto login
-            http_response_code(201);
-
             // add required attributes for auto login into jaws
             $registerData['auth'] = $authtype;
 

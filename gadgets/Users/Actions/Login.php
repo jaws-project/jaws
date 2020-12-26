@@ -229,14 +229,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $classname = "Users_Account_{$authtype}_Authenticate";
         $objAccount = new $classname($this->gadget);
         $loginData = $objAccount->Authenticate();
-        if (Jaws_Error::IsError($loginData)) {
-            $default_authtype = $this->gadget->registry->fetch('authtype');
-            return $objAccount->AuthenticateError(
-                $loginData,
-                ($authtype != $default_authtype)? $authtype : '',
-                bin2hex($referrer)
-            );
-        } else {
+        if (!Jaws_Error::IsError($loginData)) {
             $loginData['auth'] = $authtype;
             // create session & cookie
             $this->app->session->create($loginData, $loginData['remember']);
@@ -257,7 +250,12 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $this->gadget->event->shout('LoginUser', $loginData);
         }
 
-        return Jaws_Header::Location($referrer, 'Login.Response');
+        $default_authtype = $this->gadget->registry->fetch('authtype');
+        return $objAccount->AuthenticateError(
+            $loginData,
+            ($authtype != $default_authtype)? $authtype : '',
+            bin2hex($referrer)
+        );
     }
 
     /**
