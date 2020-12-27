@@ -248,27 +248,23 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             $urlParams['authtype'] = strtolower($authtype);
         }
         if (!empty($referrer)) {
-            $urlParams['referrer'] = $referrer;
+            $urlParams['referrer'] = bin2hex($referrer);
         }
 
         if (Jaws_Error::IsError($result)) {
             http_response_code($result->getCode());
-        } else {
-            // 201 http code for success login
-            http_response_code(201);
-        }
-
-        if (JAWS_SCRIPT == 'index') {
             return Jaws_Header::Location(
                 $this->gadget->urlMap('Login', $urlParams),
                 'Login.Response'
             );
-        } else {
-            return Jaws_Header::Location(
-                $this->gadget->url('Login', $urlParams),
-                'Login.Response'
-            );
         }
+
+        // 201 http code for success login
+        http_response_code(201);
+        return Jaws_Header::Location(
+            $referrer,
+            'Login.Response'
+        );
     }
 
 }

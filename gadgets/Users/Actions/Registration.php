@@ -110,7 +110,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         return $objAccount->RegisterError(
             $registerData,
             ($authtype != $default_authtype)? $authtype : '',
-            bin2hex($referrer)
+            $referrer
         );
     }
 

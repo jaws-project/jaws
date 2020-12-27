@@ -254,7 +254,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         return $objAccount->AuthenticateError(
             $loginData,
             ($authtype != $default_authtype)? $authtype : '',
-            bin2hex($referrer)
+            $referrer
         );
     }
 

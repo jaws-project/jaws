@@ -109,7 +109,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         return $objAccount->LoginRecoveryError(
             $recoveryData,
             ($authtype != $default_authtype)? $authtype : '',
-            bin2hex($referrer)
+            $referrer
         );
     }
 

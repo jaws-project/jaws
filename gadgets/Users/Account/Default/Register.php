@@ -163,7 +163,7 @@ class Users_Account_Default_Register extends Users_Account_Default
             $urlParams['authtype'] = strtolower($authtype);
         }
         if (!empty($referrer)) {
-            $urlParams['referrer'] = $referrer;
+            $urlParams['referrer'] = bin2hex($referrer);
         }
 
         if (Jaws_Error::IsError($result)) {
