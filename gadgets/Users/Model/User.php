@@ -71,6 +71,7 @@ class Users_Model_User extends Jaws_Gadget_Model
     {
         $user = $this->getUser(
             $uid,
+            0,
             array('default' => true, 'account' => true, 'password' => true)
         );
         if (Jaws_Error::IsError($user) || empty($user)) {
