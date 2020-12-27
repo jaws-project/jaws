@@ -415,11 +415,11 @@ function Jaws_Gadget_Users() { return {
 
         this.ajax.callAsync('GetUser', {
                 'id': this.selectedUser,
+                'account': true
             }, function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
                     callOptions.showMessage = false;
                     var userInfo = response.data;
-                    console.log(userInfo);
                     if (userInfo) {
                         $('#users-form input, #users-form select, #users-form textarea').each(
                             function () {
@@ -535,36 +535,45 @@ function Jaws_Gadget_Users() { return {
     /**
      * Edit user's personal information
      */
-    editPersonal: function(uid) {
+    editPersonal: function (uid) {
         this.selectedUser = uid;
         this.currentAction = 'UserPersonal';
 
         this.ajax.callAsync('GetUser', {
-                'id': id,
+                'id': uid,
+                'account': true,
+                'personal': true,
             }, function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
-                    var syncError = response.data;
-                    $('#sync-error-details-form span').each($.proxy(function (i, elem) {
-                            if ($(elem).data('field') == 'data') {
-                                $(elem).html(this.gadget.syntaxHighlightJson(syncError[$(elem).data('field')]));
+                    var userInfo = response.data;
+                    $('#users-form input, #users-form select, #users-form textarea').each(
+                        function () {
+                            if ($(this).is('select')) {
+                                if (userInfo[$(this).attr('name')] === true) {
+                                    $(this).val('1');
+                                } else if (userInfo[$(this).attr('name')] === false) {
+                                    $(this).val('0');
+                                } else {
+                                    $(this).val(userInfo[$(this).attr('name')]);
+                                }
                             } else {
-                                $(elem).html(syncError[$(elem).data('field')]);
+                                $(this).val(userInfo[$(this).attr('name')]);
                             }
-                        }, this)
+                        }
                     );
 
-                    $('#fname').val(uInfo['fname']);
-                    $('#lname').val(uInfo['lname']);
-                    $('#gender').val(Number(uInfo['gender']));
-                    $('#ssn').val(uInfo['ssn']);
-                    $('#dob').val(uInfo['dob']);
-                    $('#url').val(uInfo['url']);
-                    $('#about').val(uInfo['about']);
-                    $('#avatar').val('false');
-                    $('#image').attr('src', uInfo['avatar']+ '?'+ (new Date()).getTime());
-                    $('#privacy').val(Number(uInfo['privacy']));
+                    // $('#fname').val(uInfo['fname']);
+                    // $('#lname').val(uInfo['lname']);
+                    // $('#gender').val(Number(uInfo['gender']));
+                    // $('#ssn').val(uInfo['ssn']);
+                    // $('#dob').val(uInfo['dob']);
+                    // $('#url').val(uInfo['url']);
+                    // $('#about').val(uInfo['about']);
+                    // $('#avatar').val('false');
+                    // $('#image').attr('src', uInfo['avatar'] + '?' + (new Date()).getTime());
+                    // $('#privacy').val(Number(uInfo['privacy']));
 
-                    $('#userGroupsModal').modal('show');
+                    $('#personalModal').modal('show');
                 }
             }
         );

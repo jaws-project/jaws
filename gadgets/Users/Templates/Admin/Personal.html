@@ -1,0 +1,94 @@
+<div class="modal fade" id="personalModal" tabindex="-1" role="dialog" aria-labelledby="personalModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "users.personal" | t }}</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="avatar" id="avatar" value="" />
+
+        <form id="user-personal-form" action="#">
+
+          <div class="row">
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="privacy">{{ "users.users_privacy" | t }}:</label>
+              <select class="form-control" name="privacy" id="privacy">
+                <option value="0">{{ "global.disabled" | t }}</option>
+                <option value="1">{{ "global.enabled" | t }}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+             <span id="user_avatar"><img name="image" id="image" src="" /></span>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="fname">{{ "users.users_firstname" | t }}:</label>
+              <input type="text" class="form-control" name="fname" id="fname">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="lname">{{ "users.users_lastname" | t }}:</label>
+              <input type="text" class="form-control" name="lname" id="lname">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="gender">{{ "users.users_gender" | t }}:</label>
+              <select class="form-control" name="gender" id="gender">
+                <option value="0">{{ "users.users_gender_0" | t }}</option>
+                <option value="1">{{ "users.users_gender_1" | t }}</option>
+                <option value="2">{{ "users.users_gender_2" | t }}</option>
+              </select>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+              <span id="avatar_actions">
+                  <form id="frm_avatar" name="frm_avatar" method="post"
+                      target="ifrm_upload" action="{{base_script}}"
+                      enctype="multipart/form-data" onsubmit="return true">
+                  <input type="hidden" name="reqGadget" value="Users"/>
+                  <input type="hidden" name="reqAction" value="UploadAvatar"/>
+                  <div class="gadget_actions">{{btn_upload}} {{btn_remove}}<div class="wrapper">{{upload_avatar}}</div></div>
+                </form>
+              </span>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="ssn">{{ "users.users_ssn" | t }}:</label>
+              <input type="text" class="form-control ltr" name="ssn" id="ssn">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="dob">{{ "users.users_birthday" | t }}:</label>
+              {% include 'include/Jaws/Resources/XDatePicker.html' with dob as datepicker %}
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="url">{{ "global.url" | t }}:</label>
+              <input type="text" class="form-control ltr" name="url" id="url">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="url">{{ "users.users_about" | t }}:</label>
+              <textarea name="about" id="about" cols="34" rows="4" class="form-control"></textarea>
+            </div>
+
+
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btnSaveUserGroups">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

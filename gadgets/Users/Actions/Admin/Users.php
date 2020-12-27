@@ -48,6 +48,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             1 => $this::t('USERS_TYPE_SUPERADMIN'),
         );
         $assigns['expiry_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'expiry_date'));
+        $assigns['dob'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'dob'));
 
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {
             $assigns['domains'] = $this->gadget->model->load('Domains')->getDomains();
@@ -128,8 +129,11 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function GetUser()
     {
-        $post = $this->gadget->request->fetch(array('id:integer'), 'post');
-        $userInfo = $this->app->users->GetUserNew((int)$post['id'], array('account' => true, 'personal' => true));
+        $post = $this->gadget->request->fetch(array('id:integer', 'account:bool', 'personal:bool'), 'post');
+        $userInfo = $this->app->users->GetUserNew(
+            (int)$post['id'],
+            array('account' => (bool)$post['account'], 'personal' => (bool)$post['personal'])
+        );
         if (Jaws_Error::IsError($userInfo)) {
             return $this->gadget->session->response(
                 $userInfo->getMessage(),
