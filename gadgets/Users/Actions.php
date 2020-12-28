@@ -475,7 +475,7 @@ $admin_actions['AddUser'] = array(
 );
 $admin_actions['UpdateUser'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['DeleteUser'] = array(
@@ -553,7 +553,7 @@ $admin_actions['ExtraUI'] = array(
 );
 $admin_actions['UpdatePersonal'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['UpdatePreferences'] = array(
     'standalone' => true,

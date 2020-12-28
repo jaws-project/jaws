@@ -141,6 +141,17 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             );
         }
 
+        $objDate = Jaws_Date::getInstance();
+        if (isset($userInfo['dob']) && !empty($userInfo['dob'])) {
+            $userInfo['dob'] = $objDate->Format($userInfo['dob'], 'Y/m/d');
+        }
+
+        if (!isset($userInfo['avatar']) && empty($userInfo['avatar'])) {
+            $userInfo['avatar'] = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
+        } else {
+            $userInfo['avatar'] = $this->app->getDataURL(). 'avatar/'. $userInfo['avatar'];
+        }
+
         return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
@@ -186,6 +197,85 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         );
     }
 
+    /**
+     * Update user account information
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateUser()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
+        $uData = $post['data'];
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $uData['password'] = $JCrypt->decrypt($uData['password']);
+        }
+
+        if ((int)$post['id'] == $this->app->session->user->id) {
+            unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
+        } else {
+            $uData['status'] = (int)$uData['status'];
+        }
+
+        $res = $this->app->users->UpdateUser((int)$post['id'], $uData);
+        if (Jaws_Error::isError($res)) {
+            return $this->gadget->session->response(
+                $res->getMessage(),
+                RESPONSE_ERROR
+            );
+        } else {
+            // send activate notification
+            if ($uData['prev_status'] == 2 && $uData['status'] == 1) {
+                $uRegistration = $this->gadget->action->load('Registration');
+                $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
+            }
+            return $this->gadget->session->response(
+                $this::t('USERS_UPDATED', $uData['username']),
+                RESPONSE_NOTICE
+            );
+        }
+    }
+
+    /**
+     * Update user's personal info
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdatePersonal()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
+        $pData = $post['data'];
+
+        $pData['dob'] = empty($pData['dob'])? null : $pData['dob'];
+        if (!empty($pData['dob'])) {
+            $objDate = Jaws_Date::getInstance();
+            $pData['dob'] = $objDate->ToBaseDate(preg_split('/[- :]/', $pData['dob']), 'Y-m-d H:i:s');
+            $pData['dob'] = $this->app->UserTime2UTC($pData['dob'], 'Y-m-d H:i:s');
+        }
+
+        // don't touch user's avatar
+        if ($pData['avatar'] == 'false') {
+            unset($pData['avatar']);
+        }
+
+        $res = $this->app->users->UpdatePersonal((int)$post['id'], $pData);
+        if ($res === false || Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response(
+                $this::t('USERS_PERSONALINFO_NOT_UPDATED'),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $this->gadget->session->response(
+            $this::t('USERS_PERSONALINFO_UPDATED'),
+            RESPONSE_NOTICE
+        );
+    }
 
     /**
      * Logout user

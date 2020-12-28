@@ -137,12 +137,12 @@ width:250px;
 #ifrm_upload{
 display:none;
 }
-#fname , #lname, #ssn{
-width:130px;
-}
-#privacy, #gender{
-width:138px;
-}
+/*#fname , #lname, #ssn{*/
+/*width:130px;*/
+/*}*/
+/*#privacy, #gender{*/
+/*width:138px;*/
+/*}*/
 #user_avatar{
 width:132px;
 padding:0px;

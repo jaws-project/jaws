@@ -32,6 +32,7 @@ function Jaws_Gadget_Users() { return {
         UpdateUser: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
+                $('#userModal').modal('hide');
                 $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
@@ -45,6 +46,8 @@ function Jaws_Gadget_Users() { return {
         UpdatePersonal: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
+                $('#personalModal').modal('hide');
+                $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
@@ -306,7 +309,7 @@ function Jaws_Gadget_Users() { return {
                         delete formData['length'];
                         delete formData['modulus'];
                         delete formData['exponent'];
-                        this.gadget.ajax.callAsync('UpdateUser', {'uid':  $('#uid').val(), 'data': formData});
+                        this.gadget.ajax.callAsync('UpdateUser', {'id':  this.selectedUser, 'data': formData});
                     }
                 }, this.gadget);
 
@@ -343,20 +346,10 @@ function Jaws_Gadget_Users() { return {
                 break;
 
             case 'UserPersonal':
-                this.gadget.ajax.callAsync(
-                    'UpdatePersonal', [
-                        $('#uid').val(),
-                        $('#fname').val(),
-                        $('#lname').val(),
-                        $('#gender').val(),
-                        $('#ssn').val(),
-                        $('#dob').val(),
-                        $('#url').val(),
-                        $('#about').val(),
-                        $('#avatar').val(),
-                        $('#privacy').val()
-                    ]
-                );
+                var formData = $.unserialize($('#user-personal-form').serialize());
+                delete formData['reqGadget'];
+                delete formData['reqAction'];
+                this.gadget.ajax.callAsync('UpdatePersonal', {'id':  this.selectedUser, 'data': formData});
                 break;
 
             case 'UserContacts':
@@ -546,7 +539,7 @@ function Jaws_Gadget_Users() { return {
             }, function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
                     var userInfo = response.data;
-                    $('#users-form input, #users-form select, #users-form textarea').each(
+                    $('#user-personal-form input, #user-personal-form select, #user-personal-form textarea').each(
                         function () {
                             if ($(this).is('select')) {
                                 if (userInfo[$(this).attr('name')] === true) {
@@ -561,6 +554,7 @@ function Jaws_Gadget_Users() { return {
                             }
                         }
                     );
+                    $('#image').attr('src', userInfo['avatar']+ '?'+ (new Date()).getTime());
 
                     // $('#fname').val(uInfo['fname']);
                     // $('#lname').val(uInfo['lname']);
@@ -679,7 +673,6 @@ function Jaws_Gadget_Users() { return {
     stopUserAction: function() {
         this.selectedUser = 0;
         $('#users-form')[0].reset();
-        // this.currentAction = 'UserAccount';
     },
 
     /**
@@ -1251,12 +1244,18 @@ function Jaws_Gadget_Users() { return {
             $('#userModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction()
             }, this));
+            $('#personalModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopUserAction()
+            }, this));
 
             $('#components').on('click', $.proxy(function (e) {
                 this.getACL();
             }, this));
 
             $('#btnSaveUser').on('click', $.proxy(function (e) {
+                this.saveUser();
+            }, this));
+            $('#btnSaveUserPersonal').on('click', $.proxy(function (e) {
                 this.saveUser();
             }, this));
 
