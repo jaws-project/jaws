@@ -68,11 +68,10 @@ function Jaws_Gadget_Users() { return {
             $('#pass2').val('');
         },
 
-        DeleteUser: function(response) {
+        DeleteUsers: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
-                $('#users_datagrid')[0].deleteItem();
-                getDG('users_datagrid');
+                $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
@@ -274,7 +273,7 @@ function Jaws_Gadget_Users() { return {
                     !$('#nickname').val() ||
                     (!$('#email').val() && !$('#mobile').val())
                 ) {
-                    alert(this.gadget.defines.LANGUAGE.incompleteUserFields);
+                    alert(this.gadget.defines.incompleteUserFields);
                     return false;
                 }
 
@@ -288,7 +287,7 @@ function Jaws_Gadget_Users() { return {
 
                     if (this.selectedUser == 0) {
                         if (!$('#password').val()) {
-                            alert(this.gadget.defines.LANGUAGE.incompleteUserFields);
+                            alert(this.gadget.defines.incompleteUserFields);
                             return false;
                         }
 
@@ -376,15 +375,13 @@ function Jaws_Gadget_Users() { return {
     },
 
     /**
-     * Delete user
+     * Delete user(s)
      */
-    deleteUser: function(rowElement, uid) {
+    deleteUsers: function (uids) {
         this.stopUserAction();
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
         if (confirm(this.gadget.defines.confirmUserDelete)) {
-            this.gadget.ajax.callAsync('DeleteUser', uid);
+            this.gadget.ajax.callAsync('DeleteUsers', {'uids': uids});
         }
-        unselectGridRow('users_datagrid');
     },
 
     /**
@@ -556,17 +553,6 @@ function Jaws_Gadget_Users() { return {
                     );
                     $('#image').attr('src', userInfo['avatar']+ '?'+ (new Date()).getTime());
 
-                    // $('#fname').val(uInfo['fname']);
-                    // $('#lname').val(uInfo['lname']);
-                    // $('#gender').val(Number(uInfo['gender']));
-                    // $('#ssn').val(uInfo['ssn']);
-                    // $('#dob').val(uInfo['dob']);
-                    // $('#url').val(uInfo['url']);
-                    // $('#about').val(uInfo['about']);
-                    // $('#avatar').val('false');
-                    // $('#image').attr('src', uInfo['avatar'] + '?' + (new Date()).getTime());
-                    // $('#privacy').val(Number(uInfo['privacy']));
-
                     $('#personalModal').modal('show');
                 }
             }
@@ -576,51 +562,67 @@ function Jaws_Gadget_Users() { return {
     /**
      * Edit user's contacts info
      */
-    editContacts: function(rowElement, uid) {
-        $('#uid').val(uid);
+    editContacts: function(uid) {
+        this.selectedUser = uid;
         this.currentAction = 'UserContacts';
-        $('#legend_title').html(this.gadget.defines.editContacts_title);
-        if (this.cachedContactsForm == null) {
-            this.cachedContactsForm = this.gadget.ajax.callSync('ContactsUI');
-        }
-        $('#workarea').html(this.cachedContactsForm);
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-        var cInfo = this.gadget.ajax.callSync('GetUserContact', {'uid': uid});
-        if (cInfo) {
-            this.changeProvince(cInfo['province_home'], 'city_home');
-            this.changeProvince(cInfo['province_work'], 'city_work');
-            this.changeProvince(cInfo['province_other'], 'city_other');
+        this.ajax.callAsync('GetUserContact', {
+                'uid': uid
+            }, function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    var cInfo = response.data;
+                    if (cInfo) {
+                        this.changeProvince(cInfo['province_home'], 'city_home');
+                        this.changeProvince(cInfo['province_work'], 'city_work');
+                        this.changeProvince(cInfo['province_other'], 'city_other');
 
-            $('#contact-form input, #contact-form select, #contact-form textarea').each(
-                function () {
-                    $(this).val(cInfo[$(this).attr('name')]);
+                        $('#contact-form input, #contact-form select, #contact-form textarea').each(
+                            function () {
+                                $(this).val(cInfo[$(this).attr('name')]);
+                            }
+                        );
+                    }
+
+                    $('#contactsModal').modal('show');
                 }
-            );
-        }
+            }
+        );
     },
 
     /**
      * Edit user's extra attributes
      */
-    editExtra: function(rowElement, uid) {
-        $('#uid').val(uid);
+    editExtra: function(uid) {
+        this.selectedUser = uid;
         this.currentAction = 'UserExtra';
-        $('#legend_title').html(this.gadget.defines.editExtra_title);
-        if (this.cachedExtraForm == null) {
-            this.cachedExtraForm = this.gadget.ajax.callSync('ExtraUI');
-        }
-        $('#workarea').html(this.cachedExtraForm);
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-        var exInfo = this.gadget.ajax.callSync('GetUserExtra', {'uid': uid});
-        if (exInfo) {
-            $('#extra-form input, #extra-form select, #extra-form textarea').each(
-                function () {
-                    $(this).val(exInfo[$(this).attr('name')]);
+        this.ajax.callAsync('GetUserExtra', {
+                'uid': uid
+            }, function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    var exInfo = response.data;
+                    if (exInfo) {
+                        $('#extra-form input, #extra-form select, #extra-form textarea').each(
+                            function () {
+                                $(this).val(exInfo[$(this).attr('name')]);
+                            }
+                        );
+                    }
+
+                    $('#extraModal').modal('show');
                 }
-            );
-        }
+            }
+        );
+    },
+
+    /**
+     * Change user's password
+     */
+    changePassword: function(username, uid) {
+        this.selectedUser = uid;
+        this.currentAction = 'ChangePassword';
+        $('#user-password input[name="username"]').val(username);
+        $('#passwordModal').modal('show');
     },
 
     /**
@@ -1125,6 +1127,36 @@ function Jaws_Gadget_Users() { return {
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
                         this.editPersonal(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'contacts',
+                    html: '<span class="glyphicon glyphicon-envelope"></span> ' + this.gadget.defines.LANGUAGE.contacts,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editContacts(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'extra',
+                    html: '<span class="glyphicon glyphicon-th-large"></span> ' + this.gadget.defines.LANGUAGE.extra,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editExtra(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'password',
+                    html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.password,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.changePassword(helpers.rowData.username, helpers.rowData.id);
                         callback();
                     }, this)
 

@@ -1,0 +1,36 @@
+<div class="modal fade" id="extraModal" tabindex="-1" role="dialog" aria-labelledby="extraModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "users.personal" | t }}</h4>
+      </div>
+      <div class="modal-body">
+
+        <form id="extra-form" name="extra" method="post" action="{{base_script}}" onsubmit="return false;">
+          <div class="row">
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="mailquota">{{ "users.extra_mailquota" | t }}:</label>
+              <input class="form-control ltr" name="mailquota" id="mailquota" value="" type="text"/>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="ftpquota">{{ "users.extra_ftpquota" | t }}:</label>
+              <input class="form-control ltr" name="ftpquota" id="ftpquota" value="" type="text"/>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btnSaveUserExtra">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

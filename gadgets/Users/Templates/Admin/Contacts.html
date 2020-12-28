@@ -1,0 +1,259 @@
+<div class="modal fade" id="contactsModal" tabindex="-1" role="dialog" aria-labelledby="contactsModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "users.contacts" | t }}</h4>
+      </div>
+      <div class="modal-body">
+
+        <form name="contacts" id="contact-form" action="#" method="post">
+          <div class="row">
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="title">{{ "global.title" | t }}:</label>
+              <input class="form-control" name="title" id="title" value="" type="text"/>
+            </div>
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="name">{{ "global.name" | t }}:</label>
+              <input class="form-control" name="name" id="name" value="" type="text"/>
+            </div>
+          </div>
+
+          <div>
+            <fieldset>
+              <legend id="legend_tel">
+                {{ "users.contacts_phone_number" | t }}
+              </legend>
+              <div class="row">
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="tel_home">{{ "users.contacts_home" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="tel_home" id="tel_home" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="tel_work">{{ "users.contacts_work" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="tel_work" id="tel_work" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="tel_other">{{ "users.contacts_other" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="tel_other" id="tel_other" value="">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div>
+            <fieldset>
+              <legend id="legend_fax">
+                {{ "users.contacts_fax_number" | t }}
+              </legend>
+              <div class="row">
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="fax_home">{{ "users.contacts_home" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="fax_home" id="fax_home" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="fax_work">{{ "users.contacts_work" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="fax_work" id="fax_work" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="fax_other">{{ "users.contacts_other" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="fax_other" id="fax_other" value="">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div>
+            <fieldset>
+              <legend id="legend_mobile">
+                {{ "users.contacts_mobile_number" | t }}
+              </legend>
+              <div class="row">
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="mobile_home">{{ "users.contacts_home" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="mobile_home" id="mobile_home" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="mobile_work">{{ "users.contacts_work" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="mobile_work" id="mobile_work" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="mobile_other">{{ "users.contacts_other" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="mobile_other" id="mobile_other" value="">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div>
+            <fieldset>
+              <legend id="legend_url">
+                {{ "global.url" | t }}
+              </legend>
+              <div class="row">
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="url_home">{{ "users.contacts_home" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="url_home" id="url_home" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="url_work">{{ "users.contacts_work" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="url_work" id="url_work" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="url_other">{{ "users.contacts_other" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="url_other" id="url_other" value="">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div>
+            <fieldset>
+              <legend id="legend_email">
+                {{ "global.email" | t }}
+              </legend>
+              <div class="row">
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="email_home">{{ "users.contacts_home" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="email_home" id="email_home" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="email_work">{{ "users.contacts_work" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="email_work" id="email_work" value="">
+                </div>
+                <div class="form-group col-xs-12 col-md-4">
+                  <label for="email_other">{{ "users.contacts_other" | t }}:</label>
+                  <input type="text" class="form-control ltr" name="email_other" id="email_other" value="">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div>
+            <fieldset>
+              <legend id="legend_address">{{ "users.contacts_address" | t }}</legend>
+
+                <fieldset>
+                  <legend id="legend_address_home">{{ "users.contacts_home" | t }}:</legend>
+                  <div class="row">
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="province_home">{{ "global.province" | t }}:</label>
+                    <select name="province_home"
+                            id="province_home" class="form-control"
+                            onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_home');">
+                      {%- for province in provinces %}
+                      <option value="{{province.province}}">
+                        {{- province.title -}}
+                      </option>
+                      {%- endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="city_home">{{ "global.city" | t }}:</label>
+                    <select name="city_home" id="city_home" class="form-control"></select>
+                  </div>
+
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="postal_code_home">{{ "users.contacts_postal_code" | t }}:</label>
+                    <input class="form-control ltr" name="postal_code_home" id="postal_code_home" type="text"/>
+                  </div>
+
+                  <div class="form-group col-xs-12">
+                    <label for="address_home">{{ "users.contacts_address" | t }}:</label>
+                    <textarea class="form-control" name="address_home" id="address_home" cols="45" rows="4"></textarea>
+                  </div>
+
+                </div>
+                </fieldset>
+
+              <fieldset>
+                <legend id="legend_address_work">{{ "users.contacts_work" | t }}:</legend>
+                <div class="row">
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="province_work">{{ "global.province" | t }}:</label>
+                    <select name="province_work"
+                            id="province_work" class="form-control"
+                            onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_work');">
+                      {%- for province in provinces %}
+                      <option value="{{province.province}}">
+                        {{- province.title -}}
+                      </option>
+                      {%- endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="city_work">{{ "global.city" | t }}:</label>
+                    <select name="city_work" id="city_work" class="form-control"></select>
+                  </div>
+
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="postal_code_work">{{ "users.contacts_postal_code" | t }}:</label>
+                    <input class="form-control ltr" name="postal_code_work" id="postal_code_work" type="text"/>
+                  </div>
+
+                  <div class="form-group col-xs-12">
+                    <label for="address_work">{{ "users.contacts_address" | t }}:</label>
+                    <textarea class="form-control" name="address_work" id="address_work" cols="45" rows="4"></textarea>
+                  </div>
+                </div>
+              </fieldset>
+
+
+              <fieldset>
+                <legend id="legend_address_other">{{ "users.contacts_other" | t }}:</legend>
+                <div class="row">
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="province_other">{{ "global.province" | t }}:</label>
+                    <select name="province_other"
+                            id="province_other" class="form-control"
+                            onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_other');">
+                      {%- for province in provinces %}
+                      <option value="{{province.province}}">
+                        {{- province.title -}}
+                      </option>
+                      {%- endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="city_other">{{ "global.city" | t }}:</label>
+                    <select name="city_other" id="city_other" class="form-control"></select>
+                  </div>
+                  <div class="form-group col-xs-12 col-md-4">
+                    <label for="postal_code_other">{{ "users.contacts_postal_code" | t }}:</label>
+                    <input class="form-control ltr" name="postal_code_other" id="postal_code_other" type="text"/>
+                  </div>
+                  <div class="form-group col-xs-12">
+                    <label for="address_other">{{ "users.contacts_address" | t }}:</label>
+                    <textarea class="form-control" name="address_other" id="address_other" cols="45" rows="4"></textarea>
+                  </div>
+                </div>
+              </fieldset>
+
+            </fieldset>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <label for="note">{{ "users.contacts_note" | t }}:</label>
+              <textarea class="form-control" name="note" id="note" cols="45" rows="4"></textarea>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btnSaveUserContact">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

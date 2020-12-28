@@ -446,11 +446,11 @@ $admin_actions['GetUser'] = array(
 );
 $admin_actions['GetUserContact'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['GetUserExtra'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['GetUsers'] = array(
     'standalone' => true,
@@ -478,9 +478,9 @@ $admin_actions['UpdateUser'] = array(
     'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
-$admin_actions['DeleteUser'] = array(
+$admin_actions['DeleteUsers'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
     'loglevel' => JAWS_WARNING,
 );
 $admin_actions['DeleteSession'] = array(

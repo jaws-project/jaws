@@ -18,6 +18,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
         $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
+        $this->gadget->define('confirmUserDelete', $this::t('USER_CONFIRM_DELETE'));
+        $this->gadget->define('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
         $this->gadget->define('LANGUAGE', array(
             'nickname'=> $this::t('USERS_NICKNAME'),
             'username'=> $this::t('USERS_USERNAME'),
@@ -29,8 +31,10 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             'acl'=> $this::t('ACLS'),
             'users_groups'=> $this::t('USERS_GROUPS'),
             'personal'=> $this::t('PERSONAL'),
+            'contacts'=> $this::t('CONTACTS'),
+            'extra'=> $this::t('EXTRA'),
+            'password'=> $this::t('USERS_PASSWORD'),
             'delete'=> Jaws::t('DELETE'),
-            'incompleteUserFields'=> $this::t('MYACCOUNT_INCOMPLETE_FIELDS'),
         ));
 
         $statusItems = array(
@@ -53,8 +57,20 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {
             $assigns['domains'] = $this->gadget->model->load('Domains')->getDomains();
         }
-        $assigns['components'] = Jaws_Gadget::getInstance('Components')->model->load('Gadgets')
+        $assigns['components'] = Jaws_Gadget::getInstance('Components')
+            ->model->load('Gadgets')
             ->GetGadgetsList(null, true, true);
+
+        // province
+        $zModel = Jaws_Gadget::getInstance('Settings')->model->load('Zones');
+        $assigns['provinces'] = $zModel->GetProvinces(364);
+
+        // usecrypt
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $assigns['pubkey'] = $JCrypt->getPublic();
+            $assigns['usecrypt_selected'] = empty($reqpost['pubkey']) || !empty($reqpost['usecrypt']);
+        }
 
         return $this->gadget->template->xLoadAdmin('Users.html')->render($assigns);
     }
@@ -120,6 +136,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             )
         );
     }
+
     /**
      *
      * Get an user info
@@ -273,6 +290,98 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         return $this->gadget->session->response(
             $this::t('USERS_PERSONALINFO_UPDATED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Gets a user contact info
+     *
+     * @access  public
+     * @return  array   Users list
+     */
+    function GetUserContact()
+    {
+        $uid = (int)$this->gadget->request->fetch('uid', 'post');
+        $cInfo = $this->app->users->GetUserContact($uid);
+
+        if (Jaws_Error::IsError($cInfo)) {
+            return $this->gadget->session->response(
+                $cInfo->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            $cInfo
+        );
+    }
+
+    /**
+     * Gets a user extra info
+     *
+     * @access  public
+     * @return  array   extra attributes
+     */
+    function GetUserExtra()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $uid = (int)$this->gadget->request->fetch('uid', 'post');
+        $extraInfo = $this->gadget->model->load('Extra')->GetUserExtra($uid);
+        if (Jaws_Error::IsError($extraInfo)) {
+            return $this->gadget->session->response(
+                $extraInfo->getMessage(),
+                RESPONSE_ERROR
+            );
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            $extraInfo
+        );
+    }
+
+    /**
+     * Deletes the user(s)
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteUsers()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $uids = $this->gadget->request->fetch('uids:array', 'post');
+        $uids = is_array($uids) ? $uids : array($uids);
+
+        $errors = 0;
+        foreach ($uids as $uid) {
+            if ($uid == $this->app->session->user->id) {
+                if (count($uids) === 1) {
+                    return $this->gadget->session->response(
+                        $this::t('USERS_CANT_DELETE_SELF'),
+                        RESPONSE_ERROR
+                    );
+                }
+                $errors++;
+                continue;
+            }
+
+            $profile = $this->app->users->GetUser((int)$uid);
+            if (!$this->app->session->user->superadmin && $profile['superadmin']) {
+                $errors++;
+                continue;
+            }
+            if (!$this->app->users->DeleteUser((int)$uid)) {
+                $errors++;
+                continue;
+            }
+        }
+
+        return $this->gadget->session->response(
+            $this::t('USERS_DELETED', count($uids) - $errors, count($uids)),
             RESPONSE_NOTICE
         );
     }
