@@ -3,7 +3,6 @@
   <div class="repeater-header">
     <div class="datagrid-filters">
 
-
       <div class="row">
         <form action="#">
 
@@ -13,7 +12,7 @@
         <div class="col-xs-4">
           <div class="input-group input-append dropdown combobox" id="filter_group">
             <input type="text" class="form-control" placeholder=""
-            data-toggle="tooltip" data-placement="top" title="{{ "global.username" | t }}">
+            data-toggle="tooltip" data-placement="top" title="{{ "users.groups_group" | t }}">
             <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
@@ -150,100 +149,16 @@
     </div>
 </div>
 
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">{{ "users.users_add" | t }}</h4>
-      </div>
-      <div class="modal-body">
-        <form id="users-form" action="#">
-          <div class="row">
+{% include 'gadgets/Users/Templates/Admin/Account.html' %}
 
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="username">{{ "global.username" | t }}:</label>
-              <input type="text" class="form-control ltr" name="username" id="username">
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="nickname">{{ "users.users_nickname" | t }}:</label>
-              <input type="text" class="form-control" name="nickname" id="nickname">
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="email">{{ "global.email" | t }}:</label>
-              <input type="text" class="form-control ltr" name="email" id="email">
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="mobile">{{ "users.contacts_mobile_number" | t }}:</label>
-              <input type="text" class="form-control ltr" name="mobile" id="mobile">
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="superadmin">{{ "users.users_type_superadmin" | t }}:</label>
-              <select class="form-control" name="superadmin" id="superadmin">
-                <option value="0">{{ "global.no" | t }}</option>
-                <option value="1">{{ "global.yes" | t }}</option>
-              </select>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label for="password">{{ "users.users_password" | t }}:</label>
-              <div class="input-group">
-                <input class="form-control ltr" type="password" name="password" id="password" autocomplete="off" data-toggle="password">
-                <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
-                          <i class="glyphicon glyphicon-eye-open"></i>
-                        </span>
-              </div>
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="concurrents">{{ "users.users_concurrents" | t }}:</label>
-              <input type="text" class="form-control ltr" name="concurrents" id="concurrents" value="0">
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="expiry_date">{{ "users.users_expiry_date" | t }}:</label>
-              {% include 'include/Jaws/Resources/XDatePicker.html' with expiry_date as datepicker %}
-            </div>
-
-            <div class="form-group col-xs-12 col-md-6">
-              <label for="concurrents">{{ "global.status" | t }}:</label>
-              <select class="form-control" name="status" id="status">
-                {%- for status in statusItems %}
-                <option value="{{forloop.key}}" {{ forloop.key | equal: 1, "selected" }}>
-                  {{- status -}}
-                </option>
-                {%- endfor %}
-              </select>
-            </div>
-
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          {{ "global.cancel" | t }}
-        </button>
-        <button type="button" class="btn btn-primary" id="btnSaveUser">
-          {{ "global.save" | t }}
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% include 'gadgets/Users/Templates/Admin/ACL.html' with components %}
+{% include 'gadgets/Users/Templates/Admin/ACL.html' %}
 
 {% include 'gadgets/Users/Templates/Admin/UserGroups.html' %}
 
-{% include 'gadgets/Users/Templates/Admin/Personal.html' with personal %}
+{% include 'gadgets/Users/Templates/Admin/Personal.html' %}
 
-{% include 'gadgets/Users/Templates/Admin/Contacts.html' with contacts %}
+{% include 'gadgets/Users/Templates/Admin/Contacts.html' %}
 
 {% include 'gadgets/Users/Templates/Admin/Extra.html' %}
 
 {% include 'gadgets/Users/Templates/Admin/Password.html' %}
-

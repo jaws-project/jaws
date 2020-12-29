@@ -464,10 +464,6 @@ $admin_actions['GetOnlineUsersCount'] = array(
     'standalone' => true,
     'file' => 'OnlineUsers',
 );
-$admin_actions['GetUsersCount'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
 $admin_actions['AddUser'] = array(
     'standalone' => true,
     'file' => 'Users',
@@ -507,6 +503,11 @@ $admin_actions['UpdateGroupACL'] = array(
     'file' => 'Ajax',
     'loglevel' => JAWS_NOTICE,
 );
+$admin_actions['AddUserToGroup'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+    'loglevel' => JAWS_NOTICE,
+);
 $admin_actions['AddUserToGroups'] = array(
     'standalone' => true,
     'file' => 'Ajax',
@@ -524,7 +525,7 @@ $admin_actions['UpdateSettings'] = array(
 );
 $admin_actions['GetACLKeys'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['UpdateMyAccount'] = array(
     'standalone' => true,
@@ -533,25 +534,17 @@ $admin_actions['UpdateMyAccount'] = array(
 );
 $admin_actions['GetUserGroups'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
-$admin_actions['PersonalUI'] = array(
+$admin_actions['DeleteUserFromGroups'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['PreferencesUI'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['ContactsUI'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['ExtraUI'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['UpdatePersonal'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+);
+$admin_actions['UpdateUserPassword'] = array(
     'standalone' => true,
     'file' => 'Users',
 );
@@ -559,13 +552,13 @@ $admin_actions['UpdatePreferences'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['UpdateContacts'] = array(
+$admin_actions['UpdateUserContacts'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
-$admin_actions['UpdateExtra'] = array(
+$admin_actions['UpdateUserExtra'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
 );
 $admin_actions['GetGroup'] = array(
     'standalone' => true,
@@ -589,10 +582,6 @@ $admin_actions['DeleteGroup'] = array(
     'standalone' => true,
     'file' => 'Ajax',
     'loglevel' => JAWS_NOTICE,
-);
-$admin_actions['GroupUsersUI'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
 );
 $admin_actions['GetGroupUsers'] = array(
     'standalone' => true,

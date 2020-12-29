@@ -19,9 +19,13 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
-        $groups = $this->app->users->GetGroups(
+        $model = $this->gadget->model->load('Groups');
+        $groups = $model->getGroups(
             0,
-            null,
+            0,
+            0,
+            $post['filters'],
+            array('default' => true),
             $post['sortBy'],
             $post['limit'],
             $post['offset']
@@ -32,7 +36,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
                 RESPONSE_ERROR
             );
         }
-        $groupsCount = $this->app->users->GetGroupsCount(0, null);
+        $groupsCount = $model->getGroupsCount(0, 0, 0, $post['filters']);
         if (Jaws_Error::IsError($groupsCount)) {
             return $this->gadget->session->response(
                 $groupsCount->getMessage(),

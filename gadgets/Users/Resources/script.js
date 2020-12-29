@@ -37,9 +37,16 @@ function Jaws_Gadget_Users() { return {
             }
         },
 
-        AddUserToGroups: function(response) {
+        DeleteUserFromGroups: function(response) {
             if (response['type'] == 'alert-success') {
-                this.stopUserAction();
+                $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
+        AddUserToGroup: function(response) {
+            if (response['type'] == 'alert-success') {
+                $('#group_combo').find('>input').val('');
+                $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
@@ -51,15 +58,24 @@ function Jaws_Gadget_Users() { return {
             }
         },
 
-        UpdateContacts: function(response) {
+        UpdateUserPassword: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
+                $('#passwordModal').modal('hide');
             }
         },
 
-        UpdateExtra: function(response) {
+        UpdateUserContacts: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
+                $('#contactsModal').modal('hide');
+            }
+        },
+
+        UpdateUserExtra: function(response) {
+            if (response['type'] == 'alert-success') {
+                this.stopUserAction();
+                $('#extraModal').modal('hide');
             }
         },
 
@@ -112,6 +128,16 @@ function Jaws_Gadget_Users() { return {
             }
         }
 
+    },
+
+    /**
+     * Cancel select combobox
+     */
+    cancelSelectCombobox: function(comboElement) {
+        $(comboElement).find('div.input-group-btn ul.dropdown-menu').html('');
+        $(comboElement).find('>input').val('');
+        $(comboElement).combobox('enable').combobox('selectByIndex', '0');
+        $(comboElement).find('>input').val('');
     },
 
     /**
@@ -267,111 +293,127 @@ function Jaws_Gadget_Users() { return {
      * Saves users data / changes
      */
     saveUser: function() {
-        switch (this.currentAction) {
-            case 'UserAccount':
-                if (!$('#username').val() ||
-                    !$('#nickname').val() ||
-                    (!$('#email').val() && !$('#mobile').val())
-                ) {
+        if (!$('#username').val() ||
+            !$('#nickname').val() ||
+            (!$('#email').val() && !$('#mobile').val())
+        ) {
+            alert(this.gadget.defines.incompleteUserFields);
+            return false;
+        }
+
+        var password = $('#password').val();
+        $.loadScript('libraries/js/jsencrypt.min.js', function() {
+            if ($('#pubkey').length) {
+                var objRSACrypt = new JSEncrypt();
+                objRSACrypt.setPublicKey($('#pubkey').val());
+                password = objRSACrypt.encrypt($('#pass1').val());
+            }
+
+            if (this.selectedUser == 0) {
+                if (!$('#password').val()) {
                     alert(this.gadget.defines.incompleteUserFields);
                     return false;
                 }
 
-                var password = $('#password').val();
-                $.loadScript('libraries/js/jsencrypt.min.js', function() {
-                    if ($('#pubkey').length) {
-                        var objRSACrypt = new JSEncrypt();
-                        objRSACrypt.setPublicKey($('#pubkey').val());
-                        password = objRSACrypt.encrypt($('#pass1').val());
-                    }
-
-                    if (this.selectedUser == 0) {
-                        if (!$('#password').val()) {
-                            alert(this.gadget.defines.incompleteUserFields);
-                            return false;
-                        }
-
-                        var formData = $.unserialize(
-                            $('#users-form input, #users-form select,#users-form textarea').serialize()
-                        );
-                        formData['password'] = password;
-                        // delete formData['modulus'];
-                        // delete formData['exponent'];
-                        this.gadget.ajax.callAsync('AddUser', {'data': formData});
-                    } else {
-                        var formData = $.unserialize(
-                            $('#users-form input, #users-form select, #users-form textarea').serialize()
-                        );
-                        formData['password'] = password;
-                        delete formData['pass1'];
-                        delete formData['pass2'];
-                        delete formData['length'];
-                        delete formData['modulus'];
-                        delete formData['exponent'];
-                        this.gadget.ajax.callAsync('UpdateUser', {'id':  this.selectedUser, 'data': formData});
-                    }
-                }, this.gadget);
-
-                break;
-
-            case 'UserACL':
-                if ($('#components').val() === '') {
-                    return;
-                }
-                var acls = [];
-                $.each($('#acl_form img[alt!="-1"]'), function(index, aclTag) {
-                    var keys = $(aclTag).attr('id').split(':');
-                    acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
-                });
-                this.gadget.ajax.callAsync('UpdateUserACL', [this.selectedId, $('#components').val(), acls]);
-                break;
-
-            case 'UserGroups':
-                var inputs  = $('#workarea input');
-                var keys    = new Array();
-                var counter = 0;
-                for (var i = 0; i < inputs.length; i++) {
-                    if (inputs[i].name.indexOf('user_groups') == -1) {
-                        continue;
-                    }
-
-                    if (inputs[i].checked) {
-                        keys[counter] = inputs[i].value;
-                        counter++;
-                    }
-                }
-
-                this.gadget.ajax.callAsync('AddUserToGroups', [$('#uid').val(), keys]);
-                break;
-
-            case 'UserPersonal':
-                var formData = $.unserialize($('#user-personal-form').serialize());
-                delete formData['reqGadget'];
-                delete formData['reqAction'];
-                this.gadget.ajax.callAsync('UpdatePersonal', {'id':  this.selectedUser, 'data': formData});
-                break;
-
-            case 'UserContacts':
-                this.gadget.ajax.callAsync(
-                    'UpdateContacts',
-                    {
-                        'uid': $('#uid').val(),
-                        'data': $.unserialize($('form[name=contacts]').serialize())
-                    }
+                var formData = $.unserialize(
+                    $('#users-form input, #users-form select,#users-form textarea').serialize()
                 );
-                break;
-
-            case 'UserExtra':
-                this.gadget.ajax.callAsync(
-                    'UpdateExtra',
-                    {
-                        'uid': $('#uid').val(),
-                        'data': $.unserialize($('form[name=extra]').serialize())
-                    }
+                formData['password'] = password;
+                // delete formData['modulus'];
+                // delete formData['exponent'];
+                this.gadget.ajax.callAsync('AddUser', {'data': formData});
+            } else {
+                var formData = $.unserialize(
+                    $('#users-form input, #users-form select, #users-form textarea').serialize()
                 );
-                break;
+                formData['password'] = password;
+                delete formData['pass1'];
+                delete formData['pass2'];
+                delete formData['length'];
+                delete formData['modulus'];
+                delete formData['exponent'];
+                this.gadget.ajax.callAsync('UpdateUser', {'id':  this.selectedUser, 'data': formData});
+            }
+        }, this.gadget);
+    },
+
+    /**
+     * Save user's personal data
+     */
+    saveUserPersonal: function() {
+        var formData = $.unserialize($('#user-personal-form').serialize());
+        delete formData['reqGadget'];
+        delete formData['reqAction'];
+        this.gadget.ajax.callAsync('UpdatePersonal', {'id':  this.selectedUser, 'data': formData});
+    },
+
+    /**
+     * Save user's ACL
+     */
+    saveUserACL: function() {
+        if ($('#components').val() === '') {
+            return;
+        }
+        var acls = [];
+        $.each($('#acl_form img[alt!="-1"]'), function(index, aclTag) {
+            var keys = $(aclTag).attr('id').split(':');
+            acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
+        });
+        this.gadget.ajax.callAsync('UpdateUserACL', [this.selectedId, $('#components').val(), acls]);
+    },
+
+    /**
+     * Save user's contact
+     */
+    saveUserContact: function() {
+        this.gadget.ajax.callAsync(
+            'UpdateUserContacts',
+            {
+                'uid': this.selectedUser,
+                'data': $.unserialize($('#user-contacts-form').serialize())
+            }
+        );
+    },
+
+    /**
+     * Save user's extra data
+     */
+    saveUserExtra: function() {
+        this.gadget.ajax.callAsync(
+            'UpdateUserExtra',
+            {
+                'uid': this.selectedUser,
+                'data': $.unserialize($('#user-extra-form').serialize())
+            }
+        );
+    },
+
+    /**
+     * Save user's password
+     */
+    saveUserPassword: function() {
+        var password = $('#user-password-form input[name="password"]').val();
+        if (password.blank()) {
+            alert(this.gadget.defines.wrongPassword);
+            return false;
         }
 
+        $.loadScript('libraries/js/jsencrypt.min.js', $.proxy(function() {
+            if ($('#pubkey').length) {
+                var objRSACrypt = new JSEncrypt();
+                objRSACrypt.setPublicKey($('#pubkey').val());
+                password = objRSACrypt.encrypt(password);
+            }
+
+            this.gadget.ajax.callAsync(
+                'UpdateUserPassword',
+                {
+                    'uid': this.selectedUser,
+                    'password': password,
+                    'expired': $('#user-password-form #expired').prop('checked')
+                }
+            );
+        }, this));
     },
 
     /**
@@ -441,6 +483,7 @@ function Jaws_Gadget_Users() { return {
     editUserACL: function (uid) {
         this.selectedUser = uid;
         $('#aclModal').modal('show');
+        this.initiateUserACLsDG();
     },
 
     /**
@@ -466,9 +509,9 @@ function Jaws_Gadget_Users() { return {
      * Loads ACL data of the selected gadget/plugin
      */
     getACL: function() {
-        function getValue(key, subkey) {
+        function getValue(custom_acls, key, subkey) {
             var res = -1;
-            $.each(acls.custom_acls, function (index, acl) {
+            $.each(custom_acls, function (index, acl) {
                 if (acl.key_name === key && acl.key_subkey == subkey) {
                     res = acl.key_value;
                     return false; 
@@ -483,34 +526,41 @@ function Jaws_Gadget_Users() { return {
             return;
         }
 
-        var form = $('#acl_form').html(''),
-            acls = this.gadget.ajax.callSync(
-                'GetACLKeys',
-                [this.selectedId, $('#components').val(), this.currentAction]
-            );
+        this.ajax.callAsync('GetACLKeys', {
+                'uid': this.selectedId,
+                'comp': $('#components').val(),
+                'action': this.currentAction
+            }, function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    var acls = response.data;
+                    var form = $('#acl_form').html('');
+                    $.each(acls.default_acls, $.proxy(function(index, acl) {
+                        var key_unique = acl.key_name + ':' + acl.key_subkey;
+                        var check = $('<img/>').attr('id', key_unique),
+                            label = $('<label></label>').attr('for', key_unique),
+                            div = $('<div></div>').append(check, label),
+                            value = getValue(acls.custom_acls, acl.key_name, acl.key_subkey);
 
-        $.each(acls.default_acls, $.proxy(function(index, acl) {
-            var key_unique = acl.key_name + ':' + acl.key_subkey;
-            var check = $('<img/>').attr('id', key_unique),
-                label = $('<label></label>').attr('for', key_unique),
-                div = $('<div></div>').append(check, label),
-                value = getValue(acl.key_name, acl.key_subkey);
+                        label.html(acl.key_desc);
+                        check.attr('alt', value);
+                        check.attr('src', this.chkImages[value]);
+                        label.on('click', $.proxy(function (event) {
+                            var check = $(event.target).prev('img'),
+                                value = parseInt(check.attr('alt'));
+                            check.attr('alt', (value == -1)? 1 : value - 1);
+                            check.attr('src', this.chkImages[check.attr('alt')]);
+                        }, this));
+                        check.on('click', $.proxy(function () {
+                            $(event.target).attr('alt', (event.target.alt == -1)? 1 : parseInt($(event.target).attr('alt')) - 1);
+                            $(event.target).attr('src', this.chkImages[$(event.target).attr('alt')]);
+                        }, this));
+                        form.append(div);
+                    }, this));
+                }
+            }
+        );
 
-            label.html(acl.key_desc);
-            check.attr('alt', value);
-            check.attr('src', this.chkImages[value]);
-            label.on('click', $.proxy(function (event) {
-                var check = $(event.target).prev('img'),
-                    value = parseInt(check.attr('alt'));
-                check.attr('alt', (value == -1)? 1 : value - 1);
-                check.attr('src', this.chkImages[check.attr('alt')]);
-            }, this));
-            check.on('click', $.proxy(function () {
-                $(event.target).attr('alt', (event.target.alt == -1)? 1 : parseInt($(event.target).attr('alt')) - 1);
-                $(event.target).attr('src', this.chkImages[$(event.target).attr('alt')]);
-            }, this));
-            form.append(div);
-        }, this));
+
     },
 
     /**
@@ -520,6 +570,29 @@ function Jaws_Gadget_Users() { return {
         this.selectedUser = uid;
         this.currentAction = 'UserGroups';
         $('#userGroupsModal').modal('show');
+        this.initiateUserGroupsDG();
+    },
+
+    /**
+     * Add an user to a group
+     */
+    addUserToGroup: function () {
+        if ($('#group_combo').combobox('selectedItem').value === undefined) {
+            return false;
+        }
+
+        this.gadget.ajax.callAsync('AddUserToGroup',
+            {
+                'uid': this.selectedUser,
+                'gid': $('#group_combo').combobox('selectedItem').value
+            });
+    },
+
+    /**
+     * Delete user from groups
+     */
+    deleteUserFromGroups: function (groupIds) {
+        this.gadget.ajax.callAsync('DeleteUserFromGroups', {'uid': this.selectedUser, 'groupIds': groupIds});
     },
 
     /**
@@ -576,7 +649,7 @@ function Jaws_Gadget_Users() { return {
                         this.changeProvince(cInfo['province_work'], 'city_work');
                         this.changeProvince(cInfo['province_other'], 'city_other');
 
-                        $('#contact-form input, #contact-form select, #contact-form textarea').each(
+                        $('#user-contacts-form input, #user-contacts-form select, #user-contacts-form textarea').each(
                             function () {
                                 $(this).val(cInfo[$(this).attr('name')]);
                             }
@@ -592,7 +665,7 @@ function Jaws_Gadget_Users() { return {
     /**
      * Edit user's extra attributes
      */
-    editExtra: function(uid) {
+    editUserExtra: function(uid) {
         this.selectedUser = uid;
         this.currentAction = 'UserExtra';
 
@@ -602,7 +675,7 @@ function Jaws_Gadget_Users() { return {
                 if (response['type'] == 'alert-success') {
                     var exInfo = response.data;
                     if (exInfo) {
-                        $('#extra-form input, #extra-form select, #extra-form textarea').each(
+                        $('#user-extra-form input, #user-extra-form select, #user-extra-form textarea').each(
                             function () {
                                 $(this).val(exInfo[$(this).attr('name')]);
                             }
@@ -618,10 +691,10 @@ function Jaws_Gadget_Users() { return {
     /**
      * Change user's password
      */
-    changePassword: function(username, uid) {
+    changeUserPassword: function(username, uid) {
         this.selectedUser = uid;
-        this.currentAction = 'ChangePassword';
-        $('#user-password input[name="username"]').val(username);
+        this.currentAction = 'changeUserPassword';
+        $('#user-password-form input[name="username"]').val(username);
         $('#passwordModal').modal('show');
     },
 
@@ -1146,7 +1219,7 @@ function Jaws_Gadget_Users() { return {
                     html: '<span class="glyphicon glyphicon-th-large"></span> ' + this.gadget.defines.LANGUAGE.extra,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
-                        this.editExtra(helpers.rowData.id);
+                        this.editUserExtra(helpers.rowData.id);
                         callback();
                     }, this)
 
@@ -1156,7 +1229,7 @@ function Jaws_Gadget_Users() { return {
                     html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.password,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
-                        this.changePassword(helpers.rowData.username, helpers.rowData.id);
+                        this.changeUserPassword(helpers.rowData.username, helpers.rowData.id);
                         callback();
                     }, this)
 
@@ -1209,6 +1282,232 @@ function Jaws_Gadget_Users() { return {
     },
 
     /**
+     * Define the data to be displayed in the user ACLs datagrid
+     */
+    userACLsDataSource: function (options, callback) {
+        var columns = {
+            'gadget': {
+                'label': this.gadget.defines.LANGUAGE.gadget,
+                'property': 'nickname'
+            },
+            'title': {
+                'label': this.gadget.defines.LANGUAGE.title,
+                'property': 'username'
+            },
+        };
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.gadget.ajax.callAsync(
+            'GetUserACLs', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': {}
+            },
+            function(response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total/options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end':   options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end':   0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * initiate User ACLs dataGrid
+     */
+    initiateUserACLsDG: function() {
+        if ($('#user-acls-grid').data('currentview') !== undefined) {
+            return $('#user-acls-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
+        }
+
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.LANGUAGE.delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = new Array();
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.deleteUserACLs(ids);
+                        callback();
+                    }, this)
+
+                },
+            ]
+        };
+
+        // initialize the repeater
+        $('#user-acls-grid').repeater({
+            dataSource: $.proxy(this.userACLsDataSource, this),
+            list_actions: list_actions,
+            // list_columnRendered: $.proxy(this.userACLsDGColumnRenderer, this),
+            list_selectable: 'multi',
+            list_noItemsHTML: this.gadget.defines.datagridNoItems,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $("#user-acls-grid button.btn-refresh").on('click', function (e) {
+            $('#user-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    /**
+     * Define the data to be displayed in the user datagrid
+     */
+    userGroupsDataSource: function (options, callback) {
+        var columns = {
+            'name': {
+                'label': this.gadget.defines.LANGUAGE.name,
+                'property': 'name'
+            },
+            'title': {
+                'label': this.gadget.defines.LANGUAGE.title,
+                'property': 'title'
+            }
+        };
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.gadget.ajax.callAsync(
+            'GetUserGroups', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': {'uid': this.selectedUser}
+            },
+            function(response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total/options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end':   options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end':   0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * initiate User's groups dataGrid
+     */
+    initiateUserGroupsDG: function() {
+        if ($('#user-groups-grid').data('currentview') !== undefined) {
+            return $('#user-groups-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
+        }
+
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.LANGUAGE.delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = [];
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.deleteUserFromGroups(ids);
+                        callback();
+                    }, this)
+
+                }
+            ]
+        };
+
+        // initialize the repeater
+        $('#user-groups-grid').repeater({
+            dataSource: $.proxy(this.userGroupsDataSource, this),
+            list_actions: list_actions,
+            list_selectable: 'multi',
+            // list_infiniteScroll: true,
+            list_noItemsHTML: this.gadget.defines.datagridNoItems,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $("#user-groups-grid button.btn-refresh").on('click', function (e) {
+            $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    /**
      * Add option to combo box
      */
     addOptionToCombo: function (comboElement, data, emptyCombo = false) {
@@ -1226,7 +1525,7 @@ function Jaws_Gadget_Users() { return {
     searchGroupsAndFillCombo: function (comboElm) {
         this.ajax.callAsync(
             'GetGroups',
-            {'filters': {'title': $(comboElm).find('>input').val()}, 'limit': 10},
+            {'filters': {'term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
                 $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
                 if (response['type'] == 'alert-success' && response.data.total > 0) {
@@ -1261,6 +1560,7 @@ function Jaws_Gadget_Users() { return {
             $('#filter_type').prop('selectedIndex', 0);
             $('#filter_status').prop('selectedIndex', 0);
             this.stopUserAction();
+
             this.initiateUsersDG();
 
             $('#filter_group').combobox({
@@ -1273,11 +1573,25 @@ function Jaws_Gadget_Users() { return {
                 }, this));
             $("#filter_group").trigger('keyup.fu.combobox');
 
+            $('#group_combo').combobox({
+                'showOptionsOnKeypress': true,
+                'noMatchesMessage': this.gadget.defines.noMatchesMessage
+            }).combobox('enable')
+                .find('>input').val('')
+                .on('keyup.fu.combobox', $.proxy(function (evt, data) {
+                    this.searchGroupsAndFillCombo($('#group_combo'));
+                }, this));
+            $("#group_combo").trigger('keyup.fu.combobox');
+
+            $('button.btn-cancel-select-group').on('click', $.proxy(function (e) {
+                this.cancelSelectCombobox($('#' + $(e.target).parent().data('combo-name')));
+            }, this));
+
             $('#userModal').on('hidden.bs.modal', $.proxy(function (e) {
-                this.stopUserAction()
+                this.stopUserAction();
             }, this));
             $('#personalModal').on('hidden.bs.modal', $.proxy(function (e) {
-                this.stopUserAction()
+                this.stopUserAction();
             }, this));
 
             $('#components').on('click', $.proxy(function (e) {
@@ -1287,8 +1601,20 @@ function Jaws_Gadget_Users() { return {
             $('#btnSaveUser').on('click', $.proxy(function (e) {
                 this.saveUser();
             }, this));
+            $('#btnAddUserToGroup').on('click', $.proxy(function (e) {
+                this.addUserToGroup();
+            }, this));
             $('#btnSaveUserPersonal').on('click', $.proxy(function (e) {
-                this.saveUser();
+                this.saveUserPersonal();
+            }, this));
+            $('#btnSaveUserContact').on('click', $.proxy(function (e) {
+                this.saveUserContact();
+            }, this));
+            $('#btnSaveUserExtra').on('click', $.proxy(function (e) {
+                this.saveUserExtra();
+            }, this));
+            $('#btnSaveUserPassword').on('click', $.proxy(function (e) {
+                this.saveUserPassword();
             }, this));
 
             // toggle password between hide and show

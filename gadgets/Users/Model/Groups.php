@@ -122,7 +122,7 @@ class Users_Model_Groups extends Jaws_Gadget_Model
         // user
         if (!empty($user)) {
             $objORM->join('users_groups', 'users_groups.group', 'groups.id');
-            $objORM->where('users_groups.user', (int)$user);
+            $objORM->and()->where('users_groups.user', (int)$user);
         }
 
         // filters

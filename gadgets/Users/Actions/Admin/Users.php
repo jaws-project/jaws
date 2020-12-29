@@ -20,6 +20,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
         $this->gadget->define('confirmUserDelete', $this::t('USER_CONFIRM_DELETE'));
         $this->gadget->define('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
+        $this->gadget->define('wrongPassword', $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
         $this->gadget->define('LANGUAGE', array(
             'nickname'=> $this::t('USERS_NICKNAME'),
             'username'=> $this::t('USERS_USERNAME'),
@@ -34,6 +35,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             'contacts'=> $this::t('CONTACTS'),
             'extra'=> $this::t('EXTRA'),
             'password'=> $this::t('USERS_PASSWORD'),
+            'name'=> Jaws::t('NAME'),
+            'title'=> Jaws::t('TITLE'),
             'delete'=> Jaws::t('DELETE'),
         ));
 
@@ -70,6 +73,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         if (!Jaws_Error::IsError($JCrypt)) {
             $assigns['pubkey'] = $JCrypt->getPublic();
             $assigns['usecrypt_selected'] = empty($reqpost['pubkey']) || !empty($reqpost['usecrypt']);
+//            $this->gadget->define('pubkey', $JCrypt->getPublic());
         }
 
         return $this->gadget->template->xLoadAdmin('Users.html')->render($assigns);
@@ -109,10 +113,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $post['offset']
         );
         if (Jaws_Error::IsError($users)) {
-            return $this->gadget->session->response(
-                $users->GetMessage(),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($users->GetMessage(), RESPONSE_ERROR);
         }
 
         $usersCount = $uModel->getUsersCount(
@@ -121,10 +122,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $filters,
         );
         if (Jaws_Error::IsError($usersCount)) {
-            return $this->gadget->session->response(
-                $usersCount->GetMessage(),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($usersCount->GetMessage(), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
@@ -152,10 +150,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             array('account' => (bool)$post['account'], 'personal' => (bool)$post['personal'])
         );
         if (Jaws_Error::IsError($userInfo)) {
-            return $this->gadget->session->response(
-                $userInfo->getMessage(),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($userInfo->getMessage(), RESPONSE_ERROR);
         }
 
         $objDate = Jaws_Date::getInstance();
@@ -169,11 +164,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $userInfo['avatar'] = $this->app->getDataURL(). 'avatar/'. $userInfo['avatar'];
         }
 
-        return $this->gadget->session->response(
-            '',
-            RESPONSE_NOTICE,
-            $userInfo
-        );
+        return $this->gadget->session->response('', RESPONSE_NOTICE, $userInfo);
     }
 
     /**
@@ -198,20 +189,14 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
         $res = $this->app->users->AddUser($uData);
         if (Jaws_Error::isError($res)) {
-            return $this->gadget->session->response(
-                $res->getMessage(),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
 
         $guid = $this->gadget->registry->fetch('anon_group');
         if (!empty($guid)) {
             $this->app->users->AddUserToGroup($res, (int)$guid);
         }
-        return $this->gadget->session->response(
-            $this::t('USERS_CREATED', $uData['username']),
-            RESPONSE_NOTICE
-        );
+        return $this->gadget->session->response($this::t('USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
     }
 
     /**
@@ -239,21 +224,155 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $res = $this->app->users->UpdateUser((int)$post['id'], $uData);
         if (Jaws_Error::isError($res)) {
-            return $this->gadget->session->response(
-                $res->getMessage(),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } else {
             // send activate notification
             if ($uData['prev_status'] == 2 && $uData['status'] == 1) {
                 $uRegistration = $this->gadget->action->load('Registration');
                 $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
             }
-            return $this->gadget->session->response(
-                $this::t('USERS_UPDATED', $uData['username']),
-                RESPONSE_NOTICE
-            );
+            return $this->gadget->session->response($this::t('USERS_UPDATED', $uData['username']), RESPONSE_NOTICE);
         }
+    }
+
+    /**
+     * Returns ACL keys of the component and user/group
+     *
+     * @access  public
+     * @return  array   Array of default ACLs and the user/group ACLs
+     */
+    function GetACLKeys()
+    {
+        $this->gadget->CheckPermission('ManageUserACLs');
+        $post = $this->gadget->request->fetch(array('uid', 'comp', 'action'), 'post');
+        // fetch default ACLs
+        $default_acls = array();
+        $result = $this->app->acl->fetchAll($post['comp']);
+        if (!empty($result)) {
+            // set ACL keys description
+            $info = Jaws_Gadget::getInstance($post['comp']);
+            foreach ($result as $key_name => $acl) {
+                foreach ($acl as $subkey => $value) {
+                    $default_acls[] = array(
+                        'key_name'   => $key_name,
+                        'key_subkey' => $subkey,
+                        'key_value'  => $value,
+                        'key_desc'   => $info->acl->description($key_name, $subkey),
+                    );
+                }
+            }
+        }
+
+        // fetch user/group ACLs
+        $custom_acls = array();
+        $result = ($post['action'] === 'UserACL')?
+            $this->app->acl->fetchAllByUser((int)$post['uid'], $post['comp']):
+            $this->app->acl->fetchAllByGroup((int)$post['uid'], $post['comp']);
+        if (!empty($result)) {
+            foreach ($result as $key_name => $acl) {
+                foreach ($acl as $subkey => $value) {
+                    $custom_acls[] = array(
+                        'key_name'   => $key_name,
+                        'key_subkey' => $subkey,
+                        'key_value'  => $value,
+                    );
+                }
+            }
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'default_acls' => $default_acls,
+                'custom_acls' => $custom_acls
+            )
+        );
+    }
+
+    /**
+     * Gets the user-groups data
+     *
+     * @access  public
+     * @return  array   Groups data
+     */
+    function GetUserGroups()
+    {
+        $post = $this->gadget->request->fetch(
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
+            'post'
+        );
+
+        $model = $this->gadget->model->load('Groups');
+        $groups = $model->getGroups(
+            0,
+            0,
+            (int)$post['filters']['uid'],
+            array(),
+            array('default' => true),
+            $post['sortBy'],
+            $post['limit'],
+            $post['offset']
+        );
+        if (Jaws_Error::IsError($groups)) {
+            return $this->gadget->session->response($groups->getMessage(), RESPONSE_ERROR);
+        }
+
+        $groupsCount = $model->getGroupsCount(
+            0,
+            0,
+            (int)$post['filters']['uid']
+        );
+        if (Jaws_Error::IsError($groupsCount)) {
+            return $this->gadget->session->response($groupsCount->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total' => $groupsCount,
+                'records' => $groups
+            )
+        );
+    }
+
+    /**
+     * Add user to group
+     *
+     * @access  public
+     * @return  array   Groups data
+     */
+    function AddUserToGroup()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $post = $this->gadget->request->fetch(array('uid', 'gid'), 'post');
+
+        $res = $this->app->users->AddUserToGroup((int)$post['uid'], (int)$post['gid']);
+        if (Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
+        }
+        return $this->gadget->session->response($this::t('USERS_USER_ADDED_TO_GROUP'), RESPONSE_NOTICE);
+    }
+
+    /**
+     * Delete user from groups
+     *
+     * @access  public
+     * @return  array   Groups data
+     */
+    function DeleteUserFromGroups()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $post = $this->gadget->request->fetch(array('uid', 'groupIds:array'), 'post');
+
+        foreach ($post['groupIds'] as $gid) {
+            $res = $this->app->users->DeleteUserFromGroup((int)$post['uid'], $gid);
+            if (Jaws_Error::IsError($res)) {
+                return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
+            }
+        }
+        return $this->gadget->session->response($this::t('USERS_USERS_DELETED_FROM_GROUP'), RESPONSE_NOTICE);
     }
 
     /**
@@ -282,16 +401,10 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $res = $this->app->users->UpdatePersonal((int)$post['id'], $pData);
         if ($res === false || Jaws_Error::IsError($res)) {
-            return $this->gadget->session->response(
-                $this::t('USERS_PERSONALINFO_NOT_UPDATED'),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($this::t('USERS_PERSONALINFO_NOT_UPDATED'), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(
-            $this::t('USERS_PERSONALINFO_UPDATED'),
-            RESPONSE_NOTICE
-        );
+        return $this->gadget->session->response($this::t('USERS_PERSONALINFO_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -304,19 +417,77 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     {
         $uid = (int)$this->gadget->request->fetch('uid', 'post');
         $cInfo = $this->app->users->GetUserContact($uid);
-
         if (Jaws_Error::IsError($cInfo)) {
-            return $this->gadget->session->response(
-                $cInfo->getMessage(),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($cInfo->getMessage(), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(
-            '',
-            RESPONSE_NOTICE,
-            $cInfo
+        return $this->gadget->session->response('', RESPONSE_NOTICE, $cInfo);
+    }
+
+    /**
+     * Updates contacts information of the user
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateUserContacts()
+    {
+        $post = $this->gadget->request->fetch(array('uid', 'data:array'), 'post');
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($post['data']),
+            array(
+                'title', 'name', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
+                'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
+                'email_home', 'email_work', 'email_other',
+                'province_home', 'city_home', 'address_home', 'postal_code_home',
+                'province_work', 'city_work', 'address_work', 'postal_code_work',
+                'province_other', 'city_other', 'address_other', 'postal_code_other',
+                'note'
+            )
         );
+        foreach ($invalids as $invalid) {
+            unset($post['data'][$invalid]);
+        }
+
+        $res = $this->gadget->model->load('Contacts')->UpdateContact(
+            (int)$post['uid'],
+            $post['data']
+        );
+        if ($res === false || Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response($this::t('USERS_NOT_CONTACTINFO_UPDATED'), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response($this::t('USERS_CONTACTINFO_UPDATED'), RESPONSE_NOTICE);
+    }
+
+    /**
+     * Updates extra information of the user
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateUserExtra()
+    {
+        $post = $this->gadget->request->fetch(array('uid', 'data:array'), 'post');
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($post['data']),
+            array('mailquota', 'ftpquota')
+        );
+        foreach ($invalids as $invalid) {
+            unset($post['data'][$invalid]);
+        }
+
+        $res = $this->gadget->model->load('Extra')->UpdateExtra(
+            (int)$post['uid'],
+            $post['data']
+        );
+        if ($res === false) {
+            return $this->gadget->session->response($this::t('USERS_NOT_EXTRAINFO_UPDATED'), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response($this::t('USERS_EXTRAINFO_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -331,17 +502,10 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $uid = (int)$this->gadget->request->fetch('uid', 'post');
         $extraInfo = $this->gadget->model->load('Extra')->GetUserExtra($uid);
         if (Jaws_Error::IsError($extraInfo)) {
-            return $this->gadget->session->response(
-                $extraInfo->getMessage(),
-                RESPONSE_ERROR
-            );
+            return $this->gadget->session->response($extraInfo->getMessage(), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(
-            '',
-            RESPONSE_NOTICE,
-            $extraInfo
-        );
+        return $this->gadget->session->response('', RESPONSE_NOTICE, $extraInfo);
     }
 
     /**
@@ -384,6 +548,35 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $this::t('USERS_DELETED', count($uids) - $errors, count($uids)),
             RESPONSE_NOTICE
         );
+    }
+
+    /**
+     * Updates user password
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateUserPassword()
+    {
+        $this->gadget->CheckPermission('ManageUsers');
+        $postedData = $this->gadget->request->fetch(array('uid', 'password', 'expired'), 'post');
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $postedData['password'] = $JCrypt->decrypt($postedData['password']);
+        }
+
+        $result = $this->app->users->UpdatePassword(
+            (int)$postedData['uid'],
+            $postedData['password'],
+            false,
+            (bool)$postedData['expired']
+        );
+        if (Jaws_Error::isError($result)) {
+            return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response($this::t('USERS_PASSWORD_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**
