@@ -47,7 +47,23 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
-            $referrer = bin2hex(Jaws_Utils::getRequestURL());
+            if ($this->app->mainRequest['gadget'] == $this->app->requestedGadget &&
+                $this->app->mainRequest['action'] == $this->app->requestedAction
+            ) {
+                $referrer = '';
+            } else {
+                $referrer = bin2hex(Jaws_Utils::getRequestURL());
+            }
+
+            // overwrite referrer to default login/register/recovery transfer gadget
+            $defaultActionAttribute = 'default_action';
+            $default_transfer_gadget = $this->gadget->registry->fetch('login_transfer_gadget_index');
+            if (!empty($default_transfer_gadget)) {
+                $defaultAction = Jaws_Gadget::getInstance($default_transfer_gadget)->$defaultActionAttribute;
+                if (!Jaws_Error::IsError($defaultAction) && !empty($defaultAction)) {
+                    $referrer = bin2hex(Jaws_Gadget::getInstance($default_transfer_gadget)->urlMap($defaultAction));
+                }
+            }
         }
         $this->gadget->session->referrer = $referrer;
 

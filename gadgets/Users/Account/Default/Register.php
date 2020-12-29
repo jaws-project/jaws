@@ -168,13 +168,16 @@ class Users_Account_Default_Register extends Users_Account_Default
 
         if (Jaws_Error::IsError($result)) {
             http_response_code($result->getCode());
-        } else {
-            // 201 http code for success login
-            http_response_code(201);
+            return Jaws_Header::Location(
+                $this->gadget->urlMap('Registration', $urlParams),
+                'Registration.Response'
+            );
         }
 
+        // 201 http code for success login
+        http_response_code(201);
         return Jaws_Header::Location(
-            $this->gadget->urlMap('Registration', $urlParams),
+            $referrer,
             'Registration.Response'
         );
     }
