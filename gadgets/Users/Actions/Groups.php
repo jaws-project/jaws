@@ -83,12 +83,17 @@ class Users_Actions_Groups extends Users_Actions_Default
             'post'
         );
 
-        $uModel = new Jaws_User();
-        $groups = $uModel->GetGroups(0, null, 'name', $post['limit'], $post['offset']);
+        $groups = $this->gadget->model->load('Groups')->getGroups(
+            0, 0, 0,
+            array(), array(),
+            array('id' => true),
+            $post['limit'],
+            $post['offset']
+        );
         if (Jaws_Error::IsError($groups)) {
             return array();
         }
-        $total = $uModel->GetGroupsCount(0, null);
+        $total = $this->gadget->model->load('Groups')->getGroupsCount(0, 0, 0, array());
 
         return array(
             'status' => 'success',

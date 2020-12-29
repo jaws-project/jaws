@@ -414,13 +414,12 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageGroups');
 
         $uid = $this->gadget->request->fetch('uid', 'post');
-        $uModel = new Jaws_User();
-        $groups = $uModel->GetGroupsOfUser((int)$uid);
+        $groups = $this->gadget->model->load('Groups')->getGroups(0, 0, (int)$uid);
         if (Jaws_Error::IsError($groups)) {
             return array();
         }
 
-        return array_keys($groups);
+        return array_column($groups, 'id');
     }
 
     /**
