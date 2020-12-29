@@ -71,7 +71,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $anon_group = (int)$this->gadget->registry->fetch('anon_group');
         if (!empty($anon_group)) {
             $jawsUser->AddUserToGroup($user, $anon_group);
-            $uData['groups'] = array($anon_group);
+            $uData['groups'] = array($anon_group => $anon_group);
         }
 
         return $uData;
