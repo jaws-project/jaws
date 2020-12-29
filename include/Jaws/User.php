@@ -1900,7 +1900,7 @@ class Jaws_User
             ->insert(array('user' => $user, 'group' => $group['id']))
             ->exec();
         if (!Jaws_Error::IsError($result)) {
-            if ($this->app->session->user->id == $user) {
+            if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user->id == $user) {
                 // update logged user session
                 $user_groups = $this->app->session->user->groups;
                 $user_groups[$group['id']] = $group['name'];
