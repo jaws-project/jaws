@@ -281,18 +281,104 @@ class Users_Actions_Profile extends Users_Actions_Default
             }
 
             // fetch user custom attributes
-            $result = $objHook->gadget->users->fetch($uid, array('custom' => array_keys($attrs)), 'inner');
-            if (Jaws_Error::IsError($result) || empty($result)) {
+            $attrValues = $objHook->gadget->users->fetch($uid, array('custom' => array_keys($attrs)), 'inner');
+            if (Jaws_Error::IsError($attrValues) || empty($attrValues)) {
                 continue;
             }
 
             $tpl->SetBlock('profile/attributes/gadget');
             $tpl->SetVariable('gadget', $gadget);
             $tpl->SetVariable('lbl_gadget', Jaws_Gadget::t("$gadget.TITLE"));
-            foreach ($result as $attr => $value) {
+            foreach ($attrs as $attrName => $attrOptions) {
+                // set default value
+                $defaultValue = isset($attrOptions['value'])? $attrOptions['value'] : null;
+                if (!empty($attrValues) && !is_null($attrValues[$attrName])) {
+                    $defaultValue = $attrValues[$attrName];
+                }
+
+                switch ($attrOptions['type']) {
+                    case 'select':
+                        $defaultValue = $attrOptions['values'][$defaultValue];
+                        break;
+
+                    case 'user':
+                        break;
+
+                    case 'checkbox':
+                        $defaultValue = !empty($defaultValue)? Jaws::t('YES') : Jaws::t('NO');
+                        break;
+
+                    case 'date':
+                        $defaultValue = Jaws_Date::getInstance()->Format($defaultValue, 'Y/m/d');
+                        break;
+
+                    case 'country':
+                        try {
+                            $this->selectedCountry = $defaultValue;
+
+                            $country = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCountry(
+                                $defaultValue
+                            );
+                            if (Jaws_Error::IsError($country) || empty($country)) {
+                                throw new Exception('');
+                            }
+                            $defaultValue = $country['title'];
+
+                        } catch (Exception $error) {
+                            // don nothing
+                        }
+                        break;
+
+                    case 'province':
+                        try {
+                            $this->selectedProvince = $defaultValue;
+                            if (empty($this->selectedCountry)) {
+                                throw new Exception('');
+                            }
+
+                            $province = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetProvince(
+                                $defaultValue
+                            );
+                            if (Jaws_Error::IsError($province) || empty($province)) {
+                                throw new Exception('');
+                            }
+                            $defaultValue = $province['title'];
+
+                        } catch (Exception $error) {
+                            // don nothing
+                        }
+                        break;
+
+                    case 'city':
+                        try {
+                            if (empty($this->selectedCountry) || empty($this->selectedProvince)) {
+                                throw new Exception('');
+                            }
+
+                            $city = Jaws_Gadget::getInstance('Settings')->model->load('Zones')->GetCity(
+                                $defaultValue
+                            );
+                            if (Jaws_Error::IsError($city) || empty($city)) {
+                                throw new Exception('');
+                            }
+                            $defaultValue = $city['title'];
+
+                        } catch (Exception $error) {
+                            // don nothing
+                        }
+                        break;
+
+                    default:
+                        // do nothing
+                }
+
+                if (isset($attrOptions['hidden']) && $attrOptions['hidden']) {
+                    continue;
+                }
+
                 $tpl->SetBlock('profile/attributes/gadget/item');
-                $tpl->SetVariable('title', $attrs[$attr]['title']);
-                $tpl->SetVariable('value',  $value);
+                $tpl->SetVariable('title', $attrOptions['title']);
+                $tpl->SetVariable('value',  $defaultValue);
                 $tpl->ParseBlock('profile/attributes/gadget/item');
             }
             $tpl->ParseBlock('profile/attributes/gadget');
