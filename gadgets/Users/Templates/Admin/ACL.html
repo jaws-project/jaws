@@ -8,7 +8,7 @@
       <div class="modal-body">
         <div class="row">
 
-          <div class="col-md-6">
+          <div class="col-md-4">
             <form id="acl-form" action="#">
               <div id="acl">
                 <div>
@@ -31,10 +31,17 @@
                 </div>
                 <div id="acl_form"></div>
               </div>
+
+              <div class="actions">
+                <button type="button" class="btn btn-primary" id="btnSaveUserACLs">
+                  {{ "users.acls_apply" | t }}
+                </button>
+              </div>
+
             </form>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="repeater" id="user-acls-grid" data-staticheight="500">
               <div class="repeater-header">
                 <div class="datagrid-filters">
@@ -111,9 +118,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
           {{ "global.cancel" | t }}
-        </button>
-        <button type="button" class="btn btn-primary" id="btnSaveACL">
-          {{ "global.save" | t }}
         </button>
       </div>
     </div>

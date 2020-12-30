@@ -29,14 +29,18 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             'status'=> Jaws::t('STATUS'),
             'view'=> Jaws::t('VIEW'),
             'edit'=> Jaws::t('EDIT'),
-            'acl'=> $this::t('ACLS'),
+            'acls'=> $this::t('ACLS'),
             'users_groups'=> $this::t('USERS_GROUPS'),
             'personal'=> $this::t('PERSONAL'),
             'contacts'=> $this::t('CONTACTS'),
             'extra'=> $this::t('EXTRA'),
             'password'=> $this::t('USERS_PASSWORD'),
             'name'=> Jaws::t('NAME'),
-            'title'=> Jaws::t('TITLE'),
+            'acl_key_title'=> $this::t('ACLS_KEY_TITLE'),
+            'acl'=> $this::t('ACL'),
+            'components'=> $this::t('ACLS_COMPONENTS'),
+            'acl_allow'=> $this::t('ACLS_ALLOW'),
+            'acl_deny'=> $this::t('ACLS_DENY'),
             'delete'=> Jaws::t('DELETE'),
         ));
 
@@ -236,6 +240,48 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     }
 
     /**
+     * Gets user acls data
+     *
+     * @access  public
+     * @return  array   Groups data
+     */
+    function GetUserACLs()
+    {
+        $post = $this->gadget->request->fetch(
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
+            'post'
+        );
+
+        $acls = $this->app->acl->fetchAllByUser((int)$post['filters']['uid']);
+        if (Jaws_Error::IsError($acls)) {
+            return $this->gadget->session->response($acls->getMessage(), RESPONSE_ERROR);
+        }
+        $userACLs = array();
+        foreach ($acls as $comp => $acls) {
+            foreach ($acls as $keyName => $keyValue) {
+                foreach ($keyValue as $subkey => $val) {
+                    $userACLs[] = array(
+                        'component' => $comp,
+                        'component_title' => _t(strtoupper($comp) . '_TITLE'),
+                        'key_name' => $keyName,
+                        'key_title' => _t(strtoupper($comp) . '_ACL_' . strtoupper($keyName)),
+                        'key_value' => $val
+                    );
+                }
+            }
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total' => count($userACLs),
+                'records' => $userACLs
+            )
+        );
+    }
+
+    /**
      * Returns ACL keys of the component and user/group
      *
      * @access  public
@@ -287,6 +333,51 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 'default_acls' => $default_acls,
                 'custom_acls' => $custom_acls
             )
+        );
+    }
+
+    /**
+     * Delete a user ACLs key
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteUserACLs()
+    {
+        $this->gadget->CheckPermission('ManageUserACLs');
+        $post = $this->gadget->request->fetch(array('uid', 'comp', 'key_name'), 'post');
+        $res = $this->app->acl->deleteByUser((int)$post['uid'], $post['comp'], $post['key_name']);
+        if (!$res) {
+            return $this->gadget->session->response($this::t('USER_ACL_NOT_DELETED'), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response(
+            $this::t('USER_ACL_DELETED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Updates modified user ACL keys
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function UpdateUserACL()
+    {
+        $this->gadget->CheckPermission('ManageUserACLs');
+        $post = $this->gadget->request->fetch(array('uid', 'component', 'acls:array'), 'post');
+        $res = $this->app->acl->deleteByUser((int)$post['uid'], $post['component']);
+        if ($res) {
+            $res = $this->app->acl->insertAll($post['acls'], $post['component'], (int)$post['uid']);
+        }
+        if (!$res) {
+            return $this->gadget->session->response($this::t('USER_ACL_NOT_UPDATED'), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response(
+            $this::t('USER_ACL_UPDATED'),
+            RESPONSE_NOTICE
         );
     }
 

@@ -495,7 +495,12 @@ $admin_actions['AgentBlock'] = array(
 );
 $admin_actions['UpdateUserACL'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Users',
+    'loglevel' => JAWS_NOTICE,
+);
+$admin_actions['DeleteUserACLs'] = array(
+    'standalone' => true,
+    'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateGroupACL'] = array(
@@ -522,6 +527,10 @@ $admin_actions['UpdateSettings'] = array(
     'standalone' => true,
     'file' => 'Settings',
     'loglevel' => JAWS_WARNING,
+);
+$admin_actions['GetUserACLs'] = array(
+    'standalone' => true,
+    'file' => 'Users',
 );
 $admin_actions['GetACLKeys'] = array(
     'standalone' => true,

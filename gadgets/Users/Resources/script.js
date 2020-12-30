@@ -37,6 +37,18 @@ function Jaws_Gadget_Users() { return {
             }
         },
 
+        UpdateUserACL: function(response) {
+            if (response['type'] == 'alert-success') {
+                $('#user-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
+        DeleteUserACLs: function(response) {
+            if (response['type'] == 'alert-success') {
+                $('#user-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
         DeleteUserFromGroups: function(response) {
             if (response['type'] == 'alert-success') {
                 $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
@@ -359,7 +371,20 @@ function Jaws_Gadget_Users() { return {
             var keys = $(aclTag).attr('id').split(':');
             acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
         });
-        this.gadget.ajax.callAsync('UpdateUserACL', [this.selectedId, $('#components').val(), acls]);
+        this.gadget.ajax.callAsync('UpdateUserACL', {
+            'uid': this.selectedUser,
+            'component': $('#components').val(),
+            'acls': acls
+        });
+    },
+
+    /**
+     * Delete user's ACL
+     */
+    deleteUserACLs: function(ids) {
+        this.gadget.ajax.callAsync('DeleteUserACLs', {
+            'ids': ids
+        });
     },
 
     /**
@@ -483,6 +508,13 @@ function Jaws_Gadget_Users() { return {
     editUserACL: function (uid) {
         this.selectedUser = uid;
         $('#aclModal').modal('show');
+
+        this.chkImages = $('#acl img').map(function() {
+            return $(this).attr('src');
+        }).toArray();
+        this.chkImages[-1] = this.chkImages[2];
+        delete this.chkImages[2];
+
         this.initiateUserACLsDG();
     },
 
@@ -529,7 +561,7 @@ function Jaws_Gadget_Users() { return {
         this.ajax.callAsync('GetACLKeys', {
                 'uid': this.selectedId,
                 'comp': $('#components').val(),
-                'action': this.currentAction
+                'action': 'UserACL'
             }, function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
                     var acls = response.data;
@@ -1176,7 +1208,7 @@ function Jaws_Gadget_Users() { return {
                 },
                 {
                     name: 'acl',
-                    html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.acl,
+                    html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.acls,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
                         this.editUserACL(helpers.rowData.id);
@@ -1286,13 +1318,17 @@ function Jaws_Gadget_Users() { return {
      */
     userACLsDataSource: function (options, callback) {
         var columns = {
-            'gadget': {
-                'label': this.gadget.defines.LANGUAGE.gadget,
-                'property': 'nickname'
+            'component': {
+                'label': this.gadget.defines.LANGUAGE.components,
+                'property': 'component_title'
             },
-            'title': {
-                'label': this.gadget.defines.LANGUAGE.title,
-                'property': 'username'
+            'acl_key_title': {
+                'label': this.gadget.defines.LANGUAGE.acl_key_title,
+                'property': 'key_title'
+            },
+            'acl': {
+                'label': this.gadget.defines.LANGUAGE.acl,
+                'property': 'key_value'
             },
         };
 
@@ -1308,7 +1344,7 @@ function Jaws_Gadget_Users() { return {
                 'limit': options.pageSize,
                 'sortDirection': options.sortDirection,
                 'sortBy': options.sortProperty,
-                'filters': {}
+                'filters': {'uid': this.selectedUser}
             },
             function(response, status, callOptions) {
                 var dataSource = {};
@@ -1342,6 +1378,47 @@ function Jaws_Gadget_Users() { return {
                 callback(dataSource);
             }
         );
+    },
+
+    /**
+     * userACLs Datagrid column renderer
+     */
+    userACLsDGRowRenderer: function (helpers, callback) {
+        switch (helpers.rowData.key_value) {
+            case 0:
+                helpers.item.addClass('bg-success');
+                break;
+            case 1:
+                helpers.item.addClass('bg-danger');
+                break;
+        }
+
+        callback();
+    },
+
+    /**
+     * userAcls Datagrid column renderer
+     */
+    userACLsDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'key_value':
+                if (rowData.key_value == 0) {
+                    customMarkup = this.gadget.defines.LANGUAGE.acl_allow;
+                } else if (rowData.key_value == 1) {
+                    customMarkup = this.gadget.defines.LANGUAGE.acl_deny;
+                }
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+        callback();
     },
 
     /**
@@ -1382,7 +1459,9 @@ function Jaws_Gadget_Users() { return {
         $('#user-acls-grid').repeater({
             dataSource: $.proxy(this.userACLsDataSource, this),
             list_actions: list_actions,
-            // list_columnRendered: $.proxy(this.userACLsDGColumnRenderer, this),
+            list_infiniteScroll: true,
+            list_columnRendered: $.proxy(this.userACLsDGColumnRenderer, this),
+            list_rowRendered: $.proxy(this.userACLsDGRowRenderer, this),
             list_selectable: 'multi',
             list_noItemsHTML: this.gadget.defines.datagridNoItems,
             list_direction: $('.repeater-canvas').css('direction')
@@ -1600,6 +1679,9 @@ function Jaws_Gadget_Users() { return {
 
             $('#btnSaveUser').on('click', $.proxy(function (e) {
                 this.saveUser();
+            }, this));
+            $('#btnSaveUserACLs').on('click', $.proxy(function (e) {
+                this.saveUserACL();
             }, this));
             $('#btnAddUserToGroup').on('click', $.proxy(function (e) {
                 this.addUserToGroup();
