@@ -187,6 +187,7 @@ class Jaws_ACL
             $tblACL->orderBy('component', 'key_name', 'key_subkey');
             $result = $tblACL->fetchAll();
             if (!Jaws_Error::IsError($result)) {
+                $acls = array();
                 // uniformed result with output of cached ACLs
                 foreach ($result as $acl) {
                     $acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
