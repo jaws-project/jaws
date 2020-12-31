@@ -25,7 +25,9 @@
     -ms-user-select: none;
     user-select: none;
 }
-
+#acl select{
+    margin-bottom: 10px;
+}
 
 .workarea{
 width:290px;
@@ -224,9 +226,7 @@ vertical-align:middle;
 display:inline;
 vertical-align:middle;
 }
-#acl select{
-width:160px;
-}
+
 #acl_form{
 height:350px;
 overflow:auto;

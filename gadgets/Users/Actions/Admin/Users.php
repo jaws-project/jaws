@@ -39,8 +39,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             'acl_key_title'=> $this::t('ACLS_KEY_TITLE'),
             'acl'=> $this::t('ACL'),
             'components'=> $this::t('ACLS_COMPONENTS'),
-            'acl_allow'=> $this::t('ACLS_ALLOW'),
-            'acl_deny'=> $this::t('ACLS_DENY'),
+            'acl_allow'=> $this::t('ACLS_ACCESS_YES'),
+            'acl_deny'=> $this::t('ACLS_ACCESS_NO'),
             'delete'=> Jaws::t('DELETE'),
         ));
 
@@ -264,6 +264,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                         'component' => $comp,
                         'component_title' => _t(strtoupper($comp) . '_TITLE'),
                         'key_name' => $keyName,
+                        'subkey' => $subkey,
                         'key_title' => _t(strtoupper($comp) . '_ACL_' . strtoupper($keyName)),
                         'key_value' => $val
                     );
@@ -345,10 +346,21 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     function DeleteUserACLs()
     {
         $this->gadget->CheckPermission('ManageUserACLs');
-        $post = $this->gadget->request->fetch(array('uid', 'comp', 'key_name'), 'post');
-        $res = $this->app->acl->deleteByUser((int)$post['uid'], $post['comp'], $post['key_name']);
-        if (!$res) {
+        $post = $this->gadget->request->fetch(array('uid', 'acls:array'), 'post');
+        if (empty((int)$post['uid'])) {
             return $this->gadget->session->response($this::t('USER_ACL_NOT_DELETED'), RESPONSE_ERROR);
+        }
+
+        foreach ((array)$post['acls'] as $acl) {
+            $res = $this->app->acl->deleteByUser(
+                (int)$post['uid'],
+                $acl['component'],
+                $acl['key_name'],
+                $acl['subkey']
+            );
+            if (!$res) {
+                return $this->gadget->session->response($this::t('USER_ACL_NOT_DELETED'), RESPONSE_ERROR);
+            }
         }
 
         return $this->gadget->session->response(

@@ -316,9 +316,10 @@ function Jaws_Gadget_Users() { return {
     /**
      * Delete user's ACL
      */
-    deleteUserACLs: function(ids) {
+    deleteUserACLs: function(acls) {
         this.gadget.ajax.callAsync('DeleteUserACLs', {
-            'ids': ids
+            'uid': this.selectedUser,
+            'acls': acls
         });
     },
 
@@ -442,15 +443,17 @@ function Jaws_Gadget_Users() { return {
      */
     editUserACL: function (uid) {
         this.selectedUser = uid;
-        $('#aclModal').modal('show');
+        $('#aclModal')
+            .modal('show')
+            .on('shown.bs.modal', $.proxy(function (e) {
+            this.initiateUserACLsDG();
+        }, this));
 
-        this.chkImages = $('#acl img').map(function() {
+        this.chkImages = $('#aclModal .acl-images img').map(function() {
             return $(this).attr('src');
         }).toArray();
         this.chkImages[-1] = this.chkImages[2];
         delete this.chkImages[2];
-
-        this.initiateUserACLsDG();
     },
 
     /**
@@ -1373,16 +1376,25 @@ function Jaws_Gadget_Users() { return {
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
 
-                        var ids = new Array();
+                        var acls = new Array();
                         if (helpers.length > 1) {
                             helpers.forEach(function(entry) {
-                                ids.push(entry.rowData.id);
+                                acls.push({
+                                    'component': entry.rowData.component,
+                                    'key_name': entry.rowData.key_name,
+                                    'subkey': entry.rowData.subkey,
+                                });
                             });
                         } else {
-                            ids.push(helpers.rowData.id);
+                            acls.push({
+                                'component': helpers.rowData.component,
+                                'key_name': helpers.rowData.key_name,
+                                'subkey': helpers.rowData.subkey,
+                            });
                         }
 
-                        this.deleteUserACLs(ids);
+                        console.log(acls);
+                        this.deleteUserACLs(acls);
                         callback();
                     }, this)
 
