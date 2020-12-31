@@ -562,16 +562,24 @@ class Jaws_ACL
      * @access  public
      * @param   int     $user       User ID
      * @param   string  $component  Component name
+     * @param   string  $key_name   Key name
+     * @param   string  $subkey     Subkey name
      * @return  bool    True if success otherwise False
      */
-    function deleteByUser($user, $component = '')
+    function deleteByUser($user, $component = '', $key_name = '', $subkey = '')
     {
-        $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $tblACL->delete()->where('user', (int)$user);
-        if (!empty($component)) {
-            $tblACL->and()->where('component', $component);
-        }
-        $result = $tblACL->exec();
+        $result = Jaws_ORM::getInstance()
+            ->table('acl')
+            ->delete()
+            ->where('user', (int)$user)
+            ->and()
+            ->where('component', $component, '=', empty($component)) // ignore if component is empty
+            ->and()
+            ->where('key_name', $key_name, '=', empty($key_name))    // ignore if key_name is empty
+            ->and()
+            ->where('key_subkey', $subkey, '=', empty($subkey))      // ignore if subkey is empty
+            ->exec();
+
         return !Jaws_Error::IsError($result);
     }
 
@@ -581,16 +589,24 @@ class Jaws_ACL
      * @access  public
      * @param   int     $group      Group ID
      * @param   string  $component  Component name
+     * @param   string  $key_name   Key name
+     * @param   string  $subkey     Subkey name
      * @return  bool    True if success otherwise False
      */
-    function deleteByGroup($group, $component = '')
+    function deleteByGroup($group, $component = '', $key_name = '', $subkey = '')
     {
-        $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $tblACL->delete()->where('group', (int)$group);
-        if (!empty($component)) {
-            $tblACL->and()->where('component', $component);
-        }
-        $result = $tblACL->exec();
+        $result = Jaws_ORM::getInstance()
+            ->table('acl')
+            ->delete()
+            ->where('group', (int)$group)
+            ->and()
+            ->where('component', $component, '=', empty($component)) // ignore if component is empty
+            ->and()
+            ->where('key_name', $key_name, '=', empty($key_name))    // ignore if key_name is empty
+            ->and()
+            ->where('key_subkey', $subkey, '=', empty($subkey))      // ignore if subkey is empty
+            ->exec();
+
         return !Jaws_Error::IsError($result);
     }
 
