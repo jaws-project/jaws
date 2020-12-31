@@ -257,7 +257,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             return $this->gadget->session->response($acls->getMessage(), RESPONSE_ERROR);
         }
         $userACLs = array();
-        foreach ($acls as $comp => $acls) {
+        foreach ((array)$acls as $comp => $acls) {
             foreach ($acls as $keyName => $keyValue) {
                 foreach ($keyValue as $subkey => $val) {
                     $userACLs[] = array(
