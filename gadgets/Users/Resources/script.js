@@ -25,6 +25,7 @@ function Jaws_Gadget_Users() { return {
         AddUser: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopUserAction();
+                $('#userModal').modal('hide');
                 $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
@@ -253,7 +254,7 @@ function Jaws_Gadget_Users() { return {
             if ($('#pubkey').length) {
                 var objRSACrypt = new JSEncrypt();
                 objRSACrypt.setPublicKey($('#pubkey').val());
-                password = objRSACrypt.encrypt($('#pass1').val());
+                password = objRSACrypt.encrypt($('#password').val());
             }
 
             if (this.selectedUser == 0) {
