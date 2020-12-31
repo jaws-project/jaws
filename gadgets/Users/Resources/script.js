@@ -540,8 +540,11 @@ function Jaws_Gadget_Users() { return {
     editUserGroups: function(uid) {
         this.selectedUser = uid;
         this.currentAction = 'UserGroups';
-        $('#userGroupsModal').modal('show');
-        this.initiateUserGroupsDG();
+        $('#userGroupsModal')
+            .modal('show')
+            .on('shown.bs.modal', $.proxy(function (e) {
+                this.initiateUserGroupsDG();
+            }, this));
     },
 
     /**

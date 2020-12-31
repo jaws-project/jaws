@@ -19,219 +19,287 @@
             </div>
           </div>
 
-          <div>
-            <fieldset>
-              <legend id="legend_tel">
-                {{ "users.contacts_phone_number" | t }}
-              </legend>
-              <div class="row">
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="tel_home">{{ "users.contacts_home" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="tel_home" id="tel_home" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="tel_work">{{ "users.contacts_work" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="tel_work" id="tel_work" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="tel_other">{{ "users.contacts_other" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="tel_other" id="tel_other" value="">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div>
-            <fieldset>
-              <legend id="legend_fax">
-                {{ "users.contacts_fax_number" | t }}
-              </legend>
-              <div class="row">
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="fax_home">{{ "users.contacts_home" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="fax_home" id="fax_home" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="fax_work">{{ "users.contacts_work" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="fax_work" id="fax_work" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="fax_other">{{ "users.contacts_other" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="fax_other" id="fax_other" value="">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div>
-            <fieldset>
-              <legend id="legend_mobile">
-                {{ "users.contacts_mobile_number" | t }}
-              </legend>
-              <div class="row">
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="mobile_home">{{ "users.contacts_home" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="mobile_home" id="mobile_home" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="mobile_work">{{ "users.contacts_work" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="mobile_work" id="mobile_work" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="mobile_other">{{ "users.contacts_other" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="mobile_other" id="mobile_other" value="">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div>
-            <fieldset>
-              <legend id="legend_url">
-                {{ "global.url" | t }}
-              </legend>
-              <div class="row">
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="url_home">{{ "users.contacts_home" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="url_home" id="url_home" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="url_work">{{ "users.contacts_work" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="url_work" id="url_work" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="url_other">{{ "users.contacts_other" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="url_other" id="url_other" value="">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div>
-            <fieldset>
-              <legend id="legend_email">
-                {{ "global.email" | t }}
-              </legend>
-              <div class="row">
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="email_home">{{ "users.contacts_home" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="email_home" id="email_home" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="email_work">{{ "users.contacts_work" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="email_work" id="email_work" value="">
-                </div>
-                <div class="form-group col-xs-12 col-md-4">
-                  <label for="email_other">{{ "users.contacts_other" | t }}:</label>
-                  <input type="text" class="form-control ltr" name="email_other" id="email_other" value="">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div>
-            <fieldset>
-              <legend id="legend_address">{{ "users.contacts_address" | t }}</legend>
-
-                <fieldset>
-                  <legend id="legend_address_home">{{ "users.contacts_home" | t }}:</legend>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingPhone">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePhone" aria-expanded="false" aria-controls="collapsePhone">
+                  {{ "users.contacts_phone_number" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapsePhone" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPhone">
+              <div class="panel-body">
+                <div class="pre-scrollable">
                   <div class="row">
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="province_home">{{ "global.province" | t }}:</label>
-                    <select name="province_home"
-                            id="province_home" class="form-control"
-                            onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_home');">
-                      {%- for province in provinces %}
-                      <option value="{{province.province}}">
-                        {{- province.title -}}
-                      </option>
-                      {%- endfor %}
-                    </select>
-                  </div>
-
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="city_home">{{ "global.city" | t }}:</label>
-                    <select name="city_home" id="city_home" class="form-control"></select>
-                  </div>
-
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="postal_code_home">{{ "users.contacts_postal_code" | t }}:</label>
-                    <input class="form-control ltr" name="postal_code_home" id="postal_code_home" type="text"/>
-                  </div>
-
-                  <div class="form-group col-xs-12">
-                    <label for="address_home">{{ "users.contacts_address" | t }}:</label>
-                    <textarea class="form-control" name="address_home" id="address_home" cols="45" rows="4"></textarea>
-                  </div>
-
-                </div>
-                </fieldset>
-
-              <fieldset>
-                <legend id="legend_address_work">{{ "users.contacts_work" | t }}:</legend>
-                <div class="row">
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="province_work">{{ "global.province" | t }}:</label>
-                    <select name="province_work"
-                            id="province_work" class="form-control"
-                            onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_work');">
-                      {%- for province in provinces %}
-                      <option value="{{province.province}}">
-                        {{- province.title -}}
-                      </option>
-                      {%- endfor %}
-                    </select>
-                  </div>
-
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="city_work">{{ "global.city" | t }}:</label>
-                    <select name="city_work" id="city_work" class="form-control"></select>
-                  </div>
-
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="postal_code_work">{{ "users.contacts_postal_code" | t }}:</label>
-                    <input class="form-control ltr" name="postal_code_work" id="postal_code_work" type="text"/>
-                  </div>
-
-                  <div class="form-group col-xs-12">
-                    <label for="address_work">{{ "users.contacts_address" | t }}:</label>
-                    <textarea class="form-control" name="address_work" id="address_work" cols="45" rows="4"></textarea>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="tel_home">{{ "users.contacts_home" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="tel_home" id="tel_home" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="tel_work">{{ "users.contacts_work" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="tel_work" id="tel_work" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="tel_other">{{ "users.contacts_other" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="tel_other" id="tel_other" value="">
+                    </div>
                   </div>
                 </div>
-              </fieldset>
+              </div>
+            </div>
+          </div>
 
-
-              <fieldset>
-                <legend id="legend_address_other">{{ "users.contacts_other" | t }}:</legend>
-                <div class="row">
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="province_other">{{ "global.province" | t }}:</label>
-                    <select name="province_other"
-                            id="province_other" class="form-control"
-                            onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_other');">
-                      {%- for province in provinces %}
-                      <option value="{{province.province}}">
-                        {{- province.title -}}
-                      </option>
-                      {%- endfor %}
-                    </select>
-                  </div>
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="city_other">{{ "global.city" | t }}:</label>
-                    <select name="city_other" id="city_other" class="form-control"></select>
-                  </div>
-                  <div class="form-group col-xs-12 col-md-4">
-                    <label for="postal_code_other">{{ "users.contacts_postal_code" | t }}:</label>
-                    <input class="form-control ltr" name="postal_code_other" id="postal_code_other" type="text"/>
-                  </div>
-                  <div class="form-group col-xs-12">
-                    <label for="address_other">{{ "users.contacts_address" | t }}:</label>
-                    <textarea class="form-control" name="address_other" id="address_other" cols="45" rows="4"></textarea>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingFax">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFax" aria-expanded="false" aria-controls="collapseFax">
+                  {{ "users.contacts_fax_number" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseFax" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFax">
+              <div class="panel-body">
+                <div class="pre-scrollable">
+                  <div class="row">
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="fax_home">{{ "users.contacts_home" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="fax_home" id="fax_home" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="fax_work">{{ "users.contacts_work" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="fax_work" id="fax_work" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="fax_other">{{ "users.contacts_other" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="fax_other" id="fax_other" value="">
+                    </div>
                   </div>
                 </div>
-              </fieldset>
+              </div>
+            </div>
+          </div>
 
-            </fieldset>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingMobile">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMobile" aria-expanded="false" aria-controls="collapseMobile">
+                  {{ "users.contacts_mobile_number" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseMobile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMobile">
+              <div class="panel-body">
+                <div class="pre-scrollable">
+                  <div class="row">
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="mobile_home">{{ "users.contacts_home" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="mobile_home" id="mobile_home" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="mobile_work">{{ "users.contacts_work" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="mobile_work" id="mobile_work" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="mobile_other">{{ "users.contacts_other" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="mobile_other" id="mobile_other" value="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingURL">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseURL" aria-expanded="false" aria-controls="collapseURL">
+                  {{ "global.url" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseURL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingURL">
+              <div class="panel-body">
+                <div class="pre-scrollable">
+                  <div class="row">
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="url_home">{{ "users.contacts_home" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="url_home" id="url_home" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="url_work">{{ "users.contacts_work" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="url_work" id="url_work" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="url_other">{{ "users.contacts_other" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="url_other" id="url_other" value="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingEmail">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEmail" aria-expanded="false" aria-controls="collapseEmail">
+                  {{ "global.email" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseEmail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEmail">
+              <div class="panel-body">
+                <div class="pre-scrollable">
+                  <div class="row">
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="email_home">{{ "users.contacts_home" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="email_home" id="email_home" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="email_work">{{ "users.contacts_work" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="email_work" id="email_work" value="">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="email_other">{{ "users.contacts_other" | t }}:</label>
+                      <input type="text" class="form-control ltr" name="email_other" id="email_other" value="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAdrHome">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAdrHome" aria-expanded="false" aria-controls="collapseAdrHome">
+                  {{ "users.contacts_address" | t }} {{ "users.contacts_home" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAdrHome" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAdrHome">
+              <div class="panel-body">
+                <div class="pre-scrollable">
+                  <div class="row">
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="province_home">{{ "global.province" | t }}:</label>
+                      <select name="province_home"
+                              id="province_home" class="form-control"
+                              onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_home');">
+                        {%- for province in provinces %}
+                        <option value="{{province.province}}">
+                          {{- province.title -}}
+                        </option>
+                        {%- endfor %}
+                      </select>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="city_home">{{ "global.city" | t }}:</label>
+                      <select name="city_home" id="city_home" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="postal_code_home">{{ "users.contacts_postal_code" | t }}:</label>
+                      <input class="form-control ltr" name="postal_code_home" id="postal_code_home" type="text"/>
+                    </div>
+
+                    <div class="form-group col-xs-12">
+                      <label for="address_home">{{ "users.contacts_address" | t }}:</label>
+                      <textarea class="form-control" name="address_home" id="address_home" cols="45" rows="4"></textarea>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAdrWork">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAdrWork" aria-expanded="false" aria-controls="collapseAdrWork">
+                  {{ "users.contacts_address" | t }} {{ "users.contacts_work" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAdrWork" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAdrWork">
+              <div class="panel-body">
+                <div class="pre-scrollable">
+                  <div class="row">
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="province_work">{{ "global.province" | t }}:</label>
+                      <select name="province_work"
+                              id="province_work" class="form-control"
+                              onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_work');">
+                        {%- for province in provinces %}
+                        <option value="{{province.province}}">
+                          {{- province.title -}}
+                        </option>
+                        {%- endfor %}
+                      </select>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="city_work">{{ "global.city" | t }}:</label>
+                      <select name="city_work" id="city_work" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="postal_code_work">{{ "users.contacts_postal_code" | t }}:</label>
+                      <input class="form-control ltr" name="postal_code_work" id="postal_code_work" type="text"/>
+                    </div>
+
+                    <div class="form-group col-xs-12">
+                      <label for="address_work">{{ "users.contacts_address" | t }}:</label>
+                      <textarea class="form-control" name="address_work" id="address_work" cols="45" rows="4"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAdrOther">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAdrOther" aria-expanded="false" aria-controls="collapseAdrOther">
+                  {{ "users.contacts_address" | t }} {{ "users.contacts_other" | t }}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAdrOther" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAdrOther">
+              <div class="panel-body">
+                <div class="pre-scrollable">
+                  <div class="row">
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="province_other">{{ "global.province" | t }}:</label>
+                      <select name="province_other"
+                              id="province_other" class="form-control"
+                              onchange="Jaws_Gadget.getInstance('Users').changeProvince(this.value, 'city_other');">
+                        {%- for province in provinces %}
+                        <option value="{{province.province}}">
+                          {{- province.title -}}
+                        </option>
+                        {%- endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="city_other">{{ "global.city" | t }}:</label>
+                      <select name="city_other" id="city_other" class="form-control"></select>
+                    </div>
+                    <div class="form-group col-xs-12 col-md-4">
+                      <label for="postal_code_other">{{ "users.contacts_postal_code" | t }}:</label>
+                      <input class="form-control ltr" name="postal_code_other" id="postal_code_other" type="text"/>
+                    </div>
+                    <div class="form-group col-xs-12">
+                      <label for="address_other">{{ "users.contacts_address" | t }}:</label>
+                      <textarea class="form-control" name="address_other" id="address_other" cols="45" rows="4"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="row">
