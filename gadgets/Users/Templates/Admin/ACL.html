@@ -6,17 +6,19 @@
         <h4 class="modal-title">{{ "users.acls" | t }}</h4>
       </div>
       <div class="modal-body">
+        <div class="row acl-images">
+          <div class="col-xs-12">
+            <!--                  <strong>{{ "users.acl_permissions" | t}}</strong>-->
+              <img src="gadgets/Users/Resources/images/check-deny.png" alt="deny"/>{{ "users.acls_deny" | t }}
+              <img src="gadgets/Users/Resources/images/check-allow.png" alt="allow"/>{{ "users.acls_allow" | t }}
+              <img src="gadgets/Users/Resources/images/checkbox.png" alt="default"/>{{ "users.acls_default" | t }}
+          </div>
+        </div>
         <div class="row">
 
           <div class="col-md-4">
             <form id="acl-form" action="#">
               <div id="acl">
-                <div>
-                  <strong>{{ "users.acl_permissions" | t}}</strong>
-                  <img src="gadgets/Users/Resources/images/check-deny.png" alt="deny" />{{ "users.acls_deny" | t }}
-                  <img src="gadgets/Users/Resources/images/check-allow.png" alt="allow" />{{ "users.acls_allow" | t }}
-                  <img src="gadgets/Users/Resources/images/checkbox.png" alt="default" />{{ "users.acls_default" | t }}
-                </div>
                 <div><label for="components">{{ "users.acls_components" | t }}</label>
 
                   <select class="form-control" name="components" id="components">

@@ -150,35 +150,7 @@ function Jaws_Gadget_Users() { return {
         $(comboElement).find('>input').val('');
         $(comboElement).combobox('enable').combobox('selectByIndex', '0');
         $(comboElement).find('>input').val('');
-    },
-
-    /**
-     * Get users list
-     */
-    getUsers: function(name, offset, reset) {
-        var result = this.gadget.ajax.callSync(
-            'GetUsers', [
-                $('#filter_group').val(),
-                $('#filter_type').val(),
-                $('#filter_status').val(),
-                $('#filter_term').val(),
-                $('#order_type').val(),
-                offset
-            ]
-        );
-        if (reset) {
-            $('#' + name)[0].setCurrentPage(0);
-            var total = this.gadget.ajax.callSync(
-                'GetUsersCount', [
-                    $('#filter_group').val(),
-                    $('#filter_domain').val(),
-                    $('#filter_type').val(),
-                    $('#filter_status').val(),
-                    $('#filter_term').val()
-                ]
-            );
-        }
-        resetGrid(name, result, total);
+        $(comboElement).trigger('keyup.fu.combobox');
     },
 
     /**
@@ -189,43 +161,6 @@ function Jaws_Gadget_Users() { return {
             element.blur();
             element.focus();
         }
-    },
-
-    /**
-     * Search user function
-     */
-    searchUser: function() {
-        this.getUsers('users_datagrid', 0, true);
-    },
-
-    /**
-     * Get users list
-     */
-    getUsers: function(name, offset, reset) {
-        var result = this.gadget.ajax.callSync(
-            'GetUsers', [
-                $('#filter_group').val(),
-                $('#filter_domain').val(),
-                $('#filter_type').val(),
-                $('#filter_status').val(),
-                $('#filter_term').val(),
-                $('#order_type').val(),
-                offset
-            ]
-        );
-        if (reset) {
-            $('#' + name)[0].setCurrentPage(0);
-            var total = this.gadget.ajax.callSync(
-                'GetUsersCount', [
-                    $('#filter_group').val(),
-                    $('#filter_domain').val(),
-                    $('#filter_type').val(),
-                    $('#filter_status').val(),
-                    $('#filter_term').val()
-                ]
-            );
-        }
-        resetGrid(name, result, total);
     },
 
     /**
@@ -559,7 +494,7 @@ function Jaws_Gadget_Users() { return {
         }
 
         this.ajax.callAsync('GetACLKeys', {
-                'uid': this.selectedId,
+                'uid': this.selectedUser,
                 'comp': $('#components').val(),
                 'action': 'UserACL'
             }, function (response, status, callOptions) {
@@ -1386,10 +1321,10 @@ function Jaws_Gadget_Users() { return {
     userACLsDGRowRenderer: function (helpers, callback) {
         switch (helpers.rowData.key_value) {
             case 0:
-                helpers.item.addClass('bg-success');
+                helpers.item.addClass('bg-danger');
                 break;
             case 1:
-                helpers.item.addClass('bg-danger');
+                helpers.item.addClass('bg-success');
                 break;
         }
 
@@ -1407,9 +1342,9 @@ function Jaws_Gadget_Users() { return {
         switch (column) {
             case 'key_value':
                 if (rowData.key_value == 0) {
-                    customMarkup = this.gadget.defines.LANGUAGE.acl_allow;
-                } else if (rowData.key_value == 1) {
                     customMarkup = this.gadget.defines.LANGUAGE.acl_deny;
+                } else if (rowData.key_value == 1) {
+                    customMarkup = this.gadget.defines.LANGUAGE.acl_allow;
                 }
                 break;
             default:
@@ -1640,8 +1575,6 @@ function Jaws_Gadget_Users() { return {
             $('#filter_status').prop('selectedIndex', 0);
             this.stopUserAction();
 
-            this.initiateUsersDG();
-
             $('#filter_group').combobox({
                 'showOptionsOnKeypress': true,
                 'noMatchesMessage': this.gadget.defines.noMatchesMessage
@@ -1651,6 +1584,8 @@ function Jaws_Gadget_Users() { return {
                     this.searchGroupsAndFillCombo($('#filter_group'));
                 }, this));
             $("#filter_group").trigger('keyup.fu.combobox');
+
+            this.initiateUsersDG();
 
             $('#group_combo').combobox({
                 'showOptionsOnKeypress': true,

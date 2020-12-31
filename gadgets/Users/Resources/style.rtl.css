@@ -1,8 +1,30 @@
 .modal-body form div[class*="col-md"]{
     min-height: 60px;
 }
+.acl-images {
+    margin-bottom: 10px;
+}
+.btn-combo {
+    position: relative;
 
-
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 5px 8px;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 
 .workarea{

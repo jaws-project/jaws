@@ -10,19 +10,25 @@
           <label for="filter_group" class="">{{ "users.groups_group" | t }}</label>
         </div>
         <div class="col-xs-4">
-          <div class="input-group input-append dropdown combobox" id="filter_group">
-            <input type="text" class="form-control" placeholder=""
-            data-toggle="tooltip" data-placement="top" title="{{ "users.groups_group" | t }}">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right"></ul>
+            <div class="input-group input-append dropdown combobox" id="filter_group">
+              <input type="text" class="form-control" placeholder=""
+                     data-toggle="tooltip" data-placement="top" title="{{ "users.groups_group" | t }}">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right"></ul>
+              </div>
+              <div class="input-group-btn">
+                <button class="btn-combo btn-warning btn-cancel-select-group" type="button" data-combo-name="filter_group">
+                  <span class="glyphicon glyphicon-remove"></span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {% if domains | isset %}
+
+          {% if domains | isset %}
         <div class="col-xs-2">
           <label for="filter_domain">{{ "users.domain" | t }}: </label>
         </div>
