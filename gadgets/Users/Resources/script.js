@@ -1146,6 +1146,16 @@ function Jaws_Gadget_Users() { return {
 
                 },
                 {
+                    name: 'password',
+                    html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.password,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.changeUserPassword(helpers.rowData.username, helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
                     name: 'acl',
                     html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.acls,
                     clickAction: $.proxy(function (helpers, callback, e) {
@@ -1191,16 +1201,6 @@ function Jaws_Gadget_Users() { return {
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
                         this.editUserExtra(helpers.rowData.id);
-                        callback();
-                    }, this)
-
-                },
-                {
-                    name: 'password',
-                    html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.password,
-                    clickAction: $.proxy(function (helpers, callback, e) {
-                        e.preventDefault();
-                        this.changeUserPassword(helpers.rowData.username, helpers.rowData.id);
                         callback();
                     }, this)
 
@@ -1259,15 +1259,18 @@ function Jaws_Gadget_Users() { return {
         var columns = {
             'component': {
                 'label': this.gadget.defines.LANGUAGE.components,
-                'property': 'component_title'
+                'property': 'component_title',
+                'width': '30%'
             },
             'acl_key_title': {
                 'label': this.gadget.defines.LANGUAGE.acl_key_title,
-                'property': 'key_title'
+                'property': 'key_title',
+                'width': '50%'
             },
             'acl': {
                 'label': this.gadget.defines.LANGUAGE.acl,
-                'property': 'key_value'
+                'property': 'key_value',
+                'width': '20%'
             },
         };
 
@@ -1621,7 +1624,7 @@ function Jaws_Gadget_Users() { return {
                 this.stopUserAction();
             }, this));
 
-            $('#components').on('click', $.proxy(function (e) {
+            $('#components').on('change', $.proxy(function (e) {
                 this.getACL();
             }, this));
 

@@ -6,20 +6,15 @@
         <h4 class="modal-title">{{ "users.acls" | t }}</h4>
       </div>
       <div class="modal-body">
-        <div class="row acl-images">
-          <div class="col-xs-12">
-              <img src="gadgets/Users/Resources/images/check-deny.png" alt="deny"/>{{ "users.acls_deny" | t }}
-              <img src="gadgets/Users/Resources/images/check-allow.png" alt="allow"/>{{ "users.acls_allow" | t }}
-              <img src="gadgets/Users/Resources/images/checkbox.png" alt="default"/>{{ "users.acls_default" | t }}
-          </div>
-        </div>
         <div class="row">
 
           <div class="col-md-4">
             <form id="acl-form" action="#">
               <div id="acl">
-                <div><label for="components">{{ "users.acls_components" | t }}</label>
-
+                <div class="input-group acl-components">
+                  <label for="components"  class="input-group-addon text-input">
+                    {{ "users.acls_components" | t }}
+                  </label>
                   <select class="form-control" name="components" id="components">
                     <option value="-1">{{ "global.all" | t }}</option>
                     {%- for component in components %}
@@ -28,14 +23,15 @@
                     </option>
                     {%- endfor %}
                   </select>
-
                 </div>
+
                 <div id="acl_form"></div>
               </div>
 
               <div class="actions">
                 <button type="button" class="btn btn-primary" id="btnSaveUserACLs">
                   {{ "users.acls_apply" | t }}
+                  <span class="glyphicon glyphicon-arrow-right"></span>
                 </button>
               </div>
 
@@ -115,6 +111,15 @@
           </div>
 
         </div>
+
+        <div class="row acl-images">
+          <div class="col-xs-12">
+            <img src="gadgets/Users/Resources/images/check-deny.png" alt="deny"/>{{ "users.acls_deny" | t }}
+            <img src="gadgets/Users/Resources/images/check-allow.png" alt="allow"/>{{ "users.acls_allow" | t }}
+            <img src="gadgets/Users/Resources/images/checkbox.png" alt="default"/>{{ "users.acls_default" | t }}
+          </div>
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">

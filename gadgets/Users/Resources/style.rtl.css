@@ -2,7 +2,7 @@
     min-height: 60px;
 }
 .acl-images {
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 .btn-combo {
     position: relative;
@@ -25,8 +25,13 @@
     -ms-user-select: none;
     user-select: none;
 }
-#acl select{
+#acl .acl-components{
     margin-bottom: 10px;
+}
+#acl_form{
+    height:350px;
+    overflow:auto;
+    border:1px solid #c7c7c7;
 }
 
 .workarea{
@@ -222,15 +227,11 @@ padding:0;
 #acl img{
 vertical-align:middle;
 }
-#acl label{
-display:inline;
-vertical-align:middle;
-}
+/*#acl label{*/
+/*display:inline;*/
+/*vertical-align:middle;*/
+/*}*/
 
-#acl_form{
-height:350px;
-overflow:auto;
-}
 #acl_form label{
 font-weight:normal;
 }

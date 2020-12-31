@@ -260,10 +260,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         foreach ((array)$acls as $comp => $acls) {
             // set ACL keys description
             $info = Jaws_Gadget::getInstance($comp);
-
             foreach ($acls as $keyName => $keyValue) {
                 foreach ($keyValue as $subkey => $val) {
-
                     $userACLs[] = array(
                         'component' => $comp,
                         'component_title' => _t(strtoupper($comp) . '_TITLE'),
