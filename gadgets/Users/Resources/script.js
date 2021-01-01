@@ -11,8 +11,8 @@ function Jaws_Gadget_Users() { return {
     currentAction: null,
 
     // selected user/group ID
-    selectedId : null,
     selectedUser : 0,
+    selectedGroup : 0,
 
     // checkbox, allow & deny icons
     chkImages : [],
@@ -40,13 +40,13 @@ function Jaws_Gadget_Users() { return {
 
         UpdateUserACL: function(response) {
             if (response['type'] == 'alert-success') {
-                $('#user-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         DeleteUserACLs: function(response) {
             if (response['type'] == 'alert-success') {
-                $('#user-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
@@ -56,10 +56,21 @@ function Jaws_Gadget_Users() { return {
             }
         },
 
+        DeleteUsersFromGroup: function(response) {
+            if (response['type'] == 'alert-success') {
+                $('#group-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
         AddUserToGroup: function(response) {
             if (response['type'] == 'alert-success') {
-                $('#group_combo').find('>input').val('');
-                $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                if ($('#group_combo').length) {
+                    $('#group_combo').find('>input').val('');
+                    $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                } else {
+                    $('#user_combo').find('>input').val('');
+                    $('#group-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                }
             }
         },
 
@@ -99,7 +110,6 @@ function Jaws_Gadget_Users() { return {
 
         DeleteUsers: function(response) {
             if (response['type'] == 'alert-success') {
-                this.stopUserAction();
                 $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
@@ -107,24 +117,34 @@ function Jaws_Gadget_Users() { return {
         AddGroup: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopGroupAction();
-                $('#groups_datagrid')[0].addItem();
-                $('#groups_datagrid')[0].lastPage();
-                getDG('groups_datagrid');
+                $('#groupModal').modal('hide');
+                $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         UpdateGroup: function(response) {
             if (response['type'] == 'alert-success') {
                 this.stopGroupAction();
-                getDG('groups_datagrid');
+                $('#groupModal').modal('hide');
+                $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
-        DeleteGroup: function(response) {
+        UpdateGroupACL: function(response) {
             if (response['type'] == 'alert-success') {
-                this.stopGroupAction();
-                $('#groups_datagrid')[0].deleteItem();
-                getDG('groups_datagrid');
+                $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
+        DeleteGroupACLs: function(response) {
+            if (response['type'] == 'alert-success') {
+                $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
+        DeleteGroups: function(response) {
+            if (response['type'] == 'alert-success') {
+                $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
@@ -162,18 +182,6 @@ function Jaws_Gadget_Users() { return {
             element.blur();
             element.focus();
         }
-    },
-
-    /**
-     * Get groups list
-     */
-    getGroups: function(name, offset, reset) {
-        var result = this.gadget.ajax.callSync('GetGroups', offset);
-        if (reset) {
-            $('#' + name)[0].setCurrentPage(0);
-            var total = this.gadget.ajax.callSync('getgroupscount');
-        }
-        resetGrid(name, result, total);
     },
 
     /**
@@ -382,22 +390,18 @@ function Jaws_Gadget_Users() { return {
      * Delete user(s)
      */
     deleteUsers: function (uids) {
-        this.stopUserAction();
         if (confirm(this.gadget.defines.confirmUserDelete)) {
             this.gadget.ajax.callAsync('DeleteUsers', {'uids': uids});
         }
     },
 
     /**
-     * Delete group
+     * Delete group(s)
      */
-    deleteGroup: function(rowElement, gid) {
-        this.stopGroupAction();
-        selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
+    deleteGroups: function(gids) {
         if (confirm(this.gadget.defines.confirmGroupDelete)) {
-            this.gadget.ajax.callAsync('DeleteGroup', gid);
+            this.gadget.ajax.callAsync('DeleteGroups', {'gids': gids});
         }
-        unselectGridRow('groups_datagrid');
     },
 
     /**
@@ -497,15 +501,22 @@ function Jaws_Gadget_Users() { return {
             return;
         }
 
+        var action = 'UserACL';
+        var id = this.selectedUser;
+        if (this.gadget.actions.indexOf('Groups') >= 0) {
+            action = 'GroupACL';
+            id = this.selectedGroup;
+        }
+
         this.ajax.callAsync('GetACLKeys', {
-                'uid': this.selectedUser,
+                'id': id,
                 'comp': $('#components').val(),
-                'action': 'UserACL'
+                'action': action
             }, function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
                     var acls = response.data;
                     var form = $('#acl_form').html('');
-                    $.each(acls.default_acls, $.proxy(function(index, acl) {
+                    $.each(acls.default_acls, $.proxy(function (index, acl) {
                         var key_unique = acl.key_name + ':' + acl.key_subkey;
                         var check = $('<img/>').attr('id', key_unique),
                             label = $('<label></label>').attr('for', key_unique),
@@ -518,11 +529,11 @@ function Jaws_Gadget_Users() { return {
                         label.on('click', $.proxy(function (event) {
                             var check = $(event.target).prev('img'),
                                 value = parseInt(check.attr('alt'));
-                            check.attr('alt', (value == -1)? 1 : value - 1);
+                            check.attr('alt', (value == -1) ? 1 : value - 1);
                             check.attr('src', this.chkImages[check.attr('alt')]);
                         }, this));
                         check.on('click', $.proxy(function () {
-                            $(event.target).attr('alt', (event.target.alt == -1)? 1 : parseInt($(event.target).attr('alt')) - 1);
+                            $(event.target).attr('alt', (event.target.alt == -1) ? 1 : parseInt($(event.target).attr('alt')) - 1);
                             $(event.target).attr('src', this.chkImages[$(event.target).attr('alt')]);
                         }, this));
                         form.append(div);
@@ -550,16 +561,11 @@ function Jaws_Gadget_Users() { return {
     /**
      * Add an user to a group
      */
-    addUserToGroup: function () {
-        if ($('#group_combo').combobox('selectedItem').value === undefined) {
-            return false;
-        }
-
-        this.gadget.ajax.callAsync('AddUserToGroup',
-            {
-                'uid': this.selectedUser,
-                'gid': $('#group_combo').combobox('selectedItem').value
-            });
+    addUserToGroup: function (uid, gid) {
+        this.gadget.ajax.callAsync('AddUserToGroup', {
+            'uid': uid,
+            'gid': gid
+        });
     },
 
     /**
@@ -567,6 +573,13 @@ function Jaws_Gadget_Users() { return {
      */
     deleteUserFromGroups: function (groupIds) {
         this.gadget.ajax.callAsync('DeleteUserFromGroups', {'uid': this.selectedUser, 'groupIds': groupIds});
+    },
+
+    /**
+     * Delete users from group
+     */
+    deleteUsersFromGroup: function (userIds) {
+        this.gadget.ajax.callAsync('DeleteUsersFromGroup', {'gid': this.selectedGroup, 'userIds': userIds});
     },
 
     /**
@@ -727,117 +740,131 @@ function Jaws_Gadget_Users() { return {
     /**
      * Edit group
      */
-    editGroup: function(rowElement, gid) {
-        this.selectedId = gid;
-        this.currentAction = 'Group';
-        $('#legend_title').html(this.gadget.defines.editGroup_title);
-        $('#workarea').html(this.cachedGroupForm);
-        selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
+    editGroup: function(gid) {
+        this.selectedGroup = gid;
+        $('#groupModal .modal-title').html(this.gadget.defines.LANGUAGE.edit_group_title);
 
-        var gInfo = this.gadget.ajax.callSync('GetGroup', gid);
-        $('#name').val(gInfo['name']);
-        $('#title').val(gInfo['title'].defilter());
-        $('#description').val(gInfo['description'].defilter());
-        $('#enabled').val(Number(gInfo['enabled']));
+        this.ajax.callAsync('GetGroup', {
+                'gid': this.selectedGroup
+            }, function (response, status, callOptions) {
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+                    var gInfo = response.data;
+                    if (gInfo) {
+                        $('#name').val(gInfo.name);
+                        $('#title').val(gInfo.title.defilter());
+                        $('#description').val(gInfo.description === null ? '' : gInfo.description.defilter());
+                        $('#enabled').val(Number(gInfo.enabled));
+
+                        $('#groupModal').modal('show');
+                    }
+                }
+            }
+        );
     },
 
     /**
      * Edit the members of group
      */
-    editGroupUsers: function(rowElement, gid) {
-        this.selectedId = gid;
-        this.currentAction = 'GroupUsers';
-        $('#legend_title').html(this.gadget.defines.editGroupUsers_title);
-        if (this.cachedGroupUsersForm == null) {
-            this.cachedGroupUsersForm = this.gadget.ajax.callSync('GroupUsersUI');
-        }
-        $('#workarea').html(this.cachedGroupUsersForm);
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
+    editGroupUsers: function(gid) {
+        this.selectedGroup = gid;
+        $('#groupUsersModal')
+            .modal('show')
+            .on('shown.bs.modal', $.proxy(function (e) {
+                this.initiateGroupUsersDG();
 
-        var gUsers = this.gadget.ajax.callSync('GetGroupUsers', gid);
-        $.each(gUsers, function(index, user) {
-            if ($('#user_' + user['id']).length) {
-                $('#user_' + user['id']).prop('checked', true);
-            }
-        });
+                $('#user_combo').combobox({
+                    'showOptionsOnKeypress': true,
+                    'noMatchesMessage': this.gadget.defines.noMatchesMessage
+                });
+                $('#user_combo').combobox('enable');
+                $('#user_combo').find('>input').val('');
+                $("#user_combo").on('keyup.fu.combobox', $.proxy(function (evt, data) {
+                    this.searchUsersAndFillCombo($('#user_combo'));
+                }, this));
+                $("#user_combo").trigger('keyup.fu.combobox');
+
+            }, this));
     },
 
     /**
      * Saves data / changes on the group's form
      */
     saveGroup: function() {
-        switch(this.currentAction) {
-            case 'Group':
-                if (!$('#name').val() || !$('#title').val()) {
-                    alert(this.gadget.defines.incompleteGroupFields);
-                    return false;
-                }
-
-                if (this.selectedId == 0) {
-                    this.gadget.ajax.callAsync(
-                        'AddGroup', [
-                            $('#name').val(),
-                            $('#title').val(),
-                            $('#description').val(),
-                            $('#enabled').val()
-                        ]
-                    );
-                } else {
-                    this.gadget.ajax.callAsync(
-                        'UpdateGroup', [
-                            this.selectedId,
-                            $('#name').val(),
-                            $('#title').val(),
-                            $('#description').val(),
-                            $('#enabled').val()
-                        ]
-                    );
-                }
-
-                break;
-
-            case 'GroupACL':
-                if ($('components').val() === '') {
-                    return;
-                }
-                var acls = [];
-                $.each($('#acl_form img[alt!="-1"]'), function(index, aclTag) {
-                    var keys = $(aclTag).attr('id').split(':');
-                    acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
-                });
-                this.gadget.ajax.callAsync('UpdateGroupACL', [this.selectedId, $('#components').val(), acls]);
-                break;
-
-            case 'GroupUsers':
-                var inputs  = $('#workarea input');
-                var keys    = new Array();
-                var counter = 0;
-                for (var i=0; i<inputs.length; i++) {
-                    if (inputs[i].name.indexOf('group_users') == -1) {
-                        continue;
-                    }
-
-                    if (inputs[i].checked) {
-                        keys[counter] = inputs[i].value;
-                        counter++;
-                    }
-                }
-
-                this.gadget.ajax.callAsync('AddUsersToGroup', [this.selectedId, keys]);
-                break;
+        if (!$('#name').val() || !$('#title').val()) {
+            alert(this.gadget.defines.incompleteGroupFields);
+            return false;
         }
 
+        if (this.selectedGroup == 0) {
+            this.gadget.ajax.callAsync(
+                'AddGroup', {
+                    'data': $.unserialize($('#group-form input,#group-form select,#group-form textarea').serialize())
+                });
+        } else {
+            this.gadget.ajax.callAsync(
+                'UpdateGroup', {
+                    'gid': this.selectedGroup,
+                    'data': $.unserialize($('#group-form input,#group-form select,#group-form textarea').serialize())
+                });
+        }
     },
+
+    /**
+     * Save group's ACL
+     */
+    saveGroupACL: function() {
+        if ($('#components').val() === '') {
+            return;
+        }
+        var acls = [];
+        $.each($('#acl_form img[alt!="-1"]'), function (index, aclTag) {
+            var keys = $(aclTag).attr('id').split(':');
+            acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
+        });
+        this.gadget.ajax.callAsync('UpdateGroupACL', {
+            'gid': this.selectedGroup,
+            'component': $('#components').val(),
+            'acls': acls
+        });
+    },
+
+    /**
+     * Edit group ACL
+     */
+    editGroupACL: function (uid) {
+        this.selectedGroup = uid;
+        $('#aclModal')
+            .modal('show')
+            .on('shown.bs.modal', $.proxy(function (e) {
+                this.initiateGroupACLsDG();
+            }, this));
+
+        this.chkImages = $('#aclModal .acl-images img').map(function() {
+            return $(this).attr('src');
+        }).toArray();
+        this.chkImages[-1] = this.chkImages[2];
+        delete this.chkImages[2];
+    },
+
+    /**
+     * Delete group's ACL
+     */
+    deleteGroupACLs: function(acls) {
+        this.gadget.ajax.callAsync('DeleteGroupACLs', {
+            'gid': this.selectedGroup,
+            'acls': acls
+        });
+    },
+
 
     /**
      * Stops doing a certain action
      */
     stopGroupAction: function() {
-        this.selectedId = 0;
-        this.currentAction = 'Group';
-        unselectGridRow('groups_datagrid');
-        $('#legend_title').html(this.gadget.defines.addGroup_title);
-        $('#workarea').html(this.cachedGroupForm);
+        this.selectedGroup = 0;
+        $('form#group-form')[0].reset();
+        $('#groupModal .modal-title').html(this.gadget.defines.LANGUAGE.add_group_title);
     },
 
     /**
@@ -1142,11 +1169,9 @@ function Jaws_Gadget_Users() { return {
                     html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.gadget.defines.LANGUAGE.edit,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
-
                         this.editUser(helpers.rowData.id);
                         callback();
                     }, this)
-
                 },
                 {
                     name: 'password',
@@ -1156,7 +1181,6 @@ function Jaws_Gadget_Users() { return {
                         this.changeUserPassword(helpers.rowData.username, helpers.rowData.id);
                         callback();
                     }, this)
-
                 },
                 {
                     name: 'acl',
@@ -1166,7 +1190,6 @@ function Jaws_Gadget_Users() { return {
                         this.editUserACL(helpers.rowData.id);
                         callback();
                     }, this)
-
                 },
                 {
                     name: 'users_groups',
@@ -1176,7 +1199,6 @@ function Jaws_Gadget_Users() { return {
                         this.editUserGroups(helpers.rowData.id);
                         callback();
                     }, this)
-
                 },
                 {
                     name: 'personal',
@@ -1186,7 +1208,6 @@ function Jaws_Gadget_Users() { return {
                         this.editPersonal(helpers.rowData.id);
                         callback();
                     }, this)
-
                 },
                 {
                     name: 'contacts',
@@ -1196,7 +1217,6 @@ function Jaws_Gadget_Users() { return {
                         this.editContacts(helpers.rowData.id);
                         callback();
                     }, this)
-
                 },
                 {
                     name: 'extra',
@@ -1206,7 +1226,6 @@ function Jaws_Gadget_Users() { return {
                         this.editUserExtra(helpers.rowData.id);
                         callback();
                     }, this)
-
                 },
                 {
                     name: 'delete',
@@ -1284,12 +1303,12 @@ function Jaws_Gadget_Users() { return {
         columns = Object.values(columns);
 
         this.gadget.ajax.callAsync(
-            'GetUserACLs', {
+            'GetObjectACLs', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
                 'sortDirection': options.sortDirection,
                 'sortBy': options.sortProperty,
-                'filters': {'uid': this.selectedUser}
+                'filters': {'id': this.selectedUser, 'action':'User'}
             },
             function(response, status, callOptions) {
                 var dataSource = {};
@@ -1370,8 +1389,8 @@ function Jaws_Gadget_Users() { return {
      * initiate User ACLs dataGrid
      */
     initiateUserACLsDG: function() {
-        if ($('#user-acls-grid').data('currentview') !== undefined) {
-            return $('#user-acls-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
+        if ($('#item-acls-grid').data('currentview') !== undefined) {
+            return $('#item-acls-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
         }
 
         var list_actions = {
@@ -1400,7 +1419,6 @@ function Jaws_Gadget_Users() { return {
                             });
                         }
 
-                        console.log(acls);
                         this.deleteUserACLs(acls);
                         callback();
                     }, this)
@@ -1410,7 +1428,7 @@ function Jaws_Gadget_Users() { return {
         };
 
         // initialize the repeater
-        $('#user-acls-grid').repeater({
+        $('#item-acls-grid').repeater({
             dataSource: $.proxy(this.userACLsDataSource, this),
             list_actions: list_actions,
             list_infiniteScroll: true,
@@ -1422,8 +1440,8 @@ function Jaws_Gadget_Users() { return {
         });
 
         // monitor required events
-        $("#user-acls-grid button.btn-refresh").on('click', function (e) {
-            $('#user-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        $("#item-acls-grid button.btn-refresh").on('click', function (e) {
+            $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
         });
     },
 
@@ -1529,7 +1547,7 @@ function Jaws_Gadget_Users() { return {
             dataSource: $.proxy(this.userGroupsDataSource, this),
             list_actions: list_actions,
             list_selectable: 'multi',
-            // list_infiniteScroll: true,
+            list_infiniteScroll: true,
             list_noItemsHTML: this.gadget.defines.datagridNoItems,
             list_direction: $('.repeater-canvas').css('direction')
         });
@@ -1537,6 +1555,624 @@ function Jaws_Gadget_Users() { return {
         // monitor required events
         $("#user-groups-grid button.btn-refresh").on('click', function (e) {
             $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    /**
+     * Define the data to be displayed in the groups datagrid
+     */
+    groupsDataSource: function (options, callback) {
+        var columns = {
+            'name': {
+                'label': this.gadget.defines.LANGUAGE.name,
+                'property': 'name',
+                'width': '30%'
+            },
+            'title': {
+                'label': this.gadget.defines.LANGUAGE.title,
+                'property': 'title',
+                'width': '55%'
+            },
+            'enabled': {
+                'label': this.gadget.defines.LANGUAGE.enabled,
+                'property': 'enabled',
+                'width': '15%'
+            },
+        };
+
+        var filters = $.unserialize($('#groups-grid .datagrid-filters form').serialize());
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.gadget.ajax.callAsync(
+            'GetGroups', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': filters
+            },
+            function(response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total/options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end':   options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end':   0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * groups Datagrid column renderer
+     */
+    groupsDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'enabled':
+                if (helpers.item.text() == "true") {
+                    customMarkup = this.gadget.defines.LANGUAGE.yes;
+                } else {
+                    customMarkup = this.gadget.defines.LANGUAGE.no;
+                }
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+        callback();
+    },
+
+    /**
+     * initiate Groups dataGrid
+     */
+    initiateGroupsDG: function() {
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'edit',
+                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.gadget.defines.LANGUAGE.edit,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        this.editGroup(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'acl',
+                    html: '<span class="glyphicon glyphicon-lock"></span> ' + this.gadget.defines.LANGUAGE.acls,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editGroupACL(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'group_members',
+                    html: '<span class="glyphicon glyphicon-user"></span> ' + this.gadget.defines.LANGUAGE.group_members,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+                        this.editGroupUsers(helpers.rowData.id);
+                        callback();
+                    }, this)
+
+                },
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.LANGUAGE.delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = new Array();
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.deleteGroups(ids);
+                        callback();
+                    }, this)
+
+                },
+            ]
+        };
+
+        // initialize the repeater
+        $('#groups-grid').repeater({
+            dataSource: $.proxy(this.groupsDataSource, this),
+            list_actions: list_actions,
+            list_columnRendered: $.proxy(this.groupsDGColumnRenderer, this),
+            list_selectable: 'multi',
+            list_noItemsHTML: this.gadget.defines.datagridNoItems,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $("#groups-grid input").keypress(function (e) {
+            if (e.which == 13) {
+                $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        });
+        $("#groups-grid button.btn-refresh").on('click', function (e) {
+            $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    /**
+     * Define the data to be displayed in the user ACLs datagrid
+     */
+    groupACLsDataSource: function (options, callback) {
+        var columns = {
+            'component': {
+                'label': this.gadget.defines.LANGUAGE.components,
+                'property': 'component_title',
+                'width': '30%'
+            },
+            'acl_key_title': {
+                'label': this.gadget.defines.LANGUAGE.acl_key_title,
+                'property': 'key_title',
+                'width': '50%'
+            },
+            'acl': {
+                'label': this.gadget.defines.LANGUAGE.acl,
+                'property': 'key_value',
+                'width': '20%'
+            },
+        };
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.gadget.ajax.callAsync(
+            'GetObjectACLs', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': {'id': this.selectedGroup, 'action':'Group'}
+            },
+            function(response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total/options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end':   options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end':   0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * groupACLs Datagrid column renderer
+     */
+    groupACLsDGRowRenderer: function (helpers, callback) {
+        switch (helpers.rowData.key_value) {
+            case 0:
+                helpers.item.addClass('bg-danger');
+                break;
+            case 1:
+                helpers.item.addClass('bg-success');
+                break;
+        }
+
+        callback();
+    },
+
+    /**
+     * groupAcls Datagrid column renderer
+     */
+    groupACLsDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'key_value':
+                if (rowData.key_value == 0) {
+                    customMarkup = this.gadget.defines.LANGUAGE.acl_deny;
+                } else if (rowData.key_value == 1) {
+                    customMarkup = this.gadget.defines.LANGUAGE.acl_allow;
+                }
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+        callback();
+    },
+
+    /**
+     * initiate User ACLs dataGrid
+     */
+    initiateGroupACLsDG: function() {
+        if ($('#item-acls-grid').data('currentview') !== undefined) {
+            return $('#item-acls-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
+        }
+
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.LANGUAGE.delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var acls = new Array();
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                acls.push({
+                                    'component': entry.rowData.component,
+                                    'key_name': entry.rowData.key_name,
+                                    'subkey': entry.rowData.subkey,
+                                });
+                            });
+                        } else {
+                            acls.push({
+                                'component': helpers.rowData.component,
+                                'key_name': helpers.rowData.key_name,
+                                'subkey': helpers.rowData.subkey,
+                            });
+                        }
+
+                        this.deleteGroupACLs(acls);
+                        callback();
+                    }, this)
+
+                },
+            ]
+        };
+
+        // initialize the repeater
+        $('#item-acls-grid').repeater({
+            dataSource: $.proxy(this.groupACLsDataSource, this),
+            list_actions: list_actions,
+            list_infiniteScroll: true,
+            list_columnRendered: $.proxy(this.groupACLsDGColumnRenderer, this),
+            list_rowRendered: $.proxy(this.groupACLsDGRowRenderer, this),
+            list_selectable: 'multi',
+            list_noItemsHTML: this.gadget.defines.datagridNoItems,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $("#item-acls-grid button.btn-refresh").on('click', function (e) {
+            $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    /**
+     * Define the data to be displayed in the group's users datagrid
+     */
+    groupUsersDataSource: function (options, callback) {
+        var columns = {
+            'username': {
+                'label': this.gadget.defines.LANGUAGE.username,
+                'property': 'username'
+            },
+            'nickname': {
+                'label': this.gadget.defines.LANGUAGE.nickname,
+                'property': 'nickname'
+            }
+        };
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.gadget.ajax.callAsync(
+            'GetGroupUsers', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': {'gid': this.selectedGroup}
+            },
+            function(response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total/options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end':   options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end':   0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * initiate Group's users dataGrid
+     */
+    initiateGroupUsersDG: function() {
+        if ($('#group-users-grid').data('currentview') !== undefined) {
+            return $('#group-users-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
+        }
+
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.LANGUAGE.delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = [];
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.deleteUsersFromGroup(ids);
+                        callback();
+                    }, this)
+
+                }
+            ]
+        };
+
+        // initialize the repeater
+        $('#group-users-grid').repeater({
+            dataSource: $.proxy(this.groupUsersDataSource, this),
+            list_actions: list_actions,
+            list_selectable: 'multi',
+            list_infiniteScroll: true,
+            list_noItemsHTML: this.gadget.defines.datagridNoItems,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $("#group-users-grid button.btn-refresh").on('click', function (e) {
+            $('#group-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+    },
+
+    /**
+     * Define the data to be displayed in the online-user datagrid
+     */
+    onlineUsersDataSource: function (options, callback) {
+        var columns = {
+            'username': {
+                'label': this.gadget.defines.LANGUAGE.username,
+                'property': 'username'
+            },
+            'nickname': {
+                'label': this.gadget.defines.LANGUAGE.nickname,
+                'property': 'nickname'
+            },
+            'superadmin': {
+                'label': this.gadget.defines.LANGUAGE.superadmin,
+                'property': 'superadmin'
+            },
+            'ip': {
+                'label': this.gadget.defines.LANGUAGE.ip,
+                'property': 'ip'
+            },
+            'type': {
+                'label': this.gadget.defines.LANGUAGE.session_type,
+                'property': 'type'
+            },
+            'last_activetime': {
+                'label': this.gadget.defines.LANGUAGE.last_activetime,
+                'property': 'last_activetime'
+            },
+        };
+
+        var filters = $.unserialize($('#online-users-grid .datagrid-filters form').serialize());
+
+        // set sort property & direction
+        if (options.sortProperty) {
+            columns[options.sortProperty].sortDirection = options.sortDirection;
+        }
+        columns = Object.values(columns);
+
+        this.gadget.ajax.callAsync(
+            'GetOnlineUsers', {
+                'offset': options.pageIndex * options.pageSize,
+                'limit': options.pageSize,
+                'sortDirection': options.sortDirection,
+                'sortBy': options.sortProperty,
+                'filters': filters
+            },
+            function(response, status, callOptions) {
+                var dataSource = {};
+                if (response['type'] == 'alert-success') {
+                    callOptions.showMessage = false;
+
+                    // processing end item index of page
+                    options.end = options.offset + options.pageSize;
+                    options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                    dataSource = {
+                        'page': options.pageIndex,
+                        'pages': Math.ceil(response['data'].total/options.pageSize),
+                        'count': response['data'].total,
+                        'start': options.offset + 1,
+                        'end':   options.end,
+                        'columns': columns,
+                        'items': response['data'].records
+                    };
+                } else {
+                    dataSource = {
+                        'page': 0,
+                        'pages': 0,
+                        'count': 0,
+                        'start': 0,
+                        'end':   0,
+                        'columns': columns,
+                        'items': {}
+                    };
+                }
+                // pass the datasource back to the repeater
+                callback(dataSource);
+            }
+        );
+    },
+
+    /**
+     * online-users Datagrid column renderer
+     */
+    onlineUsersDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'status':
+                customMarkup = this.gadget.defines.statusItems[rowData.status];
+                break;
+            case 'last_activetime':
+                helpers.item.addClass('ltr');
+                customMarkup = helpers.item.text();
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+        callback();
+    },
+
+    /**
+     * initiate online-user dataGrid
+     */
+    initiateOnlineUsersDG: function() {
+        var list_actions = {
+            width: 50,
+            items: [
+                {
+                    name: 'delete',
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.LANGUAGE.delete,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = new Array();
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.deleteSession(ids);
+                        callback();
+                    }, this)
+
+                },
+            ]
+        };
+
+        // initialize the repeater
+        $('#online-users-grid').repeater({
+            dataSource: $.proxy(this.onlineUsersDataSource, this),
+            list_actions: list_actions,
+            list_columnRendered: $.proxy(this.onlineUsersDGColumnRenderer, this),
+            list_selectable: 'multi',
+            list_noItemsHTML: this.gadget.defines.datagridNoItems,
+            list_direction: $('.repeater-canvas').css('direction')
+        });
+
+        // monitor required events
+        $("#online-users-grid select").change(function () {
+            $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
+        $("#online-users-grid button.btn-refresh").on('click', function (e) {
+            $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
         });
     },
 
@@ -1553,12 +2189,32 @@ function Jaws_Gadget_Users() { return {
     },
 
     /**
+     * Search users and fill combo
+     */
+    searchUsersAndFillCombo: function (comboElm) {
+        console.log('searchUsersAndFillCombo');
+        this.ajax.callAsync(
+            'GetUsers',
+            {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
+            $.proxy(function (response, status) {
+                $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
+                if (response['type'] == 'alert-success' && response.data.total > 0) {
+                    console.log(response.data.records);
+                    $.each(response.data.records, $.proxy(function (key, user) {
+                        this.addOptionToCombo(comboElm, {'value': user.id, 'title': user.nickname});
+                    }, this));
+                }
+            }, this)
+        );
+    },
+
+    /**
      * Search groups and fill combo
      */
     searchGroupsAndFillCombo: function (comboElm) {
         this.ajax.callAsync(
             'GetGroups',
-            {'filters': {'term': $(comboElm).find('>input').val()}, 'limit': 10},
+            {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
                 $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
                 if (response['type'] == 'alert-success' && response.data.total > 0) {
@@ -1598,11 +2254,23 @@ function Jaws_Gadget_Users() { return {
                 'showOptionsOnKeypress': true,
                 'noMatchesMessage': this.gadget.defines.noMatchesMessage
             }).combobox('enable')
-                .find('>input').val('')
-                .on('keyup.fu.combobox', $.proxy(function (evt, data) {
-                    this.searchGroupsAndFillCombo($('#filter_group'));
-                }, this));
-            $("#filter_group").trigger('keyup.fu.combobox');
+                .find('>input').val('');
+            $("#filter_group").on('keyup.fu.combobox', $.proxy(function (evt, data) {
+                this.searchGroupsAndFillCombo($('#filter_group'));
+            }, this)).on('changed.fu.combobox', $.proxy(function (evt, data) {
+                if (data.value !== undefined) {
+                    $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                }
+            }, this)).trigger('keyup.fu.combobox');
+
+            $('button.btn-cancel-select-group').on('click', $.proxy(function (e) {
+                var cmbName = $(e.target).data('combo-name');
+                if ($(e.target).is("span")) {
+                    cmbName = $(e.target).parent().data('combo-name');
+                }
+                this.cancelSelectCombobox($('#' + cmbName));
+                $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }, this));
 
             this.initiateUsersDG();
 
@@ -1615,10 +2283,6 @@ function Jaws_Gadget_Users() { return {
                     this.searchGroupsAndFillCombo($('#group_combo'));
                 }, this));
             $("#group_combo").trigger('keyup.fu.combobox');
-
-            $('button.btn-cancel-select-group').on('click', $.proxy(function (e) {
-                this.cancelSelectCombobox($('#' + $(e.target).parent().data('combo-name')));
-            }, this));
 
             $('#userModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
@@ -1634,11 +2298,15 @@ function Jaws_Gadget_Users() { return {
             $('#btnSaveUser').on('click', $.proxy(function (e) {
                 this.saveUser();
             }, this));
-            $('#btnSaveUserACLs').on('click', $.proxy(function (e) {
+            $('#btnSaveACLs').on('click', $.proxy(function (e) {
                 this.saveUserACL();
             }, this));
             $('#btnAddUserToGroup').on('click', $.proxy(function (e) {
-                this.addUserToGroup();
+                var gid = $('#group_combo').combobox('selectedItem').value;
+                if ( gid === undefined) {
+                    return false;
+                }
+                this.addUserToGroup(this.selectedUser, gid);
             }, this));
             $('#btnSaveUserPersonal').on('click', $.proxy(function (e) {
                 this.saveUserPersonal();
@@ -1668,10 +2336,41 @@ function Jaws_Gadget_Users() { return {
 
         // init groups action
         if (this.gadget.actions.indexOf('Groups') >= 0) {
-            this.currentAction = 'UserAccount';
-            this.cachedGroupForm = $('#workarea').html();
             this.stopGroupAction();
-            initDataGrid('groups_datagrid', this.gadget, this.getGroups);
+            this.initiateGroupsDG();
+
+            $('#groupModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopGroupAction();
+            }, this));
+
+            $('#btnSaveGroup').on('click', $.proxy(function (e) {
+                this.saveGroup();
+            }, this));
+
+            $('#btnSaveACLs').on('click', $.proxy(function (e) {
+                this.saveGroupACL();
+            }, this));
+
+            $('#components').on('change', $.proxy(function (e) {
+                this.getACL();
+            }, this));
+
+            $('#btnAddUserToGroup').on('click', $.proxy(function (e) {
+                var uid = $('#user_combo').combobox('selectedItem').value;
+                if ( uid === undefined) {
+                    return false;
+                }
+                this.addUserToGroup(uid, this.selectedGroup);
+            }, this));
+
+            $('button.btn-cancel-select-user').on('click', $.proxy(function (e) {
+                var cmbName = $(e.target).data('combo-name');
+                if ($(e.target).is("span")) {
+                    cmbName = $(e.target).parent().data('combo-name');
+                }
+                this.cancelSelectCombobox($('#' + cmbName));
+            }, this));
+
         }
 
         // init ACLs action
@@ -1682,7 +2381,14 @@ function Jaws_Gadget_Users() { return {
 
         // init online users action
         if (this.gadget.actions.indexOf('OnlineUsers') >= 0) {
-            initDataGrid('onlineusers_datagrid', this.gadget, this.getOnlineUsers);
+            this.initiateOnlineUsersDG();
+        }
+
+        // init settings action
+        if (this.gadget.actions.indexOf('Settings') >= 0) {
+            $('#btnUpdateSettings').on('click', $.proxy(function (e) {
+                this.updateSettings();
+            }, this));
         }
     },
 

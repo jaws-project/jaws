@@ -1,14 +1,66 @@
-<!-- BEGIN settings -->
 <div class="gadget_menubar">{{menubar}}</div>
-<div id="main">
-  <table id="users_settings">
-    <tr><td><label for="authtype">{{lbl_authtype}}: </label></td><td>{{authtype}}</td></tr>
-    <tr><td><label for="anon_register">{{lbl_anon_register}}: </label></td><td>{{anon_register}}</td></tr>
-    <tr><td><label for="anon_activation">{{lbl_anon_activation}}: </label></td><td>{{anon_activation}}</td></tr>
-    <tr><td><label for="anon_group">{{lbl_anon_group}}: </label></td><td>{{anon_group}}</td></tr>
-    <tr><td><label for="password_recovery">{{lbl_password_recovery}}: </label></td><td>{{password_recovery}}</td></tr>
-    <tr><td><label for="reserved_users">{{lbl_reserved_users}}: </label></td><td>{{reserved_users}}</td></tr>
-  </table>
-  <div class="buttons">{{btn_save}}</div>
+
+<div class="row">
+  <div class="form-group col-xs-12 col-md-4">
+    <label for="authtype">{{ "global.authtype" | t }}:</label>
+    <select class="form-control" name="authtype" id="authtype">
+      {%- for authtype in authtypes %}
+      <option value="{{authtype}}" {{ authtype | equal: authtype_default, "selected" }}>
+      {{- authtype -}}
+      </option>
+      {%- endfor %}
+    </select>
+  </div>
+
+  <div class="form-group col-xs-12 col-md-4">
+    <label for="anon_register">{{ "users.properties_anon_register" | t }}:</label>
+    <select class="form-control" name="anon_register" id="anon_register">
+      <option value="0" {{ anon_register | equal: 0, "selected" }}>{{ "global.no" | t }}</option>
+      <option value="1" {{ anon_register | equal: 1, "selected" }}>{{ "global.yes" | t }}</option>
+    </select>
+  </div>
+
+  <div class="form-group col-xs-12 col-md-4">
+    <label for="anon_activation">{{ "users.properties_anon_activation" | t }}:</label>
+    <select class="form-control" name="anon_activation" id="anon_activation">
+      {%- for anon_activation in anon_activation_items %}
+      <option value="{{forloop.key}}" {{ forloop.key | equal: anon_activation_default, "selected" }}>
+      {{- anon_activation -}}
+      </option>
+      {%- endfor %}
+    </select>
+  </div>
+
+  <div class="form-group col-xs-12 col-md-4">
+    <label for="anon_group">{{ "users.properties_anon_group" | t }}:</label>
+    <select class="form-control" name="anon_group" id="anon_group">
+      {%- for group in groups %}
+      <option value="{{group.id}}" {{ group.id | equal: anon_group, "selected" }}>
+      {{- group.title -}}
+      </option>
+      {%- endfor %}
+    </select>
+  </div>
+
+  <div class="form-group col-xs-12 col-md-4">
+    <label for="password_recovery">{{ "users.properties_pass_recovery" | t }}:</label>
+    <select class="form-control" name="password_recovery" id="password_recovery">
+      <option value="0" {{ password_recovery | equal: 0, "selected" }}>{{ "global.no" | t }}</option>
+      <option value="1" {{ password_recovery | equal: 1, "selected" }}>{{ "global.yes" | t }}</option>
+    </select>
+  </div>
+
+  <div class="form-group col-xs-12">
+    <label for="reserved_users">{{ "users.properties_reserved_users" | t }}:</label>
+    <textarea name="reserved_users" id="reserved_users" class="form-control ltr" cols="30" rows="8">
+      {{ reserved_users }}
+    </textarea>
+  </div>
+
 </div>
-<!-- END settings -->
+
+<div class="actions">
+  <button type="button" class="btn btn-primary" id="btnUpdateSettings">
+    {{ "global.save" | t }}
+  </button>
+</div>

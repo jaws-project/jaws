@@ -1,9 +1,9 @@
-<div class="modal fade" id="userGroupsModal" tabindex="-1" role="dialog" aria-labelledby="userGroupsModalLabel">
+<div class="modal fade" id="groupUsersModal" tabindex="-1" role="dialog" aria-labelledby="groupUsersModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">{{ "users.users_groups" | t }}</h4>
+        <h4 class="modal-title">{{ "users.groups_members" | t }}</h4>
       </div>
       <div class="modal-body">
 
@@ -12,12 +12,12 @@
 
               <div class="col-xs-8">
 
-                <div class="input-group input-append dropdown combobox" id="group_combo">
-                  <label for="group_combo"  class="input-group-addon text-input">
-                    {{ "users.groups_group" | t }}
+                <div class="input-group input-append dropdown combobox" id="user_combo">
+                  <label for="user_combo"  class="input-group-addon text-input">
+                    {{ "users.user" | t }}
                   </label>
                   <input type="text" class="form-control" placeholder=""
-                         data-toggle="tooltip" data-placement="top" title="{{ "users.groups_group" | t }}">
+                         data-toggle="tooltip" data-placement="top" title="{{ "users.user" | t }}">
                   <div class="input-group-btn">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                       <span class="caret"></span>
@@ -25,7 +25,7 @@
                     <ul class="dropdown-menu dropdown-menu-right"></ul>
                   </div>
                   <div class="input-group-btn">
-                    <button class="btn-combo btn-warning btn-cancel-select-group" type="button" data-combo-name="group_combo">
+                    <button class="btn-combo btn-warning btn-cancel-select-user" type="button" data-combo-name="user_combo">
                       <span class="glyphicon glyphicon-remove"></span>
                     </button>
                   </div>
@@ -45,7 +45,7 @@
 
         <p></p>
 
-        <div class="repeater" id="user-groups-grid" data-staticheight="400">
+        <div class="repeater" id="group-users-grid" data-staticheight="400">
           <div class="repeater-header">
             <div class="datagrid-filters">
             </div>

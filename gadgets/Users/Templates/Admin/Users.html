@@ -4,7 +4,7 @@
     <div class="datagrid-filters">
 
       <div class="row">
-        <form action="#">
+        <form action="#" onsubmit="return false;">
 
         <div class="col-xs-2">
           <label for="filter_group" class="">{{ "users.groups_group" | t }}: </label>
@@ -28,7 +28,7 @@
           </div>
 
 
-          {% if domains | isset %}
+        {% if domains | isset %}
         <div class="col-xs-2">
           <label for="filter_domain">{{ "users.domain" | t }}: </label>
         </div>
@@ -75,10 +75,10 @@
         </div>
 
         <div class="col-xs-2">
-          <label for="filter_status">{{ "users.users_search_term" | t }}: </label>
+          <label for="filter_term">{{ "users.users_search_term" | t }}: </label>
         </div>
         <div class="col-xs-4">
-          <input type="text" class="form-control ltr" name="filter_term" id="filter_term" >
+          <input type="text" class="form-control" name="filter_term" id="filter_term" >
         </div>
 
         </form>

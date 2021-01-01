@@ -505,7 +505,12 @@ $admin_actions['DeleteUserACLs'] = array(
 );
 $admin_actions['UpdateGroupACL'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Groups',
+    'loglevel' => JAWS_NOTICE,
+);
+$admin_actions['DeleteGroupACLs'] = array(
+    'standalone' => true,
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['AddUserToGroup'] = array(
@@ -527,14 +532,6 @@ $admin_actions['UpdateSettings'] = array(
     'standalone' => true,
     'file' => 'Settings',
     'loglevel' => JAWS_WARNING,
-);
-$admin_actions['GetUserACLs'] = array(
-    'standalone' => true,
-    'file' => 'Users',
-);
-$admin_actions['GetACLKeys'] = array(
-    'standalone' => true,
-    'file' => 'Users',
 );
 $admin_actions['UpdateMyAccount'] = array(
     'standalone' => true,
@@ -571,7 +568,7 @@ $admin_actions['UpdateUserExtra'] = array(
 );
 $admin_actions['GetGroup'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Groups',
 );
 $admin_actions['GetGroups'] = array(
     'standalone' => true,
@@ -579,22 +576,26 @@ $admin_actions['GetGroups'] = array(
 );
 $admin_actions['AddGroup'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateGroup'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
-$admin_actions['DeleteGroup'] = array(
+$admin_actions['DeleteGroups'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Groups',
     'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetGroupUsers'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Groups',
+);
+$admin_actions['DeleteUsersFromGroup'] = array(
+    'standalone' => true,
+    'file' => 'Groups',
 );
 $admin_actions['ACLs'] = array(
     'normal' => true,
@@ -604,7 +605,15 @@ $admin_actions['GetACLs'] = array(
     'standalone' => true,
     'file' => 'ACLs',
 );
+$admin_actions['GetACLKeys'] = array(
+    'standalone' => true,
+    'file' => 'ACLs',
+);
 $admin_actions['GetACLGroupsUsers'] = array(
+    'standalone' => true,
+    'file' => 'ACLs',
+);
+$admin_actions['GetObjectACLs'] = array(
     'standalone' => true,
     'file' => 'ACLs',
 );

@@ -58,7 +58,7 @@
             </div>
 
             <div class="form-group col-xs-12 col-md-6">
-              <label for="concurrents">{{ "global.status" | t }}:</label>
+              <label for="status">{{ "global.status" | t }}:</label>
               <select class="form-control" name="status" id="status">
                 {%- for status in statusItems %}
                 <option value="{{forloop.key}}" {{ forloop.key | equal: 1, "selected" }}>
