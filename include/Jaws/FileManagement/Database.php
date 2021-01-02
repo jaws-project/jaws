@@ -10,6 +10,41 @@
  */
 class Jaws_FileManagement_Database extends Jaws_FileManagement
 {
+
+    /**
+     * Returns information about a file path
+     *
+     * @access  public
+     * @param   string  $filename   The filename/directory to be parsed
+     * #param   int     $options    If present, specifies a specific element to be returned
+     * @return  mixed   Returns anassociative array containing the following elements
+     * @see     http://www.php.net/pathinfo 
+     */
+    static function pathinfo($filename, $options)
+    {
+        $path = dirname($filename);
+        $name = basename($filename);
+        $hash_path = hash64($path);
+        $hash_name = hash64($name);
+
+        $res = Jaws_ORM::getInstance()
+            ->table('dbfs')
+            ->select(
+                'id:integer', 'path as dirname', 'name as basename', 'type:integer', 'size:integer',
+                'insert_time:integer', 'update_time:integer'
+            )
+            ->where('hash_path', $hash_path)
+            ->and()
+            ->where('hash_name', $hash_name)
+            ->and()
+            ->where('path', $path)
+            ->and()
+            ->where('name', $name)
+            ->fetchRow();
+
+        return Jaws_Error::IsError($res)? false : $res;
+    }
+
     /**
      * Checks whether a file or directory exists
      *
@@ -307,11 +342,31 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * @param   string  $src    Path to the source file or directory
      * @param   string  $dst    The destination path
      * @param   bool    $overwrite  Overwrite files if exists
+     * @param   bool    $first_iteration
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
-    static function rename($src, $dst, $overwrite = true)
+    static function rename($src, $dst, $overwrite = true, $first_iteration = true)
     {
+        if ($first_iteration) {
+            $srcInfo = self::pathinfo($src);
+            if (empty($srcInfo)) {
+                return false;
+            }
+
+            $dstInfo = self::pathinfo($dst);
+            if (empty($dstInfo) || !$overwrite) {
+                return false;
+            }
+
+            if ($overwrite) {
+                // delete destination if exists
+                if (false == self::delete($dst, true)) {
+                    return false;
+                }
+            }
+        }
+
         // source
         $srcPath = dirname($src);
         $srcName = basename($src);
@@ -323,40 +378,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $dst_hash_path = hash64($dstPath);
         $dst_hash_name = hash64($dstName);
 
-        if ($overwrite) {
-            // delete destination if exists
-            $result = Jaws_ORM::getInstance()
-                ->table('dbfs')
-                ->delete()
-                ->where('hash_path', $dst_hash_path)
-                ->and()
-                ->where('hash_name', $dst_hash_name)
-                ->and()
-                ->where('path', $dstPath)
-                ->and()
-                ->where('name', $dstName)
-                ->exec();
-            if (Jaws_Error::IsError($result)) {
-                return false;
-            }
-        } else {
-            $result = Jaws_ORM::getInstance()
-                ->table('dbfs')
-                ->select('count(id):integer')
-                ->where('hash_path', $dst_hash_path)
-                ->and()
-                ->where('hash_name', $dst_hash_name)
-                ->and()
-                ->where('path', $dstPath)
-                ->and()
-                ->where('name', $dstName)
-                ->fetchOne();
-            // if destination exist return false
-            if (Jaws_Error::IsError($result) || !empty($result)) {
-                return false;
-            }
-        }
-
+        // move file or directory(without sub files) to new destination
         $result = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->update(
@@ -374,8 +396,33 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             ->and()
             ->where('name', $srcName)
             ->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
 
-        return (Jaws_Error::IsError($result) || empty($result))? false : true;
+        if ($srcInfo['type'] == 1) { // is directory
+            $files = Jaws_ORM::getInstance()
+                ->table('dbfs')
+                ->select('id:integer', 'name', 'type:integer')
+                ->where('hash_path', hash64($src))
+                ->and()
+                ->where('path', $src)
+                ->fetchAll();
+            if (Jaws_Error::IsError($files)) {
+                return false;
+            }
+
+            // sub files/directories
+            foreach ($files as $file) {
+                if (false === self::rename(
+                    "$src/" . $file['name'], "$dst/". $file['name'], $overwrite, false
+                )) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
