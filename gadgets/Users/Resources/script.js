@@ -154,10 +154,24 @@ function Jaws_Gadget_Users() { return {
             }
         },
 
-        DeleteSession: function(response) {
+        DeleteSessions: function(response) {
             if (response['type'] == 'alert-success') {
                 clearTimeout(this.fTimeout);
-                getDG('onlineusers_datagrid', $('#onlineusers_datagrid')[0].getCurrentPage(), true);
+                $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
+        IPsBlock: function(response) {
+            if (response['type'] == 'alert-success') {
+                clearTimeout(this.fTimeout);
+                $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            }
+        },
+
+        AgentsBlock: function(response) {
+            if (response['type'] == 'alert-success') {
+                clearTimeout(this.fTimeout);
+                $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         }
 
@@ -181,67 +195,6 @@ function Jaws_Gadget_Users() { return {
         if (event.keyCode == 13) {
             element.blur();
             element.focus();
-        }
-    },
-
-    /**
-     * Get online users list
-     */
-    getOnlineUsers: function(name, offset, reset) {
-        var result = this.gadget.ajax.callSync(
-            'GetOnlineUsers', {
-                'offset': offset,
-                'active': $('#filter_active').val(),
-                'logged': $('#filter_logged').val(),
-                'session_type': $('#filter_session_type').val()
-            }
-        );
-        if (reset) {
-            var total = this.gadget.ajax.callSync(
-                'GetOnlineUsersCount', {
-                    'active': $('#filter_active').val(),
-                    'logged': $('#filter_logged').val(),
-                    'session_type': $('#filter_session_type').val()
-                }
-            );
-        }
-        resetGrid(name, result, total);
-
-        this.fTimeout = setTimeout(
-            "Jaws_Gadget.getInstance('Users', 'OnlineUsers').getOnlineUsers('onlineusers_datagrid');",
-            30000
-        );
-    },
-
-    /**
-     * Search online users
-     */
-    searchOnlineUsers: function() {
-        clearTimeout(this.fTimeout);
-        this.getOnlineUsers('onlineusers_datagrid', 0, true);
-    },
-
-    /**
-     * Executes an action on Online User
-     */
-    onlineUsersDGAction: function(combo) {
-        var rows = $('#onlineusers_datagrid')[0].getSelectedRows();
-        if (rows.length < 1) {
-            return;
-        }
-
-        if (combo.val() == 'delete') {
-            if (confirm(this.gadget.defines.confirmThrowOut)) {
-                this.gadget.ajax.callAsync('DeleteSession', rows);
-            }
-        } else if (combo.val() == 'block_ip') {
-            if (confirm(this.gadget.defines.confirmBlockIP)) {
-                this.gadget.ajax.callAsync('IPBlock', rows);
-            }
-        } else if (combo.val() == 'block_agent') {
-            if (confirm(this.gadget.defines.confirmBlockAgent)) {
-                this.gadget.ajax.callAsync('AgentBlock', rows);
-            }
         }
     },
 
@@ -337,25 +290,21 @@ function Jaws_Gadget_Users() { return {
      */
     saveUserContact: function() {
         this.gadget.ajax.callAsync(
-            'UpdateUserContacts',
-            {
+            'UpdateUserContacts', {
                 'uid': this.selectedUser,
                 'data': $.unserialize($('#user-contacts-form').serialize())
-            }
-        );
+            });
     },
 
     /**
      * Save user's extra data
      */
-    saveUserExtra: function() {
+    saveUserExtra: function () {
         this.gadget.ajax.callAsync(
-            'UpdateUserExtra',
-            {
+            'UpdateUserExtra', {
                 'uid': this.selectedUser,
                 'data': $.unserialize($('#user-extra-form').serialize())
-            }
-        );
+            });
     },
 
     /**
@@ -376,13 +325,11 @@ function Jaws_Gadget_Users() { return {
             }
 
             this.gadget.ajax.callAsync(
-                'UpdateUserPassword',
-                {
+                'UpdateUserPassword', {
                     'uid': this.selectedUser,
                     'password': password,
                     'expired': $('#user-password-form #expired').prop('checked')
-                }
-            );
+                });
         }, this));
     },
 
@@ -461,24 +408,6 @@ function Jaws_Gadget_Users() { return {
         delete this.chkImages[2];
     },
 
-    /**
-     * edit user/group ACL rules
-     */
-    editACL: function(rowElement, id, action) {
-        selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
-        if (!this.cachedACLForm) {
-            this.cachedACLForm = this.gadget.ajax.callSync('GetACLUI');
-        }
-        $('#workarea').html(this.cachedACLForm);
-        $('#legend_title').html(this.gadget.defines.editACL_title);
-        this.selectedId = id;
-        this.currentAction = action;
-        this.chkImages = $('#acl img').map(function() {
-            return $(this).attr('src');
-        }).toArray();
-        this.chkImages[-1] = this.chkImages[2];
-        delete this.chkImages[2];
-    },
     //-------------------------------
     /**
      * Loads ACL data of the selected gadget/plugin
@@ -1031,7 +960,32 @@ function Jaws_Gadget_Users() { return {
         return true;
     },
 
+    /**
+     * Delete online users
+     */
+    deleteOnlineUsers: function(ids) {
+        if (confirm(this.gadget.defines.confirmThrowOut)) {
+            this.gadget.ajax.callAsync('DeleteSessions', {'ids': ids});
+        }
+    },
 
+    /**
+     * Block online users IP address
+     */
+    blockOnlineUsersIP: function(ids) {
+        if (confirm(this.gadget.defines.confirmBlockIP)) {
+            this.gadget.ajax.callAsync('IPsBlock', {'ids': ids});
+        }
+    },
+
+    /**
+     * Block online users agent
+     */
+    blockOnlineUsersAgent: function(ids) {
+        if (confirm(this.gadget.defines.confirmBlockAgent)) {
+            this.gadget.ajax.callAsync('AgentsBlock', {'ids': ids});
+        }
+    },
 
     /**
      * view user info
@@ -1233,7 +1187,7 @@ function Jaws_Gadget_Users() { return {
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
 
-                        var ids = new Array();
+                        var ids = [];
                         if (helpers.length > 1) {
                             helpers.forEach(function(entry) {
                                 ids.push(entry.rowData.id);
@@ -1699,7 +1653,7 @@ function Jaws_Gadget_Users() { return {
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
 
-                        var ids = new Array();
+                        var ids = [];
                         if (helpers.length > 1) {
                             helpers.forEach(function(entry) {
                                 ids.push(entry.rowData.id);
@@ -2028,27 +1982,33 @@ function Jaws_Gadget_Users() { return {
         var columns = {
             'username': {
                 'label': this.gadget.defines.LANGUAGE.username,
-                'property': 'username'
+                'property': 'username',
+                'width': '15%'
             },
             'nickname': {
                 'label': this.gadget.defines.LANGUAGE.nickname,
-                'property': 'nickname'
+                'property': 'nickname',
+                'width': '20%'
             },
             'superadmin': {
                 'label': this.gadget.defines.LANGUAGE.superadmin,
-                'property': 'superadmin'
+                'property': 'superadmin',
+                'width': '15%'
             },
             'ip': {
                 'label': this.gadget.defines.LANGUAGE.ip,
-                'property': 'ip'
+                'property': 'ip',
+                'width': '15%'
             },
             'type': {
                 'label': this.gadget.defines.LANGUAGE.session_type,
-                'property': 'type'
+                'property': 'type',
+                'width': '15%'
             },
             'last_activetime': {
                 'label': this.gadget.defines.LANGUAGE.last_activetime,
-                'property': 'last_activetime'
+                'property': 'last_activetime',
+                'width': '20%'
             },
         };
 
@@ -2111,12 +2071,32 @@ function Jaws_Gadget_Users() { return {
         var customMarkup = '';
 
         switch (column) {
-            case 'status':
-                customMarkup = this.gadget.defines.statusItems[rowData.status];
+            case 'username':
+                if(rowData.username==='') {
+                    customMarkup = this.gadget.defines.LANGUAGE.anonymous;
+                } else {
+                    customMarkup = "<a href='" + rowData.user_profile_url + "' target='_blank'>" + rowData.username + "</a>";
+                }
+                break;
+            case 'superadmin':
+                customMarkup = rowData.superadmin ? this.gadget.defines.LANGUAGE.yes : this.gadget.defines.LANGUAGE.no;
+                break;
+            case 'ip':
+                if (rowData.proxy!=='') {
+                    customMarkup = "<abbr title='" + rowData.agent_text + "'>" + rowData.proxy + '(' + rowData.client + ")</abbr>";
+                } else {
+                    customMarkup = "<abbr title='" + rowData.agent_text + "'>(" + rowData.client + ")</abbr>";
+                }
                 break;
             case 'last_activetime':
                 helpers.item.addClass('ltr');
-                customMarkup = helpers.item.text();
+                if (rowData.online) {
+                    customMarkup = '<span title="' + this.gadget.defines.LANGUAGE.active + '">' +
+                        helpers.item.text() + '</span>';
+                } else {
+                    customMarkup = '<s title="' + this.gadget.defines.LANGUAGE.inactive + '">' +
+                        helpers.item.text() + '</s>';
+                }
                 break;
             default:
                 customMarkup = helpers.item.text();
@@ -2140,7 +2120,7 @@ function Jaws_Gadget_Users() { return {
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
 
-                        var ids = new Array();
+                        var ids = [];
                         if (helpers.length > 1) {
                             helpers.forEach(function(entry) {
                                 ids.push(entry.rowData.id);
@@ -2149,10 +2129,48 @@ function Jaws_Gadget_Users() { return {
                             ids.push(helpers.rowData.id);
                         }
 
-                        this.deleteSession(ids);
+                        this.deleteOnlineUsers(ids);
                         callback();
                     }, this)
 
+                },
+                {
+                    name: 'block_ip',
+                    html: '<span class="glyphicon glyphicon-ban-circle"></span> ' + this.gadget.defines.LANGUAGE.block_ip,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = [];
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.blockOnlineUsersIP(ids);
+                        callback();
+                    }, this)
+                },
+                {
+                    name: 'block_agent',
+                    html: '<span class="glyphicon glyphicon-ban-circle"></span> ' + this.gadget.defines.LANGUAGE.block_agent,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        var ids = [];
+                        if (helpers.length > 1) {
+                            helpers.forEach(function(entry) {
+                                ids.push(entry.rowData.id);
+                            });
+                        } else {
+                            ids.push(helpers.rowData.id);
+                        }
+
+                        this.blockOnlineUsersAgent(ids);
+                        callback();
+                    }, this)
                 },
             ]
         };
@@ -2174,6 +2192,11 @@ function Jaws_Gadget_Users() { return {
         $("#online-users-grid button.btn-refresh").on('click', function (e) {
             $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
         });
+
+        this.fTimeout = setTimeout(
+            "$('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});",
+            30000
+        );
     },
 
     /**

@@ -27,7 +27,7 @@
           <select class="form-control" name="filter_logged" id="filter_logged">
             <option value="-1">{{ "global.all" | t }}</option>
             {%- for membership in membership_items %}
-            <option value="{{ forloop.key }}">
+            <option value="{{forloop.key}}">
               {{- membership -}}
             </option>
             {%- endfor %}

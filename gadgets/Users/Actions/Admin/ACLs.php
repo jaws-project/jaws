@@ -19,6 +19,11 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
         $gadgets = Jaws_Gadget::getInstance('Components')->model->load('Gadgets')->GetGadgetsList(null, true, true);
         $this->gadget->define('GADGETS', array_column($gadgets, 'title', 'name'));
 
+        $assigns = array();
+        $assigns['menubar'] = empty($menubar) ? $this->MenuBar('ACLs') : $menubar;
+        return $this->gadget->template->xLoadAdmin('ACLs.html')->render($assigns);
+
+
         $tpl = $this->gadget->template->loadAdmin('ACLs.html');
         $tpl->SetBlock('ACLs');
         $tpl->SetVariable('menubar', $this->MenuBar('ACLs'));

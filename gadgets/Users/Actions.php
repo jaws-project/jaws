@@ -479,18 +479,18 @@ $admin_actions['DeleteUsers'] = array(
     'file' => 'Users',
     'loglevel' => JAWS_WARNING,
 );
-$admin_actions['DeleteSession'] = array(
+$admin_actions['DeleteSessions'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'OnlineUsers',
 );
-$admin_actions['IPBlock'] = array(
+$admin_actions['IPsBlock'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'OnlineUsers',
     'loglevel' => JAWS_NOTICE,
 );
-$admin_actions['AgentBlock'] = array(
+$admin_actions['AgentsBlock'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'OnlineUsers',
     'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateUserACL'] = array(
@@ -518,25 +518,10 @@ $admin_actions['AddUserToGroup'] = array(
     'file' => 'Users',
     'loglevel' => JAWS_NOTICE,
 );
-$admin_actions['AddUserToGroups'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-    'loglevel' => JAWS_NOTICE,
-);
-$admin_actions['AddUsersToGroup'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-    'loglevel' => JAWS_NOTICE,
-);
 $admin_actions['UpdateSettings'] = array(
     'standalone' => true,
     'file' => 'Settings',
     'loglevel' => JAWS_WARNING,
-);
-$admin_actions['UpdateMyAccount'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetUserGroups'] = array(
     'standalone' => true,

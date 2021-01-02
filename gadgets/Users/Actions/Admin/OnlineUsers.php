@@ -16,9 +16,10 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
     function OnlineUsers()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
-        $this->gadget->define('wrongPassword', $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
+        $this->gadget->define('confirmThrowOut',    $this::t('ONLINE_CONFIRM_THROWOUT'));
+        $this->gadget->define('confirmBlockIP',     $this::t('ONLINE_CONFIRM_BLOCKIP'));
+        $this->gadget->define('confirmBlockAgent',  $this::t('ONLINE_CONFIRM_BLOCKAGENT'));
+        $this->gadget->define('datagridNoItems',    Jaws::t('NOTFOUND'));
         $this->gadget->define('LANGUAGE', array(
             'username'=> $this::t('USERS_USERNAME'),
             'nickname'=> $this::t('USERS_NICKNAME'),
@@ -28,18 +29,23 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
             'last_activetime'=> $this::t('ONLINE_LAST_ACTIVETIME'),
             'yes'=> Jaws::t('YES'),
             'no'=> Jaws::t('NO'),
+            'active'=> $this::t('ONLINE_ACTIVE'),
+            'inactive'=> $this::t('ONLINE_INACTIVE'),
+            'anonymous'=> $this::t('ONLINE_ANONY'),
             'delete'=> Jaws::t('DELETE'),
+            'block_ip'=> $this::t('ONLINE_BLOCKING_IP'),
+            'block_agent'=> $this::t('ONLINE_BLOCKING_AGENT'),
         ));
         $assigns = array();
         $assigns['menubar'] =  empty($menubar)? $this->MenuBar('OnlineUsers') : $menubar;
 
         $assigns['session_status_items'] = array(
-            1 => $this::t('ONLINE_FILTER_SESSION_STATUS_ACTIVE'),
             0 => $this::t('ONLINE_FILTER_SESSION_STATUS_INACTIVE'),
+            1 => $this::t('ONLINE_FILTER_SESSION_STATUS_ACTIVE'),
         );
         $assigns['membership_items'] = array(
-            1 => $this::t('ONLINE_FILTER_MEMBERSHIP_MEMBERS'),
             0 => $this::t('ONLINE_FILTER_MEMBERSHIP_ANONYMOUS'),
+            1 => $this::t('ONLINE_FILTER_MEMBERSHIP_MEMBERS'),
         );
         $assigns['session_types'] = $this->GetSessionTypes();
 
@@ -76,26 +82,10 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
 
         $objDate = Jaws_Date::getInstance();
         foreach ($sessions as &$session) {
-            if (empty($session['username'])) {
-                $session['username'] = $this::t('ONLINE_ANONY');
-            } else {
-                $uProfile =& Piwi::CreateWidget(
-                    'Link',
-                    $session['username'],
-                    $this->gadget->urlMap('Profile',  array('user' => $session['username']))
-                );
-                $session['username'] = $uProfile->Get();
+            if (!empty($session['username'])) {
+                $session['user_profile_url'] = $this->gadget->urlMap('Profile',  array('user' => $session['username']));
             }
-            $session['superadmin'] = $session['superadmin']? Jaws::t('YES') : Jaws::t('NO');
-            $session['ip'] = "<abbr title='{$session['agent_text']}'>".
-                $session['proxy']. '('. $session['client']. ")</abbr>";
-            if ($session['online']) {
-                $session['last_activetime'] = "<label class='lastactive' title='".$this::t('ONLINE_ACTIVE')."'>".
-                    $objDate->Format($session['update_time'], 'Y-m-d H:i')."</label>";
-            } else {
-                $session['last_activetime'] = "<s class='lastactive' title='".$this::t('ONLINE_INACTIVE')."'>".
-                    $objDate->Format($session['update_time'], 'Y-m-d H:i')."</s>";
-            }
+            $session['last_activetime'] =  $objDate->Format($session['update_time'], 'Y-m-d H:i');
         }
 
         $sessionsCount = $this->app->session->getSessionsCount(
@@ -114,6 +104,89 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
                 'total' => $sessionsCount,
                 'records' => $sessions
             )
+        );
+    }
+
+    /**
+     * Delete the session(s)
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteSessions()
+    {
+        $this->gadget->CheckPermission('ManageOnlineUsers');
+        $sessionIds = $this->gadget->request->fetch('ids:array', 'post');
+
+        foreach ($sessionIds as $sid) {
+            if (!$this->app->session->delete($sid)) {
+                return $this->gadget->session->response(
+                    $this::t('ONLINE_SESSION_NOT_DELETED'),
+                    RESPONSE_ERROR
+                );
+            }
+        }
+        return $this->gadget->session->response(
+            $this::t('ONLINE_SESSION_DELETED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Block IP address
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function IPsBlock()
+    {
+        $this->gadget->CheckPermission('ManageOnlineUsers');
+        $this->gadget->CheckPermission('ManageIPs');
+        $sessionIds = $this->gadget->request->fetch('ids:array', 'post');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('IP');
+
+        foreach ($sessionIds as $sid) {
+            $session = $this->app->session->getSession($sid);
+
+            if (!$mPolicy->AddIPRange($session['ip'], null, true)) {
+                return $this->gadget->session->response(
+                    Jaws_Gadget::t('POLICY.RESPONSE_IP_NOT_ADDED'),
+                    RESPONSE_ERROR
+                );
+            }
+        }
+        return $this->gadget->session->response(
+            Jaws_Gadget::t('POLICY.RESPONSE_IP_ADDED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Block agents
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function AgentsBlock()
+    {
+        $this->gadget->CheckPermission('ManageOnlineUsers');
+        $this->gadget->CheckPermission('ManageAgents');
+        $sessionIds = $this->gadget->request->fetch('ids:array', 'post');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('Agent');
+
+        foreach ($sessionIds as $sid) {
+            $session = $this->app->session->getSession($sid);
+
+            if (!$mPolicy->AddAgent($session['agent'], true)) {
+                return $this->gadget->session->response(
+                    Jaws_Gadget::t('POLICY.RESPONSE_AGENT_NOT_ADDEDD'),
+                    RESPONSE_ERROR
+                );
+            }
+        }
+        return $this->gadget->session->response(
+            Jaws_Gadget::t('POLICY.RESPONSE_AGENT_ADDED'),
+            RESPONSE_NOTICE
         );
     }
 
