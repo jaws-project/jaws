@@ -17,11 +17,15 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * @access  public
      * @param   string  $filename   The filename/directory to be parsed
      * #param   int     $options    If present, specifies a specific element to be returned
-     * @return  mixed   Returns anassociative array containing the following elements
+     * @return  mixed   Returns an associative array containing the following elements
      * @see     http://www.php.net/pathinfo 
      */
     static function pathinfo($filename, $options)
     {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -55,6 +59,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function file_exists($filename)
     {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -85,6 +93,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function is_dir($filename)
     {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -115,6 +127,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function is_file($filename)
     {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -145,6 +161,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function filesize($filename)
     {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -202,6 +222,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function file_put_contents($filename, $data, $flags = null, $context = null)
     {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -253,6 +277,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     static function file_get_contents(
         $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = null
     ) {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -291,16 +319,23 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * @param   string  $path       Path to the directory
      * @param   int     $recursive  Make up directories if not exists
      * @param   int     $mode       Directory permissions
+     * @param   bool    $first_iteration
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see     http://www.php.net/mkdir
      */
-    static function mkdir($path, $recursive = 0, $mode = null)
+    static function mkdir($path, $recursive = 0, $mode = null, $first_iteration = true)
     {
+        if ($first_iteration) {
+            if (str_starts_with($path, ROOT_DATA_PATH)) {
+                $path = Jaws_UTF8::substr($path, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+            }
+        }
+
         $result = true;
         if (!self::file_exists($path) || !self::is_dir($path)) {
             if ($recursive && !self::file_exists(dirname($path))) {
                 $recursive--;
-                self::mkdir(dirname($path), $recursive, $mode);
+                self::mkdir(dirname($path), $recursive, $mode, false);
             }
 
             $dirpath = dirname($path);
@@ -349,6 +384,14 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     static function rename($src, $dst, $overwrite = true, $first_iteration = true)
     {
         if ($first_iteration) {
+            if (str_starts_with($src, ROOT_DATA_PATH)) {
+                $src = Jaws_UTF8::substr($src, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+            }
+
+            if (str_starts_with($dst, ROOT_DATA_PATH)) {
+                $dst = Jaws_UTF8::substr($dst, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+            }
+
             $srcInfo = self::pathinfo($src);
             if (empty($srcInfo)) {
                 return false;
@@ -429,14 +472,15 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * Makes a copy of the source file or directory to dest
      *
      * @access  public
-     * @param   string  $src    Path to the source file or directory
-     * @param   string  $dst    The destination path
+     * @param   string  $src        Path to the source file or directory
+     * @param   string  $dst        The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @param   int     $mode       see php chmod() function
+     * @param   bool    $first_iteration
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    static function copy($src, $dst, $overwrite = true, $mode = null)
+    static function copy($src, $dst, $overwrite = true, $mode = null, $first_iteration = true)
     {
         return true;
     }
@@ -447,11 +491,18 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * @access  public
      * @param   string  $filename   File/Directory path
      * @param   bool    $itself     Include self directory
+     * @param   bool    $first_iteration
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see http://www.php.net/rmdir & http://www.php.net/unlink
      */
-    static function delete($filename, $itself = true)
+    static function delete($filename, $itself = true, $first_iteration = true)
     {
+        if ($first_iteration) {
+            if (str_starts_with($filename, ROOT_DATA_PATH)) {
+                $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+            }
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
@@ -469,7 +520,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         }
 
         foreach ($files as $file) {
-            if (false === self::delete($filename. '/' . $file, $itself)) {
+            if (false === self::delete($filename. '/' . $file, $itself, false)) {
                 return false;
             }
         }
@@ -505,6 +556,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function rename_from_file($oldname, $newname, $context = null)
     {
+        if (str_starts_with($newname, ROOT_DATA_PATH)) {
+            $newname = Jaws_UTF8::substr($newname, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($newname);
         $name = basename($newname);
         $hash_path = hash64($path);
@@ -557,6 +612,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function copy_from_file($source, $dest, $context = null)
     {
+        if (str_starts_with($dest, ROOT_DATA_PATH)) {
+            $dest = Jaws_UTF8::substr($dest, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($dest);
         $name = basename($dest);
         $hash_path = hash64($path);
@@ -606,6 +665,10 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function fopen($filename, $mode, $use_include_path = false, $context = null)
     {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
         $path = dirname($filename);
         $name = basename($filename);
         $hash_path = hash64($path);
