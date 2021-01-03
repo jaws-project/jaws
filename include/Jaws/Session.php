@@ -765,11 +765,14 @@ class Jaws_Session
     {
         $sessTable = Jaws_ORM::getInstance()->table('session');
         $sessTable->select(
-            'id:integer', 'salt', 'domain', 'user:integer', 'type', 'auth', 'longevity', 'ip:integer',
-            'agent:integer', 'user_attributes', 'data', 'webpush', 'hidden:boolean', 'checksum',
-            'update_time:integer'
+            'session.id:integer', 'salt', 'domain', 'user:integer', 'type', 'auth',
+            'longevity', 'session.ip:integer', 'session.agent:integer',
+            'ip.proxy', 'ip.client', 'agent.agent as agent_text', 'user_attributes',
+            'data', 'webpush', 'hidden:boolean', 'checksum', 'session.update_time:integer'
         );
-        return $sessTable->where('id', (int)$sid)->fetchRow();
+        $sessTable->join('ip', 'ip.id', 'session.ip');
+        $sessTable->join('agent', 'agent.id', 'session.agent');
+        return $sessTable->where('session.id', (int)$sid)->fetchRow();
     }
 
     /**
