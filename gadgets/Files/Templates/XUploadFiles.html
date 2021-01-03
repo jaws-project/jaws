@@ -47,18 +47,19 @@
                 value="{{ file.id }}"
             />
             <ul>
+              {% assign file.url = 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey %}
               {% if files.preview and file.mimetype contains "image/" %}
               <li data-type="preview">
-                <a href="{{ 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey }}" target="_blank">
+                <a href="{{ file.url }}" target="_blank">
                   <img
-                    src="{{ 'files/' | append: files.interface.gadget, '/', files.interface.action, '/', file.filename | downcase | dataURL }}"
+                    src="{{ file.url }}"
                     alt="" width="128"
                   />
                 </a>
               </li>
               {% endif %}
               <li data-type="name">
-                <a href="{{ 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey }}" target="_blank">
+                <a href="{{ file.url }}" target="_blank">
                   {{ file.title }}
                 </a>
               </li>

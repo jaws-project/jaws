@@ -8,6 +8,16 @@
 class Files_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        array('fm_driver', 'File'),  // Filesystem management driver
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -78,6 +88,10 @@ class Files_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '0.4.0', '<')) {
+            $this->gadget->registry->insert('fm_driver', 'File');
         }
 
         return true;

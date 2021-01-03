@@ -304,7 +304,7 @@ function Jaws_Gadget_Files() { return {
                                 let liElement = ulElement.children().last();
                                 liElement.find('input').attr('name', 'old_files_' + inputIndexName).val(file.id);
                                 liElement.find("[data-type='name']").html(
-                                    '<a href="'+file.url_file +
+                                    '<a href="'+file.fileurl +
                                     '" target="_blank">' + file.title +
                                     '</a>'
                                 );
@@ -312,9 +312,9 @@ function Jaws_Gadget_Files() { return {
                                 // show preview
                                 if (preview) {
                                     liElement.find("[data-type='preview']").show().html(
-                                        '<a href="'+file.url_file+
+                                        '<a href="'+file.fileurl+
                                         '" target="_blank"><img src="'+
-                                        file.src_file+
+                                        file.fileurl+
                                         '" alt="" width="128"></a>'
                                     );
                                 }

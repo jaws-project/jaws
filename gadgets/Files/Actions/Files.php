@@ -24,7 +24,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             if (!empty($interface['reference'])) {
                 $files = $this->gadget->model->load('Files')->getFiles($interface);
                 foreach ($files as $ndx => $file) {
-                    $files[$ndx]['url_file'] = $this->gadget->urlMap(
+                    $files[$ndx]['fileurl'] = $this->gadget->urlMap(
                         'file',
                         array('id' => $file['id'], 'key' => $file['filekey'])
                     );
@@ -68,7 +68,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                 $tpl->SetVariable('filehits', $file['filehits']);
                 $tpl->SetVariable('lbl_file', $options['labels']['title']);
                 $tpl->SetVariable(
-                    'url_file',
+                    'fileurl',
                     $this->gadget->urlMap(
                         'file',
                         array('id' => $file['id'], 'key' => $file['filekey'])
@@ -129,7 +129,6 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                         'file',
                         array('id' => $file['id'], 'key' => $file['filekey'])
                     );
-                    $files[$ndx]['src_file'] = $this->app->getDataURL($filesPath. $file['filename']);
                     unset(
                         $files[$ndx]['type'], $files[$ndx]['public'],
                         $files[$ndx]['mimetype'], $files[$ndx]['filetype'],
@@ -223,26 +222,22 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             foreach ($files as $file) {
                 $tpl->SetBlock("$block/files/file");
 
-                $url_file = $this->gadget->urlMap(
+                $fileurl = $this->gadget->urlMap(
                     'file',
                     array('id' => $file['id'], 'key' => $file['filekey'])
                 );
-                $src_file = $this->app->getDataURL($filesPath. $file['filename']);
 
                 if ($options['preview']) {
                     switch (substr($file['mimetype'], 0, strpos($file['mimetype'], '/'))) {
                         case 'image':
                             $tpl->SetBlock("$block/files/file/image_preview");
-                            $tpl->SetVariable('src', $src_file);
-                            $tpl->SetVariable('url_file', $url_file);
-                            $tpl->SetVariable('src_file', $src_file);
+                            $tpl->SetVariable('fileurl', $fileurl);
                             $tpl->ParseBlock("$block/files/file/image_preview");
                             break;
                     }
                 }
 
-                $tpl->SetVariable('url_file', $url_file);
-                $tpl->SetVariable('src_file', $src_file);
+                $tpl->SetVariable('fileurl', $fileurl);
                 $tpl->SetVariable('input_action', strtolower($interface['action']));
                 $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
                 $tpl->SetVariable('input_type', $interface['type']);
@@ -396,7 +391,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         }
 
         if (array_key_exists($newFilesIndex, $_FILES)) {
-            $newFiles = Jaws_Utils::UploadFiles(
+            $newFiles = $this->gadget->fileManagement::uploadFiles(
                 $_FILES[$newFilesIndex],
                 ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']),
                 $options['extensions'],
@@ -441,11 +436,11 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         if (!empty($file) && $file['filekey'] == $get['key']) {
             $filePath = strtolower('files/'. $file['gadget']. '/'. $file['action']. '/');
-            if (file_exists(ROOT_DATA_PATH. $filePath . $file['filename'])) {
+            if ($this->gadget->fileManagement::file_exists(ROOT_DATA_PATH. $filePath . $file['filename'])) {
                 // increase file hits
                 $this->gadget->model->load('Files')->hitDownload($file['id']);
                 // download
-                if (Jaws_Utils::Download(
+                if ($this->gadget->fileManagement::download(
                     ROOT_DATA_PATH. $filePath . $file['filename'],
                     $file['postname'],
                     $file['mimetype']

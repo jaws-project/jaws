@@ -12,7 +12,7 @@ class Files_Model_Files extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $interface  Gadget connection interface
-     * @param   array   $files  List of upload files in jaws_utils format
+     * @param   array   $files  List of upload files in FileManagement format
      * @return  bool    True if insert successfully otherwise False
      */
     function insertFiles($interface, $files)
@@ -150,7 +150,7 @@ class Files_Model_Files extends Jaws_Gadget_Model
             $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
             foreach ($files as $file) {
                 if (!empty($file['filename'])) {
-                    Jaws_Utils::delete(ROOT_DATA_PATH. $filesPath. $file['filename']);
+                    $this->gadget->fileManagement::delete(ROOT_DATA_PATH. $filesPath. $file['filename']);
                 }
             }
         }
