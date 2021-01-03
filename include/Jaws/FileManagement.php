@@ -38,6 +38,29 @@ class Jaws_FileManagement
     );
 
     /**
+     * Creates the Jaws_FileManagement instance if it doesn't exist else it returns the already created one
+     *
+     * @access  public
+     * @param   string  $fmDriver   Filesystem management driver
+     * @return  object  Jaws_FileManagement type object
+     */
+    static function getInstance($fmDriver = 'File')
+    {
+        $fmDriver = preg_replace('/[^[:alnum:]_\-]/', '', $fmDriver);
+        if (empty($fmDriver)) {
+            $fmDriver = 'File';
+        }
+
+        static $instances = array();
+        if (!isset($instances[$fmDriver])) {
+            $className = "Jaws_FileManagement_$fmDriver";
+            $instances[$fmDriver] = new $className();
+        }
+
+        return $instances[$fmDriver];
+    }
+
+    /**
      * get upload temp directory
      *
      * @return  string  upload temp directory path
@@ -62,7 +85,7 @@ class Jaws_FileManagement
      * @param   string  $dimension      resize image file to given dimension
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
-    static function UploadFiles(
+    static function uploadFiles(
         $files, $dest, $allow_formats = '',
         $overwrite = true, $move_files = true, $max_size = null, $dimension = ''
     ) {
@@ -237,7 +260,7 @@ class Jaws_FileManagement
      * @param   int     $max_size     Max size of file
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    static function ExtractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
+    static function extractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
     {
         if (empty($files) || !is_array($files)) {
             return new Jaws_Error(Jaws::t('ERROR_UPLOAD'),
@@ -327,7 +350,7 @@ class Jaws_FileManagement
      * @param   string  $inline     Inline disposition?
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    static function Download($fpath, $fname, $mimetype = '', $expires = 0, $inline = true)
+    static function download($fpath, $fname, $mimetype = '', $expires = 0, $inline = true)
     {
         if (false === $fhandle = static::fopen($fpath, 'rb')) {
             return false;
