@@ -476,7 +476,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
 
         if ($itself) {
             $result = Jaws_ORM::getInstance()
-                ->table('dbfs', 'master')
+                ->table('dbfs')
                 ->delete()
                 ->where('hash_path', $hash_path)
                 ->and()
