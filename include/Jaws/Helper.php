@@ -360,6 +360,36 @@ if (!function_exists('mime_content_type')) {
 }
 
 /**
+ * Checks if a string starts with a given substring
+ *
+ * @param   string  $haystack   The string to search in
+ * @param   string  $needle     The substring to search for in the haystack
+ * @return  bool    Returns true if haystack begins with needle, false otherwise
+ * @see     http://www.php.net/str_starts_with
+ */
+if (!function_exists('str_starts_with')) {
+    function str_starts_with($haystack , $needle)
+    {
+        return Jaws_UTF8::strpos($haystack, $needle) === 0;
+    }
+}
+
+/**
+ * Checks if a string ends with a given substring
+ *
+ * @param   string  $haystack   The string to search in
+ * @param   string  $needle     The substring to search for in the haystack
+ * @return  bool    Returns true if haystack ends with needle, false otherwise
+ * @see     http://www.php.net/str_ends_with
+ */
+if (!function_exists('str_ends_with')) {
+    function str_ends_with($haystack , $needle)
+    {
+        return Jaws_UTF8::substr($haystack, -Jaws_UTF8::strlen($needle)) === $needle;
+    }
+}
+
+/**
  * Convenience function to translate strings.
  *
  * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
