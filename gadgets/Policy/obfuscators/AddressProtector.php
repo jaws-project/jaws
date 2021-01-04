@@ -44,7 +44,7 @@ class AddressProtector
         }
 
         $url = "http://address-protector.com/?mode=textencrypt&name=<name>&email=<email>";
-        $url  = str_replace('<name>', urlencode($name), $url);
+        $url = str_replace('<name>', urlencode($name), $url);
         $url = str_replace('<email>', $email, $url);
         $contents = $this->getURL($url);
         if (empty($contents)) {
@@ -54,7 +54,7 @@ class AddressProtector
         if (substr($contents, -1, 1) == "\n") {
             $contents = substr($contents, 0, -1);
         }             
-        file_put_contents($ap_dir. DIRECTORY_SEPARATOR. md5($email . $name), $contents);
+        $this->app->fileManagement::file_put_contents($ap_dir. '/'. md5($email . $name), $contents);
         $contents = '<a href="http://address-protector.com/' . $contents . '">' . $name . '</a>';
         return $contents;
     }
