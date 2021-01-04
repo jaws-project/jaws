@@ -192,7 +192,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $type = $this->gadget->request->fetch('type', 'post');
         $dirPath = ROOT_DATA_PATH . 'directory';
         if (!is_dir($dirPath)) {
-            if (!$this->app->fileManagement::mkdir($dirPath)) {
+            if (!Jaws_FileManagement_File::mkdir($dirPath)) {
                 $response = array(
                     'type' => 'error',
                     'message' =>_t('DIRECTORY_ERROR_FILE_UPLOAD')
@@ -201,7 +201,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         }
 
         if (empty($response)) {
-            $res = $this->app->fileManagement::uploadFiles($_FILES, $dirPath, '', null);
+            $res = Jaws_FileManagement_File::uploadFiles($_FILES, $dirPath, '', null);
             if (Jaws_Error::IsError($res)) {
                 $response = array('type' => 'error',
                                   'message' => $res->getMessage());

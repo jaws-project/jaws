@@ -76,7 +76,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
             $dirPath = ROOT_DATA_PATH . 'directory';
             if (!is_dir($dirPath)) {
-                if (!$this->app->fileManagement::mkdir($dirPath)) {
+                if (!Jaws_FileManagement_File::mkdir($dirPath)) {
                     throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
                 }
             }
@@ -96,7 +96,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 }
             }
 
-            $files = $this->app->fileManagement::uploadFiles($_FILES, $dirPath, '', null);
+            $files = Jaws_FileManagement_File::uploadFiles($_FILES, $dirPath, '', null);
             if (Jaws_Error::IsError($files)) {
                 throw new Exception($files->getMessage());
             }
@@ -150,7 +150,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                     throw new Exception($res->getMessage());
                 }
 
-                $this->app->fileManagement::delete($dirPath. '/'. $thumbfile);
+                Jaws_FileManagement_File::delete($dirPath. '/'. $thumbfile);
             }
             unset($data['thumbnail']);
 
@@ -261,7 +261,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         if (!$data['is_dir']) {
             $filename = ROOT_DATA_PATH . 'directory/' . $data['host_filename'];
             if (file_exists($filename)) {
-                if (!$this->app->fileManagement::delete($filename)) {
+                if (!Jaws_FileManagement_File::delete($filename)) {
                     return false;
                 }
             }
@@ -270,7 +270,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             $fileInfo = pathinfo($filename);
             $thumbnailPath = ROOT_DATA_PATH . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
             if (file_exists($thumbnailPath)) {
-                if (!$this->app->fileManagement::delete($thumbnailPath)) {
+                if (!Jaws_FileManagement_File::delete($thumbnailPath)) {
                     return false;
                 }
             }
