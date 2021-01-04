@@ -195,7 +195,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         if (!File_Util::pathInRoot($uploaddir, $fModel->GetFileBrowserRootDir())) {
             $this->gadget->session->push(Jaws::t('ERROR_UPLOAD'), RESPONSE_ERROR);
         } else {
-            $res = Jaws_Utils::UploadFiles($_FILES, $uploaddir, '');
+            $res = $this->app->fileManagement::uploadFiles($_FILES, $uploaddir, '');
             if (Jaws_Error::IsError($res)) {
                 $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
             } elseif (empty($res)) {
