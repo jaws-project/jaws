@@ -33,7 +33,7 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
             return new Jaws_Error(_t('TMS_ERROR_THEME_DOES_NOT_EXISTS', $theme));
         }
 
-        if (!Jaws_Utils::is_writable($destDir)) {
+        if (!$this->app->fileManagement::is_writable($destDir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', $destDir),
                                   $this->gadget->name);
         }
