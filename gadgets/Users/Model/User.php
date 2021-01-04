@@ -186,14 +186,14 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         if (array_key_exists('avatar', $pData)) {
             if (!empty($user['avatar'])) {
-                $this->app->fileManagement::delete(AVATAR_PATH. $user['avatar']);
+                Jaws_FileManagement_File::delete(AVATAR_PATH. $user['avatar']);
             }
 
             if (!empty($pData['avatar'])) {
-                $fileinfo = $this->app->fileManagement::pathinfo($pData['avatar']);
+                $fileinfo = Jaws_FileManagement_File::pathinfo($pData['avatar']);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                     $new_avatar = $user['username']. '.'. $fileinfo['extension'];
-                    $this->app->fileManagement::rename(
+                    Jaws_FileManagement_File::rename(
                         AVATAR_PATH. $pData['avatar'], AVATAR_PATH. $new_avatar
                     );
                     $pData['avatar'] = $new_avatar;

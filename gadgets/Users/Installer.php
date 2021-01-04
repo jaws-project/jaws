@@ -89,7 +89,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         $new_dir = ROOT_DATA_PATH . 'avatar';
-        if (!$this->app->fileManagement::mkdir($new_dir)) {
+        if (!Jaws_FileManagement_File::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 

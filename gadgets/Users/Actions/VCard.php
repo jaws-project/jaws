@@ -106,7 +106,7 @@ class Users_Actions_VCard extends Users_Actions_Default
         }
 
         if (!empty($_FILES)) {
-            $res = $this->app->fileManagement::uploadFiles($_FILES, '', '', null);
+            $res = Jaws_FileManagement_File::uploadFiles($_FILES, '', '', null);
             if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
                 return $this->gadget->session->response(
                     Jaws::t('ERROR_UPLOAD'),
@@ -115,7 +115,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             }
 
             $inputVcards = @file_get_contents(
-                $this->app->fileManagement::upload_tmp_dir() . '/' . $res['file'][0]['host_filename']
+                Jaws_FileManagement_File::upload_tmp_dir() . '/' . $res['file'][0]['host_filename']
             );
         } else {
             $inputVcards = Jaws_Request::getInstance()->rawData('input');

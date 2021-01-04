@@ -150,7 +150,7 @@ class Users_Actions_Personal extends Users_Actions_Default
 
         unset($post['avatar']);
         if (empty($post['delete_avatar'])) {
-            $res = $this->app->fileManagement::uploadFiles(
+            $res = Jaws_FileManagement_File::uploadFiles(
                 $_FILES,
                 AVATAR_PATH,
                 'gif,jpg,jpeg,png,svg'
