@@ -85,8 +85,7 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
             )
         );
 
-        $jUser = new Jaws_User;
-        $result = $jUser->UpdateContact(
+        $result = $this->app->users->UpdateContact(
             $uid,
             $contactData
         );
@@ -171,8 +170,7 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
             )
         );
 
-        $jUser = new Jaws_User;
-        $result = $jUser->UpdateContacts(
+        $result = $this->app->users->UpdateContacts(
             $uid,
             $cid,
             $contactData

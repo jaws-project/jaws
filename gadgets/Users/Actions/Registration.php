@@ -145,13 +145,12 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('EditUserEmail');
         $key = $this->gadget->request->fetch('key', 'get');
 
-        $jUser = new Jaws_User;
-        $user = $jUser->GetUserByEmailVerifyKey($key);
+        $user = $this->app->users->GetUserByEmailVerifyKey($key);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return $this::t('ACTIVATION_KEY_NOT_VALID');
         }
 
-        $result = $jUser->UpdateUser(
+        $result = $this->app->users->UpdateUser(
             $user['id'],
             array(
                 'username'  => $user['username'],

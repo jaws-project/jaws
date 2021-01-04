@@ -28,8 +28,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->AjaxMe('index.js');
         $response = $this->gadget->session->pop('Contact');
         if (!isset($response['data'])) {
-            $jUser = new Jaws_User;
-            $contact = $jUser->GetUserContact($this->app->session->user->id);
+            $contact = $this->app->users->GetUserContact($this->app->session->user->id);
             if (Jaws_Error::IsError($contact)) {
                 return Jaws_HTTPError::Get(500);
             }
@@ -251,8 +250,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserContacts');
         $id = (int)$this->gadget->request->fetch('id', 'post');
 
-        $jUser = new Jaws_User;
-        return $jUser->GetUserContact($this->app->session->user->id, $id);
+        return $this->app->users->GetUserContact($this->app->session->user->id, $id);
     }
 
     /**
@@ -353,8 +351,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserContacts');
 
         $ids = $this->gadget->request->fetch('ids:array', 'post');
-        $jUser = new Jaws_User;
-        $result = $jUser->DeleteUserContacts(
+        $result = $this->app->users->DeleteUserContacts(
             $this->app->session->user->id,
             $ids
         );

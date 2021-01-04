@@ -81,8 +81,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_userGroups', $this::t('USERS_GROUPS'));
 
         // Groups
-        $uModel = new Jaws_User();
-        $groups = $uModel->GetGroups(0, true, 'title');
+        $groups = $this->app->users->GetGroups(0, true, 'title');
         if (!Jaws_Error::IsError($groups)) {
             foreach ($groups as $group) {
                 $tpl->SetBlock('Users/group');
@@ -234,8 +233,9 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageUsers');
         $post = $this->gadget->request->fetch(array('id', 'account', 'personal', 'contacts') , 'post');
 
-        $uModel = new Jaws_User();
-        $profile = $uModel->GetUser((int)$post['id'], $post['account'], $post['personal'], $post['contacts']);
+        $profile = $this->app->users->GetUser(
+            (int)$post['id'], $post['account'], $post['personal'], $post['contacts']
+        );
         if (Jaws_Error::IsError($profile)) {
             return array();
         }
@@ -381,7 +381,7 @@ class Users_Actions_Users extends Users_Actions_Default
             );
         }
 
-        $uModel = new Jaws_User();
+        $uModel = Jaws_User::getInstance();
         $profile = $uModel->GetUser((int)$uid);
         if (!$this->app->session->user->superadmin && $profile['superadmin']) {
             return $this->gadget->session->response(
@@ -432,7 +432,7 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $post = $this->gadget->request->fetch(array('uid', 'groups:array'), 'post');
-        $uModel = new Jaws_User();
+        $uModel = Jaws_User::getInstance();
         $oldGroups = $uModel->GetGroupsOfUser((int)$post['uid']);
         if (!Jaws_Error::IsError($oldGroups)) {
             $oldGroups = array_keys($oldGroups);

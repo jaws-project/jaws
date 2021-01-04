@@ -16,8 +16,7 @@ class Users_Actions_Profile extends Users_Actions_Default
     function AboutUserLayoutParams()
     {
         $result = array();
-        $usrModel = new Jaws_User;
-        $users = $usrModel->GetUsers(false, false, true);
+        $users = $this->app->users->GetUsers(false, false, true);
         if (!Jaws_Error::IsError($users)) {
             $pusers = array();
             $pusers[0] = $this::t('LOGGED_USER');
@@ -50,14 +49,13 @@ class Users_Actions_Profile extends Users_Actions_Default
             $user = (int)$this->app->session->user->id;
         }
 
-        $usrModel = new Jaws_User;
-        $user = $usrModel->GetUser($user, true, true);
+        $user = $this->app->users->GetUser($user, true, true);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return Jaws_HTTPError::Get(404);
         }
 
         // Avatar
-        $user['avatar'] = $usrModel->GetAvatar(
+        $user['avatar'] = $this->app->users->GetAvatar(
             $user['avatar'],
             $user['email'],
             128,

@@ -17,8 +17,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
 
-        $uModel = new Jaws_User();
-        $uInfo = $uModel->GetUser($this->app->session->user->id, true, true);
+        $uInfo = $this->app->users->GetUser($this->app->session->user->id, true, true);
         if (Jaws_Error::IsError($uInfo) || empty($uInfo)) {
             return false;
         }
@@ -72,12 +71,16 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         $tpl->SetVariable('lbl_pass2', $this::t('USERS_PASSWORD_VERIFY'));
         $tpl->SetVariable('pass2', $pass2->Get());
 
-        $avatar =& Piwi::CreateWidget('Image',
-                                      $uModel->GetAvatar($uInfo['avatar'],
-                                                         $uInfo['email'],
-                                                         128,
-                                                         $uInfo['last_update']),
-                                      $uInfo['username']);
+        $avatar =& Piwi::CreateWidget(
+            'Image',
+            $this->app->users->GetAvatar(
+                $uInfo['avatar'],
+                $uInfo['email'],
+                128,
+                $uInfo['last_update']
+            ),
+            $uInfo['username']
+        );
         $avatar->SetID('avatar');
         $tpl->SetVariable('avatar', $avatar->Get());
 

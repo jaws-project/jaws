@@ -32,8 +32,7 @@ class Users_Actions_Account extends Users_Actions_Default
 
         $response = $this->gadget->session->pop('Account');
         if (!isset($response['data'])) {
-            $jUser = new Jaws_User;
-            $account = $jUser->GetUser($this->app->session->user->id, true, true);
+            $account = $this->app->users->GetUser($this->app->session->user->id, true, true);
         } else {
             $account = $response['data'];
         }
@@ -312,8 +311,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
         $tpl->SetVariable('email', $old_email);
 
-        $jUser = new Jaws_User;
-        $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
+        $verifyKey = $this->app->users->UpdateEmailVerifyKey($user_id);
         if (Jaws_Error::IsError($verifyKey)) {
             return $verifyKey;
         } else {

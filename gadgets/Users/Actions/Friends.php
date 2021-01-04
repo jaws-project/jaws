@@ -50,9 +50,8 @@ class Users_Actions_Friends extends Users_Actions_Default
         $tpl->SetVariable('title', $this::t('FRIENDS'));
 
         // Users
-        $uModel = new Jaws_User();
         $superadmin = $this->app->session->user->superadmin ? null : false;
-        $users = $uModel->GetUsers(false, false, $superadmin);
+        $users = $this->app->users->GetUsers(false, false, $superadmin);
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
                 $tpl->SetBlock('groups/user');
@@ -101,14 +100,13 @@ class Users_Actions_Friends extends Users_Actions_Default
         );
 
         $user = $this->app->session->user->id;
-        $jUser = new Jaws_User;
-        $groups = $jUser->GetGroups($user, $post['limit'], $post['offset']);
+        $groups = $this->app->users->GetGroups($user, $post['limit'], $post['offset']);
 
         foreach($groups as $key=>$group) {
             $group['recid'] = $group['id'];
             $groups[$key] = $group;
         }
-        $groupsCount = $jUser->GetUserContactsCount($user);
+        $groupsCount = $this->app->users->GetUserContactsCount($user);
 
         return array(
             'status' => 'success',
@@ -129,8 +127,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $id = $this->gadget->request->fetch('id', 'post');
 
         $user = $this->app->session->user->id;
-        $jUser = new Jaws_User;
-        return $jUser->GetGroup($id, $user);
+        return $this->app->users->GetGroup($id, $user);
     }
 
     /**
@@ -145,15 +142,14 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $user = $this->app->session->user->id;
-        $jUser = new Jaws_User;
 
         // Update group
         if(!empty($post['id'])) {
-            $res = $jUser->UpdateGroup($post['id'], $post['data'], $user);
+            $res = $this->app->users->UpdateGroup($post['id'], $post['data'], $user);
             // Add new group
         } else {
             unset($post['id']);
-            $res = $jUser->AddGroup($post['data'], $user);
+            $res = $this->app->users->AddGroup($post['data'], $user);
         }
 
         if (Jaws_Error::isError($res)) {
@@ -177,7 +173,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $user = $this->app->session->user->id;
 
         if (!empty($ids)) {
-            $jUser = new Jaws_User;
+            $jUser = Jaws_User::getInstance();
             foreach($ids as $id) {
                 // TODO: improve performance
                 $res= $jUser->DeleteGroup($id, $user);

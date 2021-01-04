@@ -50,9 +50,8 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
 
         // Users
-        $uModel = new Jaws_User();
         $superadmin = $this->app->session->user->superadmin ? null : false;
-        $users = $uModel->GetUsers(false, false, $superadmin);
+        $users = $this->app->users->GetUsers(false, false, $superadmin);
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
                 $tpl->SetBlock('Groups/user');
@@ -113,8 +112,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageGroups');
         $id = (int)$this->gadget->request->fetch('id' , 'post');
 
-        $uModel = new Jaws_User();
-        $gInfo = $uModel->GetGroup($id);
+        $gInfo = $this->app->users->GetGroup($id);
         if (Jaws_Error::IsError($profile)) {
             return array();
         }
@@ -134,9 +132,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $gData = $this->gadget->request->fetch('data:array', 'post');
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
-        $uModel = new Jaws_User();
-        $res = $uModel->AddGroup($gData);
-
+        $res = $this->app->users->AddGroup($gData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -157,8 +153,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $gData = $post['data'];
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
-        $uModel = new Jaws_User();
-        $res = $uModel->UpdateGroup($post['id'], $gData);
+        $res = $this->app->users->UpdateGroup($post['id'], $gData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -176,9 +171,8 @@ class Users_Actions_Groups extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $gid = (int)$this->gadget->request->fetch('id', 'post');
-        $uModel = new Jaws_User();
-        $groupinfo = $uModel->GetGroup((int)$gid);
-        if (!$uModel->DeleteGroup($gid)) {
+        $groupinfo = $this->app->users->GetGroup((int)$gid);
+        if (!$this->app->users->DeleteGroup($gid)) {
             return $this->gadget->session->response($this::t('GROUPS_CANT_DELETE', $groupinfo['name']),
                 RESPONSE_ERROR);
         } else {
@@ -196,8 +190,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function GetGroupUsers()
     {
         $gid = $this->gadget->request->fetch('gid', 'post');
-        $uModel = new Jaws_User();
-        $users = $uModel->GetUsers((int)$gid);
+        $users = $this->app->users->GetUsers((int)$gid);
         if (Jaws_Error::IsError($users)) {
             return array();
         }

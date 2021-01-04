@@ -123,7 +123,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             );
         }
 
-        $jUser = new Jaws_User;
+        $jUser = Jaws_User::getInstance();
         // this username already exists in the DB?
         if ($jUser->UsernameExists($username)) {
             return Jaws_Error::raiseError(
@@ -208,8 +208,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $activation = $this->gadget->registry->fetch('anon_activation');
         $message    = '';
 
-        $userModel = new Jaws_User();
-        $userInfo = $userModel->GetUser($user, true, true, true);
+        $userInfo = $this->app->users->GetUser($user, true, true, true);
         if (Jaws_Error::IsError($userInfo)) {
             return $userInfo;
         }

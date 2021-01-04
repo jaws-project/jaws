@@ -27,8 +27,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserPersonal');
         $response = $this->gadget->session->pop('Personal');
         if (!isset($response['data'])) {
-            $jUser = new Jaws_User;
-            $personal  = $jUser->GetUser($this->app->session->user->id, true, true);
+            $personal  = $this->app->users->GetUser($this->app->session->user->id, true, true);
         } else {
             $personal = $response['data'];
         }

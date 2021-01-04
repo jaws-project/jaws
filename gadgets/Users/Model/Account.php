@@ -31,8 +31,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
             $uData['new_email'] = $new_email;
         }
 
-        $jUser  = new Jaws_User;
-        if ($jUser->UserEmailExists($new_email)) {
+        if ($this->app->users->UserEmailExists($new_email)) {
             return Jaws_Error::raiseError(
                 $this::t('EMAIL_ALREADY_EXISTS', $new_email),
                 __FUNCTION__,
@@ -40,7 +39,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
             );
         }
 
-        if ($jUser->UserMobileExists($mobile, $uid)) {
+        if ($this->app->users->UserMobileExists($mobile, $uid)) {
             return Jaws_Error::raiseError(
                 $this::t('MOBILE_ALREADY_EXISTS', $mobile),
                 __FUNCTION__,
@@ -48,7 +47,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
             );
         }
 
-        return $jUser->UpdateUser($uid, $uData);
+        return $this->app->users->UpdateUser($uid, $uData);
     }
 
 }

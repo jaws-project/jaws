@@ -17,8 +17,7 @@ class Users_Model_Personal extends Jaws_Gadget_Model
      */
     function UpdatePersonal($uid, $pData)
     {
-        $jUser = new Jaws_User;
-        $result = $jUser->UpdatePersonal($uid, $pData);
+        $result = $this->app->users->UpdatePersonal($uid, $pData);
         return $result;
     }
 

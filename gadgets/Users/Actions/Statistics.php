@@ -94,8 +94,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         $limit = (int)$this->gadget->registry->fetch('latest_limit');
         $limit = empty($limit)? 10 : $limit;
 
-        $usrModel = new Jaws_User;
-        $users = $usrModel->GetUsers(false, false, null, 1, '', 'id desc', $limit);
+        $users = $this->app->users->GetUsers(false, false, null, 1, '', 'id desc', $limit);
         foreach($users as $user) {
             $tpl->SetBlock('LatestRegistered/user');
             $tpl->SetVariable('username', $user['username']);
