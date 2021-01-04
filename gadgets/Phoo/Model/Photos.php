@@ -417,7 +417,7 @@ class Phoo_Model_Photos extends Phoo_Model
      */
     function SavePhoto($photoFile, $title, $description)
     {
-//        $res = Jaws_Utils::UploadFiles($_FILES['logo'], $tmpDir, 'png,jpg,jpeg,bmp,gif');
+//        $res = $this->app->fileManagement::uploadFiles($_FILES['logo'], $tmpDir, 'png,jpg,jpeg,bmp,gif');
         $uploaddir = ROOT_DATA_PATH . 'phoo/' . date('Y_m_d') . '/';
         if (!is_dir($uploaddir)) {
             if (!Jaws_Utils::is_writable(ROOT_DATA_PATH . 'phoo/')) {
@@ -430,14 +430,14 @@ class Phoo_Model_Photos extends Phoo_Model
             $new_dirs[] = $uploaddir . 'thumb';
             $new_dirs[] = $uploaddir . 'medium';
             foreach ($new_dirs as $new_dir) {
-                if (!Jaws_Utils::mkdir($new_dir)) {
+                if (!$this->app->fileManagement::mkdir($new_dir)) {
                     $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                     return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
                 }
             }
         }
 
-        $res = Jaws_Utils::UploadFiles($photoFile, $uploaddir, 'jpg,gif,png,jpeg', false, true);
+        $res = $this->app->fileManagement::uploadFiles($photoFile, $uploaddir, 'jpg,gif,png,jpeg', false, true);
         if (Jaws_Error::IsError($res)) {
             return $res;
         } elseif (empty($res)) {
@@ -514,7 +514,7 @@ class Phoo_Model_Photos extends Phoo_Model
         // Lets remove the original if keep_original = false
         if ($this->gadget->registry->fetch('keep_original') == 'false') {
             if (!empty($data['filename'])) {
-                Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $data['filename']);
+                $this->app->fileManagement::delete(ROOT_DATA_PATH . 'phoo/' . $data['filename']);
             }
         }
 

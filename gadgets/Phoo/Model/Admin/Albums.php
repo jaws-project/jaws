@@ -89,9 +89,9 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
             include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
             foreach ($result as $r) {
                 if (!empty($r['filename'])) {
-                    Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $r['filename']);
-                    Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $this->GetMediumPath($r['filename']));
-                    Jaws_Utils::delete(ROOT_DATA_PATH . 'phoo/' . $this->GetThumbPath($r['filename']));
+                    $this->app->fileManagement::delete(ROOT_DATA_PATH . 'phoo/' . $r['filename']);
+                    $this->app->fileManagement::delete(ROOT_DATA_PATH . 'phoo/' . $this->GetMediumPath($r['filename']));
+                    $this->app->fileManagement::delete(ROOT_DATA_PATH . 'phoo/' . $this->GetThumbPath($r['filename']));
                 }
             }
 
