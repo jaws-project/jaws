@@ -183,7 +183,6 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', strtolower($gadget));
 
         $objDate = Jaws_Date::getInstance();
-        $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             foreach ($comments as $entry) {
                 $tpl->SetBlock($block . '/entry');
@@ -221,7 +220,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 // user's avatar
                 $tpl->SetVariable(
                     'avatar',
-                    $usrModel->GetAvatar(
+                    $this->app->users->GetAvatar(
                         $entry['avatar'],
                         $entry['email'],
                         80
@@ -352,7 +351,6 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', strtolower($this->gadget->name));
 
         $objDate = Jaws_Date::getInstance();
-        $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             foreach ($comments as $entry) {
                 $tpl->SetBlock('comments/entry');
@@ -390,7 +388,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 // user's avatar
                 $tpl->SetVariable(
                     'avatar',
-                    $usrModel->GetAvatar(
+                    $this->app->users->GetAvatar(
                         $entry['avatar'],
                         $entry['email'],
                         80
