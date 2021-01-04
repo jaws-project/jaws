@@ -134,7 +134,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 $attachmentInfo = $model->GetAttachment($attachment);
                 $filepath = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments' .
                     DIRECTORY_SEPARATOR . $attachmentInfo['filename'];
-                if (!$this->app->fileManagement::delete($filepath)) {
+                if (!Jaws_FileManagement_File::delete($filepath)) {
                     //Rollback Transaction
                     $table->rollback();
                     return false;
@@ -448,7 +448,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
                 // check new attachments file -- we must copy tmp files to correct location
                 if (is_array($attachment)) {
-                    $src_filepath = $this->app->fileManagement::upload_tmp_dir() . '/' . $attachment['filename'];
+                    $src_filepath = Jaws_FileManagement_File::upload_tmp_dir() . '/' . $attachment['filename'];
                     $dest_filepath = $pm_dir . $attachment['filename'];
 
                     if (!file_exists($src_filepath)) {
@@ -456,13 +456,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     }
 
                     if (!file_exists($pm_dir)) {
-                        if (!$this->app->fileManagement::mkdir($pm_dir)) {
+                        if (!Jaws_FileManagement_File::mkdir($pm_dir)) {
                             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', ROOT_DATA_PATH));
                         }
                     }
 
-                    $cres = $this->app->fileManagement::rename($src_filepath, $dest_filepath);
-                    $this->app->fileManagement::delete($src_filepath);
+                    $cres = Jaws_FileManagement_File::rename($src_filepath, $dest_filepath);
+                    Jaws_FileManagement_File::delete($src_filepath);
 
                     if ($cres) {
                         $aData = array(

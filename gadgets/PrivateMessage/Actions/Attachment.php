@@ -43,7 +43,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
         if (!empty($attachment)) {
             $filepath = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR . $attachment['filename'];
             if (file_exists($filepath)) {
-                if ($this->app->fileManagement::download($filepath, $attachment['title'], $attachment['filetype'])) {
+                if (Jaws_FileManagement_File::download($filepath, $attachment['title'], $attachment['filetype'])) {
                     return;
                 }
                 return Jaws_HTTPError::Get(500);
@@ -64,7 +64,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
     {
         $file_num = $this->gadget->request->fetch('attachment_number', 'post');
 
-        $file = $this->app->fileManagement::uploadFiles($_FILES, '', '', null);
+        $file = Jaws_FileManagement_File::uploadFiles($_FILES, '', '', null);
         if (Jaws_Error::IsError($file)) {
             $response = array('type'    => 'error',
                 'message' => $file->getMessage());
