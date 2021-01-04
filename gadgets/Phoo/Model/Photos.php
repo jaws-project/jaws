@@ -420,7 +420,7 @@ class Phoo_Model_Photos extends Phoo_Model
 //        $res = $this->app->fileManagement::uploadFiles($_FILES['logo'], $tmpDir, 'png,jpg,jpeg,bmp,gif');
         $uploaddir = ROOT_DATA_PATH . 'phoo/' . date('Y_m_d') . '/';
         if (!is_dir($uploaddir)) {
-            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH . 'phoo/')) {
+            if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH . 'phoo/')) {
                 $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
             }
