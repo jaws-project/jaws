@@ -20,7 +20,7 @@ class PageRank
      */
     function saveFile($cache_file, $data)
     {
-        if (!Jaws_Utils::file_put_contents($cache_file, serialize($data))) {
+        if (!$this->app->fileManagement::file_put_contents($cache_file, serialize($data))) {
             return PEAR::raiseError("Fail to save stream with file_put_contents('$cache_file',...).");
         }
 
@@ -185,7 +185,7 @@ class PageRank
 function GooglePageRank()
 {
     $cache_dir = ROOT_DATA_PATH . 'launcher' . DIRECTORY_SEPARATOR;
-    if (!Jaws_Utils::mkdir($cache_dir)) {
+    if (!$this->app->fileManagement::mkdir($cache_dir)) {
         return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $cache_dir),
                               __FUNCTION__);
     }
