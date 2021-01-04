@@ -220,12 +220,12 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
 
         // Check gadget directory in sitemap
         $gadget_dir = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget);
-        if (!$this->app->fileManagement::mkdir($gadget_dir, 1)) {
+        if (!Jaws_FileManagement_File::mkdir($gadget_dir, 1)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }
 
         $cache_file = $gadget_dir . '/sitemap.xml';
-        if (!$this->app->fileManagement::file_put_contents($cache_file, $xmlContent)) {
+        if (!Jaws_FileManagement_File::file_put_contents($cache_file, $xmlContent)) {
             return false;
         }
 
@@ -269,12 +269,12 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
 
         // Check gadget directory in sitemap
         $gadget_dir = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget);
-        if (!$this->app->fileManagement::mkdir($gadget_dir, 1)) {
+        if (!Jaws_FileManagement_File::mkdir($gadget_dir, 1)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }
 
         $cache_file = $gadget_dir . '/sitemap.bin';
-        if (!$this->app->fileManagement::file_put_contents($cache_file, serialize($gResult))) {
+        if (!Jaws_FileManagement_File::file_put_contents($cache_file, serialize($gResult))) {
             return false;
         }
         return true;

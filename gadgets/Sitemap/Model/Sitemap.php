@@ -113,7 +113,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
 
         $tpl->ParseBlock('xml');
         $xmlContent = $tpl->Get();
-        if (!$this->app->fileManagement::file_put_contents($xml_file, $xmlContent)) {
+        if (!Jaws_FileManagement_File::file_put_contents($xml_file, $xmlContent)) {
             return false;
         }
 
