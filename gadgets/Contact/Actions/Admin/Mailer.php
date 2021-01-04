@@ -34,10 +34,8 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $radio->AddEvent(ON_CLICK, 'switchEmailTarget(this.value);');
         $tpl->SetVariable('options', $radio->Get());
 
-        $userModel = new Jaws_User();
-
         // Group
-        $groups = $userModel->GetGroups();
+        $groups = $this->app->users->GetGroups();
         $combo =& Piwi::CreateWidget('Combo', 'groups');
         $combo->AddEvent(ON_CHANGE, 'updateUsers(this.value)');
         $combo->AddOption(_t('CONTACT_MAILER_ALL_GROUPS'), 0);
@@ -50,7 +48,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('lbl_group', $label->Get());
 
         // Users
-        $users = $userModel->GetUsers();
+        $users = $this->app->users->GetUsers();
         $combo =& Piwi::CreateWidget('Combo', 'users');
         $combo->AddOption(_t('CONTACT_MAILER_ALL_GROUP_USERS'), 0);
         foreach($users as $user) {
@@ -262,15 +260,14 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
                 }
             }
         } else {
-            $userModel = new Jaws_User();
             if ($target['user'] != 0) {
-                $user = $userModel->GetUser((int)$target['user']);
+                $user = $this->app->users->GetUser((int)$target['user']);
                 if (!Jaws_Error::IsError($user)) {
                     $mail->AddRecipient($user['nickname'] . ' <' . $user['email'] . '>', 'To');
                 }
             } else {
                 if ($target['group'] == 0) {$target['group'] = false;}
-                $users = $userModel->GetUsers($target['group'], false, null, true);
+                $users = $this->app->users->GetUsers($target['group'], false, null, true);
                 foreach ($users as $user) {
                     $mail->AddRecipient($user['nickname'] . ' <' . $user['email'] . '>', 'Bcc');
                 }
