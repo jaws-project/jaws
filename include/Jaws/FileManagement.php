@@ -61,17 +61,6 @@ class Jaws_FileManagement
     }
 
     /**
-     * get upload temp directory
-     *
-     * @return  string  upload temp directory path
-     */
-    static function upload_tmp_dir()
-    {
-        $upload_dir = ini_get('upload_tmp_dir')? ini_get('upload_tmp_dir') : sys_get_temp_dir();
-        return rtrim($upload_dir, "\\/");
-    }
-
-    /**
      * Upload Files
      *
      * @access  public
@@ -86,7 +75,7 @@ class Jaws_FileManagement
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
     static function uploadFiles(
-        $files, $dest, $allow_formats = '',
+        $files, $dest = '', $allow_formats = '',
         $overwrite = true, $move_files = true, $max_size = null, $dimension = ''
     ) {
         if (empty($files) || !is_array($files)) {
@@ -98,6 +87,7 @@ class Jaws_FileManagement
             $files = array($files);
         }
 
+        $dest = $dest?: static::upload_tmp_dir();
         $dest = rtrim($dest, "\\/"). DIRECTORY_SEPARATOR;
         if (!static::mkdir($dest, 2)) {
             return Jaws_Error::raiseError(

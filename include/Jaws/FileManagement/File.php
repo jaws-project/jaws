@@ -396,4 +396,15 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
         return @fopen($filename, $mode, $use_include_path, $context);
     }
 
+    /**
+     * get upload temp directory
+     *
+     * @return  string  upload temp directory path
+     */
+    static function upload_tmp_dir()
+    {
+        $upload_dir = ini_get('upload_tmp_dir')? ini_get('upload_tmp_dir') : sys_get_temp_dir();
+        return rtrim($upload_dir, "\\/");
+    }
+
 }

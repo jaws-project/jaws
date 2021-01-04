@@ -693,4 +693,14 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         return $blob;
     }
 
+    /**
+     * get upload temp directory
+     *
+     * @return  string  upload temp directory path
+     */
+    static function upload_tmp_dir()
+    {
+        return 'upload_tmp_dir';
+    }
+
 }
