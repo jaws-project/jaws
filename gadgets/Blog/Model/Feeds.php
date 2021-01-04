@@ -151,8 +151,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
             $atom->SetLink($this->app->getDataURL('xml/blog.atom', false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(ROOT_DATA_PATH . 'xml/blog.atom', $atom->GetXML());
-            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/blog.atom');
+            $this->app->fileManagement::file_put_contents(ROOT_DATA_PATH . 'xml/blog.atom', $atom->GetXML());
+            $this->app->fileManagement::chmod(ROOT_DATA_PATH . 'xml/blog.atom');
         }
 
         return $atom->GetXML();
@@ -179,8 +179,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
             $atom->SetLink($this->app->getDataURL('xml/blog.rss', false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(ROOT_DATA_PATH . 'xml/blog.rss', $atom->ToRSS2());
-            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/blog.rss');
+            $this->app->fileManagement::file_put_contents(ROOT_DATA_PATH . 'xml/blog.rss', $atom->ToRSS2());
+            $this->app->fileManagement::chmod(ROOT_DATA_PATH . 'xml/blog.rss');
         }
 
         return $atom->ToRSS2();
@@ -313,8 +313,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $filename = substr($filename, 0, strrpos($filename, '.')) . '.atom';
             $catAtom->SetLink($this->app->getDataURL('xml/' . $filename, false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(ROOT_DATA_PATH . 'xml/' . $filename, $catAtom->GetXML());
-            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/' . $filename);
+            $this->app->fileManagement::file_put_contents(ROOT_DATA_PATH . 'xml/' . $filename, $catAtom->GetXML());
+            $this->app->fileManagement::chmod(ROOT_DATA_PATH . 'xml/' . $filename);
         }
 
         return $catAtom->GetXML();
@@ -347,8 +347,8 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $filename = substr($filename, 0, strrpos($filename, '.')) . '.rss';
             $catAtom->SetLink($this->app->getDataURL('xml/' . $filename, false));
             ///FIXME we need to do more error checking over here
-            @file_put_contents(ROOT_DATA_PATH . 'xml/' . $filename, $catAtom->ToRSS2());
-            Jaws_Utils::chmod(ROOT_DATA_PATH . 'xml/' . $filename);
+            $this->app->fileManagement::file_put_contents(ROOT_DATA_PATH . 'xml/' . $filename, $catAtom->ToRSS2());
+            $this->app->fileManagement::chmod(ROOT_DATA_PATH . 'xml/' . $filename);
         }
 
         return $catAtom->ToRSS2();

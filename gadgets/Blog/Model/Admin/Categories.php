@@ -53,7 +53,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         if ($delete_image) {
             $this->app->fileManagement::delete($this->GetCategoryLogoPath($categoryId));
         } elseif (!empty($image_info)) {
-            $tmpLogo = Jaws_Utils::upload_tmp_dir() . DIRECTORY_SEPARATOR . $image_info['host_filename'];
+            $tmpLogo = $this->app->fileManagement::upload_tmp_dir() . '/' . $image_info['host_filename'];
 
             // Save original Logo
             $objImage = Jaws_Image::factory();
@@ -141,7 +141,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         if ($delete_image) {
             $this->app->fileManagement::delete($this->GetCategoryLogoPath($cid));
         } else if (!empty($image_info)) {
-            $tmpLogo = Jaws_Utils::upload_tmp_dir() . DIRECTORY_SEPARATOR . $image_info['host_filename'];
+            $tmpLogo = $this->app->fileManagement::upload_tmp_dir() . '/' . $image_info['host_filename'];
 
             // Save original Logo
             $objImage = Jaws_Image::factory();
