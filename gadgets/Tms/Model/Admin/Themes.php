@@ -52,13 +52,18 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
         if (PEAR::isError($res)) {
             return new Jaws_Error(_t('TMS_ERROR_COULD_NOT_PACK_THEME'));
         }
-        Jaws_Utils::chmod($themeDest);
+        $this->app->fileManagement::chmod($themeDest);
 
         if ($copy_example_to_repository) {
             //Copy image to repository/images
             if (file_exists($srcDir . '/example.png')) {
-                @copy($srcDir. '/example.png', ROOT_DATA_PATH. "themes/repository/Resources/images/$theme.png");
-                Jaws_Utils::chmod(ROOT_DATA_PATH . 'themes/repository/Resources/images/' . $theme . '.png');
+                $this->app->fileManagement::copy_from_file(
+                    $srcDir. '/example.png',
+                    ROOT_DATA_PATH. "themes/repository/Resources/images/$theme.png"
+                );
+                $this->app->fileManagement::chmod(
+                    ROOT_DATA_PATH . 'themes/repository/Resources/images/' . $theme . '.png'
+                );
             }
         }
 
