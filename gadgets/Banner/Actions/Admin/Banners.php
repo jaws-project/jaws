@@ -321,7 +321,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $post['template'] = $this->gadget->request->fetch('template', 'post', 'strip_crlf');
 
         $model = $this->gadget->model->loadAdmin('Banners');
-        $res = $this->app->fileManagement::uploadFiles(
+        $res = Jaws_FileManagement_File::uploadFiles(
             $_FILES,
             ROOT_DATA_PATH . $this->gadget->DataDirectory,
             'jpg,gif,swf,png,jpeg,bmp,svg',
