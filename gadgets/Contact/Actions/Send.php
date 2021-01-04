@@ -119,7 +119,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         if (($this->gadget->registry->fetch('enable_attachment') == 'true') &&
             $this->gadget->GetPermission('AllowAttachment')) 
         {
-            $attach = Jaws_Utils::UploadFiles($_FILES,
+            $attach = $this->app->fileManagement::uploadFiles($_FILES,
                                               ROOT_DATA_PATH. 'contact',
                                               '',
                                               false);
