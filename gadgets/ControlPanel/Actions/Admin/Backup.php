@@ -35,7 +35,7 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
         $files[] = File_Archive::read(ROOT_DATA_PATH);
         $files[] = File_Archive::read($dbFilePath , $dbFileName);
         File_Archive::extract($files, File_Archive::toArchive($pathArchive, File_Archive::toFiles()));
-        Jaws_Utils::Delete($dbFilePath);
+        $this->app->fileManagement::delete($dbFilePath);
 
         // browser must download file from server instead of cache
         header("Expires: 0");
@@ -48,7 +48,7 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
         header("Content-Transfer-Encoding: binary");
         header('Content-Length: '.@filesize($pathArchive));
         @readfile($pathArchive);
-        Jaws_Utils::Delete($pathArchive);
+        $this->app->fileManagement::delete($pathArchive);
     }
 
 }
