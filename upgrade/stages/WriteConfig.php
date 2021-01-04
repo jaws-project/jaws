@@ -96,7 +96,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
         $existsConfig = @file_get_contents(ROOT_JAWS_PATH. 'config/JawsConfig.php');
         $existsMD5 = md5($existsConfig);
         if ($configMD5 !== $existsMD5) {
-            if (!Jaws_Utils::is_writable(ROOT_JAWS_PATH . 'config/')) {
+            if (!Jaws_FileManagement_File::is_writable(ROOT_JAWS_PATH . 'config/')) {
                 return Jaws_Error::raiseError(
                     $this->t('CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'),
                     __FUNCTION__,
@@ -133,7 +133,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
 
         //remove cache directory
         $path = ROOT_DATA_PATH. 'cache';
-        if (!Jaws_Utils::delete($path)) {
+        if (!Jaws_FileManagement_File::delete($path)) {
             _log(JAWS_DEBUG,"Can't delete $path");
         }
 

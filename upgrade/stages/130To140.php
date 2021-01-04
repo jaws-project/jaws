@@ -54,15 +54,15 @@ class Upgrader_130To140 extends JawsUpgrader
         $old_schema = ROOT_JAWS_PATH . 'upgrade/Resources/schema/1.3.0.xml';
         $mid_schema = ROOT_JAWS_PATH . 'upgrade/Resources/schema/1.3.5.xml';
         $new_schema = ROOT_JAWS_PATH . 'upgrade/Resources/schema/1.4.0.xml';
-        if (!file_exists($old_schema)) {
+        if (!Jaws_FileManagement_File::file_exists($old_schema)) {
             return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', '1.3.0.xml'),0 , JAWS_ERROR_ERROR);
         }
 
-        if (!file_exists($mid_schema)) {
+        if (!Jaws_FileManagement_File::file_exists($mid_schema)) {
             return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', '1.3.5.xml'),0 , JAWS_ERROR_ERROR);
         }
 
-        if (!file_exists($new_schema)) {
+        if (!Jaws_FileManagement_File::file_exists($new_schema)) {
             return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', '1.4.0.xml'),0 , JAWS_ERROR_ERROR);
         }
 

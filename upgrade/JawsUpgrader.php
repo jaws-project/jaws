@@ -116,7 +116,7 @@ class JawsUpgrader
 
         foreach ($stages as $stage) {
             $file = 'stages/' . $stage['file'] . '.php';
-            if (!file_exists($file)) {
+            if (!Jaws_FileManagement_File::file_exists($file)) {
                 Jaws_Error::Fatal(
                     'The ' . $stage['file'] .
                     " stage couldn't be loaded, because " .

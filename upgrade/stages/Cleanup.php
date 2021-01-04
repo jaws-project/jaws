@@ -33,7 +33,7 @@ class Upgrader_Cleanup extends JawsUpgrader
         $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/folders.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(ROOT_JAWS_PATH. $item)) {
+            if (Jaws_FileManagement_File::file_exists(ROOT_JAWS_PATH. $item)) {
                 $cleanup_required = true;
                 $tpl->SetBlock('cleanup/item');
                 $tpl->setVariable('type', '1');
@@ -45,7 +45,7 @@ class Upgrader_Cleanup extends JawsUpgrader
         $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/files.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(ROOT_JAWS_PATH. $item)) {
+            if (Jaws_FileManagement_File::file_exists(ROOT_JAWS_PATH. $item)) {
                 $cleanup_required = true;
                 $tpl->SetBlock('cleanup/item');
                 $tpl->setVariable('type', '0');
@@ -78,8 +78,8 @@ class Upgrader_Cleanup extends JawsUpgrader
         $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/folders.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(ROOT_JAWS_PATH. $item)) {
-                if (!Jaws_Utils::Delete(ROOT_JAWS_PATH. $item)) {
+            if (Jaws_FileManagement_File::file_exists(ROOT_JAWS_PATH. $item)) {
+                if (!Jaws_FileManagement_File::delete(ROOT_JAWS_PATH. $item)) {
                     $cleanup_error = true;
                 }
             }
@@ -88,8 +88,8 @@ class Upgrader_Cleanup extends JawsUpgrader
         $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/files.txt');
         $cleanup_items = array_filter(explode("\n", $cleanup_items));
         foreach ($cleanup_items as $item) {
-            if (file_exists(ROOT_JAWS_PATH. $item)) {
-                if (!Jaws_Utils::Delete(ROOT_JAWS_PATH. $item)) {
+            if (Jaws_FileManagement_File::file_exists(ROOT_JAWS_PATH. $item)) {
+                if (!Jaws_FileManagement_File::delete(ROOT_JAWS_PATH. $item)) {
                     $cleanup_error = true;
                 }
             }

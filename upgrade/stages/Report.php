@@ -159,7 +159,7 @@ class Upgrader_Report extends JawsUpgrader
 
             // others
             foreach ($rootfiles as $rfile) {
-                if (file_exists(ROOT_DATA_PATH. "languages/$lang/$rfile")) {
+                if (Jaws_FileManagement_File::file_exists(ROOT_DATA_PATH. "languages/$lang/$rfile")) {
                     $fstring = @file_get_contents(ROOT_DATA_PATH. "languages/$lang/$rfile");
                     $fstring = strtr($fstring, array($nstr => $nstr, $ostr => $nstr));
                     @file_put_contents(ROOT_DATA_PATH. "languages/$lang/$rfile", $fstring);

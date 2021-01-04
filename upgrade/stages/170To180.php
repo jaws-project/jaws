@@ -65,11 +65,11 @@ class Upgrader_170To180 extends JawsUpgrader
             // upgrade core database schema
             $old_schema = ROOT_JAWS_PATH . "upgrade/Resources/schema/$old.xml";
             $new_schema = ROOT_JAWS_PATH . "upgrade/Resources/schema/$new.xml";
-            if (!file_exists($old_schema)) {
+            if (!Jaws_FileManagement_File::file_exists($old_schema)) {
                 return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', "$old.xml"),0 , JAWS_ERROR_ERROR);
             }
 
-            if (!file_exists($new_schema)) {
+            if (!Jaws_FileManagement_File::file_exists($new_schema)) {
                 return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', "$new.xml"),0 , JAWS_ERROR_ERROR);
             }
 

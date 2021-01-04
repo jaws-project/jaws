@@ -86,7 +86,7 @@ class Upgrader_Authentication extends JawsUpgrader
         }
 
         $key_file = UPGRADE_PATH . 'key.txt';
-        if (file_exists($key_file)) {
+        if (Jaws_FileManagement_File::file_exists($key_file)) {
             $key = trim(file_get_contents($key_file));
             if ($key === $_SESSION['upgrade']['Authentication']['key']) {
                 _log(JAWS_DEBUG,"Input log and session key match");
