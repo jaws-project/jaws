@@ -267,7 +267,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             }
 
             // delete thumbnail file
-            $fileInfo = pathinfo($filename);
+            $fileInfo = Jaws_FileManagement_File::pathinfo($filename);
             $thumbnailPath = ROOT_DATA_PATH . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
             if (file_exists($thumbnailPath)) {
                 if (!Jaws_FileManagement_File::delete($thumbnailPath)) {

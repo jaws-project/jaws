@@ -168,7 +168,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function getFileType($filename)
     {
-        $fileExt = pathinfo($filename, PATHINFO_EXTENSION);
+        $fileExt = Jaws_FileManagement_File::pathinfo($filename, PATHINFO_EXTENSION);
         if (empty($fileExt)) {
             return Directory_Info::FILE_TYPE_UNKNOWN;
         }
