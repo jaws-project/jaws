@@ -28,9 +28,25 @@ class Jaws_User
      * @access  protected
      * @return  void
      */
-    function __construct()
+    private function __construct()
     {
         $this->app = Jaws::getInstance();
+    }
+
+    /**
+     * Creates the Jaws_User instance if it doesn't exist else it returns the already created one
+     *
+     * @access  public
+     * @return  object returns the instance
+     */
+    static function getInstance()
+    {
+        static $instance;
+        if (!isset($instance)) {
+            $instance = new Jaws_User();
+        }
+
+        return $instance;
     }
 
     /**
@@ -1299,7 +1315,7 @@ class Jaws_User
 
         // rename avatar name
         if (isset($uData['avatar'])) {
-            Jaws_Utils::Delete(AVATAR_PATH. $uData['avatar']);
+            $this->app->fileManagement::delete(AVATAR_PATH. $uData['avatar']);
             @rename(AVATAR_PATH. $user['avatar'],
                     AVATAR_PATH. $uData['avatar']);
         }
@@ -1468,7 +1484,7 @@ class Jaws_User
 
         if (array_key_exists('avatar', $pData)) {
             if (!empty($user['avatar'])) {
-                Jaws_Utils::Delete(AVATAR_PATH. $user['avatar']);
+                $this->app->fileManagement::delete(AVATAR_PATH. $user['avatar']);
             }
 
             if (!empty($pData['avatar'])) {
