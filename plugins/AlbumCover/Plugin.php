@@ -24,7 +24,7 @@ class AlbumCover_Plugin extends Jaws_Plugin
     function Install()
     {
         $new_dir = ROOT_DATA_PATH . 'AlbumCover' . DIRECTORY_SEPARATOR;
-        if (!$this->app->fileManagement::mkdir($new_dir)) {
+        if (!Jaws_FileManagement_File::mkdir($new_dir)) {
             return new Jaws_Error($this->app::t('ERROR_FAILED_CREATING_DIR', $new_dir), $this->_Name);
         }
 
@@ -42,7 +42,7 @@ class AlbumCover_Plugin extends Jaws_Plugin
      */
     function Uninstall()
     {
-        $this->app->fileManagement::delete(ROOT_DATA_PATH . 'AlbumCover' . DIRECTORY_SEPARATOR);
+        Jaws_FileManagement_File::delete(ROOT_DATA_PATH . 'AlbumCover' . DIRECTORY_SEPARATOR);
         return true;
     }
 
