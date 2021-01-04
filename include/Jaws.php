@@ -765,7 +765,7 @@ class Jaws
                 break;
 
             case 'users':
-                return $this->loadObject('Jaws_User', 'users');
+                return $this->loadObject('Jaws_User', 'users', true);
                 break;
 
             default:
