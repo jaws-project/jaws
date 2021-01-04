@@ -37,8 +37,8 @@ class AddressProtector
             return $contents;
         }
 
-        $this->app->fileManagement::mkdir($ap_dir);
-        if (!is_dir($ap_dir) || !$this->app->fileManagement::is_writable($ap_dir) || !(bool)ini_get('allow_url_fopen')) {
+        Jaws_FileManagement_File::mkdir($ap_dir);
+        if (!is_dir($ap_dir) || !Jaws_FileManagement_File::is_writable($ap_dir) || !(bool)ini_get('allow_url_fopen')) {
             $contents = str_replace(array('@', '.'), array('(at)', 'dot'), $email);
             return $contents;
         }
@@ -54,7 +54,7 @@ class AddressProtector
         if (substr($contents, -1, 1) == "\n") {
             $contents = substr($contents, 0, -1);
         }             
-        $this->app->fileManagement::file_put_contents($ap_dir. '/'. md5($email . $name), $contents);
+        Jaws_FileManagement_File::file_put_contents($ap_dir. '/'. md5($email . $name), $contents);
         $contents = '<a href="http://address-protector.com/' . $contents . '">' . $name . '</a>';
         return $contents;
     }
