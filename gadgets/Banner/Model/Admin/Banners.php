@@ -239,7 +239,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
 
         $this->gadget->session->push(_t('BANNER_BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
         if (!empty($banner['banner'])) {
-            Jaws_Utils::Delete(ROOT_DATA_PATH . $this->gadget->DataDirectory . $banner['banner']);
+            $this->app->fileManagement::delete(ROOT_DATA_PATH . $this->gadget->DataDirectory . $banner['banner']);
         }
 
         return true;
