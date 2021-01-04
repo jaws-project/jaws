@@ -162,7 +162,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UploadTheme');
 
-        $res = $this->app->fileManagement::extractFiles($_FILES, ROOT_DATA_PATH . 'themes' . DIRECTORY_SEPARATOR, false);
+        $res = Jaws_FileManagement_File::extractFiles($_FILES, ROOT_DATA_PATH . 'themes' . DIRECTORY_SEPARATOR, false);
         if (!Jaws_Error::IsError($res)) {
             $this->gadget->session->push(_t('TMS_THEME_UPLOADED'), RESPONSE_NOTICE);
         } else {
@@ -198,7 +198,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
                 false
             );
             if (!Jaws_Error::isError($res)) {
-                $this->app->fileManagement::download($res, "$theme.zip");
+                Jaws_FileManagement_File::download($res, "$theme.zip");
                 return;
             }
         } else {
@@ -224,7 +224,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $defaultTheme = (array)$this->app->registry->fetch('theme', 'Settings');
             // Check is default theme?
             if (($defaultTheme['locality'] != 0) || ($theme != $defaultTheme['name'])) {
-                return $this->app->fileManagement::delete(JAWS_THEMES . $theme);
+                return Jaws_FileManagement_File::delete(JAWS_THEMES . $theme);
             }
         }
 

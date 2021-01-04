@@ -30,17 +30,17 @@ class Tms_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH)) {
+        if (!Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
         $theme_dir = ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR;
-        if (!$this->app->fileManagement::mkdir($theme_dir)) {
+        if (!Jaws_FileManagement_File::mkdir($theme_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $theme_dir));
         }
 
         //Ok, maybe user has data/themes dir but is not writable, Tms requires that dir to be writable
-        if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH . 'themes')) {
+        if (!Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH . 'themes')) {
             return new Jaws_Error(_t('TMS_ERROR_DESTINATION_THEMES_NOT_WRITABLE'));
         }
 

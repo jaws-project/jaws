@@ -33,7 +33,7 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
             return new Jaws_Error(_t('TMS_ERROR_THEME_DOES_NOT_EXISTS', $theme));
         }
 
-        if (!$this->app->fileManagement::is_writable($destDir)) {
+        if (!Jaws_FileManagement_File::is_writable($destDir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', $destDir),
                                   $this->gadget->name);
         }
@@ -52,16 +52,16 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
         if (PEAR::isError($res)) {
             return new Jaws_Error(_t('TMS_ERROR_COULD_NOT_PACK_THEME'));
         }
-        $this->app->fileManagement::chmod($themeDest);
+        Jaws_FileManagement_File::chmod($themeDest);
 
         if ($copy_example_to_repository) {
             //Copy image to repository/images
             if (file_exists($srcDir . '/example.png')) {
-                $this->app->fileManagement::copy_from_file(
+                Jaws_FileManagement_File::copy_from_file(
                     $srcDir. '/example.png',
                     ROOT_DATA_PATH. "themes/repository/Resources/images/$theme.png"
                 );
-                $this->app->fileManagement::chmod(
+                Jaws_FileManagement_File::chmod(
                     ROOT_DATA_PATH . 'themes/repository/Resources/images/' . $theme . '.png'
                 );
             }
