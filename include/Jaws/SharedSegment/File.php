@@ -149,7 +149,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
         return
             empty($ftok)?
                 true :
-                $this->app->fileManagement::delete(
+                Jaws_FileManagement_File::delete(
                     $this->sharedPath. (string)$this->ftok
                 );
     }
