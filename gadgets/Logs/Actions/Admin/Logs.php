@@ -397,7 +397,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $dst = File_Archive::toArchive($tmpArchiveName, $writerObj);
         $res = File_Archive::extract($src, $dst);
         if (!PEAR::isError($res)) {
-            return $this->app->fileManagement::download($tmpArchiveName, $tmpFileName);
+            return Jaws_FileManagement_File::download($tmpArchiveName, $tmpFileName);
         }
 
         Jaws_Header::Referrer();
