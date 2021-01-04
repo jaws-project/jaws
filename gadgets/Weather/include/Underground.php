@@ -79,7 +79,7 @@ class Underground_Weather
      */
     function saveFile($cache_file, $data)
     {
-        if (!$this->app->fileManagement::file_put_contents($cache_file, serialize($data))) {
+        if (!Jaws_FileManagement_File::file_put_contents($cache_file, serialize($data))) {
             return PEAR::raiseError("Fail to save stream with file_put_contents('$cache_file',...).");
         }
 
