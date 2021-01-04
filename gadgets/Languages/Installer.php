@@ -44,7 +44,7 @@ class Languages_Installer extends Jaws_Gadget_Installer
         }
 
         $new_dir = ROOT_DATA_PATH . 'languages' . DIRECTORY_SEPARATOR;
-        if (!Jaws_Utils::mkdir($new_dir)) {
+        if (!$this->app->fileManagement::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
@@ -66,7 +66,7 @@ class Languages_Installer extends Jaws_Gadget_Installer
         }
 
         $new_dir = ROOT_DATA_PATH . 'languages' . DIRECTORY_SEPARATOR;
-        if (!Jaws_Utils::mkdir($new_dir)) {
+        if (!$this->app->fileManagement::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 

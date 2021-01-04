@@ -29,7 +29,7 @@ class Languages_Actions_Admin_Export extends Jaws_Gadget_Action
         $dst = File_Archive::toArchive($tmpArchiveName, $writerObj);
         $res = File_Archive::extract($src, $dst);
         if (!PEAR::isError($res)) {
-            return Jaws_Utils::Download($tmpArchiveName, $tmpFileName);
+            return $this->app->fileManagement::download($tmpArchiveName, $tmpFileName);
         }
 
         Jaws_Header::Referrer();

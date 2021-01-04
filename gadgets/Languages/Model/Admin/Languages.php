@@ -36,7 +36,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                     $jaws_lang_dir = ($use_data_lang? ROOT_DATA_PATH : ROOT_JAWS_PATH) . "languages";
 
                     $lang_dir = $jaws_lang_dir. DIRECTORY_SEPARATOR. $lang_code;
-                    if (!Jaws_Utils::mkdir($lang_dir, 2)) {
+                    if (!$this->app->fileManagement::mkdir($lang_dir, 2)) {
                         $this->gadget->session->push(
                                             Jaws::t('ERROR_FAILED_CREATING_DIR'),
                                             RESPONSE_ERROR);
@@ -52,7 +52,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
 
                     $lang_exist = @is_dir($lang_dir);
                     $lang_fname_file = $lang_dir. DIRECTORY_SEPARATOR. 'FullName';
-                    if (Jaws_Utils::file_put_contents($lang_fname_file, $lang_name)) {
+                    if ($this->app->fileManagement::file_put_contents($lang_fname_file, $lang_name)) {
                         if ($lang_exist) {
                             $this->gadget->session->push(
                                             _t('LANGUAGES_LANGUAGE_UPDATED', $lang_code),
@@ -329,7 +329,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         if ($update_default_lang) {
             // update default language translation,
             // so we can delete customized language's file
-            if (Jaws_Utils::file_put_contents($orig_file, $tpl2->Get())) {
+            if ($this->app->fileManagement::file_put_contents($orig_file, $tpl2->Get())) {
                 $change_detected = false;
             }
         }
@@ -338,7 +338,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         if(file_exists($data_file)) {
             $writeable = Jaws_Utils::is_writable($data_file);
         } else {
-            Jaws_Utils::mkdir(dirname($data_file), 3);
+            $this->app->fileManagement::mkdir(dirname($data_file), 3);
             $writeable = Jaws_Utils::is_writable(dirname($data_file));
         }
 
@@ -348,7 +348,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         }
 
         if ($change_detected) {
-            if (Jaws_Utils::file_put_contents($data_file, $tpl->Get())) {
+            if ($this->app->fileManagement::file_put_contents($data_file, $tpl->Get())) {
                 $this->gadget->session->push(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
                 return true;
             } else {
@@ -356,7 +356,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                 return false;
             }
         } else {
-            Jaws_Utils::Delete($data_file);
+            $this->app->fileManagement::delete($data_file);
             $this->gadget->session->push(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
             return true;
         }
