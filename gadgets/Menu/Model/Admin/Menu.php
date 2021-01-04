@@ -22,7 +22,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             $mData['image']  = null;
         } else {
             $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $mData['image']);
-            $filename = $this->app->fileManagement::upload_tmp_dir(). '/'. $image;
+            $filename = Jaws_FileManagement_File::upload_tmp_dir(). '/'. $image;
             $mData['image'] = array('File://' . $filename, 'blob');
         }
 
@@ -35,7 +35,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         }
 
         if (isset($filename)) {
-            $this->app->fileManagement::delete($filename);
+            Jaws_FileManagement_File::delete($filename);
         }
 
         $this->MoveMenu($mid, $mData['gid'], $mData['gid'], $mData['pid'], $mData['pid'], $mData['order'], null);
@@ -68,7 +68,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
                 $mData['image'] = null;
             } else {
                 $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $mData['image']);
-                $filename = $this->app->fileManagement::upload_tmp_dir(). '/'. $image;
+                $filename = Jaws_FileManagement_File::upload_tmp_dir(). '/'. $image;
                 $mData['image'] = array('File://' . $filename, 'blob');
             }
         } else {
@@ -83,7 +83,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         }
 
         if (isset($filename)) {
-            $this->app->fileManagement::delete($filename);
+            Jaws_FileManagement_File::delete($filename);
         }
 
         $this->MoveMenu(
