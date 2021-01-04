@@ -51,9 +51,9 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
 
         // move uploaded image file
         if ($delete_image) {
-            $this->app->fileManagement::delete($this->GetCategoryLogoPath($categoryId));
+            Jaws_FileManagement_File::delete($this->GetCategoryLogoPath($categoryId));
         } elseif (!empty($image_info)) {
-            $tmpLogo = $this->app->fileManagement::upload_tmp_dir() . '/' . $image_info['host_filename'];
+            $tmpLogo = Jaws_FileManagement_File::upload_tmp_dir() . '/' . $image_info['host_filename'];
 
             // Save original Logo
             $objImage = Jaws_Image::factory();
@@ -85,7 +85,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
                 // Return an error if image can't be resized
                 return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
             }
-            $this->app->fileManagement::delete($tmpLogo);
+            Jaws_FileManagement_File::delete($tmpLogo);
         }
 
         $this->gadget->session->push(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
@@ -139,9 +139,9 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
 
         // move uploaded image file
         if ($delete_image) {
-            $this->app->fileManagement::delete($this->GetCategoryLogoPath($cid));
+            Jaws_FileManagement_File::delete($this->GetCategoryLogoPath($cid));
         } else if (!empty($image_info)) {
-            $tmpLogo = $this->app->fileManagement::upload_tmp_dir() . '/' . $image_info['host_filename'];
+            $tmpLogo = Jaws_FileManagement_File::upload_tmp_dir() . '/' . $image_info['host_filename'];
 
             // Save original Logo
             $objImage = Jaws_Image::factory();
@@ -173,7 +173,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
                 // Return an error if image can't be resized
                 return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
             }
-            $this->app->fileManagement::delete($tmpLogo);
+            Jaws_FileManagement_File::delete($tmpLogo);
         }
 
         $this->gadget->session->push(_t('BLOG_CATEGORY_UPDATED'), RESPONSE_NOTICE);

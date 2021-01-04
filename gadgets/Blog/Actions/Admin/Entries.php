@@ -266,7 +266,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Upload blog image
         $image = null;
         if (count($_FILES) > 0 && !empty($_FILES['image_file']['name'])) {
-            $res = $this->app->fileManagement::uploadFiles(
+            $res = Jaws_FileManagement_File::uploadFiles(
                 $_FILES,
                 ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
                 'jpg,gif,png,jpeg,bmp',
@@ -628,7 +628,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             $image = null;
             if (count($_FILES) > 0 && !empty($_FILES['image_file']['name'])) {
                 $targetDir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
-                $res = $this->app->fileManagement::uploadFiles(
+                $res = Jaws_FileManagement_File::uploadFiles(
                     $_FILES,
                     $targetDir,
                     'jpg,gif,png,jpeg,bmp',
@@ -645,7 +645,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                     $model = $this->gadget->model->load('Posts');
                     $blogEntry = $model->GetEntry($id);
                     if (!empty($blogEntry['image'])) {
-                        $this->app->fileManagement::delete($targetDir . $blogEntry['image']);
+                        Jaws_FileManagement_File::delete($targetDir . $blogEntry['image']);
                     }
                 }
             }
@@ -655,7 +655,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             $blogEntry = $model->GetEntry($id);
             if (!empty($blogEntry['image'])) {
                 $targetDir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
-                $this->app->fileManagement::delete($targetDir . $blogEntry['image']);
+                Jaws_FileManagement_File::delete($targetDir . $blogEntry['image']);
             }
         }
 

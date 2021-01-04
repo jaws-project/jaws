@@ -169,7 +169,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         if (!isset($_FILES['file'])) {
             return $this->gadget->session->response(Jaws::t('ERROR_UPLOAD'), RESPONSE_ERROR);
         }
-        $res = $this->app->fileManagement::uploadFiles($_FILES, '', '', null);
+        $res = Jaws_FileManagement_File::uploadFiles($_FILES, '', '', null);
         if (Jaws_Error::IsError($res) || !isset($res['file'][0])) {
             return $this->gadget->session->response(Jaws::t('ERROR_UPLOAD'), RESPONSE_ERROR);
         }

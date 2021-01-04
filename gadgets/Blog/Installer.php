@@ -66,22 +66,22 @@ class Blog_Installer extends Jaws_Gadget_Installer
      */
     function Install($input_schema = '', $input_variables = array())
     {
-        if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH)) {
+        if (!Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
         $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images';
-        if (!$this->app->fileManagement::mkdir($new_dir, 1)) {
+        if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'categories';
-        if (!$this->app->fileManagement::mkdir($new_dir, 1)) {
+        if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         $new_dir = ROOT_DATA_PATH . 'xml' . DIRECTORY_SEPARATOR;
-        if (!$this->app->fileManagement::mkdir($new_dir)) {
+        if (!Jaws_FileManagement_File::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
@@ -190,7 +190,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('recommended', ',Comments,Tags,');
 
             $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images';
-            if (!$this->app->fileManagement::mkdir($new_dir, 1)) {
+            if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
                 return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
             }
         }
@@ -207,7 +207,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('category_image_size', '128x128');
             // make directories
             $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'categories';
-            if (!$this->app->fileManagement::mkdir($new_dir, 1)) {
+            if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
                 return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
             }
 
