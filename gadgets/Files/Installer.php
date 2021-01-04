@@ -36,7 +36,7 @@ class Files_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         $dir = ROOT_DATA_PATH . 'files' . DIRECTORY_SEPARATOR;
-        if (!Jaws_Utils::mkdir($dir)) {
+        if (!$this->app->fileManagement::mkdir($dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $dir));
         }
 
