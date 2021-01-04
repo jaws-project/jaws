@@ -43,8 +43,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
 
         // User groups
-        $uModel = new Jaws_User();
-        $groups = $uModel->GetGroups(true, 'title');
+        $groups = $this->app->users->GetGroups(true, 'title');
         if (!Jaws_Error::IsError($groups)) {
             $combo =& Piwi::CreateWidget('Combo', 'sys_groups');
             $combo->AddEvent(ON_CHANGE, 'toggleUsers(this.value)');
@@ -92,8 +91,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         if ($gid === 0) {
             $gid = false;
         }
-        $uModel = new Jaws_User();
-        $users = $uModel->GetUsers($gid, false, null, 1);
+        $users = $this->app->users->GetUsers($gid, false, null, 1);
         if (Jaws_Error::IsError($users)) {
             return array();
         }
