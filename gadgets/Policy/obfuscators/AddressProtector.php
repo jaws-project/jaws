@@ -38,7 +38,7 @@ class AddressProtector
         }
 
         $this->app->fileManagement::mkdir($ap_dir);
-        if (!is_dir($ap_dir) || !Jaws_Utils::is_writable($ap_dir) || !(bool)ini_get('allow_url_fopen')) {
+        if (!is_dir($ap_dir) || !$this->app->fileManagement::is_writable($ap_dir) || !(bool)ini_get('allow_url_fopen')) {
             $contents = str_replace(array('@', '.'), array('(at)', 'dot'), $email);
             return $contents;
         }
