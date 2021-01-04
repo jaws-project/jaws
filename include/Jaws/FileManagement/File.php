@@ -11,6 +11,20 @@
 class Jaws_FileManagement_File extends Jaws_FileManagement
 {
     /**
+     * Returns information about a file path
+     *
+     * @access  public
+     * @param   string  $filename   The filename/directory to be parsed
+     * #param   int     $options    If present, specifies a specific element to be returned
+     * @return  mixed   Returns an associative array containing the following elements
+     * @see     http://www.php.net/pathinfo 
+     */
+    static function pathinfo($filename, $options = 0x0f)
+    {
+        return pathinfo($filename, $options);
+    }
+
+    /**
      * Checks whether a file or directory exists
      *
      * @access  public
@@ -223,7 +237,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
                     }
                 } else {
                     if (!$overwrite) {
-                        $destinfo = pathinfo($dest);
+                        $destinfo = self::pathinfo($dest);
                         $dest = $destinfo['dirname']. '/' .
                             $destinfo['filename']. '_'. uniqid(floor(microtime()*1000));
                         if (isset($destinfo['extension']) && !empty($destinfo['extension'])) {
@@ -286,7 +300,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
                 }
             } else {
                 if (file_exists($dest) && !$overwrite) {
-                    $destinfo = pathinfo($dest);
+                    $destinfo = self::pathinfo($dest);
                     $dest = $destinfo['dirname']. '/' .
                         $destinfo['filename']. '_'. uniqid(floor(microtime()*1000));
                     if (isset($destinfo['extension']) && !empty($destinfo['extension'])) {
