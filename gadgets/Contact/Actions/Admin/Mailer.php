@@ -165,7 +165,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
      */
     function UploadFile()
     {
-        $res = $this->app->fileManagement::uploadFiles($_FILES, Jaws_Utils::upload_tmp_dir());
+        $res = $this->app->fileManagement::uploadFiles($_FILES, '');
         if (Jaws_Error::IsError($res)) {
             $response = array('type'    => 'error',
                               'message' => $res->getMessage());
@@ -278,7 +278,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $format = $this->gadget->registry->fetch('email_format');
         $mail->SetBody($message, array('format' => $format));
         if (!empty($attachment)) {
-            $attachment = Jaws_Utils::upload_tmp_dir() . '/' . $attachment;
+            $attachment = $this->app->fileManagement::upload_tmp_dir() . '/' . $attachment;
             if (file_exists($attachment)) {
                 $mail->SetBody($attachment, array('format' => 'file'));
                 $this->app->fileManagement::delete($attachment);
