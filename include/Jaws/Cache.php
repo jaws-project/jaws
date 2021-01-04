@@ -11,6 +11,17 @@
 class Jaws_Cache
 {
     /**
+     * Constructor
+     *
+     * @access  protected
+     * @return  void
+     */
+    protected function __construct()
+    {
+        $this->app = Jaws::getInstance();
+    }
+
+    /**
      * An interface for available drivers
      *
      * @access  public

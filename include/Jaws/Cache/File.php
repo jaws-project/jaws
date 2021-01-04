@@ -32,6 +32,7 @@ class Jaws_Cache_File extends Jaws_Cache
      */
     function __construct()
     {
+        parent::__construct();
         $this->cacheDirectory = rtrim(sys_get_temp_dir(), '/\\') . '/';
     }
 
@@ -54,7 +55,7 @@ class Jaws_Cache_File extends Jaws_Cache
 
         if (!empty($lifetime)) {
             $file = $this->cacheDirectory . $this->cachePrefix. $key;
-            if ($result = Jaws_Utils::file_put_contents($file, $value)) {
+            if ($result = $this->app->fileManagement::file_put_contents($file, $value)) {
                 @touch($file, time() + $lifetime);
             }
         }
@@ -95,7 +96,7 @@ class Jaws_Cache_File extends Jaws_Cache
     function delete($key)
     {
         $file = $this->cacheDirectory . $this->cachePrefix. $key;
-        return Jaws_Utils::delete($file);
+        return $this->app->fileManagement::delete($file);
     }
 
     /**
@@ -130,7 +131,7 @@ class Jaws_Cache_File extends Jaws_Cache
                     if (@is_file($this->cacheDirectory . $fname)) {
                         $ftime = @filemtime($this->cacheDirectory . $fname);
                         if ((int)$ftime < time()) {
-                            Jaws_Utils::delete($this->cacheDirectory . $fname);
+                            $this->app->fileManagement::delete($this->cacheDirectory . $fname);
                         }
                     }
                 }

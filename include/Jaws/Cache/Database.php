@@ -25,6 +25,7 @@ class Jaws_Cache_Database extends Jaws_Cache
      */
     function __construct()
     {
+        parent::__construct();
         $this->dbCacheORM = Jaws_ORM::getInstance()->table('cache');
     }
 

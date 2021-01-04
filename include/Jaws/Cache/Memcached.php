@@ -24,6 +24,7 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      */
     function __construct()
     {
+        parent::__construct();
         // initializing driver
         $this->memcache = new Memcache;
         $this->memcache->connect('localhost', 11211);
