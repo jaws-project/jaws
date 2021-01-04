@@ -470,7 +470,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         // Remove entry image
         if (!empty($e['image'])) {
             $imageDir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
-            Jaws_Utils::Delete($imageDir . $e['image']);
+            $this->app->fileManagement::delete($imageDir . $e['image']);
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {

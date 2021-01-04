@@ -51,7 +51,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
 
         // move uploaded image file
         if ($delete_image) {
-            Jaws_Utils::delete($this->GetCategoryLogoPath($categoryId));
+            $this->app->fileManagement::delete($this->GetCategoryLogoPath($categoryId));
         } elseif (!empty($image_info)) {
             $tmpLogo = Jaws_Utils::upload_tmp_dir() . DIRECTORY_SEPARATOR . $image_info['host_filename'];
 
@@ -85,7 +85,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
                 // Return an error if image can't be resized
                 return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
             }
-            Jaws_Utils::delete($tmpLogo);
+            $this->app->fileManagement::delete($tmpLogo);
         }
 
         $this->gadget->session->push(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
@@ -139,7 +139,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
 
         // move uploaded image file
         if ($delete_image) {
-            Jaws_Utils::delete($this->GetCategoryLogoPath($cid));
+            $this->app->fileManagement::delete($this->GetCategoryLogoPath($cid));
         } else if (!empty($image_info)) {
             $tmpLogo = Jaws_Utils::upload_tmp_dir() . DIRECTORY_SEPARATOR . $image_info['host_filename'];
 
@@ -173,7 +173,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
                 // Return an error if image can't be resized
                 return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
             }
-            Jaws_Utils::delete($tmpLogo);
+            $this->app->fileManagement::delete($tmpLogo);
         }
 
         $this->gadget->session->push(_t('BLOG_CATEGORY_UPDATED'), RESPONSE_NOTICE);
