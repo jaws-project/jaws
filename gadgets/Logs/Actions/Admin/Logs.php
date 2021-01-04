@@ -412,8 +412,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function GetUser()
     {
         $term = $this->gadget->request->fetch('username', 'post');
-        $userModel = new Jaws_User();
-        $user = $userModel->GetUserByTerm(0, $term);
+        $user = $this->app->users->GetUserByTerm(0, $term);
         if (Jaws_Error::IsError($user)) {
             return $this->gadget->session->response(
                 $user->getMessage(),
