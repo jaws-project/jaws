@@ -685,7 +685,7 @@ class Jaws_User
      */
     function GetAvatar($avatar, $email, $size = 48, $time = '')
     {
-        if (empty($avatar) || !file_exists(AVATAR_PATH . $avatar)) {
+        if (empty($avatar) || !Jaws_FileManagement_File::file_exists(AVATAR_PATH . $avatar)) {
             require_once ROOT_JAWS_PATH . 'include/Jaws/Gravatar.php';
             $uAvatar = Jaws_Gravatar::GetGravatar($email, $size);
         } else {
@@ -1279,7 +1279,7 @@ class Jaws_User
 
             // set new avatar name if username changed
             if (!empty($user['avatar'])) {
-                $fileinfo = pathinfo($user['avatar']);
+                $fileinfo = Jaws_FileManagement_File::pathinfo($user['avatar']);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                     $uData['avatar'] = $uData['username']. '.'. $fileinfo['extension'];
                 }
