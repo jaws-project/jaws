@@ -37,7 +37,7 @@ class Installer_Database extends JawsInstaller
     function Display()
     {
         $jconfig = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'config/JawsConfig.php';
-        if (file_exists($jconfig)) {
+        if (Jaws_FileManagement_File::file_exists($jconfig)) {
             @include $jconfig;
         }
 

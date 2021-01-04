@@ -102,7 +102,7 @@ class Installer_WriteConfig extends JawsInstaller
         $configString = $this->BuildConfig();
 
         // following what the web page says (choice 1) and assume that the user has created it already
-        if (file_exists(ROOT_JAWS_PATH . 'config/JawsConfig.php')) {
+        if (Jaws_FileManagement_File::file_exists(ROOT_JAWS_PATH . 'config/JawsConfig.php')) {
             $configMD5    = md5($configString);
             $existsConfig = file_get_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php');
             $existsMD5    = md5($existsConfig);
@@ -114,7 +114,7 @@ class Installer_WriteConfig extends JawsInstaller
         }
 
         // create a new one if the dir is writeable
-        if (Jaws_Utils::is_writable(ROOT_JAWS_PATH . 'config/')) {
+        if (Jaws_FileManagement_File::is_writable(ROOT_JAWS_PATH . 'config/')) {
             $result = file_put_contents(ROOT_JAWS_PATH . 'config/JawsConfig.php', $configString);
             if ($result) {
                 _log(JAWS_DEBUG,"Configuration file has been created/updated");

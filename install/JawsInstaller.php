@@ -55,7 +55,7 @@ class JawsInstaller
 
         $this->_stage_config = $config;
         /*
-        if (file_exists('data.ini')) {
+        if (Jaws_FileManagement_File::file_exists('data.ini')) {
             $this->_predefined = parse_ini_file('data.ini', true);
             $this->_isPredefined = true;
         }
@@ -141,7 +141,7 @@ class JawsInstaller
 
         foreach ($stages as $stage) {
             $file = 'stages/' . $stage['file'] . '.php';
-            if (!file_exists($file)) {
+            if (!Jaws_FileManagement_File::file_exists($file)) {
                 Jaws_Error::Fatal(
                     'The ' . $stage['name'] .
                     " stage couldn't be loaded, because " .

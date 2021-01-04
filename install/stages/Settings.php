@@ -212,7 +212,7 @@ class Installer_Settings extends JawsInstaller
             } else {
                 $installer = $objGadget->installer->load();
                 $input_schema = ROOT_JAWS_PATH. "install/stages/Settings/Sample/$gadget/insert.xml";
-                if (!file_exists($input_schema)) {
+                if (!Jaws_FileManagement_File::file_exists($input_schema)) {
                     $input_schema = '';
                 }
                 $res = $installer->InstallGadget($input_schema, $variables[$gadget]);
@@ -250,7 +250,7 @@ class Installer_Settings extends JawsInstaller
         // Copy Photo Organizer sample data
         $source = ROOT_JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';
         $destination = ROOT_DATA_PATH. 'phoo/'. $variables['Phoo']['folder-path']. '/';
-        if (Jaws_Utils::copy($source, $destination)) {
+        if (Jaws_FileManagement_File::copy($source, $destination)) {
             _log(JAWS_DEBUG, "Sample data of gadget Phoo copied successfully.");
         } else {
             _log(JAWS_DEBUG, "There was a problem while copying sample data of gadget Phoo");

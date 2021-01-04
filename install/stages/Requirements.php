@@ -304,7 +304,7 @@ class Installer_Requirements extends JawsInstaller
         foreach ($paths as $path) {
             $path = $basePath . $path;
             if ($properties == 'rw') {
-                if (!is_readable($path) || !Jaws_Utils::is_writable($path)) {
+                if (!is_readable($path) || !Jaws_FileManagement_File::is_writable($path)) {
                     return false;
                 }
             } else if ($properties == 'r') {
