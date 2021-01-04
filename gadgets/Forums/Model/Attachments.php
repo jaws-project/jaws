@@ -109,7 +109,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
         $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
         $result = $attachTable->delete()->where('id', $aid)->exec();
         if ($result && !empty($attachmentInfo['filename'])) {
-            $this->app->fileManagement::delete(ROOT_DATA_PATH . 'forums/' . $attachmentInfo['filename']);
+            Jaws_FileManagement_File::delete(ROOT_DATA_PATH . 'forums/' . $attachmentInfo['filename']);
         }
         return $result;
     }
@@ -127,7 +127,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
         $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
         $result = $attachTable->delete()->where('id', $aid)->exec();
         if ($result) {
-            $this->app->fileManagement::delete(ROOT_DATA_PATH . 'forums/' . $filename);
+            Jaws_FileManagement_File::delete(ROOT_DATA_PATH . 'forums/' . $filename);
         }
         return $result;
     }
@@ -147,7 +147,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
         if ($result) {
             foreach ($attachmentsInfo as $attachment) {
                 if (!empty($attachment['filename'])) {
-                    $this->app->fileManagement::delete(ROOT_DATA_PATH . 'forums/' . $attachment['filename']);
+                    Jaws_FileManagement_File::delete(ROOT_DATA_PATH . 'forums/' . $attachment['filename']);
                 }
             }
         }
