@@ -27,6 +27,7 @@ class Jaws_SharedSegment
     protected function __construct($ftok)
     {
         $this->ftok = $ftok;
+        $this->app = Jaws::getInstance();
     }
 
     /**
