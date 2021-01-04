@@ -1315,7 +1315,7 @@ class Jaws_User
 
         // rename avatar name
         if (isset($uData['avatar'])) {
-            $this->app->fileManagement::delete(AVATAR_PATH. $uData['avatar']);
+            Jaws_FileManagement_File::delete(AVATAR_PATH. $uData['avatar']);
             @rename(AVATAR_PATH. $user['avatar'],
                     AVATAR_PATH. $uData['avatar']);
         }
@@ -1484,14 +1484,14 @@ class Jaws_User
 
         if (array_key_exists('avatar', $pData)) {
             if (!empty($user['avatar'])) {
-                $this->app->fileManagement::delete(AVATAR_PATH. $user['avatar']);
+                Jaws_FileManagement_File::delete(AVATAR_PATH. $user['avatar']);
             }
 
             if (!empty($pData['avatar'])) {
-                $fileinfo = $this->app->fileManagement::pathinfo($pData['avatar']);
+                $fileinfo = Jaws_FileManagement_File::pathinfo($pData['avatar']);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                     $new_avatar = $user['username']. '.'. $fileinfo['extension'];
-                    $this->app->fileManagement::rename(
+                    Jaws_FileManagement_File::rename(
                         AVATAR_PATH. $pData['avatar'], AVATAR_PATH. $new_avatar
                     );
                     $pData['avatar'] = $new_avatar;
