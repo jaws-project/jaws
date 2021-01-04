@@ -186,7 +186,7 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         if (array_key_exists('avatar', $pData)) {
             if (!empty($user['avatar'])) {
-                Jaws_Utils::Delete(AVATAR_PATH. $user['avatar']);
+                $this->app->fileManagement::delete(AVATAR_PATH. $user['avatar']);
             }
 
             if (!empty($pData['avatar'])) {
