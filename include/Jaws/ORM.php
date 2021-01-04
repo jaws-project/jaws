@@ -644,11 +644,17 @@ class Jaws_ORM
      * @param   string  $column Column
      * @param   string  $value  Column value
      * @param   string  $opt    Operator condition
+     * @param   bool    $ignore Ignore this condition
      * @return  object  Jaws_ORM object
      */
-    function openWhere($column = '', $value = '', $opt = '=')
+    function openWhere($column = '', $value = '', $opt = '=', $ignore = false)
     {
         $this->_where[] = '(';
+
+        if ($ignore) {
+            return $this;
+        }
+
         if (!empty($column)) {
             $this->where($column, $value, $opt);
         }
@@ -663,15 +669,18 @@ class Jaws_ORM
      * @param   string  $column Column
      * @param   string  $value  Column value
      * @param   string  $opt    Operator condition
+     * @param   bool    $ignore Ignore this condition
      * @return  object  Jaws_ORM object
      */
-    function closeWhere($column = '', $value = '', $opt = '=')
+    function closeWhere($column = '', $value = '', $opt = '=', $ignore = false)
     {
-        if (!empty($column)) {
-            $this->where($column, $value, $opt);
-        } else {
-            if (in_array(end($this->_where), array(' and ', ' or '))) {
-                array_pop($this->_where);
+        if (!$ignore) {
+            if (!empty($column)) {
+                $this->where($column, $value, $opt);
+            } else {
+                if (in_array(end($this->_where), array(' and ', ' or '))) {
+                    array_pop($this->_where);
+                }
             }
         }
 
