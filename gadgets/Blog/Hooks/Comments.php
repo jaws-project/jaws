@@ -25,8 +25,7 @@ class Blog_Hooks_Comments extends Jaws_Gadget_Hook
             $pModel = $this->gadget->model->load('Posts');
             $post = $pModel->GetEntry($reference);
             if (!Jaws_Error::IsError($post) && !empty($post)) {
-                $uModel = new Jaws_User;
-                $author = $uModel->GetUser($post['user_id']);
+                $author = $this->app->users->GetUser($post['user_id']);
                 if (empty($author)) {
                     $author = array(
                         'name'     => '',
