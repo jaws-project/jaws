@@ -448,7 +448,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
                 // check new attachments file -- we must copy tmp files to correct location
                 if (is_array($attachment)) {
-                    $src_filepath = Jaws_Utils::upload_tmp_dir() . '/' . $attachment['filename'];
+                    $src_filepath = $this->app->fileManagement::upload_tmp_dir() . '/' . $attachment['filename'];
                     $dest_filepath = $pm_dir . $attachment['filename'];
 
                     if (!file_exists($src_filepath)) {
@@ -461,7 +461,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                         }
                     }
 
-                    $cres = Jaws_Utils::rename($src_filepath, $dest_filepath);
+                    $cres = $this->app->fileManagement::rename($src_filepath, $dest_filepath);
                     $this->app->fileManagement::delete($src_filepath);
 
                     if ($cres) {

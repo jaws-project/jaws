@@ -64,7 +64,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
     {
         $file_num = $this->gadget->request->fetch('attachment_number', 'post');
 
-        $file = $this->app->fileManagement::uploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
+        $file = $this->app->fileManagement::uploadFiles($_FILES, '', '', null);
         if (Jaws_Error::IsError($file)) {
             $response = array('type'    => 'error',
                 'message' => $file->getMessage());
