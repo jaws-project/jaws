@@ -146,6 +146,10 @@ class Jaws
         $this->define('', 'base', Jaws_Utils::getBaseURL('/'));
         $this->define('', 'requestedURL', Jaws_Utils::getRequestURL());
 
+        // Filesystem management
+        $this->fileManagement = Jaws_FileManagement::getInstance(
+            $this->registry->fetch('fm_driver', 'Settings')
+        );
         $this->map->init();
         $this->session->init();
         $this->acl->init($this->session->user->id, $this->session->user->groups);
