@@ -141,7 +141,7 @@ class XML_Feed extends XML_Parser
         }
 
         $serialized = serialize($this->ex_array_map('base64_encode', $this->feed));
-        if ($this->app->fileManagement::file_put_contents($cache_file, $serialized)) {
+        if (Jaws_FileManagement_File::file_put_contents($cache_file, $serialized)) {
             return true;
         } else {
             return $this->raiseError("Fail to save stream with file_put_contents('$cache_file',...).");

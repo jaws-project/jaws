@@ -157,7 +157,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $parser = new XML_Feed();
         $parser->cache_time = $site['cache_time'];
 
-        if ($this->app->fileManagement::is_writable(ROOT_DATA_PATH.'feedcache')) {
+        if (Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH.'feedcache')) {
             $parser->cache_dir = ROOT_DATA_PATH . 'feedcache';
         }
 
