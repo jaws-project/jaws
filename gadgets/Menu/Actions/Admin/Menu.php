@@ -322,7 +322,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
      */
     function UploadImage()
     {
-        $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png,bmp,ico');
+        $res = $this->app->fileManagement::uploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png,bmp,ico');
         if (Jaws_Error::IsError($res)) {
             $response = array('type'    => 'error',
                               'message' => $res->getMessage());

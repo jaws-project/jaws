@@ -35,7 +35,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         }
 
         if (isset($filename)) {
-            Jaws_Utils::Delete($filename);
+            $this->app->fileManagement::delete($filename);
         }
 
         $this->MoveMenu($mid, $mData['gid'], $mData['gid'], $mData['pid'], $mData['pid'], $mData['order'], null);
@@ -83,7 +83,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         }
 
         if (isset($filename)) {
-            Jaws_Utils::Delete($filename);
+            $this->app->fileManagement::delete($filename);
         }
 
         $this->MoveMenu(
