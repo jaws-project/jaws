@@ -34,8 +34,8 @@ class LinkDump_Actions_Feeds extends Jaws_Gadget_Action
         }
 
         ///FIXME we need to do more error checking over here
-        $this->app->fileManagement::file_put_contents($rss_path, $rss);
-        $this->app->fileManagement::chmod($rss_path);
+        Jaws_FileManagement_File::file_put_contents($rss_path, $rss);
+        Jaws_FileManagement_File::chmod($rss_path);
 
         return $rss;
     }
