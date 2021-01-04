@@ -517,7 +517,7 @@ class Jaws_FileManagement
             );
         }
 
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $ext = static::pathinfo($filename, PATHINFO_EXTENSION);
         foreach (JAWS_FILE_TYPE as $type) {
             if (array_key_exists($ext, $mime_types[$type])) {
                 return array(
