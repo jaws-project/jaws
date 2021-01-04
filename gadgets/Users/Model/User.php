@@ -190,16 +190,13 @@ class Users_Model_User extends Jaws_Gadget_Model
             }
 
             if (!empty($pData['avatar'])) {
-                $fileinfo = pathinfo($pData['avatar']);
+                $fileinfo = $this->app->fileManagement::pathinfo($pData['avatar']);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                    if (!in_array($fileinfo['extension'], array('gif','jpg','jpeg','png','svg'))) {
-                        return false;
-                    } else {
-                        $new_avatar = $user['username']. '.'. $fileinfo['extension'];
-                        @rename(Jaws_Utils::upload_tmp_dir(). '/'. $pData['avatar'],
-                                AVATAR_PATH. $new_avatar);
-                        $pData['avatar'] = $new_avatar;
-                    }
+                    $new_avatar = $user['username']. '.'. $fileinfo['extension'];
+                    $this->app->fileManagement::rename(
+                        AVATAR_PATH. $pData['avatar'], AVATAR_PATH. $new_avatar
+                    );
+                    $pData['avatar'] = $new_avatar;
                 }
             }
         }

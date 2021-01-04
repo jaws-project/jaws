@@ -374,7 +374,7 @@ class vCard implements Countable, Iterator
             {
                 $RawContent = base64_decode($RawContent);
             }
-            $Status = file_put_contents($TargetPath, $RawContent);
+            $Status = $this->app->fileManagement::file_put_contents($TargetPath, $RawContent);
             return (bool)$Status;
         }
         else

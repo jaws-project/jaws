@@ -432,14 +432,6 @@ $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
 );
-$admin_actions['LoadAvatar'] = array(
-    'standalone' => true,
-    'file' => 'Avatar',
-);
-$admin_actions['UploadAvatar'] = array(
-    'standalone' => true,
-    'file' => 'Avatar',
-);
 $admin_actions['GetUser'] = array(
     'standalone' => true,
     'file' => 'Users',
