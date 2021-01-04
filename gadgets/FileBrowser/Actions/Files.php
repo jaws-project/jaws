@@ -298,7 +298,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
             if (file_exists($filepath)) {
                 // increase download hits
                 $fModel->HitFileDownload($iFile['id']);
-                if ($this->app->fileManagement::download($filepath, $iFile['filename'])) {
+                if (Jaws_FileManagement_File::download($filepath, $iFile['filename'])) {
                     return;
                 }
 
