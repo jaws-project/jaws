@@ -78,7 +78,6 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
 
         $objDate = Jaws_Date::getInstance();
-        $usrModel = new Jaws_User;
         $startPostNumber = $limit * ($page - 1);
         $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
         foreach ($posts as $pnum => $post) {
@@ -112,7 +111,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             // user's avatar
             $tpl->SetVariable(
                 'avatar',
-                $usrModel->GetAvatar(
+                $this->app->users->GetAvatar(
                     $post['avatar'],
                     $post['email'],
                     80,
