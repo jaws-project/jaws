@@ -35,7 +35,7 @@ class Tms_Installer extends Jaws_Gadget_Installer
         }
 
         $theme_dir = ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR;
-        if (!Jaws_Utils::mkdir($theme_dir)) {
+        if (!$this->app->fileManagement::mkdir($theme_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $theme_dir));
         }
 
