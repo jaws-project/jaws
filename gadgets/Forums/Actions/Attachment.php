@@ -42,7 +42,7 @@ class Forums_Actions_Attachment extends Jaws_Gadget_Action
                     // do nothing
                 }
 
-                if (Jaws_Utils::Download($filepath, $attachment['title'])) {
+                if ($this->app->fileManagement::download($filepath, $attachment['title'])) {
                     return;
                 }
 
