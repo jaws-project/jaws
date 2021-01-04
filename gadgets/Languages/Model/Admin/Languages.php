@@ -43,7 +43,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                         return false;
                     }
 
-                    if (!Jaws_Utils::is_writable($jaws_lang_dir)) {
+                    if (!$this->app->fileManagement::is_writable($jaws_lang_dir)) {
                         $this->gadget->session->push(
                                             Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE'),
                                             RESPONSE_ERROR);
@@ -336,10 +336,10 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
 
         // Writable
         if(file_exists($data_file)) {
-            $writeable = Jaws_Utils::is_writable($data_file);
+            $writeable = $this->app->fileManagement::is_writable($data_file);
         } else {
             $this->app->fileManagement::mkdir(dirname($data_file), 3);
-            $writeable = Jaws_Utils::is_writable(dirname($data_file));
+            $writeable = $this->app->fileManagement::is_writable(dirname($data_file));
         }
 
         if (!$writeable) {

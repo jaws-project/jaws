@@ -39,7 +39,7 @@ class Languages_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
+        if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
@@ -61,7 +61,7 @@ class Languages_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (!Jaws_Utils::is_writable(ROOT_DATA_PATH)) {
+        if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
