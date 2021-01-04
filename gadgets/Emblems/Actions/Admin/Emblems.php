@@ -198,7 +198,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
     {
         $post = $this->gadget->request->fetch(array('title', 'url', 'type', 'published'), 'post');
         $post['url'] = Jaws_XSS::defilter($post['url']);
-        $res = Jaws_Utils::UploadFiles($_FILES, ROOT_DATA_PATH . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
+        $res = $this->app->fileManagement::uploadFiles($_FILES, ROOT_DATA_PATH . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
@@ -209,7 +209,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
             $model = $this->gadget->model->loadAdmin('Emblems');
             $res = $model->AddEmblem($post);
             if (Jaws_Error::IsError($res)) {
-                Jaws_Utils::delete(ROOT_DATA_PATH. 'emblems/'. $post['image']);
+                $this->app->fileManagement::delete(ROOT_DATA_PATH. 'emblems/'. $post['image']);
                 $this->gadget->session->push(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
             } else {
                 $this->gadget->session->push(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
