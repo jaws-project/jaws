@@ -145,7 +145,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($write) {
-            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH . 'xml')) {
+            if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH . 'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_ATOMFILE'));
             }
 
@@ -173,7 +173,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($write) {
-            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH . 'xml')) {
+            if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH . 'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_RSSFILE'));
             }
 
@@ -305,7 +305,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($writeToDisk) {
-            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH.'xml')) {
+            if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH.'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'));
             }
 
@@ -339,7 +339,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         if ($writeToDisk) {
-            if (!Jaws_Utils::is_writable(ROOT_DATA_PATH.'xml')) {
+            if (!$this->app->fileManagement::is_writable(ROOT_DATA_PATH.'xml')) {
                 return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'));
             }
 
