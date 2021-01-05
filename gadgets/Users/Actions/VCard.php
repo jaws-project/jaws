@@ -114,7 +114,7 @@ class Users_Actions_VCard extends Users_Actions_Default
                 );
             }
 
-            $inputVcards = @file_get_contents(
+            $inputVcards = Jaws_FileManagement_File::file_get_contents(
                 Jaws_FileManagement_File::upload_tmp_dir() . '/' . $res['file'][0]['host_filename']
             );
         } else {

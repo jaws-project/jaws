@@ -77,13 +77,13 @@ class vCard implements Countable, Iterator
         // In both cases the real content is put in $this -> RawData
         if ($Path)
         {
-            if (!is_readable($Path))
+            if (!Jaws_FileManagement_File::is_readable($Path))
             {
                 throw new Exception('vCard: Path not accessible ('.$Path.')');
             }
 
             $this -> Path = $Path;
-            $this -> RawData = file_get_contents($this -> Path);
+            $this -> RawData = Jaws_FileManagement_File::file_get_contents($this -> Path);
         }
         elseif ($RawData)
         {
