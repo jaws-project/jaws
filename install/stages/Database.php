@@ -36,7 +36,7 @@ class Installer_Database extends JawsInstaller
      */
     function Display()
     {
-        $jconfig = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'config/JawsConfig.php';
+        $jconfig = dirname(dirname(dirname(__FILE__))) . '/config/JawsConfig.php';
         if (Jaws_FileManagement_File::file_exists($jconfig)) {
             @include $jconfig;
         }
@@ -286,12 +286,7 @@ class Installer_Database extends JawsInstaller
         }
 
         if (!empty($post['path'])) {
-            if (DIRECTORY_SEPARATOR != '/') {
-                $post['path'] = str_replace('/', '\\', $post['path']);
-            }
-            if (substr($post['path'], -1) != DIRECTORY_SEPARATOR) {
-                $post['path'] .= DIRECTORY_SEPARATOR;
-            }
+            $post['path'] = rtrim($post['path'] = , "\\/"). '/';
         }
 
         $_SESSION['install']['Database'] = array(

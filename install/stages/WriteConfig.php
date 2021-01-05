@@ -61,7 +61,7 @@ class Installer_WriteConfig extends JawsInstaller
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
         $tpl->SetBlock('WriteConfig');
 
-        $config_path = ROOT_JAWS_PATH .'config'.DIRECTORY_SEPARATOR;
+        $config_path = ROOT_JAWS_PATH .'config/';
         $tpl->setVariable('lbl_info',                $this->t('CONFIG_INFO'));
         $tpl->setVariable('lbl_solution',            $this->t('CONFIG_SOLUTION'));
         $tpl->setVariable('lbl_solution_permission', $this->t('CONFIG_SOLUTION_PERMISSION', $config_path));

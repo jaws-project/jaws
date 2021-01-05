@@ -7,8 +7,8 @@
  * @copyright   2004-2020 Jaws Development Group
  */
 // Path where Jaws is installed
-define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR);
-define('JAWS_PATH', substr(dirname(__DIR__) . DIRECTORY_SEPARATOR, strlen(ROOT_PATH)));
+define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . '/');
+define('JAWS_PATH', substr(dirname(__DIR__) . '/', strlen(ROOT_PATH)));
 define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH);
 <!-- BEGIN data_path -->
 define('DATA_PATH', '{{data_path}}');
@@ -104,6 +104,6 @@ define('LOG_ACTIVATED', {{log_level}});
  */
 
 define('LOGGER_METHOD', 'LogToFile');
-define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
+define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/');
 define('LOGGER_METHOD_FILE_SIZE', 1048576); // 1MB
 <!-- END JawsConfig -->

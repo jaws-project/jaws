@@ -36,8 +36,8 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
     date_default_timezone_set('UTC');
 }
 
-define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR);
-define('JAWS_PATH', substr(dirname(__DIR__) . DIRECTORY_SEPARATOR, strlen(ROOT_PATH)));
+define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . '/');
+define('JAWS_PATH', substr(dirname(__DIR__) . '/', strlen(ROOT_PATH)));
 define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH);
 define('PEAR_PATH', ROOT_JAWS_PATH . 'libraries/pear/');
 
@@ -48,7 +48,7 @@ set_include_path('.' . PATH_SEPARATOR . ROOT_JAWS_PATH . 'libraries/pear');
 // data path
 define(
     'DATA_PATH',
-    isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : (JAWS_PATH . 'data' . DIRECTORY_SEPARATOR)
+    isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : (JAWS_PATH . 'data/')
 );
 define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
 // base data path
@@ -60,7 +60,7 @@ define('ROOT_BASE_DATA_PATH', ROOT_PATH . BASE_DATA_PATH);
 // themes data path
 define(
     'THEMES_PATH',
-    isset($_SESSION['THEMES_PATH'])? $_SESSION['THEMES_PATH'] : (DATA_PATH. 'themes'. DIRECTORY_SEPARATOR)
+    isset($_SESSION['THEMES_PATH'])? $_SESSION['THEMES_PATH'] : (DATA_PATH. 'themes/')
 );
 define('ROOT_THEMES_PATH', ROOT_PATH . THEMES_PATH);
 // themes base data path
@@ -72,11 +72,11 @@ define('ROOT_BASE_THEMES_PATH', ROOT_PATH . BASE_THEMES_PATH);
 // cache path
 define(
     'CACHE_PATH',
-    isset($_SESSION['CACHE_PATH'])? $_SESSION['CACHE_PATH'] : (DATA_PATH. 'cache'. DIRECTORY_SEPARATOR)
+    isset($_SESSION['CACHE_PATH'])? $_SESSION['CACHE_PATH'] : (DATA_PATH. 'cache/')
 );
 define('ROOT_CACHE_PATH', ROOT_PATH . CACHE_PATH);
 // install path
-define('INSTALL_PATH', __DIR__ . DIRECTORY_SEPARATOR);
+define('INSTALL_PATH', __DIR__ . '/');
 
 require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
@@ -88,7 +88,7 @@ require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
 // Initialize the logger
 $_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
 define('LOGGER_METHOD', 'LogToFile');
-define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
+define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/');
 require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
 $GLOBALS['log'] = new Jaws_Log($_SESSION['use_log']);
 $GLOBALS['log']->Start();
