@@ -82,7 +82,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
     {
         $xml_file = ROOT_DATA_PATH . 'sitemap/sitemap.xml';
         if (file_exists($xml_file)) {
-            if (false === $data = @file_get_contents($xml_file)) {
+            if (false === $data = Jaws_FileManagement_File::file_get_contents($xml_file)) {
                 return false;
             }
             return $data;
@@ -131,7 +131,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
     {
         $xml_file = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget). '/sitemap.xml';
         if (file_exists($xml_file)) {
-            if (false === $data = @file_get_contents($xml_file)) {
+            if (false === $data = Jaws_FileManagement_File::file_get_contents($xml_file)) {
                 return false;
             }
             return $data;
@@ -149,7 +149,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
     {
         $data_file = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget) . '/sitemap.bin';
         if (file_exists($data_file)) {
-            if (false === $data = @file_get_contents($data_file)) {
+            if (false === $data = Jaws_FileManagement_File::file_get_contents($data_file)) {
                 return array();
             }
             return unserialize($data);
