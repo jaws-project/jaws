@@ -24,7 +24,7 @@ class LinkDump_Actions_Feeds extends Jaws_Gadget_Action
         $rss_path = ROOT_DATA_PATH . 'xml/link-' . $gid . '.rss';
         if (file_exists($rss_path)) {
             ///FIXME we need to do more error checking over here
-            $rss = @file_get_contents($rss_path);
+            $rss = Jaws_FileManagement_File::file_get_contents($rss_path);
             return $rss;
         }
 
