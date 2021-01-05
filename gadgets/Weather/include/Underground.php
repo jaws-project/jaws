@@ -95,7 +95,7 @@ class Underground_Weather
      */
     function loadFile($cache_file)
     {
-        if (false === $data = @file_get_contents($cache_file)) {
+        if (false === $data = Jaws_FileManagement_File::file_get_contents($cache_file)) {
             return PEAR::raiseError("Fail to open '$cache_file', not found"); 
         }
 
