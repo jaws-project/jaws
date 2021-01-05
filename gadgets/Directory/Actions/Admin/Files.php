@@ -127,7 +127,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if (!file_exists($filename)) {
             return;
         }
-        return file_get_contents($filename);
+
+        return Jaws_FileManagement_File::file_get_contents($filename);
     }
 
     /**
@@ -170,7 +171,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if ($type === Directory_Info::FILE_TYPE_TEXT) {
             $filename = ROOT_DATA_PATH . 'directory/' . $file['host_filename'];
             if (file_exists($filename)) {
-                $tpl->SetVariable('text', file_get_contents($filename));
+                $tpl->SetVariable('text', Jaws_FileManagement_File::file_get_contents($filename));
             }
         } else {
             $tpl->SetVariable('url', $this->gadget->urlMap('Download', array('id' => $file['id'])));
