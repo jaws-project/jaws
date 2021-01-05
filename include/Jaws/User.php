@@ -1,5 +1,5 @@
 <?php
-define('AVATAR_PATH', ROOT_DATA_PATH. 'avatar'. DIRECTORY_SEPARATOR);
+define('AVATAR_PATH', ROOT_DATA_PATH. 'avatar/');
 
 /**
  * This class is for Jaws_User table operations

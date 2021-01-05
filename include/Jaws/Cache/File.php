@@ -77,10 +77,10 @@ class Jaws_Cache_File extends Jaws_Cache
         $ftime = @filemtime($file);
         if ((int)$ftime > time()) {
             if ($unserialize) {
-                return @unserialize(@file_get_contents($file));
+                return @unserialize(Jaws_FileManagement_File::file_get_contents($file));
             }
 
-            return @file_get_contents($file);
+            return Jaws_FileManagement_File::file_get_contents($file);
         }
 
         return false;

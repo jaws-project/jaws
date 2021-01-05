@@ -221,7 +221,7 @@ class Jaws_Log
     function LogToFile($logLevel, $file, $line, $msg)
     {
         if (!defined('LOGGER_METHOD_FILE_PATH')) {
-            define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
+            define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/');
         }
 
         $logfile = LOGGER_METHOD_FILE_PATH . ".jaws.$logLevel";

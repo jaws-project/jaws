@@ -409,7 +409,7 @@ class Jaws_FTP
                         continue;
                     }
 
-                    $result = $this->copy($source. DIRECTORY_SEPARATOR . $file);
+                    $result = $this->copy($source. '/' . $file);
                     if (Jaws_Error::IsError($result)) {
                         return $result;
                     }

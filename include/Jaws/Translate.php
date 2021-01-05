@@ -74,7 +74,7 @@ class Jaws_Translate
      */
     private function __construct($load_user_translated)
     {
-        $gDir = ROOT_JAWS_PATH . 'gadgets' . DIRECTORY_SEPARATOR;
+        $gDir = ROOT_JAWS_PATH . 'gadgets/';
         $gadgets = scandir($gDir);
         foreach ($gadgets as $gadget) {
             if ($gadget[0] == '.' || !is_dir($gDir . $gadget)) {
@@ -83,7 +83,7 @@ class Jaws_Translate
             self::$real_gadgets_module[strtoupper($gadget)] = $gadget;
         }
 
-        $pDir = ROOT_JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
+        $pDir = ROOT_JAWS_PATH . 'plugins/';
         $plugins = scandir($pDir);
         foreach ($plugins as $plugin) {
             if ($plugin[0] == '.' || !is_dir($pDir . $plugin)) {

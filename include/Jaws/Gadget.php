@@ -164,7 +164,7 @@ class Jaws_Gadget
     {
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
-        $this->path = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR . $gadget . DIRECTORY_SEPARATOR;
+        $this->path = ROOT_JAWS_PATH. 'gadgets/'. $gadget . '/';
         $this->app  = Jaws::getInstance();
     }
 

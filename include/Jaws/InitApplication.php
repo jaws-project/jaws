@@ -35,19 +35,19 @@ require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
 require ROOT_JAWS_PATH . 'include/Jaws/Error.php';
 
 if (!defined('ROOT_DATA_PATH')) {
-    define('ROOT_DATA_PATH', ROOT_JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
+    define('ROOT_DATA_PATH', ROOT_JAWS_PATH . 'data/');
 }
 if (!defined('JAWS_BASE_DATA')) {
     define('JAWS_BASE_DATA', ROOT_DATA_PATH);
 }
 if (!defined('JAWS_THEMES')) {
-    define('JAWS_THEMES', ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR);
+    define('JAWS_THEMES', ROOT_DATA_PATH. 'themes/');
 }
 if (!defined('JAWS_BASE_THEMES')) {
-    define('JAWS_BASE_THEMES', JAWS_BASE_DATA. 'themes'. DIRECTORY_SEPARATOR);
+    define('JAWS_BASE_THEMES', JAWS_BASE_DATA. 'themes/');
 }
 if (!defined('JAWS_CACHE_PATH')) {
-    define('JAWS_CACHE_PATH', ROOT_DATA_PATH. 'cache'. DIRECTORY_SEPARATOR);
+    define('JAWS_CACHE_PATH', ROOT_DATA_PATH. 'cache/');
 }
 
 if (!defined('JAWS_WIKI')) {
