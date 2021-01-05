@@ -295,12 +295,7 @@ class Upgrader_Database extends JawsUpgrader
         }
 
         if (!empty($post['path'])) {
-            if (DIRECTORY_SEPARATOR != '/') {
-                $post['path'] = str_replace('/', '\\', $post['path']);
-            }
-            if (substr($post['path'], -1) != DIRECTORY_SEPARATOR) {
-                $post['path'] .= DIRECTORY_SEPARATOR;
-            }
+            $post['path'] = rtrim($post['path'] = , "\\/"). '/';
         }
 
         $_SESSION['upgrade']['Database'] = array(

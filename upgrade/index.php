@@ -37,14 +37,14 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) {
     date_default_timezone_set('UTC');
 }
 
-require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config/JawsConfig.php';
+require dirname(__DIR__) . '/config/JawsConfig.php';
 if (!defined('ROOT_JAWS_PATH')) {
     // old jaws version lower than version 1.7
-    define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR);
-    define('JAWS_PATH_NEW', substr(realpath(JAWS_PATH) . DIRECTORY_SEPARATOR, strlen(ROOT_PATH)));
+    define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . '/');
+    define('JAWS_PATH_NEW', substr(realpath(JAWS_PATH) . '/', strlen(ROOT_PATH)));
     define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH_NEW);
 
-    define('DATA_PATH', JAWS_PATH_NEW . 'data' . DIRECTORY_SEPARATOR);
+    define('DATA_PATH', JAWS_PATH_NEW . 'data/');
     define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
 }
 
@@ -56,7 +56,7 @@ define('PEAR_PATH', ROOT_JAWS_PATH . 'libraries/pear/');
 set_include_path('.' . PATH_SEPARATOR . ROOT_JAWS_PATH . 'libraries/pear');
 // ROOT_DATA_PATH
 if (!defined('ROOT_DATA_PATH')) {
-    define('ROOT_DATA_PATH', ROOT_JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
+    define('ROOT_DATA_PATH', ROOT_JAWS_PATH . 'data/');
 } else {
     $_SESSION['JAWS_BASE_DATA'] = ROOT_DATA_PATH;
 }
@@ -68,7 +68,7 @@ if (!defined('JAWS_BASE_DATA')) {
 }
 // JAWS_THEMES
 if (!defined('JAWS_THEMES')) {
-    define('JAWS_THEMES', ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR);
+    define('JAWS_THEMES', ROOT_DATA_PATH. 'themes/');
 } else {
     $_SESSION['JAWS_THEMES'] = JAWS_THEMES;
 }
@@ -80,11 +80,11 @@ if (!defined('JAWS_BASE_THEMES')) {
 }
 // JAWS_CACHE
 if (!defined('JAWS_CACHE')) {
-    define('JAWS_CACHE', ROOT_DATA_PATH. 'cache'. DIRECTORY_SEPARATOR);
+    define('JAWS_CACHE', ROOT_DATA_PATH. 'cache/');
 } else {
     $_SESSION['JAWS_CACHE'] = JAWS_CACHE;
 }
-define('UPGRADE_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+define('UPGRADE_PATH', dirname(__FILE__) . '/');
 
 require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Error.php';
@@ -97,7 +97,7 @@ require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
 $_SESSION['use_log'] = isset($_SESSION['use_log'])? $_SESSION['use_log']: false;
 if (!defined('LOGGER_METHOD')) {
     define('LOGGER_METHOD', 'LogToFile');
-    define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/' . DIRECTORY_SEPARATOR);
+    define('LOGGER_METHOD_FILE_PATH', ROOT_DATA_PATH . 'logs/');
 }
 require ROOT_JAWS_PATH . 'include/Jaws/Log.php';
 $GLOBALS['log'] = new Jaws_Log($_SESSION['use_log']);
