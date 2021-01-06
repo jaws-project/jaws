@@ -1,0 +1,45 @@
+<div class="gadget_header">
+  <div class="row">
+    <div class="col-xs-12"><h2>{{ {{ "blog.favorite_posts" | t }} }}</h2></div>
+  </div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_content">
+    <div id="blog_posts_favorites" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+      {% for post in posts %}
+        <li data-target="#blog_posts_favorites"
+          data-slide-to="{{ forloop.index0 }}"
+          {{ forloop.index | equal: 0, class="active" }}
+        >
+        </li>
+      {% endfor %}
+      </ol>
+
+      <div class="carousel-inner">
+        {% for post in posts %}
+        <div class="item {{ forloop.index0 | equal: 0, 'active' }}">
+          <img class="blog_post_image"
+            src="{{ 'blog/images/' | append: post.image | dataURL }}" alt="{{ post.image }}"
+          />
+          <div class="carousel-caption">
+            <a href="{{ 'Blog' | urlmap: 'SingleView', 'id', post.fast_url }}"
+              title="{{ post.publishtime | date: 'DN d MN Y' }}">
+              {{ post.title }}
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <a class="left carousel-control" href="#blog_posts_favorites" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#blog_posts_favorites" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+    </div>
+
+  </div>
+</div>
+<div class="gadget_footer"></div>
