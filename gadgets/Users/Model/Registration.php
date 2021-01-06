@@ -60,8 +60,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $uData['status'] = $status;
         }
 
-        $jawsUser = $this->app->loadObject('Jaws_User');
-        $user = $jawsUser->AddUser($uData);
+        $user = $this->app->users->AddUser($uData);
         if (Jaws_Error::IsError($user)) {
             return $user;
         }
@@ -70,7 +69,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         $anon_group = (int)$this->gadget->registry->fetch('anon_group');
         if (!empty($anon_group)) {
-            $jawsUser->AddUserToGroup($user, $anon_group);
+            $this->app->users->AddUserToGroup($user, $anon_group);
             $uData['groups'] = array($anon_group => $anon_group);
         }
 

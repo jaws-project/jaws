@@ -77,8 +77,7 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             }
 
             // fetch user information from database
-            $userModel = $this->app->loadObject('Jaws_User');
-            $user = $userModel->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
+            $user = $this->app->users->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
             if (Jaws_Error::isError($user)) {
                 // increase bad logins count
                 $this->gadget->action->load('Login')->BadLogins($loginData['username'], 1);
@@ -86,13 +85,13 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             }
 
             // fetch user groups
-            $groups = $userModel->GetGroupsOfUser($user['id']);
+            $groups = $this->app->users->GetGroupsOfUser($user['id']);
             if (Jaws_Error::IsError($groups)) {
                 $groups = array();
             }
 
             $user['groups'] = $groups;
-            $user['avatar'] = $userModel->GetAvatar(
+            $user['avatar'] = $this->app->users->GetAvatar(
                 $user['avatar'],
                 $user['email'],
                 48,
