@@ -239,56 +239,17 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function FavoritePosts($limit = 0)
     {
-        $tpl = $this->gadget->template->load('FavoritePosts.html');
-        $tpl->SetBlock('favorite_posts');
-        $tpl->SetVariable('title', _t('BLOG_FAVORITE_POSTS'));
+        $this->SetTitle(_t('BLOG_FAVORITE_POSTS'));
 
-        $model = $this->gadget->model->load('Posts');
-        $entries = $model->GetFavoritePosts((int)$limit);
-        if (!Jaws_Error::IsError($entries)) {
-            $date = Jaws_Date::getInstance();
-            foreach ($entries as $index => $entry) {
-                $tpl->SetBlock('favorite_posts/item');
-
-                $tpl->SetVariablesArray($entry);
-                $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
-                $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
-                $tpl->SetVariable('url', $perm_url);
-                $tpl->SetVariable('summary', $this->gadget->plugin->parse($entry['summary']));
-
-                $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
-                $tpl->SetVariable(
-                    'author-url',
-                    $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username']))
-                );
-                $tpl->SetVariable('post_id', $entry['id']);
-                $tpl->SetVariable('post_index', $index);
-                $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
-                $tpl->SetVariable('createtime',           $date->Format($entry['publishtime']));
-                $tpl->SetVariable('createtime-monthname', $date->Format($entry['publishtime'], 'MN'));
-                $tpl->SetVariable('createtime-monthabbr', $date->Format($entry['publishtime'], 'M'));
-                $tpl->SetVariable('createtime-month',     $date->Format($entry['publishtime'], 'm'));
-                $tpl->SetVariable('createtime-dayname',   $date->Format($entry['publishtime'], 'DN'));
-                $tpl->SetVariable('createtime-dayabbr',   $date->Format($entry['publishtime'], 'D'));
-                $tpl->SetVariable('createtime-day',       $date->Format($entry['publishtime'], 'd'));
-                $tpl->SetVariable('createtime-year',      $date->Format($entry['publishtime'], 'Y'));
-                $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'g:ia'));
-                $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
-
-                if(empty($entry['image'])) {
-                    $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
-                    $tpl->SetVariable('url_image', 'data:image/png;base64,');
-                } else {
-                    $tpl->SetVariable('image', $entry['image']);
-                    $tpl->SetVariable('url_image', $this->app->getDataURL(). 'blog/images/'. $entry['image']);
-                }
-
-                $tpl->ParseBlock('favorite_posts/item');
-            }
+        $posts = $this->gadget->model->load('Posts')->GetFavoritePosts((int)$limit);
+        if (Jaws_Error::IsError($posts) || empty($posts)) {
+            return false;
         }
 
-        $tpl->ParseBlock('favorite_posts');
-        return $tpl->Get();
+        $assigns = array();
+        $assigns['posts'] = $posts;
+
+        return $this->gadget->template->xLoad('FavoritePosts.html')->render($assigns);
     }
 
     /**
