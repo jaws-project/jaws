@@ -186,13 +186,25 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     }
 
     /**
-     * is directory writable?
+     * Tells whether the filename is writable
      *
      * @access  public
-     * @param   string  $path directory path
-     * @return  bool    True/False
+     * @param   string  $filename   The filename being checked
+     * @return  bool    Returns TRUE if the filename exists and iswritable, FALSE otherwise
      */
-    static function is_writable($path)
+    static function is_writable($filename)
+    {
+        return true;
+    }
+
+    /**
+     * Tells whether a file exists and is readable
+     *
+     * @access  public
+     * @param   string  $filename   Path to the file
+     * @return  bool    Returns TRUE if the file or directory exists and is readable, FALSE otherwise
+     */
+    static function is_readable($filename)
     {
         return true;
     }

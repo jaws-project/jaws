@@ -51,37 +51,50 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
     }
 
     /**
-     * is directory writable?
+     * Tells whether the filename is writable
      *
      * @access  public
-     * @param   string  $path directory path
-     * @return  bool    True/False
+     * @param   string  $filename   The filename being checked
+     * @return  bool    Returns TRUE if the filename exists and iswritable, FALSE otherwise
      */
-    static function is_writable($path)
+    static function is_writable($filename)
     {
         clearstatcache();
-        $path = rtrim($path, "\\/");
-        if (!file_exists($path)) {
+        $filename = rtrim($filename, "\\/");
+        if (!file_exists($filename)) {
             return false;
         }
 
         /* Take care of the safe mode limitations if safe_mode=1 */
         if (ini_get('safe_mode')) {
-            if (is_dir($path)) {
-                $tmpdir = $path.'/'. uniqid(mt_rand());
+            if (is_dir($filename)) {
+                $tmpdir = $filename.'/'. uniqid(mt_rand());
                 if (!self::mkdir($tmpdir)) {
                     return false;
                 }
                 return self::delete($tmpdir);
             } else {
-                if (false === $file = @fopen($path, 'r+')) {
+                if (false === $file = @fopen($filename, 'r+')) {
                     return false;
                 }
                 return fclose($file);
             }
         }
 
-        return is_writeable($path);
+        return is_writeable($filename);
+    }
+
+    /**
+     * Tells whether a file exists and is readable
+     *
+     * @access  public
+     * @param   string  $filename   Path to the file
+     * @return  bool    Returns TRUE if the file or directory exists and is readable, FALSE otherwise
+     */
+    static function is_readable($filename)
+    {
+        clearstatcache();
+        return is_readable($filename);
     }
 
     /**
