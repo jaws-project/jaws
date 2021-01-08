@@ -28,7 +28,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
         static $gadgetsList;
         if (!isset($gadgetsList)) {
             $gadgetsList = array();
-            $gDir = ROOT_JAWS_PATH . 'gadgets' . DIRECTORY_SEPARATOR;
+            $gDir = ROOT_JAWS_PATH . 'gadgets/';
             if (!is_dir($gDir)) {
                 Jaws_Error::Fatal('The gadgets directory does not exists!', __FILE__, __LINE__);
             }
