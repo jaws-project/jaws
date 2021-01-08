@@ -279,7 +279,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $mail->SetBody($message, array('format' => $format));
         if (!empty($attachment)) {
             $attachment = Jaws_FileManagement_File::upload_tmp_dir() . '/' . $attachment;
-            if (file_exists($attachment)) {
+            if (Jaws_FileManagement_File::file_exists($attachment)) {
                 $mail->SetBody($attachment, array('format' => 'file'));
                 Jaws_FileManagement_File::delete($attachment);
             }
