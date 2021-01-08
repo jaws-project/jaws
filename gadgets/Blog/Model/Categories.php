@@ -62,7 +62,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
         $cat = $catTable->fetchRow();
         if(!Jaws_Error::IsError($cat)) {
             $image_path = $this->GetCategoryLogoPath($id);
-            if(file_exists($image_path)) {
+            if(Jaws_FileManagement_File::file_exists($image_path)) {
                 $cat['image_url'] = $this->GetCategoryLogoURL($id);
             } else {
                 $cat['image_url'] = $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
