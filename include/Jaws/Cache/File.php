@@ -74,7 +74,7 @@ class Jaws_Cache_File extends Jaws_Cache
     function get($key, $unserialize = false)
     {
         $file = $this->cacheDirectory . $this->cachePrefix. $key;
-        $ftime = @filemtime($file);
+        $ftime = (int)Jaws_FileManagement_File::filemtime($file);
         if ((int)$ftime > time()) {
             if ($unserialize) {
                 return @unserialize(Jaws_FileManagement_File::file_get_contents($file));
@@ -109,7 +109,7 @@ class Jaws_Cache_File extends Jaws_Cache
     function exists($key)
     {
         $file = $this->cacheDirectory . $this->cachePrefix. $key;
-        $ftime = @filemtime($file);
+        $ftime = (int)Jaws_FileManagement_File::filemtime($file);
         if ((int)$ftime > time()) {
             return true;
         }
@@ -129,7 +129,7 @@ class Jaws_Cache_File extends Jaws_Cache
             if ($hDir = opendir($this->cacheDirectory)) {
                 while (($fname = readdir($hDir)) !== false) {
                     if (@is_file($this->cacheDirectory . $fname)) {
-                        $ftime = @filemtime($this->cacheDirectory . $fname);
+                        $ftime = (int)Jaws_FileManagement_File::filemtime($this->cacheDirectory . $fname);
                         if ((int)$ftime < time()) {
                             Jaws_FileManagement_File::delete($this->cacheDirectory . $fname);
                         }
