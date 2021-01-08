@@ -34,7 +34,7 @@ class Tms_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
-        $theme_dir = ROOT_DATA_PATH. 'themes'. DIRECTORY_SEPARATOR;
+        $theme_dir = ROOT_DATA_PATH. 'themes/';
         if (!Jaws_FileManagement_File::mkdir($theme_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $theme_dir));
         }

@@ -162,7 +162,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UploadTheme');
 
-        $res = Jaws_FileManagement_File::extractFiles($_FILES, ROOT_DATA_PATH . 'themes' . DIRECTORY_SEPARATOR, false);
+        $res = Jaws_FileManagement_File::extractFiles($_FILES, ROOT_DATA_PATH . 'themes/', false);
         if (!Jaws_Error::IsError($res)) {
             $this->gadget->session->push(_t('TMS_THEME_UPLOADED'), RESPONSE_NOTICE);
         } else {
