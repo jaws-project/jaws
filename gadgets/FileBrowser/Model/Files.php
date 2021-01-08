@@ -117,7 +117,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         $file['mini_icon'] = 'gadgets/FileBrowser/Resources/images/mini_file.png';
 
         //Get $date
-        $file['date'] = Jaws_FileManagement_File::filemtime($filepath);
+        $file['date'] = (int)Jaws_FileManagement_File::filemtime($filepath);
 
         //Set the file size
         $file['size'] = Jaws_Utils::FormatSize(Jaws_FileManagement_File::filesize($filepath));

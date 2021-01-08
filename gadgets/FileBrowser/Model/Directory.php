@@ -101,7 +101,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $dir['fullpath'] = $filepath;
 
         //Get $date
-        $dir['date'] = Jaws_FileManagement_File::filemtime($filepath);
+        $dir['date'] = (int)Jaws_FileManagement_File::filemtime($filepath);
 
         //Set the curr dir name
         $dir['dirname'] = $path;
