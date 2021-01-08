@@ -190,7 +190,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $uploaddir = $fModel->GetFileBrowserRootDir() . $post['path'];
 
         require_once PEAR_PATH. 'File/Util.php';
-        $uploaddir = File_Util::realpath($uploaddir) . DIRECTORY_SEPARATOR;
+        $uploaddir = File_Util::realpath($uploaddir) . '/';
 
         if (!File_Util::pathInRoot($uploaddir, $fModel->GetFileBrowserRootDir())) {
             $this->gadget->session->push(Jaws::t('ERROR_UPLOAD'), RESPONSE_ERROR);
