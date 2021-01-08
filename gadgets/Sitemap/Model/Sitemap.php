@@ -81,7 +81,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
     function GetSitemapXML()
     {
         $xml_file = ROOT_DATA_PATH . 'sitemap/sitemap.xml';
-        if (file_exists($xml_file)) {
+        if (Jaws_FileManagement_File::file_exists($xml_file)) {
             if (false === $data = Jaws_FileManagement_File::file_get_contents($xml_file)) {
                 return false;
             }
@@ -95,7 +95,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
         $gadgets = $this->GetAvailableSitemapGadgets();
         foreach ($gadgets as $gadget) {
             $gadget_xml_file = ROOT_DATA_PATH. 'sitemap/'. strtolower($gadget['name']). '/sitemap.xml';
-            if (file_exists($gadget_xml_file)) {
+            if (Jaws_FileManagement_File::file_exists($gadget_xml_file)) {
                 $tpl->SetBlock('xml/item');
                 $tpl->SetVariable(
                     'loc',
@@ -105,7 +105,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
                         array('absolute' => true)
                     )
                 );
-                $tpl->SetVariable('lastmod', $date->ToISO(filemtime($gadget_xml_file)));
+                $tpl->SetVariable('lastmod', $date->ToISO(Jaws_FileManagement_File::filemtime($gadget_xml_file)));
                 $tpl->ParseBlock('xml/item');
             }
 
@@ -130,7 +130,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
     function GetGadgetSitemapXML($gadget)
     {
         $xml_file = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget). '/sitemap.xml';
-        if (file_exists($xml_file)) {
+        if (Jaws_FileManagement_File::file_exists($xml_file)) {
             if (false === $data = Jaws_FileManagement_File::file_get_contents($xml_file)) {
                 return false;
             }
@@ -148,7 +148,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
     function GetSitemapData($gadget)
     {
         $data_file = ROOT_DATA_PATH . 'sitemap/'. strtolower($gadget) . '/sitemap.bin';
-        if (file_exists($data_file)) {
+        if (Jaws_FileManagement_File::file_exists($data_file)) {
             if (false === $data = Jaws_FileManagement_File::file_get_contents($data_file)) {
                 return array();
             }

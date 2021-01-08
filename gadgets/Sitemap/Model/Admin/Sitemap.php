@@ -231,8 +231,8 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
 
         // remove Main sitemap.xml cached file
         $xml_file = ROOT_DATA_PATH . 'sitemap/sitemap.xml';
-        if (file_exists($xml_file)) {
-            @unlink($xml_file);
+        if (Jaws_FileManagement_File::file_exists($xml_file)) {
+            Jaws_FileManagement_File::delete($xml_file);
         }
 
         // Change gadget update time
