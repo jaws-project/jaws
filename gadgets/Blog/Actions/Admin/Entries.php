@@ -268,7 +268,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         if (count($_FILES) > 0 && !empty($_FILES['image_file']['name'])) {
             $res = Jaws_FileManagement_File::uploadFiles(
                 $_FILES,
-                ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
+                ROOT_DATA_PATH . 'blog/images/',
                 'jpg,gif,png,jpeg,bmp',
                 false
             );
@@ -627,7 +627,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         if ($post['deleteImage'] == 'false') {
             $image = null;
             if (count($_FILES) > 0 && !empty($_FILES['image_file']['name'])) {
-                $targetDir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+                $targetDir = ROOT_DATA_PATH . 'blog/images/';
                 $res = Jaws_FileManagement_File::uploadFiles(
                     $_FILES,
                     $targetDir,
@@ -654,7 +654,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             $model = $this->gadget->model->load('Posts');
             $blogEntry = $model->GetEntry($id);
             if (!empty($blogEntry['image'])) {
-                $targetDir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+                $targetDir = ROOT_DATA_PATH . 'blog/images/';
                 Jaws_FileManagement_File::delete($targetDir . $blogEntry['image']);
             }
         }

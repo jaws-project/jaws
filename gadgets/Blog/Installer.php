@@ -70,17 +70,17 @@ class Blog_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
-        $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images';
+        $new_dir = ROOT_DATA_PATH . 'blog/images';
         if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
-        $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'categories';
+        $new_dir = ROOT_DATA_PATH . 'blog/categories';
         if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
-        $new_dir = ROOT_DATA_PATH . 'xml' . DIRECTORY_SEPARATOR;
+        $new_dir = ROOT_DATA_PATH . 'xml/';
         if (!Jaws_FileManagement_File::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
@@ -189,7 +189,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->delete('comment_status');
             $this->gadget->registry->insert('recommended', ',Comments,Tags,');
 
-            $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'images';
+            $new_dir = ROOT_DATA_PATH . 'blog/images';
             if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
                 return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
             }
@@ -206,7 +206,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             // registry keys
             $this->gadget->registry->insert('category_image_size', '128x128');
             // make directories
-            $new_dir = ROOT_DATA_PATH . 'blog' . DIRECTORY_SEPARATOR . 'categories';
+            $new_dir = ROOT_DATA_PATH . 'blog/categories';
             if (!Jaws_FileManagement_File::mkdir($new_dir, 1)) {
                 return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
             }
