@@ -263,7 +263,7 @@ class Underground_Weather
     function getWeather($latitude, $longitude)
     {
         $cache_file = $this->_cache_dir . '/weather_' . md5($latitude. '_'. $longitude);
-        $timedif = time() - (file_exists($cache_file)? @filemtime($cache_file) : 0);
+        $timedif = time() - Jaws_FileManagement_File::filemtime($cache_file);
         if (!empty($this->_cache_dir) && ($timedif < $this->_expire_time)) {
             //cache file is fresh
             $data = $this->loadFile($cache_file);
