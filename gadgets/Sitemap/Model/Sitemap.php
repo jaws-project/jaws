@@ -105,7 +105,9 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
                         array('absolute' => true)
                     )
                 );
-                $tpl->SetVariable('lastmod', $date->ToISO(Jaws_FileManagement_File::filemtime($gadget_xml_file)));
+                $tpl->SetVariable('lastmod', $date->ToISO(
+                    (int)Jaws_FileManagement_File::filemtime($gadget_xml_file))
+                );
                 $tpl->ParseBlock('xml/item');
             }
 
