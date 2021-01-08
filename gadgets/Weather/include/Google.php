@@ -223,7 +223,7 @@ class Google_Weather
     function getWeather($latitude, $longitude)
     {
         $cache_file = $this->_cache_dir . '/weather_' . md5($latitude. '_'. $longitude);
-        $timedif = time() - Jaws_FileManagement_File::filemtime($cache_file);
+        $timedif = time() - (int)Jaws_FileManagement_File::filemtime($cache_file);
         if (!empty($this->_cache_dir) && ($timedif < $this->_expire_time)) {
             //cache file is fresh
             $data = $this->loadFile($cache_file);
