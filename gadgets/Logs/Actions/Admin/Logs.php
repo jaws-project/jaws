@@ -366,9 +366,9 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             return;
         }
 
-        $tmpDir = sys_get_temp_dir();
+        $tmpDir = sys_get_temp_dir() . '/';
         $tmpCSVFileName = uniqid(rand(), true) . '.csv';
-        $fp = fopen($tmpDir . DIRECTORY_SEPARATOR . $tmpCSVFileName, 'w');
+        $fp = fopen($tmpDir . $tmpCSVFileName, 'w');
 
         $date = Jaws_Date::getInstance();
         foreach ($logs as $log) {
@@ -391,9 +391,9 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 
         require_once PEAR_PATH. 'File/Archive.php';
         $tmpFileName = uniqid(rand(), true) . '.tar.gz';
-        $tmpArchiveName = $tmpDir. DIRECTORY_SEPARATOR. $tmpFileName;
+        $tmpArchiveName = $tmpDir . $tmpFileName;
         $writerObj = File_Archive::toFiles();
-        $src = File_Archive::read($tmpDir . DIRECTORY_SEPARATOR . $tmpCSVFileName);
+        $src = File_Archive::read($tmpDir . $tmpCSVFileName);
         $dst = File_Archive::toArchive($tmpArchiveName, $writerObj);
         $res = File_Archive::extract($src, $dst);
         if (!PEAR::isError($res)) {
