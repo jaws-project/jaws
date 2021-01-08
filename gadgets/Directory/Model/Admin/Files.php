@@ -260,7 +260,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         // Delete from disk
         if (!$data['is_dir']) {
             $filename = ROOT_DATA_PATH . 'directory/' . $data['host_filename'];
-            if (file_exists($filename)) {
+            if (Jaws_FileManagement_File::file_exists($filename)) {
                 if (!Jaws_FileManagement_File::delete($filename)) {
                     return false;
                 }
@@ -269,7 +269,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             // delete thumbnail file
             $fileInfo = Jaws_FileManagement_File::pathinfo($filename);
             $thumbnailPath = ROOT_DATA_PATH . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
-            if (file_exists($thumbnailPath)) {
+            if (Jaws_FileManagement_File::file_exists($thumbnailPath)) {
                 if (!Jaws_FileManagement_File::delete($thumbnailPath)) {
                     return false;
                 }

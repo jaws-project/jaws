@@ -474,7 +474,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         // Check for file existence
         $filename = ROOT_DATA_PATH . 'directory/' . $file['host_filename'];
-        if (!file_exists($filename)) {
+        if (!Jaws_FileManagement_File::file_exists($filename)) {
             return Jaws_HTTPError::Get(404);
         }
 

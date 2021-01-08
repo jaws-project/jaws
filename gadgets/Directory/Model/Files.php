@@ -155,7 +155,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $thumbnailURL = '';
         if (!is_null($filename) && $filename !== '') {
             $thumbnail = "directory/$filename.thumbnail.png";
-            if (file_exists(ROOT_DATA_PATH . $thumbnail)) {
+            if (Jaws_FileManagement_File::file_exists(ROOT_DATA_PATH . $thumbnail)) {
                 $thumbnailURL = $this->app->getDataURL($thumbnail);
             }
         }

@@ -124,7 +124,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             return;
         }
         $filename = ROOT_DATA_PATH . 'directory/' . $file['host_filename'];
-        if (!file_exists($filename)) {
+        if (!Jaws_FileManagement_File::file_exists($filename)) {
             return;
         }
 
@@ -170,7 +170,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetBlock($block);
         if ($type === Directory_Info::FILE_TYPE_TEXT) {
             $filename = ROOT_DATA_PATH . 'directory/' . $file['host_filename'];
-            if (file_exists($filename)) {
+            if (Jaws_FileManagement_File::file_exists($filename)) {
                 $tpl->SetVariable('text', Jaws_FileManagement_File::file_get_contents($filename));
             }
         } else {
