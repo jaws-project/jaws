@@ -127,7 +127,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
 
         // Create directories
         $uploaddir = ROOT_DATA_PATH . 'phoo/' . date('Y_m_d') . '/';
-        if (!is_dir($uploaddir)) {
+        if (!Jaws_FileManagement_File::is_dir($uploaddir)) {
             if (!Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH . 'phoo/')) {
                 $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
@@ -146,7 +146,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         }
 
         $filename = $files['name'];
-        if (file_exists($uploaddir.$files['name'])) {
+        if (Jaws_FileManagement_File::file_exists($uploaddir.$files['name'])) {
             $filename = time() . '_' . $files['name'];
         }
 
@@ -217,7 +217,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $createtime = Jaws_DB::getInstance()->date();
         if (function_exists('exif_read_data') &&
             (preg_match("/\.jpg$|\.jpeg$/i", $files['name'])) &&
-            ($exifData = @exif_read_data($uploadfile, 1, true))
+            ($exifData = Jaws_FileManagement_File::exif_read_data($uploadfile, 1, true))
             && !empty($exifData['IFD0']['DateTime']) && $jDate->ValidDBDate($exifData['IFD0']['DateTime']))
         {
             $aux        = explode(' ', $exifData['IFD0']['DateTime']);

@@ -50,7 +50,7 @@ class Phoo_Model_Admin_Upload extends Jaws_Gadget_Model
 
             $ext = strtolower(ltrim($ext, '.'));
             if (File_Archive::isKnownExtension($ext)) {
-                $tmpArchiveName = $tmpDir . DIRECTORY_SEPARATOR . $file['name'];
+                $tmpArchiveName = $tmpDir . '/' . $file['name'];
                 if (!move_uploaded_file($file['tmp_name'], $tmpArchiveName)) {
                     continue;
                 }
@@ -59,7 +59,7 @@ class Phoo_Model_Admin_Upload extends Jaws_Gadget_Model
                 $source = File_Archive::readArchive($ext, $reader);
                 if (!PEAR::isError($source)) {
                     while ($source->next()) {
-                        $destFile   = $tmpDir . DIRECTORY_SEPARATOR . basename($source->getFilename());
+                        $destFile   = $tmpDir . '/' . basename($source->getFilename());
                         $sourceFile = $tmpArchiveName . '/' . $source->getFilename();
                         $extract    = File_Archive::extract($sourceFile, $tmpDir);
                         if (PEAR::IsError($extract)) {
