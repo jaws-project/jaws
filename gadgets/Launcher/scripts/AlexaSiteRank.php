@@ -107,7 +107,7 @@ function AlexaSiteRank()
 
     $url = Jaws::getInstance()->getSiteURL('/');
     $file = $cache_dir . 'alexarank_' . md5($url);
-    $timedif = time() - Jaws_FileManagement_File::filemtime($file);
+    $timedif = time() - (int)Jaws_FileManagement_File::filemtime($file);
 
     $objAlexaRank = new AlexaRank();
     if ($timedif < 43200) { // a half day

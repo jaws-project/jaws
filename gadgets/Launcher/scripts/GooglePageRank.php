@@ -192,7 +192,7 @@ function GooglePageRank()
 
     $url = Jaws::getInstance()->getSiteURL('/');
     $file = $cache_dir . 'rank_' . md5($url);
-    $timedif = time() - Jaws_FileManagement_File::filemtime($file);
+    $timedif = time() - (int)Jaws_FileManagement_File::filemtime($file);
 
     $gRank = new PageRank();
     if ($timedif < 604800) { // a week
