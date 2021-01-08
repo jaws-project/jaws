@@ -246,6 +246,6 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         }
 
         $rss_path = ROOT_DATA_PATH . 'xml/link-' . $gid . '.rss';
-        return @unlink($rss_path);
+        return Jaws_FileManagement_File::delete($rss_path);
     }
 }
