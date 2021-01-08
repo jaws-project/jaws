@@ -51,6 +51,19 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
     }
 
     /**
+     * Gets file modification time
+     *
+     * @access  public
+     * @param   string  $filename   Path to the file
+     * @return  mixed   Returns the time the file was last modified, or FALSE on failure
+     * @see     http://www.php.net/filemtime
+     */
+    static function filemtime($filename)
+    {
+        return @filemtime($filename);
+    }
+
+    /**
      * Tells whether the filename is writable
      *
      * @access  public

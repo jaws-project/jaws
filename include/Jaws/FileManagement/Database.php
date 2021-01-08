@@ -186,6 +186,40 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     }
 
     /**
+     * Gets file modification time
+     *
+     * @access  public
+     * @param   string  $filename   Path to the file
+     * @return  mixed   Returns the time the file was last modified, or FALSE on failure
+     * @see     http://www.php.net/filemtime
+     */
+    static function filemtime($filename)
+    {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
+        $path = dirname($filename);
+        $name = basename($filename);
+        $hash_path = hash64($path);
+        $hash_name = hash64($name);
+
+        $time = Jaws_ORM::getInstance()
+            ->table('dbfs')
+            ->select('time:integer')
+            ->where('hash_path', $hash_path)
+            ->and()
+            ->where('hash_name', $hash_name)
+            ->and()
+            ->where('path', $path)
+            ->and()
+            ->where('name', $name)
+            ->fetchOne();
+
+        return Jaws_Error::IsError($time)? false : $time;
+    }
+
+    /**
      * Tells whether the filename is writable
      *
      * @access  public
