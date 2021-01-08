@@ -443,7 +443,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         // Insert attachments info
         if (!empty($messageData['attachments']) && count($messageData['attachments']) > 0) {
             $maData = array();
-            $pm_dir = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR;
+            $pm_dir = ROOT_DATA_PATH . 'pm/attachments/';
             foreach ($messageData['attachments'] as $attachment) {
 
                 // check new attachments file -- we must copy tmp files to correct location
@@ -451,11 +451,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     $src_filepath = Jaws_FileManagement_File::upload_tmp_dir() . '/' . $attachment['filename'];
                     $dest_filepath = $pm_dir . $attachment['filename'];
 
-                    if (!file_exists($src_filepath)) {
+                    if (!Jaws_FileManagement_File::file_exists($src_filepath)) {
                         continue;
                     }
 
-                    if (!file_exists($pm_dir)) {
+                    if (!Jaws_FileManagement_File::file_exists($pm_dir)) {
                         if (!Jaws_FileManagement_File::mkdir($pm_dir)) {
                             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', ROOT_DATA_PATH));
                         }

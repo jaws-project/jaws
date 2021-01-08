@@ -41,8 +41,8 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
 
         $attachment = $aModel->GetAttachment($rqst['aid'], $rqst['mid']);
         if (!empty($attachment)) {
-            $filepath = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR . $attachment['filename'];
-            if (file_exists($filepath)) {
+            $filepath = ROOT_DATA_PATH . 'pm/attachments/' . $attachment['filename'];
+            if (Jaws_FileManagement_File::file_exists($filepath)) {
                 if (Jaws_FileManagement_File::download($filepath, $attachment['title'], $attachment['filetype'])) {
                     return;
                 }
