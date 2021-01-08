@@ -164,7 +164,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
             $fromstrings = parse_ini_file($from_file, false, INI_SCANNER_RAW);
         }
 
-        if (file_exists($data_file)) {
+        if (Jaws_FileManagement_File::file_exists($data_file)) {
             $strings = array_merge($strings, parse_ini_file($data_file, false, INI_SCANNER_RAW));
         }
 
@@ -335,7 +335,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         }
 
         // Writable
-        if(file_exists($data_file)) {
+        if(Jaws_FileManagement_File::file_exists($data_file)) {
             $writeable = Jaws_FileManagement_File::is_writable($data_file);
         } else {
             Jaws_FileManagement_File::mkdir(dirname($data_file), 3);
