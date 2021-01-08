@@ -82,7 +82,7 @@ class XML_Feed extends XML_Parser
         $this->feedFree();
         if (!empty($this->cache_dir) && $this->cache_time!=0) { // cache enabled?
             $cache_file = $this->cache_dir . '/feed_' . md5($feed_url);
-            $timedif = time() - Jaws_FileManagement_File::filemtime($cache_file);
+            $timedif = time() - (int)Jaws_FileManagement_File::filemtime($cache_file);
             if ($timedif < $this->cache_time) { // is cached file fresh?
                 $this->loadFile($cache_file);
             } else {
