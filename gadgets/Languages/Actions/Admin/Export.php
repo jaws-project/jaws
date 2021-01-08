@@ -23,7 +23,7 @@ class Languages_Actions_Admin_Export extends Jaws_Gadget_Action
         require_once PEAR_PATH. 'File/Archive.php'; 
         $tmpDir = sys_get_temp_dir();
         $tmpFileName = "$lang.tar";
-        $tmpArchiveName = $tmpDir. DIRECTORY_SEPARATOR. $tmpFileName;
+        $tmpArchiveName = $tmpDir. '/'. $tmpFileName;
         $writerObj = File_Archive::toFiles();
         $src = File_Archive::read(ROOT_DATA_PATH. "languages/$lang", $lang);
         $dst = File_Archive::toArchive($tmpArchiveName, $writerObj);

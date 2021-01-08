@@ -35,7 +35,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                     $use_data_lang = $this->gadget->registry->fetch('use_data_lang') == 'true';
                     $jaws_lang_dir = ($use_data_lang? ROOT_DATA_PATH : ROOT_JAWS_PATH) . "languages";
 
-                    $lang_dir = $jaws_lang_dir. DIRECTORY_SEPARATOR. $lang_code;
+                    $lang_dir = $jaws_lang_dir. '/'. $lang_code;
                     if (!Jaws_FileManagement_File::mkdir($lang_dir, 2)) {
                         $this->gadget->session->push(
                                             Jaws::t('ERROR_FAILED_CREATING_DIR'),
@@ -51,7 +51,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                     }
 
                     $lang_exist = @is_dir($lang_dir);
-                    $lang_fname_file = $lang_dir. DIRECTORY_SEPARATOR. 'FullName';
+                    $lang_fname_file = $lang_dir. '/FullName';
                     if (Jaws_FileManagement_File::file_put_contents($lang_fname_file, $lang_name)) {
                         if ($lang_exist) {
                             $this->gadget->session->push(
