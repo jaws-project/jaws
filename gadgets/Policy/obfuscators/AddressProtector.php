@@ -31,7 +31,7 @@ class AddressProtector
     function Get($email, $name)
     {
         $ap_dir = ROOT_DATA_PATH . 'cache/addressprotector';
-        if (file_exists($ap_dir. '/' . md5($email . $name))) {
+        if (Jaws_FileManagement_File::file_exists($ap_dir. '/' . md5($email . $name))) {
             $contents = Jaws_FileManagement_File::file_get_contents($ap_dir. '/'. md5($email . $name));
             $contents = '<a href="http://address-protector.com/' . $contents . '">' . $name . '</a>';
             return $contents;
