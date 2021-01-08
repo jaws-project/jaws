@@ -32,7 +32,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
-        $new_dir = ROOT_DATA_PATH . 'feedcache' . DIRECTORY_SEPARATOR;
+        $new_dir = ROOT_DATA_PATH . 'feedcache/';
         if (!Jaws_FileManagement_File::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
@@ -78,8 +78,8 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            $new_feed_dir = ROOT_DATA_PATH. 'feedcache'. DIRECTORY_SEPARATOR;
-            $old_feed_dir = ROOT_DATA_PATH. 'rsscache'.  DIRECTORY_SEPARATOR;
+            $new_feed_dir = ROOT_DATA_PATH. 'feedcache/';
+            $old_feed_dir = ROOT_DATA_PATH. 'rsscache/';
             if (!Jaws_FileManagement_File::mkdir($new_feed_dir)) {
                 return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_feed_dir));
             }
