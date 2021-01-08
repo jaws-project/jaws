@@ -21,13 +21,17 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('Backup');
         $tmpDir = sys_get_temp_dir();
-        $domain = preg_replace("/^(www.)|(:{$_SERVER['SERVER_PORT']})$|[^a-z0-9\-\.]/", '', strtolower($_SERVER['HTTP_HOST']));
+        $domain = preg_replace(
+            "/^(www.)|(:{$_SERVER['SERVER_PORT']})$|[^a-z0-9\-\.]/",
+            '',
+            strtolower($_SERVER['HTTP_HOST'])
+        );
         $nameArchive = $domain . '-' . date('Y-m-d') . '.tar.gz';
-        $pathArchive = $tmpDir . DIRECTORY_SEPARATOR . $nameArchive;
+        $pathArchive = $tmpDir . '/' . $nameArchive;
 
         //Dump database data
         $dbFileName = 'dbdump.xml';
-        $dbFilePath = $tmpDir . DIRECTORY_SEPARATOR . $dbFileName;
+        $dbFilePath = $tmpDir . '/' . $dbFileName;
         Jaws_DB::getInstance()->Dump($dbFilePath);
 
         $files = array();
@@ -35,7 +39,7 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
         $files[] = File_Archive::read(ROOT_DATA_PATH);
         $files[] = File_Archive::read($dbFilePath , $dbFileName);
         File_Archive::extract($files, File_Archive::toArchive($pathArchive, File_Archive::toFiles()));
-        Jaws_FileManagement_File::delete($dbFilePath);
+        @unlink($dbFilePath);
 
         // browser must download file from server instead of cache
         header("Expires: 0");
@@ -48,7 +52,7 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
         header("Content-Transfer-Encoding: binary");
         header('Content-Length: '.@filesize($pathArchive));
         @readfile($pathArchive);
-        Jaws_FileManagement_File::delete($pathArchive);
+        @unlink($pathArchive);
     }
 
 }
