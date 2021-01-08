@@ -367,21 +367,14 @@ class vCard implements Countable, Iterator
             return false;
         }
 
-        if (is_writable($TargetPath) || (!file_exists($TargetPath) && is_writable(dirname($TargetPath))))
+        $RawContent = $this -> Data[$Key][$Index]['Value'];
+        if (isset($this -> Data[$Key][$Index]['Encoding']) && $this -> Data[$Key][$Index]['Encoding'] == 'base64')
         {
-            $RawContent = $this -> Data[$Key][$Index]['Value'];
-            if (isset($this -> Data[$Key][$Index]['Encoding']) && $this -> Data[$Key][$Index]['Encoding'] == 'base64')
-            {
-                $RawContent = base64_decode($RawContent);
-            }
-            $Status = Jaws_FileManagement_File::file_put_contents($TargetPath, $RawContent);
-            return (bool)$Status;
+            $RawContent = base64_decode($RawContent);
         }
-        else
-        {
-            throw new Exception('vCard: Cannot save file ('.$Key.'), target path not writable ('.$TargetPath.')');
-        }
-        return false;
+
+        $Status = Jaws_FileManagement_File::file_put_contents($TargetPath, $RawContent);
+        return (bool)$Status;
     }
 
     /**
