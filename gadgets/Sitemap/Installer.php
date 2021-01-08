@@ -44,7 +44,7 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(Jaws::t('ERROR_FAILED_DIRECTORY_UNWRITABLE', ROOT_DATA_PATH));
         }
 
-        $new_dir = ROOT_DATA_PATH . 'sitemap' . DIRECTORY_SEPARATOR;
+        $new_dir = ROOT_DATA_PATH . 'sitemap/';
         if (!Jaws_FileManagement_File::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
