@@ -61,7 +61,7 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
-        $new_dir = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments';
+        $new_dir = ROOT_DATA_PATH . 'pm/attachments';
         if (!Jaws_FileManagement_File::mkdir($new_dir)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }

@@ -132,8 +132,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             if ($attachmentCount == 0) {
                 $model = $this->gadget->model->load('Attachment');
                 $attachmentInfo = $model->GetAttachment($attachment);
-                $filepath = ROOT_DATA_PATH . 'pm' . DIRECTORY_SEPARATOR . 'attachments' .
-                    DIRECTORY_SEPARATOR . $attachmentInfo['filename'];
+                $filepath = ROOT_DATA_PATH . 'pm/attachments/' . $attachmentInfo['filename'];
                 if (!Jaws_FileManagement_File::delete($filepath)) {
                     //Rollback Transaction
                     $table->rollback();
