@@ -117,10 +117,10 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         $file['mini_icon'] = 'gadgets/FileBrowser/Resources/images/mini_file.png';
 
         //Get $date
-        $file['date'] = @filemtime($filepath);
+        $file['date'] = Jaws_FileManagement_File::filemtime($filepath);
 
         //Set the file size
-        $file['size'] = Jaws_Utils::FormatSize(@filesize($filepath));
+        $file['size'] = Jaws_Utils::FormatSize(Jaws_FileManagement_File::filesize($filepath));
         //Set the curr dir name
         $file['dirname'] = $path;
         $dbFile = $this->DBFileInfo($path, $fname);

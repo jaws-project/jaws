@@ -295,7 +295,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
 
         if (!empty($iFile)) {
             $filepath = $fModel->GetFileBrowserRootDir(). $iFile['path']. '/'. $iFile['filename'];
-            if (file_exists($filepath)) {
+            if (Jaws_FileManagement_File::file_exists($filepath)) {
                 // increase download hits
                 $fModel->HitFileDownload($iFile['id']);
                 if (Jaws_FileManagement_File::download($filepath, $iFile['filename'])) {

@@ -141,8 +141,8 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             return false;
         }
 
-        if (is_file($filename)) {
-            $return = @unlink($filename);
+        if (Jaws_FileManagement_File::is_file($filename)) {
+            $return = Jaws_FileManagement_File::delete($filename);
             if (!$return) {
                 $this->gadget->session->push(_t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file), RESPONSE_ERROR);
                 return false;

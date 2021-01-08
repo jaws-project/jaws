@@ -101,12 +101,12 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $dir['fullpath'] = $filepath;
 
         //Get $date
-        $dir['date'] = @filemtime($filepath);
+        $dir['date'] = Jaws_FileManagement_File::filemtime($filepath);
 
         //Set the curr dir name
         $dir['dirname'] = $path;
         //Is shared?
-        $dir['is_shared'] = file_exists($dir['fullpath'].'/.jaws_virtual');
+        $dir['is_shared'] = Jaws_FileManagement_File::file_exists($dir['fullpath'].'/.jaws_virtual');
         //hold.. is it shared?
         if ($dir['is_shared']) {
             $dir['icon'] = 'gadgets/FileBrowser/Resources/images/folder-remote.png';
@@ -152,7 +152,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
 
         $fModel = $this->gadget->model->load('Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
-        if (!file_exists($folder) || !$adr = scandir($folder)) {
+        if (!Jaws_FileManagement_File::file_exists($folder) || !$adr = Jaws_FileManagement_File::scandir($folder)) {
             $this->gadget->session->push(
                 _t('FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', $path),
                 RESPONSE_ERROR
@@ -207,7 +207,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
 
         $fModel = $this->gadget->model->load('Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
-        if (file_exists($folder) && $adr = scandir($folder)) {
+        if (Jaws_FileManagement_File::file_exists($folder) && $adr = Jaws_FileManagement_File::scandir($folder)) {
             return count($adr) - 2;
         }
 
