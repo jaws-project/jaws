@@ -31,7 +31,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
         }
 
         // find real gadget name
-        $gPath = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $gPath = ROOT_JAWS_PATH. 'gadgets/';
         $hooks = glob($gPath . '*/Hooks/UserAttributes.php');
         $gadgets = preg_replace(
             '@'.preg_quote($gPath, '@'). '(\w*)/Hooks/UserAttributes.php@',
@@ -181,7 +181,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
         }
 
         // find real gadget name
-        $gPath = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $gPath = ROOT_JAWS_PATH. 'gadgets/';
         $hooks = glob($gPath . '*/Hooks/GroupAttributes.php');
         $gadgets = preg_replace(
             '@'.preg_quote($gPath, '@'). '(\w*)/Hooks/GroupAttributes.php@',

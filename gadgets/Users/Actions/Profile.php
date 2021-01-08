@@ -254,7 +254,7 @@ class Users_Actions_Profile extends Users_Actions_Default
      */
     function UserAttributes(&$tpl, $uid, $uname)
     {
-        $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $gDir = ROOT_JAWS_PATH. 'gadgets/';
         $hooks = glob($gDir . '*/Hooks/UserAttributes.php');
         $gadgets = preg_replace(
             '@'.preg_quote($gDir, '@'). '(\w*)/Hooks/UserAttributes.php@',
@@ -394,7 +394,7 @@ class Users_Actions_Profile extends Users_Actions_Default
     function Activity(&$tpl, $uid, $uname)
     {
         $parsed = false;
-        $gDir = ROOT_JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $gDir = ROOT_JAWS_PATH. 'gadgets/';
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {
