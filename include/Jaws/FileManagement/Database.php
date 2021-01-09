@@ -344,7 +344,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             ->where('name', $name)
             ->fetchOne();
 
-        if (Jaws_Error::IsError($result)) {
+        if (Jaws_Error::IsError($blob)) {
             return false;
         }
 
