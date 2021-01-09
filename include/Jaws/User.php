@@ -103,9 +103,9 @@ class Jaws_User
             'bad_password_count', 'last_password_update', 'last_access', 'status:integer')
             ->where('domain', (int)$domain)
             ->and()
-            ->openWhere('lower(username)', Jaws_UTF8::strtolower($user))
+            ->openWhere('username', Jaws_UTF8::strtolower($user))
             ->or()
-            ->where('lower(email)', Jaws_UTF8::strtolower($user))
+            ->where('email', Jaws_UTF8::strtolower($user))
             ->or()
             ->closeWhere('mobile', $user)
             ->fetchRow();
@@ -254,7 +254,7 @@ class Jaws_User
      * @param   int     $domain     Domain Id
      * @return  mixed   Returns an array with the info of the user and false on error
      */
-    function GetUserNew($user, $fieldsets = array(), $domain = null)
+    function GetUserNew($user, $fieldsets = array(), $domain = 0)
     {
         $columns = array(
             'default'  => array(
@@ -283,11 +283,11 @@ class Jaws_User
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select($selectedColumns)
-            ->where('domain', (int)$domain, '=', is_null($domain));
+            ->where('domain', (int)$domain, '=');
         if (is_int($user)) {
             $objORM->and()->where('users.id', $user);
         } else {
-            $objORM->and()->where('lower(username)', Jaws_UTF8::strtolower($user));
+            $objORM->and()->where('username', Jaws_UTF8::strtolower($user));
         }
 
         return $objORM->fetchRow();
@@ -335,7 +335,7 @@ class Jaws_User
         if (is_int($user)) {
             $usersTable->where('users.id', $user);
         } else {
-            $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user));
+            $usersTable->where('username', Jaws_UTF8::strtolower($user));
         }
 
         return $usersTable->fetchRow();
@@ -365,7 +365,7 @@ class Jaws_User
             if (is_int($user)) {
                 $objORM->where('uc.owner', $user);
             } else {
-                $objORM->where('lower(username)', Jaws_UTF8::strtolower($user));
+                $objORM->where('username', Jaws_UTF8::strtolower($user));
             }
         }
 
@@ -553,9 +553,9 @@ class Jaws_User
                 'mobile', 'superadmin:boolean', 'status:integer'
             )->where('domain', (int)$domain)
             ->and()
-            ->openWhere('lower(username)', Jaws_UTF8::strtolower($term))
+            ->openWhere('username', Jaws_UTF8::strtolower($term))
             ->or()
-            ->where('lower(email)', Jaws_UTF8::strtolower($term))
+            ->where('email', Jaws_UTF8::strtolower($term))
             ->or()
             ->closeWhere('mobile', $term)
             ->fetchRow();
@@ -573,9 +573,9 @@ class Jaws_User
         return Jaws_ORM::getInstance()->table('users')
             ->select('id:integer', 'domain:integer', 'username', 'nickname', 'email',
                 'mobile', 'superadmin:boolean', 'status:integer'
-            )->openWhere('lower(username)', Jaws_UTF8::strtolower($term))
+            )->openWhere('username', Jaws_UTF8::strtolower($term))
             ->or()
-            ->where('lower(email)', Jaws_UTF8::strtolower($term))
+            ->where('email', Jaws_UTF8::strtolower($term))
             ->or()
             ->closeWhere('mobile', $term)
             ->fetchRow();
@@ -610,9 +610,9 @@ class Jaws_User
     {
         $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
             ->openWhere()
-            ->where('lower(username)', Jaws_UTF8::strtolower($username))
+            ->where('username', Jaws_UTF8::strtolower($username))
             ->or()
-            ->where('lower(email)', Jaws_UTF8::strtolower($username))
+            ->where('email', Jaws_UTF8::strtolower($username))
             ->or()
             ->where('mobile', $username)
             ->closeWhere()
@@ -637,9 +637,9 @@ class Jaws_User
         if (!empty($email)) {
             $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
                 ->openWhere()
-                ->where('lower(email)', Jaws_UTF8::strtolower($email))
+                ->where('email', Jaws_UTF8::strtolower($email))
                 ->or()
-                ->where('lower(username)', Jaws_UTF8::strtolower($email))
+                ->where('username', Jaws_UTF8::strtolower($email))
                 ->closeWhere()
                 ->and()
                 ->where('id', $exclude, '<>')
@@ -665,7 +665,7 @@ class Jaws_User
                 ->openWhere()
                 ->where('mobile', $mobile)
                 ->or()
-                ->where('lower(username)', Jaws_UTF8::strtolower($mobile))
+                ->where('username', Jaws_UTF8::strtolower($mobile))
                 ->closeWhere()
                 ->and()
                 ->where('id', $exclude, '<>')
@@ -712,7 +712,7 @@ class Jaws_User
         if (is_int($group)) {
             $groupsTable->and()->where('id', $group);
         } else {
-            $groupsTable->and()->where('lower(name)', Jaws_UTF8::strtolower($group));
+            $groupsTable->and()->where('name', Jaws_UTF8::strtolower($group));
         }
 
         return $groupsTable->fetchRow();
@@ -770,10 +770,10 @@ class Jaws_User
 
         if (!empty($term)) {
             $term = Jaws_UTF8::strtolower($term);
-            $usersTable->and()->openWhere('lower(username)', $term, 'like');
-            $usersTable->or()->where('lower(nickname)',      $term, 'like');
-            $usersTable->or()->where('mobile',               $term, 'like');
-            $usersTable->or()->closeWhere('lower(email)',    $term, 'like');
+            $usersTable->and()->openWhere('username',   $term, 'like');
+            $usersTable->or()->where('lower(nickname)', $term, 'like');
+            $usersTable->or()->where('mobile',          $term, 'like');
+            $usersTable->or()->closeWhere('email',      $term, 'like');
         }
 
         $usersTable->orderBy('users.'.$orderBy);
@@ -815,10 +815,10 @@ class Jaws_User
 
         if (!empty($term)) {
             $term = Jaws_UTF8::strtolower($term);
-            $usersTable->and()->openWhere('lower(username)', $term, 'like');
+            $usersTable->and()->openWhere('username', $term, 'like');
             $usersTable->or()->where('lower(nickname)',      $term, 'like');
             $usersTable->or()->where('mobile',               $term, 'like');
-            $usersTable->or()->closeWhere('lower(email)',    $term, 'like');
+            $usersTable->or()->closeWhere('email',    $term, 'like');
         }
 
         $result = $usersTable->fetchOne();
