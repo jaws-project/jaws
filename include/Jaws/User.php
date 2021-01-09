@@ -686,7 +686,6 @@ class Jaws_User
     function GetAvatar($avatar, $email, $size = 48, $time = '')
     {
         if (empty($avatar) || !Jaws_FileManagement_File::file_exists(AVATAR_PATH . $avatar)) {
-            require_once ROOT_JAWS_PATH . 'include/Jaws/Gravatar.php';
             $uAvatar = Jaws_Gravatar::GetGravatar($email, $size);
         } else {
             $uAvatar = $this->app->getDataURL(). "avatar/$avatar";
