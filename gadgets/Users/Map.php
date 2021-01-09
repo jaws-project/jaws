@@ -40,5 +40,10 @@ $maps[] = array(
     'users/profile[/{user}]',
     array('user' => '[[:alnum:]\-_.@]+')
 );
+$maps[] = array(
+    'Avatar',
+    'users/avatar[/{user}]',
+    array('user' => '[[:alnum:]\-_.@]+')
+);
 $maps[] = array('Users', 'users');
 $maps[] = array('Groups', 'groups');

@@ -21,7 +21,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         $columns = array(
             'default'  => array(
                 'users.domain:integer', 'users.id:integer', 'username', 'users.email', 'users.mobile',
-                'nickname', 'contact:integer', 'avatar', 'status:integer'
+                'nickname', 'contact:integer', 'avatar:boolean', 'status:integer'
             ),
             'account'  => array(
                 'superadmin:boolean', 'concurrents:integer', 'logon_hours',
@@ -51,7 +51,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         if (is_int($user)) {
             $objORM->and()->where('users.id', $user);
         } else {
-            $objORM->and()->where('lower(username)', Jaws_UTF8::strtolower($user));
+            $objORM->and()->where('username', Jaws_UTF8::strtolower($user));
         }
 
         return $objORM->fetchRow();
@@ -171,7 +171,6 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         if (JAWS_GODUSER == $user['id']) {
-            
             if (!isset($this->app) ||
                 !property_exists($this->app, 'session') ||
                 $this->app->session->user->id != $user['id']
@@ -185,19 +184,13 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         if (array_key_exists('avatar', $pData)) {
-            if (!empty($user['avatar'])) {
-                Jaws_FileManagement_File::delete(AVATAR_PATH. $user['avatar']);
-            }
-
-            if (!empty($pData['avatar'])) {
-                $fileinfo = Jaws_FileManagement_File::pathinfo($pData['avatar']);
-                if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                    $new_avatar = $user['username']. '.'. $fileinfo['extension'];
-                    Jaws_FileManagement_File::rename(
-                        AVATAR_PATH. $pData['avatar'], AVATAR_PATH. $new_avatar
-                    );
-                    $pData['avatar'] = $new_avatar;
-                }
+            if (empty($pData['avatar'])) {
+                $pData['avatar'] = null;
+            } else {
+                $pData['avatar'] = array(
+                    'File://' . Jaws_FileManagement_File::upload_tmp_dir() . '/' . $pData['avatar'],
+                    'blob'
+                );
             }
         }
 
@@ -214,6 +207,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         ) {
             foreach($pData as $k => $v) {
                 if ($k == 'avatar') {
+                    // url to avatar action
                     $this->app->session->user = array(
                         'avatar' => $this->app->users->GetAvatar($v, $user['email'], 48, $pData['last_update'])
                     );
@@ -233,6 +227,40 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         return true;
+    }
+
+    /**
+     * Get user's avatar
+     *
+     * @access  public
+     * @param   int     $user   User ID/Name
+     * @param   int     $domain Domain ID
+     * @return  mixed   The function returns the avatar image content or Jaws_Error on failure
+     */
+    function getAvatar($user, $domain = 0)
+    {
+        $objORM = Jaws_ORM::getInstance()
+            ->table('users')
+            ->select('avatar:blob')
+            ->where('domain', (int)$domain, '=', empty($domain));
+        if (is_int($user)) {
+            $objORM->and()->where('id', (int)$user);
+        } else {
+            $objORM->and()->where('username', Jaws_UTF8::strtolower($user));
+        }
+        $blob->fetchOne();
+        if (Jaws_Error::IsError($blob)) {
+            return false;
+        }
+
+        $avatar = '';
+        if (is_resource($blob)) {
+            while (!feof($blob)) {
+                $avatar.= fread($blob, 8192);
+            }
+        }
+
+        return $avatar;
     }
 
 }

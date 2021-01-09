@@ -341,7 +341,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '4.4.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '4.3.0.xml');
+            $result = $this->installSchema('4.4.0.xml', array(), '4.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -372,6 +372,61 @@ class Users_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '5.0', '<')) {
             // Registry keys
             $this->gadget->registry->insert('default_concurrents', 0);
+        }
+
+        if (version_compare($old, '5.1.0', '<')) {
+            $result = $this->installSchema('4.4.5.xml', array(), '4.3.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $offset = 0;
+            while (true) {
+                $tblUsers = Jaws_ORM::getInstance()->table('users');
+                $users = $tblUsers->select('id:integer', 'oldavatar')
+                    ->orderBy('id')
+                    ->limit(1000, $offset)
+                    ->fetchAll();
+                if (Jaws_Error::IsError($users)) {
+                    return $users;
+                }
+                $offset += 1000;
+
+                $tblUsers->beginTransaction(false);
+                foreach ($users as $user) {
+                    if (empty($user['oldavatar'])) {
+                        continue;
+                    }
+
+                    $avatar = ROOT_DATA_PATH. 'avatar/' . $user['oldavatar'];
+                    if (!file_exists($avatar)) {
+                        continue;
+                    }
+
+                    $res = $tblUsers->update(
+                            array(
+                                'oldavatar' => '',
+                                'pic' => array('File://' . $avatar, 'blob')
+                            )
+                        )
+                        ->where('id', (int)$user['id'])
+                        ->exec();
+                    if (Jaws_Error::IsError($res)) {
+                        // do nothing
+                    }
+
+                }
+                $tblUsers->commit();
+
+                if (count($users) < 1000) {
+                    break;
+                }
+            }
+
+            $result = $this->installSchema('schema.xml', array(), '4.4.5.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;

@@ -152,7 +152,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         if (empty($post['delete_avatar'])) {
             $res = Jaws_FileManagement_File::uploadFiles(
                 $_FILES,
-                AVATAR_PATH,
+                '',
                 'gif,jpg,jpeg,png,svg'
             );
             if (Jaws_Error::IsError($res)) {
@@ -171,7 +171,7 @@ class Users_Actions_Personal extends Users_Actions_Default
             $post['avatar'] = '';
         }
 
-        $result = $this->gadget->model->load('User')->UpdatePersonal(
+        $result = $this->gadget->model->load('User')->updatePersonal(
             $this->app->session->user->id,
             $post
         );

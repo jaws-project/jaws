@@ -37,7 +37,7 @@ class Users_Model_Users extends Jaws_Gadget_Model
         $columns = array(
             'default'  => array(
                 'users.domain:integer', 'users.id:integer', 'username', 'users.email', 'users.mobile',
-                'nickname', 'contact:integer', 'avatar', 'status:integer'
+                'nickname', 'contact:integer', 'avatar:boolean', 'status:integer'
             ),
             'account'  => array(
                 'superadmin:boolean', 'concurrents:integer', 'logon_hours',
@@ -88,13 +88,13 @@ class Users_Model_Users extends Jaws_Gadget_Model
         if (!empty($filters['term'])) {
             $term = Jaws_UTF8::strtolower($filters['term']);
             $objORM->and()
-                ->openWhere('lower(username)', $term, 'like')
+                ->openWhere('username', $term, 'like')
                 ->or()
                 ->where('lower(nickname)', $term, 'like')
                 ->or()
                 ->where('mobile', $term, 'like')
                 ->or()
-                ->closeWhere('lower(email)', $term, 'like');
+                ->closeWhere('email', $term, 'like');
         }
 
         // Order by
@@ -153,13 +153,13 @@ class Users_Model_Users extends Jaws_Gadget_Model
         if (!empty($filters['term'])) {
             $term = Jaws_UTF8::strtolower($filters['term']);
             $objORM->and()
-                ->openWhere('lower(username)', $term, 'like')
+                ->openWhere('username', $term, 'like')
                 ->or()
                 ->where('lower(nickname)', $term, 'like')
                 ->or()
                 ->where('mobile', $term, 'like')
                 ->or()
-                ->closeWhere('lower(email)', $term, 'like');
+                ->closeWhere('email', $term, 'like');
         }
 
         return $objORM->fetchOne();

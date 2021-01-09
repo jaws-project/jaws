@@ -41,6 +41,10 @@ $actions['Profile'] = array(
         'order' => 0
     ),
 );
+$actions['Avatar'] = array(
+    'standalone' => true,
+    'file' => 'Profile',
+);
 $actions['AboutUser'] = array(
     'layout' => true,
     'file' => 'Profile',

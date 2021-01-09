@@ -83,8 +83,8 @@
 
             <field>
                 <name>avatar</name>
-                <was>pic</was>
-                <type>blob</type>
+                <type>text</type>
+                <length>128</length>
             </field>
 
             <field>

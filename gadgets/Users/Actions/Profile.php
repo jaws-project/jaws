@@ -245,6 +245,41 @@ class Users_Actions_Profile extends Users_Actions_Default
     }
 
     /**
+     * User's avatar image
+     *
+     * @access  public
+     * @return  mixed   Avatar image content on successful, False otherwise
+     */
+    function Avatar()
+    {
+        $user = $this->gadget->request->fetch('user', 'get');
+        $user = $user?: $this->app->session->user->username;
+        if (empty($user)) {
+            return false
+        }
+
+        if ($this->app->session->user->username != $user &&
+            !$this->gadget->GetPermission('AccessUsersProfile')
+        ) {
+            return false;
+        }
+
+        $image = $this->gadget->model->load('User')->getAvatar($user);
+        if (!Jaws_Error::IsError($image)) {
+            $objImage = Jaws_Image::factory();
+            if (!Jaws_Error::IsError($objImage)) {
+                $objImage->setData($image, true);
+                $res = $objImage->display('', null, 2592000);// cached for a month
+                if (!Jaws_Error::IsError($res)) {
+                    return $res;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Builds user's custom attributes page
      *
      * @access  public
