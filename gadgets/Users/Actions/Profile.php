@@ -255,7 +255,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         $user = $this->gadget->request->fetch('user', 'get');
         $user = $user?: $this->app->session->user->username;
         if (empty($user)) {
-            return false
+            return false;
         }
 
         if ($this->app->session->user->username != $user &&
