@@ -248,7 +248,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         } else {
             $objORM->and()->where('username', Jaws_UTF8::strtolower($user));
         }
-        $blob->fetchOne();
+        $blob = $objORM->fetchOne();
         if (Jaws_Error::IsError($blob)) {
             return false;
         }
