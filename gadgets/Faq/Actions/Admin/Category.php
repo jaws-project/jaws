@@ -114,9 +114,6 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         }
         $result = array();
         foreach ($categories as $category) {
-            if (!$this->gadget->GetPermission('AccessCategory', $category['id'])) {
-                continue;
-            }
             $categoryData = array();
 
             $categoryData['title']  = $category['category'];
