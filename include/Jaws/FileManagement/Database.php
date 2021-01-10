@@ -118,12 +118,12 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     }
 
     /**
-     * Tells whether the filename is a directory
+     * Tells whether the filename is a regular file
      *
      * @access  public
-     * @param   string  $filename   Path to the file or directory
-     * @return  bool    Returns TRUE if the filename exists and is a directory, FALSE otherwise
-     * @see     http://www.php.net/is_dir
+     * @param   string  $filename   Path to the file
+     * @return  bool    Returns TRUE if the filename exists and is a regular file, FALSE otherwise
+     * @see     http://www.php.net/is_file
      */
     static function is_file($filename)
     {
