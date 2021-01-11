@@ -32,6 +32,7 @@ class Users_Actions_Personal extends Users_Actions_Default
             $personal = $response['data'];
         }
 
+        $this->AjaxMe('index.js');
         // Load the template
         $tpl = $this->gadget->template->load('Personal.html');
         $tpl->SetBlock('personal');
@@ -42,16 +43,8 @@ class Users_Actions_Personal extends Users_Actions_Default
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        if (empty($personal['avatar'])) {
-            $user_current_avatar = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
-        } else {
-            $user_current_avatar = $this->app->getDataURL() . "avatar/" . $personal['avatar'];
-            $user_current_avatar .= !empty($personal['last_update']) ? "?" . $personal['last_update'] . "" : '';
-        }
-        $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
-        $avatar->SetID('avatar');
-        $tpl->SetVariable('avatar', $avatar->Get());
-
+        //$personal['last_update']
+        $tpl->SetVariable('avatar', $this->gadget->urlMap('Avatar', array('user'  => $personal['username'])));
         $tpl->SetVariable('lbl_fname',  $this::t('USERS_FIRSTNAME'));
         $tpl->SetVariable('fname',      $personal['fname']);
         $tpl->SetVariable('lbl_lname',  $this::t('USERS_LASTNAME'));

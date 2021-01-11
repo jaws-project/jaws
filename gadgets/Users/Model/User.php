@@ -258,6 +258,10 @@ class Users_Model_User extends Jaws_Gadget_Model
             while (!feof($blob)) {
                 $avatar.= fread($blob, 8192);
             }
+        } else {
+            $avatar = (string)Jaws_FileManagement_File::file_get_contents(
+                JAWS_PATH . 'gadgets/Users/Resources/images/photo128px.png'
+            );
         }
 
         return $avatar;

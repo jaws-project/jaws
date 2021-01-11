@@ -12,20 +12,24 @@
   <form name="personalbox" action="{{base_script}}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="reqGadget" value="Users" />
   <input type="hidden" name="reqAction" value="UpdatePersonal" />
-  <input type="hidden" name="MAX_FILE_SIZE" value="524288" />
   <input type="hidden" name="delete_avatar" value="">
   <div class="gadget_content">
     <fieldset>
-      <div class="user_avatar">{{avatar}}
-        <input class="form-control-file" type="file" name="avatar" onchange="previewImage(this);" style="opacity:0; height:0;">
+      <div class="user_avatar">
+        <img src="{{avatar}}" />
+        <input class="form-control-file" type="file"
+          data-maxsize="{{maxsize}}"
+          data-dimension="{{dimension}}"
+          name="avatar"
+          accept="image/*"
+          onchange="Jaws_Gadget.getInstance('Users').browseFile(this);"
+          style="opacity:0; height:0; width:0;"
+        />
         <button class="btn" type="button" title="{{lbl_browse_avatar}}" onclick="browseImage(this);">
           <img src="images/stock/up.png" alt="upload" />
         </button>
         <button class="btn" type="button" title="{{lbl_delete_avatar}}" onclick="removeImage(this);" >
           <img src="images/stock/delete.png" alt="delete" />
-        </button>
-        <button class="btn" type="button" title="{{lbl_reload_avatar}}" onclick="reloadImage(this);" >
-          <img src="images/stock/reload.png" alt="reload" />
         </button>
         <script type="text/javascript">
         var original_avatar = document.getElementById('avatar').src;
