@@ -100,8 +100,10 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $this->gadget->define('confirmDelete', _t('LAYOUT_CONFIRM_DELETE'), 'Layout');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
+
         // remove script tag
-        $layoutContent = preg_replace('@<script[^>]*>.*?</script>@sim', '', $layoutContent);
+        //$layoutContent = preg_replace('@<script[^>]*>.*?</script>@sim', '', $layoutContent);
+
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
             '<body\1>'. $working_box. $response_box. $this->LayoutBar($theme, $theme_locality, $layout),
