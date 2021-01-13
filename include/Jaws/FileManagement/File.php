@@ -137,6 +137,27 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
     }
 
     /**
+     * List files and directories inside the specified path
+     *
+     * @access  public
+     * @param   string      $directory      The directory that will be scanned
+     * @param   int         $sorting_order  Sorting type by alphabetical
+     *                      SCANDIR_SORT_ASCENDING, SCANDIR_SORT_DESCENDING, SCANDIR_SORT_NONE
+     * @param   resource    $context
+     * @return  mixed       Returns an array of filenames on success, or FALSE on failure
+     * @see     http://www.php.net/scandir
+     */
+    static function scandir($directory, $sorting_order = SCANDIR_SORT_ASCENDING, $context = null)
+    {
+        $list = @scandir($directory, $sorting_order);
+        if (!empty($list)) {
+            $list = array_diff($list, array('..', '.'));
+        }
+
+        return $list;
+    }
+
+    /**
      * Write a string to a file
      *
      * @access  public

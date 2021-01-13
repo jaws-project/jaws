@@ -257,6 +257,47 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     }
 
     /**
+     * List files and directories inside the specified path
+     *
+     * @access  public
+     * @param   string      $directory      The directory that will be scanned
+     * @param   int         $sorting_order  Sorting type by alphabetical
+     *                      SCANDIR_SORT_ASCENDING, SCANDIR_SORT_DESCENDING, SCANDIR_SORT_NONE
+     * @param   resource    $context
+     * @return  mixed       Returns an array of filenames on success, or FALSE on failure
+     * @see     http://www.php.net/scandir
+     */
+    static function scandir($directory, $sorting_order = SCANDIR_SORT_ASCENDING, $context = null)
+    {
+        if (str_starts_with($directory, ROOT_DATA_PATH)) {
+            $directory = Jaws_UTF8::substr($directory, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
+        $objORM = Jaws_ORM::getInstance()
+            ->table('dbfs')
+            ->select('name')
+            ->where('hash_path', hash64($directory))
+            ->and()
+            ->where('path', $directory);
+
+        switch ($sorting_order) {
+            case SCANDIR_SORT_ASCENDING:
+                $objORM->orderBy('name asc');
+                break;
+
+            case SCANDIR_SORT_DESCENDING:
+                $objORM->orderBy('name desc');
+                break;
+
+            default: // SCANDIR_SORT_NONE
+                // do nothing
+        }
+
+        $list = $objORM->fetchColumn();
+        return Jaws_Error::IsError($list)? false : $list;
+    }
+
+    /**
      * Write a string to a file
      * @access  public
      * @param   string      $filename   Path to the file where to write the data
