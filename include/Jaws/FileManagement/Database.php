@@ -400,6 +400,24 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     }
 
     /**
+     * Parse a configuration file
+     * @access  public
+     * @param   string      $filename           The filename of the ini file being parsed
+     * @param   string      $process_sections   
+     * @param   int         $scanner_mode       Can either be INI_SCANNER_NORMAL or INI_SCANNER_RAW
+     * @return  mixed       The settings are returned as an associative array on success,and FALSE on failure
+     * @see     http://www.php.net/parse_ini_file
+     */
+    static function parse_ini_file($filename, $process_sections = false, $scanner_mode = INI_SCANNER_NORMAL)
+    {
+        if (false === $ini = self::file_get_contents($filename)) {
+            return false;
+        }
+
+        return parse_ini_string($ini, $process_sections, $scanner_mode);
+    }
+
+    /**
      * Make directory
      *
      * @access  public
