@@ -194,7 +194,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * @see     http://www.php.net/file_get_contents
      */
     static function file_get_contents(
-        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = null
+        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = PHP_INT_MAX
     ) {
         return @file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
     }
@@ -228,6 +228,22 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
     static function exif_read_data($stream, $sections = null, $arrays = false, $thumbnail = false)
     {
         return @exif_read_data($stream, $sections, $arrays, $thumbnail);
+    }
+
+    /**
+     * Reads entire file into an array
+     *
+     * @access  public
+     * @param   string      $filename   Path to the file
+     * @param   int         $flags      Flags can be one, ormore, of the following constants:
+     *                                  FILE_USE_INCLUDE_PATH, FILE_IGNORE_NEW_LINES, FILE_SKIP_EMPTY_LINES 
+     * @param   resource    $context    context resource 
+     * @return  mixed       Returns the file in an array or FALSE on failure
+     * @see     http://www.php.net/file
+     */
+    static function file($filename, $flags = 0, $context = null)
+    {
+        return @file($filename, $flags, $context);
     }
 
     /**

@@ -363,7 +363,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * @see     http://www.php.net/file_get_contents
      */
     static function file_get_contents(
-        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = null
+        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = PHP_INT_MAX
     ) {
         if (str_starts_with($filename, ROOT_DATA_PATH)) {
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
@@ -457,6 +457,34 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         }
 
         return @exif_read_data($blob, $sections, $arrays, $thumbnail);
+    }
+
+    /**
+     * Reads entire file into an array
+     *
+     * @access  public
+     * @param   string      $filename   Path to the file
+     * @param   int         $flags      Flags can be one, ormore, of the following constants:
+     *                                  FILE_USE_INCLUDE_PATH, FILE_IGNORE_NEW_LINES, FILE_SKIP_EMPTY_LINES 
+     * @param   resource    $context    context resource 
+     * @return  mixed       Returns the file in an array or FALSE on failure
+     * @see     http://www.php.net/file
+     */
+    static function file($filename, $flags = 0, $context = null)
+    {
+        if (false === $content = self::file_get_contents($filename)) {
+            return false;
+        }
+
+        $pregFlags = 0;
+        if ($flags & FILE_SKIP_EMPTY_LINES) {
+            $pregFlags = $pregFlags | PREG_SPLIT_NO_EMPTY;
+        }
+        if (!(bool)($flags & FILE_IGNORE_NEW_LINES)) {
+            $pregFlags = $pregFlags | PREG_SPLIT_DELIM_CAPTURE;
+        }
+
+        return @preg_split('/(?<=[\r\n]|[\n]|[\r])/', $content, -1, $pregFlags);
     }
 
     /**
