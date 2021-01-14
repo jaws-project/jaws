@@ -299,6 +299,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
 
     /**
      * Write a string to a file
+     *
      * @access  public
      * @param   string      $filename   Path to the file where to write the data
      * @param   string      $data       file content
@@ -401,6 +402,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
 
     /**
      * Parse a configuration file
+     *
      * @access  public
      * @param   string      $filename           The filename of the ini file being parsed
      * @param   string      $process_sections   
@@ -415,6 +417,46 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         }
 
         return parse_ini_string($ini, $process_sections, $scanner_mode);
+    }
+
+    /**
+     * Reads the EXIF headers from an image file
+     *
+     * @access  public
+     * @param   mixed   $stream     The location of the image file or a stream resource
+     * @param   string  $sections   Is a comma separated list of sections
+     * @param   bool    $arrays     Specifies whether or not each section becomes an array
+     * @param   bool    $thumbnail  Thumbnail itself is read, Otherwise only thetagged data is read
+     * @return  mixed   Returns an associative array or FALSE on failure
+     * @see     https://www.php.net/exif_read_data
+     */
+    static function exif_read_data($stream, $sections = null, $arrays = false, $thumbnail = false)
+    {
+        if (str_starts_with($filename, ROOT_DATA_PATH)) {
+            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        }
+
+        $path = dirname($filename);
+        $name = basename($filename);
+        $hash_path = hash64($path);
+        $hash_name = hash64($name);
+
+        $blob = Jaws_ORM::getInstance()
+            ->table('dbfs')
+            ->select('data:blob')
+            ->where('hash_path', $hash_path)
+            ->and()
+            ->where('hash_name', $hash_name)
+            ->and()
+            ->where('path', $path)
+            ->and()
+            ->where('name', $name)
+            ->fetchOne();
+        if (Jaws_Error::IsError($blob) || !is_resource($blob)) {
+            return false;
+        }
+
+        return @exif_read_data($blob, $sections, $arrays, $thumbnail);
     }
 
     /**

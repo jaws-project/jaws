@@ -201,6 +201,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
 
     /**
      * Parse a configuration file
+     *
      * @access  public
      * @param   string      $filename           The filename of the ini file being parsed
      * @param   string      $process_sections   
@@ -211,6 +212,22 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
     static function parse_ini_file($filename, $process_sections = false, $scanner_mode = INI_SCANNER_NORMAL)
     {
         return parse_ini_file($filename, $process_sections, $scanner_mode);
+    }
+
+    /**
+     * Reads the EXIF headers from an image file
+     *
+     * @access  public
+     * @param   mixed   $stream     The location of the image file or a stream resource
+     * @param   string  $sections   Is a comma separated list of sections
+     * @param   bool    $arrays     Specifies whether or not each section becomes an array
+     * @param   bool    $thumbnail  Thumbnail itself is read, Otherwise only the tagged data is read
+     * @return  mixed   Returns an associative array or FALSE on failure
+     * @see     http://www.php.net/exif_read_data
+     */
+    static function exif_read_data($stream, $sections = null, $arrays = false, $thumbnail = false)
+    {
+        return @exif_read_data($stream, $sections, $arrays, $thumbnail);
     }
 
     /**
