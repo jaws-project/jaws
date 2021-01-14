@@ -284,7 +284,11 @@ class Phoo_Model_Photos extends Phoo_Model
         // EXIF STUFF
         $show = $this->gadget->registry->fetch('show_exif_info');
         if ($show == 'true' && function_exists('exif_read_data')) {
-            if ($data = @exif_read_data(ROOT_DATA_PATH . 'phoo/' . $r['filename'], 1, true)) {
+            if ($data = Jaws_FileManagement_File::exif_read_data(
+                ROOT_DATA_PATH . 'phoo/' . $r['filename'],
+                1,
+                true
+            )) {
                 $cameraimg = '';
                 if (isset($data['IFD0']['Make'])) {
                     $camera = $data['IFD0']['Make'].' / '.$data['IFD0']['Model'];
