@@ -254,7 +254,10 @@ class Jaws_XSS
     static function filterURL($url, $urlencoded = false, $deny_remote_url = false)
     {
         // parse & encode given url
-        $parsedURL = parse_url(htmlspecialchars_decode($url));
+        if (false === $parsedURL = parse_url(htmlspecialchars_decode($url))) {
+            return '';
+        }
+
         foreach ($parsedURL as $part => $value) {
             if ($deny_remote_url &&
                 in_array($part, array('schema', 'host', 'port'))
