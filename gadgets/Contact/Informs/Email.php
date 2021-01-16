@@ -24,6 +24,9 @@ class Contact_Informs_Email extends Jaws_Gadget_Action
         $from_email = $contact['email'];
         $site_url   = $this->app->getSiteURL('/');
         $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
+        if (!array_key_exists('email', $recipient)) {
+            $recipient['email'] = $this->gadget->registry->fetch('site_email', 'Settings');
+        }
 
         $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
