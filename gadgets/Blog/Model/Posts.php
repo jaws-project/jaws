@@ -741,7 +741,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
              * This query needs more work, not use $v straight, should be
              * like rest of the param stuff.
              */
-            foreach ($searchdata as $v) {
+            foreach ($searchdata as $str) {
                 $blogTable->and()
                     ->openWhere()
                     ->where('blog.title', $str, 'like')
