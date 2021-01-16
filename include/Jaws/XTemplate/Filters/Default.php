@@ -47,8 +47,9 @@ class Jaws_XTemplate_Filters_Default
      */
     public static function isset($input, $trueResult = null, $falseResult = null)
     {
-        $trueResult = isset($trueResult)?: true;
-        $falseResult = isset($falseResult)?: false;
+        $trueResult = isset($trueResult)? $trueResult : true;
+        $falseResult = isset($falseResult)? $falseResult : false;
+
         return isset($input)? $trueResult : $falseResult;
     }
 
@@ -63,8 +64,9 @@ class Jaws_XTemplate_Filters_Default
      */
     public static function empty($input, $trueResult = null, $falseResult = null)
     {
-        $trueResult = isset($trueResult)?: true;
-        $falseResult = isset($falseResult)?: false;
+        $trueResult = isset($trueResult)? $trueResult : true;
+        $falseResult = isset($falseResult)? $falseResult : false;
+
         return empty($input)? $trueResult : $falseResult;
     }
 
@@ -79,8 +81,8 @@ class Jaws_XTemplate_Filters_Default
      */
     public static function not($input, $trueResult = null, $falseResult = null)
     {
-        $trueResult = isset($trueResult)?: true;
-        $falseResult = isset($falseResult)?: false;
+        $trueResult = isset($trueResult)? $trueResult : true;
+        $falseResult = isset($falseResult)? $falseResult : false;
 
         return !(bool)$input? $trueResult : $falseResult;
     }
