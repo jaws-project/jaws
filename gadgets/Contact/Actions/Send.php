@@ -30,7 +30,6 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             $post['name']   = $this->app->session->user->nickname;
             $post['email']  = $this->app->session->user->email;
             $post['mobile'] = $this->app->session->user->mobile;
-            $post['url']    = $this->app->session->user->url;
         }
 
         if (trim($post['name'])    == '' ||
