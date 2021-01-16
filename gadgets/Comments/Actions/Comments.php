@@ -436,7 +436,6 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         if ($this->app->session->user->logged) {
             $post['name']  = $this->app->session->user->nickname;
             $post['email'] = $this->app->session->user->email;
-            $post['url']   = $this->app->session->user->url;
         }
 
         if (trim($post['message']) == ''|| trim($post['name']) == '') {
