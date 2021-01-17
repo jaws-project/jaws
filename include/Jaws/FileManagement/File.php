@@ -325,13 +325,13 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * Renames/Moves a file or directory
      *
      * @access  public
-     * @param   string  $src    Path to the source file or directory
-     * @param   string  $dst    The destination path
+     * @param   string  $source     Path to the source file or directory
+     * @param   string  $dest       The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
-    static function rename($src, $dst, $overwrite = true)
+    static function rename($source, $dest, $overwrite = true)
     {
         $result = false;
         if (file_exists($source)) {
@@ -385,14 +385,14 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * Makes a copy of the source file or directory to dest
      *
      * @access  public
-     * @param   string  $src    Path to the source file or directory
-     * @param   string  $dst    The destination path
+     * @param   string  $source     Path to the source file or directory
+     * @param   string  $dest       The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @param   int     $mode       see php chmod() function
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    static function copy($src, $dst, $overwrite = true, $mode = null)
+    static function copy($source, $dest, $overwrite = true, $mode = null)
     {
         $result = false;
         if (file_exists($source)) {

@@ -549,50 +549,50 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * Renames/Moves a file or directory
      *
      * @access  public
-     * @param   string  $src    Path to the source file or directory
-     * @param   string  $dst    The destination path
+     * @param   string  $source     Path to the source file or directory
+     * @param   string  $dest       The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @param   bool    $first_iteration
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
-    static function rename($src, $dst, $overwrite = true, $first_iteration = true)
+    static function rename($source, $dest, $overwrite = true, $first_iteration = true)
     {
         if ($first_iteration) {
-            if (str_starts_with($src, ROOT_DATA_PATH)) {
-                $src = Jaws_UTF8::substr($src, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+            if (str_starts_with($source, ROOT_DATA_PATH)) {
+                $source = Jaws_UTF8::substr($source, Jaws_UTF8::strlen(ROOT_DATA_PATH));
             }
 
-            if (str_starts_with($dst, ROOT_DATA_PATH)) {
-                $dst = Jaws_UTF8::substr($dst, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+            if (str_starts_with($dest, ROOT_DATA_PATH)) {
+                $dest = Jaws_UTF8::substr($dest, Jaws_UTF8::strlen(ROOT_DATA_PATH));
             }
 
-            $srcInfo = self::pathinfo($src);
+            $srcInfo = self::pathinfo($source);
             if (empty($srcInfo)) {
                 return false;
             }
 
-            $dstInfo = self::pathinfo($dst);
+            $dstInfo = self::pathinfo($dest);
             if (empty($dstInfo) || !$overwrite) {
                 return false;
             }
 
             if ($overwrite) {
                 // delete destination if exists
-                if (false == self::delete($dst, true)) {
+                if (false == self::delete($dest, true)) {
                     return false;
                 }
             }
         }
 
         // source
-        $srcPath = dirname($src);
-        $srcName = basename($src);
+        $srcPath = dirname($source);
+        $srcName = basename($source);
         $src_hash_path = hash64($srcPath);
         $src_hash_name = hash64($srcName);
         // destination
-        $dstPath = dirname($dst);
-        $dstName = basename($dst);
+        $dstPath = dirname($dest);
+        $dstName = basename($dest);
         $dst_hash_path = hash64($dstPath);
         $dst_hash_name = hash64($dstName);
 
@@ -622,9 +622,9 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $files = Jaws_ORM::getInstance()
                 ->table('dbfs')
                 ->select('id:integer', 'name', 'type:integer')
-                ->where('hash_path', hash64($src))
+                ->where('hash_path', hash64($source))
                 ->and()
-                ->where('path', $src)
+                ->where('path', $source)
                 ->fetchAll();
             if (Jaws_Error::IsError($files)) {
                 return false;
@@ -633,7 +633,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             // sub files/directories
             foreach ($files as $file) {
                 if (false === self::rename(
-                    "$src/" . $file['name'], "$dst/". $file['name'], $overwrite, false
+                    "$source/" . $file['name'], "$dest/". $file['name'], $overwrite, false
                 )) {
                     return false;
                 }
@@ -644,18 +644,18 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     }
 
     /**
-     * Makes a copy of the source file or directory to dest
+     * Copies file
      *
      * @access  public
-     * @param   string  $src        Path to the source file or directory
-     * @param   string  $dst        The destination path
+     * @param   string  $source     Path to the source file
+     * @param   string  $dest       The destination path
      * @param   bool    $overwrite  Overwrite files if exists
      * @param   int     $mode       see php chmod() function
      * @param   bool    $first_iteration
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    static function copy($src, $dst, $overwrite = true, $mode = null, $first_iteration = true)
+    static function copy($source, $dest, $overwrite = true, $mode = null, $first_iteration = true)
     {
         return true;
     }
