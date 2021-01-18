@@ -334,8 +334,8 @@ class Jaws_Translate
         }
 
         $tmp_data = array();
-        if ($this->_load_user_translated && file_exists($data_i18n)) {
-            $tmp_data = parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
+        if ($this->_load_user_translated && Jaws_FileManagement_File::file_exists($data_i18n)) {
+            $tmp_data = Jaws_FileManagement_File::parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
             $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded data translation for $module, language $language");
         }
 
