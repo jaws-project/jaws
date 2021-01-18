@@ -295,7 +295,7 @@ class Upgrader_Database extends JawsUpgrader
         }
 
         if (!empty($post['path'])) {
-            $post['path'] = rtrim($post['path'] = , "\\/"). '/';
+            $post['path'] = rtrim($post['path'], "\\/"). '/';
         }
 
         $_SESSION['upgrade']['Database'] = array(
