@@ -286,7 +286,7 @@ class Installer_Database extends JawsInstaller
         }
 
         if (!empty($post['path'])) {
-            $post['path'] = rtrim($post['path'] = , "\\/"). '/';
+            $post['path'] = rtrim($post['path'], "\\/"). '/';
         }
 
         $_SESSION['install']['Database'] = array(
