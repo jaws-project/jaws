@@ -93,7 +93,7 @@ class Upgrader_WriteConfig extends JawsUpgrader
         $configString = $this->BuildConfig();
         $configMD5 = md5($configString);
 
-        $existsConfig = @file_get_contents(ROOT_JAWS_PATH. 'config/JawsConfig.php');
+        $existsConfig = Jaws_FileManagement_File::file_get_contents(ROOT_JAWS_PATH. 'config/JawsConfig.php');
         $existsMD5 = md5($existsConfig);
         if ($configMD5 !== $existsMD5) {
             if (!Jaws_FileManagement_File::is_writable(ROOT_JAWS_PATH . 'config/')) {

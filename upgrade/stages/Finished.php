@@ -33,6 +33,10 @@ class Upgrader_Finished extends JawsUpgrader
         $tpl->SetVariable('move_log',    $this->t('FINISH_MOVE_LOG'));
 
         $tpl->ParseBlock('Finished');
+
+        // Kill the session
+        session_destroy();
+
         return $tpl->Get();
     }
 }

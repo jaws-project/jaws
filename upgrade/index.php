@@ -176,12 +176,6 @@ foreach ($objStage->getStages() as $key => $stage) {
     }
 }
 
-// Check if we are on the last stage, Key + 1 because an array starts with 0 :-)
-if (($_SESSION['upgrade']['stage'] + 1) == $objStage->countStages()) {
-    // Kill of the session cookie (path cookie in FF)
-    unset($_SESSION['upgrade']);
-}
-
 if (isset($GLOBALS['message'])) {
     switch ($GLOBALS['message']->getLevel()) {
         case JAWS_ERROR_INFO:
