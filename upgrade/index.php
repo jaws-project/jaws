@@ -89,6 +89,8 @@ define('UPGRADE_PATH', dirname(__FILE__) . '/');
 require_once ROOT_JAWS_PATH . 'include/Jaws/Const.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Error.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Utils.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/FileManagement.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/FileManagement/File.php';
 require_once ROOT_JAWS_PATH . 'include/Jaws/Gadget.php';
 // Lets support older PHP versions so we can use spanking new functions
 require_once ROOT_JAWS_PATH . 'include/Jaws/Helper.php';
