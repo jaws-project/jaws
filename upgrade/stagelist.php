@@ -107,6 +107,12 @@ $stages[] = array(
     'vars' => array('1.7.0', '1.8.0'),
     'file' => '170To180',
 );
+// Upgrade from 1.8.0 to 1.9.0
+$stages[] = array(
+    'name' => 'VER_TO_VER',
+    'vars' => array('1.8.0', '1.9.0'),
+    'file' => '180To190',
+);
 // Saves the config file.
 $stages[] = array(
     'file' => 'WriteConfig',
