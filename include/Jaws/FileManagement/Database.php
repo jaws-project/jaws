@@ -34,8 +34,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $res = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select(
-                'id:integer', 'parent:integer', 'uid:integer', 'gid:integer',
-                'pathname as dirname', 'basename', 'filename', 'extension',
+                'id:integer', 'parent:integer', 'pathname as dirname', 'basename', 'filename', 'extension',
                 'type:integer', 'size:integer', 'mode:integer', 'ctime:integer', 'mtime:integer'
             )
             ->where('pathhash', $pathhash)
