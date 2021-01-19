@@ -19,7 +19,7 @@ class Upgrader_180To190 extends JawsUpgrader
     function Display()
     {
         $tpl = new Jaws_Template(false, false);
-        $tpl->Load('display.html', 'stages/170To180/templates');
+        $tpl->Load('display.html', 'stages/180To190/templates');
         $tpl->SetBlock('180To190');
 
         $tpl->setVariable('lbl_info',  $this->t('VER_INFO', '1.8.0', '1.9.0'));
