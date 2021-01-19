@@ -14,14 +14,14 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * Returns information about a file path
      *
      * @access  public
-     * @param   string  $filename   The filename/directory to be parsed
+     * @param   string  $path       The path to be parsed
      * #param   int     $options    If present, specifies a specific element to be returned
      * @return  mixed   Returns an associative array containing the following elements
      * @see     http://www.php.net/pathinfo 
      */
-    static function pathinfo($filename, $options = 0x0f)
+    static function pathinfo($path, $options = 0x0f)
     {
-        return pathinfo($filename, $options);
+        return pathinfo($path, $options);
     }
 
     /**
@@ -137,6 +137,50 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
     }
 
     /**
+     * Changes file mode
+     *
+     * @access  public
+     * @param   string  $filename   Path to the file
+     * @param   int     $mode       see php chmod() function
+     * @return  bool    Returns TRUE on success or FALSE on failure
+     * @see     http://www.php.net/chmod
+     */
+    static function chmod($filename, $mode = null)
+    {
+        $result = false;
+        if (is_null($mode)) {
+            $php_as_owner = (function_exists('posix_getuid') && posix_getuid() === @fileowner($filename));
+            $php_as_group = (function_exists('posix_getgid') && posix_getgid() === @filegroup($filename));
+            if (is_dir($filename)) {
+                $mode = $php_as_owner? 0755 : ($php_as_group? 0775 : 0777);
+            } else {
+                $mode = $php_as_owner? 0644 : ($php_as_group? 0664 : 0666);
+            }
+        }
+
+        $mode = is_int($mode)? $mode : octdec($mode);
+        $mask = umask(0);
+        /* Take care of the safe mode limitations if safe_mode=1 */
+        if (ini_get('safe_mode')) {
+            /* GID check */
+            if (ini_get('safe_mode_gid')) {
+                if (@filegroup($filename) == getmygid()) {
+                    $result = @chmod($filename, $mode);
+                }
+            } else {
+                if (@fileowner($filename) == @getmyuid()) {
+                    $result = @chmod($filename, $mode);
+                }
+            }
+        } else {
+            $result = @chmod($filename, $mode);
+        }
+
+        umask($mask);
+        return $result;
+    }
+
+    /**
      * List files and directories inside the specified path
      *
      * @access  public
@@ -161,20 +205,20 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * Write a string to a file
      *
      * @access  public
-     * @param   string      $file       file path
+     * @param   string      $filename   Path to the file where to write the data
      * @param   string      $data       file content
      * @param   int         $flags      file opening flag
      * @param   resource    $context    context resource 
      * @return  mixed       returns the number of bytes that were written to the file, or FALSE on failure
      * @see     http://www.php.net/file_put_contents
      */
-    static function file_put_contents($file, $data, $flags = 0, $context = null)
+    static function file_put_contents($filename, $data, $flags = null, $context = null)
     {
-        $res = @file_put_contents($file, $data, $flags, $context);
+        $res = @file_put_contents($filename, $data, $flags, $context);
         if ($res !== false) {
-            $mode = @fileperms(dirname($file));
+            $mode = @fileperms(dirname($filename));
             if (!empty($mode)) {
-                self::chmod($file, $mode);
+                self::chmod($filename, $mode);
             }
         }
 
@@ -256,13 +300,13 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see     http://www.php.net/chmod
      */
-    static function mkdir($path, $recursive = 0, $mode = null)
+    static function mkdir($path, $mode = 0777, $recursive = 0)
     {
         $result = true;
         if (!file_exists($path) || !is_dir($path)) {
             if ($recursive && !file_exists(dirname($path))) {
                 $recursive--;
-                self::mkdir(dirname($path), $recursive, $mode);
+                self::mkdir(dirname($path), $mode, $recursive);
             }
             $result = @mkdir($path);
         }
@@ -275,49 +319,6 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
             self::chmod($path, $mode);
         }
 
-        return $result;
-    }
-
-    /**
-     * Change file/directory mode
-     *
-     * @access  public
-     * @param   string  $path file/directory path
-     * @param   int     $mode see php chmod() function
-     * @return  bool    True/False
-     */
-    static function chmod($path, $mode = null)
-    {
-        $result = false;
-        if (is_null($mode)) {
-            $php_as_owner = (function_exists('posix_getuid') && posix_getuid() === @fileowner($path));
-            $php_as_group = (function_exists('posix_getgid') && posix_getgid() === @filegroup($path));
-            if (is_dir($path)) {
-                $mode = $php_as_owner? 0755 : ($php_as_group? 0775 : 0777);
-            } else {
-                $mode = $php_as_owner? 0644 : ($php_as_group? 0664 : 0666);
-            }
-        }
-
-        $mode = is_int($mode)? $mode : octdec($mode);
-        $mask = umask(0);
-        /* Take care of the safe mode limitations if safe_mode=1 */
-        if (ini_get('safe_mode')) {
-            /* GID check */
-            if (ini_get('safe_mode_gid')) {
-                if (@filegroup($path) == getmygid()) {
-                    $result = @chmod($path, $mode);
-                }
-            } else {
-                if (@fileowner($path) == @getmyuid()) {
-                    $result = @chmod($path, $mode);
-                }
-            }
-        } else {
-            $result = @chmod($path, $mode);
-        }
-
-        umask($mask);
         return $result;
     }
 
@@ -398,7 +399,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
         if (file_exists($source)) {
             if (is_dir($source)) {
                 if (false !== $hDir = @opendir($source)) {
-                    if ($result = self::mkdir($dest, 0, $mode)) {
+                    if ($result = self::mkdir($dest, $mode, 0)) {
                         while(false !== ($file = @readdir($hDir))) {
                             if($file == '.' || $file == '..') {
                                 continue;

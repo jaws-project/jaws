@@ -10,40 +10,41 @@
  */
 class Jaws_FileManagement_Database extends Jaws_FileManagement
 {
-
     /**
      * Returns information about a file path
      *
      * @access  public
-     * @param   string  $filename   The filename/directory to be parsed
+     * @param   string  $path       The path to be parsed
      * #param   int     $options    If present, specifies a specific element to be returned
-     * @return  mixed   Returns an associative array containing the following elements
+     * @return  mixed   Returns an associative array containing the following elements:
+     *                  dirname, basename, extension (if any), and filename
      * @see     http://www.php.net/pathinfo 
      */
-    static function pathinfo($filename, $options)
+    static function pathinfo($path, $options = 0x0f)
     {
-        if (str_starts_with($filename, ROOT_DATA_PATH)) {
-            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        if (str_starts_with($path, ROOT_DATA_PATH)) {
+            $path = Jaws_UTF8::substr($path, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($path);
+        $basename = basename($path);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $res = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select(
-                'id:integer', 'path as dirname', 'name as basename', 'type:integer', 'size:integer',
-                'insert_time:integer', 'update_time:integer'
+                'id:integer', 'parent:integer', 'uid:integer', 'gid:integer',
+                'pathname as dirname', 'basename', 'filename', 'extension',
+                'type:integer', 'size:integer', 'mode:integer', 'ctime:integer', 'mtime:integer'
             )
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchRow();
 
         return Jaws_Error::IsError($res)? false : $res;
@@ -63,21 +64,21 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $res = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select('id')
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
 
         return Jaws_Error::IsError($res)? false : !empty($res);
@@ -97,24 +98,24 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $type = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select('type:integer')
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
 
-        return Jaws_Error::IsError($type)? false : ($type == 1);
+        return Jaws_Error::IsError($type)? false : ($type == 4);
     }
 
     /**
@@ -131,24 +132,24 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $type = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select('type:integer')
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
 
-        return Jaws_Error::IsError($type)? false : ($type != 1);
+        return Jaws_Error::IsError($type)? false : ($type == 8);
     }
 
     /**
@@ -165,21 +166,21 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $size = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select('size:integer')
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
 
         return Jaws_Error::IsError($size)? false : $size;
@@ -199,24 +200,24 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
-        $time = Jaws_ORM::getInstance()
+        $mtime = Jaws_ORM::getInstance()
             ->table('dbfs')
-            ->select('time:integer')
-            ->where('hash_path', $hash_path)
+            ->select('mtime:integer')
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
 
-        return Jaws_Error::IsError($time)? false : $time;
+        return Jaws_Error::IsError($mtime)? false : $mtime;
     }
 
     /**
@@ -244,14 +245,15 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
     }
 
     /**
-     * Change file/directory mode
+     * Changes file mode
      *
      * @access  public
-     * @param   string  $path file/directory path
-     * @param   int     $mode see php chmod() function
-     * @return  bool    True/False
+     * @param   string  $filename   Path to the file
+     * @param   int     $mode       see php chmod() function
+     * @return  bool    Returns TRUE on success or FALSE on failure
+     * @see     http://www.php.net/chmod
      */
-    static function chmod($path, $mode = null)
+    static function chmod($filename, $mode = null)
     {
         return true;
     }
@@ -275,18 +277,18 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
 
         $objORM = Jaws_ORM::getInstance()
             ->table('dbfs')
-            ->select('name')
-            ->where('hash_path', hash64($directory))
+            ->select('basename')
+            ->where('pathhash', hash64($directory))
             ->and()
-            ->where('path', $directory);
+            ->where('pathname', $directory);
 
         switch ($sorting_order) {
             case SCANDIR_SORT_ASCENDING:
-                $objORM->orderBy('name asc');
+                $objORM->orderBy('basename asc');
                 break;
 
             case SCANDIR_SORT_DESCENDING:
-                $objORM->orderBy('name desc');
+                $objORM->orderBy('basename desc');
                 break;
 
             default: // SCANDIR_SORT_NONE
@@ -314,37 +316,38 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
+
         $result = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->upsert(
                 array(
-                    'hash_path' => $hash_path,
-                    'hash_name' => $hash_name,
-                    'path'      => $path,
-                    'name'      => $name,
-                    'type'      => 255,
-                    'size'      => strlen($data),
-                    'insert_time' => time(),
-                    'update_time' => time(),
-                    'data' => array($data, 'blob')
+                    'pathhash' => $pathhash,
+                    'basehash' => $basehash,
+                    'pathname' => $pathname,
+                    'basename' => $basename,
+                    'type'     => 8,
+                    'size'     => strlen($data),
+                    'ctime'    => time(),
+                    'mtime'    => time(),
+                    'data'     => array($data, 'blob')
                 ),
                 array(
-                    'size' => strlen($data),
-                    'update_time' => time(),
-                    'data' => array($data, 'blob')
+                    'size'  => strlen($data),
+                    'mtime' => time(),
+                    'data'  => array($data, 'blob')
                 )
             )
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->exec();
 
         return Jaws_Error::IsError($result)? false : strlen($data);
@@ -369,21 +372,21 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $blob = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select('data:blob')
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
 
         if (Jaws_Error::IsError($blob)) {
@@ -432,25 +435,25 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      */
     static function exif_read_data($stream, $sections = null, $arrays = false, $thumbnail = false)
     {
-        if (str_starts_with($filename, ROOT_DATA_PATH)) {
-            $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
+        if (str_starts_with($stream, ROOT_DATA_PATH)) {
+            $stream = Jaws_UTF8::substr($stream, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($stream);
+        $basename = basename($stream);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $blob = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select('data:blob')
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
         if (Jaws_Error::IsError($blob) || !is_resource($blob)) {
             return false;
@@ -492,13 +495,13 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      *
      * @access  public
      * @param   string  $path       Path to the directory
-     * @param   int     $recursive  Make up directories if not exists
      * @param   int     $mode       Directory permissions
+     * @param   int     $recursive  Make up directories if not exists
      * @param   bool    $first_iteration
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see     http://www.php.net/mkdir
      */
-    static function mkdir($path, $recursive = 0, $mode = null, $first_iteration = true)
+    static function mkdir($path, $mode = 0777, $recursive = 0, $first_iteration = true)
     {
         if ($first_iteration) {
             if (str_starts_with($path, ROOT_DATA_PATH)) {
@@ -510,27 +513,27 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         if (!self::file_exists($path) || !self::is_dir($path)) {
             if ($recursive && !self::file_exists(dirname($path))) {
                 $recursive--;
-                self::mkdir(dirname($path), $recursive, $mode, false);
+                self::mkdir(dirname($path), $mode, $recursive, false);
             }
 
-            $dirpath = dirname($path);
-            $dirname = basename($path);
-            $hash_dirpath = hash64($dirpath);
-            $hash_dirname = hash64($dirname);
+            $pathname = dirname($path);
+            $basename = basename($path);
+            $pathhash = hash64($pathname);
+            $basehash = hash64($basename);
 
             $result = Jaws_ORM::getInstance()
                 ->table('dbfs')
                 ->insert(
                     array(
-                        'hash_path' => $hash_dirpath,
-                        'hash_name' => $hash_dirname,
-                        'path'      => $dirpath,
-                        'name'      => $dirname,
-                        'type'      => 1,
-                        'size'      => 0,
-                        'insert_time' => time(),
-                        'update_time' => time(),
-                        'data' => null
+                        'pathhash' => $pathhash,
+                        'basehash' => $basehash,
+                        'pathname' => $pathname,
+                        'basename' => $basename,
+                        'type'     => 4,
+                        'size'     => 0,
+                        'ctime' => time(),
+                        'mtime' => time(),
+                        'data'  => null
                     )
                 )
                 ->exec();
@@ -590,6 +593,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $srcName = basename($source);
         $src_hash_path = hash64($srcPath);
         $src_hash_name = hash64($srcName);
+
         // destination
         $dstPath = dirname($dest);
         $dstName = basename($dest);
@@ -601,30 +605,30 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             ->table('dbfs')
             ->update(
                 array(
-                    'hash_path' => $dst_hash_path,
-                    'hash_name' => $dst_hash_name,
-                    'path'      => $dstPath,
-                    'name'      => $dstName
+                    'pathhash' => $dst_hash_path,
+                    'basehash' => $dst_hash_name,
+                    'pathname' => $dstPath,
+                    'basename' => $dstName
                 )
-            )->where('hash_path', $src_hash_path)
+            )->where('pathhash', $src_hash_path)
             ->and()
-            ->where('hash_name', $src_hash_name)
+            ->where('basehash', $src_hash_name)
             ->and()
-            ->where('path', $srcPath)
+            ->where('pathname', $srcPath)
             ->and()
-            ->where('name', $srcName)
+            ->where('basename', $srcName)
             ->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        if ($srcInfo['type'] == 1) { // is directory
+        if ($srcInfo['type'] == 4) { // is directory
             $files = Jaws_ORM::getInstance()
                 ->table('dbfs')
-                ->select('id:integer', 'name', 'type:integer')
-                ->where('hash_path', hash64($source))
+                ->select('id:integer', 'basename', 'type:integer')
+                ->where('pathhash', hash64($source))
                 ->and()
-                ->where('path', $source)
+                ->where('pathname', $source)
                 ->fetchAll();
             if (Jaws_Error::IsError($files)) {
                 return false;
@@ -633,7 +637,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             // sub files/directories
             foreach ($files as $file) {
                 if (false === self::rename(
-                    "$source/" . $file['name'], "$dest/". $file['name'], $overwrite, false
+                    "$source/" . $file['basename'], "$dest/". $file['basename'], $overwrite, false
                 )) {
                     return false;
                 }
@@ -678,17 +682,12 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             }
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
-
         $files = Jaws_ORM::getInstance()
             ->table('dbfs')
-            ->select('id:integer', 'name')
-            ->where('hash_path', hash64($filename))
+            ->select('id:integer', 'basename')
+            ->where('pathhash', hash64($filename))
             ->and()
-            ->where('path', $filename)
+            ->where('pathname', $filename)
             ->fetchAll();
         if (Jaws_Error::IsError($files)) {
             return false;
@@ -701,16 +700,21 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         }
 
         if ($itself) {
+            $pathname = dirname($filename);
+            $basename = basename($filename);
+            $pathhash = hash64($pathname);
+            $basehash = hash64($basename);
+
             $result = Jaws_ORM::getInstance()
                 ->table('dbfs')
                 ->delete()
-                ->where('hash_path', $hash_path)
+                ->where('pathhash', $pathhash)
                 ->and()
-                ->where('hash_name', $hash_name)
+                ->where('basehash', $basehash)
                 ->and()
-                ->where('path', $path)
+                ->where('pathname', $pathname)
                 ->and()
-                ->where('name', $name)
+                ->where('basename', $basename)
                 ->exec();
 
             return (Jaws_Error::IsError($result) || empty($result))? false : true;
@@ -735,37 +739,38 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $newname = Jaws_UTF8::substr($newname, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($newname);
-        $name = basename($newname);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($newname);
+        $basename = basename($newname);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
+
         $result = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->upsert(
                 array(
-                    'hash_path' => $hash_path,
-                    'hash_name' => $hash_name,
-                    'path'      => $path,
-                    'name'      => $name,
-                    'type'      => 255,
-                    'size'      => filesize($oldname),
-                    'insert_time' => time(),
-                    'update_time' => time(),
-                    'data' => array('File://' . $oldname, 'blob')
+                    'pathhash' => $pathhash,
+                    'basehash' => $basehash,
+                    'pathname' => $pathname,
+                    'basename' => $basename,
+                    'type'     => 8,
+                    'size'     => filesize($oldname),
+                    'ctime' => time(),
+                    'mtime' => time(),
+                    'data'  => array('File://' . $oldname, 'blob')
                 ),
                 array(
-                    'size' => filesize($oldname),
-                    'update_time' => time(),
-                    'data' => array('File://' . $oldname, 'blob')
+                    'size'  => filesize($oldname),
+                    'mtime' => time(),
+                    'data'  => array('File://' . $oldname, 'blob')
                 )
             )
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->exec();
 
         if (!Jaws_Error::IsError($result)) {
@@ -791,37 +796,38 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $dest = Jaws_UTF8::substr($dest, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($dest);
-        $name = basename($dest);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($dest);
+        $basename = basename($dest);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
+
         $result = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->upsert(
                 array(
-                    'hash_path' => $hash_path,
-                    'hash_name' => $hash_name,
-                    'path'      => $path,
-                    'name'      => $name,
-                    'type'      => 255,
-                    'size'      => filesize($source),
-                    'insert_time' => time(),
-                    'update_time' => time(),
-                    'data' => array('File://' . $source, 'blob')
+                    'pathhash' => $pathhash,
+                    'basehash' => $basehash,
+                    'pathname' => $pathname,
+                    'basename' => $basename,
+                    'type'     => 8,
+                    'size'     => filesize($source),
+                    'ctime' => time(),
+                    'mtime' => time(),
+                    'data'  => array('File://' . $source, 'blob')
                 ),
                 array(
-                    'size' => filesize($source),
-                    'update_time' => time(),
-                    'data' => array('File://' . $source, 'blob')
+                    'size'  => filesize($source),
+                    'mtime' => time(),
+                    'data'  => array('File://' . $source, 'blob')
                 )
             )
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->exec();
 
         return !Jaws_Error::IsError($result);
@@ -844,21 +850,21 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));
         }
 
-        $path = dirname($filename);
-        $name = basename($filename);
-        $hash_path = hash64($path);
-        $hash_name = hash64($name);
+        $pathname = dirname($filename);
+        $basename = basename($filename);
+        $pathhash = hash64($pathname);
+        $basehash = hash64($basename);
 
         $blob = Jaws_ORM::getInstance()
             ->table('dbfs')
             ->select('data:blob')
-            ->where('hash_path', $hash_path)
+            ->where('pathhash', $pathhash)
             ->and()
-            ->where('hash_name', $hash_name)
+            ->where('basehash', $basehash)
             ->and()
-            ->where('path', $path)
+            ->where('pathname', $pathname)
             ->and()
-            ->where('name', $name)
+            ->where('basename', $basename)
             ->fetchOne();
 
         if (Jaws_Error::IsError($result)) {
