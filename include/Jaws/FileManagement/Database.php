@@ -365,7 +365,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * @see     http://www.php.net/file_get_contents
      */
     static function file_get_contents(
-        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = PHP_INT_MAX
+        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = null
     ) {
         if (str_starts_with($filename, ROOT_DATA_PATH)) {
             $filename = Jaws_UTF8::substr($filename, Jaws_UTF8::strlen(ROOT_DATA_PATH));

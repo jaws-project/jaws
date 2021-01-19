@@ -238,9 +238,13 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      * @see     http://www.php.net/file_get_contents
      */
     static function file_get_contents(
-        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = PHP_INT_MAX
+        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = null
     ) {
-        return @file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
+        if (empty($maxlen)) {
+            return @file_get_contents($filename, $use_include_path, $context, $offset);
+        } else {
+            return @file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
+        }
     }
 
     /**
