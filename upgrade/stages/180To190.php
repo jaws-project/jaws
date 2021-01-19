@@ -50,13 +50,6 @@ class Upgrader_180To190 extends JawsUpgrader
             return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
-        // delete old sessions
-        $result = Jaws_ORM::getInstance()->table('session')->delete()->exec();
-        if (Jaws_Error::IsError($result)) {
-            _log(JAWS_DEBUG, $result->getMessage());
-            // do nothing
-        }
-
         $schema_array = array(
             '1.8.0' => 'schema'
         );
