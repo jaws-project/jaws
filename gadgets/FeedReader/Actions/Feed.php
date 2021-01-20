@@ -205,7 +205,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
                     'enclosure',
                     isset($item['enclosure'])? Jaws_XSS::refilter($item['enclosure']) : ''
                 );
-                $tpl->SetVariable('title', strip_tags($item['title']));
+                $tpl->SetVariable('title', isset($item['title'])? strip_tags($item['title']) : '');
                 $tpl->SetVariable('href', isset($item['link'])? Jaws_XSS::refilter($item['link']) : '');
                 $tpl->SetVariable(
                     'summary',
