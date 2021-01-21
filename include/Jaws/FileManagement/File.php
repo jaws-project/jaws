@@ -299,12 +299,12 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      *
      * @access  public
      * @param   string  $path       Path to the directory
-     * @param   int     $recursive  Make up directories if not exists
      * @param   int     $mode       Directory permissions
+     * @param   int     $recursive  Make up directories if not exists
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see     http://www.php.net/chmod
      */
-    static function mkdir($path, $mode = 0777, $recursive = 0)
+    static function mkdir($path, $mode = 0, $recursive = 0)
     {
         $result = true;
         if (!file_exists($path) || !is_dir($path)) {

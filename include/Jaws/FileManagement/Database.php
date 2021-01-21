@@ -500,7 +500,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see     http://www.php.net/mkdir
      */
-    static function mkdir($path, $mode = 0777, $recursive = 0, $first_iteration = true)
+    static function mkdir($path, $mode = 0, $recursive = 0, $first_iteration = true)
     {
         if ($first_iteration) {
             if (str_starts_with($path, ROOT_DATA_PATH)) {

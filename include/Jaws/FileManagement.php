@@ -89,7 +89,7 @@ class Jaws_FileManagement
 
         $dest = $dest?: static::upload_tmp_dir();
         $dest = rtrim($dest, "\\/"). '/';
-        if (!static::mkdir($dest, 2)) {
+        if (!static::mkdir($dest, 0, 2)) {
             return Jaws_Error::raiseError(
                 Jaws::t('ERROR_FAILED_CREATING_DIR'. $dest),
                 __FUNCTION__
