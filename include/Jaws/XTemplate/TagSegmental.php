@@ -139,7 +139,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
         $result = '';
 
         foreach ($list as $token) {
-            if (method_exists($token, 'render')) {
+            if (is_object($token) && method_exists($token, 'render')) {
                 $value = $token->render($context);
             } else {
                 $value = $token;
