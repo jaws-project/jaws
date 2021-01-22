@@ -759,6 +759,7 @@
             <field>
                 <name>data</name>
                 <type>blob</type>
+                <length>1073741824</length>
             </field>
 
             <index>
