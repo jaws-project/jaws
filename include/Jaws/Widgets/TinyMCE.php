@@ -188,7 +188,7 @@ class Jaws_Widgets_TinyMCE extends Container
                 $this->app->define(
                     '',
                     'editorFileBrowser',
-                    $this->app->map->GetRawURL('Directory', 'Browse')
+                    $this->app->map->GetRawURL('Directory', 'Directory', array('standalone' => '1'))
                 );
                 $this->app->define(
                     '',
