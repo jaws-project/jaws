@@ -240,6 +240,17 @@ class Jaws_FileManagement
                 }
             }
         } catch (Jaws_Exception $error) {
+            // delete orphaned files
+            array_walk_recursive(
+                $result,
+                function($val, $key, $dest) {
+                    if ($key == 'host_filename') {
+                        static::delete($dest . $val, true);
+                    }
+                },
+                $dest
+            );
+
             return Jaws_Error::raiseError(
                 $error->getMessage(),
                 $error->getCode(),
