@@ -319,6 +319,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $basename = basename($filename);
         $pathhash = hash64($pathname);
         $basehash = hash64($basename);
+        $fileinfo = pathinfo($basename);
 
         $result = Jaws_ORM::getInstance()
             ->table('dbfs')
@@ -328,6 +329,8 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
                     'basehash' => $basehash,
                     'pathname' => $pathname,
                     'basename' => $basename,
+                    'filename' => $fileinfo['filename'],
+                    'extension'=> (string)@$fileinfo['extension'],
                     'type'     => 8,
                     'size'     => strlen($data),
                     'ctime'    => time(),
@@ -519,6 +522,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $basename = basename($path);
             $pathhash = hash64($pathname);
             $basehash = hash64($basename);
+            $fileinfo = pathinfo($dstName);
 
             $result = Jaws_ORM::getInstance()
                 ->table('dbfs')
@@ -528,6 +532,8 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
                         'basehash' => $basehash,
                         'pathname' => $pathname,
                         'basename' => $basename,
+                        'filename' => $fileinfo['filename'],
+                        'extension'=> (string)@$fileinfo['extension'],
                         'type'     => 4,
                         'size'     => 0,
                         'ctime' => time(),
@@ -598,6 +604,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $dstName = basename($dest);
         $dst_hash_path = hash64($dstPath);
         $dst_hash_name = hash64($dstName);
+        $dst_fileinfo = pathinfo($dstName);
 
         // move file or directory(without sub files) to new destination
         $result = Jaws_ORM::getInstance()
@@ -607,7 +614,9 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
                     'pathhash' => $dst_hash_path,
                     'basehash' => $dst_hash_name,
                     'pathname' => $dstPath,
-                    'basename' => $dstName
+                    'basename' => $dstName,
+                    'filename' => $dst_fileinfo['filename'],
+                    'extension'=> (string)@$dst_fileinfo['extension'],
                 )
             )->where('pathhash', $src_hash_path)
             ->and()
@@ -742,6 +751,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $basename = basename($newname);
         $pathhash = hash64($pathname);
         $basehash = hash64($basename);
+        $fileinfo = pathinfo($basename);
 
         $result = Jaws_ORM::getInstance()
             ->table('dbfs')
@@ -751,6 +761,8 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
                     'basehash' => $basehash,
                     'pathname' => $pathname,
                     'basename' => $basename,
+                    'filename' => $fileinfo['filename'],
+                    'extension'=> (string)@$fileinfo['extension'],
                     'type'     => 8,
                     'size'     => filesize($oldname),
                     'ctime' => time(),
@@ -799,6 +811,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
         $basename = basename($dest);
         $pathhash = hash64($pathname);
         $basehash = hash64($basename);
+        $fileinfo = pathinfo($basename);
 
         $result = Jaws_ORM::getInstance()
             ->table('dbfs')
@@ -808,6 +821,8 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
                     'basehash' => $basehash,
                     'pathname' => $pathname,
                     'basename' => $basename,
+                    'filename' => $fileinfo['filename'],
+                    'extension'=> (string)@$fileinfo['extension'],
                     'type'     => 8,
                     'size'     => filesize($source),
                     'ctime' => time(),
