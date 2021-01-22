@@ -329,6 +329,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             'maxcount'    => 0,        // unlimited
             'dimension'   => '',
             'extensions'  => '',
+            'imageformat' => ''
         );
         $options = array_merge($defaultOptions, $options);
 
@@ -398,7 +399,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                 null,
                 true,
                 $options['maxsize'],
-                $options['dimension']
+                $options['dimension'],
+                $options['imageformat']
             );
 
             if (Jaws_Error::IsError($newFiles)) {
