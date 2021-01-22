@@ -693,13 +693,13 @@
             <field>
                 <name>pathname</name>
                 <type>text</type>
-                <length>32</length>
+                <length>128</length>
             </field>
 
             <field>
                 <name>basename</name>
                 <type>text</type>
-                <length>128</length>
+                <length>32</length>
             </field>
 
             <field>
