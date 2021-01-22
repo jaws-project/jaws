@@ -228,7 +228,7 @@ class Jaws_Log
 
         // log file rotation
         if (defined('LOGGER_METHOD_FILE_SIZE') && @filesize($logfile) >= LOGGER_METHOD_FILE_SIZE) {
-            Jaws_Utils::rename($logfile, $logfile. '.'. time());
+            Jaws_FileManagement_File::rename($logfile, $logfile. '.'. time());
         }
 
         if (false !== $fh = @fopen($logfile, 'a+')) {
