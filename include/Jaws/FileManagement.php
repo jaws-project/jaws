@@ -72,11 +72,12 @@ class Jaws_FileManagement
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
      * @param   int     $max_size       max size of file
      * @param   string  $dimension      resize image file to given dimension
+     * @param   string  $format         convert image file to given format
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
     static function uploadFiles(
         $files, $dest = '', $allow_formats = '',
-        $overwrite = true, $move_files = true, $max_size = null, $dimension = ''
+        $overwrite = true, $move_files = true, $max_size = null, $dimension = '', $format = ''
     ) {
         if (empty($files) || !is_array($files)) {
             return false;
@@ -179,11 +180,13 @@ class Jaws_FileManagement
                 }
 
                 // resize image file
-                if (!empty($dimension) && strpos($file['mime'], 'image/') !== false) {
+                if ((!empty($dimension) || !empty($format)) &&
+                    strpos($file['mime'], 'image/') !== false
+                ) {
                     $res = Jaws_Image::getInstance()
                         ->load($file['tmp_name'])
                         ->resize($dimension[0], $dimension[1])
-                        ->save($file['tmp_name'])
+                        ->save($file['tmp_name'], $format)
                         ->free();
                     if (Jaws_Error::IsError($res)) {
                         return Jaws_Error::raiseError(
