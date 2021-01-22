@@ -119,6 +119,14 @@ class Jaws_FileManagement
                         $file['error'] = $listFiles['error'][$i];
                     }
 
+                    $user_filename = isset($file['name']) ? $file['name'] : '';
+                    $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.\-]/', '', $user_filename));
+                    // remove deny_formats extension, even double extension
+                    $host_filename = implode(
+                        '.',
+                        array_diff(explode('.', $host_filename), self::$deny_formats)
+                    );
+
                     if (isset($file['error']) && !empty($file['error']) && $file['error'] != 4) {
                         throw new Jaws_Exception(
                             Jaws::t('ERROR_UPLOAD_CORRUPTED', $host_filename),
@@ -130,14 +138,6 @@ class Jaws_FileManagement
                     if (empty($file['tmp_name'])) {
                         continue;
                     }
-
-                    $user_filename = isset($file['name']) ? $file['name'] : '';
-                    $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.\-]/', '', $user_filename));
-                    // remove deny_formats extension, even double extension
-                    $host_filename = implode(
-                        '.',
-                        array_diff(explode('.', $host_filename), self::$deny_formats)
-                    );
 
                     // Check if the file has been altered or is corrupted
                     if (filesize($file['tmp_name']) != $file['size']) {
@@ -176,13 +176,13 @@ class Jaws_FileManagement
                         $file['size'] = filesize($file['tmp_name']);
                     }
 
-                    // file mime-type
-                    $file['mime'] = @mime_content_type($file['tmp_name']);
-                    $file['mime'] = $file['mime']?: $fileExtType['mime'];
-
                     // file category type
                     $fileExtType = static::mime_extension_type($host_filename);
                     $file['type'] = $fileExtType['type'];
+
+                    // file mime-type
+                    $file['mime'] = @mime_content_type($file['tmp_name']);
+                    $file['mime'] = $file['mime']?: $fileExtType['mime'];
 
                     // Check if the file size exceeds defined max file size
                     if (!empty($max_size) && $file['size'] > $max_size) {
