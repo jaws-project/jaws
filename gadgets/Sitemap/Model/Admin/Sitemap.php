@@ -5,7 +5,7 @@
  * @category   GadgetModel
  * @package    Sitemap
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2008-2020 Jaws Development Group
+ * @copyright  2008-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap

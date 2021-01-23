@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    Sitemap
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2014-2020 Jaws Development Group
+ * @copyright  2014-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Sitemap_Actions_Robots extends Jaws_Gadget_Action
