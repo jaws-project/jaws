@@ -5,7 +5,7 @@
  * @category   GadgetModel
  * @package    Forums
  * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2012-2020 Jaws Development Group
+ * @copyright  2012-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Forums_Model_Attachments extends Jaws_Gadget_Model
