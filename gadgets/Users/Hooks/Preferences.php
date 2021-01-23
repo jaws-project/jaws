@@ -4,9 +4,6 @@
  *
  * @category    GadgetHook
  * @package     Users
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2017-2020 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Hooks_Preferences extends Jaws_Gadget_Hook
 {

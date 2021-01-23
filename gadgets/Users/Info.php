@@ -2,8 +2,8 @@
 /**
  * Users Core Gadget
  *
- * @category   GadgetInfo
- * @package    Users
+ * @category    GadgetInfo
+ * @package     Users
  */
 class Users_Info extends Jaws_Gadget
 {

@@ -4,10 +4,6 @@
  *
  * @category    GadgetAdmin
  * @package     Users
- * @author      Jonathan Hernandez <ion@suavizado.com>
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2020 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Admin_Login extends Jaws_Gadget_Action
 {

@@ -4,9 +4,6 @@
  *
  * @category   Auth
  * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2019-2020 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Account_Github extends Jaws_Gadget_Action
 {
