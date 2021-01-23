@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Emblems
  * @author      Jorge A Gallegos <kad@gulags.org.mx>
- * @copyright   2004-2020 Jaws Development Group
+ * @copyright   2004-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 
