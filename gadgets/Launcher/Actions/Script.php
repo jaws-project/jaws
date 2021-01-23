@@ -6,7 +6,7 @@
  * @package     Launcher
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2006-2020 Jaws Development Group
+ * @copyright   2006-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Launcher_Actions_Script extends Jaws_Gadget_Action
