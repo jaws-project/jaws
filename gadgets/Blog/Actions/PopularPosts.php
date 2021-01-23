@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Blog
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2017-2020 Jaws Development Group
+ * @copyright   2017-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
