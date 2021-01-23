@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Quotes
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2007-2020 Jaws Development Group
+ * @copyright  2007-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
