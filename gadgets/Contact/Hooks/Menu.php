@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Contact
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2020 Jaws Development Group
+ * @copyright  2007-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Contact_Hooks_Menu extends Jaws_Gadget_Hook
