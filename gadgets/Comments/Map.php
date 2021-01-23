@@ -5,7 +5,7 @@
  * @category    GadgetMaps
  * @package     Comments
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2008-2020 Jaws Development Group
+ * @copyright   2008-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $maps[] = array(

@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Comments
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2008-2020 Jaws Development Group
+ * @copyright   2008-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Events_UninstallGadget extends Jaws_Gadget_Event

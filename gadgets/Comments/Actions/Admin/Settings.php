@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Comments
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2008-2020 Jaws Development Group
+ * @copyright  2008-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
