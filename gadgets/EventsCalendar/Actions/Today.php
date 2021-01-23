@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2016-2020 Jaws Development Group
+ * @copyright   2016-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
