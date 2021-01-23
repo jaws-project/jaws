@@ -1,6 +1,6 @@
 <?php
 /**
- * Class of functions for manage database file system!
+ * Class of functions for manage database file system
  *
  * @category    Jaws_FileManagement
  * @package     Core

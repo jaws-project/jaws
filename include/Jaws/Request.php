@@ -8,7 +8,7 @@
  * @package     Jaws_Request
  * @author      Helgi Þormar Þorbjörnsson <dufuz@php.net>
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2006-2020 Jaws Development Group
+ * @copyright   2006-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Request

@@ -1,9 +1,14 @@
 <?php
 /**
  * Unicode bidirectional text methods
- * @author Nicola Asuni - info@tecnick.com
- * 
- * @see https://github.com/tecnickcom/TCPDF
+ *
+ * @category    Application
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @author      Nicola Asuni <info@tecnick.com>
+ * @copyright   2020-2021 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
+ * @see         https://github.com/tecnickcom/TCPDF
  */
 class Jaws_Bidi
 {

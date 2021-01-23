@@ -5,7 +5,7 @@
  * @category    Services
  * @package     Core
  * @author      Pablo Fischer <pablo@pablo.com.mx>
- * @copyright   2006-2020 Jaws Development Group
+ * @copyright   2006-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Pingback

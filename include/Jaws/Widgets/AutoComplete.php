@@ -5,7 +5,7 @@
  * @category   Widget
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2005-2020 Jaws Development Group
+ * @copyright  2005-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 require_once ROOT_JAWS_PATH . 'libraries/piwi/Widget/Bin/Entry.php';
