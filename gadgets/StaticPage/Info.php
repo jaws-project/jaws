@@ -5,7 +5,7 @@
  * @category   GadgetInfo
  * @package    StaticPage
  * @author     Jon Wood <jon@jellybob.co.uk>
- * @copyright  2004-2020 Jaws Development Group
+ * @copyright  2004-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class StaticPage_Info extends Jaws_Gadget
