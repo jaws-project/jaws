@@ -2,12 +2,12 @@
 /**
  * Write configuration stuff Stage
  *
- * @category   Application
- * @package    UpgradeStage
- * @author     Jon Wood <jon@substance-it.co.uk>
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2005-2020 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Application
+ * @package     UpgradeStage
+ * @author      Jon Wood <jon@substance-it.co.uk>
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @copyright   2005-2021 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Upgrader_WriteConfig extends JawsUpgrader
 {

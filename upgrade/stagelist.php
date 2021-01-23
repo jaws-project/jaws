@@ -2,13 +2,13 @@
 /**
  * Upgrade stage list
  *
- * @category   Application
- * @package    Upgrade
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2020 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Application
+ * @package     Upgrade
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Helgi Þormar Þorbjörnsson <dufuz@php.net>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2021 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $stages = array();
 

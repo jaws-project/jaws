@@ -6,7 +6,7 @@
  * @package    UpgradeStage
  * @author     Jon Wood <jon@substance-it.co.uk>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2020 Jaws Development Group
+ * @copyright  2005-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Upgrader_Authentication extends JawsUpgrader

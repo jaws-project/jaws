@@ -5,7 +5,7 @@
  * @category    Application
  * @package     UpgradeStage
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2019-2020 Jaws Development Group
+ * @copyright   2019-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Upgrader_140To150 extends JawsUpgrader
