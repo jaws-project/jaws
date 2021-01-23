@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     PrivateMessage
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2008-2020 Jaws Development Group
+ * @copyright   2008-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook

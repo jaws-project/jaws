@@ -5,7 +5,7 @@
  * @category    GadgetAdmin
  * @package     PrivateMessage
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2008-2020 Jaws Development Group
+ * @copyright   2008-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class PrivateMessage_Actions_Admin_Properties extends PrivateMessage_Actions_Admin_Default
