@@ -6,7 +6,7 @@
  * @package    TMS
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2020 Jaws Development Group
+ * @copyright  2007-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
