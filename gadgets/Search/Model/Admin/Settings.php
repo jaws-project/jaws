@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     Search
  * @author      Jonathan Hernandez <ion@suavizado.com>
- * @copyright   2005-2020 Jaws Development Group
+ * @copyright   2005-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Search_Model_Admin_Settings extends Jaws_Gadget_Model
