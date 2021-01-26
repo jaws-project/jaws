@@ -166,8 +166,8 @@ class Jaws_FileManagement
 
                         if (!empty($format)) {
                             // rename file extension
-                            if (false !== $extPos = strrchr($host_filename, '.')) {
-                                $host_filename = substr($extPos, 1);
+                            if (false !== $extPos = strrpos($host_filename, '.')) {
+                                $host_filename = substr($host_filename, 0, $extPos);
                             }
                             $host_filename.= ".$format";
                         }
@@ -211,7 +211,7 @@ class Jaws_FileManagement
 
                     if (is_null($overwrite) || empty($fileinfo['filename'])) {
                         $host_filename = time(). mt_rand() . $fileinfo['extension'];
-                    } elseif (!$overwrite && file_exists($dest . $host_filename)) {
+                    } elseif (!$overwrite && static::file_exists($dest . $host_filename)) {
                         $host_filename = $fileinfo['filename']. '_'. time(). mt_rand(). $fileinfo['extension'];
                     }
 
