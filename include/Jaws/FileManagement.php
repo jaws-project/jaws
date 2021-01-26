@@ -173,6 +173,7 @@ class Jaws_FileManagement
                         }
 
                         // set new file size
+                        clearstatcache();
                         $file['size'] = filesize($file['tmp_name']);
                     }
 
