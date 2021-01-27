@@ -127,7 +127,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $usersCount = $uModel->getUsersCount(
             (int)@$post['filters']['filter_domain'],
             (int)@$post['filters']['filter_group'],
-            $filters,
+            $filters
         );
         if (Jaws_Error::IsError($usersCount)) {
             return $this->gadget->session->response($usersCount->GetMessage(), RESPONSE_ERROR);
