@@ -158,7 +158,7 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
         }
 
         $result = '';
-        $segment = array_slice($collection, $range[0], $range[1]);
+        $segment = array_slice($collection, $range[0], $range[1], true);
         if (!count($segment)) {
             return null;
         }
