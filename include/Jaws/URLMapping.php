@@ -427,10 +427,12 @@ class Jaws_URLMapping
                 }
 
                 // all params variables must exist in regexp variables
+                /*
                 $not_exist_vars = array_diff($params_vars, $map['regexp_vars']);
                 if (!empty($not_exist_vars)) {
                     continue;
                 }
+                */
 
                 // set map variables by params values
                 foreach ($params as $key => $value) {
