@@ -194,7 +194,7 @@ class Jaws_URLMapping
             }
 
             foreach ($maps as $map) {
-                $this->_actions_maps[$map['gadget']][$map['action']][] = $map['map'];
+                $this->_actions_maps[$map['gadget']][$map['action']] = $map['map'];
                 $this->_maps[$map['gadget']][$map['map']] = array(
                     'params'      => null,
                     'action'      => $map['action'],
@@ -418,59 +418,48 @@ class Jaws_URLMapping
 
         $params_vars = array_keys($params);
         if ($this->_enabled && isset($this->_actions_maps[$gadget][$action])) {
-            foreach ($this->_actions_maps[$gadget][$action] as $map) {
-                $map = $this->_maps[$gadget][$map];
-                if ($this->_custom_precedence && !empty($map['custom_map'])) {
-                    $url = $map['custom_map'];
-                } else {
-                    $url = $map['map'];
+            $map = $this->_maps[$gadget][$this->_actions_maps[$gadget][$action]];
+            if ($this->_custom_precedence && !empty($map['custom_map'])) {
+                $url = $map['custom_map'];
+            } else {
+                $url = $map['map'];
+            }
+
+            // set map variables by params values
+            foreach ($params as $key => $value) {
+                if (!is_null($value)) {
+                    $value = implode('/', array_map('rawurlencode', explode('/', $value)));
+                    // prevent encode comma
+                    $value = str_replace('%2C', ',', $value);
+                    $url = str_replace('{' . $key . '}', $value, $url);
+                }
+            }
+
+            // remove not fill optional part of map
+            do {
+                $rpl_url = $url;
+                $url = preg_replace('$\[[[:alnum:]\./\-\_]*\{\w+\}[[:alnum:]\./\-\_]*\]$u', '', $url);
+            } while ($rpl_url != $url);
+            $url = str_replace(array('[', ']'), '', $url);
+
+            if (!preg_match('#{\w+}#si', $url)) {
+                if (!$this->_use_rewrite) {
+                    $url = 'index.php/' . $url;
                 }
 
-                // all params variables must exist in regexp variables
-                /*
-                $not_exist_vars = array_diff($params_vars, $map['regexp_vars']);
-                if (!empty($not_exist_vars)) {
-                    continue;
-                }
-                */
-
-                // set map variables by params values
-                foreach ($params as $key => $value) {
-                    if (!is_null($value)) {
-                        $value = implode('/', array_map('rawurlencode', explode('/', $value)));
-                        // prevent encode comma
-                        $value = str_replace('%2C', ',', $value);
-                        $url = str_replace('{' . $key . '}', $value, $url);
+                if ($extension) {
+                    if ($extension === true) {
+                        $url.= ($map['extension'] == '.')? $this->_extension : $map['extension'];
+                    } else {
+                        $url.= $extension;
                     }
                 }
 
-                // remove not fill optional part of map
-                do {
-                    $rpl_url = $url;
-                    $url = preg_replace('$\[[[:alnum:]\./\-\_]*\{\w+\}[[:alnum:]\./\-\_]*\]$u', '', $url);
-                } while ($rpl_url != $url);
-                $url = str_replace(array('[', ']'), '', $url);
-
-                if (!preg_match('#{\w+}#si', $url)) {
-                    if (!$this->_use_rewrite) {
-                        $url = 'index.php/' . $url;
-                    }
-
-                    if ($extension) {
-                        if ($extension === true) {
-                            $url.= ($map['extension'] == '.')? $this->_extension : $map['extension'];
-                        } else {
-                            $url.= $extension;
-                        }
-                    }
-
-                    // preparing options
-                    if (!empty($options)) {
-                        $url.= '?'. http_build_query($options);
-                    }
-
-                    break;
+                // preparing options
+                if (!empty($options)) {
+                    $url.= '?'. http_build_query($options);
                 }
+            } else {
                 $url = '';
             }
 
