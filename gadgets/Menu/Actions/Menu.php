@@ -258,13 +258,17 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                         $val = null;
                 }
 
+                // if variable is null or undefined ignore this menu
                 if (is_null($val)) {
                     return false;
                 }
-                // set url variables
-                foreach ($url['params'] as $param => $str) {
-                    $params[$param] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $str);
+                // if variable not in menu url parameters ignore this variable
+                if (!array_key_exists($var, $url['params'])) {
+                    continue;
                 }
+                // set url variable
+                $params[$var] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $url['params'][$var]);
+
                 // set title variables
                 $menu['title'] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $menu['title']);
             }
