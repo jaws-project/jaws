@@ -53,9 +53,10 @@ class Jaws_XTemplate_Context
         $files = array_map('basename', glob(__DIR__ . '/Filters/*.php'));
         foreach ($files as $file) {
             $fileName = basename($file, '.php');
-            $reflection = new \ReflectionClass("Jaws_XTemplate_Filters_$fileName");
-            foreach ($reflection->getMethods(\ReflectionMethod::IS_STATIC) as $method) {
-                $this->filters[$method->name] = $method->class;
+            $classname = "Jaws_XTemplate_Filters_$fileName";
+            $methods = get_class_methods($classname);
+            foreach ($methods as $method) {
+                $this->filters[$method] = $classname;
             }
         }
     }
@@ -110,7 +111,7 @@ class Jaws_XTemplate_Context
             }
 
             if (false === $mappedFunction = $this->filters[$filter]) {
-                // filter function is global or native php method 
+                // filter function is global or native php method (registered via addFilter method)
                 return call_user_func_array($filter, $args);
             }
 
@@ -121,7 +122,7 @@ class Jaws_XTemplate_Context
 
             // filter is part of a class/object
             return call_user_func_array(array($mappedFunction, $filter), $args);
-        } catch (\TypeError $typeError) {
+        } catch (TypeError $typeError) {
             throw new Exception($typeError->getMessage(), 0, $typeError);
         }
     }
@@ -341,12 +342,12 @@ class Jaws_XTemplate_Context
             if (is_array($object)) {
                 // if the last part of the context variable is .first we return the first array element
                 if ($nextPartName == 'first' && count($parts) == 0 && !array_key_exists('first', $object)) {
-                    return Jaws_XTemplate_Filters_Default::first($object);
+                    return Jaws_XTemplate_Filters_Array::first($object);
                 }
 
                 // if the last part of the context variable is .last we return the last array element
                 if ($nextPartName == 'last' && count($parts) == 0 && !array_key_exists('last', $object)) {
-                    return Jaws_XTemplate_Filters_Default::last($object);
+                    return Jaws_XTemplate_Filters_Array::last($object);
                 }
 
                 // if the last part of the context variable is .size we just return the count
