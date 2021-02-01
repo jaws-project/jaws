@@ -42,17 +42,17 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
     /**
      * Constructor
      *
-     * @param   string  $markup
      * @param   array   $tokens
+     * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $this->nodelists = array();
         $this->elseNodelist = array();
 
-        parent::__construct($markup, $tokens);
+        parent::__construct($tokens, $markup);
 
         $syntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . '/');
 

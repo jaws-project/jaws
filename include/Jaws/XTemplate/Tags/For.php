@@ -49,15 +49,15 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
     /**
      * Constructor
      *
-     * @param   string  $markup
      * @param   array   $tokens
+     * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $this->nodelists[] = array('for', $markup, &$this->nodelist);
-        parent::__construct($markup, $tokens);
+        parent::__construct($tokens, $markup);
 
         $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_XTemplate::get('VARIABLE_NAME') . ')/');
 

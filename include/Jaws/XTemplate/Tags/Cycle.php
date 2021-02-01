@@ -30,7 +30,7 @@ class Jaws_XTemplate_Tags_Cycle extends Jaws_XTemplate_Tag
      *
      * @throws  Exception
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $simpleSyntax = new Jaws_Regexp("/" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . "/");
         $namedSyntax = new Jaws_Regexp("/(" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ")\s*\:\s*(.*)/");

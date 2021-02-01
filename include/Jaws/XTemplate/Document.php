@@ -15,7 +15,7 @@ class Jaws_XTemplate_Document extends Jaws_XTemplate_TagSegmental
      *
      * @param array $tokens
      */
-    public function __construct(array &$tokens)
+    public function __construct(array &$tokens, $markup = '')
     {
         $this->parse($tokens);
     }

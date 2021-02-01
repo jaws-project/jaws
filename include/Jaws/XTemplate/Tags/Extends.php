@@ -29,12 +29,12 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param   string  $markup
      * @param   array   $tokens
+     * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $regex = new Jaws_Regexp('/("[^"]+"|\'[^\']+\')?/');
         if ($regex->match($markup) && isset($regex->matches[1])) {
@@ -45,7 +45,7 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
             );
         }
 
-        parent::__construct($markup, $tokens);
+        parent::__construct($tokens, $markup);
     }
 
     /**

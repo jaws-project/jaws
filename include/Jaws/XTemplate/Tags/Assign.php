@@ -24,12 +24,12 @@ class Jaws_XTemplate_Tags_Assign extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param   string  $markup
      * @param   array   $tokens
+     * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $syntaxRegexp = new Jaws_Regexp('/(\w+)\s*=\s*(.*)\s*/');
 

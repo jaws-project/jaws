@@ -22,18 +22,18 @@ class Jaws_XTemplate_Tags_Capture extends Jaws_XTemplate_Tags_Segmental
     /**
      * Constructor
      *
-     * @param   string  $markup
      * @param   array   $tokens
+     * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $syntaxRegexp = new Jaws_Regexp('/(\w+)/');
 
         if ($syntaxRegexp->match($markup)) {
             $this->to = $syntaxRegexp->matches[1];
-            parent::__construct($markup, $tokens);
+            parent::__construct($tokens, $markup);
         } else {
             throw new Exception("Syntax Error in 'capture' - Valid syntax: capture [var] [value]");
         }

@@ -39,7 +39,7 @@ abstract class Jaws_XTemplate_Tag
      * @param   string  $markup
      * @param   array   $tokens
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $this->app = Jaws::getInstance();
 

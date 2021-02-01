@@ -62,7 +62,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
                     $tagName = 'Jaws_XTemplate_Tags_' . ucwords($tagRegexp->matches[1]);
                     $tagName = (class_exists($tagName) === true) ? $tagName : null;
                     if ($tagName !== null) {
-                        $this->nodelist[] = new $tagName($tagRegexp->matches[2], $tokens);
+                        $this->nodelist[] = new $tagName($tokens, $tagRegexp->matches[2]);
                         if ($tagRegexp->matches[1] == 'extends') {
                             return;
                         }

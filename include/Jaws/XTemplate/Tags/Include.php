@@ -39,12 +39,12 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param   string  $markup
      * @param   array   $tokens
+     * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct($markup, array &$tokens)
+    public function __construct(array &$tokens, $markup)
     {
         $regex = new Jaws_Regexp(
             '/('.Jaws_XTemplate::get('QUOTED_FRAGMENT').'+)' .
@@ -68,7 +68,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
 
         $this->extractAttributes($markup);
 
-        parent::__construct($markup, $tokens);
+        parent::__construct($tokens, $markup);
     }
 
     /**
