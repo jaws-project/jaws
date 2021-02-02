@@ -71,12 +71,12 @@ class Blog_Installer extends Jaws_Gadget_Installer
         }
 
         $new_dir = ROOT_DATA_PATH . 'blog/images';
-        if (!Jaws_FileManagement_File::mkdir($new_dir)) {
+        if (!Jaws_FileManagement_File::mkdir($new_dir, 0, 2)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         $new_dir = ROOT_DATA_PATH . 'blog/categories';
-        if (!Jaws_FileManagement_File::mkdir($new_dir)) {
+        if (!Jaws_FileManagement_File::mkdir($new_dir, 0, 2)) {
             return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
@@ -190,7 +190,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('recommended', ',Comments,Tags,');
 
             $new_dir = ROOT_DATA_PATH . 'blog/images';
-            if (!Jaws_FileManagement_File::mkdir($new_dir)) {
+            if (!Jaws_FileManagement_File::mkdir($new_dir, 0, 2)) {
                 return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
             }
         }
@@ -207,7 +207,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('category_image_size', '128x128');
             // make directories
             $new_dir = ROOT_DATA_PATH . 'blog/categories';
-            if (!Jaws_FileManagement_File::mkdir($new_dir)) {
+            if (!Jaws_FileManagement_File::mkdir($new_dir, 0, 2)) {
                 return new Jaws_Error(Jaws::t('ERROR_FAILED_CREATING_DIR', $new_dir));
             }
 
