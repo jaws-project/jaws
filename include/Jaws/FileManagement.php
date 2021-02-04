@@ -97,7 +97,7 @@ class Jaws_FileManagement
             );
         }
 
-        $dimension = empty($dimension)? '': explode('x', $dimension);
+        $dimension = preg_split('/\*|x/', $dimension, -1, PREG_SPLIT_NO_EMPTY);
         $allow_formats = array_filter(explode(',', $allow_formats));
         try {
             foreach($files as $key => $listFiles) {
