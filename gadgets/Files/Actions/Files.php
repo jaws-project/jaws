@@ -125,7 +125,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                 $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
                 $files = $this->gadget->model->load('Files')->getFiles($interface);
                 foreach ($files as $ndx => $file) {
-                    $files[$ndx]['url_file'] = $this->gadget->urlMap(
+                    $files[$ndx]['fileurl'] = $this->gadget->urlMap(
                         'file',
                         array('id' => $file['id'], 'key' => $file['filekey'])
                     );
