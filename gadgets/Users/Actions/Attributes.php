@@ -515,9 +515,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
                         }
 
                         // default value
-                        $defaultValue = isset($attrOptions['value']) ?
-                            $attrOptions['value'] :
-                            $cities[0]['city'];
+                        $defaultValue = isset($attrOptions['value'])? $attrOptions['value'] : reset($cities)['city'];
                         if (!empty($attrValues) && !empty($attrValues[$attrName])) {
                             $defaultValue = $attrValues[$attrName];
                         }
