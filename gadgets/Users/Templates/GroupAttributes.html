@@ -16,10 +16,12 @@
       <input type="hidden" name="gadget" value="{{gadget}}" />
       <div class="row">
         <!-- BEGIN attribute -->
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6" <!-- BEGIN hide -->style="display:none;"<!-- END hide -->>
 
           <!-- BEGIN hidden -->
-          <input type="hidden" name="{{attribute_name}}" value="{{value}}" data-field-type="{{attribute_type}}" />
+          <input class="form-control {{class}}" 
+            type="hidden" name="{{attribute_name}}" value="{{value}}" data-field-type="{{attribute_type}}"
+          />
           <!-- END hidden -->
 
           <!-- BEGIN select -->
