@@ -35,9 +35,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             // avatar
             $tpl->SetVariable(
                 'avatar',
-                $this->gadget->urlMap('Avatar', array('user'  => $this->app->session->user->username)
+                $this->gadget->urlMap('Avatar', array('user'  => $this->app->session->user->username))
             );
-
             // profile link
             $tpl->SetVariable(
                 'profile_url',
