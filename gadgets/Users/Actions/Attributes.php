@@ -347,9 +347,16 @@ class Users_Actions_Attributes extends Users_Actions_Default
             $blockName = $attrOptions['type'];
             if (isset($attrOptions['hidden']) && $attrOptions['hidden']) {
                 $blockName = 'hidden';
+            } else {
+                $attrOptions['hidden'] = false;
             }
 
             $tpl->SetBlock('attributes/attribute');
+            if ($attrOptions['hidden']) {
+                tpl->SetBlock('attributes/attribute/hide');
+                $tpl->ParseBlock('attributes/attribute/hide');
+            }
+
             $tpl->SetBlock('attributes/attribute/'. $blockName);
             $tpl->SetVariable('attribute_title', $attrOptions['title']);
             $tpl->SetVariable('attribute_name', $attrName);
@@ -438,7 +445,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
                 case 'country':
                     try {
                         $this->selectedCountry = $defaultValue;
-                        if (isset($attrOptions['hidden']) && $attrOptions['hidden']) {
+                        if ($attrOptions['hidden']) {
                             throw new Exception('');
                         }
 
