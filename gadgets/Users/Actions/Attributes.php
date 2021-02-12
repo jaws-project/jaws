@@ -353,7 +353,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
 
             $tpl->SetBlock('attributes/attribute');
             if ($attrOptions['hidden']) {
-                tpl->SetBlock('attributes/attribute/hide');
+                $tpl->SetBlock('attributes/attribute/hide');
                 $tpl->ParseBlock('attributes/attribute/hide');
             }
 
