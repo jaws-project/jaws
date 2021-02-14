@@ -15,7 +15,10 @@
       placeholder="YYYY/MM/DD" autocomplete="off"
     />
     <div class="input-group-btn">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-default dropdown-toggle"
+        data-toggle="dropdown"
+        {{ datepicker.disabled | empty | not: "disabled" }}
+      >
         <span class="glyphicon glyphicon-calendar"></span>
       </button>
       <div class="dropdown-menu dropdown-menu-right datepicker-calendar-wrapper" role="menu">
