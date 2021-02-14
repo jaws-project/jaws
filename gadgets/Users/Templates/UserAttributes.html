@@ -25,80 +25,116 @@
           <!-- END hidden -->
 
           <!-- BEGIN select -->
-          <label>{{attribute_title}}:</label>
-          <select class="form-control {{class}}" name="{{attribute_name}}"
-            {{required}} {{readonly}} {{disabled}}
-          >
-            <!-- BEGIN option -->
-            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
-            <!-- END option -->
-          </select>
+          <div class="input-group">
+            <label class="input-group-addon text-input" for="{{attribute_name}}">
+              {{attribute_title}}:
+            </label>
+            <select class="form-control {{class}}"
+              name="{{attribute_name}}" id="{{attribute_name}}"
+              {{required}} {{readonly}} {{disabled}}
+            >
+              <!-- BEGIN option -->
+              <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+              <!-- END option -->
+            </select>
+          </div>
           <!-- END select -->
 
           <!-- BEGIN country -->
-          <label>{{attribute_title}}:</label>
-          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="country"
-            {{required}} {{readonly}} {{disabled}}
-          >
-            <!-- BEGIN option -->
-            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
-            <!-- END option -->
-          </select>
+          <div class="input-group">
+            <label class="input-group-addon text-input" for="{{attribute_name}}">
+              {{attribute_title}}:
+            </label>
+            <select class="form-control {{class}}"
+              name="{{attribute_name}}" id="{{attribute_name}}"
+              data-field-type="country"
+              {{required}} {{readonly}} {{disabled}}
+            >
+              <!-- BEGIN option -->
+              <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+              <!-- END option -->
+            </select>
+          </div>
           <!-- END country -->
 
           <!-- BEGIN province -->
-          <label>{{attribute_title}}:</label>
-          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="province"
-            {{required}} {{readonly}} {{disabled}}
-          >
-            <!-- BEGIN option -->
-            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
-            <!-- END option -->
-          </select>
+          <div class="input-group">
+            <label class="input-group-addon text-input" for="{{attribute_name}}">
+              {{attribute_title}}:
+            </label>
+            <select class="form-control {{class}}"
+              name="{{attribute_name}}" id="{{attribute_name}}"
+              data-field-type="province"
+              {{required}} {{readonly}} {{disabled}}
+            >
+              <!-- BEGIN option -->
+              <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+              <!-- END option -->
+            </select>
+          </div>
           <!-- END province -->
 
           <!-- BEGIN city -->
-          <label>{{attribute_title}}:</label>
-          <select class="form-control {{class}}" name="{{attribute_name}}" data-field-type="city"
-            {{required}} {{readonly}} {{disabled}}
-          >
-            <!-- BEGIN option -->
-            <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
-            <!-- END option -->
-          </select>
+          <div class="input-group">
+            <label class="input-group-addon text-input" for="{{attribute_name}}">
+              {{attribute_title}}:
+            </label>
+            <select class="form-control {{class}}"
+              id="{{attribute_name}}" name="{{attribute_name}}"
+              data-field-type="city"
+              {{required}} {{readonly}} {{disabled}}
+            >
+              <!-- BEGIN option -->
+              <option value="{{value}}" <!-- BEGIN selected --> selected<!-- END selected -->>{{text}}</option>
+              <!-- END option -->
+            </select>
+          </div>
           <!-- END city -->
 
           <!-- BEGIN number -->
-          <label>{{attribute_title}}:</label>
-          <input class="form-control {{class}}" type="number" name="{{attribute_name}}" value="{{value}}"
-            placeholder="{{placeholder}}" min="{{min}}" max="{{max}}"
-            {{required}} {{readonly}} {{disabled}}
-            <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
-          />
+          <div class="input-group">
+            <label class="input-group-addon text-input" for="{{attribute_name}}" >
+              {{attribute_title}}:
+            </label>
+            <input type="number" class="form-control {{class}}"
+              name="{{attribute_name}}" id="attribute_name" value="{{value}}"
+              placeholder="{{placeholder}}" min="{{min}}" max="{{max}}"
+              {{required}} {{readonly}} {{disabled}}
+              <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
+            />
+          </div>
           <!-- END number -->
 
           <!-- BEGIN date -->
-          <label>{{attribute_title}}:</label>
           <!-- INCLUDE DatePicker.html include/Jaws/Resources -->
           <!-- END date -->
 
           <!-- BEGIN checkbox -->
-          <label>{{attribute_title}}:</label>
-          <input class="form-control {{class}}" type="checkbox"
-            name="{{attribute_name}}"
-            value="1"
-            {{readonly}} {{disabled}}
-            <!-- BEGIN checked --> checked<!-- END checked -->
-          />
+          <div class="input-group">
+            <input class="form-control {{class}}" type="checkbox"
+              name="{{attribute_name}}" id="{{attribute_name}}"
+              value="1"
+              {{readonly}} {{disabled}}
+              <!-- BEGIN checked --> checked<!-- END checked -->
+            />
+            <label class="input-group-addon text-input" for="{{attribute_name}}" >
+              {{attribute_title}}
+            </label>
+          </div>
           <!-- END checkbox -->
 
           <!-- BEGIN text -->
-          <label>{{attribute_title}}:</label>
-          <input class="form-control {{class}}" type="text" name="{{attribute_name}}" value="{{value}}"
-            placeholder="{{placeholder}}" minlength="{{minlength}}" maxlength="{{maxlength}}"
-            {{required}} {{readonly}} {{disabled}}
-            <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
-          />
+          <div class="input-group">
+            <label class="input-group-addon text-input" for="{{attribute_name}}" >
+              {{attribute_title}}:
+            </label>
+            <input type="text" class="form-control {{class}}"
+              name="{{attribute_name}}" id="attribute_name" value="{{value}}"
+              placeholder="{{placeholder}}" minlength="{{minlength}}" maxlength="{{maxlength}}"
+              {{required}} {{readonly}} {{disabled}}
+              <!-- BEGIN pattern -->pattern="{{pattern}}"<!-- END pattern -->
+            />
+          </div>
           <!-- END text -->
         </div>
         <!-- END attribute -->
