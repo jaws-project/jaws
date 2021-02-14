@@ -110,14 +110,14 @@
           <!-- END date -->
 
           <!-- BEGIN checkbox -->
-          <div class="input-group">
-            <input class="form-control {{class}}" type="checkbox"
+          <div class="input-group form-check">
+            <input class="form-control form-check-input {{class}}" type="checkbox"
               name="{{attribute_name}}" id="{{attribute_name}}"
               value="1"
               {{readonly}} {{disabled}}
               <!-- BEGIN checked --> checked<!-- END checked -->
             />
-            <label class="input-group-addon text-input" for="{{attribute_name}}" >
+            <label class="form-check-label input-group-addon text-input" for="{{attribute_name}}" >
               {{attribute_title}}
             </label>
           </div>
