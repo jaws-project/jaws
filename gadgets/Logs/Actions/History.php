@@ -50,22 +50,14 @@ class Logs_Actions_History extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->template->load('LoginHistory.html');
-        $tpl->SetBlock('history');
-        $date = Jaws_Date::getInstance();
-        $tpl->SetVariable('title', _t('LOGS_LOGIN_HISTORY'));
-        foreach ($logs as $log) {
-            $tpl->SetBlock('history/'. $log['result']);
-            $tpl->SetVariable('ip', long2ip($log['ip']));
-            $tpl->SetVariable('agent', $log['agent']);
-            $tpl->SetVariable('status_title', _t('LOGS_LOG_STATUS_'. $log['result']));
-            $tpl->SetVariable('date', $date->Format($log['time'], 'd MN Y H:i'));
-            
-            $tpl->ParseBlock('history/'. $log['result']);
+        foreach ($logs as &$log) {
+            $log['ip'] = long2ip($log['ip']);
         }
 
-        $tpl->ParseBlock('history');
-        return $tpl->Get();
+        $assigns = array();
+        $assigns['logs'] = $logs;
+
+        return $this->gadget->template->xLoad('LoginHistory.html')->render($assigns);
     }
 
 }

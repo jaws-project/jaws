@@ -1,30 +1,26 @@
-<!-- BEGIN history -->
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
+    <div class="col-xs-12"><h2>{{ "logs.login_history" | t }}</h2></div>
   </div>
 </div>
 <div class="gadget_container">
   <div class="gadget_content">
     <ul>
-      <!-- BEGIN 200 -->
+
+      {% for log in logs %}
       <li>
         <div>
-          <img width="16" height="16" title="{{status_title}}" alt="200" src="images/stock/info.png" />
-          <label title="{{agent}}">{{date}} - {{ip}}</label>
+          {% if log.result == 200 %}
+          <img width="16" height="16" title="{{ "logs.log_status_" | append: log.result |t }}" alt="200" src="images/stock/info.png" />
+          {% else %}
+          <img width="16" height="16" title="{{ "logs.log_status_" | append: log.result |t }}" alt="401" src="images/stock/stop.png" />
+          {% endif %}
+          <label title="{{ log.agent }}">{{ log.time | date: 'd MN Y H:i' }} - {{ log.ip }}</label>
         </div>
       </li>
-      <!-- END 200 -->
-      <!-- BEGIN 401 -->
-      <li>
-        <div>
-          <img width="16" height="16" title="{{status_title}}" alt="401" src="images/stock/stop.png" />
-          <label title="{{agent}}">{{date}} - {{ip}}</label>
-        </div>
-      </li>
-      <!-- END 401 -->
+      {% endfor %}
+
     </ul>
   </div>
 </div>
 <div class="gadget_footer"></div>
-<!-- END history -->
