@@ -2294,7 +2294,22 @@ function Jaws_Gadget_Users() { return {
             $('#userModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
             }, this));
+            $('#passwordModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopUserAction();
+            }, this));
+            $('#aclModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopUserAction();
+            }, this));
+            $('#userGroupsModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopUserAction();
+            }, this));
             $('#personalModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopUserAction();
+            }, this));
+            $('#contactsModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopUserAction();
+            }, this));
+            $('#extraModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
             }, this));
 
@@ -2347,6 +2362,12 @@ function Jaws_Gadget_Users() { return {
             this.initiateGroupsDG();
 
             $('#groupModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopGroupAction();
+            }, this));
+            $('#aclModal').on('hidden.bs.modal', $.proxy(function (e) {
+                this.stopGroupAction();
+            }, this));
+            $('#groupUsersModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopGroupAction();
             }, this));
 
