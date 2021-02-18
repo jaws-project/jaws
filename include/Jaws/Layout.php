@@ -516,7 +516,7 @@ class Jaws_Layout
     function Populate($req_result = '')
     {
         $default_acl = (JAWS_SCRIPT == 'index')? 'default' : 'default_admin';
-        $privateAccess = $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
+        $privateAccess = $this->app->registry->fetch('global_website', 'Settings') == 'false';
         $items = $this->GetLayoutItems();
         if (!Jaws_Error::IsError($items)) {
             // temporary store page title/description
