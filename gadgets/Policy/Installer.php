@@ -44,6 +44,8 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('session_online_timeout', 30),     // per minute
         array('session_anony_remember_timeout', 1440),  // per minute 1440  = 1 day
         array('session_login_remember_timeout', 43200), // per minute 43200 = 1 month
+        array('session_ip_sensitive', false),
+        array('session_agent_sensitive', false),
     );
 
     /**
@@ -172,6 +174,11 @@ class Policy_Installer extends Jaws_Gadget_Installer
             );
             $this->gadget->registry->delete('session_remember_timeout');
             $this->gadget->registry->rename('session_idle_timeout', 'session_online_timeout');
+        }
+
+        if (version_compare($old, '1.6.0', '<')) {
+            $this->gadget->registry->insert('session_ip_sensitive', false);
+            $this->gadget->registry->insert('session_agent_sensitive', false);
         }
 
         return true;
