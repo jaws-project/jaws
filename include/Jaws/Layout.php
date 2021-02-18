@@ -513,9 +513,10 @@ class Jaws_Layout
      *
      * @access  public
      */
-    function Populate($req_result = '', $onlyMainAction = false)
+    function Populate($req_result = '')
     {
         $default_acl = (JAWS_SCRIPT == 'index')? 'default' : 'default_admin';
+        $privateAccess = $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
         $items = $this->GetLayoutItems();
         if (!Jaws_Error::IsError($items)) {
             // temporary store page title/description
@@ -528,6 +529,7 @@ class Jaws_Layout
                 if (!$this->_Template->BlockExists($block)) {
                     continue;
                 }
+
                 $content = '';
                 $this->_Template->SetBlock($block);
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
@@ -535,12 +537,13 @@ class Jaws_Layout
                     $item['action'] = $this->app->mainRequest['action'];
                     $item['params'] = array();
                     $content = $req_result;
-                } elseif (!$onlyMainAction) {
-                    if ($this->IsDisplayable($this->app->mainRequest['gadget'],
-                                             $this->app->mainRequest['action'],
-                                             $item['when'],
-                                             $this->app->mainIndex))
-                    {
+                } else {
+                    if ($this->IsDisplayable(
+                        $this->app->mainRequest['gadget'],
+                        $this->app->mainRequest['action'],
+                        $item['when'],
+                        $this->app->mainIndex)
+                    ) {
                         if ($this->app->session->GetPermission($item['gadget'], $default_acl)) {
                             $item['params'] = unserialize($item['params']);
                             $content = $this->PutGadget(
@@ -548,7 +551,8 @@ class Jaws_Layout
                                 $item['action'],
                                 $item['params'],
                                 $item['filename'],
-                                $item['section']
+                                $item['section'],
+                                $privateAccess
                             );
                         }
                     }
@@ -586,11 +590,14 @@ class Jaws_Layout
      * Put a gadget on the template
      *
      * @access  public
-     * @param   string  $gadget  Gadget to put
-     * @param   string  $action  Action to execute
-     * @param   mixed   $params  Action's params
+     * @param   string  $gadget     Gadget to put
+     * @param   string  $action     Action to execute
+     * @param   mixed   $params     Action's params
+     * @param   mixed   $filename   Layout filename
+     * @param   mixed   $section    Layout section name
+     * @param   mixed   $privateAccess  Website/app is private?
      */
-    function PutGadget($gadget, $action, $params = null, $filename = '', $section = '')
+    function PutGadget($gadget, $action, $params = null, $filename = '', $section = '', $privateAccess = false)
     {
         $output = '';
         $enabled = Jaws_Gadget::IsGadgetEnabled($gadget);
@@ -612,7 +619,7 @@ class Jaws_Layout
         $output = Jaws_Gadget::getInstance($gadget)
             ->action
             ->load()
-            ->Execute($action, $params, $section, ACTION_MODE_LAYOUT);
+            ->Execute($action, $params, $section, $privateAccess, ACTION_MODE_LAYOUT);
         if (Jaws_Error::isError($output)) {
             $GLOBALS['log']->Log(JAWS_ERROR, 'In '.$gadget.'::'.$action.','.$output->GetMessage());
             $output = '';
