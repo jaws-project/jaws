@@ -315,7 +315,10 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         }
 
         if (method_exists($objAction, $action)) {
-            if ($privateAccess && !$objAction->getAttribute($reqAction, 'global')) {
+            if ($privateAccess &&
+                !$this->app->session->user->logged &&
+                !$objAction->getAttribute($action, 'global')
+            ) {
                 // website/app is private & action not global
                 return Jaws_HTTPError::Get(403);
             }

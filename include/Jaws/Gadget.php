@@ -238,12 +238,7 @@ class Jaws_Gadget
 
         // Only registered user can access not global website
         $privateAccess = $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
-        $deniedAccessToWebsite = !$jawsApp->session->user->logged;
-        if (JAWS_SCRIPT == 'index') {
-            $deniedAccessToWebsite =
-                $deniedAccessToWebsite &&
-                $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
-        }
+        $privateAccess = $privateAccess || (JAWS_SCRIPT == 'admin');
 
         // Get forwarded error from web-server
         $reqError = $jawsApp->request->fetch('http_error', 'get');
