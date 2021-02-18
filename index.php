@@ -31,7 +31,7 @@ $jawsApp = Jaws::getInstance();
 
 $result = Jaws_Gadget::ExecuteMainRequest();
 if (!$result['standalone']) {
-    $jawsApp->layout->Populate($result['return'], $result['access']);
+    $jawsApp->layout->Populate($result['return']);
     $result['return'] = $jawsApp->layout->Get();
 }
 
