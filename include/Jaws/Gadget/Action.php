@@ -253,14 +253,16 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
      * Execute the action
      *
      * @access  public
-     * @param   string  $action     Action name
-     * @param   array   $params     Action parameters array
-     * @param   string  $action     Layout section name
-     * @param   string  $action     Action execute mode(normal, layout, standalone)
+     * @param   string  $action         Action name
+     * @param   array   $params         Action parameters array
+     * @param   string  $action         Layout section name
+     * @param   mixed   $privateAccess  Website/app is private?
+     * @param   string  $action         Action execute mode(normal, layout, standalone)
      * @return  mixed   Actions output on success otherwise Jaws_Error on failure
      */
-    public function Execute($action, $params = null, $section = '', $mode = ACTION_MODE_NORMAL)
-    {
+    public function Execute(
+        $action, $params = null, $section = '', $privateAccess = false, $mode = ACTION_MODE_NORMAL
+    ) {
         if (false === $action) {
             return Jaws_Error::raiseError(Jaws::t('ACTION_NO_DEFAULT'), __FUNCTION__);
         }
@@ -313,6 +315,11 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         }
 
         if (method_exists($objAction, $action)) {
+            if ($privateAccess && !$objAction->getAttribute($reqAction, 'global')) {
+                // website/app is private & action not global
+                return Jaws_HTTPError::Get(403);
+            }
+
             $this->app->define($this->gadget->name, false);
             $this->gadget->loaded_actions[$action] = true;
             $this->app->requestedGadget  = $this->gadget->name;
