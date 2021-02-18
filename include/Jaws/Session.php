@@ -236,8 +236,17 @@ class Jaws_Session
             $checksum = md5($this->session['user'] . $this->session['user_attributes']);
             unset($this->session['data'], $this->session['user_attributes']);
 
+            // client ip
+            if ($this->app->registry->fetch('session_ip_sensitive', 'Policy') &&
+                $this->app->ip['id'] != $this->session['ip']
+            ) {
+                throw new Exception('Previous session ip has been changed', JAWS_NOTICE);
+            }
+
             // browser agent
-            if ($this->app->agent['id'] != $this->session['agent']) {
+            if ($this->app->registry->fetch('session_agent_sensitive', 'Policy') &&
+                $this->app->agent['id'] != $this->session['agent']
+            ) {
                 throw new Exception('Previous session agent has been changed', JAWS_NOTICE);
             }
 
