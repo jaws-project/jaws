@@ -237,6 +237,7 @@ class Jaws_Gadget
         $jawsApp = Jaws::getInstance();
 
         // Only registered user can access not global website
+        $privateAccess = $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
         $deniedAccessToWebsite = !$jawsApp->session->user->logged;
         if (JAWS_SCRIPT == 'index') {
             $deniedAccessToWebsite =
@@ -303,7 +304,9 @@ class Jaws_Gadget
                 }
             }
 
-            if ($deniedAccessToWebsite && (empty($objAction) || !$objAction->getAttribute($reqAction, 'global'))
+            if ($privateAccess &&
+                !$jawsApp->session->user->logged &&
+                (empty($objAction) || !$objAction->getAttribute($reqAction, 'global'))
             ) {
                 // FIXME: RunAutoload !!!
                 Jaws_Header::Location(
@@ -333,7 +336,7 @@ class Jaws_Gadget
             if (!empty($objAction)) {
                 // set in main request
                 $jawsApp->inMainRequest = true;
-                $reqResult = $objAction->Execute($reqAction);
+                $reqResult = $objAction->Execute($reqAction, null, '', $privateAccess);
                 if (Jaws_Error::isError($reqResult)) {
                     $reqResult = $reqResult->GetMessage();
                 }
@@ -360,7 +363,6 @@ class Jaws_Gadget
             'return'  => $reqResult,
             'error'   => $reqError,
             'version' => $reqGadgetVersion,
-            'access'  => $deniedAccessToWebsite,
             'standalone' => $isReqActionStandAlone,
         );
     }
