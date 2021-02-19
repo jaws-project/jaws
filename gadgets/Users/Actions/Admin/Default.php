@@ -62,13 +62,16 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
                 'gadgets/Users/Resources/images/groups_mini.png'
             );
         }
-        $menubar->AddOption(
-            'ACLs',
-            $this::t('ACLS'),
-            $this->gadget->url('ACLs'),
-            'gadgets/Users/Resources/images/acls.png'
-        );
-
+        if ($this->gadget->GetPermission('ManageUserACLs') &&
+            $this->gadget->GetPermission('ManageGroupACLs')
+        ) {
+            $menubar->AddOption(
+                'ACLs',
+                $this::t('ACLS'),
+                $this->gadget->url('ACLs'),
+                'gadgets/Users/Resources/images/acls.png'
+            );
+        }
         if ($this->gadget->GetPermission('ManageOnlineUsers')) {
             $menubar->AddOption(
                 'OnlineUsers',

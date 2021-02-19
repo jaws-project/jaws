@@ -15,6 +15,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
      */
     function Groups()
     {
+        $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
         $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));

@@ -15,6 +15,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
      */
     function OnlineUsers()
     {
+        $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmThrowOut',    $this::t('ONLINE_CONFIRM_THROWOUT'));
         $this->gadget->define('confirmBlockIP',     $this::t('ONLINE_CONFIRM_BLOCKIP'));

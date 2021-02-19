@@ -15,6 +15,8 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
      */
     function ACLs()
     {
+        $this->gadget->CheckPermission('ManageUserACLs');
+        $this->gadget->CheckPermission('ManageGroupACLs');
         $this->AjaxMe('script.js');
         $gadgets = Jaws_Gadget::getInstance('Components')->model->load('Gadgets')->GetGadgetsList(null, true, true);
         $this->gadget->define('GADGETS', array_column($gadgets, 'title', 'name'));
