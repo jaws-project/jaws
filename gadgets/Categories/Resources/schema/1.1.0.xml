@@ -9,7 +9,6 @@
             <field>
                 <name>id</name>
                 <type>integer</type>
-                <length>8</length>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
             </field>
@@ -77,45 +76,6 @@
                     <name>action</name>
                 </field>
             </index>
-        </declaration>
-    </table>
-
-    <table>
-        <name><variable>table_prefix</variable>categories_references</name>
-        <declaration>
-
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <length>8</length>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>category</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
-                <name>reference</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>categories_references_cr</name>
-                <unique>true</unique>
-                <field>
-                    <name>category</name>
-                </field>
-
-                <field>
-                    <name>reference</name>
-                </field>
-            </index>
-
         </declaration>
     </table>
 
