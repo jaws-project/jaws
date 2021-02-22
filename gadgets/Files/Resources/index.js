@@ -325,6 +325,9 @@ function Jaws_Gadget_Files() { return {
 
                     //initialize file uploader
                     this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
+                },
+                {
+                    'baseScript': 'index.php'
                 }
             );
         }
