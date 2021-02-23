@@ -286,51 +286,55 @@ function Jaws_Gadget_Files() { return {
 
         let $fileInput = $tpl.find('template').contents().find('input[type="file"]').last();
         $fileInput.attr('name', 'new_files_' + inputIndexName);
-        let preview = Boolean($fileInput.data('preview'));
 
-        if ($interface['reference'] != 0) {
-            this.gadget.ajax.callAsync(
-                'loadReferenceFiles',
-                $interface,
-                function(response, status) {
-                    if (response['type'] == 'alert-success') {
-                        let ulElement = $tpl.find('.old_files ul').first().empty();
-                        $.each(
-                            response['data'],
-                            function (index, file) {
-                                ulElement.append(
-                                    $tpl.find('template').contents().find('.file_details').parent().html()
-                                );
-                                let liElement = ulElement.children().last();
-                                liElement.find('input').attr('name', 'old_files_' + inputIndexName).val(file.id);
-                                liElement.find("[data-type='name']").html(
-                                    '<a href="'+file.fileurl +
-                                    '" target="_blank">' + file.title +
-                                    '</a>'
-                                );
-                                liElement.find("[data-type='size']").html(file.filesize);
-                                // show preview
-                                if (preview) {
-                                    liElement.find("[data-type='preview']").show().html(
-                                        '<a href="'+file.fileurl+
-                                        '" target="_blank"><img src="'+
-                                        file.fileurl+
-                                        '" alt="" width="128"></a>'
-                                    );
-                                }
-                                liElement.show();
-                            }
-                        );
-                    }
-
-                    //initialize file uploader
-                    this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
-                },
-                {
-                    'baseScript': 'index.php'
-                }
-            );
+        var ulElement = $tpl.find('.old_files ul').first().empty();
+        if ($interface['reference'] == 0) {
+            this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
+            return;
         }
+
+        let preview = Boolean($fileInput.data('preview'));
+        this.gadget.ajax.callAsync(
+            'loadReferenceFiles',
+            $interface,
+            function(response, status) {
+                if (response['type'] == 'alert-success') {
+                    $.each(
+                        response['data'],
+                        function (index, file) {
+                            ulElement.append(
+                                $tpl.find('template').contents().find('.file_details').parent().html()
+                            );
+                            let liElement = ulElement.children().last();
+                            liElement.find('input').attr('name', 'old_files_' + inputIndexName).val(file.id);
+                            liElement.find("[data-type='name']").html(
+                                '<a href="'+file.fileurl +
+                                '" target="_blank">' + file.title +
+                                '</a>'
+                            );
+                            liElement.find("[data-type='size']").html(file.filesize);
+                            // show preview
+                            if (preview) {
+                                liElement.find("[data-type='preview']").show().html(
+                                    '<a href="'+file.fileurl+
+                                    '" target="_blank"><img src="'+
+                                    file.fileurl+
+                                    '" alt="" width="128"></a>'
+                                );
+                            }
+                            liElement.show();
+                        }
+                    );
+                }
+
+                //initialize file uploader
+                this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
+            },
+            {
+                'baseScript': 'index.php'
+            }
+        );
+
     },
 
     /**
