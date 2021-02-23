@@ -294,10 +294,10 @@ function Jaws_Gadget_Files() { return {
                 $interface,
                 function(response, status) {
                     if (response['type'] == 'alert-success') {
+                        let ulElement = $tpl.find('.old_files ul').first().empty();
                         $.each(
                             response['data'],
                             function (index, file) {
-                                let ulElement = $tpl.find('.old_files ul').first();
                                 ulElement.append(
                                     $tpl.find('template').contents().find('.file_details').parent().html()
                                 );
