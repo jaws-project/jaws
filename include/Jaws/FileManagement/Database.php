@@ -522,7 +522,7 @@ class Jaws_FileManagement_Database extends Jaws_FileManagement
             $basename = basename($path);
             $pathhash = hash64($pathname);
             $basehash = hash64($basename);
-            $fileinfo = pathinfo($dstName);
+            $fileinfo = pathinfo($basename);
 
             $result = Jaws_ORM::getInstance()
                 ->table('dbfs')
