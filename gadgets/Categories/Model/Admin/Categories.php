@@ -145,6 +145,25 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
     }
 
     /**
+     * Upsert a category
+     *
+     * @access  public
+     * @param   array   $data The category data
+     * @return  mixed   True on success or Jaws_Error on failure
+     */
+    function UpsertCategory($data)
+    {
+        $data['published'] = isset($data['published']) ? (bool)$data['published'] : true;
+        $data['insert_time'] = time();
+        return Jaws_ORM::getInstance()->table('categories')
+            ->upsert($data)
+            ->where('gadget', $data['gadget'])
+            ->and()->where('action', $data['action'])
+            ->and()->where('title', $data['title'])
+            ->exec();
+    }
+
+    /**
      * Delete a category
      *
      * @access  public
