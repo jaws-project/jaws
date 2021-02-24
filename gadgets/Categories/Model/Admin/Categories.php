@@ -18,13 +18,14 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
      */
     function GetCategories($filters = null, $limit = false, $offset = null)
     {
-        $categoriesTable = Jaws_ORM::getInstance()->table('categories');
-        $categoriesTable->select(
-            'id:integer', 'gadget', 'action', 'title', 'description',
-            'meta_title', 'meta_keywords', 'meta_description', 'insert_time:integer', 'published:boolean'
-        );
-        $categoriesTable->orderBy('categories.insert_time desc');
-        $categoriesTable->limit((int)$limit, $offset);
+        $categoriesTable = Jaws_ORM::getInstance()
+            ->table('categories')
+            ->select(
+                'id:integer', 'gadget', 'action', 'title', 'description',
+                'meta_title', 'meta_keywords', 'meta_description', 'insert_time:integer', 'published:boolean'
+            )
+            ->orderBy('categories.insert_time desc')
+            ->limit((int)$limit, $offset);
 
         if (!empty($filters) && count($filters) > 0) {
             // gadget
@@ -53,8 +54,9 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
      */
     function GetCategoriesCount($filters = null)
     {
-        $categoriesTable = Jaws_ORM::getInstance()->table('categories');
-        $categoriesTable->select('count(id):integer');
+        $categoriesTable = Jaws_ORM::getInstance()
+            ->table('categories')
+            ->select('count(id):integer');
 
         if (!empty($filters) && count($filters) > 0) {
             // gadget
@@ -83,7 +85,8 @@ class Categories_Model_Admin_Categories extends Jaws_Gadget_Model
      */
     function GetCategory($id)
     {
-        return Jaws_ORM::getInstance()->table('categories')
+        return Jaws_ORM::getInstance()
+            ->table('categories')
             ->select(
                 'id:integer', 'gadget', 'action', 'title', 'description',
                 'meta_title', 'meta_keywords', 'meta_description', 'insert_time:integer', 'published:boolean'

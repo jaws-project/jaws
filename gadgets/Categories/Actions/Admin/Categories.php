@@ -16,7 +16,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
      * @param   string $menubar     Menubar
      * @return  string  XHTML UI
      */
-    function Categories($req_gadget = '', $req_action = '', $menubar = '')
+    function Categories($req_gadget = null, $req_action = null, $menubar = '')
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
@@ -29,82 +29,14 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $this->gadget->define('req_gadget', $req_gadget);
         $this->gadget->define('req_action', $req_action);
 
-        $tpl = $this->gadget->template->loadAdmin('Categories.html');
-        $tpl->SetBlock('Categories');
-
-        //Menu bar
-        $tpl->SetVariable('menubar', empty($menubar)? $this->MenuBar('Categories') : $menubar);
-
-        $tpl->SetVariable('lbl_of', Jaws::t('OF'));
-        $tpl->SetVariable('lbl_to', Jaws::t('TO'));
-        $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
-        $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
-        $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
-        $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
-        $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
-
-        $tpl->SetVariable('lbl_term',   Jaws::t('TERM'));
-        $tpl->SetVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
-        $tpl->SetVariable('lbl_action', _t('CATEGORIES_ACTION'));
-        $tpl->SetVariable('lbl_title',  Jaws::t('TITLE'));
-        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
-        $tpl->SetVariable('lbl_no',  Jaws::t('NO'));
-        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
-        $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
-        $tpl->SetVariable('lbl_meta_title',  Jaws::t('META_TITLE'));
-        $tpl->SetVariable('lbl_meta_keywords',    Jaws::t('META_KEYWORDS'));
-        $tpl->SetVariable('lbl_meta_description', Jaws::t('META_DESCRIPTION'));
-        $tpl->SetVariable('lbl_meta_info', Jaws::t('META_INFO'));
-
-        $tpl->SetVariable('lbl_insert_time', _t('CATEGORIES_INSERT_TIME'));
-
-        // gadgets filter
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList();
 
-        // filters
-        if (empty($req_gadget)) {
-            $tpl->SetBlock('Categories/visible_inputs');
-            $tpl->SetVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
-            $tpl->SetVariable('lbl_action', _t('CATEGORIES_ACTION'));
-            if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
-                foreach ($gadgetList as $gadget) {
-                    $tpl->SetBlock('Categories/visible_inputs/gadget');
-                    $tpl->SetVariable('value', $gadget['name']);
-                    $tpl->SetVariable('title', $gadget['title']);
-                    $tpl->ParseBlock('Categories/visible_inputs/gadget');
-                }
-            }
-            $tpl->ParseBlock('Categories/visible_inputs');
-
-            $tpl->SetBlock('Categories/visible_filters');
-            $tpl->SetVariable('lbl_gadget', _t('CATEGORIES_GADGET'));
-            $tpl->SetVariable('lbl_action', _t('CATEGORIES_ACTION'));
-            if (!Jaws_Error::IsError($gadgetList) && count($gadgetList) > 0) {
-                array_unshift($gadgetList, array('name' => 0, 'title' => Jaws::t('ALL')));
-                foreach ($gadgetList as $gadget) {
-                    $tpl->SetBlock('Categories/visible_filters/filter_gadget');
-                    $tpl->SetVariable('value', $gadget['name']);
-                    $tpl->SetVariable('title', $gadget['title']);
-                    $tpl->ParseBlock('Categories/visible_filters/filter_gadget');
-                }
-            }
-            $tpl->ParseBlock('Categories/visible_filters');
-
-        } else {
-            $tpl->SetBlock('Categories/hidden_filters');
-            $tpl->SetVariable('gadget', $req_gadget);
-            $tpl->SetVariable('action', $req_action);
-            $tpl->ParseBlock('Categories/hidden_filters');
-
-            $tpl->SetBlock('Categories/hidden_inputs');
-            $tpl->SetVariable('gadget', $req_gadget);
-            $tpl->SetVariable('action', $req_action);
-            $tpl->ParseBlock('Categories/hidden_inputs');
-        }
-
-        $tpl->ParseBlock('Categories');
-        return $tpl->Get();
+        $assigns = array();
+        $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Categories') : $menubar;
+        $assigns['req_gadget'] = $req_gadget;
+        $assigns['gadgets'] = $gadgetList;
+        return $this->gadget->template->xLoadAdmin('Categories.html')->render($assigns);
     }
 
     /**
@@ -157,24 +89,6 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     }
 
     /**
-     * Check a category exist
-     *
-     * @access  public
-     * @return  Boolean
-     */
-    function CheckCategoryExist()
-    {
-        $this->gadget->CheckPermission('ManageCategories');
-        $filters = $this->gadget->request->fetch('filters:array', 'post');
-        $exist = $this->gadget->model->loadAdmin('Categories')
-            ->CheckCategoryExist($filters['gadget'], $filters['action'], $filters['title'] );
-        if (Jaws_Error::IsError($exist)) {
-            return false;
-        }
-        return $exist;
-    }
-
-    /**
      * Get a category info
      *
      * @access  public
@@ -217,13 +131,12 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
                 $result->GetMessage(),
                 RESPONSE_ERROR
             );
-        } else {
-            return $this->gadget->session->response(
-                _t('CATEGORIES_CATEGORY_INSERTED'),
-                RESPONSE_NOTICE,
-                $result
-            );
         }
+        return $this->gadget->session->response(
+            _t('CATEGORIES_CATEGORY_INSERTED'),
+            RESPONSE_NOTICE,
+            $result
+        );
     }
 
     /**
@@ -240,9 +153,8 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $result = $this->gadget->model->loadAdmin('Categories')->UpdateCategory($post['id'], $post['data']);
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
-        } else {
-            return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_UPDATED'), RESPONSE_NOTICE);
         }
+        return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -259,9 +171,8 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $result =  $this->gadget->model->loadAdmin('Categories')->DeleteCategory($id);
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
-        } else {
-            return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_DELETED'), RESPONSE_NOTICE);
         }
+        return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_DELETED'), RESPONSE_NOTICE);
     }
 
 }

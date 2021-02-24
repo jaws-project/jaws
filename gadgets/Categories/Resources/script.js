@@ -39,7 +39,6 @@ function Jaws_Gadget_Categories() { return {
         this.selectedCategory = 0;
         $('#categoryModal').modal('hide');
         $('form#category-form')[0].reset();
-
     },
 
     /**
@@ -59,7 +58,6 @@ function Jaws_Gadget_Categories() { return {
                                 case 'boolean':
                                     value = value? '1' : '0'
                                     break;
-
                                 default:
                                     // do nothing
                             }
@@ -77,19 +75,21 @@ function Jaws_Gadget_Categories() { return {
      * Update the category
      */
     saveCategory: function() {
-        if (this.selectedCategory == 0) {
-            this.gadget.ajax.callAsync(
-                'InsertCategory', {
-                    data: $.unserialize($('form#category-form').serialize())
-                }
+        var data = $.unserialize($('form#category-form').serialize());
+        if (this.gadget.defines.req_gadget !== null) {
+            data.gadget = this.gadget.defines.req_gadget;
+            data.action = this.gadget.defines.req_action;
+        }
+        if (this.selectedCategory === 0) {
+            this.gadget.ajax.callAsync('InsertCategory',
+                {data: data}
             );
         } else {
-            this.gadget.ajax.callAsync(
-                'UpdateCategory', {
-                    id: this.selectedCategory,
-                    data: $.unserialize($('form#category-form').serialize())
-                }
-            );
+            this.gadget.ajax.callAsync('UpdateCategory',
+                {
+                    id: this.selectedCategory
+                    , data: data
+                });
         }
     },
 
@@ -107,7 +107,7 @@ function Jaws_Gadget_Categories() { return {
      */
     categoriesDataSource: function(options, callback) {
         var columns = [];
-        if(this.gadget.defines.req_gadget =='') {
+        if (this.gadget.defines.req_gadget === null) {
             columns.push(
                 {
                     'label': this.gadget.defines.lbl_gadget,
@@ -129,6 +129,15 @@ function Jaws_Gadget_Categories() { return {
             }
         );
 
+        var filters = {
+            term: $('#filter_term').val(),
+            gadget: this.gadget.defines.req_gadget,
+            action: this.gadget.defines.req_action,
+        };
+        if (this.gadget.defines.req_gadget === null) {
+            filters.gadget = $('#filter_gadget').val();
+            filters.action = $('#filter_action').val();
+        }
 
         this.gadget.ajax.callAsync(
             'GetCategories', {
@@ -136,12 +145,7 @@ function Jaws_Gadget_Categories() { return {
                 'limit': options.pageSize,
                 'sortDirection': options.sortDirection,
                 'sortBy': options.sortProperty,
-                'filters': {
-                    gadget: $('#filter_gadget').val(),
-                    action: $('#filter_action').val(),
-                    priority: $('#filter_priority').val(),
-                    status: $('#filter_status').val()
-                }
+                'filters': filters
             },
             function(response, status) {
                 var dataSource = {};
@@ -197,7 +201,7 @@ function Jaws_Gadget_Categories() { return {
                     html: '<span class="glyphicon glyphicon-trash"></span> ' + this.gadget.defines.lbl_delete,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
-                        deleteCategory(helpers.rowData.id);
+                        this.deleteCategory(helpers.rowData.id);
                         callback();
                     }, this)
                 }
@@ -206,8 +210,6 @@ function Jaws_Gadget_Categories() { return {
 
         // initialize the repeater
         $('#categories-grid').repeater({
-            // setup your custom datasource to handle data retrieval;
-            // responsible for any paging, sorting, filtering, searching logic
             dataSource: $.proxy(this.categoriesDataSource, this),
             staticHeight: 500,
             list_actions: list_actions,
@@ -223,20 +225,26 @@ function Jaws_Gadget_Categories() { return {
                 $('#categories-grid').repeater('render');
             }
         });
-        $('#categoryModal').on('hidden.bs.modal', $.proxy(function (e) {
-            $('form#category-form')[0].reset();
-            this.selectedCategory = 0;
-        }, this));
+
+        $("#categories-grid .btn-refresh").on('click', function (e) {
+            $('#categories-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        });
     },
 
     /**
      * initialize gadget actions
      */
-    init: function(mainGadget, mainAction) {
-        // init mail settings action
-        if (this.gadget.actions.indexOf('Categories') >= 0) {
-            this.initiateCategoriesDG();
-        }
+    init: function (mainGadget, mainAction) {
+        this.initiateCategoriesDG();
+
+        $('#categoryModal').on('hidden.bs.modal', $.proxy(function (e) {
+            $('form#category-form')[0].reset();
+            this.selectedCategory = 0;
+        }, this));
+
+        $('#btn-save-category').on('click', $.proxy(function (e) {
+            this.saveCategory();
+        }, this));
     },
 
 }};

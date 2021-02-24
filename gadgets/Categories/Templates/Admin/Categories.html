@@ -1,47 +1,56 @@
-<!-- BEGIN Categories -->
 <div class="gadget_menubar">{{menubar}}</div>
-<div>
-  <div class="repeater" id="categories-grid" data-staticheight="500">
+
+<div class="repeater" id="categories-grid" data-staticheight="500">
     <div class="repeater-header">
       <div class="datagrid-filters">
-        <table style="width: 100%;">
-          <tr>
-            <!-- BEGIN visible_filters -->
-            <td><label for="filter_action">{{lbl_action}}: </label></td>
-            <td><input type="text" id="filter_action" name="filter_action" class="form-control"></td>
+        <div class="row">
+          <form action="#" onsubmit="return false">
 
-            <td><label for="filter_gadget">{{lbl_gadget}}: </label></td>
-            <td><select name="filter_gadget" id="filter_gadget" class="form-control">
-              <!-- BEGIN filter_gadget -->
-              <option value="{{value}}">{{title}}</option>
-              <!-- END filter_gadget -->
-            </select></td>
-            <!-- END visible_filters -->
+            {% if req_gadget | not isset %}
+            <div class="col-xs-1">
+              <label for="filter_action">{{ "categories.action" | t }}: </label>
+            </div>
+            <div class="col-xs-3">
+              <input type="text" class="form-control" name="filter_action" id="filter_action" >
+            </div>
 
-            <!-- BEGIN hidden_filters -->
-            <td>
-              <input type="hidden" name="filter_gadget" id="filter_gadget" value="{{gadget}}">
-            </td>
-            <td>
-              <input type="hidden" name="filter_action" id="filter_action" value="{{action}}">
-            </td>
-            <!-- END hidden_filters -->
-            <td></td>
-          </tr>
+            <div class="col-xs-1">
+              <label for="filter_gadget">{{ "categories.gadget" | t }}: </label>
+            </div>
+            <div class="col-xs-3">
+              <select name="filter_gadget" id="filter_gadget" class="form-control">
+                <option value="0">{{ "global.all" | t }}</option>
+                {% for gadget in gadgets %}
+                <option value="{{ gadget.name }}">{{ gadget.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endif %}
 
-          <tr>
-            <td><label for="filter_term">{{lbl_term}}: </label></td>
-            <td><input type="text" id="filter_term" name="filter_term" class="form-control"></td>
-          </tr>
+            <div class="col-xs-1">
+              <label for="filter_term">{{ "global.term" | t }}: </label>
+            </div>
+            <div class="col-xs-3">
+              <input type="text" class="form-control" name="filter_term" id="filter_term" >
+            </div>
 
-        </table>
+          </form>
+        </div>
       </div>
+
+      <p></p>
+
       <div class="repeater-header-right">
-        <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#categoryModal">
-          <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#categoryModal">
+          <span class="glyphicon glyphicon-plus"></span> {{ "global.add" | t }}
+        </button>
+        <button type="button" class="btn btn-success btn-m btn-refresh">
+          <span class="glyphicon glyphicon-refresh"></span> {{ "global.reload" | t }}
         </button>
       </div>
     </div>
+
+
     <div class="repeater-viewport">
       <div class="repeater-canvas"></div>
       <div class="loader repeater-loader"></div>
@@ -51,9 +60,9 @@
         <div class="repeater-itemization">
           <span>
             <span class="repeater-start"></span>
-            {{lbl_to}} <span class="repeater-end"></span>
-            {{lbl_of}} <span class="repeater-count"></span>
-            {{lbl_items}}
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
           </span>
           <div class="btn-group selectlist dropup" data-resize="auto">
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
@@ -68,7 +77,7 @@
             </ul>
             <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
           </div>
-          <span>{{lbl_per_page}}</span>
+          <span>{{ "global.perpage" | t }}</span>
         </div>
       </div>
       <div class="repeater-footer-right">
@@ -105,52 +114,47 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="categoryModalLabel">{{lbl_add}}</h4>
+          <h4 class="modal-title" id="categoryModalLabel">{{ "global.add" | t }}</h4>
         </div>
         <div class="modal-body">
 
 
           <form action="#" id="category-form">
 
-            <!-- BEGIN visible_inputs -->
+            {% if req_gadget | not isset %}
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="gadget">{{lbl_gadget}}:</label>
+                <label for="gadget">{{ "categories.gadget" | t }}:</label>
                 <select name="gadget" id="gadget" class="form-control">
-                  <!-- BEGIN gadget -->
-                  <option value="{{value}}">{{title}}</option>
-                  <!-- END gadget -->
+                  {% for gadget in gadgets %}
+                  <option value="{{ gadget.name }}">{{ gadget.title }}</option>
+                  {% endfor %}
                 </select>
               </div>
 
               <div class="form-group col-md-6">
-                <label for="action">{{lbl_action}}:</label>
+                <label for="action">{{ "categories.action" | t }}:</label>
                 <input class="form-control" name="action" id="action" value="" type="text"/>
               </div>
             </div>
-            <!-- END visible_inputs -->
-
-            <!-- BEGIN hidden_inputs -->
-            <input type="hidden" name="gadget" id="gadget" class="form-control" value="{{gadget}}">
-            <input type="hidden" name="action" id="action" class="form-control" value="{{action}}">
-            <!-- END hidden_inputs -->
+            {% endif %}
 
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="title">{{lbl_title}}:</label>
+                <label for="title">{{ "global.title" | t }}:</label>
                 <input class="form-control" name="title" id="title" value="" type="text"/>
               </div>
 
               <div class="form-group col-md-6">
-                <label for="title">{{lbl_published}}:</label>
+                <label for="title">{{ "global.published" | t }}:</label>
                 <select name="published" id="published" class="form-control">
-                  <option value="0">{{lbl_no}}</option>
-                  <option value="1" selected>{{lbl_yes}}</option>
+                  <option value="0">{{ "global.no" | t }}</option>
+                  <option value="1" selected>{{ "global.yes" | t }}</option>
                 </select>
               </div>
             </div>
 
-            <div class="form-group"><label for="description">{{lbl_description}}:</label>
+            <div class="form-group"><label for="description">{{ "global.description" | t }}:</label>
               <textarea class="form-control" name="description" id="description" cols="45" rows="4">{{description}}</textarea>
             </div>
 
@@ -158,46 +162,41 @@
               <div class="panel-heading" role="tab" id="headingExtra">
                 <h4 class="panel-title">
                   <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExtra" aria-expanded="false" aria-controls="collapseExtra">
-                    {{lbl_meta_info}}
+                    {{ "global.meta_info" | t }}
                   </a>
                 </h4>
               </div>
               <div id="collapseExtra" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
 
-                  <div class="form-group"><label for="meta_title">{{lbl_meta_title}}:</label>
+                  <div class="form-group"><label for="meta_title">{{ "global.meta_title" | t }}:</label>
                     <input class="form-control" name="meta_title" id="meta_title" value="" type="text"/>
                   </div>
 
-                  <div class="form-group"><label for="meta_keywords">{{lbl_meta_keywords}}:</label>
+                  <div class="form-group"><label for="meta_keywords">{{ "global.meta_keywords" | t }}:</label>
                     <input class="form-control" name="meta_keywords" id="meta_keywords" value="" type="text"/>
                   </div>
 
-                  <div class="form-group"><label for="meta_description">{{lbl_meta_description}}:</label>
+                  <div class="form-group"><label for="meta_description">{{ "global.meta_description" | t }}:</label>
                     <textarea class="form-control" name="meta_description" id="meta_description" cols="45" rows="2">{{meta_description}}</textarea>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="form-group"><label for="insert_time">{{lbl_insert_time}}:</label>
+            <div class="form-group"><label for="insert_time">{{ "categories.insert_time" | t }}:</label>
               <input class="form-control" name="insert_time" id="insert_time" value="{{insert_time}}" type="text" disabled />
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal"
-            onclick="Jaws_Gadget.getInstance('Categories').stopAction();">
-            {{lbl_cancel}}
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            {{ "global.cancel" | t }}
           </button>
-          <button type="button" class="btn btn-primary"
-            onclick="Jaws_Gadget.getInstance('Categories').saveCategory()">
-          {{lbl_save}}
+          <button type="button" class="btn btn-primary" id="btn-save-category">
+            {{ "global.save" | t }}
           </button>
         </div>
       </div>
     </div>
   </div>
-
-</div>
-<!-- END Categories -->
