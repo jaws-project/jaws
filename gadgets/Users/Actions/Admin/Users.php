@@ -167,6 +167,10 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $userInfo['dob'] = $objDate->Format($userInfo['dob'], 'Y/m/d');
         }
 
+        if (!empty($userInfo['expiry_date'])) {
+            $userInfo['expiry_date'] = $objDate->Format($userInfo['expiry_date'], 'Y/m/d');
+        }
+
         if (!isset($userInfo['avatar']) && empty($userInfo['avatar'])) {
             $userInfo['avatar'] = $this->app->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
         } else {

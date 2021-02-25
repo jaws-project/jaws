@@ -647,6 +647,7 @@ function Jaws_Gadget_Users() { return {
      */
     stopUserAction: function() {
         this.selectedUser = 0;
+        $("#password").prop('disabled', false);
         $('#users-form')[0].reset();
     },
 
