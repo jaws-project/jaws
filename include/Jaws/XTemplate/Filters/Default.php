@@ -71,15 +71,32 @@ class Jaws_XTemplate_Filters_Default
     }
 
     /**
-     * Logical not
+     * check statement result is true?
      *
      * @param   mixed   $input
      * @param   mixed   $trueResult     If true result
      * @param   mixed   $falseResult    If false result
      *
-     * @return  mixed
+     * @return  bool
      */
-    public static function not($input, $trueResult = null, $falseResult = null)
+    public static function true($input, $trueResult = null, $falseResult = null)
+    {
+        $trueResult = isset($trueResult)? $trueResult : true;
+        $falseResult = isset($falseResult)? $falseResult : false;
+
+        return (bool)$input? $trueResult : $falseResult;
+    }
+
+    /**
+     * check statement result is false?
+     *
+     * @param   mixed   $input
+     * @param   mixed   $trueResult     If true result
+     * @param   mixed   $falseResult    If false result
+     *
+     * @return  bool
+     */
+    public static function false($input, $trueResult = null, $falseResult = null)
     {
         $trueResult = isset($trueResult)? $trueResult : true;
         $falseResult = isset($falseResult)? $falseResult : false;
@@ -154,6 +171,10 @@ class Jaws_XTemplate_Filters_Default
      */
     public static function contains($input, $needle)
     {
+        if (!isset($input)) {
+            return false;
+        }
+
         return is_array($input)? in_array($needle, $input) : (strpos($input, $needle) !== false);
     }
 
