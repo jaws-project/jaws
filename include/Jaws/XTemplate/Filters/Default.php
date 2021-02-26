@@ -117,8 +117,7 @@ class Jaws_XTemplate_Filters_Default
     /**
      * Return the size of an array or of an string
      *
-     * @param mixed $input
-     * @throws RenderException
+     * @param   mixed   $input
      * @return int
      */
     public static function size($input)
@@ -144,6 +143,18 @@ class Jaws_XTemplate_Filters_Default
 
         // only plain values and stringable objects left at this point
         return strlen($input);
+    }
+
+    /**
+     * Checks if input statement contains given value
+     *
+     * @param   mixed   $input      The array|string to search in
+     * @param   mixed   $needle     The searched value
+     * @return  bool    Returns true if needle is found, false otherwise
+     */
+    public static function contains($input, $needle)
+    {
+        return is_array($input)? in_array($needle, $input) : (strpos($input, $needle) !== false);
     }
 
     /**
