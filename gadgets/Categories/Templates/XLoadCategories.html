@@ -1,0 +1,24 @@
+<div class="input-group">
+  <label class="input-group-addon text-input" for="category">
+    {{ category.labels.title }}
+  </label>
+
+  <select class="form-control"
+    name="category_{{ category.input_action }}_{{ category.input_reference }}"
+    data-initialize="select"
+    data-placeholder="{{ category.labels.placeholder }}"
+    data-dir={{ category.direction }}
+    {{ category.multiple | true: 'multiple' , '' }}
+    data-tags="{{ category.autoinsert | true: 'true' , 'false' }}"
+  >
+  {% for item in category.categories %}
+    {% if forloop.first  %}
+    <option></option>
+    {% endif %}
+    <option value="{{ item.id }}" {{ category.selected | contains: item.id | true: 'selected', '' }}>
+      {{ item.title }}
+    </option>
+  {% endfor %}
+  </select>
+
+</div>
