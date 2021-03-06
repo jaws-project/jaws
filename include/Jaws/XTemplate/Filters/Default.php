@@ -18,9 +18,9 @@ class Jaws_XTemplate_Filters_Default
      *
      * @return string
      */
-    public static function date($input, $format)
+    public static function date($input, $format = '', $calendar = '')
     {
-        return Jaws_Date::getInstance()->Format($input, $format);
+        return Jaws_Date::getInstance($calendar)->Format($input, $format);
     }
 
     /**
