@@ -6,6 +6,11 @@
  * @package     Categories
  */
 
+$actions['getCategories'] = array(
+    'standalone' => true,
+    'file' => 'Categories',
+);
+
 /**
  * Admin actions
  */

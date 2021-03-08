@@ -5,7 +5,11 @@
 
   <select class="form-control"
     name="category_{{ category.input_action }}_{{ category.input_reference }}"
-    data-initialize="select"
+    data-role="select2"
+    data-prefetch="{{ category.prefetch }}"
+    data-gadget="{{ category.interface.gadget }}"
+    data-action="{{ category.interface.action }}"
+    data-reference="{{ category.interface.reference }}"
     data-placeholder="{{ category.labels.placeholder }}"
     data-dir={{ category.direction }}
     {{ category.multiple | true: 'multiple' , '' }}

@@ -12,11 +12,12 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array       $interface  Gadget connection interface
+     * @param   string      $term       Statement that will be used for title search
      * @param   bool|int    $limit      Count of categories to be returned
      * @param   int         $offset     Offset of data array
      * @return  array   List of files info or Jaws_Error on error
      */
-    function getCategories($interface, $limit = false, $offset = null)
+    function getCategories($interface, $term = null, $limit = false, $offset = null)
     {
         $data = array(
             'gadget'    => '',
@@ -28,10 +29,12 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
             ->select(
                 'id:integer', 'title', 'description', 'meta_title', 'meta_keywords',
                 'meta_description', 'insert_time:integer', 'published:boolean'
-            )->where('gadget', $interface['gadget'])
+            )
+            ->where('gadget', $interface['gadget'])
             ->and()
             ->where('action', $interface['action'])
-            ->orderBy('id desc')
+            ->and()
+            ->where('title', $term, 'like', is_null($term))
             ->limit((int)$limit, $offset)
             ->fetchAll();
     }
@@ -41,9 +44,10 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $interface  Gadget connection interface
+     * @param   string  $term       Statement that will be used for title search
      * @return  mixed   Count of available categories or Jaws_Error on failure
      */
-    function getCategoriesCount($interface)
+    function getCategoriesCount($interface, $term = null)
     {
         $data = array(
             'gadget'    => '',
@@ -55,7 +59,10 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
             ->table('categories')
             ->select('count(id):integer')
             ->where('gadget', $interface['gadget'])
-            ->and()->where('action', $interface['action'])
+            ->and()
+            ->where('action', $interface['action'])
+            ->and()
+            ->where('title', $term, 'like', is_null($term))
             ->fetchOne();
     }
 
@@ -63,7 +70,7 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
      * Returns array of categories
      *
      * @access  public
-     * @param   array       $interface  Gadget connection interface
+     * @param   array   $interface  Gadget connection interface
      * @return  array   List of files info or Jaws_Error on error
      */
     function getReferenceCategories($interface)

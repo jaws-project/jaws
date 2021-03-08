@@ -22,6 +22,7 @@ class Categories_Actions_Categories extends Jaws_Gadget_Action
                 'title' => '',
                 'placeholder' => '',
             ),
+            'prefetch'   => true,
             'multiple'   => false,
             'autoinsert' => false,
             'direction'  => Jaws::t('LANG_DIRECTION'),
@@ -42,6 +43,7 @@ class Categories_Actions_Categories extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
+        $this->gadget->define('no_results', Jaws::t('NOTFOUND'));
 
         // initiate assign with option array 
         $assigns = $options;
@@ -49,20 +51,11 @@ class Categories_Actions_Categories extends Jaws_Gadget_Action
         $assigns['input_action'] = strtolower($interface['action']);
         $assigns['input_reference'] = strtolower($interface['input_reference']);
 
-        // categories
-        $assigns['categories'] = array();
-        $categories = $this->gadget->model->load('Categories')->getCategories($interface);
-        if (!Jaws_Error::IsError($categories)) {
-            $assigns['categories'] = $categories;
-        }
-
-        // fetch categories that reference belong to
-        if (!empty($interface['reference']) && empty($interface['selected'])) {
-            $assigns['selected'] = array();
-            $selected = $this->gadget->model->load('Categories')->getReferenceCategories($interface);
-            if (!Jaws_Error::IsError($selected)) {
-               $assigns['selected'] = $selected;
-            }
+        if ($options['prefetch']) {
+            // categories
+            $result = $this->getCategories($interface);
+            $assigns['categories'] = $result['data']['categories'];
+            $assigns['selected'] = $result['data']['selected'];
         }
 
         return $assigns;
@@ -139,6 +132,90 @@ class Categories_Actions_Categories extends Jaws_Gadget_Action
         }
 
         return $input_categories;
+    }
+
+    /**
+     * Get action/reference categories
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    
+     * @return  array   Array of action/reference categories
+     */
+    function getCategories($interface = array(), $options = array())
+    {
+        // FIXME: temporary solution
+        if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            $postedData = $this->gadget->request->fetch(
+                array('interface:array', 'options:array'),
+                'post'
+            );
+
+            $interface = $postedData['interface'];
+            $options   = $postedData['options'];
+        }
+
+        $defaultOptions = array(
+            'term'   => null,
+            'limit'  => false,
+            'offset' => null,
+            'count'  => false,
+        );
+        $options = array_merge($defaultOptions, $options);
+
+        $defaultInterface = array(
+            'gadget'    => '',
+            'action'    => '',
+            'reference' => 0,
+            'selected'  => 0
+        );
+        $interface = array_merge($defaultInterface, $interface);
+
+        $result = array(
+            'count' => 0,
+            'categories' => array(),
+            'selected' => array()
+        );
+
+        // categories
+        $categories = $this->gadget->model->load('Categories')->getCategories(
+            $interface,
+            $options['term'],
+            $options['limit'],
+            $options['offset']
+        );
+        if (!Jaws_Error::IsError($categories)) {
+            $result['categories'] = $categories;
+        }
+
+        // total/count
+        if ($options['count']) {
+            $count = $this->gadget->model->load('Categories')->getCategoriesCount(
+                $interface,
+                $options['term']
+            );
+            if (!Jaws_Error::IsError($count)) {
+                $result['count'] = $count;
+            }
+        }
+
+        // fetch categories that reference belong to
+        if (!empty($interface['reference']) && empty($interface['selected'])) {
+            $selected = $this->gadget->model->load('Categories')->getReferenceCategories($interface);
+            if (!Jaws_Error::IsError($selected)) {
+               $result['selected'] = $selected;
+            }
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'count' => $result['count'],
+                'categories' => $result['categories'],
+                'selected' => $result['selected']
+            )
+        );
     }
 
 }
