@@ -167,15 +167,20 @@ class Jaws_XTemplate_Filters_Default
      *
      * @param   mixed   $input      The array|string to search in
      * @param   mixed   $needle     The searched value
+     * @param   mixed   $column_key The column of values to search(int|string|null)
      * @return  bool    Returns true if needle is found, false otherwise
      */
-    public static function contains($input, $needle)
+    public static function contains($input, $needle, $column_key = null)
     {
         if (!isset($input)) {
             return false;
         }
 
-        return is_array($input)? in_array($needle, $input) : (strpos($input, $needle) !== false);
+        if (is_array($input)) {
+            return in_array($needle, is_null($column_key)? $input : array_column($input, $column_key));
+        } else {
+            return strpos($input, $needle) !== false;
+        }
     }
 
     /**
