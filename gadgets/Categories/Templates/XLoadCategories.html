@@ -19,7 +19,7 @@
     {% if forloop.first  %}
     <option></option>
     {% endif %}
-    <option value="{{ item.id }}" {{ category.selected | contains: item.id | true: 'selected', '' }}>
+    <option value="{{ item.id }}" {{ category.selected | contains: item.id, 'id' | true: 'selected', '' }}>
       {{ item.title }}
     </option>
   {% endfor %}

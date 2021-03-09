@@ -83,14 +83,14 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
         $interface = array_merge($data, $interface);
 
         return Jaws_ORM::getInstance()->table('categories_references')
-            ->select('category:integer')
+            ->select('categories.id:integer', 'categories.title')
             ->join('categories', 'categories_references.category', 'categories.id')
             ->where('gadget', $interface['gadget'])
             ->and()
             ->where('action', $interface['action'])
             ->and()
             ->where('reference', $interface['reference'])
-            ->fetchColumn();
+            ->fetchAll();
     }
 
     /**
