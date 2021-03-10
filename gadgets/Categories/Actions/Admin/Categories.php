@@ -26,16 +26,45 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $this->gadget->define('lbl_title', Jaws::t('TITLE'));
         $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->define('lbl_all', Jaws::t('ALL'));
         $this->gadget->define('req_gadget', $req_gadget);
         $this->gadget->define('req_action', $req_action);
 
-        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
-        $gadgetList = $cmpModel->GetGadgetsList();
+        $model = $this->gadget->model->load('Categories');
+        $gadgets = $model->getHookedGadgets();
+        $gadgetsActions = array();
+        $actions = array();
+        if (count($gadgets) > 0) {
+            foreach ($gadgets as $gadget) {
+                // load gadget
+                $objGadget = Jaws_Gadget::getInstance($gadget['name']);
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
+                // load hook & execute hook
+                $gActions = $objGadget->hook->load('Categories')->Execute();
+                if (Jaws_Error::IsError($gActions)) {
+                    continue;
+                }
+
+                if (!empty($req_gadget)) {
+                    $actions = $gActions;
+                }
+
+                $gadgetsActions[$gadget['name']] = $gActions;
+            }
+        }
+
+        $this->gadget->define('gadgets', array_column($gadgets, 'title', 'name'));
+        $this->gadget->define('gadgets_actions', $gadgetsActions);
 
         $assigns = array();
         $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Categories') : $menubar;
         $assigns['req_gadget'] = $req_gadget;
-        $assigns['gadgets'] = $gadgetList;
+        $assigns['req_action'] = $req_action;
+        $assigns['gadgets'] = $gadgets;
+        $assigns['actions'] = $actions;
+        $assigns['gadgets_actions'] = $gadgetsActions;
         return $this->gadget->template->xLoadAdmin('Categories.html')->render($assigns);
     }
 

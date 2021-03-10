@@ -13,21 +13,21 @@ function Jaws_Gadget_Categories() { return {
         DeleteCategory: function(response) {
             if (response.type == 'alert-success') {
                 this.stopAction();
-                $('#categories-grid').repeater('render');
+                $('#categories-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         InsertCategory: function(response) {
             if (response.type == 'alert-success') {
                 this.stopAction();
-                $('#categories-grid').repeater('render');
+                $('#categories-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         UpdateCategory: function(response) {
             if (response.type == 'alert-success') {
                 this.stopAction();
-                $('#categories-grid').repeater('render');
+                $('#categories-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         }
     },
@@ -39,6 +39,27 @@ function Jaws_Gadget_Categories() { return {
         this.selectedCategory = 0;
         $('#categoryModal').modal('hide');
         $('form#category-form')[0].reset();
+    },
+
+    /**
+     * Change the gadget combo
+     */
+    changeGadget: function(selectedGadget, actionElm, addDefaultItem = true) {
+        actionElm = actionElm.empty().get(0);
+        if (addDefaultItem) {
+            actionElm.options[actionElm.options.length] = new Option(this.gadget.defines.lbl_all, 0);
+        }
+        $.each(this.gadget.defines.gadgets_actions[selectedGadget], function (actionName, actionTitle) {
+            actionElm.options[actionElm.options.length] = new Option(actionTitle, actionName);
+        });
+    },
+
+    /**
+     * Add a category
+     */
+    addCategory: function() {
+        $('#gadget').trigger('change');
+        $('#categoryModal').modal('show');
     },
 
     /**
@@ -63,6 +84,10 @@ function Jaws_Gadget_Categories() { return {
                             }
 
                             $(el).val(value);
+
+                            if ($(el).is("select")) {
+                                $(el).trigger('change');
+                            }
                         }
                     );
 
@@ -81,15 +106,14 @@ function Jaws_Gadget_Categories() { return {
             data.action = this.gadget.defines.req_action;
         }
         if (this.selectedCategory === 0) {
-            this.gadget.ajax.callAsync('InsertCategory',
-                {data: data}
-            );
+            this.gadget.ajax.callAsync('InsertCategory', {
+                data: data
+            });
         } else {
-            this.gadget.ajax.callAsync('UpdateCategory',
-                {
-                    id: this.selectedCategory
-                    , data: data
-                });
+            this.gadget.ajax.callAsync('UpdateCategory', {
+                id: this.selectedCategory,
+                data: data
+            });
         }
     },
 
@@ -120,6 +144,18 @@ function Jaws_Gadget_Categories() { return {
                     'sortable': true
                 }
             );
+        } else {
+            if (this.gadget.defines.req_action === null) {
+                if (Object.keys(this.gadget.defines.gadgets_actions[this.gadget.defines.req_gadget]).length > 1) {
+                    columns.push(
+                        {
+                            'label': this.gadget.defines.lbl_action,
+                            'property': 'action',
+                            'sortable': true
+                        }
+                    );
+                }
+            }
         }
         columns.push(
             {
@@ -180,6 +216,35 @@ function Jaws_Gadget_Categories() { return {
     },
 
     /**
+     * categories Datagrid column renderer
+     */
+    categoriesDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'gadget':
+                customMarkup = this.gadget.defines.gadgets[rowData.gadget];
+                break;
+            case 'action':
+                customMarkup = helpers.item.text();
+                $.each(this.gadget.defines.gadgets_actions[rowData.gadget], function (actionName, actionTitle) {
+                    if (actionName === rowData.action) {
+                        customMarkup = actionTitle
+                    }
+                });
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+        callback();
+    },
+
+    /**
      * initiate categories dataGrid
      */
     initiateCategoriesDG: function() {
@@ -213,16 +278,14 @@ function Jaws_Gadget_Categories() { return {
             dataSource: $.proxy(this.categoriesDataSource, this),
             staticHeight: 500,
             list_actions: list_actions,
+            list_columnRendered: $.proxy(this.categoriesDGColumnRenderer, this),
             list_direction: $('.repeater-canvas').css('direction')
         });
 
         // monitor required events
-        $( ".datagrid-filters select" ).change(function() {
-            $('#categories-grid').repeater('render');
-        });
         $( ".datagrid-filters input" ).keypress(function(e) {
             if (e.which == 13) {
-                $('#categories-grid').repeater('render');
+                $('#categories-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         });
 
@@ -242,6 +305,20 @@ function Jaws_Gadget_Categories() { return {
             this.selectedCategory = 0;
         }, this));
 
+        $('#btn-add-category').on('click', $.proxy(function (e) {
+            this.addCategory();
+        }, this));
+
+        $('#filter_gadget').on('change', $.proxy(function (e) {
+            this.changeGadget($(e.target).val(), $('#filter_action'));
+            $('#categories-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        }, this));
+        $('#gadget').on('change', $.proxy(function (e) {
+            this.changeGadget($(e.target).val(), $('#action'), false);
+        }, this));
+        $('#filter_action').on('change', $.proxy(function (e) {
+            $('#categories-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+        }, this));
         $('#btn-save-category').on('click', $.proxy(function (e) {
             this.saveCategory();
         }, this));

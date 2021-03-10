@@ -189,4 +189,27 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
         return true;
     }
 
+    /**
+     * Gets list of hooked gadgets for categories
+     *
+     * @access  public
+     * @return  array   List of gadgets
+     */
+    function getHookedGadgets()
+    {
+        $result = array();
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
+        $gadgets = $cmpModel->GetGadgetsList(null, true, true);
+        foreach ($gadgets as $gadget => $info) {
+            if (Jaws_FileManagement_File::file_exists(ROOT_JAWS_PATH . "gadgets/$gadget/Hooks/Categories.php")) {
+                $result[] = array(
+                    'name' => $gadget,
+                    'title' => $info['title']
+                );
+            }
+        }
+
+        return $result;
+    }
+
 }

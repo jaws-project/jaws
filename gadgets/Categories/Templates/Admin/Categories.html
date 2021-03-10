@@ -6,14 +6,7 @@
         <div class="row">
           <form action="#" onsubmit="return false">
 
-            {% if req_gadget | not isset %}
-            <div class="col-xs-1">
-              <label for="filter_action">{{ "categories.action" | t }}: </label>
-            </div>
-            <div class="col-xs-3">
-              <input type="text" class="form-control" name="filter_action" id="filter_action" >
-            </div>
-
+            {% if req_gadget | empty %}
             <div class="col-xs-1">
               <label for="filter_gadget">{{ "categories.gadget" | t }}: </label>
             </div>
@@ -23,6 +16,15 @@
                 {% for gadget in gadgets %}
                 <option value="{{ gadget.name }}">{{ gadget.title }}</option>
                 {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-xs-1">
+              <label for="filter_action">{{ "categories.action" | t }}: </label>
+            </div>
+            <div class="col-xs-3">
+              <select name="filter_action" id="filter_action" class="form-control">
+                <option value="0">{{ "global.all" | t }}</option>
               </select>
             </div>
             {% endif %}
@@ -41,7 +43,7 @@
       <p></p>
 
       <div class="repeater-header-right">
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#categoryModal">
+        <button type="button" class="btn btn-info" id="btn-add-category">
           <span class="glyphicon glyphicon-plus"></span> {{ "global.add" | t }}
         </button>
         <button type="button" class="btn btn-success btn-m btn-refresh">
@@ -121,7 +123,7 @@
 
           <form action="#" id="category-form">
 
-            {% if req_gadget | not isset %}
+            {% if req_gadget | empty %}
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="gadget">{{ "categories.gadget" | t }}:</label>
@@ -134,9 +136,17 @@
 
               <div class="form-group col-md-6">
                 <label for="action">{{ "categories.action" | t }}:</label>
-                <input class="form-control" name="action" id="action" value="" type="text"/>
+                <select name="action" id="action" class="form-control"></select>
               </div>
             </div>
+            {% else %}
+              {{ gadgets_actions[req_gadget] | log }}}
+              {% if gadgets_actions[req_gadget] | length > 1 %}
+              {% endif %}
+
+            <!--            if (this.gadget.defines.req_action === null) {-->
+<!--            if (Object.keys(this.gadget.defines.gadgets_actions[this.gadget.defines.req_gadget]).length > 1) {-->
+
             {% endif %}
 
             <div class="row">
