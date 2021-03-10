@@ -42,6 +42,19 @@ function Jaws_Gadget_Categories() { return {
                     // ajax based?
                     if (!$(elSelect).data('prefetch')) {
                         options.ajax = {
+                            delay: 250,
+                            cache: true,
+
+                            data: $.proxy(
+                                function(params) {
+                                    return {
+                                        term: params.term || '',
+                                        page: params.page || 0
+                                    }
+                                },
+                                this
+                            ),
+
                             transport: $.proxy(
                                 function (params, success, failure) {
                                     this.gadget.ajax.callAsync(
@@ -53,30 +66,39 @@ function Jaws_Gadget_Categories() { return {
                                                 reference: 1
                                             },
                                             'options': {
-                                                term: params.data.term
+                                                'term'  : params.data.term,
+                                                'limit' : 10,
+                                                'offset': params.data.page * 10,
+                                                'count' : true
                                             }
                                         },
                                         function (response) {
-                                            let data = [];
                                             if (response.type == 'alert-success') {
-                                                $.each(response.data.categories, function (key, category) {
-                                                    data.push({text: category.title, id: category.id});
-                                                });
+                                                success({'results': response.data});
                                             } else {
-                                                data.push({text: '', id: ''});
+                                                failure();
                                             }
-
-                                            success(
-                                                {
-                                                    'results': data,
-                                                    'pagination': {'more': false}
-                                                }
-                                            );
                                         }
                                     );
                                 },
                                 this
-                            )
+                            ),
+
+                            processResults: function (data, params) {
+                                params.page = params.page || 0;
+                                return {
+                                    results: $.map(
+                                        data.results.categories,
+                                        function (obj) {
+                                            obj.text = obj.title;
+                                            return obj;
+                                        }
+                                    ),
+                                    pagination: {
+                                        more: (params.page + 1) * 10 < data.results.count
+                                    }
+                                };
+                            }
                         }
                     }
 
