@@ -59,7 +59,7 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
         $this->nodelists[] = array('for', $markup, &$this->nodelist);
         parent::__construct($tokens, $markup);
 
-        $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_XTemplate::get('VARIABLE_NAME') . ')/');
+        $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')/');
 
         if ($syntaxRegexp->match($markup)) {
             $this->variableName = $syntaxRegexp->matches[1];
