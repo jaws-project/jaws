@@ -103,7 +103,11 @@ function Jaws_Gadget_Categories() { return {
         var data = $.unserialize($('form#category-form').serialize());
         if (this.gadget.defines.req_gadget !== null) {
             data.gadget = this.gadget.defines.req_gadget;
-            data.action = this.gadget.defines.req_action;
+        }
+        if (this.gadget.defines.req_action !== null) {
+            if (data.action === undefined || data.action === null) {
+                data.action = this.gadget.defines.req_action;
+            }
         }
         if (this.selectedCategory === 0) {
             this.gadget.ajax.callAsync('InsertCategory', {
@@ -172,8 +176,12 @@ function Jaws_Gadget_Categories() { return {
         };
         if (this.gadget.defines.req_gadget === null) {
             filters.gadget = $('#filter_gadget').val();
+        }
+        if (this.gadget.defines.req_action === null) {
             filters.action = $('#filter_action').val();
         }
+
+        console.log('filters', filters);
 
         this.gadget.ajax.callAsync(
             'GetCategories', {

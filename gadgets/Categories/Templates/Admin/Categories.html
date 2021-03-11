@@ -27,6 +27,20 @@
                 <option value="0">{{ "global.all" | t }}</option>
               </select>
             </div>
+            {% else %}
+              {% if req_action | empty %}
+                <div class="col-xs-1">
+                  <label for="filter_gadget">{{ "categories.action" | t }}: </label>
+                </div>
+                <div class="col-xs-3">
+                  <select name="filter_action" id="filter_action" class="form-control">
+                    <option value="0">{{ "global.all" | t }}</option>
+                    {% for action in current_actions %}
+                    <option value="{{ action.action }}">{{ action.title }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endif %}
             {% endif %}
 
             <div class="col-xs-1">
@@ -140,13 +154,18 @@
               </div>
             </div>
             {% else %}
-              {{ gadgets_actions[req_gadget] | log }}}
-              {% if gadgets_actions[req_gadget] | length > 1 %}
+              {% if req_action | empty %}
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="gadget">{{ "categories.action" | t }}:</label>
+                    <select name="action" id="action" class="form-control">
+                      {% for action in current_actions %}
+                      <option value="{{ action.action }}">{{ action.title }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
               {% endif %}
-
-            <!--            if (this.gadget.defines.req_action === null) {-->
-<!--            if (Object.keys(this.gadget.defines.gadgets_actions[this.gadget.defines.req_gadget]).length > 1) {-->
-
             {% endif %}
 
             <div class="row">

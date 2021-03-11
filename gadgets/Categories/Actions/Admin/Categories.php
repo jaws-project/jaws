@@ -28,11 +28,11 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
         $this->gadget->define('lbl_all', Jaws::t('ALL'));
         $this->gadget->define('req_gadget', $req_gadget);
-        $this->gadget->define('req_action', $req_action);
 
         $model = $this->gadget->model->load('Categories');
         $gadgets = $model->getHookedGadgets();
         $gadgetsActions = array();
+        $gadgetsActions2 = array();
         $actions = array();
         if (count($gadgets) > 0) {
             foreach ($gadgets as $gadget) {
@@ -46,17 +46,26 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
                 if (Jaws_Error::IsError($gActions)) {
                     continue;
                 }
-
                 if (!empty($req_gadget)) {
                     $actions = $gActions;
                 }
-
                 $gadgetsActions[$gadget['name']] = $gActions;
+
+                $gActions2 = array();
+                foreach ($gActions as $action => $title) {
+                    $gActions2[] = array('action' => $action, 'title' => $title);
+                }
+                $gadgetsActions2[$gadget['name']] = $gActions2;
             }
+        }
+
+        if (is_null($req_action) && count($gadgetsActions2[$req_gadget]) === 1) {
+            $req_action = $gadgetsActions2[$req_gadget][0]['action'];
         }
 
         $this->gadget->define('gadgets', array_column($gadgets, 'title', 'name'));
         $this->gadget->define('gadgets_actions', $gadgetsActions);
+        $this->gadget->define('req_action', $req_action);
 
         $assigns = array();
         $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Categories') : $menubar;
@@ -64,7 +73,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $assigns['req_action'] = $req_action;
         $assigns['gadgets'] = $gadgets;
         $assigns['actions'] = $actions;
-        $assigns['gadgets_actions'] = $gadgetsActions;
+        $assigns['current_actions'] = empty($req_gadget)? array() : $gadgetsActions2[$req_gadget];
         return $this->gadget->template->xLoadAdmin('Categories.html')->render($assigns);
     }
 
