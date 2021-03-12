@@ -301,7 +301,7 @@ class Jaws_XTemplate_Context
      */
     private function variable($key)
     {
-        // Support numeric and variable array indicies
+        // Support numeric and variable array indexes
         if (preg_match("|\[[0-9]+\]|", $key)) {
             $key = preg_replace("|\[([0-9]+)\]|", ".$1", $key);
         } elseif (preg_match("|\[[0-9a-z._]+\]|", $key, $matches)) {
@@ -309,10 +309,11 @@ class Jaws_XTemplate_Context
             if (strlen($index)) {
                 $key = preg_replace("|\[([0-9a-z._]+)\]|", ".$index", $key);
             }
+        } elseif (preg_match('/\[[\'|\"]([^\'|^\"]*)[\'|\"]\]/', $key, $matches)) {
+            $key = preg_replace('/\[[\'|\"]([^\'|^\"]*)[\'|\"]\]/', ".$1", $key);
         }
 
         $parts = explode(Jaws_XTemplate::get('VARIABLE_ATTRIBUTE_SEPARATOR'), $key);
-
         $object = $this->fetch(array_shift($parts));
 
         while (count($parts) > 0) {
