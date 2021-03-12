@@ -1,0 +1,63 @@
+<div class="gadget_section comments_form">
+  <div class="gadget_header">
+  <div class="row">
+    <div class="col-xs-12"><h2>{{ "comments.comments" | t }}</h2></div>
+  </div>
+  </div>
+  <div class="gadget_container">
+    <div class="gadget_response">
+      <div class="alert {{comment_form.response.type}}" role="alert">
+        <a class="alert-link" id="{{comment_form.gadget}}_{{comment_form.action}}"></a>
+        {{comment_form.response.text}}
+      </div>
+    </div>
+    <form action="{{comment_form.base_script}}" method="post">
+        <input type="hidden" name="reqGadget" value="Comments"/>
+        <input type="hidden" name="reqAction" value="PostMessage"/>
+        <input type="hidden" name="requested_gadget" value="{{comment_form.gadget}}"/>
+        <input type="hidden" name="requested_action" value="{{comment_form.action}}"/>
+        <input type="hidden" name="reference" value="{{comment_form.reference}}"/>
+
+        <div class="gadget_content">
+            {% unless "user.logged" | session %}
+            <div><label for="name_comments{{comment_form.rand}}">{{ "global.name" | t }}:</label>
+                <input class="form-control" name="name" class="large name" id="name_comments{{comment_form.rand}}" type="text" maxlength="20" value="{{comment_form.namevalue}}"/>
+            </div>
+
+            <div><label for="email_comments{{comment_form.rand}}">{{ "global.email" | t }}:</label>
+                <input class="form-control" name="email" class="large email ltr" id="email_comments{{comment_form.rand}}" type="text" value="{{comment_form.emailvalue}}"/>
+            </div>
+
+            <div><label for="url_comments{{comment_form.rand}}">{{ "global.url" | t }}:</label>
+                <input class="form-control" name="url" class="large url ltr" id="url_comments{{comment_form.rand}}" type="text" maxlength="100" value="{{comment_form.urlvalue}}" />
+            </div>
+            {% endunless %}
+
+            <div class="hidden"><label for="comment_url2">{{ "global.spamcheck_empty" | t }}:</label>
+                <input class="form-control" name="url2" id="comment_url2" value="{{url2_value}}" type="text" />
+            </div>
+
+            {% include 'gadgets/Policy/Templates/XCaptcha.html' with comment_form.captcha %}
+
+            <div><label for="message{{comment_form.rand}}">{{ "comments.message" | t }}:</label>
+                <textarea class="form-control" id="message{{comment_form.rand}}" class="x-large" rows="7" name="message">{{message}}</textarea>
+            </div>
+            <div>
+              <label class="form-check-label" for="private_comments{{comment_form.rand}}">
+                <input class="form-check-input" name="is_private" id="private_comments{{comment_form.rand}}" type="checkbox" value="1" />
+                {{ "comments.private" | t }}
+              </label>
+            </div>
+        </div>
+        <div class="gadget_actions">
+            <button class="btn btn-primary" type="submit" name="submit" value="{{ "comments.send" | t }}">{{ "comments.send" | t }}</button>
+        </div>
+    </form>
+
+
+      {% unless "user.logged" | session %}
+      <div class="simple-response-msg">{{comment_form.msg_access_restricted}}</div>
+      {% endunless %}
+  </div>
+  <div class="gadget_footer"></div>
+</div>

@@ -127,6 +127,79 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         return $tpl->Get();
     }
 
+    /**
+     * Displays a block of pages belongs to the specified group
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @return  array   template variables
+     */
+    function xShowCommentsForm($interface = array())
+    {
+        $defaultInterface = array(
+            'gadget'     => '',
+            'action'     => '',
+            'reference'  => 0
+        );
+        $interface = array_merge($defaultInterface, $interface);
+
+        // initiate assign with option array
+        $assigns = array();
+        $assigns['gadget'] = $interface['gadget'];
+        $assigns['action'] = $interface['action'];
+        $assigns['reference'] = $interface['reference'];
+        $assigns['base_script'] = BASE_SCRIPT;
+        $assigns['rand'] = rand();
+        $assigns['msg_access_restricted'] = Jaws::t('ERROR_ACCESS_RESTRICTED',
+            $this->app->map->GetMappedURL('Users', 'Login'),
+            $this->app->map->GetMappedURL('Users', 'Registration'));
+
+        $response = $this->gadget->session->pop('Comments');
+        $assigns['response'] = $response;
+        if (isset($response['data'])) {
+            $data = $response['data'];
+        } else {
+            $data = array(
+                'name'    => '',
+                'email'   => '',
+                'url'     => '',
+                'url2'    => '',
+                'message' => '',
+            );
+        }
+
+        $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
+        switch ($allow_comments_config) {
+            case 'restricted':
+                $allow_comments_config = $this->app->session->user->logged;
+                break;
+
+            default:
+                $allow_comments_config = $allow_comments_config == 'true';
+        }
+        $assigns['allow_comments_config'] = $allow_comments_config;
+
+        $assigns['urlvalue'] = empty($data['url'])? 'http://' : $data['url'];
+        $assigns['namevalue'] =  $data['name'];
+        $assigns['emailvalue'] =  $data['email'];
+        $assigns['url2_value'] =  $data['url2'];
+        $assigns['message'] =  $data['message'];
+
+        // captcha
+        $assigns['captcha'] = Jaws_Gadget::getInstance('Policy')
+            ->action
+            ->load('Captcha')
+            ->xloadCaptcha();
+
+        return $assigns;
+
+//        $response = $this->gadget->session->pop('Comments');
+//        if (!empty($response)) {
+//            $tpl->SetVariable('response_type', $response['type']);
+//            $tpl->SetVariable('response_text', $response['text']);
+//        }
+    }
+
 
     /**
      * Displays a block of pages belongs to the specified group
@@ -306,6 +379,216 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->ParseBlock($block);
         return $tpl->Get();
 
+    }
+
+    /**
+     * Displays comments belongs to the specified gadget,action
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(reference, pagination_data, user, per_page, order_by, ...)
+     * @return  array   Comment's template variables
+     */
+    function xShowComments($interface = array(), $options = array())
+    {
+        $defaultOptions = array(
+            'pagination_data'   => array(),
+            'user'              => null,
+            'per_page'          => null,
+            'order_by'          => 0
+        );
+        $options = array_merge($defaultOptions, $options);
+
+        $defaultInterface = array(
+            'gadget'     => '',
+            'action'     => '',
+            'reference'  => 0
+        );
+        $interface = array_merge($defaultInterface, $interface);
+
+        $max_size = 52;
+        $compactView = $this->app->requestedActionMode == ACTION_MODE_LAYOUT;
+        $rqst = $this->gadget->request->fetch(array('order', 'page'), 'get');
+        $page = empty($rqst['page']) ? 1 : (int)$rqst['page'];
+
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL && !empty($rqst['order'])) {
+            $options['order_by'] = (int)$rqst['order'];
+        }
+
+        if (empty($options['per_page'])) {
+            $options['per_page'] = $this->gadget->registry->fetch('comments_per_page');
+        }
+
+        // initiate assign with option array
+        $assigns = array();
+        $assigns['gadget'] = $interface['gadget'];
+        $assigns['compact_view'] = $compactView;
+
+        $cModel = $this->gadget->model->load('Comments');
+        $comments = $cModel->GetComments(
+            $interface['gadget'],
+            $interface['action'],
+            $interface['reference'],
+            '',
+            Comments_Info::COMMENTS_STATUS_APPROVED,
+            $options['per_page'],
+            ($page - 1) * $options['per_page'],
+            $options['order_by'],
+            $options['user']
+        );
+        $comments_count = $cModel->GetCommentsCount(
+            $interface['gadget'],
+            $interface['action'],
+            $interface['reference'],
+            '',
+            '',
+            $options['user']
+        );
+
+        if (!Jaws_Error::IsError($comments) && $comments != null) {
+            foreach ($comments as &$comment) {
+                $comment['nickname'] = empty($comment['nickname']) ? $comment['name'] : $comment['nickname'];
+                $comment['email'] = empty($comment['user_email']) ? $comment['email'] : $comment['user_email'];
+                $comment['avatar'] = $this->app->users->GetAvatar(
+                    $comment['avatar'],
+                    $comment['email'],
+                    80
+                );
+
+                $comment['message_abbr'] = (Jaws_UTF8::strlen($comment['msg_txt']) >= $max_size)?
+                    Jaws_UTF8::substr($comment['msg_txt'], 0, $max_size).'...' :
+                    $comment['msg_txt'];
+            }
+        }
+
+//        $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
+        $assigns['comments'] = $comments;
+        $assigns['gadget'] = $interface['gadget'];
+        $assigns['action'] = $interface['action'];
+        $assigns['reference'] = $interface['reference'];
+
+
+/*        $objDate = Jaws_Date::getInstance();
+        if (!Jaws_Error::IsError($comments) && $comments != null) {
+            foreach ($comments as $entry) {
+                $tpl->SetBlock($block . '/entry');
+
+                $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
+
+                if ($entry['user_registered_date']) {
+                    $tpl->SetBlock($block . '/entry/registered_date');
+                    $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
+                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
+                    $tpl->ParseBlock($block . '/entry/registered_date');
+                }
+
+                if (!empty($entry['username'])) {
+                    // user's profile
+                    $tpl->SetVariable(
+                        'user_url',
+                        $this->app->map->GetMappedURL(
+                            'Users',
+                            'Profile',
+                            array('user' => $entry['username'])
+                        )
+                    );
+
+                } else {
+                    $tpl->SetVariable('user_url', Jaws_XSS::filter($entry['url']));
+                }
+
+                $nickname = empty($entry['nickname']) ? $entry['name'] : $entry['nickname'];
+                $email = empty($entry['user_email']) ? $entry['email'] : $entry['user_email'];
+
+                $tpl->SetVariable('nickname', Jaws_XSS::filter($nickname));
+                $tpl->SetVariable('email', Jaws_XSS::filter($email));
+                $tpl->SetVariable('username', Jaws_XSS::filter($entry['username']));
+                // user's avatar
+                $tpl->SetVariable(
+                    'avatar',
+                    $this->app->users->GetAvatar(
+                        $entry['avatar'],
+                        $entry['email'],
+                        80
+                    )
+                );
+                $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
+                $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
+                $tpl->SetVariable('message', $this->gadget->plugin->parse($entry['msg_txt']));
+                $tpl->SetVariable('message_abbr', (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size)?
+                    Jaws_UTF8::substr($entry['msg_txt'], 0, $max_size).'...' :
+                    $entry['msg_txt']
+                );
+
+                // Show like rating
+                if (Jaws_Gadget::IsGadgetInstalled('Rating')) {
+                    $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('RatingTypes');
+                    $ratingHTML->loadReferenceLike('Comments', 'comment', $entry['id'], 0, $tpl, 'comments/entry');
+                }
+
+                $tpl->SetBlock($block . '/entry/read_more');
+                $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
+
+                $tpl->SetVariable('read_more_url', $entry['reference_link']);
+                $tpl->ParseBlock($block . '/entry/read_more');
+
+                if (!empty($entry['reply'])) {
+                    $tpl->SetBlock($block . '/entry/reply');
+                    $tpl->SetVariable('lbl_replier', _t('COMMENTS_REPLIER'));
+                    $tpl->SetVariable('replier', $entry['replier_nickname']);
+                    // user's profile
+                    $tpl->SetVariable(
+                        'replier_url',
+                        $this->app->map->GetMappedURL(
+                            'Users',
+                            'Profile',
+                            array('user' => $entry['replier_username'])
+                        )
+                    );
+                    $tpl->SetVariable('reply', $entry['reply']);
+                    $tpl->ParseBlock($block . '/entry/reply');
+                }
+
+                $reply_url = & Piwi::CreateWidget('Link', _t('COMMENTS_REPLY_TO_COMMENT'),
+                                                  'javascript:replyComment();');
+                $tpl->SetVariable('reply-link', $reply_url->Get());
+
+                $tpl->ParseBlock($block . '/entry');
+            }
+        }
+
+        if (!$compactView) {
+            $options['pagination_data']['params']['order'] = $orderBy;
+            // pagination
+            $this->gadget->action->load('PageNavigation')->pagination(
+                $tpl,
+                $page,
+                $options['per_page'],
+                $comments_count,
+                $options['pagination_data']['action'],
+                $options['pagination_data']['params'],
+                _t('COMMENTS_COMMENTS_COUNT', $comments_count),
+                $interface['gadget']
+            );
+
+            // feeds actions
+            $tpl->SetVariable('lbl_feeds', _t('COMMENTS_COMMENTS_XML'));
+            $tpl->SetVariable(
+                'atom_url',
+                $this->gadget->urlMap(
+                    'RecentCommentsAtom',
+                    array('gadgetname' => $interface['gadget'], 'actionname' => $interface['action'], 'reference' => $interface['reference'])
+                )
+            );
+            $tpl->SetVariable(
+                'rss_url',
+                $this->gadget->urlMap(
+                    'RecentCommentsRSS',
+                    array('gadgetname' => $interface['gadget'], 'actionname' => $interface['action'], 'reference' => $interface['reference'])
+                )
+            );
+        }*/
+        return $assigns;
     }
 
     /**
