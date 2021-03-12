@@ -183,6 +183,60 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
     }
 
     /**
+     * Get reference tags
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(reference, pagination_data, user, per_page, order_by, ...)
+     * @return  array   Tag's template variables
+     */
+    function xloadReferenceTags($interface = array(), $options = array())
+    {
+        $defaultOptions = array(
+            'user'       => 0,
+        );
+        $options = array_merge($defaultOptions, $options);
+
+        $defaultInterface = array(
+            'gadget'     => '',
+            'action'     => '',
+            'reference'  => 0
+        );
+        $interface = array_merge($defaultInterface, $interface);
+
+        $tags = $this->gadget->model->load('Tags')->GetReferenceTags(
+            $interface['gadget'],
+            $interface['action'],
+            $interface['reference'],
+            $options['user']
+        );
+        if (Jaws_Error::IsError($tags)) {
+            $tags = array();
+        }
+
+        // initiate assign with option array
+        $assigns = array();
+        $assigns['gadget'] = $interface['gadget'];
+        $assigns['action'] = $interface['action'];
+        $assigns['reference'] = $interface['reference'];
+        $assigns['tags'] = $tags;
+
+        if (!empty($tags)) {
+            // store tags of main request for later use
+            if ($this->app->inMainRequest) {
+                self::$mainRequestReference = array(
+                    'gadget' => $interface['gadget'],
+                    'action' => $interface['action'],
+                    'reference' => $interface['reference']
+                );
+                self::$mainRequestTags = array_column($tags, 'id');
+            }
+        }
+
+        return $assigns;
+    }
+
+    /**
      * Display a Tag
      *
      * @access  public

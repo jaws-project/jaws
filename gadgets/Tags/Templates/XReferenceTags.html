@@ -1,0 +1,8 @@
+<div class="gadget_meta_tags">
+  {{ "global.tags" | t }}:
+  <ul>
+    {% for tag in tags.tags %}
+    <li><a href="{{ 'Tags' | urlmap: 'ViewTag', 'tag', tag.name, 'tagged_gadget', tag.gadget }}">{{tag.title}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
