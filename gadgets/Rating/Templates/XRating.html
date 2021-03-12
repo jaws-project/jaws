@@ -1,0 +1,12 @@
+<div class="gadget_actions rating_rating">
+    <label>{{ "rating.rating" | t }}:</label>
+    <span rel="rating-rating" data-gadget="{{rating.gadget}}" data-action="{{rating.action}}" data-reference="{{rating.reference}}">
+        {% for i in (1..5) %}
+        <input class="form-check-input" type="radio" name="rating" value="{{i}}"
+               {% if i==rating.user_rating %}
+        checked="checked"
+               {% endif %}>
+        {% endfor %}
+    </span>
+    <span>({{rating.rates_count}}) - ({{rating.rates_avg}})</span>
+</div>

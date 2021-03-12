@@ -63,6 +63,70 @@ class Rating_Actions_RatingTypes extends Jaws_Gadget_Action
         $tpl->ParseBlock("$tpl_base_block/rating");
     }
 
+    /**
+     * Get reference rating
+     *
+     * @access  public
+     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options    User interface control options(reference, pagination_data, user, per_page, order_by, ...)
+     * @return  array   Tag's template variables
+     */
+    function xloadReferenceRating($interface = array(), $options = array())
+    {
+        $defaultOptions = array(
+            'item'       => 0,
+        );
+        $options = array_merge($defaultOptions, $options);
+
+        $defaultInterface = array(
+            'gadget'     => '',
+            'action'     => '',
+            'reference'  => 0
+        );
+        $interface = array_merge($defaultInterface, $interface);
+
+        $rModel = $this->gadget->model->load('Rating');
+
+        // get rating statistics
+        $rating = $rModel->GetRating(
+            $interface['gadget'],
+            $interface['action'],
+            $interface['reference'],
+            $options['item']
+        );
+        if (Jaws_Error::IsError($rating) || empty($rating)) {
+            $rating = array(
+                'rates_count' => 0,
+                'rates_sum'   => 0,
+                'rates_avg'   => 0,
+            );
+        }
+
+        // get user last rating
+        $usrRating = $rModel->GetUserRating(
+            $interface['gadget'],
+            $interface['action'],
+            $interface['reference'],
+            $options['item']
+        );
+        if (Jaws_Error::IsError($usrRating) || empty($usrRating)) {
+            $usrRating = 0;
+        }
+
+        $this->app->layout->addScript('gadgets/Rating/Resources/index.js');
+
+        // initiate assign with option array
+        $assigns = array();
+        $assigns['gadget'] = $interface['gadget'];
+        $assigns['action'] = $interface['action'];
+        $assigns['reference'] = $interface['reference'];
+        $assigns['rates_count'] = $rating['rates_count'];
+        $assigns['rates_sum'] = $rating['rates_sum'];
+        $assigns['rates_avg'] = $rating['rates_avg'];
+        $assigns['user_rating'] = $usrRating;
+        return $assigns;
+    }
+
 
     /**
      * Get reference like rating
