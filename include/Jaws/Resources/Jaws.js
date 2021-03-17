@@ -378,13 +378,35 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
     );
 
     /**
+     * Merge request data with FormData
+     *
+     * @return  object  FormData
+     */
+    this.formData = function (data, objFormData)
+    {
+        if (!(objFormData instanceof FormData)) {
+            objFormData = new FormData();
+        }
+
+        data = (/boolean|number|string/).test(typeof data)? [data] : data;
+        $.each(data, function(key, val) {
+            objFormData.append(key, val);
+        });
+
+        return objFormData;
+    };
+
+    /**
      * Performs asynchronous Ajax request
      *
-     * @param   string  action  Name of the new JawsAjax( to be executed
-     * @param   object  data    Parameters passed to the function (optional)
+     * @param   string      action      Gadget action name
+     * @param   object      data        Parameters passed to the function
+     * @param   function    done        Callback function
+     * @param   function    progress    Progress callback function
+     * @param   object      callOptions
      * @return  void
      */
-    this.callAsync = function (action, data, done, callOptions) {
+    this.callAsync = function (action, data, done, progress, callOptions) {
         var options = {};
         var gadget, baseScript;
 
@@ -410,11 +432,21 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         }
 
         options.type = 'POST';
+        options.dataType = 'text';
         options.async  = true;
+        options.processData = false;
+        options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
-        options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
-        options.contentType = 'application/json; charset=utf-8';
+
+        if (!(data instanceof FormData)) {
+            data = this.formData(data);
+        }
+        options.data = data;
+        //options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
+
+        options.contentType = false;
+        //options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
@@ -425,11 +457,14 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
     /**
      * Performs synchronous Ajax request
      *
-     * @param   string  action  Name of the action to be executed
-     * @param   object  data    Parameters passed to the function (optional)
-     * @return  mixed   Response text on synchronous mode or void otherwise
+     * @param   string      action      Gadget action name
+     * @param   object      data        Parameters passed to the function
+     * @param   function    done        Callback function
+     * @param   function    progress    Progress callback function
+     * @param   object      callOptions
+     * @return  void
      */
-    this.callSync = function (action, data, done, callOptions) {
+    this.callSync = function (action, data, done, progress, callOptions) {
         var options = {};
         var gadget, baseScript;
 
@@ -455,11 +490,21 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         }
 
         options.type = 'POST';
-        options.async = false;
+        options.dataType = 'text';
+        options.async  = false;
+        options.processData = false;
+        options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
-        options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
-        options.contentType = 'application/json; charset=utf-8';
+
+        if (!(data instanceof FormData)) {
+            data = this.formData(data);
+        }
+        options.data = data;
+        //options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
+
+        options.contentType = false;
+        //options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
