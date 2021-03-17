@@ -378,20 +378,32 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
     );
 
     /**
-     * Merge request data with FormData
+     * Takes an object and returns a FormData object
      *
      * @return  object  FormData
      */
-    this.formData = function (data, objFormData)
-    {
+    this.formData = function(data, objFormData, parentKey) {
         if (!(objFormData instanceof FormData)) {
             objFormData = new FormData();
         }
 
-        data = (/boolean|number|string/).test(typeof data)? [data] : data;
-        $.each(data, function(key, val) {
-            objFormData.append(key, val);
-        });
+        if (data && typeof data === 'object' &&
+            !(data instanceof Date) &&
+            !(data instanceof File) &&
+            !(data instanceof Blob)
+        ) {
+            $.each(Object.keys(data),
+                $.proxy(
+                    function(index, key) {
+                        this.formData(data[key], objFormData, parentKey? `${parentKey}[${key}]` : key);
+                    },
+                    this
+                )
+            );
+        } else {
+            data = (data == null)? '' : data;
+            objFormData.append(parentKey, data);
+        }
 
         return objFormData;
     };
