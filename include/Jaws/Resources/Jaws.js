@@ -414,11 +414,11 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
      * @param   string      action      Gadget action name
      * @param   object      data        Parameters passed to the function
      * @param   function    done        Callback function
-     * @param   function    progress    Progress callback function
      * @param   object      callOptions
+     * @param   function    progress    Progress callback function
      * @return  void
      */
-    this.callAsync = function (action, data, done, progress, callOptions) {
+    this.callAsync = function (action, data, done, callOptions, progress) {
         var options = {};
         var gadget, baseScript;
 
@@ -450,12 +450,26 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
+        if (progress) {
+            options.xhr = function() {
+                let xhr = $.ajaxSettings.xhr();
+                xhr.upload.addEventListener(
+                    'progress',
+                    function(evt) {
+                        if (evt.lengthComputable) {
+                            $.proxy(progress, this.callbackObject, evt.loaded, evt.total);
+                        }
+                    },
+                    false
+                );
+                return xhr;
+            }
+        }
 
         if (!(data instanceof FormData)) {
             data = this.formData(data);
         }
         options.data = data;
-        //options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
 
         options.contentType = false;
         //options.contentType = 'application/json; charset=utf-8';
@@ -472,11 +486,11 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
      * @param   string      action      Gadget action name
      * @param   object      data        Parameters passed to the function
      * @param   function    done        Callback function
-     * @param   function    progress    Progress callback function
      * @param   object      callOptions
+     * @param   function    progress    Progress callback function
      * @return  void
      */
-    this.callSync = function (action, data, done, progress, callOptions) {
+    this.callSync = function (action, data, done, callOptions, progress) {
         var options = {};
         var gadget, baseScript;
 
@@ -508,12 +522,26 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
+        if (progress) {
+            options.xhr = function() {
+                let xhr = $.ajaxSettings.xhr();
+                xhr.upload.addEventListener(
+                    'progress',
+                    function(evt) {
+                        if (evt.lengthComputable) {
+                            $.proxy(progress, this.callbackObject, evt.loaded, evt.total);
+                        }
+                    },
+                    false
+                );
+                return xhr;
+            }
+        }
 
         if (!(data instanceof FormData)) {
             data = this.formData(data);
         }
         options.data = data;
-        //options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
 
         options.contentType = false;
         //options.contentType = 'application/json; charset=utf-8';
