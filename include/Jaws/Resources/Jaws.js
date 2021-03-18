@@ -402,7 +402,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             );
         } else {
             data = (data == null)? '' : data;
-            objFormData.append(parentKey, data);
+            objFormData.append(parentKey || 0, data);
         }
 
         return objFormData;
