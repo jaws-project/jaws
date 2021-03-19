@@ -983,10 +983,11 @@ String.prototype.filter = function(quote_style, charset, double_encode) {
     var optTemp = 0,
         i = 0,
         noquotes = false;
+
     if (typeof quote_style === 'undefined' || quote_style === null) {
         quote_style = 2;
     }
-    string = string.toString();
+    string = this.toString();
     if (double_encode !== false) {
         // Put this first to avoid double-encoding
         string = string.replace(/&/g, '&amp;');
@@ -1038,25 +1039,22 @@ String.prototype.defilter = function(quote_style) {
         noquotes = false;
 
     if (typeof quote_style === 'undefined') {
-        quote_style = 3;
+        quote_style = 2;
     }
-
-    var str = this.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    string = this.toString().replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     var OPTS = {
-        'ENT_NOQUOTES': 0,
-        'ENT_HTML_QUOTE_SINGLE': 1,
-        'ENT_HTML_QUOTE_DOUBLE': 2,
-        'ENT_COMPAT': 2,
-        'ENT_QUOTES': 3,
-        'ENT_IGNORE': 4
+        'ENT_NOQUOTES'          : 0,
+        'ENT_HTML_QUOTE_SINGLE' : 1,
+        'ENT_HTML_QUOTE_DOUBLE' : 2,
+        'ENT_COMPAT'            : 2,
+        'ENT_QUOTES'            : 3,
+        'ENT_IGNORE'            : 4
     };
-
     if (quote_style === 0) {
         noquotes = true;
     }
-
-    // Allow for a single string or an array of string flags
     if (typeof quote_style !== 'number') {
+        // Allow for a single string or an array of string flags
         quote_style = [].concat(quote_style);
         for (i = 0; i < quote_style.length; i++) {
             // Resolve string input to bitwise e.g. 'PATHINFO_EXTENSION' becomes 4
@@ -1068,19 +1066,17 @@ String.prototype.defilter = function(quote_style) {
         }
         quote_style = optTemp;
     }
-
     if (quote_style & OPTS.ENT_HTML_QUOTE_SINGLE) {
-        str = str.replace(/&#0*39;/g, "'"); // PHP doesn't currently escape if more than one 0, but it should
-        // str = str.replace(/&apos;|&#x0*27;/g, "'"); // This would also be useful here, but not a part of PHP
+        string = string.replace(/&#0*39;/g, "'"); // PHP doesn't currently escape if more than one 0, but it should
+        // string = string.replace(/&apos;|&#x0*27;/g, "'"); // This would also be useful here, but not a part of PHP
     }
-
     if (!noquotes) {
-        str = str.replace(/&quot;/g, '"');
+        string = string.replace(/&quot;/g, '"');
     }
-
     // Put this in last place to avoid escape being double-decoded
-    str = str.replace(/&amp;/g, '&');
-    return str;
+    string = string.replace(/&amp;/g, '&');
+
+    return string;
 };
 
 /**
