@@ -10,8 +10,6 @@
  */
 
 function Jaws_Gadget_Logs() { return {
-    pillboxProcessing: null,
-
     // ASync callback method
     AjaxCallback: {
         DeleteLogs: function (response) {

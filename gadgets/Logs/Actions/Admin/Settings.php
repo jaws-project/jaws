@@ -47,12 +47,14 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Settings');
         $res = $model->SaveSettings($settings);
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
-        } else {
-            $this->gadget->session->push(_t('LOGS_SETTINGS_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->pop();
+        return $this->gadget->session->response(
+            _t('LOGS_SETTINGS_UPDATED'),
+            RESPONSE_NOTICE
+        );
+
     }
 
 }
