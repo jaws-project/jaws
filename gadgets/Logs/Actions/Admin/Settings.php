@@ -20,37 +20,18 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageSettings');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->template->loadAdmin('Settings.html');
-        $tpl->SetBlock('Settings');
 
-        // Log Priority Level
-        $priority_level = (int)$this->gadget->registry->fetch('log_priority_level');
-        $priorityCombo =& Piwi::CreateWidget('Combo', 'priority');
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_5'), JAWS_WARNING, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_6'), JAWS_NOTICE, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_7'), JAWS_INFO, false);
-        $priorityCombo->SetDefault($priority_level);
-        $tpl->SetVariable('lbl_priority', _t('LOGS_SETTINGS_DEFAULT_LOG_PRIORITY'));
-        $tpl->SetVariable('priority', $priorityCombo->Get());
+        $assigns = array();
+        $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Settings') : $menubar;
+        $assigns['log_parameters'] = (int)$this->gadget->registry->fetch('log_parameters');
+        $assigns['priority_level'] = (int)$this->gadget->registry->fetch('log_priority_level');
+        $assigns['priorityItems'] = array(
+            JAWS_WARNING => _t('LOGS_PRIORITY_5'),
+            JAWS_NOTICE => _t('LOGS_PRIORITY_6'),
+            JAWS_INFO => _t('LOGS_PRIORITY_7'),
+        );
 
-        // Log Parameters?
-        $log_parameters = (int)$this->gadget->registry->fetch('log_parameters');
-        $logParametersCombo =& Piwi::CreateWidget('Combo', 'log_parameters');
-        $logParametersCombo->AddOption(Jaws::t('YES'), 1, false);
-        $logParametersCombo->AddOption(Jaws::t('NO'), 0, false);
-        $logParametersCombo->SetDefault($log_parameters);
-        $tpl->SetVariable('lbl_log_parameters', _t('LOGS_SETTINGS_LOG_PARAMETERS'));
-        $tpl->SetVariable('log_parameters', $logParametersCombo->Get());
-
-        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript:saveSettings();');
-        $tpl->SetVariable('btn_save', $save->Get());
-
-        $tpl->SetVariable('menubar', $this->MenuBar('Settings'));
-
-        $tpl->ParseBlock('Settings');
-
-        return $tpl->Get();
+        return $this->gadget->template->xLoadAdmin('Settings.html')->render($assigns);
     }
 
     /**

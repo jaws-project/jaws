@@ -1,13 +1,28 @@
-<!-- BEGIN Settings -->
 <div class="gadget_menubar">{{menubar}}</div>
 <div id="settings">
     <fieldset>
         <legend></legend>
         <div>
-            <div class="fields"><label for="priority">{{lbl_priority}}: </label>{{priority}}</div>
-            <div class="fields"><label for="log_parameters">{{lbl_log_parameters}}: </label>{{log_parameters}}</div>
+            <div class="fields"><label for="priority">{{ "logs.settings_default_log_priority" | t }}: </label>
+                <select class="form-control" name="priority" id="priority">
+                    {%- for priority in priorityItems %}
+                    <option value="{{forloop.key}}" {% if priority_level == forloop.key %} selected {% endif %}>
+                        {{- priority -}}
+                    </option>
+                    {%- endfor %}
+                </select>
+            </div>
+            <div class="fields"><label for="log_parameters">{{ "logs.settings_log_parameters" | t }}: </label>
+                <select class="form-control" name="log_parameters" id="log_parameters">
+                    <option value="0" {% if log_parameters == 0 %} selected {% endif %}>{{ "global.no" | t }}</option>
+                    <option value="1" {% if log_parameters == 1 %} selected {% endif %}>{{ "global.yes" | t }}</option>
+                </select>
+            </div>
         </div>
     </fieldset>
 </div>
-<div class="buttons">{{btn_save}}</div>
-<!-- END Settings -->
+<div class="actions">
+    <button type="button" class="btn btn-primary" id="btnUpdateSettings">
+        {{ "global.save" | t }}
+    </button>
+</div>

@@ -1,43 +1,39 @@
-#log_ui{
-width:300px;
-padding-right:8px;
-vertical-align:top;
+.modal-body .display-item{
+    margin-bottom: 15px;
 }
-.tableform td{
-padding-top:5px;
+.modal-body .display-item .label{
+    font-weight: bold;
+    font-size: 11px;
+    color: #000;
 }
-#logs_filter{
-height:70px;
-text-align:right;
-padding-bottom:4px;
+.modal-body.display-item span{
+    color: #6c757d;
 }
-#logs_filter input,#logs_filter select{
-width:130px;
-white-space:nowrap;
-margin:0 10px 4px 0;
+.repeater-header-right {
+    margin: 10px 0;
 }
-#logs_filter table td{
-padding:2px;
+.datagrid-filters div[class*="col-"] {
+    min-height: 40px;
 }
-#logs_filter .filter_label{
-width:70px;
-}
-#log_box{
-width:100%;
-border-spacing:2px;
-}
-#log_box #labels{
-width:80px;
-}
-#log_box td{
-height:18px;
-padding:4px 0px;
-vertical-align:top;
-}
-#settings label{
-    width:130px;
+
+.btn-combo {
+    position: relative;
+
     display: inline-block;
-}
-#settings select{
-    width:100px;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 5px 8px;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

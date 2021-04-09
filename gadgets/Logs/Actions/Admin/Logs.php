@@ -18,162 +18,165 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function Logs()
     {
-        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
-        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
-        if ($calType != 'gregorian') {
-            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
-        }
-        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
-
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
         $this->gadget->define('msgNoMatches', _t('LOGS_COMBO_NO_MATCH_MESSAGE'));
-        $this->gadget->define('lbl_all_users', Jaws::t('ALL_USERS'));
+        $this->gadget->define('noMatchesMessage', Jaws::t('COMBO_NO_MATCH_MESSAGE'));
+        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
 
-        $tpl = $this->gadget->template->loadAdmin('Logs.html');
-        $tpl->SetBlock('Logs');
+        $this->gadget->define('LANGUAGE', array(
+            'gadget'=> Jaws::t('GADGETS'),
+            'action'=> _t('LOGS_ACTION'),
+            'auth'=> Jaws::t('AUTHTYPE'),
+            'username'=> Jaws::t('USERNAME'),
+            'time'=> Jaws::t('DATE'),
+            'view'=> Jaws::t('VIEW'),
+            'delete'=> Jaws::t('DELETE')
+        ));
 
-        //Menu bar
-        $tpl->SetVariable('menubar', $this->MenuBar('Logs'));
+        $gadgetList = Jaws_Gadget::getInstance('Components')->model->load('Gadgets')->GetGadgetsList();
+        $gadgetList = Jaws_Error::IsError($gadgetList) ? array() : $gadgetList;
+        $this->gadget->define('gadgetList', array_column($gadgetList, 'title', 'name'));
 
-        $tpl->SetVariable('lbl_all_users', Jaws::t('ALL_USERS'));
-        $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
-
-        // From Date Filter
-        $fromDate =& Piwi::CreateWidget('DatePicker', 'from_date', '');
-        $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
-        $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $fromDate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $fromDate->AddEvent(ON_CHANGE, "javascript:searchLogs();");
-        $tpl->SetVariable('filter_from_date', $fromDate->Get());
-        $tpl->SetVariable('lbl_filter_from_date', _t('LOGS_FROM_DATE'));
-
-        // To Date Filter
-        $toDate =& Piwi::CreateWidget('DatePicker', 'to_date', '');
-        $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
-        $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $toDate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $toDate->AddEvent(ON_CHANGE, "javascript:searchLogs();");
-        $tpl->SetVariable('filter_to_date', $toDate->Get());
-        $tpl->SetVariable('lbl_filter_to_date', _t('LOGS_TO_DATE'));
-
-        // Gadgets Filter
-        $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
-        $gadgetsCombo->AddOption(_t('LOGS_ALL_GADGETS'), "", false);
-        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
-        $gadgetList = $cmpModel->GetGadgetsList();
-        foreach ($gadgetList as $gadget) {
-            $gadgetsCombo->AddOption($gadget['title'], $gadget['name']);
-        }
-        $gadgetsCombo->AddEvent(ON_CHANGE, "searchLogs();");
-        $gadgetsCombo->SetDefault(0);
-        $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
-        $tpl->SetVariable('lbl_filter_gadget', Jaws::t('GADGETS'));
-
-        // Result Filter
-        $filterResult =& Piwi::CreateWidget('Entry', 'filter_result', '');
-        $filterResult->SetID('filter_result');
-        $filterResult->AddEvent(ON_CHANGE, "searchLogs();");
-        $tpl->SetVariable('lbl_filter_result', _t('LOGS_RESULT'));
-        $tpl->SetVariable('filter_result', $filterResult->Get());
-
-        // Priority
-        $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
-        $priorityCombo->AddOption(Jaws::t('ALL'), 0, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_5'), JAWS_WARNING, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_6'), JAWS_NOTICE, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_7'), JAWS_INFO, false);
-        $priorityCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
-        $priorityCombo->SetDefault(0);
-        $tpl->SetVariable('filter_priority', $priorityCombo->Get());
-        $tpl->SetVariable('lbl_filter_priority', _t('LOGS_PRIORITY'));
-
-        // Status
-        $allStatus = array (1, 2);
-        $statusCombo =& Piwi::CreateWidget('Combo', 'filter_status');
-        $statusCombo->AddOption(Jaws::t('ALL'), 0, false);
-        foreach($allStatus as $status) {
-            $statusCombo->AddOption(_t('LOGS_LOG_STATUS_' . $status), $status, false);
-        }
-        $statusCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
-        $statusCombo->SetDefault(0);
-        $tpl->SetVariable('filter_status', $statusCombo->Get());
-        $tpl->SetVariable('lbl_filter_status', _t('LOGS_LOG_STATUS'));
-
-        //DataGrid
-        $tpl->SetVariable('datagrid', $this->LogsDataGrid());
-
-        //LogUI
-        $tpl->SetVariable('log_ui', $this->LogUI());
-
-        // Actions
-        $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
-        $actions->SetID('logs_actions_combo');
-        $actions->SetTitle(Jaws::t('ACTIONS'));
-        $actions->AddOption('&nbsp;', '');
-        if ($this->gadget->GetPermission('DeleteLogs')) {
-            $actions->AddOption(Jaws::t('DELETE'), 'delete');
-            $actions->AddOption(_t('LOGS_DELETE_ALL'), 'deleteAll');
-            $actions->AddOption(_t('LOGS_DELETE_FILTERED'), 'deleteFiltered');
-        }
-        if ($this->gadget->GetPermission('ExportLogs')) {
-            $actions->AddOption(_t('LOGS_EXPORT_ALL'), 'export');
-            $actions->AddOption(_t('LOGS_EXPORT_FILTERED'), 'exportFiltered');
-        }
-        $tpl->SetVariable('actions_combo', $actions->Get());
-
-        $btnExecute =& Piwi::CreateWidget('Button', 'executeLogsAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:logsDGAction($('#logs_actions_combo'));");
-        $tpl->SetVariable('btn_execute', $btnExecute->Get());
+        $assigns = array();
+        $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Logs') : $menubar;
+        $assigns['gadgets'] = $gadgetList;
+        $assigns['from_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'from_date'));
+        $assigns['to_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'to_date'));
+        $assigns['priorityItems'] = array(
+            JAWS_WARNING => _t('LOGS_PRIORITY_5'),
+            JAWS_NOTICE => _t('LOGS_PRIORITY_6'),
+            JAWS_INFO => _t('LOGS_PRIORITY_7'),
+        );
+        $assigns['statusItems'] = array(
+            1 => _t('LOGS_LOG_STATUS_1'),
+            2 => _t('LOGS_LOG_STATUS_2'),
+        );
+        return $this->gadget->template->xLoadAdmin('Logs.html')->render($assigns);
 
 
-        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
-        $btnCancel->SetStyle('display:none;');
-        $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-        $tpl->SetVariable('legend_title',     _t('LOGS_LOG_DETAILS'));
 
-        $tpl->ParseBlock('Logs');
-        return $tpl->Get();
-    }
 
-    /**
-     * Builds logs datagrid
-     *
-     * @access  public
-     * @return  string  XHTML datagrid
-     */
-    function LogsDataGrid()
-    {
-        $grid =& Piwi::CreateWidget('DataGrid', array());
-        $grid->SetID('logs_datagrid');
-        $grid->useMultipleSelection();
-        $grid->pageBy(15);
-
-        $column1 = Piwi::CreateWidget('Column', Jaws::t('GADGETS'), null, false);
-        $column1->SetStyle('width:96px; white-space:nowrap;');
-        $grid->AddColumn($column1);
-
-        $column2 = Piwi::CreateWidget('Column', _t('LOGS_ACTION'), null, false);
-        $column2->SetStyle('width:96px; white-space:nowrap;');
-        $grid->AddColumn($column2);
-
-        $column3 = Piwi::CreateWidget('Column', Jaws::t('AUTHTYPE'), null, false);
-        $column3->SetStyle('width:96px; white-space:nowrap;');
-        $grid->AddColumn($column3);
-
-        $column4 = Piwi::CreateWidget('Column', Jaws::t('USERNAME'), null, false);
-        $column4->SetStyle('width:96px; white-space:nowrap;');
-        $grid->AddColumn($column4);
-
-        $column5 = Piwi::CreateWidget('Column', Jaws::t('DATE'), null, false);
-        $column5->SetStyle('width:128px; white-space:nowrap;');
-        $grid->AddColumn($column5);
-
-        return $grid->Get();
+//        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+//        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+//        if ($calType != 'gregorian') {
+//            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+//        }
+//        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+//        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+//        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+//        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+//
+//        $this->AjaxMe('script.js');
+//        $this->gadget->define('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
+//        $this->gadget->define('msgNoMatches', _t('LOGS_COMBO_NO_MATCH_MESSAGE'));
+//        $this->gadget->define('lbl_all_users', Jaws::t('ALL_USERS'));
+//
+//        $tpl = $this->gadget->template->loadAdmin('Logs.html');
+//        $tpl->SetBlock('Logs');
+//
+//        //Menu bar
+//        $tpl->SetVariable('menubar', $this->MenuBar('Logs'));
+//
+//        $tpl->SetVariable('lbl_all_users', Jaws::t('ALL_USERS'));
+//        $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
+//
+//        // From Date Filter
+//        $fromDate =& Piwi::CreateWidget('DatePicker', 'from_date', '');
+//        $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+//        $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
+//        $fromDate->setDateFormat('%Y-%m-%d %H:%M:%S');
+//        $fromDate->AddEvent(ON_CHANGE, "javascript:searchLogs();");
+//        $tpl->SetVariable('filter_from_date', $fromDate->Get());
+//        $tpl->SetVariable('lbl_filter_from_date', _t('LOGS_FROM_DATE'));
+//
+//        // To Date Filter
+//        $toDate =& Piwi::CreateWidget('DatePicker', 'to_date', '');
+//        $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+//        $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
+//        $toDate->setDateFormat('%Y-%m-%d %H:%M:%S');
+//        $toDate->AddEvent(ON_CHANGE, "javascript:searchLogs();");
+//        $tpl->SetVariable('filter_to_date', $toDate->Get());
+//        $tpl->SetVariable('lbl_filter_to_date', _t('LOGS_TO_DATE'));
+//
+//        // Gadgets Filter
+//        $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
+//        $gadgetsCombo->AddOption(_t('LOGS_ALL_GADGETS'), "", false);
+//        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
+//        $gadgetList = $cmpModel->GetGadgetsList();
+//        foreach ($gadgetList as $gadget) {
+//            $gadgetsCombo->AddOption($gadget['title'], $gadget['name']);
+//        }
+//        $gadgetsCombo->AddEvent(ON_CHANGE, "searchLogs();");
+//        $gadgetsCombo->SetDefault(0);
+//        $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
+//        $tpl->SetVariable('lbl_filter_gadget', Jaws::t('GADGETS'));
+//
+//        // Result Filter
+//        $filterResult =& Piwi::CreateWidget('Entry', 'filter_result', '');
+//        $filterResult->SetID('filter_result');
+//        $filterResult->AddEvent(ON_CHANGE, "searchLogs();");
+//        $tpl->SetVariable('lbl_filter_result', _t('LOGS_RESULT'));
+//        $tpl->SetVariable('filter_result', $filterResult->Get());
+//
+//        // Priority
+//        $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
+//        $priorityCombo->AddOption(Jaws::t('ALL'), 0, false);
+//        $priorityCombo->AddOption(_t('LOGS_PRIORITY_5'), JAWS_WARNING, false);
+//        $priorityCombo->AddOption(_t('LOGS_PRIORITY_6'), JAWS_NOTICE, false);
+//        $priorityCombo->AddOption(_t('LOGS_PRIORITY_7'), JAWS_INFO, false);
+//        $priorityCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
+//        $priorityCombo->SetDefault(0);
+//        $tpl->SetVariable('filter_priority', $priorityCombo->Get());
+//        $tpl->SetVariable('lbl_filter_priority', _t('LOGS_PRIORITY'));
+//
+//        // Status
+//        $allStatus = array (1, 2);
+//        $statusCombo =& Piwi::CreateWidget('Combo', 'filter_status');
+//        $statusCombo->AddOption(Jaws::t('ALL'), 0, false);
+//        foreach($allStatus as $status) {
+//            $statusCombo->AddOption(_t('LOGS_LOG_STATUS_' . $status), $status, false);
+//        }
+//        $statusCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
+//        $statusCombo->SetDefault(0);
+//        $tpl->SetVariable('filter_status', $statusCombo->Get());
+//        $tpl->SetVariable('lbl_filter_status', _t('LOGS_LOG_STATUS'));
+//
+//        //DataGrid
+//        $tpl->SetVariable('datagrid', $this->LogsDataGrid());
+//
+//        //LogUI
+//        $tpl->SetVariable('log_ui', $this->LogUI());
+//
+//        // Actions
+//        $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
+//        $actions->SetID('logs_actions_combo');
+//        $actions->SetTitle(Jaws::t('ACTIONS'));
+//        $actions->AddOption('&nbsp;', '');
+//        if ($this->gadget->GetPermission('DeleteLogs')) {
+//            $actions->AddOption(Jaws::t('DELETE'), 'delete');
+//            $actions->AddOption(_t('LOGS_DELETE_ALL'), 'deleteAll');
+//            $actions->AddOption(_t('LOGS_DELETE_FILTERED'), 'deleteFiltered');
+//        }
+//        if ($this->gadget->GetPermission('ExportLogs')) {
+//            $actions->AddOption(_t('LOGS_EXPORT_ALL'), 'export');
+//            $actions->AddOption(_t('LOGS_EXPORT_FILTERED'), 'exportFiltered');
+//        }
+//        $tpl->SetVariable('actions_combo', $actions->Get());
+//
+//        $btnExecute =& Piwi::CreateWidget('Button', 'executeLogsAction', '', STOCK_YES);
+//        $btnExecute->AddEvent(ON_CLICK, "javascript:logsDGAction($('#logs_actions_combo'));");
+//        $tpl->SetVariable('btn_execute', $btnExecute->Get());
+//
+//
+//        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
+//        $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
+//        $btnCancel->SetStyle('display:none;');
+//        $tpl->SetVariable('btn_cancel', $btnCancel->Get());
+//        $tpl->SetVariable('legend_title',     _t('LOGS_LOG_DETAILS'));
+//
+//        $tpl->ParseBlock('Logs');
+//        return $tpl->Get();
     }
 
     /**
@@ -212,56 +215,66 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function GetLogs()
     {
-        $post = $this->gadget->request->fetch(array('offset', 'filters:array'), 'post');
-        $filters = $post['filters'];
+        $post = $this->gadget->request->fetch(
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
+            'post'
+        );
 
         $model = $this->gadget->model->load('Logs');
-        $logs = $model->GetLogs($filters, 15, $post['offset']);
+        $logs = $model->GetLogs($post['filters'], $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($logs)) {
-            return array();
+            return $this->gadget->session->response($logs->GetMessage(), RESPONSE_ERROR);
         }
 
-        $date = Jaws_Date::getInstance();
-        $newData = array();
-        foreach ($logs as $log) {
-            $logData = array();
-            $logData['__KEY__'] = $log['id'];
+        $logsCount = $model->GetLogsCount($post['filters']);
+        if (Jaws_Error::IsError($logsCount)) {
+            return $this->gadget->session->response($logsCount->GetMessage(), RESPONSE_ERROR);
+        }
 
-            // Gadget
-            if (!empty($log['gadget'])) {
-                $logData['gadget'] = _t(strtoupper($log['gadget'] . '_TITLE'));
-            } else {
-                $logData['gadget'] = '';
+        if ($logsCount > 0) {
+            $objDate = Jaws_Date::getInstance();
+            foreach ($logs as &$log) {
+                $log['time'] = $objDate->Format($log['time'], 'Y/m/d H:i:s');
             }
-            // Action
-            $logData['action'] = $log['action'];
-            // auth
-            $logData['auth'] = $log['auth'];
-            // Username
-            $logData['username'] = $log['username'];
-            // Date
-            $link =& Piwi::CreateWidget(
-                'Link',
-                $date->Format($log['time'], 'Y-m-d H:i:s'),
-                "javascript:viewLog(this, '".$log['id']."');"
-            );
-            $logData['time'] = $link->Get();
-            $newData[] = $logData;
         }
-        return $newData;
-    }
 
-    /**
-     * Get logs count
-     *
-     * @access  public
-     * @return  int     Total of logs
-     */
-    function GetLogsCount()
-    {
-        $filters = $this->gadget->request->fetch('filters:array', 'post');
-        $model = $this->gadget->model->loadAdmin('Logs');
-        return $model->GetLogsCount($filters);
+//        $date = Jaws_Date::getInstance();
+//        $newData = array();
+//        foreach ($logs as $log) {
+//            $logData = array();
+//
+//            // Gadget
+//            if (!empty($log['gadget'])) {
+//                $logData['gadget'] = _t(strtoupper($log['gadget'] . '_TITLE'));
+//            } else {
+//                $logData['gadget'] = '';
+//            }
+//
+//            // Action
+//            $logData['action'] = $log['action'];
+//            // auth
+//            $logData['auth'] = $log['auth'];
+//            // Username
+//            $logData['username'] = $log['username'];
+//            // Date
+//            $link =& Piwi::CreateWidget(
+//                'Link',
+//                $date->Format($log['time'], 'Y-m-d H:i:s'),
+//                "javascript:viewLog(this, '".$log['id']."');"
+//            );
+//            $logData['time'] = $link->Get();
+//            $newData[] = $logData;
+//        }
+
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total' => $logsCount,
+                'records' => $logs
+            )
+        );
     }
 
     /**
@@ -276,7 +289,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $logModel = $this->gadget->model->loadAdmin('Logs');
         $log = $logModel->GetLog($id);
         if (Jaws_Error::IsError($log)) {
-            return array();
+            return $this->gadget->session->response($log->GetMessage(), RESPONSE_ERROR);
         }
 
         $date = Jaws_Date::getInstance();
@@ -293,7 +306,11 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             array('user' => $log['username'])
         );
 
-        return $log;
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            $log
+        );
     }
 
     /**
@@ -305,40 +322,23 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function DeleteLogs()
     {
         $this->gadget->CheckPermission('DeleteLogs');
-        $logsID = $this->gadget->request->fetchAll();
+        $post = $this->gadget->request->fetch(array('ids:array', 'filters:array'), 'post');
+        $logsID = $post['ids'];
+        $filters = $post['filters'];
         $model = $this->gadget->model->loadAdmin('Logs');
-        $res = $model->DeleteLogs($logsID);
-        if (Jaws_Error::IsError($res) || $res === false) {
-            $this->gadget->session->push(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
-                RESPONSE_ERROR);
+        if (!empty($logsID)) {
+            $res = $model->DeleteLogs($logsID);
         } else {
-            $this->gadget->session->push(_t('LOGS_LOGS_DELETED'),
-                RESPONSE_NOTICE);
+            $res = $model->DeleteLogsUseFilters($filters);
+        }
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $this->gadget->session->response(_t('LOGS_ERROR_CANT_DELETE_LOGS'), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->pop();
-    }
-
-    /**
-     * Delete Logs Use Selected Filters
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function DeleteLogsUseFilters()
-    {
-        $this->gadget->CheckPermission('DeleteLogs');
-        $filters = $this->gadget->request->fetch('filters:array', 'post');
-
-        $model = $this->gadget->model->loadAdmin('Logs');
-        $res = $model->DeleteLogsUseFilters($filters);
-        if (Jaws_Error::IsError($res) || $res === false) {
-            $this->gadget->session->push(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
-                RESPONSE_ERROR);
-        } else {
-            $this->gadget->session->push(_t('LOGS_LOGS_DELETED'),
-                RESPONSE_NOTICE);
-        }
+        return $this->gadget->session->response(
+            _t('LOGS_LOGS_DELETED'),
+            RESPONSE_NOTICE
+        );
 
         return $this->gadget->session->pop();
     }
@@ -354,11 +354,9 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $this->gadget->CheckPermission('ExportLogs');
 
         $filters = $this->gadget->request->fetch(
-            array('from_date', 'to_date', 'gname', 'user', 'priority', 'result', 'status'),
+            array('from_date', 'to_date', 'gadget', 'action', 'user', 'priority', 'result', 'status'),
             'get'
         );
-        $filters['gadget'] = $filters['gname'];
-        unset( $filters['gname']);
 
         $model = $this->gadget->model->load('Logs');
         $logs = $model->GetLogs($filters);
@@ -402,29 +400,4 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 
         Jaws_Header::Referrer();
     }
-
-    /**
-     * Search user (used in pillbox)
-     *
-     * @access  public
-     * @return  void
-     */
-    function GetUser()
-    {
-        $term = $this->gadget->request->fetch('username', 'post');
-        $user = $this->app->users->GetUserByTerm(0, $term);
-        if (Jaws_Error::IsError($user)) {
-            return $this->gadget->session->response(
-                $user->getMessage(),
-                RESPONSE_ERROR
-            );
-        }
-
-        return $this->gadget->session->response(
-            '',
-            RESPONSE_NOTICE,
-            $user
-        );
-    }
-
 }

@@ -1,81 +1,259 @@
-<!-- BEGIN Logs -->
 <div class="gadget_menubar">{{menubar}}</div>
-<div id="main">
-<table width="100%">
-  <tr>
-    <td id="l_datagrid" valign="top">
-        <table id="logs_filter">
-            <tr>
-                <td class="filter_label"><label for="filter_from_date">{{lbl_filter_from_date}}:</label></td><td>{{filter_from_date}}</td>
-                <td class="filter_label"><label for="filter_gadget">{{lbl_filter_gadget}}:</label></td><td>{{filter_gadget}}</td>
-                <td class="filter_label"><label for="filter_priority">{{lbl_filter_priority}}:</label></td><td>{{filter_priority}}</td>
-            </tr>
-            <tr>
-                <td class="filter_label"><label for="filter_to_date">{{lbl_filter_to_date}}:</label></td>
-                <td>{{filter_to_date}}</td>
 
-                <td class="filter_label"><label for="filter_user">{{lbl_filter_user}}:</label></td>
-                <td>
-                    <div class="input-group input-append dropdown combobox" id="filter_user">
-                        <input type="text" class="form-control" placeholder="{{lbl_filter_user}}"
-                               data-toggle="tooltip" data-placement="top" title="{{lbl_filter_user}}">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle"
-                                    data-toggle="dropdown" title=""><span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li data-value="0" data-selected=""><a href="#">{{lbl_all_users}}</a></li>
-                            </ul>
+<div class="repeater" id="logs-grid" data-staticheight="550">
+        <div class="repeater-header">
+            <div class="datagrid-filters">
+
+                <div class="row">
+
+                    <form action="#" onsubmit="return false;">
+
+                        <div class="col-xs-1">
+                            <label for="filter_gadget">{{ "global.gadgets" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <select class="form-control" name="gadget" id="filter_gadget">
+                                <option value="0">{{ "global.all" | t }}</option>
+                                {%- for gadget in gadgets %}
+                                <option value="{{gadget.name}}">
+                                    {{- gadget.title -}}
+                                </option>
+                                {%- endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-xs-1">
+                            <label for="filter_action">{{ "logs.action" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control ltr" name="action" id="filter_action">
+                        </div>
+
+                        <div class="col-xs-1">
+                            <label for="filter_priority">{{ "logs.priority" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <select class="form-control" name="priority" id="filter_priority">
+                                <option value="0">{{ "global.all" | t }}</option>
+                                {%- for priority in priorityItems %}
+                                <option value="{{forloop.key}}">
+                                    {{- priority -}}
+                                </option>
+                                {%- endfor %}
+                            </select>
+                        </div>
+
+
+                        <div class="col-xs-1">
+                            <label for="filter_status">{{ "logs.log_status" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <select class="form-control" name="status" id="filter_status">
+                                <option value="0">{{ "global.all" | t }}</option>
+                                {%- for status in statusItems %}
+                                <option value="{{forloop.key}}">
+                                    {{- status -}}
+                                </option>
+                                {%- endfor %}
+                            </select>
+                        </div>
+
+
+                        <div class="col-xs-1">
+                            <label for="filter_result">{{ "logs.result" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" name="result" id="filter_result" >
+                        </div>
+
+                        <div class="col-xs-1">
+                            <label for="filter_user" class="">{{ "logs.users" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="input-group input-append dropdown combobox" id="filter_user">
+                                <input type="text" class="form-control" placeholder=""
+                                       data-toggle="tooltip" data-placement="top" title="{{ "logs.users" | t }}">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right"></ul>
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn-combo btn-warning btn-cancel-select-group" type="button" data-combo-name="filter_user">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-1">
+                            <label for="filter_from_date">{{ "logs.from_date" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            {% include 'include/Jaws/Resources/XDatePicker.html' with from_date as datepicker %}
+                        </div>
+
+                        <div class="col-xs-1">
+                            <label for="filter_to_date">{{ "logs.to_date" | t }}: </label>
+                        </div>
+                        <div class="col-xs-3">
+                            {% include 'include/Jaws/Resources/XDatePicker.html' with to_date as datepicker %}
+                        </div>
+
+
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="repeater-header-right">
+                <button type="button" class="btn btn-warning btn-export" id="btn-delete-filtered-logs">
+                    <span class="glyphicon glyphicon-trash"></span> {{ "logs.delete_filtered" | t }}
+                </button>
+                <button type="button" class="btn btn-info btn-export" id="btn-export-filtered-logs">
+                    <span class="glyphicon glyphicon-export"></span> {{ "logs.export_filtered" | t }}
+                </button>
+                <button type="button" class="btn btn-success btn-refresh">
+                    <span class="glyphicon glyphicon-refresh"></span> {{ "global.reload" | t }}
+                </button>
+            </div>
+        </div>
+
+        <div class="repeater-viewport">
+            <div class="repeater-canvas"></div>
+            <div class="loader repeater-loader"></div>
+        </div>
+        <div class="repeater-footer">
+            <div class="repeater-footer-left">
+                <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
+          </span>
+                    <div class="btn-group selectlist dropup" data-resize="auto">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            <span class="selected-label">?</span>
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                            <li data-value="25"><a href="#">25</a></li>
+                            <li data-value="50"><a href="#">50</a></li>
+                        </ul>
+                        <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+                    </div>
+                    <span>{{ "global.perpage" | t }}</span>
+                </div>
+            </div>
+            <div class="repeater-footer-right">
+                <div class="repeater-pagination">
+                    <button type="button" class="btn btn-default btn-sm repeater-prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous Page</span>
+                    </button>
+                    <label class="page-label" id="myPageLabel"></label>
+                    <div class="repeater-primaryPaging active">
+                        <div class="input-group input-append dropdown combobox dropup">
+                            <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right"></ul>
+                            </div>
                         </div>
                     </div>
-                </td>
-
-                <td class="filter_label"><label for="filter_result">{{lbl_filter_result}}:</label></td>
-                <td>{{filter_result}}</td>
-            </tr>
-
-            <tr>
-                <td class="filter_label"><label for="filter_status">{{lbl_filter_status}}:</label></td>
-                <td>{{filter_status}}</td>
-                <td class="filter_label"></td>
-                <td></td>
-                <td class="filter_label"></td>
-                <td></td>
-            </tr>
-        </table>
-
-        {{datagrid}}
-        <div class="buttons">{{actions_combo}}{{btn_execute}}</div>
-    </td>
-    <td id="log_ui">
-      <fieldset>
-        <legend><span id="legend_title">{{legend_title}}</span></legend>
-        <div id="l_work_area">{{log_ui}}</div>
-      </fieldset>
-    </td>
-  </tr>
-  <tr>
-    <td class="buttons" colspan="2">{{btn_cancel}}</td>
-  </tr>
-</table>
+                    <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+                    <button type="button" class="btn btn-default btn-sm repeater-next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next Page</span>
+                    </button>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- END Logs -->
-<!-- BEGIN LogUI -->
-<table id="log_box">
-  <colgroup>
-    <col id="labels" />
-    <col />
-  </colgroup>
-  <tr><td><label for="log_gadget">{{lbl_gadget}}:</label></td><td id="log_gadget"></td></tr>
-  <tr><td><label for="log_action">{{lbl_action}}:</label></td><td id="log_action"></td></tr>
-  <tr><td><label for="log_backend">{{lbl_backend}}:</label></td><td id="log_backend"></td></tr>
-  <tr><td><label for="log_priority">{{lbl_priority}}:</label></td><td id="log_priority"></td></tr>
-  <tr><td><label for="log_result">{{lbl_result}}:</label></td><td id="log_result"></td></tr>
-  <tr><td><label for="log_status">{{lbl_status}}:</label></td><td id="log_status"></td></tr>
-  <tr><td><label for="log_apptype">{{lbl_apptype}}:</label></td><td id="log_apptype"></td></tr>
-  <tr><td><label for="log_auth">{{lbl_auth}}:</label></td><td id="log_auth"></td></tr>
-  <tr><td><label for="log_username">{{lbl_username}}:</label></td><td id="log_username"></td></tr>
-  <tr><td><label for="log_ip">{{lbl_ip}}:</label></td><td id="log_ip"></td></tr>
-  <tr><td><label for="log_agent">{{lbl_agent}}:</label></td><td id="log_agent"></td></tr>
-  <tr><td><label for="log_date">{{lbl_date}}:</label></td><td id="log_date"></td></tr>
-</table>
-<!-- END LogUI -->
+
+
+<div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ "logs.log_details" | t }}</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="#" id="log-form" onsubmit="return false;">
+                    <div class="row item-info-list">
+
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "global.gadget" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="gadget"></span></div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "global.action" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="action"></span></div>
+                        </div>
+
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "logs.log_script" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="backend"></span></div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "logs.priority" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="priority"></span></div>
+                        </div>
+
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "logs.log_result" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="result"></span></div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "logs.log_status" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="status"></span></div>
+                        </div>
+
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "logs.log_request_type" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="apptype"></span></div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "global.authtype" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="auth"></span></div>
+                        </div>
+
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "global.username" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="username"></span></div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "global.ip" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="ip"></span></div>
+                        </div>
+
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "logs.agent" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="agent"></span></div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 display-item">
+                            <div class="col-xs-6 label">{{ "global.date" | t }}:</div>
+                            <div class="col-xs-6"><span data-field="date"></span></div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    {{ "global.cancel" | t }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
