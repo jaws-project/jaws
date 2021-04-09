@@ -61,6 +61,11 @@ $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
 );
+$admin_actions['SaveSettings'] = array(
+    'standalone' => true,
+    'file' => 'Settings',
+);
+
 $admin_actions['SearchComments'] = array(
     'standalone' => true,
     'file' => 'Ajax',
@@ -82,10 +87,6 @@ $admin_actions['DeleteComments'] = array(
     'file' => 'Ajax',
 );
 $admin_actions['MarkAs'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['SaveSettings'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );

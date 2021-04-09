@@ -20,45 +20,52 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('Settings');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->template->loadAdmin('Settings.html');
-        $tpl->SetBlock('Settings');
 
-        // comments site wide
-        $comments =& Piwi::CreateWidget('Combo', 'allow_comments');
-        $comments->setID('allow_comments');
-        $comments->AddOption(Jaws::t('YES'), 'true');
-        $comments->AddOption(_t('COMMENTS_ALLOW_COMMENTS_RESTRICTED'), 'restricted');
-        $comments->AddOption(Jaws::t('NO'), 'false');
-        $comments->SetDefault($this->gadget->registry->fetch('allow_comments'));
-        $tpl->SetVariable('lbl_allow_comments', _t('COMMENTS_ALLOW_COMMENTS'));
-        $tpl->SetVariable('allow_comments', $comments->Get());
+        $assigns = array();
+        $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Settings') : $menubar;
+        $assigns['allow_comments'] = $this->gadget->registry->fetch('allow_comments');
+        $assigns['default_comment_status'] = $this->gadget->registry->fetch('default_comment_status');
+        $assigns['order_type'] = $this->gadget->registry->fetch('order_type');
 
-        // comment default status
-        $status =& Piwi::CreateWidget('Combo', 'default_comment_status');
-        $status->setID('default_comment_status');
-        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), 1);
-        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), 2);
-        $status->SetDefault($this->gadget->registry->fetch('default_comment_status'));
-        $tpl->SetVariable('lbl_default_comment_status', _t('COMMENTS_STATUS_DEFAULT'));
-        $tpl->SetVariable('default_comment_status', $status->Get());
+        $assigns['allowCommentsItems'] = array(
+            'true' => Jaws::t('YES'),
+            'restricted' => _t('COMMENTS_ALLOW_COMMENTS_RESTRICTED'),
+            'false' => Jaws::t('NO')
+        );
+        $assigns['defaultStatusItems'] = array(
+            1 => _t('COMMENTS_STATUS_APPROVED'),
+            2 => _t('COMMENTS_STATUS_WAITING')
+        );
+        $assigns['orderTypeItems'] = array(
+            1 => Jaws::t('CREATETIME'). ' &uarr;',
+            2 => Jaws::t('CREATETIME'). ' &darr;'
+        );
 
-        //Order by option
-        $orderType =& Piwi::CreateWidget('Combo', 'order_type');
-        $orderType->AddOption(Jaws::t('CREATETIME'). ' &uarr;', '1');
-        $orderType->AddOption(Jaws::t('CREATETIME'). ' &darr;', '2');
-        $orderType->SetDefault($this->gadget->registry->fetch('order_type'));
-        $tpl->SetVariable('lbl_order_type', Jaws::t('ORDERBY'));
-        $tpl->SetVariable('order_type', $orderType->Get());
-
-        $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript:SaveSettings();');
-        $tpl->SetVariable('btn_save', $save->Get());
-
-        $tpl->SetVariable('menubar', $this->MenuBar('Settings'));
-
-        $tpl->ParseBlock('Settings');
-
-        return $tpl->Get();
+        return $this->gadget->template->xLoadAdmin('Settings.html')->render($assigns);
     }
 
+    /**
+     * Update Settings
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function SaveSettings()
+    {
+        $this->gadget->CheckPermission('Settings');
+        $post = $this->gadget->request->fetch(array('allow_comments', 'default_comment_status', 'order_type'), 'post');
+        $res = $this->gadget->model->loadAdmin('Settings')->SaveSettings(
+            $post['allow_comments'],
+            $post['default_comment_status'],
+            $post['order_type']
+        );
+        if (Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response(
+            _t('COMMENTS_PROPERTIES_UPDATED'),
+            RESPONSE_NOTICE
+        );
+    }
 }

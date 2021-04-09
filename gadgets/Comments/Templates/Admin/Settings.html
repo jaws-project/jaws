@@ -1,11 +1,43 @@
-<!-- BEGIN Settings -->
 <div class="gadget_menubar">{{menubar}}</div>
 <div id="settings">
-    <form onsubmit="return false;" action="admin.php" method="post" id="propertiesForm">
-        <div class="fields"><label for="allow_comments">{{lbl_allow_comments}}</label>{{allow_comments}}</div>
-        <div class="fields"><label for="order_type">{{lbl_default_comment_status}}</label>{{default_comment_status}}</div>
-        <div class="fields"><label for="order_type">{{lbl_order_type}}</label>{{order_type}}</div>
-    </form>
+    <fieldset>
+        <legend></legend>
+        <div>
+
+            <div class="fields"><label for="allow_comments">{{ "comments.allow_comments" | t }}: </label>
+                <select class="form-control" name="allow_comments" id="allow_comments">
+                    {%- for allowItem in allowCommentsItems %}
+                    <option value="{{forloop.key}}" {% if allow_comments == forloop.key %} selected {% endif %}>
+                        {{- allowItem -}}
+                    </option>
+                    {%- endfor %}
+                </select>
+            </div>
+
+            <div class="fields"><label for="default_comment_status">{{ "comments.status_default" | t }}: </label>
+                <select class="form-control" name="default_comment_status" id="default_comment_status">
+                    {%- for status in defaultStatusItems %}
+                    <option value="{{forloop.key}}" {% if default_comment_status == forloop.key %} selected {% endif %}>
+                        {{- status -}}
+                    </option>
+                    {%- endfor %}
+                </select>
+            </div>
+
+            <div class="fields"><label for="order_type">{{ "global.orderby" | t }}: </label>
+                <select class="form-control" name="order_type" id="order_type">
+                    {%- for order in orderTypeItems %}
+                    <option value="{{forloop.key}}" {% if order_type == forloop.key %} selected {% endif %}>
+                        {{- order -}}
+                    </option>
+                    {%- endfor %}
+                </select>
+            </div>
+        </div>
+    </fieldset>
 </div>
-<div class="buttons">{{btn_save}}</div>
-<!-- END Settings -->
+<div class="actions">
+    <button type="button" class="btn btn-primary" id="btn-update-settings">
+        {{ "global.save" | t }}
+    </button>
+</div>

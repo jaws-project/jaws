@@ -135,25 +135,5 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         return $this->gadget->session->pop();
     }
 
-    /**
-     * Update Settings
-     *
-     * @access  public
-     * @return  array   Response array (notice or error)
-     */
-    function SaveSettings()
-    {
-        $this->gadget->CheckPermission('Settings');
-        @list($allowComments, $defaultStatus, $orderType) = $this->gadget->request->fetchAll('post');
-        $cModel = $this->gadget->model->loadAdmin('Settings');
-        $res = $cModel->SaveSettings($allowComments, $defaultStatus, $orderType);
-        if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
-        } else {
-            $this->gadget->session->push(_t('COMMENTS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
-        }
-
-        return $this->gadget->session->pop();
-    }
 
 }
