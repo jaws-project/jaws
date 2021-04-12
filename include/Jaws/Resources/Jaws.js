@@ -444,9 +444,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         }
 
         options.type = 'POST';
-        options.dataType = 'text';
         options.async  = true;
-        options.processData = false;
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
@@ -466,13 +464,15 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             }
         }
 
-        if (!(data instanceof FormData)) {
-            data = this.formData(data);
+        if (data instanceof FormData) {
+            options.dataType = 'text';
+            options.processData = false;
+            options.contentType = false;
+        } else {
+            options.contentType = 'application/json; charset=utf-8';
         }
         options.data = data;
 
-        options.contentType = false;
-        //options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
@@ -516,9 +516,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         }
 
         options.type = 'POST';
-        options.dataType = 'text';
         options.async  = false;
-        options.processData = false;
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
@@ -538,13 +536,15 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             }
         }
 
-        if (!(data instanceof FormData)) {
-            data = this.formData(data);
+        if (data instanceof FormData) {
+            options.dataType = 'text';
+            options.processData = false;
+            options.contentType = false;
+        } else {
+            options.contentType = 'application/json; charset=utf-8';
         }
         options.data = data;
 
-        options.contentType = false;
-        //options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
