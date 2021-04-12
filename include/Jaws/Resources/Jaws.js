@@ -468,10 +468,11 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             options.dataType = 'text';
             options.processData = false;
             options.contentType = false;
+            options.data = data;
         } else {
             options.contentType = 'application/json; charset=utf-8';
+            options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
         }
-        options.data = data;
 
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
@@ -540,10 +541,11 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             options.dataType = 'text';
             options.processData = false;
             options.contentType = false;
+            options.data = data;
         } else {
             options.contentType = 'application/json; charset=utf-8';
+            options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
         }
-        options.data = data;
 
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
