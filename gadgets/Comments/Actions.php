@@ -57,6 +57,26 @@ $admin_actions['Comments'] = array(
     'normal' => true,
     'file' => 'Comments',
 );
+$admin_actions['GetComments'] = array(
+    'standalone' => true,
+    'file' => 'Comments',
+);
+$admin_actions['GetComment'] = array(
+    'standalone' => true,
+    'file' => 'Comments',
+);
+$admin_actions['UpdateComment'] = array(
+    'standalone' => true,
+    'file' => 'Comments',
+);
+$admin_actions['DeleteComments'] = array(
+    'standalone' => true,
+    'file' => 'Comments',
+);
+$admin_actions['MarkComments'] = array(
+    'standalone' => true,
+    'file' => 'Comments',
+);
 $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
@@ -64,29 +84,4 @@ $admin_actions['Settings'] = array(
 $admin_actions['SaveSettings'] = array(
     'standalone' => true,
     'file' => 'Settings',
-);
-
-$admin_actions['SearchComments'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['SizeOfCommentsSearch'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['GetComment'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['UpdateComment'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['DeleteComments'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['MarkAs'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
 );

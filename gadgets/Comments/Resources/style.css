@@ -1,3 +1,7 @@
+.modal-body form .form-group {
+    min-height: 60px;
+}
+
 .workarea{
 width:370px;
 padding-left:8px;

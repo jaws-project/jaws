@@ -10,10 +10,15 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_Comments() { return {
+    selectedComment : 0,
+
     // ASync callback method
     AjaxCallback: {
         UpdateComment: function(response) {
             if (response['type'] == 'alert-success') {
+                this.selectedComment = 0;
+                $('#commentModal').modal('hide');
+                $('#comment-form')[0].reset();
                 $('#comments-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
@@ -24,11 +29,26 @@ function Jaws_Gadget_Comments() { return {
             }
         },
 
-        MarkAs: function(response) {
+        MarkComments: function(response) {
             if (response['type'] == 'alert-success') {
                 $('#comments-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         }
+    },
+
+    /**
+     * Get selected data grid row ids
+     */
+    getSelectedDGRows: function (helpers) {
+        var ids = [];
+        if (helpers.length > 1) {
+            helpers.forEach(function(entry) {
+                ids.push(entry.rowData.id);
+            });
+        } else {
+            ids.push(helpers.rowData.id);
+        }
+        return ids;
     },
 
     /**
@@ -40,27 +60,25 @@ function Jaws_Gadget_Comments() { return {
                 'label': this.gadget.defines.LANGUAGE.gadget,
                 'property': 'gadget'
             },
-            'action': {
-                'label': this.gadget.defines.LANGUAGE.action,
-                'property': 'action'
-            },
-            'auth': {
-                'label': this.gadget.defines.LANGUAGE.auth,
-                'property': 'auth'
+            'msg_abbr': {
+                'label': this.gadget.defines.LANGUAGE.comment,
+                'property': 'msg_abbr'
             },
             'username': {
                 'label': this.gadget.defines.LANGUAGE.username,
                 'property': 'username'
             },
-            'time': {
+            'insert_time': {
                 'label': this.gadget.defines.LANGUAGE.time,
-                'property': 'time'
+                'property': 'insert_time'
+            },
+            'status': {
+                'label': this.gadget.defines.LANGUAGE.status,
+                'property': 'status'
             }
         };
 
         var filters = $.unserialize($('#comments-grid .datagrid-filters form').serialize());
-        filters.user = $('#filter_user').combobox('selectedItem').value === undefined ? 0 :
-            $('#filter_user').combobox('selectedItem').value;
 
         // set sort property & direction
         if (options.sortProperty) {
@@ -123,6 +141,9 @@ function Jaws_Gadget_Comments() { return {
             case 'gadget':
                 customMarkup = this.gadget.defines.gadgetList[rowData.gadget];
                 break;
+            case 'status':
+                customMarkup = this.gadget.defines.statusItems[rowData.status];
+                break;
             default:
                 customMarkup = helpers.item.text();
                 break;
@@ -140,11 +161,11 @@ function Jaws_Gadget_Comments() { return {
             width: 50,
             items: [
                 {
-                    name: 'view',
-                    html: '<span class="glyphicon glyphicon-eye-open"></span> ' + this.gadget.defines.LANGUAGE.view,
+                    name: 'edit',
+                    html: '<span class="glyphicon glyphicon-edit"></span> ' + this.gadget.defines.LANGUAGE.edit,
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
-                        this.viewComment(helpers.rowData.id);
+                        this.editComment(helpers.rowData.id);
                         callback();
                     }, this)
                 },
@@ -154,19 +175,49 @@ function Jaws_Gadget_Comments() { return {
                     clickAction: $.proxy(function (helpers, callback, e) {
                         e.preventDefault();
 
-                        var ids = [];
-                        if (helpers.length > 1) {
-                            helpers.forEach(function(entry) {
-                                ids.push(entry.rowData.id);
-                            });
-                        } else {
-                            ids.push(helpers.rowData.id);
-                        }
-
-                        this.deleteComments('selected', ids);
+                        this.deleteComments(this.getSelectedDGRows(helpers));
                         callback();
                     }, this)
+                },
+                {
+                    name: 'mark_as_approved',
+                    html: '<span class="glyphicon glyphicon-ok"></span> ' + this.gadget.defines.LANGUAGE.mark_as_approved,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
 
+                        this.markComments(this.getSelectedDGRows(helpers), this.gadget.defines.status.approve);
+                        callback();
+                    }, this)
+                },
+                {
+                    name: 'mark_as_waiting',
+                    html: '<span class="glyphicon glyphicon-time"></span> ' + this.gadget.defines.LANGUAGE.mark_as_waiting,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        this.markComments(this.getSelectedDGRows(helpers), this.gadget.defines.status.waiting);
+                        callback();
+                    }, this)
+                },
+                {
+                    name: 'mark_as_spam',
+                    html: '<span class="glyphicon glyphicon-ban-circle"></span> ' + this.gadget.defines.LANGUAGE.mark_as_spam,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        this.markComments(this.getSelectedDGRows(helpers), this.gadget.defines.status.spam);
+                        callback();
+                    }, this)
+                },
+                {
+                    name: 'mark_as_private',
+                    html: '<span class="glyphicon glyphicon-eye-close"></span> ' + this.gadget.defines.LANGUAGE.mark_as_private,
+                    clickAction: $.proxy(function (helpers, callback, e) {
+                        e.preventDefault();
+
+                        this.markComments(this.getSelectedDGRows(helpers), this.gadget.defines.status.private);
+                        callback();
+                    }, this)
                 },
             ]
         };
@@ -196,20 +247,23 @@ function Jaws_Gadget_Comments() { return {
     },
 
     /**
-     * view a comment details
+     * view/edit a comment
      *
      */
-    viewComment: function (id) {
+    editComment: function (id) {
+        this.selectedComment = id;
+
         this.ajax.callAsync('GetComment',
             {'id': id},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
                     callOptions.showMessage = false;
                     var commentInfo = response.data;
+                    console.log(commentInfo);
                     if (commentInfo) {
-                        $('#comment-form span').each(
-                            $.proxy(function (key, elem) {
-                                $(elem).html(response.data[$(elem).data('field')]);
+                        $('#comment-form').find(':input').each($.proxy(function (key, elem) {
+                                console.log($(elem).attr('name'));
+                                $(elem).val(response.data[$(elem).attr('name')]);
                             }, this)
                         );
 
@@ -221,22 +275,30 @@ function Jaws_Gadget_Comments() { return {
     },
 
     /**
+     * Update a comment
+     */
+    updateComment: function (sendEmail = false) {
+        var data = $.unserialize($('#comment-form').serialize());
+        data.gadget = this.gadget.defines.gadget;
+        data.send_email = sendEmail;
+        this.ajax.callAsync('UpdateComment', {'id': this.selectedComment, 'data': data});
+    },
+
+    /**
      * delete comments
      */
-    deleteComments: function (type, ids = []) {
-        if (!confirm(this.gadget.defines.confirmCommentsDelete)) {
+    deleteComments: function (ids) {
+        if (!confirm(this.gadget.defines.confirmCommentDelete)) {
             return false;
         }
+        this.ajax.callAsync('DeleteComments', {'ids':ids});
+    },
 
-        var params = {'ids': [], 'filters': []};
-        if (type === 'filtered') {
-            params.filters = $.unserialize($('#comments-grid .datagrid-filters form').serialize());
-            params.filters.user = $('#filter_user').combobox('selectedItem').value === undefined ? 0 :
-                $('#filter_user').combobox('selectedItem').value;
-        } else {
-            params.ids = ids;
-        }
-        this.ajax.callAsync('DeleteComments', params);
+    /**
+     * mark comments
+     */
+    markComments: function (ids, status) {
+        this.ajax.callAsync('MarkComments', {'ids':ids, 'status':status});
     },
 
     /**
@@ -262,8 +324,11 @@ function Jaws_Gadget_Comments() { return {
 
                 this.initiateCommentsDG();
 
-                $('#btn-delete-filtered-comments').on('click', $.proxy(function (e) {
-                    this.deleteComments('filtered');
+                $('#btn-save-comment').on('click', $.proxy(function (e) {
+                    this.updateComment(false);
+                }, this));
+                $('#btn-send-reply').on('click', $.proxy(function (e) {
+                    this.updateComment(true);
                 }, this));
 
                 break;
@@ -277,227 +342,3 @@ function Jaws_Gadget_Comments() { return {
     },
 
 }};
-
-
-
-
-/**
- * Use async mode, create Callback
- */
-// var CommentsCallback = {
-//     UpdateComment: function(response) {
-//         if (response['type'] == 'alert-success') {
-//             stopCommentAction();
-//             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
-//         }
-//     },
-//
-//     DeleteComments: function(response) {
-//         if (response['type'] == 'alert-success') {
-//             stopCommentAction();
-//             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
-//         }
-//     },
-//
-//     MarkAs: function(response) {
-//         if (response['type'] == 'alert-success') {
-//             stopCommentAction();
-//             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
-//         }
-//     }
-//
-// }
-//
-// /**
-//  * Fetches comments data to fills the data grid
-//  */
-// function getCommentsDataGrid(name, offset, reset)
-// {
-//     var comments = CommentsAjax.callSync(
-//         'SearchComments', [
-//             CommentsAjax.mainRequest.gadget,
-//             $('#gadgets_filter').val(),
-//             $('#filter').val(),
-//             $('#status').val(),
-//             offset,
-//             2
-//         ]
-//     );
-//     if (reset) {
-//         stopCommentAction();
-//         $('#' + name)[0].setCurrentPage(0);
-//         var total = CommentsAjax.callSync(
-//             'SizeOfCommentsSearch', [
-//                 $('#gadgets_filter').val(),
-//                 $('#filter').val(),
-//                 $('#status').val()
-//             ]
-//         );
-//     }
-//
-//     resetGrid(name, comments, total);
-// }
-//
-// function isValidEmail(email) {
-//     return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email));
-// }
-//
-// /**
-//  * Clean the form
-//  *
-//  */
-// function stopCommentAction()
-// {
-//     $('#id').val(0);
-//     $('#gadget').val('');
-//     $('#comment_ip').html('');
-//     $('#insert_time').html('');
-//     $('#reference_link').html('');
-//     $('#name').val('');
-//     $('#email').val('');
-//     $('#url').val('');
-//     $('#message').val('');
-//     $('#reply').val('');
-//     $('#comment_status').prop('selectedIndex', 0);
-//     $('#btn_save').css('display', 'none');
-//     $('#btn_reply').css('display', 'none');
-//     $('#btn_cancel').css('display', 'none');
-//     $("#name").prop('disabled', false);
-//     $("#email").prop('disabled', false);
-//     $("#url").prop('disabled', false);
-//     $("#message").prop('disabled', false);
-//     $("#comment_status").prop('disabled', false);
-//
-//     unselectGridRow('comments_datagrid');
-//     $('#name').focus();
-// }
-//
-// /**
-//  * Edit a Comment
-//  *
-//  */
-// function editComment(rowElement, id)
-// {
-//     stopCommentAction();
-//     selectGridRow('comments_datagrid', rowElement.parentNode.parentNode);
-//     var comment = CommentsAjax.callSync('GetComment', id);
-//     $("#name").prop('disabled', false);
-//     $("#email").prop('disabled', false);
-//     $("#url").prop('disabled', false);
-//     $("#message").prop('disabled', false);
-//     $("#comment_status").prop('disabled', false);
-//     $('#id').val(comment['id']);
-//     $('#gadget').val(comment['gadget']);
-//     $('#comment_ip').html(comment['ip']);
-//     $('#insert_time').html(comment['insert_time']);
-//     $('#name').val(comment['name']);
-//     $('#email').val(comment['email']);
-//     $('#url').val(comment['url']);
-//     $('#message').val(comment['msg_txt'].defilter());
-//     $('#comment_status').val(comment['status']);
-//     if (comment['reference_link'] != '') {
-//         $('#reference_link').html(
-//             '<a href="'
-//             + comment['reference_link']
-//             + '">'
-//             + comment['reference_title']
-//             + '</a>'
-//         );
-//     }
-//     $('#btn_save').css('display', 'inline');
-//     $('#btn_reply').css('display', 'inline');
-//     $('#btn_cancel').css('display', 'inline');
-//
-//     if(comment['reply']!=null) {
-//         $('#reply').val(comment['reply'].defilter());
-//     }
-// }
-//
-// /**
-//  * Update a Comment
-//  */
-// function updateComment(sendEmail) {
-//     CommentsAjax.callAsync(
-//         'UpdateComment', [
-//             $('#gadget').val(),
-//             $('#id').val(),
-//             $('#name').val(),
-//             $('#email').val(),
-//             $('#url').val(),
-//             $('#message').val(),
-//             $('#reply').val(),
-//             $('#comment_status').val(),
-//             sendEmail
-//         ]
-//     );
-// }
-//
-// /**
-//  * Delete comment
-//  *
-//  */
-// function commentDelete(id)
-// {
-//     stopCommentAction();
-//     if (confirm(jaws.Comments.Defines.confirmCommentDelete)) {
-//         CommentsAjax.callAsync('DeleteComments', new Array(id));
-//     }
-//     unselectGridRow('comments_datagrid');
-// }
-//
-//
-// /**
-//  * Executes an action on comments
-//  */
-// function commentDGAction(combo)
-// {
-//     var rows = $('#comments_datagrid')[0].getSelectedRows();
-//     if (rows.length < 1) {
-//         return;
-//     }
-//
-//     if (combo.val() == 'delete') {
-//         var confirmation = confirm(jaws.Comments.Defines.confirmCommentDelete);
-//         if (confirmation) {
-//             CommentsAjax.callAsync('DeleteComments', rows);
-//         }
-//     } else if (combo.val() != '') {
-//         CommentsAjax.callAsync('MarkAs', {
-//             'ids': rows,
-//             'status': combo.val()
-//         });
-//     }
-// }
-//
-// /**
-//  * search for a comment
-//  */
-// function searchComment()
-// {
-//     getCommentsDataGrid('comments_datagrid', 0, true);
-// }
-//
-// /**
-//  * save properties
-//  */
-// function SaveSettings()
-// {
-//     CommentsAjax.callAsync(
-//         'SaveSettings', [
-//             $('#allow_comments').val(),
-//             $('#default_comment_status').val(),
-//             $('#order_type').val()
-//         ]
-//     );
-// }
-//
-// $(document).ready(function() {
-//     if (jaws.Defines.mainGadget !== 'Comments' || jaws.Defines.mainAction === 'Comments') {
-//         $('#gadgets_filter').selectedIndex = 0;
-//         initDataGrid('comments_datagrid', CommentsAjax, getCommentsDataGrid);
-//     }
-// });
-//
-// var CommentsAjax = new JawsAjax('Comments', CommentsCallback),
-//     selectedRow = null,
-//     selectedRowColor = null;

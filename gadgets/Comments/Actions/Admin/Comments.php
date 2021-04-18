@@ -23,247 +23,202 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmCommentDelete', _t('COMMENTS_CONFIRM_DELETE'));
 
-        $tpl = $this->gadget->template->loadAdmin('Comments.html');
-        $tpl->SetBlock('Comments');
-        //Menu bar
-        $tpl->SetVariable('menubar', empty($menubar)? $this->MenuBar('Comments') : $menubar);
+        $this->gadget->define('LANGUAGE', array(
+            'gadget'=> Jaws::t('GADGETS'),
+            'comment'=> _t('COMMENTS_COMMENT'),
+            'username'=> Jaws::t('USERNAME'),
+            'time'=> Jaws::t('CREATED'),
+            'status'=> Jaws::t('STATUS'),
+            'mark_as_approved'=> _t('COMMENTS_MARK_AS_APPROVED'),
+            'mark_as_waiting'=> _t('COMMENTS_MARK_AS_WAITING'),
+            'mark_as_spam'=> _t('COMMENTS_MARK_AS_SPAM'),
+            'mark_as_private'=> _t('COMMENTS_MARK_AS_PRIVATE'),
+            'edit'=> Jaws::t('EDIT'),
+            'delete'=> Jaws::t('DELETE')
+        ));
 
-        if (empty($req_gadget)) {
-            //Gadgets filter label
-            $lblGadget =& Piwi::CreateWidget('Label', _t('COMMENTS_GADGETS').': ', 'gadgets_filter');
-            $tpl->SetVariable('lbl_gadgets_filter', $lblGadget->Get());
-
-            //Gadgets filter
-            $filterGadgets =& Piwi::CreateWidget('Combo', 'gadgets_filter');
-            $filterGadgets->SetID('gadgets_filter');
-            $filterGadgets->setStyle('width: 100px;');
-            $filterGadgets->AddEvent(ON_CHANGE, "searchComment()");
-            $filterGadgets->AddOption(Jaws::t('ALL'), '');
-            $filterGadgets->AddOption(_t('COMMENTS_TITLE'), 'Comments');
-            $gadgets = $this->gadget->model->load()->recommendedfor();
-            if (!Jaws_Error::IsError($gadgets)) {
-                foreach ($gadgets as $gadget) {
-                    $filterGadgets->AddOption(_t(strtoupper($gadget.'_TITLE')), $gadget);
-                }
+        $gadgets = $this->gadget->model->load()->recommendedfor();
+        $gadgetsList = array(array('name' => 'Comments', 'title' => _t('COMMENTS_TITLE')));
+        if (!Jaws_Error::IsError($gadgets) && count($gadgets) > 0) {
+            foreach ($gadgets as $gadget) {
+                $gadgetsList[] = array('name' => $gadget, 'title' => _t(strtoupper($gadget . '_TITLE')));
             }
-            $filterGadgets->SetDefault('');
-        } else {
-            $filterGadgets =& Piwi::CreateWidget('HiddenEntry', 'gadgets_filter', $req_gadget);
-            $filterGadgets->SetID('gadgets_filter');
-        }
-        $tpl->SetVariable('gadgets_filter', $filterGadgets->Get());
-
-        //Status
-        $status =& Piwi::CreateWidget('Combo', 'status');
-        $status->AddOption(Jaws::t('ALL'), 0);
-        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
-        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
-        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
-        $status->AddOption(_t('COMMENTS_STATUS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
-        $status->SetDefault(0);
-        $status->AddEvent(ON_CHANGE, 'searchComment();');
-        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
-        $tpl->SetVariable('status', $status->Get());
-
-        // filter
-        $filterData = $this->gadget->request->fetch('filter', 'get');
-        $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
-        $filterEntry->setSize(20);
-        $tpl->SetVariable('filter', $filterEntry->Get());
-        $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
-                                            _t('COMMENTS_FILTER'), STOCK_SEARCH);
-        $filterButton->AddEvent(ON_CLICK, 'searchComment();');
-
-        $tpl->SetVariable('filter_button', $filterButton->Get());
-
-        // DataGrid
-        $tpl->SetVariable('datagrid', $this->getDataGrid($req_gadget));
-        // CommentUI
-        $tpl->SetVariable('comment_ui', $this->CommentUI());
-
-        // Actions
-        $actions =& Piwi::CreateWidget('Combo', 'comments_actions');
-        $actions->SetID('comments_actions_combo');
-        $actions->SetTitle(Jaws::t('ACTIONS'));
-        $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(Jaws::t('DELETE'), 'delete');
-        $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
-        $tpl->SetVariable('actions_combo', $actions->Get());
-
-        $btnExecute =& Piwi::CreateWidget('Button', 'executeCommentAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:commentDGAction($('#comments_actions_combo'));");
-        $tpl->SetVariable('btn_execute', $btnExecute->Get());
-
-        if ($this->gadget->GetPermission('ManageComments')) {
-            $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
-            $btnCancel->AddEvent(ON_CLICK, 'stopCommentAction();');
-            $btnCancel->SetStyle('display: none;');
-            $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, "updateComment(false);");
-            $btnSave->SetStyle('display: none;');
-            $tpl->SetVariable('btn_save', $btnSave->Get());
-
-            $btnReply =& Piwi::CreateWidget('Button', 'btn_reply', _t('COMMENTS_SAVE_AND_REPLY'), 
-                                                        'gadgets/Contact/Resources/images/contact_mini.png');
-            $btnReply->AddEvent(ON_CLICK, "updateComment(true);");
-            $btnReply->SetStyle('display: none;');
-            $tpl->SetVariable('btn_reply', $btnReply->Get());
         }
 
-        $tpl->SetVariable('legend_title', _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
+        $statusItems = array(
+            Comments_Info::COMMENTS_STATUS_APPROVED => _t('COMMENTS_STATUS_APPROVED'),
+            Comments_Info::COMMENTS_STATUS_WAITING => _t('COMMENTS_STATUS_WAITING'),
+            Comments_Info::COMMENTS_STATUS_SPAM => _t('COMMENTS_STATUS_SPAM'),
+            Comments_Info::COMMENTS_STATUS_PRIVATE => _t('COMMENTS_STATUS_PRIVATE'),
+        );
+        $this->gadget->define('gadgetList', array_column($gadgetsList, 'title', 'name'));
+        $this->gadget->define('statusItems', $statusItems);
+        $this->gadget->define('status', array(
+            'approve' => Comments_Info::COMMENTS_STATUS_APPROVED,
+            'waiting' => Comments_Info::COMMENTS_STATUS_WAITING,
+            'spam' => Comments_Info::COMMENTS_STATUS_SPAM,
+            'private' => Comments_Info::COMMENTS_STATUS_PRIVATE,
+        ));
 
-        $tpl->ParseBlock('Comments');
-        return $tpl->Get();
+        $assigns = array();
+        $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Comments') : $menubar;
+        $assigns['gadgets'] = $gadgetsList;
+        $assigns['statusItems'] = $statusItems;
+        return $this->gadget->template->xLoadAdmin('Comments.html')->render($assigns);
     }
 
     /**
-     * Show a form to show/edit a given comments
+     * Return list of Comments data for use in datagrid
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function CommentUI()
+    function GetComments()
     {
-        $tpl = $this->gadget->template->loadAdmin('Comments.html');
-        $tpl->SetBlock('CommentUI');
+        $post = $this->gadget->request->fetch(
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
+            'post'
+        );
+        $filters = $post['filters'];
 
-        //IP
-        $tpl->SetVariable('lbl_ip', Jaws::t('IP'));
-
-        //Date
-        $tpl->SetVariable('lbl_date', Jaws::t('DATE'));
-
-        //Reference Date
-        $tpl->SetVariable('lbl_reference_link', _t('COMMENTS_REFERENCE_LINK'));
-
-        //name
-        $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
-        $nameEntry->setStyle('width: 160px;');
-        $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
-        $tpl->SetVariable('name', $nameEntry->Get());
-
-        //email
-        $nameEntry =& Piwi::CreateWidget('Entry', 'email', '');
-        $nameEntry->setStyle('width: 160px;');
-        $tpl->SetVariable('lbl_email', Jaws::t('EMAIL'));
-        $tpl->SetVariable('email', $nameEntry->Get());
-
-        //url
-        $nameEntry =& Piwi::CreateWidget('Entry', 'url', '');
-        $nameEntry->setStyle('width: 270px;');
-        $tpl->SetVariable('lbl_url', Jaws::t('URL'));
-        $tpl->SetVariable('url', $nameEntry->Get());
-
-        //Status
-        $status =& Piwi::CreateWidget('Combo', 'comment_status');
-        $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
-        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
-        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
-        $status->AddOption(_t('COMMENTS_STATUS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
-        $status->SetDefault('various');
-        $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
-        $tpl->SetVariable('status', $status->Get());
-
-        //message
-        $messageText =& Piwi::CreateWidget('TextArea', 'message','');
-        $messageText->SetStyle('width: 270px;');
-        $messageText->SetRows(8);
-        $tpl->SetVariable('lbl_message', _t('COMMENTS_MESSAGE'));
-        $tpl->SetVariable('message', $messageText->Get());
-
-
-        //reply
-        $replyText =& Piwi::CreateWidget('TextArea', 'reply','');
-        $replyText->SetStyle('width: 270px;');
-        $replyText->SetRows(8);
-        if(!$this->gadget->GetPermission('ReplyComments')) {
-            $replyText->SetEnabled(false);
+        $model = $this->gadget->model->load('Comments');
+        $comments = $model->GetComments($filters['gadget'], '', '', $filters['term'], $filters['status'], 15, $post['offset'], $post['limit']);
+        if (Jaws_Error::IsError($comments)) {
+            return $this->gadget->session->response($comments->GetMessage(), RESPONSE_ERROR);
         }
-        $tpl->SetVariable('lbl_reply', _t('COMMENTS_REPLY'));
-        $tpl->SetVariable('reply', $replyText->Get());
 
-        $tpl->ParseBlock('CommentUI');
-        return $tpl->Get();
+        $commentsCount = $model->GetCommentsCount($filters['gadget'], '', '', $filters['term'], $filters['status']);
+        if (Jaws_Error::IsError($commentsCount)) {
+            return $this->gadget->session->response($commentsCount->GetMessage(), RESPONSE_ERROR);
+        }
+
+        if ($commentsCount > 0) {
+            $objDate = Jaws_Date::getInstance();
+            foreach ($comments as &$comment) {
+
+                $comment['msg_abbr'] = Jaws_UTF8::strlen($comment['msg_txt']) > 25 ?
+                    (Jaws_UTF8::substr($comment['msg_txt'], 0, 22). '...') : $comment['msg_txt'];
+
+                $comment['insert_time'] = $objDate->Format($comment['insert_time']);
+            }
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total' => $commentsCount,
+                'records' => $comments
+            )
+        );
     }
 
     /**
-     * Build a new array with filtered data
+     * Get information of a Comment
      *
      * @access  public
-     * @param   string  $requester  Requester gadget name
-     * @param   string  $gadget     Gadget name
-     * @param   string  $term       Search term
-     * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
-     * @param   mixed   $offset     Data offset (numeric/boolean)
-     * @param   int     $orderBy    Data order
-     * @return  array   Filtered Comments
+     * @return  array   Comment info array
      */
-    function GetDataAsArray($requester, $gadget, $term, $status, $offset, $orderBy)
+    function GetComment()
     {
-        $data = array();
-        $cModel = $this->gadget->model->load('Comments');
-        $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset, $orderBy);
-        if (Jaws_Error::IsError($comments)) {
-            return $data;
+        $id = (int)$this->gadget->request->fetch('id', 'post');
+        $comment = $this->gadget->model->load('Comments')->GetComment($id);
+        if (Jaws_Error::IsError($comment)) {
+            return $this->gadget->session->response($comment->GetMessage(), RESPONSE_ERROR);
         }
 
         $date = Jaws_Date::getInstance();
-        $data = array();
-        foreach ($comments as $row) {
-            $newRow = array();
-            $newRow['__KEY__'] = $row['id'];
-            if ($requester == $this->gadget->name) {
-                $newRow['gadget'] = _t(strtoupper($row['gadget']).'_TITLE');
-            }
-            $comment = Jaws_UTF8::strlen($row['msg_txt']) > 25 ?
-                (Jaws_UTF8::substr($row['msg_txt'], 0, 22). '...') : $row['msg_txt'];
-            $comment = "<abbr title='" . $row['msg_txt'] . "'>$comment</abbr>";
-            $link =& Piwi::CreateWidget('Link', $comment, "javascript:editComment(this, '{$row['id']}');");
-            $newRow['comment'] = $link->Get();
-            $newRow['name'] = $row['name'];
-            $newRow['created'] = $date->Format($row['insert_time']);
-            if ($row['status'] == Comments_Info::COMMENTS_STATUS_APPROVED) {
-                $status = _t('COMMENTS_STATUS_APPROVED');
-            } elseif ($row['status'] == Comments_Info::COMMENTS_STATUS_WAITING) {
-                $status = _t('COMMENTS_STATUS_WAITING');
-            } elseif ($row['status'] == Comments_Info::COMMENTS_STATUS_SPAM) {
-                $status = _t('COMMENTS_STATUS_SPAM');
-            } elseif ($row['status'] == Comments_Info::COMMENTS_STATUS_PRIVATE) {
-                $status = _t('COMMENTS_STATUS_PRIVATE');
-            }
-            $newRow['status']  = $status;
-            $data[] = $newRow;
-        }
-        return $data;
+        $comment['insert_time'] = $date->Format($comment['insert_time'], 'Y-m-d H:i:s');
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            $comment
+        );
     }
 
     /**
-     * Builds and returns the UI
+     * Update comment information
      *
      * @access  public
-     * @param   string $gadget  Caller gadget name
-     * @return  string  UI XHTML
+     * @return  array   Response array (notice or error)
      */
-    function getDataGrid($gadget)
+    function UpdateComment()
     {
-        $grid =& Piwi::CreateWidget('DataGrid', array());
-        $grid->SetID('comments_datagrid');
-        $grid->SetStyle('width: 100%;');
-        $grid->useMultipleSelection();
-        if (empty($gadget)) {
-            $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_GADGETS')), null, false);
+        $this->gadget->CheckPermission('ManageComments');
+//        @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = $this->gadget->request->fetchAll('post');
+
+        $post = $this->gadget->request->fetch(array('id:integer', 'data:array'), 'post');
+        $data = $post['data'];
+
+        // TODO: Fill permalink In New Versions, Please!!
+        $res = $this->gadget->model->loadAdmin('Comments')->UpdateComment(
+            $data['gadget'], $post['id'], $data['name'], $data['email'],
+            $data['url'], $data['msg_txt'], $data['reply'], '', $data['status']
+        );
+        if (Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         }
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_COMMENT')), null, false);
-        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('USERNAME')), null, false);
-        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('CREATED')), null, false);
-        $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('STATUS')), null, false);
-        return $grid->Get();
+
+        if (!empty($data['reply']) && !empty($data['email']) && $data['send_email']) {
+            $res = $this->gadget->action->load('Comments')->EmailReply(
+                $data['email'],
+                $data['msg_txt'],
+                $data['reply'],
+                $this->app->session->user->nickname
+            );
+            if (Jaws_Error::IsError($res)) {
+                return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
+            }
+        }
+
+        return $this->gadget->session->response(
+            _t('COMMENTS_COMMENT_UPDATED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Does a massive delete on comments
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteComments()
+    {
+        $this->gadget->CheckPermission('ManageComments');
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
+        $res = $this->gadget->model->loadAdmin('Comments')->DeleteMassiveComment($ids);
+        if (Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response(
+            _t('COMMENTS_COMMENT_DELETED'),
+            RESPONSE_NOTICE
+        );
+    }
+
+    /**
+     * Mark as different type a group of ids
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function MarkComments()
+    {
+        $this->gadget->CheckPermission('ManageComments');
+        $post = $this->gadget->request->fetch(array('ids:array', 'status'), 'post');
+        $cModel = $this->gadget->model->loadAdmin('Comments');
+        $res = $cModel->MarkAs($post['ids'], $post['status']);
+        if (Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
+        }
+
+        return $this->gadget->session->response(
+            _t('COMMENTS_COMMENT_MARKED'),
+            RESPONSE_NOTICE
+        );
     }
 
 }

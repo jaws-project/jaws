@@ -1,48 +1,191 @@
-<!-- BEGIN Comments -->
 <div class="gadget_menubar">{{menubar}}</div>
-<div id="main">
-<table style="width: 100%">
-  <tr>
-    <td colspan="2" style="vertical-align: top">
-      <div>
-        {{lbl_gadgets_filter}}{{gadgets_filter}}
-        <label for="status">{{lbl_status}}: </label>{{status}}
-        {{filter}}
-        {{filter_button}}
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td style="vertical-align:top; text-align:left">
-        {{datagrid}}
-        <div class="buttons">{{actions_combo}}{{btn_execute}}</div>
-    </td>
-    <td class="workarea" style="vertical-align:top; width:300px;">
-      <input type="hidden" name="id" id="id" value="0" />
-      <input type="hidden" name="reqGadget" id="gadget" value="" />
-      <fieldset>
-        <legend><span id="legend_title">{{legend_title}}</span></legend>
-        <div id="c_work_area">{{comment_ui}}</div>
-      </fieldset>
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td class="buttons">{{btn_cancel}}{{btn_save}}{{btn_reply}}</td>
-  </tr>
-</table>
 
+<div class="repeater" id="comments-grid" data-staticheight="550">
+  <div class="repeater-header">
+    <div class="datagrid-filters">
+
+      <div class="row">
+
+        <form action="#" onsubmit="return false;">
+
+          <div class="col-xs-1">
+            <label for="filter_gadget">{{ "global.gadgets" | t }}: </label>
+          </div>
+          <div class="col-xs-3">
+            <select class="form-control" name="gadget" id="filter_gadget">
+              <option value="0">{{ "global.all" | t }}</option>
+              {%- for gadget in gadgets %}
+              <option value="{{gadget.name}}">
+                {{- gadget.title -}}
+              </option>
+              {%- endfor %}
+            </select>
+          </div>
+
+          <div class="col-xs-1">
+            <label for="filter_status">{{ "global.status" | t }}: </label>
+          </div>
+          <div class="col-xs-3">
+            <select class="form-control" name="status" id="filter_status">
+              <option value="0">{{ "global.all" | t }}</option>
+              {%- for status in statusItems %}
+              <option value="{{forloop.key}}">
+                {{- status -}}
+              </option>
+              {%- endfor %}
+            </select>
+          </div>
+
+          <div class="col-xs-1">
+            <label for="filter_status">{{ "global.term" | t }}: </label>
+          </div>
+          <div class="col-xs-3">
+            <input type="text" class="form-control" name="term" id="filter_term">
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <div class="repeater-header-right">
+      <button type="button" class="btn btn-success btn-refresh">
+        <span class="glyphicon glyphicon-refresh"></span> {{ "global.reload" | t }}
+      </button>
+    </div>
+  </div>
+
+  <div class="repeater-viewport">
+    <div class="repeater-canvas"></div>
+    <div class="loader repeater-loader"></div>
+  </div>
+  <div class="repeater-footer">
+    <div class="repeater-footer-left">
+      <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
+          </span>
+        <div class="btn-group selectlist dropup" data-resize="auto">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+            <span class="selected-label">?</span>
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li data-value="10" data-selected="true"><a href="#">10</a></li>
+            <li data-value="25"><a href="#">25</a></li>
+            <li data-value="50"><a href="#">50</a></li>
+          </ul>
+          <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+        </div>
+        <span>{{ "global.perpage" | t }}</span>
+      </div>
+    </div>
+    <div class="repeater-footer-right">
+      <div class="repeater-pagination">
+        <button type="button" class="btn btn-default btn-sm repeater-prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+          <span class="sr-only">Previous Page</span>
+        </button>
+        <label class="page-label" id="myPageLabel"></label>
+        <div class="repeater-primaryPaging active">
+          <div class="input-group input-append dropdown combobox dropup">
+            <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right"></ul>
+            </div>
+          </div>
+        </div>
+        <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+        <button type="button" class="btn btn-default btn-sm repeater-next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+          <span class="sr-only">Next Page</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- END Comments -->
-<!-- BEGIN CommentUI -->
-<table id="comment_box">
-  <div><label for="name">{{lbl_name}}:</label>{{name}} <small id="comment_ip" title="{{lbl_ip}}"></small></div>
-  <div><label for="email">{{lbl_email}}:</label>{{email}}</div>
-  <div><label for="url">{{lbl_url}}:</label>{{url}}</div>
-  <div><label for="comment_status">{{lbl_status}}:</label>{{status}}</div>
-  <div style="margin:5px 0"><label style="display: inline">{{lbl_date}}: </label><span id="insert_time">{{date}}</span></div>
-  <div><label>{{lbl_reference_link}}: </label><span id="reference_link"></span></div>
-  <div><label for="message">{{lbl_message}}:</label>{{message}}</div>
-  <div><label for="reply">{{lbl_reply}}:</label>{{reply}}</div>
-</table>
-<!-- END CommentUI -->
+
+
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "comments.comment_details" | t }}</h4>
+      </div>
+
+      <div class="modal-body">
+        <form action="#" id="comment-form" onsubmit="return false;">
+          <div class="row">
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="comment_name">{{ "global.name" | t }}:</label>
+              <input class="form-control" name="name" id="comment_name" value="" type="text"/>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="comment_email">{{ "global.email" | t }}:</label>
+              <input class="form-control ltr" name="email" id="comment_email" value="" type="email"/>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="comment_url">{{ "global.url" | t }}:</label>
+              <input class="form-control ltr" name="url" id="comment_url" value="" type="text"/>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="comment_status">{{ "global.status" | t }}:</label>
+              <select class="form-control" name="status" id="comment_status">
+                {%- for status in statusItems %}
+                <option value="{{forloop.key}}">
+                  {{- status -}}
+                </option>
+                {%- endfor %}
+              </select>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="comment_insert_time">{{ "global.date" | t }}:</label>
+              <input class="form-control" name="insert_time" id="comment_insert_time" value="" type="text" disabled/>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="comment_reference_link">{{ "comments.reference_link" | t }}:</label>
+              <span><a href="" id="comment_reference_link"></a></span>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-12">
+              <label for="comment_msg_txt">{{ "comments.message" | t }}:</label>
+              <textarea class="form-control" name="msg_txt" id="comment_msg_txt" rows="4"></textarea>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-12">
+              <label for="comment_reply">{{ "comments.reply" | t }}:</label>
+              <textarea class="form-control" name="reply" id="comment_reply" rows="4"></textarea>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-info" id="btn-send-reply">
+          {{ "comments.save_and_reply" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-save-comment">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
