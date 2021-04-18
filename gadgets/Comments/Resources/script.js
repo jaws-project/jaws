@@ -259,10 +259,8 @@ function Jaws_Gadget_Comments() { return {
                 if (response['type'] == 'alert-success') {
                     callOptions.showMessage = false;
                     var commentInfo = response.data;
-                    console.log(commentInfo);
                     if (commentInfo) {
                         $('#comment-form').find(':input').each($.proxy(function (key, elem) {
-                                console.log($(elem).attr('name'));
                                 $(elem).val(response.data[$(elem).attr('name')]);
                             }, this)
                         );
