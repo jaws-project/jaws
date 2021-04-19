@@ -377,7 +377,9 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
                 );
             }
 
-            $entry['type'] = Jaws_Gadget::getInstance('Categories')->model->load('Categories')->GetCategory($row['type']);
+            $entry['type'] = Jaws_Gadget::getInstance('Categories')->model->load('Categories')->getCategory(
+                $row['type']
+            );
 
             $entry['tags'] = array();
             if (Jaws_Gadget::IsGadgetInstalled('Tags')) {

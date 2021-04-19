@@ -137,7 +137,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Type
         $tpl->SetVariable('type', _t('BLOG_TYPE'));
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
-        $types = $cModel->GetCategories('Blog', 'Types');
+        $types = $cModel->GetCategories(array('gadget'=> 'Blog', 'action' => 'Types'));
         $typeCombo =& Piwi::CreateWidget('Combo', 'type');
         $typeCombo->setId('type');
         if (!Jaws_Error::IsError($types) && count($types) > 0) {
@@ -474,7 +474,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Type
         $tpl->SetVariable('type', _t('BLOG_TYPE'));
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
-        $types = $cModel->GetCategories('Blog', 'Types');
+        $types = $cModel->GetCategories(array('gadget'=> 'Blog', 'action' => 'Types'));
         $typeCombo =& Piwi::CreateWidget('Combo', 'type');
         $typeCombo->setId('type');
         if (!Jaws_Error::IsError($types) && count($types) > 0) {

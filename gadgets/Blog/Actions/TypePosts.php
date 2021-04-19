@@ -20,7 +20,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
     {
         $result = array();
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
-        $types = $cModel->GetCategories('Blog', 'Types');
+        $types = $cModel->GetCategories(array('gadget' => 'Blog', 'action' => 'Types'));
         if (!Jaws_Error::isError($types)) {
             $pcats = array();
             foreach ($types as $type) {
