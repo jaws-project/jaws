@@ -102,7 +102,7 @@ class Jaws_Regexp
      *
      * @return  array|bool  Array containing substrings of splitted subject, or FALSE on failure
      */
-    public function split($subject, $limit = -1, int $flags = 0)
+    public function split($subject, $limit = -1, $flags = 0)
     {
         return preg_split($this->pattern, $subject, $limit, $flags);
     }
