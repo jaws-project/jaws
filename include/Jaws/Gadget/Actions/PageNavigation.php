@@ -67,7 +67,7 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
                     $tpl->SetVariable('lbl', Jaws::t('PAGINATION_PREVIOUS'));
                     $tpl->ParseBlock("$block/pagination/page/start");
                 }
-            } elseif ($k == 'separator1' || $k == 'separator2') {
+            } elseif ($k == 'separator') {
                 $tpl->SetBlock("$block/pagination/page/separator");
                 $tpl->ParseBlock("$block/pagination/page/separator");
             } elseif ($k == 'current') {
@@ -88,6 +88,34 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
         return $tpl->Get();
     }
 
+
+    /**
+     * Get navigate pagination
+     *
+     * @access  public
+     * @param   int     $current    Current page number
+     * @param   int     $ipp        Item per page
+     * @param   int     $total      Total items
+     * @param   string  $action     Gadget action name
+     * @param   array   $params     Action params array
+     * @param   string  $label      Total label
+     * @param   string  $gadget     Gadget name
+     * @return  array   Pager navigation array
+     */
+    function xpagination($current, $ipp, $total, $action, $params = array(), $label = '', $gadget = '')
+    {
+        $pager = $this->GetPagerNumbered($current, $ipp, $total);
+        if (empty($pager)) {
+            return false;
+        }
+
+        return array(
+            'gadget' => $this->gadget->name,
+            'action' => $action,
+            'label'  => $label,
+            'pager'  => $pager
+        );
+    }
 
     /**
      * Get pager numbered links
@@ -137,7 +165,7 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
                 }
             }
 
-            $pages['separator2'] = true;
+            $pages['separator'] = true;
 
             for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
                 $pages[$i] = $i;
@@ -148,7 +176,7 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
                 $pages[$i] = $i;
             }
 
-            $pages['separator1'] = true;
+            $pages['separator'] = true;
 
             for ($i = $npages - $paginator_size + ($tail - 1); $i <= $npages; $i++) {
                 if ($i == $page) {
@@ -162,7 +190,7 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
                 $pages[$i] = $i;
             }
 
-            $pages['separator1'] = true;
+            $pages['separator'] = true;
 
             $start = floor(($paginator_size - $tail)/2);
             $end = ($paginator_size - $tail) - $start;
@@ -174,7 +202,7 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
                 }
             }
 
-            $pages['separator2'] = true;
+            $pages['separator'] = true;
 
             for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
                 $pages[$i] = $i;
