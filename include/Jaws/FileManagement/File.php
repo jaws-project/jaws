@@ -214,7 +214,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      */
     static function file_put_contents($filename, $data, $flags = null, $context = null)
     {
-        $res = @file_put_contents($filename, $data, $flags, $context);
+        $res = @file_put_contents($filename, $data, $flags);
         if ($res !== false) {
             $mode = @fileperms(dirname($filename));
             if (!empty($mode)) {
@@ -291,7 +291,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      */
     static function file($filename, $flags = 0, $context = null)
     {
-        return @file($filename, $flags, $context);
+        return @file($filename, $flags);
     }
 
     /**
@@ -501,7 +501,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      */
     static function rename_from_file($oldname, $newname, $context = null)
     {
-        return @rename($oldname, $newname, $context);
+        return @rename($oldname, $newname);
     }
 
     /**
@@ -516,7 +516,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      */
     static function copy_from_file($source, $dest, $context = null)
     {
-        return @copy($source, $dest, $context);
+        return @copy($source, $dest);
     }
 
     /**
@@ -532,7 +532,7 @@ class Jaws_FileManagement_File extends Jaws_FileManagement
      */
     static function fopen($filename, $mode, $use_include_path = false, $context = null)
     {
-        return @fopen($filename, $mode, $use_include_path, $context);
+        return @fopen($filename, $mode, $use_include_path);
     }
 
     /**
