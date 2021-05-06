@@ -39,6 +39,7 @@ $actions['UploadPhotoUI'] = array(
 );
 $actions['UploadPhoto'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Photos',
 );
 $actions['ViewUserPhotos'] = array(

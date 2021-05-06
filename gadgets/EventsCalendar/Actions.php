@@ -30,14 +30,17 @@ $admin_actions['GetEvent'] = array(
 );
 $admin_actions['CreateEvent'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'ManageEvent'
 );
 $admin_actions['UpdateEvent'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'ManageEvent'
 );
 $admin_actions['DeleteEvents'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'ManageEvent'
 );
 

@@ -33,10 +33,12 @@ $actions['Download'] = array(
 );
 $actions['UploadFile'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'File'
 );
 $actions['SaveFile'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'File'
 );
 $actions['DeleteFile'] = array(

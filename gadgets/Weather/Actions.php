@@ -37,26 +37,32 @@ $actions['UserRegionsList'] = array(
 );
 $actions['GetUserRegions'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'RegionWeather',
 );
 $actions['DeleteUserRegion'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'RegionWeather',
 );
 $actions['GetRegion'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'RegionWeather',
 );
 $actions['GetGoogleMapImage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'GoogleMap',
 );
 $actions['InsertRegion'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'RegionWeather',
 );
 $actions['UpdateRegion'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'RegionWeather',
 );
 

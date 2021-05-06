@@ -40,14 +40,17 @@ $actions['EditTagUI'] = array(
 );
 $actions['UpdateTag'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'       => 'Manage',
 );
 $actions['DeleteTags'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'       => 'Manage',
 );
 $actions['MergeTags'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'       => 'Manage',
 );
 

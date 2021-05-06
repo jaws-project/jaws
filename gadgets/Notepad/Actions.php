@@ -45,14 +45,17 @@ $actions['ShareNote'] = array(
 );
 $actions['CreateNote'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Create'
 );
 $actions['UpdateNote'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Update'
 );
 $actions['DeleteNote'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Delete'
 );
 $actions['Search'] = array(
@@ -65,6 +68,7 @@ $actions['GetUsers'] = array(
 );
 $actions['UpdateShare'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Share'
 );
 $actions['Pager'] = array(

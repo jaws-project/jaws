@@ -31,6 +31,7 @@ $actions['ViewResult'] = array(
 );
 $actions['Vote'] = array(
     'normal' => true,
+    'internal' => true,
     'file' => 'Poll',
 );
 
