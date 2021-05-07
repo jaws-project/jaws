@@ -29,7 +29,7 @@ class Directory_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.8.0';
+    var $version = '1.9.0';
 
     /**
      * Recommended gadgets

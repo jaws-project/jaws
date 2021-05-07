@@ -30,6 +30,7 @@ class Directory_Installer extends Jaws_Gadget_Installer
         'ManageComments',
         array('UploadFiles', '', false),
         'PublishFiles',
+        'UserFiles'
     );
 
     /**
@@ -149,6 +150,11 @@ class Directory_Installer extends Jaws_Gadget_Installer
 
             //commit transaction
             $objORM->commit();
+        }
+
+        if (version_compare($old, '1.9.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('UserFiles');
         }
 
         return true;
