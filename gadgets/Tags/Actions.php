@@ -33,25 +33,40 @@ $actions['ManageTags'] = array(
     'navigation' => array(
         'order' => 0
     ),
+    'acls' => array(
+        'UserTags',
+    ),
 );
 $actions['EditTagUI'] = array(
     'normal' => true,
-    'file'   => 'Manage',
+    'file' => 'Manage',
+    'acls' => array(
+        'UserTags',
+    ),
 );
 $actions['UpdateTag'] = array(
     'standalone' => true,
     'internal' => true,
-    'file'       => 'Manage',
+    'file' => 'Manage',
+    'acls' => array(
+        'UserTags',
+    ),
 );
 $actions['DeleteTags'] = array(
     'standalone' => true,
     'internal' => true,
-    'file'       => 'Manage',
+    'file' => 'Manage',
+    'acls' => array(
+        'UserTags',
+    ),
 );
 $actions['MergeTags'] = array(
     'standalone' => true,
     'internal' => true,
-    'file'       => 'Manage',
+    'file' => 'Manage',
+    'acls' => array(
+        'UserTags',
+    ),
 );
 
 /**
