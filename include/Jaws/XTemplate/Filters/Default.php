@@ -158,8 +158,30 @@ class Jaws_XTemplate_Filters_Default
             }
         }
 
-        // only plain values and stringable objects left at this point
+        // only plain values and string-able objects left at this point
         return strlen($input);
+    }
+
+    /**
+     * Return a PHP value from a stored representation
+     *
+     * @param   mixed   $input  The value to be serialized
+     * @return  string
+     */
+    public static function serialize($input)
+    {
+        return serialize($input);
+    }
+
+    /**
+     * Return a PHP value from a stored representation
+     *
+     * @param   string  $input  The serialized string
+     * @return  mixed
+     */
+    public static function unserialize($input)
+    {
+        return @unserialize($input);
     }
 
     /**
