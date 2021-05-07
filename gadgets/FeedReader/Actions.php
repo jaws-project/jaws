@@ -44,6 +44,9 @@ $actions['GetUserFeeds'] = array(
 $actions['DeleteUserFeed'] = array(
     'standalone' => true,
     'file' => 'Feed',
+    'acls' => array(
+        'UserFeeds',
+    ),
 );
 $actions['GetUserFeed'] = array(
     'standalone' => true,
@@ -52,10 +55,16 @@ $actions['GetUserFeed'] = array(
 $actions['InsertFeed'] = array(
     'standalone' => true,
     'file' => 'Feed',
+    'acls' => array(
+        'UserFeeds',
+    ),
 );
 $actions['UpdateFeed'] = array(
     'standalone' => true,
     'file' => 'Feed',
+    'acls' => array(
+        'UserFeeds',
+    ),
 );
 
 /**
