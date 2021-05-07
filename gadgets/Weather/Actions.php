@@ -44,6 +44,9 @@ $actions['DeleteUserRegion'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'RegionWeather',
+    'acls' => array(
+        'UserRegions',
+    ),
 );
 $actions['GetRegion'] = array(
     'standalone' => true,
@@ -59,11 +62,17 @@ $actions['InsertRegion'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'RegionWeather',
+    'acls' => array(
+        'UserRegions',
+    ),
 );
 $actions['UpdateRegion'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'RegionWeather',
+    'acls' => array(
+        'UserRegions',
+    ),
 );
 
 /**
