@@ -18,6 +18,7 @@ $actions['Guestbook'] = array(
 );
 $actions['PostMessage'] = array(
     'normal' => true,
+    'internal' => true,
     'file'   => 'Comments',
 );
 $actions['RecentComments'] = array(

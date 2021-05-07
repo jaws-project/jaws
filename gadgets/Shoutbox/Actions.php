@@ -18,6 +18,7 @@ $actions['Comments'] = array(
 );
 $actions['GetComments'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'   => 'Comments',
 );
 

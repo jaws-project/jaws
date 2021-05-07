@@ -33,30 +33,37 @@ $actions['Message'] = array(
 );
 $actions['DraftMessage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Draft',
 );
 $actions['DeleteMessage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Message',
 );
 $actions['ArchiveMessage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Message',
 );
 $actions['UnArchiveMessage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Message',
 );
 $actions['TrashMessage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Message',
 );
 $actions['RestoreTrashMessage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Message',
 );
 $actions['ChangeMessageRead'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Message',
 );
 $actions['Compose'] = array(
@@ -65,6 +72,7 @@ $actions['Compose'] = array(
 );
 $actions['SendMessage'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Compose',
 );
 $actions['GetMessageAttachmentUI'] = array(
@@ -77,6 +85,7 @@ $actions['GetUsers'] = array(
 );
 $actions['CheckUserExist'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Compose'
 );
 $actions['Attachment'] = array(
@@ -85,6 +94,7 @@ $actions['Attachment'] = array(
 );
 $actions['UploadFile'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Attachment'
 );
 

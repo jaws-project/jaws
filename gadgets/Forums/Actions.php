@@ -53,10 +53,12 @@ $actions['DeleteTopic'] = array(
 );
 $actions['UpdateTopic'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'   => 'Topics',
 );
 $actions['LockTopic'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'   => 'Topics',
 );
 $actions['PublishTopic'] = array(
@@ -81,6 +83,7 @@ $actions['DeletePost'] = array(
 );
 $actions['UpdatePost'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'   => 'Posts',
 );
 $actions['GetPost'] = array(

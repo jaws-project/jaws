@@ -11,6 +11,7 @@
  */
 $actions['PostRating'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Rating',
 );
 

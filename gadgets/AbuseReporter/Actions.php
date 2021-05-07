@@ -15,6 +15,7 @@ $actions['ReportUI'] = array(
 );
 $actions['SaveReport'] = array(
     'standalone' => true,
+    'internal' => true,
     'file'   => 'Report'
 );
 

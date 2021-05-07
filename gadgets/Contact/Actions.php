@@ -35,6 +35,7 @@ $actions['ContactFull'] = array(
 );
 $actions['Send'] = array(
     'normal' => true,
+    'internal' => true,
     'file' => 'Send'
 );
 
