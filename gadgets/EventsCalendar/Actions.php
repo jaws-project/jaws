@@ -56,6 +56,9 @@ $actions['ManageEvents'] = array(
         ),
         'order' => 1
     ),
+    'acls' => array(
+        'UserEvents',
+    ),
 );
 $actions['Search'] = array(
     'standalone' => true,
@@ -63,15 +66,24 @@ $actions['Search'] = array(
 );
 $actions['NewEvent'] = array(
     'normal' => true,
-    'file' => 'ManageEvent'
+    'file' => 'ManageEvent',
+    'acls' => array(
+        'UserEvents',
+    ),
 );
 $actions['EditEvent'] = array(
     'normal' => true,
-    'file' => 'ManageEvent'
+    'file' => 'ManageEvent',
+    'acls' => array(
+        'UserEvents',
+    ),
 );
 $actions['CreateEvent'] = array(
     'standalone' => true,
-    'file' => 'ManageEvent'
+    'file' => 'ManageEvent',
+    'acls' => array(
+        'UserEvents',
+    ),
 );
 $actions['UpdateEvent'] = array(
     'standalone' => true,
@@ -79,15 +91,24 @@ $actions['UpdateEvent'] = array(
 );
 $actions['DeleteEvent'] = array(
     'standalone' => true,
-    'file' => 'ManageEvent'
+    'file' => 'ManageEvent',
+    'acls' => array(
+        'UserEvents',
+    ),
 );
 $actions['ShareEvent'] = array(
     'normal' => true,
-    'file' => 'ShareEvent'
+    'file' => 'ShareEvent',
+    'acls' => array(
+        'UserEvents',
+    ),
 );
 $actions['UpdateShare'] = array(
     'standalone' => true,
-    'file' => 'ShareEvent'
+    'file' => 'ShareEvent',
+    'acls' => array(
+        'UserEvents',
+    ),
 );
 $actions['GetUsers'] = array(
     'standalone' => true,
