@@ -28,6 +28,7 @@ class Tags_Installer extends Jaws_Gadget_Installer
         'AddTags',
         'DeleteTags',
         'MergeTags',
+        'UserTags'
     );
 
     /**
@@ -85,6 +86,11 @@ class Tags_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.1.0', '<')) {
             // Add listener for remove/publish menu items related to given gadget
             $this->gadget->event->insert('UninstallGadget');
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('UserTags');
         }
 
         return true;
