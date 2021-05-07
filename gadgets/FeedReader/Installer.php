@@ -21,6 +21,16 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
     );
 
     /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLKeys = array(
+        'UserFeeds'
+    );
+
+    /**
      * Installs the gadget
      *
      * @access  public
@@ -115,6 +125,11 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('UserFeeds');
         }
 
         return true;
