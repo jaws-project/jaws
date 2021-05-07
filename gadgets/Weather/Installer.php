@@ -32,6 +32,7 @@ class Weather_Installer extends Jaws_Gadget_Installer
     var $_ACLKeys = array(
         'ManageRegions',
         'UpdateProperties',
+        'UserRegions'
     );
 
     /**
@@ -101,6 +102,11 @@ class Weather_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.0.0', '<')) {
             $this->gadget->registry->update('unit', null, true);
             $this->gadget->registry->update('date_format', null, true);
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('UserRegions');
         }
 
         return true;
