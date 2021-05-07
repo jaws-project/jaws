@@ -34,16 +34,25 @@ $actions['Download'] = array(
 $actions['UploadFile'] = array(
     'standalone' => true,
     'internal' => true,
-    'file' => 'File'
+    'file' => 'File',
+    'acls' => array(
+        'UserFiles',
+    ),
 );
 $actions['SaveFile'] = array(
     'standalone' => true,
     'internal' => true,
-    'file' => 'File'
+    'file' => 'File',
+    'acls' => array(
+        'UserFiles',
+    ),
 );
 $actions['DeleteFile'] = array(
     'standalone' => true,
-    'file' => 'File'
+    'file' => 'File',
+    'acls' => array(
+        'UserFiles',
+    ),
 );
 $actions['GetFile'] = array(
     'standalone' => true,
