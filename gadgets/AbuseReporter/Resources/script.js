@@ -82,8 +82,6 @@ function deleteReport(id)
  * Define the data to be displayed in the users datagrid
  */
 function reportsDataSource(options, callback) {
-    options.offset = options.pageIndex*options.pageSize;
-
     var columns = {
         'gadget': {
             'label': jaws.AbuseReporter.Defines.lbl_gadget,
@@ -135,6 +133,7 @@ function reportsDataSource(options, callback) {
             var dataSource = {};
             if (response['type'] == 'alert-success') {
                 // processing end item index of page
+                options.offset = options.pageIndex*options.pageSize;
                 options.end = options.offset + options.pageSize;
                 options.end = (options.end > response['data'].total)? response['data'].total : options.end;
                 dataSource = {

@@ -571,9 +571,7 @@ function deleteGroup(id)
 /**
  * Define the data to be displayed in the users datagrid
  */
-function usersDataSource(options, callback)
-{
-    options.offset = options.pageIndex*options.pageSize;
+function usersDataSource(options, callback) {
     var columns = {
         'nickname': {
             'label': jaws.Users.Defines.lbl_nickname,
@@ -610,6 +608,7 @@ function usersDataSource(options, callback)
             var dataSource = {};
             if (response['type'] == 'alert-success') {
                 // processing end item index of page
+                options.offset = options.pageIndex*options.pageSize;
                 options.end = options.offset + options.pageSize;
                 options.end = (options.end > response['data'].total)? response['data'].total : options.end;
                 dataSource = {
@@ -878,9 +877,7 @@ function uploadVCardFile() {
 
 
 // Define the data to be displayed in the repeater.
-function contactsDataSource(options, callback)
-{
-    options.offset = options.pageIndex*options.pageSize;
+function contactsDataSource(options, callback) {
     var columns = {
         'title': {
             'label': jaws.Users.Defines.lbl_title,
@@ -910,6 +907,7 @@ function contactsDataSource(options, callback)
             var dataSource = {};
             if (response['type'] == 'alert-success') {
                 // processing end item index of page
+                options.offset = options.pageIndex*options.pageSize;
                 options.end = options.offset + options.pageSize;
                 options.end = (options.end > response['data'].total)? response['data'].total : options.end;
                 dataSource = {
