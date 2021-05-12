@@ -86,7 +86,6 @@ function Jaws_Gadget_Directory() { return {
 
     // Define the data to be displayed in the repeater.
     directoryDataSource: function(options, callback) {
-        options.offset = options.pageIndex*options.pageSize;
         // define the columns for the grid
         var columns = [
             {
@@ -105,6 +104,7 @@ function Jaws_Gadget_Directory() { return {
                         response['data'].records[key].name = file.title;
                     });
                     // processing end item index of page
+                    options.offset = options.pageIndex*options.pageSize;
                     options.end = options.offset + options.pageSize;
                     options.end = (options.end > response['data'].total)? response['data'].total : options.end;
                     dataSource = {

@@ -76,6 +76,7 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
+                    options.offset = options.pageIndex*options.pageSize;
                     options.end = options.offset + options.pageSize;
                     options.end = (options.end > response['data'].total) ? response['data'].total : options.end;
                     dataSource = {
@@ -357,6 +358,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
+                    options.offset = options.pageIndex*options.pageSize;
                     options.end = options.offset + options.pageSize;
                     options.end = (options.end > response['data'].total) ? response['data'].total : options.end;
                     dataSource = {
