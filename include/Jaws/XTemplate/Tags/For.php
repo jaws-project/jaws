@@ -59,32 +59,34 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
         $this->nodelists[] = array('for', $markup, &$this->nodelist);
         parent::__construct($tokens, $markup);
 
-        $syntaxRegexp = new Jaws_Regexp('/(\w+)\s+in\s+(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')/');
-
+        $syntaxRegexp = new Jaws_Regexp(
+            '/(\w+)\s+in\s+\((\d+|' .
+            Jaws_XTemplate::get('VARIABLE_NAME') .
+            ')\s*\.\.\s*(\d+|' .
+            Jaws_XTemplate::get('VARIABLE_NAME') .
+            ')\)/'
+        );
         if ($syntaxRegexp->match($markup)) {
+            $this->type = 'digit';
             $this->variableName = $syntaxRegexp->matches[1];
-            $this->collectionName = $syntaxRegexp->matches[2];
-            $this->name = $syntaxRegexp->matches[1] . '-' . $syntaxRegexp->matches[2];
+            $this->start = $syntaxRegexp->matches[2];
+            $this->collectionName = $syntaxRegexp->matches[3];
+            $this->name = $syntaxRegexp->matches[1].'-digit';
             $this->extractAttributes($markup);
         } else {
             $syntaxRegexp = new Jaws_Regexp(
-                '/(\w+)\s+in\s+\((\d+|' .
-                Jaws_XTemplate::get('VARIABLE_NAME') .
-                ')\s*\.\.\s*(\d+|' .
-                Jaws_XTemplate::get('VARIABLE_NAME') .
-                ')\)/'
+                '/(\w+)\s+in\s+(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')/'
             );
             if ($syntaxRegexp->match($markup)) {
-                $this->type = 'digit';
                 $this->variableName = $syntaxRegexp->matches[1];
-                $this->start = $syntaxRegexp->matches[2];
-                $this->collectionName = $syntaxRegexp->matches[3];
-                $this->name = $syntaxRegexp->matches[1].'-digit';
+                $this->collectionName = $syntaxRegexp->matches[2];
+                $this->name = $syntaxRegexp->matches[1] . '-' . $syntaxRegexp->matches[2];
                 $this->extractAttributes($markup);
             } else {
                 throw new Exception("Syntax Error in 'for loop' - Valid syntax: for [item] in [collection]");
             }
         }
+
     }
 
     public function unknownTag($tag, $params, array $tokens)
