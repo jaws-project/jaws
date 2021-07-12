@@ -17,6 +17,42 @@ class Policy_Model_IP extends Jaws_Gadget_Model
      * @access  public
      * @param   string  $ip     IP Address
      * @param   string  $script JAWS_SCRIPT
+     * @param   string  $gadget Gadget name
+     * @param   string  $action Action name
+     * @return  bool    True if request(script/gadget/action) accessible
+     */
+    function IsReguestAccessible($ip, $script, $gadget, $action)
+    {
+        $result = Jaws_ORM::getInstance()
+            ->table('policy_zone_action')
+            ->select('access:boolean')
+            ->join('policy_zone_range', 'policy_zone_range.zone', 'policy_zone_action.zone')
+            ->where('policy_zone_range.from', $ip, '>=')
+            ->and()
+            ->where('policy_zone_range.to', $ip, '<=')
+            ->and()
+            ->openWhere('script', $script)
+            ->or()
+            ->closeWhere('script', 0)
+            ->and()
+            ->openWhere('gadget', $gadget)
+            ->or()
+            ->closeWhere('gadget', '')
+            ->and()
+            ->openWhere('action', $action)
+            ->or()
+            ->closeWhere('action', '')
+            ->orderBy('policy_zone_action.order')
+            ->fetchOne();
+        return $result;
+    }
+
+    /**
+     * Checks wheter the IP is blocked or not
+     *
+     * @access  public
+     * @param   string  $ip     IP Address
+     * @param   string  $script JAWS_SCRIPT
      * @return  bool    True if the IP is blocked
      */
     function IsIPBlocked($ip, $script)

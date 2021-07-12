@@ -158,7 +158,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.4.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '1.3.0.xml');
+            $result = $this->installSchema('1.4.0.xml', array(), '1.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -179,6 +179,13 @@ class Policy_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.6.0', '<')) {
             $this->gadget->registry->insert('session_ip_sensitive', false);
             $this->gadget->registry->insert('session_agent_sensitive', false);
+        }
+
+        if (version_compare($old, '1.7.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '1.4.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;

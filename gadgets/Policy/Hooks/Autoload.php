@@ -17,8 +17,31 @@ class Policy_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
+        $this->RequestAccessible();
         $this->BlockIPHook();
         $this->BlockAgentHook();
+    }
+
+    /**
+     * Block IP hook
+     *
+     * @access  private
+     */
+    function RequestAccessible()
+    {
+        if (!$this->app->session->user->superadmin) {
+            $addr = Jaws_Utils::GetRemoteAddress();
+            $accessible = $this->gadget->model->load('IP')->IsReguestAccessible(
+                $addr['proxy']?: $addr['client'],
+                JAWS_SCRIPT == 'index'? 1 : 2,
+                $this->app->mainRequest['gadget'],
+                $this->app->mainRequest['action']
+            );
+            if (!is_null($accessible) && !$accessible) {
+                echo Jaws_HTTPError::Get(403);
+                exit;
+            }
+        }
     }
 
     /**
