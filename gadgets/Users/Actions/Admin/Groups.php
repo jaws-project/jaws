@@ -92,7 +92,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             (int)@$post['filters']['filter_domain'],
             0,
             0,
-            $filters,
+            $filters
         );
         if (Jaws_Error::IsError($groupsCount)) {
             return $this->gadget->session->response($groupsCount->GetMessage(), RESPONSE_ERROR);
@@ -223,7 +223,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
 
         $usersCount = $model->getUsersCount(
             0,
-            (int)$post['filters']['gid'],
+            (int)$post['filters']['gid']
         );
         if (Jaws_Error::IsError($usersCount)) {
             return $this->gadget->session->response($usersCount->getMessage(), RESPONSE_ERROR);
