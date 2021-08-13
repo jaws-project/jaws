@@ -69,7 +69,7 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
         $tpl->SetVariable('key_start_date', $keyStartDate->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript:saveEncryptionSettings();');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:Jaws_Gadget.getInstance(\'Policy\').saveEncryptionSettings();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->ParseBlock('encryption');

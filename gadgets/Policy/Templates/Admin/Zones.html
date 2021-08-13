@@ -1,0 +1,215 @@
+<div id="policy">
+    <table>
+        <tr>
+            <td id="policy_sidebar"><div class="gadget_sidebar">{{sidebar}}</div></td>
+            <td>
+                <div class="repeater" id="zones-grid" data-staticheight="450">
+                    <div class="repeater-header">
+                        <div class="repeater-header-right">
+                            <button type="button" class="btn btn-info btn-m" data-toggle="modal" data-target="#zoneModal">
+                                <span class="glyphicon glyphicon-plus"></span> {{ "global.add" | t }}
+                            </button>
+                            <button type="button" class="btn btn-success btn-refresh">
+                                <span class="glyphicon glyphicon-refresh"></span> {{ "global.reload" | t }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="repeater-viewport">
+                        <div class="repeater-canvas"></div>
+                        <div class="loader repeater-loader"></div>
+                    </div>
+                    <div class="repeater-footer">
+                        <div class="repeater-footer-left">
+                            <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
+          </span>
+                                <div class="btn-group selectlist dropup" data-resize="auto">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                        <span class="selected-label">?</span>
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                                        <li data-value="25"><a href="#">25</a></li>
+                                        <li data-value="50"><a href="#">50</a></li>
+                                    </ul>
+                                    <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+                                </div>
+                                <span>{{ "global.perpage" | t }}</span>
+                            </div>
+                        </div>
+                        <div class="repeater-footer-right">
+                            <div class="repeater-pagination">
+                                <button type="button" class="btn btn-default btn-sm repeater-prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="sr-only">Previous Page</span>
+                                </button>
+                                <label class="page-label" id="myPageLabel"></label>
+                                <div class="repeater-primaryPaging active">
+                                    <div class="input-group input-append dropdown combobox dropup">
+                                        <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+                                <button type="button" class="btn btn-default btn-sm repeater-next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <span class="sr-only">Next Page</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="modal fade" id="zoneModal" tabindex="-1" role="dialog" aria-labelledby="zoneModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ "policy.zone_add" | t }}</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="#" id="zone-form" onsubmit="return false;">
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <label for="title">{{ "global.title" | t }}:</label>
+                            <input class="form-control" name="title" id="title" value="" type="text"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    {{ "global.cancel" | t }}
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSaveZone">
+                    {{ "global.save" | t }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="zoneRangeModal" tabindex="-1" role="dialog" aria-labelledby="zoneRangeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ "policy.zone_range_edit" | t }}</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <div>
+                    <div class="repeater" id="zone-ranges-grid" data-staticheight="300">
+                        <div class="repeater-header">
+                            <div class="repeater-header-right">
+                                <button type="button" class="btn btn-success btn-refresh">
+                                    <span class="glyphicon glyphicon-refresh"></span> {{ "global.reload" | t }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="repeater-viewport">
+                            <div class="repeater-canvas"></div>
+                            <div class="loader repeater-loader"></div>
+                        </div>
+                        <div class="repeater-footer">
+                            <div class="repeater-footer-left">
+                                <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
+          </span>
+                                    <div class="btn-group selectlist dropup" data-resize="auto">
+                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                            <span class="selected-label">?</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                                            <li data-value="25"><a href="#">25</a></li>
+                                            <li data-value="50"><a href="#">50</a></li>
+                                        </ul>
+                                        <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+                                    </div>
+                                    <span>{{ "global.perpage" | t }}</span>
+                                </div>
+                            </div>
+                            <div class="repeater-footer-right">
+                                <div class="repeater-pagination">
+                                    <button type="button" class="btn btn-default btn-sm repeater-prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                        <span class="sr-only">Previous Page</span>
+                                    </button>
+                                    <label class="page-label" id="myPageLabel"></label>
+                                    <div class="repeater-primaryPaging active">
+                                        <div class="input-group input-append dropdown combobox dropup">
+                                            <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+                                    <button type="button" class="btn btn-default btn-sm repeater-next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                        <span class="sr-only">Next Page</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <form action="#" id="zone-range-form" onsubmit="return false;">
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-md-6">
+                            <label for="from">{{ "global.from" | t }}:</label>
+                            <input class="form-control ltr" name="from" id="from" value="" type="text"/>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <label for="to">{{ "global.to" | t }}:</label>
+                            <input class="form-control ltr" name="to" id="to" value="" type="text"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    {{ "global.cancel" | t }}
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSaveZoneRange">
+                    {{ "global.save" | t }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

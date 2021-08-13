@@ -23,6 +23,80 @@ $actions['Captcha'] = array(
 /**
  * Admin actions
  */
+$admin_actions['Zones'] = array(
+    'normal' => true,
+    'file' => 'Zone',
+);
+$admin_actions['GetZones'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['GetZoneRanges'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['GetZone'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['GetZoneRange'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['InsertZone'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['UpdateZone'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['DeleteZone'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['InsertZoneRange'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['UpdateZoneRange'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['DeleteZoneRange'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+
+$admin_actions['ZoneActions'] = array(
+    'normal' => true,
+    'file' => 'Zone',
+);
+$admin_actions['GetZoneActions'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['GetZoneAction'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['InsertZoneAction'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['UpdateZoneAction'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['DeleteZoneAction'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+$admin_actions['GetGadgetActions'] = array(
+    'standalone' => true,
+    'file' => 'Zone',
+);
+
 $admin_actions['IPBlocking'] = array(
     'normal' => true,
     'file' => 'IP',

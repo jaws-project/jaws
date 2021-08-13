@@ -34,13 +34,13 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageAgents')) {
                 $ipWidget =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
-                    "javascript:editAgent(this, '".$agent['id']."');",
+                    "javascript:Jaws_Gadget.getInstance('Policy').editAgent(this, '".$agent['id']."');",
                     STOCK_EDIT);
                 $actions.= $ipWidget->Get().'&nbsp;';
 
                 $agWidget =& Piwi::CreateWidget('Link',
                     Jaws::t('DELETE' ,_t('POLICY_AGENT')),
-                    "javascript:deleteAgent(this, '".$agent['id']."');",
+                    "javascript:Jaws_Gadget.getInstance('Policy').deleteAgent(this, '".$agent['id']."');",
                     STOCK_DELETE);
                 $actions .= $agWidget->Get();
             }
@@ -101,7 +101,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
             'true',
             'block_undefined_agent',
             $default);
-        $blockUndefined->AddEvent(ON_CLICK, 'javascript:setBlockUndefinedAgent();');
+        $blockUndefined->AddEvent(ON_CLICK, 'javascript:Jaws_Gadget.getInstance(\'Policy\').setBlockUndefinedAgent();');
         $tpl->SetVariable('enabled_option', $blockUndefined->Get());
 
         $tpl->SetVariable('legend_title', _t('POLICY_AGENT'));
@@ -131,11 +131,11 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
 
         if ($this->gadget->GetPermission('ManageAgents')) {
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, 'javascript:saveAgent();');
+            $btnSave->AddEvent(ON_CLICK, 'javascript:Jaws_Gadget.getInstance(\'Policy\').saveAgent();');
             $tpl->SetVariable('btn_save', $btnSave->Get());
 
             $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
-            $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
+            $btnCancel->AddEvent(ON_CLICK, 'javascript:Jaws_Gadget.getInstance(\'Policy\').stopAction();');
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
         }
 

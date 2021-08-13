@@ -1,0 +1,204 @@
+<div id="policy">
+    <table>
+        <tr>
+            <td id="policy_sidebar"><div class="gadget_sidebar">{{sidebar}}</div></td>
+            <td>
+                <div class="repeater" id="zone-actions-grid" data-staticheight="450">
+                    <div class="repeater-header">
+                        <div class="datagrid-filters">
+                            <form action="#" onsubmit="return false;">
+                                <div class="row">
+
+                                <div class="col-xs-2">
+                                    <label for="filter_zone">{{ "policy.zone" | t }}: </label>
+                                </div>
+                                <div class="col-xs-4">
+                                    <select id="filter_zone" name="zone" class="form-control">
+                                        <option value="0">{{ "global.all" | t }}</option>
+                                        {% for zone in zones %}
+                                        <option value="{{ zone.id }}">{{ zone.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-xs-2">
+                                    <label for="filter_script">{{ "policy.script" | t }}: </label>
+                                </div>
+                                <div class="col-xs-4">
+                                    <select id="filter_script" name="script"  class="form-control">
+                                        <option value="0">{{ "policy.script_both" | t }}</option>
+                                        <option value="1">{{ "policy.script_index" | t }}</option>
+                                        <option value="2">{{ "policy.script_admin" | t }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-xs-2">
+                                    <label for="filter_gadget">{{ "global.gadget" | t }}: </label>
+                                </div>
+                                <div class="col-xs-4">
+                                    <select id="filter_gadget" name="gadget" class="form-control">
+                                        <option value="0">{{ "global.all" | t }}</option>
+                                        {% for gadget in gadgets %}
+                                        <option value="{{ gadget.name }}">{{ gadget.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-xs-2">
+                                    <label for="filter_action">{{ "global.action" | t }}: </label>
+                                </div>
+                                <div class="col-xs-4">
+                                    <select id="filter_action" name="action" class="form-control">
+                                        <option value="0">{{ "global.all" | t }}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            </form>
+                        </div>
+
+                        <div class="repeater-header-right">
+                            <button type="button" class="btn btn-info btn-m" data-toggle="modal" data-target="#zoneActionModal">
+                                <span class="glyphicon glyphicon-plus"></span> {{ "global.add" | t }}
+                            </button>
+                            <button type="button" class="btn btn-success btn-refresh">
+                                <span class="glyphicon glyphicon-refresh"></span> {{ "global.reload" | t }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="repeater-viewport">
+                        <div class="repeater-canvas"></div>
+                        <div class="loader repeater-loader"></div>
+                    </div>
+                    <div class="repeater-footer">
+                        <div class="repeater-footer-left">
+                            <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
+          </span>
+                                <div class="btn-group selectlist dropup" data-resize="auto">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                        <span class="selected-label">?</span>
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                                        <li data-value="25"><a href="#">25</a></li>
+                                        <li data-value="50"><a href="#">50</a></li>
+                                    </ul>
+                                    <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+                                </div>
+                                <span>{{ "global.perpage" | t }}</span>
+                            </div>
+                        </div>
+                        <div class="repeater-footer-right">
+                            <div class="repeater-pagination">
+                                <button type="button" class="btn btn-default btn-sm repeater-prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="sr-only">Previous Page</span>
+                                </button>
+                                <label class="page-label" id="myPageLabel"></label>
+                                <div class="repeater-primaryPaging active">
+                                    <div class="input-group input-append dropdown combobox dropup">
+                                        <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+                                <button type="button" class="btn btn-default btn-sm repeater-next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <span class="sr-only">Next Page</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="modal fade" id="zoneActionModal" tabindex="-1" role="dialog" aria-labelledby="zoneActionModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ "policy.zone_action_add" | t }}</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="#" id="zone-action-form" onsubmit="return false;">
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <label for="zone">{{ "policy.zone" | t }}:</label>
+                            <select name="zone" id="zone" class="form-control">
+                                {% for zone in zones %}
+                                <option value="{{ zone.id }}">{{ zone.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group col-xs-12">
+                            <label for="zone">{{ "policy.script" | t }}:</label>
+                            <select name="script" id="script" class="form-control">
+                                <option value="0">{{ "policy.script_both" | t }}</option>
+                                <option value="1">{{ "policy.script_index" | t }}</option>
+                                <option value="2">{{ "policy.script_admin" | t }}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-xs-12">
+                            <label for="zone">{{ "global.gadget" | t }}:</label>
+                            <select name="gadget" id="gadget" class="form-control">
+                                <option value="">{{ "global.all" | t }}</option>
+                                {% for gadget in gadgets %}
+                                <option value="{{ gadget.name }}">{{ gadget.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group col-xs-12">
+                            <label for="zone">{{ "global.action" | t }}:</label>
+                            <select name="action" id="action" class="form-control">
+                            </select>
+                        </div>
+
+                        <div class="form-group col-xs-12">
+                            <label for="zone">{{ "policy.access" | t }}:</label>
+                            <select name="access" id="access" class="form-control">
+                                <option value="0">{{ "global.no" | t }}</option>
+                                <option value="1">{{ "global.yes" | t }}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-xs-12">
+                            <label for="order">{{ "policy.order" | t }}:</label>
+                            <input class="form-control" name="order" id="order" value="" type="number"/>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    {{ "global.cancel" | t }}
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSaveZoneAction">
+                    {{ "global.save" | t }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

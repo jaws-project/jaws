@@ -20,15 +20,25 @@ class Policy_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function SideBar($action)
     {
-        $actions = array('IPBlocking', 'AgentBlocking', 'Encryption', 'AntiSpam',
+        $actions = array('Zones', 'ZoneActions', 'IPBlocking', 'AgentBlocking', 'Encryption', 'AntiSpam',
                          'AdvancedPolicies');
         if (!in_array($action, $actions)) {
             $action = 'IPBlocking';
         }
 
         $sidebar = new Jaws_Widgets_Sidebar('policy');
+        if ($this->gadget->GetPermission('ManageZones')) {
+            $sidebar->AddOption('Zones', _t('POLICY_ZONES'),
+                BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=Zones',
+                'images/stock/stop.png');
+        }
+        if ($this->gadget->GetPermission('ManageZoneActions')) {
+            $sidebar->AddOption('ZoneActions', _t('POLICY_ZONE_ACTIONS'),
+                BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=ZoneActions',
+                'images/stock/stop.png');
+        }
         if ($this->gadget->GetPermission('IPBlocking')) {
-            $sidebar->AddOption('IPBlocking', _t('POLICY_IP_BLOCKING'), 
+            $sidebar->AddOption('IPBlocking', _t('POLICY_IP_BLOCKING'),
                                 BASE_SCRIPT . '?reqGadget=Policy&amp;reqAction=IPBlocking',
                                 'images/stock/stop.png');
         }
