@@ -181,6 +181,12 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageZones');
         $data = $this->gadget->request->fetch('data:array', 'post');
+
+        $data['from'] = @inet_pton($data['from']);
+        $data['from'] = rtrim(base64_encode($data['from']), '=');
+        $data['to'] = @inet_pton($data['to']);
+        $data['to'] = rtrim(base64_encode($data['to']), '=');
+
         $res = $this->gadget->model->loadAdmin('Zone')->InsertZoneRange($data);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONERANGE_NOT_INSERTED'), RESPONSE_ERROR);
@@ -223,6 +229,12 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageZones');
         $post = $this->gadget->request->fetch(array('id:integer', 'data:array'), 'post');
+
+        $post['data']['from'] = @inet_pton($post['data']['from']);
+        $post['data']['from'] = rtrim(base64_encode($post['data']['from']), '=');
+        $post['data']['to'] = @inet_pton($post['data']['to']);
+        $post['data']['to'] = rtrim(base64_encode($post['data']['to']), '=');
+
         $res = $this->gadget->model->loadAdmin('Zone')->UpdateZoneRange($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONERANGE_NOT_UPDATED'), RESPONSE_ERROR);

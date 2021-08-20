@@ -147,6 +147,32 @@ function Jaws_Gadget_Policy() { return {
     },
 
     /**
+     * PHP's inet_ntop in JavaScript
+     *
+     */
+    inet_ntop: function (a) {
+        // http://kevin.vanzonneveld.net
+        var i = 0,
+            m = '',
+            c = [];
+        a += '';
+        if (a.length === 4) { // IPv4
+            return [
+                a.charCodeAt(0), a.charCodeAt(1), a.charCodeAt(2), a.charCodeAt(3)].join('.');
+        } else if (a.length === 16) { // IPv6
+            for (i = 0; i < 16; i++) {
+                c.push(((a.charCodeAt(i++) << 8) + a.charCodeAt(i)).toString(16));
+            }
+            return c.join(':').replace(/((^|:)0(?=:|$))+:?/g, function (t) {
+                m = (t.length > m.length) ? t : m;
+                return t;
+            }).replace(m || ' ', '::');
+        } else { // Invalid length
+            return false;
+        }
+    },
+
+    /**
      * Select DataGrid row
      *
      */
@@ -601,8 +627,8 @@ function Jaws_Gadget_Policy() { return {
                     callOptions.showMessage = false;
                     var zoneRangeInfo = response.data;
                     if (zoneRangeInfo) {
-                        $('#from').val(zoneRangeInfo.from);
-                        $('#to').val(zoneRangeInfo.to);
+                        $('#from').val(this.inet_ntop(atob(zoneRangeInfo.from)));
+                        $('#to').val(this.inet_ntop(atob(zoneRangeInfo.to)));
                     }
                 }
             }
@@ -720,6 +746,30 @@ function Jaws_Gadget_Policy() { return {
     },
 
     /**
+     * ZoneRanges Datagrid column renderer
+     */
+    zoneRangesDGColumnRenderer: function (helpers, callback) {
+        var column = helpers.columnAttr;
+        var rowData = helpers.rowData;
+        var customMarkup = '';
+
+        switch (column) {
+            case 'from':
+                customMarkup = this.inet_ntop(atob(rowData.from));
+                break;
+            case 'to':
+                customMarkup = this.inet_ntop(atob(rowData.to));
+                break;
+            default:
+                customMarkup = helpers.item.text();
+                break;
+        }
+
+        helpers.item.html(customMarkup);
+        callback();
+    },
+
+    /**
      * initiate ZoneRanges dataGrid
      */
     initiateZoneRangesDG: function() {
@@ -751,6 +801,7 @@ function Jaws_Gadget_Policy() { return {
         // initialize the repeater
         this.zoneRangesDataGrid = $('#zone-ranges-grid').repeater({
             dataSource: $.proxy(this.zoneRangesDataSource, this),
+            list_columnRendered: $.proxy(this.zoneRangesDGColumnRenderer, this),
             list_actions: list_actions,
             list_noItemsHTML: this.gadget.defines.datagridNoItems,
             list_direction: $('.repeater-canvas').css('direction')
