@@ -15,8 +15,8 @@
   <div class="form-group col-xs-12 col-md-4">
     <label for="anon_register">{{ "users.properties_anon_register" | t }}:</label>
     <select class="form-control" name="anon_register" id="anon_register">
-      <option value="0" {{ anon_register | equal: 0, "selected" }}>{{ "global.no" | t }}</option>
-      <option value="1" {{ anon_register | equal: 1, "selected" }}>{{ "global.yes" | t }}</option>
+      <option value="false" {{ anon_register | equal: "false", "selected" }}>{{ "global.no" | t }}</option>
+      <option value="true" {{ anon_register | equal: "true", "selected" }}>{{ "global.yes" | t }}</option>
     </select>
   </div>
 
@@ -45,8 +45,8 @@
   <div class="form-group col-xs-12 col-md-4">
     <label for="password_recovery">{{ "users.properties_pass_recovery" | t }}:</label>
     <select class="form-control" name="password_recovery" id="password_recovery">
-      <option value="0" {{ password_recovery | equal: 0, "selected" }}>{{ "global.no" | t }}</option>
-      <option value="1" {{ password_recovery | equal: 1, "selected" }}>{{ "global.yes" | t }}</option>
+      <option value="false" {{ password_recovery | equal: "false", "selected" }}>{{ "global.no" | t }}</option>
+      <option value="true" {{ password_recovery | equal: "true", "selected" }}>{{ "global.yes" | t }}</option>
     </select>
   </div>
 
