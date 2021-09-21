@@ -402,12 +402,12 @@ function Jaws_Gadget_Policy() { return {
                     $('#password_lockedout_time').val(),
                     $('#password_max_age').val(),
                     $('#password_min_length').val(),
-                    $('#zonein_captcha').val(),
-                    $('#zonein_captcha_driver').val(),
+                    $('#login_captcha').val(),
+                    $('#login_captcha_driver').val(),
                     $('#xss_parsing_level').val(),
                     $('#session_online_timeout').val(),
                     $('#session_anony_remember_timeout').val(),
-                    $('#session_zonein_remember_timeout').val()
+                    $('#session_login_remember_timeout').val()
                 ]
             );
         } catch(e) {

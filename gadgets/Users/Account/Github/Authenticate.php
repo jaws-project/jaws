@@ -69,12 +69,12 @@ class Users_Account_Github_Authenticate extends Users_Account_Github
                 'Bearer ' . $this->gadget->session->access_token
             );
         }
-        $result = $httpRequest->get($this->apiBaseURL . 'user', $loginData);
-        if (Jaws_Error::IsError($result) || $result != 200) {
+        $result = $httpRequest->get($this->apiBaseURL . 'user');
+        if (Jaws_Error::IsError($result) || $result['status'] != 200) {
             return Jaws_Error::raiseError('Fetch authorize error!', __FUNCTION__);
         }
 
-        $loginData = json_decode($loginData, true);
+        $loginData = json_decode($result['body'], true);
 
         $user = array();
         $user['id']          = strtolower('Github:'.$loginData['login']);
