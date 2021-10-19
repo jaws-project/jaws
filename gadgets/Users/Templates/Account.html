@@ -12,35 +12,42 @@
   <form name="account" action="{{base_script}}" method="post">
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="UpdateAccount" />
+    <input type="hidden" name="step" value="{{step}}" />
     <div class="gadget_content">
       <fieldset>
-        <div class="user_avatar">
-          <img src="{{avatar}}" alt="{{username}}" title="{{nickname}}">
-        </div>
-        <div>
-          <label for="username">{{ "users.users_username" | t }}:</label>
-          <input class="form-control ltr" name="username" id="username" value="{{username}}"
-            type="text" {{ username_disabled | equal: true, 'disabled="disabled"' }}
-          />
-        </div>
-        <div>
-          <label for="nickname">{{ "users.users_nickname" | t }}:</label>
-          <input class="form-control" name="nickname" id="nickname" value="{{nickname}}"
-            type="text" {{ nickname_disabled | equal: true, 'disabled="disabled"' }}
-          />
-        </div>
-        <div>
-          <label for="email">{{ "global.email" | t }}:</label>
-          <input class="form-control ltr" name="email" id="email" value="{{email}}"
-            type="text" {{ email_disabled | equal: true, 'disabled="disabled"' }}
-          />
-        </div>
-        <div>
-          <label for="mobile">{{ "users.contacts_mobile_number" | t }}:</label>
-          <input class="form-control ltr" name="mobile" id="mobile" value="{{mobile}}"
-            type="text" {{ mobile_disabled | equal: true, 'disabled="disabled"' }}
-          />
-        </div>
+        {% case step %}
+          {% when 2 %}
+            <div class="user_avatar">
+              <img src="{{avatar}}" alt="{{username}}" title="{{nickname}}">
+            </div>
+            <div>
+              <label for="username">{{ "users.users_username" | t }}:</label>
+              <input class="form-control ltr" name="username" id="username" value="{{username}}"
+                type="text" {{ username_disabled | equal: true, 'disabled="disabled"' }}
+              />
+            </div>
+            <div>
+              <label for="nickname">{{ "users.users_nickname" | t }}:</label>
+              <input class="form-control" name="nickname" id="nickname" value="{{nickname}}"
+                type="text" {{ nickname_disabled | equal: true, 'disabled="disabled"' }}
+              />
+            </div>
+            <div>
+              <label for="email">{{ "global.email" | t }}:</label>
+              <input class="form-control ltr" name="email" id="email" value="{{email}}"
+                type="text" {{ email_disabled | equal: true, 'disabled="disabled"' }}
+              />
+            </div>
+            <div>
+              <label for="mobile">{{ "users.contacts_mobile_number" | t }}:</label>
+              <input class="form-control ltr" name="mobile" id="mobile" value="{{mobile}}"
+                type="text" {{ mobile_disabled | equal: true, 'disabled="disabled"' }}
+              />
+            </div>
+          {% when 3 %}
+          {% else %}
+        {% endcase %}
+
       </fieldset>
     </div>
     <div class="gadget_actions">

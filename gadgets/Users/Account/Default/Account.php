@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Users
  */
-class Users_Actions_Account extends Users_Actions_Default
+class Users_Account_Default_Account extends Users_Account_Default
 {
     /**
      * Builds a simple form to update user account info(nickname, email)
@@ -15,31 +15,74 @@ class Users_Actions_Account extends Users_Actions_Default
      */
     function Account()
     {
-        if (!$this->app->session->user->logged) {
-            return Jaws_Header::Location(
-                $this->gadget->urlMap(
-                    'Login',
-                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
-                )
+        $this->AjaxMe('index.js');
+
+        $assigns = array();
+        $response = $this->gadget->session->pop('Account.Response');
+        if (!isset($response['data'])) {
+            $assigns = $this->gadget->model->load('User')->getUser(
+                $this->app->session->user->id,
+                $this->app->session->user->domain
             );
+            $assigns['step'] = 2;
+        } else {
+            $assigns = $response['data'];
+            $assigns['step'] = (int)$assigns['step'];
+        }
+        $assigns['response'] = $response;
+
+        switch ($assigns['step']) {
+            case 2:
+                $this->AccountStep2($assigns);
+                break;
+
+            case 3:
+                $this->AccountStep3($assigns);
+                break;
+
+            default:
+                $this->AccountStep1($assigns);
         }
 
-        $this->gadget->CheckPermission(
-            'EditUserName,EditUserNickname,EditUserEmail',
-            '',
-            false
-        );
+        return $this->gadget->template->xLoad('Account.html')->render($assigns);
+    }
 
-        $authtype = $this->app->session->auth;
-        $classfile = ROOT_JAWS_PATH . "gadgets/Users/Account/$authtype/Account.php";
-        if (!file_exists($classfile)) {
-            Jaws_Error::Fatal($authtype. ' account class doesn\'t exists');
-        }
+    /**
+     * Builds a simple form to update user account info(nickname, email)
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function AccountStep1(&$assigns)
+    {
+    }
 
-        // load logout method of account driver
-        $classname = "Users_Account_{$authtype}_Account";
-        $objAccount = new $classname($this->gadget);
-        return $objAccount->Account();
+    /**
+     * Builds a simple form to update user account info(nickname, email)
+     *
+     * @access  public
+     * @return  void
+     */
+    function AccountStep2(&$assigns)
+    {
+        // Menu navigation
+        $assigns['navigation'] = $this->gadget->action->load('MenuNavigation')->xnavigation();
+        $assigns['base_script']       = BASE_SCRIPT;
+        $assigns['username_disabled'] = !$this->gadget->GetPermission('EditUserName');
+        $assigns['nickname_disabled'] = !$this->gadget->GetPermission('EditUserNickname');
+        $assigns['email_disabled']    = !$this->gadget->GetPermission('EditUserEmail');
+        $assigns['mobile_disabled']   = !$this->gadget->GetPermission('EditUserMobile');
+        $assigns['avatar']            = $this->gadget->urlMap('Avatar', array('user'  => $assigns['username']));
+    }
+
+    /**
+     * Builds a simple form to update user account info(nickname, email)
+     *
+     * @access  public
+     * @return  string  XHTML form
+     */
+    function AccountStep3(&$assigns)
+    {
     }
 
     /**
@@ -50,49 +93,70 @@ class Users_Actions_Account extends Users_Actions_Default
      */
     function UpdateAccount()
     {
-        if (!$this->app->session->user->logged) {
-            return Jaws_Header::Location(
-                $this->gadget->urlMap(
-                    'Login',
-                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
-                )
+        $postData = $this->gadget->request->fetch(
+            array(
+                'domain', 'username', 'nickname', 'email', 'mobile', 'step'
+            ),
+            'post'
+        );
+        $postData['step'] = (int)$postData['step'];
+
+        // set default domain if not set
+        if (is_null($postData['domain'])) {
+            $postData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
+        }
+
+        try {
+            if ($rcvryData['step'] == 2) {
+                // check edit username permission
+                if (empty($postData['username']) ||
+                    !$this->gadget->GetPermission('EditUserName'))
+                {
+                    $postData['username'] = $this->app->session->user->username;
+                }
+                // check edit nickname permission
+                if (empty($postData['nickname']) ||
+                    !$this->gadget->GetPermission('EditUserNickname'))
+                {
+                    $postData['nickname'] = $this->app->session->user->nickname;
+                }
+                // check edit email permission
+                if (empty($postData['email']) ||
+                    !$this->gadget->GetPermission('EditUserEmail'))
+                {
+                    $postData['email'] = $this->app->session->user->email;
+                }
+                // check edit mobile permission
+                if (empty($postData['mobile']) ||
+                    !$this->gadget->GetPermission('EditUserMobile'))
+                {
+                    $postData['mobile'] = $this->app->session->user->mobile;
+                }
+
+                $result = $this->gadget->model->load('User')->updateAccount(
+                    $this->app->session->user->id,
+                    $postData
+                );
+                if (Jaws_Error::IsError($result)) {
+                    throw new Exception($result->getMessage(), 404);
+                }
+
+                throw new Exception($this::t('MYACCOUNT_UPDATED'), 201);
+
+            } elseif () {
+            }
+        } catch (Exception $error) {
+            unset($postData['password'], $postData['password_check']);
+            $this->gadget->session->push(
+                $error->getMessage(),
+                ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
+                'Account.Response',
+                $postData
             );
+
+            return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
         }
-
-        $this->gadget->CheckPermission(
-            'EditUserName,EditUserNickname,EditUserEmail,EditUserMobile',
-            '',
-            false
-        );
-
-        $authtype = $this->app->session->auth;
-        $classfile = ROOT_JAWS_PATH . "gadgets/Users/Account/$authtype/Account.php";
-        if (!file_exists($classfile)) {
-            Jaws_Error::Fatal($authtype. ' account class doesn\'t exists');
-        }
-
-        // load logout method of account driver
-        $classname = "Users_Account_{$authtype}_Account";
-        $objAccount = new $classname($this->gadget);
-        $result = $objAccount->UpdateAccount();
-        if (!Jaws_Error::IsError($result)) {
-            // add required attributes for auto login into jaws
-            $recoveryData['auth'] = $authtype;
-        }
-
-        $default_authtype = $this->gadget->registry->fetch('authtype');
-        return $objAccount->LoginRecoveryError(
-            $recoveryData,
-            ($authtype != $default_authtype)? $authtype : '',
-            $referrer
-        );
-
-
-
-
-        return Jaws_Header::Location($this->gadget->urlMap('Account'));
     }
-
 
     /**
      * Builds a simple form to update user password
