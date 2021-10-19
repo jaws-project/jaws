@@ -198,7 +198,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             if (!empty($default_transfer_gadget)) {
                 $defaultAction = Jaws_Gadget::getInstance($default_transfer_gadget)->$defaultActionAttribute;
                 if (!Jaws_Error::IsError($defaultAction) && !empty($defaultAction)) {
-                    $referrer = bin2hex(Jaws_Gadget::getInstance($default_transfer_gadget)->urlMap($defaultAction));
+                    $referrer = bin2hex(
+                        Jaws_Gadget::getInstance($default_transfer_gadget)->urlMap($defaultAction)
+                    );
                 }
             }
         }
