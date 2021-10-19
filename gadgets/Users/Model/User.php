@@ -267,4 +267,51 @@ class Users_Model_User extends Jaws_Gadget_Model
         return $avatar;
     }
 
+    /**
+     * Updates user account information
+     *
+     * @access  public
+     * @param   int     $uid    User ID
+     * @param   array   $uData  Account information data
+     * @return  bool    Returns true on success, false on failure
+     */
+    function updateAccount($uid, $uData)
+    {
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($uData),
+            array('username', 'nickname', 'email', 'mobile')
+        );
+        foreach ($invalids as $invalid) {
+            unset($uData[$invalid]);
+        }
+
+        $uData['last_update'] = time();
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update($uData)->where('id', (int)$uid)->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        if (isset($this->app) &&
+            property_exists($this->app, 'session') &&
+            $this->app->session->user->id == (int)$uid
+        ) {
+            foreach($uData as $k => $v) {
+                $this->app->session->user = array($k => $v);
+            }
+        }
+
+        // Let everyone know a user has been added
+        $res = $this->gadget->event->shout(
+            'UserChanges',
+            array('action' => 'UpdateUser', 'user' => (int)$uid)
+        );
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
