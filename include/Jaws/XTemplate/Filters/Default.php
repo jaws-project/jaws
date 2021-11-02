@@ -282,6 +282,7 @@ class Jaws_XTemplate_Filters_Default
         if (empty($globalVariables)) {
             $thisApp = Jaws::getInstance();
             $globalVariables['.dir']     = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
+            $globalVariables['site_url'] = Jaws_Utils::getBaseURL('/', false);
             $globalVariables['base_url'] = Jaws_Utils::getBaseURL('/');
             $globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
             $globalVariables['base_script']   = BASE_SCRIPT;
