@@ -74,7 +74,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $data['user'] = (int)$this->app->session->user->id;
             $data['is_dir'] = true;
             $data['published'] = $data['published']? true : false;
-            $data['title'] = $data['title'];
+            $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
             $data['file_type'] = Directory_Info::FILE_TYPE_FOLDER;
             $result = $this->gadget->model->loadAdmin('Files')->InsertFile($data);
@@ -110,8 +110,8 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            $data['title'] = $data['title'];
-            $data['description'] = $data['description'];
+            $data['title'] = Jaws_XSS::defilter($data['title']);
+            $data['description'] = Jaws_XSS::defilter($data['description']);
 
             $id = (int)$this->gadget->request->fetch('id', 'post');
 

@@ -33,7 +33,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         if ($standalone) {
             $tpl->SetVariable('standalone', 'standalone');
             $this->gadget->define('currentAction', 'Browse');
-            $tpl->SetVariable('home_url', BASE_SCRIPT . '?reqGadget=Directory&reqAction=Browse');
+            $tpl->SetVariable('home_url', $this->gadget->url('Directory', array('standalone' => '1')));
 
             $tpl->SetBlock('workspace/standalone');
             $tpl->ParseBlock('workspace/standalone');

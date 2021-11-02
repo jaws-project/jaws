@@ -66,8 +66,8 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
             $data['is_dir'] = false;
             $data['public'] = (bool)$data['public'];
-            $data['title'] = $data['title'];
-            $data['description'] = $data['description'];
+            $data['title'] = Jaws_XSS::defilter($data['title']);
+            $data['description'] = Jaws_XSS::defilter($data['description']);
             if (!$this->gadget->GetPermission('PublishFiles')) {
                 $data['published'] = !$data['public'];
             } else {

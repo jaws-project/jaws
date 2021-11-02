@@ -386,6 +386,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $tpl->SetVariable('icon', $iconUrl . $icons[$file['file_type']] . '.png');
             }
 
+            // display file
+            $tpl->SetVariable(
+                'preview',
+                $this->gadget->action->loadAdmin('Files')->PlayMedia($file)
+            );
+
             $tpl->ParseBlock("$block/files/file");
         }
 
@@ -456,10 +462,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         if (empty($id)) {
             return Jaws_HTTPError::Get(404);
         }
-        $model = $this->gadget->model->load('Files');
 
         // Validate file
-        $file = $model->GetFile($id);
+        $file = $this->gadget->model->load('Files')->GetFile($id);
         if (Jaws_Error::IsError($file) || empty($file) || empty($file['user_filename'])) {
             return Jaws_HTTPError::Get(404);
         }
