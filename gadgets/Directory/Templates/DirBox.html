@@ -1,13 +1,11 @@
-<!-- BEGIN directory -->
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
+    <div class="col-xs-12"><h2>{{ "directory.actions_directory" | t }}</h2></div>
   </div>
 </div>
 <div class="gadget_container directory">
   <div class="gadget_content">
-    <!-- INCLUDE Files.html -->
+    {% include 'gadgets/Directory/Templates/XFiles.html' %}
   </div>
 </div>
 <div class="gadget_footer"></div>
-<!-- END directory -->

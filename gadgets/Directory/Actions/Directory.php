@@ -70,11 +70,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $this->SetActionMode('Directory', 'standalone', 'normal');
         }
 
-        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
-            $tpl = $this->gadget->template->load('Directory.html');
-        } else {
-            $tpl = $this->gadget->template->load('DirBox.html');
-        }
+        $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('directory');
 
         $response = $this->gadget->session->pop('SaveFile');
@@ -138,7 +134,14 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         $tpl->ParseBlock('directory');
-        return $tpl->Get();
+
+        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
+            return $tpl->Get();
+        } else {
+            $assigns = $this->xListFiles();
+            return $this->gadget->template->xLoad('DirBox.html')->render($assigns);
+        }
+
     }
 
     /**
@@ -426,6 +429,161 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $tpl->ParseBlock("$block/files");
         return;
+    }
+
+    /**
+     * Fetches and displays list of directories/files
+     *
+     * @access  public
+     * @param   int     $parent
+     * @param   null    $type
+     * @param   int     $orderBy    Order by
+     * @param   int     $limit      Forms limit
+     * @return string HTML content
+     */
+    function xListFiles($parent = 0, $type = null, $orderBy = 0, $limit = 0)
+    {
+        $assigns = array();
+
+        $params = array();
+        $filters = $this->gadget->request->fetch(
+            array('filter_file_type', 'filter_file_size', 'filter_from_date', 'filter_to_date', 'filter_order'),
+            'post'
+        );
+
+        // Layout action
+        $isLayoutAction = $this->app->requestedActionMode == ACTION_MODE_LAYOUT;
+        if ($isLayoutAction) {
+            $page = 0;
+            $params['file_type'] = (int)$type;
+            if ($params['file_type'] == 1) {
+                $params['is_dir'] = true;
+            }
+        } else {
+            $get = $this->gadget->request->fetch(array('type', 'order', 'page'), 'get');
+            $page = (int)$get['page'];
+            $params['file_type'] = (int)$get['type'];
+            if (!empty($get['order'])) {
+                $orderBy = (int)$get['order'];
+            }
+        }
+
+        $params['limit']  = ($limit > 0) ? $limit : (int)$this->gadget->registry->fetch('items_per_page');
+        $params['offset'] = ($page == 0)? 0 : $params['limit'] * ($page - 1);
+        $params['parent'] = (int)$parent;
+        $params['public'] = true;
+        $params['published'] = true;
+
+        $user = $this->gadget->request->fetch('user', 'get');
+        if (!empty($user)) {
+            if (is_numeric($user)) {
+                $params['user'] = (int)$user;
+                if ($params['user'] == (int)$this->app->session->user->id) {
+                    unset($params['public'], $params['published']);
+                }
+            } else {
+                $params['user'] = $user;
+                if ($params['user'] == $this->app->session->user->username) {
+                    unset($params['public'], $params['published']);
+                }
+            }
+        }
+
+        // check filters
+        if (!is_null($filters['filter_file_type'])) {
+            $params['file_type'] = $filters['filter_file_type'];
+            if ($filters['filter_file_type'] == 1) {
+                $params['is_dir'] = true;
+            }
+        }
+        if (!empty($filters['filter_file_size'])) {
+            $params['file_size'] = ($filters['filter_file_size'] == '0') ?
+                null : explode(',', $filters['filter_file_size']);
+        }
+
+        $jdate = Jaws_Date::getInstance();
+        $from_date = $to_date = '';
+        if (!empty($filters['filter_from_date'])) {
+            $from_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_from_date']));
+            $from_date = $this->app->UserTime2UTC($from_date['timestamp']);
+        }
+        if (!empty($filters['filter_to_date'])) {
+            $to_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_to_date'] . ' 23:59:59'));
+            $to_date = $this->app->UserTime2UTC($to_date['timestamp']);
+        }
+        $params['date'] = array($from_date, $to_date);
+        if (!empty($filters['filter_order'])) {
+            $orderBy = (int)$filters['filter_order'];
+        }
+
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->AjaxMe('index.js');
+
+        // file type
+        $fileTypes = array();
+        $fileTypes[] = array('id' => 0, 'title' => Jaws::t('ALL'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_FOLDER, 'title' => _t('DIRECTORY_FILE_TYPE_FOLDER'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'));
+        $assigns['file_types'] = $fileTypes;
+
+        // file size
+        $fileSizes = array();
+        $fileSizes[] = array('id' => '0', 'title' => Jaws::t('ALL'));
+        $fileSizes[] = array('id' => '0,10', 'title' => '0 - 10 KB');
+        $fileSizes[] = array('id' => '10,100', 'title' => '10 - 100 KB');
+        $fileSizes[] = array('id' => '100,1024', 'title' => '100 KB - 1 MB');
+        $fileSizes[] = array('id' => '1024,16384', 'title' => '1 MB - 16 MB');
+        $fileSizes[] = array('id' => '16384,131072', 'title' => '16 MB - 128 MB');
+        $fileSizes[] = array('id' => '131072,', 'title' => '>> 128 MB');
+        $assigns['file_sizes'] = $fileSizes;
+
+        $model = $this->gadget->model->load('Files');
+        $files = $model->GetFiles($params, false, $orderBy);
+        if (Jaws_Error::IsError($files)) {
+            return;
+        }
+
+        $theme = $this->app->GetTheme();
+        $iconUrl = is_dir($theme['url'] . 'mimetypes')? $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
+        $assigns['icons'] = array(
+            1 => 'folder',
+            2 => 'text-generic',
+            3 => 'image-generic',
+            4 => 'audio-generic',
+            5 => 'video-generic',
+            6 => 'package-generic',
+            99 => 'file-generic',
+        );
+        foreach ($files as &$file) {
+            if ($file['is_dir']) {
+                $file['url'] = $this->gadget->urlMap('Directory', array('id' => $file['id']));
+            } else {
+                $file['url'] = $this->gadget->urlMap('File', array('id' => $file['id']));
+            }
+
+            $thumbnailURL = $model->GetThumbnailURL($file['host_filename']);
+            if (!empty($thumbnailURL)) {
+                $file['icon'] = $thumbnailURL;
+            } else {
+                $file['icon'] = $iconUrl . $assigns['icons'][$file['file_type']] . '.png';
+            }
+        }
+        $assigns['files'] = $files;
+
+        return $assigns;
     }
 
     /**
