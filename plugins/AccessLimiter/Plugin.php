@@ -43,8 +43,8 @@ class AccessLimiter_Plugin extends Jaws_Plugin
         $groups = $data[4];
         $content= &$data[5];
 
-        if ($this->app->session->logged()) {
-            if (!$this->app->session->isSuperAdmin()) {
+        if ($this->app->session->user->logged) {
+            if (!$this->app->session->user->superadmin) {
                 $users  = empty($users) ? array() : array_map('trim', explode(',', $users));
                 $groups = empty($groups)? array() : array_map('trim', explode(',', $groups));
 
