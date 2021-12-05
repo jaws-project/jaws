@@ -259,9 +259,14 @@ class Users_Model_User extends Jaws_Gadget_Model
                 $avatar.= fread($blob, 8192);
             }
         } else {
-            $avatar = (string)Jaws_FileManagement_File::file_get_contents(
-                JAWS_PATH . 'gadgets/Users/Resources/images/photo128px.png'
-            );
+            $theme = Jaws::getInstance()->GetTheme();
+            $defaultImage = $theme['path'] . 'default_avatar.png';
+            if (!file_exists($defaultImage)) {
+                $defaultImage = ROOT_JAWS_PATH. 'gadgets/Users/Resources/images/photo128px.png';
+            }
+
+            // FIXME: Gravatar support!
+            $avatar = (string)Jaws_FileManagement_File::file_get_contents($defaultImage);
         }
 
         return $avatar;
