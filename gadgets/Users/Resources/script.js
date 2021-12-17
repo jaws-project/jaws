@@ -395,11 +395,7 @@ function Jaws_Gadget_Users() { return {
      */
     editUserACL: function (uid) {
         this.selectedUser = uid;
-        $('#aclModal')
-            .modal('show')
-            .on('shown.bs.modal', $.proxy(function (e) {
-            this.initiateUserACLsDG();
-        }, this));
+        $('#aclModal').modal('show');
 
         this.chkImages = $('#aclModal .acl-images img').map(function() {
             return $(this).attr('src');
@@ -480,11 +476,7 @@ function Jaws_Gadget_Users() { return {
     editUserGroups: function(uid) {
         this.selectedUser = uid;
         this.currentAction = 'UserGroups';
-        $('#userGroupsModal')
-            .modal('show')
-            .on('shown.bs.modal', $.proxy(function (e) {
-                this.initiateUserGroupsDG();
-            }, this));
+        $('#userGroupsModal').modal('show');
     },
 
     /**
@@ -647,6 +639,7 @@ function Jaws_Gadget_Users() { return {
      */
     stopUserAction: function() {
         this.selectedUser = 0;
+        this.cancelSelectCombobox($('#group_combo'));
         $("#password").prop('disabled', false);
         $('#users-form')[0].reset();
     },
@@ -682,23 +675,7 @@ function Jaws_Gadget_Users() { return {
      */
     editGroupUsers: function(gid) {
         this.selectedGroup = gid;
-        $('#groupUsersModal')
-            .modal('show')
-            .on('shown.bs.modal', $.proxy(function (e) {
-                this.initiateGroupUsersDG();
-
-                $('#user_combo').combobox({
-                    'showOptionsOnKeypress': true,
-                    'noMatchesMessage': this.gadget.defines.noMatchesMessage
-                });
-                $('#user_combo').combobox('enable');
-                $('#user_combo').find('>input').val('');
-                $("#user_combo").on('keyup.fu.combobox', $.proxy(function (evt, data) {
-                    this.searchUsersAndFillCombo($('#user_combo'));
-                }, this));
-                $("#user_combo").trigger('keyup.fu.combobox');
-
-            }, this));
+        $('#groupUsersModal').modal('show');
     },
 
     /**
@@ -748,11 +725,7 @@ function Jaws_Gadget_Users() { return {
      */
     editGroupACL: function (uid) {
         this.selectedGroup = uid;
-        $('#aclModal')
-            .modal('show')
-            .on('shown.bs.modal', $.proxy(function (e) {
-                this.initiateGroupACLsDG();
-            }, this));
+        $('#aclModal').modal('show');
 
         this.chkImages = $('#aclModal .acl-images img').map(function() {
             return $(this).attr('src');
@@ -777,6 +750,7 @@ function Jaws_Gadget_Users() { return {
      */
     stopGroupAction: function() {
         this.selectedGroup = 0;
+        this.cancelSelectCombobox($('#user_combo'));
         $('form#group-form')[0].reset();
         $('#groupModal .modal-title').html(this.gadget.defines.LANGUAGE.add_group_title);
     },
@@ -2207,14 +2181,12 @@ function Jaws_Gadget_Users() { return {
      * Search users and fill combo
      */
     searchUsersAndFillCombo: function (comboElm) {
-        console.log('searchUsersAndFillCombo');
         this.ajax.callAsync(
             'GetUsers',
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
                 $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
                 if (response['type'] == 'alert-success' && response.data.total > 0) {
-                    console.log(response.data.records);
                     $.each(response.data.records, $.proxy(function (key, user) {
                         this.addOptionToCombo(comboElm, {'value': user.id, 'title': user.nickname});
                     }, this));
@@ -2289,15 +2261,15 @@ function Jaws_Gadget_Users() { return {
 
             this.initiateUsersDG();
 
+            // initiate #group_combo
             $('#group_combo').combobox({
                 'showOptionsOnKeypress': true,
                 'noMatchesMessage': this.gadget.defines.noMatchesMessage
             }).combobox('enable')
-                .find('>input').val('')
-                .on('keyup.fu.combobox', $.proxy(function (evt, data) {
-                    this.searchGroupsAndFillCombo($('#group_combo'));
-                }, this));
-            $("#group_combo").trigger('keyup.fu.combobox');
+                .find('>input').val('');
+            $("#group_combo").on('keyup.fu.combobox', $.proxy(function (evt, data) {
+                this.searchGroupsAndFillCombo($('#group_combo'));
+            }, this)).trigger('keyup.fu.combobox');
 
             $('#userModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
@@ -2307,9 +2279,13 @@ function Jaws_Gadget_Users() { return {
             }, this));
             $('#aclModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
+            }, this)).on('shown.bs.modal', $.proxy(function (e) {
+                this.initiateUserACLsDG();
             }, this));
             $('#userGroupsModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
+            }, this)).on('shown.bs.modal', $.proxy(function (e) {
+                this.initiateUserGroupsDG();
             }, this));
             $('#personalModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
@@ -2366,7 +2342,6 @@ function Jaws_Gadget_Users() { return {
 
         // init groups action
         if (this.gadget.actions.indexOf('Groups') >= 0) {
-            this.stopGroupAction();
             this.initiateGroupsDG();
 
             $('#groupModal').on('hidden.bs.modal', $.proxy(function (e) {
@@ -2374,9 +2349,14 @@ function Jaws_Gadget_Users() { return {
             }, this));
             $('#aclModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopGroupAction();
+            }, this)).on('shown.bs.modal', $.proxy(function (e) {
+                this.initiateGroupACLsDG();
             }, this));
+
             $('#groupUsersModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopGroupAction();
+            }, this)).on('shown.bs.modal', $.proxy(function (e) {
+                this.initiateGroupUsersDG();
             }, this));
 
             $('#btnSaveGroup').on('click', $.proxy(function (e) {
@@ -2407,6 +2387,15 @@ function Jaws_Gadget_Users() { return {
                 this.cancelSelectCombobox($('#' + cmbName));
             }, this));
 
+            // initiate #user_combo
+            $('#user_combo').combobox({
+                'showOptionsOnKeypress': true,
+                'noMatchesMessage': this.gadget.defines.noMatchesMessage
+            }).combobox('enable')
+                .find('>input').val('');
+            $("#user_combo").on('keyup.fu.combobox', $.proxy(function (evt, data) {
+                this.searchUsersAndFillCombo($('#user_combo'));
+            }, this)).trigger('keyup.fu.combobox');
         }
 
         // init ACLs action
