@@ -450,4 +450,14 @@ class Jaws_JWT
         return $payload;
     }
 
+    /**
+     * Returns an array with the key details
+     *
+     * @return  array   Returns an array with the key details in success or false in failure
+     */
+    public function get_key_details()
+    {
+        return openssl_pkey_get_details($this->key['public']);
+    }
+
 }
