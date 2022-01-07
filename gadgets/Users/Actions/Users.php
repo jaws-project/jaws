@@ -160,7 +160,7 @@ class Users_Actions_Users extends Users_Actions_Default
 
         $orderBy = array();
         if (isset($post['sortBy'])) {
-            $orderBy[] = array($post['sortBy'] => $post['sortDirection'] == 'asc');
+            $orderBy = array($post['sortBy'] => $post['sortDirection'] == 'asc');
         }
 
         $group = !empty($post['filters']['group']) ? $post['filters']['group'] : false;
