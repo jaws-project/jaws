@@ -59,7 +59,10 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
 
         $tpl->SetBlock('Messages/filter_from_date');
-        $this->gadget->action->load('DatePicker')->calendar($tpl, array('name' => 'filter_from_date'));
+        $objDate = Jaws_Date::getInstance();
+        $this->gadget->action->load('DatePicker')->calendar($tpl,
+            array('name' => 'filter_from_date', 'value' => $objDate->Format(time() - (24 * 3600), 'Y/m/d'))
+        );
         $tpl->ParseBlock('Messages/filter_from_date');
 
         $tpl->SetBlock('Messages/filter_to_date');
