@@ -83,6 +83,28 @@ if (!function_exists('array_column')) {
 }
 
 /**
+ * Gets the first key of an array
+ * @see http://www.php.net/array_key_first
+ */
+if (!function_exists('array_key_first')) {
+    function array_key_first($array)
+    {
+        return key(array_slice($array, 0, 1, true));
+    }
+}
+
+/**
+ * Gets the last key of an array
+ * @see http://www.php.net/array_key_last
+ */
+if (!function_exists('array_key_last')) {
+    function array_key_last($array)
+    {
+        return key(array_slice($array, -1, 1, true));
+    }
+}
+
+/**
  * Find the last occurrence of a string
  *
  * @param   string  $haystack       The input string
