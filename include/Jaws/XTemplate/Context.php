@@ -196,11 +196,9 @@ class Jaws_XTemplate_Context
     public function set($key, $value, $global = false)
     {
         if ($global) {
-            for ($i = 0; $i < count($this->assigns); $i++) {
-                $this->assigns[$i][$key] = $value;
-            }
+            $this->set_nested_array_value($this->assigns[count($this->assigns)-1], $key, $value);
         } else {
-            $this->assigns[0][$key] = $value;
+            $this->set_nested_array_value($this->assigns[0], $key, $value);
         }
     }
 
@@ -254,7 +252,7 @@ class Jaws_XTemplate_Context
         }
 
         if (preg_match('/^(-?\d+)$/', $key, $matches)) {
-            return $matches[1];
+            return (int)$matches[1];
         }
 
         if (preg_match('/^(-?\d[\d\.]+)$/', $key, $matches)) {
@@ -415,6 +413,30 @@ class Jaws_XTemplate_Context
         }
 
         return $object;
+    }
+
+    /**
+    * Sets a value in a nested array based on path
+    *
+    * @param    array  $array      Array to modify
+    * @param    string $path       Path in the array
+    * @param    mixed  $value      Value to set
+    * @param    string $delimiter  Separator for the path
+    * @return   void
+    */
+    private function set_nested_array_value(&$array, $path, &$value, $delimiter = '.')
+    {
+        $parts = explode($delimiter, $path);
+        $ref = &$array;
+        foreach ($parts as $part) {
+            if (isset($ref) && !is_array($ref)) {
+                $ref = array();
+            }
+
+            $ref = &$ref[$part];
+        }
+
+        $ref = $value;
     }
 
 }
