@@ -8,4 +8,4 @@
  * @copyright  2008-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('Block', 'block/{id}');
+$maps[] = array('Block', 'block[/{id}]');
