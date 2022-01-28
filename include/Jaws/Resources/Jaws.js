@@ -1429,7 +1429,7 @@ function initDatePicker(name)
  */
 function showDialogBox(name, dTitle, url, dHeight, dWidth)
 {
-    var dRect = {x: $(document).width(), y: $(document).height()};
+    var dRect = {x: $(window).width(), y: $(window).height()};
     var dLeft = (dWidth  > dRect.x )? 0 : Math.round(dRect.x  / 2 - dWidth  / 2) + 'px';
     var dTop  = (dHeight > dRect.y)? 0 : Math.round(dRect.y / 2 - dHeight / 2) + 'px';
 
@@ -1462,7 +1462,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
         }, dialog));
         $('body').append(overlay);
         $('body').append(dialog);
-        dialog.css({'left': dLeft, 'top': dTop});
+        dialog.css({'left': dLeft, 'top': dTop, 'position': 'fixed'});
     }
 
     $('#' + name + '_overlay').css('display', 'block');
