@@ -152,6 +152,10 @@ background:transparent url(../Resources/images/layout-controls-bg.png);
 #layout-controls *{
 font:bold 1em tahoma, georgia, arial, sans-serif;
 }
+#layout-controls a{
+opacity:1;
+display:inline-block;
+}
 #layout-controls-items{
 width:980px;
 color:#000;
@@ -369,9 +373,13 @@ margin:2px;
 float:left;
 margin:2px;
 }
-.item-delete img{
+.layout-section .item-delete img{
 width:10px;
 height:10px;
+}
+.layout-section .item_icon img {
+width:48px;
+height:48px;
 }
 #edit_layout{
 text-align:right;
