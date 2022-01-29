@@ -81,7 +81,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                         $tpl->SetBlock('ViewAlbumPage/photos/item');
                         $url = $this->gadget->urlMap(
                             'Photo',
-                            array('id' => $image['id'], 'album' => $image['albumid'])
+                            array('photo' => $image['id'], 'album' => $image['albumid'])
                         );
                         $tpl->SetVariable('url',      $url);
                         $tpl->SetVariable('thumb',    $this->app->getDataURL('phoo/' . $image['thumb']));
@@ -187,7 +187,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                 $this->gadget->registry->fetch('allow_comments') == 'true' &&
                 $allow_comments_config;
 
-            $redirect_to = $this->gadget->urlMap('Photo', array('id' => $image['id'], 'album' => $albumid));
+            $redirect_to = $this->gadget->urlMap('Photo', array('photo' => $image['id'], 'album' => $albumid));
 
             $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
             $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'Image', $image['id'],
@@ -218,10 +218,10 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         if ($image['first'] != $image['id']) {
             $tpl->SetBlock('ViewImage/navigation/no-first-photo');
             $tpl->SetVariable('lbl_first', _t('PHOO_FIRST'));
-            $url = $this->gadget->urlMap('Photo', array('id' => $image['first'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('Photo', array('photo' => $image['first'], 'album' => $albumid));
             $tpl->SetVariable('url_first', $url);
             $tpl->SetVariable('lbl_prev', _t('PHOO_PREVIOUS'));
-            $url = $this->gadget->urlMap('Photo', array('id' => $image['previous'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('Photo', array('photo' => $image['previous'], 'album' => $albumid));
             $tpl->SetVariable('url_prev', $url);
             $tpl->ParseBlock('ViewImage/navigation/no-first-photo');
         } else {
@@ -234,10 +234,10 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         if ($image['last'] != $image['id']) {
             $tpl->SetBlock('ViewImage/navigation/no-last-photo');
             $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
-            $url = $this->gadget->urlMap('Photo', array('id' => $image['next'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('Photo', array('photo' => $image['next'], 'album' => $albumid));
             $tpl->SetVariable('url_next', $url);
             $tpl->SetVariable('lbl_last', _t('PHOO_LAST'));
-            $url = $this->gadget->urlMap('Photo', array('id' => $image['last'], 'albumid' => $albumid));
+            $url = $this->gadget->urlMap('Photo', array('photo' => $image['last'], 'album' => $albumid));
             $tpl->SetVariable('url_last', $url);
             $tpl->ParseBlock('ViewImage/navigation/no-last-photo');
         } else {
