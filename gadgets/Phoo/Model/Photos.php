@@ -380,9 +380,9 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         foreach ($rs as $i) {
             if (empty($entry)) {
                 $entry['id']                = $i['id'];
-                $entry['thumb']             = Phoo_Model::GetThumbPath($i['filename']);
-                $entry['medium']            = Phoo_Model::GetMediumPath($i['filename']);
-                $entry['image']             = Phoo_Model::GetOriginalPath($i['filename']);
+                $entry['thumb']             = $this->gadget->model->load('Common')->GetThumbPath($i['filename']);
+                $entry['medium']            = $this->gadget->model->load('Common')->GetMediumPath($i['filename']);
+                $entry['image']             = $this->gadget->model->load('Common')->GetOriginalPath($i['filename']);
                 $entry['description']       = $i['description'];
                 $entry['meta_keywords']     = $i['meta_keywords'];
                 $entry['meta_description']  = $i['meta_description'];
