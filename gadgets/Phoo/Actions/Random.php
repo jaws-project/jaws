@@ -67,8 +67,8 @@ class Phoo_Actions_Random extends Jaws_Gadget_Action
         $tpl->SetVariable(
             'url',
             $this->gadget->urlMap(
-                'ViewImage',
-                array('id' => $r['id'],'albumid' => $r['phoo_album_id'])
+                'Photo',
+                array('id' => $r['id'],'album' => $r['phoo_album_id'])
             )
         );
         $tpl->SetVariable('name',     $r['name']);

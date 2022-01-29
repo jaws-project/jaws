@@ -10,7 +10,7 @@
  * @copyright  2004-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Model extends Jaws_Gadget_Model
+class Phoo_Model_Common extends Jaws_Gadget_Model
 {
     /**
      * Get the thumbnail thumb path of a given filename

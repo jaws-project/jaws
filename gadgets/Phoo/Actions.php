@@ -29,7 +29,7 @@ $actions['Photos'] = array(
 //    'normal' => true,
 //    'file' => 'Photos',
 //);
-$actions['ViewImage'] = array(
+$actions['Photo'] = array(
     'normal' => true,
     'file' => 'Photos',
 );

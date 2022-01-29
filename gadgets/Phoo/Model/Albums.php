@@ -10,7 +10,7 @@
  * @copyright  2004-2021 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Model_Albums extends Phoo_Model
+class Phoo_Model_Albums extends Phoo_Model_Common
 {
     /**
      * Get a list of albums

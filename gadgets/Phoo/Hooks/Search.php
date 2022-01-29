@@ -80,8 +80,8 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
                 $entry = array();
                 $entry['title'] = $r['title'];
                 $entry['url']   = $this->gadget->urlMap(
-                    'ViewImage',
-                    array('albumid' => $r['phoo_album_id'], 'id' => $r['id'])
+                    'Photo',
+                    array('album' => $r['phoo_album_id'], 'id' => $r['id'])
                 );
                 $path = substr($r['filename'], 0, strrpos($r['filename'], '/'));
                 $file = basename($r['filename']);

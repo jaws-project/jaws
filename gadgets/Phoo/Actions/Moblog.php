@@ -66,8 +66,8 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
                 $tpl->SetVariable(
                     'url',
                     $this->gadget->urlMap(
-                        'ViewImage',
-                        array('id' => $mb['id'], 'albumid' => $mb['phoo_album_id'])
+                        'Photo',
+                        array('id' => $mb['id'], 'album' => $mb['phoo_album_id'])
                     )
                 );
                 $tpl->SetVariable('name',     $mb['name']);
