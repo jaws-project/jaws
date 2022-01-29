@@ -24,13 +24,6 @@ class Phoo_Hooks_Tags extends Jaws_Gadget_Hook
             return false;
         }
 
-/*
-        $table->join('phoo_image', 'phoo_image.id', 'phoo_image_album.phoo_image_id');
-        $table->join('phoo_album', 'phoo_album.id', 'phoo_image_album.phoo_album_id');
-
-        $table->and()->where('phoo_image.published', true);
-        $table->and()->where('phoo_album.published', true);
-*/
         $result = Jaws_ORM::getInstance()
             ->table('phoo_image')
             ->select('id:integer', 'filename', 'fast_url', 'title', 'description', 'updatetime')
@@ -49,7 +42,9 @@ class Phoo_Hooks_Tags extends Jaws_Gadget_Hook
             $photo['title']   = $r['title'];
             $photo['url']     = $this->gadget->urlMap('Photo', array('photo' => $r['id']));
             $photo['outer']   = false;
-            $photo['image']   = $this->gadget->model->load('Common')->GetThumbPath($r['filename']);
+            $photo['image']   = $this->app->getDataURL(
+                'phoo/' . $this->gadget->model->load('Common')->GetThumbPath($r['filename'])
+            );
             $photo['snippet'] = $r['description'];
             $photo['date']    = $date->ToISO($r['updatetime']);
             $photos[$r['id']] = $photo;

@@ -169,6 +169,12 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $tpl->SetVariable('url', 'javascript:void();');
         }
 
+        // Show Tags
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tagsHTML = Jaws_Gadget::getInstance('Tags')->action->load('Tags');
+            $tagsHTML->loadReferenceTags('Phoo', 'image', $image['id'], $tpl, 'ViewImage');
+        }
+
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
             $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
             switch ($allow_comments_config) {
