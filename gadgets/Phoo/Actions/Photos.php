@@ -130,9 +130,9 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('ViewImage.html');
 
-        $get = $this->gadget->request->fetch(array('id', 'albumid'), 'get');
-        $id  = !is_null($id)? $id : (!empty($get['id'])? $get['id'] : '0');
-        $albumid = !is_null($albumid)? $albumid : (!empty($get['albumid'])? $get['albumid'] : '0');
+        $get = $this->gadget->request->fetch(array('photo', 'album'), 'get');
+        $id  = !is_null($id)? $id : (!empty($get['photo'])? $get['photo'] : '0');
+        $albumid = !is_null($albumid)? $albumid : (!empty($get['album'])? $get['album'] : '0');
 
         $pModel = $this->gadget->model->load('Photos');
         $sModel = $this->gadget->model->load('Settings');
