@@ -192,7 +192,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
             $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'Image', $image['id'],
                 array('action' => 'Photo',
-                    'params' => array('album' => $albumid, 'id' => $image['id']))));
+                    'params' => array('album' => $albumid, 'photo' => $image['id']))));
 
             if ($allow_comments) {
                 $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm(
