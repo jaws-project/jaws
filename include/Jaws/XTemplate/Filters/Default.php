@@ -217,13 +217,21 @@ class Jaws_XTemplate_Filters_Default
      */
     public static function urlmap($gadget, $action, ...$params)
     {
-        $pairs = array_chunk(array_pad($params, round(count($params)/2)*2, null), 2);
-        $params = array_combine(array_column($pairs, 0), array_column($pairs, 1));
+        $urlParams = array();
+        array_walk($params, function($val, $key) use (&$urlParams) {
+            if (is_array($val)) {
+                $urlParams = array_merge($urlParams, array_merge(array_keys($val), array_values($val)));
+            } else {
+                $urlParams[] = $val;
+            }
+        });
+        $pairs = array_chunk(array_pad($urlParams, round(count($urlParams)/2)*2, null), 2);
+        $urlParams = array_combine(array_column($pairs, 0), array_column($pairs, 1));
 
         return Jaws::getInstance()->map->GetMappedURL(
             $gadget,
             $action,
-            $params
+            $urlParams
         );
     }
 
