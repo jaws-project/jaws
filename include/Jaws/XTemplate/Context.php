@@ -47,7 +47,7 @@ class Jaws_XTemplate_Context
      */
     public function __construct(array $assigns = array())
     {
-        $this->assigns = array($assigns);
+        $this->assigns = array((object)$assigns);
         $this->registers = array();
 
         $files = array_map('basename', glob(__DIR__ . '/Filters/*.php'));
@@ -134,7 +134,7 @@ class Jaws_XTemplate_Context
      */
     public function merge($newAssigns)
     {
-        $this->assigns[0] = array_merge($this->assigns[0], $newAssigns);
+        $this->assigns[0] = (object)array_merge((array)$this->assigns[0], $newAssigns);
     }
 
     /**
@@ -142,7 +142,7 @@ class Jaws_XTemplate_Context
      *
      * @return  array
      */
-    public function &parentContext()
+    public function parentContext()
     {
         return $this->assigns[1];
     }
@@ -154,7 +154,7 @@ class Jaws_XTemplate_Context
      */
     public function push()
     {
-        array_unshift($this->assigns, array());
+        array_unshift($this->assigns, (object)array());
         return true;
     }
 
@@ -195,11 +195,18 @@ class Jaws_XTemplate_Context
      */
     public function set($key, $value, $global = false)
     {
+        $layer = 0;
         if ($global) {
-            $this->set_nested_array_value($this->assigns[count($this->assigns)-1], $key, $value);
-        } else {
-            $this->set_nested_array_value($this->assigns[0], $key, $value);
+            $root = explode('.', $key)[0];
+            foreach ($this->assigns as $index => $scope) {
+                if (property_exists($scope, $root)) {
+                    $layer = $index;
+                    break;
+                }
+            }
         }
+
+        $this->set_nested_array_value($this->assigns[$layer], $key, $value);
     }
 
     /**
@@ -277,9 +284,8 @@ class Jaws_XTemplate_Context
         }
 
         foreach ($this->assigns as $scope) {
-            if (array_key_exists($key, $scope)) {
-                $obj = $scope[$key];
-                return $obj;
+            if (property_exists($scope, $key)) {
+                return $scope->$key;
             }
         }
 
@@ -418,25 +424,48 @@ class Jaws_XTemplate_Context
     /**
     * Sets a value in a nested array based on path
     *
-    * @param    array  $array      Array to modify
-    * @param    string $path       Path in the array
-    * @param    mixed  $value      Value to set
-    * @param    string $delimiter  Separator for the path
+    * @param    object  $objArr     Array object
+    * @param    string  $path       Path in the array
+    * @param    mixed   $value      Value to set
+    * @param    string  $delimiter  Separator for the path
     * @return   void
     */
-    private function set_nested_array_value(&$array, $path, &$value, $delimiter = '.')
+    private function set_nested_array_value($objArr, $path, &$value, $delimiter = '.')
     {
         $parts = explode($delimiter, $path);
-        $ref = &$array;
-        foreach ($parts as $part) {
-            if (isset($ref) && !is_array($ref)) {
-                $ref = array();
+        $len = count($parts);
+
+        $obj = &$objArr;
+        for ($i = 0; $i < $len - 1; $i++) {
+            $part = $parts[$i];
+
+            switch (gettype($obj)) {
+                case 'object':
+                    if (!property_exists($obj, $part)) {
+                        $obj->$part = (object)[];
+                    }
+                    $obj = &$obj->$part;
+                    break;
+
+                case 'array':
+                    if (!array_key_exists($part, $obj)) {
+                        $obj[$part] = array();
+                    }
+                    $obj = &$obj[$part];
+                    break;
+
+                default:
+                    $obj = array();
             }
 
-            $ref = &$ref[$part];
         }
 
-        $ref = $value;
+        if (is_object($obj)) {
+            $obj->{$parts[$len - 1]} = $value;
+        } else {
+            $obj[$parts[$len - 1]] = $value;
+        }
+
     }
 
 }
