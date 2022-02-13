@@ -77,7 +77,7 @@ abstract class Jaws_XTemplate_Tag
     {
         $this->attributes = array();
 
-        $attributeRegexp = new Jaws_Regexp(Jaws_XTemplate::get('TAG_ATTRIBUTES'));
+        $attributeRegexp = new Jaws_Regexp(Jaws_XTemplate_Parser::get('TAG_ATTRIBUTES'));
 
         $attributeRegexp->scan($markup);
 

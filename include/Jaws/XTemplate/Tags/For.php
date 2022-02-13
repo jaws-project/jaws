@@ -61,9 +61,9 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
 
         $syntaxRegexp = new Jaws_Regexp(
             '/(\w+)\s+in\s+\((\d+|' .
-            Jaws_XTemplate::get('VARIABLE_NAME') .
+            Jaws_XTemplate_Parser::get('VARIABLE_NAME') .
             ')\s*\.\.\s*(\d+|' .
-            Jaws_XTemplate::get('VARIABLE_NAME') .
+            Jaws_XTemplate_Parser::get('VARIABLE_NAME') .
             ')\)/'
         );
         if ($syntaxRegexp->match($markup)) {
@@ -75,7 +75,7 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
             $this->extractAttributes($markup);
         } else {
             $syntaxRegexp = new Jaws_Regexp(
-                '/(\w+)\s+in\s+(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')/'
+                '/(\w+)\s+in\s+(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . ')/'
             );
             if ($syntaxRegexp->match($markup)) {
                 $this->variableName = $syntaxRegexp->matches[1];

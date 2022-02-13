@@ -75,7 +75,7 @@ class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
 
         $logicalRegex = new Jaws_Regexp('/\s+(and|or)\s+/');
         $compareRegex = new Jaws_Regexp(
-            '/\s*('. Jaws_XTemplate::get('COMPARISON_OPERATOR'). ')\s*/'
+            '/\s*('. Jaws_XTemplate_Parser::get('COMPARISON_OPERATOR'). ')\s*/'
         );
 
         $result = '';

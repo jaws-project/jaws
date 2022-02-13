@@ -47,11 +47,11 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     public function __construct(array &$tokens, $markup)
     {
         $regex = new Jaws_Regexp(
-            '/('.Jaws_XTemplate::get('QUOTED_FRAGMENT').'+)' .
+            '/('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+)' .
             '(\s+(with|for)\s+(' .
-            Jaws_XTemplate::get('QUOTED_FRAGMENT') .
+            Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') .
             '+))?(\s+(?:as)\s+(' .
-            Jaws_XTemplate::get('VARIABLE_NAME').
+            Jaws_XTemplate_Parser::get('VARIABLE_NAME').
             '+))?/'
         );
 
@@ -92,7 +92,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
         */
 
         //if ($this->document == false || $this->document->hasIncludes() == true) {
-            $templateTokens = Jaws_XTemplate::tokenize($source);
+            $templateTokens = Jaws_XTemplate_Parser::tokenize($source);
             $this->document = new Jaws_XTemplate_Document($templateTokens);
             /*
             $this->app->cache->set(

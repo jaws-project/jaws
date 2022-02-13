@@ -54,7 +54,7 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
 
         parent::__construct($tokens, $markup);
 
-        $syntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . '/');
+        $syntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '/');
 
         if ($syntaxRegexp->match($markup)) {
             $this->left = $syntaxRegexp->matches[0];
@@ -82,7 +82,7 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
      */
     public function unknownTag($tag, $params, array $tokens)
     {
-        $whenSyntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . '/');
+        $whenSyntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '/');
 
         switch ($tag) {
             case 'when':

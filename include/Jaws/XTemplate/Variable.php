@@ -35,20 +35,20 @@ class Jaws_XTemplate_Variable
     {
         $this->markup = $markup;
 
-        $filterSep = new Jaws_Regexp('/' . Jaws_XTemplate::get('FILTER_SEPARATOR') . '\s*(.*)/m');
-        $syntaxParser = new Jaws_Regexp('/(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')(.*)/m');
+        $filterSep = new Jaws_Regexp('/' . Jaws_XTemplate_Parser::get('FILTER_SEPARATOR') . '\s*(.*)/m');
+        $syntaxParser = new Jaws_Regexp('/(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . ')(.*)/m');
         $filterParser = new Jaws_Regexp(
             '/(?:\s+|' .
-            Jaws_XTemplate::get('QUOTED_FRAGMENT') . '|' .
-            Jaws_XTemplate::get('ARGUMENT_SEPARATOR') .
+            Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '|' .
+            Jaws_XTemplate_Parser::get('ARGUMENT_SEPARATOR') .
             ')+/'
         );
         $filterArgsRegex = new Jaws_Regexp(
             '/(?:' .
-            Jaws_XTemplate::get('FILTER_ARGUMENT_SEPARATOR') . '|' .
-            Jaws_XTemplate::get('ARGUMENT_SEPARATOR') .
+            Jaws_XTemplate_Parser::get('FILTER_ARGUMENT_SEPARATOR') . '|' .
+            Jaws_XTemplate_Parser::get('ARGUMENT_SEPARATOR') .
             ')\s*((?:\w+\s*\:\s*)?' .
-            Jaws_XTemplate::get('QUOTED_FRAGMENT') .
+            Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') .
             ')/'
         );
 
@@ -72,7 +72,7 @@ class Jaws_XTemplate_Variable
             }
         }
 
-        if (Jaws_XTemplate::get('ESCAPE_BY_DEFAULT')) {
+        if (Jaws_XTemplate_Parser::get('ESCAPE_BY_DEFAULT')) {
             // if auto_escape is enabled, and
             // - there's no raw filter, and
             // - no escape filter
@@ -107,7 +107,9 @@ class Jaws_XTemplate_Variable
         $filterArgs = array();
         $keywordArgs = array();
 
-        $justTagAttributes = new Jaws_Regexp('/\A' . trim(Jaws_XTemplate::get('TAG_ATTRIBUTES'), '/') . '\z/');
+        $justTagAttributes = new Jaws_Regexp(
+            '/\A' . trim(Jaws_XTemplate_Parser::get('TAG_ATTRIBUTES'), '/') . '\z/'
+        );
 
         foreach ($unparsedArgs as $a) {
             if ($justTagAttributes->match($a)) {

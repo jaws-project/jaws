@@ -17,7 +17,12 @@ class Jaws_XTemplate_Tags_Raw extends Jaws_XTemplate_TagSegmental
      */
     public function parse(array &$tokens)
     {
-        $tagRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '\s*(\w+)\s*(.*)?' . Jaws_XTemplate::get('TAG_END') . '$/');
+        $tagRegexp = new Jaws_Regexp(
+            '/^' .
+            Jaws_XTemplate_Parser::get('TAG_START') .
+            '\s*(\w+)\s*(.*)?' . 
+            Jaws_XTemplate_Parser::get('TAG_END') . '$/'
+        );
 
         $this->nodelist = array();
 

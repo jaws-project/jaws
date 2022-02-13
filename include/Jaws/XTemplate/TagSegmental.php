@@ -41,9 +41,16 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
      */
     public function parse(array &$tokens)
     {
-        $startRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . '/');
-        $tagRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('TAG_START') . Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?\s*(\w+)\s*(.*?)' . Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?' . Jaws_XTemplate::get('TAG_END') . '$/');
-        $variableStartRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate::get('VARIABLE_START') . '/');
+        $startRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate_Parser::get('TAG_START') . '/');
+        $tagRegexp = new Jaws_Regexp(
+            '/^' . Jaws_XTemplate_Parser::get('TAG_START') .
+            Jaws_XTemplate_Parser::get('WHITESPACE_CONTROL') .
+            '?\s*(\w+)\s*(.*?)' .
+            Jaws_XTemplate_Parser::get('WHITESPACE_CONTROL') .
+            '?' .
+            Jaws_XTemplate_Parser::get('TAG_END') . '$/'
+        );
+        $variableStartRegexp = new Jaws_Regexp('/^' . Jaws_XTemplate_Parser::get('VARIABLE_START') . '/');
 
         $this->nodelist = array();
 
@@ -100,7 +107,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
          * This assumes that TAG_START is always '{%', and a whitespace control indicator
          * is exactly one character long, on a third position.
          */
-        if (Jaws_UTF8::substr($token, 2, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL')) {
+        if (Jaws_UTF8::substr($token, 2, 1) === Jaws_XTemplate_Parser::get('WHITESPACE_CONTROL')) {
             $previousToken = end($this->nodelist);
             if (is_string($previousToken)) { // this can also be a tag or a variable
                 $this->nodelist[key($this->nodelist)] = rtrim($previousToken);
@@ -111,7 +118,8 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
          * This assumes that TAG_END is always '%}', and a whitespace control indicator
          * is exactly one character long, on a third position from the end.
          */
-        self::$trimWhitespace = Jaws_UTF8::substr($token, -3, 1) === Jaws_XTemplate::get('WHITESPACE_CONTROL');
+        self::$trimWhitespace =
+            Jaws_UTF8::substr($token, -3, 1) === Jaws_XTemplate_Parser::get('WHITESPACE_CONTROL');
     }
 
     /**
@@ -236,10 +244,10 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
     {
         $variableRegexp = new Jaws_Regexp(
             '/^' .
-            Jaws_XTemplate::get('VARIABLE_START') .
-            Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?(.*?)' .
-            Jaws_XTemplate::get('WHITESPACE_CONTROL') . '?' .
-            Jaws_XTemplate::get('VARIABLE_END') .
+            Jaws_XTemplate_Parser::get('VARIABLE_START') .
+            Jaws_XTemplate_Parser::get('WHITESPACE_CONTROL') . '?(.*?)' .
+            Jaws_XTemplate_Parser::get('WHITESPACE_CONTROL') . '?' .
+            Jaws_XTemplate_Parser::get('VARIABLE_END') .
             '$/');
         if ($variableRegexp->match($token)) {
             return new Jaws_XTemplate_Variable($variableRegexp->matches[1]);

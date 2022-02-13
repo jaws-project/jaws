@@ -8,7 +8,7 @@
  * @copyright   2020-2021 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_XTemplate_Filters_Array
+class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
 {
     /*
     TODO:

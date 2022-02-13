@@ -32,8 +32,8 @@ class Jaws_XTemplate_Tags_Cycle extends Jaws_XTemplate_Tag
      */
     public function __construct(array &$tokens, $markup)
     {
-        $simpleSyntax = new Jaws_Regexp("/" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . "/");
-        $namedSyntax = new Jaws_Regexp("/(" . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ")\s*\:\s*(.*)/");
+        $simpleSyntax = new Jaws_Regexp("/" . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . "/");
+        $namedSyntax = new Jaws_Regexp("/(" . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . ")\s*\:\s*(.*)/");
 
         if ($namedSyntax->match($markup)) {
             $this->variables = $this->variablesFromString($namedSyntax->matches[2]);
@@ -88,7 +88,7 @@ class Jaws_XTemplate_Tags_Cycle extends Jaws_XTemplate_Tag
      */
     private function variablesFromString($markup)
     {
-        $regexp = new Jaws_Regexp('/\s*(' . Jaws_XTemplate::get('QUOTED_FRAGMENT') . ')\s*/');
+        $regexp = new Jaws_Regexp('/\s*(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . ')\s*/');
         $parts = explode(',', $markup);
         $result = array();
 

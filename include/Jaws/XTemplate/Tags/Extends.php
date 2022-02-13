@@ -56,15 +56,15 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
     private function findBlocks(array $tokens)
     {
         $blockstartRegexp = new Jaws_Regexp(
-            '/^' . Jaws_XTemplate::get('TAG_START') .
+            '/^' . Jaws_XTemplate_Parser::get('TAG_START') .
             '\s*block (\w+)\s*(.*)?' .
-            Jaws_XTemplate::get('TAG_END') .
+            Jaws_XTemplate_Parser::get('TAG_END') .
             '$/'
         );
         $blockendRegexp = new Jaws_Regexp(
-            '/^' . Jaws_XTemplate::get('TAG_START') .
+            '/^' . Jaws_XTemplate_Parser::get('TAG_START') .
             '\s*endblock\s*?' .
-            Jaws_XTemplate::get('TAG_END') .
+            Jaws_XTemplate_Parser::get('TAG_END') .
             '$/'
         );
 
@@ -103,12 +103,12 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
         );
 
         // tokens in this new document
-        $maintokens = Jaws_XTemplate::tokenize($source);
+        $maintokens = Jaws_XTemplate_Parser::tokenize($source);
 
         $eRegexp = new Jaws_Regexp(
-            '/^' . Jaws_XTemplate::get('TAG_START') .
+            '/^' . Jaws_XTemplate_Parser::get('TAG_START') .
             '\s*extends (.*)?' .
-            Jaws_XTemplate::get('TAG_END') .
+            Jaws_XTemplate_Parser::get('TAG_END') .
             '$/'
         );
 
@@ -125,15 +125,15 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
             $childtokens = $this->findBlocks($tokens);
 
             $blockstartRegexp = new Jaws_Regexp(
-                '/^' . Jaws_XTemplate::get('TAG_START') .
+                '/^' . Jaws_XTemplate_Parser::get('TAG_START') .
                 '\s*block (\w+)\s*(.*)?' .
-                Jaws_XTemplate::get('TAG_END') .
+                Jaws_XTemplate_Parser::get('TAG_END') .
                 '$/'
             );
             $blockendRegexp = new Jaws_Regexp(
-                '/^' . Jaws_XTemplate::get('TAG_START') .
+                '/^' . Jaws_XTemplate_Parser::get('TAG_START') .
                 '\s*endblock\s*?' .
-                Jaws_XTemplate::get('TAG_END') .
+                Jaws_XTemplate_Parser::get('TAG_END') .
                 '$/'
             );
 

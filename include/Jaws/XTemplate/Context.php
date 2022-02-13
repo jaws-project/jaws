@@ -49,6 +49,7 @@ class Jaws_XTemplate_Context
     {
         $this->assigns = array((object)$assigns);
         $this->registers = array();
+        
 
         $files = array_map('basename', glob(__DIR__ . '/Filters/*.php'));
         foreach ($files as $file) {
@@ -56,7 +57,7 @@ class Jaws_XTemplate_Context
             $classname = "Jaws_XTemplate_Filters_$fileName";
             $methods = get_class_methods($classname);
             foreach ($methods as $method) {
-                $this->filters[$method] = $classname;
+                $this->filters[$method] = new $classname();
             }
         }
     }
@@ -317,7 +318,7 @@ class Jaws_XTemplate_Context
             $key = preg_replace('/\[[\'|\"]([^\'|^\"]*)[\'|\"]\]/', ".$1", $key);
         }
 
-        $parts = explode(Jaws_XTemplate::get('VARIABLE_ATTRIBUTE_SEPARATOR'), $key);
+        $parts = explode(Jaws_XTemplate_Parser::get('VARIABLE_ATTRIBUTE_SEPARATOR'), $key);
         $object = $this->fetch(array_shift($parts));
 
         while (count($parts) > 0) {
@@ -383,12 +384,18 @@ class Jaws_XTemplate_Context
             }
 
             // if it has `get` or `field_exists` methods
-            if (method_exists($object, Jaws_XTemplate::get('HAS_PROPERTY_METHOD'))) {
-                if (!call_user_func(array($object, Jaws_XTemplate::get('HAS_PROPERTY_METHOD')), $nextPartName)) {
+            if (method_exists($object, Jaws_XTemplate_Parser::get('HAS_PROPERTY_METHOD'))) {
+                if (!call_user_func(
+                        array($object, Jaws_XTemplate_Parser::get('HAS_PROPERTY_METHOD')), $nextPartName
+                    )
+                ) {
                     return null;
                 }
 
-                $object = call_user_func(array($object, Jaws_XTemplate::get('GET_PROPERTY_METHOD')), $nextPartName);
+                $object = call_user_func(
+                    array($object, Jaws_XTemplate_Parser::get('GET_PROPERTY_METHOD')),
+                    $nextPartName
+                );
                 continue;
             }
 
