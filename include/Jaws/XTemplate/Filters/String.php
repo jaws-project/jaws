@@ -352,4 +352,18 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
         return urldecode($input);
     }
 
+    /**
+     * Format a number with grouped thousands
+     *
+     * @param   string  $input
+     * @param   array   $args   Variable-length argument lists
+     *
+     * @return  string
+     */
+    public static function format($input, ...$args)
+    {
+        array_unshift($args, (float)$input);
+        return call_user_func_array('number_format', $args);
+    }
+
 }
