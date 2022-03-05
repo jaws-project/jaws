@@ -363,7 +363,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     public static function format($input, ...$args)
     {
         array_unshift($args, (float)$input);
-        return call_user_func_array('number_format', $args);
+        return call_user_func_array(array('Jaws_Utils', 'formatNumber'), $args);
     }
 
 }
