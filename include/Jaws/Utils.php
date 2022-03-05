@@ -128,7 +128,7 @@ class Jaws_Utils
      * @param   string  $unit
      * @return  string  The converted number in string
      */
-    static function formatNumber($num, $unit = 'filesize', ...$args)
+    static function formatNumber($num, $unit = '', ...$args)
     {
         $units = array(
             'length' => array(
@@ -157,14 +157,18 @@ class Jaws_Utils
             ),
         );
 
-        $i = 0;
-        while ($num >= $units[$unit]['step']) {
-            $i++;
-            $num = $num/$units[$unit]['step'];
+        $symbol = '';
+        if (array_key_exists($unit, $units)) {
+            $i = 0;
+            while ($num >= $units[$unit]['step']) {
+                $i++;
+                $num = $num/$units[$unit]['step'];
+            }
+            $symbol = ' '. $units[$unit]['symbol'][$i];
         }
 
         array_unshift($args, (float)$num);
-        return call_user_func_array('number_format', $args). " ". $units[$unit]['symbol'][$i];
+        return call_user_func_array('number_format', $args). $symbol;
     }
 
     /**
