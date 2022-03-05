@@ -977,6 +977,55 @@ String.prototype.blank = function() {
 };
 
 /**
+ * Javascript format number prototype
+ */
+String.prototype.format = function(unit = '') {
+    let num = Number.parseFloat(this);
+
+    let units = {
+        'length': {
+            'step': 1000,
+            'symbol': ['m', 'km', 'Mm', 'Gm', 'Tm', 'Pm']
+        },
+        'power': {
+            'step': 1000,
+            'symbol': ['W', 'kW', 'MW', 'GW', 'TW', 'PW']
+        },
+        'weight': {
+            'step': 1000,
+            'symbol': ['g', 'Kg', 'Mg', 'Gg', 'Tg', 'Pg']
+        },
+        'currency': {
+            'step': 1000,
+            'symbol': ['',  'K',  'M',  'B',  'T',  'Q']
+        },
+        'filesize': {
+            'step': 1024,
+            'symbol': ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+        },
+        'hashrate': {
+            'step': 1000,
+            'symbol': ['H', 'KH', 'MH', 'GH', 'TH', 'PH']
+        }
+    };
+
+    let symbol = '';
+    if (units.hasOwnProperty(unit)) {
+        let i = 0;
+        while (num >= units[unit]['step']) {
+            i++;
+            num = num/units[unit]['step'];
+        }
+        symbol = ' '+ units[unit]['symbol'][i];
+    }
+
+    let args = [].slice.call(arguments);
+    args.shift()
+    num = num.toFixed(args.shift());
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + symbol;
+};
+
+/**
  * Javascript htmlspecialchars
  *
  * @see https://github.com/hirak/phpjs/blob/master/functions/strings/htmlspecialchars.js
