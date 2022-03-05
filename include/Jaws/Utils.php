@@ -121,6 +121,53 @@ class Jaws_Utils
     }
 
     /**
+     * Format a raw number
+     *
+     * @access  public
+     * @param   int     $num
+     * @param   string  $unit
+     * @return  string  The converted number in string
+     */
+    static function formatNumber($num, $unit = 'filesize', ...$args)
+    {
+        $units = array(
+            'length' => array(
+                'step' => 1000,
+                'symbol' => array('m', 'km', 'Mm', 'Gm', 'Tm', 'Pm')
+            ),
+            'power' => array(
+                'step' => 1000,
+                'symbol' => array('W', 'kW', 'MW', 'GW', 'TW', 'PW')
+            ),
+            'weight' =>array(
+                'step' => 1000,
+                'symbol' => array('g', 'Kg', 'Mg', 'Gg', 'Tg', 'Pg')
+            ),
+            'currency' => array(
+                'step' => 1000,
+                'symbol' => array('',  'K',  'M',  'B',  'T',  'Q')
+            ),
+            'filesize' => array(
+                'step' => 1024,
+                'symbol' => array('B', 'KB', 'MB', 'GB', 'TB', 'PB')
+            ),
+            'hashrate' => array(
+                'step' => 1000,
+                'symbol' => array('H', 'KH', 'MH', 'GH', 'TH', 'PH')
+            ),
+        );
+
+        $i = 0;
+        while ($num >= $units[$unit]['step']) {
+            $i++;
+            $num = $num/$units[$unit]['step'];
+        }
+
+        array_unshift($args, (float)$num);
+        return call_user_func_array('number_format', $args). " ". $units[$unit]['symbol'][$i];
+    }
+
+    /**
      * Parse request URL
      *
      * @access  public
