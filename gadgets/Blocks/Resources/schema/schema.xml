@@ -1,64 +1,56 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <database>
-
  <name><variable>database</variable></name>
 
- <table>
-    <name><variable>table_prefix</variable>blocks</name>
-    <declaration>
+    <table>
+        <name><variable>table_prefix</variable>blocks</name>
+        <declaration>
 
-        <field>
-            <name>id</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <autoincrement>true</autoincrement>
-        </field>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-        <field>
-            <name>title</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
 
-        <field>
-            <name>contents</name>
-            <type>text</type>
-        </field>
+            <field>
+                <name>summary</name>
+                <type>text</type>
+            </field>
 
-        <field>
-            <name>display_title</name>
-            <type>boolean</type>
-            <notnull>true</notnull>
-            <default>true</default>
-        </field>
+            <field>
+                <name>content</name>
+                <was>contents</was>
+                <type>text</type>
+            </field>
 
-        <field>
-            <name>created_by</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <default>0</default>
-        </field>
+            <field>
+                <name>display_title</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
 
-        <field>
-            <name>modified_by</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <default>0</default>
-        </field>
+            <field>
+                <name>inserted</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
 
-        <field>
-            <name>createtime</name>
-            <was>creation_date</was>
-            <type>timestamp</type>
-        </field>
+            <field>
+                <name>updated</name>
+                <type>integer</type>
+                <length>16</length>
+                <default>0</default>
+            </field>
 
-        <field>
-            <name>updatetime</name>
-            <was>modification_date</was>
-            <type>timestamp</type>
-        </field>
-
-    </declaration>
- </table>
+        </declaration>
+    </table>
 
 </database>

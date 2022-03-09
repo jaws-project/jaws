@@ -1,15 +1,15 @@
-<!-- BEGIN blocks -->
-<!-- BEGIN block_title -->
+{% if block.display_title %}
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
+    <div class="col-xs-12"><h2>{{ block.title }}</h2></div>
   </div>
 </div>
-<!-- END block_title -->
+{% endif %}
 <div class="gadget_container">
   <div class="gadget_content">
-    {{contents}}
+    <div class="row">
+      {{ block.content }}
+    </div>
   </div>
 </div>
 <div class="gadget_footer"></div>
-<!-- END blocks -->

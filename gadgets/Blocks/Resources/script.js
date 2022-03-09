@@ -64,7 +64,8 @@ function fillEditorEntries(block_data)
     $('#block_id').prop('disabled', false);
     $('#hidden_id').val(block_data['id']);
     $('#block_title').val(block_data['title'].defilter());
-    $('#block_contents').val(block_data['contents']);
+    $('#block_summary').val(block_data['summary']);
+    $('#block_content').val(block_data['content']);
     document.getElementsByName('display_title[]').item(0).checked = block_data['display_title'] == '1';
     currentMode = 'edit';
 }
@@ -78,10 +79,11 @@ function updateBlock()
         newBlock();
     } else {
         $('#block_id').prop('disabled', true);
-        id       = $('#hidden_id').val();
-        title    = $('#block_title').val();
-        contents = $('#block_contents').val();
-        if (!title || !contents)
+        id      = $('#hidden_id').val();
+        title   = $('#block_title').val();
+        summary = $('#block_summary').val();
+        content = $('#block_content').val();
+        if (!title || !content)
         {
             alert(jaws.Blocks.Defines.incompleteBlockFields);
             return false;
@@ -90,7 +92,7 @@ function updateBlock()
         displayTitle = $('#display_title_true').prop('checked');
         // Call function
         loading_message = jaws.Blocks.Defines.updatingMessage;
-        BlocksAjax.callAsync('UpdateBlock', [id, title, contents, displayTitle]);
+        BlocksAjax.callAsync('UpdateBlock', [id, title, summary, content, displayTitle]);
         // Update Combo
         var combo = $('#block_id')[0];
         combo.options[combo.selectedIndex].text = title;
@@ -177,12 +179,12 @@ function edit(id)
 function preview()
 {
     switchTab('preview');
-    var block_contents = $('#block_contents').val();
+    var block_content = $('#block_content').val();
     $('#preview_title').html($('#block_title').val());
 
     // Use this if you want to use plugins
-    BlocksAjax.callAsync('ParseText', block_contents);
-    //$('#preview_contents').html(block_contents);
+    BlocksAjax.callAsync('ParseText', block_content);
+    //$('#preview_contents').html(block_content);
 }
 
 
@@ -198,7 +200,8 @@ function createNewBlock(title)
     blockTitle = $('#block_title')[0];
     blockTitle.value = '';
     blockTitle.focus();
-    $('#block_contents').val('');
+    $('#block_summary').val('');
+    $('#block_content').val('');
 }
 
 /**
@@ -206,8 +209,9 @@ function createNewBlock(title)
  */
 function newBlock()
 {
-    contents = $('#block_contents').val();
-    if (!$('#block_title').val() || !contents)
+    summary = $('#block_summary').val();
+    content = $('#block_content').val();
+    if (!$('#block_title').val() || !content)
     {
         alert(jaws.Blocks.Defines.incompleteBlockFields);
         return false;
@@ -216,7 +220,7 @@ function newBlock()
     displayTitle = $('#display_title_true').prop('checked');
     // Call function
     loading_message = jaws.Blocks.Defines.savingMessage;
-    BlocksAjax.callAsync('NewBlock', [$('#block_title').val(), contents, displayTitle]);
+    BlocksAjax.callAsync('NewBlock', [$('#block_title').val(), summary, content, displayTitle]);
 }
 
 /**
@@ -245,7 +249,8 @@ function returnToEdit()
         if (previousID == 'NEW') {
             blockTitle.value = '';
             blockTitle.focus();
-            $('#block_contents').val('');
+            $('#block_summary').val('');
+            $('#block_content').val('');
             b.disabled = true;
             combo.disabled = true;
         } else {

@@ -14,20 +14,21 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
      * Create a new Block
      *
      * @access  public
-     * @param   string  $title          Block title
-     * @param   string  $contents       Block contents
+     * @param   string  $title      Block title
+     * @param   string  $summary    Block summary
+     * @param   string  $content    Block contents
      * @param   bool    $display_title  True if we want to display block title
      * @param   int     $user           User ID
      * @return  mixed   Result array if successful or Jaws_Error or False on failure
      */
-    function NewBlock($title, $contents, $display_title, $user)
+    function NewBlock($title, $summary, $content, $display_title)
     {
         $data = array();
         $data['title'] = $title;
-        $data['contents'] = $contents;
+        $data['summary']  = $summary;
+        $data['content'] = $content;
         $data['display_title'] = (bool)$display_title;
-        $data['created_by'] = $data['modified_by'] = $user;
-        $data['createtime'] = $data['updatetime'] = Jaws_DB::getInstance()->date();
+        $data['inserted'] = $data['updated'] = time();
 
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->insert($data)->exec();
@@ -44,19 +45,19 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $id             Block ID
      * @param   string  $title          Block title
-     * @param   string  $contents       Block contents
+     * @param   string  $summary        Block summary
+     * @param   string  $content        Block contents
      * @param   bool    $display_title  True if we want to display block title
-     * @param   int     $user           User ID
      * @return  mixed   True if query is successful, if not, returns Jaws_Error on any error
      */
-    function UpdateBlock($id, $title, $contents, $display_title, $user)
+    function UpdateBlock($id, $title, $summary, $content, $display_title)
     {
         $data = array();
         $data['title'] = $title;
-        $data['contents'] = $contents;
-        $data['display_title'] = ($display_title ? true : false);
-        $data['modified_by'] = $user;
-        $data['updatetime'] = Jaws_DB::getInstance()->date();
+        $data['summary'] = $summary;
+        $data['content'] = $content;
+        $data['display_title'] = (bool)$display_title;
+        $data['updated'] = time();
 
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->update($data)->where('id', (int)$id)->exec();

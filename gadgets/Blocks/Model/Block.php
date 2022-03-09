@@ -19,12 +19,13 @@ class Blocks_Model_Block extends Jaws_Gadget_Model
      */
     function GetBlock($id)
     {
-        $blocksTable = Jaws_ORM::getInstance()->table('blocks');
-        $blocksTable->select(
-            'id:integer', 'title', 'contents', 'display_title:boolean', 'created_by:integer',
-            'modified_by:integer', 'createtime:timestamp', 'updatetime:timestamp'
-        );
-        return $blocksTable->where('id', $id)->fetchRow();
+        return Jaws_ORM::getInstance()->table('blocks')
+            ->select(
+                'id:integer', 'title', 'summary', 'content', 'display_title:boolean',
+                'inserted:integer', 'updated:integer'
+            )
+            ->where('id', $id)
+            ->fetchRow();
     }
 
 
@@ -41,12 +42,15 @@ class Blocks_Model_Block extends Jaws_Gadget_Model
             $columns = array('id:integer', 'title');
         } else {
             $columns = array(
-                'id:integer', 'title', 'contents', 'display_title:integer',
-                'created_by:integer', 'modified_by:integer',
-                'createtime:timestamp', 'updatetime:timestamp');
+                'id:integer', 'title', 'summary', 'content', 'display_title:integer',
+                'inserted:integer', 'updated:integer'
+            );
         }
-        $blocksTable = Jaws_ORM::getInstance()->table('blocks');
-        $blocksTable->select($columns)->orderBy('title asc');
-        return $blocksTable->fetchAll();
+
+        return Jaws_ORM::getInstance()->table('blocks')
+            ->select($columns)
+            ->orderBy('title asc')
+            ->fetchAll();
     }
+
 }

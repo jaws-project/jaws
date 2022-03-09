@@ -33,8 +33,9 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * Create a new  block
      *
      * @access  public
-     * @internal param  string  $title Block title
-     * @internal param  string  $contents Block contents
+     * @internal param  string  $title      Block title
+     * @internal param  string  $summary    Block summary
+     * @internal param  string  $content    Block content
      * @internal param  bool    $displayTitle If true display block title
      * @return  array   Response array (notice or error)
      */
@@ -43,10 +44,10 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('AddBlock');
 
         @list($title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
-        $user = $this->app->session->user->id;
-        $contents = $this->gadget->request->fetch(1, 'post', 'strip_crlf');
+        $summary = $this->gadget->request->fetch(1, 'post', 'strip_crlf');
+        $content = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
-        $res = $model->NewBlock($title, $contents, $displayTitle, $user);
+        $res = $model->NewBlock($title, $summary, $content, $displayTitle);
         if (Jaws_Error::IsError($res)) {
             return $this->gadget->session->response($res->GetMessage(),
                                                          RESPONSE_ERROR);
@@ -61,9 +62,10 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * Update a block
      *
      * @access  public
-     * @internal param  int     $id Block ID
-     * @internal param  string  $title Block title
-     * @internal param  string  $contents Block contents
+     * @internal param  int     $id         Block ID
+     * @internal param  string  $title      Block title
+     * @internal param  string  $summary    Block summary
+     * @internal param  string  $content    Block content
      * @internal param  bool    $displayTitle If true display block title
      * @return  array  Response array (notice or error)
      */
@@ -72,10 +74,10 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('EditBlock');
 
         @list($id, $title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
-        $user = $this->app->session->user->id;
-        $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
+        $summary = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
+        $content = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Block');
-        $model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
+        $model->UpdateBlock($id, $title, $summary, $content, $displayTitle);
         return $this->gadget->session->pop();
     }
 

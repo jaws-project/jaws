@@ -1,0 +1,30 @@
+{% if display_title %}
+<div class="gadget_header">
+  <div class="row">
+    <div class="col-xs-12"><h2>{{ block.title }}</h2></div>
+  </div>
+</div>
+{% endif %}
+<div class="gadget_container">
+  <div class="gadget_content">
+  {% if block.summary %}
+    <div class="row">
+      <div class="col-xs-12">
+        {{ block.summary }}
+      </div>
+    </div>
+    <div class="block_meta">
+      <span class="block-read-more">
+        <a href="{{ 'Blocks' | urlmap: 'Block', 'id', block.id }}">{{ "blocks.read_more" | t }}</a>
+      </span>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="col-xs-12">
+        {{ block.content }}
+      </div>
+    </div>
+  {% endif %}
+  </div>
+</div>
+<div class="gadget_footer"></div>

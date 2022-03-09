@@ -32,6 +32,14 @@ class Blocks_Actions_Block extends Jaws_Gadget_Action
                 'title' => _t('BLOCKS_BLOCK'),
                 'value' => $pblocks
             );
+
+            $result[] = array(
+                'title' => _t('BLOCKS_DISPLAY_TYPE'),
+                'value' => array(
+                    0 => _t('BLOCKS_DISPLAY_TYPE_0'),
+                    1 => _t('BLOCKS_DISPLAY_TYPE_1'),
+                ),
+            );
         }
 
         return $result;
@@ -41,34 +49,28 @@ class Blocks_Actions_Block extends Jaws_Gadget_Action
      * Display a Block
      *
      * @access  public
-     * @param   int     $id Block ID
+     * @param   int $id             Block ID
+     * @param   int $displayType
      * @return  string  XHTML Template content
      */
-    function Block($id = 0)
+    function Block($id = 0, $displayType = 0)
     {
         if (empty($id)) {
             $id = $this->gadget->request->fetch('id', 'get');
         }
 
-        $tpl = $this->gadget->template->load('Blocks.html');
-        if (!empty($id)) {
-            $model = $this->gadget->model->load('Block');
-            $block = $model->GetBlock($id);
-            if (!Jaws_Error::IsError($block)) {
-                $tpl->SetBlock('blocks');
-                $tpl->SetVariable('id', $block['id']);
-                $contents = $this->gadget->plugin->parseAdmin($block['contents']);
-                $tpl->SetVariable('contents', $contents);
-                if ($block['display_title']) {
-                    $tpl->SetBlock('blocks/block_title');
-                    $tpl->SetVariable('title', $block['title']);
-                    $tpl->ParseBlock('blocks/block_title');
-                }
-                $tpl->ParseBlock('blocks');
-            }
+        $assigns = array();
+        $block = $this->gadget->model->load('Block')->GetBlock($id);
+        if (!Jaws_Error::IsError($block) && !empty($block)) {
+            $assigns['block'] = $block;
         }
 
-        return $tpl->Get();
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Blocks.html';
+        } else {
+            $tFilename = 'Blocks' . (int)$displayType . '.html';
+        }
+        return $this->gadget->template->xLoad($tFilename)->render($assigns);
     }
 
 }

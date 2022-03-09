@@ -64,12 +64,20 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
         $tpl->SetVariable('block_title',  Jaws::t('TITLE'));
         $tpl->SetVariable('title_field', $title->Get());
 
-        $contents =& $this->app->loadEditor('Blocks', 'block_contents');
-        $contents->setID('block_contents');
-        $contents->TextArea->SetStyle('width: 99%;');
+        // block summary
+        $summary =& $this->app->loadEditor('Blocks', 'block_summary');
+        $summary->setID('block_summary');
+        $summary->TextArea->SetStyle('width: 99%;');
+        $tpl->SetVariable('summary', _t('BLOCKS_SUMMARY'));
+        $tpl->SetVariable('summary_field', $summary->Get());
 
-        $tpl->SetVariable('contents', _t('BLOCKS_CONTENT'));
-        $tpl->SetVariable('contents_field', $contents->Get());
+        // block content
+        $content =& $this->app->loadEditor('Blocks', 'block_content');
+        $content->setID('block_content');
+        $content->TextArea->SetStyle('width: 99%;');
+        $tpl->SetVariable('content', _t('BLOCKS_CONTENT'));
+        $tpl->SetVariable('content_field', $content->Get());
+
         $dispTitle =& Piwi::CreateWidget('CheckButtons', 'display_title');
         // FIXME: This is an ugly hack to add an ID to a Option...
         $dispTitle->AddOption(_t('BLOCKS_DISPLAYTITLE'), 'true', null, true);
