@@ -210,8 +210,13 @@ $layout->SetBlock('layout');
 // Basic setup
 $layout->SetVariable('base_url', Jaws_Utils::getBaseURL('/upgrade/'));
 $layout->SetVariable('.dir', $dir);
-$layout->SetVariable('site-title', 'Jaws ' . JAWS_VERSION);
-$layout->SetVariable('site-name',  'Jaws ' . JAWS_VERSION);
+if ($_SESSION['upgrade']['stage'] < 2 ) {
+    $layout->SetVariable('site-title', 'Jaws Project');
+    $layout->SetVariable('site-name',  'Jaws Project');
+} else {
+    $layout->SetVariable('site-title', 'Jaws ' . JAWS_VERSION);
+    $layout->SetVariable('site-name',  'Jaws ' . JAWS_VERSION);
+}
 $layout->SetVariable('site-slogan', JAWS_VERSION_CODENAME);
 
 // Load js files
