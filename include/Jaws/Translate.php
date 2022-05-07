@@ -156,10 +156,16 @@ class Jaws_Translate
                 break;
 
             case self::TRANSLATE_GADGET:
+                if (array_key_exists($component, self::$real_gadgets_module)) {
+                    $component = self::$real_gadgets_module[$component];
+                }
                 $string = strtoupper($component . '_'. $string);
                 break;
 
             case self::TRANSLATE_PLUGIN:
+                if (array_key_exists($component, self::$real_plugins_module)) {
+                    $component = self::$real_plugins_module[$component];
+                }
                 $string = strtoupper('PLUGINS_' . $component . '_' . $string);
                 break;
 
