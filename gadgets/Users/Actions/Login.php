@@ -57,7 +57,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             if ($layoutGadget->GetPermission('MainLayoutManage')) {
                 // link to manage global layout
                 $tpl->SetBlock('UserLinks/manage-layout');
-                $tpl->SetVariable('layout', Jaws_Gadget::t('LAYOUT.TITLE'));
+                $tpl->SetVariable('layout', Jaws_Gadget::t('LAYOUT.LAYOUT'));
                 $tpl->SetVariable(
                     'layout_url',
                     $layoutGadget->urlMap('Layout')
@@ -66,7 +66,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             } elseif ($this->gadget->GetPermission('ManageUserLayout')) {
                 // link to manage personal layout
                 $tpl->SetBlock('UserLinks/manage-layout');
-                $tpl->SetVariable('layout', Jaws_Gadget::t('LAYOUT.TITLE'));
+                $tpl->SetVariable('layout', Jaws_Gadget::t('LAYOUT.LAYOUT'));
                 $tpl->SetVariable(
                     'layout_url',
                     $layoutGadget->urlMap('Layout', array('layout' => 'Index.User'))
