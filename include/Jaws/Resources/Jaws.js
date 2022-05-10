@@ -1869,6 +1869,11 @@ $(document).ready(function() {
         initEditor(this)
     });
 
+    // disable anchor tag click when one of parents are disabled 
+    $('a').closest(":disabled, .disabled").find('a').click(function (event) {
+        event.preventDefault();
+    });
+
     $.each(jaws.Gadgets, function(index, gadget) {
         Jaws_Gadget.getInstance(gadget);
         $.each(jaws[gadget].Actions, function(index, action) {
