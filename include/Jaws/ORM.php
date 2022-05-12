@@ -1285,11 +1285,19 @@ class Jaws_ORM
             case 'get':
                 return $this->fetch('raw');
 
-            case 'quote':
             case 'now':
+            case 'abs':
+            case 'mod':
+            case 'div':
+            case 'quote':
             case 'expr':
+            case 'ceil':
             case 'lower':
             case 'upper':
+            case 'floor':
+            case 'round':
+            case 'trunc':
+            case 'power':
             case 'length':
             case 'random':
             case 'concat':
@@ -1517,6 +1525,22 @@ class Jaws_ORM_Function
                     $func_str = preg_replace('/\?/', $param, $func_str, 1);
                 }
 
+                break;
+
+            case 'abs':
+            case 'mod':
+            case 'div':
+            case 'ceil':
+            case 'floor':
+            case 'round':
+            case 'trunc':
+            case 'power':
+                foreach ($params as &$param) {
+                    if (is_object($param)) {
+                        $param = $param->get();
+                    }
+                }
+                $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, $method), $params);
                 break;
         }
 
