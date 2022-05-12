@@ -117,6 +117,34 @@ class MDB2_Driver_Function_mysql extends MDB2_Driver_Function_Common
         return "CONCAT(".implode(', ', $args).")";
     }
 
+    /**
+     * return math truncate of expression
+     *
+     * @param mixed $value1
+     * @param int   $value2
+     *
+     * @return return string of math truncate of an expression
+     * @access public
+     */
+    function trunc($value1, $value2 = 0)
+    {
+        return "truncate($value1, $value2)";
+    }
+
+    /**
+     * return math division of expression
+     *
+     * @param mixed $value1
+     * @param mixed $value2
+     *
+     * @return return string of math division of an expression
+     * @access public
+     */
+    function div($value1, $value2)
+    {
+        return "($value1 div $value2)";
+    }
+
     // }}}
     // {{{ guid()
 

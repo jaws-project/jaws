@@ -104,5 +104,20 @@ class MDB2_Driver_Function_ibase extends MDB2_Driver_Function_Common
     }
 
     // }}}
+
+    /**
+     * return math division of expression
+     *
+     * @param mixed $value1
+     * @param mixed $value2
+     *
+     * @return return string of math division of an expression
+     * @access public
+     */
+    function div($value1, $value2)
+    {
+        return "trunc($value1 / $value2)";
+    }
+
 }
 ?>

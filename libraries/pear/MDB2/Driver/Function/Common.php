@@ -267,6 +267,115 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         return "LENGTH($expression)";
     }
 
+    /**
+     * return math absolute of expression
+     *
+     * @param mixed $expression
+     *
+     * @return return string of math absolute of an expression
+     * @access public
+     */
+    function abs($expression)
+    {
+        return "abs($expression)";
+    }
+
+    /**
+     * return math floor of expression
+     *
+     * @param mixed $expression
+     *
+     * @return return string of math floor of an expression
+     * @access public
+     */
+    function floor($expression)
+    {
+        return "floor($expression)";
+    }
+
+    /**
+     * return math ceil of expression
+     *
+     * @param mixed $expression
+     *
+     * @return return string of math ceil of an expression
+     * @access public
+     */
+    function ceil($expression)
+    {
+        return "ceil($expression)";
+    }
+
+    /**
+     * return math round of expression
+     *
+     * @param mixed $value1
+     * @param int   $value2
+     *
+     * @return return string of math round of an expression
+     * @access public
+     */
+    function round($value1, $value2 = 0)
+    {
+        return "round($value1, $value2)";
+    }
+
+    /**
+     * return math truncate of expression
+     *
+     * @param mixed $value1
+     * @param int   $value2
+     *
+     * @return return string of math truncate of an expression
+     * @access public
+     */
+    function trunc($value1, $value2 = 0)
+    {
+        return "trunc($value1, $value2)";
+    }
+
+    /**
+     * return math power of expression
+     *
+     * @param mixed $value1
+     * @param mixed $value2
+     *
+     * @return return string of math power of an expression
+     * @access public
+     */
+    function power($value1, $value2)
+    {
+        return "power($value1, $value2)";
+    }
+
+    /**
+     * return math mod of expression
+     *
+     * @param mixed $value1
+     * @param mixed $value2
+     *
+     * @return return string of math mod of an expression
+     * @access public
+     */
+    function mod($value1, $value2)
+    {
+        return "mod($value1, $value2)";
+    }
+
+    /**
+     * return math division of expression
+     *
+     * @param mixed $value1
+     * @param mixed $value2
+     *
+     * @return return string of math division of an expression
+     * @access public
+     */
+    function div($value1, $value2)
+    {
+        return "div($value1, $value2)";
+    }
+
     // }}}
     // {{{ guid()
 
