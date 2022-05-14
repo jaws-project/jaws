@@ -273,7 +273,7 @@ class XML_Parser
      */
     function _initHandlers()
     {
-        if (!is_resource($this->parser)) {
+        if ($this->parser === false) {
             return false;
         }
 
@@ -333,7 +333,7 @@ class XML_Parser
         } else {
             $xp = @xml_parser_create($this->srcenc);
         }
-        if (is_resource($xp)) {
+        if ($xp !== false) {
             if ($this->tgtenc !== null) {
                 if (!@xml_parser_set_option($xp, XML_OPTION_TARGET_ENCODING, 
                     $this->tgtenc)
@@ -544,7 +544,7 @@ class XML_Parser
      */
     function parseString($data, $eof = false)
     {
-        if (!isset($this->parser) || !is_resource($this->parser)) {
+        if (!isset($this->parser) || $this->parser === false) {
             $this->reset();
         }
 
@@ -569,7 +569,7 @@ class XML_Parser
      **/
     function free()
     {
-        if (isset($this->parser) && is_resource($this->parser)) {
+        if (isset($this->parser) && $this->parser !== false) {
             xml_parser_free($this->parser);
             unset( $this->parser );
         }
@@ -656,7 +656,7 @@ class XML_Parser
      * @return null
      * @abstract
      */
-    function startHandler($xp, $elem, &$attribs)
+    function startHandler($xp, $elem, $attribs)
     {
         return null;
     }
