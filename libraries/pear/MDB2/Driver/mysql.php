@@ -680,7 +680,11 @@ class MDB2_Driver_mysql extends MDB2_Driver_Common
             return $connection;
         }
 
-        $result = @mysql_select_db($name, $connection);
+        try {
+            $result = mysql_select_db($name, $connection);
+        } catch (Exception $e) {
+            // do nothing
+        }
         @mysql_close($connection);
 
         return $result;
