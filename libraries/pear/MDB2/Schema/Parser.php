@@ -126,7 +126,7 @@ class MDB2_Schema_Parser extends XML_Parser
         );
     }
 
-    function startHandler($xp, $element, &$attribs)
+    function startHandler($xp, $element, $attribs)
     {
         if (strtolower($element) == 'variable') {
             $this->var_mode = true;
