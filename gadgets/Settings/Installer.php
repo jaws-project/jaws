@@ -41,6 +41,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('connection_timeout', '5'),           // per second
         array('global_website', 'true'),            // global website?
         array('img_driver', 'GD'),                  // image driver
+        array('fm_driver', 'File'),                 // Filesystem management driver
         array('site_status', 'enabled'),
         array('site_name', ''),
         array('site_slogan', ''),
@@ -397,6 +398,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '2.8.0', '<')) {
             // registry keys 
             $this->gadget->registry->insert('cookie_samesite', 'Lax');
+        }
+
+        if (version_compare($old, '2.9.0', '<')) {
+            // registry keys 
+            $this->gadget->registry->insert('fm_driver', 'File');
         }
 
         return true;
