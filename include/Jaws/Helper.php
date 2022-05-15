@@ -533,7 +533,7 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     }
 
     // encode data based on response type
-    $data = Jaws_Response::get($resType, $data);
+    $data = Jaws_Response::get((string)$resType, $data);
 
     // return data
     echo $data;
