@@ -285,7 +285,7 @@ class Jaws_Request
         if (isset($this->data[$method][$key])) {
             $value = $json_decode? json_decode($this->data[$method][$key]) : $this->data[$method][$key];
             // try unserialize value
-            if (false !== $tvalue = @unserialize($value)) {
+            if (is_string($value) && false !== $tvalue = @unserialize($value)) {
                 $value = $tvalue;
                 unset($tvalue);
             }
