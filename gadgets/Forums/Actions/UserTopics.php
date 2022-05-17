@@ -23,7 +23,7 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
         if (empty($user)) {
             return false;
         }
-        $user = $this->app->users->GetUser($user);
+        $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser($user);
 
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
