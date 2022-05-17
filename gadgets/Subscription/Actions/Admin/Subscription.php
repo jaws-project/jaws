@@ -26,7 +26,10 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         // Users Filter
         $usersCombo =& Piwi::CreateWidget('Combo', 'filter_user');
         $usersCombo->AddOption(Jaws::t('ALL_USERS'), "", false);
-        $users = $this->app->users->GetUsers();
+        $users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+            0, 0,
+            array('status' => 1)
+        );
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
                 $usersCombo->AddOption($user['username'] . ' - ' . $user['nickname'], $user['id']);
