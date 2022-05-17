@@ -264,7 +264,9 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
             }
         } else {
             if ($target['user'] != 0) {
-                $user = $this->app->users->GetUser((int)$target['user']);
+                $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+                    (int)$target['user']
+                );
                 if (!Jaws_Error::IsError($user)) {
                     $mail->AddRecipient($user['nickname'] . ' <' . $user['email'] . '>', 'To');
                 }
