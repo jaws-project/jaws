@@ -161,10 +161,11 @@ class Users_Actions_Contacts extends Users_Actions_Default
             'post'
         );
 
-        $uModel = $this->gadget->model->load('Contacts');
-        $result = $uModel->UpdateContact(
+        $contactData = $this->prepareContactData($post);
+        $result = $this->gadget->model->load('User')->updateContact(
             $this->app->session->user->id,
-            $post
+            $contactData,
+            true, // main user contact
         );
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
@@ -327,11 +328,12 @@ class Users_Actions_Contacts extends Users_Actions_Default
             unset($post['data'][$invalid]);
         }
 
-        $cModel = $this->gadget->model->load('Contacts');
-        $result = $cModel->UpdateContacts(
+        $contactData = $this->prepareContactData($post['data']);
+        $result = $this->gadget->model->load('User')->updateContact(
             $this->app->session->user->id,
-            $post['cid'],
-            $post['data']
+            $contactData,
+            false, // not main user contact
+            post['cid']
         );
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
@@ -361,4 +363,85 @@ class Users_Actions_Contacts extends Users_Actions_Default
             return $this->gadget->session->response($this::t('USERS_CONTACTINFO_DELETED'), RESPONSE_NOTICE);
         }
     }
+
+    /**
+     * Prepare raw contact data 
+     *
+     * @access  public
+     * @param   array   $rawContact Raw contact data
+     * @return  array   Prepared contact data
+     */
+    function prepareContactData($rawContact)
+    {
+        $contactData = array();
+        $contactData['title'] = $rawContact['title'];
+        $contactData['name']  = $rawContact['name'];
+        $contactData['note']  = isset($rawContact['note'])? $rawContact['note'] : '';
+        $contactData['tel']   = json_encode(
+            array(
+                'home' => isset($rawContact['tel_home'])? $rawContact['tel_home'] : '',
+                'work' => isset($rawContact['tel_work'])? $rawContact['tel_work'] : '',
+                'other' => isset($rawContact['tel_other'])? $rawContact['tel_other'] : ''
+            )
+        );
+        $contactData['fax'] = json_encode(
+            array(
+                'home' => isset($rawContact['fax_home'])? $rawContact['fax_home'] : '',
+                'work' => isset($rawContact['fax_work'])? $rawContact['fax_work'] : '',
+                'other' => isset($rawContact['fax_other'])? $rawContact['fax_other'] : ''
+            )
+        );
+        $contactData['mobile'] = json_encode(
+            array(
+                'home' => isset($rawContact['mobile_home'])? $rawContact['mobile_home'] : '',
+                'work' => isset($rawContact['mobile_work'])? $rawContact['mobile_work'] : '',
+                'other' => isset($rawContact['mobile_other'])? $rawContact['mobile_other'] : ''
+            )
+        );
+        $contactData['url'] = json_encode(
+            array(
+                'home' => isset($rawContact['url_home'])? $rawContact['url_home'] : '',
+                'work' => isset($rawContact['url_work'])? $rawContact['url_work'] : '',
+                'other' => isset($rawContact['url_other'])? $rawContact['url_other'] : ''
+            )
+        );
+        $contactData['email'] = json_encode(
+            array(
+                'home' => isset($rawContact['email_home'])? $rawContact['email_home'] : '',
+                'work' => isset($rawContact['email_work'])? $rawContact['email_work'] : '',
+                'other' => isset($rawContact['email_other'])? $rawContact['email_other'] : ''
+            )
+        );
+        $contactData['address'] = json_encode(
+            array(
+                'home' =>
+                    array(
+                        'country' => isset($rawContact['country_home']) ? $rawContact['country_home'] : '',
+                        'province' => isset($rawContact['province_home']) ? $rawContact['province_home'] : '',
+                        'city' => isset($rawContact['city_home']) ? $rawContact['city_home'] : '',
+                        'address' => isset($rawContact['address_home'])? $rawContact['address_home'] : '',
+                        'postal_code' => isset($rawContact['postal_code_home'])? $rawContact['postal_code_home'] : ''
+                    ),
+                'work' =>
+                    array(
+                        'country' => isset($rawContact['country_work']) ? $rawContact['country_work'] : '',
+                        'province' => isset($rawContact['province_work']) ? $rawContact['province_work'] : '',
+                        'city' => isset($rawContact['city_work']) ? $rawContact['city_work'] : '',
+                        'address' => isset($rawContact['address_work'])? $rawContact['address_work'] : '',
+                        'postal_code' => isset($rawContact['postal_code_work'])? $rawContact['postal_code_work'] : ''
+                    ),
+                'other' =>
+                    array(
+                        'country' => isset($rawContact['country_other']) ? $rawContact['country_other'] : '',
+                        'province' => isset($rawContact['province_other']) ? $rawContact['province_other'] : '',
+                        'city' => isset($rawContact['city_other']) ? $rawContact['city_other'] : '',
+                        'address' => isset($rawContact['address_other'])? $rawContact['address_other'] : '',
+                        'postal_code' => isset($rawContact['postal_code_other'])? $rawContact['postal_code_other'] : ''
+                    ),
+            )
+        );
+
+        return $contactData;
+    }
+
 }
