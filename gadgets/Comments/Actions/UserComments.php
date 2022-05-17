@@ -22,7 +22,7 @@ class Comments_Actions_UserComments extends Jaws_Gadget_Action
         if(empty($user)) {
             return '';
         }
-        $userInfo = $this->app->users->GetUser($user);
+        $userInfo = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser($user);
 
         $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
