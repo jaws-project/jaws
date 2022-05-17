@@ -190,9 +190,9 @@ class Installer_CreateUser extends JawsInstaller
         Jaws_Translate::getInstance()->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 
         require_once ROOT_JAWS_PATH . 'include/Jaws/User.php';
-        $userModel = Jaws_User::getInstance();
-        $userInfo = $userModel->GetUser($post['username']);
+        $userInfo = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser($post['username']);
         if (!Jaws_Error::IsError($userInfo)) {
+            $userModel = Jaws_User::getInstance();
             //username exists
             if (isset($userInfo['username'])) {
                 _log(JAWS_DEBUG,"Update existing user");
