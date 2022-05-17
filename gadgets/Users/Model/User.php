@@ -136,7 +136,7 @@ class Users_Model_User extends Jaws_Gadget_Model
             array('action' => 'UpdatePassword', 'user' => $uid, 'password' => $new_password)
         );
         if (Jaws_Error::IsError($res)) {
-            return false;
+            // nothing
         }
 
         return true;
@@ -223,7 +223,7 @@ class Users_Model_User extends Jaws_Gadget_Model
             array('action' => 'UpdateUser', 'user' => (int)$id)
         );
         if (Jaws_Error::IsError($res)) {
-            return false;
+            // nothing
         }
 
         return true;
@@ -313,10 +313,163 @@ class Users_Model_User extends Jaws_Gadget_Model
             array('action' => 'UpdateUser', 'user' => (int)$uid)
         );
         if (Jaws_Error::IsError($res)) {
-            return false;
+            // nothing
         }
 
         return true;
+    }
+
+    /**
+     * Deletes an user
+     *
+     * @access  public
+     * @param   int     $uid    User's ID
+     * @return  bool    Returns true if user was successfully deleted, false if not
+     */
+    function deleteUser($uid)
+    {
+        $objORM = Jaws_ORM::getInstance();
+        $user = $this->getUser(
+            $uid,
+            0,
+            array('default' => true, 'account' => true)
+        );
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
+
+        if (JAWS_GODUSER == $user['id']) {
+            return false;
+        }
+
+        // users can't delete himself
+        if (isset($this->app) &&
+            property_exists($this->app, 'session') && $this->app->session->user->id == $user['id']
+        ) {
+            return false;
+        }
+
+        //Start Transaction
+        $objORM->beginTransaction();
+
+        $result = $objORM->delete()->table('users')->where('id', $user['id'])->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        $result = $objORM->delete()->table('groups')->where('owner', $user['id'])->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        $result = $objORM->delete()->table('users_groups')->where('user', $user['id'])->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        // delete user's contact
+        $result = $objORM->delete()->table('users_contacts')->where('owner', $user['id'])->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        // Registry
+        if (!$this->app->registry->deleteByUser($user['id'])) {
+            return false;
+        }
+        // ACL
+        if (!$this->app->acl->deleteByUser($user['id'])) {
+            return false;
+        }
+        // Session
+        if (!$this->app->session->deleteUserSessions($user['id'])) {
+            return false;
+        }
+
+        //Commit Transaction
+        $objORM->commit();
+
+        // Let everyone know a user has been deleted
+        $res = $this->gadget->event->shout(
+            'UserChanges',
+            array('action' => 'DeleteUser', 'user' => $user['id'])
+        );
+        if (Jaws_Error::IsError($res)) {
+            // nothing
+        }
+
+        return true;
+    }
+
+    /**
+     * Updates contacts information of the user
+     *
+     * @access  public
+     * @param   int     $uid    User ID
+     * @param   array   $data   Contact's data
+     * @param   bool    $main   Main contact?
+     * @param   int     $cid    Contact's ID
+     * @return  array   Response array (notice or error)
+     */
+    function updateContact($uid, $data, $main = true, $cid = 0)
+    {
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($data),
+            array('title', 'name', 'image', 'note', 'tel', 'mobile', 'fax', 'url', 'email', 'address')
+        );
+        foreach ($invalids as $invalid) {
+            unset($data[$invalid]);
+        }
+
+        $user = $this->getUser($uid);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
+
+        if (JAWS_GODUSER == $user['id']) {
+            if (!isset($this->app) ||
+                !property_exists($this->app, 'session') ||
+                $this->app->session->user->id != $user['id']
+            ) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_ACCESS_DENIED'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
+        $data['owner'] = $user['id'];
+        $data['checksum'] = hash64(json_encode($data));
+        // begin transaction
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+        $contactId = $objORM->table('users_contacts')
+            ->upsert($data)
+            ->where('owner', $uid)
+            ->and()
+            ->where('id', $main? $user['contact'] : $cid)
+            ->and()
+            ->where('checksum', $data['checksum'], '=', $main) // ignore if it is main contact
+            ->exec();
+        if (Jaws_Error::IsError($contactId)) {
+            return $contactId;
+        }
+
+        if ($main) {
+            // set user's contact id
+            $res = $objORM->table('users')->update(
+                    array('contact' => $contactId)
+                )->where('id', (int)$uid)
+                ->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
+        }
+
+        // commit transaction
+        $objORM->commit();
+        return $contactId;
     }
 
 }
