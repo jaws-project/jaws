@@ -718,69 +718,6 @@ class Jaws_User
     }
 
     /**
-     * Get list of users
-     *
-     * @access  public
-     * @param   mixed   $group      Group ID of users
-     * @param   mixed   $domain     Domain ID of users
-     * @param   mixed   $superadmin Type of user(null = all types, true = superadmin, false = normal)
-     * @param   int     $status     User's status (null: all users, 0: disabled, 1: enabled, 2: not verified)
-     * @param   string  $term       Search term(searched in username, nickname and email)
-     * @param   string  $orderBy    Field to order by
-     * @param   int     $limit
-     * @param   int     $offset
-     * @return  array   Returns an array of the available users and false on error
-     */
-    function GetUsers($group = false, $domain = false, $superadmin = null, $status = null, $term = '', $orderBy = 'id asc',
-        $limit = 0, $offset = null)
-    {
-        $fields = array(
-            'id', 'id asc', 'id desc',
-            'username', 'username asc', 'username desc',
-            'nickname', 'nickname asc', 'nickname desc',
-            'email',
-            'mobile'
-        );
-        if (!in_array($orderBy, $fields)) {
-            $orderBy = 'id asc';
-        }
-
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select(
-            'users.id:integer', 'domain:integer', 'username', 'email', 'mobile', 'nickname',
-            'fname', 'lname', 'superadmin:boolean', 'users.status:integer'
-        );
-        if ($group !== false) {
-            $usersTable->join('users_groups', 'users_groups.user', 'users.id');
-            $usersTable->where('group', (int)$group);
-        }
-
-        if ($domain !== false) {
-            $usersTable->and()->where('domain', (int)$domain);
-        }
-
-        if (!is_null($superadmin)) {
-            $usersTable->and()->where('superadmin', (bool)$superadmin);
-        }
-
-        if (!is_null($status)) {
-            $usersTable->and()->where('status', (int)$status);
-        }
-
-        if (!empty($term)) {
-            $term = Jaws_UTF8::strtolower($term);
-            $usersTable->and()->openWhere('username',   $term, 'like');
-            $usersTable->or()->where('lower(nickname)', $term, 'like');
-            $usersTable->or()->where('mobile',          $term, 'like');
-            $usersTable->or()->closeWhere('email',      $term, 'like');
-        }
-
-        $usersTable->orderBy('users.'.$orderBy);
-        $usersTable->limit($limit, $offset);
-        return $usersTable->fetchAll();
-    }
-
-    /**
      * Get count of users
      *
      * @access  public
