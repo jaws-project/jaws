@@ -59,10 +59,10 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 // remove temp user data
                 $this->gadget->session->delete('temp_recovery_user');
 
-                $user = $this->app->users->GetUserNew(
+                $user = $this->gadget->model->load('User')->getUser(
                     (int)$userData['id'],
-                    array('account' => true),
-                    $userData['domain']
+                    $userData['domain'],
+                    array('account' => true)
                 );
                 if (Jaws_Error::IsError($user) || empty($user)) {
                     $rcvryData['rcvstep'] = 1;
