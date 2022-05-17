@@ -592,7 +592,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $postedData['password'] = $JCrypt->decrypt($postedData['password']);
         }
 
-        $result = $this->app->users->UpdatePassword(
+        $result = $this->gadget->model->load('User')->updatePassword(
             (int)$postedData['uid'],
             $postedData['password'],
             false,
