@@ -250,54 +250,6 @@ class Jaws_User
      *
      * @access  public
      * @param   mixed   $user       The username or ID
-     * @param   array   $fieldsets  Fieldsets(default, account, personal, password)
-     * @param   int     $domain     Domain Id
-     * @return  mixed   Returns an array with the info of the user and false on error
-     */
-    function GetUserNew($user, $fieldsets = array(), $domain = 0)
-    {
-        $columns = array(
-            'default'  => array(
-                'domain:integer', 'users.id:integer', 'contact:integer', 'avatar', 'status:integer'
-            ),
-            'account'  => array(
-                'username', 'nickname', 'users.email', 'users.mobile',
-                'superadmin:boolean', 'concurrents', 'logon_hours', 'expiry_date', 'registered_date',
-                'last_update', 'bad_password_count', 'last_password_update', 'last_access', 'verify_key'
-            ),
-            'personal' => array(
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'extra', 'public:boolean', 'privacy:boolean',
-                'pgpkey', 'signature', 'about', 'experiences', 'occupations', 'interests'
-            ),
-            'password' => array('password'),
-        );
-        $fieldsets['default'] = true;
-
-        $selectedColumns = array();
-        foreach ($fieldsets as $key => $keyValue) {
-            if ($keyValue) {
-                $selectedColumns = array_merge($selectedColumns, $columns[$key]);
-            }
-        }
-
-        $objORM = Jaws_ORM::getInstance()
-            ->table('users')
-            ->select($selectedColumns)
-            ->where('domain', (int)$domain, '=');
-        if (is_int($user)) {
-            $objORM->and()->where('users.id', $user);
-        } else {
-            $objORM->and()->where('username', Jaws_UTF8::strtolower($user));
-        }
-
-        return $objORM->fetchRow();
-    }
-
-    /**
-     * Get the info of an user by the username or ID
-     *
-     * @access  public
-     * @param   mixed   $user       The username or ID
      * @param   bool    $account    Account information
      * @param   bool    $personal   Personal information
      * @param   bool    $contacts   Contacts information
