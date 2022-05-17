@@ -91,7 +91,10 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         if ($gid === 0) {
             $gid = false;
         }
-        $users = $this->app->users->GetUsers($gid, false, null, 1);
+        $users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+            0, $gid,
+            array('status' => 1)
+        );
         if (Jaws_Error::IsError($users)) {
             return array();
         }
