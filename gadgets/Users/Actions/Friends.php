@@ -50,8 +50,12 @@ class Users_Actions_Friends extends Users_Actions_Default
         $tpl->SetVariable('title', $this::t('FRIENDS'));
 
         // Users
-        $superadmin = $this->app->session->user->superadmin ? null : false;
-        $users = $this->app->users->GetUsers(false, false, $superadmin);
+        $users = $this->gadget->model->load('Users')->getUsers(
+            0, 0,
+            array(
+                'superadmin' => $this->app->session->user->superadmin? null : false
+            )
+        );
         if (!Jaws_Error::IsError($users)) {
             foreach ($users as $user) {
                 $tpl->SetBlock('groups/user');
