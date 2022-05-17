@@ -165,7 +165,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $result = $this->gadget->model->load('User')->updateContact(
             $this->app->session->user->id,
             $contactData,
-            true, // main user contact
+            true // main user contact
         );
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
@@ -333,7 +333,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             $this->app->session->user->id,
             $contactData,
             false, // not main user contact
-            post['cid']
+            $post['cid']
         );
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);

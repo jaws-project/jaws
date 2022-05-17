@@ -292,8 +292,8 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         $uData['last_update'] = time();
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($uData)->where('id', (int)$uid)->exec();
+        $objORM = Jaws_ORM::getInstance()->table('users');
+        $result = $objORM->update($uData)->where('id', (int)$uid)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -442,15 +442,27 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         $data['owner'] = $user['id'];
         $data['checksum'] = hash64(json_encode($data));
+
+        $objORM = Jaws_ORM::getInstance();
+        if (!$main) {
+            $howmany = $objORM->table('users_contacts')
+                ->select('count(id):integer')
+                ->where('owner', $uid)
+                ->and()
+                ->where('checksum', $data['checksum'])
+                ->fetchOne();
+            if (!empty($howmany)) {
+                return false;
+            }
+        }
         // begin transaction
-        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+        $objORM->beginTransaction();
+
         $contactId = $objORM->table('users_contacts')
             ->upsert($data)
             ->where('owner', $uid)
             ->and()
             ->where('id', $main? $user['contact'] : $cid)
-            ->and()
-            ->where('checksum', $data['checksum'], '=', $main) // ignore if it is main contact
             ->exec();
         if (Jaws_Error::IsError($contactId)) {
             return $contactId;

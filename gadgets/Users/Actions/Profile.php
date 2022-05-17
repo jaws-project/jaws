@@ -150,7 +150,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $personal = $this->gadget->model->load('User')->getUser(
+        $user = $this->gadget->model->load('User')->getUser(
             $user,
             0,
             array('default' => true, 'account' => true, 'personal' => true)
