@@ -61,7 +61,11 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if (isset($params['user']) && !empty($params['user'])) {
-            $user = $this->app->users->GetUser($params['user'], true, false, true);
+            $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+                $params['user'],
+                0,
+                array('default' => true, 'account' => true)
+            );
             if (!Jaws_Error::IsError($user) && !empty($user)) {
                 $users[] = $user;
             }
@@ -71,7 +75,11 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         if (isset($params['users']) && !empty($params['users'])) {
             foreach ($params['users'] as $userId) {
                 if (!empty($userId)) {
-                    $user = $this->app->users->GetUser($userId, true, false, true);
+                    $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+                        $userId,
+                        0,
+                        array('default' => true, 'account' => true)
+                    );
                     if (!Jaws_Error::IsError($user) && !empty($user)) {
                         $users[] = $user;
                     }
