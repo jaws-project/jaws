@@ -48,7 +48,10 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('lbl_group', $label->Get());
 
         // Users
-        $users = $this->app->users->GetUsers();
+        $users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+            0, 0,
+            array('status' => 1)
+        );
         $combo =& Piwi::CreateWidget('Combo', 'users');
         $combo->AddOption(_t('CONTACT_MAILER_ALL_GROUP_USERS'), 0);
         foreach($users as $user) {
@@ -266,8 +269,13 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
                     $mail->AddRecipient($user['nickname'] . ' <' . $user['email'] . '>', 'To');
                 }
             } else {
-                if ($target['group'] == 0) {$target['group'] = false;}
-                $users = $this->app->users->GetUsers($target['group'], false, null, true);
+                if ($target['group'] == 0) {
+                    $target['group'] = false;
+                }
+                $users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+                    0, $target['group'],
+                    array('status' => 1)
+                );
                 foreach ($users as $user) {
                     $mail->AddRecipient($user['nickname'] . ' <' . $user['email'] . '>', 'Bcc');
                 }
