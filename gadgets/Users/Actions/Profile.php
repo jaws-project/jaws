@@ -16,7 +16,12 @@ class Users_Actions_Profile extends Users_Actions_Default
     function AboutUserLayoutParams()
     {
         $result = array();
-        $users = $this->app->users->GetUsers(false, false, true);
+        $users = $this->gadget->model->load('Users')->getUsers(
+            0, 0,
+            array(
+                'superadmin' => true
+            )
+        );
         if (!Jaws_Error::IsError($users)) {
             $pusers = array();
             $pusers[0] = $this::t('LOGGED_USER');

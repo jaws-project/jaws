@@ -29,7 +29,8 @@ class Users_Model_Friends extends Jaws_Gadget_Model
             $postedUsers[$v] = $v;
         }
 
-        $list = $userModel->GetUsers();
+        // FIXME: only fetch users of given group's domain
+        $list = $this->gadget->model->load('Users')->getUsers();
         foreach ($list as $user) {
             if ($userModel->UserIsInGroup($user['id'], $guid)) {
                 if (!isset($postedUsers[$user['id']])) {
