@@ -231,10 +231,16 @@ class Users_Actions_Users extends Users_Actions_Default
     function GetUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $post = $this->gadget->request->fetch(array('id', 'account', 'personal', 'contacts') , 'post');
+        $post = $this->gadget->request->fetch(array('id', 'account', 'personal') , 'post');
 
-        $profile = $this->app->users->GetUser(
-            (int)$post['id'], $post['account'], $post['personal'], $post['contacts']
+        $profile = $this->gadget->model->load('User')->getUser(
+            (int)$post['id'],
+            0,
+            array(
+                'default'  => true,
+                'account'  => (bool)$post['account'],
+                'personal' => (bool)$post['personal']
+            )
         );
         if (Jaws_Error::IsError($profile)) {
             return array();
@@ -381,8 +387,7 @@ class Users_Actions_Users extends Users_Actions_Default
             );
         }
 
-        $uModel = Jaws_User::getInstance();
-        $profile = $uModel->GetUser((int)$uid);
+        $profile = $this->gadget->model->load('User')->getUser((int)$uid);
         if (!$this->app->session->user->superadmin && $profile['superadmin']) {
             return $this->gadget->session->response(
                 $this::t('USERS_CANT_DELETE', $profile['username']),
@@ -390,6 +395,7 @@ class Users_Actions_Users extends Users_Actions_Default
             );
         }
 
+        $uModel = Jaws_User::getInstance();
         if (!$uModel->DeleteUser($uid)) {
             return $this->gadget->session->response(
                 $this::t('USERS_CANT_DELETE', $profile['username']),

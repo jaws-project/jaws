@@ -27,7 +27,11 @@ class Users_Actions_Personal extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserPersonal');
         $response = $this->gadget->session->pop('Personal');
         if (!isset($response['data'])) {
-            $personal  = $this->app->users->GetUser($this->app->session->user->id, true, true);
+            $personal  = $this->gadget->model->load('User')->getUser(
+                $this->app->session->user->id,
+                0,
+                array('default' => true, 'account' => true, 'personal' => true)
+            );
         } else {
             $personal = $response['data'];
         }

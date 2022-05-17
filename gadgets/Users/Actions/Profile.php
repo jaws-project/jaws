@@ -54,7 +54,11 @@ class Users_Actions_Profile extends Users_Actions_Default
             $user = (int)$this->app->session->user->id;
         }
 
-        $user = $this->app->users->GetUser($user, true, true);
+        $user = $this->gadget->model->load('User')->getUser(
+            $user,
+            0,
+            array('default' => true, 'account' => true, 'personal' => true)
+        );
         if (Jaws_Error::IsError($user) || empty($user)) {
             return Jaws_HTTPError::Get(404);
         }
@@ -146,7 +150,11 @@ class Users_Actions_Profile extends Users_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $user = $this->app->users->GetUser($user, true, true, true);
+        $personal = $this->gadget->model->load('User')->getUser(
+            $user,
+            0,
+            array('default' => true, 'account' => true, 'personal' => true)
+        );
         if (Jaws_Error::IsError($user) || empty($user)) {
             return Jaws_HTTPError::Get(404);
         }

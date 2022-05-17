@@ -207,7 +207,11 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $activation = $this->gadget->registry->fetch('anon_activation');
         $message    = '';
 
-        $userInfo = $this->app->users->GetUser($user, true, true, true);
+        $userInfo  = $this->gadget->model->load('User')->getUser(
+            $user,
+            0,
+            array('default' => true, 'account' => true, 'personal' => true)
+        );
         if (Jaws_Error::IsError($userInfo)) {
             return $userInfo;
         }

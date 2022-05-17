@@ -559,7 +559,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 continue;
             }
 
-            $profile = $this->app->users->GetUser((int)$uid);
+            $profile = $this->gadget->model->load('User')->getUser((int)$uid);
             if (!$this->app->session->user->superadmin && $profile['superadmin']) {
                 $errors++;
                 continue;
