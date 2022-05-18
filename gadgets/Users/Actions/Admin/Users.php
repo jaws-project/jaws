@@ -425,7 +425,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             unset($pData['avatar']);
         }
 
-        $res = $this->app->users->UpdatePersonal((int)$post['id'], $pData);
+        $res = $this->gadget->model->load('User')->updatePersonal((int)$post['id'], $pData);
         if ($res === false || Jaws_Error::IsError($res)) {
             return $this->gadget->session->response($this::t('USERS_PERSONALINFO_NOT_UPDATED'), RESPONSE_ERROR);
         }

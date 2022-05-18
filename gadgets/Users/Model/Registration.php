@@ -166,7 +166,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             return $user_id;
         }
 
-        $result = $jUser->UpdatePersonal(
+        $result = $this->gadget->model->load('User')->updatePersonal(
             $user_id,
             array(
                 'fname'  => $fname,

@@ -195,8 +195,10 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         $pData['last_update'] = time();
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($pData)->where('id', (int)$id)->exec();
+        $result = Jaws_ORM::getInstance()->table('users')
+            ->update($pData)
+            ->where('id', (int)$id)
+            ->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
