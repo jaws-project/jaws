@@ -28,7 +28,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->AjaxMe('index.js');
         $response = $this->gadget->session->pop('Contact');
         if (!isset($response['data'])) {
-            $contact = $this->app->users->GetUserContact($this->app->session->user->id);
+            $contact = $this->gadget->model->load('Contact')->getContact($this->app->session->user->id);
             if (Jaws_Error::IsError($contact)) {
                 return Jaws_HTTPError::Get(500);
             }
@@ -251,7 +251,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserContacts');
         $id = (int)$this->gadget->request->fetch('id', 'post');
 
-        return $this->app->users->GetUserContact($this->app->session->user->id, $id);
+        return $this->gadget->model->load('Contact')->getContact($this->app->session->user->id, $id);
     }
 
     /**
@@ -269,7 +269,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         );
 
         $currentUser = $this->app->session->user->id;
-        $contacts = $this->app->users->GetUserContacts(
+        $contacts = $this->gadget->model->load('Contact')->getContacts(
             $currentUser,
             $post['search'],
             $post['limit'],
@@ -282,7 +282,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             );
         }
 
-        $total = $this->app->users->GetUserContactsCount($currentUser, $post['search']);
+        $total = $this->gadget->model->load('Contact')->getContactsCount($currentUser, $post['search']);
         if (Jaws_Error::IsError($total)) {
             return $this->gadget->session->response(
                 $total->getMessage(),
@@ -353,7 +353,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserContacts');
 
         $ids = $this->gadget->request->fetch('ids:array', 'post');
-        $result = $this->app->users->DeleteUserContacts(
+        $result = $this->gadget->model->load('Contact')->deleteContacts(
             $this->app->session->user->id,
             $ids
         );
