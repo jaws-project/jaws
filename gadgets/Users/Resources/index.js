@@ -593,7 +593,7 @@ function usersDataSource(options, callback) {
 
     UsersAjax.callAsync(
         'GetUsers', {
-            'offset': options.offset,
+            'offset': options.pageIndex * options.pageSize,
             'limit': options.pageSize,
             'sortDirection': options.sortDirection,
             'sortBy': options.sortProperty,
@@ -901,7 +901,7 @@ function contactsDataSource(options, callback) {
         'GetContacts', {
             'search': options.search || '',
             'limit': options.pageSize,
-            'offset': options.offset
+            'offset': options.pageIndex * options.pageSize
         },
         function (response, status) {
             var dataSource = {};

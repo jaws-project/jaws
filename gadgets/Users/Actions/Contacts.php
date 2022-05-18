@@ -271,7 +271,6 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $currentUser = $this->app->session->user->id;
         $contacts = $this->gadget->model->load('Contact')->getContacts(
             $currentUser,
-            $post['search'],
             $post['limit'],
             $post['offset']
         );
