@@ -43,7 +43,12 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
 
         // User groups
-        $groups = $this->app->users->GetGroups(true, 'title');
+        $groups = $this->gadget->model->load('Groups')->getGroups(
+            0, 0, 0,
+            array('enabled'  => true),
+            array(), // default fieldset
+            array('title' => true ) // order by title ascending
+        );
         if (!Jaws_Error::IsError($groups)) {
             $combo =& Piwi::CreateWidget('Combo', 'sys_groups');
             $combo->AddEvent(ON_CHANGE, 'toggleUsers(this.value)');
