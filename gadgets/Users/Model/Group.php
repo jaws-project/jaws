@@ -22,7 +22,7 @@ class Users_Model_Group extends Jaws_Gadget_Model
             'default'  => array(
                 /*'groups.domain:integer', */
                 'groups.id:integer', 'groups.owner:integer', 'groups.name', 'groups.title',
-                'enabled:boolean'
+                'groups.description', 'enabled:boolean'
             ),
         );
         $fieldsets['default'] = true;
