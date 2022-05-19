@@ -35,7 +35,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('options', $radio->Get());
 
         // Group
-        $groups = $this->gadget->model->load('Groups')->getGroups(
+        $groups = Jaws_Gadget::getInstance('Users')->model->load('Groups')->getGroups(
             0, 0, 0,
             array('enabled'  => true)
         );
