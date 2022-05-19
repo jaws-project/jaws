@@ -19,7 +19,7 @@ class Users_Model_Friends extends Jaws_Gadget_Model
     function AddUsersToGroup($guid, $users, $owner)
     {
         $userModel = Jaws_User::getInstance();
-        $group = $userModel->GetGroup((int)$guid, $owner);
+        $group = $this->gadget->model->load('Group')->getGroup((int)$guid, $owner);
         if (!$group) {
             return new Jaws_Error($this::t('GROUPS_GROUP_NOT_EXIST'));
         }

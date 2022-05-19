@@ -116,7 +116,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageGroups');
         $id = (int)$this->gadget->request->fetch('id' , 'post');
 
-        $gInfo = $this->app->users->GetGroup($id);
+        $gInfo = $this->gadget->model->load('Group')->getGroup($id);
         if (Jaws_Error::IsError($profile)) {
             return array();
         }
@@ -136,7 +136,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $gData = $this->gadget->request->fetch('data:array', 'post');
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
-        $res = $this->app->users->AddGroup($gData);
+        $res = $this->gadget->model->load('Group')->addGroup($gData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -157,7 +157,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $gData = $post['data'];
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
-        $res = $this->app->users->UpdateGroup($post['id'], $gData);
+        $res = $this->gadget->model->load('Group')->editGroup($post['id'], $gData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -175,8 +175,8 @@ class Users_Actions_Groups extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $gid = (int)$this->gadget->request->fetch('id', 'post');
-        $groupinfo = $this->app->users->GetGroup((int)$gid);
-        if (!$this->app->users->DeleteGroup($gid)) {
+        $groupinfo = $this->gadget->model->load('Group')->getGroup((int)$gid);
+        if (!$this->gadget->model->load('Group')->deleteGroup($gid)) {
             return $this->gadget->session->response($this::t('GROUPS_CANT_DELETE', $groupinfo['name']),
                 RESPONSE_ERROR);
         } else {

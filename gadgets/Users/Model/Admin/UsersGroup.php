@@ -18,7 +18,7 @@ class Users_Model_Admin_UsersGroup extends Jaws_Gadget_Model
     function AddUsersToGroup($guid, $users)
     {
         $userModel = Jaws_User::getInstance();
-        $group = $userModel->GetGroup((int)$guid);
+        $group = $this->gadget->model->load('Group')->getGroup((int)$guid);
         if (!$group) {
             return new Jaws_Error($this::t('GROUPS_GROUP_NOT_EXIST'));
         }
