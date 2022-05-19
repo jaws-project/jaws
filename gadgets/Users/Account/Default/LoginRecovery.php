@@ -142,7 +142,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 throw new Exception($resCheck->getMessage(), 401);
             }
 
-            $userData = $this->app->users->GetUserByTerm($rcvryData['domain'], $rcvryData['account']);
+            $userData = $this->gadget->model->load('User')->getByTerm($rcvryData['domain'], $rcvryData['account']);
             if (Jaws_Error::IsError($userData) || empty($userData)) {
                 throw new Exception($this::t('USER_NOT_EXIST'), 401);
             }

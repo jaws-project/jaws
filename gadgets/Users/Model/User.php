@@ -58,6 +58,30 @@ class Users_Model_User extends Jaws_Gadget_Model
     }
 
     /**
+     * Get the info of an user(s) by the email address
+     *
+     * @access  public
+     * @param   int     $domain     Domain Id
+     * @param   string  $term       User name/email/mobile
+     * @return  mixed   Returns an array with the info of the user or false on error
+     */
+    function getByTerm($domain, $term)
+    {
+        return Jaws_ORM::getInstance()
+            ->table('users')
+            ->select('id:integer', 'domain:integer', 'username', 'nickname', 'email',
+                'mobile', 'superadmin:boolean', 'status:integer'
+            )->where('domain', (int)$domain)
+            ->and()
+            ->openWhere('username', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->where('email', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->closeWhere('mobile', $term)
+            ->fetchRow();
+    }
+
+    /**
      * Update user password
      *
      * @access  public
@@ -851,6 +875,31 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         return true;
+    }
+
+    /**
+     * Check username/email/mobile already exists
+     *
+     * @access  public
+     * @param   string  $username   The username
+     * @param   int     $exclude    Excluded user ID
+     * @return  mixed   Returns email address exists or not
+     */
+    function exists($term, $exclude = 0)
+    {
+        $howmany = Jaws_ORM::getInstance()->table('users')->select('count(id)')
+            ->openWhere()
+            ->where('username', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->where('email', Jaws_UTF8::strtolower($term))
+            ->or()
+            ->where('mobile', $term)
+            ->closeWhere()
+            ->and()
+            ->where('id', $exclude, '<>')
+            ->fetchOne();
+        
+        return !Jaws_Error::IsError($howmany) && !empty($howmany);
     }
 
 }

@@ -124,7 +124,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         $jUser = Jaws_User::getInstance();
         // this username already exists in the DB?
-        if ($jUser->UsernameExists($username)) {
+        if ($this->gadget->model->load('User')->exists($username)) {
             return Jaws_Error::raiseError(
                 $this::t('USERS_ALREADY_EXISTS', $username),
                 __FUNCTION__,
@@ -132,7 +132,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             );
         }
         // this email address already exists in the DB?
-        if ($jUser->UserEmailExists($user_email)) {
+        if ($this->gadget->model->load('User')->exists($user_email)) {
             return Jaws_Error::raiseError(
                 $this::t('EMAIL_ALREADY_EXISTS', $user_email),
                 __FUNCTION__,
@@ -140,7 +140,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             );
         }
         // this mobile number already exists in the DB?
-        if ($jUser->UserMobileExists($user_mobile)) {
+        if ($this->gadget->model->load('User')->exists($user_mobile)) {
             return Jaws_Error::raiseError(
                 $this::t('MOBILE_ALREADY_EXISTS', $user_mobile),
                 __FUNCTION__,
