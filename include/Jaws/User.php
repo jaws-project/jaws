@@ -245,25 +245,4 @@ class Jaws_User
         return !Jaws_Error::IsError($result);
     }
 
-    /**
-     * Get the avatar url
-     * @access  public
-     * @param   string   $avatar    User's avatar
-     * @param   string   $email     User's email address
-     * @param   integer  $size      Avatar size
-     * @param   integer  $time      An integer for force browser to refresh it cache
-     * @return  string   Url to avatar image
-     */
-    function GetAvatar($avatar, $email, $size = 48, $time = '')
-    {
-        if (empty($avatar) || !Jaws_FileManagement_File::file_exists(AVATAR_PATH . $avatar)) {
-            $uAvatar = Jaws_Gravatar::GetGravatar($email, $size);
-        } else {
-            $uAvatar = $this->app->getDataURL(). "avatar/$avatar";
-            $uAvatar.= !empty($time)? "?$time" : '';
-        }
-
-        return $uAvatar;
-    }
-
 }
