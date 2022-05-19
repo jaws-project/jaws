@@ -201,7 +201,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $uData['status'] = (int)$uData['status'];
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
-        $res = $this->app->users->AddUser($uData);
+        $res = $this->gadget->model->load('User')->addUser($uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
@@ -244,7 +244,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             return $this->gadget->session->response($this::t('USERS_USER_NOT_EXIST'), RESPONSE_ERROR);
         }
 
-        $res = $this->app->users->UpdateUser((int)$post['id'], $uData);
+        $res = $this->gadget->model->load('User')->editUser((int)$post['id'], $uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } else {
@@ -564,7 +564,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $errors++;
                 continue;
             }
-            if (!$this->app->users->DeleteUser((int)$uid)) {
+            if (!$this->gadget->model->load('User')->deleteUser((int)$uid)) {
                 $errors++;
                 continue;
             }

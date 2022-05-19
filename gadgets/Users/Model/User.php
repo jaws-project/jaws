@@ -143,6 +143,456 @@ class Users_Model_User extends Jaws_Gadget_Model
     }
 
     /**
+     * Adds a new user
+     *
+     * @access  public
+     * @param   array   $uData  User information data
+     * @return  mixed   Returns user's id if user was successfully added, otherwise Jaws_Error
+     */
+    function addUser($uData)
+    {
+        // username
+        $uData['username'] = trim($uData['username'], '-_.@');
+        if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INVALID_USERNAME'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+        $uData['username'] = strtolower($uData['username']);
+
+        // check reserved users
+        $reservedUsers = preg_split("/\n|\r|\n\r/", $this->app->registry->fetch('reserved_users', 'Users'));
+        if (in_array($uData['username'], $reservedUsers)) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // nickname
+        $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
+        if (empty($uData['nickname'])) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // email
+        $uData['email'] = trim($uData['email']);
+        if (!empty($uData['email'])) {
+            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_INVALID_EMAIL_ADDRESS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $uData['email'] = strtolower($uData['email']);
+            $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
+            if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
+        // mobile
+        $uData['mobile'] = isset($uData['mobile'])? trim($uData['mobile']) : '';
+        if (!empty($uData['mobile'])) {
+            if (!empty($uData['mobile'])) {
+                if (!preg_match("/^[00|\+|0]\d{10,16}$/", $uData['mobile'])) {
+                    return Jaws_Error::raiseError(
+                        Jaws::t('ERROR_INVALID_MOBILE_NUMBER'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
+            }
+        }
+
+        if (empty($uData['email']) && empty($uData['mobile'])) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // password & complexity
+        $min = (int)$this->app->registry->fetch('password_min_length', 'Policy');
+        $min = ($min == 0)? 1 : $min;
+        if ($uData['password'] == '' ||
+            !preg_match("/^[[:print:]]{{$min},24}$/", $uData['password'])
+        ) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INVALID_PASSWORD', $min),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        if (!preg_match($this->app->registry->fetch('password_complexity', 'Policy'),
+                $uData['password'])
+        ) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INVALID_COMPLEXITY'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        $uData['last_update'] = time();
+        if (!array_key_exists('last_password_update', $uData)) {
+            $uData['last_password_update'] = time();
+        } else {
+            $uData['last_password_update'] = (int)$uData['last_password_update'];
+        }
+
+        $uData['registered_date'] = time();
+        $uData['superadmin'] = isset($uData['superadmin'])? (bool)$uData['superadmin'] : false;
+        $uData['status'] = isset($uData['status'])? (int)$uData['status'] : 1;
+        $uData['concurrents'] =
+            isset($uData['concurrents'])?
+            (int)$uData['concurrents'] :
+            (int)$this->app->registry->fetch('default_concurrents', 'Users');
+        $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
+        $uData['logon_hours'] = empty($uData['logon_hours'])? str_pad('', 42, 'F') : $uData['logon_hours'];
+        if (isset($uData['expiry_date'])) {
+            if (empty($uData['expiry_date'])) {
+                $uData['expiry_date'] = 0;
+            } else {
+                $objDate = Jaws_Date::getInstance();
+                $uData['expiry_date'] = $this->app->UserTime2UTC(
+                    (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
+                );
+            }
+        }
+
+        // set user's domain to default domain if not set
+        if (!isset($uData['domain'])) {
+            $uData['domain'] = (int)$this->app->registry->fetch('default_domain', 'Users');
+        }
+
+        // delete unverified old user with this username/email/mobile
+        $objORM = Jaws_ORM::getInstance()
+            ->table('users')
+            ->delete()
+            ->where('domain', $uData['domain'])
+            ->and()
+            ->where('status', 2)  // 2 = unverified user
+            ->and()
+            ->openWhere('username', $uData['username']);
+        if (!empty($uData['email'])) {
+            $objORM->or()->where('email', $uData['email']);
+        }
+        if (!empty($uData['mobile'])) {
+            $objORM->or()->where('mobile', $uData['mobile']);
+        }
+        $objORM->closeWhere();
+        $result = $objORM->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        // prevent duplicate username/email/mobile
+        $objORM->reset();
+        $objORM->table('users')
+            ->select('count(id)')
+            ->where('domain', $uData['domain'])
+            ->and()
+            ->openWhere('username', $uData['username']);
+        if (!empty($uData['email'])) {
+            $objORM->or()->where('email', $uData['email']);
+        }
+        if (!empty($uData['mobile'])) {
+            $objORM->or()->where('mobile', $uData['mobile']);
+        }
+        $objORM->closeWhere();
+        $howmany = $objORM->fetchOne();
+        if (Jaws_Error::IsError($howmany) || !empty($howmany)) {
+            return Jaws_Error::raiseError(
+                Jaws::t('USERS_ALREADY_EXISTS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // insert user
+        $objORM->reset();
+        $result = $objORM->table('users')->insert($uData)->exec();
+        if (Jaws_Error::IsError($result)) {
+            if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
+                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $uData['username']));
+            }
+            return $result;
+        }
+
+        // Let everyone know a user has been added
+        $res = $this->app->listener->Shout(
+            'Users',
+            'UserChanges',
+            array('action' => 'AddUser', 'user' => $result)
+        );
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Edit user attributes
+     *
+     * @access  public
+     * @param   int     $uid    User's ID
+     * @param   array   $uData  User information data
+     * @return  bool    Returns true if user was successfully updated, false if not
+     */
+    function editUser($uid, $uData)
+    {
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($uData),
+            array('domain', 'username', 'nickname', 'email', 'new_email', 'mobile',
+                'superadmin', 'status', 'concurrents', 'logon_hours', 'expiry_date',
+            )
+        );
+        foreach ($invalids as $invalid) {
+            unset($uData[$invalid]);
+        }
+
+        // username
+        if (array_key_exists('username', $uData)) {
+            $uData['username'] = trim($uData['username'], '-_.@');
+            if (!preg_match('/^[[:alnum:]\-_.@]{3,32}$/', $uData['username'])) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_INVALID_USERNAME'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $uData['username'] = strtolower($uData['username']);
+        }
+
+        // nickname
+        if (array_key_exists('nickname', $uData)) {
+            $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
+            if (empty($uData['nickname'])) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_INCOMPLETE_FIELDS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
+        // email
+        if (array_key_exists('email', $uData)) {
+            $uData['email'] = trim($uData['email']);
+            if (!empty($uData['email'])) {
+                if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['email'])) {
+                    return Jaws_Error::raiseError(
+                        Jaws::t('ERROR_INVALID_EMAIL_ADDRESS'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
+                $uData['email'] = strtolower($uData['email']);
+                $blockedDomains = $this->app->registry->fetch('blocked_domains', 'Policy');
+                if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
+                    return Jaws_Error::raiseError(
+                        Jaws::t('ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
+            }
+        }
+
+        // new email
+        if (array_key_exists('new_email', $uData)) {
+            $uData['new_email'] = trim($uData['new_email']);
+            if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $uData['new_email'])) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_INVALID_EMAIL_ADDRESS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $uData['new_email'] = strtolower($uData['new_email']);
+            if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['new_email'], '@'), 1))) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['new_email'], '@'), 1)),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
+        // mobile
+        if (array_key_exists('mobile', $uData)) {
+            $uData['mobile'] = isset($uData['mobile'])? trim($uData['mobile']) : '';
+            if (!empty($uData['mobile'])) {
+                if (!empty($uData['mobile'])) {
+                    if (!preg_match("/^[00|\+|0]\d{10,16}$/", $uData['mobile'])) {
+                        return Jaws_Error::raiseError(
+                            Jaws::t('ERROR_INVALID_MOBILE_NUMBER'),
+                            __FUNCTION__,
+                            JAWS_ERROR_NOTICE
+                        );
+                    }
+                }
+            }
+        }
+
+        // get user information, we need it for rename avatar
+        $user = $this->getUser(
+            $uid,
+            0,
+            array('default' => true, 'account' => true, 'personal' => true)
+        );
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
+
+        // at least one of email or mobile or email
+        if (((array_key_exists('email', $uData) && empty($uData['email'])) ||
+            (!array_key_exists('email', $uData) && empty($user['email']))) &&
+            ((array_key_exists('mobile', $uData) && empty($uData['mobile'])) ||
+            (!array_key_exists('mobile', $uData) && empty($user['mobile'])))
+        ) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // if currently a user logged
+        
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user->logged) {
+            // other users can't modify the god user
+            if (JAWS_GODUSER == $user['id'] && $this->app->session->user->id != $user['id']) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_ACCESS_DENIED'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+
+            // not superadmin cant set/modify superadmin users 
+            if (!$this->app->session->user->superadmin) {
+                unset($uData['superadmin']);
+                // non-superadmin user can't change properties of superadmin users
+                if ($user['superadmin']) {
+                    return Jaws_Error::raiseError(
+                        Jaws::t('ERROR_ACCESS_DENIED'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
+                }
+            }
+        }
+
+        if (array_key_exists('username', $uData) && ($uData['username'] !== $user['username'])) {
+            // check reserved users
+            $reservedUsers = preg_split("/\n|\r|\n\r/", $this->app->registry->fetch('reserved_users', 'Users'));
+            if (in_array($uData['username'], $reservedUsers)) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_RESERVED_USERNAME', substr(strrchr($uData['username'], '@'), 1)),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+
+            // set new avatar name if username changed
+            if (!empty($user['avatar'])) {
+                $fileinfo = Jaws_FileManagement_File::pathinfo($user['avatar']);
+                if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                    $uData['avatar'] = $uData['username']. '.'. $fileinfo['extension'];
+                }
+            }
+        }
+
+        $uData['last_update'] = time();
+        if (isset($uData['status'])) {
+            $uData['status'] = (int)$uData['status'];
+            if ($uData['status'] == 1) {
+                $uData['recovery_key'] = '';
+            }
+        }
+        if (isset($uData['expiry_date'])) {
+            if (empty($uData['expiry_date'])) {
+                $uData['expiry_date'] = 0;
+            } else {
+                $objDate = Jaws_Date::getInstance();
+                $uData['expiry_date'] = $this->app->UserTime2UTC(
+                    (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
+                );
+            }
+        }
+
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->update($uData)->where('id', $uid)->exec();
+        if (Jaws_Error::IsError($result)) {
+            if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
+                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $uData['username']));
+            }
+            return $result;
+        }
+
+        // rename avatar name
+        if (isset($uData['avatar'])) {
+            Jaws_FileManagement_File::delete(AVATAR_PATH. $uData['avatar']);
+             Jaws_FileManagement_File::rename(
+                AVATAR_PATH. $user['avatar'],
+                AVATAR_PATH. $uData['avatar']
+            );
+        }
+
+        if (isset($this->app) && property_exists($this->app, 'session') && $this->app->session->user->id == $uid) {
+            if (array_key_exists('username', $uData)) {
+                $this->app->session->user = array('username' => $uData['username']);
+            }
+            if (array_key_exists('nickname', $uData)) {
+                $this->app->session->user  = array('nickname' => $uData['nickname']);
+            }
+            if (array_key_exists('email', $uData)) {
+                $this->app->session->user = array('email' => $uData['email']);
+            }
+            if (array_key_exists('mobile', $uData)) {
+                $this->app->session->user = array('mobile' => $uData['mobile']);
+            }
+
+            // update user's avatar in current session
+            if (isset($uData['avatar'])) {
+                $this->app->session->user = array(
+                    'avatar' => $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
+                );
+            }
+        }
+
+        // Let everyone know a user has been added
+        $res = $this->app->listener->Shout(
+            'Users',
+            'UserChanges',
+            array('action' => 'UpdateUser', 'user' => $uid)
+        );
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Updates user profile
      *
      * @access  public

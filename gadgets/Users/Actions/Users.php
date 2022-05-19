@@ -293,7 +293,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
         $uData['status'] = (int)$uData['status'];
 
-        $res = $this->app->users->AddUser($uData);
+        $res = $this->gadget->model->load('User')->addUser($uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -328,7 +328,7 @@ class Users_Actions_Users extends Users_Actions_Default
             }
         }
 
-        $res = $this->app->users->UpdateUser($post['uid'], $uData);
+        $res = $this->gadget->model->load('User')->editUser($post['uid'], $uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -396,7 +396,7 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $uModel = Jaws_User::getInstance();
-        if (!$uModel->DeleteUser($uid)) {
+        if (!$this->gadget->model->load('User')->deleteUser($uid)) {
             return $this->gadget->session->response(
                 $this::t('USERS_CANT_DELETE', $profile['username']),
                 RESPONSE_ERROR
