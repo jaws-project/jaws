@@ -442,7 +442,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     function GetUserContact()
     {
         $uid = (int)$this->gadget->request->fetch('uid', 'post');
-        $cInfo = $this->app->users->GetUserContact($uid);
+        $cInfo = $this->gadget->model->load('Contact')->getContact($uid);
         if (Jaws_Error::IsError($cInfo)) {
             return $this->gadget->session->response($cInfo->getMessage(), RESPONSE_ERROR);
         }

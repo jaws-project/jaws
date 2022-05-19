@@ -116,7 +116,7 @@ class Users_Actions_Friends extends Users_Actions_Default
             $group['recid'] = $group['id'];
             $groups[$key] = $group;
         }
-        $groupsCount = $this->app->users->GetUserContactsCount($user);
+        $groupsCount = $this->gadget->model->load('Contact')->getContactsCount($user);
 
         return array(
             'status' => 'success',

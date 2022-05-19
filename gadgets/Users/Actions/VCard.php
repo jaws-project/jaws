@@ -21,8 +21,7 @@ class Users_Actions_VCard extends Users_Actions_Default
 
         require_once ROOT_JAWS_PATH . 'gadgets/Users/include/vCard.php';
 
-        $currentUser = $this->app->session->user->id;
-        $contacts = $this->app->users->GetUserContacts($currentUser);
+        $contacts = $this->gadget->model->load('Contact')->getContacts($this->app->session->user->id);
 
         $result = '';
         foreach ($contacts as $contact) {
