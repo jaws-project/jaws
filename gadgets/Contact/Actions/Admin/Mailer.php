@@ -35,7 +35,10 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('options', $radio->Get());
 
         // Group
-        $groups = $this->app->users->GetGroups();
+        $groups = $this->gadget->model->load('Groups')->getGroups(
+            0, 0, 0,
+            array('enabled'  => true)
+        );
         $combo =& Piwi::CreateWidget('Combo', 'groups');
         $combo->AddEvent(ON_CHANGE, 'updateUsers(this.value)');
         $combo->AddOption(_t('CONTACT_MAILER_ALL_GROUPS'), 0);
