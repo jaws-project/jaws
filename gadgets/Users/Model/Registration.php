@@ -122,7 +122,6 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             );
         }
 
-        $jUser = Jaws_User::getInstance();
         // this username already exists in the DB?
         if ($this->gadget->model->load('User')->exists($username)) {
             return Jaws_Error::raiseError(

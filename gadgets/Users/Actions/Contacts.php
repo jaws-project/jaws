@@ -162,7 +162,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         );
 
         $contactData = $this->prepareContactData($post);
-        $result = $this->gadget->model->load('User')->updateContact(
+        $result = $this->gadget->model->load('Contact')->updateContact(
             $this->app->session->user->id,
             $contactData,
             true // main user contact
@@ -328,7 +328,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
 
         $contactData = $this->prepareContactData($post['data']);
-        $result = $this->gadget->model->load('User')->updateContact(
+        $result = $this->gadget->model->load('Contact')->updateContact(
             $this->app->session->user->id,
             $contactData,
             false, // not main user contact

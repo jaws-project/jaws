@@ -135,18 +135,24 @@ class Users_Actions_VCard extends Users_Actions_Default
                 );
             }
 
-            $jUser = Jaws_User::getInstance();
-            $currentUser = $this->app->session->user->id;
             if (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {
-                    $contactId = $jUser->UpdateContacts($currentUser, 0, $result);
+                    $contactId = $this->gadget->model->load('Contact')->updateContact(
+                        $this->app->session->user->id,
+                        $resul,
+                        false
+                    );
                 }
             } else {
                 foreach ($vCard as $Index => $vCardPart) {
                     $result = $this->PrepareForImport($vCardPart);
                     if ($result) {
-                        $contactId = $jUser->UpdateContacts($currentUser, 0, $result);
+                        $contactId = $this->gadget->model->load('Contact')->updateContact(
+                            $this->app->session->user->id,
+                            $resul,
+                            false
+                        );
                     }
                 }
             }

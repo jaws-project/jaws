@@ -400,7 +400,6 @@ class Users_Actions_Users extends Users_Actions_Default
             );
         }
 
-        $uModel = Jaws_User::getInstance();
         if (!$this->gadget->model->load('User')->deleteUser($uid)) {
             return $this->gadget->session->response(
                 $this::t('USERS_CANT_DELETE', $profile['username']),
@@ -443,7 +442,6 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $post = $this->gadget->request->fetch(array('uid', 'groups:array'), 'post');
-        $uModel = Jaws_User::getInstance();
         $oldGroups = $this->gadget->model->load('Groups')->getGroups(0, 0, (int)$post['uid']);
         if (!Jaws_Error::IsError($oldGroups)) {
             $oldGroups = array_column($oldGroups, 'id');
