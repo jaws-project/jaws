@@ -52,7 +52,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
             'comments_details.id:integer', 'gadget', 'action', 'reference:integer',
-            'reference_title', 'reference_link', 'user', 'reply', 'replier',
+            'reference_title', 'reference_link', 'user:integer', 'reply', 'replier',
             'comments_details.name', 'comments_details.email', 'comments_details.url',
             'uip', 'msg_txt', 'comments_details.status:integer', 'comments_details.insert_time',
             'users.username', 'users.nickname', 'users.email as user_email', 'users.avatar',
