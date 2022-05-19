@@ -65,7 +65,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('events_url', $this->gadget->urlMap('ManageEvents', array('user' => $userId)));
 
         // User groups
-        $groups = $this->gadget->model->load('Groups')->getGroups(
+        $groups = Jaws_Gadget::getInstance('Users')->model->load('Groups')->getGroups(
             0, $userId, 0,
             array('enabled'  => true),
             array(), // default fieldset
