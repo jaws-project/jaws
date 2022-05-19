@@ -81,7 +81,12 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_userGroups', $this::t('USERS_GROUPS'));
 
         // Groups
-        $groups = $this->app->users->GetGroups(0, true, 'title');
+        $groups = $this->gadget->model->load('Groups')->getGroups(
+            0, 0, 0,
+            array('enabled'  => true),
+            array(), // default fieldsets
+            array('title' => true ) // order by title ascending
+        );
         if (!Jaws_Error::IsError($groups)) {
             foreach ($groups as $group) {
                 $tpl->SetBlock('Users/group');
@@ -439,9 +444,9 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageGroups');
         $post = $this->gadget->request->fetch(array('uid', 'groups:array'), 'post');
         $uModel = Jaws_User::getInstance();
-        $oldGroups = $uModel->GetGroupsOfUser((int)$post['uid']);
+        $oldGroups = $this->gadget->model->load('Groups')->getGroups(0, 0, (int)$post['uid']);
         if (!Jaws_Error::IsError($oldGroups)) {
-            $oldGroups = array_keys($oldGroups);
+            $oldGroups = array_column($oldGroups, 'id');
             foreach ($post['groups'] as $group) {
                 if (false === $gIndex = array_search($group, $oldGroups)) {
                     $uModel->AddUserToGroup($post['uid'], $group);

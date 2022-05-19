@@ -30,7 +30,12 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         );
         $assigns['anon_activation_default'] = $this->gadget->registry->fetch('anon_activation');
         $assigns['anon_group'] = $this->gadget->registry->fetch('anon_group');
-        $assigns['groups'] = $this->app->users->GetGroups(null, 'title');
+        $assigns['groups'] = $this->gadget->model->load('Groups')->getGroups(
+            0, 0, 0,
+            array('enabled'  => true),
+            array(), // default fieldset
+            array('title' => true ) // order by title ascending
+        )
         $assigns['password_recovery'] = $this->gadget->registry->fetch('password_recovery');
         $assigns['reserved_users'] = trim($this->gadget->registry->fetch('reserved_users'));
         return $this->gadget->template->xLoadAdmin('Settings.html')->render($assigns);

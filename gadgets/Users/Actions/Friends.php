@@ -104,8 +104,14 @@ class Users_Actions_Friends extends Users_Actions_Default
         );
 
         $user = $this->app->session->user->id;
-        $groups = $this->app->users->GetGroups($user, $post['limit'], $post['offset']);
-
+        $groups = $this->gadget->model->load('Groups')->getGroups(
+            0, $user, 0,
+            array(),
+            array(),
+            array(),
+            $post['limit'],
+            $post['offset']
+        );
         foreach($groups as $key=>$group) {
             $group['recid'] = $group['id'];
             $groups[$key] = $group;

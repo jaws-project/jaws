@@ -30,7 +30,6 @@ class Users_Model_Groups extends Jaws_Gadget_Model
      * @param   int     $offset
      * @return  array|Jaws_Error    Returns an array of the available groups or Jaws_Error on error
      */
-    //$owner = 0, $enabled = null, $orderBy = 'name', $limit = 0, $offset = null
     function getGroups(
         $domain = 0, $owner = 0, $user = 0,
         $filters = array(), $fieldsets = array(),

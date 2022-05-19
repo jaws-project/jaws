@@ -85,8 +85,9 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             }
 
             // fetch user groups
-            $groups = $this->app->users->GetGroupsOfUser($user['id']);
+            $groups = $this->gadget->model->load('Groups')->getGroups(0, 0, $user['id']);
             if (Jaws_Error::IsError($groups)) {
+                $groups = array_column($groups, 'name', 'id');
                 $groups = array();
             }
 
