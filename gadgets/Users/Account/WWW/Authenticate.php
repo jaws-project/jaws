@@ -77,7 +77,9 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             }
 
             // fetch user information from database
-            $user = $this->app->users->VerifyUser($loginData['domain'], $loginData['username'], $loginData['password']);
+            $user = $this->gadget->model->load('User')->verify(
+                $loginData['domain'], $loginData['username'], $loginData['password']
+            );
             if (Jaws_Error::isError($user)) {
                 // increase bad logins count
                 $this->gadget->action->load('Login')->BadLogins($loginData['username'], 1);

@@ -143,7 +143,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 // fetch user information from database
-                $user = $this->app->users->VerifyUser(
+                $user = $this->gadget->model->load('User')->verify(
                     $loginData['domain'], $loginData['username'], $loginData['password']
                 );
                 if (Jaws_Error::isError($user)) {

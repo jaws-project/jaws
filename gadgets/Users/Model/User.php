@@ -104,7 +104,7 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         // check old password
         if ($old_password !== false) {
-            if ($user['password'] !== Jaws_User::GetHashedPassword($old_password, $user['password'])) {
+            if ($user['password'] !== Jaws_Utils::HashedPassword($old_password, $user['password'])) {
                 return Jaws_Error::raiseError(
                     Jaws_Gadget::t('Users.USERS_PASSWORD_OLD_DONT_MATCH'),
                     __FUNCTION__,
@@ -136,7 +136,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         $result = Jaws_ORM::getInstance()
             ->table('users')->update(
                 array(
-                    'password' => Jaws_User::GetHashedPassword($new_password),
+                    'password' => Jaws_Utils::HashedPassword($new_password),
                     'last_password_update' => $last_password_update,
                 )
             )
@@ -286,7 +286,7 @@ class Users_Model_User extends Jaws_Gadget_Model
             isset($uData['concurrents'])?
             (int)$uData['concurrents'] :
             (int)$this->app->registry->fetch('default_concurrents', 'Users');
-        $uData['password'] = Jaws_User::GetHashedPassword($uData['password']);
+        $uData['password'] = Jaws_Utils::HashedPassword($uData['password']);
         $uData['logon_hours'] = empty($uData['logon_hours'])? str_pad('', 42, 'F') : $uData['logon_hours'];
         if (isset($uData['expiry_date'])) {
             if (empty($uData['expiry_date'])) {
@@ -359,13 +359,12 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         // Let everyone know a user has been added
-        $res = $this->app->listener->Shout(
-            'Users',
+        $res = $this->gadget->event->shout(
             'UserChanges',
             array('action' => 'AddUser', 'user' => $result)
         );
         if (Jaws_Error::IsError($res)) {
-            return false;
+            // nothing
         }
 
         return $result;
@@ -604,13 +603,12 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         // Let everyone know a user has been added
-        $res = $this->app->listener->Shout(
-            'Users',
+        $res = $this->gadget->event->shout(
             'UserChanges',
             array('action' => 'UpdateUser', 'user' => $uid)
         );
         if (Jaws_Error::IsError($res)) {
-            return false;
+            // nothing
         }
 
         return true;
@@ -876,6 +874,162 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         return true;
+    }
+
+    /**
+     * Verify a user
+     *
+     * @access  public
+     * @param   string  $user      User name/email/mobile
+     * @param   string  $password  Password of the user
+     * @return  boolean Returns true if the user is valid and false if not
+     */
+    function verify($domain, $user, $password)
+    {
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $result = $usersTable->select(
+            'id:integer', 'domain:integer', 'username', 'password', 'email', 'mobile',
+            'superadmin:boolean', 'nickname', 'ssn', 'dob', 'concurrents:integer',
+            'logon_hours', 'expiry_date', 'avatar', 'registered_date', 'last_update',
+            'bad_password_count', 'last_password_update', 'last_access', 'status:integer')
+            ->where('domain', (int)$domain)
+            ->and()
+            ->openWhere('username', Jaws_UTF8::strtolower($user))
+            ->or()
+            ->where('email', Jaws_UTF8::strtolower($user))
+            ->or()
+            ->closeWhere('mobile', $user)
+            ->fetchRow();
+        if (Jaws_Error::IsError($result) || empty($result)) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_LOGIN_WRONG'),
+                401,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // check password
+        if ($result['password'] !== Jaws_Utils::HashedPassword($password, $result['password'])) {
+            $this->updateLastAccess($result['id'], false);
+            // password incorrect event logging
+            $this->gadget->event->shout(
+                'Log',
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'domain'   => $result['domain'],
+                    'user'     => $result['id'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'result'   => 401,
+                    'status'   => false,
+                )
+            );
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_LOGIN_WRONG'),
+                401,
+                JAWS_ERROR_NOTICE
+            );
+        }
+        unset($result['password']);
+
+        // status
+        if ($result['status'] !== 1) {
+            // forbidden access event logging
+            $this->gadget->event->shout(
+                'Log',
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'domain'   => $result['domain'],
+                    'user'     => $result['id'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'result'   => 403,
+                    'status'   => false,
+                )
+            );
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_LOGIN_STATUS_'. $result['status']),
+                403,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // expiry date
+        if (!empty($result['expiry_date']) && $result['expiry_date'] <= time()) {
+            // forbidden access event logging
+            $this->gadget->event->shout(
+                'Log',
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'domain'   => $result['domain'],
+                    'user'     => $result['id'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'result'   => 403,
+                    'status'   => false,
+                )
+            );
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_LOGIN_EXPIRED'),
+                403,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // logon hours
+        $wdhour = explode(',', $this->app->UTC2UserTime(time(), 'w,G', true));
+        $lhByte = hexdec($result['logon_hours'][$wdhour[0]*6 + intval($wdhour[1]/4)]);
+        if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
+            // forbidden access event logging
+            $this->gadget->event->shout(
+                'Log',
+                array(
+                    'gadget'   => 'Users',
+                    'action'   => 'Login',
+                    'domain'   => $result['domain'],
+                    'user'     => $result['id'],
+                    'username' => $result['username'],
+                    'priority' => JAWS_WARNING,
+                    'result'   => 403,
+                    'status'   => false,
+                )
+            );
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_LOGIN_LOGON_HOURS'),
+                403,
+                JAWS_ERROR_NOTICE
+            );
+        }
+
+        // update last access
+        $this->updateLastAccess($result['id'], true);
+        return $result;
+
+    }
+
+    /**
+     * Updates the last login time for the given user
+     *
+     * @param   int     $user       user id of the user being updated
+     * @param   bool    $success    successfully accessed
+     * @return  bool    true if all is ok, false if error
+     */
+    private function updateLastAccess($user, $success = true)
+    {
+        $data['last_access'] = time();
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        if ($success) {
+            $data['bad_password_count'] = 0;
+        } else {
+            // increase bad_password_count
+            $data['bad_password_count'] = $usersTable->expr('bad_password_count + ?', 1);
+        }
+
+        $result = $usersTable->update($data)->where('id', (int)$user)->exec();
+        return !Jaws_Error::IsError($result);
     }
 
     /**
