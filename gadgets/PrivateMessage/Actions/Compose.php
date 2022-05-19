@@ -217,7 +217,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             }
 
             // Friends List
-            $groups = $this->gadget->model->load('Groups')->getGroups(
+            $groups = Jaws_Gadget::getInstance('Users')->model->load('Groups')->getGroups(
                 0, $user, 0,
                 array('enabled'  => true)
             );
