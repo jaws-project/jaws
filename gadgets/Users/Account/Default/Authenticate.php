@@ -161,12 +161,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 $user['groups'] = $groups;
-                $user['avatar'] = $this->app->users->GetAvatar(
-                    $user['avatar'],
-                    $user['email'],
-                    48,
-                    $user['last_update']
-                );
+                $user['avatar'] = $this->gadget->model->load('User')->getAvatar($user['id'], $user['domain']);
                 $user['internal'] = true;
                 $user['remember'] = (bool)$loginData['remember'];
                 // user define default data for pass to user login listener gadgets

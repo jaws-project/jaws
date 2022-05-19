@@ -598,7 +598,7 @@ class Users_Model_User extends Jaws_Gadget_Model
             // update user's avatar in current session
             if (isset($uData['avatar'])) {
                 $this->app->session->user = array(
-                    'avatar' => $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
+                    'avatar' => $this->getAvatar($uid)
                 );
             }
         }
@@ -685,7 +685,7 @@ class Users_Model_User extends Jaws_Gadget_Model
                 if ($k == 'avatar') {
                     // url to avatar action
                     $this->app->session->user = array(
-                        'avatar' => $this->app->users->GetAvatar($v, $user['email'], 48, $pData['last_update'])
+                        'avatar' => $this->getAvatar($user['id'])
                     );
                 } else {
                     $this->app->session->user = array($k => $v);
@@ -742,6 +742,7 @@ class Users_Model_User extends Jaws_Gadget_Model
             }
 
             // FIXME: Gravatar support!
+            // Gravatar  -> $avatar = Jaws_Gravatar::GetGravatar($email, $size);
             $avatar = (string)Jaws_FileManagement_File::file_get_contents($defaultImage);
         }
 

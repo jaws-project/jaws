@@ -64,12 +64,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         }
 
         // Avatar
-        $user['avatar'] = $this->app->users->GetAvatar(
-            $user['avatar'],
-            $user['email'],
-            128,
-            $user['last_update']
-        );
+        $user['avatar'] = $this->gadget->model->load('User')->getAvatar($user['id']);
 
         // Gender
         $user['gender'] = $this::t('USERS_GENDER_'.$user['gender']);
@@ -162,12 +157,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         // Avatar
         $user['avatar'] = $this->gadget->urlMap('Avatar', array('user'  => $user['username']));
         /*
-        $user['avatar'] = $this->app->users->GetAvatar(
-            $user['avatar'],
-            $user['email'],
-            128,
-            $user['last_update']
-        );
+        $user['avatar'] = $this->gadget->model->load('User')->getAvatar($user['id']);
         */
 
         // Gender

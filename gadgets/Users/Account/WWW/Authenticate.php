@@ -93,12 +93,7 @@ class Users_Account_WWW_Authenticate extends Users_Account_WWW
             }
 
             $user['groups'] = $groups;
-            $user['avatar'] = $this->app->users->GetAvatar(
-                $user['avatar'],
-                $user['email'],
-                48,
-                $user['last_update']
-            );
+            $user['avatar'] = $this->gadget->model->load('User')->getAvatar($user['id'], $user['domain']);
             $user['internal'] = true;
             $user['remember'] = (bool)$loginData['remember'];
 

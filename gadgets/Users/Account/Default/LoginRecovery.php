@@ -78,12 +78,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 }
 
                 $user['groups'] = $groups;
-                $user['avatar'] = $this->app->users->GetAvatar(
-                    $user['avatar'],
-                    $user['email'],
-                    48,
-                    $user['last_update']
-                );
+                $user['avatar'] = $this->gadget->model->load('User')->getAvatar($user['id'], $user['domain']);
                 $user['internal'] = true;
                 $user['remember'] = false;
                 // force user to change his password
