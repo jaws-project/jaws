@@ -345,6 +345,7 @@ function editGroup(id)
 function editUserGroups(id)
 {
     selectedUser = id;
+    currentAction = "UserGroups";
 
     $('#users-groups-form input[type=checkbox]').prop('checked', false);
 

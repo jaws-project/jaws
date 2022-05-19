@@ -275,7 +275,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $post = $this->gadget->request->fetch(array('gid', 'userIds:array'), 'post');
 
         foreach ((array)$post['userIds'] as $uid) {
-            $res = $this->app->users->DeleteUserFromGroup($uid, (int)$post['gid']);
+            $res = this->gadget->model->load('UserGroup')->delete($uid, (int)$post['gid']);
             if (Jaws_Error::IsError($res)) {
                 return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
             }

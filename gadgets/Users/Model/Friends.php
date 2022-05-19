@@ -32,16 +32,16 @@ class Users_Model_Friends extends Jaws_Gadget_Model
         // FIXME: only fetch users of given group's domain
         $list = $this->gadget->model->load('Users')->getUsers();
         foreach ($list as $user) {
-            if ($userModel->UserIsInGroup($user['id'], $guid)) {
+            if ($this->gadget->model->load('UserGroup')->exists($user['id'], $guid)) {
                 if (!isset($postedUsers[$user['id']])) {
                     if (!$this->app->session->user->superadmin && $user['superadmin']) {
                         continue;
                     }
-                    $userModel->DeleteUserFromGroup($user['id'], $guid, $owner);
+                    $this->gadget->model->load('UserGroup')->add($user['id'], $guid, $owner);
                 }
             } else {
                 if (isset($postedUsers[$user['id']])) {
-                    $userModel->AddUserToGroup($user['id'], $guid, $owner);
+                    $this->gadget->model->load('UserGroup')->add($user['id'], $guid, $owner);
 
                 }
             }

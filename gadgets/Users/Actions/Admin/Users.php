@@ -208,7 +208,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $guid = $this->gadget->registry->fetch('anon_group');
         if (!empty($guid)) {
-            $this->app->users->AddUserToGroup($res, (int)$guid);
+            $this->gadget->model->load('UserGroup')->add($res, (int)$guid);
         }
         return $this->gadget->session->response($this::t('USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
     }
@@ -374,7 +374,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageUsers');
         $post = $this->gadget->request->fetch(array('uid', 'gid'), 'post');
 
-        $res = $this->app->users->AddUserToGroup((int)$post['uid'], (int)$post['gid']);
+        $res = $this->gadget->model->load('UserGroup')->add((int)$post['uid'], (int)$post['gid']);
         if (Jaws_Error::IsError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
@@ -393,7 +393,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $post = $this->gadget->request->fetch(array('uid', 'groupIds:array'), 'post');
 
         foreach ((array)$post['groupIds'] as $gid) {
-            $res = $this->app->users->DeleteUserFromGroup((int)$post['uid'], $gid);
+            $res = $this->gadget->model->load('UserGroup')->delete((int)$post['uid'], $gid);
             if (Jaws_Error::IsError($res)) {
                 return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
             }

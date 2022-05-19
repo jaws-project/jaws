@@ -69,7 +69,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         $anon_group = (int)$this->gadget->registry->fetch('anon_group');
         if (!empty($anon_group)) {
-            $this->app->users->AddUserToGroup($user, $anon_group);
+            $this->gadget->model->load('UserGroup')->add($user, $anon_group);
             $uData['groups'] = array($anon_group => $anon_group);
         }
 
@@ -182,7 +182,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         if (!is_null($group) && is_numeric($group)) {
-            $jUser->AddUserToGroup($user_id, $group);
+            $this->gadget->model->load('UserGroup')->add($user_id, $group);
         }
 
         $this->SendVerifyKey($user_id, true, $password);

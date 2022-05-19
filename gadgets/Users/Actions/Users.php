@@ -304,7 +304,7 @@ class Users_Actions_Users extends Users_Actions_Default
         } else {
             $guid = $this->gadget->registry->fetch('anon_group');
             if (!empty($guid)) {
-                $this->app->users->AddUserToGroup($res, (int)$guid);
+                $this->gadget->model->load('UserGroup')->add($res, (int)$guid);
             }
             return $this->gadget->session->response($this::t('USERS_CREATED', $uData['username']), RESPONSE_NOTICE);
         }
@@ -449,7 +449,7 @@ class Users_Actions_Users extends Users_Actions_Default
             $oldGroups = array_column($oldGroups, 'id');
             foreach ($post['groups'] as $group) {
                 if (false === $gIndex = array_search($group, $oldGroups)) {
-                    $uModel->AddUserToGroup($post['uid'], $group);
+                    $this->gadget->model->load('UserGroup')->add($post['uid'], $group);
                 } else {
                     unset($oldGroups[$gIndex]);
                 }
@@ -457,7 +457,7 @@ class Users_Actions_Users extends Users_Actions_Default
 
             // delete remainder groups
             foreach ($oldGroups as $group) {
-                $uModel->DeleteUserFromGroup($post['uid'], $group);
+                $this->gadget->model->load('UserGroup')->delete($post['uid'], $group);
             }
 
             return $this->gadget->session->response($this::t('GROUPS_UPDATED_USERS'),
