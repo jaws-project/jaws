@@ -118,11 +118,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 // user's avatar
                 $tpl->SetVariable(
                     'avatar',
-                    $this->app->users->GetAvatar(
-                        $message['avatar'],
-                        $message['email'],
-                        80
-                    )
+                    Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($message['from'])
                 );
 
                 // user's profile
