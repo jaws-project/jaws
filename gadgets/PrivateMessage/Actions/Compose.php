@@ -217,7 +217,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             }
 
             // Friends List
-            $groups = $this->app->users->GetGroups($user, true);
+            $groups = $this->gadget->model->load('Groups')->getGroups(
+                0, $user, 0,
+                array('enabled'  => true)
+            );
             if (!Jaws_Error::IsError($groups) && count($groups) > 0) {
                 foreach ($groups as $group) {
                     $tpl->SetBlock('compose/recipients/friend');
