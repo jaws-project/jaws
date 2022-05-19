@@ -764,10 +764,6 @@ class Jaws
                 return $this->cache;
                 break;
 
-            case 'users':
-                return $this->loadObject('Jaws_User', 'users', true);
-                break;
-
             default:
                 return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
         }
