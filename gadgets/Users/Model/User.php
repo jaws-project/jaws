@@ -14,7 +14,7 @@ class Users_Model_User extends Jaws_Gadget_Model
      * @param   mixed   $user       The username or ID
      * @param   int     $domain     Domain ID // 0: don't check domain
      * @param   array   $fieldsets  Users fields sets // default, account, personal, password
-     * @return  mixed   Returns an array with the info of the user and false on error
+     * @return  mixed   Returns an array with the info of the user and Jaws_Error on error
      */
     function getUser($user, $domain = 0, $fieldsets = array())
     {
