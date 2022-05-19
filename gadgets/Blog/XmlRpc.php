@@ -178,7 +178,11 @@ function metaWeblog_getUserInfo($params)
     }
 
     $siteurl = $this->app->getSiteURL();
-    $user = Jaws_User::GetUser((int)$userInfo['id'], true, true);
+    $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+        (int)$userInfo['id'],
+        0,
+        array('account' => true, 'personal' => true)
+    );
     $data = array(
         'nickname'  => new XML_RPC_Value($user['username']),
         'userid'    => new XML_RPC_Value($user['id']),
