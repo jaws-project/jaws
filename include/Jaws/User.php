@@ -246,63 +246,6 @@ class Jaws_User
     }
 
     /**
-     * Get the info of an user by the username or ID
-     *
-     * @access  public
-     * @param   mixed   $group      Group ID
-     * @param   bool    $account    Account information
-     * @param   bool    $personal   Personal information
-     * @param   bool    $contacts   Contacts information
-     * @param   bool    $password   Returns password
-     * @return  mixed   Returns an array with the info of the user and false on error
-     */
-    function GetGroupUsers(
-        $group, $account = true, $personal = false, $contacts = false, $password = false,
-        $limit = 0, $offset = null
-    ) {
-        $columns = array('users.id:integer', 'domain:integer', 'avatar');
-        // account information
-        if ($account) {
-            $columns = array_merge($columns, array('username', 'nickname', 'email', 'mobile', 'superadmin:boolean',
-                'concurrents', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
-                'last_update', 'bad_password_count', 'last_access',)
-            );
-        }
-
-        if ($password) {
-            $columns = array_merge($columns, array('password'));
-        }
-
-        if ($personal) {
-            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob', 'extra',
-                'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
-                'interests',)
-            );
-        }
-
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select($columns);
-        $usersTable->join('users_groups', 'users_groups.user', 'users.id');
-        $usersTable->where('group', (int)$group);
-        return $usersTable->limit($limit, $offset)->fetchAll();
-    }
-
-    /**
-     * Get count of group users
-     *
-     * @access  public
-     * @param   int     $group  Group ID
-     * @return  mixed   Returns count of users or Jaws_Error on error
-     */
-    function GetGroupUsersCount($group) {
-        return Jaws_ORM::getInstance()->table('users')
-            ->select('count(users.id)')
-            ->join('users_groups', 'users_groups.user', 'users.id')
-            ->where('users_groups.group', (int)$group)
-            ->fetchOne();
-    }
-
-    /**
      * Get the info of an user(s) by the email address
      *
      * @access  public
