@@ -189,14 +189,13 @@ class Installer_CreateUser extends JawsInstaller
         $jawsApp->loadPreferences(array('language' => $_SESSION['install']['language']), false);
         Jaws_Translate::getInstance()->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 
-        require_once ROOT_JAWS_PATH . 'include/Jaws/User.php';
-        $userInfo = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser($post['username']);
+        $userModel = Jaws_Gadget::getInstance('Users')->model->load('User');
+        $userInfo = $userModel->getUser($post['username']);
         if (!Jaws_Error::IsError($userInfo)) {
-            $userModel = Jaws_User::getInstance();
             //username exists
             if (isset($userInfo['username'])) {
                 _log(JAWS_DEBUG,"Update existing user");
-                $res = $userModel->UpdateUser(
+                $res = $userModel->updateUser(
                     $userInfo['id'],
                     array(
                         'username' => $post['username'], 
@@ -207,7 +206,7 @@ class Installer_CreateUser extends JawsInstaller
                 );
             } else {
                 _log(JAWS_DEBUG,"Adding first/new admin user to Jaws");
-                $res = $userModel->AddUser(
+                $res = $userModel->addUser(
                     array(
                         'username' => $post['username'],
                         'nickname' => $post['nickname'],
