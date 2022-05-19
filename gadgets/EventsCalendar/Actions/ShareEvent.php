@@ -65,7 +65,12 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('events_url', $this->gadget->urlMap('ManageEvents', array('user' => $userId)));
 
         // User groups
-        $groups = $this->app->users->GetGroups($userId, true, 'title');
+        $groups = $this->gadget->model->load('Groups')->getGroups(
+            0, $userId, 0,
+            array('enabled'  => true),
+            array(), // default fieldset
+            array('title' => true ) // order by title ascending
+        );
         if (!Jaws_Error::IsError($groups)) {
             $combo =& Piwi::CreateWidget('Combo', 'sys_groups');
             $combo->AddEvent(ON_CHANGE, 'toggleUsers(this.value)');
