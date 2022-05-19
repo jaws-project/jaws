@@ -43,7 +43,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
 
         // User groups
-        $groups = $this->gadget->model->load('Groups')->getGroups(
+        $groups = Jaws_Gadget::getInstance('Users')->model->load('Groups')->getGroups(
             0, 0, 0,
             array('enabled'  => true),
             array(), // default fieldset
