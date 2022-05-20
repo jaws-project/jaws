@@ -154,7 +154,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     function GetUser()
     {
         $post = $this->gadget->request->fetch(array('id:integer', 'account:bool', 'personal:bool'), 'post');
-        $userInfo = $this->gadget->model->load('User')->getUser(
+        $userInfo = $this->gadget->model->load('User')->get(
             (int)$post['id'],
             0,
             array('account' => (bool)$post['account'], 'personal' => (bool)$post['personal'])
@@ -236,7 +236,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $uData['status'] = (int)$uData['status'];
         }
 
-        $userInfo = $this->gadget->model->load('User')->getUser((int)$post['id']);
+        $userInfo = $this->gadget->model->load('User')->get((int)$post['id']);
         if (Jaws_Error::IsError($userInfo)) {
             return $this->gadget->session->response($userInfo->getMessage(), RESPONSE_ERROR);
         }
@@ -559,7 +559,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 continue;
             }
 
-            $profile = $this->gadget->model->load('User')->getUser((int)$uid);
+            $profile = $this->gadget->model->load('User')->get((int)$uid);
             if (!$this->app->session->user->superadmin && $profile['superadmin']) {
                 $errors++;
                 continue;

@@ -59,7 +59,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 // remove temp user data
                 $this->gadget->session->delete('temp_recovery_user');
 
-                $user = $this->gadget->model->load('User')->getUser(
+                $user = $this->gadget->model->load('User')->get(
                     (int)$userData['id'],
                     $userData['domain'],
                     array('account' => true)

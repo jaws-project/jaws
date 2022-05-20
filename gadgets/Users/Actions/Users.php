@@ -238,7 +238,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageUsers');
         $post = $this->gadget->request->fetch(array('id', 'account', 'personal') , 'post');
 
-        $profile = $this->gadget->model->load('User')->getUser(
+        $profile = $this->gadget->model->load('User')->get(
             (int)$post['id'],
             0,
             array(
@@ -392,7 +392,7 @@ class Users_Actions_Users extends Users_Actions_Default
             );
         }
 
-        $profile = $this->gadget->model->load('User')->getUser((int)$uid);
+        $profile = $this->gadget->model->load('User')->get((int)$uid);
         if (!$this->app->session->user->superadmin && $profile['superadmin']) {
             return $this->gadget->session->response(
                 $this::t('USERS_CANT_DELETE', $profile['username']),

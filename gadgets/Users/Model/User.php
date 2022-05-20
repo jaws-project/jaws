@@ -16,7 +16,7 @@ class Users_Model_User extends Jaws_Gadget_Model
      * @param   array   $fieldsets  Users fields sets // default, account, personal, password
      * @return  mixed   Returns an array with the info of the user and Jaws_Error on error
      */
-    function getUser($user, $domain = 0, $fieldsets = array())
+    function get($user, $domain = 0, $fieldsets = array())
     {
         $columns = array(
             'default'  => array(
@@ -93,7 +93,7 @@ class Users_Model_User extends Jaws_Gadget_Model
      */
     function updatePassword($uid, $new_password, $old_password = false, $expired = false)
     {
-        $user = $this->getUser(
+        $user = $this->get(
             $uid,
             0,
             array('default' => true, 'account' => true, 'password' => true)
@@ -476,7 +476,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         // get user information, we need it for rename avatar
-        $user = $this->getUser(
+        $user = $this->get(
             $uid,
             0,
             array('default' => true, 'account' => true, 'personal' => true)
@@ -637,7 +637,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         // get user information
-        $user = $this->getUser((int)$id);
+        $user = $this->get((int)$id);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
         }
@@ -804,7 +804,7 @@ class Users_Model_User extends Jaws_Gadget_Model
     function deleteUser($uid)
     {
         $objORM = Jaws_ORM::getInstance();
-        $user = $this->getUser(
+        $user = $this->get(
             $uid,
             0,
             array('default' => true, 'account' => true)

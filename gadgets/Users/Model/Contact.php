@@ -152,7 +152,7 @@ class Users_Model_Contact extends Jaws_Gadget_Model
             unset($data[$invalid]);
         }
 
-        $user = $this->gadget->model->load('User')->getUser($uid);
+        $user = $this->gadget->model->load('User')->get($uid);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
         }

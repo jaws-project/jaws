@@ -20,7 +20,7 @@ class Users_Account_Default_Account extends Users_Account_Default
         $assigns = array();
         $response = $this->gadget->session->pop('Account.Response');
         if (!isset($response['data'])) {
-            $assigns = $this->gadget->model->load('User')->getUser(
+            $assigns = $this->gadget->model->load('User')->get(
                 $this->app->session->user->id,
                 $this->app->session->user->domain
             );

@@ -54,7 +54,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             $user = (int)$this->app->session->user->id;
         }
 
-        $user = $this->gadget->model->load('User')->getUser(
+        $user = $this->gadget->model->load('User')->get(
             $user,
             0,
             array('default' => true, 'account' => true, 'personal' => true)
@@ -145,7 +145,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $user = $this->gadget->model->load('User')->getUser(
+        $user = $this->gadget->model->load('User')->get(
             $user,
             0,
             array('default' => true, 'account' => true, 'personal' => true)

@@ -17,7 +17,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
 
-        $uInfo = $this->gadget->model->load('User')->getUser(
+        $uInfo = $this->gadget->model->load('User')->get(
             $this->app->session->user->id,
             0,
             array('default' => true, 'account' => true, 'personal' => true)
