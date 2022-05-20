@@ -34,18 +34,6 @@
             </field>
 
             <field>
-                <name>verify_key</name>
-                <type>text</type>
-                <length>5</length>
-            </field>
-
-            <field>
-                <name>recovery_key</name>
-                <type>text</type>
-                <length>5</length>
-            </field>
-
-            <field>
                 <name>superadmin</name>
                 <type>boolean</type>
                 <default>false</default>
@@ -64,26 +52,13 @@
             </field>
 
             <field>
-                <name>new_email</name>
-                <type>text</type>
-                <length>128</length>
-            </field>
-
-            <field>
                 <name>mobile</name>
                 <type>text</type>
                 <length>24</length>
             </field>
 
             <field>
-                <name>new_mobile</name>
-                <type>text</type>
-                <length>24</length>
-            </field>
-
-            <field>
                 <name>avatar</name>
-                <was>pic</was>
                 <type>blob</type>
             </field>
 
@@ -368,6 +343,24 @@
             </field>
 
             <field>
+                <name>department</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
+                <name>email</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>mobile</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
                 <name>removable</name>
                 <type>boolean</type>
                 <default>true</default>
@@ -386,6 +379,14 @@
                     <name>name</name>
                 </field>
             </index>
+
+            <index>
+                <name><variable>table_prefix</variable>groups_department</name>
+                <field>
+                    <name>department</name>
+                </field>
+            </index>
+
         </declaration>
     </table>
 
@@ -401,14 +402,12 @@
 
             <field>
                 <name>user</name>
-                <was>user_id</was>
                 <type>integer</type>
                 <notnull>true</notnull>
             </field>
 
             <field>
                 <name>group</name>
-                <was>group_id</was>
                 <type>integer</type>
                 <notnull>true</notnull>
             </field>

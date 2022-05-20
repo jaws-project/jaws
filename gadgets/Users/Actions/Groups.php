@@ -96,7 +96,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         if (Jaws_Error::IsError($groups)) {
             return array();
         }
-        $total = $this->gadget->model->load('Groups')->getGroupsCount(0, 0, 0, array());
+        $total = $this->gadget->model->load('Groups')->listCount(0, 0, 0, array());
 
         return array(
             'status' => 'success',

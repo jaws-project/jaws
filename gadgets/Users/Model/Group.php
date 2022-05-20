@@ -151,7 +151,7 @@ class Users_Model_Group extends Jaws_Gadget_Model
      *                  )
      * @return  array|Jaws_Error    Returns an count of the available groups or Jaws_Error on error
      */
-    function getGroupsCount($domain = 0, $owner = 0, $user = 0, $filters = array())
+    function listCount($domain = 0, $owner = 0, $user = 0, $filters = array())
     {
         $objORM = Jaws_ORM::getInstance()
             ->table('groups')
@@ -230,6 +230,7 @@ class Users_Model_Group extends Jaws_Gadget_Model
             }
             return $result;
         }
+        $this->gadget->acl->insert('GroupManage', $result, false);
 
         // Let everyone know a group has been added
         $res = $this->app->listener->Shout(
@@ -344,6 +345,7 @@ class Users_Model_Group extends Jaws_Gadget_Model
             return false;
         }
 
+        $this->gadget->acl->delete('GroupManage', $id);
         $this->app->acl->deleteByGroup($id);
 
         //Commit Transaction

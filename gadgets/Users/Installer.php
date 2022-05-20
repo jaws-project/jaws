@@ -99,8 +99,8 @@ class Users_Installer extends Jaws_Gadget_Installer
                 'name' => 'users',
                 'title' => 'Users',
                 'description' => '',
+                'removable' => false,
                 'enabled' => true,
-                'removable' => false
             )
         );
         if (Jaws_Error::IsError($result) && MDB2_ERROR_CONSTRAINT != $result->getCode()) {
@@ -423,7 +423,7 @@ class Users_Installer extends Jaws_Gadget_Installer
                 }
             }
 
-            $result = $this->installSchema('schema.xml', array(), '4.4.5.xml');
+            $result = $this->installSchema('5.1.0.xml', array(), '4.4.5.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -431,6 +431,13 @@ class Users_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '5.2.0', '<')) {
             // do nothing!
+        }
+
+        if (version_compare($old, '5.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '5.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
