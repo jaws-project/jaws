@@ -73,8 +73,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             'term' => $post['filters']['filter_term']
         );
 
-        $uModel = $this->gadget->model->load('Groups');
-        $groups = $uModel->getGroups(
+        $groups = $this->gadget->model->load('Group')->list(
             (int)@$post['filters']['filter_domain'],
             0,
             0,
@@ -88,7 +87,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             return $this->gadget->session->response($groups->GetMessage(), RESPONSE_ERROR);
         }
 
-        $groupsCount = $uModel->getGroupsCount(
+        $groupsCount = $this->gadget->model->load('Group')->listCount(
             (int)@$post['filters']['filter_domain'],
             0,
             0,
@@ -118,7 +117,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
     function GetGroup()
     {
         $gid = (int)$this->gadget->request->fetch('gid:integer', 'post');
-        $gInfo = $this->gadget->model->load('Group')->getGroup($gid);
+        $gInfo = $this->gadget->model->load('Group')->get($gid);
         if (Jaws_Error::IsError($gInfo)) {
             return $this->gadget->session->response($gInfo->getMessage(), RESPONSE_ERROR);
         }
@@ -136,7 +135,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $data = $this->gadget->request->fetch('data:array', 'post');
-        $res = $this->gadget->model->load('Group')->addGroup($data);
+        $res = $this->gadget->model->load('Group')->add($data);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
@@ -157,7 +156,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $post = $this->gadget->request->fetch(array('gid', 'data:array'), 'post');
-        $res = $this->gadget->model->load('Group')->editGroup((int)$post['gid'], $post['data']);
+        $res = $this->gadget->model->load('Group')->update((int)$post['gid'], $post['data']);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
@@ -182,7 +181,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
 
         $errors = 0;
         foreach ($gids as $gid) {
-            if (!$this->gadget->model->load('Group')->deleteGroup($gid)) {
+            if (!$this->gadget->model->load('Group')->delete($gid)) {
                 $errors++;
                 continue;
             }

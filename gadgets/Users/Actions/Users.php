@@ -81,7 +81,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_userGroups', $this::t('USERS_GROUPS'));
 
         // Groups
-        $groups = $this->gadget->model->load('Groups')->getGroups(
+        $groups = $this->gadget->model->load('Group')->list(
             0, 0, 0,
             array('enabled'  => true),
             array(), // default fieldsets
@@ -424,7 +424,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageGroups');
 
         $uid = $this->gadget->request->fetch('uid', 'post');
-        $groups = $this->gadget->model->load('Groups')->getGroups(0, 0, (int)$uid);
+        $groups = $this->gadget->model->load('Group')->list(0, 0, (int)$uid);
         if (Jaws_Error::IsError($groups)) {
             return array();
         }
@@ -442,7 +442,7 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $post = $this->gadget->request->fetch(array('uid', 'groups:array'), 'post');
-        $oldGroups = $this->gadget->model->load('Groups')->getGroups(0, 0, (int)$post['uid']);
+        $oldGroups = $this->gadget->model->load('Group')->list(0, 0, (int)$post['uid']);
         if (!Jaws_Error::IsError($oldGroups)) {
             $oldGroups = array_column($oldGroups, 'id');
             foreach ($post['groups'] as $group) {

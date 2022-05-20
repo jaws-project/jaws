@@ -86,7 +86,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             'post'
         );
 
-        $groups = $this->gadget->model->load('Groups')->getGroups(
+        $groups = $this->gadget->model->load('Group')->list(
             0, 0, 0,
             array(), array(),
             array('id' => true),
@@ -116,7 +116,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageGroups');
         $id = (int)$this->gadget->request->fetch('id' , 'post');
 
-        $gInfo = $this->gadget->model->load('Group')->getGroup($id);
+        $gInfo = $this->gadget->model->load('Group')->get($id);
         if (Jaws_Error::IsError($profile)) {
             return array();
         }
@@ -136,7 +136,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $gData = $this->gadget->request->fetch('data:array', 'post');
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
-        $res = $this->gadget->model->load('Group')->addGroup($gData);
+        $res = $this->gadget->model->load('Group')->add($gData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -157,7 +157,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $gData = $post['data'];
         $gData['enabled'] = ($gData['enabled'] == 1) ? true : false;
 
-        $res = $this->gadget->model->load('Group')->editGroup($post['id'], $gData);
+        $res = $this->gadget->model->load('Group')->update($post['id'], $gData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -175,8 +175,8 @@ class Users_Actions_Groups extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $gid = (int)$this->gadget->request->fetch('id', 'post');
-        $groupinfo = $this->gadget->model->load('Group')->getGroup((int)$gid);
-        if (!$this->gadget->model->load('Group')->deleteGroup($gid)) {
+        $groupinfo = $this->gadget->model->load('Group')->get((int)$gid);
+        if (!$this->gadget->model->load('Group')->delete($gid)) {
             return $this->gadget->session->response($this::t('GROUPS_CANT_DELETE', $groupinfo['name']),
                 RESPONSE_ERROR);
         } else {

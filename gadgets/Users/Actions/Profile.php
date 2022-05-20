@@ -64,7 +64,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         }
 
         // Avatar
-        $user['avatar'] = $this->gadget->model->load('User')->getAvatar($user['id']);
+        $user['avatar'] = $this->gadget->urlMap('Avatar', array('user'  => $user['username']));
 
         // Gender
         $user['gender'] = $this::t('USERS_GENDER_'.$user['gender']);

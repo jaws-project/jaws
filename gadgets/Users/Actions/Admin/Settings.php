@@ -30,7 +30,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
         );
         $assigns['anon_activation_default'] = $this->gadget->registry->fetch('anon_activation');
         $assigns['anon_group'] = $this->gadget->registry->fetch('anon_group');
-        $assigns['groups'] = $this->gadget->model->load('Groups')->getGroups(
+        $assigns['groups'] = $this->gadget->model->load('Group')->list(
             0, 0, 0,
             array('enabled'  => true),
             array(), // default fieldset

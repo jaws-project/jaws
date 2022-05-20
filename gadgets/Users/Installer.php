@@ -94,7 +94,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         // Create the group 'users'
-        $result = $this->gadget->model->load('Group')->addGroup(
+        $result = $this->gadget->model->load('Group')->add(
             array(
                 'name' => 'users',
                 'title' => 'Users',

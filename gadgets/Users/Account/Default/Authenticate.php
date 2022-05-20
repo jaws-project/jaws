@@ -153,7 +153,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 }
 
                 // fetch user groups
-                $groups = $this->gadget->model->load('Groups')->getGroups(0, 0, $user['id']);
+                $groups = $this->gadget->model->load('Group')->list(0, 0, $user['id']);
                 if (Jaws_Error::IsError($groups)) {
                     $groups = array();
                 } else {

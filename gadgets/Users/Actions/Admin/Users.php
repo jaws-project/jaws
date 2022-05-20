@@ -328,8 +328,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             'post'
         );
 
-        $model = $this->gadget->model->load('Groups');
-        $groups = $model->getGroups(
+        $groups = $this->gadget->model->load('Group')->list(
             0,
             0,
             (int)$post['filters']['uid'],
@@ -343,7 +342,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             return $this->gadget->session->response($groups->getMessage(), RESPONSE_ERROR);
         }
 
-        $groupsCount = $model->getGroupsCount(
+        $groupsCount = $this->gadget->model->load('Group')->listCount(
             0,
             0,
             (int)$post['filters']['uid']

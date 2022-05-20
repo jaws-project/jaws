@@ -77,7 +77,7 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
 
         $avatar =& Piwi::CreateWidget(
             'Image',
-            $this->gadget->model->load('User')->getAvatar($uInfo['id']),
+            $this->gadget->urlMap('Avatar', array('user'  => $uInfo['username'])),
             $uInfo['username']
         );
         $avatar->SetID('avatar');

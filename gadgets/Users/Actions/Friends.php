@@ -104,7 +104,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         );
 
         $user = $this->app->session->user->id;
-        $groups = $this->gadget->model->load('Groups')->getGroups(
+        $groups = $this->gadget->model->load('Group')->list(
             0, $user, 0,
             array(),
             array(),
@@ -137,7 +137,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $id = $this->gadget->request->fetch('id', 'post');
 
         $user = $this->app->session->user->id;
-        return $this->gadget->model->load('Group')->getGroup($id, $user);
+        return $this->gadget->model->load('Group')->get($id, $user);
     }
 
     /**
@@ -155,11 +155,11 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         // Update group
         if(!empty($post['id'])) {
-            $res = $this->gadget->model->load('Group')->editGroup($post['id'], $post['data'], $user);
+            $res = $this->gadget->model->load('Group')->update($post['id'], $post['data'], $user);
             // Add new group
         } else {
             unset($post['id']);
-            $res = $this->gadget->model->load('Group')->addGroup($post['data'], $user);
+            $res = $this->gadget->model->load('Group')->add($post['data'], $user);
         }
 
         if (Jaws_Error::isError($res)) {
@@ -185,7 +185,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         if (!empty($ids)) {
             foreach($ids as $id) {
                 // TODO: improve performance
-                $res= $$this->gadget->model->load('Group')->deleteGroup($id, $user);
+                $res= $$this->gadget->model->load('Group')->delete($id, $user);
                 if (Jaws_Error::IsError($res)) {
                     $this->gadget->session->push(
                         $res->getMessage(),
