@@ -38,7 +38,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         $users = array();
         if (isset($params['group']) && !empty($params['group'])) {
-            $group_users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+            $group_users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
                 0, $params['group'],
                 array(),
                 array('account' => true)
@@ -65,7 +65,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if (isset($params['user']) && !empty($params['user'])) {
-            $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+            $user = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
                 $params['user'],
                 0,
                 array('default' => true, 'account' => true)
@@ -79,7 +79,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         if (isset($params['users']) && !empty($params['users'])) {
             foreach ($params['users'] as $userId) {
                 if (!empty($userId)) {
-                    $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+                    $user = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
                         $userId,
                         0,
                         array('default' => true, 'account' => true)
