@@ -293,7 +293,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 // user's avatar
                 $tpl->SetVariable(
                     'avatar',
-                    Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($entry['username'])
+                    Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $entry['username']))
                 );
                 $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
@@ -445,7 +445,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             foreach ($comments as &$comment) {
                 $comment['nickname'] = empty($comment['nickname']) ? $comment['name'] : $comment['nickname'];
                 $comment['email'] = empty($comment['user_email']) ? $comment['email'] : $comment['user_email'];
-                $comment['avatar'] = Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($comment['user']);
+                $comment['avatar'] = Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $comment['username']));
                 $comment['message_abbr'] = (Jaws_UTF8::strlen($comment['msg_txt']) >= $max_size)?
                     Jaws_UTF8::substr($comment['msg_txt'], 0, $max_size).'...' :
                     $comment['msg_txt'];
@@ -497,7 +497,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 // user's avatar
                 $tpl->SetVariable(
                     'avatar',
-                    Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($entry['username'])
+                    Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $entry['username']))
                 );
                 $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
@@ -658,7 +658,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 // user's avatar
                 $tpl->SetVariable(
                     'avatar',
-                    Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($entry['username'])
+                    Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $entry['username']))
                 );
                 $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
