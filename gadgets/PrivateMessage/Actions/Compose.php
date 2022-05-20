@@ -200,7 +200,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
             if (!empty($recipient_users)) {
                 foreach ($recipient_users as $userId) {
-                    $user_info = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+                    $user_info = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
                         (int)$userId,
                         0,
                         array('default' => true, 'account' => true)
@@ -235,7 +235,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         } else {
             $tpl->SetBlock('compose/recipient');
             $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
-            $user_info = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+            $user_info = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
                 $recipient_users[0]
             );
 
@@ -402,7 +402,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     function GetUsers()
     {
         $term = $this->gadget->request->fetch('term', 'post');
-        $users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+        $users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
             0, 0,
             array('status' => 1, 'term' => $term),
             array(),
@@ -432,7 +432,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     function CheckUserExist()
     {
         $uid = $this->gadget->request->fetch('user', 'post');
-        $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser($uid);
+        $user = Jaws_Gadget::getInstance('Users')->model->load('User')->get($uid);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return false;
         }
