@@ -357,7 +357,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         // user's avatar
         $tpl->SetVariable(
             'avatar',
-            Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($message['from'])
+            Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $message['from_username']))
         );
 
         // user's profile

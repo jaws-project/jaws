@@ -118,7 +118,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 // user's avatar
                 $tpl->SetVariable(
                     'avatar',
-                    Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($message['from'])
+                    Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $message['from_username']))
                 );
 
                 // user's profile
@@ -213,7 +213,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             }
 
             // Friends List
-            $groups = Jaws_Gadget::getInstance('Users')->model->load('Groups')->getGroups(
+            $groups = Jaws_Gadget::getInstance('Users')->model->load('Group')->list(
                 0, $user, 0,
                 array('enabled'  => true)
             );
