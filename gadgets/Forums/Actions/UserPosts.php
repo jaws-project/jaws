@@ -24,7 +24,7 @@ class Forums_Actions_UserPosts extends Jaws_Gadget_Action
             return false;
         }
 
-        $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser($user);
+        $user = Jaws_Gadget::getInstance('Users')->model->load('User')->get($user);
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         // posts per page
