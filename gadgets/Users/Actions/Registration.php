@@ -150,7 +150,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             return $this::t('ACTIVATION_KEY_NOT_VALID');
         }
 
-        $result = $this->gadget->model->load('User')->editUser(
+        $result = $this->gadget->model->load('User')->update(
             $user['id'],
             array(
                 'username'  => $user['username'],

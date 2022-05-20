@@ -60,7 +60,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $uData['status'] = $status;
         }
 
-        $user = $this->gadget->model->load('User')->addUser($uData);
+        $user = $this->gadget->model->load('User')->add($uData);
         if (Jaws_Error::IsError($user)) {
             return $user;
         }
@@ -149,7 +149,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
         $verifyKey = Jaws_Utils::RandomText(5, array('number' => true));
         $user_enabled = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
-        $user_id = $this->gadget->model->load('User')->addUser(
+        $user_id = $this->gadget->model->load('User')->add(
             array(
                 'domain' =>   $domain,
                 'username' => $username,

@@ -16,7 +16,7 @@ class Users_Actions_Profile extends Users_Actions_Default
     function AboutUserLayoutParams()
     {
         $result = array();
-        $users = $this->gadget->model->load('Users')->getUsers(
+        $users = $this->gadget->model->load('User')->list(
             0, 0,
             array(
                 'superadmin' => true

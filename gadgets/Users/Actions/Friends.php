@@ -50,7 +50,7 @@ class Users_Actions_Friends extends Users_Actions_Default
         $tpl->SetVariable('title', $this::t('FRIENDS'));
 
         // Users
-        $users = $this->gadget->model->load('Users')->getUsers(
+        $users = $this->gadget->model->load('User')->list(
             0, 0,
             array(
                 'superadmin' => $this->app->session->user->superadmin? null : false

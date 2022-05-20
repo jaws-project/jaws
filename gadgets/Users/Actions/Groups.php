@@ -50,7 +50,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
 
         // Users
-        $users = $this->gadget->model->load('Users')->getUsers(
+        $users = $this->gadget->model->load('User')->list(
             0, 0,
             array(
                 'superadmin' => $this->app->session->user->superadmin? null : false
@@ -194,7 +194,7 @@ class Users_Actions_Groups extends Users_Actions_Default
     function GetGroupUsers()
     {
         $gid = $this->gadget->request->fetch('gid', 'post');
-        $users = $this->gadget->model->load('Users')->getUsers(0, (int)$gid);
+        $users = $this->gadget->model->load('User')->list(0, (int)$gid);
         if (Jaws_Error::IsError($users)) {
             return array();
         }

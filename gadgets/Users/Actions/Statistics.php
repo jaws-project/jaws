@@ -94,7 +94,7 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         $limit = (int)$this->gadget->registry->fetch('latest_limit');
         $limit = empty($limit)? 10 : $limit;
 
-        $users = $this->gadget->model->load('Users')->getUsers(
+        $users = $this->gadget->model->load('User')->list(
             0, 0,
             array('status' => 1),
             array(),

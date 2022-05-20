@@ -111,8 +111,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $filters['status'] = (int)$post['filters']['filter_status'];
         }
 
-        $uModel = $this->gadget->model->load('Users');
-        $users = $uModel->getUsers(
+        $users = $this->gadget->model->load('User')->list(
             (int)@$post['filters']['filter_domain'],
             (int)@$post['filters']['filter_group'],
             $filters,
@@ -125,7 +124,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             return $this->gadget->session->response($users->GetMessage(), RESPONSE_ERROR);
         }
 
-        $usersCount = $uModel->getUsersCount(
+        $usersCount = $this->gadget->model->load('User')->listCount(
             (int)@$post['filters']['filter_domain'],
             (int)@$post['filters']['filter_group'],
             $filters
@@ -201,7 +200,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $uData['status'] = (int)$uData['status'];
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
-        $res = $this->gadget->model->load('User')->addUser($uData);
+        $res = $this->gadget->model->load('User')->add($uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
@@ -244,7 +243,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             return $this->gadget->session->response($this::t('USERS_USER_NOT_EXIST'), RESPONSE_ERROR);
         }
 
-        $res = $this->gadget->model->load('User')->editUser((int)$post['id'], $uData);
+        $res = $this->gadget->model->load('User')->update((int)$post['id'], $uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } else {
@@ -564,7 +563,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $errors++;
                 continue;
             }
-            if (!$this->gadget->model->load('User')->deleteUser((int)$uid)) {
+            if (!$this->gadget->model->load('User')->delete((int)$uid)) {
                 $errors++;
                 continue;
             }

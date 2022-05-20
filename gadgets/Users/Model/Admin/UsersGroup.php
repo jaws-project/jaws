@@ -28,7 +28,7 @@ class Users_Model_Admin_UsersGroup extends Jaws_Gadget_Model
         }
 
         // FIXME: only fetch users of given group's domain
-        $list = $this->gadget->model->load('Users')->getUsers();
+        $list = $this->gadget->model->load('User')->list();
         foreach ($list as $user) {
             if ($this->gadget->model->load('UserGroup')->exists($user['id'], $guid)) {
                 if (!isset($postedUsers[$user['id']])) {

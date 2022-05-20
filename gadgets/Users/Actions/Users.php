@@ -182,7 +182,7 @@ class Users_Actions_Users extends Users_Actions_Default
             }
         }
 
-        $users = $this->gadget->model->load('Users')->getUsers(
+        $users = $this->gadget->model->load('User')->list(
             $domain, $group,
             array(
                 'term' => $term,
@@ -202,7 +202,7 @@ class Users_Actions_Users extends Users_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        $total = $this->gadget->model->load('Users')->getUsersCount(
+        $total = $this->gadget->model->load('User')->listCount(
             $domain, $group,
             array(
                 'term' => $term,
@@ -298,7 +298,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
         $uData['status'] = (int)$uData['status'];
 
-        $res = $this->gadget->model->load('User')->addUser($uData);
+        $res = $this->gadget->model->load('User')->add($uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -333,7 +333,7 @@ class Users_Actions_Users extends Users_Actions_Default
             }
         }
 
-        $res = $this->gadget->model->load('User')->editUser($post['uid'], $uData);
+        $res = $this->gadget->model->load('User')->update($post['uid'], $uData);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -400,7 +400,7 @@ class Users_Actions_Users extends Users_Actions_Default
             );
         }
 
-        if (!$this->gadget->model->load('User')->deleteUser($uid)) {
+        if (!$this->gadget->model->load('User')->delete($uid)) {
             return $this->gadget->session->response(
                 $this::t('USERS_CANT_DELETE', $profile['username']),
                 RESPONSE_ERROR
