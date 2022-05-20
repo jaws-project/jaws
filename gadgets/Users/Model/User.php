@@ -27,7 +27,7 @@ class Users_Model_User extends Jaws_Gadget_Model
                 'superadmin:boolean', 'concurrents:integer', 'logon_hours',
                 'expiry_date:integer', 'registered_date:integer', 'bad_password_count:integer', 
                 'last_update:integer', 'last_password_update:integer',
-                'last_access:integer', 'verify_key'
+                'last_access:integer'
             ),
             'personal' => array(
                 'fname', 'lname', 'gender', 'ssn', 'dob:integer', 'extra', 'public:boolean', 'privacy:boolean',
@@ -117,7 +117,7 @@ class Users_Model_User extends Jaws_Gadget_Model
                 'superadmin:boolean', 'concurrents:integer', 'logon_hours',
                 'expiry_date:integer', 'registered_date:integer', 'bad_password_count:integer', 
                 'last_update:integer', 'last_password_update:integer',
-                'last_access:integer', 'verify_key'
+                'last_access:integer'
             ),
             'personal' => array(
                 'fname', 'lname', 'gender', 'ssn', 'dob:integer', 'extra', 'public:boolean', 'privacy:boolean',
