@@ -178,7 +178,7 @@ function metaWeblog_getUserInfo($params)
     }
 
     $siteurl = $this->app->getSiteURL();
-    $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+    $user = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
         (int)$userInfo['id'],
         0,
         array('account' => true, 'personal' => true)
