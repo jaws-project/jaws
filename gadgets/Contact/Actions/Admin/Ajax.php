@@ -309,7 +309,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function GetUsers()
     {
         @list($group) = $this->gadget->request->fetchAll('post');
-        return Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+        return Jaws_Gadget::getInstance('Users')->model->load('User')->list(
             0, $group,
             array('status' => 1)
         );

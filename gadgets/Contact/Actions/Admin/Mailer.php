@@ -51,7 +51,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl->SetVariable('lbl_group', $label->Get());
 
         // Users
-        $users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+        $users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
             0, 0,
             array('status' => 1)
         );
@@ -267,7 +267,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
             }
         } else {
             if ($target['user'] != 0) {
-                $user = Jaws_Gadget::getInstance('Users')->model->load('User')->getUser(
+                $user = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
                     (int)$target['user']
                 );
                 if (!Jaws_Error::IsError($user)) {
@@ -277,7 +277,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
                 if ($target['group'] == 0) {
                     $target['group'] = false;
                 }
-                $users = Jaws_Gadget::getInstance('Users')->model->load('Users')->getUsers(
+                $users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
                     0, $target['group'],
                     array('status' => 1)
                 );
