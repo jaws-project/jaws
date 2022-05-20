@@ -111,7 +111,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             // user's avatar
             $tpl->SetVariable(
                 'avatar',
-                Jaws_Gadget::getInstance('Users')->model->load('User')->getAvatar($post['uid'])
+                Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $post['username']))
             );
 
             // user's profile
