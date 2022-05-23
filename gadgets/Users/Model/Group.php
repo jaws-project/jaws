@@ -22,7 +22,8 @@ class Users_Model_Group extends Jaws_Gadget_Model
             'default'  => array(
                 /*'groups.domain:integer', */
                 'groups.id:integer', 'groups.owner:integer', 'groups.name', 'groups.title',
-                'groups.description', 'enabled:boolean'
+                'groups.description', 'groups.department:boolean', 'groups.email', 'groups.mobile',
+                'groups.removable:boolean', 'groups.enabled:boolean'
             ),
         );
         $fieldsets['default'] = true;
@@ -257,7 +258,10 @@ class Users_Model_Group extends Jaws_Gadget_Model
     function update($id, $gData, $owner = 0)
     {
         // unset invalid keys
-        $invalids = array_diff(array_keys($gData), array('name', 'title', 'description', 'enabled'));
+        $invalids = array_diff(
+            array_keys($gData),
+            array('name', 'title', 'description', 'email', 'mobile', 'department', 'removable', 'enabled')
+        );
         foreach ($invalids as $invalid) {
             unset($gData[$invalid]);
         }

@@ -15,7 +15,6 @@ class Users_Hooks_ACL extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $language = $this->gadget->registry->fetch('admin_language', 'Settings');
         $groups = $this->gadget->model->load('Group')->list();
         if (!Jaws_Error::IsError($groups)) {
             foreach ($groups as $group) {

@@ -73,19 +73,33 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             'term' => $post['filters']['filter_term']
         );
 
-        $groups = $this->gadget->model->load('Group')->list(
-            (int)@$post['filters']['filter_domain'],
-            0,
-            0,
-            $filters,
-            array(),
-            $post['sortBy'],
-            $post['limit'],
-            $post['offset']
-        );
-        if (Jaws_Error::IsError($groups)) {
-            return $this->gadget->session->response($groups->GetMessage(), RESPONSE_ERROR);
+        if (!$this->app->session->user->superadmin) {
+            // check user group access
+            $groupsAccess = array();
+            $groups = $this->gadget->model->load('Group')->list(0, 0, $this->app->session->user->id);
+            foreach ((array) $groups as $group) {
+                if ($this->gadget->GetPermission('GroupManage', $group['id'])) {
+//                    if ($group['title'])
+                    $groupsAccess[] = $group;
+                }
+            }
+            $groups = $groupsAccess;
+        } else {
+            $groups = $this->gadget->model->load('Group')->list(
+                (int)@$post['filters']['filter_domain'],
+                0,
+                0,
+                $filters,
+                array(),
+                $post['sortBy'],
+                $post['limit'],
+                $post['offset']
+            );
+            if (Jaws_Error::IsError($groups)) {
+                return $this->gadget->session->response($groups->GetMessage(), RESPONSE_ERROR);
+            }
         }
+
 
         $groupsCount = $this->gadget->model->load('Group')->listCount(
             (int)@$post['filters']['filter_domain'],
@@ -273,7 +287,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $post = $this->gadget->request->fetch(array('gid', 'userIds:array'), 'post');
 
         foreach ((array)$post['userIds'] as $uid) {
-            $res = this->gadget->model->load('UserGroup')->delete($uid, (int)$post['gid']);
+            $res = $this->gadget->model->load('UserGroup')->delete($uid, (int)$post['gid']);
             if (Jaws_Error::IsError($res)) {
                 return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
             }

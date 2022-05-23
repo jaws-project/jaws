@@ -660,7 +660,11 @@ function Jaws_Gadget_Users() { return {
                     if (gInfo) {
                         $('#name').val(gInfo.name);
                         $('#title').val(gInfo.title.defilter());
+                        $('#email').val(gInfo.email);
+                        $('#mobile').val(gInfo.mobile);
                         $('#description').val(gInfo.description === null ? '' : gInfo.description.defilter());
+                        $('#department').val(Number(gInfo.department));
+                        $('#removable').val(Number(gInfo.removable));
                         $('#enabled').val(Number(gInfo.enabled));
 
                         $('#groupModal').modal('show');

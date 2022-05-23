@@ -107,7 +107,7 @@ class Users_Account_Default_Account extends Users_Account_Default
         }
 
         try {
-            if ($rcvryData['step'] == 2) {
+            if ($postData['step'] == 2) {
                 // check edit username permission
                 if (empty($postData['username']) ||
                     !$this->gadget->GetPermission('EditUserName'))
@@ -143,7 +143,7 @@ class Users_Account_Default_Account extends Users_Account_Default
 
                 throw new Exception($this::t('MYACCOUNT_UPDATED'), 201);
 
-            } elseif () {
+//            } elseif () {
             }
         } catch (Exception $error) {
             unset($postData['password'], $postData['password_check']);
