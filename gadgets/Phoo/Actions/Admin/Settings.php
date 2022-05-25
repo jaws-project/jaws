@@ -99,8 +99,8 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $moderateCombo =& Piwi::CreateWidget('Combo', 'comment_status');
         $moderateCombo->setContainerClass('oneline');
         $moderateCombo->SetTitle(_t('PHOO_MODERATE_COMMENTS'));
-        $moderateCombo->AddOption(Jaws::t('YES'), 'waiting');
-        $moderateCombo->AddOption(Jaws::t('NO'), 'approved');
+        $moderateCombo->AddOption(Jaws::t('YESS'), 'waiting');
+        $moderateCombo->AddOption(Jaws::t('NOO'), 'approved');
         $moderateCombo->SetDefault($settings['comment_status']);
 
         // Keep original
