@@ -100,8 +100,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
-        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
-        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_FROM_DATE'));
         $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_TO_DATE'));
@@ -184,7 +184,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                 'Profile',
                 array('user' => $file['username'])
             );
-            $file['published_str'] = $file['published'] ? Jaws::t('YES'): Jaws::t('NO');
+            $file['published_str'] = $file['published'] ? Jaws::t('YESS'): Jaws::t('NOO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
             $file['thumbnail'] = $modelFiles->GetThumbnailURL($file['host_filename']);
@@ -479,7 +479,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             if ($file['is_dir']) {
                 $file['url'] = BASE_SCRIPT . '?reqGadget=Directory&reqAction=Directory&id=' . $file['id'];
             }
-            $file['published_str'] = $file['published'] ? Jaws::t('YES'): Jaws::t('NO');
+            $file['published_str'] = $file['published'] ? Jaws::t('YESS'): Jaws::t('NOO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
             $file['thumbnail'] = $model->GetThumbnailURL($file['host_filename']);
