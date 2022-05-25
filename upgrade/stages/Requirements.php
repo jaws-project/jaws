@@ -97,7 +97,7 @@ class Upgrader_Requirements extends JawsUpgrader
         // Database drivers
         $tpl->setBlock('Requirements/req_item');
         $tpl->setVariable('item', implode('<br/>', $this->_db_drivers));
-        $tpl->setVariable('item_requirement', Jaws::t('YES'));
+        $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $actual = '';
         $db_state = false;
         foreach (array_keys($this->_db_drivers) as $ext) {
@@ -118,8 +118,8 @@ class Upgrader_Requirements extends JawsUpgrader
         // XML extension
         $tpl->setBlock('Requirements/req_item');
         $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'XML'));
-        $tpl->setVariable('item_requirement', Jaws::t('YES'));
-        $tpl->setVariable('item_actual', (in_array('xml', $modules)? Jaws::t('YES') : Jaws::t('NO')));
+        $tpl->setVariable('item_requirement', Jaws::t('YESS'));
+        $tpl->setVariable('item_actual', (in_array('xml', $modules)? Jaws::t('YESS') : Jaws::t('NOO')));
         if (in_array('xml', $modules)) {
             _log(JAWS_DEBUG,"xml support is enabled");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
@@ -133,9 +133,9 @@ class Upgrader_Requirements extends JawsUpgrader
         // File Upload
         $tpl->setBlock('Requirements/rec_item');
         $tpl->setVariable('item', $this->t('REQ_FILE_UPLOAD'));
-        $tpl->setVariable('item_requirement', Jaws::t('YES'));
+        $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $check = (bool) ini_get('file_uploads');
-        $tpl->setVariable('item_actual', ($check ? Jaws::t('YES'): Jaws::t('NO')));
+        $tpl->setVariable('item_actual', ($check ? Jaws::t('YESS'): Jaws::t('NOO')));
         if ($check) {
             _log(JAWS_DEBUG,"PHP accepts file uploads");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
@@ -165,7 +165,7 @@ class Upgrader_Requirements extends JawsUpgrader
         // GD/ImageMagick
         $tpl->setBlock('Requirements/rec_item');
         $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'GD/ImageMagick'));
-        $tpl->setVariable('item_requirement', Jaws::t('YES'));
+        $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $actual  = in_array('gd', $modules)?'GD' : '';
         $actual .= in_array('magickwand', $modules)? ((empty($actual)? '' : ' + ') . 'ImageMagick') : '';
         $actual = empty($actual)? 'No' : $actual;
@@ -183,8 +183,8 @@ class Upgrader_Requirements extends JawsUpgrader
         // Exif extension
         $tpl->setBlock('Requirements/rec_item');
         $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'Exif'));
-        $tpl->setVariable('item_requirement', Jaws::t('YES'));
-        $tpl->setVariable('item_actual', (in_array('exif', $modules)? Jaws::t('YES') : Jaws::t('NO')));
+        $tpl->setVariable('item_requirement', Jaws::t('YESS'));
+        $tpl->setVariable('item_actual', (in_array('exif', $modules)? Jaws::t('YESS') : Jaws::t('NOO')));
         if (in_array('exif', $modules)) {
             _log(JAWS_DEBUG,"exif support is enabled");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
@@ -198,8 +198,8 @@ class Upgrader_Requirements extends JawsUpgrader
         // OpenSSL extension
         $tpl->setBlock('Requirements/rec_item');
         $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'OpenSSL'));
-        $tpl->setVariable('item_requirement', Jaws::t('YES'));
-        $tpl->setVariable('item_actual', (in_array('openssl', $modules)? Jaws::t('YES') : Jaws::t('NO')));
+        $tpl->setVariable('item_requirement', Jaws::t('YESS'));
+        $tpl->setVariable('item_actual', (in_array('openssl', $modules)? Jaws::t('YESS') : Jaws::t('NOO')));
         if (in_array('openssl', $modules)) {
             _log(JAWS_DEBUG,"openssl extension is loaded");
             $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
