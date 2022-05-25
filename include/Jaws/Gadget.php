@@ -684,10 +684,8 @@ class Jaws_Gadget
      *
      * @return string
      */
-    public static function t($params)
+    public static function t($string, ...$params)
     {
-        $params = func_get_args();
-        $string = array_shift($params);
         if ($gadget = strstr($string, '.', true)) {
             $string = substr($string, strlen($gadget) + 1);
         } else {
@@ -732,7 +730,7 @@ class Jaws_Gadget
 
             case 'title':
             case 'description':
-                return _t(strtoupper($this->name. '_'. $property));
+                return $this::t($property);
                 break;
 
             case 'acl':
