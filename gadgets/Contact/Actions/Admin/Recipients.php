@@ -64,8 +64,8 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
 
         $visibleType =& Piwi::CreateWidget('Combo', 'visible');
         $visibleType->SetID('visible');
-        $visibleType->AddOption(Jaws::t('NO'),  0);
-        $visibleType->AddOption(Jaws::t('YES'), 1);
+        $visibleType->AddOption(Jaws::t('NOO'),  0);
+        $visibleType->AddOption(Jaws::t('YESS'), 1);
         $visibleType->SetDefault(1);
         $tpl->SetVariable('lbl_visible', Jaws::t('VISIBLE'));
         $tpl->SetVariable('visible', $visibleType->Get());
@@ -137,7 +137,7 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
             $recipientData = array();
             $recipientData['name']  = $recipient['name'];
             $recipientData['email'] = $recipient['email'];
-            $recipientData['visible'] = ($recipient['visible']?Jaws::t('YES') : Jaws::t('NO'));
+            $recipientData['visible'] = ($recipient['visible']?Jaws::t('YESS') : Jaws::t('NOO'));
             $actions = '';
             if ($this->gadget->GetPermission('ManageRecipients')) {
                 $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),

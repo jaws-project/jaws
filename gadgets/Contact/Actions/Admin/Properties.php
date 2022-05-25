@@ -30,8 +30,8 @@ class Contact_Actions_Admin_Properties extends Contact_Actions_Admin_Default
         $use_antispam = $this->gadget->registry->fetch('use_antispam');
         $antispamCombo =& Piwi::CreateWidget('Combo', 'use_antispam');
         $antispamCombo->SetID('use_antispam');
-        $antispamCombo->AddOption(Jaws::t('NO'),  'false');
-        $antispamCombo->AddOption(Jaws::t('YES'), 'true');
+        $antispamCombo->AddOption(Jaws::t('NOO'),  'false');
+        $antispamCombo->AddOption(Jaws::t('YESS'), 'true');
         $antispamCombo->SetDefault($use_antispam);
         $tpl->SetVariable('lbl_use_antispam', _t('CONTACT_PROPERTIES_USE_ANTISPAM'));
         $tpl->SetVariable('use_antispam', $antispamCombo->Get());
@@ -47,8 +47,8 @@ class Contact_Actions_Admin_Properties extends Contact_Actions_Admin_Default
 
         $attachment = $this->gadget->registry->fetch('enable_attachment');
         $combo =& Piwi::CreateWidget('Combo', 'enable_attachment');
-        $combo->AddOption(Jaws::t('NO'), 'false');
-        $combo->AddOption(Jaws::t('YES'), 'true');
+        $combo->AddOption(Jaws::t('NOO'), 'false');
+        $combo->AddOption(Jaws::t('YESS'), 'true');
         $combo->SetDefault($attachment);
         $tpl->SetVariable('lbl_enable_attachment', _t('CONTACT_PROPERTIES_ENABLE_ATTACHMENT'));
         $tpl->SetVariable('enable_attachment', $combo->Get());
