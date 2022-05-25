@@ -296,8 +296,8 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_latitude', _t('WEATHER_LATITUDE'));
         $tpl->SetVariable('lbl_longitude', _t('WEATHER_LONGITUDE'));
         $tpl->SetVariable('lbl_published', _t('WEATHER_PUBLISHED'));
-        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
-        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
@@ -337,7 +337,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $total = $model->GetRegionsCount($filters, $user);
 
         foreach ($regions as $key => $region) {
-            $region['published'] = ($region['published']) ? Jaws::t('YES') : Jaws::t('NO');
+            $region['published'] = ($region['published']) ? Jaws::t('YESS') : Jaws::t('NOO');
             $regions[$key] = $region;
         }
         return $this->gadget->session->response(
