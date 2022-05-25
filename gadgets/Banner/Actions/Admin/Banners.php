@@ -221,16 +221,16 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $randomType =& Piwi::CreateWidget('Combo', 'random');
         $randomType->SetID('random');
         $randomType->setStyle('width: 85px;');
-        $randomType->AddOption(Jaws::t('NO'),  '0');
-        $randomType->AddOption(Jaws::t('YES'), '1');
+        $randomType->AddOption(Jaws::t('NOO'),  '0');
+        $randomType->AddOption(Jaws::t('YESS'), '1');
         $tpl->SetVariable('lbl_random', _t('BANNER_BANNERS_RANDOM'));
         $tpl->SetVariable('random', $randomType->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->setStyle('width: 85px;');
-        $published->AddOption(Jaws::t('NO'),  0);
-        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NOO'),  0);
+        $published->AddOption(Jaws::t('YESS'), 1);
         $published->SetDefault('1');
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());

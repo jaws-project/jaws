@@ -93,8 +93,8 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl->SetVariable('lbl_show_title', _t('BANNER_GROUPS_SHOW_TITLE'));
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
         $showTitle->SetStyle('width: 128px;');
-        $showTitle->AddOption(Jaws::t('NO'),  0);
-        $showTitle->AddOption(Jaws::t('YES'), 1);
+        $showTitle->AddOption(Jaws::t('NOO'),  0);
+        $showTitle->AddOption(Jaws::t('YESS'), 1);
         $showTitle->SetDefault('1');
         $tpl->SetVariable('show_title', $showTitle->Get());
         $tpl->SetVariable('lbl_show_title', _t('BANNER_GROUPS_SHOW_TITLE'));
@@ -112,8 +112,8 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->SetStyle('width: 128px;');
-        $published->AddOption(Jaws::t('NO'),  0);
-        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NOO'),  0);
+        $published->AddOption(Jaws::t('YESS'), 1);
         $published->SetDefault(true);
         $tpl->SetVariable('published', $published->Get());
 
