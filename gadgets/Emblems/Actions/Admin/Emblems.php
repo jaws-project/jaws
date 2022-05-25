@@ -56,8 +56,8 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetTitle(Jaws::t('PUBLISHED'));
-        $published->AddOption(Jaws::t('YES'), 1);
-        $published->AddOption(Jaws::t('NO'), 0);
+        $published->AddOption(Jaws::t('YESS'), 1);
+        $published->AddOption(Jaws::t('NOO'), 0);
         $fs->Add($published);
 
         $addsubmit =& Piwi::CreateWidget('Button', 'submitadd', _t('EMBLEMS_ADD_EMBLEM'), STOCK_NEW);
