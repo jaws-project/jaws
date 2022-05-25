@@ -34,7 +34,7 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
             $siteData['id']    = $site['id'];
             $siteData['title'] = '<span style="white-space: nowrap;"><a href="'.$site['url'].'" title="'.$site['url'];
             $siteData['title'].= '" target="_blank" style="text-decoration: none;">'.$site['title'].'</a></span>';
-            $siteData['published'] = ($site['published']? Jaws::t('YES') : Jaws::t('NO'));
+            $siteData['published'] = ($site['published']? Jaws::t('YESS') : Jaws::t('NOO'));
 
             $actions = '';
             $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
@@ -161,8 +161,8 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->setStyle('width: 128px;');
-        $published->AddOption(Jaws::t('NO'),  0);
-        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NOO'),  0);
+        $published->AddOption(Jaws::t('YESS'), 1);
         $published->SetDefault(1);
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());

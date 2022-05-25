@@ -351,8 +351,8 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
         $tpl->SetVariable('lbl_alias', Jaws::t('ALIAS'));
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
-        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
-        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
 
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
@@ -389,7 +389,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $total = $model->GetFeedsCount($filters, $user);
 
         foreach ($feeds as $key => $feed) {
-            $feed['published'] = ($feed['published'])? Jaws::t('YES') : Jaws::t('NO');
+            $feed['published'] = ($feed['published'])? Jaws::t('YESS') : Jaws::t('NOO');
             $feeds[$key] = $feed;
         }
         return $this->gadget->session->response(
