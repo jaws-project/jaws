@@ -149,32 +149,24 @@ class Jaws_Translate
     function XTranslate($lang, $type, $component, $string, $params)
     {
         $lang = empty($lang)? $this->_defaultLanguage : $lang;
+        $string = strtoupper($string);
 
         switch ($type) {
             case self::TRANSLATE_GLOBAL:
-                $string = strtoupper('GLOBAL_' . $string);
+            case self::TRANSLATE_INSTALL:
+            case self::TRANSLATE_UPGRADE:
                 break;
 
             case self::TRANSLATE_GADGET:
                 if (array_key_exists($component, self::$real_gadgets_module)) {
                     $component = self::$real_gadgets_module[$component];
                 }
-                $string = strtoupper($component . '_'. $string);
                 break;
 
             case self::TRANSLATE_PLUGIN:
                 if (array_key_exists($component, self::$real_plugins_module)) {
                     $component = self::$real_plugins_module[$component];
                 }
-                $string = strtoupper('PLUGINS_' . $component . '_' . $string);
-                break;
-
-            case self::TRANSLATE_INSTALL:
-                $string = strtoupper('INSTALL_' . $string);
-                break;
-
-            case self::TRANSLATE_UPGRADE:
-                $string = strtoupper('UPGRADE_' . $string);
                 break;
 
             default:
@@ -191,69 +183,6 @@ class Jaws_Translate
         }
 
         foreach ($params as $key => $value) {
-            $string = str_replace('{' . $key . '}', $value, $string);
-        }
-
-        if (strpos($string, '{') !== false) {
-            $string = preg_replace('/\s*{[0-9]+\}/u', '', $string);
-        }
-
-        return $string;
-    }
-
-    /**
-     * Translate a string.
-     *
-     * @access  public
-     * @param   string  $lang       Language code
-     * @param   string  $string     The ID of the string to translate.
-     * @param   array   $parameters An array replacements to make in the string.
-     * @return  string The translated string, with replacements made.
-     */
-    function Translate($lang, $string, $parameters = array())
-    {
-        $lang = empty($lang)? $this->_defaultLanguage : $lang;
-        @list($type, $module) = explode('_', $string);
-        switch ($type) {
-            case 'GLOBAL':
-                $type = 0;
-                $module = 'Global';
-                break;
-
-            case 'PLUGINS':
-                $type = 2;
-                $module = self::$real_plugins_module[$module];
-                break;
-
-            case 'INSTALL':
-                $type = 4;
-                $module = 'Install';
-                break;
-
-            case 'UPGRADE':
-                $type = 5;
-                $module = 'Upgrade';
-                break;
-
-            default:
-                if (!array_key_exists($type, self::$real_gadgets_module)) {
-                    return $string;
-                }
-
-                $module = self::$real_gadgets_module[$type];
-                $type = 1;
-        }
-
-        // autoload not loaded module language
-        if (!isset($this->translates[$lang][$type][$module])) {
-            $this->LoadTranslation($module, $type, $lang);
-        }
-
-        if (isset($this->translates[$lang][$type][$module][$string])) {
-            $string = str_replace('\n', "\n", $this->translates[$lang][$type][$module][$string]);
-        }
-
-        foreach ($parameters as $key => $value) {
             $string = str_replace('{' . $key . '}', $value, $string);
         }
 
