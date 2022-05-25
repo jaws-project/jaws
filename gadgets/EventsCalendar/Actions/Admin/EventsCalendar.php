@@ -74,8 +74,8 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['newEvent'] = _t('EVENTSCALENDAR_NEW_EVENT');
         $const['viewEvent'] = _t('EVENTSCALENDAR_VIEW_EVENT');
         $const['editEvent'] = _t('EVENTSCALENDAR_EDIT_EVENT');
-        $const['yes'] = Jaws::t('YES');
-        $const['no'] = Jaws::t('NO');
+        $const['yes'] = Jaws::t('YESS');
+        $const['no'] = Jaws::t('NOO');
         $const['edit'] = Jaws::t('EDIT');
         $const['delete'] = Jaws::t('DELETE');
         $const['confirmDelete'] = Jaws::t('CONFIRM_DELETE');
@@ -156,8 +156,8 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         // Shared
         $sharedCombo =& Piwi::CreateWidget('Combo', 'filter_shared');
         $sharedCombo->AddOption(Jaws::t('ALL'), -1, false);
-        $sharedCombo->AddOption(Jaws::t('YES'), 1);
-        $sharedCombo->AddOption(Jaws::t('NO'), 0);
+        $sharedCombo->AddOption(Jaws::t('YESS'), 1);
+        $sharedCombo->AddOption(Jaws::t('NOO'), 0);
         $sharedCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $sharedCombo->SetDefault(-1);
         $tpl->SetVariable('filter_shared', $sharedCombo->Get());
@@ -247,11 +247,11 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
         $tpl->SetBlock('eventForm/public');
         $tpl->SetVariable('value', 0);
-        $tpl->SetVariable('title', Jaws::t('NO'));
+        $tpl->SetVariable('title', Jaws::t('NOO'));
         $tpl->ParseBlock('eventForm/public');
         $tpl->SetBlock('eventForm/public');
         $tpl->SetVariable('value', 1);
-        $tpl->SetVariable('title', Jaws::t('YES'));
+        $tpl->SetVariable('title', Jaws::t('YESS'));
         $tpl->ParseBlock('eventForm/public');
 
         // Priority

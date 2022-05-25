@@ -123,8 +123,8 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $combo =& Piwi::CreateWidget('Combo', 'public');
         $combo->SetID('');
         $combo->AddOption('', '');
-        $combo->AddOption(Jaws::t('YES'), 1);
-        $combo->AddOption(Jaws::t('NO'), 0);
+        $combo->AddOption(Jaws::t('YESS'), 1);
+        $combo->AddOption(Jaws::t('NOO'), 0);
         $combo->SetDefault(@$params['search']['public']);
         $tpl->SetVariable('public', $combo->Get());
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
@@ -154,8 +154,8 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $combo =& Piwi::CreateWidget('Combo', 'shared');
         $combo->SetID('');
         $combo->AddOption('', '');
-        $combo->AddOption(Jaws::t('YES'), 1);
-        $combo->AddOption(Jaws::t('NO'), 0);
+        $combo->AddOption(Jaws::t('YESS'), 1);
+        $combo->AddOption(Jaws::t('NOO'), 0);
         $combo->SetDefault(@$params['search']['shared']);
         $tpl->SetVariable('shared', $combo->Get());
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));

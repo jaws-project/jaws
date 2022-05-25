@@ -148,8 +148,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Public
         $combo =& Piwi::CreateWidget('Combo', 'public');
         $combo->SetId('event_type');
-        $combo->AddOption(Jaws::t('YES'), 1);
-        $combo->AddOption(Jaws::t('NO'), 0);
+        $combo->AddOption(Jaws::t('YESS'), 1);
+        $combo->AddOption(Jaws::t('NOO'), 0);
         $combo->SetDefault($event['public']? 1 : 0);
         $tpl->SetVariable('public', $combo->Get());
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));

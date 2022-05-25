@@ -109,11 +109,11 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
         // Public
-        $tpl->SetVariable('public', $event['public']? Jaws::t('YES') : Jaws::t('NO'));
+        $tpl->SetVariable('public', $event['public']? Jaws::t('YESS') : Jaws::t('NOO'));
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
 
         // Shared
-        $tpl->SetVariable('shared', $event['shared']? Jaws::t('YES') : Jaws::t('NO'));
+        $tpl->SetVariable('shared', $event['shared']? Jaws::t('YESS') : Jaws::t('NOO'));
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
 
         // Symbol
