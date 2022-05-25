@@ -118,8 +118,8 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         //published
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
-        $published->AddOption(Jaws::t('NO'),  0);
-        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NOO'),  0);
+        $published->AddOption(Jaws::t('YESS'), 1);
         $published->SetDefault('1');
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
