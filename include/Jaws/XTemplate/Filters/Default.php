@@ -325,9 +325,19 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         $args = func_get_args();
         array_shift($args);
 
-        return Jaws_Translate::getInstance()->Translate(
+
+        if ($gadget = strstr($input, '.', true)) {
+            $string = substr($input, strlen($gadget) + 1);
+        } else {
+            $gadget = '';
+            $string = $input;
+        }
+
+        return Jaws_Translate::getInstance()->XTranslate(
             null,
-            strtoupper(str_replace(array(' ', '.'), '_', $input)),
+            Jaws_Translate::TRANSLATE_GADGET,
+            $gadget,
+            strtoupper($string),
             $args
         );
     }
