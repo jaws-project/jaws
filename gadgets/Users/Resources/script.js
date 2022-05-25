@@ -23,7 +23,7 @@ function Jaws_Gadget_Users() { return {
     // ASync callback method
     AjaxCallback : {
         AddUser: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopUserAction();
                 $('#userModal').modal('hide');
                 $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
@@ -31,7 +31,7 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdateUser: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopUserAction();
                 $('#userModal').modal('hide');
                 $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
@@ -39,31 +39,31 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdateUserACL: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         DeleteUserACLs: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         DeleteUserFromGroups: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         DeleteUsersFromGroup: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#group-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         AddUserToGroup: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 if ($('#group_combo').length) {
                     $('#group_combo').find('>input').val('');
                     $('#user-groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
@@ -75,7 +75,7 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdatePersonal: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopUserAction();
                 $('#personalModal').modal('hide');
                 $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
@@ -83,21 +83,21 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdateUserPassword: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopUserAction();
                 $('#passwordModal').modal('hide');
             }
         },
 
         UpdateUserContacts: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopUserAction();
                 $('#contactsModal').modal('hide');
             }
         },
 
         UpdateUserExtra: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopUserAction();
                 $('#extraModal').modal('hide');
             }
@@ -109,13 +109,13 @@ function Jaws_Gadget_Users() { return {
         },
 
         DeleteUsers: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         AddGroup: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopGroupAction();
                 $('#groupModal').modal('hide');
                 $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
@@ -123,7 +123,7 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdateGroup: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopGroupAction();
                 $('#groupModal').modal('hide');
                 $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
@@ -131,45 +131,45 @@ function Jaws_Gadget_Users() { return {
         },
 
         UpdateGroupACL: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         DeleteGroupACLs: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#item-acls-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         DeleteGroups: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 $('#groups-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         AddUsersToGroup: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 this.stopGroupAction();
             }
         },
 
         DeleteSessions: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 clearTimeout(this.fTimeout);
                 $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         IPsBlock: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 clearTimeout(this.fTimeout);
                 $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
         },
 
         AgentsBlock: function(response) {
-            if (response['type'] == 'alert-success') {
+            if (response.type === 'alert-success') {
                 clearTimeout(this.fTimeout);
                 $('#online-users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
             }
@@ -362,7 +362,7 @@ function Jaws_Gadget_Users() { return {
                 'id': this.selectedUser,
                 'account': true
             }, function (response, status, callOptions) {
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
                     var userInfo = response.data;
                     if (userInfo) {
@@ -438,7 +438,7 @@ function Jaws_Gadget_Users() { return {
                 'comp': $('#components').val(),
                 'action': action
             }, function (response, status, callOptions) {
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     var acls = response.data;
                     var form = $('#acl_form').html('');
                     $.each(acls.default_acls, $.proxy(function (index, acl) {
@@ -515,7 +515,7 @@ function Jaws_Gadget_Users() { return {
                 'account': true,
                 'personal': true,
             }, function (response, status, callOptions) {
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     var userInfo = response.data;
                     $('#user-personal-form input, #user-personal-form select, #user-personal-form textarea').each(
                         function () {
@@ -550,7 +550,7 @@ function Jaws_Gadget_Users() { return {
         this.ajax.callAsync('GetUserContact', {
                 'uid': uid
             }, function (response, status, callOptions) {
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     var cInfo = response.data;
                     if (cInfo) {
                         this.changeProvince(cInfo['province_home'], 'city_home');
@@ -580,7 +580,7 @@ function Jaws_Gadget_Users() { return {
         this.ajax.callAsync('GetUserExtra', {
                 'uid': uid
             }, function (response, status, callOptions) {
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     var exInfo = response.data;
                     if (exInfo) {
                         $('#user-extra-form input, #user-extra-form select, #user-extra-form textarea').each(
@@ -654,7 +654,7 @@ function Jaws_Gadget_Users() { return {
         this.ajax.callAsync('GetGroup', {
                 'gid': this.selectedGroup
             }, function (response, status, callOptions) {
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
                     var gInfo = response.data;
                     if (gInfo) {
@@ -957,7 +957,7 @@ function Jaws_Gadget_Users() { return {
         this.ajax.callAsync('GetSyncError', {
                 'id': id,
             }, function (response, status, callOptions) {
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     var syncError = response.data;
                     $('#sync-error-details-form span').each($.proxy(function (i, elem) {
                             if ($(elem).data('field') == 'data') {
@@ -1021,7 +1021,7 @@ function Jaws_Gadget_Users() { return {
             },
             function(response, status, callOptions) {
                 var dataSource = {};
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
@@ -1230,7 +1230,7 @@ function Jaws_Gadget_Users() { return {
             },
             function(response, status, callOptions) {
                 var dataSource = {};
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
@@ -1395,7 +1395,7 @@ function Jaws_Gadget_Users() { return {
             },
             function(response, status, callOptions) {
                 var dataSource = {};
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
@@ -1518,7 +1518,7 @@ function Jaws_Gadget_Users() { return {
             },
             function(response, status, callOptions) {
                 var dataSource = {};
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
@@ -1696,7 +1696,7 @@ function Jaws_Gadget_Users() { return {
             },
             function(response, status, callOptions) {
                 var dataSource = {};
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
@@ -1861,7 +1861,7 @@ function Jaws_Gadget_Users() { return {
             },
             function(response, status, callOptions) {
                 var dataSource = {};
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
@@ -1999,7 +1999,7 @@ function Jaws_Gadget_Users() { return {
             },
             function(response, status, callOptions) {
                 var dataSource = {};
-                if (response['type'] == 'alert-success') {
+                if (response.type === 'alert-success') {
                     callOptions.showMessage = false;
 
                     // processing end item index of page
@@ -2190,7 +2190,7 @@ function Jaws_Gadget_Users() { return {
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
                 $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
-                if (response['type'] == 'alert-success' && response.data.total > 0) {
+                if (response.type === 'alert-success' && response.data.total > 0) {
                     $.each(response.data.records, $.proxy(function (key, user) {
                         this.addOptionToCombo(comboElm, {'value': user.id, 'title': user.nickname});
                     }, this));
@@ -2208,10 +2208,14 @@ function Jaws_Gadget_Users() { return {
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
                 $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
-                if (response['type'] == 'alert-success' && response.data.total > 0) {
+                if (response.type === 'alert-success' && response.data.total > 0) {
                     $.each(response.data.records, $.proxy(function (key, group) {
                         this.addOptionToCombo(comboElm, {'value': group.id, 'title': group.title});
                     }, this));
+
+                    if ($(comboElm).combobox('selectedItem').value === undefined) {
+                        $(comboElm).combobox('selectByValue', response.data.records[0].id);
+                    }
                 }
             }, this)
         );

@@ -29,6 +29,7 @@
               <input type="text" class="form-control ltr" name="mobile" id="mobile">
             </div>
 
+            {% if is_superadmin%}
             <div class="form-group col-xs-12 col-md-6">
               <label for="superadmin">{{ "users.users_type_superadmin" | t }}:</label>
               <select class="form-control" name="superadmin" id="superadmin">
@@ -36,6 +37,7 @@
                 <option value="1">{{ "global.yes" | t }}</option>
               </select>
             </div>
+            {% endif %}
 
             <div class="form-group col-md-6">
               <label for="password">{{ "users.users_password" | t }}:</label>
@@ -67,6 +69,19 @@
                 {%- endfor %}
               </select>
             </div>
+
+            {% unless is_superadmin%}
+            <div class="form-group col-xs-12 col-md-6">
+              <label for="group">{{ "users.groups_group" | t }}:</label>
+              <select class="form-control" name="group" id="group">
+                {%- for group in granted_groups %}
+                <option value="{{group.id}}" {{ forloop.index | equal: 1, "selected" }}>
+                {{- group.title -}}
+                </option>
+                {%- endfor %}
+              </select>
+            </div>
+            {%- endunless %}
 
           </div>
         </form>

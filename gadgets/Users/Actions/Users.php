@@ -80,13 +80,18 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('addUser_title', $this::t('USERS_ADD'));
         $tpl->SetVariable('lbl_userGroups', $this::t('USERS_GROUPS'));
 
-        // Groups
-        $groups = $this->gadget->model->load('Group')->list(
-            0, 0, 0,
-            array('enabled'  => true),
-            array(), // default fieldsets
-            array('title' => true ) // order by title ascending
-        );
+        if ($this->app->session->user->superadmin) {
+            // Groups
+            $groups = $this->gadget->model->load('Group')->list(
+                0, 0, 0,
+                array('enabled'  => true),
+                array(), // default fieldsets
+                array('title' => true ) // order by title ascending
+            );
+        } else {
+            // check user group access
+            $groups = $this->gadget->model->load('UserGroup')->getGrantedGroups();
+        }
         if (!Jaws_Error::IsError($groups)) {
             foreach ($groups as $group) {
                 $tpl->SetBlock('Users/group');
@@ -102,7 +107,9 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_filter_status', Jaws::t('STATUS'));
         $tpl->SetVariable('lbl_filter_term', $this::t('USERS_SEARCH_TERM'));
         if (!Jaws_Error::IsError($groups)) {
-            array_unshift($groups, array('id' => 0, 'title' => Jaws::t('ALL')));
+            if ($this->app->session->user->superadmin) {
+                array_unshift($groups, array('id' => 0, 'title' => Jaws::t('ALL')));
+            }
             foreach ($groups as $group) {
                 $tpl->SetBlock('Users/filterGroup');
                 $tpl->SetVariable('value', $group['id']);
@@ -168,7 +175,20 @@ class Users_Actions_Users extends Users_Actions_Default
             $orderBy = array($post['sortBy'] => $post['sortDirection'] == 'asc');
         }
 
-        $group = !empty($post['filters']['group']) ? $post['filters']['group'] : false;
+        $post['filters']['group'] = !empty($post['filters']['group']) ? (int)$post['filters']['group'] : false;
+        if ($this->app->session->user->superadmin) {
+            $groupFilter = $post['filters']['group'];
+        } else {
+            // check user group access
+            $groups = $this->gadget->model->load('UserGroup')->getGrantedGroups();
+            $defaultGroup = $groups[0]['id'];
+            foreach ($groups as $group) {
+                if ($post['filters']['group'] === $group['id']) {
+                    $defaultGroup = $group['id'];
+                }
+            }
+            $groupFilter = $defaultGroup;
+        }
         $domain = !empty($post['filters']['domain']) ? $post['filters']['domain'] : false;
         $status = isset($post['filters']['status']) &&
             $post['filters']['status'] >= 0 ? $post['filters']['status'] : null;
@@ -183,7 +203,7 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $users = $this->gadget->model->load('User')->list(
-            $domain, $group,
+            $domain, $groupFilter,
             array(
                 'term' => $term,
                 'status' => $status,

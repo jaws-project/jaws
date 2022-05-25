@@ -86,17 +86,23 @@ class Users_Actions_Groups extends Users_Actions_Default
             'post'
         );
 
-        $groups = $this->gadget->model->load('Group')->list(
-            0, 0, 0,
-            array(), array(),
-            array('id' => true),
-            $post['limit'],
-            $post['offset']
-        );
-        if (Jaws_Error::IsError($groups)) {
-            return array();
+        if (!$this->app->session->user->superadmin) {
+            // check user group access
+            $groups = $this->gadget->model->load('UserGroup')->getGrantedGroups($post['filters']['filter_term']);
+            $total = count($groups);
+        } else {
+            $groups = $this->gadget->model->load('Group')->list(
+                0, 0, 0,
+                array(), array(),
+                array('id' => true),
+                $post['limit'],
+                $post['offset']
+            );
+            if (Jaws_Error::IsError($groups)) {
+                return array();
+            }
+            $total = $this->gadget->model->load('Groups')->listCount(0, 0, 0, array());
         }
-        $total = $this->gadget->model->load('Groups')->listCount(0, 0, 0, array());
 
         return array(
             'status' => 'success',

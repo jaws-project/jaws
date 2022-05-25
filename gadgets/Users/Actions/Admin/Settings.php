@@ -35,7 +35,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
             array('enabled'  => true),
             array(), // default fieldset
             array('title' => true ) // order by title ascending
-        )
+        );
         $assigns['password_recovery'] = $this->gadget->registry->fetch('password_recovery');
         $assigns['reserved_users'] = trim($this->gadget->registry->fetch('reserved_users'));
         return $this->gadget->template->xLoadAdmin('Settings.html')->render($assigns);

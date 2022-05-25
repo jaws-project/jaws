@@ -129,4 +129,26 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
         return (bool)$howmany;
     }
 
+    /**
+     * get current user's  granted groups
+     *
+     * @access  public
+     * @param   string  $term  limit group result by custom term
+     * @return  mixed   Array of groups on success or Jaws_Error on failure
+     */
+    function getGrantedGroups($term = '')
+    {
+        $groupsAccess = array();
+        $groups = $this->gadget->model->load('Group')->list(0, 0, $this->app->session->user->id);
+        foreach ((array)$groups as $group) {
+            if ($this->gadget->GetPermission('GroupManage', $group['id'])) {
+                if (empty($term) || stripos($group['title'], $term) !== false ||
+                    stripos($group['name'], $term) !== false) {
+                    $groupsAccess[] = $group;
+                }
+            }
+        }
+        return $groupsAccess;
+    }
+
 }

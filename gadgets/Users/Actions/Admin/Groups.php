@@ -75,15 +75,8 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
 
         if (!$this->app->session->user->superadmin) {
             // check user group access
-            $groupsAccess = array();
-            $groups = $this->gadget->model->load('Group')->list(0, 0, $this->app->session->user->id);
-            foreach ((array) $groups as $group) {
-                if ($this->gadget->GetPermission('GroupManage', $group['id'])) {
-//                    if ($group['title'])
-                    $groupsAccess[] = $group;
-                }
-            }
-            $groups = $groupsAccess;
+            $groups = $this->gadget->model->load('UserGroup')->getGrantedGroups($post['filters']['filter_term']);
+            $groupsCount = count($groups);
         } else {
             $groups = $this->gadget->model->load('Group')->list(
                 (int)@$post['filters']['filter_domain'],
@@ -98,17 +91,16 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             if (Jaws_Error::IsError($groups)) {
                 return $this->gadget->session->response($groups->GetMessage(), RESPONSE_ERROR);
             }
-        }
 
-
-        $groupsCount = $this->gadget->model->load('Group')->listCount(
-            (int)@$post['filters']['filter_domain'],
-            0,
-            0,
-            $filters
-        );
-        if (Jaws_Error::IsError($groupsCount)) {
-            return $this->gadget->session->response($groupsCount->GetMessage(), RESPONSE_ERROR);
+            $groupsCount = $this->gadget->model->load('Group')->listCount(
+                (int)@$post['filters']['filter_domain'],
+                0,
+                0,
+                $filters
+            );
+            if (Jaws_Error::IsError($groupsCount)) {
+                return $this->gadget->session->response($groupsCount->GetMessage(), RESPONSE_ERROR);
+            }
         }
 
         return $this->gadget->session->response(

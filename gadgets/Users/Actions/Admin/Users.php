@@ -83,6 +83,11 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 //            $this->gadget->define('pubkey', $JCrypt->getPublic());
         }
 
+        $assigns['is_superadmin'] = $this->app->session->user->superadmin;
+        if (!$this->app->session->user->superadmin) {
+            $assigns['granted_groups'] = $this->gadget->model->load('UserGroup')->getGrantedGroups();
+        }
+
         return $this->gadget->template->xLoadAdmin('Users.html')->render($assigns);
     }
 
@@ -109,6 +114,19 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         }
         if (isset($post['filters']['filter_status']) && (int)$post['filters']['filter_status'] >= 0) {
             $filters['status'] = (int)$post['filters']['filter_status'];
+        }
+
+        // check group filter
+        if (!$this->app->session->user->superadmin) {
+            // check user group access
+            $groups = $this->gadget->model->load('UserGroup')->getGrantedGroups($post['filters']['filter_term']);
+            $grantedGroup = $groups[0]['id'];
+            foreach ($groups as $group) {
+                if ((int)$post['filters']['filter_group'] === $group['id']) {
+                    $grantedGroup = $group['id'];
+                }
+            }
+            $post['filters']['filter_group'] = $grantedGroup;
         }
 
         $users = $this->gadget->model->load('User')->list(
@@ -198,6 +216,9 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
+        $selGroup = (int)$uData['group'];
+        unset($uData['group']);
+
         $uData['status'] = (int)$uData['status'];
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
         $res = $this->gadget->model->load('User')->add($uData);
@@ -205,7 +226,20 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         }
 
-        $guid = $this->gadget->registry->fetch('anon_group');
+        if ($this->app->session->user->superadmin) {
+            $guid = $this->gadget->registry->fetch('anon_group');
+        } else {
+            // check user group access
+            $groups = $this->gadget->model->load('UserGroup')->getGrantedGroups();
+            $defaultGroup = $groups[0]['id'];
+            foreach ($groups as $group) {
+                if ($selGroup === $group['id']) {
+                    $defaultGroup = $group['id'];
+                }
+            }
+            $guid = $defaultGroup;
+        }
+
         if (!empty($guid)) {
             $this->gadget->model->load('UserGroup')->add($res, (int)$guid);
         }
