@@ -168,8 +168,8 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $titleview =& Piwi::CreateWidget('Combo', 'title_view');
         $titleview->SetID('title_view');
         $titleview->setStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
-        $titleview->AddOption(Jaws::t('NO'),  '0');
-        $titleview->AddOption(Jaws::t('YES'), '1');
+        $titleview->AddOption(Jaws::t('NOO'),  '0');
+        $titleview->AddOption(Jaws::t('YESS'), '1');
         $tpl->SetVariable('lbl_title_view', _t('MENU_GROUPS_TITLE_VIEW'));
         $tpl->SetVariable('title_view', $titleview->Get());
 
@@ -185,8 +185,8 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
         $published->SetStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
-        $published->AddOption(Jaws::t('NO'),  0);
-        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NOO'),  0);
+        $published->AddOption(Jaws::t('YESS'), 1);
         $published->SetDefault(1);
         $tpl->SetVariable('published', $published->Get());
 
