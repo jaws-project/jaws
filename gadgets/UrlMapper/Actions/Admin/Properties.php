@@ -32,20 +32,20 @@ class UrlMapper_Actions_Admin_Properties extends UrlMapper_Actions_Admin_Default
 
         $useMapCombo =& Piwi::CreateWidget('Combo', 'enabled');
         $useMapCombo->SetTitle(_t('URLMAPPER_SETTINGS_MAP_ENABLED'));
-        $useMapCombo->AddOption(Jaws::t('YES'), 'true');
-        $useMapCombo->AddOption(Jaws::t('NO'), 'false');
+        $useMapCombo->AddOption(Jaws::t('YESS'), 'true');
+        $useMapCombo->AddOption(Jaws::t('NOO'), 'false');
         $useMapCombo->SetDefault($this->gadget->registry->fetch('map_enabled'));
 
         $precedence =& Piwi::CreateWidget('Combo', 'custom_precedence');
         $precedence->SetTitle(_t('URLMAPPER_CUSTOM_MAP_PRECEDENCE'));
-        $precedence->AddOption(Jaws::t('YES'), 'true');
-        $precedence->AddOption(Jaws::t('NO'), 'false');
+        $precedence->AddOption(Jaws::t('YESS'), 'true');
+        $precedence->AddOption(Jaws::t('NOO'), 'false');
         $precedence->SetDefault($this->gadget->registry->fetch('map_custom_precedence'));
 
         $useAliasesCombo =& Piwi::CreateWidget('Combo', 'use_aliases');
         $useAliasesCombo->SetTitle(_t('URLMAPPER_SETTINGS_MAP_USE_ALIASES'));
-        $useAliasesCombo->AddOption(Jaws::t('YES'), 'true');
-        $useAliasesCombo->AddOption(Jaws::t('NO'), 'false');
+        $useAliasesCombo->AddOption(Jaws::t('YESS'), 'true');
+        $useAliasesCombo->AddOption(Jaws::t('NOO'), 'false');
         $useAliasesCombo->SetDefault($this->gadget->registry->fetch('map_use_aliases'));
 
         $extension =& Piwi::CreateWidget('Entry', 'extension',
