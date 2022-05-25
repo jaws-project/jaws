@@ -28,9 +28,9 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
         $assigns['order_type'] = $this->gadget->registry->fetch('order_type');
 
         $assigns['allowCommentsItems'] = array(
-            'true' => Jaws::t('YES'),
+            'true' => Jaws::t('YESS'),
             'restricted' => _t('COMMENTS_ALLOW_COMMENTS_RESTRICTED'),
-            'false' => Jaws::t('NO')
+            'false' => Jaws::t('NOO')
         );
         $assigns['defaultStatusItems'] = array(
             1 => _t('COMMENTS_STATUS_APPROVED'),
