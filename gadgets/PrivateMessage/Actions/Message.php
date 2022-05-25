@@ -93,8 +93,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
                 $tpl->SetBlock('messages/filter_read');
                 $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
-                $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
-                $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+                $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
+                $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
                 $tpl->ParseBlock('messages/filter_read');
@@ -104,8 +104,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
                 $tpl->SetBlock('messages/filter_read');
                 $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
-                $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
-                $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+                $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
+                $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
                 $tpl->ParseBlock('messages/filter_read');
