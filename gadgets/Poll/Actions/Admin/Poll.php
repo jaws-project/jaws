@@ -31,9 +31,9 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
             $pollData = array();
             $pollData['title'] = $poll['title'];
             if ($poll['published'] == true) {
-                $pollData['published'] = Jaws::t('YES');
+                $pollData['published'] = Jaws::t('YESS');
             } else {
-                $pollData['published'] = Jaws::t('NO');
+                $pollData['published'] = Jaws::t('NOO');
             }
             $actions = '';
             if ($this->gadget->GetPermission('ManagePolls')) {
@@ -175,8 +175,8 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
 
         $resultView =& Piwi::CreateWidget('Combo', 'result_view');
         $resultView->SetID('result_view');
-        $resultView->AddOption(Jaws::t('NO'),  0);
-        $resultView->AddOption(Jaws::t('YES'), 1);
+        $resultView->AddOption(Jaws::t('NOO'),  0);
+        $resultView->AddOption(Jaws::t('YESS'), 1);
         $resultView->SetDefault(1);
         $tpl->SetVariable('lbl_result_view', _t('POLL_POLLS_RESULT_VIEW'));
         $tpl->SetVariable('result_view', $resultView->Get());
@@ -199,8 +199,8 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
-        $published->AddOption(Jaws::t('NO'),  0);
-        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NOO'),  0);
+        $published->AddOption(Jaws::t('YESS'), 1);
         $published->SetDefault(1);
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());

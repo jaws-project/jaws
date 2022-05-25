@@ -31,9 +31,9 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
             $groupData = array();
             $groupData['title'] = $group['title'];
             if ($group['published'] == true) {
-                $groupData['published'] = Jaws::t('YES');
+                $groupData['published'] = Jaws::t('YESS');
             } else {
-                $groupData['published'] = Jaws::t('NO');
+                $groupData['published'] = Jaws::t('NOO');
             }
             $actions = '';
             if ($this->gadget->GetPermission('ManageGroups')) {
@@ -138,8 +138,8 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->SetID('published');
-        $published->AddOption(Jaws::t('NO'),  0);
-        $published->AddOption(Jaws::t('YES'), 1);
+        $published->AddOption(Jaws::t('NOO'),  0);
+        $published->AddOption(Jaws::t('YESS'), 1);
         $published->SetDefault(1);
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
