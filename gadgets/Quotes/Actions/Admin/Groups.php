@@ -59,8 +59,8 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('view_type', $viewType->Get());
 
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
-        $showTitle->AddOption(Jaws::t('NO'),  'false');
-        $showTitle->AddOption(Jaws::t('YES'), 'true');
+        $showTitle->AddOption(Jaws::t('NOO'),  'false');
+        $showTitle->AddOption(Jaws::t('YESS'), 'true');
         $showTitle->SetDefault('true');
         $tpl->SetVariable('lbl_show_title', _t('QUOTES_SHOW_TITLE'));
         $tpl->SetVariable('show_title', $showTitle->Get());
@@ -70,15 +70,15 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('limit_count', $limitcount->Get());
 
         $randomly =& Piwi::CreateWidget('Combo', 'random');
-        $randomly->AddOption(Jaws::t('NO'),  'false');
-        $randomly->AddOption(Jaws::t('YES'), 'true');
+        $randomly->AddOption(Jaws::t('NOO'),  'false');
+        $randomly->AddOption(Jaws::t('YESS'), 'true');
         $randomly->SetDefault('true');
         $tpl->SetVariable('lbl_random', _t('QUOTES_GROUPS_RANDOM'));
         $tpl->SetVariable('random', $randomly->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->AddOption(Jaws::t('NO'),  'false');
-        $published->AddOption(Jaws::t('YES'), 'true');
+        $published->AddOption(Jaws::t('NOO'),  'false');
+        $published->AddOption(Jaws::t('YESS'), 'true');
         $published->SetDefault('true');
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());

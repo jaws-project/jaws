@@ -98,16 +98,16 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
 
         // show_title
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
-        $showTitle->AddOption(Jaws::t('NO'),  'false');
-        $showTitle->AddOption(Jaws::t('YES'), 'true');
+        $showTitle->AddOption(Jaws::t('NOO'),  'false');
+        $showTitle->AddOption(Jaws::t('YESS'), 'true');
         $showTitle->SetDefault('true');
         $tpl->SetVariable('lbl_show_title', _t('QUOTES_SHOW_TITLE'));
         $tpl->SetVariable('show_title', $showTitle->Get());
 
         // published
         $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->AddOption(Jaws::t('NO'),  'false');
-        $published->AddOption(Jaws::t('YES'), 'true');
+        $published->AddOption(Jaws::t('NOO'),  'false');
+        $published->AddOption(Jaws::t('YESS'), 'true');
         $published->SetDefault('true');
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
