@@ -46,10 +46,8 @@ class Jaws_Gadget_Class
      *
      * @return string
      */
-    public static function t($params)
+    public static function t($string, ...$params)
     {
-        $params = func_get_args();
-        $string = array_shift($params);
         if ($gadget = strstr($string, '.', true)) {
             $string = substr($string, strlen($gadget) + 1);
         } else {
