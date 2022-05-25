@@ -344,7 +344,7 @@ class Users_Actions_Profile extends Users_Actions_Default
                         break;
 
                     case 'checkbox':
-                        $defaultValue = !empty($defaultValue)? Jaws::t('YES') : Jaws::t('NO');
+                        $defaultValue = !empty($defaultValue)? Jaws::t('YESS') : Jaws::t('NOO');
                         break;
 
                     case 'date':

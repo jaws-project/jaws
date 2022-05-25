@@ -70,8 +70,8 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
-        $tpl->SetVariable('lbl_yes', Jaws::t('YES'));
-        $tpl->SetVariable('lbl_no', Jaws::t('NO'));
+        $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
+        $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
         $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
         $tpl->SetVariable('lbl_of', Jaws::t('OF'));
         $tpl->SetVariable('lbl_to', Jaws::t('TO'));
