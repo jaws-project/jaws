@@ -35,8 +35,8 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         // Use Enabled?
         $useProxy =& Piwi::CreateWidget('Combo', 'proxy_enabled');
         $useProxy->setID('proxy_enabled');
-        $useProxy->AddOption(Jaws::t('NO'),  'false');
-        $useProxy->AddOption(Jaws::t('YES'), 'true');
+        $useProxy->AddOption(Jaws::t('NOO'),  'false');
+        $useProxy->AddOption(Jaws::t('YESS'), 'true');
         $useProxy->SetDefault($this->gadget->registry->fetch('proxy_enabled'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'proxy_enabled');
@@ -69,8 +69,8 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         // Proxy Auth
         $proxyAuth =& Piwi::CreateWidget('Combo', 'proxy_auth');
         $proxyAuth->setID('proxy_auth');
-        $proxyAuth->AddOption(Jaws::t('NO'),  'false');
-        $proxyAuth->AddOption(Jaws::t('YES'), 'true');
+        $proxyAuth->AddOption(Jaws::t('NOO'),  'false');
+        $proxyAuth->AddOption(Jaws::t('YESS'), 'true');
         $proxyAuth->SetDefault($this->gadget->registry->fetch('proxy_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'proxy_auth');

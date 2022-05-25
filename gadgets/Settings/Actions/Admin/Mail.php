@@ -70,8 +70,8 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         // SMTP Verification
         $smtpVrfy =& Piwi::CreateWidget('Combo', 'smtp_vrfy');
         $smtpVrfy->setID('smtp_vrfy');
-        $smtpVrfy->AddOption(Jaws::t('NO'),  'false');
-        $smtpVrfy->AddOption(Jaws::t('YES'), 'true');
+        $smtpVrfy->AddOption(Jaws::t('NOO'),  'false');
+        $smtpVrfy->AddOption(Jaws::t('YESS'), 'true');
         $smtpVrfy->SetDefault($this->gadget->registry->fetch('smtp_vrfy'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_vrfy');
@@ -113,8 +113,8 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         // SMTP Auth
         $smtpAuth =& Piwi::CreateWidget('Combo', 'smtp_auth');
         $smtpAuth->setID('smtp_auth');
-        $smtpAuth->AddOption(Jaws::t('NO'),  'false');
-        $smtpAuth->AddOption(Jaws::t('YES'), 'true');
+        $smtpAuth->AddOption(Jaws::t('NOO'),  'false');
+        $smtpAuth->AddOption(Jaws::t('YESS'), 'true');
         $smtpAuth->SetDefault($this->gadget->registry->fetch('smtp_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_auth');

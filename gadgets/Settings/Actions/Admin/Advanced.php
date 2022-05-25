@@ -70,8 +70,8 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $use_gravatar = $this->gadget->registry->fetch('use_gravatar');
         $gravatar =& Piwi::CreateWidget('Combo', 'use_gravatar');
         $gravatar->setID('use_gravatar');
-        $gravatar->AddOption(Jaws::t('YES'), 'yes');
-        $gravatar->AddOption(Jaws::t('NO'), 'no');
+        $gravatar->AddOption(Jaws::t('YESS'), 'yes');
+        $gravatar->AddOption(Jaws::t('NOO'), 'no');
         $gravatar->SetDefault($use_gravatar);
         $gravatar->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Settings').toggleGR();");
         $tpl->SetBlock('settings/item');
@@ -98,8 +98,8 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         // show view site icon on CP
         $viewSite =& Piwi::CreateWidget('Combo', 'show_viewsite');
         $viewSite->setID('show_viewsite');
-        $viewSite->AddOption(Jaws::t('YES'), 'true');
-        $viewSite->AddOption(Jaws::t('NO'), 'false');
+        $viewSite->AddOption(Jaws::t('YESS'), 'true');
+        $viewSite->AddOption(Jaws::t('NOO'), 'false');
         $viewSite->SetDefault($this->gadget->registry->fetch('show_viewsite'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'show_viewsite');

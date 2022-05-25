@@ -35,8 +35,8 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         // Use Enabled?
         $useFTP =& Piwi::CreateWidget('Combo', 'ftp_enabled');
         $useFTP->setID('ftp_enabled');
-        $useFTP->AddOption(Jaws::t('NO'),  'false');
-        $useFTP->AddOption(Jaws::t('YES'), 'true');
+        $useFTP->AddOption(Jaws::t('NOO'),  'false');
+        $useFTP->AddOption(Jaws::t('YESS'), 'true');
         $useFTP->SetDefault($this->gadget->registry->fetch('ftp_enabled'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'ftp_enabled');
