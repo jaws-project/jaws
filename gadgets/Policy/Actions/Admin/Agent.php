@@ -123,8 +123,8 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
         $blocked =& Piwi::CreateWidget('Combo', 'blocked');
         $blocked->SetID('blocked');
         $blocked->setStyle('width: 120px;');
-        $blocked->AddOption(Jaws::t('NO'),  0);
-        $blocked->AddOption(Jaws::t('YES'), 1);
+        $blocked->AddOption(Jaws::t('NOO'),  0);
+        $blocked->AddOption(Jaws::t('YESS'), 1);
         $blocked->SetDefault('1');
         $tpl->SetVariable('lbl_blocked', _t('POLICY_BLOCKED'));
         $tpl->SetVariable('blocked', $blocked->Get());

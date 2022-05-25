@@ -31,8 +31,8 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
 
         $useEncryption =& Piwi::CreateWidget('Combo', 'enabled');
         $useEncryption->setID('enabled');
-        $useEncryption->AddOption(Jaws::t('NO'),  'false');
-        $useEncryption->AddOption(Jaws::t('YES'), 'true');
+        $useEncryption->AddOption(Jaws::t('NOO'),  'false');
+        $useEncryption->AddOption(Jaws::t('YESS'), 'true');
         $useEncryption->SetDefault($this->gadget->registry->fetch('crypt_enabled'));
         $tpl->SetVariable('lbl_enabled', Jaws::t('ENABLED'));
         $tpl->SetVariable('enabled', $useEncryption->Get());
