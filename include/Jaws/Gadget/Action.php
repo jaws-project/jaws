@@ -296,12 +296,8 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         }
 
         if (isset($this->app->layout)) {
-            $title = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_TITLE');
-            $description = strtoupper($this->gadget->name.'_ACTIONS_'.$action.'_DESC');
-            $title = (_t($title) == $title)? '' : _t($title);
-            $description = (_t($description) == $description)? '' : _t($description);
-            $this->app->layout->SetTitle($title);
-            $this->app->layout->SetDescription($description);
+            $this->app->layout->SetTitle($this::t('ACTIONS_'.$action.'_TITLE'));
+            $this->app->layout->SetDescription($this::t('ACTIONS_'.$action.'_DESC'));
         }
 
         $file = $this->gadget->actions[JAWS_SCRIPT][$action]['file'];
