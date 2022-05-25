@@ -56,8 +56,8 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $tpl->SetVariable('meta_desc', $entry->Get());
 
         $combo =& Piwi::CreateWidget('Combo', 'visible');
-        $combo->AddOption(Jaws::t('NO'),  'false');
-        $combo->AddOption(Jaws::t('YES'), 'true');
+        $combo->AddOption(Jaws::t('NOO'),  'false');
+        $combo->AddOption(Jaws::t('YESS'), 'true');
         $combo->SetDefault('true');
         $tpl->SetVariable('visible', $combo->Get());
         $tpl->SetVariable('lbl_visible', Jaws::t('VISIBLE').':');

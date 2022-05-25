@@ -135,8 +135,8 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
             //show title
             $show_title = ($show_title == true) ? 1 : 0;
             $titleShowCombo =& Piwi::CreateWidget('Combo', 'show_title');
-            $titleShowCombo->AddOption(Jaws::t('YES'), '1');
-            $titleShowCombo->AddOption(Jaws::t('NO'),  '0');
+            $titleShowCombo->AddOption(Jaws::t('YESS'), '1');
+            $titleShowCombo->AddOption(Jaws::t('NOO'),  '0');
             $titleShowCombo->SetDefault($show_title);
             $titleShowCombo->setTitle(_t('STATICPAGE_SHOW_TITLE'));
             $vBox->Add($titleShowCombo);

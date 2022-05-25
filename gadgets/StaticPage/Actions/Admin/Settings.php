@@ -54,8 +54,8 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
         // Use multilanguage pages?
         $multiLanguage =& Piwi::CreateWidget('Combo', 'multilanguage');
         $multiLanguage->setTitle(_t('STATICPAGE_USE_MULTILANGUAGE'));
-        $multiLanguage->addOption(Jaws::t('YES'), 'yes');
-        $multiLanguage->addOption(Jaws::t('NO'), 'no');
+        $multiLanguage->addOption(Jaws::t('YESS'), 'yes');
+        $multiLanguage->addOption(Jaws::t('NOO'), 'no');
         $multiLanguage->setDefault($this->gadget->registry->fetch('multilanguage'));
         $fieldset->add($multiLanguage);
 
