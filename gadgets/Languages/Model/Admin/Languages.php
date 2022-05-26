@@ -55,22 +55,22 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                     if (Jaws_FileManagement_File::file_put_contents($lang_fname_file, $lang_name)) {
                         if ($lang_exist) {
                             $this->gadget->session->push(
-                                            _t('LANGUAGES_LANGUAGE_UPDATED', $lang_code),
+                                            $this::t('LANGUAGE_UPDATED', $lang_code),
                                             RESPONSE_NOTICE);
                         } else {
                             $this->gadget->session->push(
-                                            _t('LANGUAGES_LANGUAGE_ADDED', $lang_code),
+                                            $this::t('LANGUAGE_ADDED', $lang_code),
                                             RESPONSE_NOTICE);
                         }
                         return true;
                     } else {
                         if ($lang_exist) {
                             $this->gadget->session->push(
-                                            _t('LANGUAGES_LANGUAGE_UPDATE_ERROR', $lang_code),
+                                            $this::t('LANGUAGE_UPDATE_ERROR', $lang_code),
                                             RESPONSE_ERROR);
                         } else {
                             $this->gadget->session->push(
-                                            _t('LANGUAGES_LANGUAGE_ADD_ERROR', $lang_code),
+                                            $this::t('LANGUAGE_ADD_ERROR', $lang_code),
                                             RESPONSE_ERROR);
                         }
                         return false;
@@ -79,7 +79,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
             }
         }
 
-        $this->gadget->session->push(_t('LANGUAGES_NAME_ERROR'), RESPONSE_ERROR);
+        $this->gadget->session->push($this::t('NAME_ERROR'), RESPONSE_ERROR);
         return false;
     }
 
@@ -343,21 +343,21 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         }
 
         if (!$writeable) {
-            $this->gadget->session->push(_t('LANGUAGES_NOT_PERMISSION'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('NOT_PERMISSION'), RESPONSE_ERROR);
             return false;
         }
 
         if ($change_detected) {
             if (Jaws_FileManagement_File::file_put_contents($data_file, $tpl->Get())) {
-                $this->gadget->session->push(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('UPDATED', $module), RESPONSE_NOTICE);
                 return true;
             } else {
-                $this->gadget->session->push(_t('LANGUAGES_NOT_UPDATED', $module), RESPONSE_ERROR);
+                $this->gadget->session->push($this::t('NOT_UPDATED', $module), RESPONSE_ERROR);
                 return false;
             }
         } else {
             Jaws_FileManagement_File::delete($data_file);
-            $this->gadget->session->push(_t('LANGUAGES_UPDATED', $module), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('UPDATED', $module), RESPONSE_NOTICE);
             return true;
         }
     }

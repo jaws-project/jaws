@@ -19,31 +19,31 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
     function Languages()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmSaveData',     _t('LANGUAGES_SAVEDATA'));
-        $this->gadget->define('add_language_title',  _t('LANGUAGES_LANGUAGE_ADD'));
-        $this->gadget->define('save_language_title', _t('LANGUAGES_LANGUAGE_SAVE'));
+        $this->gadget->define('confirmSaveData',     $this::t('SAVEDATA'));
+        $this->gadget->define('add_language_title',  $this::t('LANGUAGE_ADD'));
+        $this->gadget->define('save_language_title', $this::t('LANGUAGE_SAVE'));
 
         $tpl = $this->gadget->template->loadAdmin('Languages.html');
         $tpl->SetBlock('Languages');
-        $tpl->SetVariable('language',   _t('LANGUAGES_LANGUAGE'));
-        $tpl->SetVariable('component',  _t('LANGUAGES_COMPONENT'));
-        $tpl->SetVariable('settings',   _t('LANGUAGES_SETTINGS'));
-        $tpl->SetVariable('from',       _t('LANGUAGES_FROM'));
-        $tpl->SetVariable('to',         _t('LANGUAGES_TO'));
+        $tpl->SetVariable('language',   $this::t('LANGUAGE'));
+        $tpl->SetVariable('component',  $this::t('COMPONENT'));
+        $tpl->SetVariable('settings',   $this::t('SETTINGS'));
+        $tpl->SetVariable('from',       $this::t('FROM'));
+        $tpl->SetVariable('to',         $this::t('TO'));
 
         $btnExport =& Piwi::CreateWidget('Button','btn_export',
-                                         _t('LANGUAGES_LANGUAGE_EXPORT'), STOCK_DOWN);
+                                         $this::t('LANGUAGE_EXPORT'), STOCK_DOWN);
         $btnExport->AddEvent(ON_CLICK, 'javascript:export_lang();');
         $tpl->SetVariable('btn_export', $btnExport->Get());
 
         $tpl->SetBlock('Languages/properties');
         $langId =& Piwi::CreateWidget('Entry', 'lang_code', '');
         $tpl->SetVariable('lang_code', $langId->Get());
-        $tpl->SetVariable('lbl_lang_code', _t('LANGUAGES_LANGUAGE_CODE'));
+        $tpl->SetVariable('lbl_lang_code', $this::t('LANGUAGE_CODE'));
 
         $langName =& Piwi::CreateWidget('Entry', 'lang_name', '');
         $tpl->SetVariable('lang_name', $langName->Get());
-        $tpl->SetVariable('lbl_lang_name', _t('LANGUAGES_LANGUAGE_NAME'));
+        $tpl->SetVariable('lbl_lang_name', $this::t('LANGUAGE_NAME'));
 
         if ($this->gadget->GetPermission('ModifyLanguageProperties')) {
             $btnLang =& Piwi::CreateWidget('Button','btn_lang', '', STOCK_SAVE);
@@ -58,7 +58,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetBlock('Languages/lang');
         $tpl->SetVariable('selected', '');
         $tpl->SetVariable('code', '');
-        $tpl->SetVariable('fullname', _t('LANGUAGES_LANGUAGE_NEW'));
+        $tpl->SetVariable('fullname', $this::t('LANGUAGE_NEW'));
         $tpl->ParseBlock('Languages/lang');
 
         foreach ($langs as $code => $fullname) {
@@ -117,7 +117,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         //checkbox_filter
         $check_filter =& Piwi::CreateWidget('CheckButtons', 'checkbox_filter');
         $check_filter->AddEvent(ON_CLICK, 'javascript:filterTranslated();');
-        $check_filter->AddOption(_t('LANGUAGES_NOT_SHOW_TRANSLATED'), '', 'checkbox_filter');
+        $check_filter->AddOption($this::t('NOT_SHOW_TRANSLATED'), '', 'checkbox_filter');
         $tpl->SetVariable('checkbox_filter', $check_filter->Get());
 
         $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel',
@@ -127,7 +127,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $save_btn =& Piwi::CreateWidget('Button','btn_save',
-                                        Jaws::t('SAVE', _t('LANGUAGES_CHANGES')), STOCK_SAVE);
+                                        Jaws::t('SAVE', $this::t('CHANGES')), STOCK_SAVE);
         $save_btn->AddEvent(ON_CLICK, 'javascript:save_lang_data();');
         $save_btn->SetStyle('visibility: hidden;');
         $tpl->SetVariable('save', $save_btn->Get());
