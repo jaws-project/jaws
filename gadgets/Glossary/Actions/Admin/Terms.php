@@ -42,8 +42,8 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
 
         // New Button
         if ($this->gadget->GetPermission('AddTerm')) {
-            $newButton =& Piwi::CreateWidget('Button', 'newButton', Jaws::t('CREATE', _t('GLOSSARY_TERM')), STOCK_NEW);
-            $newButton->AddEvent(ON_CLICK, 'createNewTerm(\'' . Jaws::t('CREATE', _t('GLOSSARY_TERM')) . '\');');
+            $newButton =& Piwi::CreateWidget('Button', 'newButton', Jaws::t('CREATE', $this::t('TERM')), STOCK_NEW);
+            $newButton->AddEvent(ON_CLICK, 'createNewTerm(\'' . Jaws::t('CREATE', $this::t('TERM')) . '\');');
             $newButton->SetID('newButton');
             $tpl->SetVariable('new_button', $newButton->Get());
         } else {
@@ -61,20 +61,20 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
         $title =& Piwi::CreateWidget('Entry', 'title', '');
         $title->SetID('term_title');
         $title->SetStyle('width: 256px;');
-        $tpl->SetVariable('term_title', _t('GLOSSARY_TERM'));
+        $tpl->SetVariable('term_title', $this::t('TERM'));
         $tpl->SetVariable('title_field', $title->Get());
 
         $fast_url =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $fast_url->SetID('fast_url');
         $fast_url->SetStyle('width: 256px;');
-        $tpl->SetVariable('lbl_fast_url', _t('GLOSSARY_FAST_URL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FAST_URL'));
         $tpl->SetVariable('fast_url', $fast_url->Get());
 
         $selected_content = isset($selected_content)? $selected_content : '';
         $contents =& $this->app->loadEditor('Glossary', 'term_contents', $selected_content);
         $contents->setID('term_contents');
         $contents->TextArea->SetStyle('width: 99%; height: 260px;');
-        $tpl->SetVariable('contents', _t('GLOSSARY_DESC'));
+        $tpl->SetVariable('contents', $this::t('DESC'));
         $tpl->SetVariable('contents_field', $contents->Get());
         $dispTitle =& Piwi::CreateWidget('CheckButtons', 'display_title');
 
@@ -89,7 +89,7 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
         $tpl->SetVariable('save', $save->Get());
 
         $del =& Piwi::CreateWidget('Button', 'delete', Jaws::t('DELETE'), STOCK_DELETE);
-        $del->AddEvent(ON_CLICK, 'if (confirm(\'' . _t('GLOSSARY_CONFIRM_DELETE_TERM') . '\')) { deleteTerm(); }');
+        $del->AddEvent(ON_CLICK, 'if (confirm(\'' . $this::t('CONFIRM_DELETE_TERM') . '\')) { deleteTerm(); }');
         $del->SetID('delButton');
         $tpl->SetVariable('delete', $del->Get());
 
@@ -105,11 +105,11 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
 
         // Messages
         $this->gadget->define('incompleteGlossaryFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('retrieving_message',       _t('GLOSSARY_MSGRETRIEVING'));
-        $this->gadget->define('updating_message',         _t('GLOSSARY_MSGUPDATING'));
-        $this->gadget->define('deleting_message',         _t('GLOSSARY_MSGDELETING'));
-        $this->gadget->define('saving_message',           _t('GLOSSARY_MSGSAVING'));
-        $this->gadget->define('sending_message',          _t('GLOSSARY_MSGSENDING'));
+        $this->gadget->define('retrieving_message',       $this::t('MSGRETRIEVING'));
+        $this->gadget->define('updating_message',         $this::t('MSGUPDATING'));
+        $this->gadget->define('deleting_message',         $this::t('MSGDELETING'));
+        $this->gadget->define('saving_message',           $this::t('MSGSAVING'));
+        $this->gadget->define('sending_message',          $this::t('MSGSENDING'));
 
         // Acl
         $this->gadget->define('aclAddTerm', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');

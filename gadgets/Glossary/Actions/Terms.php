@@ -118,7 +118,7 @@ class Glossary_Actions_Terms extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Term');
         $term = $model->GetRandomTerm();
         if (!Jaws_Error::IsError($term)) {
-            $tpl->SetVariable('title', _t('GLOSSARY_RANDOM_TERM'));
+            $tpl->SetVariable('title', $this::t('RANDOM_TERM'));
             $tpl->SetVariable('term', $term['term']);
             $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($term['description']));
         }
