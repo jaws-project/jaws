@@ -52,7 +52,7 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
         $gadgetLogo = $this->app->getSiteURL('/gadgets/' . $shouter . '/Resources/images/logo.png', false);
         $params['key']   = time();
         $params['name']  = 'Subscription';
-        $params['title'] = _t('SUBSCRIPTION_NOTIFICATION_TITLE');
+        $params['title'] = $this::t('NOTIFICATION_TITLE');
         $params['summary'] = $params['summary'];
         $params['verbose'] = $params['description'];
         //$params['url'] = isset($params['url']) ? $params['url'] : '';

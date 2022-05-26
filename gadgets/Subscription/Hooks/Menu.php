@@ -19,7 +19,7 @@ class Subscription_Hooks_Menu extends Jaws_Gadget_Hook
 
         $urls[] = array(
             'url'   => $this->gadget->urlMap('Subscription'),
-            'title' => _t('SUBSCRIPTION_SUBSCRIPTION')
+            'title' => $this::t('SUBSCRIPTION')
         );
 
         return $urls;

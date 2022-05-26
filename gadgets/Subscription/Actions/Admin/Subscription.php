@@ -65,7 +65,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $orderType->AddEvent(ON_CHANGE, "javascript:searchSubscription();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
-        $tpl->SetVariable('lbl_order_type', _t('SUBSCRIPTION_ORDER_TYPE'));
+        $tpl->SetVariable('lbl_order_type', $this::t('ORDER_TYPE'));
 
         //DataGrid
         $tpl->SetVariable('datagrid', $this->SubscriptionDataGrid());
@@ -107,22 +107,22 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $grid->useMultipleSelection();
         $grid->pageBy(15);
 
-        $column1 = Piwi::CreateWidget('Column', _t('SUBSCRIPTION_USER'), null, false);
+        $column1 = Piwi::CreateWidget('Column', $this::t('USER'), null, false);
         $column1->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column1);
 
         $column2 = Piwi::CreateWidget('Column', Jaws::t('EMAIL'), null, false);
         $grid->AddColumn($column2);
 
-        $column3 = Piwi::CreateWidget('Column', _t('SUBSCRIPTION_MOBILE_NUMBER'), null, false);
+        $column3 = Piwi::CreateWidget('Column', $this::t('MOBILE_NUMBER'), null, false);
         $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
-        $column4 = Piwi::CreateWidget('Column', _t('SUBSCRIPTION_GADGET'), null, false);
+        $column4 = Piwi::CreateWidget('Column', $this::t('GADGET'), null, false);
         $column4->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
-        $column5 = Piwi::CreateWidget('Column', _t('SUBSCRIPTION_ACTION'), null, false);
+        $column5 = Piwi::CreateWidget('Column', $this::t('ACTION'), null, false);
         $column5->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column5);
 
@@ -205,9 +205,9 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $model = $this->gadget->model->loadAdmin('Subscription');
         $res = $model->DeleteSubscriptions($subscriptionsID);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('SUBSCRIPTION_ERROR_CANT_DELETE_SUBSCRIPTIONS'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CANT_DELETE_SUBSCRIPTIONS'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('SUBSCRIPTION_SUBSCRIPTION_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('SUBSCRIPTION_DELETED'), RESPONSE_NOTICE);
         }
     }
 }

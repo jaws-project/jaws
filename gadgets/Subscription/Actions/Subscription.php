@@ -46,9 +46,9 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $tpl->SetVariable('title', _t('SUBSCRIPTION_SUBSCRIPTION'));
-        $tpl->SetVariable('web_push_subscription', _t('SUBSCRIPTION_SUBSCRIBE_BY_WEB_PUSH'));
-        $this->SetTitle(_t('SUBSCRIPTION_SUBSCRIPTION'));
+        $tpl->SetVariable('title', $this::t('SUBSCRIPTION'));
+        $tpl->SetVariable('web_push_subscription', $this::t('SUBSCRIBE_BY_WEB_PUSH'));
+        $this->SetTitle($this::t('SUBSCRIPTION'));
 
         if (empty($currentUser)) {
             $tpl->SetBlock('subscription/email');
@@ -58,7 +58,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
             $tpl->SetBlock('subscription/mobile');
             $tpl->SetVariable('mobile', $mobile);
-            $tpl->SetVariable('lbl_mobile', _t('SUBSCRIPTION_MOBILE_NUMBER'));
+            $tpl->SetVariable('lbl_mobile', $this::t('MOBILE_NUMBER'));
             $tpl->ParseBlock('subscription/mobile');
         }
 
@@ -68,7 +68,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             return $gadgets;
         }
 
-        $tpl->SetVariable('update', _t('SUBSCRIPTION_UPDATE'));
+        $tpl->SetVariable('update', $this::t('UPDATE'));
 
         // call gadget hook
         foreach ($gadgets as $gadget => $title) {
@@ -182,7 +182,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             );
         } else {
             $this->gadget->session->push(
-                _t('SUBSCRIPTION_SUBSCRIPTION_UPDATED'),
+                $this::t('SUBSCRIPTION_UPDATED'),
                 RESPONSE_NOTICE,
                 'Subscription'
             );
@@ -209,7 +209,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
-        $tpl->SetVariable('lbl_subscription', _t('SUBSCRIPTION_SUBSCRIPTION'));
+        $tpl->SetVariable('lbl_subscription', $this::t('SUBSCRIPTION'));
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
         // check user current subscription
@@ -219,10 +219,10 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
         if ($isSubscribed) {
             $tpl->SetVariable('is_subscribe', '0');
-            $tpl->SetVariable('lbl_action_type', _t('SUBSCRIPTION_ACTION_UNSUBSCRIBE'));
+            $tpl->SetVariable('lbl_action_type', $this::t('ACTION_UNSUBSCRIBE'));
         } else {
             $tpl->SetVariable('is_subscribe', '1');
-            $tpl->SetVariable('lbl_action_type', _t('SUBSCRIPTION_ACTION_SUBSCRIBE'));
+            $tpl->SetVariable('lbl_action_type', $this::t('ACTION_SUBSCRIBE'));
         }
 
         if (empty($currentUser)) {
@@ -275,7 +275,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             );
         } else {
             $this->gadget->session->push(
-                _t('SUBSCRIPTION_SUBSCRIPTION_UPDATED'),
+                $this::t('SUBSCRIPTION_UPDATED'),
                 RESPONSE_NOTICE,
                 'Subscription'
             );
