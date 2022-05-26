@@ -96,7 +96,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                     }
                 }
             }
-            $tpl->SetVariable("date",_t("GLOBAL_DATE"));
+            $tpl->SetVariable('date', Jaws::t('DATE'));
             $datecombo->SetDefault(isset($post['date']) ? $post['date'] : null);
             $datecombo->AddEvent (new JSEvent (ON_CHANGE, "selectAllAlbums(); this.form.submit();"));
             $tpl->SetVariable("date_combo",$datecombo->Get());
