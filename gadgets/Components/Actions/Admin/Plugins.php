@@ -22,9 +22,9 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManagePlugins');
         $this->AjaxMe('script.js');
 
-        $this->gadget->define('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
-        $this->gadget->define('lbl_install', _t('COMPONENTS_INSTALL'));
-        $this->gadget->define('confirmUninstallPlugin', _t('COMPONENTS_PLUGINS_CONFIRM_UNINSTALL'));
+        $this->gadget->define('lbl_uninstall', $this::t('UNINSTALL'));
+        $this->gadget->define('lbl_install', $this::t('INSTALL'));
+        $this->gadget->define('confirmUninstallPlugin', $this::t('PLUGINS_CONFIRM_UNINSTALL'));
 
         $tpl = $this->gadget->template->loadAdmin('Plugins.html');
         $tpl->SetBlock('components');
@@ -32,14 +32,14 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
         $tpl->SetVariable('summary', $this->PluginsSummary());
 
-        $tpl->SetVariable('lbl_installed', _t('COMPONENTS_PLUGINS_INSTALLED'));
-        $tpl->SetVariable('installed_desc', _t('COMPONENTS_PLUGINS_INSTALLED_DESC'));
-        $tpl->SetVariable('lbl_notinstalled', _t('COMPONENTS_PLUGINS_NOTINSTALLED'));
-        $tpl->SetVariable('notinstalled_desc', _t('COMPONENTS_PLUGINS_NOTINSTALLED_DESC'));
-        $tpl->SetVariable('lbl_info', _t('COMPONENTS_INFO'));
-        $tpl->SetVariable('lbl_usage', _t('COMPONENTS_PLUGINS_USAGE'));
-        $tpl->SetVariable('lbl_registry', _t('COMPONENTS_REGISTRY'));
-        $tpl->SetVariable('lbl_acl', _t('COMPONENTS_ACL'));
+        $tpl->SetVariable('lbl_installed', $this::t('PLUGINS_INSTALLED'));
+        $tpl->SetVariable('installed_desc', $this::t('PLUGINS_INSTALLED_DESC'));
+        $tpl->SetVariable('lbl_notinstalled', $this::t('PLUGINS_NOTINSTALLED'));
+        $tpl->SetVariable('notinstalled_desc', $this::t('PLUGINS_NOTINSTALLED_DESC'));
+        $tpl->SetVariable('lbl_info', $this::t('INFO'));
+        $tpl->SetVariable('lbl_usage', $this::t('PLUGINS_USAGE'));
+        $tpl->SetVariable('lbl_registry', $this::t('REGISTRY'));
+        $tpl->SetVariable('lbl_acl', $this::t('ACL'));
 
         $button =& Piwi::CreateWidget('Button', 'btn_close', 'X ');
         $button->AddEvent(ON_CLICK, 'javascript:closeUI();');
@@ -59,10 +59,10 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
     {
         $tpl = $this->gadget->template->loadAdmin('PluginsSummary.html');
         $tpl->SetBlock('summary');
-        $tpl->SetVariable('lbl_summary', _t('COMPONENTS_SUMMARY'));
-        $tpl->SetVariable('lbl_installed', _t('COMPONENTS_PLUGINS_INSTALLED').':');
-        $tpl->SetVariable('lbl_notinstalled', _t('COMPONENTS_PLUGINS_NOTINSTALLED').':');
-        $tpl->SetVariable('lbl_total', _t('COMPONENTS_PLUGINS_TOTAL').':');
+        $tpl->SetVariable('lbl_summary', $this::t('SUMMARY'));
+        $tpl->SetVariable('lbl_installed', $this::t('PLUGINS_INSTALLED').':');
+        $tpl->SetVariable('lbl_notinstalled', $this::t('PLUGINS_NOTINSTALLED').':');
+        $tpl->SetVariable('lbl_total', $this::t('PLUGINS_TOTAL').':');
         $tpl->ParseBlock('summary');
         return $tpl->Get();
     }
@@ -84,17 +84,17 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Plugin.html');
         $tpl->SetBlock('info');
 
-        $tpl->SetVariable('lbl_version',   _t('COMPONENTS_VERSION').':');
-        $tpl->SetVariable('lbl_example',   _t('COMPONENTS_PLUGINS_USAGE').':');
-        $tpl->SetVariable('lbl_accesskey', _t('COMPONENTS_PLUGINS_ACCESSKEY').':');
-        $tpl->SetVariable('lbl_friendly',  _t('COMPONENTS_PLUGINS_FRIENDLY').':');
+        $tpl->SetVariable('lbl_version',   $this::t('VERSION').':');
+        $tpl->SetVariable('lbl_example',   $this::t('PLUGINS_USAGE').':');
+        $tpl->SetVariable('lbl_accesskey', $this::t('PLUGINS_ACCESSKEY').':');
+        $tpl->SetVariable('lbl_friendly',  $this::t('PLUGINS_FRIENDLY').':');
         $tpl->SetVariable(
             'accesskey',
-            method_exists($objPlugin, 'GetAccessKey')? $objPlugin->GetAccessKey() : _t('COMPONENTS_PLUGINS_NO_ACCESSKEY')
+            method_exists($objPlugin, 'GetAccessKey')? $objPlugin->GetAccessKey() : $this::t('PLUGINS_NO_ACCESSKEY')
         );
         $tpl->SetVariable(
             'friendly',
-            $objPlugin->friendly? _t('COMPONENTS_PLUGINS_FRIENDLY') : _t('COMPONENTS_PLUGINS_NOT_FRIENDLY')
+            $objPlugin->friendly? $this::t('PLUGINS_FRIENDLY') : $this::t('PLUGINS_NOT_FRIENDLY')
         );
         $tpl->SetVariable(
             'example',
@@ -102,12 +102,12 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         );
         $tpl->SetVariable('version', $objPlugin->version);
 
-        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
+        $button =& Piwi::CreateWidget('Button', 'btn_install', $this::t('INSTALL'), STOCK_SAVE);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('install', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
+        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', $this::t('UNINSTALL'), STOCK_DELETE);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('uninstall', $button->Get());
@@ -127,10 +127,10 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('PluginUsage.html');
         $tpl->SetBlock('usage');
 
-        $tpl->SetVariable('decription', _t('COMPONENTS_PLUGINS_USAGE_DESC'));
-        $tpl->SetVariable('lbl_gadget', _t('COMPONENTS_PLUGINS_USAGE_GADGET'));
-        $tpl->SetVariable('lbl_backend', _t('COMPONENTS_PLUGINS_USAGE_BACKEND'));
-        $tpl->SetVariable('lbl_frontend', _t('COMPONENTS_PLUGINS_USAGE_FRONTEND'));
+        $tpl->SetVariable('decription', $this::t('PLUGINS_USAGE_DESC'));
+        $tpl->SetVariable('lbl_gadget', $this::t('PLUGINS_USAGE_GADGET'));
+        $tpl->SetVariable('lbl_backend', $this::t('PLUGINS_USAGE_BACKEND'));
+        $tpl->SetVariable('lbl_frontend', $this::t('PLUGINS_USAGE_FRONTEND'));
 
         $check =& Piwi::CreateWidget('CheckButtons', 'all');
         $check->AddOption('', 'backend');

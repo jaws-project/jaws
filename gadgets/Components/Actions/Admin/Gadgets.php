@@ -22,12 +22,12 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
-        $this->gadget->define('lbl_update', _t('COMPONENTS_UPDATE'));
-        $this->gadget->define('lbl_enable', _t('COMPONENTS_ENABLE'));
-        $this->gadget->define('lbl_install', _t('COMPONENTS_INSTALL'));
-        $this->gadget->define('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
-        $this->gadget->define('confirmUninstallGadget', _t('COMPONENTS_GADGETS_CONFIRM_UNINSTALL'));
-        $this->gadget->define('confirmDisableGadget', _t('COMPONENTS_GADGETS_CONFIRM_DISABLE'));
+        $this->gadget->define('lbl_update', $this::t('UPDATE'));
+        $this->gadget->define('lbl_enable', $this::t('ENABLE'));
+        $this->gadget->define('lbl_install', $this::t('INSTALL'));
+        $this->gadget->define('lbl_uninstall', $this::t('UNINSTALL'));
+        $this->gadget->define('confirmUninstallGadget', $this::t('GADGETS_CONFIRM_UNINSTALL'));
+        $this->gadget->define('confirmDisableGadget', $this::t('GADGETS_CONFIRM_DISABLE'));
 
         $tpl = $this->gadget->template->loadAdmin('Gadgets.html');
         $tpl->SetBlock('components');
@@ -35,17 +35,17 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
         $tpl->SetVariable('summary', $this->GadgetsSummary());
 
-        $tpl->SetVariable('lbl_outdated', _t('COMPONENTS_GADGETS_OUTDATED'));
-        $tpl->SetVariable('outdated_desc', _t('COMPONENTS_GADGETS_OUTDATED_DESC'));
-        $tpl->SetVariable('lbl_notinstalled', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
-        $tpl->SetVariable('notinstalled_desc', _t('COMPONENTS_GADGETS_NOTINSTALLED_DESC'));
-        $tpl->SetVariable('lbl_installed', _t('COMPONENTS_GADGETS_INSTALLED'));
-        $tpl->SetVariable('installed_desc', _t('COMPONENTS_GADGETS_INSTALLED_DESC'));
-        $tpl->SetVariable('lbl_core', _t('COMPONENTS_GADGETS_CORE'));
-        $tpl->SetVariable('core_desc', _t('COMPONENTS_GADGETS_CORE_DESC'));
-        $tpl->SetVariable('lbl_info', _t('COMPONENTS_INFO'));
-        $tpl->SetVariable('lbl_registry', _t('COMPONENTS_REGISTRY'));
-        $tpl->SetVariable('lbl_acl', _t('COMPONENTS_ACL'));
+        $tpl->SetVariable('lbl_outdated', $this::t('GADGETS_OUTDATED'));
+        $tpl->SetVariable('outdated_desc', $this::t('GADGETS_OUTDATED_DESC'));
+        $tpl->SetVariable('lbl_notinstalled', $this::t('GADGETS_NOTINSTALLED'));
+        $tpl->SetVariable('notinstalled_desc', $this::t('GADGETS_NOTINSTALLED_DESC'));
+        $tpl->SetVariable('lbl_installed', $this::t('GADGETS_INSTALLED'));
+        $tpl->SetVariable('installed_desc', $this::t('GADGETS_INSTALLED_DESC'));
+        $tpl->SetVariable('lbl_core', $this::t('GADGETS_CORE'));
+        $tpl->SetVariable('core_desc', $this::t('GADGETS_CORE_DESC'));
+        $tpl->SetVariable('lbl_info', $this::t('INFO'));
+        $tpl->SetVariable('lbl_registry', $this::t('REGISTRY'));
+        $tpl->SetVariable('lbl_acl', $this::t('ACL'));
 
         $button =& Piwi::CreateWidget('Button', 'btn_close', 'X ');
         $button->AddEvent(ON_CLICK, 'javascript:closeUI();');
@@ -65,13 +65,13 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
     {
         $tpl = $this->gadget->template->loadAdmin('GadgetsSummary.html');
         $tpl->SetBlock('summary');
-        $tpl->SetVariable('lbl_summary', _t('COMPONENTS_SUMMARY'));
-        $tpl->SetVariable('lbl_outdated', _t('COMPONENTS_GADGETS_OUTDATED').':');
-        $tpl->SetVariable('lbl_disabled', _t('COMPONENTS_GADGETS_DISABLED').':');
-        $tpl->SetVariable('lbl_installed', _t('COMPONENTS_GADGETS_INSTALLED').':');
-        $tpl->SetVariable('lbl_notinstalled', _t('COMPONENTS_GADGETS_NOTINSTALLED').':');
-        $tpl->SetVariable('lbl_core', _t('COMPONENTS_GADGETS_CORE').':');
-        $tpl->SetVariable('lbl_total', _t('COMPONENTS_GADGETS_TOTAL').':');
+        $tpl->SetVariable('lbl_summary', $this::t('SUMMARY'));
+        $tpl->SetVariable('lbl_outdated', $this::t('GADGETS_OUTDATED').':');
+        $tpl->SetVariable('lbl_disabled', $this::t('GADGETS_DISABLED').':');
+        $tpl->SetVariable('lbl_installed', $this::t('GADGETS_INSTALLED').':');
+        $tpl->SetVariable('lbl_notinstalled', $this::t('GADGETS_NOTINSTALLED').':');
+        $tpl->SetVariable('lbl_core', $this::t('GADGETS_CORE').':');
+        $tpl->SetVariable('lbl_total', $this::t('GADGETS_TOTAL').':');
         $tpl->ParseBlock('summary');
         return $tpl->Get();
     }
@@ -100,15 +100,15 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $tpl->SetVariable('lbl_version', Jaws::t('VERSION').':');
         $tpl->SetVariable('version', $objGadget->version);
 
-        $tpl->SetVariable('lbl_jaws_version', _t('COMPONENTS_JAWS_VERSION').':');
+        $tpl->SetVariable('lbl_jaws_version', $this::t('JAWS_VERSION').':');
         $tpl->SetVariable('jaws_version', $objGadget->GetRequiredJawsVersion());
 
-        $tpl->SetVariable('lbl_section', _t('COMPONENTS_GADGETS_SECTION').':');
+        $tpl->SetVariable('lbl_section', $this::t('GADGETS_SECTION').':');
         $tpl->SetVariable('section', $objGadget->GetSection());
 
         // Requires
         $tpl->SetBlock('info/requires');
-        $tpl->SetVariable('lbl_requires', _t('COMPONENTS_GADGETS_DEPENDENCIES').':');
+        $tpl->SetVariable('lbl_requires', $this::t('GADGETS_DEPENDENCIES').':');
         foreach ($objGadget->requirement as $rqGadget) {
             $tpl->SetBlock('info/requires/item');
             $tpl->SetVariable('gadget', $rqGadget);
@@ -118,7 +118,7 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
 
         // ACL Rules
         $tpl->SetBlock('info/acls');
-        $tpl->SetVariable('lbl_acl_rules', _t('COMPONENTS_GADGETS_ACL_RULES').':');
+        $tpl->SetVariable('lbl_acl_rules', $this::t('GADGETS_ACL_RULES').':');
         $acls = $this->app->acl->fetchAll($gadget);
         if (!empty($acls)) {
             foreach ($acls as $key_name => $acl) {
@@ -131,27 +131,27 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         }
         $tpl->ParseBlock('info/acls');
 
-        $button =& Piwi::CreateWidget('Button', 'btn_update', _t('COMPONENTS_UPDATE'), STOCK_REFRESH);
+        $button =& Piwi::CreateWidget('Button', 'btn_update', $this::t('UPDATE'), STOCK_REFRESH);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('update', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_install', _t('COMPONENTS_INSTALL'), STOCK_SAVE);
+        $button =& Piwi::CreateWidget('Button', 'btn_install', $this::t('INSTALL'), STOCK_SAVE);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('install', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', _t('COMPONENTS_UNINSTALL'), STOCK_DELETE);
+        $button =& Piwi::CreateWidget('Button', 'btn_uninstall', $this::t('UNINSTALL'), STOCK_DELETE);
         $button->AddEvent(ON_CLICK, 'javascript:setupComponent();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('uninstall', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_enable', _t('COMPONENTS_ENABLE'), STOCK_ADD);
+        $button =& Piwi::CreateWidget('Button', 'btn_enable', $this::t('ENABLE'), STOCK_ADD);
         $button->AddEvent(ON_CLICK, 'javascript:enableGadget();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('enable', $button->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_disable', _t('COMPONENTS_DISABLE'), STOCK_REMOVE);
+        $button =& Piwi::CreateWidget('Button', 'btn_disable', $this::t('DISABLE'), STOCK_REMOVE);
         $button->AddEvent(ON_CLICK, 'javascript:disableGadget();');
         $button->SetStyle('display:none');
         $tpl->SetVariable('disable', $button->Get());

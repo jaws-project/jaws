@@ -30,7 +30,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
             $this->app->session->pushResponse(
-                _t('COMPONENTS_GADGETS_INSTALL_FAILURE', $gadget),
+                $this::t('GADGETS_INSTALL_FAILURE', $gadget),
                 RESPONSE_ERROR
             );
         } else {
@@ -43,7 +43,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
                 );
             } else {
                 $this->app->session->pushResponse(
-                    _t('COMPONENTS_GADGETS_INSTALL_OK', $objGadget->title),
+                    $this::t('GADGETS_INSTALL_OK', $objGadget->title),
                     RESPONSE_NOTICE
                 );
             }
@@ -77,10 +77,10 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($return)) {
                 $this->gadget->session->push($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $this->gadget->session->push(_t('COMPONENTS_GADGETS_UPDATE_OK', $gadget), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('GADGETS_UPDATE_OK', $gadget), RESPONSE_NOTICE);
             }
         } else {
-            $this->gadget->session->push(_t('COMPONENTS_GADGETS_UPDATE_NO_NEED', $gadget), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GADGETS_UPDATE_NO_NEED', $gadget), RESPONSE_ERROR);
         }
 
         if ($redirect) {
@@ -113,7 +113,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($return)) {
                 $this->gadget->session->push($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $this->gadget->session->push(_t('COMPONENTS_GADGETS_UNINSTALL_OK', $objGadget->title), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('GADGETS_UNINSTALL_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
@@ -147,7 +147,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($return)) {
                 $this->gadget->session->push($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $this->gadget->session->push(_t('COMPONENTS_GADGETS_ENABLE_OK', $objGadget->title), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('GADGETS_ENABLE_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
@@ -181,7 +181,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($return)) {
                 $this->gadget->session->push($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $this->gadget->session->push(_t('COMPONENTS_GADGETS_DISABLE_OK', $objGadget->title), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('GADGETS_DISABLE_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
