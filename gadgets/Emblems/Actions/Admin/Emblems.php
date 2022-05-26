@@ -47,9 +47,9 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $type =& Piwi::CreateWidget('Combo', 'type');
         $type->SetTitle($this::t('TYPE'));
         for ($i = 1; $i <= 15; $i++) {
-            $type_str = "EMBLEMS_TYPE_$i";
-            if (_t($type_str) != $type_str) {
-                $type->AddOption(_t($type_str), $i);
+            $type_str = "TYPE_$i";
+            if ($this::t($type_str) != $type_str) {
+                $type->AddOption($this::t($type_str), $i);
             }
         }
         $fs->Add($type);
@@ -129,9 +129,9 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
 
         $types = array();
         for ($i = 1; $i <= 15; $i++) {
-            $type_str = "EMBLEMS_TYPE_$i";
-            if (_t($type_str) != $type_str) {
-                $types[$i] = _t($type_str);
+            $type_str = "TYPE_$i";
+            if ($this::t($type_str) != $type_str) {
+                $types[$i] = $this::t($type_str);
             }
         }
         $dataURL = $this->app->getDataURL('emblems/');
