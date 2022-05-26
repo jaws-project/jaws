@@ -24,7 +24,7 @@ class Webcam_Actions_Webcam extends Jaws_Gadget_Action
         $webcams = $model->GetWebcams();
         if (!Jaws_Error::IsError($webcams)) {
             $tpl->SetBlock('webcam');
-            $tpl->SetVariable('title', _t('WEBCAM_WEBCAMS'));
+            $tpl->SetVariable('title', $this::t('WEBCAMS'));
             foreach ($webcams as $webcam) {
                 $tpl->SetBlock('webcam/item');
                 $tpl->SetVariable('url',     $webcam['url']);
@@ -52,7 +52,7 @@ class Webcam_Actions_Webcam extends Jaws_Gadget_Action
         $webcam = $model->GetRandomWebCam();
         if (!Jaws_Error::IsError($webcam)) {
             $tpl->SetBlock('webcam');
-            $tpl->SetVariable('title', _t('WEBCAM_WEBCAMS'));
+            $tpl->SetVariable('title', $this::t('WEBCAMS'));
             $tpl->SetBlock('webcam/item');
             $tpl->SetVariable('url',     $webcam['url']);
             $tpl->SetVariable('title',   $webcam['title']);

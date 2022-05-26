@@ -56,7 +56,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             }
             if ($this->gadget->GetPermission('DeleteWebcam')) {
                 $link =& Piwi::CreateWidget('Link', Jaws::t('DELETE'),
-                    "javascript:if (confirm('"._t('WEBCAM_CONFIRM_DELETE_WEBCAM')."')) ".
+                    "javascript:if (confirm('".$this::t('CONFIRM_DELETE_WEBCAM')."')) ".
                     "deleteWebcam('".$webcam['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
@@ -121,7 +121,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $fieldset_webcam->Add($urlentry);
 
             $refresh =& Piwi::CreateWidget('SpinButton', 'refresh', 60, '', 5);
-            $refresh->SetTitle(_t('WEBCAM_REFRESH_TIME'));
+            $refresh->SetTitle($this::t('REFRESH_TIME'));
             $refresh->SetDefault(10);
             $fieldset_webcam->Add($refresh);
 
@@ -154,7 +154,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
 
 
             $limitcombo =& Piwi::CreateWidget('Combo', 'limit_random');
-            $limitcombo->SetTitle(_t('WEBCAM_RANDOM_LIMIT'));
+            $limitcombo->SetTitle($this::t('RANDOM_LIMIT'));
             for ($i = 1; $i <= 10; $i++) {
                 $limitcombo->AddOption($i, $i);
             }

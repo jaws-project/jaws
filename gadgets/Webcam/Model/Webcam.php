@@ -32,7 +32,7 @@ class Webcam_Model_Webcam extends Jaws_Gadget_Model
             return $row;
         }
 
-        return new Jaws_Error(_t('WEBCAM_ERROR_WEBCAM_DOES_NOT_EXISTS'));
+        return new Jaws_Error($this::t('ERROR_WEBCAM_DOES_NOT_EXISTS'));
     }
 
     /**
@@ -55,7 +55,7 @@ class Webcam_Model_Webcam extends Jaws_Gadget_Model
             return $row;
         }
 
-        return new Jaws_Error(_t('WEBCAM_ERROR_WEBCAM_NOWEBCAMS'));
+        return new Jaws_Error($this::t('ERROR_WEBCAM_NOWEBCAMS'));
     }
 
     /**
