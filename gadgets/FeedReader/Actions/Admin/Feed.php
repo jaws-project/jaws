@@ -125,32 +125,32 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $cachecombo->AddOption(Jaws::t('DATE_DAYS',    1),  86400);
         $cachecombo->AddOption(Jaws::t('DATE_WEEKS',   1), 604800);
         $cachecombo->SetDefault(3600);
-        $tpl->SetVariable('lbl_cache_time', _t('FEEDREADER_CACHE_TIME'));
+        $tpl->SetVariable('lbl_cache_time', $this::t('CACHE_TIME'));
         $tpl->SetVariable('cache_time', $cachecombo->Get());
 
         $viewType =& Piwi::CreateWidget('Combo', 'view_type');
         $viewType->SetID('view_type');
         $viewType->setStyle('width: 128px;');
-        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_SIMPLE'),        0);
-        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_UP'),    1);
-        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_DOWN'),  2);
-        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_LEFT'),  3);
-        $viewType->AddOption(_t('FEEDREADER_VIEW_TYPE_MARQUEE_RIGHT'), 4);
-        $tpl->SetVariable('lbl_view_type', _t('FEEDREADER_VIEW_TYPE'));
+        $viewType->AddOption($this::t('VIEW_TYPE_SIMPLE'),        0);
+        $viewType->AddOption($this::t('VIEW_TYPE_MARQUEE_UP'),    1);
+        $viewType->AddOption($this::t('VIEW_TYPE_MARQUEE_DOWN'),  2);
+        $viewType->AddOption($this::t('VIEW_TYPE_MARQUEE_LEFT'),  3);
+        $viewType->AddOption($this::t('VIEW_TYPE_MARQUEE_RIGHT'), 4);
+        $tpl->SetVariable('lbl_view_type', $this::t('VIEW_TYPE'));
         $tpl->SetVariable('view_type', $viewType->Get());
 
         $titleViewcombo =& Piwi::CreateWidget('Combo', 'title_view');
         $titleViewcombo->SetID('title_view');
         $titleViewcombo->setStyle('width: 128px;');
-        $titleViewcombo->AddOption(_t('FEEDREADER_TITLE_VIEW_DISABLE'),  0);
-        $titleViewcombo->AddOption(_t('FEEDREADER_TITLE_VIEW_INTERNAL'), 1);
-        $titleViewcombo->AddOption(_t('FEEDREADER_TITLE_VIEW_EXTERNAL'), 2);
-        $tpl->SetVariable('lbl_title_view', _t('FEEDREADER_TITLE_VIEW'));
+        $titleViewcombo->AddOption($this::t('TITLE_VIEW_DISABLE'),  0);
+        $titleViewcombo->AddOption($this::t('TITLE_VIEW_INTERNAL'), 1);
+        $titleViewcombo->AddOption($this::t('TITLE_VIEW_EXTERNAL'), 2);
+        $tpl->SetVariable('lbl_title_view', $this::t('TITLE_VIEW'));
         $tpl->SetVariable('title_view', $titleViewcombo->Get());
 
         $countentry =& Piwi::CreateWidget('Entry', 'count_entry', '');
         $countentry->setStyle('width: 120px;');
-        $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
+        $tpl->SetVariable('lbl_count_entry', $this::t('SITE_COUNT_ENTRY'));
         $tpl->SetVariable('count_entry', $countentry->Get());
 
         $alias =& Piwi::CreateWidget('Entry', 'alias', '');
@@ -177,8 +177,8 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $btnsave->AddEvent(ON_CLICK, 'updateFeed();');
         $tpl->SetVariable('btn_save', $btnsave->Get());
 
-        $this->gadget->define('incompleteFeedFields', _t('FEEDREADER_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmFeedDelete',    _t('FEEDREADER_CONFIRM_DELETE_FEED'));
+        $this->gadget->define('incompleteFeedFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmFeedDelete',    $this::t('CONFIRM_DELETE_FEED'));
 
         $tpl->ParseBlock('feedreader');
 

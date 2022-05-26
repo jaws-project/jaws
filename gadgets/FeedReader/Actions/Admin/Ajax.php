@@ -60,7 +60,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('FEEDREADER_SITE_ADDED'),
+            $this::t('SITE_ADDED'),
             RESPONSE_NOTICE
         );
     }
@@ -85,7 +85,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('FEEDREADER_SITE_UPDATED'),
+            $this::t('SITE_UPDATED'),
             RESPONSE_NOTICE
         );
     }
@@ -105,7 +105,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('FEEDREADER_SITE_DELETED'),
+            $this::t('SITE_DELETED'),
             RESPONSE_NOTICE
         );
     }

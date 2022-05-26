@@ -22,10 +22,10 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
     {
         $result = array();
         $result[] = array(
-            'title' => _t('FEEDREADER_SHOW_FEEDS'),
+            'title' => $this::t('SHOW_FEEDS'),
             'value' => array(
-                0 => _t('FEEDREADER_GLOBAL_FEEDS'),
-                1 => _t('FEEDREADER_USER_FEEDS'),
+                0 => $this::t('GLOBAL_FEEDS'),
+                1 => $this::t('USER_FEEDS'),
             )
         );
 
@@ -50,7 +50,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('FEEDREADER_FEED'),
+                'title' => $this::t('FEED'),
                 'value' => $psites
             );
 
@@ -82,7 +82,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('FEEDREADER_FEED'),
+                'title' => $this::t('FEED'),
                 'value' => $psites
             );
         }
@@ -164,7 +164,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $res = $parser->fetch(Jaws_XSS::defilter($site['url']));
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['log']->Log(JAWS_ERROR, '['.$this->gadget->title.']: ',
-                _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::refilter($site['url'])), '');
+                $this::t('ERROR_CANT_FETCH', Jaws_XSS::refilter($site['url'])), '');
         }
 
         if (!isset($parser->feed)) {
@@ -174,7 +174,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $block = ($site['view_type']==0)? 'simple' : 'marquee';
         $tpl->SetBlock("feedreader/$block");
         $tpl->SetVariable('alias', $site['alias']);
-        $tpl->SetVariable('title', _t('FEEDREADER_ACTION_TITLE'));
+        $tpl->SetVariable('title', $this::t('ACTION_TITLE'));
 
         switch ($site['title_view']) {
             case 1:
@@ -320,13 +320,13 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('UserFeeds.html');
         $tpl->SetBlock('UserFeeds');
-        $tpl->SetVariable('title', _t('FEEDREADER_USER_FEEDS'));
+        $tpl->SetVariable('title', $this::t('USER_FEEDS'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
         $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
         $tpl->SetVariable('lbl_url', Jaws::t('URL'));
 
-        $tpl->SetVariable('lbl_cache_time', _t('FEEDREADER_CACHE_TIME'));
+        $tpl->SetVariable('lbl_cache_time', $this::t('CACHE_TIME'));
         $tpl->SetVariable('lbl_disable', Jaws::t('DISABLE'));
         $tpl->SetVariable('lbl_minutes_10', Jaws::t('DATE_MINUTES', 10));
         $tpl->SetVariable('lbl_minutes_30', Jaws::t('DATE_MINUTES', 30));
@@ -336,19 +336,19 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_days_1', Jaws::t('DATE_DAYS', 1));
         $tpl->SetVariable('lbl_weeks_1', Jaws::t('DATE_WEEKS', 1));
 
-        $tpl->SetVariable('lbl_view_type', _t('FEEDREADER_VIEW_TYPE'));
-        $tpl->SetVariable('lbl_view_type_simple', _t('FEEDREADER_VIEW_TYPE_SIMPLE'));
-        $tpl->SetVariable('lbl_view_type_up', _t('FEEDREADER_VIEW_TYPE_MARQUEE_UP'));
-        $tpl->SetVariable('lbl_view_type_down', _t('FEEDREADER_VIEW_TYPE_MARQUEE_DOWN'));
-        $tpl->SetVariable('lbl_view_type_left', _t('FEEDREADER_VIEW_TYPE_MARQUEE_LEFT'));
-        $tpl->SetVariable('lbl_view_type_right', _t('FEEDREADER_VIEW_TYPE_MARQUEE_RIGHT'));
+        $tpl->SetVariable('lbl_view_type', $this::t('VIEW_TYPE'));
+        $tpl->SetVariable('lbl_view_type_simple', $this::t('VIEW_TYPE_SIMPLE'));
+        $tpl->SetVariable('lbl_view_type_up', $this::t('VIEW_TYPE_MARQUEE_UP'));
+        $tpl->SetVariable('lbl_view_type_down', $this::t('VIEW_TYPE_MARQUEE_DOWN'));
+        $tpl->SetVariable('lbl_view_type_left', $this::t('VIEW_TYPE_MARQUEE_LEFT'));
+        $tpl->SetVariable('lbl_view_type_right', $this::t('VIEW_TYPE_MARQUEE_RIGHT'));
 
-        $tpl->SetVariable('lbl_title_view', _t('FEEDREADER_TITLE_VIEW'));
-        $tpl->SetVariable('lbl_title_view_disable', _t('FEEDREADER_TITLE_VIEW_DISABLE'));
-        $tpl->SetVariable('lbl_title_view_internal', _t('FEEDREADER_TITLE_VIEW_INTERNAL'));
-        $tpl->SetVariable('lbl_title_view_external', _t('FEEDREADER_TITLE_VIEW_EXTERNAL'));
+        $tpl->SetVariable('lbl_title_view', $this::t('TITLE_VIEW'));
+        $tpl->SetVariable('lbl_title_view_disable', $this::t('TITLE_VIEW_DISABLE'));
+        $tpl->SetVariable('lbl_title_view_internal', $this::t('TITLE_VIEW_INTERNAL'));
+        $tpl->SetVariable('lbl_title_view_external', $this::t('TITLE_VIEW_EXTERNAL'));
 
-        $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
+        $tpl->SetVariable('lbl_count_entry', $this::t('SITE_COUNT_ENTRY'));
         $tpl->SetVariable('lbl_alias', Jaws::t('ALIAS'));
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
@@ -433,9 +433,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $data['user'] = (int)$this->app->session->user->id;
         $res = $model->InsertUserFeed($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FEEDREADER_ERROR_SITE_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_SITE_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FEEDREADER_SITE_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('SITE_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -456,9 +456,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $user = (int)$this->app->session->user->id;
         $res = $model->UpdateUserFeed($post['id'], $post['data'], $user);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FEEDREADER_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FEEDREADER_SITE_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('SITE_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -480,9 +480,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $user = (int)$this->app->session->user->id;
         $res = $model->DeleteUserFeed($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FEEDREADER_SITE_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('SITE_DELETED'), RESPONSE_NOTICE);
         }
     }
 
