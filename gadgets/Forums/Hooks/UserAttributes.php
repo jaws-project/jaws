@@ -21,7 +21,7 @@ class Forums_Hooks_UserAttributes extends Jaws_Gadget_Hook
         $attrs = array();
         $attrs['level'] = array(
             'type'  => 'number',
-            'title' => _t('FORUMS_USERS_ATTRIBUTES_LEVEL'),
+            'title' => $this::t('USERS_ATTRIBUTES_LEVEL'),
             'value' => 1,
             'ltr' => true,
         );

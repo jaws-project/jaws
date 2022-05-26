@@ -100,7 +100,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('FORUMS_NOTICE_FORUM_CREATED'),
+            $this::t('NOTICE_FORUM_CREATED'),
             RESPONSE_NOTICE,
             $res
         );
@@ -135,7 +135,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('FORUMS_NOTICE_FORUM_UPDATED'),
+            $this::t('NOTICE_FORUM_UPDATED'),
             RESPONSE_NOTICE
         );
     }
@@ -157,12 +157,12 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } elseif ($res) {
             return $this->gadget->session->response(
-                _t('FORUMS_NOTICE_FORUM_DELETED'),
+                $this::t('NOTICE_FORUM_DELETED'),
                 RESPONSE_NOTICE
             );
         } else {
             return $this->gadget->session->response(
-                _t('FORUMS_ERROR_FORUM_NOT_EMPTY'),
+                $this::t('ERROR_FORUM_NOT_EMPTY'),
                 RESPONSE_ERROR
             );
         }
@@ -190,7 +190,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('FORUMS_NOTICE_GROUP_CREATED'),
+            $this::t('NOTICE_GROUP_CREATED'),
             RESPONSE_NOTICE,
             $gid
         );
@@ -219,7 +219,7 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('FORUMS_NOTICE_GROUP_UPDATED'),
+            $this::t('NOTICE_GROUP_UPDATED'),
             RESPONSE_NOTICE
         );
     }
@@ -240,12 +240,12 @@ class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } elseif ($res) {
             return $this->gadget->session->response(
-                _t('FORUMS_NOTICE_GROUP_DELETED'),
+                $this::t('NOTICE_GROUP_DELETED'),
                 RESPONSE_NOTICE
             );
         } else {
             return $this->gadget->session->response(
-                _t('FORUMS_ERROR_GROUP_NOT_EMPTY'),
+                $this::t('ERROR_GROUP_NOT_EMPTY'),
                 RESPONSE_ERROR
             );
         }

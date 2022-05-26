@@ -27,9 +27,9 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
                 $pgroups[$group['id']] = $group['title'];
             }
 
-            $pgroups  = array('0' => _t('FORUMS_GROUPS_ALL')) + $pgroups;
+            $pgroups  = array('0' => $this::t('GROUPS_ALL')) + $pgroups;
             $result[] = array(
-                'title' => _t('FORUMS_GROUPS'),
+                'title' => $this::t('GROUPS'),
                 'value' => $pgroups
             );
 
@@ -56,7 +56,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($group) || empty($group)) {
             $group = array();
             $group['id']    = 0;
-            $group['title'] = _t('FORUMS_GROUPS_ALL');
+            $group['title'] = $this::t('GROUPS_ALL');
         }
 
         $tpl = $this->gadget->template->load('RecentTopics.html');
@@ -75,7 +75,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
             $objDate = Jaws_Date::getInstance();
             $tpl->SetBlock('recenttopics');
             // title
-            $tpl->SetVariable('action_title', _t('FORUMS_LAYOUT_RECENT_POSTS'));
+            $tpl->SetVariable('action_title', $this::t('LAYOUT_RECENT_POSTS'));
             $tpl->SetVariable('group_title', $group['title']);
 
             foreach ($topics as $topic) {
@@ -102,7 +102,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
                         $max_size
                     ). ' ...'
                 );
-                $tpl->SetVariable('lbl_postedby',_t('FORUMS_POSTEDBY'));
+                $tpl->SetVariable('lbl_postedby',$this::t('POSTEDBY'));
                 $tpl->SetVariable('username', $topic['username']);
                 $tpl->SetVariable('nickname', $topic['nickname']);
 

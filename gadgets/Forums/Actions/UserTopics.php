@@ -44,20 +44,20 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
             $tpl->SetBlock('topics');
 
             $userURL = $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $user['username']));
-            $tpl->SetVariable('index_title', _t('FORUMS_TOPICS'));
+            $tpl->SetVariable('index_title', $this::t('TOPICS'));
             $tpl->SetVariable('title', $user['nickname']);
             $tpl->SetVariable('url', $userURL);
-            $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
-            $tpl->SetVariable('lbl_replies', _t('FORUMS_REPLIES'));
-            $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
-            $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
+            $tpl->SetVariable('lbl_topics', $this::t('TOPICS'));
+            $tpl->SetVariable('lbl_replies', $this::t('REPLIES'));
+            $tpl->SetVariable('lbl_views', $this::t('VIEWS'));
+            $tpl->SetVariable('lbl_lastpost', $this::t('LASTPOST'));
 
             // posts per page
             $posts_limit = $this->gadget->registry->fetch('posts_limit');
             $posts_limit = empty($posts_limit) ? 10 : (int)$posts_limit;
             foreach ($topics as $topic) {
                 $tpl->SetBlock('topics/topic');
-                $tpl->SetVariable('lbl_forum', _t('FORUMS_FORUM'));
+                $tpl->SetVariable('lbl_forum', $this::t('FORUM'));
                 $tpl->SetVariable('forum', $topic['title']);
                 $tpl->SetVariable('forum_url', $this->gadget->urlMap('Topics', array('fid' => $topic['fid'])));
                 $tpl->SetVariable('status', (int)$topic['locked']);
@@ -71,7 +71,7 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
                 $tpl->SetVariable('replies', $topic['replies']);
                 $tpl->SetVariable('views', $topic['views']);
                 // first post
-                $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+                $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
                 $tpl->SetVariable('username', $user['username']);
                 $tpl->SetVariable('nickname', $user['nickname']);
                 $tpl->SetVariable('user_url', $userURL);
@@ -81,14 +81,14 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
                 // last post
                 if (!empty($topic['last_post_id'])) {
                     $tpl->SetBlock('topics/topic/lastpost');
-                    $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+                    $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
                     $tpl->SetVariable('username', $topic['last_username']);
                     $tpl->SetVariable('nickname', $topic['last_nickname']);
                     $tpl->SetVariable(
                         'user_url',
                         $this->app->map->GetMappedURL('Users', 'Profile', array('user' => $topic['last_username']))
                     );
-                    $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
+                    $tpl->SetVariable('lastpost_lbl',$this::t('LASTPOST'));
                     $tpl->SetVariable('lastpost_date', $objDate->Format($topic['last_post_time'], $date_format));
                     $tpl->SetVariable('lastpost_date_iso', $objDate->ToISO((int)$topic['last_post_time']));
                     $url_params = array('fid' => $topic['fid'], 'tid'=> $topic['id']);
@@ -112,7 +112,7 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
                 $topicCounts,
                 'UserTopics',
                 array('user' => $user['username']),
-                _t('FORUMS_POSTS_COUNT', $topicCounts)
+                $this::t('POSTS_COUNT', $topicCounts)
             );
 
             $tpl->ParseBlock('topics');

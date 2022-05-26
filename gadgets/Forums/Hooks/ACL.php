@@ -24,15 +24,15 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
             foreach ($items as $item) {
                 $this->gadget->translate->insert(
                     'ACL_FORUMPUBLIC_'. $item['id'],
-                    _t('FORUMS_ACL_FORUM_PUBLIC', $item['title'])
+                    $this::t('ACL_FORUM_PUBLIC', $item['title'])
                 );
                 $this->gadget->translate->insert(
                     'ACL_FORUMMEMBER_'. $item['id'],
-                    _t('FORUMS_ACL_FORUM_MEMBER', $item['title'])
+                    $this::t('ACL_FORUM_MEMBER', $item['title'])
                 );
                 $this->gadget->translate->insert(
                     'ACL_FORUMMANAGE_'. $item['id'],
-                    _t('FORUMS_ACL_FORUM_MANAGE', $item['title'])
+                    $this::t('ACL_FORUM_MANAGE', $item['title'])
                 );
             }
         }
@@ -42,7 +42,7 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
             foreach ($items as $item) {
                 $this->gadget->translate->insert(
                     'ACL_GROUPACCESS_'. $item['id'],
-                    _t('FORUMS_ACL_GROUP_ACCESS', $item['title'])
+                    $this::t('ACL_GROUP_ACCESS', $item['title'])
                 );
             }
         }

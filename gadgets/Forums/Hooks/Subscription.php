@@ -27,7 +27,7 @@ class Forums_Hooks_Subscription extends Jaws_Gadget_Hook
                 $item = array();
                 $item['action'] = 'Forum';
                 $item['reference'] = $forum['id'];
-                $item['title'] = _t('FORUMS_FORUM') . ' ' . $forum['title'];
+                $item['title'] = $this::t('FORUM') . ' ' . $forum['title'];
                 $item['url'] = $this->gadget->urlMap('Topics', array('fid' => $forum['id']));
                 $forumItems[$forum['gid']][] = $item;
             }
@@ -40,7 +40,7 @@ class Forums_Hooks_Subscription extends Jaws_Gadget_Hook
                 $item['selectable'] = false;
                 $item['action'] = 'Group';
                 $item['reference'] = $group['id'];
-                $item['title'] = _t('FORUMS_GROUP') . ' ' . $group['title'];
+                $item['title'] = $this::t('GROUP') . ' ' . $group['title'];
                 $item['url'] = $this->gadget->urlMap('Group', array('gid' => $group['id']));
                 if(isset($forumItems[$group['id']])) {
                     $item['sub_items'] = $forumItems[$group['id']];

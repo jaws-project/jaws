@@ -27,9 +27,9 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
                 $pgroups[$group['id']] = $group['title'];
             }
 
-            $pgroups  = array('0' => _t('FORUMS_GROUPS_ALL')) + $pgroups;
+            $pgroups  = array('0' => $this::t('GROUPS_ALL')) + $pgroups;
             $result[] = array(
-                'title' => _t('FORUMS_GROUPS'),
+                'title' => $this::t('GROUPS'),
                 'value' => $pgroups
             );
         }
@@ -51,11 +51,11 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
             return false;
         }
 
-        $this->app->layout->SetTitle(_t('FORUMS_FORUMS'));
+        $this->app->layout->SetTitle($this::t('FORUMS'));
         $tpl = $this->gadget->template->load('Forums.html');
         $tpl->SetBlock('forums');
 
-        $tpl->SetVariable('title', _t('FORUMS_FORUMS'));
+        $tpl->SetVariable('title', $this::t('FORUMS'));
         $tpl->SetVariable('url', $this->gadget->urlMap('Forums'));
 
         foreach ($groups as $group) {
@@ -98,7 +98,7 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
             $this->app->layout->SetTitle($group['title']);
             $tpl = $this->gadget->template->load('Group.html');
             $tpl->SetBlock("$block");
-            $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+            $tpl->SetVariable('findex_title', $this::t('FORUMS'));
             $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
             $tpl->SetVariable('title', $group['title']);
             $tpl->SetVariable('url', $this->gadget->urlMap('Group', array('gid' => $group['id'])));
@@ -126,9 +126,9 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
         $tpl->SetBlock("$block/group");
         $tpl->SetVariable('title', $group['title']);
         $tpl->SetVariable('url', $this->gadget->urlMap('Group', array('gid' => $group['id'])));
-        $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
-        $tpl->SetVariable('lbl_posts', _t('FORUMS_POSTS'));
-        $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
+        $tpl->SetVariable('lbl_topics', $this::t('TOPICS'));
+        $tpl->SetVariable('lbl_posts', $this::t('POSTS'));
+        $tpl->SetVariable('lbl_lastpost', $this::t('LASTPOST'));
         foreach ($forums as $forum) {
             $tpl->SetBlock("$block/group/forum");
             $tpl->SetVariable('status', (int)$forum['locked']);
@@ -149,7 +149,7 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
             // last post
             if ($accessToLastTopic && !empty($forum['last_topic_id'])) {
                 $tpl->SetBlock("$block/group/forum/lastpost");
-                $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+                $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
                 $tpl->SetVariable('username', $forum['username']);
                 $tpl->SetVariable('nickname', $forum['nickname']);
                 $tpl->SetVariable(
@@ -160,7 +160,7 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
                         array('user' => $forum['username'])
                     )
                 );
-                $tpl->SetVariable('lastpost_lbl',_t('FORUMS_LASTPOST'));
+                $tpl->SetVariable('lastpost_lbl',$this::t('LASTPOST'));
                 $tpl->SetVariable('lastpost_date', $objDate->Format($forum['last_post_time'], $date_format));
                 $tpl->SetVariable('lastpost_date_iso', $objDate->ToISO((int)$forum['last_post_time']));
                 $url_params = array('fid' => $forum['id'], 'tid'=> $forum['last_topic_id']);

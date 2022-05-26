@@ -29,7 +29,7 @@ class Forums_Actions_Admin_Forum extends Jaws_Gadget_Action
         foreach ($groups as $group) {
             $groupCombo->AddOption($group['title'], $group['id']);
         }
-        $tpl->SetVariable('lbl_gid', _t('FORUMS_GROUP'));
+        $tpl->SetVariable('lbl_gid', $this::t('GROUP'));
         $tpl->SetVariable('gid', $groupCombo->Get());
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
@@ -44,12 +44,12 @@ class Forums_Actions_Admin_Forum extends Jaws_Gadget_Action
 
         $fasturl =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $fasturl->SetID('fast_url');
-        $tpl->SetVariable('lbl_fast_url', _t('FORUMS_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
         $order =& Piwi::CreateWidget('Combo', 'order');
         $order->SetID('order');
-        $tpl->SetVariable('lbl_order', _t('FORUMS_ORDER'));
+        $tpl->SetVariable('lbl_order', $this::t('ORDER'));
         $tpl->SetVariable('order', $order->Get());
 
         $locked =& Piwi::CreateWidget('Combo', 'locked');
@@ -57,7 +57,7 @@ class Forums_Actions_Admin_Forum extends Jaws_Gadget_Action
         $locked->AddOption(Jaws::t('NOO'),  0);
         $locked->AddOption(Jaws::t('YESS'), 1);
         $locked->SetDefault(0);
-        $tpl->SetVariable('lbl_locked', _t('FORUMS_LOCKED'));
+        $tpl->SetVariable('lbl_locked', $this::t('LOCKED'));
         $tpl->SetVariable('locked', $locked->Get());
 
         $private =& Piwi::CreateWidget('Combo', 'private');
@@ -65,7 +65,7 @@ class Forums_Actions_Admin_Forum extends Jaws_Gadget_Action
         $private->AddOption(Jaws::t('NOO'), 0);
         $private->AddOption(Jaws::t('YESS'), 1);
         $private->SetDefault(0);
-        $tpl->SetVariable('lbl_private', _t('FORUMS_PRIVATE'));
+        $tpl->SetVariable('lbl_private', $this::t('PRIVATE'));
         $tpl->SetVariable('private', $private->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');

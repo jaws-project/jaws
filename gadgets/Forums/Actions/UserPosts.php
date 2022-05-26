@@ -44,7 +44,7 @@ class Forums_Actions_UserPosts extends Jaws_Gadget_Action
             $tpl->SetBlock('userposts');
 
             // title
-            $tpl->SetVariable('title', _t('FORUMS_USER_POSTS', $user['nickname']));
+            $tpl->SetVariable('title', $this::t('USER_POSTS', $user['nickname']));
 
             foreach ($posts as $post) {
                 $tpl->SetBlock('userposts/post');
@@ -91,7 +91,7 @@ class Forums_Actions_UserPosts extends Jaws_Gadget_Action
                 $post_counts,
                 'UserPosts',
                 array('user' => $user['username']),
-                _t('FORUMS_POSTS_COUNT', $post_counts)
+                $this::t('POSTS_COUNT', $post_counts)
             );
 
             $tpl->ParseBlock('userposts');

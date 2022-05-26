@@ -336,23 +336,23 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             )
         );
 
-        $event_subject = _t("FORUMS_POSTS_{$event_type}_NOTIFICATION_SUBJECT", $forum_title);
-        $event_message = _t("FORUMS_POSTS_{$event_type}_NOTIFICATION_MESSAGE", $lnkProfile->Get());
+        $event_subject = $this::t("POSTS_{$event_type}_NOTIFICATION_SUBJECT", $forum_title);
+        $event_message = $this::t("POSTS_{$event_type}_NOTIFICATION_MESSAGE", $lnkProfile->Get());
 
         $tpl = $this->gadget->template->load('PostNotification.html');
         $tpl->SetBlock('notification');
         $tpl->SetVariable('notification', $event_message);
-        $tpl->SetVariable('lbl_subject',  _t('FORUMS_TOPICS_SUBJECT'));
+        $tpl->SetVariable('lbl_subject',  $this::t('TOPICS_SUBJECT'));
         $tpl->SetVariable('subject',      $topic_subject);
-        $tpl->SetVariable('lbl_message',  _t('FORUMS_POSTS_MESSAGE'));
+        $tpl->SetVariable('lbl_message',  $this::t('POSTS_MESSAGE'));
         $tpl->SetVariable('message',      $post_message);
-        $tpl->SetVariable('lbl_url',      _t('FORUMS_TOPIC'));
+        $tpl->SetVariable('lbl_url',      $this::t('TOPIC'));
         $tpl->SetVariable('url',          $post_link);
         $tpl->SetVariable('site_name',    $site_name);
         $tpl->SetVariable('site_url',     $site_url);
         if (!empty($reason)) {
             $tpl->SetBlock('notification/reason');
-            $tpl->SetVariable('lbl_reason',  _t('FORUMS_POSTS_REASON'));
+            $tpl->SetVariable('lbl_reason',  $this::t('POSTS_REASON'));
             $tpl->SetVariable('lbl_reason',  $reason);
             $tpl->ParseBlock('notification/reason');
         }

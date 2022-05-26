@@ -56,7 +56,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Posts.html');
         $tpl->SetBlock('posts');
 
-        $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+        $tpl->SetVariable('findex_title', $this::t('FORUMS'));
         $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
         $tpl->SetVariable('forum_title', $topic['forum_title']);
         $tpl->SetVariable('forum_url', $this->gadget->urlMap('Topics', array('fid' => $topic['fid'])));
@@ -85,9 +85,9 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $startPostNumber ++;
             $tpl->SetVariable('post_number', $startPostNumber);
             $tpl->SetVariable('title', $topic['subject']);
-            $tpl->SetVariable('posts_count_lbl',_t('FORUMS_USERS_POSTS_COUNT'));
-            $tpl->SetVariable('registered_date_lbl',_t('FORUMS_USERS_REGISTERED_DATE'));
-            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('posts_count_lbl',$this::t('USERS_POSTS_COUNT'));
+            $tpl->SetVariable('registered_date_lbl',$this::t('USERS_REGISTERED_DATE'));
+            $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
             $tpl->SetVariable('posts_count', $pModel->GetUserPostsCount($post['uid']));
             $tpl->SetVariable(
                 'user_posts',
@@ -134,7 +134,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 ),
                 array(
                     'labels' => array(
-                        'title' => _t('FORUMS_POSTS_ATTACHMENT')
+                        'title' => $this::t('POSTS_ATTACHMENT')
                     )
                 )
             );
@@ -142,7 +142,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             // update information
             if ($post['update_uid'] != 0) {
                 $tpl->SetBlock('posts/post/update');
-                $tpl->SetVariable('updatedby_lbl', _t('FORUMS_POSTS_UPDATEDBY'));
+                $tpl->SetVariable('updatedby_lbl', $this::t('POSTS_UPDATEDBY'));
                 $tpl->SetVariable('username', $post['updater_username']);
                 $tpl->SetVariable('nickname', $post['updater_nickname']);
                 $tpl->SetVariable(
@@ -157,7 +157,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 $tpl->SetVariable('update_time_iso', $objDate->ToISO($post['update_time']));
                 if (!empty($post['update_reason'])) {
                     $tpl->SetBlock('posts/post/update/reason');
-                    $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
+                    $tpl->SetVariable('lbl_update_reason', $this::t('POSTS_EDIT_REASON'));
                     $tpl->SetVariable('update_reason', $post['update_reason']);
                     $tpl->ParseBlock('posts/post/update/reason');
                 }
@@ -167,13 +167,13 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             // reply: check permission for add post
             if ($this->gadget->GetPermission('AddPost') && (!$topic['locked'] || $forumManage)) {
                 $tpl->SetBlock('posts/post/replyPostAction');
-                $tpl->SetVariable('lbl_reply_post', _t('FORUMS_POSTS_REPLY'));
+                $tpl->SetVariable('lbl_reply_post', $this::t('POSTS_REPLY'));
                 $tpl->SetVariable('pid', $post['id']);
                 $tpl->ParseBlock('posts/post/replyPostAction');
 
 //                $tpl->SetBlock('posts/post/action');
-//                $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_REPLY'));
-//                $tpl->SetVariable('action_title',_t('FORUMS_POSTS_REPLY_TITLE'));
+//                $tpl->SetVariable('action_lbl',$this::t('POSTS_REPLY'));
+//                $tpl->SetVariable('action_title',$this::t('POSTS_REPLY_TITLE'));
 //                $tpl->SetVariable(
 //                    'action_url',
 //                    $this->gadget->urlMap(
@@ -192,8 +192,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                     ((time() - $post['insert_time']) <= $edit_max_limit_time || $forumManage)
                 ) {
                     $tpl->SetBlock('posts/post/action');
-                    $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_EDIT'));
-                    $tpl->SetVariable('action_title',_t('FORUMS_TOPICS_EDIT_TITLE'));
+                    $tpl->SetVariable('action_lbl',$this::t('TOPICS_EDIT'));
+                    $tpl->SetVariable('action_title',$this::t('TOPICS_EDIT_TITLE'));
                     $tpl->SetVariable(
                         'action_url',
                         $this->gadget->urlMap(
@@ -210,8 +210,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                     ((time() - $post['insert_time']) <= $edit_min_limit_time || $forumManage)
                 ) {
                     $tpl->SetBlock('posts/post/action');
-                    $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_DELETE'));
-                    $tpl->SetVariable('action_title',_t('FORUMS_TOPICS_DELETE_TITLE'));
+                    $tpl->SetVariable('action_lbl',$this::t('TOPICS_DELETE'));
+                    $tpl->SetVariable('action_title',$this::t('TOPICS_DELETE_TITLE'));
                     $tpl->SetVariable(
                         'action_url',
                         $this->gadget->urlMap(
@@ -229,7 +229,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                     ((time() - $post['insert_time']) <= $edit_max_limit_time || $forumManage)
                 ) {
                     $tpl->SetBlock('posts/post/editPostAction');
-                    $tpl->SetVariable('lbl_edit_post', _t('FORUMS_POSTS_EDIT'));
+                    $tpl->SetVariable('lbl_edit_post', $this::t('POSTS_EDIT'));
                     $tpl->SetVariable('pid', $post['id']);
                     $tpl->ParseBlock('posts/post/editPostAction');
                 }
@@ -241,8 +241,8 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                     ((time() - $post['insert_time']) <= $edit_min_limit_time || $forumManage)
                 ){
                     $tpl->SetBlock('posts/post/action');
-                    $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_DELETE'));
-                    $tpl->SetVariable('action_title',_t('FORUMS_POSTS_DELETE_TITLE'));
+                    $tpl->SetVariable('action_lbl',$this::t('POSTS_DELETE'));
+                    $tpl->SetVariable('action_title',$this::t('POSTS_DELETE_TITLE'));
                     $tpl->SetVariable(
                         'action_url',
                         $this->gadget->urlMap(
@@ -265,13 +265,13 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $topic['replies'],
             'Posts',
             array('fid' => $topic['fid'], 'tid' => $topic['id']),
-            _t('FORUMS_POSTS_COUNT', $topic['replies'])
+            $this::t('POSTS_COUNT', $topic['replies'])
         );
 
         // check permission to add new post
         if ($this->gadget->GetPermission('AddPost') && (!$topic['locked'] || $forumManage)) {
             $tpl->SetBlock('posts/newPostAction');
-            $tpl->SetVariable('lbl_new_post', _t('FORUMS_POSTS_NEW'));
+            $tpl->SetVariable('lbl_new_post', $this::t('POSTS_NEW'));
             $tpl->ParseBlock('posts/newPostAction');
 
             // display post UI
@@ -285,7 +285,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $tpl->SetBlock('posts/action');
             $tpl->SetVariable(
                 'action_lbl',
-                $topic['locked']? _t('FORUMS_TOPICS_UNLOCK') : _t('FORUMS_TOPICS_LOCK')
+                $topic['locked']? $this::t('TOPICS_UNLOCK') : $this::t('TOPICS_LOCK')
             );
             $tpl->SetVariable(
                 'action_url',
@@ -299,7 +299,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $tpl->SetBlock('posts/action');
             $tpl->SetVariable(
                 'action_lbl',
-                $topic['published']? _t('FORUMS_TOPICS_DRAFT') : _t('FORUMS_TOPICS_PUBLISH')
+                $topic['published']? $this::t('TOPICS_DRAFT') : $this::t('TOPICS_PUBLISH')
             );
             $tpl->SetVariable(
                 'action_url',
@@ -334,7 +334,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
             $tpl->SetBlock('post/post_meta');
-            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             $tpl->SetVariable(
@@ -349,7 +349,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         */
 
         // message
-        $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
+        $tpl->SetVariable('lbl_message', $this::t('POSTS_MESSAGE'));
         $message = $this->gadget->action->load('Editor')->load('message', '');
         $message->setId('message');
         $message->TextArea->SetRows(8);
@@ -368,16 +368,16 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 ),
                 array(
                     'labels' => array(
-                        'title'  => _t('FORUMS_POSTS_ATTACHMENT'),
-                        'browse' => _t('FORUMS_POSTS_EXTRA_ATTACHMENT'),
-                        'remove' => _t('FORUMS_POSTS_ATTACHMENT_REMOVE')
+                        'title'  => $this::t('POSTS_ATTACHMENT'),
+                        'browse' => $this::t('POSTS_EXTRA_ATTACHMENT'),
+                        'remove' => $this::t('POSTS_ATTACHMENT_REMOVE')
                     )
                 )
             );
         }
 
-        $tpl->SetVariable('lbl_update_reason', _t('FORUMS_POSTS_EDIT_REASON'));
-        $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+        $tpl->SetVariable('lbl_update_reason', $this::t('POSTS_EDIT_REASON'));
+        $tpl->SetVariable('lbl_send_notification', $this::t('NOTIFICATION_MESSAGE'));
 
         // display captcha
         $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
@@ -475,7 +475,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 $post['message']
             );
             $event_type = 'new';
-            $error_message = _t('FORUMS_POSTS_NEW_ERROR');
+            $error_message = $this::t('POSTS_NEW_ERROR');
             $last_post_page = floor($topic['replies']/$posts_limit) + 1;
         } else {
             $oldPost = $pModel->GetPost($post['pid'], $post['tid'], $post['fid']);
@@ -510,7 +510,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $event_type = 'edit';
             // no notification for topic creator
             $topic['email'] = '';
-            $error_message = _t('FORUMS_POSTS_EDIT_ERROR');
+            $error_message = $this::t('POSTS_EDIT_ERROR');
             $last_post_page = floor(($topic['replies'] - 1)/$posts_limit) + 1;
         }
 
@@ -610,7 +610,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 );
                 if (Jaws_Error::IsError($result)) {
                     $this->gadget->session->push(
-                        _t('FORUMS_POSTS_DELETE_ERROR'),
+                        $this::t('POSTS_DELETE_ERROR'),
                         RESPONSE_NOTICE,
                         'DeletePost'
                     );
@@ -646,7 +646,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $tpl->SetVariable('fid', $post['fid']);
             $tpl->SetVariable('tid', $post['tid']);
             $tpl->SetVariable('pid', $post['id']);
-            $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
+            $tpl->SetVariable('findex_title', $this::t('FORUMS'));
             $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
             $tpl->SetVariable('forum_title', $post['forum_title']);
             $tpl->SetVariable(
@@ -658,7 +658,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 'topic_url',
                 $this->gadget->urlMap('Posts', array('fid'=> $post['fid'], 'tid' => $post['tid']))
             );
-            $tpl->SetVariable('title', _t('FORUMS_POSTS_DELETE_TITLE'));
+            $tpl->SetVariable('title', $this::t('POSTS_DELETE_TITLE'));
 
             // error response
             if ($response = $this->gadget->session->pop('DeletePost')) {
@@ -670,7 +670,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $date_format = $this->gadget->registry->fetch('date_format');
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
             // post meta data
-            $tpl->SetVariable('postedby_lbl',_t('FORUMS_POSTEDBY'));
+            $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);
             $tpl->SetVariable(
@@ -685,18 +685,18 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
             $tpl->SetVariable('message', $this->gadget->plugin->parseAdmin($post['message']));
 
             // delete reason
-            $tpl->SetVariable('lbl_delete_reason', _t('FORUMS_POSTS_DELETE_REASON'));
+            $tpl->SetVariable('lbl_delete_reason', $this::t('POSTS_DELETE_REASON'));
 
             // notification
             if ($this->gadget->GetPermission('ForumManage', $post['fid'])) {
                 $tpl->SetBlock('post/notification');
-                $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+                $tpl->SetVariable('lbl_send_notification', $this::t('NOTIFICATION_MESSAGE'));
                 $tpl->SetBlock('post/notification/checked');
                 $tpl->ParseBlock('post/notification/checked');
                 $tpl->ParseBlock('post/notification');
             }
 
-            $tpl->SetVariable('btn_submit_title', _t('FORUMS_POSTS_DELETE_BUTTON'));
+            $tpl->SetVariable('btn_submit_title', $this::t('POSTS_DELETE_BUTTON'));
             $tpl->SetVariable('btn_cancel_title', Jaws::t('CANCEL'));
             $tpl->ParseBlock('post');
             return $tpl->Get();

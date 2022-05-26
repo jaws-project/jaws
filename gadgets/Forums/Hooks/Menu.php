@@ -22,7 +22,7 @@ class Forums_Hooks_Menu extends Jaws_Gadget_Hook
         $urls = array();
         $urls[] = array(
             'url'   => $this->gadget->urlMap('Forums'),
-            'title' => _t('FORUMS_FORUMS')
+            'title' => $this::t('FORUMS')
         );
 
         return $urls;
