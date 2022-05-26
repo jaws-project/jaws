@@ -27,11 +27,11 @@ class Banner_Actions_Admin_Default extends Jaws_Gadget_Action
                                 BASE_SCRIPT . '?reqGadget=Banner&amp;reqAction=Banners', 'gadgets/Banner/Resources/images/banners_mini.png');
         }
         if ($this->gadget->GetPermission('ManageGroups')) {
-            $menubar->AddOption('Groups', _t('BANNER_GROUPS_GROUPS'),
+            $menubar->AddOption('Groups', $this::t('GROUPS_GROUPS'),
                                 BASE_SCRIPT . '?reqGadget=Banner&amp;reqAction=Groups', 'gadgets/Banner/Resources/images/groups_mini.png');
         }
         if ($this->gadget->GetPermission('ViewReports')) {
-            $menubar->AddOption('Reports', _t('BANNER_REPORTS_REPORTS'),
+            $menubar->AddOption('Reports', $this::t('REPORTS_REPORTS'),
                                 BASE_SCRIPT . '?reqGadget=Banner&amp;reqAction=Reports', 'gadgets/Banner/Resources/images/reports_mini.png');
         }
         $menubar->Activate($action);

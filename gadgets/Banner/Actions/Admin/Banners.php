@@ -49,7 +49,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Banners'));
 
-        $tpl->SetVariable('legend_title', _t('BANNER_BANNERS_ADD'));
+        $tpl->SetVariable('legend_title', $this::t('BANNERS_ADD'));
 
         //Group filter
         $bGroup =& Piwi::CreateWidget('Combo', 'bgroup_filter');
@@ -62,7 +62,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             $bGroup->AddOption($group['title'], $group['id']);
         }
         $tpl->SetVariable('bgroup_filter', $bGroup->Get());
-        $tpl->SetVariable('lbl_bgroup', _t('BANNER_GROUPS_GROUP'));
+        $tpl->SetVariable('lbl_bgroup', $this::t('GROUPS_GROUP'));
 
         // domains
         if ($this->gadget->registry->fetch('multi_domain', 'Users') == 'true') {
@@ -95,10 +95,10 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $this->gadget->define('incompleteBannerFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmBannerDelete',    _t('BANNER_BANNERS_CONFIRM_DELETE'));
-        $this->gadget->define('addBanner_title',        _t('BANNER_BANNERS_ADD'));
-        $this->gadget->define('editBanner_title',       _t('BANNER_BANNERS_EDIT'));
+        $this->gadget->define('incompleteBannerFields', $this::t('BANNERS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmBannerDelete',    $this::t('BANNERS_CONFIRM_DELETE'));
+        $this->gadget->define('addBanner_title',        $this::t('BANNERS_ADD'));
+        $this->gadget->define('editBanner_title',       $this::t('BANNERS_EDIT'));
 
         $this->gadget->define('textTemplate',  $text_banner);
         $this->gadget->define('imageTemplate', $image_banner);
@@ -151,17 +151,17 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         foreach($groups as $group) {
             $group_combo->AddOption($group['title'], $group['id']);
         }
-        $tpl->SetVariable('lbl_gid', _t('BANNER_GROUPS_GROUPS'));
+        $tpl->SetVariable('lbl_gid', $this::t('GROUPS_GROUPS'));
         $tpl->SetVariable('gid', $group_combo->Get());
 
         $check_upload =& Piwi::CreateWidget('CheckButtons', 'through_upload');
         $check_upload->AddEvent(ON_CLICK, 'javascript:changeThroughUpload(this.checked);');
-        $check_upload->AddOption(_t('BANNER_BANNERS_THROUGH_UPLOADING'), '0');
+        $check_upload->AddOption($this::t('BANNERS_THROUGH_UPLOADING'), '0');
         $tpl->SetVariable('th_upload', $check_upload->Get());
 
         $bannerEntry =& Piwi::CreateWidget('Entry', 'banner', '');
         $bannerEntry->SetID('banner');
-        $tpl->SetVariable('lbl_banner', _t('BANNER_BANNERS_BANNER'));
+        $tpl->SetVariable('lbl_banner', $this::t('BANNERS_BANNER'));
         $tpl->SetVariable('banner', $bannerEntry->Get());
 
         $upload_bannerEntry =& Piwi::CreateWidget('FileEntry', 'upload_banner', '');
@@ -172,21 +172,21 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $template =& Piwi::CreateWidget('TextArea', 'template', '');
         $template->SetID('template');
         $template->SetRows(6);
-        $tpl->SetVariable('lbl_template', _t('BANNER_BANNERS_TEMPLATE'));
+        $tpl->SetVariable('lbl_template', $this::t('BANNERS_TEMPLATE'));
         $tpl->SetVariable('template', $template->Get());
 
         $btnText =& Piwi::CreateWidget('Button','btn_text', '', 'gadgets/Banner/Resources/images/text.png');
-        $btnText->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_TEXT'));
+        $btnText->SetTitle($this::t('BANNERS_BANNERTYPE_TEXT'));
         $btnText->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.Banner.Defines.textTemplate);');
         $tpl->SetVariable('btn_text', $btnText->Get());
 
         $btnImage =& Piwi::CreateWidget('Button','btn_image', '', 'gadgets/Banner/Resources/images/image.png');
-        $btnImage->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_IMAGE'));
+        $btnImage->SetTitle($this::t('BANNERS_BANNERTYPE_IMAGE'));
         $btnImage->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.Banner.Defines.imageTemplate);');
         $tpl->SetVariable('btn_image', $btnImage->Get());
 
         $btnFlash =& Piwi::CreateWidget('Button','btn_flash', '', 'gadgets/Banner/Resources/images/flash.png');
-        $btnFlash->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_FLASH'));
+        $btnFlash->SetTitle($this::t('BANNERS_BANNERTYPE_FLASH'));
         $btnFlash->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.Banner.Defines.flashTemplate);');
         $tpl->SetVariable('btn_flash', $btnFlash->Get());
 
@@ -194,17 +194,17 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $btnReset->AddEvent(ON_CLICK, 'javascript:setTemplate(defaultTemplate);');
         $tpl->SetVariable('btn_reset', $btnReset->Get());
 
-        $tpl->SetVariable('lbl_limits', _t('BANNER_BANNERS_LIMITATIONS'));
+        $tpl->SetVariable('lbl_limits', $this::t('BANNERS_LIMITATIONS'));
         $viewsLimitEntry =& Piwi::CreateWidget('Entry', 'views_limit', '');
         $viewsLimitEntry->SetID('views_limit');
         $viewsLimitEntry->setStyle('width: 78px;');
-        $tpl->SetVariable('lbl_views_limit', _t('BANNER_BANNERS_VIEWS'));
+        $tpl->SetVariable('lbl_views_limit', $this::t('BANNERS_VIEWS'));
         $tpl->SetVariable('views_limit', $viewsLimitEntry->Get());
 
         $clicksLimitEntry =& Piwi::CreateWidget('Entry', 'clicks_limit', '');
         $clicksLimitEntry->SetID('clicks_limit');
         $clicksLimitEntry->setStyle('width: 78px;');
-        $tpl->SetVariable('lbl_clicks_limit', _t('BANNER_BANNERS_CLICKS'));
+        $tpl->SetVariable('lbl_clicks_limit', $this::t('BANNERS_CLICKS'));
         $tpl->SetVariable('clicks_limit', $clicksLimitEntry->Get());
 
         $tpl->SetVariable('lbl_start_time', Jaws::t('START_TIME'));
@@ -223,7 +223,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $randomType->setStyle('width: 85px;');
         $randomType->AddOption(Jaws::t('NOO'),  '0');
         $randomType->AddOption(Jaws::t('YESS'), '1');
-        $tpl->SetVariable('lbl_random', _t('BANNER_BANNERS_RANDOM'));
+        $tpl->SetVariable('lbl_random', $this::t('BANNERS_RANDOM'));
         $tpl->SetVariable('random', $randomType->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');

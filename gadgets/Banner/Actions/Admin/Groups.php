@@ -22,7 +22,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('GroupBanners.html');
         $tpl->SetBlock('Groups');
 
-        $addGroup =& Piwi::CreateWidget('Button', 'add_group', _t('BANNER_GROUPS_ADD'), STOCK_NEW);
+        $addGroup =& Piwi::CreateWidget('Button', 'add_group', $this::t('GROUPS_ADD'), STOCK_NEW);
         $addGroup->AddEvent(ON_CLICK, "javascript:addGroup();");
         $tpl->SetVariable('add_group', $addGroup->Get());
 
@@ -31,7 +31,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $saveGroup->SetStyle('display: none;');
         $tpl->SetVariable('save_group', $saveGroup->Get());
 
-        $GroupBanners =& Piwi::CreateWidget('Button', 'add_banners', _t('BANNER_GROUPS_ADD_BANNERS'), STOCK_EDIT);
+        $GroupBanners =& Piwi::CreateWidget('Button', 'add_banners', $this::t('GROUPS_ADD_BANNERS'), STOCK_EDIT);
         $GroupBanners->AddEvent(ON_CLICK, "javascript:editGroupBanners();");
         $GroupBanners->SetStyle('display: none;');
         $tpl->SetVariable('add_banners', $GroupBanners->Get());
@@ -41,7 +41,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $cancelAction->SetStyle('display: none;');
         $tpl->SetVariable('cancel', $cancelAction->Get());
 
-        $deleteGroup =& Piwi::CreateWidget('Button', 'delete_group', _t('BANNER_GROUPS_DELETE'), STOCK_DELETE);
+        $deleteGroup =& Piwi::CreateWidget('Button', 'delete_group', $this::t('GROUPS_DELETE'), STOCK_DELETE);
         $deleteGroup->AddEvent(ON_CLICK, "javascript:deleteGroup();");
         $deleteGroup->SetStyle('display: none;');
         $tpl->SetVariable('delete_group', $deleteGroup->Get());
@@ -61,8 +61,8 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
             $comboGroups->AddOption($group['title'], $group['id']);
         }
         $tpl->SetVariable('combo_groups', $comboGroups->Get());
-        $this->gadget->define('incompleteGroupFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmGroupDelete', _t('BANNER_GROUPS_CONFIRM_DELETE'));
+        $this->gadget->define('incompleteGroupFields', $this::t('BANNERS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmGroupDelete', $this::t('GROUPS_CONFIRM_DELETE'));
         $tpl->ParseBlock('Groups');
 
         return $tpl->Get();
@@ -84,27 +84,27 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $titleEntry->SetStyle('width: 300px;');
         $tpl->SetVariable('title', $titleEntry->Get());
 
-        $tpl->SetVariable('lbl_count', _t('BANNER_GROUPS_COUNT'));
+        $tpl->SetVariable('lbl_count', $this::t('GROUPS_COUNT'));
         $countEntry =& Piwi::CreateWidget('Entry', 'count', '0');
         $countEntry->SetID('count');
         $countEntry->SetStyle('width: 120px;');
         $tpl->SetVariable('count', $countEntry->Get());
 
-        $tpl->SetVariable('lbl_show_title', _t('BANNER_GROUPS_SHOW_TITLE'));
+        $tpl->SetVariable('lbl_show_title', $this::t('GROUPS_SHOW_TITLE'));
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
         $showTitle->SetStyle('width: 128px;');
         $showTitle->AddOption(Jaws::t('NOO'),  0);
         $showTitle->AddOption(Jaws::t('YESS'), 1);
         $showTitle->SetDefault('1');
         $tpl->SetVariable('show_title', $showTitle->Get());
-        $tpl->SetVariable('lbl_show_title', _t('BANNER_GROUPS_SHOW_TITLE'));
+        $tpl->SetVariable('lbl_show_title', $this::t('GROUPS_SHOW_TITLE'));
 
-        $tpl->SetVariable('lbl_show_type', _t('BANNER_GROUPS_SHOW_TYPE'));
+        $tpl->SetVariable('lbl_show_type', $this::t('GROUPS_SHOW_TYPE'));
         $showType =& Piwi::CreateWidget('Combo', 'show_type');
         $showType->SetStyle('width: 128px;');
-        $showType->AddOption(_t("BANNER_GROUPS_SHOW_TYPE_0"),  0);
-        $showType->AddOption(_t("BANNER_GROUPS_SHOW_TYPE_1"),  1);
-        $showType->AddOption(_t("BANNER_GROUPS_SHOW_TYPE_2"),  2);
+        $showType->AddOption($this::t("GROUPS_SHOW_TYPE_0"),  0);
+        $showType->AddOption($this::t("GROUPS_SHOW_TYPE_1"),  1);
+        $showType->AddOption($this::t("GROUPS_SHOW_TYPE_2"),  2);
         $showType->SetDefault(0);
         $tpl->SetVariable('show_type', $showType->Get());
 
@@ -135,7 +135,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
 
         $model = $this->gadget->model->load('Banners');
 
-        $tpl->SetVariable('lbl_banners', _t('BANNER_GROUPS_MARK_BANNERS'));
+        $tpl->SetVariable('lbl_banners', $this::t('GROUPS_MARK_BANNERS'));
         $bannersCombo =& Piwi::CreateWidget('Combo', 'banners_combo');
         $bannersCombo->SetID('banners_combo');
         $bannersCombo->SetStyle('width: 670px;');
@@ -149,7 +149,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $btnAdd->AddEvent(ON_CLICK, "javascript:addBannerToList();");
         $tpl->SetVariable('btn_add', $btnAdd->Get());
 
-        $tpl->SetVariable('lbl_list', _t('BANNER_GROUPS_MEMBERS'));
+        $tpl->SetVariable('lbl_list', $this::t('GROUPS_MEMBERS'));
         $bannersList =& Piwi::CreateWidget('Combo', 'group_members');
         $bannersList->SetID('group_members');
         $bannersList->SetSize('8');

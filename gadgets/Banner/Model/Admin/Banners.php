@@ -63,7 +63,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $this->gadget->session->push(_t('BANNER_BANNERS_CREATED', $title), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('BANNERS_CREATED', $title), RESPONSE_NOTICE);
 
         return true;
     }
@@ -121,7 +121,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('BANNER_BANNERS_UPDATED', $title), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('BANNERS_UPDATED', $title), RESPONSE_NOTICE);
         return true;
     }
 
@@ -168,7 +168,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             }
         }
 
-        $this->gadget->session->push(_t('BANNER_GROUPS_UPDATED_BANNERS'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_UPDATED_BANNERS'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -226,7 +226,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         }
 
         if(!isset($banner['id'])) {
-            $this->gadget->session->push(_t('BANNER_BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -237,7 +237,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('BANNER_BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('BANNERS_DELETED', $banner['title']), RESPONSE_NOTICE);
         if (!empty($banner['banner'])) {
             Jaws_FileManagement_File::delete(ROOT_DATA_PATH . $this->gadget->DataDirectory . $banner['banner']);
         }

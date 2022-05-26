@@ -25,7 +25,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('BANNER_GROUPS_GROUP'),
+                'title' => $this::t('GROUPS_GROUP'),
                 'value' => $pgroups
             );
         }
@@ -104,7 +104,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
         $tpl->SetVariable('gid', $gid);
         if ($group['show_title']) {
             $tpl->SetBlock("$type_block/title");
-            $tpl->SetVariable('title', _t('BANNER_ACTIONS_BANNERS_TITLE', $group['title']));
+            $tpl->SetVariable('title', $this::t('ACTIONS_BANNERS_TITLE', $group['title']));
             $tpl->ParseBlock("$type_block/title");
         }
 

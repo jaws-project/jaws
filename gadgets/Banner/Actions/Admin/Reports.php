@@ -42,19 +42,19 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
                 $item['stop'] = $objDate->Format($banner['stop_time'], 'Y-m-d');
             }
             $item['status'] = (($banner['random']==1)?
-                _t('BANNER_REPORTS_BANNERS_STATUS_RANDOM'):
-                _t('BANNER_REPORTS_BANNERS_STATUS_ALWAYS')) . '/';
-            $item['status'].= $banner['published']? _t('BANNER_REPORTS_BANNERS_STATUS_VISIBLE') :
-                _t('BANNER_REPORTS_BANNERS_STATUS_INVISIBLE');
+                $this::t('REPORTS_BANNERS_STATUS_RANDOM'):
+                $this::t('REPORTS_BANNERS_STATUS_ALWAYS')) . '/';
+            $item['status'].= $banner['published']? $this::t('REPORTS_BANNERS_STATUS_VISIBLE') :
+                $this::t('REPORTS_BANNERS_STATUS_INVISIBLE');
 
             $actions = '';
             if ($this->gadget->GetPermission('ManageBanners')) {
-                $link =& Piwi::CreateWidget('Link', _t('BANNER_BANNERS_RESET_VIEWS'),
+                $link =& Piwi::CreateWidget('Link', $this::t('BANNERS_RESET_VIEWS'),
                     "javascript:resetViews('".$banner['id']."');",
                     STOCK_REFRESH);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('BANNER_BANNERS_RESET_CLICKS'),
+                $link =& Piwi::CreateWidget('Link', $this::t('BANNERS_RESET_CLICKS'),
                     "javascript:resetClicks('".$banner['id']."');",
                     STOCK_RESET);
                 $actions.= $link->Get().'&nbsp;';
@@ -89,10 +89,10 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
 
         $column1 = Piwi::CreateWidget('Column', Jaws::t('TITLE'), null, false);
         $datagrid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('BANNER_BANNERS_VIEWS'), null, false);
+        $column2 = Piwi::CreateWidget('Column', $this::t('BANNERS_VIEWS'), null, false);
         $column2->SetStyle('width: 64px; white-space:nowrap;');
         $datagrid->AddColumn($column2);
-        $column3 = Piwi::CreateWidget('Column', _t('BANNER_BANNERS_CLICKS'), null, false);
+        $column3 = Piwi::CreateWidget('Column', $this::t('BANNERS_CLICKS'), null, false);
         $column3->SetStyle('width: 64px; white-space:nowrap;');
         $datagrid->AddColumn($column3);
         $column4 = Piwi::CreateWidget('Column', Jaws::t('START_TIME'), null, false);
@@ -124,10 +124,10 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
             $bGroup->AddOption($group['title'], $group['id']);
         }
         $tpl->SetVariable('bgroup_filter', $bGroup->Get());
-        $tpl->SetVariable('lbl_bgroup', _t('BANNER_GROUPS_GROUP'));
+        $tpl->SetVariable('lbl_bgroup', $this::t('GROUPS_GROUP'));
 
-        $this->gadget->define('confirmResetBannerViews',  _t('BANNER_BANNERS_CONFIRM_RESET_VIEWS'));
-        $this->gadget->define('confirmResetBannerClicks', _t('BANNER_BANNERS_CONFIRM_RESET_CLICKS'));
+        $this->gadget->define('confirmResetBannerViews',  $this::t('BANNERS_CONFIRM_RESET_VIEWS'));
+        $this->gadget->define('confirmResetBannerClicks', $this::t('BANNERS_CONFIRM_RESET_CLICKS'));
 
         $tpl->ParseBlock('Reports');
         return $tpl->Get();

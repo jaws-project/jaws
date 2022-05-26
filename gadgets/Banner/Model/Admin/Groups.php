@@ -33,7 +33,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $this->gadget->session->push(_t('BANNER_GROUPS_CREATED', $title), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_CREATED', $title), RESPONSE_NOTICE);
 
         return true;
     }
@@ -65,7 +65,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $this->gadget->session->push(_t('BANNER_GROUPS_UPDATED', $title), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_UPDATED', $title), RESPONSE_NOTICE);
 
         return true;
     }
@@ -80,7 +80,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $this->gadget->session->push(_t('BANNER_GROUPS_ERROR_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GROUPS_ERROR_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -92,7 +92,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
         }
 
         if(!isset($group['id'])) {
-            $this->gadget->session->push(_t('BANNER_GROUPS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GROUPS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -107,7 +107,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('BANNER_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_DELETED', $gid), RESPONSE_NOTICE);
 
         return true;
     }

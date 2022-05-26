@@ -25,7 +25,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         }
 
         if(!isset($banner['id'])) {
-            $this->gadget->session->push(_t('BANNER_BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -40,7 +40,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('BANNER_BANNERS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('BANNERS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -61,7 +61,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         }
 
         if(!isset($banner['id'])) {
-            $this->gadget->session->push(_t('BANNER_BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('BANNERS_ERROR_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -75,7 +75,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('BANNER_BANNERS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('BANNERS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
