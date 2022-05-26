@@ -19,7 +19,7 @@ class Phoo_Hooks_Activities extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['Photo'] = _t('PHOO_ACTIVITIES_ACTION_PHOTO');
+        $items['Photo'] = $this::t('ACTIVITIES_ACTION_PHOTO');
 
         return $items;
     }

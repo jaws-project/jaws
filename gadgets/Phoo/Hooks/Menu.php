@@ -23,7 +23,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array('url'   => $this->gadget->urlMap('Albums'),
                         'title' => $this->gadget->title);
 
-        $urls[] = array('url' => $this->gadget->urlMap('UploadPhotoUI'), 'title' => _t('PHOO_UPLOAD_PHOTO'));
+        $urls[] = array('url' => $this->gadget->urlMap('UploadPhotoUI'), 'title' => $this::t('UPLOAD_PHOTO'));
 
         //Load model
         $model  = $this->gadget->model->load('Albums');

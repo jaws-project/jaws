@@ -32,10 +32,10 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'SaveAdditionalSettings'));
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('PHOO_ADDITIONAL_SETTINGS'));
+        $fieldset = new Jaws_Widgets_FieldSet($this::t('ADDITIONAL_SETTINGS'));
 
         // Save Button
-        $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_SETTINGS'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', $this::t('SAVE_SETTINGS'), STOCK_SAVE);
         $save->SetSubmit();
 
         // Reset Button
@@ -47,50 +47,50 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $settings = $sModel->GetSettings();
 
         // Default View
-        $tpl->SetVariable('label', _t('PHOO_DEFAULT_VIEW'));
+        $tpl->SetVariable('label', $this::t('DEFAULT_VIEW'));
         $viewCombo =& Piwi::CreateWidget('Combo', 'default_action');
         $viewCombo->setContainerClass('oneline');
-        $viewCombo->SetTitle(_t('PHOO_DEFAULT_VIEW'));
-        $viewCombo->AddOption(_t('PHOO_ALBUM_LIST'), 'Albums');
-        $viewCombo->AddOption(_t('PHOO_PHOTOBLOG'), 'PhotoblogPortrait');
+        $viewCombo->SetTitle($this::t('DEFAULT_VIEW'));
+        $viewCombo->AddOption($this::t('ALBUM_LIST'), 'Albums');
+        $viewCombo->AddOption($this::t('PHOTOBLOG'), 'PhotoblogPortrait');
         $viewCombo->SetDefault($settings['default_action']);
 
         // Default status
         $statusCombo =& Piwi::CreateWidget('Combo', 'published');
         $statusCombo->setContainerClass('oneline');
-        $statusCombo->SetTitle(_t('PHOO_DEFAULT_STATUS'));
-        $statusCombo->AddOption(_t('PHOO_PUBLISHED'), 'true');
-        $statusCombo->AddOption(_t('PHOO_HIDDEN'), 'false');
+        $statusCombo->SetTitle($this::t('DEFAULT_STATUS'));
+        $statusCombo->AddOption($this::t('PUBLISHED'), 'true');
+        $statusCombo->AddOption($this::t('HIDDEN'), 'false');
         $statusCombo->SetDefault($settings['published']);
 
         // Albums Order type
         $albumsorderType =& Piwi::CreateWidget('Combo', 'albums_order_type');
         $albumsorderType->setContainerClass('oneline');
-        $albumsorderType->SetTitle(_t('PHOO_ALBUMS_ORDER_TYPE'));
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &darr;', 'createtime');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime desc');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &darr;', 'name');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &uarr;', 'name desc');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &darr;', 'id');
-        $albumsorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &uarr;', 'id desc');
+        $albumsorderType->SetTitle($this::t('ALBUMS_ORDER_TYPE'));
+        $albumsorderType->AddOption($this::t('ORDER_TYPE_BY_CREATETIME') . ' &darr;', 'createtime');
+        $albumsorderType->AddOption($this::t('ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime desc');
+        $albumsorderType->AddOption($this::t('ORDER_TYPE_BY_NAME') . ' &darr;', 'name');
+        $albumsorderType->AddOption($this::t('ORDER_TYPE_BY_NAME') . ' &uarr;', 'name desc');
+        $albumsorderType->AddOption($this::t('ORDER_TYPE_BY_ID') . ' &darr;', 'id');
+        $albumsorderType->AddOption($this::t('ORDER_TYPE_BY_ID') . ' &uarr;', 'id desc');
         $albumsorderType->SetDefault($settings['albums_order_type']);
 
         // Photos Order type
         $photosorderType =& Piwi::CreateWidget('Combo', 'photos_order_type');
         $photosorderType->setContainerClass('oneline');
-        $photosorderType->SetTitle(_t('PHOO_PHOTOS_ORDER_TYPE'));
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &darr;', 'createtime');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime desc');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &darr;', 'title');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_NAME') . ' &uarr;', 'title desc');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &darr;', 'id');
-        $photosorderType->AddOption(_t('PHOO_ORDER_TYPE_BY_ID') . ' &uarr;', 'id desc');
+        $photosorderType->SetTitle($this::t('PHOTOS_ORDER_TYPE'));
+        $photosorderType->AddOption($this::t('ORDER_TYPE_BY_CREATETIME') . ' &darr;', 'createtime');
+        $photosorderType->AddOption($this::t('ORDER_TYPE_BY_CREATETIME') . ' &uarr;', 'createtime desc');
+        $photosorderType->AddOption($this::t('ORDER_TYPE_BY_NAME') . ' &darr;', 'title');
+        $photosorderType->AddOption($this::t('ORDER_TYPE_BY_NAME') . ' &uarr;', 'title desc');
+        $photosorderType->AddOption($this::t('ORDER_TYPE_BY_ID') . ' &darr;', 'id');
+        $photosorderType->AddOption($this::t('ORDER_TYPE_BY_ID') . ' &uarr;', 'id desc');
         $photosorderType->SetDefault($settings['photos_order_type']);
 
         // Comments
         $commCombo =& Piwi::CreateWidget('Combo', 'allow_comments');
         $commCombo->setContainerClass('oneline');
-        $commCombo->SetTitle(_t('PHOO_COMMENTS'));
+        $commCombo->SetTitle($this::t('COMMENTS'));
         $commCombo->AddOption(Jaws::t('ENABLED'), 'true');
         $commCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $commCombo->SetDefault($settings['allow_comments']);
@@ -98,7 +98,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         // Moderate comments
         $moderateCombo =& Piwi::CreateWidget('Combo', 'comment_status');
         $moderateCombo->setContainerClass('oneline');
-        $moderateCombo->SetTitle(_t('PHOO_MODERATE_COMMENTS'));
+        $moderateCombo->SetTitle($this::t('MODERATE_COMMENTS'));
         $moderateCombo->AddOption(Jaws::t('YESS'), 'waiting');
         $moderateCombo->AddOption(Jaws::t('NOO'), 'approved');
         $moderateCombo->SetDefault($settings['comment_status']);
@@ -106,7 +106,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         // Keep original
         $keepCombo =& Piwi::CreateWidget('Combo', 'keep_original');
         $keepCombo->setContainerClass('oneline');
-        $keepCombo->SetTitle(_t('PHOO_KEEP_ORIGINAL'));
+        $keepCombo->SetTitle($this::t('KEEP_ORIGINAL'));
         $keepCombo->AddOption(Jaws::t('ENABLED'), 'true');
         $keepCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $keepCombo->SetDefault($settings['keep_original']);
@@ -114,13 +114,13 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         // Show EXIF info
         $exifCombo =& Piwi::CreateWidget('Combo', 'show_exif_info');
         $exifCombo->setContainerClass('oneline');
-        $exifCombo->SetTitle(_t('PHOO_SHOW_EXIF_INFO'));
+        $exifCombo->SetTitle($this::t('SHOW_EXIF_INFO'));
         $exifCombo->AddOption(Jaws::t('ENABLED'), 'true');
         $exifCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $exifCombo->SetDefault($settings['show_exif_info']);
 
         // Moblog
-        $moblogLimitCombo =& Piwi::CreateWidget('Combo', 'moblog_limit', _t('PHOO_MOBLOG_LIMIT'));
+        $moblogLimitCombo =& Piwi::CreateWidget('Combo', 'moblog_limit', $this::t('MOBLOG_LIMIT'));
         $moblogLimitCombo->setContainerClass('oneline');
         $moblogLimitCombo->AddOption('5', '5');
         $moblogLimitCombo->AddOption('10', '10');
@@ -130,7 +130,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
 
         // Photoblog
         $albums = $aModel->GetAlbums('name', 'ASC');
-        $photoblogAlbumCombo =& Piwi::CreateWidget('Combo', 'photoblog_album', _t('PHOO_PHOTOBLOG_ALBUM'));
+        $photoblogAlbumCombo =& Piwi::CreateWidget('Combo', 'photoblog_album', $this::t('PHOTOBLOG_ALBUM'));
         $photoblogAlbumCombo->setContainerClass('oneline');
         $photoblogAlbumCombo->AddOption('&nbsp;', '');
         if (!Jaws_Error::IsError($albums)) {
@@ -138,14 +138,14 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
             foreach ($albums as $a) {
                 // FIXME: Ugly hack to add title to photoblogAlbumCombo
                 $o =& Piwi::CreateWidget('ComboOption', $a['name'], $a['name']);
-                $o->SetTitle(_t('PHOO_NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
-                _t('PHOO_ALBUM_CREATION_DATE') . ': ' . $date->Format($a['createtime']));
+                $o->SetTitle($this::t('NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
+                $this::t('ALBUM_CREATION_DATE') . ': ' . $date->Format($a['createtime']));
                 $photoblogAlbumCombo->_options[$a['name']] = $o;
             }
         }
         $photoblogAlbumCombo->SetDefault($settings['photoblog_album']);
 
-        $photoblogLimitCombo =& Piwi::CreateWidget('Combo', 'photoblog_limit', _t('PHOO_PHOTOBLOG_LIMIT'));
+        $photoblogLimitCombo =& Piwi::CreateWidget('Combo', 'photoblog_limit', $this::t('PHOTOBLOG_LIMIT'));
         $photoblogLimitCombo->setContainerClass('oneline');
         $photoblogLimitCombo->AddOption('5', '5');
         $photoblogLimitCombo->AddOption('10', '10');
@@ -154,9 +154,9 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $photoblogLimitCombo->SetDefault($settings['photoblog_limit']);
 
         // Images per Page
-        $thumbnailLimitCombo =& Piwi::CreateWidget('Combo', 'thumbnail_limit', _t('PHOO_THUMBNAIL_LIMIT'));
+        $thumbnailLimitCombo =& Piwi::CreateWidget('Combo', 'thumbnail_limit', $this::t('THUMBNAIL_LIMIT'));
         $thumbnailLimitCombo->setContainerClass('oneline');
-        $thumbnailLimitCombo->AddOption(_t('PHOO_FULL_ALBUM'), '0');
+        $thumbnailLimitCombo->AddOption($this::t('FULL_ALBUM'), '0');
         $thumbnailLimitCombo->AddOption('10', '10');
         $thumbnailLimitCombo->AddOption('20', '20');
         $thumbnailLimitCombo->AddOption('40', '40');

@@ -20,7 +20,7 @@ class Phoo_Hooks_Users extends Jaws_Gadget_Hook
         $entities = array();
 
         // user photos
-        $entities[0]['title'] = _t('PHOO_USER_PHOTOS', $uname);
+        $entities[0]['title'] = $this::t('USER_PHOTOS', $uname);
         $entities[0]['url'] = $this->gadget->urlMap('ViewUserPhotos', array('user' => $uid));
 
         return $entities;

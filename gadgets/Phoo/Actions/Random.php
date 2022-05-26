@@ -32,7 +32,7 @@ class Phoo_Actions_Random extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('PHOO_ALBUMS'),
+                'title' => $this::t('ALBUMS'),
                 'value' => $palbums
             );
         }
@@ -63,7 +63,7 @@ class Phoo_Actions_Random extends Jaws_Gadget_Action
             $tpl->SetVariable('width',  $imgData[0]);
             $tpl->SetVariable('height', $imgData[1]);
         }
-        $tpl->SetVariable('title',_t('PHOO_ACTIONS_RANDOM'));
+        $tpl->SetVariable('title',$this::t('ACTIONS_RANDOM'));
         $tpl->SetVariable(
             'url',
             $this->gadget->urlMap(

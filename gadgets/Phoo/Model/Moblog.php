@@ -31,12 +31,12 @@ class Phoo_Model_Moblog extends Phoo_Model_Common
 
         $limit = $this->gadget->registry->fetch('moblog_limit');
         if (Jaws_Error::isError($limit)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'));
+            return new Jaws_Error($this::t('ERROR_GETMOBLOG'));
         }
 
         $result = $table->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'));
+            return new Jaws_Error($this::t('ERROR_GETMOBLOG'));
         }
 
         foreach ($result as $key => $image) {

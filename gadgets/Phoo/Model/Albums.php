@@ -26,13 +26,13 @@ class Phoo_Model_Albums extends Phoo_Model_Common
 
         $albums = $table->fetchAll();
         if (Jaws_Error::IsError($albums)) {
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUMLIST'));
+            return new Jaws_Error($this::t('ERROR_ALBUMLIST'));
         }
 
         // Add unknown photo album to albums list
         array_push($albums, array('id' => 0,
-            'name' => _t('PHOO_WITHOUT_ALBUM'),
-            'description' => _t('PHOO_WITHOUT_ALBUM_DESCRIPTION'),
+            'name' => $this::t('WITHOUT_ALBUM'),
+            'description' => $this::t('WITHOUT_ALBUM_DESCRIPTION'),
             'createtime' => date('Y-m-d H:i:s')));
 
         for ($i = 0; $i < count($albums); $i++) {
@@ -122,7 +122,7 @@ class Phoo_Model_Albums extends Phoo_Model_Common
 
         $rows = $table->fetchAll();
         if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUMS', $by));
+            return new Jaws_Error($this::t('ERROR_ALBUMS', $by));
         }
 
         $ret = array();

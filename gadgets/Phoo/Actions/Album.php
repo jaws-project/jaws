@@ -31,7 +31,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('PHOO_ALBUMS'),
+                'title' => $this::t('ALBUMS'),
                 'value' => $palbums
             );
         }
@@ -49,7 +49,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Albums.html');
         $tpl->SetBlock('albums');
-        $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
+        $tpl->SetVariable('title', $this::t('ALBUMS'));
         $model = $this->gadget->model->load('Albums');
         $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
@@ -70,7 +70,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
                 $tpl->SetVariable('name',     $album['name']);
                 $tpl->SetVariable('filename', $album['filename']);
                 $tpl->SetVariable('thumb',    $this->app->getDataURL('phoo/' . $album['thumb']));
-                $tpl->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
+                $tpl->SetVariable('howmany',  $this::t('NUM_PHOTOS_ALBUM', $album['qty']));
                 $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
                 $tpl->SetVariable('createtime', $date->Format($album['createtime']));
                 $tpl->ParseBlock('albums/item');

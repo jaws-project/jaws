@@ -62,11 +62,11 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
         }
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetClass('hbox');
-        $submit =& Piwi::CreateWidget('Button', 'other_pic_button', _t('PHOO_SELECT_OTHER_IMAGE'), STOCK_LEFT);
+        $submit =& Piwi::CreateWidget('Button', 'other_pic_button', $this::t('SELECT_OTHER_IMAGE'), STOCK_LEFT);
         $submit->SetSubmit();
         if (empty($image)) {
             $tpl->SetBlock('ImageSelect/not_published');
-            $tpl->SetVariable('not_published_label', _t('PHOO_NOT_PUBLISHED'));
+            $tpl->SetVariable('not_published_label', $this::t('NOT_PUBLISHED'));
             if (isset($r_album)){
                 $tpl->SetVariable('album', $r_album);
             }
@@ -82,12 +82,12 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
             if (isset($r_album)){
                 $tpl->SetVariable('album',$r_album);
             }
-            $tpl->SetVariable('t_title',            _t('PHOO_PHOTO_TITLE'));
+            $tpl->SetVariable('t_title',            $this::t('PHOTO_TITLE'));
             $tpl->SetVariable('t_desc',             Jaws::t('DESCRIPTION'));
-            $tpl->SetVariable('t_size',             _t('PHOO_SIZE'));
-            $tpl->SetVariable('t_thumb',            _t('PHOO_THUMB'));
-            $tpl->SetVariable('t_medium',           _t('PHOO_MEDIUM'));
-            $tpl->SetVariable('insert_image_title', _t('PHOO_INSERTIMAGE'));
+            $tpl->SetVariable('t_size',             $this::t('SIZE'));
+            $tpl->SetVariable('t_thumb',            $this::t('THUMB'));
+            $tpl->SetVariable('t_medium',           $this::t('MEDIUM'));
+            $tpl->SetVariable('insert_image_title', $this::t('INSERTIMAGE'));
             $tpl->SetVariable('s_image',            $this->app->getDataURL('phoo/' . $image['medium']));
             $tpl->SetVariable('s_name',             $title);
             $tpl->SetVariable('s_desc',             $desc);
@@ -96,11 +96,11 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
 
             if ($editor === 'TextArea') {
                 $tpl->SetBlock('ImageSelect/selected/linked');
-                $tpl->SetVariable('include_link', _t('PHOO_INCLUDE_LINK_TO_ALBUM'));
+                $tpl->SetVariable('include_link', $this::t('INCLUDE_LINK_TO_ALBUM'));
                 $tpl->ParseBlock('ImageSelect/selected/linked');
             }
 
-            $insert_pic =& Piwi::CreateWidget('Button', 'insert_pic__button', _t('PHOO_INSERTIMAGE'), STOCK_SAVE);
+            $insert_pic =& Piwi::CreateWidget('Button', 'insert_pic__button', $this::t('INSERTIMAGE'), STOCK_SAVE);
             $insert_pic->AddEvent(ON_CLICK, "insertImage('$filename', 
                                                          this.form.s_title.value, 
                                                          this.form.s_desc.value, 
@@ -112,7 +112,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
             $tpl->SetVariable('button_bar',$buttonbox->Get());
             if ($this->gadget->registry->fetch('keep_original') == 'true') {
                 $tpl->SetBlock('ImageSelect/selected/original');
-                $tpl->SetVariable('t_original',_t('PHOO_ORIGINAL'));
+                $tpl->SetVariable('t_original',$this::t('ORIGINAL'));
                 $tpl->ParseBlock('ImageSelect/selected/original');
             }
             $tpl->ParseBlock('ImageSelect/selected');

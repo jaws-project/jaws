@@ -50,14 +50,14 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
             $tpl->SetBlock("phoo_browse/upload_photo");
             $tpl->SetVariable('base_script', BASE_SCRIPT);
             $tpl->SetVariable('extra_params', $extraParams);
-            $tpl->SetVariable('lbl_file_upload', _t('PHOO_UPLOAD_PHOTO'));
+            $tpl->SetVariable('lbl_file_upload', $this::t('UPLOAD_PHOTO'));
 
             $uploadfile =& Piwi::CreateWidget('FileEntry', 'photo1', '');
             $uploadfile->SetID('photo1');
-            $tpl->SetVariable('lbl_filename', _t('PHOO_IMAGE_LABEL'));
+            $tpl->SetVariable('lbl_filename', $this::t('IMAGE_LABEL'));
             $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('PHOO_UPLOAD_PHOTOS'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', $this::t('UPLOAD_PHOTOS'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript:uploadPhoto();");
             $tpl->SetVariable('btn_upload_file', $btnSave->Get());
             $tpl->ParseBlock("phoo_browse/upload_photo");
@@ -114,8 +114,8 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                 }
                 // FIXME: Ugly hack to add title to albumcombo
                 $o =& Piwi::CreateWidget('ComboOption', $a['id'], $a['name']);
-                $o->SetTitle(_t('PHOO_NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
-                            _t('PHOO_ALBUM_CREATION_DATE'). ' '.$objDate->Format($a['createtime']));
+                $o->SetTitle($this::t('NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
+                            $this::t('ALBUM_CREATION_DATE'). ' '.$objDate->Format($a['createtime']));
                 $albumcombo->_options[$a['id']] = $o;
             }
 
@@ -137,7 +137,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
 
             $albumcombo->SetDefault($r_album);
             $albumcombo->AddEvent (new JSEvent (ON_CHANGE, "document.album_form.submit();"));
-            $tpl->SetVariable('albums', _t('PHOO_ALBUMS'));
+            $tpl->SetVariable('albums', $this::t('ALBUMS'));
             $tpl->SetVariable('albums_combo', $albumcombo->Get());
 
             // Ugly hack to convert $r_album to array...
@@ -187,7 +187,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                                     $tpl->SetVariable('width',  60);
                                     $tpl->SetVariable('height', 60);
                                     $tpl->SetBlock('phoo_browse/photos/albums/item/notfound');
-                                    $tpl->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
+                                    $tpl->SetVariable('notfound', $this::t('NOT_FOUND'));
                                     $tpl->ParseBlock('phoo_browse/photos/albums/item/notfound');
                                 } else {
                                     $tpl->SetVariable('thumb',  $this->app->getDataURL('phoo/' . $img['thumb']));
@@ -198,14 +198,14 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                                 $tpl->SetVariable('album',  $img['albumid']);
                                 if ($img['published'] == false) {
                                     $tpl->SetBlock('phoo_browse/photos/albums/item/notpublished');
-                                    $tpl->SetVariable('notpublished', _t('PHOO_NOT_PUBLISHED'));
+                                    $tpl->SetVariable('notpublished', $this::t('NOT_PUBLISHED'));
                                     $tpl->ParseBlock('phoo_browse/photos/albums/item/notpublished');
                                 }
                                 $tpl->ParseBlock('phoo_browse/photos/albums/item');
                             }
                         } else {
                             $tpl->SetBlock('phoo_browse/photos/albums/nophotos');
-                            $tpl->SetVariable('message', _t('PHOO_ALBUM_EMPTY'));
+                            $tpl->SetVariable('message', $this::t('ALBUM_EMPTY'));
                             $tpl->ParseBlock('phoo_browse/photos/albums/nophotos');
                         }
                         $tpl->ParseBlock('phoo_browse/photos/albums');
@@ -228,7 +228,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
             $tpl->ParseBlock('phoo_browse/photos');
         } else {
             $tpl->SetBlock('phoo_browse/noalbums');
-            $tpl->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));
+            $tpl->SetVariable('message', $this::t('EMPTY_ALBUMSET'));
             $tpl->ParseBlock('phoo_browse/noalbums');
         }
 

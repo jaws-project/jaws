@@ -34,7 +34,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
             return '';
         }
 
-        $this->SetTitle(_t('PHOO_PHOTOBLOG'));
+        $this->SetTitle($this::t('PHOTOBLOG'));
         $tpl = $this->gadget->template->load('Photoblog.html');
         $tpl->SetBlock('photoblog_portrait');
         $first = true;

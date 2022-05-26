@@ -60,8 +60,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($album) && !empty($album) && $album['published']) {
             // display album info
             if ($req_album == 0) {
-                $tpl->SetVariable('title', _t('PHOO_UNKNOW_ALBUM'));
-                $this->SetTitle(_t('PHOO_UNKNOW_ALBUM'));
+                $tpl->SetVariable('title', $this::t('UNKNOW_ALBUM'));
+                $this->SetTitle($this::t('UNKNOW_ALBUM'));
                 $tpl->SetVariable('description', '');
             } else {
                 $tpl->SetVariable('title', $album['name']);
@@ -108,7 +108,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                 $total,
                 'Photos',
                 array('album' => $req_album),
-                _t('PHOO_PHOTOS_COUNT', $total)
+                $this::t('PHOTOS_COUNT', $total)
             );
         } else {
             return Jaws_HTTPError::Get(404);
@@ -149,7 +149,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $this->SetTitle($image['name']);
         $tpl->SetBlock('ViewImage');
         $tpl->SetVariable('title',       $image['name']);
-        $tpl->SetVariable('posted_by',   _t('PHOO_POSTED_BY'));
+        $tpl->SetVariable('posted_by',   $this::t('POSTED_BY'));
         $tpl->SetVariable('img_author',  $image['author']);
         $tpl->SetVariable('name',        $image['name']);
         $tpl->SetVariable('filename',    $image['filename']);
@@ -216,40 +216,40 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
 
         // Pager
         $tpl->SetBlock('ViewImage/navigation');
-        $tpl->SetVariable('lbl_page_counter', _t('PHOO_PHOTO_COUNTER', $image['pos'], $image['total']));
-        $tpl->SetVariable('lbl_thumbs', _t('PHOO_THUMBS'));
+        $tpl->SetVariable('lbl_page_counter', $this::t('PHOTO_COUNTER', $image['pos'], $image['total']));
+        $tpl->SetVariable('lbl_thumbs', $this::t('THUMBS'));
         $url = $this->gadget->urlMap('Photos', array('album' => $albumid));
         $tpl->SetVariable('url_thumbs', $url);
 
         if ($image['first'] != $image['id']) {
             $tpl->SetBlock('ViewImage/navigation/no-first-photo');
-            $tpl->SetVariable('lbl_first', _t('PHOO_FIRST'));
+            $tpl->SetVariable('lbl_first', $this::t('FIRST'));
             $url = $this->gadget->urlMap('Photo', array('photo' => $image['first'], 'album' => $albumid));
             $tpl->SetVariable('url_first', $url);
-            $tpl->SetVariable('lbl_prev', _t('PHOO_PREVIOUS'));
+            $tpl->SetVariable('lbl_prev', $this::t('PREVIOUS'));
             $url = $this->gadget->urlMap('Photo', array('photo' => $image['previous'], 'album' => $albumid));
             $tpl->SetVariable('url_prev', $url);
             $tpl->ParseBlock('ViewImage/navigation/no-first-photo');
         } else {
             $tpl->SetBlock('ViewImage/navigation/first-photo');
-            $tpl->SetVariable('lbl_first', _t('PHOO_FIRST'));
-            $tpl->SetVariable('lbl_prev',  _t('PHOO_PREVIOUS'));
+            $tpl->SetVariable('lbl_first', $this::t('FIRST'));
+            $tpl->SetVariable('lbl_prev',  $this::t('PREVIOUS'));
             $tpl->ParseBlock('ViewImage/navigation/first-photo');
         }
 
         if ($image['last'] != $image['id']) {
             $tpl->SetBlock('ViewImage/navigation/no-last-photo');
-            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
+            $tpl->SetVariable('lbl_next', $this::t('NEXT'));
             $url = $this->gadget->urlMap('Photo', array('photo' => $image['next'], 'album' => $albumid));
             $tpl->SetVariable('url_next', $url);
-            $tpl->SetVariable('lbl_last', _t('PHOO_LAST'));
+            $tpl->SetVariable('lbl_last', $this::t('LAST'));
             $url = $this->gadget->urlMap('Photo', array('photo' => $image['last'], 'album' => $albumid));
             $tpl->SetVariable('url_last', $url);
             $tpl->ParseBlock('ViewImage/navigation/no-last-photo');
         } else {
             $tpl->SetBlock('ViewImage/navigation/last-photo');
-            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
-            $tpl->SetVariable('lbl_last', _t('PHOO_LAST'));
+            $tpl->SetVariable('lbl_next', $this::t('NEXT'));
+            $tpl->SetVariable('lbl_last', $this::t('LAST'));
             $tpl->ParseBlock('ViewImage/navigation/last-photo');
         }
 
@@ -259,12 +259,12 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         if ($settings['show_exif_info'] == 'true' && isset($image['exif']) && count($image['exif']) > 0) {
             $datatext = '';
             if (!empty($image['exif']['width'])) {
-                $datatext .= _t('PHOO_WIDTH').': '.$image['exif']['width'] . 'px<br />';
-                $datatext .= _t('PHOO_HEIGHT').': '.$image['exif']['height'] . 'px<br />';
+                $datatext .= $this::t('WIDTH').': '.$image['exif']['width'] . 'px<br />';
+                $datatext .= $this::t('HEIGHT').': '.$image['exif']['height'] . 'px<br />';
             }
 
             if (!empty($image['exif']['filesize'])) {
-                $datatext .= _t('PHOO_SIZE') . ': ' . $image['exif']['filesize'] . '<br />';
+                $datatext .= $this::t('SIZE') . ': ' . $image['exif']['filesize'] . '<br />';
             }
 
             if (!empty($image['exif']['datetime'])) {
@@ -273,24 +273,24 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             }
 
             if (!empty($image['exif']['aperture'])) {
-                $datatext .= _t('PHOO_APERTURE') . ': ' . $image['exif']['aperture'] . '<br />';
+                $datatext .= $this::t('APERTURE') . ': ' . $image['exif']['aperture'] . '<br />';
             }
 
             if (!empty($image['exif']['exposure'])) {
-                $datatext .= _t('PHOO_EXPOSURE_TIME') . ': ' . $image['exif']['exposure'] . '<br />';
+                $datatext .= $this::t('EXPOSURE_TIME') . ': ' . $image['exif']['exposure'] . '<br />';
             }
 
             if (!empty($image['exif']['focallength'])) {
-                $datatext .= _t('PHOO_FOCAL_LENGTH') . ': ' . $image['exif']['focallength'];
+                $datatext .= $this::t('FOCAL_LENGTH') . ': ' . $image['exif']['focallength'];
             }
 
             $tpl->SetBlock('ViewImage/exif');
-            $tpl->SetVariable('exif_info', _t('PHOO_EXIF_INFO'));
+            $tpl->SetVariable('exif_info', $this::t('EXIF_INFO'));
             $tpl->SetVariable('cameraimg', $image['exif']['cameraimg']);
             if (!empty($image['exif']['camera']))  {
                 $tpl->SetVariable('camera', $image['exif']['camera']);
             } else {
-                $tpl->SetVariable('camera', _t('PHOO_UNKNOWN_CAM'));
+                $tpl->SetVariable('camera', $this::t('UNKNOWN_CAM'));
             }
             $tpl->SetVariable('data', $datatext);
             $tpl->ParseBlock('ViewImage/exif');
@@ -327,8 +327,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $this->SetTitle(_t('PHOO_UPLOAD_PHOTO'));
-        $tpl->SetVariable('title', _t('PHOO_UPLOAD_PHOTO'));
+        $this->SetTitle($this::t('UPLOAD_PHOTO'));
+        $tpl->SetVariable('title', $this::t('UPLOAD_PHOTO'));
 
         $tpl->SetVariable('lbl_file', Jaws::t('FILE'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
@@ -381,7 +381,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             );
         } else {
             $this->gadget->session->push(
-                _t('PHOO_PHOTO_ADDED'),
+                $this::t('PHOTO_ADDED'),
                 RESPONSE_NOTICE,
                 'UploadPhoto'
             );

@@ -31,7 +31,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('UploadPhotos'));
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $phooFieldset = new Jaws_Widgets_FieldSet(_t('PHOO_UPLOAD_PHOTOS'));
+        $phooFieldset = new Jaws_Widgets_FieldSet($this::t('UPLOAD_PHOTOS'));
         $phooFieldset->SetDirection('vertical');
         $phooFieldset->SetId('phoo_fieldset');
         $phooForm =& Piwi::CreateWidget('Form',
@@ -42,15 +42,15 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Phoo'));
         $phooForm->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'UploadPhotosStep2'));
 
-        $albumcombo =& Piwi::CreateWidget('Combo', 'album', _t('PHOO_ALBUM'));
+        $albumcombo =& Piwi::CreateWidget('Combo', 'album', $this::t('ALBUM'));
         $albums = $model->GetAlbums('name', 'ASC');
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $date = Jaws_Date::getInstance();
             foreach ($albums as $a) {
                 // FIXME: Ugly hack to add title to albumcombo
                 $o =& Piwi::CreateWidget('ComboOption', $a['id'], $a['name']);
-                $o->SetTitle(_t('PHOO_NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
-                _t('PHOO_ALBUM_CREATION_DATE', $date->Format($a['createtime'])));
+                $o->SetTitle($this::t('NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
+                $this::t('ALBUM_CREATION_DATE', $date->Format($a['createtime'])));
                 $albumcombo->_options[$a['id']] = $o;
             }
         }
@@ -58,19 +58,19 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $phooFieldset->Add($albumcombo);
         for ($i = 1; $i <= 5; $i++) {
             $imageEntry =& Piwi::CreateWidget('FileEntry', 'photo'.$i);
-            $imageEntry->SetTitle(_t('PHOO_PHOTO').' '.$i);
+            $imageEntry->SetTitle($this::t('PHOTO').' '.$i);
             $phooFieldset->Add($imageEntry);
         }
 
-        $addEntryButton =& Piwi::CreateWidget('Button', 'addEntryButton', _t('PHOO_ADD_ANOTHER_PHOTO'), STOCK_ADD);
-        $addEntryButton->AddEvent(ON_CLICK, "addEntry('" . _t('PHOO_PHOTO') . "');");
-        $addEntryUrl = '<span id="phoo_addentry6"><div><a href="#" onclick="addEntry(\'' . _t('PHOO_PHOTO') . '\');">' . _t('PHOO_ADD_ANOTHER_PHOTO') . '</a></div></span>';
+        $addEntryButton =& Piwi::CreateWidget('Button', 'addEntryButton', $this::t('ADD_ANOTHER_PHOTO'), STOCK_ADD);
+        $addEntryButton->AddEvent(ON_CLICK, "addEntry('" . $this::t('PHOTO') . "');");
+        $addEntryUrl = '<span id="phoo_addentry6"><div><a href="#" onclick="addEntry(\'' . $this::t('PHOTO') . '\');">' . $this::t('ADD_ANOTHER_PHOTO') . '</a></div></span>';
         $addEntryArea = '<span id="phoo_addentry6"><div>' . $addEntryButton->Get() . '</div></span>';
         $addEntry =& Piwi::CreateWidget('StaticEntry', $addEntryArea);
         $phooFieldset->Add($addEntry);
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetStyle(Jaws::t('LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;'); //hig style
-        $submit =& Piwi::CreateWidget('Button', 'uploadphotos', _t('PHOO_UPLOAD_PHOTOS'), STOCK_SAVE);
+        $submit =& Piwi::CreateWidget('Button', 'uploadphotos', $this::t('UPLOAD_PHOTOS'), STOCK_SAVE);
         $submit->SetSubmit();
         $buttonbox->Add($submit);
         $phooForm->Add($phooFieldset);
@@ -123,7 +123,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
                 if (!Jaws_Error::IsError($id)) {
                     $uploadedImages[] = $id;
                 } else {
-                    $failures[] = _t('PHOO_UPLOAD_FAILURE').' <strong>'.$name.'.'.$ext.'</strong>';
+                    $failures[] = $this::t('UPLOAD_FAILURE').' <strong>'.$name.'.'.$ext.'</strong>';
                 }
             }
         }

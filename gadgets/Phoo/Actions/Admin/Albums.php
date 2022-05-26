@@ -42,7 +42,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
 
         $name =& Piwi::CreateWidget('Entry', 'name');
         $name->SetStyle('width: 100%;');
-        $tpl->SetVariable('name', _t('PHOO_ALBUM_NAME'));
+        $tpl->SetVariable('name', $this::t('ALBUM_NAME'));
         $tpl->SetVariable('name_field', $name->get());
 
         // Allow Comments
@@ -52,21 +52,21 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         } else {
             $selected = false;
         }
-        $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', null, $selected);
+        $comments->AddOption($this::t('ALLOW_COMMENTS'), '1', null, $selected);
         $tpl->SetVariable('allow_comments_field', $comments->get());
 
         // Status
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
         $statCombo->setId('published');
-        $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
-        $statCombo->AddOption(_t('PHOO_PUBLISHED'), '1');
+        $statCombo->AddOption($this::t('HIDDEN'), '0');
+        $statCombo->AddOption($this::t('PUBLISHED'), '1');
         if ($this->gadget->registry->fetch('published') === 'true') {
             $published = true;
         } else {
             $published = false;
         }
         $statCombo->SetDefault($published);
-        $tpl->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status', $this::t('STATUS'));
         $tpl->SetVariable('status_field', $statCombo->get());
 
         $desc = isset($description) ? $description : '';
@@ -76,7 +76,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
-        $tpl->SetVariable('lbl_description', _t('PHOO_ALBUM_DESC'));
+        $tpl->SetVariable('lbl_description', $this::t('ALBUM_DESC'));
 
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
@@ -93,7 +93,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $cancel =& Piwi::CreateWidget('Button', 'cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, 'history.go(-1)');
         $tpl->SetVariable('cancel', $cancel->Get());
-        $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', $this::t('SAVE_CHANGES'), STOCK_SAVE);
         $save->SetSubmit(true);
         $tpl->SetVariable('save', $save->Get());
 
@@ -170,7 +170,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
 
         $name =& Piwi::CreateWidget('Entry', 'name', $album['name']);
         $name->SetStyle('width: 100%;');
-        $tpl->SetVariable('name', _t('PHOO_ALBUM_NAME'));
+        $tpl->SetVariable('name', $this::t('ALBUM_NAME'));
         $tpl->SetVariable('name_field', $name->get());
 
         // Allow Comments
@@ -180,22 +180,22 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         } else {
             $selected = false;
         }
-        $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', null, $selected);
+        $comments->AddOption($this::t('ALLOW_COMMENTS'), '1', null, $selected);
         $tpl->SetVariable('allow_comments_field', $comments->get());
 
         // Status
-        $tpl->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status', $this::t('STATUS'));
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
         $statCombo->setId('published');
-        $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
-        $statCombo->AddOption(_t('PHOO_PUBLISHED'), '1');
+        $statCombo->AddOption($this::t('HIDDEN'), '0');
+        $statCombo->AddOption($this::t('PUBLISHED'), '1');
         if ($album['published'] == true) {
             $published = true;
         } else {
             $published = false;
         }
         $statCombo->SetDefault($published);
-        $tpl->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status', $this::t('STATUS'));
         $tpl->SetVariable('status_field', $statCombo->get());
 
         $editor =& $this->app->loadEditor('Phoo', 'description', $album['description'], false);
@@ -204,7 +204,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         // FIXME: Ugly hack to set rows in editor
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
-        $tpl->SetVariable('lbl_description', _t('PHOO_ALBUM_DESC'));
+        $tpl->SetVariable('lbl_description', $this::t('ALBUM_DESC'));
 
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $album['meta_keywords']);
@@ -221,7 +221,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $cancel =& Piwi::CreateWidget('Button', 'cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "gotoLocation({$get['album']})");
         $tpl->SetVariable('cancel', $cancel->Get());
-        $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', $this::t('SAVE_CHANGES'), STOCK_SAVE);
         $save->SetSubmit(true);
         $tpl->SetVariable('save', $save->Get());
 

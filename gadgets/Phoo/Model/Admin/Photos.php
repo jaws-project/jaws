@@ -41,8 +41,8 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'));
+            $this->gadget->session->push($this::t('ERROR_CANT_UPDATE_PHOTO'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CANT_UPDATE_PHOTO'));
         }
 
         if ($albums !== null) {
@@ -55,7 +55,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
             $tModel->InsertReferenceTags('Phoo', 'image', $id, $data['published'], time(), $tags);
         }
 
-        $this->gadget->session->push(_t('PHOO_PHOTO_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('PHOTO_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -72,22 +72,22 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $image = $table->select('filename')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($image)) {
-            $this->gadget->session->push(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
+            $this->gadget->session->push($this::t('IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         $table->reset();
         $result = $table->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
+            $this->gadget->session->push($this::t('IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         $table = Jaws_ORM::getInstance()->table('phoo_image_album');
         $result = $table->delete()->where('phoo_image_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
+            $this->gadget->session->push($this::t('IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         if (!empty($image['filename'])) {
@@ -96,7 +96,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
             Jaws_FileManagement_File::delete(ROOT_DATA_PATH . 'phoo/' . $this->GetThumbPath($image['filename']));
         }
 
-        $this->gadget->session->push(_t('PHOO_PHOTO_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('PHOTO_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -116,21 +116,21 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
     {
         // check if it's really a uploaded file.
         /*if (is_uploaded_file($files['tmp_name'])) {
-            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+            $this->gadget->session->push($this::t('ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO'));
         }*/
 
         if (!preg_match("/\.png$|\.jpg$|\.jpeg$|\.gif$/i", $files['name'])) {
-            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'));
+            $this->gadget->session->push($this::t('ERROR_CANT_UPLOAD_PHOTO_EXT'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO_EXT'));
         }
 
         // Create directories
         $uploaddir = ROOT_DATA_PATH . 'phoo/' . date('Y_m_d') . '/';
         if (!Jaws_FileManagement_File::is_dir($uploaddir)) {
             if (!Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH . 'phoo/')) {
-                $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+                $this->gadget->session->push($this::t('ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO'));
             }
 
             $new_dirs = array();
@@ -139,8 +139,8 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
             $new_dirs[] = $uploaddir . 'medium';
             foreach ($new_dirs as $new_dir) {
                 if (!Jaws_FileManagement_File::mkdir($new_dir)) {
-                    $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+                    $this->gadget->session->push($this::t('ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                    return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO'));
                 }
             }
         }
@@ -177,7 +177,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         $objImage->free();
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
-            $this->gadget->session->push(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
@@ -188,7 +188,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'));
+            return new Jaws_Error($this::t('ERROR_CANT_RESIZE_TO_MEDIUM'));
         }
 
         $data = array();
@@ -230,8 +230,8 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+            $this->gadget->session->push($this::t('ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO'));
         }
 
         // Lets remove the original if keep_original = false
@@ -246,7 +246,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         $saParams['action'] = 'Photo';
         $this->gadget->event->shout('Activities', $saParams);
 
-        $this->gadget->session->push(_t('PHOO_PHOTO_ADDED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('PHOTO_ADDED'), RESPONSE_NOTICE);
         return $result;
     }
 
@@ -267,8 +267,8 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         $table = Jaws_ORM::getInstance()->table('phoo_image_album', '', '');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'));
+            $this->gadget->session->push($this::t('ERROR_CANT_ADD_ENTRY_TO_ALBUM'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CANT_ADD_ENTRY_TO_ALBUM'));
         }
 
         return true;
@@ -298,7 +298,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
             }
         }
 
-        $this->gadget->session->push(_t('PHOO_ALBUMS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('ALBUMS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 }

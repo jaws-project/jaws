@@ -78,7 +78,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $albumcombo->SetMultiple(true);
 
             $free_photos[] = array('id'         => 0,
-                'name'       => _t('PHOO_WITHOUT_ALBUM'),
+                'name'       => $this::t('WITHOUT_ALBUM'),
                 'createtime' => date('Y-m-d H:i:s'),
                 'howmany'    => 0);
             $albums = array_merge($free_photos, $albums);
@@ -86,8 +86,8 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             foreach ($albums as $a) {
                 // FIXME: Ugly hack to add title to albumcombo
                 $o =& Piwi::CreateWidget('ComboOption', $a['id'], $a['name']);
-                $o->SetTitle(_t('PHOO_NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
-                _t('PHOO_ALBUM_CREATION_DATE', $objDate->Format($a['createtime'])));
+                $o->SetTitle($this::t('NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
+                $this::t('ALBUM_CREATION_DATE', $objDate->Format($a['createtime'])));
                 $albumcombo->_options[$a['id']] = $o;
             }
 
@@ -100,11 +100,11 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
             $albumcombo->SetDefault($r_album);
             $albumcombo->AddEvent(ON_CHANGE, 'this.form.submit();');
-            $tpl->SetVariable('albums', _t('PHOO_ALBUMS'));
+            $tpl->SetVariable('albums', $this::t('ALBUMS'));
             $tpl->SetVariable('albums_combo', $albumcombo->Get());
 
             if ($this->gadget->GetPermission('ManageAlbums')) {
-                $newalbum =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
+                $newalbum =& Piwi::CreateWidget('Button', 'newalbum', $this::t('CREATE_NEW_ALBUM'), STOCK_NEW);
                 $newalbum->AddEvent(ON_CLICK, "this.form.reqAction.value='NewAlbum'; this.form.submit();");
                 $tpl->SetVariable('new_album', $newalbum->Get());
             } else {
@@ -146,13 +146,13 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                         $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
                         $tpl->SetVariable('createtime', $objDate->Format($album['createtime']));
                         $upload_url = BASE_SCRIPT."?reqGadget=Phoo&amp;reqAction=UploadPhotos&amp;album={$album['id']}";
-                        $manageAlbumActions = "<a href=\"{$upload_url}\">"._t('PHOO_UPLOAD_PHOTOS')."</a>";
+                        $manageAlbumActions = "<a href=\"{$upload_url}\">".$this::t('UPLOAD_PHOTOS')."</a>";
                         $manageAlbumActions.= " | <a href=\"".BASE_SCRIPT."?reqGadget=Phoo&amp;reqAction=EditAlbum&amp;album={$album['id']}\">".
-                            _t('PHOO_EDIT_DESCRIPTION')."</a>";
+                            $this::t('EDIT_DESCRIPTION')."</a>";
                         $manageAlbumActions.= " | <a href=\"javascript:void(0);\" onclick=\"if (confirm('".
-                            _t('PHOO_DELETE_ALBUM_CONFIRM').
+                            $this::t('DELETE_ALBUM_CONFIRM').
                             "')) { window.location = '".BASE_SCRIPT.'?reqGadget=Phoo&amp;reqAction=DeleteAlbum&amp'.
-                            ";album={$album['id']}';  }\">"._t('PHOO_DELETE_ALBUM')."</a>";
+                            ";album={$album['id']}';  }\">".$this::t('DELETE_ALBUM')."</a>";
                         if ($album['id'] != 0) {
                             $tpl->SetVariable('actions', $manageAlbumActions);
                         } else {
@@ -171,7 +171,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                                     $tpl->SetVariable('width',  60);
                                     $tpl->SetVariable('height', 60);
                                     $tpl->SetBlock('phoo/photos/albums/item/notfound');
-                                    $tpl->SetVariable('notfound', _t('PHOO_NOT_FOUND'));
+                                    $tpl->SetVariable('notfound', $this::t('NOT_FOUND'));
                                     $tpl->ParseBlock('phoo/photos/albums/item/notfound');
                                 } else {
                                     $tpl->SetVariable('thumb',  $this->app->getDataURL('phoo/' . $img['thumb']));
@@ -182,7 +182,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                                 $tpl->SetVariable('album',  $img['albumid']);
                                 if ($img['published'] == false) {
                                     $tpl->SetBlock('phoo/photos/albums/item/notpublished');
-                                    $tpl->SetVariable('notpublished', _t('PHOO_NOT_PUBLISHED'));
+                                    $tpl->SetVariable('notpublished', $this::t('NOT_PUBLISHED'));
                                     $tpl->ParseBlock('phoo/photos/albums/item/notpublished');
                                 }
                                 $tpl->ParseBlock('phoo/photos/albums/item');
@@ -190,13 +190,13 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                         } else {
                             if ($album['id'] != 0) {
                                 $tpl->SetBlock('phoo/photos/albums/nophotos');
-                                $tpl->SetVariable('message', "<a href=\"{$upload_url}\">"._t('PHOO_START_UPLOADING_PHOTOS')."</a>");
+                                $tpl->SetVariable('message', "<a href=\"{$upload_url}\">".$this::t('START_UPLOADING_PHOTOS')."</a>");
                                 $tpl->ParseBlock('phoo/photos/albums/nophotos');
                             }
                         }
                         $tpl->ParseBlock('phoo/photos/albums');
                     } else {
-                        $this->gadget->session->push(_t('PHOO_INEXISTENT_ALBUM'), RESPONSE_ERROR);
+                        $this->gadget->session->push($this::t('INEXISTENT_ALBUM'), RESPONSE_ERROR);
                     }
                 }
             }
@@ -217,11 +217,11 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         } else {
             $tpl->SetBlock('phoo/noalbums');
-            $tpl->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));
+            $tpl->SetVariable('message', $this::t('EMPTY_ALBUMSET'));
             $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Phoo'));
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'NewAlbum'));
-            $b =& Piwi::CreateWidget('Button', 'newalbum', _t('PHOO_CREATE_NEW_ALBUM'), STOCK_NEW);
+            $b =& Piwi::CreateWidget('Button', 'newalbum', $this::t('CREATE_NEW_ALBUM'), STOCK_NEW);
             $b->SetSubmit(true);
             $form->Add($b);
             $tpl->SetVariable('form', $form->Get());
@@ -269,9 +269,9 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
         // Tabs titles
-        $tpl->SetVariable('editPhoto_tab',  Jaws::t('EDIT', _t('PHOO_PHOTO')));
-        $tpl->SetVariable('albums_tab', _t('PHOO_ALBUMS'));
-        $tpl->SetVariable('description_tab', _t('PHOO_PHOTO_DESCRIPTION'));
+        $tpl->SetVariable('editPhoto_tab',  Jaws::t('EDIT', $this::t('PHOTO')));
+        $tpl->SetVariable('albums_tab', $this::t('ALBUMS'));
+        $tpl->SetVariable('description_tab', $this::t('PHOTO_DESCRIPTION'));
 
         $photoid =& Piwi::CreateWidget('HiddenEntry', 'image', $id);
         $tpl->SetVariable('imageid', $photoid->Get());
@@ -281,7 +281,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('filter', $filter->Get());
         $albumid =& Piwi::CreateWidget('HiddenEntry', 'fromalbum', $get['album']);
         $tpl->SetVariable('albumid', $albumid->Get());
-        $tpl->SetVariable('name', _t('PHOO_PHOTO_TITLE'));
+        $tpl->SetVariable('name', $this::t('PHOTO_TITLE'));
 
         $name =& Piwi::CreateWidget('Entry', 'title', $title);
         $name->SetStyle('width: 99%;');
@@ -298,7 +298,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         $editor->setId('description');
         $tpl->SetVariable('description', $editor->Get());
-        $tpl->SetVariable('lbl_description', _t('PHOO_PHOTO_DESCRIPTION'));
+        $tpl->SetVariable('lbl_description', $this::t('PHOTO_DESCRIPTION'));
 
         // Meta keywords
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', $meta_keywords);
@@ -330,21 +330,21 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             }
         }
         $albumchecks->SetDefault($albums);
-        $tpl->SetVariable('albums', _t('PHOO_ALBUMS'));
-        $tpl->SetVariable('album', _t('PHOO_ALBUM'));
+        $tpl->SetVariable('albums', $this::t('ALBUMS'));
+        $tpl->SetVariable('album', $this::t('ALBUM'));
         $tpl->SetVariable('album_field', $albumchecks->Get());
 
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
-        $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', 'allow_comments', $allow_comments);
+        $comments->AddOption($this::t('ALLOW_COMMENTS'), '1', 'allow_comments', $allow_comments);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
-        $tpl->SetVariable('status', _t('PHOO_STATUS'));
+        $tpl->SetVariable('status', $this::t('STATUS'));
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
         $statCombo->setId('published');
-        $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
-        $statCombo->AddOption(_t('PHOO_PUBLISHED'), '1');
+        $statCombo->AddOption($this::t('HIDDEN'), '0');
+        $statCombo->AddOption($this::t('PUBLISHED'), '1');
         $statCombo->SetDefault((int)$published);
         $tpl->SetVariable('status_field', $statCombo->Get());
 
@@ -356,7 +356,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $comments->AddEvent(ON_CLICK, "this.form.reqAction.value = 'ManageComments'; this.form.submit();");
         $tpl->SetVariable('comments', $comments->Get());
         $delete =& Piwi::CreateWidget('Button', 'delete', '', STOCK_DELETE);
-        $delete->AddEvent(ON_CLICK, "if (confirm('"._t('PHOO_DELETE_PHOTO_CONFIRM').
+        $delete->AddEvent(ON_CLICK, "if (confirm('".$this::t('DELETE_PHOTO_CONFIRM').
             "')) { this.form.reqAction.value = 'DeletePhoto'; this.form.submit();}");
         $tpl->SetVariable('delete', $delete->Get());
         if (function_exists('imagerotate')) {
@@ -372,7 +372,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $cancel =& Piwi::CreateWidget('Button', 'cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "gotoLocation({$get['album']})");
         $tpl->SetVariable('cancel', $cancel->Get());
-        $save =& Piwi::CreateWidget('Button', 'save', _t('PHOO_SAVE_CHANGES'), STOCK_SAVE);
+        $save =& Piwi::CreateWidget('Button', 'save', $this::t('SAVE_CHANGES'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'updatePhoto();');
         //$save->SetSubmit(true);
         $tpl->SetVariable('save', $save->Get());

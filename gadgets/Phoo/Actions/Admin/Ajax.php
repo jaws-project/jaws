@@ -65,7 +65,7 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $aModel = $this->gadget->model->load('Albums');
         $albums = $aModel->GetAlbums('createtime', 'ASC');
         $free_photos[] = array('id'         => 0,
-            'name'       => _t('PHOO_WITHOUT_ALBUM'),
+            'name'       => $this::t('WITHOUT_ALBUM'),
             'createtime' => date('Y-m-d H:i:s'),
             'howmany'    => 0);
         if (Jaws_Error::IsError($albums) || !is_array($albums)) {

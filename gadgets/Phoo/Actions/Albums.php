@@ -23,7 +23,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Albums.html');
         $tpl->SetBlock('albums');
-        $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
+        $tpl->SetVariable('title', $this::t('ALBUMS'));
         $model = $this->gadget->model->load('Albums');
 
 
@@ -48,7 +48,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
                 $tpl->SetVariable('filename', $album['filename']);
                 $tpl->SetVariable('thumb',    $this->app->getDataURL('phoo/' . $album['thumb']));
                 $tpl->SetVariable('medium',   $this->app->getDataURL('phoo/' . $album['medium']));
-                $tpl->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
+                $tpl->SetVariable('howmany',  $this::t('NUM_PHOTOS_ALBUM', $album['qty']));
                 $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
                 $tpl->SetVariable('createtime', $date->Format($album['createtime']));
                 $tpl->ParseBlock('albums/item');

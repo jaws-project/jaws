@@ -30,13 +30,13 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
         $items = $iModel->GetItemsToImport();
         if (count($items) > 0) {
             $tpl->SetBlock('import/pictures');
-            $tpl->SetVariable('ready_to_import', _t('PHOO_READY_TO_IMPORT', count($items)));
+            $tpl->SetVariable('ready_to_import', $this::t('READY_TO_IMPORT', count($items)));
             $gadget =& Piwi::CreateWidget('HiddenEntry', 'reqGadget', 'Phoo');
             $tpl->SetVariable ('gadget_hidden', $gadget->Get());
             $action =& Piwi::CreateWidget('HiddenEntry', 'reqAction', 'FinishImport');
             $tpl->SetVariable ('action_hidden', $action->Get());
-            $tpl->SetVariable ('import_message', _t('PHOO_IMPORT_MESSAGE'));
-            $albumcombo =& Piwi::CreateWidget('Combo', 'album', _t('PHOO_ALBUM'));
+            $tpl->SetVariable ('import_message', $this::t('IMPORT_MESSAGE'));
+            $albumcombo =& Piwi::CreateWidget('Combo', 'album', $this::t('ALBUM'));
             $first = false;
             $albums = $aModel->GetAlbums('name', 'ASC');
             if (!Jaws_Error::IsError($albums) && !empty($albums)) {
@@ -49,7 +49,7 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
             }
             $albumcombo->SetDefault($first);
             $tpl->SetVariable ('albums_combo', $albumcombo->Get());
-            $b =& Piwi::CreateWidget('Button', 'import_button', _t('PHOO_IMPORT'), STOCK_DOWN);
+            $b =& Piwi::CreateWidget('Button', 'import_button', $this::t('IMPORT'), STOCK_DOWN);
             $b->SetSubmit(true);
             $tpl->SetVariable ('import_button', $b->Get());
             $counter = 0;
@@ -66,8 +66,8 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
             $tpl->ParseBlock('import/pictures');
         } else {
             $tpl->SetBlock('import/noitems');
-            $tpl->SetVariable('no_items_to_import', _t('PHOO_NO_IMAGES_TO_IMPORT'));
-            $tpl->SetVariable('message', _t('PHOO_IMPORT_INSTRUCTIONS'));
+            $tpl->SetVariable('no_items_to_import', $this::t('NO_IMAGES_TO_IMPORT'));
+            $tpl->SetVariable('message', $this::t('IMPORT_INSTRUCTIONS'));
             $tpl->ParseBlock('import/noitems');
         }
         $tpl->ParseBlock('import');
@@ -90,13 +90,13 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('FinishImport.html');
         $tpl->SetBlock('finishimport');
         $tpl->SetVariable('menubar', $this->MenuBar('Import'));
-        $tpl->SetVariable('importing', _t('PHOO_IMPORTING'));
+        $tpl->SetVariable('importing', $this::t('IMPORTING'));
         $tpl->SetVariable('album', $post['album']);
         $tpl->SetVariable('howmany', (string)count($post['images']));
         $tpl->SetVariable('indicator_image', 'gadgets/ControlPanel/Resources/images/indicator.gif');
         $tpl->SetVariable('ok_image', STOCK_OK);
-        $tpl->SetVariable('finished', _t('PHOO_FINISHED'));
-        $tpl->SetVariable('import_warning', _t('PHOO_IMPORTING_WARNING'));
+        $tpl->SetVariable('finished', $this::t('FINISHED'));
+        $tpl->SetVariable('import_warning', $this::t('IMPORTING_WARNING'));
         $counter = 0;
         foreach ($post['images'] as $image) {
             $tpl->SetBlock('finishimport/items');

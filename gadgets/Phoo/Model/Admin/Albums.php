@@ -38,11 +38,11 @@ class Phoo_Model_Admin_Albums extends Phoo_Model_Common
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'));
+            $this->gadget->session->push($this::t('ERROR_ALBUM_NOT_UPDATED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_ALBUM_NOT_UPDATED'));
         }
 
-        $this->gadget->session->push(_t('PHOO_ALBUM_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('ALBUM_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -62,8 +62,8 @@ class Phoo_Model_Admin_Albums extends Phoo_Model_Common
         $table->where('phoo_album_id', $id);
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
+            $this->gadget->session->push($this::t('ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_ALBUM_NOT_DELETED'));
         }
 
         if (!empty($result)) {
@@ -82,8 +82,8 @@ class Phoo_Model_Admin_Albums extends Phoo_Model_Common
             $table->having('count(phoo_image_id)', 1);
             $result = $table->fetchAll();
             if (Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
+                $this->gadget->session->push($this::t('ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_ALBUM_NOT_DELETED'));
             }
 
             include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
@@ -102,8 +102,8 @@ class Phoo_Model_Admin_Albums extends Phoo_Model_Common
                 $result = $table->exec();
             }
             if (Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
+                $this->gadget->session->push($this::t('ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_ALBUM_NOT_DELETED'));
             }
 
             // Delete images from phoo_image_album
@@ -111,8 +111,8 @@ class Phoo_Model_Admin_Albums extends Phoo_Model_Common
             $table->delete()->where('phoo_album_id', $id);
             $result = $table->exec();
             if (Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
+                $this->gadget->session->push($this::t('ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_ALBUM_NOT_DELETED'));
             }
         }
 
@@ -121,11 +121,11 @@ class Phoo_Model_Admin_Albums extends Phoo_Model_Common
         $table->delete()->where('id', $id);
         $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
+            $this->gadget->session->push($this::t('ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_ALBUM_NOT_DELETED'));
         }
 
-        $this->gadget->session->push(_t('PHOO_ALBUM_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('ALBUM_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -155,11 +155,11 @@ class Phoo_Model_Admin_Albums extends Phoo_Model_Common
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $id = $table->insert($data)->exec();
         if (Jaws_Error::IsError($id)) {
-            $this->gadget->session->push(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_CREATED'));
+            $this->gadget->session->push($this::t('ERROR_ALBUM_NOT_CREATED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_ALBUM_NOT_CREATED'));
         }
 
-        $this->gadget->session->push(_t('PHOO_ALBUM_CREATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('ALBUM_CREATED'), RESPONSE_NOTICE);
         return $id;
     }
 

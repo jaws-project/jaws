@@ -31,7 +31,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('PHOO_ALBUMS'),
+                'title' => $this::t('ALBUMS'),
                 'value' => $palbums
             );
         }
@@ -49,7 +49,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Moblog.html');
         $tpl->SetBlock('moblog');
-        $tpl->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
+        $tpl->SetVariable('title',$this::t('ACTIONS_MOBLOG'));
 
         $model = $this->gadget->model->load('Moblog');
         $moblog = $model->GetMoblog($aid);

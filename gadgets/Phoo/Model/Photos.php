@@ -86,7 +86,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         $table->select('id:integer', 'name', 'description', 'createtime', 'published:boolean');
         $r = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($r)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'));
+            return new Jaws_Error($this::t('ERROR_GETALBUM'));
         }
 
         // The album does not exist or is hidden
@@ -97,8 +97,8 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         $album = array();
         if ($id == '0') { //UNKNOWN
             $album['id']          = '0';
-            $album['name']        = _t('PHOO_WITHOUT_ALBUM');
-            $album['description'] = _t('PHOO_WITHOUT_ALBUM_DESCRIPTION');
+            $album['name']        = $this::t('WITHOUT_ALBUM');
+            $album['description'] = $this::t('WITHOUT_ALBUM_DESCRIPTION');
             $album['createtime']  = date('Y-m-d H:i:s');
             $album['published']   = true;
         } else {
@@ -146,7 +146,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
 
         $r2 = $table->fetchAll();
         if (Jaws_Error::IsError($r2)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'));
+            return new Jaws_Error($this::t('ERROR_GETALBUM'));
         }
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Image.php';
@@ -207,7 +207,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
 
         $r = $table->fetchRow();
         if (Jaws_Error::IsError($r)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGE'));
+            return new Jaws_Error($this::t('ERROR_GETIMAGE'));
         }
 
         // image does not exist or is hidden
@@ -250,7 +250,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
 
         $items = $table->fetchColumn();
         if (Jaws_Error::IsError($items)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGE'));
+            return new Jaws_Error($this::t('ERROR_GETIMAGE'));
         }
 
         $image['first']    = 0;
@@ -373,7 +373,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         $table->where('phoo_image.id', $id);
         $rs = $table->fetchAll();
         if (Jaws_Error::IsError($rs)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGEENTRY'));
+            return new Jaws_Error($this::t('ERROR_GETIMAGEENTRY'));
         }
 
         $entry = array();
@@ -425,8 +425,8 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         $uploaddir = ROOT_DATA_PATH . 'phoo/' . date('Y_m_d') . '/';
         if (!is_dir($uploaddir)) {
             if (!Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH . 'phoo/')) {
-                $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+                $this->gadget->session->push($this::t('ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO'));
             }
 
             $new_dirs = array();
@@ -435,8 +435,8 @@ class Phoo_Model_Photos extends Phoo_Model_Common
             $new_dirs[] = $uploaddir . 'medium';
             foreach ($new_dirs as $new_dir) {
                 if (!Jaws_FileManagement_File::mkdir($new_dir)) {
-                    $this->gadget->session->push(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+                    $this->gadget->session->push($this::t('ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
+                    return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO'));
                 }
             }
         }
@@ -466,7 +466,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         $objImage->free();
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
-            $this->gadget->session->push(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
             return new Jaws_Error($res->GetMessage());
         }
 
@@ -477,7 +477,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
             $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'));
+            return new Jaws_Error($this::t('ERROR_CANT_RESIZE_TO_MEDIUM'));
         }
 
         $data = array();
@@ -512,7 +512,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         $table = Jaws_ORM::getInstance()->table('phoo_image');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
+            return new Jaws_Error($this::t('ERROR_CANT_UPLOAD_PHOTO'));
         }
 
         // Lets remove the original if keep_original = false
