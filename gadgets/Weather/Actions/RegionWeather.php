@@ -30,7 +30,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('WEATHER_ACTIONS_REGIONWEATHER'),
+                'title' => $this::t('ACTIONS_REGIONWEATHER'),
                 'value' => $pregions
             );
         }
@@ -57,7 +57,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('WEATHER_ACTIONS_REGIONWEATHER'),
+                'title' => $this::t('ACTIONS_REGIONWEATHER'),
                 'value' => $pregions
             );
         }
@@ -119,42 +119,42 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             $options);
         $rWeather = $wService->getWeather($region['latitude'], $region['longitude']);
         if (!PEAR::isError($rWeather)) {
-            $tpl->SetVariable('title', _t('WEATHER_REGION', $region['title']));
+            $tpl->SetVariable('title', $this::t('REGION', $region['title']));
             $rid = empty($region['fast_url'])? $region['id'] : $region['fast_url'];
             $url = $this->gadget->urlMap('RegionWeather', array('id' => $rid));
             $tpl->SetVariable('url',  $url);
             $tpl->SetBlock('weather/current');
             if ($forecast) {
                 $tpl->SetBlock('weather/current/head');
-                $tpl->SetVariable('lbl_current',_t('WEATHER_CURRENT'));
+                $tpl->SetVariable('lbl_current',$this::t('CURRENT'));
                 $tpl->ParseBlock('weather/current/head');
             }
             $tpl->SetVariable('url',  $url);
             $tpl->SetVariable('temp', $rWeather['temp']);
-            $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
-                _t('WEATHER_UNIT_IMPERIAL_TEMP'));
+            $tpl->SetVariable('unit', $metric? $this::t('UNIT_METRIC_TEMP') :
+                $this::t('UNIT_IMPERIAL_TEMP'));
             $tpl->SetVariable('alt',  $rWeather['icon']);
             $tpl->SetVariable('icon', "gadgets/Weather/Resources/images/states/{$rWeather['icon']}.png");
             $tpl->ParseBlock('weather/current');
 
             if ($forecast) {
-                $this->app->layout->SetTitle(_t('WEATHER_REGION', $region['title']));
+                $this->app->layout->SetTitle($this::t('REGION', $region['title']));
                 $this->app->layout->AddToMetaKeywords($this->gadget->title. ','. $region['title']);
                 $objDate = Jaws_Date::getInstance();
                 $tpl->SetBlock('weather/forecast');
-                $tpl->SetVariable('lbl_forecast', _t('WEATHER_FORECAST'));
+                $tpl->SetVariable('lbl_forecast', $this::t('FORECAST'));
                 $dFormat = $this->gadget->registry->fetchByUser('date_format');
                 foreach ($rWeather['forecast'] as $dayIndex => $fWeather) {
                     $tpl->SetBlock('weather/forecast/item');
                     //86400 = 3600 * 24
                     $tpl->SetVariable('forecast_date',
                         $objDate->Format(time() + $dayIndex * 86400, $dFormat));
-                    $tpl->SetVariable('lbl_low',   _t('WEATHER_LOW'));
+                    $tpl->SetVariable('lbl_low',   $this::t('LOW'));
                     $tpl->SetVariable('low_temp',  $fWeather['low']);
-                    $tpl->SetVariable('lbl_high',  _t('WEATHER_HIGH'));
+                    $tpl->SetVariable('lbl_high',  $this::t('HIGH'));
                     $tpl->SetVariable('high_temp', $fWeather['high']);
-                    $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
-                        _t('WEATHER_UNIT_IMPERIAL_TEMP'));
+                    $tpl->SetVariable('unit', $metric? $this::t('UNIT_METRIC_TEMP') :
+                        $this::t('UNIT_IMPERIAL_TEMP'));
                     $tpl->SetVariable('alt',  $fWeather['icon']);
                     $tpl->SetVariable('icon', "gadgets/Weather/Resources/images/states/{$fWeather['icon']}.png");
                     $tpl->ParseBlock('weather/forecast/item');
@@ -192,10 +192,10 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
     {
         $result = array();
         $result[] = array(
-            'title' => _t('WEATHER_REGIONS'),
+            'title' => $this::t('REGIONS'),
             'value' => array(
-                0 => _t('WEATHER_GLOBAL_REGIONS'),
-                1 => _t('WEATHER_USER_REGIONS'),
+                0 => $this::t('GLOBAL_REGIONS'),
+                1 => $this::t('USER_REGIONS'),
             )
         );
 
@@ -213,7 +213,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('AllWeather.html');
         $tpl->SetBlock('weather');
-        $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
+        $tpl->SetVariable('title', $this::t('ALL_REGIONS'));
 
         $model = $this->gadget->model->load('Regions');
 
@@ -252,8 +252,8 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
                         $this->gadget->urlMap('RegionWeather', array('id' => $rid))
                     );
                     $tpl->SetVariable('temp', $rWeather['temp']);
-                    $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
-                        _t('WEATHER_UNIT_IMPERIAL_TEMP'));
+                    $tpl->SetVariable('unit', $metric? $this::t('UNIT_METRIC_TEMP') :
+                        $this::t('UNIT_IMPERIAL_TEMP'));
                     $tpl->SetVariable('alt',  $rWeather['icon']);
                     $tpl->SetVariable('icon', "gadgets/Weather/Resources/images/states/{$rWeather['icon']}.png");
                     $tpl->ParseBlock('weather/region');
@@ -279,23 +279,23 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 
         $this->AjaxMe('index.js');
         $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_published', _t('WEATHER_PUBLISHED'));
+        $this->gadget->define('lbl_published', $this::t('PUBLISHED'));
         $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_geo_position', _t('WEATHER_GEOPOSITION'));
+        $this->gadget->define('lbl_geo_position', $this::t('GEOPOSITION'));
         $this->gadget->define('lbl_search', Jaws::t('SEARCH'));
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
         $this->gadget->define('base_script', BASE_SCRIPT);
 
         $tpl = $this->gadget->template->load('UserRegions.html');
         $tpl->SetBlock('UserRegions');
-        $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
+        $tpl->SetVariable('title', $this::t('ALL_REGIONS'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_add', Jaws::t('ADD'));
-        $tpl->SetVariable('lbl_fast_url', _t('WEATHER_FASTURL'));
-        $tpl->SetVariable('lbl_latitude', _t('WEATHER_LATITUDE'));
-        $tpl->SetVariable('lbl_longitude', _t('WEATHER_LONGITUDE'));
-        $tpl->SetVariable('lbl_published', _t('WEATHER_PUBLISHED'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
+        $tpl->SetVariable('lbl_latitude', $this::t('LATITUDE'));
+        $tpl->SetVariable('lbl_longitude', $this::t('LONGITUDE'));
+        $tpl->SetVariable('lbl_published', $this::t('PUBLISHED'));
         $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
         $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
@@ -380,9 +380,9 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $data['user'] = (int)$this->app->session->user->id;
         $res = $model->InsertUserRegion($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('WEATHER_REGION_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('REGION_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -403,9 +403,9 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $user = (int)$this->app->session->user->id;
         $res = $model->UpdateUserRegion($post['id'], $post['data'], $user);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('WEATHER_REGION_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('REGION_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -425,9 +425,9 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $user = (int)$this->app->session->user->id;
         $res = $this->gadget->model->load('Regions')->DeleteUserRegion($user, $id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('REGION_DELETED'), RESPONSE_NOTICE);
         }
     }
 }

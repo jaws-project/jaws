@@ -31,10 +31,10 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));
 
         $unit =& Piwi::CreateWidget('Combo', 'unit');
-        $unit->AddOption(_t('WEATHER_UNIT_METRIC'), 'metric');
-        $unit->AddOption(_t('WEATHER_UNIT_IMPERIAL'), 'imperial');
+        $unit->AddOption($this::t('UNIT_METRIC'), 'metric');
+        $unit->AddOption($this::t('UNIT_IMPERIAL'), 'imperial');
         $unit->SetDefault($this->gadget->registry->fetch('unit'));
-        $tpl->SetVariable('lbl_unit', _t('WEATHER_UNIT'));
+        $tpl->SetVariable('lbl_unit', $this::t('UNIT'));
         $tpl->SetVariable('unit', $unit->Get());
 
         $period =& Piwi::CreateWidget('Combo', 'update_period');
@@ -46,7 +46,7 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $period->AddOption(Jaws::t('DATE_HOURS',   8),  28800);
         $period->AddOption(Jaws::t('DATE_DAYS',    1),  86400);
         $period->SetDefault($this->gadget->registry->fetch('update_period'));
-        $tpl->SetVariable('lbl_update_period', _t('WEATHER_UPDATE_PERIOD'));
+        $tpl->SetVariable('lbl_update_period', $this::t('UPDATE_PERIOD'));
         $tpl->SetVariable('update_period', $period->Get());
 
         $now = time();
@@ -57,15 +57,15 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $dFormat->AddOption($objDate->Format($now, 'd MN'), 'd MN');
         $dFormat->AddOption($objDate->Format($now, 'DN d MN'), 'DN d MN');
         $dFormat->SetDefault($this->gadget->registry->fetch('date_format'));
-        $tpl->SetVariable('lbl_date_format', _t('WEATHER_DATE_FORMAT'));
+        $tpl->SetVariable('lbl_date_format', $this::t('DATE_FORMAT'));
         $tpl->SetVariable('date_format', $dFormat->Get());
 
         $apikey =& Piwi::CreateWidget('Entry',
             'api_key',
             $this->gadget->registry->fetch('api_key'));
         $apikey->setStyle('width:200px; direction: ltr;');
-        $tpl->SetVariable('lbl_api_key', _t('WEATHER_API_KEY'));
-        $tpl->SetVariable('lbl_api_key_desc', _t('WEATHER_API_KEY_DESC'));
+        $tpl->SetVariable('lbl_api_key', $this::t('API_KEY'));
+        $tpl->SetVariable('lbl_api_key_desc', $this::t('API_KEY_DESC'));
         $tpl->SetVariable('api_key', $apikey->Get());
 
         if ($this->gadget->GetPermission('UpdateSetting')) {

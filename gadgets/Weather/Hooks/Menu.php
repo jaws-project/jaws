@@ -23,7 +23,7 @@ class Weather_Hooks_Menu extends Jaws_Gadget_Hook
                         'title' => $this->gadget->title);
 
         $urls[] = array('url'   => $this->gadget->urlMap('UserRegionsList'),
-                        'title' => _t('WEATHER_USER_REGIONS_LIST'));
+                        'title' => $this::t('USER_REGIONS_LIST'));
 
         return $urls;
     }

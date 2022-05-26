@@ -31,7 +31,7 @@ class Weather_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageRegions')) {
             $menubar->AddOption(
                 'Regions',
-                _t('WEATHER_REGIONS'),
+                $this::t('REGIONS'),
                 $this->gadget->url('Regions'),
                 'gadgets/Weather/Resources/images/regions.png'
             );

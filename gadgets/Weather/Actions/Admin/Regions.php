@@ -24,8 +24,8 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageRegions');
         $this->AjaxMe('script.js');
         $this->gadget->define('base_script', BASE_SCRIPT);
-        $this->gadget->define('confirmDelete', _t('WEATHER_CONFIRM_DELETE'));
-        $this->gadget->define('incompleteFields', _t('WEATHER_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'));
+        $this->gadget->define('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Weather.html');
         $tpl->SetBlock('Weather');
@@ -33,32 +33,32 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('Regions'));
         $tpl->SetVariable('datagrid', $this->RegionsDataGrid());
 
-        $tpl->SetVariable('legend_title', _t('WEATHER_GEOPOSITION'));
-        $tpl->SetVariable('map_title', _t('WEATHER_MAP_HINT'));
+        $tpl->SetVariable('legend_title', $this::t('GEOPOSITION'));
+        $tpl->SetVariable('map_title', $this::t('MAP_HINT'));
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
         $fasturl =& Piwi::CreateWidget('Entry', 'fast_url', '');
-        $tpl->SetVariable('lbl_fast_url', _t('WEATHER_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
         $tpl->SetVariable('fast_url', $fasturl->Get());
 
         $latitude =& Piwi::CreateWidget('Entry', 'latitude', '');
         $latitude->setStyle('direction: ltr;');
-        $tpl->SetVariable('lbl_latitude', _t('WEATHER_LATITUDE'));
+        $tpl->SetVariable('lbl_latitude', $this::t('LATITUDE'));
         $tpl->SetVariable('latitude', $latitude->Get());
 
         $longitude =& Piwi::CreateWidget('Entry', 'longitude', '');
         $longitude->setStyle('direction: ltr;');
-        $tpl->SetVariable('lbl_longitude', _t('WEATHER_LONGITUDE'));
+        $tpl->SetVariable('lbl_longitude', $this::t('LONGITUDE'));
         $tpl->SetVariable('longitude', $longitude->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
         $published->AddOption(Jaws::t('YESS'), 1);
         $published->AddOption(Jaws::t('NOO'), 0);
         $published->setStyle('width:50px');
-        $tpl->SetVariable('lbl_published', _t('WEATHER_PUBLISHED'));
+        $tpl->SetVariable('lbl_published', $this::t('PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
