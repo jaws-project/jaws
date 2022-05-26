@@ -271,7 +271,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $result = $mapsTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('URLMAPPER_ERROR_MAP_NOT_ADDED'));
+            return new Jaws_Error($this::t('ERROR_MAP_NOT_ADDED'));
         }
 
         return true;
@@ -304,7 +304,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
             }
 
             if (empty($result)) {
-                return Jaws_Error::raiseError(_t('URLMAPPER_NO_MAPS'),  __FUNCTION__);
+                return Jaws_Error::raiseError($this::t('NO_MAPS'),  __FUNCTION__);
             }
 
             $vars_regexps = unserialize($result['vars_regexps']);
@@ -341,7 +341,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         }
 
         if (empty($dbMap)) {
-            return Jaws_Error::raiseError(_t('URLMAPPER_NO_MAPS'),  __FUNCTION__);
+            return Jaws_Error::raiseError($this::t('NO_MAPS'),  __FUNCTION__);
         }
 
         $params = array();

@@ -58,9 +58,9 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Maps');
         $res = $model->UpdateCustomMap($id, $custom_map, $order);
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('URLMAPPER_ERROR_MAP_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_MAP_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('URLMAPPER_MAP_UPDATED', $custom_map), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('MAP_UPDATED', $custom_map), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -222,7 +222,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('URLMAPPER_ERRORMAP_ADDED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('ERRORMAP_ADDED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();

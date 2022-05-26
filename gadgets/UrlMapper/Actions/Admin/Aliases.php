@@ -29,18 +29,18 @@ class UrlMapper_Actions_Admin_Aliases extends UrlMapper_Actions_Admin_Default
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'alias_id', '-'));
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('URLMAPPER_ALIASES_ALIAS'));
+        $fieldset = new Jaws_Widgets_FieldSet($this::t('ALIASES_ALIAS'));
         $fieldset->SetDirection('vertical');
         $fieldset->SetID('AliasFieldset');
         $fieldset->SetStyle('width: 300px; min-width: 250px; max-width: 300px;');
 
         $customUrl =& Piwi::CreateWidget('Entry', 'custom_url');
-        $customUrl->SetTitle(_t('URLMAPPER_ALIASES_LINK'));
+        $customUrl->SetTitle($this::t('ALIASES_LINK'));
         $customUrl->SetId('custom_url');
         $customUrl->SetStyle('width: 230px;');
         $fieldset->Add($customUrl);
 
-        $alias =& Piwi::CreateWidget('Entry', 'alias', '', _t('URLMAPPER_ALIASES_ALIAS'));
+        $alias =& Piwi::CreateWidget('Entry', 'alias', '', $this::t('ALIASES_ALIAS'));
         $alias->SetId('alias');
         $alias->SetStyle('width: 230px;');
         $fieldset->Add($alias);

@@ -56,7 +56,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->setID('maps_datagrid');
 
-        $datagrid->addColumn(Piwi::CreateWidget('Column', _t('URLMAPPER_MAPS'), null, false));
+        $datagrid->addColumn(Piwi::CreateWidget('Column', $this::t('MAPS'), null, false));
         $colActions = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'), null, false);
         $colActions->SetStyle('width: 60px; white-space:nowrap;');
         $datagrid->addColumn($colActions);
@@ -100,7 +100,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $tpl->SetVariable('lbl_actions', Jaws::t('GADGET_ACTIONS'));
         $tpl->SetVariable('combo_actions', $comboActions->Get());
 
-        $tpl->SetVariable('lbl_maps',    _t('URLMAPPER_MAPS'));
+        $tpl->SetVariable('lbl_maps',    $this::t('MAPS'));
         $tpl->SetVariable('datagrid', $this->MapsDatagrid());
 
         // map order
@@ -113,7 +113,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $route->SetID('map_route');
         $route->SetStyle('direction: ltr; width: 200px;');
         $route->SetEnabled(false);
-        $tpl->SetVariable('lbl_map_route', _t('URLMAPPER_MAPS_ROUTE'));
+        $tpl->SetVariable('lbl_map_route', $this::t('MAPS_ROUTE'));
         $tpl->SetVariable('map_route', $route->Get());
 
         // map extension
@@ -121,7 +121,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $ext->SetID('map_ext');
         $ext->SetStyle('direction: ltr; width: 200px;');
         $ext->SetEnabled(false);
-        $tpl->SetVariable('lbl_map_ext', _t('URLMAPPER_MAPS_EXTENSION'));
+        $tpl->SetVariable('lbl_map_ext', $this::t('MAPS_EXTENSION'));
         $tpl->SetVariable('map_ext', $ext->Get());
 
         // custom route entry
@@ -129,7 +129,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $custom_route->SetID('custom_map_route');
         $custom_route->SetStyle('direction: ltr; width: 200px;');
         $custom_route->SetEnabled(false);
-        $tpl->SetVariable('lbl_custom_map_route', _t('URLMAPPER_MAPS_ROUTE'));
+        $tpl->SetVariable('lbl_custom_map_route', $this::t('MAPS_ROUTE'));
         $tpl->SetVariable('custom_map_route', $custom_route->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
@@ -142,9 +142,9 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, "javascript:saveMap();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $this->gadget->define('addMap_title', _t('URLMAPPER_MAPS_ADD_TITLE'));
-        $this->gadget->define('editMap_title', _t('URLMAPPER_MAPS_EDIT_TITLE'));
-        $this->gadget->define('confirmMapDelete', _t('URLMAPPER_MAPS_CONFIRM_DELETE'));
+        $this->gadget->define('addMap_title', $this::t('MAPS_ADD_TITLE'));
+        $this->gadget->define('editMap_title', $this::t('MAPS_EDIT_TITLE'));
+        $this->gadget->define('confirmMapDelete', $this::t('MAPS_CONFIRM_DELETE'));
 
         $tpl->ParseBlock('UrlMapper');
         return $tpl->Get();

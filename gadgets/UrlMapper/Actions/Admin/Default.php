@@ -27,11 +27,11 @@ class UrlMapper_Actions_Admin_Default extends Jaws_Gadget_Action
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('Maps', _t('URLMAPPER_MAPS'),
+        $menubar->AddOption('Maps', $this::t('MAPS'),
                             BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Maps', STOCK_DOCUMENTS);
-        $menubar->AddOption('Aliases', _t('URLMAPPER_ALIASES'),
+        $menubar->AddOption('Aliases', $this::t('ALIASES'),
                             BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Aliases', 'gadgets/UrlMapper/Resources/images/aliases.png');
-        $menubar->AddOption('ErrorMaps', _t('URLMAPPER_ERRORMAPS'),
+        $menubar->AddOption('ErrorMaps', $this::t('ERRORMAPS'),
                             BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=ErrorMaps', STOCK_DOCUMENTS);
         $menubar->AddOption('Properties', Jaws::t('PROPERTIES'),
                             BASE_SCRIPT . '?reqGadget=UrlMapper&amp;reqAction=Properties', STOCK_PREFERENCES);
