@@ -23,7 +23,7 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
         $limit = (int)$this->gadget->registry->fetch('limit');
         $tpl = $this->gadget->template->load('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
-        $tpl->SetVariable('title', _t('SHOUTBOX_SHOUTBOX'));
+        $tpl->SetVariable('title', $this::t('SHOUTBOX'));
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
         $tpl->SetVariable(
             'comments',

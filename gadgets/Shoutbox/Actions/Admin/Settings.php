@@ -33,12 +33,12 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_Actions_Admin_Default
             $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'UpdateProperties'));
 
             include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-            $fieldset = new Jaws_Widgets_FieldSet(_t('SHOUTBOX_SETTINGS'));
+            $fieldset = new Jaws_Widgets_FieldSet($this::t('SETTINGS'));
             $fieldset->SetDirection('vertical');
 
             //
             $limitcombo =& Piwi::CreateWidget('Combo', 'limit_entries');
-            $limitcombo->SetTitle(_t('SHOUTBOX_ENTRY_LIMIT'));
+            $limitcombo->SetTitle($this::t('ENTRY_LIMIT'));
             for ($i = 1; $i <= 20; ++$i) {
                 $limitcombo->AddOption($i, $i);
             }
@@ -51,7 +51,7 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_Actions_Admin_Default
 
             // max length
             $max_lencombo =& Piwi::CreateWidget('Combo', 'max_strlen');
-            $max_lencombo->SetTitle(_t('SHOUTBOX_ENTRY_MAX_LEN'));
+            $max_lencombo->SetTitle($this::t('ENTRY_MAX_LEN'));
             for ($i = 1; $i <= 10; ++$i) {
                 $max_lencombo->AddOption($i*25, $i*25);
             }
@@ -64,7 +64,7 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_Actions_Admin_Default
 
             //Anonymous post authority
             $authority =& Piwi::CreateWidget('Combo', 'authority');
-            $authority->SetTitle(_t('SHOUTBOX_ANON_POST_AUTHORITY'));
+            $authority->SetTitle($this::t('ANON_POST_AUTHORITY'));
             $authority->AddOption(Jaws::t('DISABLED'), 'false');
             $authority->AddOption(Jaws::t('ENABLED'),  'true');
             $anon_authority = $this->gadget->registry->fetch('anon_post_authority');
