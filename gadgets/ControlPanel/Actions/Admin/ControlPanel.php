@@ -59,7 +59,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             if (!Jaws_Error::isError($gInfo)) {
                 $docurl = $gInfo->GetDoc();
             }
-            $gname = _t(strtoupper($ReqGadget) . '_TITLE');
+            $gname = $this::t($ReqGadget. '.TITLE');
             $tpl->SetBlock('layout/cptitle');
             $tpl->SetVariable('admin-script', BASE_SCRIPT);
             $tpl->SetVariable('cp-title', Jaws::t('CONTROLPANEL'));
@@ -155,7 +155,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             $noninstalled = $cmpModel->GetGadgetsList(null, false);
             if (count($noninstalled) > 0) {
                 $tpl->SetBlock('notifybox');
-                $tpl->SetVariable('title', _t('COMPONENTS_GADGETS_NOTINSTALLED'));
+                $tpl->SetVariable('title', $this::t('COMPONENTS.GADGETS_NOTINSTALLED'));
                 foreach ($noninstalled as $key => $gadget) {
                     $tpl->SetBlock('notifybox/item');
                     $gadgetCompleteDesc = $gadget['title'] . ' - ' . $gadget['description'];
@@ -167,7 +167,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                         'url',
                         $this->app->map->GetRawURL('Components', 'InstallGadget', array('comp' => $key))
                     );
-                    $tpl->SetVariable('install', _t('COMPONENTS_INSTALL'));
+                    $tpl->SetVariable('install', $this::t('COMPONENTS.INSTALL'));
                     $tpl->ParseBlock('notifybox/item');
                 }
                 $tpl->ParseBlock('notifybox');
@@ -177,7 +177,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             $nonupdated = $cmpModel->GetGadgetsList(null, true, false);
             if (count($nonupdated) > 0) {
                 $tpl->SetBlock('notifybox');
-                $tpl->SetVariable('title', _t('COMPONENTS_GADGETS_OUTDATED'));
+                $tpl->SetVariable('title', $this::t('COMPONENTS.GADGETS_OUTDATED'));
                 foreach ($nonupdated as $key => $gadget) {
                     $tpl->SetBlock('notifybox/item');
                     $gadgetCompleteDesc = $gadget['title'] . ' - ' . $gadget['description'];
@@ -189,7 +189,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                         'url',
                         $this->app->map->GetRawURL('Components', 'UpgradeGadget', array('comp' => $key))
                     );
-                    $tpl->SetVariable('install', _t('COMPONENTS_UPDATE'));
+                    $tpl->SetVariable('install', $this::t('COMPONENTS.UPDATE'));
                     $tpl->ParseBlock('notifybox/item');
                 }
                 $tpl->ParseBlock('notifybox');
@@ -210,7 +210,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             if (!Jaws_Error::IsError($logs) && !empty($logs)) {
                 $tpl->SetBlock('login_history');
                 $date = Jaws_Date::getInstance();
-                $tpl->SetVariable('title', _t('LOGS_LOGIN_HISTORY'));
+                $tpl->SetVariable('title', $this::t('LOGS.LOGIN_HISTORY'));
                 foreach ($logs as $log) {
                     $tpl->SetBlock('login_history/item');
                     $tpl->SetVariable('ip', long2ip((int)$log['ip']));

@@ -19,7 +19,7 @@ class ControlPanel_Hooks_Menu extends Jaws_Gadget_Hook
         $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
         $urls[] = array(
             'url'   => empty($admin_script)? 'admin.php' : $admin_script,
-            'title' => _t('USERS_CONTROLPANEL'),
+            'title' => $this::t('USERS.CONTROLPANEL'),
             'permission' => array(
                 'key'    => 'default_admin',
                 'subkey' => ''
