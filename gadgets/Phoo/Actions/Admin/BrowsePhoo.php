@@ -24,7 +24,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
         $aModel = $this->gadget->model->load('Albums');
         $tpl = $this->gadget->template->loadAdmin('PhooBrowse.html');
         $tpl->SetBlock('phoo_browse');
-        $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_GALLERY'));
+        $tpl->SetVariable('page-title', Jaws::t('PLUGINS.PHOOINSERT.PHOTO_GALLERY'));
 
         $dir = Jaws::t('LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');

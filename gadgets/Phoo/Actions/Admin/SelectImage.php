@@ -28,7 +28,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
         $model = $this->gadget->model->load('Photos');
         $tpl = $this->gadget->template->loadAdmin('SelectImage.html');
         $tpl->SetBlock('ImageSelect');
-        $tpl->SetVariable('page-title', _t('PLUGINS_PHOOINSERT_PHOTO_SELECT'));
+        $tpl->SetVariable('page-title', Jaws::t('PLUGINS.PHOOINSERT.PHOTO_SELECT'));
 
         $dir = Jaws::t('LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
