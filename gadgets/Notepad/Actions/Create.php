@@ -35,12 +35,12 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
             $note['content'] = '';
         }
 
-        $tpl->SetVariable('title', _t('NOTEPAD_NEW_NOTE'));
-        $tpl->SetVariable('errorIncompleteData', _t('NOTEPAD_ERROR_INCOMPLETE_DATA'));
+        $tpl->SetVariable('title', $this::t('NEW_NOTE'));
+        $tpl->SetVariable('errorIncompleteData', $this::t('ERROR_INCOMPLETE_DATA'));
         $tpl->SetVariable('action', 'newnote');
         $tpl->SetVariable('form_action', 'CreateNote');
-        $tpl->SetVariable('lbl_title', _t('NOTEPAD_NOTE_TITLE'));
-        $tpl->SetVariable('lbl_content', _t('NOTEPAD_NOTE_CONTENT'));
+        $tpl->SetVariable('lbl_title', $this::t('NOTE_TITLE'));
+        $tpl->SetVariable('lbl_content', $this::t('NOTE_CONTENT'));
         $tpl->SetVariable('url_back', $this->gadget->urlMap('Notepad'));
 
         // Editor
@@ -67,7 +67,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         $data = $this->gadget->request->fetch(array('title', 'content'), 'post');
         if (empty($data['title']) || empty($data['content'])) {
             $this->gadget->session->push(
-                _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),
+                $this::t('ERROR_INCOMPLETE_DATA'),
                 RESPONSE_ERROR,
                 'Response',
                 $data
@@ -82,7 +82,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         $result = $model->Insert($data);
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
-                _t('NOTEPAD_ERROR_NOTE_CREATE'),
+                $this::t('ERROR_NOTE_CREATE'),
                 RESPONSE_ERROR,
                 'Response',
                 $data
@@ -91,7 +91,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         }
 
         $this->gadget->session->push(
-            _t('NOTEPAD_NOTICE_NOTE_CREATED'),
+            $this::t('NOTICE_NOTE_CREATED'),
             RESPONSE_NOTICE,
             'Response'
         );

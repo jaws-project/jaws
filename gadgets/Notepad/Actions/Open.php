@@ -39,9 +39,9 @@ class Notepad_Actions_Open extends Jaws_Gadget_Action
         if ($note['user'] == $user) {
             $tpl->SetBlock('note/actions');
             $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
-            $tpl->SetVariable('lbl_share', _t('NOTEPAD_SHARE'));
+            $tpl->SetVariable('lbl_share', $this::t('SHARE'));
             $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
-            $tpl->SetVariable('confirmDelete', _t('NOTEPAD_WARNING_DELETE_NOTE'));
+            $tpl->SetVariable('confirmDelete', $this::t('WARNING_DELETE_NOTE'));
             $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
             $tpl->SetVariable('url_edit', $this->gadget->urlMap('EditNote', array('id' => $id)));
             $tpl->SetVariable('url_share', $this->gadget->urlMap('ShareNote', array('id' => $id)));

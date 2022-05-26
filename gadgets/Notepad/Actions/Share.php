@@ -38,8 +38,8 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('UID', $uid);
         $tpl->SetVariable('note_title', $note['title']);
-        $tpl->SetVariable('title', _t('NOTEPAD_SHARE'));
-        $tpl->SetVariable('lbl_users', _t('NOTEPAD_USERS'));
+        $tpl->SetVariable('title', $this::t('SHARE'));
+        $tpl->SetVariable('lbl_users', $this::t('USERS'));
         $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
 
         // User groups
@@ -52,13 +52,13 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($groups)) {
             $combo =& Piwi::CreateWidget('Combo', 'sys_groups');
             $combo->AddEvent(ON_CHANGE, 'toggleUsers(this.value)');
-            $combo->AddOption(_t('NOTEPAD_ALL_USERS'), 0);
+            $combo->AddOption($this::t('ALL_USERS'), 0);
             foreach ($groups as $group) {
                 $combo->AddOption($group['title'], $group['id']);
             }
             $tpl->SetVariable('groups', $combo->Get());
         }
-        $tpl->SetVariable('lbl_groups', _t('NOTEPAD_GROUPS'));
+        $tpl->SetVariable('lbl_groups', $this::t('GROUPS'));
 
         // Note users
         $model = $this->gadget->model->load('Share');
@@ -73,7 +73,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
             }
         }
         $tpl->SetVariable('note_users', $combo->Get());
-        $tpl->SetVariable('lbl_note_users', _t('NOTEPAD_SHARED_FOR'));
+        $tpl->SetVariable('lbl_note_users', $this::t('SHARED_FOR'));
 
         // Actions
         $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
@@ -122,7 +122,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note) || empty($note)) {
             return $this->gadget->session->response(
-                _t('NOTEPAD_ERROR_RETRIEVING_DATA'),
+                $this::t('ERROR_RETRIEVING_DATA'),
                 RESPONSE_ERROR
             );
         }
@@ -130,7 +130,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         // Verify owner
         if ($note['user'] != $user) {
             return $this->gadget->session->response(
-                _t('NOTEPAD_ERROR_NO_PERMISSION'),
+                $this::t('ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
         }
@@ -141,18 +141,18 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $res = $model->UpdateNoteUsers($id, $users);
         if (Jaws_Error::IsError($res)) {
             return $this->gadget->session->response(
-                _t('NOTEPAD_ERROR_NOTE_SHARE'),
+                $this::t('ERROR_NOTE_SHARE'),
                 RESPONSE_ERROR
             );
         }
 
         $this->gadget->session->push(
-            _t('NOTEPAD_NOTICE_SHARE_UPDATED'),
+            $this::t('NOTICE_SHARE_UPDATED'),
             RESPONSE_NOTICE,
             'Response'
         );
         return $this->gadget->session->response(
-            _t('NOTEPAD_NOTICE_SHARE_UPDATED')
+            $this::t('NOTICE_SHARE_UPDATED')
         );
     }
 }

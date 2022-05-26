@@ -29,7 +29,7 @@ class Notepad_Actions_View extends Jaws_Gadget_Action
         $user = (int)$this->app->session->user->id;
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note) || empty($note)) {
-            $tpl->SetVariable('text', _t('NOTEPAD_ERROR_RETRIEVING_DATA'));
+            $tpl->SetVariable('text', $this::t('ERROR_RETRIEVING_DATA'));
             $tpl->SetVariable('type', 'alert-danger');
         }
 

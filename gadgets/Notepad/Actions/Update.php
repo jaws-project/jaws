@@ -41,21 +41,21 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->template->load('Form.html');
         $tpl->SetBlock('form');
-        $tpl->SetVariable('title', _t('NOTEPAD_EDIT_NOTE'));
-        $tpl->SetVariable('errorIncompleteData', _t('NOTEPAD_ERROR_INCOMPLETE_DATA'));
+        $tpl->SetVariable('title', $this::t('EDIT_NOTE'));
+        $tpl->SetVariable('errorIncompleteData', $this::t('ERROR_INCOMPLETE_DATA'));
         $tpl->SetVariable('action', 'editnote');
         $tpl->SetVariable('form_action', 'UpdateNote');
         $tpl->SetVariable('id', $note['id']);
 
         // Title
         $tpl->SetVariable('note_title', $note['title']);
-        $tpl->SetVariable('lbl_title', _t('NOTEPAD_NOTE_TITLE'));
+        $tpl->SetVariable('lbl_title', $this::t('NOTE_TITLE'));
 
         // Editor
         $editor =& $this->app->loadEditor('Notepad', 'content', $note['content']);
         $editor->setID('content');
         $tpl->SetVariable('note_content', $editor->Get());
-        $tpl->SetVariable('lbl_content', _t('NOTEPAD_NOTE_CONTENT'));
+        $tpl->SetVariable('lbl_content', $this::t('NOTE_CONTENT'));
 
         // Actions
         $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
@@ -77,7 +77,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $data = $this->gadget->request->fetch(array('id', 'title', 'content'), 'post');
         if (empty($data['id']) || empty($data['title']) || empty($data['content'])) {
             $this->gadget->session->push(
-                _t('NOTEPAD_ERROR_INCOMPLETE_DATA'),
+                $this::t('ERROR_INCOMPLETE_DATA'),
                 RESPONSE_ERROR,
                 'Response',
                 $data
@@ -92,7 +92,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note)) {
             $this->gadget->session->push(
-                _t('NOTEPAD_ERROR_RETRIEVING_DATA'),
+                $this::t('ERROR_RETRIEVING_DATA'),
                 RESPONSE_ERROR,
                 'Response'
             );
@@ -102,7 +102,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         // Verify owner
         if ($note['user'] != $user) {
             $this->gadget->session->push(
-                _t('NOTEPAD_ERROR_NO_PERMISSION'),
+                $this::t('ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR,
                 'Response'
             );
@@ -114,7 +114,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         $result = $model->Update($id, $data);
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
-                _t('NOTEPAD_ERROR_NOTE_UPDATE'),
+                $this::t('ERROR_NOTE_UPDATE'),
                 RESPONSE_ERROR,
                 'Response',
                 $data
@@ -123,7 +123,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         }
 
         $this->gadget->session->push(
-            _t('NOTEPAD_NOTICE_NOTE_UPDATED'),
+            $this::t('NOTICE_NOTE_UPDATED'),
             RESPONSE_NOTICE,
             'Response'
         );

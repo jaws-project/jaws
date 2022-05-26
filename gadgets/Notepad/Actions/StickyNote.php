@@ -19,11 +19,11 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
     function StickyNoteLayoutParams()
     {
         $types = array();
-        $types[1] = _t('NOTEPAD_LAST_NOTE');
-        $types[5] = _t('NOTEPAD_LATEST_5_NOTES');
-        $types[10] = _t('NOTEPAD_LATEST_10_NOTES');
+        $types[1] = $this::t('LAST_NOTE');
+        $types[5] = $this::t('LATEST_5_NOTES');
+        $types[10] = $this::t('LATEST_10_NOTES');
         $result[] = array(
-            'title' => _t('NOTEPAD_STICKYNOTE_DISPLAY'),
+            'title' => $this::t('STICKYNOTE_DISPLAY'),
             'value' => $types
         );
 
@@ -69,7 +69,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('StickyNote.html');
         $tpl->SetBlock('notes');
 
-        $tpl->SetVariable('title', _t('NOTEPAD_LATEST_NOTES'));
+        $tpl->SetVariable('title', $this::t('LATEST_NOTES'));
         $objDate = Jaws_Date::getInstance();
         foreach ($notes as $note) {
             $tpl->SetBlock('notes/note');
