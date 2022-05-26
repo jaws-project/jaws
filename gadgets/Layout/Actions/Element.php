@@ -43,9 +43,9 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $tpl->SetVariable('.browser', $brow);
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
-        $tpl->SetVariable('gadgets', _t('LAYOUT_GADGETS'));
-        $tpl->SetVariable('actions', _t('LAYOUT_ACTIONS'));
-        $addButton =& Piwi::CreateWidget('Button', 'add',_t('LAYOUT_NEW'), STOCK_ADD);
+        $tpl->SetVariable('gadgets', $this::t('GADGETS'));
+        $tpl->SetVariable('actions', $this::t('ACTIONS'));
+        $addButton =& Piwi::CreateWidget('Button', 'add',$this::t('NEW'), STOCK_ADD);
         $addButton->AddEvent(ON_CLICK, "parent.parent.addGetAction(document);");
         $tpl->SetVariable('add_button', $addButton->Get());
 
@@ -200,7 +200,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
             }
         } else {
             $tpl->SetBlock('template/no_action');
-            $tpl->SetVariable('no_gadget_desc', _t('LAYOUT_NO_GADGET_ACTIONS'));
+            $tpl->SetVariable('no_gadget_desc', $this::t('NO_GADGET_ACTIONS'));
             $tpl->ParseBlock('template/no_action');
         }
 
@@ -234,9 +234,9 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
             $res = Jaws_Error::IsError($res)? false : true;
         }
         if ($res === false) {
-            $this->gadget->session->push(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('LAYOUT_ELEMENT_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('ELEMENT_UPDATED'), RESPONSE_NOTICE);
         }
         return $this->gadget->session->pop();
     }

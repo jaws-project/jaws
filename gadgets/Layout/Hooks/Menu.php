@@ -17,7 +17,7 @@ class Layout_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls[] = array(
             'url'        => $this->gadget->urlMap('Layout'),
-            'title'      => _t('LAYOUT_TITLE'),
+            'title'      => $this::t('TITLE'),
             'permission' => array(
                 'key'    => 'MainLayoutManage',
                 'subkey' => ''

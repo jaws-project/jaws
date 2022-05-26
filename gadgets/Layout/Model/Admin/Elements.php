@@ -85,7 +85,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
         $lyTable->beginTransaction();
         $result = $lyTable->delete()->where('id', $id)->and()->where('user', $user)->exec();
         if (Jaws_Error::IsError($result)) {
-            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_DELETED'));
+            $result->setMessage($this::t('ERROR_ELEMENT_DELETED'));
             return $result;
         }
 
@@ -103,7 +103,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             ->where('position', (int)$position, '>=')
             ->exec();
         if (Jaws_Error::IsError($result)) {
-            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+            $result->setMessage($this::t('ERROR_ELEMENT_MOVED'));
             return $result;
         }
 
@@ -153,7 +153,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             $lyTable->where('position', $new_position, '>=');
             $result = $lyTable->exec();
             if (Jaws_Error::IsError($result)) {
-                $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+                $result->setMessage($this::t('ERROR_ELEMENT_MOVED'));
                 return $result;
             }
 
@@ -171,7 +171,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             ->where('layout', $layout)
             ->exec();
         if (Jaws_Error::IsError($result)) {
-            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+            $result->setMessage($this::t('ERROR_ELEMENT_MOVED'));
             return $result;
         }
 
@@ -190,7 +190,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             ->where('layout', $layout)
             ->exec();
         if (Jaws_Error::IsError($result)) {
-            $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
+            $result->setMessage($this::t('ERROR_ELEMENT_MOVED'));
             return $result;
         }
 

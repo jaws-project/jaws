@@ -35,7 +35,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push($result->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('LAYOUT_ELEMENT_MOVED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('ELEMENT_MOVED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -55,7 +55,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push($result->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('LAYOUT_ELEMENT_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('ELEMENT_DELETED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -107,18 +107,18 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
         }
 
         if ($id === false) {
-            $this->gadget->session->push(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
             $res['success'] = false;
         } else {
             $el = $model->GetElement($id);
-            $this->gadget->session->push(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('ELEMENT_ADDED'), RESPONSE_NOTICE);
             $info = Jaws_Gadget::getInstance($gadget);
             $el['tname'] = $info->title;
             if (isset($actions[$action])) {
                 $el['taction'] = $actions[$action]['name'];
                 $el['tactiondesc'] = $actions[$action]['desc'];
             } else {
-                $el['taction'] =  _t('LAYOUT_ACTION');
+                $el['taction'] =  $this::t('ACTION');
                 $el['tactiondesc'] = '';
             }
 
@@ -129,8 +129,8 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $el['delete']    = "deleteElement('{$id}');";
             $el['deleteimg'] = 'gadgets/Layout/Resources/images/delete-item.gif';
             $el['dwalways']  = Jaws::t('ALWAYS');
-            $el['dwtitle']   = _t('LAYOUT_CHANGE_DW');
-            $el['dwdisplay'] = _t('LAYOUT_DISPLAY_IN') . ': ';
+            $el['dwtitle']   = $this::t('CHANGE_DW');
+            $el['dwdisplay'] = $this::t('DISPLAY_IN') . ': ';
             $el['dwid'] = 'dw'.$id;
             $el['dwonclick'] = BASE_SCRIPT. '?reqGadget=Layout&reqAction=DisplayWhen&id='.$id.'&layout='.$layout;
             $res = $el;

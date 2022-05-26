@@ -18,10 +18,10 @@ class Layout_Hooks_Preferences extends Jaws_Gadget_Hook
         $result = array();
         $result['default_layout_type'] = array(
             'type' => 'select',
-            'title' => _t('LAYOUT_TYPE_DEFAULT'),
+            'title' => $this::t('TYPE_DEFAULT'),
             'values' => array(
-                0 => _t('LAYOUT_TYPE_0'),
-                1 => _t('LAYOUT_TYPE_1'),
+                0 => $this::t('TYPE_0'),
+                1 => $this::t('TYPE_1'),
             ),
         );
 

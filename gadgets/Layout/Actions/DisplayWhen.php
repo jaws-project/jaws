@@ -43,7 +43,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl->SetVariable('.dir', $dir);
         $tpl->SetVariable('.browser', $brow);
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('lbl_when', _t('LAYOUT_DISPLAY'));
+        $tpl->SetVariable('lbl_when', $this::t('DISPLAY'));
 
         $layoutElement = $model->GetElement($rqst['id']);
         if (is_array($layoutElement) && !empty($layoutElement)) {
@@ -51,8 +51,8 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         }
 
         $displayCombo =& Piwi::CreateWidget('Combo', 'display_in');
-        $displayCombo->AddOption(_t('LAYOUT_ALWAYS'), 'always');
-        $displayCombo->AddOption(_t('LAYOUT_ONLY_IN_GADGET'), 'selected');
+        $displayCombo->AddOption($this::t('ALWAYS'), 'always');
+        $displayCombo->AddOption($this::t('ONLY_IN_GADGET'), 'selected');
 
         if ($dw_value == '*') {
             $displayCombo->SetDefault('always');
@@ -68,7 +68,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $selectedGadgets = explode(',', $dw_value);
         // for index...
         $gadget_field =& Piwi::CreateWidget('CheckButtons', 'checkbox_index', 'vertical');
-        $gadget_field->AddOption(_t('LAYOUT_INDEX'), 'index', null, in_array('index', $selectedGadgets));
+        $gadget_field->AddOption($this::t('INDEX'), 'index', null, in_array('index', $selectedGadgets));
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadget_list = $cmpModel->GetGadgetsList(null, true, true, true);
         foreach ($gadget_list as $g) {
@@ -106,9 +106,9 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Elements');
         $res = $model->UpdateDisplayWhen($item, $layout, $dw);
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
         }
         return $this->gadget->session->pop();
     }

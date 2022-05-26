@@ -68,12 +68,12 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $t_item->Blocks['response']->Parsed = '';
 
         $t_item->SetBlock('drag_drop');
-        $t_item->SetVariable('empty_section',    _t('LAYOUT_SECTION_EMPTY'));
-        $t_item->SetVariable('display_always',   _t('LAYOUT_ALWAYS'));
-        $t_item->SetVariable('display_never',    _t('LAYOUT_NEVER'));
-        $t_item->SetVariable('displayWhenTitle', _t('LAYOUT_CHANGE_DW'));
-        $t_item->SetVariable('actionsTitle',     _t('LAYOUT_ACTIONS'));
-        $t_item->SetVariable('confirmDelete',    _t('LAYOUT_CONFIRM_DELETE'));
+        $t_item->SetVariable('empty_section',    $this::t('SECTION_EMPTY'));
+        $t_item->SetVariable('display_always',   $this::t('ALWAYS'));
+        $t_item->SetVariable('display_never',    $this::t('NEVER'));
+        $t_item->SetVariable('displayWhenTitle', $this::t('CHANGE_DW'));
+        $t_item->SetVariable('actionsTitle',     $this::t('ACTIONS'));
+        $t_item->SetVariable('confirmDelete',    $this::t('CONFIRM_DELETE'));
         $dragdrop = $t_item->ParseBlock('drag_drop');
         $t_item->Blocks['drag_drop']->Parsed = '';
 
@@ -91,13 +91,13 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             $this->gadget->urlMap('Layout', array('theme' => '~theme~')),
             'Layout'
         );
-        $this->gadget->define('noActionsMsg', _t('LAYOUT_NO_GADGET_ACTIONS'), 'Layout');
-        $this->gadget->define('noItemsMsg', _t('LAYOUT_SECTION_EMPTY'), 'Layout');
-        $this->gadget->define('displayAlways', _t('LAYOUT_ALWAYS'), 'Layout');
-        $this->gadget->define('displayNever', _t('LAYOUT_NEVER'), 'Layout');
-        $this->gadget->define('actionsTitle', _t('LAYOUT_ACTIONS'), 'Layout');
-        $this->gadget->define('displayWhenTitle', _t('LAYOUT_CHANGE_DW'), 'Layout');
-        $this->gadget->define('confirmDelete', _t('LAYOUT_CONFIRM_DELETE'), 'Layout');
+        $this->gadget->define('noActionsMsg', $this::t('NO_GADGET_ACTIONS'), 'Layout');
+        $this->gadget->define('noItemsMsg', $this::t('SECTION_EMPTY'), 'Layout');
+        $this->gadget->define('displayAlways', $this::t('ALWAYS'), 'Layout');
+        $this->gadget->define('displayNever', $this::t('NEVER'), 'Layout');
+        $this->gadget->define('actionsTitle', $this::t('ACTIONS'), 'Layout');
+        $this->gadget->define('displayWhenTitle', $this::t('CHANGE_DW'), 'Layout');
+        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'), 'Layout');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
 
@@ -135,11 +135,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetVariable('item_id', $gadget['id']);
                     $t_item->SetVariable('layout', $layout);
                     $t_item->SetVariable('pos', $gadget['position']);
-                    $t_item->SetVariable('gadget', _t('LAYOUT_REQUESTED_GADGET'));
+                    $t_item->SetVariable('gadget', $this::t('REQUESTED_GADGET'));
                     $t_item->SetVariable('action', '&nbsp;');
                     $t_item->SetVariable('icon', 'gadgets/Layout/Resources/images/requested-gadget.png');
-                    $t_item->SetVariable('description', _t('LAYOUT_REQUESTED_GADGET_DESC'));
-                    $t_item->SetVariable('lbl_when', _t('LAYOUT_DISPLAY_IN'));
+                    $t_item->SetVariable('description', $this::t('REQUESTED_GADGET_DESC'));
+                    $t_item->SetVariable('lbl_when', $this::t('DISPLAY_IN'));
                     $t_item->SetVariable('when', Jaws::t('ALWAYS'));
                     $t_item->SetVariable('void_link', 'return;');
                     $t_item->SetVariable('section_name', $name);
@@ -185,11 +185,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
                     $t_item->SetVariable('controls', $controls);
                     $t_item->SetVariable('void_link', '');
-                    $t_item->SetVariable('lbl_when', _t('LAYOUT_DISPLAY_IN'));
+                    $t_item->SetVariable('lbl_when', $this::t('DISPLAY_IN'));
                     if ($gadget['when'] == '*') {
                         $t_item->SetVariable('when', Jaws::t('ALWAYS'));
                     } elseif (empty($gadget['when'])) {
-                        $t_item->SetVariable('when', _t('LAYOUT_NEVER'));
+                        $t_item->SetVariable('when', $this::t('NEVER'));
                     } else {
                         $t_item->SetVariable('when', str_replace(',', ', ', $gadget['when']));
                     }
@@ -226,17 +226,17 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         } else {
             $tpl->SetVariable('admin_script', 'javascript:void();');
         }
-        $tpl->SetVariable('title-name', _t('LAYOUT_TITLE'));
+        $tpl->SetVariable('title-name', $this::t('TITLE'));
         $tpl->SetVariable('icon-gadget', 'gadgets/Layout/Resources/images/logo.png');
         $tpl->SetVariable('title-gadget', 'Layout');
         $tpl->SetVariable('layout-url', $this->gadget->urlMap('Layout', array()));
 
         // themes
-        $tpl->SetVariable('lbl_theme', _t('LAYOUT_THEME'));
+        $tpl->SetVariable('lbl_theme', $this::t('THEME'));
         $themeCombo =& Piwi::CreateWidget('ComboGroup', 'theme');
         $themeCombo->setID('theme');
-        $themeCombo->addGroup(0, _t('LAYOUT_THEME_LOCAL'));
-        $themeCombo->addGroup(1, _t('LAYOUT_THEME_REMOTE'));
+        $themeCombo->addGroup(0, $this::t('THEME_LOCAL'));
+        $themeCombo->addGroup(1, $this::t('THEME_REMOTE'));
         $themes = Jaws_Utils::GetThemesInfo();
         foreach ($themes[0] as $theme => $tInfo) {
             $themeCombo->AddOption(0, $tInfo['name'], "$theme,0");
@@ -250,7 +250,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
 
         // layouts
-        $tpl->SetVariable('lbl_layout', _t('LAYOUT_LAYOUT'));
+        $tpl->SetVariable('lbl_layout', $this::t('LAYOUT'));
         $layouts =& Piwi::CreateWidget('Combo', 'layout');
         $layouts->setID('layout');
         if (isset($themes[$theme_locality][$theme_name])) {
@@ -261,16 +261,16 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                 )
             );
             // default layout
-            $layouts->AddOption(_t('LAYOUT_LAYOUT_DEFAULT'), 'Layout');
+            $layouts->AddOption($this::t('LAYOUT_DEFAULT'), 'Layout');
             // index layout
             if (isset($theme_layouts['Index.html'])) {
-                $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 'Index');
+                $layouts->AddOption($this::t('LAYOUT_INDEX'), 'Index');
             }
             // dashboard layout available if user has permission for use it
             if ($this->app->session->getPermission('Users', 'ManageDashboard') &&
                 isset($theme_layouts['Index.Dashboard.html'])
             ) {
-                $layouts->AddOption(_t('LAYOUT_DASHBOARD'), 'Index.Dashboard');
+                $layouts->AddOption($this::t('DASHBOARD'), 'Index.Dashboard');
             }
             // unset pre-added layouts
             unset(
@@ -289,10 +289,10 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $layouts->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $tpl->SetVariable('layouts_combo', $layouts->Get());
 
-        $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
+        $add =& Piwi::CreateWidget('Button', 'add', $this::t('NEW'), STOCK_ADD);
         $url = $this->app->getSiteURL('/').
             BASE_SCRIPT. '?reqGadget=Layout&amp;reqAction=AddLayoutElement&amp;layout='. $layout;
-        $add->AddEvent(ON_CLICK, "addGadget('".$url."', '"._t('LAYOUT_NEW')."');");
+        $add->AddEvent(ON_CLICK, "addGadget('".$url."', '".$this::t('NEW')."');");
         $tpl->SetVariable('add_gadget', $add->Get());
 
         $docurl = $this->gadget->GetDoc();
@@ -322,7 +322,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {
             $this->gadget->session->push(
-                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout'),
+                $this::t('ERROR_NO_BLOCK', $theme, 'layout'),
                 RESPONSE_ERROR,
                 'Layout'
             );
@@ -330,7 +330,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['main'])) {
             $this->gadget->session->push(
-                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/main'),
+                $this::t('ERROR_NO_BLOCK', $theme, 'layout/main'),
                 RESPONSE_ERROR,
                 'Layout'
             );
@@ -338,7 +338,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['links'])) {
             $this->gadget->session->push(
-                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/links'),
+                $this::t('ERROR_NO_BLOCK', $theme, 'layout/links'),
                 RESPONSE_ERROR,
                 'Layout'
             );
@@ -346,7 +346,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['metas'])) {
             $this->gadget->session->push(
-                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/metas'),
+                $this::t('ERROR_NO_BLOCK', $theme, 'layout/metas'),
                 RESPONSE_ERROR,
                 'Layout'
             );
@@ -354,7 +354,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['scripts'])) {
             $this->gadget->session->push(
-                _t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout/scripts'),
+                $this::t('ERROR_NO_BLOCK', $theme, 'layout/scripts'),
                 RESPONSE_ERROR,
                 'Layout'
             );
@@ -368,7 +368,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             'Settings'
         );
         $this->gadget->session->push(
-            _t('LAYOUT_THEME_CHANGED'),
+            $this::t('THEME_CHANGED'),
             RESPONSE_NOTICE,
             'Layout'
         );
