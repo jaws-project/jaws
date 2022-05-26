@@ -49,8 +49,8 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         $themesCombo =& Piwi::CreateWidget('ComboGroup', 'themes_combo');
         $themesCombo->SetID('themes_combo');
         $themesCombo->SetSize(24);
-        $themesCombo->addGroup(0, _t('LAYOUT_THEME_LOCAL'));
-        $themesCombo->addGroup(1, _t('LAYOUT_THEME_REMOTE'));
+        $themesCombo->addGroup(0, $this::t('LAYOUT.THEME_LOCAL'));
+        $themesCombo->addGroup(1, $this::t('LAYOUT.THEME_REMOTE'));
         $themesCombo->AddEvent(ON_CHANGE, 'javascript:editTheme(this.value);');
         $themes = Jaws_Utils::GetThemesInfo();
         foreach ($themes[0] as $theme => $tInfo) {
