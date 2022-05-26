@@ -97,7 +97,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
         $tpl->SetBlock('tagcloud');
 
         if(!empty($gadget)) {
-            $tpl->SetVariable('title', $this::t('TAG_CLOUD', _t(strtoupper($gadget) . '_TITLE')));
+            $tpl->SetVariable('title', $this::t('TAG_CLOUD', $this::t($gadget. '.TITLE')));
         } else {
             $tpl->SetVariable('title', $this::t('TAG_CLOUD', Jaws::t('ALL')));
         }
@@ -306,7 +306,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
 
         if (count($references) > 2) {
             $tpl->SetBlock('tag/subtitle');
-            $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE', $referencesCount, $tag));
+            $tpl->SetVariable('text', $this::t('SEARCH.RESULTS_SUBTITLE', $referencesCount, $tag));
             $tpl->ParseBlock('tag/subtitle');
         }
 
@@ -335,7 +335,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
                 $result = $objHook->Execute($action, $references);
                 if (!Jaws_Error::IsError($result) && !empty($result)) {
                     $tpl->SetBlock('tags/gadget');
-                    $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
+                    $tpl->SetVariable('gadget_result', $this::t('SEARCH.RESULTS_IN_GADGETS',
                         count($result),
                         'TEST',
                         $objGadget->title));
