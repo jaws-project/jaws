@@ -41,7 +41,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $fromDate->setDateFormat('%Y-%m-%d');
         $fromDate->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $tpl->SetVariable('filter_from_date', $fromDate->Get());
-        $tpl->SetVariable('lbl_filter_from_date', _t('ACTIVITIES_FROM_DATE'));
+        $tpl->SetVariable('lbl_filter_from_date', $this::t('FROM_DATE'));
 
         // To Date Filter
         $toDate =& Piwi::CreateWidget('DatePicker', 'to_date', '');
@@ -51,7 +51,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $toDate->setDateFormat('%Y-%m-%d');
         $toDate->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $tpl->SetVariable('filter_to_date', $toDate->Get());
-        $tpl->SetVariable('lbl_filter_to_date', _t('ACTIVITIES_TO_DATE'));
+        $tpl->SetVariable('lbl_filter_to_date', $this::t('TO_DATE'));
 
         // Gadgets Filter
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
@@ -71,7 +71,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $domainCombo->AddOption(Jaws::t('ALL'), -1, false);
         foreach ($allDomains as $domain) {
             if (empty($domain)) {
-                $domainCombo->AddOption(_t('ACTIVITIES_MY_DOMAIN'), '', false);
+                $domainCombo->AddOption($this::t('MY_DOMAIN'), '', false);
             } else {
                 $domainCombo->AddOption($domain, $domain, false);
             }
@@ -79,18 +79,18 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $domainCombo->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $domainCombo->SetDefault('');
         $tpl->SetVariable('filter_domain', $domainCombo->Get());
-        $tpl->SetVariable('lbl_filter_domain', _t('ACTIVITIES_DOMAIN'));
+        $tpl->SetVariable('lbl_filter_domain', $this::t('DOMAIN'));
 
         // Order
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
         $orderType->AddOption(Jaws::t('DATE'). ' &darr;', 'date');
         $orderType->AddOption(Jaws::t('DATE'). ' &uarr;', 'date desc');
-        $orderType->AddOption(_t('ACTIVITIES_HITS'). ' &darr;', 'hits');
-        $orderType->AddOption(_t('ACTIVITIES_HITS'). ' &uarr;', 'hits desc');
+        $orderType->AddOption($this::t('HITS'). ' &darr;', 'hits');
+        $orderType->AddOption($this::t('HITS'). ' &uarr;', 'hits desc');
         $orderType->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
-        $tpl->SetVariable('lbl_order_type', _t('ACTIVITIES_ORDER_TYPE'));
+        $tpl->SetVariable('lbl_order_type', $this::t('ORDER_TYPE'));
 
         //DataGrid
         $tpl->SetVariable('datagrid', $this->ActivitiesDataGrid());
@@ -102,7 +102,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $actions->AddOption('&nbsp;', '');
         if ($this->gadget->GetPermission('DeleteActivities')) {
             $actions->AddOption(Jaws::t('DELETE'), 'delete');
-            $actions->AddOption(_t('ACTIVITIES_DELETE_ALL'), 'deleteAll');
+            $actions->AddOption($this::t('DELETE_ALL'), 'deleteAll');
         }
         $tpl->SetVariable('actions_combo', $actions->Get());
 
@@ -135,7 +135,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $grid->useMultipleSelection();
         $grid->pageBy(15);
 
-        $column1 = Piwi::CreateWidget('Column', _t('ACTIVITIES_DOMAIN'), null, false);
+        $column1 = Piwi::CreateWidget('Column', $this::t('DOMAIN'), null, false);
         $column1->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column1);
 
@@ -146,7 +146,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
-        $column4 = Piwi::CreateWidget('Column', _t('ACTIVITIES_HITS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', $this::t('HITS'), null, false);
         $column4->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
@@ -225,9 +225,9 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $model = $this->gadget->model->loadAdmin('Activities');
         $res = $model->DeleteActivities($activity);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('ACTIVITIES_DELETED'), RESPONSE_NOTICE);
         }
     }
 
@@ -243,9 +243,9 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $model = $this->gadget->model->loadAdmin('Activities');
         $res = $model->DeleteAllActivities();
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('ACTIVITIES_DELETED'), RESPONSE_NOTICE);
         }
     }
 

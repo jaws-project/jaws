@@ -18,8 +18,8 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         // Load the template
         $tpl = $this->gadget->template->load('Activities.html');
         $tpl->SetBlock('Activities');
-        $tpl->SetVariable('title', _t('ACTIVITIES_ACTIONS_ACTIVITIES'));
-        $this->SetTitle(_t('ACTIVITIES_ACTIONS_ACTIVITIES'));
+        $tpl->SetVariable('title', $this::t('ACTIONS_ACTIVITIES'));
+        $this->SetTitle($this::t('ACTIONS_ACTIVITIES'));
 
         $model = $this->gadget->model->load('Activities');
 
@@ -70,7 +70,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
             }
         } else {
             $tpl->SetBlock('Activities/no_activity');
-            $tpl->SetVariable('no_activity', _t('ACTIVITIES_ACTIONS_NOT_FIND_ACTIVITY'));
+            $tpl->SetVariable('no_activity', $this::t('ACTIONS_NOT_FIND_ACTIVITY'));
             $tpl->ParseBlock('Activities/no_activity');
         }
 

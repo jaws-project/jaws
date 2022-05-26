@@ -19,7 +19,7 @@ class Activities_Hooks_Menu extends Jaws_Gadget_Hook
 
         $urls[] = array(
             'url'   => $this->gadget->urlMap('Activities'),
-            'title' => _t('ACTIVITIES_ACTIONS_ACTIVITIES')
+            'title' => $this::t('ACTIONS_ACTIVITIES')
         );
 
         return $urls;
