@@ -178,10 +178,10 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
             }
             $globals = @parse_ini_file($global_file, false, INI_SCANNER_RAW);
             $data['lang_direction'] = 
-                isset($globals['GLOBAL_LANG_DIRECTION'])? $globals['GLOBAL_LANG_DIRECTION'] : 'ltr';
+                isset($globals['LANG_DIRECTION'])? $globals['LANG_DIRECTION'] : 'ltr';
         } else {
             $data['lang_direction'] = 
-                isset($strings['GLOBAL_LANG_DIRECTION'])? $strings['GLOBAL_LANG_DIRECTION'] : 'ltr';
+                isset($strings['LANG_DIRECTION'])? $strings['LANG_DIRECTION'] : 'ltr';
         }
 
         // Metadata
