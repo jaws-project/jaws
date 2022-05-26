@@ -29,7 +29,7 @@ class Launcher_Actions_Script extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('LAUNCHER_SCRIPT'),
+                'title' => $this::t('SCRIPT'),
                 'value' => $pscripts
             );
         }
@@ -59,11 +59,11 @@ class Launcher_Actions_Script extends Jaws_Gadget_Action
                 if (function_exists($script)) {
                     return call_user_func($script, $params);
                 } else {
-                    return new Jaws_Error(_t('LAUNCHER_ERROR_FUNCTION_NOT_EXISTS', $script));
+                    return new Jaws_Error($this::t('ERROR_FUNCTION_NOT_EXISTS', $script));
                 }
             }
         }
 
-        return new Jaws_Error(_t('LAUNCHER_ERROR_SCRIPT_NOT_EXISTS', $script));
+        return new Jaws_Error($this::t('ERROR_SCRIPT_NOT_EXISTS', $script));
     }
 }
