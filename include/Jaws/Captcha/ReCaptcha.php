@@ -57,9 +57,9 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
         $res['key']   = 0;
         $res['type']  = $this->type;
         $res['text']  = $reCAPTCHA;
-        $res['label'] = _t($this->_label);
-        $res['title'] = _t($this->_label);
-        $res['description'] = _t($this->_description);
+        $res['label'] = Jaws::t($this->_label);
+        $res['title'] = Jaws::t($this->_label);
+        $res['description'] = Jaws::t($this->_description);
         return $res;
     }
 

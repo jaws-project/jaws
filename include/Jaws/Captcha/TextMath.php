@@ -24,7 +24,7 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
      * @var     string
      * @access  private
      */
-    var $_label = 'GLOBAL_CAPTCHA_QUESTION';
+    var $_label = 'CAPTCHA_QUESTION';
 
     /**
      * Captcha entry description
@@ -32,7 +32,7 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
      * @var     string
      * @access  private
      */
-    var $_description = 'GLOBAL_CAPTCHA_QUESTION_DESC';
+    var $_description = 'CAPTCHA_QUESTION_DESC';
 
     /**
      * Returns an array with the captcha text entry
@@ -52,8 +52,8 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
         $res['type']  = $this->type;
         $res['text']  = $value;
         $res['title'] = $title;
-        $res['label'] = _t($this->_label);
-        $res['description'] = _t($this->_description);
+        $res['label'] = Jaws::t($this->_label);
+        $res['description'] = Jaws::t($this->_description);
         return $res;
     }
 
@@ -83,7 +83,7 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
             case 0:
                 $result = $fnum + $snum;
                 $equation = $fnum. '+'. $snum;
-                $title = _t('POLICY_CAPTCHA_MATH_PLUS', $fsnum, $ssnum);
+                $title = Jaws::t('GADGETS.POLICY.CAPTCHA_MATH_PLUS', $fsnum, $ssnum);
                 break;
 
             case 1:
@@ -98,13 +98,13 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
                 }
                 $result = $fnum - $snum;
                 $equation = $fnum. '-'. $snum;
-                $title = _t('POLICY_CAPTCHA_MATH_MINUS', $fsnum, $ssnum);
+                $title = Jaws::t('GADGETS.POLICY.CAPTCHA_MATH_MINUS', $fsnum, $ssnum);
                 break;
 
             case 2:
                 $result = $fnum * $snum;
                 $equation = $fnum. '*'. $snum;
-                $title = _t('POLICY_CAPTCHA_MATH_MULTIPLY', $fsnum, $ssnum);
+                $title = Jaws::t('GADGETS.POLICY.CAPTCHA_MATH_MULTIPLY', $fsnum, $ssnum);
         }
 
         return array($equation, $result, $title);

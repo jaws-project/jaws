@@ -42,7 +42,7 @@ class Jaws_Captcha
      * @var     string
      * @access  private
      */
-    private $_label = 'GLOBAL_CAPTCHA_CODE';
+    private $_label = 'CAPTCHA_CODE';
 
     /**
      * Captcha entry description
@@ -50,7 +50,7 @@ class Jaws_Captcha
      * @var     string
      * @access  private
      */
-    private $_description = 'GLOBAL_CAPTCHA_CODE_DESC';
+    private $_description = 'CAPTCHA_CODE_DESC';
 
     /**
      * Constructor
@@ -114,9 +114,9 @@ class Jaws_Captcha
         $res['key']   = $key;
         $res['type']  = $this->type;
         $res['text']  = '';
-        $res['label'] = _t($this->_label);
-        $res['title'] = _t($this->_label);
-        $res['description'] = _t($this->_description);
+        $res['label'] = Jaws::t($this->_label);
+        $res['title'] = Jaws::t($this->_label);
+        $res['description'] = Jaws::t($this->_description);
         return $res;
     }
 
