@@ -32,15 +32,15 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('File.html');
         $tpl->SetBlock('file');
 
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
-        $tpl->SetVariable('lbl_filename', _t('DIRECTORY_FILE_FILENAME'));
-        $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
-        $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-        $tpl->SetVariable('lbl_bytes', _t('DIRECTORY_BYTES'));
-        $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
-        $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
-        $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
+        $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
+        $tpl->SetVariable('lbl_desc', $this::t('FILE_DESC'));
+        $tpl->SetVariable('lbl_filename', $this::t('FILE_FILENAME'));
+        $tpl->SetVariable('lbl_type', $this::t('FILE_TYPE'));
+        $tpl->SetVariable('lbl_size', $this::t('FILE_SIZE'));
+        $tpl->SetVariable('lbl_bytes', $this::t('BYTES'));
+        $tpl->SetVariable('lbl_created', $this::t('FILE_CREATED'));
+        $tpl->SetVariable('lbl_modified', $this::t('FILE_MODIFIED'));
+        $tpl->SetVariable('lbl_download', $this::t('DOWNLOAD'));
 
         $objDate = Jaws_Date::getInstance();
         $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
@@ -180,7 +180,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         if (!empty($data['title'])) {
             $result = $this->gadget->model->loadAdmin('Files')->SaveFile($data);
         } else {
-            $result = Jaws_Error::raiseError(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'), __FUNCTION__, JAWS_ERROR_NOTICE);
+            $result = Jaws_Error::raiseError($this::t('ERROR_INCOMPLETE_DATA'), __FUNCTION__, JAWS_ERROR_NOTICE);
         }
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
@@ -236,7 +236,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('DIRECTORY_NOTICE_ITEMS_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('NOTICE_ITEMS_DELETED'), RESPONSE_NOTICE);
         }
     }
 

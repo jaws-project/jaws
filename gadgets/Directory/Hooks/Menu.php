@@ -19,19 +19,19 @@ class Directory_Hooks_Menu extends Jaws_Gadget_Hook
                         'title' => $this->gadget->title);
 
         $urls[] = array('url' => $this->gadget->urlMap('Directory', array('type'=>Directory_Info::FILE_TYPE_TEXT)),
-                        'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
+                        'title' => $this::t('FILE_TYPE_TEXT'));
 
         $urls[] = array('url' => $this->gadget->urlMap('Directory', array('type'=>Directory_Info::FILE_TYPE_IMAGE)),
-                        'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
+                        'title' => $this::t('FILE_TYPE_IMAGE'));
 
         $urls[] = array('url' => $this->gadget->urlMap('Directory', array('type'=>Directory_Info::FILE_TYPE_AUDIO)),
-                        'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
+                        'title' => $this::t('FILE_TYPE_AUDIO'));
 
         $urls[] = array('url' => $this->gadget->urlMap('Directory', array('type'=>Directory_Info::FILE_TYPE_VIDEO)),
-                        'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'));
+                        'title' => $this::t('FILE_TYPE_VIDEO'));
 
         $urls[] = array('url' => $this->gadget->urlMap('Directory', array('type'=>Directory_Info::FILE_TYPE_ARCHIVE)),
-                        'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
+                        'title' => $this::t('FILE_TYPE_ARCHIVE'));
 
         return $urls;
     }

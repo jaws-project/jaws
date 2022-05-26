@@ -19,9 +19,9 @@ class Directory_Actions_Admin_Statistics extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->loadAdmin('Statistics.html');
         $tpl->SetBlock('statistics');
 
-        $tpl->SetVariable('title', _t('DIRECTORY_STATISTICS'));
-        $tpl->SetVariable('lbl_files', _t('DIRECTORY_STAT_FILES'));
-        $tpl->SetVariable('lbl_dirs', _t('DIRECTORY_STAT_DIRS'));
+        $tpl->SetVariable('title', $this::t('STATISTICS'));
+        $tpl->SetVariable('lbl_files', $this::t('STAT_FILES'));
+        $tpl->SetVariable('lbl_dirs', $this::t('STAT_DIRS'));
 
         $model = $this->gadget->model->loadAdmin('Statistics');
         $user = (int)$this->app->session->user->id;

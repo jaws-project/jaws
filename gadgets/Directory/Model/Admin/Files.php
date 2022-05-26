@@ -56,7 +56,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             if ($data['parent'] != 0) {
                 $parent = $this->gadget->model->load('Files')->GetFile($data['parent']);
                 if (Jaws_Error::IsError($parent)) {
-                    throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                    throw new Exception($this::t('ERROR_FILE_UPLOAD'));
                 }
             }
 
@@ -125,7 +125,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $data['file_size'] = $dbFileInfo['file_size'];
             } else {
                 // File is mandatory
-                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                throw new Exception($this::t('ERROR_FILE_UPLOAD'));
             }
 
             if (isset($files['thumbnail']) || isset($data['thumbnail'])) {
@@ -163,7 +163,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $result = $this->UpdateFile($data['id'], $data);
                 if (Jaws_Error::IsError($result)) {
                     // TODO: delete uploaded file
-                    throw new Exception(_t('DIRECTORY_ERROR_FILE_CREATE'));
+                    throw new Exception($this::t('ERROR_FILE_CREATE'));
                 }
 
                 // Update Tags
@@ -179,7 +179,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                     );
                 }
 
-                return _t('DIRECTORY_NOTICE_FILE_UPDATED');
+                return $this::t('NOTICE_FILE_UPDATED');
             } else {
                 //insert new file
                 unset($data['id']);
@@ -187,7 +187,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $id = $this->InsertFile($data);
                 if (Jaws_Error::IsError($id)) {
                     // TODO: delete uploaded file
-                    throw new Exception(_t('DIRECTORY_ERROR_FILE_CREATE'));
+                    throw new Exception($this::t('ERROR_FILE_CREATE'));
                 }
 
                 // Insert Tags
@@ -206,7 +206,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 // shout Activities event
                 $this->gadget->event->shout('Activities', array('action'=>'File'));
 
-                return _t('DIRECTORY_NOTICE_FILE_CREATED');
+                return $this::t('NOTICE_FILE_CREATED');
             }
 
         } catch (Exception $e) {

@@ -56,21 +56,21 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         }
 
         $tpl->SetVariable('lbl_search', Jaws::t('SEARCH'));
-        $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));
-        $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
-        $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
-        $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
+        $tpl->SetVariable('lbl_adv_search', $this::t('ADVANCED_SEARCH'));
+        $tpl->SetVariable('lbl_new_dir', $this::t('NEW_DIR'));
+        $tpl->SetVariable('lbl_new_file', $this::t('NEW_FILE'));
+        $tpl->SetVariable('lbl_props', $this::t('PROPERTIES'));
         $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
         $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
-        $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
-        $tpl->SetVariable('lbl_dl', _t('DIRECTORY_DOWNLOAD'));
-        $tpl->SetVariable('lbl_folder', _t('DIRECTORY_FILE_TYPE_FOLDER'));
-        $tpl->SetVariable('lbl_text', _t('DIRECTORY_FILE_TYPE_TEXT'));
-        $tpl->SetVariable('lbl_image', _t('DIRECTORY_FILE_TYPE_IMAGE'));
-        $tpl->SetVariable('lbl_audio', _t('DIRECTORY_FILE_TYPE_AUDIO'));
-        $tpl->SetVariable('lbl_video', _t('DIRECTORY_FILE_TYPE_VIDEO'));
-        $tpl->SetVariable('lbl_archive', _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
-        $tpl->SetVariable('lbl_other', _t('DIRECTORY_FILE_TYPE_OTHER'));
+        $tpl->SetVariable('lbl_move', $this::t('MOVE'));
+        $tpl->SetVariable('lbl_dl', $this::t('DOWNLOAD'));
+        $tpl->SetVariable('lbl_folder', $this::t('FILE_TYPE_FOLDER'));
+        $tpl->SetVariable('lbl_text', $this::t('FILE_TYPE_TEXT'));
+        $tpl->SetVariable('lbl_image', $this::t('FILE_TYPE_IMAGE'));
+        $tpl->SetVariable('lbl_audio', $this::t('FILE_TYPE_AUDIO'));
+        $tpl->SetVariable('lbl_video', $this::t('FILE_TYPE_VIDEO'));
+        $tpl->SetVariable('lbl_archive', $this::t('FILE_TYPE_ARCHIVE'));
+        $tpl->SetVariable('lbl_other', $this::t('FILE_TYPE_OTHER'));
 
         $tpl->SetVariable('type_folder', Directory_Info::FILE_TYPE_FOLDER);
         $tpl->SetVariable('type_text', Directory_Info::FILE_TYPE_TEXT);
@@ -91,22 +91,22 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         $dir_id = (int)$this->gadget->request->fetch('id');
         $this->gadget->define('currentDir', $dir_id);
-        $tpl->SetVariable('home_title', _t('DIRECTORY_HOME'));
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
-        $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
-        $tpl->SetVariable('lbl_term', _t('DIRECTORY_FILE_TERM'));
-        $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
-        $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
-        $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
+        $tpl->SetVariable('home_title', $this::t('HOME'));
+        $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
+        $tpl->SetVariable('lbl_created', $this::t('FILE_CREATED'));
+        $tpl->SetVariable('lbl_modified', $this::t('FILE_MODIFIED'));
+        $tpl->SetVariable('lbl_term', $this::t('FILE_TERM'));
+        $tpl->SetVariable('lbl_tags', $this::t('FILE_TAGS'));
+        $tpl->SetVariable('lbl_type', $this::t('FILE_TYPE'));
+        $tpl->SetVariable('lbl_owner', $this::t('FILE_OWNER'));
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
         $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
-        $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-        $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_FROM_DATE'));
-        $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_TO_DATE'));
-        $this->gadget->define('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
-        $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));
+        $tpl->SetVariable('lbl_size', $this::t('FILE_SIZE'));
+        $tpl->SetVariable('lbl_start_date', $this::t('FILE_FROM_DATE'));
+        $tpl->SetVariable('lbl_end_date', $this::t('FILE_TO_DATE'));
+        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'));
+        $tpl->SetVariable('confirmFileDelete', $this::t('CONFIRM_FILE_DELETE'));
         $this->gadget->define('imgDeleteFile', STOCK_DELETE);
         $theme = $this->app->GetTheme();
         $icon_url = is_dir($theme['url'] . 'mimetypes')?
@@ -303,7 +303,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
             return $this->gadget->session->response(
-                _t('DIRECTORY_ERROR_DELETE'),
+                $this::t('ERROR_DELETE'),
                 RESPONSE_ERROR
             );
         }
@@ -333,12 +333,12 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         if ($fault === true) {
             return $this->gadget->session->response(
-                _t('DIRECTORY_WARNING_DELETE'),
+                $this::t('WARNING_DELETE'),
                 RESPONSE_WARNING
             );
         } else {
             return $this->gadget->session->response(
-                _t('DIRECTORY_NOTICE_ITEMS_DELETED'),
+                $this::t('NOTICE_ITEMS_DELETED'),
                 RESPONSE_NOTICE
             );
         }
@@ -355,7 +355,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $data = $this->gadget->request->fetch(array('id_set', 'target'));
         if (empty($data['id_set']) || is_null($data['target'])) {
             return $this->gadget->session->response(
-                _t('DIRECTORY_ERROR_MOVE'),
+                $this::t('ERROR_MOVE'),
                 RESPONSE_ERROR
             );
         }
@@ -369,7 +369,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             $dir = $modelFiles->GetFile($target);
             if (Jaws_Error::IsError($dir) || !$dir['is_dir']) {
                 return $this->gadget->session->response(
-                    _t('DIRECTORY_ERROR_MOVE'),
+                    $this::t('ERROR_MOVE'),
                     RESPONSE_ERROR
                 );
             }
@@ -419,12 +419,12 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         if ($fault === true) {
             return $this->gadget->session->response(
-                _t('DIRECTORY_WARNING_MOVE'),
+                $this::t('WARNING_MOVE'),
                 RESPONSE_WARNING
             );
         } else {
             return $this->gadget->session->response(
-                _t('DIRECTORY_NOTICE_ITEMS_MOVED'),
+                $this::t('NOTICE_ITEMS_MOVED'),
                 RESPONSE_NOTICE
             );
         }
@@ -487,7 +487,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         }
 
         return $this->gadget->session->response(
-            _t('DIRECTORY_NOTICE_SEARCH_RESULT', count($files)),
+            $this::t('NOTICE_SEARCH_RESULT', count($files)),
             RESPONSE_NOTICE,
             $files);
     }

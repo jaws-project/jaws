@@ -25,15 +25,15 @@ class Directory_Actions_DirExplorer extends Jaws_Gadget_Action
         $this->app->layout = $browserLayout;
         if ($this->app->session->user->logged) {
             $tpl->SetBlock('layout/upload');
-            $tpl->SetVariable('lbl_upload', _t('DIRECTORY_UPLOAD_FILE'));
+            $tpl->SetVariable('lbl_upload', $this::t('UPLOAD_FILE'));
             $tpl->ParseBlock('layout/upload');
         }
         $tpl->SetVariable('referrer', bin2hex(Jaws_Utils::getRequestURL(true)));
-        $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
-        $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_description', _t('DIRECTORY_FILE_DESC'));
-        $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
+        $tpl->SetVariable('lbl_file', $this::t('FILE'));
+        $tpl->SetVariable('lbl_thumbnail', $this::t('THUMBNAIL'));
+        $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
+        $tpl->SetVariable('lbl_description', $this::t('FILE_DESC'));
+        $tpl->SetVariable('lbl_tags', $this::t('FILE_TAGS'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
 

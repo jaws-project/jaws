@@ -20,8 +20,8 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->loadAdmin('Directory.html');
         $tpl->SetBlock($mode);
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
+        $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
+        $tpl->SetVariable('lbl_desc', $this::t('FILE_DESC'));
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
         $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
@@ -31,9 +31,9 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $editor->TextArea->SetStyle('width:100%; height:60px;');
             $tpl->SetVariable('description', $editor->get());
         } else {
-            $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
-            $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
-            $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
+            $tpl->SetVariable('lbl_type', $this::t('FILE_TYPE'));
+            $tpl->SetVariable('lbl_created', $this::t('FILE_CREATED'));
+            $tpl->SetVariable('lbl_modified', $this::t('FILE_MODIFIED'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('type', '{type}');
@@ -60,14 +60,14 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
                 'post'
             );
             if (empty($data['title'])) {
-                throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
+                throw new Exception($this::t('ERROR_INCOMPLETE_DATA'));
             }
 
             // Validate parent
             if ($data['parent'] != 0) {
                 $parent = $this->gadget->model->load('Files')->GetFile($data['parent']);
                 if (Jaws_Error::IsError($parent)) {
-                    throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
+                    throw new Exception($this::t('ERROR_DIR_CREATE'));
                 }
             }
 
@@ -79,7 +79,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $data['file_type'] = Directory_Info::FILE_TYPE_FOLDER;
             $result = $this->gadget->model->loadAdmin('Files')->InsertFile($data);
             if (Jaws_Error::IsError($result)) {
-                throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
+                throw new Exception($this::t('ERROR_DIR_CREATE'));
             }
 
             // shout Activities event
@@ -89,7 +89,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             return $this->gadget->session->response($e->getMessage(), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(_t('DIRECTORY_NOTICE_DIR_CREATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('NOTICE_DIR_CREATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -108,7 +108,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
 
             // Validate data
             if (empty($data['title'])) {
-                throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
+                throw new Exception($this::t('ERROR_INCOMPLETE_DATA'));
             }
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
@@ -126,13 +126,13 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $data['published'] = $data['published']? true : false;
             $result = $this->gadget->model->loadAdmin('Files')->UpdateFile($id, $data);
             if (Jaws_Error::IsError($result)) {
-                throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
+                throw new Exception($this::t('ERROR_DIR_UPDATE'));
             }
 
         } catch (Exception $e) {
             return $this->gadget->session->response($e->getMessage(), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(_t('DIRECTORY_NOTICE_DIR_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('NOTICE_DIR_UPDATED'), RESPONSE_NOTICE);
     }
 }

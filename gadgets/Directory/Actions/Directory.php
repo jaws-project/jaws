@@ -15,16 +15,16 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function DirectoryLayoutParams()
     {
-        $result[] = array('title' => _t('DIRECTORY_FILE_TYPE'), 'value' =>
+        $result[] = array('title' => $this::t('FILE_TYPE'), 'value' =>
             array(
                 0 => Jaws::t('ALL'),
-                Directory_Info::FILE_TYPE_FOLDER  => _t('DIRECTORY_FILE_TYPE_FOLDER'),
-                Directory_Info::FILE_TYPE_TEXT    => _t('DIRECTORY_FILE_TYPE_TEXT'),
-                Directory_Info::FILE_TYPE_IMAGE   => _t('DIRECTORY_FILE_TYPE_IMAGE'),
-                Directory_Info::FILE_TYPE_AUDIO   => _t('DIRECTORY_FILE_TYPE_AUDIO'),
-                Directory_Info::FILE_TYPE_VIDEO   => _t('DIRECTORY_FILE_TYPE_VIDEO'),
-                Directory_Info::FILE_TYPE_ARCHIVE => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
-                Directory_Info::FILE_TYPE_UNKNOWN => _t('DIRECTORY_FILE_TYPE_OTHER'),
+                Directory_Info::FILE_TYPE_FOLDER  => $this::t('FILE_TYPE_FOLDER'),
+                Directory_Info::FILE_TYPE_TEXT    => $this::t('FILE_TYPE_TEXT'),
+                Directory_Info::FILE_TYPE_IMAGE   => $this::t('FILE_TYPE_IMAGE'),
+                Directory_Info::FILE_TYPE_AUDIO   => $this::t('FILE_TYPE_AUDIO'),
+                Directory_Info::FILE_TYPE_VIDEO   => $this::t('FILE_TYPE_VIDEO'),
+                Directory_Info::FILE_TYPE_ARCHIVE => $this::t('FILE_TYPE_ARCHIVE'),
+                Directory_Info::FILE_TYPE_UNKNOWN => $this::t('FILE_TYPE_OTHER'),
             ));
 
         $result[] = array(
@@ -63,7 +63,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
+        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'));
 
         $standalone = (bool)$this->gadget->request->fetch('standalone');
         if ($standalone) {
@@ -79,32 +79,32 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $this->SetTitle(_t('DIRECTORY_ACTIONS_DIRECTORY'));
-        $tpl->SetVariable('title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
+        $this->SetTitle($this::t('ACTIONS_DIRECTORY'));
+        $tpl->SetVariable('title', $this::t('ACTIONS_DIRECTORY'));
 
         // parse files, filters, pagination
         $this->ListFiles($tpl, $id, $type, $orderBy, $limit);
 
-        $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
+        $tpl->SetVariable('root', $this::t('HOME'));
         $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
         $tpl->SetVariable('path', $this->GetPath($id));
 
         if ($this->gadget->GetPermission('UploadFiles')) {
             $tpl->SetBlock('directory/upload_files');
-            $tpl->SetVariable('upload', _t('DIRECTORY_UPLOAD_FILE'));
+            $tpl->SetVariable('upload', $this::t('UPLOAD_FILE'));
             $tpl->ParseBlock('directory/upload_files');
         }
 
         // if user has permission, display upload area
         if ($this->app->session->user->logged) {
             $tpl->SetBlock('directory/upload_form');
-            $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
-            $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
-            $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-            $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
-            $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
-            $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC'));
-            $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
+            $tpl->SetVariable('lbl_file', $this::t('FILE'));
+            $tpl->SetVariable('lbl_thumbnail', $this::t('THUMBNAIL'));
+            $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
+            $tpl->SetVariable('lbl_desc', $this::t('FILE_DESC'));
+            $tpl->SetVariable('lbl_tags', $this::t('FILE_TAGS'));
+            $tpl->SetVariable('lbl_public', $this::t('FILE_PUBLIC'));
+            $tpl->SetVariable('lbl_url', $this::t('FILE_URL'));
             $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
             $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
 
@@ -127,7 +127,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $tpl->ParseBlock('directory/upload_form/published');
             }
 
-            $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
+            $tpl->SetVariable('root', $this::t('HOME'));
             $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
 
             $tpl->ParseBlock('directory/upload_form');
@@ -242,32 +242,32 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/filters");
 
-        $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
-        $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-        $tpl->SetVariable('lbl_from_date', _t('DIRECTORY_FILE_FROM_DATE'));
-        $tpl->SetVariable('lbl_to_date', _t('DIRECTORY_FILE_TO_DATE'));
+        $tpl->SetVariable('lbl_type', $this::t('FILE_TYPE'));
+        $tpl->SetVariable('lbl_size', $this::t('FILE_SIZE'));
+        $tpl->SetVariable('lbl_from_date', $this::t('FILE_FROM_DATE'));
+        $tpl->SetVariable('lbl_to_date', $this::t('FILE_TO_DATE'));
         $tpl->SetVariable('lbl_search', Jaws::t('SEARCH'));
         $tpl->SetVariable('lbl_order', Jaws::t('ORDERBY'));
         $tpl->SetVariable('lbl_create_time', Jaws::t('CREATETIME'));
 
-        $tpl->SetVariable('lbl_folder', _t('DIRECTORY_FILE_TYPE_FOLDER'));
-        $tpl->SetVariable('lbl_text', _t('DIRECTORY_FILE_TYPE_TEXT'));
-        $tpl->SetVariable('lbl_image', _t('DIRECTORY_FILE_TYPE_IMAGE'));
-        $tpl->SetVariable('lbl_audio', _t('DIRECTORY_FILE_TYPE_AUDIO'));
-        $tpl->SetVariable('lbl_video', _t('DIRECTORY_FILE_TYPE_VIDEO'));
-        $tpl->SetVariable('lbl_archive', _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
-        $tpl->SetVariable('lbl_other', _t('DIRECTORY_FILE_TYPE_OTHER'));
+        $tpl->SetVariable('lbl_folder', $this::t('FILE_TYPE_FOLDER'));
+        $tpl->SetVariable('lbl_text', $this::t('FILE_TYPE_TEXT'));
+        $tpl->SetVariable('lbl_image', $this::t('FILE_TYPE_IMAGE'));
+        $tpl->SetVariable('lbl_audio', $this::t('FILE_TYPE_AUDIO'));
+        $tpl->SetVariable('lbl_video', $this::t('FILE_TYPE_VIDEO'));
+        $tpl->SetVariable('lbl_archive', $this::t('FILE_TYPE_ARCHIVE'));
+        $tpl->SetVariable('lbl_other', $this::t('FILE_TYPE_OTHER'));
 
         // file type
         $fileTypes = array();
         $fileTypes[] = array('id' => 0, 'title' => Jaws::t('ALL'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_FOLDER, 'title' => _t('DIRECTORY_FILE_TYPE_FOLDER'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_FOLDER, 'title' => $this::t('FILE_TYPE_FOLDER'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => $this::t('FILE_TYPE_TEXT'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => $this::t('FILE_TYPE_IMAGE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => $this::t('FILE_TYPE_AUDIO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => $this::t('FILE_TYPE_VIDEO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => $this::t('FILE_TYPE_ARCHIVE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => $this::t('FILE_TYPE_OTHER'));
         foreach ($fileTypes as $fileType) {
             $tpl->SetBlock("$block/filters/file_type");
             $tpl->SetVariable('value', $fileType['id']);
@@ -330,17 +330,17 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
         if (empty($files)) {
             $tpl->SetBlock("$block/files/message");
-            $tpl->SetVariable('msg', _t('DIRECTORY_INFO_NO_FILES'));
+            $tpl->SetVariable('msg', $this::t('INFO_NO_FILES'));
             $tpl->ParseBlock("$block/files/message");
             return;
         }
         $count = $model->GetFiles($params, true, $orderBy);
 
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
-        $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
-        $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
-        $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
+        $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
+        $tpl->SetVariable('lbl_created', $this::t('FILE_CREATED'));
+        $tpl->SetVariable('lbl_modified', $this::t('FILE_MODIFIED'));
+        $tpl->SetVariable('lbl_type', $this::t('FILE_TYPE'));
+        $tpl->SetVariable('lbl_size', $this::t('FILE_SIZE'));
         $tpl->SetVariable('lbl_action', Jaws::t('ACTIONS'));
 
         $tpl->SetVariable('site_url', $this->app->getSiteURL('/'));
@@ -530,13 +530,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         // file type
         $fileTypes = array();
         $fileTypes[] = array('id' => 0, 'title' => Jaws::t('ALL'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_FOLDER, 'title' => _t('DIRECTORY_FILE_TYPE_FOLDER'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
-        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_FOLDER, 'title' => $this::t('FILE_TYPE_FOLDER'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => $this::t('FILE_TYPE_TEXT'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => $this::t('FILE_TYPE_IMAGE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => $this::t('FILE_TYPE_AUDIO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => $this::t('FILE_TYPE_VIDEO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => $this::t('FILE_TYPE_ARCHIVE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => $this::t('FILE_TYPE_OTHER'));
         $assigns['file_types'] = $fileTypes;
 
         // file size

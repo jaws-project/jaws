@@ -16,8 +16,8 @@ class Directory_Hooks_Activities extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['File'] = _t('DIRECTORY_ACTIVITIES_ACTION_FILE');
-        $items['Folder'] = _t('DIRECTORY_ACTIVITIES_ACTION_FOLDER');
+        $items['File'] = $this::t('ACTIVITIES_ACTION_FILE');
+        $items['Folder'] = $this::t('ACTIVITIES_ACTION_FOLDER');
 
         return $items;
     }

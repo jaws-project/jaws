@@ -22,11 +22,11 @@ class Directory_Actions_Admin_Common extends Jaws_Gadget_Action
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('Directory',_t('DIRECTORY_TITLE'),
+        $menubar->AddOption('Directory',$this::t('TITLE'),
             BASE_SCRIPT . '?reqGadget=Directory&amp;reqAction=Directory', 'images/stock/folder.png');
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
-            $menubar->AddOption('Comments', _t('DIRECTORY_FILE_COMMENTS'),
+            $menubar->AddOption('Comments', $this::t('FILE_COMMENTS'),
                 BASE_SCRIPT . '?reqGadget=Directory&amp;reqAction=ManageComments', 'images/stock/stock-comments.png');
         }
 

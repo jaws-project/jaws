@@ -19,26 +19,26 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if ($mode === null) $mode = 'view';
         $tpl = $this->gadget->template->loadAdmin('File.html');
         $tpl->SetBlock($mode);
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
-        $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
+        $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
+        $tpl->SetVariable('lbl_desc', $this::t('FILE_DESC'));
+        $tpl->SetVariable('lbl_tags', $this::t('FILE_TAGS'));
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
-        $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
-        $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
+        $tpl->SetVariable('lbl_url', $this::t('FILE_URL'));
+        $tpl->SetVariable('lbl_thumbnail', $this::t('THUMBNAIL'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
         if ($mode === 'edit') {
             $editor =& $this->app->loadEditor('Directory', 'description');
             $editor->TextArea->SetStyle('width:100%; height:60px;');
             $tpl->SetVariable('description', $editor->get());
-            $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
+            $tpl->SetVariable('lbl_file', $this::t('FILE'));
             $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
         } else {
-            $tpl->SetVariable('lbl_filename', _t('DIRECTORY_FILE_FILENAME'));
-            $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
-            $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-            $tpl->SetVariable('lbl_bytes', _t('DIRECTORY_BYTES'));
-            $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
-            $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
+            $tpl->SetVariable('lbl_filename', $this::t('FILE_FILENAME'));
+            $tpl->SetVariable('lbl_type', $this::t('FILE_TYPE'));
+            $tpl->SetVariable('lbl_size', $this::t('FILE_SIZE'));
+            $tpl->SetVariable('lbl_bytes', $this::t('BYTES'));
+            $tpl->SetVariable('lbl_created', $this::t('FILE_CREATED'));
+            $tpl->SetVariable('lbl_modified', $this::t('FILE_MODIFIED'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('tags', '{tags}');
@@ -77,7 +77,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if (!empty($data['title'])) {
             $result = $this->gadget->model->loadAdmin('Files')->SaveFile($data);
         } else {
-            $result = Jaws_Error::raiseError(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'), __FUNCTION__);
+            $result = Jaws_Error::raiseError($this::t('ERROR_INCOMPLETE_DATA'), __FUNCTION__);
         }
 
         if (Jaws_Error::IsError($result)) {
@@ -196,7 +196,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             if (!Jaws_FileManagement_File::mkdir($dirPath)) {
                 $response = array(
                     'type' => 'error',
-                    'message' =>_t('DIRECTORY_ERROR_FILE_UPLOAD')
+                    'message' =>$this::t('ERROR_FILE_UPLOAD')
                 );
             }
         }
