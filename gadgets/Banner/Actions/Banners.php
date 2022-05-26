@@ -35,8 +35,8 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             $domains = Jaws_Gadget::getInstance('Users')->model->load('Domains')->getDomains();
             if (!Jaws_Error::IsError($domains) && !empty($domains)) {
                 $pdomains = array();
-                $pdomains[-1] = _t('USERS_ALLDOMAIN');
-                $pdomains[0]  = _t('USERS_NODOMAIN');
+                $pdomains[-1] = $this::t('USERS.ALLDOMAIN');
+                $pdomains[0]  = $this::t('USERS.NODOMAIN');
                 foreach ($domains as $domain) {
                     $pdomains[$domain['id']] = $domain['title'];
                 }

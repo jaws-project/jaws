@@ -69,8 +69,8 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             $tpl->SetBlock('Banners/domain');
             $domains = Jaws_Gadget::getInstance('Users')->model->load('Domains')->getDomains();
             if (!Jaws_Error::IsError($domains) && !empty($domains)) {
-                array_unshift($domains, array('id' =>  0, 'title' => _t('USERS_NODOMAIN')));
-                array_unshift($domains, array('id' => -1, 'title' => _t('USERS_ALLDOMAIN')));
+                array_unshift($domains, array('id' =>  0, 'title' => $this::t('USERS.NODOMAIN')));
+                array_unshift($domains, array('id' => -1, 'title' => $this::t('USERS.ALLDOMAIN')));
                 $domainCombo =& Piwi::CreateWidget('Combo', 'domain_filter');
                 foreach ($domains as $domain) {
                     $domainCombo->AddOption($domain['title'], $domain['id']);
@@ -78,7 +78,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
                 $domainCombo->SetDefault(-1);
                 $domainCombo->AddEvent(ON_CHANGE, "getBannersDataGrid('banners_datagrid', 0, true)");
                 $tpl->SetVariable('domain_filter', $domainCombo->Get());
-                $tpl->SetVariable('lbl_domain', _t('USERS_DOMAIN'));
+                $tpl->SetVariable('lbl_domain', $this::t('USERS.DOMAIN'));
             }
             $tpl->ParseBlock('Banners/domain');
         }
@@ -124,14 +124,14 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             $tpl->SetBlock('BannerInfo/domain');
             $domains = Jaws_Gadget::getInstance('Users')->model->load('Domains')->getDomains();
             if (!Jaws_Error::IsError($domains) && !empty($domains)) {
-                array_unshift($domains, array('id' => 0, 'title' => _t('USERS_NODOMAIN')));
+                array_unshift($domains, array('id' => 0, 'title' => $this::t('USERS.NODOMAIN')));
                 $domainCombo =& Piwi::CreateWidget('Combo', 'domain');
                 foreach ($domains as $domain) {
                     $domainCombo->AddOption($domain['title'], $domain['id']);
                 }
                 $domainCombo->SetDefault(0);
                 $tpl->SetVariable('domain', $domainCombo->Get());
-                $tpl->SetVariable('lbl_domain', _t('USERS_DOMAIN'));
+                $tpl->SetVariable('lbl_domain', $this::t('USERS.DOMAIN'));
             }
             $tpl->ParseBlock('BannerInfo/domain');
         }
