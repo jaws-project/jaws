@@ -37,9 +37,9 @@ class Tms_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $gadget = $this->gadget->action->loadAdmin('Themes');
         $res = $gadget->DeleteTheme($theme);
         if (Jaws_Error::IsError($res) || !$res) {
-            $this->gadget->session->push(_t('TMS_ERROR_CANT_DELETE_THEME'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_CANT_DELETE_THEME'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('TMS_RESPONSE_THEME_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('RESPONSE_THEME_DELETED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();

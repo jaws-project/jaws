@@ -41,7 +41,7 @@ class Tms_Installer extends Jaws_Gadget_Installer
 
         //Ok, maybe user has data/themes dir but is not writable, Tms requires that dir to be writable
         if (!Jaws_FileManagement_File::is_writable(ROOT_DATA_PATH . 'themes')) {
-            return new Jaws_Error(_t('TMS_ERROR_DESTINATION_THEMES_NOT_WRITABLE'));
+            return new Jaws_Error($this::t('ERROR_DESTINATION_THEMES_NOT_WRITABLE'));
         }
 
         return true;

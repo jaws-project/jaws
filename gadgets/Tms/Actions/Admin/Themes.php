@@ -25,7 +25,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('Themes', _t('TMS_THEMES'),
+        $menubar->AddOption('Themes', $this::t('THEMES'),
                             BASE_SCRIPT . '?reqGadget=Tms&amp;reqAction=Themes',
                             'gadgets/Tms/Resources/images/themes.png');
         $menubar->Activate($action);
@@ -41,7 +41,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     function Themes()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDeleteTheme', _t('TMS_THEMES_DELETE_CONFIRM'));
+        $this->gadget->define('confirmDeleteTheme', $this::t('THEMES_DELETE_CONFIRM'));
 
         $tpl = $this->gadget->template->loadAdmin('Themes.html');
         $tpl->SetBlock('Tms');
@@ -67,14 +67,14 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $fileEntry =& Piwi::CreateWidget('FileEntry', 'theme_upload');
             $fileEntry->SetStyle('width: 250px;');
             $fileEntry->AddEvent(ON_CHANGE, 'javascript:uploadTheme();');
-            $tpl->SetVariable('lbl_theme_upload', _t('TMS_UPLOAD_THEME'));
+            $tpl->SetVariable('lbl_theme_upload', $this::t('UPLOAD_THEME'));
             $tpl->SetVariable('theme_upload', $fileEntry->Get());
             $tpl->ParseBlock('Tms/UploadTheme');
         }
 
         $btnDownload =& Piwi::CreateWidget('Button',
                                            'download_button',
-                                           _t('TMS_DOWNLOAD'), 
+                                           $this::t('DOWNLOAD'), 
                                            STOCK_DOWN);
         $btnDownload->AddEvent(ON_CLICK, 'javascript:downloadTheme();');
         $btnDownload->SetStyle('display: none');
@@ -105,7 +105,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->loadAdmin('ThemeInfo.html');
         $tpl->SetBlock('ThemeInfo');
-        $tpl->SetVariable('theme_str', _t('TMS_THEME_INFO_NAME'));
+        $tpl->SetVariable('theme_str', $this::t('THEME_INFO_NAME'));
 
         @list($theme, $locality) = explode(',', $theme);
         $tInfo = Jaws_Utils::GetThemesInfo($locality, $theme);
@@ -122,9 +122,9 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
 
             $tpl->SetVariable('theme_image', $tInfo['image']);
             $tpl->SetBlock('ThemeInfo/section');
-            $tpl->SetVariable('name', _t('TMS_THEME_INFO_DESCRIPTION'));
+            $tpl->SetVariable('name', $this::t('THEME_INFO_DESCRIPTION'));
             if (empty($tInfo['desc'])) {
-                $tpl->SetVariable('value', _t('TMS_THEME_INFO_DESCRIPTION_DEFAULT'));
+                $tpl->SetVariable('value', $this::t('THEME_INFO_DESCRIPTION_DEFAULT'));
             } else {
                 $tpl->SetVariable('value', $tInfo['desc']);
             }
@@ -133,7 +133,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             //We have authors?
             if (count($tInfo['authors']) > 0) {
                 $tpl->SetBlock('ThemeInfo/multisection');
-                $tpl->SetVariable('name', _t('TMS_THEME_INFO_AUTHOR'));
+                $tpl->SetVariable('name', $this::t('THEME_INFO_AUTHOR'));
                 foreach($tInfo['authors'] as $author) {
                     $tpl->SetBlock('ThemeInfo/multisection/subsection');
                     $tpl->SetVariable('value', $author);
@@ -144,7 +144,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         } else {
             $tpl->SetVariable('downloadable', 'false');
             $tpl->SetBlock('ThemeInfo/error');
-            $tpl->SetVariable('msg', _t('TMS_ERROR_THEME_DOES_NOT_EXISTS'));
+            $tpl->SetVariable('msg', $this::t('ERROR_THEME_DOES_NOT_EXISTS'));
             $tpl->ParseBlock('ThemeInfo/error');
         }
 
@@ -164,7 +164,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
 
         $res = Jaws_FileManagement_File::extractFiles($_FILES, ROOT_DATA_PATH . 'themes/', false);
         if (!Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('TMS_THEME_UPLOADED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('THEME_UPLOADED'), RESPONSE_NOTICE);
         } else {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         }
