@@ -38,7 +38,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $usersCombo->AddEvent(ON_CHANGE, "javascript:searchSubscription();");
         $usersCombo->SetDefault(-1);
         $tpl->SetVariable('filter_user', $usersCombo->Get());
-        $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
+        $tpl->SetVariable('lbl_filter_user', $this::t('LOGS.USERS'));
 
         // Email
         $email =& Piwi::CreateWidget('Entry', 'filter_email');
@@ -166,7 +166,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
             $subscriptionData['mobile_number'] = $subscription['mobile_number'];
             // Gadget
             if (!empty($subscription['gadget'])) {
-                $subscriptionData['gadget'] = _t(strtoupper($subscription['gadget'] . '_TITLE'));
+                $subscriptionData['gadget'] = $this::t($subscription['gadget'] . '.TITLE');
             } else {
                 $subscriptionData['gadget'] = '';
             }
