@@ -58,7 +58,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
                 return false;
             }
 
-            $this->gadget->session->push(_t('FILEBROWSER_FILE_UPDATED', $file), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('FILE_UPDATED', $file), RESPONSE_NOTICE);
         } else {
             //Insert
             $fast_url = $this->GetRealFastUrl($fast_url, 'filebrowser');
@@ -76,7 +76,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
                 $this->gadget->acl->insert('OutputAccess', $res, true);
             }
 
-            $this->gadget->session->push(_t('FILEBROWSER_FILE_ADDED', $file), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('FILE_ADDED', $file), RESPONSE_NOTICE);
         }
 
         return true;
@@ -102,7 +102,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             $res = $table->delete()->where('id', $dbRow['id'])->exec();
             if (!Jaws_Error::IsError($res)) {
                 $this->gadget->acl->delete('OutputAccess', $dbRow['id']);
-                $this->gadget->session->push(_t('FILEBROWSER_FILE_DELETED', $file), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('FILE_DELETED', $file), RESPONSE_NOTICE);
                 return true;
             }
         }
@@ -135,8 +135,8 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         if (!File_Util::pathInRoot($realpath, $fModel->GetFileBrowserRootDir()) ||
             in_array(strtolower(basename($filename)), $blackList))
         {
-            $msgError = is_dir($filename)? _t('FILEBROWSER_ERROR_CANT_DELETE_DIR', $file):
-                _t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file);
+            $msgError = is_dir($filename)? $this::t('ERROR_CANT_DELETE_DIR', $file):
+                $this::t('ERROR_CANT_DELETE_FILE', $file);
             $this->gadget->session->push($msgError, RESPONSE_ERROR);
             return false;
         }
@@ -144,13 +144,13 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         if (Jaws_FileManagement_File::is_file($filename)) {
             $return = Jaws_FileManagement_File::delete($filename);
             if (!$return) {
-                $this->gadget->session->push(_t('FILEBROWSER_ERROR_CANT_DELETE_FILE', $file), RESPONSE_ERROR);
+                $this->gadget->session->push($this::t('ERROR_CANT_DELETE_FILE', $file), RESPONSE_ERROR);
                 return false;
             }
         } elseif (is_dir($filename)) {
             $return = Jaws_FileManagement_File::delete($filename);
             if (!$return) {
-                $this->gadget->session->push(_t('FILEBROWSER_ERROR_CANT_DELETE_DIR', $file), RESPONSE_ERROR);
+                $this->gadget->session->push($this::t('ERROR_CANT_DELETE_DIR', $file), RESPONSE_ERROR);
                 return false;
             }
         }
@@ -188,7 +188,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             in_array(strtolower(basename($newfile)), $blackList))
         {
             $this->gadget->session->push(
-                _t('FILEBROWSER_ERROR_CANT_RENAME', $old, $new),
+                $this::t('ERROR_CANT_RENAME', $old, $new),
                 RESPONSE_ERROR
             );
             return false;
@@ -197,13 +197,13 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $return = @rename($oldfile, $newfile);
         if ($return) {
             $this->gadget->session->push(
-                _t('FILEBROWSER_RENAMED', $old, $new),
+                $this::t('RENAMED', $old, $new),
                 RESPONSE_NOTICE
             );
             return true;
         }
 
-        $msgError = _t('FILEBROWSER_ERROR_CANT_RENAME', $old, $new);
+        $msgError = $this::t('ERROR_CANT_RENAME', $old, $new);
         $this->gadget->session->push($msgError, RESPONSE_ERROR);
         return false;
     }

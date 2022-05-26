@@ -112,7 +112,7 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
         $dirname =& Piwi::CreateWidget('Entry', 'dirname', '');
         $dirname->SetID('dirname');
         $dirname->SetStyle('width: 270px;');
-        $tpl->SetVariable('lbl_dirname', _t('FILEBROWSER_DIR_NAME'));
+        $tpl->SetVariable('lbl_dirname', $this::t('DIR_NAME'));
         $tpl->SetVariable('dirname', $dirname->Get());
 
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
@@ -127,7 +127,7 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('description', $desc->Get());
 
-        $tpl->SetVariable('lbl_fast_url', _t('FILEBROWSER_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
         $fasturl =& Piwi::CreateWidget('Entry', 'dir_fast_url', '');
         $fasturl->SetStyle('direction:ltr; width:270px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());

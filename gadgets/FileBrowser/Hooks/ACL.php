@@ -26,7 +26,7 @@ class FileBrowser_Hooks_ACL extends Jaws_Gadget_Hook
                 if ($item['is_dir'] && !empty($item['id'])) {
                     $this->gadget->translate->insert(
                         'ACL_OUTPUTACCESS_'. $item['id'],
-                        _t('FILEBROWSER_DIRECTORY_ACCESS', $item['title'])
+                        $this::t('DIRECTORY_ACCESS', $item['title'])
                     );
                 }
             }

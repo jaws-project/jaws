@@ -37,7 +37,7 @@ class FileBrowser_Model_Admin_Directory extends Jaws_Gadget_Model
             in_array(strtolower(basename($realpath)), $blackList) ||
             !Jaws_FileManagement_File::mkdir($realpath))
         {
-            $this->gadget->session->push(_t('FILEBROWSER_ERROR_CANT_CREATE_DIRECTORY', $realpath), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_CANT_CREATE_DIRECTORY', $realpath), RESPONSE_ERROR);
             return false;
         }
 

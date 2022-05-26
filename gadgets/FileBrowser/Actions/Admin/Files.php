@@ -33,30 +33,30 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('path', $path);
         $this->gadget->define('path', $path);
 
-        $tpl->SetVariable('lbl_location', _t('FILEBROWSER_LOCATION'));
+        $tpl->SetVariable('lbl_location', $this::t('LOCATION'));
         $tpl->SetVariable('location_link', $this->GetLocation($path));
 
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
         $orderType->AddOption(Jaws::t('TITLE') . ' &darr;', 'title, false');
         $orderType->AddOption(Jaws::t('TITLE') . ' &uarr;', 'title, true');
-        $orderType->AddOption(_t('FILEBROWSER_FILENAME') . ' &darr;', 'filename, false');
-        $orderType->AddOption(_t('FILEBROWSER_FILENAME') . ' &uarr;', 'filename, true');
+        $orderType->AddOption($this::t('FILENAME') . ' &darr;', 'filename, false');
+        $orderType->AddOption($this::t('FILENAME') . ' &uarr;', 'filename, true');
         $orderType->AddOption(Jaws::t('DATE') . ' &darr;', 'date, false');
         $orderType->AddOption(Jaws::t('DATE') . ' &uarr;', 'date, true');
         $orderType->SetDefault('filename, false');
         $orderType->AddEvent(ON_CHANGE, 'javascript:reOrderFiles();');
-        $tpl->SetVariable('lbl_order', _t('FILEBROWSER_ORDER_BY'));
+        $tpl->SetVariable('lbl_order', $this::t('ORDER_BY'));
         $tpl->SetVariable('order_type', $orderType->Get());
 
-        $tpl->SetVariable('lbl_file',      _t('FILEBROWSER_FILE'));
-        $tpl->SetVariable('lbl_directory', _t('FILEBROWSER_DIR'));
+        $tpl->SetVariable('lbl_file',      $this::t('FILE'));
+        $tpl->SetVariable('lbl_directory', $this::t('DIR'));
         $tpl->SetVariable('fui',  $this->GetFileUI());
         $tpl->SetVariable('dui',  $dHTML->GetDirectoryUI());
         $tpl->SetVariable('grid', $this->Datagrid($path));
 
         $this->gadget->define('incompleteFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
-        $this->gadget->define('confirmDirDelete',  _t('FILEBROWSER_CONFIRM_DELETE_DIR'));
+        $this->gadget->define('confirmFileDelete', $this::t('CONFIRM_DELETE_FILE'));
+        $this->gadget->define('confirmDirDelete',  $this::t('CONFIRM_DELETE_DIR'));
 
         $tpl->ParseBlock('filebrowser');
         return $tpl->Get();
@@ -75,13 +75,13 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
         $upload_switch =& Piwi::CreateWidget('CheckButtons', 'upload_switch');
         $upload_switch->AddEvent(ON_CLICK, 'javascript:uploadswitch(this.checked);');
-        $upload_switch->AddOption(_t('FILEBROWSER_UPLOAD_FILE'), '0', 'upload_switch', true);
+        $upload_switch->AddOption($this::t('UPLOAD_FILE'), '0', 'upload_switch', true);
         $tpl->SetVariable('upload_switch', $upload_switch->Get());
 
         $filename =& Piwi::CreateWidget('Entry', 'filename', '');
         $filename->SetID('filename');
         $filename->SetStyle('width: 270px;');
-        $tpl->SetVariable('lbl_filename', _t('FILEBROWSER_FILENAME'));
+        $tpl->SetVariable('lbl_filename', $this::t('FILENAME'));
         $tpl->SetVariable('filename', $filename->Get());
 
         $uploadfile =& Piwi::CreateWidget('FileEntry', 'uploadfile', '');
@@ -101,7 +101,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_description', Jaws::t('DESCRIPTION'));
         $tpl->SetVariable('description', $desc->Get());
 
-        $tpl->SetVariable('lbl_fast_url', _t('FILEBROWSER_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
         $fasturl =& Piwi::CreateWidget('Entry', 'file_fast_url', '');
         $fasturl->SetStyle('direction:ltr; width:270px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());
@@ -141,8 +141,8 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $grid->AddColumn($column);
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('NAME')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('FILEBROWSER_SIZE')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('FILEBROWSER_HITS')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('SIZE')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('HITS')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
         $grid->SetStyle('width: 100%;');
 
@@ -240,8 +240,8 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
         $tpl->SetVariable('page-title', $this->gadget->title);
         $tpl->SetVariable('incompleteFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
-        $tpl->SetVariable('confirmDirDelete', _t('FILEBROWSER_CONFIRM_DELETE_DIR'));
+        $tpl->SetVariable('confirmFileDelete', $this::t('CONFIRM_DELETE_FILE'));
+        $tpl->SetVariable('confirmDirDelete', $this::t('CONFIRM_DELETE_DIR'));
 
         $dir = Jaws::t('LANG_DIRECTION');
         $tpl->SetVariable('.dir', ($dir == 'rtl')? '.' . $dir : '');
@@ -265,7 +265,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
             $tpl->SetVariable('path', $path);
             $tpl->SetVariable('extra_params', $extraParams);
-            $tpl->SetVariable('lbl_file_upload', _t('FILEBROWSER_UPLOAD_FILE'));
+            $tpl->SetVariable('lbl_file_upload', $this::t('UPLOAD_FILE'));
 
             $title =& Piwi::CreateWidget('Entry', 'file_title', '');
             $title->SetStyle('width: 200px;');
@@ -274,10 +274,10 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
             $uploadfile =& Piwi::CreateWidget('FileEntry', 'uploadfile', '');
             $uploadfile->SetID('uploadfile');
-            $tpl->SetVariable('lbl_filename', _t('FILEBROWSER_FILENAME'));
+            $tpl->SetVariable('lbl_filename', $this::t('FILENAME'));
             $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
-            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('FILEBROWSER_UPLOAD_FILE'), STOCK_SAVE);
+            $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', $this::t('UPLOAD_FILE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "javascript:saveFile();");
             $tpl->SetVariable('btn_upload_file', $btnSave->Get());
 
@@ -295,7 +295,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
                 }
                 $url = BASE_SCRIPT . '?reqGadget=FileBrowser&reqAction=BrowseFile&path=' . $_path;
                 if (empty($_path)) {
-                    $link =& Piwi::CreateWidget('Link', _t('FILEBROWSER_ROOT'), $url . '/' . $extraParams);
+                    $link =& Piwi::CreateWidget('Link', $this::t('ROOT'), $url . '/' . $extraParams);
                     $tpl->SetVariable('root', $link->Get());
                 } else {
                     if ($_path == $path) {
@@ -310,9 +310,9 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
             }
         }
 
-        $tpl->SetVariable('lbl_location', _t('FILEBROWSER_LOCATION'));
-        $tpl->SetVariable('lbl_file_name', _t('FILEBROWSER_FILENAME'));
-        $tpl->SetVariable('lbl_file_size', _t('FILEBROWSER_SIZE'));
+        $tpl->SetVariable('lbl_location', $this::t('LOCATION'));
+        $tpl->SetVariable('lbl_file_name', $this::t('FILENAME'));
+        $tpl->SetVariable('lbl_file_size', $this::t('SIZE'));
         $tpl->SetVariable('lbl_action', Jaws::t('ACTIONS'));
 
         $files = $dModel->ReadDir($path);

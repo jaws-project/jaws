@@ -29,7 +29,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
             require_once PEAR_PATH. 'File/Util.php';
             $root_dir = File_Util::realpath($root_dir). '/';
             if (!File_Util::pathInRoot($root_dir, ROOT_DATA_PATH)) {
-                Jaws_Error::Fatal(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'), __FILE__, __LINE__);
+                Jaws_Error::Fatal($this::t('ERROR_DIRECTORY_DOES_NOT_EXISTS'), __FILE__, __LINE__);
             }
         }
 

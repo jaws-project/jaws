@@ -55,7 +55,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $this->SetTitle($this->gadget->title);
 
         $parentPath = '';
-        $tpl->SetVariable('location', _t('FILEBROWSER_LOCATION'));
+        $tpl->SetVariable('location', $this::t('LOCATION'));
         foreach ($locationTree as $_path => $dir) {
             $_path = trim($_path, '/');
             $dbFile = $fModel->DBFileInfo($parentPath, $dir);
@@ -71,7 +71,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
 
             $parentPath = $_path;
             if (empty($_path)) {
-                $tpl->SetVariable('root', _t('FILEBROWSER_ROOT'));
+                $tpl->SetVariable('root', $this::t('ROOT'));
                 $tpl->SetVariable('root-path', $this->gadget->urlMap('Display'));
             } else {
                 $tpl->SetBlock('filebrowser/tree');
@@ -107,7 +107,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
                         $tpl->SetVariable('url', $this->gadget->urlMap('Download',
                             array('id' => $fid)));
                         $tpl->SetBlock('filebrowser/item/info');
-                        $tpl->SetVariable('lbl_info', _t('FILEBROWSER_FILEINFO'));
+                        $tpl->SetVariable('lbl_info', $this::t('FILEINFO'));
                         $tpl->SetVariable('info_url', $this->gadget->urlMap('FileInfo',
                             array('id' => $fid)));
                         $tpl->ParseBlock('filebrowser/item/info');
@@ -151,7 +151,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
-            $tpl->SetVariable('total', _t('FILEBROWSER_ENTRIES_COUNT', $pager['total']));
+            $tpl->SetVariable('total', $this::t('ENTRIES_COUNT', $pager['total']));
 
             $pager_view = '';
             foreach ($pager as $k => $v) {
@@ -246,7 +246,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         }
 
         $parentPath = '';
-        $tpl->SetVariable('location', _t('FILEBROWSER_LOCATION'));
+        $tpl->SetVariable('location', $this::t('LOCATION'));
         foreach ($locationTree as $path => $dir) {
             if (!empty($dir) && $path[0] == '/') {
                 $path = substr($path, 1);
@@ -261,7 +261,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
 
             $parentPath = $path;
             if (empty($path)) {
-                $tpl->SetVariable('root', _t('FILEBROWSER_ROOT'));
+                $tpl->SetVariable('root', $this::t('ROOT'));
                 $tpl->SetVariable('root-path', $this->gadget->urlMap('Display', array('path' => $path), false));
             } else {
                 $tpl->SetBlock('fileinfo/tree');

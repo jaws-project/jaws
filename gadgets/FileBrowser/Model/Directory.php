@@ -27,7 +27,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $fModel = $this->gadget->model->load('Files');
         if (!is_dir($fModel->GetFileBrowserRootDir() . $path)) {
             return Jaws_Error::raiseError(
-                _t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'),
+                $this::t('ERROR_DIRECTORY_DOES_NOT_EXISTS'),
                 404,
                 JAWS_ERROR_NOTICE
             );
@@ -154,10 +154,10 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (!Jaws_FileManagement_File::file_exists($folder) || !$adr = Jaws_FileManagement_File::scandir($folder)) {
             $this->gadget->session->push(
-                _t('FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', $path),
+                $this::t('ERROR_CANT_OPEN_DIRECTORY', $path),
                 RESPONSE_ERROR
             );
-            return new Jaws_Error(_t('FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', $path));
+            return new Jaws_Error($this::t('ERROR_CANT_OPEN_DIRECTORY', $path));
         }
 
         $files = array();
