@@ -82,8 +82,8 @@ class Jaws_HTTPError
                 break;
 
             default:
-                $title   = empty($title)? _t("GLOBAL_HTTP_ERROR_TITLE_$code") : $title;
-                $message = empty($message)? _t("GLOBAL_HTTP_ERROR_CONTENT_$code") : $message;
+                $title   = empty($title)? Jaws::t("HTTP_ERROR_TITLE_$code") : $title;
+                $message = empty($message)? Jaws::t("HTTP_ERROR_CONTENT_$code") : $message;
         }
 
         // if current theme has a error code html file, return it, if not return the messages.
