@@ -24,49 +24,49 @@ class PrivateMessage_Actions_Default extends Jaws_Gadget_Action
 
         $actions = array(
             'Notifications' => array(
-                'title' => _t('PRIVATEMESSAGE_NOTIFICATIONS'),
+                'title' => $this::t('NOTIFICATIONS'),
                 'icon' => 'gadgets/PrivateMessage/Resources/images/notify.png',
                 'url' => $this->gadget->urlMap(
                     'Messages',
                     array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS))
             ),
             'Inbox' => array(
-                'title' => _t('PRIVATEMESSAGE_INBOX'),
+                'title' => $this::t('INBOX'),
                 'icon' => 'gadgets/PrivateMessage/Resources/images/inbox.png',
                 'url' => $this->gadget->urlMap(
                     'Messages',
                     array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
             ),
             'Outbox' => array(
-                'title' => _t('PRIVATEMESSAGE_OUTBOX'),
+                'title' => $this::t('OUTBOX'),
                 'icon' => 'gadgets/PrivateMessage/Resources/images/outbox.png',
                 'url' => $this->gadget->urlMap(
                     'Messages',
                     array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX))
             ),
             'Draft' => array(
-                'title' => _t('PRIVATEMESSAGE_DRAFT'),
+                'title' => $this::t('DRAFT'),
                 'icon' => 'gadgets/PrivateMessage/Resources/images/draft.png',
                 'url' => $this->gadget->urlMap(
                     'Messages',
                     array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT))
             ),
             'Archived' => array(
-                'title' => _t('PRIVATEMESSAGE_ARCHIVED'),
+                'title' => $this::t('ARCHIVED'),
                 'icon' => 'gadgets/PrivateMessage/Resources/images/archive.png',
                 'url' => $this->gadget->urlMap(
                     'Messages',
                     array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED))
             ),
             'Trash' => array(
-                'title' => _t('PRIVATEMESSAGE_TRASH'),
+                'title' => $this::t('TRASH'),
                 'icon' => 'gadgets/PrivateMessage/Resources/images/trash.png',
                 'url' => $this->gadget->urlMap(
                     'Messages',
                     array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH))
             ),
             'Compose' => array(
-                'title' => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
+                'title' => $this::t('COMPOSE_MESSAGE'),
                 'icon' => 'gadgets/PrivateMessage/Resources/images/compose.png',
                 'url' => $this->gadget->urlMap('Compose')
             ),

@@ -348,7 +348,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             (empty($recipient_users) || count($recipient_users) <= 0)))
         {
             return Jaws_Error::raiseError(
-                _t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'),
+                $this::t('MESSAGE_INCOMPLETE_FIELDS'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -426,8 +426,8 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                         $params = array();
                         $params['key']  = $senderMessageId;
                         $params['name'] = 'PrivateMessage';
-                        $params['title'] = _t('PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION_TITLE');
-                        $params['summary'] = _t('PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION');
+                        $params['title'] = $this::t('NEW_MESSAGE_NOTIFICATION_TITLE');
+                        $params['summary'] = $this::t('NEW_MESSAGE_NOTIFICATION');
                         $params['verbose'] = _t(
                             'PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION_DESC',
                             $data['subject']

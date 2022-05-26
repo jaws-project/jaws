@@ -21,50 +21,50 @@ class PrivateMessage_Hooks_Menu extends Jaws_Gadget_Hook
         $urls   = array();
         $urls[] = array(
             'url'   => $this->gadget->urlMap('PrivateMessage'),
-            'title' => _t('PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE')
+            'title' => $this::t('ACTIONS_PRIVATEMESSAGE')
         );
         $urls[] = array(
             'url' => $this->gadget->urlMap(
                 'Messages',
                 array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)
             ),
-            'title' => _t('PRIVATEMESSAGE_INBOX')
+            'title' => $this::t('INBOX')
         );
         $urls[] = array(
             'url' => $this->gadget->urlMap(
                 'Messages',
                 array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT)
             ),
-            'title' => _t('PRIVATEMESSAGE_DRAFT')
+            'title' => $this::t('DRAFT')
         );
         $urls[] = array(
             'url' => $this->gadget->urlMap(
                 'Messages',
                 array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED)
             ),
-            'title' => _t('PRIVATEMESSAGE_ARCHIVED')
+            'title' => $this::t('ARCHIVED')
         );
         $urls[] = array(
             'url' => $this->gadget->urlMap(
                 'Messages',
                 array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX)
             ),
-            'title' => _t('PRIVATEMESSAGE_OUTBOX')
+            'title' => $this::t('OUTBOX')
         );
         $urls[] = array(
             'url' => $this->gadget->urlMap(
                 'Messages',
                 array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH)
             ),
-            'title' => _t('PRIVATEMESSAGE_TRASH')
+            'title' => $this::t('TRASH')
         );
         $urls[] = array(
             'url'   => $this->gadget->urlMap('Messages'),
-            'title' => _t('PRIVATEMESSAGE_ALL_MESSAGES')
+            'title' => $this::t('ALL_MESSAGES')
         );
         $urls[] = array(
             'url'   => $this->gadget->urlMap('Compose'),
-            'title' => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE')
+            'title' => $this::t('COMPOSE_MESSAGE')
         );
         return $urls;
     }

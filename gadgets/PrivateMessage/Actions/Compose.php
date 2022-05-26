@@ -47,14 +47,14 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             for ($i = 1; $i <= 6; $i++) {
                 $url = $this->gadget->urlMap('Messages', array('folder' => $i));
                 $options[$url] = array(
-                    'title' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i),
+                    'title' => $this::t('MESSAGE_FOLDER_'. $i),
                     'url' => $url,
                     'separator' => ($i == 2 || $i == 6)? true: false,
                 );
             }
             $url = $this->gadget->urlMap('Compose');
             $options[$url] = array(
-                'title' => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
+                'title' => $this::t('COMPOSE_MESSAGE'),
                 'url' => $url,
                 'separator' => true,
             );
@@ -82,13 +82,13 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                     return Jaws_HTTPError::Get(404);
                 }
 
-                $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
+                $tpl->SetVariable('title', $this::t('COMPOSE_MESSAGE'));
                 $tpl->SetVariable('id', $id);
                 $recipient_users = array_map('intval', explode(',', $message['recipient_users']));
                 $recipient_groups = array_map('intval', explode(',', $message['recipient_groups']));
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
-                $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                $tpl->SetVariable('lbl_attachments', $this::t('MESSAGE_ATTACHMENTS'));
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
 
             // reply a message
@@ -102,11 +102,11 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetBlock('compose/parent_message');
                 $tpl->SetBlock('compose/parent_message/message');
 
-                $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
-                $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
-                $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
-                $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
-                $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
+                $tpl->SetVariable('confirmDelete', $this::t('MESSAGE_CONFIRM_DELETE'));
+                $tpl->SetVariable('lbl_from', $this::t('MESSAGE_FROM'));
+                $tpl->SetVariable('lbl_send_time', $this::t('MESSAGE_SEND_TIME'));
+                $tpl->SetVariable('lbl_subject', $this::t('MESSAGE_SUBJECT'));
+                $tpl->SetVariable('lbl_body', $this::t('MESSAGE_BODY'));
 
                 $tpl->SetVariable('from', $message['from_nickname']);
                 $tpl->SetVariable('username', $message['from_username']);
@@ -133,10 +133,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
                 if(!empty($message['attachments'])) {
                     $tpl->SetBlock('compose/parent_message/message/attachment');
-                    $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                    $tpl->SetVariable('lbl_attachments', $this::t('MESSAGE_ATTACHMENTS'));
                     foreach($message['attachments'] as $file) {
                         $tpl->SetBlock('compose/parent_message/message/attachment/file');
-                        $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
+                        $tpl->SetVariable('lbl_file_size', $this::t('MESSAGE_FILE_SIZE'));
                         $tpl->SetVariable('file_name', $file['title']);
                         $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
 
@@ -159,21 +159,21 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
                 //
                 $tpl->SetVariable('parent', $id);
-                $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
-                $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
+                $tpl->SetVariable('title', $this::t('REPLY'));
+                $tpl->SetVariable('subject', $this::t('REPLY_ON', $message['subject']));
                 $defaultRecipientUser = $message['from'];
                 $recipient_users = array($message['from']);
 
-                $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                $tpl->SetVariable('lbl_attachments', $this::t('MESSAGE_ATTACHMENTS'));
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id, false));
 
             // forward a message
             } else if (!empty($data['reply']) && $data['reply'] == 'false') {
-                $tpl->SetVariable('title', _t('PRIVATEMESSAGE_FORWARD_MESSAGE'));
+                $tpl->SetVariable('title', $this::t('FORWARD_MESSAGE'));
                 $body_value = $message['body'];
-                $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_FORWARD_ABBREVIATION') . ' ' .$message['subject']);
+                $tpl->SetVariable('subject', $this::t('FORWARD_ABBREVIATION') . ' ' .$message['subject']);
 
-                $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                $tpl->SetVariable('lbl_attachments', $this::t('MESSAGE_ATTACHMENTS'));
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
             }
         } else {
@@ -183,7 +183,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $recipient_users = array($data['user']);
             }
 
-            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
+            $tpl->SetVariable('title', $this::t('COMPOSE_MESSAGE'));
             $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI());
         }
 
@@ -194,8 +194,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         if ($show_recipient) {
             $tpl->SetBlock('compose/recipients');
-            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
-            $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
+            $tpl->SetVariable('lbl_recipient', $this::t('MESSAGE_RECIPIENTS'));
+            $tpl->SetVariable('lbl_recipient_users', $this::t('MESSAGE_RECIPIENT_USERS'));
             $tpl->SetVariable('delete-icon', STOCK_DELETE);
 
             if (!empty($recipient_users)) {
@@ -230,11 +230,11 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                     $tpl->ParseBlock('compose/recipients/friend');
                 }
             }
-            $tpl->SetVariable('lbl_recipient_groups', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS'));
+            $tpl->SetVariable('lbl_recipient_groups', $this::t('MESSAGE_RECIPIENT_GROUPS'));
             $tpl->ParseBlock('compose/recipients');
         } else {
             $tpl->SetBlock('compose/recipient');
-            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
+            $tpl->SetVariable('lbl_recipient', $this::t('MESSAGE_RECIPIENTS'));
             $user_info = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
                 $recipient_users[0]
             );
@@ -253,14 +253,14 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $tpl->ParseBlock('compose/recipient');
         }
 
-        $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
-        $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
-        $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
-        $tpl->SetVariable('lbl_save_draft', _t('PRIVATEMESSAGE_SAVE_DRAFT'));
-        $tpl->SetVariable('lbl_send', _t('PRIVATEMESSAGE_SEND'));
-        $tpl->SetVariable('lbl_back', _t('PRIVATEMESSAGE_BACK'));
-        $tpl->SetVariable('lbl_file', _t('PRIVATEMESSAGE_FILE'));
-        $tpl->SetVariable('lbl_add_file', _t('PRIVATEMESSAGE_ADD_ANOTHER_FILE'));
+        $tpl->SetVariable('lbl_subject', $this::t('MESSAGE_SUBJECT'));
+        $tpl->SetVariable('lbl_body', $this::t('MESSAGE_BODY'));
+        $tpl->SetVariable('lbl_attachments', $this::t('MESSAGE_ATTACHMENTS'));
+        $tpl->SetVariable('lbl_save_draft', $this::t('SAVE_DRAFT'));
+        $tpl->SetVariable('lbl_send', $this::t('SEND'));
+        $tpl->SetVariable('lbl_back', $this::t('BACK'));
+        $tpl->SetVariable('lbl_file', $this::t('FILE'));
+        $tpl->SetVariable('lbl_add_file', $this::t('ADD_ANOTHER_FILE'));
 
         $tpl->SetVariable('back_url', $this->gadget->urlMap(
             'Messages',
@@ -310,7 +310,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             if (isset($message['attachments'])) {
                 foreach ($message['attachments'] as $file) {
                     $tpl->SetBlock('attachments/file');
-                    $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
+                    $tpl->SetVariable('lbl_file_size', $this::t('MESSAGE_FILE_SIZE'));
                     $tpl->SetVariable('file_name', $file['title']);
                     $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
                     $tpl->SetVariable('file_id', $file['id']);
@@ -375,14 +375,14 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         } else {
             if ($post['is_draft']) {
                 $this->gadget->session->push(
-                    _t('PRIVATEMESSAGE_DRAFT_SAVED'),
+                    $this::t('DRAFT_SAVED'),
                     RESPONSE_NOTICE,
                     'Compose',
                     array('is_draft' => true, 'message_id' => $message_id)
                 );
             } else {
                 $this->gadget->session->push(
-                    _t('PRIVATEMESSAGE_MESSAGE_SEND'),
+                    $this::t('MESSAGE_SEND'),
                     RESPONSE_NOTICE,
                     'Compose',
                     array('url' => $url)

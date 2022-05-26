@@ -40,26 +40,26 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
                                                  $user_id,
                                                  PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT);
         if ($unreadNotifyCount > 0) {
-            $tpl->SetVariable('notifications', _t('PRIVATEMESSAGE_NOTIFICATIONS', '(' . $unreadNotifyCount . ')'));
+            $tpl->SetVariable('notifications', $this::t('NOTIFICATIONS', '(' . $unreadNotifyCount . ')'));
         } else {
-            $tpl->SetVariable('notifications', _t('PRIVATEMESSAGE_NOTIFICATIONS'));
+            $tpl->SetVariable('notifications', $this::t('NOTIFICATIONS'));
         }
         if ($unreadInboxCount > 0) {
-            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadInboxCount . ')'));
+            $tpl->SetVariable('inbox', $this::t('INBOX', '(' . $unreadInboxCount . ')'));
         } else {
-            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX'));
+            $tpl->SetVariable('inbox', $this::t('INBOX'));
         }
         if ($draftMessageCount > 0) {
-            $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT', '(' . $draftMessageCount . ')'));
+            $tpl->SetVariable('draft', $this::t('DRAFT', '(' . $draftMessageCount . ')'));
         } else {
-            $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT'));
+            $tpl->SetVariable('draft', $this::t('DRAFT'));
         }
 
-        $tpl->SetVariable('archived', _t('PRIVATEMESSAGE_ARCHIVED'));
-        $tpl->SetVariable('outbox', _t('PRIVATEMESSAGE_OUTBOX'));
-        $tpl->SetVariable('trash', _t('PRIVATEMESSAGE_TRASH'));
-        $tpl->SetVariable('compose_message', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
-        $tpl->SetVariable('all_messages', _t('PRIVATEMESSAGE_ALL_MESSAGES'));
+        $tpl->SetVariable('archived', $this::t('ARCHIVED'));
+        $tpl->SetVariable('outbox', $this::t('OUTBOX'));
+        $tpl->SetVariable('trash', $this::t('TRASH'));
+        $tpl->SetVariable('compose_message', $this::t('COMPOSE_MESSAGE'));
+        $tpl->SetVariable('all_messages', $this::t('ALL_MESSAGES'));
 
         $tpl->SetVariable('compose_message_url', $this->gadget->urlMap('Compose'));
         $tpl->SetVariable('all_messages_url', $this->gadget->urlMap('Messages'));

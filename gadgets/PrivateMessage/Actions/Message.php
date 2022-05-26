@@ -21,11 +21,11 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $result = array();
         $folders = array();
         for ($i = 1; $i <= 6; $i++) {
-            $folders[$i] = _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i);
+            $folders[$i] = $this::t('MESSAGE_FOLDER_'. $i);
         }
 
         $result[] = array(
-            'title' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER'),
+            'title' => $this::t('MESSAGE_FOLDER'),
             'value' => $folders
         );
 
@@ -47,13 +47,13 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $this->AjaxMe('index.js');
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
         $this->gadget->define('lbl_view', Jaws::t('VIEW'));
-        $this->gadget->define('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-        $this->gadget->define('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
-        $this->gadget->define('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
-        $this->gadget->define('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
-        $this->gadget->define('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
-        $this->gadget->define('lbl_unarchive', _t('PRIVATEMESSAGE_UNARCHIVE'));
-        $this->gadget->define('lbl_view_message', _t('PRIVATEMESSAGE_MESSAGE_VIEW'));
+        $this->gadget->define('lbl_archive', $this::t('ARCHIVE'));
+        $this->gadget->define('lbl_mark_as_read', $this::t('MARK_AS_READ'));
+        $this->gadget->define('lbl_mark_as_unread', $this::t('MARK_AS_UNREAD'));
+        $this->gadget->define('lbl_trash', $this::t('TRASH'));
+        $this->gadget->define('lbl_restore_trash', $this::t('RESTORE_TRASH'));
+        $this->gadget->define('lbl_unarchive', $this::t('UNARCHIVE'));
+        $this->gadget->define('lbl_view_message', $this::t('MESSAGE_VIEW'));
         $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
@@ -74,11 +74,11 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $tpl->SetVariable('lbl_term', Jaws::t('TERM'));
         $tpl->SetVariable('lbl_reload', Jaws::t('RELOAD'));
-        $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
-        $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
-        $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
-        $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
-        $tpl->SetVariable('lbl_compose', _t('PRIVATEMESSAGE_COMPOSE'));
+        $tpl->SetVariable('lbl_from', $this::t('MESSAGE_FROM'));
+        $tpl->SetVariable('lbl_subject', $this::t('MESSAGE_SUBJECT'));
+        $tpl->SetVariable('lbl_send_time', $this::t('MESSAGE_SEND_TIME'));
+        $tpl->SetVariable('lbl_recipients', $this::t('MESSAGE_RECIPIENTS'));
+        $tpl->SetVariable('lbl_compose', $this::t('COMPOSE'));
         $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
 
         $tpl->SetVariable('lbl_of', Jaws::t('OF'));
@@ -89,65 +89,65 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $gridColumns = array();
         switch ($folder) {
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS:
-                $title = _t('PRIVATEMESSAGE_NOTIFICATIONS');
+                $title = $this::t('NOTIFICATIONS');
 
                 $tpl->SetBlock('messages/filter_read');
                 $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
                 $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
                 $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
-                $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
+                $tpl->SetVariable('lbl_read', $this::t('STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
                 $tpl->ParseBlock('messages/filter_read');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX:
-                $title = _t('PRIVATEMESSAGE_INBOX');
+                $title = $this::t('INBOX');
 
                 $tpl->SetBlock('messages/filter_read');
                 $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
                 $tpl->SetVariable('lbl_yes', Jaws::t('YESS'));
                 $tpl->SetVariable('lbl_no', Jaws::t('NOO'));
-                $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
+                $tpl->SetVariable('lbl_read', $this::t('STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
                 $tpl->ParseBlock('messages/filter_read');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX:
-                $title = _t('PRIVATEMESSAGE_OUTBOX');
+                $title = $this::t('OUTBOX');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT:
-                $title = _t('PRIVATEMESSAGE_DRAFT');
+                $title = $this::t('DRAFT');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED:
-                $title = _t('PRIVATEMESSAGE_ARCHIVED');
+                $title = $this::t('ARCHIVED');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH:
-                $title = _t('PRIVATEMESSAGE_TRASH');
+                $title = $this::t('TRASH');
                 break;
             default:
                 $gridColumns[] = array(
-                    'label' => _t('PRIVATEMESSAGE_MESSAGE_FOLDER'),
+                    'label' => $this::t('MESSAGE_FOLDER'),
                     'property' => 'folder',
                 );
-                $title = _t('PRIVATEMESSAGE_ALL_MESSAGES');
+                $title = $this::t('ALL_MESSAGES');
         }
 
         $gridColumns[] = array(
-            'label' => _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'),
+            'label' => $this::t('MESSAGE_SUBJECT'),
             'property' => 'subject',
         );
         $gridColumns[] = array(
-            'label' => _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'),
+            'label' => $this::t('MESSAGE_ATTACHMENT'),
             'property' => 'have_attachment',
         );
         $gridColumns[] = array(
-            'label' => _t('PRIVATEMESSAGE_MESSAGE_FROM'),
+            'label' => $this::t('MESSAGE_FROM'),
             'property' => 'from_nickname',
         );
         $gridColumns[] = array(
-            'label' => _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'),
+            'label' => $this::t('MESSAGE_RECIPIENTS'),
             'property' => 'recipients',
         );
         $gridColumns[] = array(
-            'label' => _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'),
+            'label' => $this::t('MESSAGE_SEND_TIME'),
             'property' => 'send_time',
         );
 
@@ -158,7 +158,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         for ($i = 1; $i <= 6; $i++) {
             $url = $this->gadget->urlMap('Messages', array('folder' => $i));
             $options[$url] = array(
-                'title'     => _t('PRIVATEMESSAGE_MESSAGE_FOLDER_'. $i),
+                'title'     => $this::t('MESSAGE_FOLDER_'. $i),
                 'url'       => $url,
                 'separator' => ($i == 2 || $i == 6)? true: false,
                 'active'    => $i == $folder
@@ -166,7 +166,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
         $url = $this->gadget->urlMap('Compose');
         $options[$url] = array(
-            'title'     => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
+            'title'     => $this::t('COMPOSE_MESSAGE'),
             'url'       => $url,
             'separator' => true,
         );
@@ -174,7 +174,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $tpl->SetVariable('folder', $folder);
         $tpl->SetVariable('filter', Jaws::t('SEARCH'));
-        $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
+        $tpl->SetVariable('lbl_page_item', $this::t('ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', Jaws::t('ACTIONS'));
         $tpl->SetVariable('lbl_no_action', Jaws::t('NO_ACTION'));
 
@@ -233,7 +233,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $date_format = $this->gadget->registry->fetch('date_format');
         if (count($messages) > 0) {
             foreach ($messages as &$message) {
-                $message['folder'] = _t('PRIVATEMESSAGE_MESSAGE_FOLDER_' . $message['folder']);
+                $message['folder'] = $this::t('MESSAGE_FOLDER_' . $message['folder']);
                 $message['send_time'] = $objDate->Format($message['insert_time'], $date_format);
                 $message['have_attachment'] = $message['attachments'] > 0;
 
@@ -328,18 +328,18 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl = $this->gadget->template->load('Message.html');
         $tpl->SetBlock('message');
         $tpl->SetVariable('id', $id);
-        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_MESSAGE_VIEW'));
+        $tpl->SetVariable('title', $this::t('MESSAGE_VIEW'));
 
         $tpl->SetBlock('message');
 
-        $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
-        $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
-        $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
-        $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
+        $tpl->SetVariable('lbl_from', $this::t('MESSAGE_FROM'));
+        $tpl->SetVariable('lbl_send_time', $this::t('MESSAGE_SEND_TIME'));
+        $tpl->SetVariable('lbl_subject', $this::t('MESSAGE_SUBJECT'));
+        $tpl->SetVariable('lbl_body', $this::t('MESSAGE_BODY'));
 
-        $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-        $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
-        $tpl->SetVariable('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
+        $tpl->SetVariable('lbl_archive', $this::t('ARCHIVE'));
+        $tpl->SetVariable('lbl_trash', $this::t('TRASH'));
+        $tpl->SetVariable('lbl_restore_trash', $this::t('RESTORE_TRASH'));
         $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
         $tpl->SetVariable('icon_archive', 'gadgets/PrivateMessage/Resources/images/archive-mini.png');
         $tpl->SetVariable('icon_restore_archive', 'gadgets/PrivateMessage/Resources/images/unarchive-mini.png');
@@ -372,10 +372,10 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         if (!empty($message['attachments'])) {
             $tpl->SetBlock('message/attachment');
-            $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+            $tpl->SetVariable('lbl_attachments', $this::t('MESSAGE_ATTACHMENTS'));
             foreach ($message['attachments'] as $file) {
                 $tpl->SetBlock('message/attachment/file');
-                $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
+                $tpl->SetVariable('lbl_file_size', $this::t('MESSAGE_FILE_SIZE'));
                 $tpl->SetVariable('file_name', $file['title']);
                 $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
 
@@ -400,7 +400,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetBlock('message/reply');
                 $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $message['id'], 'reply' => 'true')));
                 $tpl->SetVariable('icon_reply', 'gadgets/PrivateMessage/Resources/images/reply-mini.png');
-                $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
+                $tpl->SetVariable('reply', $this::t('REPLY'));
                 $tpl->ParseBlock('message/reply');
             }
 
@@ -409,7 +409,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 'id' => $message['id'],
                 'reply' => 'false')));
             $tpl->SetVariable('icon_forward', 'gadgets/PrivateMessage/Resources/images/forward-mini.png');
-            $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
+            $tpl->SetVariable('forward', $this::t('FORWARD'));
             $tpl->ParseBlock('message/forward');
         }
 
@@ -442,9 +442,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $res = $this->gadget->model->load('Message')->MarkMessages($post['ids'], $post['read'], $user);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'), RESPONSE_ERROR);
         }
-        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('MESSAGE_READ_MESSAGE_STATUS_CHANGED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -465,13 +465,13 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         );
         if (Jaws_Error::IsError($res) || $res === false) {
             return $this->gadget->session->response(
-                $post['archive'] ? _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED') :
-                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_UNARCHIVED'),
+                $post['archive'] ? $this::t('ERROR_MESSAGE_NOT_ARCHIVED') :
+                    $this::t('ERROR_MESSAGE_NOT_UNARCHIVED'),
                 RESPONSE_ERROR
             );
         }
         return $this->gadget->session->response(
-            $post['archive'] ? _t('PRIVATEMESSAGE_MESSAGE_ARCHIVED') : _t('PRIVATEMESSAGE_MESSAGE_UNARCHIVED'),
+            $post['archive'] ? $this::t('MESSAGE_ARCHIVED') : $this::t('MESSAGE_UNARCHIVED'),
             RESPONSE_NOTICE
         );
     }
@@ -489,9 +489,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $res = $this->gadget->model->load('Message')->TrashMessage($ids, $this->app->session->user->id, true);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASHED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_MESSAGE_NOT_TRASHED'), RESPONSE_ERROR);
         }
-        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_TRASHED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('MESSAGE_TRASHED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -507,9 +507,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $res = $this->gadget->model->load('Message')->TrashMessage($ids, $this->app->session->user->id, false);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_TRASH_RESTORED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_MESSAGE_NOT_TRASH_RESTORED'), RESPONSE_ERROR);
         }
-        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_TRASH_RESTORED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('MESSAGE_TRASH_RESTORED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -525,8 +525,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $res = $this->gadget->model->load('Message')->DeleteMessage($ids, $this->app->session->user->id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('MESSAGE_NOT_DELETED'), RESPONSE_ERROR);
         }
-        return $this->gadget->session->response(_t('PRIVATEMESSAGE_MESSAGE_DELETED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('MESSAGE_DELETED'), RESPONSE_NOTICE);
    }
 }
