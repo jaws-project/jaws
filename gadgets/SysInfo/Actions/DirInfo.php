@@ -25,7 +25,7 @@ class SysInfo_Actions_DirInfo extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('DirInfo');
         $tpl = $this->gadget->template->load('SysInfo.html');
         $tpl->SetBlock('SysInfo');
-        $tpl->SetVariable('title',  _t('SYSINFO_DIRINFO'));
+        $tpl->SetVariable('title',  $this::t('DIRINFO'));
 
         //Directory Permissions
         $tpl->SetBlock('SysInfo/InfoSection');

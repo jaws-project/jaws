@@ -26,7 +26,7 @@ class SysInfo_Actions_Admin_SysInfo extends SysInfo_Actions_Admin_Default
 
         //System Information
         $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_SYSINFO'));
+        $tpl->SetVariable('section_title', $this::t('SYSINFO'));
         $items = $model->GetSysInfo();
         foreach ($items as $item) {
             $tpl->SetBlock('SysInfo/InfoSection/InfoItem');

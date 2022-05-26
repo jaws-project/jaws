@@ -26,7 +26,7 @@ class SysInfo_Actions_Admin_JawsInfo extends SysInfo_Actions_Admin_Default
 
         //Jaws Settings
         $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_JAWSINFO'));
+        $tpl->SetVariable('section_title', $this::t('JAWSINFO'));
         $items = $model->GetJawsInfo();
         foreach ($items as $item) {
             $tpl->SetBlock('SysInfo/InfoSection/InfoItem');

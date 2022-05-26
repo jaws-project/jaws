@@ -26,7 +26,7 @@ class SysInfo_Actions_Admin_PHPInfo extends SysInfo_Actions_Admin_Default
 
         //PHP Settings
         $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_PHPINFO'));
+        $tpl->SetVariable('section_title', $this::t('PHPINFO'));
         $items = $model->GetPHPInfo();
         foreach ($items as $item) {
             $tpl->SetBlock('SysInfo/InfoSection/InfoItem');

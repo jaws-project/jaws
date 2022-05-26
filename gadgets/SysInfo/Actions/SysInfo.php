@@ -25,7 +25,7 @@ class SysInfo_Actions_SysInfo extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('SysInfo');
         $tpl = $this->gadget->template->load('SysInfo.html');
         $tpl->SetBlock('SysInfo');
-        $tpl->SetVariable('title', _t('SYSINFO_SYSINFO'));
+        $tpl->SetVariable('title', $this::t('SYSINFO'));
 
         //System Information
         $tpl->SetBlock('SysInfo/InfoSection');

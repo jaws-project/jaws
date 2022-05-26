@@ -50,25 +50,25 @@ class SysInfo_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $sidebar = new Jaws_Widgets_Sidebar('sysinfo');
         if ($this->gadget->GetPermission('SysInfo')) {
-            $sidebar->AddOption('SysInfo', _t('SYSINFO_SYSINFO'), 
+            $sidebar->AddOption('SysInfo', $this::t('SYSINFO'), 
                                 BASE_SCRIPT . '?reqGadget=SysInfo&amp;reqAction=SysInfo',
                                 'gadgets/SysInfo/Resources/images/sysinfo.png');
         }
 
         if ($this->gadget->GetPermission('PHPInfo')) {
-            $sidebar->AddOption('PHPInfo', _t('SYSINFO_PHPINFO'),
+            $sidebar->AddOption('PHPInfo', $this::t('PHPINFO'),
                                 BASE_SCRIPT . '?reqGadget=SysInfo&amp;reqAction=PHPInfo',
                                 'gadgets/SysInfo/Resources/images/phpinfo.png');
         }
 
         if ($this->gadget->GetPermission('JawsInfo')) {
-            $sidebar->AddOption('JawsInfo', _t('SYSINFO_JAWSINFO'),
+            $sidebar->AddOption('JawsInfo', $this::t('JAWSINFO'),
                                 BASE_SCRIPT . '?reqGadget=SysInfo&amp;reqAction=JawsInfo',
                                 'gadgets/SysInfo/Resources/images/jawsinfo.png');
         }
 
         if ($this->gadget->GetPermission('DirInfo')) {
-            $sidebar->AddOption('DirInfo', _t('SYSINFO_DIRINFO'),
+            $sidebar->AddOption('DirInfo', $this::t('DIRINFO'),
                                 BASE_SCRIPT . '?reqGadget=SysInfo&amp;reqAction=DirInfo',
                                 'gadgets/SysInfo/Resources/images/dirinfo.png');
         }

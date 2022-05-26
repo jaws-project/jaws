@@ -26,7 +26,7 @@ class SysInfo_Actions_Admin_DirInfo extends SysInfo_Actions_Admin_Default
 
         //Directory Permissions
         $tpl->SetBlock('SysInfo/InfoSection');
-        $tpl->SetVariable('section_title', _t('SYSINFO_DIRINFO'));
+        $tpl->SetVariable('section_title', $this::t('DIRINFO'));
         $items = $model->GetDirsPermissions();
         foreach ($items as $item) {
             $tpl->SetBlock('SysInfo/InfoSection/InfoItem');

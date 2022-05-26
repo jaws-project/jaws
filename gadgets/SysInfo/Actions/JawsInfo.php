@@ -25,7 +25,7 @@ class SysInfo_Actions_JawsInfo extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('JawsInfo');
         $tpl = $this->gadget->template->load('SysInfo.html');
         $tpl->SetBlock('SysInfo');
-        $tpl->SetVariable('title',  _t('SYSINFO_JAWSINFO'));
+        $tpl->SetVariable('title',  $this::t('JAWSINFO'));
 
         //Jaws Settings
         $tpl->SetBlock('SysInfo/InfoSection');
