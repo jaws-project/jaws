@@ -27,9 +27,9 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', $ReqGadget);
         $tpl->SetVariable('gadget_version', $ReqGadgetVersion);
         $tpl->SetVariable('requested_gadget', strtolower($ReqGadget));
-        $tpl->SetVariable('control-panel', _t('CONTROLPANEL_TITLE'));
+        $tpl->SetVariable('control-panel', $this::t('TITLE'));
         $tpl->SetBlock('layout/login-info', false);
-        $tpl->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
+        $tpl->SetVariable('logged-in-as', $this::t('LOGGED_IN_AS'));
         $tpl->SetVariable('username', $this->app->session->user->username);
         $tpl->SetVariable('nickname', $this->app->session->user->nickname);
         $tpl->SetVariable('email',    $this->app->session->user->email);
@@ -233,7 +233,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         $tpl->SetVariable('do_checking', (int)$do_checking);
         $tpl->SetVariable('jaws_version', JAWS_VERSION);
         $tpl->SetVariable('latest_jaws_version', $last_checking['version']);
-        $tpl->SetVariable('lbl_latest_jaws_version', _t('CONTROLPANEL_LATEST_JAWS_VERSION'));
+        $tpl->SetVariable('lbl_latest_jaws_version', $this::t('LATEST_JAWS_VERSION'));
         $tpl->ParseBlock('versionbox');
 
         return $tpl->Get();
