@@ -260,7 +260,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Menu');
         $result = $model->DeleteMenu($mid);
         if ($result) {
-            $this->gadget->session->push(_t('MENU_NOTICE_MENU_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('NOTICE_MENU_DELETED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -312,9 +312,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($request) = $this->gadget->request->fetchAll('post');
         if ($request == 'url') {
             $urls[] = array('url'   => '/',
-                            'title' => _t('MENU_REFERENCES_FREE_LINK'));
+                            'title' => $this::t('REFERENCES_FREE_LINK'));
             $urls[] = array('url'   => '',
-                            'title' => _t('MENU_REFERENCES_NO_LINK'));
+                            'title' => $this::t('REFERENCES_NO_LINK'));
             return $urls;
         } else {
             if (Jaws_Gadget::IsGadgetUpdated($request)) {
@@ -326,11 +326,11 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                             $links,
                             array(
                                 'url'   => '/',
-                                'title' => _t('MENU_REFERENCES_FREE_LINK')
+                                'title' => $this::t('REFERENCES_FREE_LINK')
                             ),
                             array(
                                 'url'   => '',
-                                'title' => _t('MENU_REFERENCES_NO_LINK')
+                                'title' => $this::t('REFERENCES_NO_LINK')
                             )
                         );
                         foreach ($links as $key => $link) {

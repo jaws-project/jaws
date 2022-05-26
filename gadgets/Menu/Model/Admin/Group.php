@@ -28,7 +28,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         if ($gc > 0) {
-            $this->gadget->session->push(_t('MENU_ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -44,7 +44,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         $this->gadget->acl->insert('GroupAccess', $gid, true);
-        $this->gadget->session->push(_t('MENU_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
+        $this->gadget->session->push($this::t('NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
         return true;
     }
 
@@ -71,7 +71,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         if ($gc > 0) {
-            $this->gadget->session->push(_t('MENU_ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_DUPLICATE_GROUP_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -86,7 +86,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('MENU_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -100,7 +100,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $this->gadget->session->push(_t('MENU_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
         $model = $this->gadget->model->load('Group');
@@ -111,7 +111,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         if(!isset($group['id'])) {
-            $this->gadget->session->push(_t('MENU_ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -129,7 +129,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
         }
 
         $this->gadget->acl->delete('GroupAccess', $gid);
-        $this->gadget->session->push(_t('MENU_NOTICE_GROUP_DELETED', $gid), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('NOTICE_GROUP_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
 

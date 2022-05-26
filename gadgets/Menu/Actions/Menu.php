@@ -33,7 +33,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('MENU_ACTIONS_MENU'),
+                'title' => $this::t('ACTIONS_MENU'),
                 'value' => $pgroups
             );
         }
@@ -80,7 +80,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                 $homeMenu = array();
                 $homeMenu['symbol'] = 'glyphicon glyphicon-home';
                 $homeMenu['url']    = '/';
-                $homeMenu['title']  = _t('MENU_HOME');
+                $homeMenu['title']  = $this::t('HOME');
             }
 
             if (!empty($homeMenu)) {

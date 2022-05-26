@@ -39,7 +39,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         }
 
         $this->MoveMenu($mid, $mData['gid'], $mData['gid'], $mData['pid'], $mData['pid'], $mData['order'], null);
-        $this->gadget->session->push($mid.'%%' . _t('MENU_NOTICE_MENU_CREATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($mid.'%%' . $this::t('NOTICE_MENU_CREATED'), RESPONSE_NOTICE);
 
         return true;
     }
@@ -57,7 +57,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
         if (Jaws_Error::IsError($oldMenu)) {
-            $this->gadget->session->push(_t('MENU_ERROR_GET_MENUS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GET_MENUS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -95,7 +95,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             $mData['order'],
             $oldMenu['order']
         );
-        $this->gadget->session->push(_t('MENU_NOTICE_MENU_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('NOTICE_MENU_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -257,7 +257,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             }
         }
 
-        //$this->gadget->session->push(_t('MENU_NOTICE_MENU_MOVED'), RESPONSE_NOTICE);
+        //$this->gadget->session->push($this::t('NOTICE_MENU_MOVED'), RESPONSE_NOTICE);
         return true;
     }
 

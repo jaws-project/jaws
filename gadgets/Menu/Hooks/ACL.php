@@ -21,7 +21,7 @@ class Menu_Hooks_ACL extends Jaws_Gadget_Hook
             foreach ($items as $item) {
                 $this->gadget->translate->insert(
                     'ACL_GROUPACCESS_'. $item['id'],
-                    _t('MENU_ACL_GROUPACCESS', $item['title'])
+                    $this::t('ACL_GROUPACCESS', $item['title'])
                 );
             }
         }

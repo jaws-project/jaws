@@ -16,13 +16,13 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
     function Menu()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('addMenuTitle', _t('MENU_ADD_MENU'));
-        $this->gadget->define('editMenuTitle', _t('MENU_EDIT_MENU'));
-        $this->gadget->define('addGroupTitle', _t('MENU_ADD_GROUP'));
-        $this->gadget->define('editGroupTitle', _t('MENU_EDIT_GROUP'));
-        $this->gadget->define('incompleteFields', _t('MENU_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmGroupDelete', _t('MENU_CONFIRM_DELETE_GROUP'));
-        $this->gadget->define('confirmMenuDelete', _t('MENU_CONFIRM_DELETE_MENU'));
+        $this->gadget->define('addMenuTitle', $this::t('ADD_MENU'));
+        $this->gadget->define('editMenuTitle', $this::t('EDIT_MENU'));
+        $this->gadget->define('addGroupTitle', $this::t('ADD_GROUP'));
+        $this->gadget->define('editGroupTitle', $this::t('EDIT_GROUP'));
+        $this->gadget->define('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmGroupDelete', $this::t('CONFIRM_DELETE_GROUP'));
+        $this->gadget->define('confirmMenuDelete', $this::t('CONFIRM_DELETE_MENU'));
         $this->gadget->define('base_script', BASE_SCRIPT);
 
         $tpl = $this->gadget->template->loadAdmin('Menu.html');
@@ -30,7 +30,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetBlock('menus/menus_base');
 
         $tpl->SetVariable('menus_trees', $this->GetMenusTrees());
-        $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('MENU_ADD_GROUP'), STOCK_NEW);
+        $add_btn =& Piwi::CreateWidget('Button','btn_add', $this::t('ADD_GROUP'), STOCK_NEW);
         $add_btn->AddEvent(ON_CLICK, 'javascript:addGroup();');
         $tpl->SetVariable('add', $add_btn->Get());
 
@@ -50,7 +50,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $tpl->SetVariable('menu_tree_image', 'gadgets/Menu/Resources/images/menu-item.png');
-        $tpl->SetVariable('menu_tree_title', _t('MENU_TREE_TITLE'));
+        $tpl->SetVariable('menu_tree_title', $this::t('TREE_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->ParseBlock('menus/menus_base');
@@ -85,7 +85,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
             $tpl->SetVariable('icon', 'gadgets/Menu/Resources/images/menu-item.png');
             $tpl->SetVariable('title', $menu['title']);
             $tpl->SetVariable('js_edit_func', "editMenu({$menu['id']})");
-            $tpl->SetVariable('add_title', _t('MENU_ADD_MENU'));
+            $tpl->SetVariable('add_title', $this::t('ADD_MENU'));
             $tpl->SetVariable('add_icon', STOCK_NEW);
             $tpl->SetVariable('js_add_func', "addMenu($gid, {$menu['id']})");
             $tpl->SetVariable('sub_menus', $this->GetMenuLevel($model, $tpl_str, $gid, $menu['id']));
@@ -117,7 +117,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
             $tpl->SetVariable('icon', 'gadgets/Menu/Resources/images/menu-group.png');
             $tpl->SetVariable('title', $group['title']);
             $tpl->SetVariable('js_edit_func', "editGroup({$group['id']})");
-            $tpl->SetVariable('add_title', _t('MENU_ADD_MENU'));
+            $tpl->SetVariable('add_title', $this::t('ADD_MENU'));
             $tpl->SetVariable('add_icon', STOCK_NEW);
             $tpl->SetVariable('js_add_func', "addMenu({$group['id']}, 0)");
             $tpl->SetVariable('sub_menus',  $this->GetMenuLevel($mModel, $tpl_str, $group['id'], 0));
@@ -161,7 +161,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
                 $homeCombo->AddOption($groups[$menu['gid']]. ' / '. $menu['title'], $menu['id']);
             }
         }
-        $tpl->SetVariable('lbl_home', _t('MENU_HOME'));
+        $tpl->SetVariable('lbl_home', $this::t('HOME'));
         $tpl->SetVariable('home', $homeCombo->Get());
 
         // title view
@@ -170,15 +170,15 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $titleview->setStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
         $titleview->AddOption(Jaws::t('NOO'),  '0');
         $titleview->AddOption(Jaws::t('YESS'), '1');
-        $tpl->SetVariable('lbl_title_view', _t('MENU_GROUPS_TITLE_VIEW'));
+        $tpl->SetVariable('lbl_title_view', $this::t('GROUPS_TITLE_VIEW'));
         $tpl->SetVariable('title_view', $titleview->Get());
 
         $viewType =& Piwi::CreateWidget('Combo', 'view_type');
         $viewType->SetID('view_type');
         $viewType->setStyle('width: 96px; margin-top:2px; margin-bottom:5px;');
-        $viewType->AddOption(_t('MENU_GROUPS_VIEW_TYPE_1'), 1);
-        $viewType->AddOption(_t('MENU_GROUPS_VIEW_TYPE_2'), 2);
-        $tpl->SetVariable('lbl_view_type', _t('MENU_GROUPS_VIEW_TYPE'));
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_1'), 1);
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_2'), 2);
+        $tpl->SetVariable('lbl_view_type', $this::t('GROUPS_VIEW_TYPE'));
         $tpl->SetVariable('view_type', $viewType->Get());
 
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
@@ -216,14 +216,14 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
             $groupCombo->AddOption($group['title'], $group['id']);
         }
         $groupCombo->AddEvent(ON_CHANGE, 'changeMenuGroup(this.value);');
-        $tpl->SetVariable('lbl_gid', _t('MENU_GROUP'));
+        $tpl->SetVariable('lbl_gid', $this::t('GROUP'));
         $tpl->SetVariable('gid', $groupCombo->Get());
 
         $parentCombo =& Piwi::CreateWidget('Combo', 'pid');
         $parentCombo->SetID('pid');
         $parentCombo->setStyle('width: 256px;');
         $parentCombo->AddEvent(ON_CHANGE, 'changeMenuParent(this.value);');
-        $tpl->SetVariable('lbl_pid', _t('MENU_PARENT'));
+        $tpl->SetVariable('lbl_pid', $this::t('PARENT'));
         $tpl->SetVariable('pid', $parentCombo->Get());
 
         $gadgetCombo =& Piwi::CreateWidget('Combo', 'gadget');
@@ -257,7 +257,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $rfcCombo->SetID('references');
         $rfcCombo->setStyle('width: 256px;');
         $rfcCombo->AddEvent(ON_CHANGE, 'changeReferences();');
-        $tpl->SetVariable('lbl_references', _t('MENU_REFERENCES'));
+        $tpl->SetVariable('lbl_references', $this::t('REFERENCES'));
         $tpl->SetVariable('references', $rfcCombo->Get());
 
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
@@ -270,12 +270,12 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $urlEntry->SetStyle('direction: ltr;width: 256px;');
         $tpl->SetVariable('url', $urlEntry->Get());
 
-        $tpl->SetVariable('lbl_options', _t('MENU_OPTIONS'));
+        $tpl->SetVariable('lbl_options', $this::t('OPTIONS'));
         $optionsEntry =& Piwi::CreateWidget('Entry', 'options', '');
         $optionsEntry->SetStyle('direction: ltr;width: 256px;');
         $tpl->SetVariable('options', $optionsEntry->Get());
 
-        $tpl->SetVariable('lbl_symbol', _t('MENU_SYMBOL'));
+        $tpl->SetVariable('lbl_symbol', $this::t('SYMBOL'));
         $symbolEntry =& Piwi::CreateWidget('Entry', 'symbol', '');
         $symbolEntry->SetStyle('direction: ltr;width: 256px;');
         $tpl->SetVariable('symbol', $symbolEntry->Get());
@@ -283,15 +283,15 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $target =& Piwi::CreateWidget('Combo', 'target');
         $target->SetID('target');
         $target->setStyle('width: 128px;');
-        $target->AddOption(_t('MENU_TARGET_SELF'),  0);
-        $target->AddOption(_t('MENU_TARGET_BLANK'), 1);
-        $tpl->SetVariable('lbl_target', _t('MENU_TARGET'));
+        $target->AddOption($this::t('TARGET_SELF'),  0);
+        $target->AddOption($this::t('TARGET_BLANK'), 1);
+        $tpl->SetVariable('lbl_target', $this::t('TARGET'));
         $tpl->SetVariable('target', $target->Get());
 
         $order =& Piwi::CreateWidget('Combo', 'order');
         $order->SetID('order');
         $order->setStyle('width: 128px;');
-        $tpl->SetVariable('lbl_order', _t('MENU_ORDER'));
+        $tpl->SetVariable('lbl_order', $this::t('ORDER'));
         $tpl->SetVariable('order', $order->Get());
 
         $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
@@ -300,8 +300,8 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $status->SetStyle('width: 128px;');
         $status->AddOption(Jaws::t('DISABLED'),  0);
         $status->AddOption(Jaws::t('PUBLISHED'), 1);
-        $status->AddOption(_t('MENU_ANONYMOUS'),   2);
-        $status->AddOption(_t('MENU_RESTRICTED'),  3);
+        $status->AddOption($this::t('ANONYMOUS'),   2);
+        $status->AddOption($this::t('RESTRICTED'),  3);
         $status->SetDefault(1);
         $tpl->SetVariable('status', $status->Get());
 
