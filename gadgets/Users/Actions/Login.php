@@ -82,7 +82,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
                 $tpl->SetBlock('UserLinks/layouts');
                 $tpl->SetBlock('UserLinks/layouts/layout');
-                $tpl->SetVariable('layout', _t("USERS_DASHBOARD_$layout"));
+                $tpl->SetVariable('layout', $this::t("DASHBOARD_$layout"));
                 $tpl->SetVariable(
                     'layout_url',
                     $layoutGadget->urlMap('LayoutType', array('type' => $layout))

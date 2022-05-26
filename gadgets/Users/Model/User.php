@@ -511,7 +511,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         $result = $objORM->table('users')->insert($uData)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
-                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $uData['username']));
+                $result->SetMessage($this::t('USERS_ALREADY_EXISTS', $uData['username']));
             }
             return $result;
         }
@@ -724,7 +724,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         $result = $usersTable->update($uData)->where('id', $uid)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
-                $result->SetMessage(_t('USERS_USERS_ALREADY_EXISTS', $uData['username']));
+                $result->SetMessage($this::t('USERS_ALREADY_EXISTS', $uData['username']));
             }
             return $result;
         }

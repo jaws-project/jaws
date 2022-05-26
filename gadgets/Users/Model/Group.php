@@ -227,7 +227,7 @@ class Users_Model_Group extends Jaws_Gadget_Model
         $result = $groupsTable->insert($gData)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
-                $result->SetMessage(_t('USERS_GROUPS_ALREADY_EXISTS', $gData['name']));
+                $result->SetMessage($this::t('GROUPS_ALREADY_EXISTS', $gData['name']));
             }
             return $result;
         }
@@ -300,7 +300,7 @@ class Users_Model_Group extends Jaws_Gadget_Model
         $result = $groupsTable->update($gData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             if (MDB2_ERROR_CONSTRAINT == $result->getCode()) {
-                $result->SetMessage(_t('USERS_GROUPS_ALREADY_EXISTS', $gData['name']));
+                $result->SetMessage($this::t('GROUPS_ALREADY_EXISTS', $gData['name']));
             }
             return $result;
         }

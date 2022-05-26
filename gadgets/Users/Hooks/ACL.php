@@ -20,7 +20,7 @@ class Users_Hooks_ACL extends Jaws_Gadget_Hook
             foreach ($groups as $group) {
                 $this->gadget->translate->insert(
                     'ACL_GROUPMANAGE_'. $group['id'],
-                    _t('USERS_ACL_GROUP_MANAGE', $group['title'])
+                    $this::t('ACL_GROUP_MANAGE', $group['title'])
                 );
             }
         }
