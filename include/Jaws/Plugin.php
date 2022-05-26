@@ -270,10 +270,8 @@ class Jaws_Plugin
      *
      * @return string
      */
-    public static function t($params)
+    public static function t($string, ...$params)
     {
-        $params = func_get_args();
-        $string = array_shift($params);
         if ($plugin = strstr($string, '.', true)) {
             $string = substr($string, strlen($plugin) + 1);
         } else {
