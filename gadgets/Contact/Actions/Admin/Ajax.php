@@ -61,7 +61,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('CONTACT_CONTACTS_UPDATED'),
+            $this::t('CONTACTS_UPDATED'),
             RESPONSE_NOTICE,
             $result
         );
@@ -87,7 +87,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('CONTACT_CONTACTS_DELETED'),
+            $this::t('CONTACTS_DELETED'),
             RESPONSE_NOTICE,
             $result
         );
@@ -170,7 +170,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('CONTACT_RECIPIENT_ADDED'),
+            $this::t('RECIPIENT_ADDED'),
             RESPONSE_NOTICE,
             $result
         );
@@ -205,7 +205,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('CONTACT_RECIPIENT_UPDATED'),
+            $this::t('RECIPIENT_UPDATED'),
             RESPONSE_NOTICE,
             $result
         );
@@ -231,7 +231,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $this->gadget->session->response(
-            _t('CONTACT_RECIPIENT_DELETED'),
+            $this::t('RECIPIENT_DELETED'),
             RESPONSE_NOTICE,
             $result
         );

@@ -37,7 +37,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             trim($post['message']) == '')
         {
             $this->gadget->session->push(
-                _t('CONTACT_INCOMPLETE_FIELDS'),
+                $this::t('INCOMPLETE_FIELDS'),
                 RESPONSE_ERROR,
                 'Contact',
                 $post
@@ -94,7 +94,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
 
         if (empty($post['email']) && empty($post['mobile'])) {
             $this->gadget->session->push(
-                _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
+                $this::t('RESULT_BAD_EMAIL_ADDRESS'),
                 RESPONSE_ERROR,
                 'Contact',
                 $post
@@ -105,7 +105,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         if ($this->gadget->registry->fetch('use_antispam') == 'true') {
             if (!preg_match("/^[[:alnum:]\-_.]+\@[[:alnum:]\-_.]+\.[[:alnum:]\-_]+$/", $post['email'])) {
                 $this->gadget->session->push(
-                    _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
+                    $this::t('RESULT_BAD_EMAIL_ADDRESS'),
                     RESPONSE_ERROR,
                     'Contact',
                     $post
@@ -153,13 +153,13 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
                 $post['message']
             );
             if (Jaws_Error::IsError($result)) {
-                throw new Exception(_t('CONTACT_RESULT_ERROR_DB'), 500);
+                throw new Exception($this::t('RESULT_ERROR_DB'), 500);
             }
 
             if (!empty($post['recipient'])) {
                 $recipient = $this->gadget->model->load('Recipients')->GetRecipient((int)$post['recipient']);
                 if (Jaws_Error::IsError($recipient)) {
-                    throw new Exception(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'), 500);
+                    throw new Exception($this::t('ERROR_RECIPIENT_DOES_NOT_EXISTS'), 500);
                 }
             }
 
@@ -178,7 +178,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             }
 
             $this->gadget->session->push(
-                _t('CONTACT_RESULT_SENT'),
+                $this::t('RESULT_SENT'),
                 RESPONSE_NOTICE,
                 'Contact'
             );

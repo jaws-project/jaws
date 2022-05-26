@@ -46,9 +46,9 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
                 }
             }
         }
-        $tpl->SetVariable('lbl_recipient_filter', _t('CONTACT_RECIPIENT'));
+        $tpl->SetVariable('lbl_recipient_filter', $this::t('RECIPIENT'));
         $tpl->SetVariable('recipient_filter', $recipientCombo->Get());
-        $tpl->SetVariable('lbl_recipient_filter', _t('CONTACT_RECIPIENT'));
+        $tpl->SetVariable('lbl_recipient_filter', $this::t('RECIPIENT'));
 
         //DataGrid
         $tpl->SetVariable('grid', $this->ContactsDataGrid());
@@ -67,17 +67,17 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $btnSave->SetStyle('display:none;');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnSaveSend =& Piwi::CreateWidget('Button', 'btn_save_send', _t('CONTACT_REPLAY_SAVE_SEND'), STOCK_SAVE);
+        $btnSaveSend =& Piwi::CreateWidget('Button', 'btn_save_send', $this::t('REPLAY_SAVE_SEND'), STOCK_SAVE);
         $btnSaveSend->SetEnabled($this->gadget->GetPermission('ManageContacts'));
         $btnSaveSend->AddEvent(ON_CLICK, 'updateContact(true);');
         $btnSaveSend->SetStyle('display:none;');
         $tpl->SetVariable('btn_save_send', $btnSaveSend->Get());
 
-        $this->gadget->define('incompleteContactFields', _t('CONTACT_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmContactDelete',    _t('CONTACT_CONTACTS_CONFIRM_DELETE'));
-        $this->gadget->define('legend_title',            _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
-        $this->gadget->define('messageDetail_title',     _t('CONTACT_CONTACTS_MESSAGE_DETAILS'));
-        $this->gadget->define('contactReply_title',      _t('CONTACT_CONTACTS_MESSAGE_REPLY'));
+        $this->gadget->define('incompleteContactFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmContactDelete',    $this::t('CONTACTS_CONFIRM_DELETE'));
+        $this->gadget->define('legend_title',            $this::t('CONTACTS_MESSAGE_DETAILS'));
+        $this->gadget->define('messageDetail_title',     $this::t('CONTACTS_MESSAGE_DETAILS'));
+        $this->gadget->define('contactReply_title',      $this::t('CONTACTS_MESSAGE_REPLY'));
         $this->gadget->define('dataURL',                 $this->app->getDataURL() . 'contact/');
 
         $tpl->ParseBlock('Contacts');
@@ -175,7 +175,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('CONTACT_CONTACTS_MESSAGE_REPLY'),
+                $link =& Piwi::CreateWidget('Link', $this::t('CONTACTS_MESSAGE_REPLY'),
                                             "javascript:editReply(this, '" . $contact['id'] . "');",
                                             'gadgets/Contact/Resources/images/contact_mini.png');
                 $actions.= $link->Get().'&nbsp;';
@@ -217,7 +217,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
 
         //company
         $nameEntry =& Piwi::CreateWidget('Entry', 'company', '');
-        $tpl->SetVariable('lbl_company', _t('CONTACT_COMPANY'));
+        $tpl->SetVariable('lbl_company', $this::t('COMPANY'));
         $tpl->SetVariable('company', $nameEntry->Get());
 
         //url
@@ -227,22 +227,22 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
 
         //tel
         $nameEntry =& Piwi::CreateWidget('Entry', 'tel', '');
-        $tpl->SetVariable('lbl_tel', _t('CONTACT_TEL'));
+        $tpl->SetVariable('lbl_tel', $this::t('TEL'));
         $tpl->SetVariable('tel', $nameEntry->Get());
 
         //fax
         $nameEntry =& Piwi::CreateWidget('Entry', 'fax', '');
-        $tpl->SetVariable('lbl_fax', _t('CONTACT_FAX'));
+        $tpl->SetVariable('lbl_fax', $this::t('FAX'));
         $tpl->SetVariable('fax', $nameEntry->Get());
 
         //mobile
         $nameEntry =& Piwi::CreateWidget('Entry', 'mobile', '');
-        $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
+        $tpl->SetVariable('lbl_mobile', $this::t('MOBILE'));
         $tpl->SetVariable('mobile', $nameEntry->Get());
 
         //address
         $nameEntry =& Piwi::CreateWidget('Entry', 'address', '');
-        $tpl->SetVariable('lbl_address', _t('CONTACT_ADDRESS'));
+        $tpl->SetVariable('lbl_address', $this::t('ADDRESS'));
         $tpl->SetVariable('address', $nameEntry->Get());
 
         //recipient
@@ -256,19 +256,19 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
                 $recipientCombo->AddOption($recipient['name'], $recipient['id']);
             }
         }
-        $tpl->SetVariable('lbl_recipient', _t('CONTACT_RECIPIENT'));
+        $tpl->SetVariable('lbl_recipient', $this::t('RECIPIENT'));
         $tpl->SetVariable('recipient', $recipientCombo->Get());
 
         //subject
         $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
-        $tpl->SetVariable('lbl_subject', _t('CONTACT_SUBJECT'));
+        $tpl->SetVariable('lbl_subject', $this::t('SUBJECT'));
         $tpl->SetVariable('subject', $subjectEntry->Get());
 
         //message
         $messageText =& Piwi::CreateWidget('TextArea', 'msg_txt','');
         $messageText->SetID('message');
         $messageText->SetRows(8);
-        $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
+        $tpl->SetVariable('lbl_message', $this::t('MESSAGE'));
         $tpl->SetVariable('message', $messageText->Get());
 
         $tpl->ParseBlock('ContactUI');
@@ -301,7 +301,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         //subject
         $subjectEntry =& Piwi::CreateWidget('Entry', 'subject', '');
         $subjectEntry->SetReadOnly(true);
-        $tpl->SetVariable('lbl_subject', _t('CONTACT_SUBJECT'));
+        $tpl->SetVariable('lbl_subject', $this::t('SUBJECT'));
         $tpl->SetVariable('subject', $subjectEntry->Get());
 
         //message
@@ -309,13 +309,13 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $messageText->SetID('message');
         $messageText->SetReadOnly(true);
         $messageText->SetRows(8);
-        $tpl->SetVariable('lbl_message', _t('CONTACT_MESSAGE'));
+        $tpl->SetVariable('lbl_message', $this::t('MESSAGE'));
         $tpl->SetVariable('message', $messageText->Get());
 
         //reply
         $replyText =& Piwi::CreateWidget('TextArea', 'reply','');
         $replyText->SetRows(10);
-        $tpl->SetVariable('lbl_reply', _t('CONTACT_REPLY'));
+        $tpl->SetVariable('lbl_reply', $this::t('REPLY'));
         $tpl->SetVariable('reply', $replyText->Get());
 
         $tpl->ParseBlock('ReplyUI');
@@ -340,9 +340,9 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         }
 
         if (!isset($contact['id'])) {
-            $this->gadget->session->push(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
+            $this->gadget->session->push($this::t('ERROR_CONTACT_DOES_NOT_EXISTS'),
                                                        RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'));
+            return new Jaws_Error($this::t('ERROR_CONTACT_DOES_NOT_EXISTS'));
         }
 
         $from_name  = '';
@@ -358,9 +358,9 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
                 return new Jaws_Error(Jaws::t('ERROR_QUERY_FAILED'));
             }
             if (!isset($recipient['id'])) {
-                $this->gadget->session->push(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),
+                $this->gadget->session->push($this::t('ERROR_RECIPIENT_DOES_NOT_EXISTS'),
                                                            RESPONSE_ERROR);
-                return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'));
+                return new Jaws_Error($this::t('ERROR_RECIPIENT_DOES_NOT_EXISTS'));
             }
             $from_name  = $recipient['name'];
             $from_email = $recipient['email'];
@@ -419,12 +419,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $mail->SetBody($template, array('format' => $format));
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('CONTACT_ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_REPLY_NOT_SENT'), RESPONSE_ERROR);
             return false;
         }
 
         $model->UpdateContact($cid, array('reply_sent' => 1));
-        $this->gadget->session->push(_t('CONTACT_REPLY_SENT'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('REPLY_SENT'), RESPONSE_NOTICE);
         return true;
     }
 

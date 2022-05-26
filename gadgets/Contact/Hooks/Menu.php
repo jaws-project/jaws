@@ -20,17 +20,17 @@ class Contact_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url'    => $this->gadget->urlMap('Contact'),
-                        'title'  => _t('CONTACT_ACTIONS_CONTACT'),
-                        'title2' => _t('CONTACT_US'));
+                        'title'  => $this::t('ACTIONS_CONTACT'),
+                        'title2' => $this::t('US'));
         $urls[] = array('url'    => $this->gadget->urlMap('ContactMini'),
-                        'title'  => _t('CONTACT_ACTIONS_CONTACTMINI'),
-                        'title2' => _t('CONTACT_US'));
+                        'title'  => $this::t('ACTIONS_CONTACTMINI'),
+                        'title2' => $this::t('US'));
         $urls[] = array('url'    => $this->gadget->urlMap('ContactSimple'),
-                        'title'  => _t('CONTACT_ACTIONS_CONTACTSIMPLE'),
-                        'title2' => _t('CONTACT_US'));
+                        'title'  => $this::t('ACTIONS_CONTACTSIMPLE'),
+                        'title2' => $this::t('US'));
         $urls[] = array('url'    => $this->gadget->urlMap('ContactFull'),
-                        'title'  => _t('CONTACT_ACTIONS_CONTACTFULL'),
-                        'title2' => _t('CONTACT_US'));
+                        'title'  => $this::t('ACTIONS_CONTACTFULL'),
+                        'title2' => $this::t('US'));
         return $urls;
     }
 }

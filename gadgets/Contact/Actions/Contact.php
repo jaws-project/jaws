@@ -19,7 +19,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
      */
     function Contact()
     {
-        $this->SetTitle(_t('CONTACT_US'));
+        $this->SetTitle($this::t('US'));
         return $this->GetContactForm('');
     }
 
@@ -31,7 +31,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
      */
     function ContactMini()
     {
-        $this->SetTitle(_t('CONTACT_US'));
+        $this->SetTitle($this::t('US'));
         return $this->GetContactForm('mini');
     }
 
@@ -43,7 +43,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
      */
     function ContactSimple()
     {
-        $this->SetTitle(_t('CONTACT_US'));
+        $this->SetTitle($this::t('US'));
         return $this->GetContactForm('simple');
     }
 
@@ -55,7 +55,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
      */
     function ContactFull()
     {
-        $this->SetTitle(_t('CONTACT_US'));
+        $this->SetTitle($this::t('US'));
         return $this->GetContactForm('full');
     }
 

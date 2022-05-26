@@ -31,12 +31,12 @@ class Contact_Model_Admin_Properties extends Jaws_Gadget_Model
 
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || !$r) {
-                $this->gadget->session->push(_t('CONTACT_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('CONTACT_ERROR_PROPERTIES_NOT_UPDATED'));
+                $this->gadget->session->push($this::t('ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_PROPERTIES_NOT_UPDATED'));
             }
         }
 
-        $this->gadget->session->push(_t('CONTACT_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 }

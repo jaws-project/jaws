@@ -33,16 +33,16 @@ class Contact_Actions_Admin_Properties extends Contact_Actions_Admin_Default
         $antispamCombo->AddOption(Jaws::t('NOO'),  'false');
         $antispamCombo->AddOption(Jaws::t('YESS'), 'true');
         $antispamCombo->SetDefault($use_antispam);
-        $tpl->SetVariable('lbl_use_antispam', _t('CONTACT_PROPERTIES_USE_ANTISPAM'));
+        $tpl->SetVariable('lbl_use_antispam', $this::t('PROPERTIES_USE_ANTISPAM'));
         $tpl->SetVariable('use_antispam', $antispamCombo->Get());
 
         $email_format = $this->gadget->registry->fetch('email_format');
         $formatCombo =& Piwi::CreateWidget('Combo', 'email_format');
         $formatCombo->SetID('email_format');
-        $formatCombo->AddOption(_t('CONTACT_PROPERTIES_EMAIL_FORMAT_PLAINTEXT'), 'text');
-        $formatCombo->AddOption(_t('CONTACT_PROPERTIES_EMAIL_FORMAT_HTML'),      'html');
+        $formatCombo->AddOption($this::t('PROPERTIES_EMAIL_FORMAT_PLAINTEXT'), 'text');
+        $formatCombo->AddOption($this::t('PROPERTIES_EMAIL_FORMAT_HTML'),      'html');
         $formatCombo->SetDefault($email_format);
-        $tpl->SetVariable('lbl_email_format', _t('CONTACT_PROPERTIES_EMAIL_FORMAT'));
+        $tpl->SetVariable('lbl_email_format', $this::t('PROPERTIES_EMAIL_FORMAT'));
         $tpl->SetVariable('email_format', $formatCombo->Get());
 
         $attachment = $this->gadget->registry->fetch('enable_attachment');
@@ -50,14 +50,14 @@ class Contact_Actions_Admin_Properties extends Contact_Actions_Admin_Default
         $combo->AddOption(Jaws::t('NOO'), 'false');
         $combo->AddOption(Jaws::t('YESS'), 'true');
         $combo->SetDefault($attachment);
-        $tpl->SetVariable('lbl_enable_attachment', _t('CONTACT_PROPERTIES_ENABLE_ATTACHMENT'));
+        $tpl->SetVariable('lbl_enable_attachment', $this::t('PROPERTIES_ENABLE_ATTACHMENT'));
         $tpl->SetVariable('enable_attachment', $combo->Get());
 
         // Comments
         $comments = $this->gadget->registry->fetch('comments');
         $editor =& $this->app->loadEditor('Contact', 'comments', $comments, false);
         $editor->SetId('comments');
-        $tpl->SetVariable('lbl_comments', _t('CONTACT_PROPERTIES_COMMENTS'));
+        $tpl->SetVariable('lbl_comments', $this::t('PROPERTIES_COMMENTS'));
         $tpl->SetVariable('comments', $editor->Get());
 
         if ($this->gadget->GetPermission('UpdateSetting')) {

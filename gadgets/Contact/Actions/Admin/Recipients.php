@@ -28,7 +28,7 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
         $tpl->SetVariable('grid', $this->RecipientsDataGrid());
 
         // Tabs titles
-        $tpl->SetVariable('legend_title', _t('CONTACT_RECIPIENTS_ADD'));
+        $tpl->SetVariable('legend_title', $this::t('RECIPIENTS_ADD'));
 
         $titleentry =& Piwi::CreateWidget('Entry', 'name', '');
         $tpl->SetVariable('lbl_name', Jaws::t('TITLE'));
@@ -39,15 +39,15 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
         $tpl->SetVariable('email', $emailentry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'tel', '');
-        $tpl->SetVariable('lbl_tel', _t('CONTACT_TEL'));
+        $tpl->SetVariable('lbl_tel', $this::t('TEL'));
         $tpl->SetVariable('tel', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'fax', '');
-        $tpl->SetVariable('lbl_fax', _t('CONTACT_FAX'));
+        $tpl->SetVariable('lbl_fax', $this::t('FAX'));
         $tpl->SetVariable('fax', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'mobile', '');
-        $tpl->SetVariable('lbl_mobile', _t('CONTACT_MOBILE'));
+        $tpl->SetVariable('lbl_mobile', $this::t('MOBILE'));
         $tpl->SetVariable('mobile', $entry->Get());
 
         $informtypes = array_map('basename', glob(ROOT_JAWS_PATH . 'gadgets/Contact/Informs/*.php'));
@@ -59,7 +59,7 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
             $informType->AddOption($inform, $inform);
         }
         $informType->SetDefault(0);
-        $tpl->SetVariable('lbl_inform_type', _t('CONTACT_RECIPIENTS_INFORM_TYPE'));
+        $tpl->SetVariable('lbl_inform_type', $this::t('RECIPIENTS_INFORM_TYPE'));
         $tpl->SetVariable('inform_type', $informType->Get());
 
         $visibleType =& Piwi::CreateWidget('Combo', 'visible');
@@ -79,8 +79,8 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, 'updateRecipient();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $this->gadget->define('incompleteRecipientFields', _t('CONTACT_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmRecipientDelete',    _t('CONTACT_CONFIRM_DELETE_RECIPIENT'));
+        $this->gadget->define('incompleteRecipientFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmRecipientDelete',    $this::t('CONFIRM_DELETE_RECIPIENT'));
 
         $tpl->ParseBlock('recipients');
 

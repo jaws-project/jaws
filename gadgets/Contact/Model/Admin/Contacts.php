@@ -84,14 +84,14 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
         $contact = $this->gadget->model->load('Contacts')->GetContact($id);
         if (Jaws_Error::IsError($contact) || empty($contact)) {
             return Jaws_Error::raiseError(
-                _t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
+                $this::t('ERROR_CONTACT_DOES_NOT_EXISTS'),
                 __FUNCTION__
             );
         }
 
         if (!$this->gadget->GetPermission('ManageRecipientContacts', $contact['recipient'])) {
             return Jaws_Error::raiseError(
-                _t('CONTACT_ERROR_CONTACT_NOT_UPDATED'),
+                $this::t('ERROR_CONTACT_NOT_UPDATED'),
                 __FUNCTION__
             );
         }
@@ -112,14 +112,14 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
         $contact = $this->gadget->model->load('Contacts')->GetContact($id);
         if (Jaws_Error::IsError($contact) || empty($contact)) {
             return Jaws_Error::raiseError(
-                _t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
+                $this::t('ERROR_CONTACT_DOES_NOT_EXISTS'),
                 __FUNCTION__
             );
         }
 
         if (!$this->gadget->GetPermission('ManageRecipientContacts', $contact['recipient'])) {
             return Jaws_Error::raiseError(
-                _t('CONTACT_ERROR_CONTACT_NOT_DELETED'),
+                $this::t('ERROR_CONTACT_NOT_DELETED'),
                 __FUNCTION__
             );
         }

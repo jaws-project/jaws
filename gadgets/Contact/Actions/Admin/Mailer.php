@@ -28,8 +28,8 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
 
         // Options
         $radio =& Piwi::CreateWidget('RadioButtons', 'options', 'horizontal');
-        $radio->AddOption(_t('CONTACT_MAILER_SEND_TO_USERS'), 1);
-        $radio->AddOption(_t('CONTACT_MAILER_SEND_TO_ADDRESS'), 2);
+        $radio->AddOption($this::t('MAILER_SEND_TO_USERS'), 1);
+        $radio->AddOption($this::t('MAILER_SEND_TO_ADDRESS'), 2);
         $radio->SetDefault(1);
         $radio->AddEvent(ON_CLICK, 'switchEmailTarget(this.value);');
         $tpl->SetVariable('options', $radio->Get());
@@ -41,12 +41,12 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         );
         $combo =& Piwi::CreateWidget('Combo', 'groups');
         $combo->AddEvent(ON_CHANGE, 'updateUsers(this.value)');
-        $combo->AddOption(_t('CONTACT_MAILER_ALL_GROUPS'), 0);
+        $combo->AddOption($this::t('MAILER_ALL_GROUPS'), 0);
         foreach($groups as $group) {
             $combo->AddOption($group['title'], $group['id']);
         }
         $tpl->SetVariable('groups', $combo->Get());
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_GROUP'), $combo);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_GROUP'), $combo);
         $label->SetID('');
         $tpl->SetVariable('lbl_group', $label->Get());
 
@@ -56,34 +56,34 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
             array('status' => 1)
         );
         $combo =& Piwi::CreateWidget('Combo', 'users');
-        $combo->AddOption(_t('CONTACT_MAILER_ALL_GROUP_USERS'), 0);
+        $combo->AddOption($this::t('MAILER_ALL_GROUP_USERS'), 0);
         foreach($users as $user) {
             $combo->AddOption($user['nickname'], $user['id']);
         }
         $tpl->SetVariable('users', $combo->Get());
         $tpl->SetVariable('target_user', count($users));
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_USER'), $combo);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_USER'), $combo);
         $label->SetID('');
         $tpl->SetVariable('lbl_user', $label->Get());
 
         // To
         $entry =& Piwi::CreateWidget('Entry', 'to');
         $tpl->SetVariable('to', $entry->Get());
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_TO'), $entry);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_TO'), $entry);
         $label->SetID('');
         $tpl->SetVariable('lbl_to', $label->Get());
 
         // Cc
         $entry =& Piwi::CreateWidget('Entry', 'cc');
         $tpl->SetVariable('cc', $entry->Get());
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_CC'), $entry);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_CC'), $entry);
         $label->SetID('');
         $tpl->SetVariable('lbl_cc', $label->Get());
 
         // Bcc
         $entry =& Piwi::CreateWidget('Entry', 'bcc');
         $tpl->SetVariable('bcc', $entry->Get());
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_BCC'), $entry);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_BCC'), $entry);
         $label->SetID('');
         $tpl->SetVariable('lbl_bcc', $label->Get());
 
@@ -98,14 +98,14 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $entry =& Piwi::CreateWidget('Entry', 'from', $from);
         $entry->SetEnabled(false);
         $tpl->SetVariable('from', $entry->Get());
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_FROM'), $entry);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_FROM'), $entry);
         $label->SetID('');
         $tpl->SetVariable('lbl_from', $label->Get());
 
         // Subject
         $entry =& Piwi::CreateWidget('Entry', 'subject');
         $tpl->SetVariable('subject', $entry->Get());
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_SUBJECT'), $entry);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_SUBJECT'), $entry);
         $label->SetID('');
         $tpl->SetVariable('lbl_subject', $label->Get());
 
@@ -116,11 +116,11 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $entry->AddEvent(ON_CHANGE, 'uploadFile();');
         $tpl->SetVariable('attachment', $entry->Get());
 
-        $button =& Piwi::CreateWidget('Button', 'btn_upload', _t('CONTACT_MAILER_ADD_ATTACHMENT'));
+        $button =& Piwi::CreateWidget('Button', 'btn_upload', $this::t('MAILER_ADD_ATTACHMENT'));
         $tpl->SetVariable('btn_upload', $button->Get());
 
         $link =& Piwi::CreateWidget('Link',
-                                    _t('CONTACT_MAILER_REMOVE_ATTACHMENT'),
+                                    $this::t('MAILER_REMOVE_ATTACHMENT'),
                                     'javascript:removeAttachment();',
                                     'images/stock/cancel.png');
         $tpl->SetVariable('remove', $link->get());
@@ -129,35 +129,35 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $editor =& $this->app->loadEditor('Contact', 'message');
         $editor->setID('message');
         $tpl->SetVariable('message', $editor->Get());
-        $label =& Piwi::CreateWidget('Label', _t('CONTACT_MAILER_MESSAGE'), $editor->TextArea);
+        $label =& Piwi::CreateWidget('Label', $this::t('MAILER_MESSAGE'), $editor->TextArea);
         $label->SetID('');
         $tpl->SetVariable('lbl_message', $label->Get());
 
         // Actions
         $button =& Piwi::CreateWidget('Button',
                                       'btn_new',
-                                      _t('CONTACT_MAILER_BUTTON_NEW'),
+                                      $this::t('MAILER_BUTTON_NEW'),
                                       'gadgets/Contact/Resources/images/contact_mini.png');
         $button->AddEvent(ON_CLICK, 'newEmail();');
         $tpl->SetVariable('btn_new', $button->Get());
 
         $button =& Piwi::CreateWidget('Button',
                                       'btn_preview',
-                                      _t('CONTACT_MAILER_BUTTON_PREVIEW'),
+                                      $this::t('MAILER_BUTTON_PREVIEW'),
                                       'gadgets/Contact/Resources/images/email_preview.png');
         $button->AddEvent(ON_CLICK, 'previewMessage();');
         $tpl->SetVariable('btn_preview', $button->Get());
 
         $button =& Piwi::CreateWidget('Button',
                                       'btn_send',
-                                      _t('CONTACT_MAILER_BUTTON_SEND'),
+                                      $this::t('MAILER_BUTTON_SEND'),
                                       'gadgets/Contact/Resources/images/email_send.png');
         $button->AddEvent(ON_CLICK, 'sendEmail();');
         $tpl->SetVariable('btn_send', $button->Get());
 
-        $this->gadget->define('lblAllGroupUsers', _t('CONTACT_MAILER_ALL_GROUP_USERS'));
-        $this->gadget->define('groupHasNoUser', _t('CONTACT_ERROR_GROUP_HAS_NO_USER'));
-        $this->gadget->define('incompleteMailerFields', _t('CONTACT_INCOMPLETE_FIELDS'));
+        $this->gadget->define('lblAllGroupUsers', $this::t('MAILER_ALL_GROUP_USERS'));
+        $this->gadget->define('groupHasNoUser', $this::t('ERROR_GROUP_HAS_NO_USER'));
+        $this->gadget->define('incompleteMailerFields', $this::t('INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('mailer');
         return $tpl->Get();
@@ -300,11 +300,11 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
 
         $result = $mail->send();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('CONTACT_ERROR_EMAIL_NOT_SENT'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_EMAIL_NOT_SENT'), RESPONSE_ERROR);
             return false;
         }
 
-        $this->gadget->session->push(_t('CONTACT_NOTICE_EMAIL_SENT'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('NOTICE_EMAIL_SENT'), RESPONSE_NOTICE);
         return true;
     }
 }

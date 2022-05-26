@@ -21,7 +21,7 @@ class Contact_Hooks_ACL extends Jaws_Gadget_Hook
             foreach ($recipients as $recipient) {
                 $this->gadget->translate->insert(
                     'ACL_MANAGERECIPIENTCONTACTS_'. $recipient['id'],
-                    _t('CONTACT_ACL_MANAGERECIPIENTCONTACTS', $recipient['name'])
+                    $this::t('ACL_MANAGERECIPIENTCONTACTS', $recipient['name'])
                 );
             }
         }

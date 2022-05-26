@@ -28,19 +28,19 @@ class Contact_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageContacts')) {
             $menubar->AddOption('Contacts',
-                                _t('CONTACT_TITLE'),
+                                $this::t('TITLE'),
                                 BASE_SCRIPT . '?reqGadget=Contact&amp;reqAction=Contacts',
                                 'gadgets/Contact/Resources/images/contact_mini.png');
         }
         if ($this->gadget->GetPermission('ManageRecipients')) {
             $menubar->AddOption('Recipients',
-                                _t('CONTACT_RECIPIENTS'),
+                                $this::t('RECIPIENTS'),
                                 BASE_SCRIPT . '?reqGadget=Contact&amp;reqAction=Recipients',
                                 'gadgets/Contact/Resources/images/recipients_mini.png');
         }
         if ($this->gadget->GetPermission('AccessToMailer')) {
             $menubar->AddOption('Mailer',
-                                _t('CONTACT_MAILER'),
+                                $this::t('MAILER'),
                                 BASE_SCRIPT . '?reqGadget=Contact&amp;reqAction=Mailer',
                                 'gadgets/Contact/Resources/images/email_send.png');
         }
