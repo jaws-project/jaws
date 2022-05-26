@@ -124,7 +124,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
 
             $tpl->SetBlock('group_pages/read-more');
             $tpl->SetVariable('url', $this->gadget->urlMap('GroupPages',$urlParam));
-            $tpl->SetVariable('read_more', _t('STATICPAGE_GROUP_PAGES_LIST', $group['title']));
+            $tpl->SetVariable('read_more', $this::t('GROUP_PAGES_LIST', $group['title']));
             $tpl->ParseBlock('group_pages/read-more');
         }
 
@@ -148,7 +148,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('StaticPage.html');
         $tpl->SetBlock('group_index');
-        $tpl->SetVariable('title', _t('STATICPAGE_GROUPS_LIST'));
+        $tpl->SetVariable('title', $this::t('GROUPS_LIST'));
         foreach ($groups as $group) {
             if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
                 continue;

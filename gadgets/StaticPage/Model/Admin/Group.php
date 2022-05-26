@@ -104,7 +104,7 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_GROUP_NOT_DELETABLE'));
+            return new Jaws_Error($this::t('ERROR_GROUP_NOT_DELETABLE'));
         }
 
         $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');

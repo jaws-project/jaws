@@ -22,9 +22,9 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array('url'   => $this->gadget->urlMap('Page'),
                         'title' => $this->gadget->title);
         $urls[] = array('url'   => $this->gadget->urlMap('GroupsList'),
-                        'title' => _t('STATICPAGE_GROUPS_LIST'));
+                        'title' => $this::t('GROUPS_LIST'));
         $urls[] = array('url'   => $this->gadget->urlMap('PagesTree'),
-                        'title' => _t('STATICPAGE_PAGES_TREE'));
+                        'title' => $this::t('PAGES_TREE'));
 
         //Load model
         $max_size = 32;

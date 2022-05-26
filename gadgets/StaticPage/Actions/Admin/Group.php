@@ -24,10 +24,10 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->define('add_group_title',      _t('STATICPAGE_GROUP_ADD'));
-        $this->gadget->define('edit_group_title',     _t('STATICPAGE_GROUP_EDIT'));
-        $this->gadget->define('confirm_group_delete', _t('STATICPAGE_GROUP_CONFIRM_DELETE'));
-        $this->gadget->define('incomplete_fields',    _t('STATICPAGE_GROUP_INCOMPLETE_FIELDS'));
+        $this->gadget->define('add_group_title',      $this::t('GROUP_ADD'));
+        $this->gadget->define('edit_group_title',     $this::t('GROUP_EDIT'));
+        $this->gadget->define('confirm_group_delete', $this::t('GROUP_CONFIRM_DELETE'));
+        $this->gadget->define('incomplete_fields',    $this::t('GROUP_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');
@@ -44,7 +44,7 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
 
         $entry =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $entry->SetStyle('direction:ltr;');
-        $tpl->SetVariable('lbl_fast_url', _t('STATICPAGE_FASTURL').':');
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL').':');
         $tpl->SetVariable('fast_url', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_keys', '');
@@ -69,7 +69,7 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-        $tpl->SetVariable('legend_title',         _t('STATICPAGE_GROUP_ADD'));
+        $tpl->SetVariable('legend_title',         $this::t('GROUP_ADD'));
 
         $tpl->ParseBlock('Groups');
         return $tpl->Get();

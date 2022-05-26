@@ -133,12 +133,12 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $newid = $model->AddPage($title, $group, $showtitle, $content, $language,
                                    $fast_url, $meta_keys, $meta_desc, $tags, $published, true);
             $response['id'] = $newid;
-            $response['message'] = _t('STATICPAGE_PAGE_AUTOUPDATED',
+            $response['message'] = $this::t('PAGE_AUTOUPDATED',
                                       date('H:i:s'),
                                       (int)$id,
                                       date('D, d'));
             $this->gadget->session->push(
-                _t('STATICPAGE_PAGE_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
+                $this::t('PAGE_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
                 RESPONSE_NOTICE,
                 $newid
             );
@@ -210,7 +210,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('STATICPAGE_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('NOTICE_GROUP_CREATED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -231,7 +231,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('STATICPAGE_NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('NOTICE_GROUP_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -252,7 +252,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('STATICPAGE_NOTICE_GROUP_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('NOTICE_GROUP_DELETED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();

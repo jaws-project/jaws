@@ -40,7 +40,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
 
         //Default page (combo)
         $defaultPage =& Piwi::CreateWidget('Combo', 'default_page');
-        $defaultPage->setTitle(_t('STATICPAGE_DEFAULT_PAGE'));
+        $defaultPage->setTitle($this::t('DEFAULT_PAGE'));
         $pages = $model->GetPages();
         if (Jaws_Error::isError($pages)) {
             $pages = array();
@@ -53,7 +53,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
 
         // Use multilanguage pages?
         $multiLanguage =& Piwi::CreateWidget('Combo', 'multilanguage');
-        $multiLanguage->setTitle(_t('STATICPAGE_USE_MULTILANGUAGE'));
+        $multiLanguage->setTitle($this::t('USE_MULTILANGUAGE'));
         $multiLanguage->addOption(Jaws::t('YESS'), 'yes');
         $multiLanguage->addOption(Jaws::t('NOO'), 'no');
         $multiLanguage->setDefault($this->gadget->registry->fetch('multilanguage'));

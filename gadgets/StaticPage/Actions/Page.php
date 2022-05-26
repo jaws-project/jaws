@@ -27,7 +27,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('StaticPage.html');
         $tpl->SetBlock('index');
-        $tpl->SetVariable('title', _t('STATICPAGE_PAGES_LIST'));
+        $tpl->SetVariable('title', $this::t('PAGES_LIST'));
         foreach ($pages as $page) {
             if (!$this->gadget->GetPermission('AccessGroup', $page['group_id'])) {
                 continue;
@@ -98,10 +98,10 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
             !$this->app->session->user->superadmin &&
             $page['user'] !== (int)$this->app->session->user->id)
         {
-            $this->SetTitle(_t('STATICPAGE_TITLE_NOT_FOUND'));
-            $tpl->SetVariable('content', _t('STATICPAGE_CONTENT_NOT_FOUND'));
+            $this->SetTitle($this::t('TITLE_NOT_FOUND'));
+            $tpl->SetVariable('content', $this::t('CONTENT_NOT_FOUND'));
             $tpl->SetBlock('page/title');
-            $tpl->SetVariable('title', _t('STATICPAGE_TITLE_NOT_FOUND'));
+            $tpl->SetVariable('title', $this::t('TITLE_NOT_FOUND'));
             $tpl->ParseBlock('page/title');
         } else {
             $this->SetTitle($page['title']);
@@ -119,7 +119,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
                 $translations = $tModel->GetTranslationsOfPage($page['page_id'], true);
                 if (!Jaws_Error::isError($translations) && count($translations)>1) {
                     $tpl->SetBlock('page/translations');
-                    $tpl->SetVariable('avail_trans', _t('STATICPAGE_AVAIL_TRANSLATIONS'));
+                    $tpl->SetVariable('avail_trans', $this::t('AVAIL_TRANSLATIONS'));
                     foreach ($translations as $trans) {
                         //if ($page['language'] == $trans['language']) continue;
                         $tpl->SetBlock('page/translations/language');
@@ -172,7 +172,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('StaticPage.html');
         $tpl->SetBlock('pages_tree');
-        $tpl->SetVariable('title', _t('STATICPAGE_PAGES_TREE'));
+        $tpl->SetVariable('title', $this::t('PAGES_TREE'));
 
         $pModel = $this->gadget->model->load('Page');
         $gModel = $this->gadget->model->load('Group');

@@ -32,16 +32,16 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('ManagePages', _t('STATICPAGE_MENU_PAGES'),
+        $menubar->AddOption('ManagePages', $this::t('MENU_PAGES'),
                             BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=ManagePages', STOCK_DOCUMENTS);
 
         if ($this->gadget->GetPermission('AddPage')) {
-            $menubar->AddOption('AddNewPage', _t('STATICPAGE_MENU_ADDPAGE'),
+            $menubar->AddOption('AddNewPage', $this::t('MENU_ADDPAGE'),
                                 BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=AddNewPage', STOCK_NEW);
         }
 
         if ($this->gadget->GetPermission('ManageGroups')) {
-            $menubar->AddOption('Groups', _t('STATICPAGE_GROUPS'),
+            $menubar->AddOption('Groups', $this::t('GROUPS'),
                                 BASE_SCRIPT . '?reqGadget=StaticPage&amp;reqAction=Groups',
                                 'gadgets/StaticPage/Resources/images/groups.png');
         }
@@ -80,7 +80,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                         $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmPageDelete', Jaws::t('CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
+        $this->gadget->define('confirmPageDelete', Jaws::t('CONFIRM_DELETE', $this::t('PAGE')));
 
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('pageform');
@@ -117,7 +117,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                 }
                 $combo->AddOption($group['title'], $group['id']);
             }
-            $combo->SetTitle(_t('STATICPAGE_GROUP'));
+            $combo->SetTitle($this::t('GROUP'));
             $combo->SetDefault($gid);
             $vBox->Add($combo);
         }
@@ -125,10 +125,10 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         // Status
         $published = ($published === true) ? 1 : 0;
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
-        $statCombo->AddOption(_t('STATICPAGE_DRAFT'), '0');
-        $statCombo->AddOption(_t('STATICPAGE_PUBLISHED'), '1');
+        $statCombo->AddOption($this::t('DRAFT'), '0');
+        $statCombo->AddOption($this::t('PUBLISHED'), '1');
         $statCombo->SetDefault($published);
-        $statCombo->setTitle(_t('STATICPAGE_STATUS'));
+        $statCombo->setTitle($this::t('STATUS'));
         $vBox->Add($statCombo);
 
         if ($mode == 'base') {
@@ -138,7 +138,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
             $titleShowCombo->AddOption(Jaws::t('YESS'), '1');
             $titleShowCombo->AddOption(Jaws::t('NOO'),  '0');
             $titleShowCombo->SetDefault($show_title);
-            $titleShowCombo->setTitle(_t('STATICPAGE_SHOW_TITLE'));
+            $titleShowCombo->setTitle($this::t('SHOW_TITLE'));
             $vBox->Add($titleShowCombo);
         }
 
@@ -150,11 +150,11 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
             $languageCombo->AddOption($langName, $langCode);
         }
         $languageCombo->SetDefault($language);
-        $languageCombo->setTitle(_t('STATICPAGE_PAGE_LANGUAGE'));
+        $languageCombo->setTitle($this::t('PAGE_LANGUAGE'));
         $vBox->Add($languageCombo);
 
         // Advanced Options
-        $btnAdvanced =& Piwi::CreateWidget('Button', 'btn_advanced', _t('STATICPAGE_ADVANCED_OPTIONS'));
+        $btnAdvanced =& Piwi::CreateWidget('Button', 'btn_advanced', $this::t('ADVANCED_OPTIONS'));
         $btnAdvanced->AddEvent(ON_CLICK, "javascript:$('#advanced_options').show(); $(this).hide();");
 
         $advBox =& Piwi::CreateWidget('VBox');
@@ -164,7 +164,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         // Fast URL
         if ($mode == 'base') {
             $fasturlentry =& Piwi::CreateWidget('Entry', 'fast_url', $fast_url);
-            $fasturlentry->SetTitle(_t('STATICPAGE_FASTURL'));
+            $fasturlentry->SetTitle($this::t('FASTURL'));
             $fasturlentry->SetStyle('direction:ltr;');
             $advBox->Add($fasturlentry);
         }
@@ -204,17 +204,17 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         if ($mode == 'base') {
             if ($action == 'AddPage') {
-                $submit =& Piwi::CreateWidget('Button', 'newpage', _t('STATICPAGE_ADD_PAGE'), STOCK_SAVE);
+                $submit =& Piwi::CreateWidget('Button', 'newpage', $this::t('ADD_PAGE'), STOCK_SAVE);
             } else {
-                $submit =& Piwi::CreateWidget('Button', 'editpage', _t('STATICPAGE_UPDATE_PAGE'), STOCK_SAVE);
+                $submit =& Piwi::CreateWidget('Button', 'editpage', $this::t('UPDATE_PAGE'), STOCK_SAVE);
                 $btnDelete =& Piwi::CreateWidget('Button', 'delpage', Jaws::t('DELETE'), STOCK_DELETE);
                 $btnDelete->AddEvent(ON_CLICK, "javascript:deletePage($id, true);");
             }
         } else {
             if ($action == 'AddTranslation') {
-                $submit =& Piwi::CreateWidget('Button', 'newpagetrans', _t('STATICPAGE_ADD_TRANSLATION'), STOCK_SAVE);
+                $submit =& Piwi::CreateWidget('Button', 'newpagetrans', $this::t('ADD_TRANSLATION'), STOCK_SAVE);
             } else {
-                $submit =& Piwi::CreateWidget('Button', 'editpagetrans', _t('STATICPAGE_UPDATE_TRANSLATION'), STOCK_SAVE);
+                $submit =& Piwi::CreateWidget('Button', 'editpagetrans', $this::t('UPDATE_TRANSLATION'), STOCK_SAVE);
                 $btnDelete =& Piwi::CreateWidget('Button', 'delpagetrans', Jaws::t('DELETE'), STOCK_DELETE);
                 $btnDelete->AddEvent(ON_CLICK, "javascript:deleteTranslation($id, true);");
             }

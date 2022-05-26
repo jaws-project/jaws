@@ -30,7 +30,7 @@ class StaticPage_Model_Translation extends Jaws_Gadget_Model
 
         $row = $sptTable->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'));
+            return new Jaws_Error($this::t('ERROR_TRANSLATION_NOT_EXISTS'));
         }
 
         if (isset($row['translation_id'])) {
@@ -44,7 +44,7 @@ class StaticPage_Model_Translation extends Jaws_Gadget_Model
             return $row;
         }
 
-        return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'));
+        return new Jaws_Error($this::t('ERROR_TRANSLATION_NOT_EXISTS'));
     }
 
 
@@ -65,14 +65,14 @@ class StaticPage_Model_Translation extends Jaws_Gadget_Model
         )->where('base_id', $page_id)->and()->where('language', $language)->fetchRow();
 
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'));
+            return new Jaws_Error($this::t('ERROR_TRANSLATION_NOT_EXISTS'));
         }
 
         if (isset($row['translation_id'])) {
             return $row;
         }
 
-        return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'));
+        return new Jaws_Error($this::t('ERROR_TRANSLATION_NOT_EXISTS'));
     }
 
     /**

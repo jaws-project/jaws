@@ -30,11 +30,11 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $grid->SetID('pages_datagrid');
         $grid->useMultipleSelection();
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_FASTURL')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_GROUP')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_PAGE_TRANSLATION')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_STATUS')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('STATICPAGE_LAST_UPDATE')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('FASTURL')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('GROUP')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('PAGE_TRANSLATION')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('STATUS')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('LAST_UPDATE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
 
         return $grid->Get();
@@ -92,12 +92,12 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
                 }
                 $pageData['trans'].= substr($transString, 0, -2).'&nbsp;';
             }
-            $pageData['trans'].= '<small>[<a href="'.$add_turl.$page['page_id'].'">'._t('STATICPAGE_ADD_LANGUAGE').'</a>]</small>';
+            $pageData['trans'].= '<small>[<a href="'.$add_turl.$page['page_id'].'">'.$this::t('ADD_LANGUAGE').'</a>]</small>';
 
             if ($page['published'] === true) {
-                $pageData['published'] = _t('STATICPAGE_PUBLISHED');
+                $pageData['published'] = $this::t('PUBLISHED');
             } else {
-                $pageData['published'] = _t('STATICPAGE_DRAFT');
+                $pageData['published'] = $this::t('DRAFT');
             }
             $pageData['date']  = $date->Format($page['updated'], 'Y-m-d H:i:s');
             $actions = '';
@@ -131,8 +131,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
     function ManagePages()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmPageDelete', Jaws::t('CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
-        $this->gadget->define('confirmMassiveDelete', _t('STATICPAGE_CONFIRM_MASIVE_DELETE_PAGE'));
+        $this->gadget->define('confirmPageDelete', Jaws::t('CONFIRM_DELETE', $this::t('PAGE')));
+        $this->gadget->define('confirmMassiveDelete', $this::t('CONFIRM_MASIVE_DELETE_PAGE'));
 
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('static_page');
@@ -163,7 +163,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         }
         $languageCombo->SetDefault($language);
         $languageCombo->AddEvent(ON_CHANGE, 'javascript:searchPage();');
-        $tpl->SetVariable('language', _t('STATICPAGE_PAGE_LANGUAGE'));
+        $tpl->SetVariable('language', $this::t('PAGE_LANGUAGE'));
         $tpl->SetVariable('language_field', $languageCombo->Get());
 
         // Group filter
@@ -176,18 +176,18 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         }
         $combo->AddEvent(ON_CHANGE, 'searchPage();');
         $tpl->SetVariable('group_field', $combo->Get());
-        $tpl->SetVariable('group', _t('STATICPAGE_GROUP'));
+        $tpl->SetVariable('group', $this::t('GROUP'));
 
         //Status filter
         $status = '';
         $statusCombo =& Piwi::CreateWidget('Combo', 'status');
         $statusCombo->setId('status');
         $statusCombo->AddOption('&nbsp;', '');
-        $statusCombo->AddOption(_t('STATICPAGE_PUBLISHED'), '1');
-        $statusCombo->AddOption(_t('STATICPAGE_DRAFT'), '0');
+        $statusCombo->AddOption($this::t('PUBLISHED'), '1');
+        $statusCombo->AddOption($this::t('DRAFT'), '0');
         $statusCombo->SetDefault($status);
         $statusCombo->AddEvent(ON_CHANGE, 'javascript:searchPage();');
-        $tpl->SetVariable('status', _t('STATICPAGE_STATUS'));
+        $tpl->SetVariable('status', $this::t('STATUS'));
         $tpl->SetVariable('status_field', $statusCombo->Get());
 
         //Order by filter
@@ -202,7 +202,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $orderCombo->AddOption(Jaws::t('UPDATETIME'). ' &darr;', 5);
         $orderCombo->SetDefault(1);
         $orderCombo->AddEvent(ON_CHANGE, 'javascript:searchPage();');
-        $tpl->SetVariable('orderby', _t('STATICPAGE_ORDERBY'));
+        $tpl->SetVariable('orderby', $this::t('ORDERBY'));
         $tpl->SetVariable('orderby_field', $orderCombo->Get());
 
         // Free text search

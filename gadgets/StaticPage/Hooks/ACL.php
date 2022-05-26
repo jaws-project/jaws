@@ -24,11 +24,11 @@ class StaticPage_Hooks_ACL extends Jaws_Gadget_Hook
             foreach ($groups as $group) {
                 $this->gadget->translate->insert(
                     'ACL_ACCESSGROUP_'. $group['id'],
-                    _t('STATICPAGE_ACL_ACCESSGROUP', $group['title'])
+                    $this::t('ACL_ACCESSGROUP', $group['title'])
                 );
                 $this->gadget->translate->insert(
                     'ACL_MANAGEGROUP_'. $group['id'],
-                    _t('STATICPAGE_ACL_MANAGEGROUP', $group['title'])
+                    $this::t('ACL_MANAGEGROUP', $group['title'])
                 );
             }
         }
