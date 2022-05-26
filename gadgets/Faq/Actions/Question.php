@@ -47,15 +47,15 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('ViewFaq.html');
         $tpl->SetBlock('faq');
-        $tpl->SetVariable('title', _t('FAQ_TITLE'));
-        $this->SetTitle(_t('FAQ_TITLE'));
+        $tpl->SetVariable('title', $this::t('TITLE'));
+        $this->SetTitle($this::t('TITLE'));
         $view_answers = $tpl->BlockExists('faq/answers');
 
         $model = $this->gadget->model->load('Question');
         $questions = $model->GetQuestions(null, true);
         if (is_array($questions) && count($questions) > 0) {
             $tpl->SetBlock('faq/summary');
-            $tpl->SetVariable('contents', _t('FAQ_CONTENTS'));
+            $tpl->SetVariable('contents', $this::t('CONTENTS'));
             foreach ($questions as $cat) {
                 $tpl->SetBlock('faq/summary/category');
                 $tpl->SetVariable('id', $cat['id']);
@@ -97,7 +97,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
                     foreach ($cat['questions'] as $q) {
                         $qPos++;
                         $tpl->SetBlock('faq/answers/category/question');
-                        $tpl->SetVariable('top_label', _t('FAQ_GO_TO_TOP'));
+                        $tpl->SetVariable('top_label', $this::t('GO_TO_TOP'));
                         $tpl->SetVariable('top_link', $this->gadget->urlMap('View').'#topfaq');
                         $tpl->SetVariable('id',  $q['id']);
                         $tpl->SetVariable('pos', $qPos);

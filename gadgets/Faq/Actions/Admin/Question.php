@@ -39,7 +39,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
             $bCategory->AddOption($category['category'], $category['id']);
         }
         $tpl->SetVariable('category_filter', $bCategory->Get());
-        $tpl->SetVariable('lbl_category', _t('FAQ_CATEGORY'));
+        $tpl->SetVariable('lbl_category', $this::t('CATEGORY'));
 
         $tpl->SetVariable('grid', $this->QuestionsDatagrid());
         $tpl->SetVariable('question_ui', $this->QuestionUI());
@@ -53,11 +53,11 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $tpl->SetVariable('legend_title',                              _t('FAQ_ADD_QUESTION'));
+        $tpl->SetVariable('legend_title',                              $this::t('ADD_QUESTION'));
         $this->gadget->define('incompleteQuestionFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmQuestionDelete',    _t('FAQ_CONFIRM_DELETE_QUESTION'));
-        $this->gadget->define('addQuestion_title',        _t('FAQ_ADD_QUESTION'));
-        $this->gadget->define('editQuestion_title',       _t('FAQ_EDIT_QUESTION'));
+        $this->gadget->define('confirmQuestionDelete',    $this::t('CONFIRM_DELETE_QUESTION'));
+        $this->gadget->define('addQuestion_title',        $this::t('ADD_QUESTION'));
+        $this->gadget->define('editQuestion_title',       $this::t('EDIT_QUESTION'));
 
         $tpl->ParseBlock('Questions');
         return $tpl->Get();
@@ -76,7 +76,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
 
         //question
         $questionEntry =& Piwi::CreateWidget('Entry', 'question', '');
-        $tpl->SetVariable('lbl_question', _t('FAQ_QUESTION'));
+        $tpl->SetVariable('lbl_question', $this::t('QUESTION'));
         $tpl->SetVariable('question', $questionEntry->Get());
 
         //answer
@@ -84,7 +84,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $answer->TextArea->SetStyle('width: 100%;');
         $answer->TextArea->SetRows(8);
         $answer->setID('answer');
-        $tpl->SetVariable('lbl_answer', _t('FAQ_ANSWER'));
+        $tpl->SetVariable('lbl_answer', $this::t('ANSWER'));
         $tpl->SetVariable('answer', $answer->Get());
 
         //category
@@ -96,13 +96,13 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
             $category_combo->AddOption($category['category'], $category['id']);
         }
         $category_combo->setDefault($categories[0]['id']);
-        $tpl->SetVariable('lbl_category', _t('FAQ_CATEGORY'));
+        $tpl->SetVariable('lbl_category', $this::t('CATEGORY'));
         $tpl->SetVariable('category', $category_combo->Get());
 
         //fast url
         $fast_url =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $fast_url->SetID('fast_url');
-        $tpl->SetVariable('lbl_fast_url', _t('FAQ_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
         $tpl->SetVariable('fast_url', $fast_url->Get());
 
         // meta_keywords
@@ -179,12 +179,12 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEUP'),
+                $link =& Piwi::CreateWidget('Link', $this::t('MOVEUP'),
                     "javascript:moveQuestion(" . $question['category'] . "," . $question['id'] . "," . $question['faq_position'] . ", -1);",
                     STOCK_UP);
                 $actions .= $link->Get() . '&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEDOWN'),
+                $link =& Piwi::CreateWidget('Link', $this::t('MOVEDOWN'),
                     "javascript:moveQuestion(" . $question['category'] . "," . $question['id'] . "," . $question['faq_position'] . ", 1);",
                     STOCK_DOWN);
                 $actions .= $link->Get() . '&nbsp;';
@@ -242,9 +242,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
         $res = $model->InsertQuestion($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_QUESTION_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('QUESTION_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -263,9 +263,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
         $res = $model->UpdateQuestion($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_QUESTION_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('QUESTION_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -282,9 +282,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $res = $model->DeleteQuestion($id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('QUESTION_DELETED'), RESPONSE_NOTICE);
         }
     }
 
@@ -300,9 +300,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
         $result = $model->MoveQuestion($post['category'], $post['id'], $post['position'], $post['direction']);
         if (Jaws_Error::IsError($result)) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_QUESTION_MOVED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('QUESTION_MOVED'), RESPONSE_NOTICE);
         }
     }
 }

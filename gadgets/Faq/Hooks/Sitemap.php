@@ -25,7 +25,7 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
             '/' => array(
                 'id'     => 0,
                 'parent' => 0,
-                'title'  => _t('FAQ_TITLE'),
+                'title'  => $this::t('TITLE'),
                 'url'    => $this->gadget->urlMap('View', array(), array('absolute' => true))
             ),
             'levels' => array(),

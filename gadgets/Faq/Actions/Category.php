@@ -21,7 +21,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Categories.html');
         $tpl->SetBlock('faq_categories');
-        $tpl->SetVariable('title', _t('FAQ_CATEGORIES'));
+        $tpl->SetVariable('title', $this::t('CATEGORIES'));
         $model = $this->gadget->model->load('Category');
         $cats = $model->GetCategories();
         if (is_array($cats) && count($cats) > 0) {
@@ -52,13 +52,13 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
         $cat_id = $this->gadget->request->fetch('id', 'get');
         $cat_id = Jaws_XSS::defilter($cat_id);
 
-        $this->SetTitle($this->gadget->title . ' - ' . _t('FAQ_CATEGORIES'));
+        $this->SetTitle($this->gadget->title . ' - ' . $this::t('CATEGORIES'));
         $questions = $model->GetQuestions($cat_id, true);
         if (is_array($questions) && count($questions) > 0) {
             $tpl = $this->gadget->template->load('Category.html');
             foreach ($questions as $cat) {
                 $tpl->SetBlock('faq_category');
-                $tpl->SetVariable('title', _t('FAQ_TITLE'));
+                $tpl->SetVariable('title', $this::t('TITLE'));
                 $tpl->SetVariable('category', $cat['category']);
                 $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($cat['description']));
                 if (isset($cat['questions']) && is_array($cat['questions'])) {
@@ -82,7 +82,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
                 foreach ($cat['questions'] as $q) {
                     $qPos++;
                     $tpl->SetBlock('faq_category/item');
-                    $tpl->SetVariable('top_label', _t('FAQ_GO_TO_TOP'));
+                    $tpl->SetVariable('top_label', $this::t('GO_TO_TOP'));
                     $tpl->SetVariable('top_link', $this->gadget->urlMap('ViewCategory', array('id' => $cat_id)).'#topfaq');
                     $tpl->SetVariable('id', $q['id']);
                     $tpl->SetVariable('pos', $qPos);

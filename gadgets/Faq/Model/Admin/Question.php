@@ -82,8 +82,8 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $rid = $faqTable->select('faq_position')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($rid)) {
-            $this->gadget->session->push(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
+            $this->gadget->session->push($this::t('ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_QUESTION_NOT_DELETED'));
         }
 
         if (isset($rid['faq_position'])) {
@@ -92,23 +92,23 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
                 array('faq_position' => $faqTable->expr('faq_position - ?', 1))
             )->where('faq_position', $rid['faq_position'], '>')->exec();
             if (Jaws_Error::IsError($rs)) {
-                $this->gadget->session->push(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
+                $this->gadget->session->push($this::t('ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_QUESTION_NOT_DELETED'));
             }
 
             $faqTable = Jaws_ORM::getInstance()->table('faq');
             $rs = $faqTable->delete()->where('id', $id)->exec();
             if (Jaws_Error::IsError($rs)) {
-                $this->gadget->session->push(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
+                $this->gadget->session->push($this::t('ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_QUESTION_NOT_DELETED'));
             }
 
-            $this->gadget->session->push(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('QUESTION_DELETED'), RESPONSE_NOTICE);
             return true;
         }
 
-        $this->gadget->session->push(_t('FAQ_ERROR_QUESTION_DOES_NOT_EXISTS'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('FAQ_ERROR_QUESTION_DOES_NOT_EXISTS'));
+        $this->gadget->session->push($this::t('ERROR_QUESTION_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+        return new Jaws_Error($this::t('ERROR_QUESTION_DOES_NOT_EXISTS'));
     }
 
     /**
@@ -139,14 +139,14 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $faqTable->update(array('faq_position' => (int)$oldpos))->where('category', (int)$cat);
         $result = $faqTable->and()->where('faq_position', (int)$newpos)->exec();
         if (Jaws_Error::IsError($result)) {
-            $result->setMessage(_t('FAQ_ERROR_QUESTION_NOT_MOVED'));
+            $result->setMessage($this::t('ERROR_QUESTION_NOT_MOVED'));
             return $result;
         }
 
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $result = $faqTable->update(array('faq_position' => (int)$newpos))->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $result->setMessage(_t('FAQ_ERROR_QUESTION_NOT_MOVED'));
+            $result->setMessage($this::t('ERROR_QUESTION_NOT_MOVED'));
             return $result;
         }
 

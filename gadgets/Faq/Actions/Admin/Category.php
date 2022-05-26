@@ -38,7 +38,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
 
         $entry =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $entry->SetStyle('direction:ltr;');
-        $tpl->SetVariable('lbl_fast_url', _t('FAQ_FASTURL').':');
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL').':');
         $tpl->SetVariable('fast_url', $entry->Get());
 
         $entry =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
@@ -63,11 +63,11 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $tpl->SetVariable('legend_title',          _t('FAQ_ADD_CATEGORY'));
+        $tpl->SetVariable('legend_title',          $this::t('ADD_CATEGORY'));
 
-        $this->gadget->define('addCategory_title',     _t('FAQ_ADD_CATEGORY'));
-        $this->gadget->define('editCategory_title',    _t('FAQ_EDIT_CATEGORY'));
-        $this->gadget->define('confirmCategoryDelete', _t('FAQ_CONFIRM_DELETE_CATEGORY'));
+        $this->gadget->define('addCategory_title',     $this::t('ADD_CATEGORY'));
+        $this->gadget->define('editCategory_title',    $this::t('EDIT_CATEGORY'));
+        $this->gadget->define('confirmCategoryDelete', $this::t('CONFIRM_DELETE_CATEGORY'));
         $this->gadget->define('incomplete_fields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('Categories');
@@ -125,12 +125,12 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEUP'),
+                $link =& Piwi::CreateWidget('Link', $this::t('MOVEUP'),
                     "javascript:moveCategory(" . $category['id'] . "," . $category['category_position'] . ", -1);",
                     STOCK_UP);
                 $actions .= $link->Get() . '&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEDOWN'),
+                $link =& Piwi::CreateWidget('Link', $this::t('MOVEDOWN'),
                     "javascript:moveCategory(" . $category['id'] . "," . $category['category_position'] . ", 1);",
                     STOCK_DOWN);
                 $actions .= $link->Get() . '&nbsp;';
@@ -194,9 +194,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->InsertCategory($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_CATEGORY_ADDED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('CATEGORY_ADDED'), RESPONSE_NOTICE);
         }
     }
 
@@ -213,9 +213,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->UpdateCategory($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_CATEGORY_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('CATEGORY_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -232,9 +232,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $res = $model->DeleteCategory($id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_CATEGORY_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('CATEGORY_DELETED'), RESPONSE_NOTICE);
         }
     }
 
@@ -250,9 +250,9 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
         $result = $model->MoveCategory($post['id'], $post['old_pos'], $post['new_pos']);
         if (Jaws_Error::IsError($result)) {
-            return $this->gadget->session->response(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CATEGORY_NOT_MOVED'), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('FAQ_CATEGORY_MOVED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('CATEGORY_MOVED'), RESPONSE_NOTICE);
         }
     }
 }

@@ -51,6 +51,6 @@ class Faq_Model_Category extends Jaws_Gadget_Model
             return $row;
         }
 
-        return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_DOES_NOT_EXISTS'));
+        return new Jaws_Error($this::t('ERROR_CATEGORY_DOES_NOT_EXISTS'));
     }
 }
