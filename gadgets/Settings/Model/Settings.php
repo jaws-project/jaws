@@ -41,9 +41,9 @@ class Settings_Model_Settings extends Jaws_Gadget_Model
     function GetEditorList()
     {
         $editors = array();
-        $editors['TextArea'] = _t('SETTINGS_EDITOR_CLASSIC');
-        $editors['TinyMCE']  = _t('SETTINGS_EDITOR_TINYMCE');
-        $editors['CKEditor'] = _t('SETTINGS_EDITOR_CKEDITOR');
+        $editors['TextArea'] = $this::t('EDITOR_CLASSIC');
+        $editors['TinyMCE']  = $this::t('EDITOR_TINYMCE');
+        $editors['CKEditor'] = $this::t('EDITOR_CKEDITOR');
         return $editors;
     }
 

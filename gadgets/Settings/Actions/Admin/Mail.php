@@ -26,7 +26,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Mail'));
-        $tpl->SetVariable('legend', _t('SETTINGS_MAIL_SETTINGS'));
+        $tpl->SetVariable('legend', $this::t('MAIL_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitMailSettingsForm();");
@@ -43,7 +43,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $mailer->SetDefault($this->gadget->registry->fetch('mailer'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'mailer');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_MAILER'));
+        $tpl->SetVariable('label', $this::t('MAIL_MAILER'));
         $tpl->SetVariable('field', $mailer->Get());
         $tpl->SetVariable('style', 'padding-bottom: 8px;');
         $tpl->ParseBlock('settings/item');
@@ -53,7 +53,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $siteEmail =& Piwi::CreateWidget('Entry', 'gate_email', $this->gadget->registry->fetch('gate_email'));
         $siteEmail->setID('gate_email');
         $tpl->SetVariable('field-name', 'gate_email');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_GATE_EMAIL'));
+        $tpl->SetVariable('label', $this::t('MAIL_GATE_EMAIL'));
         $tpl->SetVariable('field', $siteEmail->Get());
         $tpl->SetVariable('style', 'padding-bottom: 0px;');
         $tpl->ParseBlock('settings/item');
@@ -63,7 +63,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $emailName =& Piwi::CreateWidget('Entry', 'gate_title', $this->gadget->registry->fetch('gate_title'));
         $emailName->setID('gate_title');
         $tpl->SetVariable('field-name', 'gate_title');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_GATE_TITLE'));
+        $tpl->SetVariable('label', $this::t('MAIL_GATE_TITLE'));
         $tpl->SetVariable('field', $emailName->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -75,7 +75,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $smtpVrfy->SetDefault($this->gadget->registry->fetch('smtp_vrfy'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_vrfy');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_VRFY'));
+        $tpl->SetVariable('label', $this::t('MAIL_SMTP_VRFY'));
         $tpl->SetVariable('field', $smtpVrfy->Get());
         $tpl->SetVariable('style', 'padding-bottom: 8px;');
         $tpl->ParseBlock('settings/item');
@@ -85,7 +85,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $sendmailPath =& Piwi::CreateWidget('Entry', 'sendmail_path', $this->gadget->registry->fetch('sendmail_path'));
         $sendmailPath->setID('sendmail_path');
         $tpl->SetVariable('field-name', 'sendmail_path');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_SENDMAIL_PATH'));
+        $tpl->SetVariable('label', $this::t('MAIL_SENDMAIL_PATH'));
         $tpl->SetVariable('field', $sendmailPath->Get());
         $tpl->SetVariable('style', 'padding-bottom: 8px;');
         $tpl->ParseBlock('settings/item');
@@ -95,7 +95,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $smtpHost =& Piwi::CreateWidget('Entry', 'smtp_host', $this->gadget->registry->fetch('smtp_host'));
         $smtpHost->setID('smtp_host');
         $tpl->SetVariable('field-name', 'smtp_host');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_HOST'));
+        $tpl->SetVariable('label', $this::t('MAIL_SMTP_HOST'));
         $tpl->SetVariable('field', $smtpHost->Get());
         $tpl->SetVariable('style', 'padding-bottom: 0px;');
         $tpl->ParseBlock('settings/item');
@@ -106,7 +106,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $smtpPort->setID('smtp_port');
         $smtpPort->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'smtp_port');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_PORT'));
+        $tpl->SetVariable('label', $this::t('MAIL_SMTP_PORT'));
         $tpl->SetVariable('field', $smtpPort->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -118,7 +118,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $smtpAuth->SetDefault($this->gadget->registry->fetch('smtp_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'smtp_auth');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_AUTH'));
+        $tpl->SetVariable('label', $this::t('MAIL_SMTP_AUTH'));
         $tpl->SetVariable('field', $smtpAuth->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -128,7 +128,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $smtpUser->setID('smtp_user');
         $smtpUser->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'smtp_user');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_USER'));
+        $tpl->SetVariable('label', $this::t('MAIL_SMTP_USER'));
         $tpl->SetVariable('field', $smtpUser->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -138,7 +138,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $smtpPass->setID('smtp_pass');
         $smtpPass->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'smtp_pass');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIL_SMTP_PASS'));
+        $tpl->SetVariable('label', $this::t('MAIL_SMTP_PASS'));
         $tpl->SetVariable('field', $smtpPass->Get());
         $tpl->ParseBlock('settings/item');
 

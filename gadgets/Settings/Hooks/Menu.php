@@ -19,7 +19,7 @@ class Settings_Hooks_Menu extends Jaws_Gadget_Hook
 
         $urls[] = array(
             'url'        => $this->gadget->urlMap('Settings'),
-            'title'      => _t('SETTINGS_TITLE'),
+            'title'      => $this::t('TITLE'),
             'permission' => array(
                 'key'    => 'BasicSettings',
                 'subkey' => ''

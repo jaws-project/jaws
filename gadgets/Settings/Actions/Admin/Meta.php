@@ -26,11 +26,11 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Meta'));
-        $tpl->SetVariable('custom_meta', _t('SETTINGS_META_CUSTOM'));
-        $tpl->SetVariable('legend', _t('SETTINGS_META_SETTINGS'));
+        $tpl->SetVariable('custom_meta', $this::t('META_CUSTOM'));
+        $tpl->SetVariable('legend', $this::t('META_SETTINGS'));
 
         // Add Button
-        $addButton =& Piwi::CreateWidget('Button', 'add', _t('SETTINGS_META_ADD_CUSTOM'), STOCK_ADD);
+        $addButton =& Piwi::CreateWidget('Button', 'add', $this::t('META_ADD_CUSTOM'), STOCK_ADD);
         $addButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').addCustomMeta();");
         $tpl->SetVariable('addButton', $addButton->Get());
 
@@ -47,7 +47,7 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         $sitedesc->SetRows(5);
         $sitedesc->setID('site_description');
         $tpl->SetVariable('field-name', 'site_description');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_DESCRIPTION'));
+        $tpl->SetVariable('label', $this::t('SITE_DESCRIPTION'));
         $tpl->SetVariable('field', $sitedesc->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -58,7 +58,7 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         $sitekeys->setID('site_keywords');
         $sitekeys->setStyle('direction:ltr;');
         $tpl->SetVariable('field-name', 'site_keywords');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_KEYWORDS'));
+        $tpl->SetVariable('label', $this::t('SITE_KEYWORDS'));
         $tpl->SetVariable('field', $sitekeys->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -67,7 +67,7 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         $author =& Piwi::CreateWidget('Entry', 'site_author', $this->gadget->registry->fetch('site_author'));
         $author->setID('site_author');
         $tpl->SetVariable('field-name', 'site_author');
-        $tpl->SetVariable('label',_t('SETTINGS_SITE_AUTHOR'));
+        $tpl->SetVariable('label',$this::t('SITE_AUTHOR'));
         $tpl->SetVariable('field',$author->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -76,7 +76,7 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         $license =& Piwi::CreateWidget('Entry', 'site_license', $this->gadget->registry->fetch('site_license'));
         $license->setID('site_license');
         $tpl->SetVariable('field-name', 'site_license');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_LICENSE'));
+        $tpl->SetVariable('label', $this::t('SITE_LICENSE'));
         $tpl->SetVariable('field', $license->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -85,7 +85,7 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         $copyright =& Piwi::CreateWidget('Entry', 'site_copyright', $this->gadget->registry->fetch('site_copyright'));
         $copyright->setID('site_copyright');
         $tpl->SetVariable('field-name', 'site_copyright');
-        $tpl->SetVariable('label', _t('SETTINGS_COPYRIGHT'));
+        $tpl->SetVariable('label', $this::t('COPYRIGHT'));
         $tpl->SetVariable('field', $copyright->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -94,7 +94,7 @@ class Settings_Actions_Admin_Meta extends Settings_Actions_Admin_Default
         if (!empty($Metas)) {
             foreach ($Metas as $meta) {
                 $tpl->SetBlock('settings/custom');
-                $tpl->SetVariable('label', _t('SETTINGS_META_CUSTOM'));
+                $tpl->SetVariable('label', $this::t('META_CUSTOM'));
                 // name
                 $nMeta =& Piwi::CreateWidget('Entry', 'meta_name', $meta[0]);
                 $nMeta->setClass('meta-name');

@@ -26,7 +26,7 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('FTP'));
-        $tpl->SetVariable('legend', _t('SETTINGS_FTP_SETTINGS'));
+        $tpl->SetVariable('legend', $this::t('FTP_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitFTPSettingsForm();");
@@ -51,7 +51,7 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $ftpHost->setID('ftp_host');
         $ftpHost->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'ftp_host');
-        $tpl->SetVariable('label', _t('SETTINGS_FTP_HOST'));
+        $tpl->SetVariable('label', $this::t('FTP_HOST'));
         $tpl->SetVariable('field', $ftpHost->Get());
         $tpl->SetVariable('style', 'padding-bottom: 0px;');
         $tpl->ParseBlock('settings/item');
@@ -62,19 +62,19 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $ftpPort->setID('ftp_port');
         $ftpPort->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'ftp_port');
-        $tpl->SetVariable('label', _t('SETTINGS_FTP_PORT'));
+        $tpl->SetVariable('label', $this::t('FTP_PORT'));
         $tpl->SetVariable('field', $ftpPort->Get());
         $tpl->ParseBlock('settings/item');
 
         // FTP mode (active/passive)
         $ftpMode =& Piwi::CreateWidget('Combo', 'ftp_mode');
         $ftpMode->setID('ftp_mode');
-        $ftpMode->AddOption(_t('SETTINGS_FTP_MODE_ACTIVE'),  'active');
-        $ftpMode->AddOption(_t('SETTINGS_FTP_MODE_PASSIVE'), 'passive');
+        $ftpMode->AddOption($this::t('FTP_MODE_ACTIVE'),  'active');
+        $ftpMode->AddOption($this::t('FTP_MODE_PASSIVE'), 'passive');
         $ftpMode->SetDefault($this->gadget->registry->fetch('ftp_mode'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'ftp_mode');
-        $tpl->SetVariable('label', _t('SETTINGS_FTP_MODE'));
+        $tpl->SetVariable('label', $this::t('FTP_MODE'));
         $tpl->SetVariable('field', $ftpMode->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -83,7 +83,7 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $ftpUser =& Piwi::CreateWidget('Entry', 'ftp_user', $this->gadget->registry->fetch('ftp_user'));
         $ftpUser->setID('ftp_user');
         $tpl->SetVariable('field-name', 'ftp_user');
-        $tpl->SetVariable('label', _t('SETTINGS_FTP_USER'));
+        $tpl->SetVariable('label', $this::t('FTP_USER'));
         $tpl->SetVariable('field', $ftpUser->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -92,7 +92,7 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $ftpPass =& Piwi::CreateWidget('PasswordEntry', 'ftp_pass', '');
         $ftpPass->setID('ftp_pass');
         $tpl->SetVariable('field-name', 'ftp_pass');
-        $tpl->SetVariable('label', _t('SETTINGS_FTP_PASS'));
+        $tpl->SetVariable('label', $this::t('FTP_PASS'));
         $tpl->SetVariable('field', $ftpPass->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -102,7 +102,7 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $ftpRoot->setID('ftp_root');
         $ftpRoot->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'ftp_root');
-        $tpl->SetVariable('label', _t('SETTINGS_FTP_ROOT'));
+        $tpl->SetVariable('label', $this::t('FTP_ROOT'));
         $tpl->SetVariable('field', $ftpRoot->Get());
         $tpl->ParseBlock('settings/item');
 

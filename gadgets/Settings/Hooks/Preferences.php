@@ -28,34 +28,34 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
 
         $result['admin_language'] = array(
             'type'  => 'select',
-            'title' => _t('SETTINGS_ADMIN_LANGUAGE'),
+            'title' => $this::t('ADMIN_LANGUAGE'),
             'values' => $languages,
             'ltr' => true,
         );
         $result['site_language'] = array(
             'type'  => 'select',
-            'title' => _t('SETTINGS_DEFAULT_SITE_LANGUAGE'),
+            'title' => $this::t('DEFAULT_SITE_LANGUAGE'),
             'values' => $languages,
             'ltr' => true,
         );
         $result['calendar'] = array(
             'type'  => 'select',
-            'title' => _t('SETTINGS_CALENDAR'),
+            'title' => $this::t('CALENDAR'),
             'values' => $objSettings->GetCalendarList(),
         );
         $result['date_format'] = array(
             'type'  => 'select',
-            'title' => _t('SETTINGS_DATE_FORMAT'),
+            'title' => $this::t('DATE_FORMAT'),
             'values' => $objSettings->GetDateFormatList(),
         );
         $result['main_gadget'] = array(
             'type'  => 'select',
-            'title' => _t('SETTINGS_MAIN_GADGET'),
+            'title' => $this::t('MAIN_GADGET'),
             'values' => $gadgets,
         );
         $result['editor'] = array(
             'type'  => 'select',
-            'title' => _t('SETTINGS_EDITOR'),
+            'title' => $this::t('EDITOR'),
             'values' => $objSettings->GetEditorList(),
         );
         $result['timezone'] = array(

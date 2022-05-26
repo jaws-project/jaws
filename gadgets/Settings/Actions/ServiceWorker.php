@@ -26,8 +26,8 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
                 '\n',
                 addslashes(Jaws_HTTPError::Get(
                     503,
-                    _t('SETTINGS_PWA_ERROR_OFFLINE_TITLE'),
-                    _t('SETTINGS_PWA_ERROR_OFFLINE_CONTENT')
+                    $this::t('PWA_ERROR_OFFLINE_TITLE'),
+                    $this::t('PWA_ERROR_OFFLINE_CONTENT')
                 ))
             )
         );
@@ -71,7 +71,7 @@ class Settings_Actions_ServiceWorker extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Offline.html');
         $tpl->SetBlock('Offline');
-        $tpl->SetVariable('offline_message', _t('SETTINGS_PWA_ERROR_REQUEST_DOES_NOT_EXIST'));
+        $tpl->SetVariable('offline_message', $this::t('PWA_ERROR_REQUEST_DOES_NOT_EXIST'));
         $tpl->ParseBlock('Offline');
         return $tpl->Get();
     }

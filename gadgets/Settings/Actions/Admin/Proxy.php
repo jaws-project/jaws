@@ -26,7 +26,7 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Proxy'));
-        $tpl->SetVariable('legend', _t('SETTINGS_PROXY_SETTINGS'));
+        $tpl->SetVariable('legend', $this::t('PROXY_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitProxySettingsForm();");
@@ -51,7 +51,7 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $proxyHost->setID('proxy_host');
         $proxyHost->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'proxy_host');
-        $tpl->SetVariable('label', _t('SETTINGS_PROXY_HOST'));
+        $tpl->SetVariable('label', $this::t('PROXY_HOST'));
         $tpl->SetVariable('field', $proxyHost->Get());
         $tpl->SetVariable('style', 'padding-bottom: 0px;');
         $tpl->ParseBlock('settings/item');
@@ -62,7 +62,7 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $proxyPort->setID('proxy_port');
         $proxyPort->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'proxy_port');
-        $tpl->SetVariable('label', _t('SETTINGS_PROXY_PORT'));
+        $tpl->SetVariable('label', $this::t('PROXY_PORT'));
         $tpl->SetVariable('field', $proxyPort->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -74,7 +74,7 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $proxyAuth->SetDefault($this->gadget->registry->fetch('proxy_auth'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'proxy_auth');
-        $tpl->SetVariable('label', _t('SETTINGS_PROXY_AUTH'));
+        $tpl->SetVariable('label', $this::t('PROXY_AUTH'));
         $tpl->SetVariable('field', $proxyAuth->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -84,7 +84,7 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $proxyUser->setID('proxy_user');
         $proxyUser->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'proxy_user');
-        $tpl->SetVariable('label', _t('SETTINGS_PROXY_USER'));
+        $tpl->SetVariable('label', $this::t('PROXY_USER'));
         $tpl->SetVariable('field', $proxyUser->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -94,7 +94,7 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $proxyPass->setID('proxy_pass');
         $proxyPass->setStyle('direction:ltr');
         $tpl->SetVariable('field-name', 'proxy_pass');
-        $tpl->SetVariable('label', _t('SETTINGS_PROXY_PASS'));
+        $tpl->SetVariable('label', $this::t('PROXY_PASS'));
         $tpl->SetVariable('field', $proxyPass->Get());
         $tpl->ParseBlock('settings/item');
 

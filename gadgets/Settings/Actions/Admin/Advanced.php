@@ -26,7 +26,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Advanced'));
-        $tpl->SetVariable('legend', _t('SETTINGS_ADVANCED_SETTINGS'));
+        $tpl->SetVariable('legend', $this::t('ADVANCED_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(ON_CLICK, "Jaws_Gadget.getInstance('Settings').submitAdvancedForm();");
@@ -43,7 +43,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $date_format->SetDefault($this->gadget->registry->fetch('date_format'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'date_format');
-        $tpl->SetVariable('label', _t('SETTINGS_DATE_FORMAT'));
+        $tpl->SetVariable('label', $this::t('DATE_FORMAT'));
         $tpl->SetVariable('field', $date_format->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -62,7 +62,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         }
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'calendar');
-        $tpl->SetVariable('label', _t('SETTINGS_CALENDAR'));
+        $tpl->SetVariable('label', $this::t('CALENDAR'));
         $tpl->SetVariable('field', $date_calendar->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -76,22 +76,22 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $gravatar->AddEvent(ON_CHANGE, "Jaws_Gadget.getInstance('Settings').toggleGR();");
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'use_gravatar');
-        $tpl->SetVariable('label', _t('SETTINGS_USE_GRAVATAR'));
+        $tpl->SetVariable('label', $this::t('USE_GRAVATAR'));
         $tpl->SetVariable('field', $gravatar->Get());
         $tpl->ParseBlock('settings/item');
 
         // Gravatar rating
         $gravatar =& Piwi::CreateWidget('Combo', 'gravatar_rating');
         $gravatar->setID('gravatar_rating');
-        $gravatar->AddOption(_t('SETTINGS_GRAVATAR_G'), 'G');
-        $gravatar->AddOption(_t('SETTINGS_GRAVATAR_PG'), 'PG');
-        $gravatar->AddOption(_t('SETTINGS_GRAVATAR_R'), 'R');
-        $gravatar->AddOption(_t('SETTINGS_GRAVATAR_X'), 'X');
+        $gravatar->AddOption($this::t('GRAVATAR_G'), 'G');
+        $gravatar->AddOption($this::t('GRAVATAR_PG'), 'PG');
+        $gravatar->AddOption($this::t('GRAVATAR_R'), 'R');
+        $gravatar->AddOption($this::t('GRAVATAR_X'), 'X');
         $gravatar->SetDefault($this->gadget->registry->fetch('gravatar_rating'));
         $gravatar->SetEnabled($use_gravatar == 'yes');
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'gravatar_rating');
-        $tpl->SetVariable('label', '<a href="http://www.gravatar.com/rating.php" rel="external" target="_blank">' . _t('SETTINGS_GRAVATAR') . '</a>');
+        $tpl->SetVariable('label', '<a href="http://www.gravatar.com/rating.php" rel="external" target="_blank">' . $this::t('GRAVATAR') . '</a>');
         $tpl->SetVariable('field', $gravatar->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -103,21 +103,21 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $viewSite->SetDefault($this->gadget->registry->fetch('show_viewsite'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'show_viewsite');
-        $tpl->SetVariable('label', _t('SETTINGS_SHOW_VIEWSITE'));
+        $tpl->SetVariable('label', $this::t('SHOW_VIEWSITE'));
         $tpl->SetVariable('field', $viewSite->Get());
         $tpl->ParseBlock('settings/item');
 
         // default title
         $defaultTitle =& Piwi::CreateWidget('Combo', 'site_title_separator');
         $defaultTitle->setID('site_title_separator');
-        $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_SLASH'), '/');
-        $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_PIPE'), '|');
-        $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_DASH'), '-');
-        $defaultTitle->AddOption(_t('SETTINGS_TITLE_SEPARATOR_DOUBLECOLON'), '::');
+        $defaultTitle->AddOption($this::t('TITLE_SEPARATOR_SLASH'), '/');
+        $defaultTitle->AddOption($this::t('TITLE_SEPARATOR_PIPE'), '|');
+        $defaultTitle->AddOption($this::t('TITLE_SEPARATOR_DASH'), '-');
+        $defaultTitle->AddOption($this::t('TITLE_SEPARATOR_DOUBLECOLON'), '::');
         $defaultTitle->SetDefault($this->gadget->registry->fetch('site_title_separator'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'site_title_separator');
-        $tpl->SetVariable('label', _t('SETTINGS_TITLE_SEPARATOR'));
+        $tpl->SetVariable('label', $this::t('TITLE_SEPARATOR'));
         $tpl->SetVariable('field', $defaultTitle->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -131,7 +131,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $editorCombo->SetDefault($this->gadget->registry->fetch('editor'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'editor');
-        $tpl->SetVariable('label', _t('SETTINGS_EDITOR'));
+        $tpl->SetVariable('label', $this::t('EDITOR'));
         $tpl->SetVariable('field', $editorCombo->Get());
         $tpl->ParseBlock('settings/item');
 

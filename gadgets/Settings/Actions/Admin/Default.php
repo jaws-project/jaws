@@ -27,32 +27,32 @@ class Settings_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $sidebar = new Jaws_Widgets_Sidebar('settings');
         if ($this->gadget->GetPermission('BasicSettings')) {
-            $sidebar->AddOption('Basic', _t('SETTINGS_BASIC_SETTINGS'),
+            $sidebar->AddOption('Basic', $this::t('BASIC_SETTINGS'),
                                 BASE_SCRIPT . '?reqGadget=Settings&amp;reqAction=BasicSettings');
         }
 
         if ($this->gadget->GetPermission('AdvancedSettings')) {
-            $sidebar->AddOption('Advanced', _t('SETTINGS_ADVANCED_SETTINGS'),
+            $sidebar->AddOption('Advanced', $this::t('ADVANCED_SETTINGS'),
                                 BASE_SCRIPT . '?reqGadget=Settings&amp;reqAction=AdvancedSettings');
         }
 
         if ($this->gadget->GetPermission('MetaSettings')) {
-            $sidebar->AddOption('Meta', _t('SETTINGS_META_SETTINGS'),
+            $sidebar->AddOption('Meta', $this::t('META_SETTINGS'),
                                 BASE_SCRIPT . '?reqGadget=Settings&amp;reqAction=MetaSettings');
         }
 
         if ($this->gadget->GetPermission('MailSettings')) {
-            $sidebar->AddOption('Mail', _t('SETTINGS_MAIL_SETTINGS'),
+            $sidebar->AddOption('Mail', $this::t('MAIL_SETTINGS'),
                                 BASE_SCRIPT . '?reqGadget=Settings&amp;reqAction=MailSettings');
         }
 
         if ($this->gadget->GetPermission('FTPSettings')) {
-            $sidebar->AddOption('FTP', _t('SETTINGS_FTP_SETTINGS'),
+            $sidebar->AddOption('FTP', $this::t('FTP_SETTINGS'),
                                 BASE_SCRIPT . '?reqGadget=Settings&amp;reqAction=FTPSettings');
         }
 
         if ($this->gadget->GetPermission('ProxySettings')) {
-            $sidebar->AddOption('Proxy', _t('SETTINGS_PROXY_SETTINGS'),
+            $sidebar->AddOption('Proxy', $this::t('PROXY_SETTINGS'),
                                 BASE_SCRIPT . '?reqGadget=Settings&amp;reqAction=ProxySettings');
         }
 

@@ -26,7 +26,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Basic'));
-        $tpl->SetVariable('legend', _t('SETTINGS_BASIC_SETTINGS'));
+        $tpl->SetVariable('legend', $this::t('BASIC_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->AddEvent(
@@ -44,7 +44,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $site_status->SetDefault($this->gadget->registry->fetch('site_status'));
         $site_status->SetEnabled($this->gadget->GetPermission('ManageSiteStatus'));
         $tpl->SetVariable('field-name', 'site_status');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_STATUS'));
+        $tpl->SetVariable('label', $this::t('SITE_STATUS'));
         $tpl->SetVariable('field', $site_status->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -55,7 +55,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
             Jaws_XSS::defilter($this->gadget->registry->fetch('site_name')));
         $sitename->setID('site_name');
         $tpl->SetVariable('field-name', 'site_name');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_NAME'));
+        $tpl->SetVariable('label', $this::t('SITE_NAME'));
         $tpl->SetVariable('field', $sitename->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -66,7 +66,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
             Jaws_XSS::defilter($this->gadget->registry->fetch('site_slogan')));
         $sitedesc->setID('site_slogan');
         $tpl->SetVariable('field-name', 'site_slogan');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_SLOGAN'));
+        $tpl->SetVariable('label', $this::t('SITE_SLOGAN'));
         $tpl->SetVariable('field', $sitedesc->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -80,7 +80,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         }
         $lang->SetDefault($this->gadget->registry->fetch('site_language'));
         $tpl->SetVariable('field-name', 'site_language');
-        $tpl->SetVariable('label', _t('SETTINGS_DEFAULT_SITE_LANGUAGE'));
+        $tpl->SetVariable('label', $this::t('DEFAULT_SITE_LANGUAGE'));
         $tpl->SetVariable('field', $lang->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -93,7 +93,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         }
         $lang->SetDefault($this->gadget->registry->fetch('admin_language'));
         $tpl->SetVariable('field-name', 'admin_language');
-        $tpl->SetVariable('label', _t('SETTINGS_ADMIN_LANGUAGE'));
+        $tpl->SetVariable('label', $this::t('ADMIN_LANGUAGE'));
         $tpl->SetVariable('field', $lang->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -110,7 +110,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         }
         $gdt->SetDefault($this->gadget->registry->fetch('main_gadget'));
         $tpl->SetVariable('field-name', 'main_gadget');
-        $tpl->SetVariable('label', _t('SETTINGS_MAIN_GADGET'));
+        $tpl->SetVariable('label', $this::t('MAIN_GADGET'));
         $tpl->SetVariable('field', $gdt->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -121,7 +121,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
             $this->gadget->registry->fetch('site_email'));
         $siteemail->setID('site_email');
         $tpl->SetVariable('field-name', 'site_email');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_EMAIL'));
+        $tpl->SetVariable('label', $this::t('SITE_EMAIL'));
         $tpl->SetVariable('field', $siteemail->Get());
         $tpl->ParseBlock('settings/item');
 
@@ -133,7 +133,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $sitecomment->SetRows(4);
         $sitecomment->setID('site_comment');
         $tpl->SetVariable('field-name', 'site_comment');
-        $tpl->SetVariable('label', _t('SETTINGS_SITE_COMMENT'));
+        $tpl->SetVariable('label', $this::t('SITE_COMMENT'));
         $tpl->SetVariable('field', $sitecomment->Get());
         $tpl->ParseBlock('settings/item');
 
