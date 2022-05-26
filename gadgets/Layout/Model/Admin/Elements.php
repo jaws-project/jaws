@@ -244,8 +244,8 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             }
 
             $actions[$key]['action'] = $key;
-            $actions[$key]['name'] = _t(strtoupper($g.'_ACTIONS_'.$key));
-            $actions[$key]['desc'] = _t(strtoupper($g.'_ACTIONS_'.$key.'_DESC'));
+            $actions[$key]['name'] = $this::t($g.'.ACTIONS_'.$key);
+            $actions[$key]['desc'] = $this::t($g.'.ACTIONS_'.$key.'_DESC');
             if (isset($action['parametric']) && $action['parametric']) {
                 // set initial params
                 $actions[$key]['parametric'] = false;

@@ -167,7 +167,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     if (isset($actions[$gadget['action']]) &&
                         Jaws_Gadget::IsGadgetEnabled($gadget['gadget'])
                     ) {
-                        $t_item->SetVariable('gadget', _t(strtoupper($gadget['gadget']).'_TITLE'));
+                        $t_item->SetVariable('gadget', $this::t($gadget['gadget']. '.TITLE'));
                         if (isset($actions[$gadget['action']]['name'])) {
                             $t_item->SetVariable('action', $actions[$gadget['action']]['name']);
                         } else {
