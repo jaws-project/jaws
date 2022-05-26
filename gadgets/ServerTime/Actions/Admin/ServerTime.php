@@ -36,7 +36,7 @@ class ServerTime_Actions_Admin_ServerTime extends Jaws_Gadget_Action
         $objDate = Jaws_Date::getInstance();
         $dFormat =& Piwi::CreateWidget('Combo', 'date_format');
         $dFormat->SetID('date_format');
-        $dFormat->SetTitle(_t('SERVERTIME_FORMAT_TEXT'));
+        $dFormat->SetTitle($this::t('FORMAT_TEXT'));
         $dFormat->SetStyle('width: 300px;');
         $dFormat->AddOption($objDate->Format($now, 'MN j, g:i a'),     'MN j, g:i a');
         $dFormat->AddOption($objDate->Format($now, 'j.m.y'),           'j.m.y');
