@@ -59,7 +59,7 @@ class Jaws_Gadget_Actions_DatePicker extends Jaws_Gadget_Class
         for ($i = 0; $i < 12; $i++) {
             $tpl->SetBlock("$block/datepicker/months/month");
             $tpl->SetVariable('i', $i);
-            $tpl->SetVariable('name', _t("GLOBAL_{$calendar}_MONTH_$i"));
+            $tpl->SetVariable('name', Jaws::t("{$calendar}_MONTH_$i"));
             $tpl->ParseBlock("$block/datepicker/months/month");
         }
         $tpl->ParseBlock("$block/datepicker/months");
@@ -69,7 +69,7 @@ class Jaws_Gadget_Actions_DatePicker extends Jaws_Gadget_Class
         for ($i = 0; $i < 12; $i++) {
             $tpl->SetBlock("$block/datepicker/short_months/month");
             $tpl->SetVariable('i', $i);
-        $tpl->SetVariable('name', _t("GLOBAL_{$calendar}_MONTH_SHORT_$i"));
+        $tpl->SetVariable('name', Jaws::t("{$calendar}_MONTH_SHORT_$i"));
             $tpl->ParseBlock("$block/datepicker/short_months/month");
         }
         $tpl->ParseBlock("$block/datepicker/short_months");
@@ -79,7 +79,7 @@ class Jaws_Gadget_Actions_DatePicker extends Jaws_Gadget_Class
         for ($i = 0; $i < 7; $i++) {
             $tpl->SetBlock("$block/datepicker/week_days/day");
             $tpl->SetVariable('i', $i);
-            $tpl->SetVariable('name', _t("GLOBAL_{$calendar}_DAY_SHORT_$i"));
+            $tpl->SetVariable('name', Jaws::t("{$calendar}_DAY_SHORT_$i"));
             $tpl->ParseBlock("$block/datepicker/week_days/day");
         }
         $tpl->ParseBlock("$block/datepicker/week_days");

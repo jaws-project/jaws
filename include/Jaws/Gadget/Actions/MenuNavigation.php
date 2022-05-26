@@ -42,7 +42,7 @@ class Jaws_Gadget_Actions_MenuNavigation extends Jaws_Gadget_Class
 
                 $menu = array(
                     'name'  => $actionName,
-                    'title' => _t(strtoupper("{$this->gadget->name}_ACTIONS_{$actionName}_TITLE")),
+                    'title' => $this::t("ACTIONS_{$actionName}_TITLE"),
                     'url' => $this->gadget->urlMap(
                         $actionName,
                         isset($action['navigation']['params'])? $action['navigation']['params'] : array()
@@ -118,7 +118,7 @@ class Jaws_Gadget_Actions_MenuNavigation extends Jaws_Gadget_Class
 
                 $menu = array(
                     'name'  => $actionName,
-                    'title' => _t(strtoupper("{$this->gadget->name}_ACTIONS_{$actionName}_TITLE")),
+                    'title' => $this::t("ACTIONS_{$actionName}_TITLE"),
                     'url' => $this->gadget->urlMap(
                         $actionName,
                         isset($action['navigation']['params'])? $action['navigation']['params'] : array()

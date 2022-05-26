@@ -103,12 +103,12 @@ class Jaws_Gadget_ACL extends Jaws_Gadget_Class
     function description($key, $subkey = 0)
     {
         if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
-            return _t(strtoupper('GLOBAL_ACL_'. $key));
+            return Jaws::t('ACL_'. $key));
         } elseif (empty($subkey)) {
-            return _t(strtoupper($this->gadget->name. '_ACL_'. $key));
+            return $this::t('ACL_'. $key));
         } else {
             static $alreadyLoaded;
-            $acl_key_name = strtoupper($this->gadget->name. '_ACL_'. $key. '_'. $subkey);
+            $acl_key_name = 'ACL_'. $key. '_'. $subkey;
             if (!isset($alreadyLoaded)) {
                 $alreadyLoaded = true;
                 // load ACL hook for get dynamic ACL names
@@ -118,7 +118,7 @@ class Jaws_Gadget_ACL extends Jaws_Gadget_Class
                 }
             }
 
-            return _t($acl_key_name);
+            return $this::t($acl_key_name);
         }
     }
 
