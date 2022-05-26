@@ -72,7 +72,7 @@ class Jaws_Calendar
         $tpl = new Jaws_Template();
         $tpl->Load('Calendar.html', $this->_TemplateDir);
         $tpl->SetBlock('calendar');
-        $tpl->setVariable('title', _t('BLOG_LAYOUT_CALENDAR'));
+        $tpl->setVariable('title', Jaws::t('GADGETS.BLOG.LAYOUT_CALENDAR'));
 
         $objDate = Jaws_Date::getInstance();
         // Obtain first week day of month
