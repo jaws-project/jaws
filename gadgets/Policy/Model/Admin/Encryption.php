@@ -30,7 +30,7 @@ class Policy_Model_Admin_Encryption extends Jaws_Gadget_Model
                 $this->gadget->registry->update('crypt_key_start_date', 0);
             }
         }
-        $this->gadget->session->push(_t('POLICY_RESPONSE_ENCRYPTION_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('RESPONSE_ENCRYPTION_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 }

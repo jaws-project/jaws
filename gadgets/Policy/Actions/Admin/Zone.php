@@ -25,10 +25,10 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
             'from'=> Jaws::t('FROM'),
             'to'=> Jaws::t('TO'),
             'edit'=> Jaws::t('EDIT'),
-            'editZoneRange'=> _t('POLICY_ZONE_RANGE_EDIT'),
+            'editZoneRange'=> $this::t('ZONE_RANGE_EDIT'),
             'delete'=> Jaws::t('DELETE'),
-            'addNewZone'=> _t('POLICY_ZONE_ADD'),
-            'editZone'=> _t('POLICY_ZONE_EDIT')
+            'addNewZone'=> $this::t('ZONE_ADD'),
+            'editZone'=> $this::t('ZONE_EDIT')
         ));
 
         $assigns = array();
@@ -140,11 +140,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $data = $this->gadget->request->fetch('data:array', 'post');
         $res = $this->gadget->model->loadAdmin('Zone')->InsertZone($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONE_NOT_INSERTED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONE_NOT_INSERTED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONE_INSERTED'),
+            $this::t('RESPONSE_ZONE_INSERTED'),
             RESPONSE_NOTICE
         );
     }
@@ -189,11 +189,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
 
         $res = $this->gadget->model->loadAdmin('Zone')->InsertZoneRange($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONERANGE_NOT_INSERTED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONERANGE_NOT_INSERTED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONERANGE_INSERTED'),
+            $this::t('RESPONSE_ZONERANGE_INSERTED'),
             RESPONSE_NOTICE
         );
     }
@@ -210,11 +210,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $post = $this->gadget->request->fetch(array('id:integer', 'data:array'), 'post');
         $res = $this->gadget->model->loadAdmin('Zone')->UpdateZone($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONE_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONE_NOT_UPDATED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONE_UPDATED'),
+            $this::t('RESPONSE_ZONE_UPDATED'),
             RESPONSE_NOTICE
         );
     }
@@ -237,11 +237,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
 
         $res = $this->gadget->model->loadAdmin('Zone')->UpdateZoneRange($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONERANGE_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONERANGE_NOT_UPDATED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONERANGE_UPDATED'),
+            $this::t('RESPONSE_ZONERANGE_UPDATED'),
             RESPONSE_NOTICE
         );
     }
@@ -258,11 +258,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $res = $this->gadget->model->loadAdmin('Zone')->DeleteZone($id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONE_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONE_NOT_DELETED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONE_DELETED'),
+            $this::t('RESPONSE_ZONE_DELETED'),
             RESPONSE_NOTICE
         );
     }
@@ -279,11 +279,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $res = $this->gadget->model->loadAdmin('Zone')->DeleteZoneRange($id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONERANGE_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONERANGE_NOT_DELETED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONERANGE_DELETED'),
+            $this::t('RESPONSE_ZONERANGE_DELETED'),
             RESPONSE_NOTICE
         );
     }
@@ -302,17 +302,17 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
 
         $this->gadget->define('LANGUAGE', array(
-            'zone' => _t('POLICY_ZONE'),
+            'zone' => $this::t('ZONE'),
             'gadget' => Jaws::t('GADGET'),
             'action' => Jaws::t('ACTION'),
-            'order' => _t('POLICY_ORDER'),
-            'access' => _t('POLICY_ACCESS'),
+            'order' => $this::t('ORDER'),
+            'access' => $this::t('ACCESS'),
             'yes' => Jaws::t('YESS'),
             'no' => Jaws::t('NOO'),
             'edit' => Jaws::t('EDIT'),
             'delete' => Jaws::t('DELETE'),
-            'addNewZoneAction' => _t('POLICY_ZONE_ACTION_ADD'),
-            'editZoneAction' => _t('POLICY_ZONE_ACTION_EDIT')
+            'addNewZoneAction' => $this::t('ZONE_ACTION_ADD'),
+            'editZoneAction' => $this::t('ZONE_ACTION_EDIT')
         ));
 
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
@@ -396,11 +396,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $data = $this->gadget->request->fetch('data:array', 'post');
         $res = $this->gadget->model->loadAdmin('Zone')->InsertZoneAction($data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONE_ACTION_NOT_INSERTED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONE_ACTION_NOT_INSERTED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONE_ACTION_INSERTED'),
+            $this::t('RESPONSE_ZONE_ACTION_INSERTED'),
             RESPONSE_NOTICE
         );
     }
@@ -417,11 +417,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $post = $this->gadget->request->fetch(array('id:integer', 'data:array'), 'post');
         $res = $this->gadget->model->loadAdmin('Zone')->UpdateZoneAction($post['id'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONE_ACTION_NOT_UPDATED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONE_ACTION_NOT_UPDATED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONE_ACTION_UPDATED'),
+            $this::t('RESPONSE_ZONE_ACTION_UPDATED'),
             RESPONSE_NOTICE
         );
     }
@@ -438,11 +438,11 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $id = (int)$this->gadget->request->fetch('id', 'post');
         $res = $this->gadget->model->loadAdmin('Zone')->DeleteZoneAction($id);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('POLICY_RESPONSE_ZONE_ACTION_NOT_DELETED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('RESPONSE_ZONE_ACTION_NOT_DELETED'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('POLICY_RESPONSE_ZONE_ACTION_DELETED'),
+            $this::t('RESPONSE_ZONE_ACTION_DELETED'),
             RESPONSE_NOTICE
         );
     }

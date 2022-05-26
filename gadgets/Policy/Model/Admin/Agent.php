@@ -73,11 +73,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $res = $table->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLICY_RESPONSE_AGENT_NOT_ADDEDD', 'AddAgent'));
+            $this->gadget->session->push($this::t('RESPONSE_AGENT_NOT_ADDEDD'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('RESPONSE_AGENT_NOT_ADDEDD', 'AddAgent'));
         }
 
-        $this->gadget->session->push(_t('POLICY_RESPONSE_AGENT_ADDED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('RESPONSE_AGENT_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -101,11 +101,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $res = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('POLICY_RESPONSE_AGENT_NOT_EDITED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLICY_RESPONSE_AGENT_NOT_EDITED', 'EditAgent'));
+            $this->gadget->session->push($this::t('RESPONSE_AGENT_NOT_EDITED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('RESPONSE_AGENT_NOT_EDITED', 'EditAgent'));
         }
 
-        $this->gadget->session->push(_t('POLICY_RESPONSE_AGENT_EDITED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('RESPONSE_AGENT_EDITED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -121,11 +121,11 @@ class Policy_Model_Admin_Agent extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('policy_agentblock');
         $res = $table->delete()->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('POLICY_RESPONSE_AGENT_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('RESPONSE_AGENT_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
         }
 
-        $this->gadget->session->push(_t('POLICY_RESPONSE_AGENT_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('RESPONSE_AGENT_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 

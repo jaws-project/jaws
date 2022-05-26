@@ -29,7 +29,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
 
         // Sidebar
         $tpl->SetVariable('sidebar', $this->SideBar('AntiSpam'));
-        $tpl->SetVariable('legend_title', _t('POLICY_ANTISPAM'));
+        $tpl->SetVariable('legend_title', $this::t('ANTISPAM'));
 
         //Filter
         $filters =& Piwi::CreateWidget('Combo', 'filter');
@@ -39,18 +39,18 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
             $filters->AddOption($f, $f);
         }
         $filters->SetDefault($this->gadget->registry->fetch('filter'));
-        $tpl->SetVariable('lbl_filter', _t('POLICY_ANTISPAM_FILTER'));
+        $tpl->SetVariable('lbl_filter', $this::t('ANTISPAM_FILTER'));
         $tpl->SetVariable('filter', $filters->Get());
 
         //Captcha
         $captcha =& Piwi::CreateWidget('Combo', 'default_captcha');
         $captcha->AddOption(Jaws::t('DISABLED'), 'DISABLED');
-        $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ALWAYS'), 'ALWAYS');
-        $captcha->AddOption(_t('POLICY_ANTISPAM_CAPTCHA_ANONYMOUS'), 'ANONYMOUS');
+        $captcha->AddOption($this::t('ANTISPAM_CAPTCHA_ALWAYS'), 'ALWAYS');
+        $captcha->AddOption($this::t('ANTISPAM_CAPTCHA_ANONYMOUS'), 'ANONYMOUS');
         $captchaValue = $this->gadget->registry->fetch('default_captcha_status');
         $captcha->SetDefault($captchaValue);
         $captcha->AddEvent(ON_CHANGE, "javascript:toggleCaptcha('default');");
-        $tpl->SetVariable('lbl_default_captcha', _t('POLICY_ANTISPAM_CAPTCHA'));
+        $tpl->SetVariable('lbl_default_captcha', $this::t('ANTISPAM_CAPTCHA'));
         $tpl->SetVariable('default_captcha', $captcha->Get());
 
         //Captcha driver
@@ -73,7 +73,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
             $useEmailProtector->AddOption($o, $o);
         }
         $useEmailProtector->SetDefault($this->gadget->registry->fetch('obfuscator'));
-        $tpl->SetVariable('lbl_obfuscator', _t('POLICY_ANTISPAM_PROTECTEMAIL'));
+        $tpl->SetVariable('lbl_obfuscator', $this::t('ANTISPAM_PROTECTEMAIL'));
         $tpl->SetVariable('obfuscator', $useEmailProtector->Get());
 
         // Blocked domains
@@ -84,7 +84,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
         );
         $blockedDomains->SetRows(10);
         $blockedDomains->setID('blocked_domains');
-        $tpl->SetVariable('lbl_blocked_domains', _t('POLICY_ANTISPAM_BLOCKED_DOMAINS'));
+        $tpl->SetVariable('lbl_blocked_domains', $this::t('ANTISPAM_BLOCKED_DOMAINS'));
         $tpl->SetVariable('blocked_domains', $blockedDomains->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);

@@ -41,7 +41,7 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
                 $actions.= $ipWidget->Get().'&nbsp;';
 
                 $ipWidget =& Piwi::CreateWidget('Link',
-                    Jaws::t('DELETE', _t('POLICY_IP_RANGE')),
+                    Jaws::t('DELETE', $this::t('IP_RANGE')),
                     "javascript:Jaws_Gadget.getInstance('Policy').deleteIPRange(this, '".$ipRange['id']."');",
                     STOCK_DELETE);
                 $actions.= $ipWidget->Get();
@@ -89,7 +89,7 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $this->gadget->CheckPermission('IPBlocking');
         $this->AjaxMe('script.js');
         $this->gadget->define('incompleteFields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmIPRangeDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_IP'));
+        $this->gadget->define('confirmIPRangeDelete', $this::t('RESPONSE_CONFIRM_DELETE_IP'));
 
         $tpl = $this->gadget->template->loadAdmin('IPBlocking.html');
         $tpl->SetBlock('ipblocking');
@@ -100,14 +100,14 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
 
         $default = $this->gadget->registry->fetch('block_undefined_ip') == 'true';
         $blockUndefined =& Piwi::CreateWidget('CheckButtons', 'ipblocking');
-        $blockUndefined->AddOption(_t('POLICY_IP_BLOCK_UNDEFINED'),
+        $blockUndefined->AddOption($this::t('IP_BLOCK_UNDEFINED'),
             'true',
             'block_undefined_ip',
             $default);
         $blockUndefined->AddEvent(ON_CLICK, 'javascript:Jaws_Gadget.getInstance("Policy").setBlockUndefinedIP();');
         $tpl->SetVariable('enabled_option', $blockUndefined->Get());
 
-        $tpl->SetVariable('legend_title', _t('POLICY_IP_RANGE'));
+        $tpl->SetVariable('legend_title', $this::t('IP_RANGE'));
         $fromIPAddress =& Piwi::CreateWidget('Entry', 'from_ipaddress', '');
         $fromIPAddress->setSize(24);
         $tpl->SetVariable('lbl_from_ipaddress', Jaws::t('FROM'));
@@ -121,16 +121,16 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $script =& Piwi::CreateWidget('Combo', 'script');
         $script->SetID('script');
         $script->setStyle('width: 14em;');
-        $script->AddOption(_t('POLICY_SCRIPT_INDEX'), 'index');
-        $script->AddOption(_t('POLICY_SCRIPT_ADMIN'), 'admin');
-        $script->AddOption(_t('POLICY_SCRIPT_BOTH'),  '');
+        $script->AddOption($this::t('SCRIPT_INDEX'), 'index');
+        $script->AddOption($this::t('SCRIPT_ADMIN'), 'admin');
+        $script->AddOption($this::t('SCRIPT_BOTH'),  '');
         $script->SetDefault('index');
-        $tpl->SetVariable('lbl_script', _t('POLICY_SCRIPT'));
+        $tpl->SetVariable('lbl_script', $this::t('SCRIPT'));
         $tpl->SetVariable('script', $script->Get());
 
         $order =& Piwi::CreateWidget('Entry', 'order', '');
         $order->setSize(10);
-        $tpl->SetVariable('lbl_order', _t('POLICY_ORDER'));
+        $tpl->SetVariable('lbl_order', $this::t('ORDER'));
         $tpl->SetVariable('order', $order->Get());
 
         $blocked =& Piwi::CreateWidget('Combo', 'blocked');
@@ -139,7 +139,7 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $blocked->AddOption(Jaws::t('NOO'),  0);
         $blocked->AddOption(Jaws::t('YESS'), 1);
         $blocked->SetDefault('1');
-        $tpl->SetVariable('lbl_blocked', _t('POLICY_BLOCKED'));
+        $tpl->SetVariable('lbl_blocked', $this::t('BLOCKED'));
         $tpl->SetVariable('blocked', $blocked->Get());
 
         if ($this->gadget->GetPermission('ManageIPs')) {

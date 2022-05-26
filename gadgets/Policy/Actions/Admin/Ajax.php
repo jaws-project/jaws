@@ -157,9 +157,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('IP');
         $res = $model->IPBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('POLICY_RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -178,9 +178,9 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Agent');
         $res = $model->AgentBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
-            $this->gadget->session->push(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('POLICY_RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('RESPONSE_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();

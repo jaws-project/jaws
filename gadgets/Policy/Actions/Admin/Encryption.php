@@ -27,7 +27,7 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
 
         // Sidebar
         $tpl->SetVariable('sidebar', $this->SideBar('Encryption'));
-        $tpl->SetVariable('legend_title', _t('POLICY_ENCRYPTION'));
+        $tpl->SetVariable('legend_title', $this::t('ENCRYPTION'));
 
         $useEncryption =& Piwi::CreateWidget('Combo', 'enabled');
         $useEncryption->setID('enabled');
@@ -46,17 +46,17 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
         $keyAge->AddOption(Jaws::t('DATE_WEEKS',   1), 604800);
         $keyAge->SetDefault($this->gadget->registry->fetch('crypt_key_age'));
         $keyAge->SetEnabled($this->gadget->GetPermission('ManageEncryptionKey'));
-        $tpl->SetVariable('lbl_key_age', _t('POLICY_ENCRYPTION_KEY_AGE'));
+        $tpl->SetVariable('lbl_key_age', $this::t('ENCRYPTION_KEY_AGE'));
         $tpl->SetVariable('key_age', $keyAge->Get());
 
         $keyLen =& Piwi::CreateWidget('Combo', 'key_len');
         $keyLen->setID('key_len');
-        $keyLen->AddOption(_t('POLICY_ENCRYPTION_512BIT'),  '512');
-        $keyLen->AddOption(_t('POLICY_ENCRYPTION_1024BIT'), '1024');
-        $keyLen->AddOption(_t('POLICY_ENCRYPTION_2048BIT'), '2048');
+        $keyLen->AddOption($this::t('ENCRYPTION_512BIT'),  '512');
+        $keyLen->AddOption($this::t('ENCRYPTION_1024BIT'), '1024');
+        $keyLen->AddOption($this::t('ENCRYPTION_2048BIT'), '2048');
         $keyLen->SetDefault($this->gadget->registry->fetch('crypt_key_len'));
         $keyLen->SetEnabled($this->gadget->GetPermission('ManageEncryptionKey'));
-        $tpl->SetVariable('lbl_key_len', _t('POLICY_ENCRYPTION_KEY_LEN'));
+        $tpl->SetVariable('lbl_key_len', $this::t('ENCRYPTION_KEY_LEN'));
         $tpl->SetVariable('key_len', $keyLen->Get());
 
         $date = Jaws_Date::getInstance();
@@ -65,7 +65,7 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
         $keyStartDate->setID('key_start_date');
         $keyStartDate->setSize(30);
         $keyStartDate->SetEnabled(false);
-        $tpl->SetVariable('lbl_key_start_date', _t('POLICY_ENCRYPTION_KEY_START_DATE'));
+        $tpl->SetVariable('lbl_key_start_date', $this::t('ENCRYPTION_KEY_START_DATE'));
         $tpl->SetVariable('key_start_date', $keyStartDate->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);

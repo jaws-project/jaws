@@ -39,7 +39,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
                 $actions.= $ipWidget->Get().'&nbsp;';
 
                 $agWidget =& Piwi::CreateWidget('Link',
-                    Jaws::t('DELETE' ,_t('POLICY_AGENT')),
+                    Jaws::t('DELETE' ,$this::t('AGENT')),
                     "javascript:Jaws_Gadget.getInstance('Policy').deleteAgent(this, '".$agent['id']."');",
                     STOCK_DELETE);
                 $actions .= $agWidget->Get();
@@ -66,7 +66,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
         $grid->SetID('blocked_agents_datagrid');
         $grid->TotalRows($totalAgents);
         $grid->pageBy(12);
-        $column1 = Piwi::CreateWidget('Column', _t('POLICY_AGENT'));
+        $column1 = Piwi::CreateWidget('Column', $this::t('AGENT'));
         $grid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', Jaws::t('ACTIONS'));
         $column2->SetStyle('width: 60px; white-space:nowrap;');
@@ -86,7 +86,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
         $this->gadget->CheckPermission('AgentBlocking');
         $this->AjaxMe('script.js');
         $this->gadget->define('incompleteFields',   Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmAgentDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_AGENT'));
+        $this->gadget->define('confirmAgentDelete', $this::t('RESPONSE_CONFIRM_DELETE_AGENT'));
 
         $tpl = $this->gadget->template->loadAdmin('AgentBlocking.html');
         $tpl->SetBlock('agentblocking');
@@ -97,27 +97,27 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
 
         $default = $this->gadget->registry->fetch('block_undefined_agent') == 'true';
         $blockUndefined =& Piwi::CreateWidget('CheckButtons', 'agentblocking');
-        $blockUndefined->AddOption(_t('POLICY_AGENT_BLOCK_UNDEFINED'),
+        $blockUndefined->AddOption($this::t('AGENT_BLOCK_UNDEFINED'),
             'true',
             'block_undefined_agent',
             $default);
         $blockUndefined->AddEvent(ON_CLICK, 'javascript:Jaws_Gadget.getInstance(\'Policy\').setBlockUndefinedAgent();');
         $tpl->SetVariable('enabled_option', $blockUndefined->Get());
 
-        $tpl->SetVariable('legend_title', _t('POLICY_AGENT'));
+        $tpl->SetVariable('legend_title', $this::t('AGENT'));
         $agentEntry =& Piwi::CreateWidget('Entry', 'agent', '');
         $agentEntry->setSize(24);
-        $tpl->SetVariable('lbl_agent', _t('POLICY_AGENT'));
+        $tpl->SetVariable('lbl_agent', $this::t('AGENT'));
         $tpl->SetVariable('agent', $agentEntry->Get());
 
         $script =& Piwi::CreateWidget('Combo', 'script');
         $script->SetID('script');
         $script->setStyle('width: 14em;');
-        $script->AddOption(_t('POLICY_SCRIPT_INDEX'), 'index');
-        $script->AddOption(_t('POLICY_SCRIPT_ADMIN'), 'admin');
-        $script->AddOption(_t('POLICY_SCRIPT_BOTH'),  '');
+        $script->AddOption($this::t('SCRIPT_INDEX'), 'index');
+        $script->AddOption($this::t('SCRIPT_ADMIN'), 'admin');
+        $script->AddOption($this::t('SCRIPT_BOTH'),  '');
         $script->SetDefault('index');
-        $tpl->SetVariable('lbl_script', _t('POLICY_SCRIPT'));
+        $tpl->SetVariable('lbl_script', $this::t('SCRIPT'));
         $tpl->SetVariable('script', $script->Get());
 
         $blocked =& Piwi::CreateWidget('Combo', 'blocked');
@@ -126,7 +126,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
         $blocked->AddOption(Jaws::t('NOO'),  0);
         $blocked->AddOption(Jaws::t('YESS'), 1);
         $blocked->SetDefault('1');
-        $tpl->SetVariable('lbl_blocked', _t('POLICY_BLOCKED'));
+        $tpl->SetVariable('lbl_blocked', $this::t('BLOCKED'));
         $tpl->SetVariable('blocked', $blocked->Get());
 
         if ($this->gadget->GetPermission('ManageAgents')) {
