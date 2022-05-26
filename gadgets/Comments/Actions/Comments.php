@@ -20,7 +20,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Guestbook.html');
         $tpl->SetBlock('guestbook');
-        $tpl->SetVariable('title', _t('COMMENTS_GUESTBOOK'));
+        $tpl->SetVariable('title', $this::t('GUESTBOOK'));
 
         $tpl->SetVariable(
             'comments',
@@ -50,7 +50,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('CommentForm.html');
         $tpl->SetBlock('comment_form');
-        $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
+        $tpl->SetVariable('title', $this::t('COMMENTS'));
 
         $response = $this->gadget->session->pop('Comments');
         if (isset($response['data'])) {
@@ -68,7 +68,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
-        $tpl->SetVariable('private', _t('COMMENTS_PRIVATE'));
+        $tpl->SetVariable('private', $this::t('PRIVATE'));
 
         $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
         switch ($allow_comments_config) {
@@ -82,8 +82,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         if ($allow_comments_config) {
             $tpl->SetVariable('base_script', BASE_SCRIPT);
-            $tpl->SetVariable('lbl_message', _t('COMMENTS_MESSAGE'));
-            $tpl->SetVariable('send', _t('COMMENTS_SEND'));
+            $tpl->SetVariable('lbl_message', $this::t('MESSAGE'));
+            $tpl->SetVariable('send', $this::t('SEND'));
 
             $rand = rand();
             $tpl->SetVariable('rand', $rand);
@@ -252,7 +252,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         }
         $tpl->SetBlock($block);
 
-        $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
+        $tpl->SetVariable('title', $this::t('COMMENTS'));
         $tpl->SetVariable('gadget', strtolower($gadget));
 
         $objDate = Jaws_Date::getInstance();
@@ -260,11 +260,11 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             foreach ($comments as $entry) {
                 $tpl->SetBlock($block . '/entry');
 
-                $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
+                $tpl->SetVariable('postedby_lbl', $this::t('POSTEDBY'));
 
                 if ($entry['user_registered_date']) {
                     $tpl->SetBlock($block . '/entry/registered_date');
-                    $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
+                    $tpl->SetVariable('registered_date_lbl', $this::t('USERS_REGISTERED_DATE'));
                     $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
                     $tpl->ParseBlock($block . '/entry/registered_date');
                 }
@@ -310,14 +310,14 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 }
 
                 $tpl->SetBlock($block . '/entry/read_more');
-                $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
+                $tpl->SetVariable('read_more', $this::t('READ_MORE'));
 
                 $tpl->SetVariable('read_more_url', $entry['reference_link']);
                 $tpl->ParseBlock($block . '/entry/read_more');
 
                 if (!empty($entry['reply'])) {
                     $tpl->SetBlock($block . '/entry/reply');
-                    $tpl->SetVariable('lbl_replier', _t('COMMENTS_REPLIER'));
+                    $tpl->SetVariable('lbl_replier', $this::t('REPLIER'));
                     $tpl->SetVariable('replier', $entry['replier_nickname']);
                     // user's profile
                     $tpl->SetVariable(
@@ -332,7 +332,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     $tpl->ParseBlock($block . '/entry/reply');
                 }
 
-                $reply_url = & Piwi::CreateWidget('Link', _t('COMMENTS_REPLY_TO_COMMENT'),
+                $reply_url = & Piwi::CreateWidget('Link', $this::t('REPLY_TO_COMMENT'),
                                                   'javascript:replyComment();');
                 $tpl->SetVariable('reply-link', $reply_url->Get());
 
@@ -350,12 +350,12 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 $comments_count,
                 $pagination_data['action'],
                 $pagination_data['params'],
-                _t('COMMENTS_COMMENTS_COUNT', $comments_count),
+                $this::t('COMMENTS_COUNT', $comments_count),
                 $gadget
             );
 
             // feeds actions
-            $tpl->SetVariable('lbl_feeds', _t('COMMENTS_COMMENTS_XML'));
+            $tpl->SetVariable('lbl_feeds', $this::t('COMMENTS_XML'));
             $tpl->SetVariable(
                 'atom_url',
                 $this->gadget->urlMap(
@@ -452,7 +452,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             }
         }
 
-//        $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
+//        $tpl->SetVariable('title', $this::t('COMMENTS'));
         $assigns['comments'] = $comments;
         $assigns['gadget'] = $interface['gadget'];
         $assigns['action'] = $interface['action'];
@@ -464,11 +464,11 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             foreach ($comments as $entry) {
                 $tpl->SetBlock($block . '/entry');
 
-                $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
+                $tpl->SetVariable('postedby_lbl', $this::t('POSTEDBY'));
 
                 if ($entry['user_registered_date']) {
                     $tpl->SetBlock($block . '/entry/registered_date');
-                    $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
+                    $tpl->SetVariable('registered_date_lbl', $this::t('USERS_REGISTERED_DATE'));
                     $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
                     $tpl->ParseBlock($block . '/entry/registered_date');
                 }
@@ -514,14 +514,14 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 }
 
                 $tpl->SetBlock($block . '/entry/read_more');
-                $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
+                $tpl->SetVariable('read_more', $this::t('READ_MORE'));
 
                 $tpl->SetVariable('read_more_url', $entry['reference_link']);
                 $tpl->ParseBlock($block . '/entry/read_more');
 
                 if (!empty($entry['reply'])) {
                     $tpl->SetBlock($block . '/entry/reply');
-                    $tpl->SetVariable('lbl_replier', _t('COMMENTS_REPLIER'));
+                    $tpl->SetVariable('lbl_replier', $this::t('REPLIER'));
                     $tpl->SetVariable('replier', $entry['replier_nickname']);
                     // user's profile
                     $tpl->SetVariable(
@@ -536,7 +536,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                     $tpl->ParseBlock($block . '/entry/reply');
                 }
 
-                $reply_url = & Piwi::CreateWidget('Link', _t('COMMENTS_REPLY_TO_COMMENT'),
+                $reply_url = & Piwi::CreateWidget('Link', $this::t('REPLY_TO_COMMENT'),
                                                   'javascript:replyComment();');
                 $tpl->SetVariable('reply-link', $reply_url->Get());
 
@@ -554,12 +554,12 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 $comments_count,
                 $options['pagination_data']['action'],
                 $options['pagination_data']['params'],
-                _t('COMMENTS_COMMENTS_COUNT', $comments_count),
+                $this::t('COMMENTS_COUNT', $comments_count),
                 $interface['gadget']
             );
 
             // feeds actions
-            $tpl->SetVariable('lbl_feeds', _t('COMMENTS_COMMENTS_XML'));
+            $tpl->SetVariable('lbl_feeds', $this::t('COMMENTS_XML'));
             $tpl->SetVariable(
                 'atom_url',
                 $this->gadget->urlMap(
@@ -625,11 +625,11 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             foreach ($comments as $entry) {
                 $tpl->SetBlock('comments/entry');
 
-                $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
+                $tpl->SetVariable('postedby_lbl', $this::t('POSTEDBY'));
 
                 if ($entry['user_registered_date']) {
                     $tpl->SetBlock('comments/entry/registered_date');
-                    $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
+                    $tpl->SetVariable('registered_date_lbl', $this::t('USERS_REGISTERED_DATE'));
                     $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
                     $tpl->ParseBlock('comments/entry/registered_date');
                 }
@@ -676,7 +676,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $comments_count,
             'Comments',
             array('perpage'=>$perPage, 'order'=>$orderBy),
-            _t('COMMENTS_COMMENTS_COUNT', $comments_count)
+            $this::t('COMMENTS_COUNT', $comments_count)
         );
 
         $tpl->ParseBlock('comments');
@@ -706,7 +706,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         if (trim($post['message']) == ''|| trim($post['name']) == '') {
             $this->gadget->session->push(
-                _t('COMMENTS_COMMENT_INCOMPLETE_FIELDS'),
+                $this::t('COMMENT_INCOMPLETE_FIELDS'),
                 RESPONSE_ERROR,
                 'Comments',
                 $post
@@ -722,7 +722,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         */
         if (!empty($post['url2'])) {
             $this->gadget->session->push(
-                _t('COMMENTS_FAILED_SPAM_CHECK_MESSAGES'),
+                $this::t('FAILED_SPAM_CHECK_MESSAGES'),
                 RESPONSE_ERROR,
                 'Comments',
                 $post
@@ -762,7 +762,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $reference = $objHook->Execute($post['requested_action'], $post['reference']);
         if (empty($reference)) {
             $this->gadget->session->push(
-                _t('COMMENTS_ERROR_REFERENCE_EXISTS'),
+                $this::t('ERROR_REFERENCE_EXISTS'),
                 RESPONSE_ERROR,
                 'Comments',
                 $post
@@ -784,7 +784,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             );
         } else {
             $this->EmailComment($reference, $post['message']);
-            $this->gadget->session->push(_t('COMMENTS_MESSAGE_SENT'), RESPONSE_NOTICE, 'Comments');
+            $this->gadget->session->push($this::t('MESSAGE_SENT'), RESPONSE_NOTICE, 'Comments');
         }
 
         return Jaws_Header::Location($reference['reference_link']);
@@ -824,7 +824,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $ObjMail->AddRecipient('', 'cc');
         }
 
-        $ObjMail->SetSubject(_t('COMMENTS_COMMENT_NOTIFICATION', $reference['reference_title']));
+        $ObjMail->SetSubject($this::t('COMMENT_NOTIFICATION', $reference['reference_title']));
         $ObjMail->SetBody($template, array('format' => 'html'));
         return $ObjMail->send();
     }

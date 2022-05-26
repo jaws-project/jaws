@@ -28,7 +28,7 @@ class Comments_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageComments')) {
             $menubar->AddOption(
                 'Comments',
-                _t('COMMENTS_TITLE'),
+                $this::t('TITLE'),
                 BASE_SCRIPT . '?reqGadget=Comments&amp;reqAction=Comments');
         }
 

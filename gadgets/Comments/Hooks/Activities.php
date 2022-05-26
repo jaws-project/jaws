@@ -19,7 +19,7 @@ class Comments_Hooks_Activities extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['NewComment'] = _t('COMMENTS_ACTIVITIES_ACTION_NEWCOMMENTS');
+        $items['NewComment'] = $this::t('ACTIVITIES_ACTION_NEWCOMMENTS');
 
         return $items;
     }

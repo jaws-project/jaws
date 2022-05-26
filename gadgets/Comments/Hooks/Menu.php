@@ -21,11 +21,11 @@ class Comments_Hooks_Menu extends Jaws_Gadget_Hook
         $urls = array();
         $urls[] = array(
             'url'   => $this->gadget->urlMap('Guestbook'),
-            'title' => _t('COMMENTS_GUESTBOOK')
+            'title' => $this::t('GUESTBOOK')
         );
         $urls[] = array(
             'url'   => $this->gadget->urlMap('MostCommented'),
-            'title' => _t('COMMENTS_MOST_COMMENTED')
+            'title' => $this::t('MOST_COMMENTED')
         );
 
         return $urls;

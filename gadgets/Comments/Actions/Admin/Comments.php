@@ -21,24 +21,24 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
     function Comments($req_gadget = '', $menubar = '')
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmCommentDelete', _t('COMMENTS_CONFIRM_DELETE'));
+        $this->gadget->define('confirmCommentDelete', $this::t('CONFIRM_DELETE'));
 
         $this->gadget->define('LANGUAGE', array(
             'gadget'=> Jaws::t('GADGETS'),
-            'comment'=> _t('COMMENTS_COMMENT'),
+            'comment'=> $this::t('COMMENT'),
             'username'=> Jaws::t('USERNAME'),
             'time'=> Jaws::t('CREATED'),
             'status'=> Jaws::t('STATUS'),
-            'mark_as_approved'=> _t('COMMENTS_MARK_AS_APPROVED'),
-            'mark_as_waiting'=> _t('COMMENTS_MARK_AS_WAITING'),
-            'mark_as_spam'=> _t('COMMENTS_MARK_AS_SPAM'),
-            'mark_as_private'=> _t('COMMENTS_MARK_AS_PRIVATE'),
+            'mark_as_approved'=> $this::t('MARK_AS_APPROVED'),
+            'mark_as_waiting'=> $this::t('MARK_AS_WAITING'),
+            'mark_as_spam'=> $this::t('MARK_AS_SPAM'),
+            'mark_as_private'=> $this::t('MARK_AS_PRIVATE'),
             'edit'=> Jaws::t('EDIT'),
             'delete'=> Jaws::t('DELETE')
         ));
 
         $gadgets = $this->gadget->model->load()->recommendedfor();
-        $gadgetsList = array(array('name' => 'Comments', 'title' => _t('COMMENTS_TITLE')));
+        $gadgetsList = array(array('name' => 'Comments', 'title' => $this::t('TITLE')));
         if (!Jaws_Error::IsError($gadgets) && count($gadgets) > 0) {
             foreach ($gadgets as $gadget) {
                 $gadgetsList[] = array('name' => $gadget, 'title' => _t(strtoupper($gadget . '_TITLE')));
@@ -46,10 +46,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         }
 
         $statusItems = array(
-            Comments_Info::COMMENTS_STATUS_APPROVED => _t('COMMENTS_STATUS_APPROVED'),
-            Comments_Info::COMMENTS_STATUS_WAITING => _t('COMMENTS_STATUS_WAITING'),
-            Comments_Info::COMMENTS_STATUS_SPAM => _t('COMMENTS_STATUS_SPAM'),
-            Comments_Info::COMMENTS_STATUS_PRIVATE => _t('COMMENTS_STATUS_PRIVATE'),
+            Comments_Info::COMMENTS_STATUS_APPROVED => $this::t('STATUS_APPROVED'),
+            Comments_Info::COMMENTS_STATUS_WAITING => $this::t('STATUS_WAITING'),
+            Comments_Info::COMMENTS_STATUS_SPAM => $this::t('STATUS_SPAM'),
+            Comments_Info::COMMENTS_STATUS_PRIVATE => $this::t('STATUS_PRIVATE'),
         );
         $this->gadget->define('gadgetList', array_column($gadgetsList, 'title', 'name'));
         $this->gadget->define('statusItems', $statusItems);
@@ -173,7 +173,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         }
 
         return $this->gadget->session->response(
-            _t('COMMENTS_COMMENT_UPDATED'),
+            $this::t('COMMENT_UPDATED'),
             RESPONSE_NOTICE
         );
     }
@@ -194,7 +194,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         }
 
         return $this->gadget->session->response(
-            _t('COMMENTS_COMMENT_DELETED'),
+            $this::t('COMMENT_DELETED'),
             RESPONSE_NOTICE
         );
     }
@@ -216,7 +216,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         }
 
         return $this->gadget->session->response(
-            _t('COMMENTS_COMMENT_MARKED'),
+            $this::t('COMMENT_MARKED'),
             RESPONSE_NOTICE
         );
     }

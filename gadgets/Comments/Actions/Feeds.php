@@ -72,20 +72,20 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
         $objTranslate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
         $result[] = array(
-            'title' => _t('COMMENTS_GADGETS'),
+            'title' => $this::t('GADGETS'),
             'value' => array(
                 'Blog' => _t('BLOG_TITLE'),
                 'Phoo' => _t('PHOO_TITLE'),
                 'Shoutbox' => _t('SHOUTBOX_TITLE'),
-                'Comments' => _t('COMMENTS_TITLE'),
+                'Comments' => $this::t('TITLE'),
             )
         );
 
         $result[] = array(
-            'title' => _t('COMMENTS_FEEDS_TYPE'),
+            'title' => $this::t('FEEDS_TYPE'),
             'value' => array(
-                'RSS' => _t('COMMENTS_FEEDS_RSS') ,
-                'Atom' => _t('COMMENTS_FEEDS_ATOM') ,
+                'RSS' => $this::t('FEEDS_RSS') ,
+                'Atom' => $this::t('FEEDS_ATOM') ,
             )
         );
         return $result;
@@ -142,7 +142,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
             array(Comments_Info::COMMENTS_STATUS_APPROVED)
         );
         if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
+            return new Jaws_Error($this::t('ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
         }
 
         $commentAtom = new Jaws_AtomFeed();
@@ -170,7 +170,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
         );
         $commentAtom->SetGenerator('JAWS '.$this->app->registry->fetch('version'));
         $commentAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
-        $commentAtom->SetTagLine(_t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget).'_TITLE')));
+        $commentAtom->SetTagLine($this::t('RECENT_COMMENTS', _t(strtoupper($gadget).'_TITLE')));
 
         $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);

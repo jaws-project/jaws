@@ -102,7 +102,7 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
             return $duplicated;
         } elseif ($duplicated) {
             return Jaws_Error::raiseError(
-                _t('COMMENTS_SPAM_POSSIBLE_DUPLICATE_MESSAGE'),
+                $this::t('SPAM_POSSIBLE_DUPLICATE_MESSAGE'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -271,7 +271,7 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
 
         if (empty($gar)) {
             return Jaws_Error::raiseError(
-                _t('COMMENTS_REFERENCE_NOTFOUND'),
+                $this::t('REFERENCE_NOTFOUND'),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );

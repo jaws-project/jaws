@@ -27,7 +27,7 @@ class Comments_Model_Admin_Settings extends Jaws_Gadget_Model
         $res = $res && $this->gadget->registry->update('order_type', $orderType);
         if ($res === false) {
             return Jaws_Error::raiseError(
-                _t('COMMENTS_ERROR_CANT_UPDATE_PROPERTIES'),
+                $this::t('ERROR_CANT_UPDATE_PROPERTIES'),
                 __FUNCTION__
             );
         }

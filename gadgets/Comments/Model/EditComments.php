@@ -59,7 +59,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $messageHash = crc32($message);
         if ($this->gadget->registry->fetch('allow_duplicate') == 'no') {
             if ($this->IsMessageDuplicated($messageHash)) {
-                return new Jaws_Error(_t('COMMENTS_SPAM_POSSIBLE_DUPLICATE_MESSAGE'));
+                return new Jaws_Error($this::t('SPAM_POSSIBLE_DUPLICATE_MESSAGE'));
             }
         }
 

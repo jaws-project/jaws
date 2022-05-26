@@ -27,13 +27,13 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
         $objTranslate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
         $result[] = array(
-            'title' => _t('COMMENTS_GADGETS'),
+            'title' => $this::t('GADGETS'),
             'value' => array(
                 '' => Jaws::t('ALL') ,
                 'Blog' => _t('BLOG_TITLE') ,
                 'Phoo' => _t('PHOO_TITLE') ,
                 'Shoutbox' => _t('SHOUTBOX_TITLE') ,
-                'Comments' => _t('COMMENTS_TITLE') ,
+                'Comments' => $this::t('TITLE') ,
             )
         );
 
@@ -82,7 +82,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
         $gadget_name = (empty($gadget)) ? Jaws::t('ALL') : _t(strtoupper($gadget) . '_TITLE');
         $tpl = $this->gadget->template->load('MostCommented.html');
         $tpl->SetBlock($baseBlock);
-        $tpl->SetVariable('title', _t('COMMENTS_MOST_COMMENTED', $gadget_name));
+        $tpl->SetVariable('title', $this::t('MOST_COMMENTED', $gadget_name));
         if(!empty($gadget)) {
             $tpl->SetVariable('gadget', $gadget);
         }
@@ -105,7 +105,7 @@ class Comments_Actions_MostCommented extends Jaws_Gadget_Action
                     $mostCount,
                     'MostCommented',
                     array(),
-                    _t('COMMENTS_PAGES_COUNT', $mostCount)
+                    $this::t('PAGES_COUNT', $mostCount)
                 );
             } else {
                 if ($mostCount > $limit) {

@@ -26,7 +26,7 @@ class Comments_Actions_UserComments extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
-        $tpl->SetVariable('title', _t('COMMENTS_USER_COMMENTS', $userInfo['nickname']));
+        $tpl->SetVariable('title', $this::t('USER_COMMENTS', $userInfo['nickname']));
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
         $tpl->SetVariable(

@@ -29,12 +29,12 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
 
         $assigns['allowCommentsItems'] = array(
             'true' => Jaws::t('YESS'),
-            'restricted' => _t('COMMENTS_ALLOW_COMMENTS_RESTRICTED'),
+            'restricted' => $this::t('ALLOW_COMMENTS_RESTRICTED'),
             'false' => Jaws::t('NOO')
         );
         $assigns['defaultStatusItems'] = array(
-            1 => _t('COMMENTS_STATUS_APPROVED'),
-            2 => _t('COMMENTS_STATUS_WAITING')
+            1 => $this::t('STATUS_APPROVED'),
+            2 => $this::t('STATUS_WAITING')
         );
         $assigns['orderTypeItems'] = array(
             1 => Jaws::t('CREATETIME'). ' &uarr;',
@@ -64,7 +64,7 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
         }
 
         return $this->gadget->session->response(
-            _t('COMMENTS_PROPERTIES_UPDATED'),
+            $this::t('PROPERTIES_UPDATED'),
             RESPONSE_NOTICE
         );
     }
