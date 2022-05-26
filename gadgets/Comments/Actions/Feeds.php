@@ -74,9 +74,9 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
         $result[] = array(
             'title' => $this::t('GADGETS'),
             'value' => array(
-                'Blog' => _t('BLOG_TITLE'),
-                'Phoo' => _t('PHOO_TITLE'),
-                'Shoutbox' => _t('SHOUTBOX_TITLE'),
+                'Blog' => $this::t('BLOG.TITLE'),
+                'Phoo' => $this::t('PHOO.TITLE'),
+                'Shoutbox' => $this::t('SHOUTBOX.TITLE'),
                 'Comments' => $this::t('TITLE'),
             )
         );
@@ -170,7 +170,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
         );
         $commentAtom->SetGenerator('JAWS '.$this->app->registry->fetch('version'));
         $commentAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
-        $commentAtom->SetTagLine($this::t('RECENT_COMMENTS', _t(strtoupper($gadget).'_TITLE')));
+        $commentAtom->SetTagLine($this::t('RECENT_COMMENTS', $this::t($gadget. '.TITLE')));
 
         $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);

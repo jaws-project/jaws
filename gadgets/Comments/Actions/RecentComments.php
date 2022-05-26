@@ -30,9 +30,9 @@ class Comments_Actions_RecentComments extends Jaws_Gadget_Action
             'title' => $this::t('GADGETS'),
             'value' => array(
                 '' => Jaws::t('ALL') ,
-                'Blog' => _t('BLOG_TITLE') ,
-                'Phoo' => _t('PHOO_TITLE') ,
-                'Shoutbox' => _t('SHOUTBOX_TITLE') ,
+                'Blog' => $this::t('BLOG.TITLE') ,
+                'Phoo' => $this::t('PHOO.TITLE') ,
+                'Shoutbox' => $this::t('SHOUTBOX.TITLE') ,
                 'Comments' => $this::t('TITLE') ,
             )
         );
@@ -70,7 +70,7 @@ class Comments_Actions_RecentComments extends Jaws_Gadget_Action
         $objTranslate = Jaws_Translate::getInstance();
         $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
 
-        $gadget_name = (empty($gadget)) ? Jaws::t('ALL') : _t(strtoupper($gadget) . '_TITLE');
+        $gadget_name = (empty($gadget)) ? Jaws::t('ALL') : $this::t($gadget. '.TITLE');
         $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
         $tpl->SetVariable('title', $this::t('RECENT_COMMENTS', $gadget_name));

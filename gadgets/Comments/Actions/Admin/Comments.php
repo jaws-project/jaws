@@ -41,7 +41,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $gadgetsList = array(array('name' => 'Comments', 'title' => $this::t('TITLE')));
         if (!Jaws_Error::IsError($gadgets) && count($gadgets) > 0) {
             foreach ($gadgets as $gadget) {
-                $gadgetsList[] = array('name' => $gadget, 'title' => _t(strtoupper($gadget . '_TITLE')));
+                $gadgetsList[] = array('name' => $gadget, 'title' => $this::t($gadget. '.TITLE'));
             }
         }
 
