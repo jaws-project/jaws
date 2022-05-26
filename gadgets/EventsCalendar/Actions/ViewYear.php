@@ -43,7 +43,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
 
         // Current year
         $tpl->SetVariable('title', $year);
-        $this->SetTitle($year . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
+        $this->SetTitle($year . ' - ' . $this::t('EVENTS'));
 
         // Next year
         $nextURL = $user?

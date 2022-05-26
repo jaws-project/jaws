@@ -52,7 +52,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
 
         // Location
         $tpl->SetVariable('location', $event['location']);
-        $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_location', $this::t('EVENT_LOCATION'));
 
         // Link
         $tpl->SetVariable('link', $event['link']);
@@ -60,7 +60,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
 
         // verbose
         $tpl->SetVariable('desc', $event['verbose']);
-        $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
+        $tpl->SetVariable('lbl_desc', $this::t('EVENT_DESC'));
 
         // Start Date/Time
         $start = $event['start_time'];
@@ -72,20 +72,20 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('stop_date', $jDate->Format($stop, 'Y-m-d'));
         $tpl->SetVariable('stop_time', $jDate->Format($stop, 'H:i'));
 
-        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
-        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
+        $tpl->SetVariable('lbl_date', $this::t('DATE'));
+        $tpl->SetVariable('lbl_time', $this::t('TIME'));
 
         // Type
-        $tpl->SetVariable('type', _t('EVENTSCALENDAR_EVENT_TYPE_'.$event['type']));
-        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+        $tpl->SetVariable('type', $this::t('EVENT_TYPE_'.$event['type']));
+        $tpl->SetVariable('lbl_type', $this::t('EVENT_TYPE'));
 
         // Priority
-        $tpl->SetVariable('priority', _t('EVENTSCALENDAR_EVENT_PRIORITY_'.$event['priority']));
-        $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+        $tpl->SetVariable('priority', $this::t('EVENT_PRIORITY_'.$event['priority']));
+        $tpl->SetVariable('lbl_priority', $this::t('EVENT_PRIORITY'));
 
         // Reminder
-        $tpl->SetVariable('reminder', _t('EVENTSCALENDAR_EVENT_REMINDER_'.$event['reminder']/60));
-        $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
+        $tpl->SetVariable('reminder', $this::t('EVENT_REMINDER_'.$event['reminder']/60));
+        $tpl->SetVariable('lbl_reminder', $this::t('EVENT_REMINDER'));
 
         // Recurrences
         $value = '';
@@ -98,23 +98,23 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
                 $value = ' - ' . $jDate->DayString($event['wday'] - 1);
                 break;
             case '3':
-                $value = ' - ' . $event['day'] . ' ' . _t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_MONTH');
+                $value = ' - ' . $event['day'] . ' ' . $this::t('EVENT_RECURRENCE_EVERY_MONTH');
                 break;
             case '4':
                 $value = ' - ' . $event['day'] . ' ' . $jDate->MonthString($event['month']);
                 break;
         }
-        $tpl->SetVariable('recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE_'.$event['recurrence']));
+        $tpl->SetVariable('recurrence', $this::t('EVENT_RECURRENCE_'.$event['recurrence']));
         $tpl->SetVariable('rec_value', $value);
-        $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
+        $tpl->SetVariable('lbl_recurrence', $this::t('EVENT_RECURRENCE'));
 
         // Public
         $tpl->SetVariable('public', $event['public']? Jaws::t('YESS') : Jaws::t('NOO'));
-        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
+        $tpl->SetVariable('lbl_public', $this::t('EVENT_PUBLIC'));
 
         // Shared
         $tpl->SetVariable('shared', $event['shared']? Jaws::t('YESS') : Jaws::t('NOO'));
-        $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
+        $tpl->SetVariable('lbl_shared', $this::t('SHARED'));
 
         // Symbol
         $tpl->SetVariable('symbol', $event['symbol']);
@@ -126,7 +126,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_edit', Jaws::t('EDIT'));
         $tpl->SetVariable('url_share', $siteUrl . $this->gadget->urlMap('ShareEvent',
                 array('user' => $user, 'event' => $eventId)));
-        $tpl->SetVariable('lbl_share', _t('EVENTSCALENDAR_SHARE'));
+        $tpl->SetVariable('lbl_share', $this::t('SHARE'));
 
         $tpl->ParseBlock('event');
         return $tpl->Get();

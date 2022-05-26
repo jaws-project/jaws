@@ -36,8 +36,8 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ViewWeek.html');
         $tpl->SetBlock('week');
 
-        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
-        $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
+        $tpl->SetVariable('lbl_day', $this::t('DAY'));
+        $tpl->SetVariable('lbl_events', $this::t('EVENTS'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -59,7 +59,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
                 'day' => $info['mday']
             ));
         $tpl->SetVariable('next_url', $nextUrl);
-        $tpl->SetVariable('next', _t('EVENTSCALENDAR_NEXT_WEEK'));
+        $tpl->SetVariable('next', $this::t('NEXT_WEEK'));
 
         // Previous week
         $info = $jDate->GetDateInfo($year, $month, $day - 7);
@@ -76,7 +76,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
                 'day' => $info['mday']
             ));
         $tpl->SetVariable('prev_url', $prevUrl);
-        $tpl->SetVariable('prev', _t('EVENTSCALENDAR_PREV_WEEK'));
+        $tpl->SetVariable('prev', $this::t('PREV_WEEK'));
 
         $todayInfo = $jDate->GetDateInfo($year, $month, $day);
         $startDay = $day - $todayInfo['wday'];
@@ -90,7 +90,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $from = $jDate->Format($start, 'Y MN d');
         $to = $jDate->Format($stop, 'Y MN d');
         $current = $from . ' - ' . $to;
-        $this->SetTitle($current . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
+        $this->SetTitle($current . ' - ' . $this::t('EVENTS'));
         $tpl->SetVariable('title', $current);
 
         // Fetch events

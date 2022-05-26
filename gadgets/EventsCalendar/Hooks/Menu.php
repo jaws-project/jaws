@@ -19,7 +19,7 @@ class EventsCalendar_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url' => $this->gadget->urlMap('ViewYear'),
-                        'title' => _t('EVENTSCALENDAR_PUBLIC_EVENTS'));
+                        'title' => $this::t('PUBLIC_EVENTS'));
         return $urls;
     }
 }

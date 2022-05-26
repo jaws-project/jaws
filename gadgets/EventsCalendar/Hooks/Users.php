@@ -21,7 +21,7 @@ class EventsCalendar_Hooks_Users extends Jaws_Gadget_Hook
         $model = $this->gadget->model->load('Events');
         $eventsCount = $model->GetEvents(array('user' => $uid), true);
         if ($eventsCount > 0) {
-            $entity[0]['title'] = _t('EVENTSCALENDAR_EVENT');
+            $entity[0]['title'] = $this::t('EVENT');
             $entity[0]['count'] = $eventsCount;
             $entity[0]['url'] = $this->gadget->urlMap('ViewYear', array('user' => $uid));
         }

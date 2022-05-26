@@ -20,10 +20,10 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
     {
         return array(
             array(
-                'title' => _t('EVENTSCALENDAR_EVENTS'),
+                'title' => $this::t('EVENTS'),
                 'value' => array(
-                    'user' => _t('EVENTSCALENDAR_USER_EVENTS'),
-                    'public' => _t('EVENTSCALENDAR_PUBLIC_EVENTS')
+                    'user' => $this::t('USER_EVENTS'),
+                    'public' => $this::t('PUBLIC_EVENTS')
                 )
             ),
         );
@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             return '';
         }
 
-        $this->SetTitle(_t('EVENTSCALENDAR_EVENTS'));
+        $this->SetTitle($this::t('EVENTS'));
 
         $assigns = array();
 

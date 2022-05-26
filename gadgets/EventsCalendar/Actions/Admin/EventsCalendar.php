@@ -61,19 +61,19 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['user'] = (int)$this->app->session->user->id;
         $const['calendar'] = $this->gadget->registry->fetch('calendar', 'Settings');
         $const['eventsLimit'] = $this->gadget->registry->fetch('events_limit');
-        $const['summary'] = _t('EVENTSCALENDAR_EVENT_SUMMARY');
-        $const['location'] = _t('EVENTSCALENDAR_EVENT_LOCATION');
-        $const['verbose'] = _t('EVENTSCALENDAR_EVENT_DESC');
-        $const['type'] = _t('EVENTSCALENDAR_EVENT_TYPE');
-        $const['priority'] = _t('EVENTSCALENDAR_EVENT_PRIORITY');
-        $const['shared'] = _t('EVENTSCALENDAR_SHARED');
-        $const['date'] = _t('EVENTSCALENDAR_DATE');
-        $const['time'] = _t('EVENTSCALENDAR_TIME');
-        $const['from'] = _t('EVENTSCALENDAR_FROM');
-        $const['to'] = _t('EVENTSCALENDAR_TO');
-        $const['newEvent'] = _t('EVENTSCALENDAR_NEW_EVENT');
-        $const['viewEvent'] = _t('EVENTSCALENDAR_VIEW_EVENT');
-        $const['editEvent'] = _t('EVENTSCALENDAR_EDIT_EVENT');
+        $const['summary'] = $this::t('EVENT_SUMMARY');
+        $const['location'] = $this::t('EVENT_LOCATION');
+        $const['verbose'] = $this::t('EVENT_DESC');
+        $const['type'] = $this::t('EVENT_TYPE');
+        $const['priority'] = $this::t('EVENT_PRIORITY');
+        $const['shared'] = $this::t('SHARED');
+        $const['date'] = $this::t('DATE');
+        $const['time'] = $this::t('TIME');
+        $const['from'] = $this::t('FROM');
+        $const['to'] = $this::t('TO');
+        $const['newEvent'] = $this::t('NEW_EVENT');
+        $const['viewEvent'] = $this::t('VIEW_EVENT');
+        $const['editEvent'] = $this::t('EDIT_EVENT');
         $const['yes'] = Jaws::t('YESS');
         $const['no'] = Jaws::t('NOO');
         $const['edit'] = Jaws::t('EDIT');
@@ -82,11 +82,11 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['incompleteFields'] = Jaws::t('ERROR_INCOMPLETE_FIELDS');
         $const['types'] = array();
         for ($i = 1; $i <= 5; $i++) {
-            $const['types'][$i] = _t('EVENTSCALENDAR_EVENT_TYPE_' . $i);
+            $const['types'][$i] = $this::t('EVENT_TYPE_' . $i);
         }
         $const['priorities'] = array();
         for ($i = 0; $i <= 2; $i++) {
-            $const['priorities'][$i] = _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i);
+            $const['priorities'][$i] = $this::t('EVENT_PRIORITY_' . $i);
         }
         $this->gadget->define('CONST', $const);
 
@@ -96,14 +96,14 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
             $tpl->ParseBlock('ec/addBtn');
         }
 
-        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
-        $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_summary', $this::t('EVENT_SUMMARY'));
+        $tpl->SetVariable('lbl_location', $this::t('EVENT_LOCATION'));
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
-        $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
-        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
+        $tpl->SetVariable('lbl_desc', $this::t('EVENT_DESC'));
+        $tpl->SetVariable('lbl_to', $this::t('TO'));
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
         $tpl->SetVariable('lbl_cancel', Jaws::t('CANCEL'));
-        $tpl->SetVariable('lbl_addEvent', _t('EVENTSCALENDAR_NEW_EVENT'));
+        $tpl->SetVariable('lbl_addEvent', $this::t('NEW_EVENT'));
 
         $tpl->SetVariable('lbl_of', Jaws::t('OF'));
         $tpl->SetVariable('lbl_to', Jaws::t('TO'));
@@ -139,19 +139,19 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $summary =& Piwi::CreateWidget('Entry', 'filter_summary');
         $summary->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $tpl->SetVariable('filter_summary', $summary->Get());
-        $tpl->SetVariable('lbl_filter_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
+        $tpl->SetVariable('lbl_filter_summary', $this::t('EVENT_SUMMARY'));
 
         // Location
         $location =& Piwi::CreateWidget('Entry', 'filter_location');
         $location->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $tpl->SetVariable('filter_location', $location->Get());
-        $tpl->SetVariable('lbl_filter_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_filter_location', $this::t('EVENT_LOCATION'));
 
         // verbose
         $verbose =& Piwi::CreateWidget('Entry', 'filter_verbose');
         $verbose->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $tpl->SetVariable('filter_verbose', $verbose->Get());
-        $tpl->SetVariable('lbl_filter_verbose', _t('EVENTSCALENDAR_EVENT_DESC'));
+        $tpl->SetVariable('lbl_filter_verbose', $this::t('EVENT_DESC'));
 
         // Shared
         $sharedCombo =& Piwi::CreateWidget('Combo', 'filter_shared');
@@ -161,31 +161,31 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $sharedCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $sharedCombo->SetDefault(-1);
         $tpl->SetVariable('filter_shared', $sharedCombo->Get());
-        $tpl->SetVariable('lbl_filter_shared', _t('EVENTSCALENDAR_SHARED'));
+        $tpl->SetVariable('lbl_filter_shared', $this::t('SHARED'));
 
         // Type
         $typeCombo =& Piwi::CreateWidget('Combo', 'filter_type');
         $typeCombo->AddOption(Jaws::t('ALL'), 0, false);
         for ($i = 1; $i <= 5; $i++) {
-            $typeCombo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_' . $i), $i, false);
+            $typeCombo->AddOption($this::t('EVENT_TYPE_' . $i), $i, false);
         }
         $typeCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $typeCombo->SetDefault(0);
         $tpl->SetVariable('filter_type', $typeCombo->Get());
-        $tpl->SetVariable('lbl_filter_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+        $tpl->SetVariable('lbl_filter_type', $this::t('EVENT_TYPE'));
 
         // Priority
         $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
         for ($i = 0; $i <= 2; $i++) {
-            $priorityCombo->AddOption(_t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i), $i, false);
+            $priorityCombo->AddOption($this::t('EVENT_PRIORITY_' . $i), $i, false);
         }
         $priorityCombo->AddEvent(ON_CHANGE, "javascript:searchEvents();");
         $priorityCombo->SetDefault(0);
         $tpl->SetVariable('filter_priority', $priorityCombo->Get());
-        $tpl->SetVariable('lbl_filter_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+        $tpl->SetVariable('lbl_filter_priority', $this::t('EVENT_PRIORITY'));
 
         // Date
-        $tpl->SetVariable('lbl_filter_date', _t('EVENTSCALENDAR_DATE'));
+        $tpl->SetVariable('lbl_filter_date', $this::t('DATE'));
 
         // From Date Filter
         $fromDate =& Piwi::CreateWidget('DatePicker', 'filter_start_date', '');
@@ -220,31 +220,31 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl = $this->gadget->template->loadAdmin('Events.html');
         $tpl->SetBlock('eventForm');
 
-        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
-        $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_summary', $this::t('EVENT_SUMMARY'));
+        $tpl->SetVariable('lbl_location', $this::t('EVENT_LOCATION'));
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
-        $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
-        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
+        $tpl->SetVariable('lbl_desc', $this::t('EVENT_DESC'));
+        $tpl->SetVariable('lbl_to', $this::t('TO'));
 
         // Start/Stop date
-        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
-        $tpl->SetVariable('lbl_from', _t('EVENTSCALENDAR_FROM'));
-        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
+        $tpl->SetVariable('lbl_date', $this::t('DATE'));
+        $tpl->SetVariable('lbl_from', $this::t('FROM'));
+        $tpl->SetVariable('lbl_to', $this::t('TO'));
 
         // Start/Stop time
-        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
+        $tpl->SetVariable('lbl_time', $this::t('TIME'));
 
         // Type
-        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+        $tpl->SetVariable('lbl_type', $this::t('EVENT_TYPE'));
         for ($i = 1; $i <= 5; $i++) {
             $tpl->SetBlock('eventForm/type');
             $tpl->SetVariable('value', $i);
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_TYPE_' . $i));
+            $tpl->SetVariable('title', $this::t('EVENT_TYPE_' . $i));
             $tpl->ParseBlock('eventForm/type');
         }
 
         // Public
-        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
+        $tpl->SetVariable('lbl_public', $this::t('EVENT_PUBLIC'));
         $tpl->SetBlock('eventForm/public');
         $tpl->SetVariable('value', 0);
         $tpl->SetVariable('title', Jaws::t('NOO'));
@@ -255,31 +255,31 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->ParseBlock('eventForm/public');
 
         // Priority
-        $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+        $tpl->SetVariable('lbl_priority', $this::t('EVENT_PRIORITY'));
         for ($i = 0; $i <= 2; $i++) {
             $tpl->SetBlock('eventForm/priority');
             $tpl->SetVariable('value', $i);
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i));
+            $tpl->SetVariable('title', $this::t('EVENT_PRIORITY_' . $i));
             $tpl->ParseBlock('eventForm/priority');
         }
 
         // Reminder
-        $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
+        $tpl->SetVariable('lbl_reminder', $this::t('EVENT_REMINDER'));
         $intervals = array(0, 1, 5, 10, 15, 30, 60, 120, 180, 240, 300,
             360, 420, 480, 540, 600, 660, 720, 1440, 2880, 10080, 43200);
         foreach ($intervals as $i) {
             $tpl->SetBlock('eventForm/reminder');
             $tpl->SetVariable('value', $i);
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_REMINDER_' . $i));
+            $tpl->SetVariable('title', $this::t('EVENT_REMINDER_' . $i));
             $tpl->ParseBlock('eventForm/reminder');
         }
 
         // Recurrence
-        $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
+        $tpl->SetVariable('lbl_recurrence', $this::t('EVENT_RECURRENCE'));
         for ($i = 0; $i <= 4; $i++) {
             $tpl->SetBlock('eventForm/recurrence');
             $tpl->SetVariable('value', $i);
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENT_RECURRENCE_' . $i));
+            $tpl->SetVariable('title', $this::t('EVENT_RECURRENCE_' . $i));
             $tpl->ParseBlock('eventForm/recurrence');
         }
 
@@ -290,7 +290,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
             $combo->AddOption($i, $i);
         }
         $tpl->SetVariable('day', $combo->Get());
-        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
+        $tpl->SetVariable('lbl_day', $this::t('DAY'));
 
         // Week Day
         $jDate = Jaws_Date::getInstance();
@@ -301,7 +301,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         }
         $combo->setDefault(1);
         $tpl->SetVariable('wday', $combo->Get());
-        $tpl->SetVariable('lbl_wday', _t('EVENTSCALENDAR_WEEK_DAY'));
+        $tpl->SetVariable('lbl_wday', $this::t('WEEK_DAY'));
 
         // Month
         $combo =& Piwi::createWidget('Combo', 'month');
@@ -311,7 +311,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         }
         $combo->setDefault(1);
         $tpl->SetVariable('month', $combo->Get());
-        $tpl->SetVariable('lbl_month', _t('EVENTSCALENDAR_MONTH'));
+        $tpl->SetVariable('lbl_month', $this::t('MONTH'));
 
         $tpl->ParseBlock('eventForm');
         return $tpl->Get();
@@ -342,13 +342,13 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $events = $model->GetEvents($params);
         $eventsCount = $model->GetEvents($params, true);
         if (Jaws_Error::IsError($events)) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
 
         // prepare data
         $jDate = Jaws_Date::getInstance();
         foreach ($events as &$event) {
-            $event['shared'] = $event['shared']? _t('EVENTSCALENDAR_SHARED') : '';
+            $event['shared'] = $event['shared']? $this::t('SHARED') : '';
             $event['start_time'] = $jDate->Format($event['start_time'], 'Y/m/d H:i');
             $event['stop_time'] = $jDate->Format($event['stop_time'], 'Y/m/d H:i');
         }
@@ -372,7 +372,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $model = $this->gadget->model->load('Event');
         $event = $model->GetEvent($id);
         if (Jaws_Error::IsError($event) || empty($event)) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
 
         $jDate = Jaws_Date::getInstance();

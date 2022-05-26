@@ -38,8 +38,8 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
-        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
-        $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
+        $tpl->SetVariable('lbl_day', $this::t('DAY'));
+        $tpl->SetVariable('lbl_events', $this::t('EVENTS'));
 
         $jDate = Jaws_Date::getInstance();
         $daysInMonth = $jDate->monthDays($year, $month);
@@ -58,7 +58,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
 
         $current = $jDate->Format($start, 'Y MN');
         $tpl->SetVariable('title', $current);
-        $this->SetTitle($current . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
+        $this->SetTitle($current . ' - ' . $this::t('EVENTS'));
 
         // Next month
         $next = $jDate->ToBaseDate($year, $month + 1, 1);

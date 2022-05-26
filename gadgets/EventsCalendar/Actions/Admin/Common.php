@@ -28,10 +28,10 @@ class EventsCalendar_Actions_Admin_Common extends Jaws_Gadget_Action
         $menuImage = 'gadgets/EventsCalendar/Resources/images/calendar.png';
         $menubar = new Jaws_Widgets_Menubar();
 
-        $menubar->AddOption('PublicEvents',_t('EVENTSCALENDAR_PUBLIC_EVENTS'),
+        $menubar->AddOption('PublicEvents',$this::t('PUBLIC_EVENTS'),
             $baseUrl . 'PublicEvents', $menuImage);
 
-        $menubar->AddOption('UserEvents',_t('EVENTSCALENDAR_USER_EVENTS'),
+        $menubar->AddOption('UserEvents',$this::t('USER_EVENTS'),
             $baseUrl . 'UserEvents', $menuImage);
 
         $menubar->Activate($action);

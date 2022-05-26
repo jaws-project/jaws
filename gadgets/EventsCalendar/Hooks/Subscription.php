@@ -22,7 +22,7 @@ class EventsCalendar_Hooks_Subscription extends Jaws_Gadget_Hook
             'selectable' => true,
             'action' => 'ViewYear',
             'reference' => '0',
-            'title' => _t('EVENTSCALENDAR_PUBLIC_EVENTS'),
+            'title' => $this::t('PUBLIC_EVENTS'),
             'url' => $this->gadget->urlMap('ViewYear')
         );
 
@@ -32,7 +32,7 @@ class EventsCalendar_Hooks_Subscription extends Jaws_Gadget_Hook
             'selectable' => true,
             'action' => 'ViewYear',
             'reference' => $user,
-            'title' => _t('EVENTSCALENDAR_USER_EVENTS'),
+            'title' => $this::t('USER_EVENTS'),
             'url' => $this->gadget->urlMap('ViewYear', array('user' => $user))
         );
 

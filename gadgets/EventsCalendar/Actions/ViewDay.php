@@ -36,8 +36,8 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ViewDay.html');
         $tpl->SetBlock('day');
 
-        $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
-        $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
+        $tpl->SetVariable('lbl_hour', $this::t('HOUR'));
+        $tpl->SetVariable('lbl_events', $this::t('EVENTS'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -84,7 +84,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $info = $jDate->GetDateInfo($year, $month, $day);
         $date = $jDate->ToBaseDate($year, $month, $day);
         $today = $jDate->Format($date['timestamp'], 'DN d MN Y');
-        $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
+        $this->SetTitle($today . ' - ' . $this::t('EVENTS'));
         $tpl->SetVariable('year', $info['year']);
         $tpl->SetVariable('month', $info['month']);
         $tpl->SetVariable('day', $info['mday']);

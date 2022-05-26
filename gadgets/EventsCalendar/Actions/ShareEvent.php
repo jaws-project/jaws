@@ -57,11 +57,11 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ShareEvent.html');
         $tpl->SetBlock('share');
-        $tpl->SetVariable('title', _t('EVENTSCALENDAR_SHARE'));
+        $tpl->SetVariable('title', $this::t('SHARE'));
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('UID', $userId);
         $tpl->SetVariable('title', $event['title']);
-        $tpl->SetVariable('lbl_users', _t('EVENTSCALENDAR_USERS'));
+        $tpl->SetVariable('lbl_users', $this::t('USERS'));
         $tpl->SetVariable('events_url', $this->gadget->urlMap('ManageEvents', array('user' => $userId)));
 
         // User groups
@@ -74,13 +74,13 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($groups)) {
             $combo =& Piwi::CreateWidget('Combo', 'sys_groups');
             $combo->AddEvent(ON_CHANGE, 'toggleUsers(this.value)');
-            $combo->AddOption(_t('EVENTSCALENDAR_ALL_USERS'), 0);
+            $combo->AddOption($this::t('ALL_USERS'), 0);
             foreach ($groups as $group) {
                 $combo->AddOption($group['title'], $group['id']);
             }
             $tpl->SetVariable('groups', $combo->Get());
         }
-        $tpl->SetVariable('lbl_groups', _t('EVENTSCALENDAR_GROUPS'));
+        $tpl->SetVariable('lbl_groups', $this::t('GROUPS'));
 
         // Event users
         $model = $this->gadget->model->load('Share');
@@ -95,7 +95,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             }
         }
         $tpl->SetVariable('event_users', $combo->Get());
-        $tpl->SetVariable('lbl_event_users', _t('EVENTSCALENDAR_SHARED_FOR'));
+        $tpl->SetVariable('lbl_event_users', $this::t('SHARED_FOR'));
 
         // Actions
         $tpl->SetVariable('lbl_ok', Jaws::t('OK'));
@@ -144,7 +144,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event) || empty($event)) {
             return $this->gadget->session->response(
-                _t('EVENTSCALENDAR_ERROR_RETRIEVING_DATA'),
+                $this::t('ERROR_RETRIEVING_DATA'),
                 RESPONSE_ERROR
             );
         }
@@ -152,7 +152,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         // Verify owner
         if ($event['user'] != $user) {
             return $this->gadget->session->response(
-                _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
+                $this::t('ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
         }
@@ -163,18 +163,18 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $res = $model->UpdateEventUsers($id, $users);
         if (Jaws_Error::IsError($res)) {
             return $this->gadget->session->response(
-                _t('EVENTSCALENDAR_ERROR_EVENT_SHARE'),
+                $this::t('ERROR_EVENT_SHARE'),
                 RESPONSE_ERROR
             );
         }
 
         $this->gadget->session->push(
-            _t('EVENTSCALENDAR_NOTICE_SHARE_UPDATED'),
+            $this::t('NOTICE_SHARE_UPDATED'),
             RESPONSE_NOTICE,
             'Response'
         );
         return $this->gadget->session->response(
-            _t('EVENTSCALENDAR_NOTICE_SHARE_UPDATED')
+            $this::t('NOTICE_SHARE_UPDATED')
         );
     }
 }

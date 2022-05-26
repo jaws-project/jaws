@@ -28,7 +28,7 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
             'post'
         );
         if (empty($post['summary']) || empty($post['start_date'])) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_INCOMPLETE_DATA'), RESPONSE_ERROR);
         }
 
         $post['public'] = true;
@@ -46,10 +46,10 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Event');
         $id = $model->InsertEvent($post);
         if (Jaws_Error::IsError($id)) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(_t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'), RESPONSE_NOTICE, $id);
+        return $this->gadget->session->response($this::t('NOTICE_EVENT_CREATED'), RESPONSE_NOTICE, $id);
     }
 
     /**
@@ -69,7 +69,7 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
             'post'
         );
         if (empty($post['summary']) || empty($post['start_date'])) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_INCOMPLETE_DATA'), RESPONSE_ERROR);
         }
 
         // Validate event
@@ -78,7 +78,7 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
         $user = (int)$this->app->session->user->id;
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event)) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_RETRIEVING_DATA'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_RETRIEVING_DATA'), RESPONSE_ERROR);
         }
 
         // Verify owner
@@ -93,10 +93,10 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
 
         $res = $model->UpdateEvent($id, $post, $event);
         if (Jaws_Error::IsError($res)) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(_t('EVENTSCALENDAR_NOTICE_EVENT_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('NOTICE_EVENT_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -109,19 +109,19 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
     {
         $events = $this->gadget->request->fetch('ids:array');
         if (empty($events)) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_EVENT_DELETE'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_EVENT_DELETE'), RESPONSE_ERROR);
         }
 
         // Delete events
         $model = $this->gadget->model->load('Event');
         $res = $model->DeleteEvents($events);
         if (Jaws_Error::IsError($res)) {
-            return $this->gadget->session->response(_t('EVENTSCALENDAR_ERROR_EVENT_DELETE'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_EVENT_DELETE'), RESPONSE_ERROR);
         }
 
         $msg = (count($events) === 1)?
-            _t('EVENTSCALENDAR_NOTICE_EVENT_DELETED') :
-            _t('EVENTSCALENDAR_NOTICE_EVENTS_DELETED');
+            $this::t('NOTICE_EVENT_DELETED') :
+            $this::t('NOTICE_EVENTS_DELETED');
         return $this->gadget->session->response($msg, RESPONSE_NOTICE);
     }
 }

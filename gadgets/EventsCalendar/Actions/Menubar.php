@@ -23,12 +23,12 @@ class EventsCalendar_Actions_Menubar extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
 
         if ($user > 0) {
-            $menubar->AddOption('Events', _t('EVENTSCALENDAR_PUBLIC_EVENTS'),
+            $menubar->AddOption('Events', $this::t('PUBLIC_EVENTS'),
                 $this->gadget->urlMap('ViewYear'),
                 'gadgets/EventsCalendar/Resources/images/calendar.png'
             );
             if ($action !== 'ManageEvents' && $this->app->session->user->logged) {
-                $menubar->AddOption('ManageEvents', _t('EVENTSCALENDAR_EVENTS_MANAGE'),
+                $menubar->AddOption('ManageEvents', $this::t('EVENTS_MANAGE'),
                     $this->gadget->urlMap('ManageEvents', array('user' => $user)),
                     'gadgets/EventsCalendar/Resources/images/events.png'
                 );
@@ -36,7 +36,7 @@ class EventsCalendar_Actions_Menubar extends Jaws_Gadget_Action
         } else {
             $user = (int)$this->app->session->user->id;
             if ($user > 0) {
-                $menubar->AddOption('Events', _t('EVENTSCALENDAR_MY_EVENTS'),
+                $menubar->AddOption('Events', $this::t('MY_EVENTS'),
                     $this->gadget->urlMap('ViewYear', array('user' => $user)),
                     'gadgets/EventsCalendar/Resources/images/calendar.png'
                 );

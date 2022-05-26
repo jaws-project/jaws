@@ -20,10 +20,10 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
     {
         return array(
             array(
-                'title' => _t('EVENTSCALENDAR_EVENTS'),
+                'title' => $this::t('EVENTS'),
                 'value' => array(
-                    'user' => _t('EVENTSCALENDAR_USER_EVENTS'),
-                    'public' => _t('EVENTSCALENDAR_PUBLIC_EVENTS')
+                    'user' => $this::t('USER_EVENTS'),
+                    'public' => $this::t('PUBLIC_EVENTS')
                 )
             ),
         );
@@ -47,8 +47,8 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Today.html');
         $tpl->SetBlock('today');
 
-        $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
-        $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
+        $tpl->SetVariable('lbl_hour', $this::t('HOUR'));
+        $tpl->SetVariable('lbl_events', $this::t('EVENTS'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -58,18 +58,18 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         $now = time();
         $today = $jDate->Format($now, 'DN d MN Y');
 
-        $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
+        $this->SetTitle($today . ' - ' . $this::t('EVENTS'));
         $tpl->SetVariable('today', $today);
         if ($user === 'public') {
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_PUBLIC_EVENTS'));
+            $tpl->SetVariable('title', $this::t('PUBLIC_EVENTS'));
         } else {
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_USER_EVENTS'));
+            $tpl->SetVariable('title', $this::t('USER_EVENTS'));
         }
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
-        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
-        $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
-        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
+        $tpl->SetVariable('lbl_location', $this::t('EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_type', $this::t('EVENT_TYPE'));
+        $tpl->SetVariable('lbl_priority', $this::t('EVENT_PRIORITY'));
+        $tpl->SetVariable('lbl_time', $this::t('TIME'));
 
         // Fetch events
         $info = $jDate->GetDateInfo($now);
@@ -93,9 +93,9 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
             $tpl->SetBlock('today/event');
 
             $tpl->SetVariable('title', $event['title']);
-            $tpl->SetVariable('type', _t('EVENTSCALENDAR_EVENT_TYPE_' . $event['type']));
+            $tpl->SetVariable('type', $this::t('EVENT_TYPE_' . $event['type']));
             $tpl->SetVariable('location', $event['location']);
-            $tpl->SetVariable('priority', _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $event['priority']));
+            $tpl->SetVariable('priority', $this::t('EVENT_PRIORITY_' . $event['priority']));
 
             $startHour = $jDate->Format($event['start_time'], 'H:i');
             $stopHour = $jDate->Format($event['stop_time'], 'H:i');

@@ -106,24 +106,24 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('verbose', $event['verbose']);
 
         if (empty($id)) {
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_NEW_EVENT'));
+            $tpl->SetVariable('title', $this::t('NEW_EVENT'));
             $tpl->SetVariable('action', 'newevent');
             $tpl->SetVariable('form_action', 'CreateEvent');
         } else {
-            $tpl->SetVariable('title', _t('EVENTSCALENDAR_EDIT_EVENT'));
+            $tpl->SetVariable('title', $this::t('EDIT_EVENT'));
             $tpl->SetVariable('action', 'editevent');
             $tpl->SetVariable('form_action', 'UpdateEvent');
         }
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
-        $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
+        $tpl->SetVariable('lbl_summary', $this::t('EVENT_SUMMARY'));
+        $tpl->SetVariable('lbl_location', $this::t('EVENT_LOCATION'));
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
-        $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
-        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
-        $tpl->SetVariable('errorIncompleteData', _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'));
+        $tpl->SetVariable('lbl_desc', $this::t('EVENT_DESC'));
+        $tpl->SetVariable('lbl_to', $this::t('TO'));
+        $tpl->SetVariable('errorIncompleteData', $this::t('ERROR_INCOMPLETE_DATA'));
 
         // Start date
-        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
+        $tpl->SetVariable('lbl_date', $this::t('DATE'));
         $tpl->SetBlock('form/start_time');
         $this->gadget->action->load('DatePicker')->calendar(
             $tpl,
@@ -140,8 +140,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->ParseBlock('form/stop_time');
 
         // Start/Stop time
-        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
-        $tpl->SetVariable('error_time_value', _t('EVENTSCALENDAR_ERROR_INVALID_TIME_FORMAT'));
+        $tpl->SetVariable('lbl_time', $this::t('TIME'));
+        $tpl->SetVariable('error_time_value', $this::t('ERROR_INVALID_TIME_FORMAT'));
         $tpl->SetVariable('start_time', $event['start_time']);
         $tpl->SetVariable('stop_time', $event['stop_time']);
 
@@ -152,27 +152,27 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $combo->AddOption(Jaws::t('NOO'), 0);
         $combo->SetDefault($event['public']? 1 : 0);
         $tpl->SetVariable('public', $combo->Get());
-        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
+        $tpl->SetVariable('lbl_public', $this::t('EVENT_PUBLIC'));
 
         // Type
         $combo =& Piwi::CreateWidget('Combo', 'type');
         $combo->SetId('event_type');
         for ($i = 1; $i <= 5; $i++) {
-            $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_' . $i), $i);
+            $combo->AddOption($this::t('EVENT_TYPE_' . $i), $i);
         }
         $combo->SetDefault($event['type']);
         $tpl->SetVariable('type', $combo->Get());
-        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+        $tpl->SetVariable('lbl_type', $this::t('EVENT_TYPE'));
 
         // Priority
         $combo =& Piwi::CreateWidget('Combo', 'priority');
         $combo->SetId('event_priority');
         for ($i = 0; $i <= 2; $i++) {
-            $combo->AddOption(_t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i), $i);
+            $combo->AddOption($this::t('EVENT_PRIORITY_' . $i), $i);
         }
         $combo->SetDefault($event['priority']);
         $tpl->SetVariable('priority', $combo->Get());
-        $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+        $tpl->SetVariable('lbl_priority', $this::t('EVENT_PRIORITY'));
 
         // Reminder (in minutes)
         $combo =& Piwi::CreateWidget('Combo', 'reminder');
@@ -180,23 +180,23 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $intervals = array(0, 1, 5, 10, 15, 30, 60, 120, 180, 240, 300,
             360, 420, 480, 540, 600, 660, 720, 1440, 2880, 10080, 43200);
         foreach ($intervals as $i) {
-            $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REMINDER_' . $i), $i);
+            $combo->AddOption($this::t('EVENT_REMINDER_' . $i), $i);
         }
         $combo->SetDefault($event['reminder']);
         $tpl->SetVariable('reminder', $combo->Get());
-        $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
+        $tpl->SetVariable('lbl_reminder', $this::t('EVENT_REMINDER'));
 
         // Recurrence
         $combo =& Piwi::CreateWidget('Combo', 'recurrence');
         $combo->SetId('event_recurrence');
         for ($i = 0; $i <= 4; $i++) {
-            $combo->AddOption(_t("EVENTSCALENDAR_EVENT_RECURRENCE_$i"), $i);
+            $combo->AddOption($this::t("EVENT_RECURRENCE_$i"), $i);
         }
         $combo->SetDefault($event['recurrence']);
         $combo->AddEvent(ON_CHANGE, 'updateRepeatUI(this.value)');
         $tpl->SetVariable('recurrence', $combo->Get());
         $tpl->SetVariable('recurrence_value', $event['recurrence']);
-        $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
+        $tpl->SetVariable('lbl_recurrence', $this::t('EVENT_RECURRENCE'));
 
         // Day
         $combo =& Piwi::CreateWidget('Combo', 'day');
@@ -206,7 +206,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
         $combo->SetDefault($event['day']);
         $tpl->SetVariable('day', $combo->Get());
-        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
+        $tpl->SetVariable('lbl_day', $this::t('DAY'));
 
         // Week Day
         $combo =& Piwi::CreateWidget('Combo', 'wday');
@@ -216,7 +216,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
         $combo->SetDefault($event['wday']);
         $tpl->SetVariable('wday', $combo->Get());
-        $tpl->SetVariable('lbl_wday', _t('EVENTSCALENDAR_WEEK_DAY'));
+        $tpl->SetVariable('lbl_wday', $this::t('WEEK_DAY'));
 
         // Month
         $combo =& Piwi::CreateWidget('Combo', 'month');
@@ -226,10 +226,10 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
         $combo->SetDefault($event['month']);
         $tpl->SetVariable('month', $combo->Get());
-        $tpl->SetVariable('lbl_month', _t('EVENTSCALENDAR_MONTH'));
+        $tpl->SetVariable('lbl_month', $this::t('MONTH'));
 
         // Symbol
-        $tpl->SetVariable('lbl_symbol', _t('EVENTSCALENDAR_SYMBOL'));
+        $tpl->SetVariable('lbl_symbol', $this::t('SYMBOL'));
         $tpl->SetVariable('symbol', $event['symbol']);
 
         // Actions
@@ -256,7 +256,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($event['summary']) || empty($event['start_date'])) {
             $this->gadget->session->push(
-                _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
+                $this::t('ERROR_INCOMPLETE_DATA'),
                 RESPONSE_ERROR,
                 'Event',
                 $event
@@ -279,7 +279,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $result = $model->InsertEvent($event);
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
-                _t('EVENTSCALENDAR_ERROR_EVENT_CREATE'),
+                $this::t('ERROR_EVENT_CREATE'),
                 RESPONSE_ERROR,
                 'Event',
                 $event
@@ -288,7 +288,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         $this->gadget->session->push(
-            _t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'),
+            $this::t('NOTICE_EVENT_CREATED'),
             RESPONSE_NOTICE,
             'Event'
         );
@@ -309,7 +309,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($data['summary']) || empty($data['start_date'])) {
             $this->gadget->session->push(
-                _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
+                $this::t('ERROR_INCOMPLETE_DATA'),
                 RESPONSE_ERROR,
                 'Event',
                 $data
@@ -324,7 +324,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event)) {
             $this->gadget->session->push(
-                _t('EVENTSCALENDAR_ERROR_RETRIEVING_DATA'),
+                $this::t('ERROR_RETRIEVING_DATA'),
                 RESPONSE_ERROR,
                 'Event'
             );
@@ -334,7 +334,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Verify owner
         if ($event['owner'] != $user) {
             $this->gadget->session->push(
-                _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
+                $this::t('ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR,
                 'Event'
             );
@@ -352,7 +352,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $result = $model->UpdateEvent($id, $data, $event);
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
-                _t('EVENTSCALENDAR_ERROR_EVENT_UPDATE'),
+                $this::t('ERROR_EVENT_UPDATE'),
                 RESPONSE_ERROR,
                 'Event',
                 $data
@@ -361,7 +361,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         $this->gadget->session->push(
-            _t('EVENTSCALENDAR_NOTICE_EVENT_UPDATED'),
+            $this::t('NOTICE_EVENT_UPDATED'),
             RESPONSE_NOTICE,
             'Event'
         );
@@ -380,7 +380,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $id_set = explode(',', $id_set);
         if (empty($id_set)) {
             return $this->gadget->session->response(
-                _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
+                $this::t('ERROR_EVENT_DELETE'),
                 RESPONSE_ERROR
             );
         }
@@ -391,7 +391,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $verifiedEvents = $model->CheckEvents($id_set, $user);
         if (Jaws_Error::IsError($verifiedEvents)) {
             return $this->gadget->session->response(
-                _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
+                $this::t('ERROR_EVENT_DELETE'),
                 RESPONSE_ERROR
             );
         }
@@ -399,7 +399,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // No events was verified
         if (empty($verifiedEvents)) {
             return $this->gadget->session->response(
-                _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
+                $this::t('ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
         }
@@ -409,21 +409,21 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $res = $model->DeleteEvents($verifiedEvents);
         if (Jaws_Error::IsError($res)) {
             return $this->gadget->session->response(
-                _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
+                $this::t('ERROR_EVENT_DELETE'),
                 RESPONSE_ERROR
             );
         }
 
         if (count($id_set) !== count($verifiedEvents)) {
-            $msg = _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS_FAILED');
+            $msg = $this::t('WARNING_DELETE_EVENTS_FAILED');
             // FIXME: we are creating response twice
             $this->gadget->session->push($msg, RESPONSE_WARNING, 'Event');
             return $this->gadget->session->response($msg, RESPONSE_WARNING);
         }
 
         $msg = (count($id_set) === 1)?
-            _t('EVENTSCALENDAR_NOTICE_EVENT_DELETED') :
-            _t('EVENTSCALENDAR_NOTICE_EVENTS_DELETED');
+            $this::t('NOTICE_EVENT_DELETED') :
+            $this::t('NOTICE_EVENTS_DELETED');
         $this->gadget->session->push($msg, RESPONSE_NOTICE, 'Event');
         return $this->gadget->session->response($msg);
     }

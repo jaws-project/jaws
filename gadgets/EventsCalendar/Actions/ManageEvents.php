@@ -41,19 +41,19 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $eventsUrl = $siteUrl . $this->gadget->urlMap('ManageEvents', array('user' => $user));
 
         $this->gadget->define('events_url', $eventsUrl);
-        $this->gadget->define('confirmDelete', _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS'));
-        $this->gadget->define('errorShortQuery', _t('EVENTSCALENDAR_ERROR_SHORT_QUERY'));
+        $this->gadget->define('confirmDelete', $this::t('WARNING_DELETE_EVENTS'));
+        $this->gadget->define('errorShortQuery', $this::t('ERROR_SHORT_QUERY'));
 
         $tpl = $this->gadget->template->load('ManageEvents.html');
         $tpl->SetBlock('events');
 
-        $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENTS_MANAGE'));
-        $tpl->SetVariable('lbl_summary', _t('EVENTSCALENDAR_EVENT_SUMMARY'));
-        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
-        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
-        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
-        $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
-        $tpl->SetVariable('lbl_owner', _t('EVENTSCALENDAR_EVENT_OWNER'));
+        $tpl->SetVariable('title', $this::t('EVENTS_MANAGE'));
+        $tpl->SetVariable('lbl_summary', $this::t('EVENT_SUMMARY'));
+        $tpl->SetVariable('lbl_date', $this::t('DATE'));
+        $tpl->SetVariable('lbl_time', $this::t('TIME'));
+        $tpl->SetVariable('lbl_public', $this::t('EVENT_PUBLIC'));
+        $tpl->SetVariable('lbl_shared', $this::t('SHARED'));
+        $tpl->SetVariable('lbl_owner', $this::t('EVENT_OWNER'));
 
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -90,17 +90,17 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             $tpl->SetBlock('events/event');
             $tpl->SetVariable('id', $event['id']);
             $tpl->SetVariable('summary', $event['summary']);
-            $tpl->SetVariable('public', $event['public']? _t('EVENTSCALENDAR_EVENT_PUBLIC') : '');
+            $tpl->SetVariable('public', $event['public']? $this::t('EVENT_PUBLIC') : '');
 
             $startDate = $jDate->Format($event['start_time'], 'Y/m/d');
             $stopDate = $jDate->Format($event['stop_time'], 'Y/m/d');
             $date = ($startDate == $stopDate)? $startDate :
-                $startDate . _t('EVENTSCALENDAR_TO') . $stopDate;
+                $startDate . $this::t('TO') . $stopDate;
             $tpl->SetVariable('date', $date);
 
             $start_time = $jDate->Format($event['start_time'], 'H:i');
             $time = ($event['start_time'] == $event['stop_time'])?
-                $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
+                $start_time : $start_time . $this::t('TO') .
                 $jDate->Format($event['stop_time'], 'H:i');
             $tpl->SetVariable('time', $time);
 
@@ -112,7 +112,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
                 $tpl->SetVariable('nickname', $event['nickname']);
                 $tpl->SetVariable('username', $event['username']);
             } else {
-                $tpl->SetVariable('shared', $event['shared']? _t('EVENTSCALENDAR_SHARED') : '');
+                $tpl->SetVariable('shared', $event['shared']? $this::t('SHARED') : '');
                 $tpl->SetVariable('nickname', '');
                 $tpl->SetVariable('username', '');
             }
@@ -127,29 +127,29 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $combo->AddOption(Jaws::t('NOO'), 0);
         $combo->SetDefault(@$params['search']['public']);
         $tpl->SetVariable('public', $combo->Get());
-        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
+        $tpl->SetVariable('lbl_public', $this::t('EVENT_PUBLIC'));
 
         $combo =& Piwi::CreateWidget('Combo', 'type');
         $combo->SetID('');
         $combo->AddOption('', '');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_1'), 1);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_2'), 2);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_3'), 3);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_4'), 4);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_5'), 5);
+        $combo->AddOption($this::t('EVENT_TYPE_1'), 1);
+        $combo->AddOption($this::t('EVENT_TYPE_2'), 2);
+        $combo->AddOption($this::t('EVENT_TYPE_3'), 3);
+        $combo->AddOption($this::t('EVENT_TYPE_4'), 4);
+        $combo->AddOption($this::t('EVENT_TYPE_5'), 5);
         $combo->SetDefault(@$params['search']['type']);
         $tpl->SetVariable('type', $combo->Get());
-        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+        $tpl->SetVariable('lbl_type', $this::t('EVENT_TYPE'));
 
         $combo =& Piwi::CreateWidget('Combo', 'priority');
         $combo->SetID('');
         $combo->AddOption('', '');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_PRIORITY_0'), 0);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_PRIORITY_1'), 1);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_PRIORITY_2'), 2);
+        $combo->AddOption($this::t('EVENT_PRIORITY_0'), 0);
+        $combo->AddOption($this::t('EVENT_PRIORITY_1'), 1);
+        $combo->AddOption($this::t('EVENT_PRIORITY_2'), 2);
         $combo->SetDefault(@$params['search']['priority']);
         $tpl->SetVariable('priority', $combo->Get());
-        $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
+        $tpl->SetVariable('lbl_priority', $this::t('EVENT_PRIORITY'));
 
         $combo =& Piwi::CreateWidget('Combo', 'shared');
         $combo->SetID('');
@@ -158,12 +158,12 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $combo->AddOption(Jaws::t('NOO'), 0);
         $combo->SetDefault(@$params['search']['shared']);
         $tpl->SetVariable('shared', $combo->Get());
-        $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
+        $tpl->SetVariable('lbl_shared', $this::t('SHARED'));
 
         $entry =& Piwi::CreateWidget('Entry', 'term', @$params['search']['term']);
         $entry->SetID('');
         $tpl->SetVariable('term', $entry->Get());
-        $tpl->SetVariable('lbl_term', _t('EVENTSCALENDAR_TERM'));
+        $tpl->SetVariable('lbl_term', $this::t('TERM'));
 
         // stat time
         $tpl->SetBlock('events/start_time');
@@ -181,19 +181,19 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         );
         $tpl->ParseBlock('events/stop_time');
 
-        $button =& Piwi::CreateWidget('Button', '', _t('EVENTSCALENDAR_SEARCH'), STOCK_SEARCH);
+        $button =& Piwi::CreateWidget('Button', '', $this::t('SEARCH'), STOCK_SEARCH);
         $button->SetSubmit(true);
         $tpl->SetVariable('btn_search', $button->Get());
 
         if (!is_null(@$params['search'])) { // search mode
-            $button =& Piwi::CreateWidget('Button', '', _t('EVENTSCALENDAR_RESET'), STOCK_REFRESH);
+            $button =& Piwi::CreateWidget('Button', '', $this::t('RESET'), STOCK_REFRESH);
             $button->SetSubmit(false);
             $button->AddEvent(ON_CLICK, 'resetSearch(this.form)');
             $tpl->SetVariable('btn_reset', $button->Get());
         }
 
         // Actions
-        $tpl->SetVariable('lbl_new_event', _t('EVENTSCALENDAR_NEW_EVENT'));
+        $tpl->SetVariable('lbl_new_event', $this::t('NEW_EVENT'));
         $tpl->SetVariable('lbl_del_event', Jaws::t('DELETE'));
         $tpl->SetVariable('url_new', $siteUrl . $this->gadget->urlMap('EditEvent',
             array('user' => $user, 'event' => 0))
@@ -207,7 +207,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             $count,
             'ManageEvents',
             array('user' => $user),
-            _t('EVENTSCALENDAR_EVENTS_COUNT', $count)
+            $this::t('EVENTS_COUNT', $count)
         );
 
         $tpl->ParseBlock('events');
