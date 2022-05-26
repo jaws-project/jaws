@@ -706,15 +706,57 @@ class Jaws
      *
      * @return string
      */
-    public static function t($params)
+    public static function t($input, ...$params)
     {
-        $params = func_get_args();
-        $string = array_shift($params);
+        if ($type = strstr($input, '.', true)) {
+            $string = substr($input, strlen($type) + 1);
+            if ($component = strstr($string, '.', true)) {
+                $string = substr($string, strlen($component) + 1);
+            } else {
+                // format not supported
+                return $input;
+            }
+
+            switch ($type) {
+                case 'global':
+                case 'GLOBAL':
+                    $type = Jaws_Translate::TRANSLATE_GLOBAL;
+                    break;
+
+                case 'gadgets':
+                case 'GADGETS':
+                    $type = Jaws_Translate::TRANSLATE_GADGET;
+                    break;
+
+                case 'plugins':
+                case 'PLUGINS':
+                    $type = Jaws_Translate::TRANSLATE_PLUGIN;
+                    break;
+
+                case 'install':
+                case 'INSTALL':
+                    $type = Jaws_Translate::TRANSLATE_INSTALL;
+                    break;
+
+                case 'upgrade':
+                case 'UPGRADE':
+                    $type = Jaws_Translate::TRANSLATE_UPGRADE;
+                    break;
+
+                default:
+                    // format not supported
+                    return $input;
+            }
+        } else {
+            $string = $input;
+            $component = '';
+            $type = Jaws_Translate::TRANSLATE_GLOBAL;
+        }
 
         return Jaws_Translate::getInstance()->XTranslate(
             '',
-            Jaws_Translate::TRANSLATE_GLOBAL,
-            '',
+            $type,
+            $component,
             $string,
             $params
         );
