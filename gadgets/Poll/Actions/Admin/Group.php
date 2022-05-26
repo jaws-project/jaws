@@ -42,7 +42,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('POLL_GROUPS_POLLS_TITLE'),
+                $link =& Piwi::CreateWidget('Link', $this::t('GROUPS_POLLS_TITLE'),
                     "javascript:editPollGroupPolls(this, '" . $group['id'] . "');",
                     'gadgets/Poll/Resources/images/polls_mini.png');
                 $actions.= $link->Get().'&nbsp;';
@@ -94,11 +94,11 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteGroupsFields',   _t('POLL_POLLS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmPollGroupDelete',   _t('POLL_GROUPS_CONFIRM_DELETE'));
-        $this->gadget->define('addPollGroup_title',       _t('POLL_GROUPS_ADD_TITLE'));
-        $this->gadget->define('editPollGroup_title',      _t('POLL_GROUPS_EDIT_TITLE'));
-        $this->gadget->define('editPollGroupPolls_title', _t('POLL_GROUPS_POLLS_TITLE'));
+        $this->gadget->define('incompleteGroupsFields',   $this::t('POLLS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmPollGroupDelete',   $this::t('GROUPS_CONFIRM_DELETE'));
+        $this->gadget->define('addPollGroup_title',       $this::t('GROUPS_ADD_TITLE'));
+        $this->gadget->define('editPollGroup_title',      $this::t('GROUPS_EDIT_TITLE'));
+        $this->gadget->define('editPollGroupPolls_title', $this::t('GROUPS_POLLS_TITLE'));
 
         $tpl = $this->gadget->template->loadAdmin('PollGroups.html');
         $tpl->SetBlock('PollGroups');
@@ -115,7 +115,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-        $tpl->SetVariable('legend_title',             _t('POLL_GROUPS_ADD_TITLE'));
+        $tpl->SetVariable('legend_title',             $this::t('GROUPS_ADD_TITLE'));
 
         $tpl->ParseBlock('PollGroups');
         return $tpl->Get();

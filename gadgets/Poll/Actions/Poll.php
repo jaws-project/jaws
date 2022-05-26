@@ -28,9 +28,9 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $p[$poll['id']] = $poll['title'];
             }
 
-            $p = array('0' => _t('POLL_LAYOUT_LAST')) + $p;
+            $p = array('0' => $this::t('LAYOUT_LAST')) + $p;
             $result[] = array(
-                'title' => _t('POLL_ACTION_POLL_TITLE'),
+                'title' => $this::t('ACTION_POLL_TITLE'),
                 'value' => $p
             );
         }
@@ -67,7 +67,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Poll.html');
         $tpl->SetBlock('poll');
-        $tpl->SetVariable('title', _t('POLL_ACTION_POLL_TITLE'));
+        $tpl->SetVariable('title', $this::t('ACTION_POLL_TITLE'));
         $tpl->SetVariable('poll_title', $poll['title']);
 
         $response = $this->gadget->session->pop('Vote');
@@ -113,22 +113,22 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                     $tpl->SetVariable('votes', $answer['votes']);
                     $percent = ($total_votes==0)? 0 : floor(($answer['votes']/$total_votes)*100);
                     $tpl->SetVariable('percent', $percent);
-                    $tpl->SetVariable('txt_percent', _t('POLL_REPORTS_PERCENT', $percent));
+                    $tpl->SetVariable('txt_percent', $this::t('REPORTS_PERCENT', $percent));
                     $tpl->ParseBlock("poll/{$block}/answer");
                 }
 
                 $tpl->SetVariable('total_votes', $total_votes);
-                $tpl->SetVariable('lbl_total_votes', _t('POLL_REPORTS_TOTAL_VOTES'));
+                $tpl->SetVariable('lbl_total_votes', $this::t('REPORTS_TOTAL_VOTES'));
 
                 if ($allowVote) {
-                    $btnVote =& Piwi::CreateWidget('Button', 'btn_vote', _t('POLL_VOTE'));
+                    $btnVote =& Piwi::CreateWidget('Button', 'btn_vote', $this::t('VOTE'));
                     $btnVote->SetSubmit();
                     $tpl->SetVariable('btn_vote', $btnVote->Get());
                 }
 
                 if ($poll['result_view']) {
                     $link = $this->gadget->urlMap('ViewResult', array('id' => $poll['id']));
-                    $viewRes =& Piwi::CreateWidget('Link', _t('POLL_REPORTS_RESULTS'), $link);
+                    $viewRes =& Piwi::CreateWidget('Link', $this::t('REPORTS_RESULTS'), $link);
                     $tpl->SetVariable('result_link', $viewRes->Get());
                 }
 
@@ -137,11 +137,11 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         }
 
         if (!$allowVote) {
-            $tpl->SetVariable('already_message', _t('POLL_ALREADY_VOTED'));
+            $tpl->SetVariable('already_message', $this::t('ALREADY_VOTED'));
         }
 
         if (!$poll['result_view']) {
-            $tpl->SetVariable('disabled_message', _t('POLL_RESULT_DISABLED'));
+            $tpl->SetVariable('disabled_message', $this::t('RESULT_DISABLED'));
         }
 
         $tpl->ParseBlock('poll');
@@ -165,7 +165,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $pgroups[$group['id']] = $group['title'];
             }
 
-            $pgroups = array('0' => _t('POLL_LAYOUT_POLLS_ALL')) + $pgroups;
+            $pgroups = array('0' => $this::t('LAYOUT_POLLS_ALL')) + $pgroups;
             $result[] = array(
                 'title' => Jaws::t('CATEGORY'),
                 'value' => $pgroups
@@ -194,9 +194,9 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
             if (Jaws_Error::isError($group) || empty($group)) {
                 $group['title'] = '';
             }
-            $tpl->SetVariable('title', _t('POLL_ACTION_POLLS_INGROUP_TITLE', $group['title']));
+            $tpl->SetVariable('title', $this::t('ACTION_POLLS_INGROUP_TITLE', $group['title']));
         } else {
-            $tpl->SetVariable('title', _t('POLL_ACTION_POLLS_TITLE'));
+            $tpl->SetVariable('title', $this::t('ACTION_POLLS_TITLE'));
         }
 
         $polls = $pModel->GetPolls($gid, true);
@@ -256,7 +256,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 );
             } else {
                 $this->gadget->session->push(
-                    _t('POLL_THANKS'),
+                    $this::t('THANKS'),
                     RESPONSE_NOTICE,
                     'Vote'
                 );
@@ -283,7 +283,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Results.html');
         $tpl->SetBlock('results');
-        $tpl->SetVariable('title', _t('POLL_ACTION_RESULT_TITLE'));
+        $tpl->SetVariable('title', $this::t('ACTION_RESULT_TITLE'));
         $tpl->SetVariable('title', $poll['title']);
 
         $answers = $model->GetPollAnswers($poll['id']);
@@ -295,13 +295,13 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $answers
             ));
             $tpl->SetVariable('total_votes', $total_votes);
-            $tpl->SetVariable('lbl_total_votes', _t('POLL_REPORTS_TOTAL_VOTES'));
+            $tpl->SetVariable('lbl_total_votes', $this::t('REPORTS_TOTAL_VOTES'));
 
             foreach($answers as $answer) {
                 $tpl->SetBlock('results/answer');
                 $tpl->SetVariable('title', $answer['title']);
                 $percent = (($total_votes==0)? 0 : floor(($answer['votes']/$total_votes)*100));
-                $tpl->SetVariable('txt_percent', _t('POLL_REPORTS_PERCENT', $percent));
+                $tpl->SetVariable('txt_percent', $this::t('REPORTS_PERCENT', $percent));
                 $tpl->SetVariable('percent', $percent);
                 $tpl->SetVariable('votes', $answer['votes']);
                 $tpl->ParseBlock('results/answer');

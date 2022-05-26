@@ -37,14 +37,14 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
         $pResults = $objORM->table('poll_results')
         ->insert($data)->exec();
         if(Jaws_Error::IsError($pResults)) {
-            return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
+            return new Jaws_Error($this::t('ERROR_VOTE_NOT_ADDED'));
         }
 
         // update total_votes
         $table = $objORM->table('poll');
         $result = $table->update(array('total_votes' => $table->expr('total_votes + ?', 1)))->where('id', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
+            return new Jaws_Error($this::t('ERROR_VOTE_NOT_ADDED'));
         }
 
         // update poll_answers votes
@@ -53,7 +53,7 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
             $table->update(array('votes' => $table->expr('votes + ?', 1)));
             $result = $table->where('id', $aid)->and()->where('poll', $pid)->exec();
             if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
+                return new Jaws_Error($this::t('ERROR_VOTE_NOT_ADDED'));
             }
         }
 

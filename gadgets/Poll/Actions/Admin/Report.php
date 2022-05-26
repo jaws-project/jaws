@@ -30,7 +30,7 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Reports'));
 
-        $tpl->SetVariable('lbl_pollgroups', _t('POLL_GROUPS'));
+        $tpl->SetVariable('lbl_pollgroups', $this::t('GROUPS'));
         $groupsCombo =& Piwi::CreateWidget('Combo', 'pollgroups');
         $groupsCombo->SetID('pollgroups');
         $groupsCombo->AddEvent(ON_CHANGE, "javascript:getGroupPolls(this.value);");
@@ -41,7 +41,7 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
         }
         $tpl->SetVariable('pollgroups_combo', $groupsCombo->Get());
 
-        $tpl->SetVariable('lbl_grouppolls', _t('POLL_POLLS'));
+        $tpl->SetVariable('lbl_grouppolls', $this::t('POLLS'));
         $pollsCombo =& Piwi::CreateWidget('Combo', 'grouppolls');
         $pollsCombo->SetID('grouppolls');
         $pollsCombo->SetSize(15);
@@ -78,14 +78,14 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
                 },
                 $answers
             ));
-            $tpl->SetVariable('lbl_total_votes', _t('POLL_REPORTS_TOTAL_VOTES'));
+            $tpl->SetVariable('lbl_total_votes', $this::t('REPORTS_TOTAL_VOTES'));
             $tpl->SetVariable('total_votes', $total_votes);
 
             foreach($answers as $answer) {
                 $tpl->SetBlock('PollResults/answer');
                 $tpl->SetVariable('title', $answer['title']);
                 $percent = (($total_votes==0)? 0 : floor(($answer['votes']/$total_votes)*100));
-                $tpl->SetVariable('percent', _t('POLL_REPORTS_PERCENT', $percent));
+                $tpl->SetVariable('percent', $this::t('REPORTS_PERCENT', $percent));
                 $tpl->SetVariable('image_width', floor($percent*1.5));
                 $tpl->SetVariable('votes', $answer['votes']);
                 $tpl->ParseBlock('PollResults/answer');

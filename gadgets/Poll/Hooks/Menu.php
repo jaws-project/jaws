@@ -20,9 +20,9 @@ class Poll_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url'   => $this->gadget->urlMap('Poll'),
-                        'title' => _t('POLL_LAYOUT_LAST'));
+                        'title' => $this::t('LAYOUT_LAST'));
         $urls[] = array('url'   => $this->gadget->urlMap('Polls'),
-                        'title' => _t('POLL_ACTIONS_POLLS'));
+                        'title' => $this::t('ACTIONS_POLLS'));
 
         $model  = $this->gadget->model->load('Poll');
         $polls = $model->GetPolls(null, true);

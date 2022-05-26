@@ -42,7 +42,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
-                $link =& Piwi::CreateWidget('Link', _t('POLL_POLLS_ANSWERS'),
+                $link =& Piwi::CreateWidget('Link', $this::t('POLLS_ANSWERS'),
                     "javascript:editPollAnswers(this, '" . $poll['id'] . "');",
                     'gadgets/Poll/Resources/images/polls_mini.png');
                 $actions.= $link->Get().'&nbsp;';
@@ -72,7 +72,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $grid->SetID('polls_datagrid');
         $grid->TotalRows($total);
         $grid->pageBy(12);
-        $column1 = Piwi::CreateWidget('Column', _t('POLL_POLLS_QUESTION'), null, false);
+        $column1 = Piwi::CreateWidget('Column', $this::t('POLLS_QUESTION'), null, false);
         $grid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', Jaws::t('PUBLISHED'), null, false);
         $column2->SetStyle('width:56px; white-space:nowrap;');
@@ -94,13 +94,13 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManagePolls');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompletePollsFields', _t('POLL_POLLS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('requiresTwoAnswers',    _t('POLL_ERROR_REQUIRES_TWO_ANSWERS'));
-        $this->gadget->define('confirmPollDelete',     _t('POLL_POLLS_CONFIRM_DELETE'));
-        $this->gadget->define('addPoll_title',         _t('POLL_POLLS_ADD_TITLE'));
-        $this->gadget->define('editPoll_title',        _t('POLL_POLLS_EDIT_TITLE'));
-        $this->gadget->define('editAnswers_title',     _t('POLL_POLLS_ANSWERS_TITLE'));
-        $this->gadget->define('legend_title',          _t('POLL_POLLS_ADD_TITLE'));
+        $this->gadget->define('incompletePollsFields', $this::t('POLLS_INCOMPLETE_FIELDS'));
+        $this->gadget->define('requiresTwoAnswers',    $this::t('ERROR_REQUIRES_TWO_ANSWERS'));
+        $this->gadget->define('confirmPollDelete',     $this::t('POLLS_CONFIRM_DELETE'));
+        $this->gadget->define('addPoll_title',         $this::t('POLLS_ADD_TITLE'));
+        $this->gadget->define('editPoll_title',        $this::t('POLLS_EDIT_TITLE'));
+        $this->gadget->define('editAnswers_title',     $this::t('POLLS_ANSWERS_TITLE'));
+        $this->gadget->define('legend_title',          $this::t('POLLS_ADD_TITLE'));
 
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
@@ -144,7 +144,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl->SetBlock('PollUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', _t('POLL_POLLS_QUESTION'));
+        $tpl->SetVariable('lbl_title', $this::t('POLLS_QUESTION'));
         $tpl->SetVariable('title', $title->Get());
 
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
@@ -154,23 +154,23 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         foreach($groups as $group) {
             $groupCombo->AddOption($group['title'], $group['id']);
         }
-        $tpl->SetVariable('lbl_gid', _t('POLL_GROUPS'));
+        $tpl->SetVariable('lbl_gid', $this::t('GROUPS'));
         $tpl->SetVariable('gid', $groupCombo->Get());
 
         $type =& Piwi::CreateWidget('Combo', 'type');
         $type->SetID('type');
-        $type->AddOption(_t('POLL_POLLS_SELECT_SINGLE'), 0);
-        $type->AddOption(_t('POLL_POLLS_SELECT_MULTI'),  1);
-        $tpl->SetVariable('lbl_type', _t('POLL_POLLS_TYPE'));
+        $type->AddOption($this::t('POLLS_SELECT_SINGLE'), 0);
+        $type->AddOption($this::t('POLLS_SELECT_MULTI'),  1);
+        $tpl->SetVariable('lbl_type', $this::t('POLLS_TYPE'));
         $tpl->SetVariable('type', $type->Get());
 
         $pollMode =& Piwi::CreateWidget('Combo', 'restriction');
         $pollMode->SetID('restriction');
-        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_IP'), Poll_Info::POLL_RESTRICTION_TYPE_IP);
-        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_USER'), Poll_Info::POLL_RESTRICTION_TYPE_USER);
-        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_SESSION'), Poll_Info::POLL_RESTRICTION_TYPE_SESSION);
-        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_FREE'), Poll_Info::POLL_RESTRICTION_TYPE_FREE);
-        $tpl->SetVariable('lbl_restriction', _t('POLL_POLLS_RESTRICTION'));
+        $pollMode->AddOption($this::t('RESTRICTION_TYPE_IP'), Poll_Info::POLL_RESTRICTION_TYPE_IP);
+        $pollMode->AddOption($this::t('RESTRICTION_TYPE_USER'), Poll_Info::POLL_RESTRICTION_TYPE_USER);
+        $pollMode->AddOption($this::t('RESTRICTION_TYPE_SESSION'), Poll_Info::POLL_RESTRICTION_TYPE_SESSION);
+        $pollMode->AddOption($this::t('RESTRICTION_TYPE_FREE'), Poll_Info::POLL_RESTRICTION_TYPE_FREE);
+        $tpl->SetVariable('lbl_restriction', $this::t('POLLS_RESTRICTION'));
         $tpl->SetVariable('restriction', $pollMode->Get());
 
         $resultView =& Piwi::CreateWidget('Combo', 'result_view');
@@ -178,7 +178,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $resultView->AddOption(Jaws::t('NOO'),  0);
         $resultView->AddOption(Jaws::t('YESS'), 1);
         $resultView->SetDefault(1);
-        $tpl->SetVariable('lbl_result_view', _t('POLL_POLLS_RESULT_VIEW'));
+        $tpl->SetVariable('lbl_result_view', $this::t('POLLS_RESULT_VIEW'));
         $tpl->SetVariable('result_view', $resultView->Get());
 
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
@@ -223,12 +223,12 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
         $title->SetEnabled(false);
-        $tpl->SetVariable('lbl_title', _t('POLL_POLLS_QUESTION'));
+        $tpl->SetVariable('lbl_title', $this::t('POLLS_QUESTION'));
         $tpl->SetVariable('title', $title->Get());
 
         $answer =& Piwi::CreateWidget('Entry', 'answer', '');
         $answer->AddEvent(ON_KPRESS, 'javascript:keypressOnAnswer(event);');
-        $tpl->SetVariable('lbl_answer', _t('POLL_POLLS_ANSWER'));
+        $tpl->SetVariable('lbl_answer', $this::t('POLLS_ANSWER'));
         $tpl->SetVariable('answer', $answer->Get());
 
         $answersCombo =& Piwi::CreateWidget('Combo', 'answers_combo');

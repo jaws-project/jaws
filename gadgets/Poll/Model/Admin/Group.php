@@ -29,7 +29,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         }
 
         if ($count > 0) {
-            $this->gadget->session->push(_t('POLL_ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -40,10 +40,10 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_ADDED'));
+            return new Jaws_Error($this::t('ERROR_GROUP_NOT_ADDED'));
         }
 
-        $this->gadget->session->push(_t('POLL_GROUPS_CREATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_CREATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -68,7 +68,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         }
 
         if ($gc > 0) {
-            $this->gadget->session->push(_t('POLL_ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GROUP_TITLE_DUPLICATE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -79,10 +79,10 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $result = $table->update($data)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_UPDATED'));
+            return new Jaws_Error($this::t('ERROR_GROUP_NOT_UPDATED'));
         }
 
-        $this->gadget->session->push(_t('POLL_GROUPS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -96,7 +96,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
     function DeletePollGroup($gid)
     {
         if ($gid == 1) {
-            $this->gadget->session->push(_t('POLL_ERROR_GROUP_NOT_DELETED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GROUP_NOT_DELETED'), RESPONSE_ERROR);
             return false;
         }
 
@@ -107,7 +107,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         }
 
         if(!isset($group['id'])) {
-            $this->gadget->session->push(_t('POLL_ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -118,10 +118,10 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $result = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_DELETED'));
+            return new Jaws_Error($this::t('ERROR_GROUP_NOT_DELETED'));
         }
 
-        $this->gadget->session->push(_t('POLL_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
 }

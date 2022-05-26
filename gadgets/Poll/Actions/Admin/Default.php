@@ -27,15 +27,15 @@ class Poll_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManagePolls')) {
-            $menubar->AddOption('Polls', _t('POLL_POLLS'),
+            $menubar->AddOption('Polls', $this::t('POLLS'),
                                 BASE_SCRIPT . '?reqGadget=Poll&amp;reqAction=Polls', 'gadgets/Poll/Resources/images/polls_mini.png');
         }
         if ($this->gadget->GetPermission('ManageGroups')) {
-            $menubar->AddOption('PollGroups', _t('POLL_GROUPS'),
+            $menubar->AddOption('PollGroups', $this::t('GROUPS'),
                                 BASE_SCRIPT . '?reqGadget=Poll&amp;reqAction=PollGroups', 'gadgets/Poll/Resources/images/groups_mini.png');
         }
         if ($this->gadget->GetPermission('ViewReports')) {
-            $menubar->AddOption('Reports', _t('POLL_REPORTS'),
+            $menubar->AddOption('Reports', $this::t('REPORTS'),
                                 BASE_SCRIPT . '?reqGadget=Poll&amp;reqAction=Reports', 'gadgets/Poll/Resources/images/reports_mini.png');
         }
         $menubar->Activate($action);

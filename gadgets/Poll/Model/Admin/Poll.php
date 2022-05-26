@@ -51,13 +51,13 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $result = $table->insert($pollData)->exec();
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_ADDED'));
+            return new Jaws_Error($this::t('ERROR_POLL_NOT_ADDED'));
         }
 
         // shout Activity event
         $this->gadget->event->shout('Activities', array('action'=>'Poll'));
 
-        $this->gadget->session->push(_t('POLL_POLLS_ADDED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('POLLS_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -101,10 +101,10 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $result = $table->update($pollData)->where('id', (int)$pid)->exec();
         if (Jaws_Error::IsError($result)) {
             $this->gadget->session->push($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_UPDATED'));
+            return new Jaws_Error($this::t('ERROR_POLL_NOT_UPDATED'));
         }
 
-        $this->gadget->session->push(_t('POLL_POLLS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('POLLS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -121,17 +121,17 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $res = $table->delete()->where('id', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_DELETED'));
+            return new Jaws_Error($this::t('ERROR_POLL_NOT_DELETED'));
         }
 
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $res = $table->delete()->where('poll', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_EXCEPTION_ANSWER_NOT_DELETED'));
+            return new Jaws_Error($this::t('ERROR_EXCEPTION_ANSWER_NOT_DELETED'));
         }
 
-        $this->gadget->session->push(_t('POLL_POLLS_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('POLLS_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -157,7 +157,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
                 }
             }
         }
-        $this->gadget->session->push(_t('POLL_GROUPS_UPDATED_POLLS'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_UPDATED_POLLS'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -202,8 +202,8 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $model = $this->gadget->model->loadAdmin('Answer');
         $oldAnswers = $this->GetPollAnswers($pid);
         if (Jaws_Error::IsError($oldAnswers)) {
-            $this->gadget->session->push(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'));
+            $this->gadget->session->push($this::t('ERROR_ANSWERS_NOT_UPDATED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_ANSWERS_NOT_UPDATED'));
         }
 
         foreach ($oldAnswers as $oldAnswer) {
@@ -231,19 +231,19 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
             if ($found) {
                 $res = $model->UpdateAnswer($newAnswer['id'], $newAnswer['title'], $index);
                 if (Jaws_Error::IsError($res)) {
-                    $this->gadget->session->push(_t('POLL_ERROR_ANSWER_NOT_UPDATED'), RESPONSE_ERROR);
+                    $this->gadget->session->push($this::t('ERROR_ANSWER_NOT_UPDATED'), RESPONSE_ERROR);
                     return false;
                 }
             } else {
                 $res = $model->InsertAnswer($pid, $newAnswer['title'], $index);
                 if (Jaws_Error::IsError($res)) {
-                    $this->gadget->session->push(_t('POLL_ERROR_ANSWER_NOT_ADDED'), RESPONSE_ERROR);
+                    $this->gadget->session->push($this::t('ERROR_ANSWER_NOT_ADDED'), RESPONSE_ERROR);
                     return false;
                 }
             }
         }
 
-        $this->gadget->session->push(_t('POLL_ANSWERS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('ANSWERS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 

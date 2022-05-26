@@ -19,7 +19,7 @@ class Poll_Hooks_Activities extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['Poll'] = _t('POLL_ACTIVITIES_ACTION_POLL');
+        $items['Poll'] = $this::t('ACTIVITIES_ACTION_POLL');
 
         return $items;
     }
