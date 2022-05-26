@@ -65,7 +65,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         } else {
             $tpl->SetVariable('title', $this::t('USER_EVENTS'));
         }
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_location', $this::t('EVENT_LOCATION'));
         $tpl->SetVariable('lbl_type', $this::t('EVENT_TYPE'));
         $tpl->SetVariable('lbl_priority', $this::t('EVENT_PRIORITY'));

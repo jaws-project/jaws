@@ -114,7 +114,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             $tpl->SetVariable('action', 'editevent');
             $tpl->SetVariable('form_action', 'UpdateEvent');
         }
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_summary', $this::t('EVENT_SUMMARY'));
         $tpl->SetVariable('lbl_location', $this::t('EVENT_LOCATION'));
         $tpl->SetVariable('lbl_link', Jaws::t('URL'));
