@@ -21,8 +21,8 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_gadget', _t('CATEGORIES_GADGET'));
-        $this->gadget->define('lbl_action', _t('CATEGORIES_ACTION'));
+        $this->gadget->define('lbl_gadget', $this::t('GADGET'));
+        $this->gadget->define('lbl_action', $this::t('ACTION'));
         $this->gadget->define('lbl_title', Jaws::t('TITLE'));
         $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
@@ -128,7 +128,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         $category = $this->gadget->model->loadAdmin('Categories')->GetCategory($id);
         if (Jaws_Error::IsError($category) || empty($category)) {
             return $this->gadget->session->response(
-                 empty($category)? _t('CATEGORIES_CATEGORY_NOTFOUND') : $category->getMessage(),
+                 empty($category)? $this::t('CATEGORY_NOTFOUND') : $category->getMessage(),
                 RESPONSE_ERROR
             );
         }
@@ -160,7 +160,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
             );
         }
         return $this->gadget->session->response(
-            _t('CATEGORIES_CATEGORY_INSERTED'),
+            $this::t('CATEGORY_INSERTED'),
             RESPONSE_NOTICE,
             $result
         );
@@ -181,7 +181,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         }
-        return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_UPDATED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('CATEGORY_UPDATED'), RESPONSE_NOTICE);
     }
 
     /**
@@ -199,7 +199,7 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         }
-        return $this->gadget->session->response(_t('CATEGORIES_CATEGORY_DELETED'), RESPONSE_NOTICE);
+        return $this->gadget->session->response($this::t('CATEGORY_DELETED'), RESPONSE_NOTICE);
     }
 
 }

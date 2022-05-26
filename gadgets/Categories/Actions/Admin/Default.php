@@ -25,7 +25,7 @@ class Categories_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar->AddOption(
             'Categories',
-            _t('CATEGORIES_CATEGORIES'),
+            $this::t('CATEGORIES'),
             BASE_SCRIPT . '?reqGadget=Categories&amp;reqAction=Categories',
             STOCK_DOCUMENTS);
         $menubar->Activate($action);
