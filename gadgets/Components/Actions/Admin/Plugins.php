@@ -98,7 +98,7 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         );
         $tpl->SetVariable(
             'example',
-            _t('PLUGINS_'. strtoupper($plugin). '_EXAMPLE')
+            $objPlugin::t('EXAMPLE')
         );
         $tpl->SetVariable('version', $objPlugin->version);
 
