@@ -29,7 +29,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $addform->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'AddEmblem'));
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fs = new Jaws_Widgets_FieldSet(_t('EMBLEMS_ADD_EMBLEM'));
+        $fs = new Jaws_Widgets_FieldSet($this::t('ADD_EMBLEM'));
         $fs->SetDirection('vertical');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
@@ -45,7 +45,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $fs->Add($image);
 
         $type =& Piwi::CreateWidget('Combo', 'type');
-        $type->SetTitle(_t('EMBLEMS_TYPE'));
+        $type->SetTitle($this::t('TYPE'));
         for ($i = 1; $i <= 15; $i++) {
             $type_str = "EMBLEMS_TYPE_$i";
             if (_t($type_str) != $type_str) {
@@ -60,7 +60,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $published->AddOption(Jaws::t('NOO'), 0);
         $fs->Add($published);
 
-        $addsubmit =& Piwi::CreateWidget('Button', 'submitadd', _t('EMBLEMS_ADD_EMBLEM'), STOCK_NEW);
+        $addsubmit =& Piwi::CreateWidget('Button', 'submitadd', $this::t('ADD_EMBLEM'), STOCK_NEW);
         $addsubmit->SetSubmit();
 
         $addform->Add($fs);
@@ -69,7 +69,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $tpl->SetVariable('form', $addform->Get());
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $this->gadget->define('confirmDelete', _t('EMBLEMS_CONFIRM_DELETE'));
+        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'));
         $tpl->SetVariable('grid', $this->Datagrid());
         $tpl->ParseBlock('emblems');
 
@@ -91,7 +91,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $datagrid->SetID('emblems_datagrid');
         $datagrid->TotalRows($total);
 
-        $typecol =& Piwi::CreateWidget('Column', _t('EMBLEMS_TYPE'));
+        $typecol =& Piwi::CreateWidget('Column', $this::t('TYPE'));
         $datagrid->AddColumn($typecol);
 
         $titlecol =& Piwi::CreateWidget('Column', Jaws::t('TITLE'));
@@ -100,7 +100,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $urlcol =& Piwi::CreateWidget('Column', Jaws::t('URL'));
         $datagrid->AddColumn($urlcol);
 
-        $imgcol =& Piwi::CreateWidget('Column', _t('EMBLEMS_RESULT'));
+        $imgcol =& Piwi::CreateWidget('Column', $this::t('RESULT'));
         $datagrid->AddColumn($imgcol);
 
         $statuscol =& Piwi::CreateWidget('Column', Jaws::t('PUBLISHED'));
@@ -202,7 +202,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
-            $this->gadget->session->push(_t('EMBLEMS_ERROR_NO_IMAGE_UPLOADED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_NO_IMAGE_UPLOADED'), RESPONSE_ERROR);
         } else {
             $post['image'] = $res['image'][0]['host_filename'];
             $post['published'] = (bool)$post['published'];
@@ -210,9 +210,9 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
             $res = $model->AddEmblem($post);
             if (Jaws_Error::IsError($res)) {
                 Jaws_FileManagement_File::delete(ROOT_DATA_PATH. 'emblems/'. $post['image']);
-                $this->gadget->session->push(_t('EMBLEMS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
+                $this->gadget->session->push($this::t('ERROR_NOT_ADDED'), RESPONSE_ERROR);
             } else {
-                $this->gadget->session->push(_t('EMBLEMS_ADDED'), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('ADDED'), RESPONSE_NOTICE);
             }
         }
 

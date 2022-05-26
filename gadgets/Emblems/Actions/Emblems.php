@@ -20,7 +20,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Emblems.html');
         $tpl->SetBlock('emblems');
-        $tpl->SetVariable('title', _t('EMBLEMS_ACTION_TITLE'));
+        $tpl->SetVariable('title', $this::t('ACTION_TITLE'));
 
         $model = $this->gadget->model->load('Emblems');
         $emblems = $model->GetEmblems(true);
@@ -39,7 +39,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
                 );
                 $tpl->SetBlock('emblems/emblem');
                 $tpl->SetVariable('id', $e['id']);
-                $tpl->SetVariable('title', _t('EMBLEMS_TYPE_' . $e['type'], $e['title']));
+                $tpl->SetVariable('title', $this::t('TYPE_' . $e['type'], $e['title']));
                 $tpl->SetVariable('image', $this->app->getDataURL('emblems/' . $e['image']));
                 $tpl->SetVariable('url',   $e['url']);
                 $tpl->ParseBlock('emblems/emblem');

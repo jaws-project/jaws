@@ -28,7 +28,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return new Jaws_Error($res->getMessage());
         }
 
-        $this->gadget->session->push(_t('EMBLEMS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('UPDATED'), RESPONSE_NOTICE);
         return $this->gadget->session->pop();
     }
 
@@ -56,7 +56,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
             Jaws_FileManagement_File::delete(ROOT_DATA_PATH . 'emblems/' . $emblem['image']);
         }
 
-        $this->gadget->session->push(_t('EMBLEMS_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('DELETED'), RESPONSE_NOTICE);
         return $this->gadget->session->pop();
     }
 
