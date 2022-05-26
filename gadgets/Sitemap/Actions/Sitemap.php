@@ -44,7 +44,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Sitemap.html');
         $tpl->SetBlock('sitemap');
-        $tpl->SetVariable('title', _t('SITEMAP_SITEMAP'));
+        $tpl->SetVariable('title', $this::t('SITEMAP'));
 
         $defaultStatus = Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH;
         $model = $this->gadget->model->load('Sitemap');

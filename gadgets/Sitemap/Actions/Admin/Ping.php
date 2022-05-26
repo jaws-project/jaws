@@ -22,12 +22,12 @@ class Sitemap_Actions_Admin_Ping extends Jaws_Gadget_Action
         $res = $model->PingSearchEngines();
         if (Jaws_Error::IsError($res) || $res === false) {
             $this->gadget->session->push(
-                _t('SITEMAP_ERROR_CANT_PING_SEARCHENGINES'),
+                $this::t('ERROR_CANT_PING_SEARCHENGINES'),
                 RESPONSE_ERROR
             );
         } else {
             $this->gadget->session->push(
-                _t('SITEMAP_SEARCHENGINES_PINGED'),
+                $this::t('SEARCHENGINES_PINGED'),
                 RESPONSE_NOTICE
             );
         }

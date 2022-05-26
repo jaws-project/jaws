@@ -19,7 +19,7 @@ class Sitemap_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url'   => $this->gadget->urlMap('Sitemap'),
-                        'title' => _t('SITEMAP_SITEMAP'));
+                        'title' => $this::t('SITEMAP'));
         return $urls;
     }
 }

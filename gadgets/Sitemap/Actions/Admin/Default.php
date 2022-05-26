@@ -26,11 +26,11 @@ class Sitemap_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Sitemap',
-                            _t('SITEMAP_TITLE'),
+                            $this::t('TITLE'),
                             BASE_SCRIPT . '?reqGadget=Sitemap&amp;reqAction=ManageSitemap',
                             'gadgets/Sitemap/Resources/images/logo.mini.png');
         $menubar->AddOption('Robots',
-                            _t('SITEMAP_ROBOTS'),
+                            $this::t('ROBOTS'),
                             BASE_SCRIPT . '?reqGadget=Sitemap&amp;reqAction=Robots',
                             'gadgets/Sitemap/Resources/images/robots.png');
         $menubar->Activate($action);

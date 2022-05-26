@@ -22,11 +22,11 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->define('editCategoryTitle',  _t('SITEMAP_CATEGORY_EDIT'));
-        $this->gadget->define('editGadgetTitle',    _t('SITEMAP_GADGET_EDIT'));
+        $this->gadget->define('editCategoryTitle',  $this::t('CATEGORY_EDIT'));
+        $this->gadget->define('editGadgetTitle',    $this::t('GADGET_EDIT'));
         $this->gadget->define('sitemapListOpenImageSrc',  STOCK_ADD);
         $this->gadget->define('sitemapListCloseImageSrc', STOCK_REMOVE);
-        $this->gadget->define('noCategoryExists', _t('SITEMAP_CATEGORY_NOEXISTS'));
+        $this->gadget->define('noCategoryExists', $this::t('CATEGORY_NOEXISTS'));
 
         $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
         $tpl->SetBlock('sitemap');
@@ -47,10 +47,10 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $tpl->SetVariable('sitemap_tree_image', 'gadgets/Sitemap/Resources/images/logo.mini.png');
-        $tpl->SetVariable('sitemap_tree_title', _t('SITEMAP_TREE_TITLE'));
+        $tpl->SetVariable('sitemap_tree_title', $this::t('TREE_TITLE'));
         $tpl->SetVariable('ping_icon', STOCK_RESET);
         $tpl->SetVariable('js_ping_func', "pingSearchEngines()");
-        $tpl->SetVariable('ping_title', _t('SITEMAP_PING_SEARCHENGINES'));
+        $tpl->SetVariable('ping_title', $this::t('PING_SEARCHENGINES'));
 
         $tpl->ParseBlock('sitemap/sitemap_base');
         $tpl->ParseBlock('sitemap');
@@ -79,7 +79,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
             $tpl->SetVariable('js_edit_func', "editGadget('" . $gadget['name'] . "')");
             $tpl->SetVariable('sync_icon', STOCK_REFRESH);
             $tpl->SetVariable('js_sync_func', "syncSitemap('" . $gadget['name'] . "')");
-            $tpl->SetVariable('sync_title', _t('SITEMAP_SYNC_SITEMAP'));
+            $tpl->SetVariable('sync_title', $this::t('SYNC_SITEMAP'));
             $tpl->ParseBlock('sitemap/sitemap_gadget');
         }
 
@@ -143,8 +143,8 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         // Priority
         $priority =& Piwi::CreateWidget('Combo', 'priority');
-        $priority->SetTitle(_t('SITEMAP_PRIORITY'));
-        $priority->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), '0');
+        $priority->SetTitle($this::t('PRIORITY'));
+        $priority->AddOption($this::t('INHERITANCE_SETTINGS'), '0');
         for($i=1; $i<10; $i++) {
             $priority->AddOption('0.'.$i, '0.'.$i);
         }
@@ -152,34 +152,34 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $priority->SetDefault(null);
         $priority->SetId('priority');
         $priority->SetStyle('width: 330px;');
-        $tpl->SetVariable('lbl_priority', _t('SITEMAP_PRIORITY'));
+        $tpl->SetVariable('lbl_priority', $this::t('PRIORITY'));
         $tpl->SetVariable('priority', $priority->Get());
 
         // Change Frequency
         $changeFreq =& Piwi::CreateWidget('Combo', 'frequency');
-        $changeFreq->SetTitle(_t('SITEMAP_CHANGE_FREQ'));
-        $changeFreq->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), 0);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_ALWAYS'), Sitemap_Info::SITEMAP_CHANGE_FREQ_ALWAYS);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_HOURLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_HOURLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_DAILY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_DAILY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_WEEKLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_WEEKLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_MONTHLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_MONTHLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_YEARLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_YEARLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_NEVER'), Sitemap_Info::SITEMAP_CHANGE_FREQ_NEVER);
+        $changeFreq->SetTitle($this::t('CHANGE_FREQ'));
+        $changeFreq->AddOption($this::t('INHERITANCE_SETTINGS'), 0);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_ALWAYS'), Sitemap_Info::SITEMAP_CHANGE_FREQ_ALWAYS);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_HOURLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_HOURLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_DAILY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_DAILY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_WEEKLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_WEEKLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_MONTHLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_MONTHLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_YEARLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_YEARLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_NEVER'), Sitemap_Info::SITEMAP_CHANGE_FREQ_NEVER);
         $changeFreq->SetDefault(0);
         $changeFreq->SetId('frequency');
         $changeFreq->SetStyle('width: 330px;');
-        $tpl->SetVariable('lbl_frequency', _t('SITEMAP_CHANGE_FREQ'));
+        $tpl->SetVariable('lbl_frequency', $this::t('CHANGE_FREQ'));
         $tpl->SetVariable('frequency', $changeFreq->Get());
 
         // Status
         $changeFreq =& Piwi::CreateWidget('Combo', 'status');
         $changeFreq->SetTitle(Jaws::t('STATUS'));
-        $changeFreq->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), 0);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_NONE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_NONE);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_XML'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_XML);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_USER_SIDE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_USER_SIDE);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_BOTH'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH);
+        $changeFreq->AddOption($this::t('INHERITANCE_SETTINGS'), 0);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_NONE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_NONE);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_XML'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_XML);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_USER_SIDE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_USER_SIDE);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_BOTH'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH);
         $changeFreq->SetDefault(0);
         $changeFreq->SetId('status');
         $changeFreq->SetStyle('width: 330px;');
@@ -206,8 +206,8 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         // Priority
         $priority =& Piwi::CreateWidget('Combo', 'priority');
-        $priority->SetTitle(_t('SITEMAP_PRIORITY'));
-        $priority->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), null);
+        $priority->SetTitle($this::t('PRIORITY'));
+        $priority->AddOption($this::t('INHERITANCE_SETTINGS'), null);
         for($i=1; $i<10; $i++) {
             $priority->AddOption('0.'.$i, '0.'.$i);
         }
@@ -215,34 +215,34 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $priority->SetDefault(null);
         $priority->SetId('priority');
         $priority->SetStyle('width: 330px;');
-        $tpl->SetVariable('lbl_priority', _t('SITEMAP_PRIORITY'));
+        $tpl->SetVariable('lbl_priority', $this::t('PRIORITY'));
         $tpl->SetVariable('priority', $priority->Get());
 
         // Change Frequency
         $changeFreq =& Piwi::CreateWidget('Combo', 'frequency');
-        $changeFreq->SetTitle(_t('SITEMAP_CHANGE_FREQ'));
-        $changeFreq->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), 0);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_ALWAYS'), Sitemap_Info::SITEMAP_CHANGE_FREQ_ALWAYS);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_HOURLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_HOURLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_DAILY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_DAILY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_WEEKLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_WEEKLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_MONTHLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_MONTHLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_YEARLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_YEARLY);
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_NEVER'), Sitemap_Info::SITEMAP_CHANGE_FREQ_NEVER);
+        $changeFreq->SetTitle($this::t('CHANGE_FREQ'));
+        $changeFreq->AddOption($this::t('INHERITANCE_SETTINGS'), 0);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_ALWAYS'), Sitemap_Info::SITEMAP_CHANGE_FREQ_ALWAYS);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_HOURLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_HOURLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_DAILY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_DAILY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_WEEKLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_WEEKLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_MONTHLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_MONTHLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_YEARLY'), Sitemap_Info::SITEMAP_CHANGE_FREQ_YEARLY);
+        $changeFreq->AddOption($this::t('CHANGE_FREQ_NEVER'), Sitemap_Info::SITEMAP_CHANGE_FREQ_NEVER);
         $changeFreq->SetDefault(0);
         $changeFreq->SetId('frequency');
         $changeFreq->SetStyle('width: 330px;');
-        $tpl->SetVariable('lbl_frequency', _t('SITEMAP_CHANGE_FREQ'));
+        $tpl->SetVariable('lbl_frequency', $this::t('CHANGE_FREQ'));
         $tpl->SetVariable('frequency', $changeFreq->Get());
 
         // Status
         $changeFreq =& Piwi::CreateWidget('Combo', 'status');
         $changeFreq->SetTitle(Jaws::t('STATUS'));
-        $changeFreq->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), 0);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_NONE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_NONE);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_XML'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_XML);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_USER_SIDE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_USER_SIDE);
-        $changeFreq->AddOption(_t('SITEMAP_CATEGORY_SHOW_IN_BOTH'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH);
+        $changeFreq->AddOption($this::t('INHERITANCE_SETTINGS'), 0);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_NONE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_NONE);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_XML'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_XML);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_USER_SIDE'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_USER_SIDE);
+        $changeFreq->AddOption($this::t('CATEGORY_SHOW_IN_BOTH'), Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH);
         $changeFreq->SetDefault(0);
         $changeFreq->SetId('status');
         $changeFreq->SetStyle('width: 330px;');
@@ -251,7 +251,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         // Last update
         $tpl->SetVariable('lbl_last_update', Jaws::t('UPDATETIME'));
-        $tpl->SetVariable('last_update', _t('SITEMAP_NEVER'));
+        $tpl->SetVariable('last_update', $this::t('NEVER'));
 
 
         $tpl->ParseBlock('sitemap/gadgetUI');
@@ -288,7 +288,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         if(!empty($properties['update_time'])) {
             $properties['update_time'] = $date->format($properties['update_time']);
         } else {
-            $properties['update_time'] = _t('SITEMAP_NEVER');
+            $properties['update_time'] = $this::t('NEVER');
         }
         return $properties;
     }
@@ -305,10 +305,10 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->UpdateCategory($post['gname'], $post['category'], $post['data']);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $this->gadget->session->push(_t('SITEMAP_ERROR_CANT_UPDATE_CATEGORY_PROPERTIES'),
+            $this->gadget->session->push($this::t('ERROR_CANT_UPDATE_CATEGORY_PROPERTIES'),
                 RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('SITEMAP_CATEGORY_PROPERTIES_UPDATED'),
+            $this->gadget->session->push($this::t('CATEGORY_PROPERTIES_UPDATED'),
                 RESPONSE_NOTICE);
         }
 
@@ -329,10 +329,10 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $data['update_time'] = '';
         $res = $model->UpdateGadgetProperties($post['gname'], $data);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $this->gadget->session->push(_t('SITEMAP_ERROR_CANT_UPDATE_GADGET_PROPERTIES'),
+            $this->gadget->session->push($this::t('ERROR_CANT_UPDATE_GADGET_PROPERTIES'),
                 RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('SITEMAP_GADGET_PROPERTIES_UPDATED'),
+            $this->gadget->session->push($this::t('GADGET_PROPERTIES_UPDATED'),
                 RESPONSE_NOTICE);
         }
 
@@ -351,10 +351,10 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->SyncSitemapXML($gadget);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $this->gadget->session->push(_t('SITEMAP_ERROR_CANT_SYNC_XML_FILE'),
+            $this->gadget->session->push($this::t('ERROR_CANT_SYNC_XML_FILE'),
                 RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('SITEMAP_XML_FILE_SYNCED'),
+            $this->gadget->session->push($this::t('XML_FILE_SYNCED'),
                 RESPONSE_NOTICE);
         }
 
@@ -373,10 +373,10 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $res = $model->SyncSitemapData($gadget);
         if (Jaws_Error::IsError($res) || $res === false) {
-            $this->gadget->session->push(_t('SITEMAP_ERROR_CANT_SYNC_DATA_FILE'),
+            $this->gadget->session->push($this::t('ERROR_CANT_SYNC_DATA_FILE'),
                 RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('SITEMAP_DATA_FILE_SYNCED'),
+            $this->gadget->session->push($this::t('DATA_FILE_SYNCED'),
                 RESPONSE_NOTICE);
         }
 

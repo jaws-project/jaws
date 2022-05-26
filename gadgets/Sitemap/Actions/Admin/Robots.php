@@ -28,7 +28,7 @@ class Sitemap_Actions_Admin_Robots extends Sitemap_Actions_Admin_Default
         $robots =& Piwi::CreateWidget('TextArea', 'robots', $currentRobots);
         $robots->SetRows(12);
         $robots->SetStyle('width:300px');
-        $tpl->SetVariable('lbl_robots', _t('SITEMAP_ROBOTS_TXT_CONTENT'));
+        $tpl->SetVariable('lbl_robots', $this::t('ROBOTS_TXT_CONTENT'));
         $tpl->SetVariable('robots', $robots->Get());
 
         $save =& Piwi::CreateWidget('Button',
@@ -54,9 +54,9 @@ class Sitemap_Actions_Admin_Robots extends Sitemap_Actions_Admin_Default
         $robots = $this->gadget->request->fetch('robots', 'post');
         $result = $this->gadget->registry->update('robots.txt', $robots);
         if (!$result || Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('SITEMAP_ERROR_ROBOTS_NOT_SAVED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_ROBOTS_NOT_SAVED'), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('SITEMAP_ROBOTS_SAVED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('ROBOTS_SAVED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
