@@ -18,15 +18,15 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $this->gadget->CheckPermission('Messages');
         $this->AjaxMe('script.js');
         $this->gadget->define('lbl_message_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_message_type', _t('NOTIFICATION_MESSAGE_TYPE'));
+        $this->gadget->define('lbl_message_type', $this::t('MESSAGE_TYPE'));
         $this->gadget->define('lbl_shouter', Jaws::t('GADGET'));
         $this->gadget->define('lbl_insert_time', Jaws::t('CREATETIME'));
         $this->gadget->define('lbl_status', Jaws::t('STATUS'));
-        $this->gadget->define('lbl_view', _t('NOTIFICATION_VIEW'));
-        $this->gadget->define('lbl_delete_message', _t('NOTIFICATION_DELETE_MESSAGE'));
-        $this->gadget->define('lbl_delete_similar_message', _t('NOTIFICATION_DELETE_SIMILAR_MESSAGE'));
-        $this->gadget->define('confirmDeleteMessage', Jaws::t('CONFIRM_DELETE', _t('NOTIFICATION_MESSAGE')));
-        $this->gadget->define('confirmDeleteSimilarMessage', Jaws::t('CONFIRM_DELETE', _t('NOTIFICATION_MESSAGES_SIMILAR')));
+        $this->gadget->define('lbl_view', $this::t('VIEW'));
+        $this->gadget->define('lbl_delete_message', $this::t('DELETE_MESSAGE'));
+        $this->gadget->define('lbl_delete_similar_message', $this::t('DELETE_SIMILAR_MESSAGE'));
+        $this->gadget->define('confirmDeleteMessage', Jaws::t('CONFIRM_DELETE', $this::t('MESSAGE')));
+        $this->gadget->define('confirmDeleteSimilarMessage', Jaws::t('CONFIRM_DELETE', $this::t('MESSAGES_SIMILAR')));
 
         $tpl = $this->gadget->template->loadAdmin('Messages.html');
         $tpl->SetBlock('Messages');
@@ -39,23 +39,23 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $tpl->SetVariable('lbl_items', Jaws::t('ITEMS'));
         $tpl->SetVariable('lbl_per_page', Jaws::t('PERPAGE'));
 
-        $tpl->SetVariable('lbl_message', _t('NOTIFICATION_MESSAGE'));
+        $tpl->SetVariable('lbl_message', $this::t('MESSAGE'));
         $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
         $tpl->SetVariable('lbl_shouter', Jaws::t('GADGET'));
         $tpl->SetVariable('lbl_name', Jaws::t('NAME'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
-        $tpl->SetVariable('lbl_summary', _t('NOTIFICATION_MESSAGE_SUMMARY'));
-        $tpl->SetVariable('lbl_verbose', _t('NOTIFICATION_MESSAGE_VERBOSE'));
-        $tpl->SetVariable('lbl_message_type', _t('NOTIFICATION_MESSAGE_TYPE'));
-        $tpl->SetVariable('lbl_callback', _t('NOTIFICATION_MESSAGE_CALLBACK'));
-        $tpl->SetVariable('lbl_image', _t('NOTIFICATION_IMAGE'));
+        $tpl->SetVariable('lbl_summary', $this::t('MESSAGE_SUMMARY'));
+        $tpl->SetVariable('lbl_verbose', $this::t('MESSAGE_VERBOSE'));
+        $tpl->SetVariable('lbl_message_type', $this::t('MESSAGE_TYPE'));
+        $tpl->SetVariable('lbl_callback', $this::t('MESSAGE_CALLBACK'));
+        $tpl->SetVariable('lbl_image', $this::t('IMAGE'));
         $tpl->SetVariable('lbl_insert_time', Jaws::t('TIME'));
-        $tpl->SetVariable('lbl_attempts', _t('NOTIFICATION_MESSAGE_ATTEMPTS'));
-        $tpl->SetVariable('lbl_attempt_time', _t('NOTIFICATION_MESSAGE_ATTEMPT_TIME'));
-        $tpl->SetVariable('lbl_from_date', _t('NOTIFICATION_FROM_DATE'));
-        $tpl->SetVariable('lbl_to_date', _t('NOTIFICATION_TO_DATE'));
-        $tpl->SetVariable('lbl_contact', _t('NOTIFICATION_CONTACT'));
-        $tpl->SetVariable('lbl_message_details', _t('NOTIFICATION_MESSAGE_DETAILS'));
+        $tpl->SetVariable('lbl_attempts', $this::t('MESSAGE_ATTEMPTS'));
+        $tpl->SetVariable('lbl_attempt_time', $this::t('MESSAGE_ATTEMPT_TIME'));
+        $tpl->SetVariable('lbl_from_date', $this::t('FROM_DATE'));
+        $tpl->SetVariable('lbl_to_date', $this::t('TO_DATE'));
+        $tpl->SetVariable('lbl_contact', $this::t('CONTACT'));
+        $tpl->SetVariable('lbl_message_details', $this::t('MESSAGE_DETAILS'));
         $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
 
         $tpl->SetBlock('Messages/filter_from_date');
@@ -85,9 +85,9 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         }
 
         $messageTypes = array(
-            Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL => _t('NOTIFICATION_MESSAGE_TYPE_EMAIL'),
-            Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS => _t('NOTIFICATION_MESSAGE_TYPE_SMS'),
-            Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB => _t('NOTIFICATION_MESSAGE_TYPE_WEB'),
+            Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL => $this::t('MESSAGE_TYPE_EMAIL'),
+            Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS => $this::t('MESSAGE_TYPE_SMS'),
+            Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB => $this::t('MESSAGE_TYPE_WEB'),
         );
         foreach ($messageTypes as $value => $title) {
             $tpl->SetBlock('Messages/filter_message_type');
@@ -97,9 +97,9 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         }
 
         $sendStatuses = array(
-            Notification_Info::NOTIFICATION_MESSAGE_STATUS_NOT_SEND => _t('NOTIFICATION_MESSAGE_STATUS_NOT_SEND'),
-            Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENDING => _t('NOTIFICATION_MESSAGE_STATUS_SENDING'),
-            Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENT => _t('NOTIFICATION_MESSAGE_STATUS_SENT'),
+            Notification_Info::NOTIFICATION_MESSAGE_STATUS_NOT_SEND => $this::t('MESSAGE_STATUS_NOT_SEND'),
+            Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENDING => $this::t('MESSAGE_STATUS_SENDING'),
+            Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENT => $this::t('MESSAGE_STATUS_SENT'),
         );
         foreach ($sendStatuses as $value => $title) {
             $tpl->SetBlock('Messages/filter_status');
@@ -140,13 +140,13 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             $messageType = '';
             switch ($message['driver']) {
                 case Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL:
-                    $messageType = _t('NOTIFICATION_MESSAGE_TYPE_EMAIL');
+                    $messageType = $this::t('MESSAGE_TYPE_EMAIL');
                     break;
                 case Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS:
-                    $messageType = _t('NOTIFICATION_MESSAGE_TYPE_SMS');
+                    $messageType = $this::t('MESSAGE_TYPE_SMS');
                     break;
                 case Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB:
-                    $messageType = _t('NOTIFICATION_MESSAGE_TYPE_WEB');
+                    $messageType = $this::t('MESSAGE_TYPE_WEB');
                     break;
             }
             $message['message_type'] = $messageType;
@@ -154,13 +154,13 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             $sendStatus = '';
             switch ($message['status']) {
                 case Notification_Info::NOTIFICATION_MESSAGE_STATUS_NOT_SEND:
-                    $sendStatus = _t('NOTIFICATION_MESSAGE_STATUS_NOT_SEND');
+                    $sendStatus = $this::t('MESSAGE_STATUS_NOT_SEND');
                     break;
                 case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENDING:
-                    $sendStatus = _t('NOTIFICATION_MESSAGE_STATUS_SENDING');
+                    $sendStatus = $this::t('MESSAGE_STATUS_SENDING');
                     break;
                 case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENT:
-                    $sendStatus = _t('NOTIFICATION_MESSAGE_STATUS_SENT');
+                    $sendStatus = $this::t('MESSAGE_STATUS_SENT');
                     break;
             }
             $message['status'] = $sendStatus;
@@ -201,25 +201,25 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $messageType = '';
         switch ($messageInfo['driver']) {
             case Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL:
-                $messageType = _t('NOTIFICATION_MESSAGE_TYPE_EMAIL');
+                $messageType = $this::t('MESSAGE_TYPE_EMAIL');
                 break;
             case Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS:
-                $messageType = _t('NOTIFICATION_MESSAGE_TYPE_SMS');
+                $messageType = $this::t('MESSAGE_TYPE_SMS');
                 break;
             case Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB:
-                $messageType = _t('NOTIFICATION_MESSAGE_TYPE_WEB');
+                $messageType = $this::t('MESSAGE_TYPE_WEB');
                 break;
         }
         $sendStatus = '';
         switch ($messageInfo['status']) {
             case Notification_Info::NOTIFICATION_MESSAGE_STATUS_NOT_SEND:
-                $sendStatus = _t('NOTIFICATION_MESSAGE_STATUS_NOT_SEND');
+                $sendStatus = $this::t('MESSAGE_STATUS_NOT_SEND');
                 break;
             case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENDING:
-                $sendStatus = _t('NOTIFICATION_MESSAGE_STATUS_SENDING');
+                $sendStatus = $this::t('MESSAGE_STATUS_SENDING');
                 break;
             case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENT:
-                $sendStatus = _t('NOTIFICATION_MESSAGE_STATUS_SENT');
+                $sendStatus = $this::t('MESSAGE_STATUS_SENT');
                 break;
         }
 
@@ -257,7 +257,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         }
 
         return $this->gadget->session->response(
-            _t('NOTIFICATION_MESSAGE_DELETED'),
+            $this::t('MESSAGE_DELETED'),
             RESPONSE_NOTICE
         );
     }

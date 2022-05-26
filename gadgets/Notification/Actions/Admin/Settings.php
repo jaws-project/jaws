@@ -21,7 +21,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
         $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('menubar', $this->MenuBar('Settings'));
-        $tpl->SetVariable('lbl_gadgets_notification_configuration', _t('NOTIFICATION_GADGETS_NOTIFICATION_CONFIGURATION'));
+        $tpl->SetVariable('lbl_gadgets_notification_configuration', $this::t('GADGETS_NOTIFICATION_CONFIGURATION'));
 
         // get gadget driver settings
         $configuration = unserialize($this->gadget->registry->fetch('configuration'));
@@ -46,7 +46,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
                 $tpl->SetVariable('gadget_title', $objGadget->title);
 
                 $driverOpt =& Piwi::CreateWidget('Combo', $gadget);
-                $driverOpt->AddOption(_t('NOTIFICATION_ALL_DRIVERS'), 1);
+                $driverOpt->AddOption($this::t('ALL_DRIVERS'), 1);
                 $driverOpt->AddOption(Jaws::t('DISABLED'), 0);
                 foreach($driversInfo as $driver) {
                     $driverOpt->AddOption($driver, $driver);
@@ -86,7 +86,7 @@ class Notification_Actions_Admin_Settings extends Notification_Actions_Admin_Def
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($res->getMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('NOTIFICATION_SETTINGS_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('SETTINGS_UPDATED'), RESPONSE_NOTICE);
         }
     }
 

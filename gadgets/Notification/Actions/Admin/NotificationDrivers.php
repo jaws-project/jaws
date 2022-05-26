@@ -17,11 +17,11 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
     {
         $this->gadget->CheckPermission('NotificationDrivers');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteFields', _t('NOTIFICATION_INCOMPLETE_FIELDS'));
+        $this->gadget->define('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
         $this->gadget->define('lbl_title', Jaws::t('TITLE'));
         $this->gadget->define('lbl_status', Jaws::t('STATUS'));
-        $this->gadget->define('lbl_install', _t('NOTIFICATION_INSTALL'));
-        $this->gadget->define('lbl_uninstall', _t('NOTIFICATION_UNINSTALL'));
+        $this->gadget->define('lbl_install', $this::t('INSTALL'));
+        $this->gadget->define('lbl_uninstall', $this::t('UNINSTALL'));
         $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
 
         $tpl = $this->gadget->template->loadAdmin('NotificationDrivers.html');
@@ -29,7 +29,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
 
         $tpl->SetVariable('menubar', $this->MenuBar('NotificationDrivers'));
         $tpl->SetVariable('title', $this->gadget->title);
-        $tpl->SetVariable('lbl_driver_details', _t('NOTIFICATION_DRIVER_DETAILS'));
+        $tpl->SetVariable('lbl_driver_details', $this::t('DRIVER_DETAILS'));
         $tpl->SetVariable('lbl_driver_settings_title', Jaws::t('SETTINGS'));
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
         $tpl->SetVariable('lbl_back', Jaws::t('BACK'));
@@ -94,7 +94,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             $finalData['installed'] = $installed;
 
             if ($installed == false) {
-                $finalData['status'] = _t('NOTIFICATION_NOT_INSTALLED');
+                $finalData['status'] = $this::t('NOT_INSTALLED');
             } else if ($driver['status'] == true) {
                 $finalData['status'] = Jaws::t('ENABLED');
             } else {
@@ -135,7 +135,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             );
         } else {
             return $this->gadget->session->response(
-                _t('NOTIFICATION_DRIVER_UPDATED'),
+                $this::t('DRIVER_UPDATED'),
                 RESPONSE_NOTICE
             );
         }
@@ -161,7 +161,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             );
         } else {
             return $this->gadget->session->response(
-                _t('NOTIFICATION_DRIVER_INSTALLED'),
+                $this::t('DRIVER_INSTALLED'),
                 RESPONSE_NOTICE
             );
         }
@@ -187,7 +187,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             );
         } else {
             return $this->gadget->session->response(
-                _t('NOTIFICATION_DRIVER_UNINSTALLED'),
+                $this::t('DRIVER_UNINSTALLED'),
                 RESPONSE_NOTICE
             );
         }

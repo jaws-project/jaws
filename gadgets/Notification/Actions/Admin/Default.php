@@ -25,14 +25,14 @@ class Notification_Actions_Admin_Default extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('Messages')) {
             $menubar->AddOption('Messages',
-                _t('NOTIFICATION_MESSAGES'),
+                $this::t('MESSAGES'),
                 BASE_SCRIPT . '?reqGadget=Notification&amp;reqAction=Messages',
                 STOCK_OPEN);
         }
 
         if ($this->gadget->GetPermission('NotificationDrivers')) {
             $menubar->AddOption('NotificationDrivers',
-                _t('NOTIFICATION_DRIVERS'),
+                $this::t('DRIVERS'),
                 BASE_SCRIPT . '?reqGadget=Notification&amp;reqAction=NotificationDrivers',
                 STOCK_CONNECT);
         }
