@@ -87,7 +87,7 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('MostRatted.html');
         $tpl->SetBlock('rating');
-        $tpl->SetVariable('title', _t('RATING_MOSTRATTED', $gadget));
+        $tpl->SetVariable('title', $this::t('MOSTRATTED', $gadget));
 
         // provide return result
         foreach ($references as $reference) {

@@ -42,7 +42,7 @@ class Rating_Actions_RatingTypes extends Jaws_Gadget_Action
 
         $this->app->layout->addScript('gadgets/Rating/Resources/index.js');
         $tpl->SetBlock("$tpl_base_block/rating");
-        $tpl->SetVariable('lbl_rating', _t('RATING_RATING'));
+        $tpl->SetVariable('lbl_rating', $this::t('RATING'));
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
@@ -161,7 +161,7 @@ class Rating_Actions_RatingTypes extends Jaws_Gadget_Action
 
         $this->app->layout->addScript('gadgets/Rating/Resources/index.js');
         $tpl->SetBlock("$tpl_base_block/like");
-        $tpl->SetVariable('lbl_like', _t('RATING_LIKE'));
+        $tpl->SetVariable('lbl_like', $this::t('LIKE'));
         $tpl->SetVariable('gadget', $gadget);
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
