@@ -19,14 +19,14 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function Logs()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
-        $this->gadget->define('msgNoMatches', _t('LOGS_COMBO_NO_MATCH_MESSAGE'));
+        $this->gadget->define('confirmLogsDelete', $this::t('CONFIRM_DELETE'));
+        $this->gadget->define('msgNoMatches', $this::t('COMBO_NO_MATCH_MESSAGE'));
         $this->gadget->define('noMatchesMessage', Jaws::t('COMBO_NO_MATCH_MESSAGE'));
         $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
 
         $this->gadget->define('LANGUAGE', array(
             'gadget'=> Jaws::t('GADGETS'),
-            'action'=> _t('LOGS_ACTION'),
+            'action'=> $this::t('ACTION'),
             'auth'=> Jaws::t('AUTHTYPE'),
             'username'=> Jaws::t('USERNAME'),
             'time'=> Jaws::t('DATE'),
@@ -44,13 +44,13 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $assigns['from_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'from_date'));
         $assigns['to_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'to_date'));
         $assigns['priorityItems'] = array(
-            JAWS_WARNING => _t('LOGS_PRIORITY_5'),
-            JAWS_NOTICE => _t('LOGS_PRIORITY_6'),
-            JAWS_INFO => _t('LOGS_PRIORITY_7'),
+            JAWS_WARNING => $this::t('PRIORITY_5'),
+            JAWS_NOTICE => $this::t('PRIORITY_6'),
+            JAWS_INFO => $this::t('PRIORITY_7'),
         );
         $assigns['statusItems'] = array(
-            1 => _t('LOGS_LOG_STATUS_1'),
-            2 => _t('LOGS_LOG_STATUS_2'),
+            1 => $this::t('LOG_STATUS_1'),
+            2 => $this::t('LOG_STATUS_2'),
         );
         return $this->gadget->template->xLoadAdmin('Logs.html')->render($assigns);
     }
@@ -114,9 +114,9 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $date = Jaws_Date::getInstance();
         $log['time'] = $date->Format($log['time'], 'DN d MN Y H:i:s');
         $log['ip'] = long2ip($log['ip']);
-        $log['priority'] = _t('LOGS_PRIORITY_'. $log['priority']);
-        $log['status']   = _t('LOGS_LOG_STATUS_'. $log['status']);
-        $log['backend']  = $log['backend']? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_INDEX');
+        $log['priority'] = $this::t('PRIORITY_'. $log['priority']);
+        $log['status']   = $this::t('LOG_STATUS_'. $log['status']);
+        $log['backend']  = $log['backend']? $this::t('LOG_SCRIPT_ADMIN') : $this::t('LOG_SCRIPT_INDEX');
 
         // user's profile link
         $log['user_url'] = $this->app->map->GetMappedURL(
@@ -151,11 +151,11 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $res = $model->DeleteLogsUseFilters($filters);
         }
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $this->gadget->session->response(_t('LOGS_ERROR_CANT_DELETE_LOGS'), RESPONSE_ERROR);
+            return $this->gadget->session->response($this::t('ERROR_CANT_DELETE_LOGS'), RESPONSE_ERROR);
         }
 
         return $this->gadget->session->response(
-            _t('LOGS_LOGS_DELETED'),
+            $this::t('LOGS_DELETED'),
             RESPONSE_NOTICE
         );
     }

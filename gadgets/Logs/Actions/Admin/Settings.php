@@ -26,9 +26,9 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
         $assigns['log_parameters'] = (int)$this->gadget->registry->fetch('log_parameters');
         $assigns['priority_level'] = (int)$this->gadget->registry->fetch('log_priority_level');
         $assigns['priorityItems'] = array(
-            JAWS_WARNING => _t('LOGS_PRIORITY_5'),
-            JAWS_NOTICE => _t('LOGS_PRIORITY_6'),
-            JAWS_INFO => _t('LOGS_PRIORITY_7'),
+            JAWS_WARNING => $this::t('PRIORITY_5'),
+            JAWS_NOTICE => $this::t('PRIORITY_6'),
+            JAWS_INFO => $this::t('PRIORITY_7'),
         );
 
         return $this->gadget->template->xLoadAdmin('Settings.html')->render($assigns);
@@ -51,7 +51,7 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
         }
 
         return $this->gadget->session->response(
-            _t('LOGS_SETTINGS_UPDATED'),
+            $this::t('SETTINGS_UPDATED'),
             RESPONSE_NOTICE
         );
 

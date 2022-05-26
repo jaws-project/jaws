@@ -26,7 +26,7 @@ class Logs_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Logs',
-                            _t('LOGS_TITLE'),
+                            $this::t('TITLE'),
                             BASE_SCRIPT . '?reqGadget=Logs&amp;reqAction=Logs',
                             STOCK_NEW);
         if ($this->gadget->GetPermission('ManageSettings')) {
