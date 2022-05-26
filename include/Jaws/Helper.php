@@ -417,28 +417,6 @@ if (!function_exists('str_ends_with')) {
  * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
  *
  * @access  public
- * @param   string  string The string to translate.
- * @return  string
- */
-function _t($string)
-{
-    $args = array();
-    if (func_num_args() > 1) {
-        $args = func_get_args();
-
-        // Argument 1 is the string to be translated.
-        array_shift($args);
-    }
-
-    return Jaws_Translate::getInstance()->Translate(null, $string, $args);
-}
-
-/**
- * Convenience function to translate strings.
- *
- * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
- *
- * @access  public
  * @param   string  lang The language.
  * @param   string  string The string to translate.
  * @return  string
