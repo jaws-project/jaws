@@ -27,7 +27,7 @@ class Upgrader_Cleanup extends JawsUpgrader
 
         _log(JAWS_DEBUG,"Preparing cleanup stage");
         $tpl->SetBlock('cleanup');
-        $tpl->setVariable('lbl_info', $this->t('CLEANUP_INFO'));
+        $tpl->setVariable('lbl_info', $this::t('CLEANUP_INFO'));
 
         $cleanup_required = false;
         $cleanup_items = @file_get_contents(ROOT_JAWS_PATH. 'upgrade/stages/Cleanup/folders.txt');
@@ -56,7 +56,7 @@ class Upgrader_Cleanup extends JawsUpgrader
 
         if (!$cleanup_required) {
             $tpl->SetBlock('cleanup/not_required');
-            $tpl->setVariable('message', $this->t('CLEANUP_NOT_REQUIRED'));
+            $tpl->setVariable('message', $this::t('CLEANUP_NOT_REQUIRED'));
             $tpl->ParseBlock('cleanup/not_required');
         }
 
@@ -96,7 +96,7 @@ class Upgrader_Cleanup extends JawsUpgrader
         }
 
         if ($cleanup_error) {
-            return Jaws_Error::raiseError($this->t('CLEANUP_ERROR_PERMISSION'), 0, JAWS_ERROR_WARNING);
+            return Jaws_Error::raiseError($this::t('CLEANUP_ERROR_PERMISSION'), 0, JAWS_ERROR_WARNING);
         }
 
         return true;

@@ -22,8 +22,8 @@ class Upgrader_160To170 extends JawsUpgrader
         $tpl->Load('display.html', 'stages/160To170/templates');
         $tpl->SetBlock('160To170');
 
-        $tpl->setVariable('lbl_info',  $this->t('VER_INFO', '1.6.0', '1.7.0'));
-        $tpl->setVariable('lbl_notes', $this->t('VER_NOTES'));
+        $tpl->setVariable('lbl_info',  $this::t('VER_INFO', '1.6.0', '1.7.0'));
+        $tpl->setVariable('lbl_notes', $this::t('VER_NOTES'));
         $tpl->SetVariable('next',      Jaws::t('NEXT'));
 
         $tpl->ParseBlock('160To170');
@@ -47,7 +47,7 @@ class Upgrader_160To170 extends JawsUpgrader
                 JAWS_DEBUG,
                 "There was a problem connecting to the database, please check the details and try again"
             );
-            return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this::t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         // delete old sessions

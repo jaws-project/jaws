@@ -22,8 +22,8 @@ class Upgrader_100To110 extends JawsUpgrader
         $tpl->Load('display.html', 'stages/100To110/templates');
         $tpl->SetBlock('100To110');
 
-        $tpl->setVariable('lbl_info',  $this->t('VER_INFO', '1.0.0', '1.1.0'));
-        $tpl->setVariable('lbl_notes', $this->t('VER_NOTES'));
+        $tpl->setVariable('lbl_info',  $this::t('VER_INFO', '1.0.0', '1.1.0'));
+        $tpl->setVariable('lbl_notes', $this::t('VER_NOTES'));
         $tpl->SetVariable('next',      Jaws::t('NEXT'));
 
         $tpl->ParseBlock('100To110');
@@ -44,7 +44,7 @@ class Upgrader_100To110 extends JawsUpgrader
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_DEBUG,"There was a problem connecting to the database, please check the details and try again");
-            return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this::t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         // Create application

@@ -54,8 +54,8 @@ class Upgrader_Report extends JawsUpgrader
         $tpl->Load('display.html', 'stages/Report/templates');
         $tpl->SetBlock('Report');
 
-        $tpl->setVariable('lbl_info',    $this->t('REPORT_INFO', JAWS_VERSION));
-        $tpl->setVariable('lbl_message', $this->t('REPORT_MESSAGE'));
+        $tpl->setVariable('lbl_info',    $this::t('REPORT_INFO', JAWS_VERSION));
+        $tpl->setVariable('lbl_message', $this::t('REPORT_MESSAGE'));
         $tpl->SetVariable('next',        Jaws::t('NEXT'));
 
         $versions_to_upgrade = 0;
@@ -74,15 +74,15 @@ class Upgrader_Report extends JawsUpgrader
 
             if (version_compare($supported['version'], $_SESSION['upgrade']['InstalledVersion'], '<=')) {
                 if ($supported['version'] == JAWS_VERSION) {
-                    $tpl->SetVariable('status', $this->t('REPORT_NO_NEED_CURRENT'));
+                    $tpl->SetVariable('status', $this::t('REPORT_NO_NEED_CURRENT'));
                     _log(JAWS_DEBUG,$supported['version']." does not requires upgrade(is current)");
                 } else {
-                    $tpl->SetVariable('status', $this->t('REPORT_NO_NEED'));
+                    $tpl->SetVariable('status', $this::t('REPORT_NO_NEED'));
                     _log(JAWS_DEBUG,$supported['version']." does not requires upgrade");
                 }
                 $_SESSION['upgrade']['versions'][$supported['version']]['status'] = true;
             } else {
-                $tpl->SetVariable('status', $this->t('REPORT_NEED'));
+                $tpl->SetVariable('status', $this::t('REPORT_NEED'));
                 $_SESSION['upgrade']['versions'][$supported['version']]['status'] = false;
                 $versions_to_upgrade++;
                 _log(JAWS_DEBUG,$supported['version']." requires upgrade");
@@ -114,7 +114,7 @@ class Upgrader_Report extends JawsUpgrader
     function Run()
     {
         if (version_compare($_SESSION['upgrade']['InstalledVersion'], '0.9.0' , '<')) {
-            return Jaws_Error::raiseError($this->t('REPORT_NOT_SUPPORTED'), 0, JAWS_ERROR_WARNING);
+            return Jaws_Error::raiseError($this::t('REPORT_NOT_SUPPORTED'), 0, JAWS_ERROR_WARNING);
         }
 
         if (is_dir(ROOT_DATA_PATH. "languages")) {

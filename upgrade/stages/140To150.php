@@ -22,8 +22,8 @@ class Upgrader_140To150 extends JawsUpgrader
         $tpl->Load('display.html', 'stages/140To150/templates');
         $tpl->SetBlock('140To150');
 
-        $tpl->setVariable('lbl_info',  $this->t('VER_INFO', '1.4.0', '1.5.0'));
-        $tpl->setVariable('lbl_notes', $this->t('VER_NOTES'));
+        $tpl->setVariable('lbl_info',  $this::t('VER_INFO', '1.4.0', '1.5.0'));
+        $tpl->setVariable('lbl_notes', $this::t('VER_NOTES'));
         $tpl->SetVariable('next',      Jaws::t('NEXT'));
 
         $tpl->ParseBlock('140To150');
@@ -47,7 +47,7 @@ class Upgrader_140To150 extends JawsUpgrader
                 JAWS_DEBUG,
                 "There was a problem connecting to the database, please check the details and try again"
             );
-            return new Jaws_Error($this->t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this::t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         // upgrade core database schema

@@ -22,8 +22,8 @@ class Upgrader_110To111 extends JawsUpgrader
         $tpl->Load('display.html', 'stages/110To111/templates');
         $tpl->SetBlock('110To111');
 
-        $tpl->setVariable('lbl_info',  $this->t('VER_INFO', '1.1.0', '1.1.1'));
-        $tpl->setVariable('lbl_notes', $this->t('VER_NOTES'));
+        $tpl->setVariable('lbl_info',  $this::t('VER_INFO', '1.1.0', '1.1.1'));
+        $tpl->setVariable('lbl_notes', $this::t('VER_NOTES'));
         $tpl->SetVariable('next',      Jaws::t('NEXT'));
 
         $tpl->ParseBlock('110To111');
