@@ -103,9 +103,9 @@ class Jaws_Gadget_ACL extends Jaws_Gadget_Class
     function description($key, $subkey = 0)
     {
         if (in_array($key, array('default', 'default_admin', 'default_registry'))) {
-            return Jaws::t('ACL_'. $key));
+            return Jaws::t('ACL_'. $key);
         } elseif (empty($subkey)) {
-            return $this::t('ACL_'. $key));
+            return $this->gadget::t('ACL_'. $key);
         } else {
             static $alreadyLoaded;
             $acl_key_name = 'ACL_'. $key. '_'. $subkey;
@@ -118,7 +118,7 @@ class Jaws_Gadget_ACL extends Jaws_Gadget_Class
                 }
             }
 
-            return $this::t($acl_key_name);
+            return $this->gadget::t($acl_key_name);
         }
     }
 

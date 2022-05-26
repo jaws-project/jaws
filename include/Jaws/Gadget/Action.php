@@ -296,8 +296,8 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         }
 
         if (isset($this->app->layout)) {
-            $this->app->layout->SetTitle($this::t('ACTIONS_'.$action.'_TITLE'));
-            $this->app->layout->SetDescription($this::t('ACTIONS_'.$action.'_DESC'));
+            $this->app->layout->SetTitle($this->gadget::t('ACTIONS_'.$action.'_TITLE'));
+            $this->app->layout->SetDescription($this->gadget::t('ACTIONS_'.$action.'_DESC'));
         }
 
         $file = $this->gadget->actions[JAWS_SCRIPT][$action]['file'];
