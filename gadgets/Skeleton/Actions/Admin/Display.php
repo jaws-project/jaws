@@ -18,7 +18,7 @@ class Skeleton_Actions_Admin_Display extends Jaws_Gadget_Action
      */
     function Display()
     {
-        return _t('SKELETON_ADMIN_MESSAGE');
+        return $this::t('ADMIN_MESSAGE');
     }
 
 }

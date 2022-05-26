@@ -30,7 +30,7 @@ class Skeleton_Actions_Display extends Jaws_Gadget_Action
         $model   = $this->gadget->model->load();
         $version = $model->GetJawsVersion();
         */
-        return _t('SKELETON_DISPLAY_MESSAGE', $version);
+        return $this::t('DISPLAY_MESSAGE', $version);
     }
 
 }
