@@ -184,7 +184,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
             $activityData['domain'] = $activity['domain'];
             // Gadget
             if (!empty($activity['gadget'])) {
-                $activityData['gadget'] = _t(strtoupper($activity['gadget'] . '_TITLE'));
+                $activityData['gadget'] = $this::t($activity['gadget']. '.TITLE');
             } else {
                 $activityData['gadget'] = '';
             }
