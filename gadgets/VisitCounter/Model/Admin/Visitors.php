@@ -40,11 +40,11 @@ class VisitCounter_Model_Admin_Visitors extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('ipvisitor');
         $result = $table->delete()->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('VISITCOUNTER_ERROR_VISITORS_NOT_CLEARED'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_VISITORS_NOT_CLEARED'), RESPONSE_ERROR);
             return $result;
         }
 
-        $this->gadget->session->push(_t('VISITCOUNTER_VISITORS_CLEARED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('VISITORS_CLEARED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -60,16 +60,16 @@ class VisitCounter_Model_Admin_Visitors extends Jaws_Gadget_Model
             $table = Jaws_ORM::getInstance()->table('ipvisitor');
             $result = $table->update(array('visits', 0))->exec();
             if (Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'), RESPONSE_ERROR);
+                $this->gadget->session->push($this::t('ERROR_COUNTER_NOT_RESETED'), RESPONSE_ERROR);
                 return $result;
             }
 
-            $this->gadget->session->push(_t('VISITCOUNTER_COUNTER_RESETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('COUNTER_RESETED'), RESPONSE_NOTICE);
             return true;
         }
 
-        $this->gadget->session->push(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'));
+        $this->gadget->session->push($this::t('ERROR_COUNTER_NOT_RESETED'), RESPONSE_ERROR);
+        return new Jaws_Error($this::t('ERROR_COUNTER_NOT_RESETED'));
     }
 
     /**
@@ -83,7 +83,7 @@ class VisitCounter_Model_Admin_Visitors extends Jaws_Gadget_Model
     {
         $rs = $this->gadget->registry->update('start', $date);
         if (!$rs || Jaws_Error::IsError($rs)) {
-            return new Jaws_Error(_t('VISITCOUNTER_ERROR_COULD_NOT_CHANGE_STARTDATE'));
+            return new Jaws_Error($this::t('ERROR_COULD_NOT_CHANGE_STARTDATE'));
         }
         return true;
     }

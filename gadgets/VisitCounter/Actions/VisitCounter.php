@@ -22,7 +22,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('VisitCounter.html');
         $tpl->SetBlock("VisiCounter");
-        $tpl->SetVariable('title', _t('VISITCOUNTER_VISITORS'));
+        $tpl->SetVariable('title', $this::t('VISITORS'));
 
         $model = $this->gadget->model->load('Visitors');
         $viewMode = strtolower($this->gadget->registry->fetch('mode'));
@@ -43,7 +43,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
 
         if (in_array('online', $visit_counters)) {
             $tpl->SetBlock("VisiCounter/classic");
-            $tpl->SetVariable('label', _t('VISITCOUNTER_ONLINE_VISITORS'));
+            $tpl->SetVariable('label', $this::t('ONLINE_VISITORS'));
             $tpl->SetVariable('value', $viewMode=='text'?
                                        $this->gadget->plugin->parseAdmin($online_count) :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $online_count));
@@ -52,7 +52,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
 
         if (in_array('today', $visit_counters)) {
             $tpl->SetBlock("VisiCounter/classic");
-            $tpl->SetVariable('label', _t('VISITCOUNTER_TODAY_VISITORS'));
+            $tpl->SetVariable('label', $this::t('TODAY_VISITORS'));
             $tpl->SetVariable('value', $viewMode=='text'?
                                        $this->gadget->plugin->parseAdmin($today_count) :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $today_count));
@@ -61,7 +61,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
 
         if (in_array('yesterday', $visit_counters)) {
             $tpl->SetBlock("VisiCounter/classic");
-            $tpl->SetVariable('label', _t('VISITCOUNTER_YESTERDAY_VISITORS'));
+            $tpl->SetVariable('label', $this::t('YESTERDAY_VISITORS'));
             $tpl->SetVariable('value', $viewMode=='text'?
                                        $this->gadget->plugin->parseAdmin($yesterday_count) :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $yesterday_count));
@@ -70,7 +70,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
 
         if (in_array('total', $visit_counters)) {
             $tpl->SetBlock("VisiCounter/classic");
-            $tpl->SetVariable('label', _t('VISITCOUNTER_TOTAL_VISITORS'));
+            $tpl->SetVariable('label', $this::t('TOTAL_VISITORS'));
             $tpl->SetVariable('value', $viewMode=='text'?
                                        $this->gadget->plugin->parseAdmin($total_count) :
                                        preg_replace('/([0-9])/', '<img src="'.$counter_image.'$1.png" alt="$1" />', $total_count));
