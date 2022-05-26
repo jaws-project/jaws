@@ -376,7 +376,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
             );
         } else {
             return $this->gadget->session->response(
-                _t('BLOG_ENTRY_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
+                $this::t('ENTRY_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
                 RESPONSE_NOTICE,
                 $res
             );

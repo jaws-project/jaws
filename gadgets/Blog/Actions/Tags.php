@@ -38,7 +38,7 @@ class Blog_Actions_Tags extends Blog_Actions_Default
 
         $tpl = $this->gadget->template->load('CategoryCloud.html');
         $tpl->SetBlock('tagcloud');
-        $tpl->SetVariable('title', _t('BLOG_TAGCLOUD'));
+        $tpl->SetVariable('title', $this::t('TAGCLOUD'));
 
         foreach ($res as $key => $value) {
             if (!$this->gadget->GetPermission('CategoryAccess', $value['category_id'])) {

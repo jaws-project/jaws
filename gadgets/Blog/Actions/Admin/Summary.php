@@ -31,13 +31,13 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('Summary'));
 
         // Ok, start the stats!
-        $tpl->SetVariable('blog_stats', _t('BLOG_STATS'));
+        $tpl->SetVariable('blog_stats', $this::t('STATS'));
         // First entry
 
         $tpl->SetBlock('summary/item');
         $bg = Jaws_Utils::RowColor(null);
         $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_FIRST_ENTRY'));
+        $tpl->SetVariable('label', $this::t('FIRST_ENTRY'));
         if (isset($summary['min_date'])) {
             $date = Jaws_Date::getInstance();
             $tpl->SetVariable('value', $date->Format($summary['min_date']));
@@ -50,7 +50,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
         $tpl->SetBlock('summary/item');
         $bg = Jaws_Utils::RowColor($bg);
         $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_LAST_ENTRY'));
+        $tpl->SetVariable('label', $this::t('LAST_ENTRY'));
         if (isset($summary['max_date'])) {
             $date = Jaws_Date::getInstance();
             $tpl->SetVariable('value', $date->Format($summary['max_date']));
@@ -64,7 +64,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
         $tpl->SetBlock('summary/item');
         $bg = Jaws_Utils::RowColor($bg);
         $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_TOTAL_ENTRIES'));
+        $tpl->SetVariable('label', $this::t('TOTAL_ENTRIES'));
         $tpl->SetVariable('value', isset($summary['qty_posts']) ? $summary['qty_posts'] : '');
         $tpl->ParseBlock('summary/item');
 
@@ -72,7 +72,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
         $tpl->SetBlock('summary/item');
         $bg = Jaws_Utils::RowColor($bg);
         $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_AVERAGE_ENTRIES'));
+        $tpl->SetVariable('label', $this::t('AVERAGE_ENTRIES'));
         $tpl->SetVariable('value', isset($summary['AvgEntriesPerWeek']) ? $summary['AvgEntriesPerWeek'] : '');
         $tpl->ParseBlock('summary/item');
 
@@ -81,21 +81,21 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
         $tpl->SetBlock('summary/item');
         $bg = Jaws_Utils::RowColor($bg);
         $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_COMMENTS_RECEIVED'));
+        $tpl->SetVariable('label', $this::t('COMMENTS_RECEIVED'));
         $tpl->SetVariable('value', isset($summary['CommentsQty']) ? $summary['CommentsQty'] : '');
         $tpl->ParseBlock('summary/item');
 
         // Recent entries
         if (isset($summary['Entries']) && count($summary['Entries']) > 0) {
             $tpl->SetBlock('summary/recent');
-            $tpl->SetVariable('title', _t('BLOG_RECENT_ENTRIES'));
+            $tpl->SetVariable('title', $this::t('RECENT_ENTRIES'));
 
             $date = Jaws_Date::getInstance();
             foreach ($summary['Entries'] as $e) {
                 $tpl->SetBlock('summary/recent/link');
                 $url = BASE_SCRIPT . '?reqGadget=Blog&reqAction=EditEntry&id='.$e['id'];
                 if ($e['published'] === false) {
-                    $extra = '<span style="color: #999; font-size: 10px;"> [' . _t('BLOG_DRAFT') . '] </span>';
+                    $extra = '<span style="color: #999; font-size: 10px;"> [' . $this::t('DRAFT') . '] </span>';
                 } else {
                     $extra = '';
                 }

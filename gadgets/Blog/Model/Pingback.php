@@ -28,11 +28,11 @@ class Blog_Model_Pingback extends Jaws_Gadget_Model
         $permalink = strip_tags($permalink);
 
         if (empty($title)) {
-            $title   = _t('BLOG_PINGBACK_DEFAULT_TITLE', $sourceURI);
+            $title   = $this::t('PINGBACK_DEFAULT_TITLE', $sourceURI);
         }
 
         if (empty($content)) {
-            $content = _t('BLOG_PINGBACK_DEFAULT_CONTENT', $sourceURI);
+            $content = $this::t('PINGBACK_DEFAULT_CONTENT', $sourceURI);
         }
 
         /**

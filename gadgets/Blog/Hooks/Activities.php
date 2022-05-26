@@ -19,7 +19,7 @@ class Blog_Hooks_Activities extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['Post'] = _t('BLOG_ACTIVITIES_ACTION_POST');
+        $items['Post'] = $this::t('ACTIVITIES_ACTION_POST');
 
         return $items;
     }

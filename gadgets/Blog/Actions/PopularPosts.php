@@ -23,8 +23,8 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
         $result[] = array(
             'title' => Jaws::t('TIME'),
             'value' => array(
-                0 => _t('BLOG_POPULAR_POSTS_ALLTIME'),
-                1 => _t('BLOG_POPULAR_POSTS_TODAY'),
+                0 => $this::t('POPULAR_POSTS_ALLTIME'),
+                1 => $this::t('POPULAR_POSTS_TODAY'),
             ),
         );
 
@@ -58,7 +58,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
         $limit = empty($limit)? $this->gadget->registry->fetch('popular_limit') : $limit;
 
         $tpl->SetBlock($baseBlock);
-        $tpl->SetVariable('title', _t('BLOG_POPULAR_POSTS'));
+        $tpl->SetVariable('title', $this::t('POPULAR_POSTS'));
 
         $model = $this->gadget->model->load('Posts');
         $entries = $model->GetPopularPosts($from, $limit, ($page - 1) * $limit);
@@ -73,7 +73,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
                 $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
                 $tpl->SetVariable('url', $perm_url);
 
-                $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
+                $tpl->SetVariable('posted_by', $this::t('POSTED_BY'));
                 $tpl->SetVariable(
                     'author-url',
                     $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username']))
@@ -88,7 +88,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
                 $tpl->SetVariable('createtime-day',       $date->Format($entry['publishtime'], 'd'));
                 $tpl->SetVariable('createtime-year',      $date->Format($entry['publishtime'], 'Y'));
                 $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'g:ia'));
-                $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
+                $tpl->SetVariable('entry-visits',         $this::t('ENTRY_VISITS', $entry['clicks']));
 
                 if(empty($entry['image'])) {
                     $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
@@ -111,7 +111,7 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
                 $entriesCount,
                 'PopularPosts',
                 array(),
-                _t('BLOG_PAGES_COUNT', $entriesCount)
+                $this::t('PAGES_COUNT', $entriesCount)
             );
         } else {
             if ($entriesCount > $limit) {

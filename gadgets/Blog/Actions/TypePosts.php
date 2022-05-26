@@ -28,7 +28,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
             }
 
             $result[] = array(
-                'title' => _t('BLOG_TYPE'),
+                'title' => $this::t('TYPE'),
                 'value' => $pcats
             );
 
@@ -69,7 +69,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
             return false;
         }
         $cat = $typeInfo['id'];
-        $title = _t('BLOG_RECENT_POSTS_BY_TYPE', $typeInfo['title']);
+        $title = $this::t('RECENT_POSTS_BY_TYPE', $typeInfo['title']);
         $entries = $pModel->GetRecentEntriesByType($type, (int)$limit);
         if (Jaws_Error::IsError($entries) || empty($entries)) {
             return false;
@@ -89,7 +89,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
             if (Jaws_UTF8::trim($e['text']) != '') {
                 $tpl->SetBlock("$baseBlock/item/read-more");
                 $tpl->SetVariable('url', $perm_url);
-                $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
+                $tpl->SetVariable('read_more', $this::t('READ_MORE'));
                 $tpl->ParseBlock("$baseBlock/item/read-more");
             }
 
@@ -97,7 +97,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
             $tpl->SetVariable('title', $e['title']);
             $tpl->SetVariable('text', $summary);
             $tpl->SetVariable('username', $e['username']);
-            $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
+            $tpl->SetVariable('posted_by', $this::t('POSTED_BY'));
             $tpl->SetVariable('name', $e['nickname']);
             $tpl->SetVariable(
                 'author-url',
@@ -135,8 +135,8 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
     {
         $tpl = $this->gadget->template->load('Types.html');
         $tpl->SetBlock("types");
-        $tpl->SetVariable('title', _t('BLOG_ACTIONS_TYPES'));
-        $this->SetTitle(_t('BLOG_ACTIONS_TYPES'));
+        $tpl->SetVariable('title', $this::t('ACTIONS_TYPES'));
+        $this->SetTitle($this::t('ACTIONS_TYPES'));
 
 
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');

@@ -75,12 +75,12 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
             $result = $trackbackTable->update(array('status'=>$status))->where('id', $id)->exec();
 
             if (Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(_t('BLOG_ERROR_TRACKBACK_NOT_UPDATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_UPDATED'));
+                $this->gadget->session->push($this::t('ERROR_TRACKBACK_NOT_UPDATED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_TRACKBACK_NOT_UPDATED'));
             }
         }
 
-        $this->gadget->session->push(_t('BLOG_TRACKBACK_MARKED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('TRACKBACK_MARKED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -100,12 +100,12 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
         foreach ($ids as $id) {
             $res = $this->DeleteTrackback($id);
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('BLOG_ERROR_TRACKBACK_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_DELETED'));
+                $this->gadget->session->push($this::t('ERROR_TRACKBACK_NOT_DELETED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_TRACKBACK_NOT_DELETED'));
             }
         }
 
-        $this->gadget->session->push(_t('BLOG_TRACKBACK_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('TRACKBACK_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 

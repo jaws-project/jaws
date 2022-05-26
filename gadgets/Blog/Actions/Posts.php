@@ -58,7 +58,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         }
         */
 
-        $this->setTitle(_t('BLOG_RECENT_POSTS'));
+        $this->setTitle($this::t('RECENT_POSTS'));
 
         $tpl = $this->gadget->template->load('Posts.html');
         $tpl->SetBlock('view');
@@ -69,7 +69,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $row = 0;
             $col = 0;
             $index = 0;
-            $tpl->SetVariable('title', _t('BLOG_RECENT_POSTS'));
+            $tpl->SetVariable('title', $this::t('RECENT_POSTS'));
             $columns = (int) $this->gadget->registry->fetch('columns');
             $columns = ($columns <= 0)? 1 : $columns;
             foreach ($entries as $entry) {
@@ -143,7 +143,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $cModel = $this->gadget->model->load('Categories');
         $pModel = $this->gadget->model->load('Posts');
         if (is_null($cat)) {
-            $title = _t('BLOG_RECENT_POSTS');
+            $title = $this::t('RECENT_POSTS');
         } else {
             $category = $cModel->GetCategory($cat);
             if (Jaws_Error::isError($category)) {
@@ -151,10 +151,10 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             }
             if (array_key_exists('name', $category)) {
                 $cat = $category['id'];
-                $title = _t('BLOG_RECENT_POSTS_BY_CATEGORY', $category['name']);
+                $title = $this::t('RECENT_POSTS_BY_CATEGORY', $category['name']);
             } else {
                 $cat = null;
-                $title = _t('BLOG_RECENT_POSTS_BY_CATEGORY');
+                $title = $this::t('RECENT_POSTS_BY_CATEGORY');
             }
         }
         $entries = $pModel->GetRecentEntries($cat, (int)$limit);
@@ -177,7 +177,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             if (Jaws_UTF8::trim($e['text']) != '') {
                 $tpl->SetBlock('recent_posts/item/read-more');
                 $tpl->SetVariable('url', $perm_url);
-                $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
+                $tpl->SetVariable('read_more', $this::t('READ_MORE'));
                 $tpl->ParseBlock('recent_posts/item/read-more');
             }
 
@@ -185,7 +185,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $tpl->SetVariable('title', $e['title']);
             $tpl->SetVariable('text', $summary);
             $tpl->SetVariable('username', $e['username']);
-            $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
+            $tpl->SetVariable('posted_by', $this::t('POSTED_BY'));
             $tpl->SetVariable('name', $e['nickname']);
             $tpl->SetVariable(
                 'author-url',
@@ -239,7 +239,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function FavoritePosts($limit = 0)
     {
-        $this->SetTitle(_t('BLOG_FAVORITE_POSTS'));
+        $this->SetTitle($this::t('FAVORITE_POSTS'));
 
         $posts = $this->gadget->model->load('Posts')->GetFavoritePosts((int)$limit);
         if (Jaws_Error::IsError($posts) || empty($posts)) {
@@ -262,7 +262,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
     {
         $tpl = $this->gadget->template->load('Authors.html');
         $tpl->SetBlock('posts_authors');
-        $tpl->SetVariable('title', _t('BLOG_POSTS_AUTHORS'));
+        $tpl->SetVariable('title', $this::t('POSTS_AUTHORS'));
 
         $model = $this->gadget->model->load('Posts');
         $authors = $model->GetPostsAuthors();
@@ -275,7 +275,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                     $this->gadget->urlMap('ViewAuthorPage', array('id' => $author['username']))
                 );
                 $tpl->SetVariable('title', $author['nickname']);
-                $tpl->SetVariable('posts-count', _t('BLOG_AUTHOR_POSTS', $author['howmany']));
+                $tpl->SetVariable('posts-count', $this::t('AUTHOR_POSTS', $author['howmany']));
                 $tpl->ParseBlock('posts_authors/item');
             }
         }

@@ -30,7 +30,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
 
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('ManageCategories'));
-        $tpl->SetVariable('categories', _t('BLOG_CATEGORIES'));
+        $tpl->SetVariable('categories', $this::t('CATEGORIES'));
 
         $model = $this->gadget->model->load('Categories');
         $categories = $model->GetCategories();
@@ -68,12 +68,12 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         // Category form
         $catName =& Piwi::CreateWidget('Entry', 'name', '');
         $catName->setStyle('width: 300px;');
-        $tpl->SetVariable('lbl_name', _t('BLOG_CATEGORY'));
+        $tpl->SetVariable('lbl_name', $this::t('CATEGORY'));
         $tpl->SetVariable('name', $catName->Get());
 
         $catFastURL =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $catFastURL->setStyle('width: 300px;');
-        $tpl->SetVariable('lbl_fast_url', _t('BLOG_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
         $tpl->SetVariable('fast_url', $catFastURL->Get());
 
         $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
@@ -104,11 +104,11 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, 'javascript:saveCategory(this.form);');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $tpl->SetVariable('addCategory_title',_t('BLOG_NEW_CATEGORY'));
-        $this->gadget->define('addCategory_title',_t('BLOG_NEW_CATEGORY'));
-        $this->gadget->define('deleteMessage',_t('BLOG_DELETE_CONFIRM_CATEGORY'));
-        $this->gadget->define('incompleteCategoryFields',_t('BLOG_CATEGORY_INCOMPLETE_FIELDS'));
-        $this->gadget->define('editCategory_title',_t('BLOG_EDIT_CATEGORY'));
+        $tpl->SetVariable('addCategory_title',$this::t('NEW_CATEGORY'));
+        $this->gadget->define('addCategory_title',$this::t('NEW_CATEGORY'));
+        $this->gadget->define('deleteMessage',$this::t('DELETE_CONFIRM_CATEGORY'));
+        $this->gadget->define('incompleteCategoryFields',$this::t('CATEGORY_INCOMPLETE_FIELDS'));
+        $this->gadget->define('editCategory_title',$this::t('EDIT_CATEGORY'));
 
         $tpl->ParseBlock('categories');
         return $tpl->Get();
@@ -175,7 +175,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         }
 
         return $this->gadget->session->response(
-            _t('BLOG_IMAGE_UPLOADED'),
+            $this::t('IMAGE_UPLOADED'),
             RESPONSE_NOTICE,
             $res['file'][0]
         );

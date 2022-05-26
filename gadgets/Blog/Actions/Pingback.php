@@ -44,13 +44,13 @@ class Blog_Actions_Pingback extends Blog_Actions_Default
 
                     if (empty($response['title'])) {
                         if (empty($entry['title'])) {
-                            $title = Jaws::t('RE')._t('BLOG_PINGBACK_TITLE', $entry['title']);
-                            $content = _t('BLOG_PINGBACK_DEFAULT_COMMENT', $entry['sourceURI']);
+                            $title = Jaws::t('RE').$this::t('PINGBACK_TITLE', $entry['title']);
+                            $content = $this::t('PINGBACK_DEFAULT_COMMENT', $entry['sourceURI']);
                         }
                     } else {
                         $comesFrom = '<a href="'.$response['sourceURI'].'">'.$response['title'].'</a>';
-                        $content = _t('BLOG_PINGBACK_COMMENT', $comesFrom);
-                        $title = Jaws::t('RE')._t('BLOG_PINGBACK_TITLE', $response['title']);
+                        $content = $this::t('PINGBACK_COMMENT', $comesFrom);
+                        $title = Jaws::t('RE').$this::t('PINGBACK_TITLE', $response['title']);
                     }
                     $model->SavePingback($postID, $response['sourceURI'], $response['targetURI'], $title, $content);
                 }

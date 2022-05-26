@@ -25,11 +25,11 @@ class Blog_Hooks_ACL extends Jaws_Gadget_Hook
             foreach ($items as $item) {
                 $this->gadget->translate->insert(
                     'ACL_CATEGORYACCESS_'. $item['id'],
-                    _t('BLOG_ACL_CATEGORY_ACCESS', $item['name'])
+                    $this::t('ACL_CATEGORY_ACCESS', $item['name'])
                 );
                 $this->gadget->translate->insert(
                     'ACL_CATEGORYMANAGE_'. $item['id'],
-                    _t('BLOG_ACL_CATEGORY_MANAGE', $item['name'])
+                    $this::t('ACL_CATEGORY_MANAGE', $item['name'])
                 );
             }
         }

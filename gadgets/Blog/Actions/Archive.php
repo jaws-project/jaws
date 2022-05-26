@@ -24,9 +24,9 @@ class Blog_Actions_Archive extends Blog_Actions_Default
         $model = $this->gadget->model->load('Posts');
         $archiveEntries = $model->GetEntriesAsArchive();
         $auxMonth = '';
-        $this->SetTitle(_t('BLOG_ARCHIVE'));
+        $this->SetTitle($this::t('ARCHIVE'));
         $tpl->SetBlock('archive');
-        $tpl->SetVariable('title', _t('BLOG_ARCHIVE'));
+        $tpl->SetVariable('title', $this::t('ARCHIVE'));
         if (!Jaws_Error::IsError($archiveEntries)) {
             $date = Jaws_Date::getInstance();
             foreach ($archiveEntries as $entry) {
@@ -52,7 +52,7 @@ class Blog_Actions_Archive extends Blog_Actions_Default
                 $tpl->SetVariable('title', $entry['title']);
 
 
-                $comments = _t('BLOG_NO_COMMENT');
+                $comments = $this::t('NO_COMMENT');
                 if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
                     $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
                     $commentsCount = $cModel->GetCommentsCount(
@@ -63,7 +63,7 @@ class Blog_Actions_Archive extends Blog_Actions_Default
                         Comments_Info::COMMENTS_STATUS_APPROVED);
 
                     if (!empty($commentsCount)) {
-                        $comments = _t('BLOG_HAS_N_COMMENTS', $commentsCount);
+                        $comments = $this::t('HAS_N_COMMENTS', $commentsCount);
                     }
                 }
                 $tpl->SetVariable('comments', $comments);

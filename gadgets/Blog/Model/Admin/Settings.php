@@ -73,12 +73,12 @@ class Blog_Model_Admin_Settings extends Jaws_Gadget_Model
 
         foreach ($result as $r) {
             if (!$r || Jaws_Error::IsError($r)) {
-                $this->gadget->session->push(_t('BLOG_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_SETTINGS_NOT_SAVE'));
+                $this->gadget->session->push($this::t('ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
+                return new Jaws_Error($this::t('ERROR_SETTINGS_NOT_SAVE'));
             }
         }
 
-        $this->gadget->session->push(_t('BLOG_SETTINGS_SAVED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('SETTINGS_SAVED'), RESPONSE_NOTICE);
         return true;
     }
 

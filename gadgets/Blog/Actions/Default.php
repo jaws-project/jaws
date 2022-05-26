@@ -100,7 +100,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         $tpl->SetBlock("$tpl_base_block/entry");
         $tpl->SetVariablesArray($entry);
 
-        $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
+        $tpl->SetVariable('posted_by', $this::t('POSTED_BY'));
         $tpl->SetVariable('author-url',   $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username'])));
         $date = Jaws_Date::getInstance();
         $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
@@ -113,7 +113,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         $tpl->SetVariable('createtime-day',       $date->Format($entry['publishtime'], 'd'));
         $tpl->SetVariable('createtime-year',      $date->Format($entry['publishtime'], 'Y'));
         $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'g:ia'));
-        $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
+        $tpl->SetVariable('entry-visits',         $this::t('ENTRY_VISITS', $entry['clicks']));
 
         if(empty($entry['image'])) {
             $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
@@ -133,7 +133,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             if (Jaws_UTF8::trim($text) != '') {
                 $tpl->SetBlock("$tpl_base_block/entry/read-more");
                 $tpl->SetVariable('url', $perm_url);
-                $tpl->SetVariable('read_more', _t('BLOG_READ_MORE'));
+                $tpl->SetVariable('read_more', $this::t('READ_MORE'));
                 $tpl->ParseBlock("$tpl_base_block/entry/read-more");
             }
             // parse via plugins
@@ -174,7 +174,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         $tpl->SetVariable('permanent-link', $perm_url);
 
         $pos = 1;
-        $tpl->SetVariable('posted_in', _t('BLOG_POSTED_IN'));
+        $tpl->SetVariable('posted_in', $this::t('POSTED_IN'));
         foreach ($entry['categories'] as $cat) {
             $tpl->SetBlock("$tpl_base_block/entry/category");
             $tpl->SetVariable('id',   $cat['id']);
@@ -202,7 +202,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         }
 
         $commentsCount = 0;
-        $comments = _t('BLOG_NO_COMMENT');
+        $comments = $this::t('NO_COMMENT');
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
             $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
             $commentsCount = $cModel->GetCommentsCount(
@@ -213,7 +213,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
                 Comments_Info::COMMENTS_STATUS_APPROVED
             );
             if (!empty($commentsCount)) {
-                $comments = _t('BLOG_HAS_N_COMMENTS', $commentsCount);
+                $comments = $this::t('HAS_N_COMMENTS', $commentsCount);
             }
         }
 

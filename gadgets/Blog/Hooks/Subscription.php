@@ -26,7 +26,7 @@ class Blog_Hooks_Subscription extends Jaws_Gadget_Hook
                 $item['selectable'] = true;
                 $item['action'] = 'Category';
                 $item['reference'] = $category['id'];
-                $item['title'] = _t('BLOG_CATEGORY', $category['name']);
+                $item['title'] = $this::t('CATEGORY', $category['name']);
                 $item['url'] = $this->gadget->urlMap('ShowCategory', array('id' => $category['id']));
                 $blogItems[] = $item;
             }

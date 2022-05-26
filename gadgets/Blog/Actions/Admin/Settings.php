@@ -34,8 +34,8 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         $form->Add(Piwi::CreateWidget('HiddenEntry', 'reqAction', 'SaveAdditionalSettings'));
 
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_ADDITIONAL_SETTINGS'));
-        // $fieldset =& Piwi::CreateWidget('FieldSet', _t('BLOG_ADDITIONAL_SETTINGS'));
+        $fieldset = new Jaws_Widgets_FieldSet($this::t('ADDITIONAL_SETTINGS'));
+        // $fieldset =& Piwi::CreateWidget('FieldSet', $this::t('ADDITIONAL_SETTINGS'));
 
         // Save Button
         $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
@@ -49,21 +49,21 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         }
 
         // Default View
-        $tpl->SetVariable('label', _t('BLOG_DEFAULT_VIEW'));
+        $tpl->SetVariable('label', $this::t('DEFAULT_VIEW'));
         $viewCombo =& Piwi::CreateWidget('Combo', 'default_view');
         $viewCombo->setContainerClass('oneline');
-        $viewCombo->SetTitle(_t('BLOG_DEFAULT_VIEW'));
-        $viewCombo->AddOption(_t('BLOG_MONTHLY'), 'monthly');
-        $viewCombo->AddOption(_t('BLOG_LATEST_ENTRY'), 'latest_entry');
-        $viewCombo->AddOption(_t('BLOG_LAST_ENTRIES'), 'last_entries');
-        $viewCombo->AddOption(_t('BLOG_DEFAULT_CATEGORY'), 'default_category');
+        $viewCombo->SetTitle($this::t('DEFAULT_VIEW'));
+        $viewCombo->AddOption($this::t('MONTHLY'), 'monthly');
+        $viewCombo->AddOption($this::t('LATEST_ENTRY'), 'latest_entry');
+        $viewCombo->AddOption($this::t('LAST_ENTRIES'), 'last_entries');
+        $viewCombo->AddOption($this::t('DEFAULT_CATEGORY'), 'default_category');
         $viewCombo->SetDefault(isset($settings['default_view']) ?
                                $settings['default_view'] : '');
 
         // Last entries limit
         $limitCombo =& Piwi::CreateWidget('Combo', 'last_entries_limit');
         $limitCombo->setContainerClass('oneline');
-        $limitCombo->SetTitle(_t('BLOG_LAST_ENTRIES_LIMIT'));
+        $limitCombo->SetTitle($this::t('LAST_ENTRIES_LIMIT'));
         for ($i = 5; $i <= 30; $i += 5) {
             $limitCombo->AddOption($i, $i);
         }
@@ -73,7 +73,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // Popular limit
         $popCombo =& Piwi::CreateWidget('Combo', 'popular_limit');
         $popCombo->setContainerClass('oneline');
-        $popCombo->SetTitle(_t('BLOG_POPULAR_ENTRIES_LIMIT'));
+        $popCombo->SetTitle($this::t('POPULAR_ENTRIES_LIMIT'));
         for ($i = 5; $i <= 30; $i += 5) {
             $popCombo->AddOption($i, $i);
         }
@@ -83,7 +83,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // Last comments limit
         $commentslimitCombo =& Piwi::CreateWidget('Combo', 'last_comments_limit');
         $commentslimitCombo->setContainerClass('oneline');
-        $commentslimitCombo->SetTitle(_t('BLOG_LAST_COMMENTS_LIMIT'));
+        $commentslimitCombo->SetTitle($this::t('LAST_COMMENTS_LIMIT'));
         for ($i = 5; $i <= 30; $i += 5) {
             $commentslimitCombo->AddOption($i, $i);
         }
@@ -93,7 +93,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // Last recent comments
         $recentcommentsLimitCombo =& Piwi::CreateWidget('Combo', 'last_recentcomments_limit');
         $recentcommentsLimitCombo->setContainerClass('oneline');
-        $recentcommentsLimitCombo->SetTitle(_t('BLOG_LAST_RECENTCOMMENTS_LIMIT'));
+        $recentcommentsLimitCombo->SetTitle($this::t('LAST_RECENTCOMMENTS_LIMIT'));
         for ($i = 5; $i <= 30; $i += 5) {
             $recentcommentsLimitCombo->AddOption($i, $i);
         }
@@ -106,7 +106,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
 
             $catCombo =& Piwi::CreateWidget('Combo', 'default_category');
             $catCombo->setContainerClass('oneline');
-            $catCombo->SetTitle(_t('BLOG_DEFAULT_CATEGORY'));
+            $catCombo->SetTitle($this::t('DEFAULT_CATEGORY'));
             foreach ($categories as $cat) {
                 $catCombo->AddOption($cat['name'], $cat['id']);
             }
@@ -117,7 +117,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // RSS/Atom limit
         $xmlCombo =& Piwi::CreateWidget('Combo', 'xml_limit');
         $xmlCombo->setContainerClass('oneline');
-        $xmlCombo->SetTitle(_t('BLOG_RSS_ENTRIES_LIMIT'));
+        $xmlCombo->SetTitle($this::t('RSS_ENTRIES_LIMIT'));
         for ($i = 5; $i <= 50; $i += 5) {
             $xmlCombo->AddOption($i, $i);
         }
@@ -127,7 +127,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // Comments
         $commCombo =& Piwi::CreateWidget('Combo', 'comments');
         $commCombo->setContainerClass('oneline');
-        $commCombo->SetTitle(_t('BLOG_COMMENTS'));
+        $commCombo->SetTitle($this::t('COMMENTS'));
         $commCombo->AddOption(Jaws::t('ENABLED'), 'true');
         $commCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $commCombo->SetDefault(isset($settings['comments']) ? $settings['comments'] : '');
@@ -135,7 +135,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // Trackback
         $tbCombo =& Piwi::CreateWidget('Combo', 'trackback');
         $tbCombo->setContainerClass('oneline');
-        $tbCombo->SetTitle(_t('BLOG_TRACKBACK'));
+        $tbCombo->SetTitle($this::t('TRACKBACK'));
         $tbCombo->AddOption(Jaws::t('ENABLED'), 'true');
         $tbCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $tbCombo->SetDefault($settings['trackback']);
@@ -143,7 +143,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // Trackback status
         $tbStatusCombo =& Piwi::CreateWidget('Combo', 'trackback_status');
         $tbStatusCombo->setContainerClass('oneline');
-        $tbStatusCombo->SetTitle(_t('BLOG_DEFAULT_STATUS', _t('BLOG_TRACKBACK')));
+        $tbStatusCombo->SetTitle($this::t('DEFAULT_STATUS', $this::t('TRACKBACK')));
         $tbStatusCombo->AddOption(_t('COMMENTS_STATUS_APPROVED'), 'approved');
         $tbStatusCombo->AddOption(_t('COMMENTS_STATUS_WAITING'), 'waiting');
         $tbStatusCombo->SetDefault($settings['trackback_status']);
@@ -151,7 +151,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         // Pingback
         $pbCombo =& Piwi::CreateWidget('Combo', 'pingback');
         $pbCombo->setContainerClass('oneline');
-        $pbCombo->SetTitle(_t('BLOG_PINGBACK'));
+        $pbCombo->SetTitle($this::t('PINGBACK'));
         $pbCombo->AddOption(Jaws::t('ENABLED'), 'true');
         $pbCombo->AddOption(Jaws::t('DISABLED'), 'false');
         $pbCombo->SetDefault($settings['pingback']);

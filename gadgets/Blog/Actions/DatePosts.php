@@ -208,7 +208,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
     {
         $tpl = $this->gadget->template->load('MonthlyHistory.html');
         $tpl->SetBlock('monthly_history');
-        $tpl->SetVariable('title', _t('BLOG_ARCHIVE'));
+        $tpl->SetVariable('title', $this::t('ARCHIVE'));
         $model = $this->gadget->model->load('DatePosts');
         $entries = $model->GetEntriesAsHistory();
         if (!Jaws_Error::IsError($entries)) {

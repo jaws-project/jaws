@@ -44,9 +44,9 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTrackbacks'));
 
-        $tpl->SetVariable('trackbacks_where', _t('BLOG_TRACKBACK_WHERE'));
+        $tpl->SetVariable('trackbacks_where', $this::t('TRACKBACK_WHERE'));
         $tpl->SetVariable('status_label', Jaws::t('STATUS'));
-        $this->gadget->define('deleteConfirm', _t('BLOG_DELETE_MASSIVE_TRACKBACKS'));
+        $this->gadget->define('deleteConfirm', $this::t('DELETE_MASSIVE_TRACKBACKS'));
 
         //Status
         $statusData = '';
@@ -63,12 +63,12 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $filterByData = '';
         $filterBy =& Piwi::CreateWidget('Combo', 'filterby');
         $filterBy->AddOption('&nbsp;','various');
-        $filterBy->AddOption(_t('BLOG_POST_ID_IS'), 'postid');
-        $filterBy->AddOption(_t('BLOG_TITLE_CONTAINS'), 'title');
-        $filterBy->AddOption(_t('BLOG_TRACKBACK_EXCERPT_CONTAINS'), 'excerpt');
-        $filterBy->AddOption(_t('BLOG_TRACKBACK_BLOGNAME_CONTAINS'), 'blog_name');
-        $filterBy->AddOption(_t('BLOG_URL_CONTAINS'), 'url');
-        $filterBy->AddOption(_t('BLOG_IP_IS'), 'ip');
+        $filterBy->AddOption($this::t('POST_ID_IS'), 'postid');
+        $filterBy->AddOption($this::t('TITLE_CONTAINS'), 'title');
+        $filterBy->AddOption($this::t('TRACKBACK_EXCERPT_CONTAINS'), 'excerpt');
+        $filterBy->AddOption($this::t('TRACKBACK_BLOGNAME_CONTAINS'), 'blog_name');
+        $filterBy->AddOption($this::t('URL_CONTAINS'), 'url');
+        $filterBy->AddOption($this::t('IP_IS'), 'ip');
         $filterBy->SetDefault($filterByData);
         $tpl->SetVariable('filter_by', $filterBy->Get());
 
@@ -78,7 +78,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $filterEntry->setSize(20);
         $tpl->SetVariable('filter', $filterEntry->Get());
         $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
-                                            _t('BLOG_FILTER'), STOCK_SEARCH);
+                                            $this::t('FILTER'), STOCK_SEARCH);
         $filterButton->AddEvent(ON_CLICK, 'javascript:searchTrackback();');
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
@@ -96,7 +96,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $grid->SetStyle('width: 100%;');
         $grid->TotalRows($total);
         $grid->useMultipleSelection();
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('BLOG_TRACKBACK_BLOGNAME')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('TRACKBACK_BLOGNAME')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('CREATED')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('STATUS')));
@@ -166,13 +166,13 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
 
         $date = Jaws_Date::getInstance();
         include_once ROOT_JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_VIEW_TRACKBACK'));
+        $fieldset = new Jaws_Widgets_FieldSet($this::t('VIEW_TRACKBACK'));
 
         $text = '<strong>' . $entry['title'] . '</strong>';
-        $staticText =& Piwi::CreateWidget('StaticEntry', _t('BLOG_TRACKBACKS_CURRENTLY_UPDATING_FOR', $text));
+        $staticText =& Piwi::CreateWidget('StaticEntry', $this::t('TRACKBACKS_CURRENTLY_UPDATING_FOR', $text));
 
         $blog_name =& Piwi::CreateWidget('Entry', 'blog_name', Jaws_XSS::filter($trackback['blog_name']));
-        $blog_name->SetTitle(_t('BLOG_TRACKBACK_BLOGNAME'));
+        $blog_name->SetTitle($this::t('TRACKBACK_BLOGNAME'));
         $blog_name->SetStyle('width: 400px;');
 
         $url =& Piwi::CreateWidget('Entry', 'url', Jaws_XSS::filter($trackback['url']));
@@ -203,7 +203,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $excerpt->SetRows(5);
         $excerpt->SetColumns(60);
         $excerpt->SetStyle('width: 400px;');
-        $excerpt->SetTitle(_t('BLOG_TRACKBACK_EXCERPT'));
+        $excerpt->SetTitle($this::t('TRACKBACK_EXCERPT'));
 
         $cancelButton =& Piwi::CreateWidget('Button', 'previewButton', Jaws::t('CANCEL'), STOCK_CANCEL);
         $cancelButton->AddEvent(ON_CLICK, 'history.go(-1);');

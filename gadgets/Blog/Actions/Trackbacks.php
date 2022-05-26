@@ -63,7 +63,7 @@ class Blog_Actions_Trackbacks extends Blog_Actions_Default
             return $tb_msg_ok;
         } else {
             header('Content-Type: text/xml');
-            return str_replace('#MESSAGE#', _t('BLOG_TRACKBACK_DISABLED'), $tb_msg_error);
+            return str_replace('#MESSAGE#', $this::t('TRACKBACK_DISABLED'), $tb_msg_error);
         }
     }
 

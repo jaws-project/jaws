@@ -42,8 +42,8 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->table('blog_category');
         $categoryId = $objORM->insert($params)->exec();
         if (Jaws_Error::IsError($categoryId)) {
-            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'));
+            $this->gadget->session->push($this::t('ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CATEGORY_NOT_ADDED'));
         }
 
         $this->gadget->acl->insert('CategoryAccess', $categoryId, true);
@@ -65,7 +65,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 // Return an error if image can't be resized
-                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+                return new Jaws_Error($this::t('ERROR_CANT_RESIZE_IMAGE'));
             }
 
             // Save resize logo
@@ -83,12 +83,12 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 // Return an error if image can't be resized
-                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+                return new Jaws_Error($this::t('ERROR_CANT_RESIZE_IMAGE'));
             }
             Jaws_FileManagement_File::delete($tmpLogo);
         }
 
-        $this->gadget->session->push(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('CATEGORY_ADDED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -126,8 +126,8 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $result = $catTable->update($params)->where('id', $cid)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'));
+            $this->gadget->session->push($this::t('ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CATEGORY_NOT_UPDATED'));
         }
 
         if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
@@ -153,7 +153,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 // Return an error if image can't be resized
-                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+                return new Jaws_Error($this::t('ERROR_CANT_RESIZE_IMAGE'));
             }
 
             // Save resize logo
@@ -171,12 +171,12 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             $objImage->free();
             if (Jaws_Error::IsError($res)) {
                 // Return an error if image can't be resized
-                return new Jaws_Error(_t('BLOG_ERROR_CANT_RESIZE_IMAGE'));
+                return new Jaws_Error($this::t('ERROR_CANT_RESIZE_IMAGE'));
             }
             Jaws_FileManagement_File::delete($tmpLogo);
         }
 
-        $this->gadget->session->push(_t('BLOG_CATEGORY_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('CATEGORY_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -194,13 +194,13 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $sql = "SELECT COUNT([entry_id]) FROM [[blog_entrycat]] WHERE [category_id] = {id}";
         $count = Jaws_DB::getInstance()->queryOne($sql, $params);
         if (Jaws_Error::IsError($count)) {
-        $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
+        $this->gadget->session->push($this::t('ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+        return new Jaws_Error($this::t('ERROR_CATEGORY_NOT_DELETED'));
         }
 
         if ($count > 0) {
-        $this->gadget->session->push(_t('BLOG_ERROR_CATEGORIES_LINKED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_LINKED'));
+        $this->gadget->session->push($this::t('ERROR_CATEGORIES_LINKED'), RESPONSE_ERROR);
+        return new Jaws_Error($this::t('ERROR_CATEGORIES_LINKED'));
         }
          **/
 
@@ -209,22 +209,22 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $result = $objORM->delete()->where('category_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $objORM->rollback();
-            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
+            $this->gadget->session->push($this::t('ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CATEGORY_NOT_DELETED'));
         }
 
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $result = $catTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $objORM->rollback();
-            $this->gadget->session->push(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
+            $this->gadget->session->push($this::t('ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_CATEGORY_NOT_DELETED'));
         }
 
         $objORM->commit();
         $this->gadget->acl->delete('CategoryAccess', $id);
         $this->gadget->acl->delete('CategoryManage', $id);
-        $this->gadget->session->push(_t('BLOG_CATEGORY_DELETED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('CATEGORY_DELETED'), RESPONSE_NOTICE);
         return true;
     }
 

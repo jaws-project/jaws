@@ -34,7 +34,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
             if (empty($rqst['id'])) {
                 $catInfo = array(
                     'id'                => 0,
-                    'name'              => _t('BLOG_UNCATEGORIZED'),
+                    'name'              => $this::t('UNCATEGORIZED'),
                     'fast_url'          => '',
                     'description'       => '',
                     'meta_keywords'     => '',
@@ -112,7 +112,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
     {
         $tpl = $this->gadget->template->load('Categories.html');
         $tpl->SetBlock('categories_list');
-        $tpl->SetVariable('title', _t('BLOG_CATEGORIES'));
+        $tpl->SetVariable('title', $this::t('CATEGORIES'));
         $pModel = $this->gadget->model->load('Posts');
         $entries = $pModel->GetEntriesAsCategories();
         if (!Jaws_Error::IsError($entries)) {
@@ -121,7 +121,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
             if (!empty($howmany)) {
                 $entries[] = array(
                     'id'        =>  0,
-                    'name'      =>  _t('BLOG_UNCATEGORIZED'),
+                    'name'      =>  $this::t('UNCATEGORIZED'),
                     'fast_url'  => '',
                     'howmany'   => $howmany,
                 );

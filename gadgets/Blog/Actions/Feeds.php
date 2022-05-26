@@ -102,10 +102,10 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
     {
         $result = array();
         $result[] = array(
-            'title' => _t('BLOG_FEEDS_TYPE'),
+            'title' => $this::t('FEEDS_TYPE'),
             'value' => array(
-                'RSS' => _t('BLOG_FEEDS_RSS') ,
-                'Atom' => _t('BLOG_FEEDS_ATOM') ,
+                'RSS' => $this::t('FEEDS_RSS') ,
+                'Atom' => $this::t('FEEDS_ATOM') ,
             )
         );
         return $result;

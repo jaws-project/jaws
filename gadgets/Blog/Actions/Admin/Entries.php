@@ -54,7 +54,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $subtitleEntry =& Piwi::CreateWidget('Entry', 'subtitle', '');
         $subtitleEntry->SetStyle('width: 750px');
         $subtitleEntry->setId('subtitle');
-        $tpl->SetVariable('subtitle', _t('BLOG_SUBTITLE'));
+        $tpl->SetVariable('subtitle', $this::t('SUBTITLE'));
         $tpl->SetVariable('subtitle_field', $subtitleEntry->Get());
 
         // Image
@@ -99,7 +99,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
 
         // Summary
-        $tpl->SetVariable('lbl_summary', _t('BLOG_ENTRY_SUMMARY'));
+        $tpl->SetVariable('lbl_summary', $this::t('ENTRY_SUMMARY'));
         $summary =& $this->app->loadEditor('Blog', 'summary_block', '', false);
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
@@ -107,7 +107,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('summary', $summary->Get());
 
         // Body
-        $tpl->SetVariable('text', _t('BLOG_ENTRY_BODY'));
+        $tpl->SetVariable('text', $this::t('ENTRY_BODY'));
         $editor =& $this->app->loadEditor('Blog', 'text_block', '', false);
         $editor->setId('text_block');
         $editor->TextArea->SetRows(12);
@@ -117,15 +117,15 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Allow Comments
         $allow = $this->gadget->registry->fetch('allow_comments') == 'true';
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
-        $comments->AddOption(_t('BLOG_ALLOW_COMMENTS'), 'comments', 'allow_comments', $allow);
+        $comments->AddOption($this::t('ALLOW_COMMENTS'), 'comments', 'allow_comments', $allow);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
         $tpl->SetVariable('status', Jaws::t('STATUS'));
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
         $statCombo->setId('published');
-        $statCombo->AddOption(_t('BLOG_DRAFT'), '0');
-        $statCombo->AddOption(_t('BLOG_PUBLISHED'), '1');
+        $statCombo->AddOption($this::t('DRAFT'), '0');
+        $statCombo->AddOption($this::t('PUBLISHED'), '1');
         if ($this->gadget->GetPermission('PublishEntries')) {
             $statCombo->SetDefault('1');
         } else {
@@ -135,7 +135,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('status_field', $statCombo->Get());
 
         // Type
-        $tpl->SetVariable('type', _t('BLOG_TYPE'));
+        $tpl->SetVariable('type', $this::t('TYPE'));
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
         $types = $cModel->GetCategories(array('gadget'=> 'Blog', 'action' => 'Types'));
         $typeCombo =& Piwi::CreateWidget('Combo', 'type');
@@ -149,11 +149,11 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Favorite
         $favorite =& Piwi::CreateWidget('CheckButtons', 'favorite');
-        $favorite->AddOption(_t('BLOG_FAVORITE'), 'favorite', 'favorite');
+        $favorite->AddOption($this::t('FAVORITE'), 'favorite', 'favorite');
         $tpl->SetVariable('favorite_field', $favorite->Get());
 
         // Save
-        $tpl->SetVariable('missing_title', _t('BLOG_MISSING_TITLE'));
+        $tpl->SetVariable('missing_title', $this::t('MISSING_TITLE'));
         $saveButton =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);
         $saveButton->SetSubmit();
         $tpl->SetVariable('save_button', $saveButton->Get());
@@ -172,11 +172,11 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $editAdvancedchk =& Piwi::CreateWidget('CheckButtons', 'edit_advanced');
         $editAdvancedchk->SetID('advanced_toggle');
-        $editAdvancedchk->AddOption(_t('BLOG_ADVANCED_MODE'), 'advanced', false, $advancedDefault);
+        $editAdvancedchk->AddOption($this::t('ADVANCED_MODE'), 'advanced', false, $advancedDefault);
         $editAdvancedchk->AddEvent(ON_CLICK, 'toggleAdvanced(this.checked);');
         $tpl->SetVariable('advanced_field', $editAdvancedchk->Get());
 
-        $tpl->SetVariable('timestamp_label', _t('BLOG_EDIT_TIMESTAMP'));
+        $tpl->SetVariable('timestamp_label', $this::t('EDIT_TIMESTAMP'));
         $tsChk =& Piwi::CreateWidget('CheckButtons', 'edit_timestamp');
         $tsChk->AddOption('', 'yes', 'edit_timestamp', false);
         $tsChk->AddEvent(ON_CLICK, 'toggleUpdate(this.checked);');
@@ -192,10 +192,10 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $pubdate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
-        $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
+        $tpl->SetVariable('fasturl', $this::t('FASTURL'));
         $fastUrlEntry =& Piwi::CreateWidget('Entry', 'fasturl', '');
         $fastUrlEntry->SetId('fasturl');
-        $fastUrlEntry->SetTitle(_t('BLOG_FASTURL_COMMENT'));
+        $fastUrlEntry->SetTitle($this::t('FASTURL_COMMENT'));
         $fastUrlEntry->SetStyle('width: 100%; direction: ltr;');
         $tpl->SetVariable('fasturl_field', $fastUrlEntry->Get());
 
@@ -220,7 +220,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
-            $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
+            $tpl->SetVariable('trackback_to', $this::t('TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', '');
             $tb->SetId('trackback_to');
             $tb->SetRows(4);
@@ -369,7 +369,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('title_field', $titleEntry->Get());
 
         // Sub-Title
-        $tpl->SetVariable('subtitle', _t('BLOG_SUBTITLE'));
+        $tpl->SetVariable('subtitle', $this::t('SUBTITLE'));
         $subtitleEntry =& Piwi::CreateWidget('Entry', 'subtitle', $entry['subtitle']);
         $subtitleEntry->SetStyle('width: 750px');
         $tpl->SetVariable('subtitle_field', $subtitleEntry->Get());
@@ -430,7 +430,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
 
         // Summary
-        $tpl->SetVariable('lbl_summary', _t('BLOG_ENTRY_SUMMARY'));
+        $tpl->SetVariable('lbl_summary', $this::t('ENTRY_SUMMARY'));
         $summary =& $this->app->loadEditor('Blog', 'summary_block', $entry['summary'], false);
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
@@ -438,7 +438,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('summary', $summary->Get());
 
         // Body
-        $tpl->SetVariable('text', _t('BLOG_BODY'));
+        $tpl->SetVariable('text', $this::t('BODY'));
         $editor =& $this->app->loadEditor('Blog', 'text_block', $entry['text'], false);
         $editor->setId('text_block');
         $editor->TextArea->SetRows(12);
@@ -455,7 +455,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
 
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
-        $comments->AddOption(_t('BLOG_ALLOW_COMMENTS'), 'comments', 'allow_comments', $allow);
+        $comments->AddOption($this::t('ALLOW_COMMENTS'), 'comments', 'allow_comments', $allow);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
@@ -463,8 +463,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $entry['published'] = ($entry['published'] === true) ? 1 : 0;
         $statData = $entry['published'];
         $statCombo =& Piwi::CreateWidget('Combo', 'published');
-        $statCombo->AddOption(_t('BLOG_DRAFT'), '0');
-        $statCombo->AddOption(_t('BLOG_PUBLISHED'), '1');
+        $statCombo->AddOption($this::t('DRAFT'), '0');
+        $statCombo->AddOption($this::t('PUBLISHED'), '1');
         $statCombo->SetDefault($statData);
         if (!$this->gadget->GetPermission('PublishEntries')) {
             $statCombo->SetEnabled(false);
@@ -472,7 +472,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('status_field', $statCombo->Get());
 
         // Type
-        $tpl->SetVariable('type', _t('BLOG_TYPE'));
+        $tpl->SetVariable('type', $this::t('TYPE'));
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');
         $types = $cModel->GetCategories(array('gadget'=> 'Blog', 'action' => 'Types'));
         $typeCombo =& Piwi::CreateWidget('Combo', 'type');
@@ -487,12 +487,12 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Favorite
         $favorite =& Piwi::CreateWidget('CheckButtons', 'favorite');
-        $favorite->AddOption(_t('BLOG_FAVORITE'), 'favorite', 'favorite', $entry['favorite']);
+        $favorite->AddOption($this::t('FAVORITE'), 'favorite', 'favorite', $entry['favorite']);
         $tpl->SetVariable('favorite_field', $favorite->Get());
 
         // Save
-        $tpl->SetVariable('missing_title', _t('BLOG_MISSING_TITLE'));
-        $saveButton =& Piwi::CreateWidget('Button', 'save', _t('BLOG_UPDATE'), STOCK_SAVE);
+        $tpl->SetVariable('missing_title', $this::t('MISSING_TITLE'));
+        $saveButton =& Piwi::CreateWidget('Button', 'save', $this::t('UPDATE'), STOCK_SAVE);
         $saveButton->SetSubmit();
         $tpl->SetVariable('save_button', $saveButton->Get());
 
@@ -515,11 +515,11 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $editAdvancedchk =& Piwi::CreateWidget('CheckButtons', 'edit_advanced');
         $editAdvancedchk->SetID('advanced_toggle');
-        $editAdvancedchk->AddOption(_t('BLOG_ADVANCED_MODE'), 'advanced', false, $advancedDefault);
+        $editAdvancedchk->AddOption($this::t('ADVANCED_MODE'), 'advanced', false, $advancedDefault);
         $editAdvancedchk->AddEvent(ON_CLICK, 'toggleAdvanced(this.checked);');
         $tpl->SetVariable('advanced_field', $editAdvancedchk->Get());
 
-        $tpl->SetVariable('timestamp_label', _t('BLOG_EDIT_TIMESTAMP'));
+        $tpl->SetVariable('timestamp_label', $this::t('EDIT_TIMESTAMP'));
         $tsChk =& Piwi::CreateWidget('CheckButtons', 'edit_timestamp');
         $tsChk->AddOption('', 'yes', 'edit_timestamp', false);
         $tsChk->AddEvent(ON_CLICK, 'toggleUpdate(this.checked);');
@@ -534,7 +534,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $pubdate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
-        $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
+        $tpl->SetVariable('fasturl', $this::t('FASTURL'));
         $fastUrlData = $entry['fast_url'];
         $fastUrlEntry =& Piwi::CreateWidget('Entry', 'fasturl', $fastUrlData);
         $fastUrlEntry->SetId('fasturl');
@@ -564,7 +564,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Trackback
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
-            $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
+            $tpl->SetVariable('trackback_to', $this::t('TRACKBACK'));
             $tb =& Piwi::CreateWidget('TextArea', 'trackback_to', $entry['trackbacks']);
             $tb->SetId('trackback_to');
             $tb->SetRows(4);
@@ -698,9 +698,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             // Delete Post
             $res = $model->DeleteEntry($post['id']);
             if (Jaws_Error::IsError($res)) {
-                $this->gadget->session->push(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), RESPONSE_ERROR);
+                $this->gadget->session->push($this::t('ERROR_ENTRY_NOT_DELETED'), RESPONSE_ERROR);
             } else {
-                $this->gadget->session->push(_t('BLOG_ENTRY_DELETED'), RESPONSE_NOTICE);
+                $this->gadget->session->push($this::t('ENTRY_DELETED'), RESPONSE_NOTICE);
             }
 
             return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&reqAction=ListEntries');
@@ -711,7 +711,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Ask for confirmation...
         $entry = $bModel->GetEntry($get['id']);
         if (Jaws_Error::IsError($entry)) {
-            $this->gadget->session->push(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
+            $this->gadget->session->push($this::t('ERROR_DOES_NOT_EXISTS'));
             return Jaws_Header::Location(BASE_SCRIPT . '?reqGadget=Blog&reqAction=ListEntries');
         }
 
@@ -721,7 +721,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar($get['action']));
         // Message
-        $tpl->SetVariable('delete_message', _t('BLOG_DELETE_CONFIRM_ENTRY'));
+        $tpl->SetVariable('delete_message', $this::t('DELETE_CONFIRM_ENTRY'));
         // Delete
         $deleteButton =& Piwi::CreateWidget('Button', 'delete',
                                             Jaws::t('DELETE'), STOCK_DELETE);
@@ -771,7 +771,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetBlock('list_entries');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $this->gadget->define('deleteConfirm', _t('BLOG_DELETE_MASSIVE_ENTRIES'));
+        $this->gadget->define('deleteConfirm', $this::t('DELETE_MASSIVE_ENTRIES'));
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar('ListEntries'));
 
@@ -796,7 +796,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $catCombo->SetDefault($category);
         $catCombo->AddEvent(ON_CHANGE, 'javascript:searchPost();');
-        $tpl->SetVariable('category', _t('BLOG_CATEGORY'));
+        $tpl->SetVariable('category', $this::t('CATEGORY'));
         $tpl->SetVariable('category_field', $catCombo->Get());
 
         // Status filter
@@ -804,8 +804,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $statusCombo =& Piwi::CreateWidget('Combo', 'status');
         $statusCombo->setId('status');
         $statusCombo->AddOption('&nbsp;', '');
-        $statusCombo->AddOption(_t('BLOG_PUBLISHED'), '1');
-        $statusCombo->AddOption(_t('BLOG_DRAFT'), '0');
+        $statusCombo->AddOption($this::t('PUBLISHED'), '1');
+        $statusCombo->AddOption($this::t('DRAFT'), '0');
         $statusCombo->SetDefault($status);
         $statusCombo->AddEvent(ON_CHANGE, 'javascript:searchPost();');
         $tpl->SetVariable('status', Jaws::t('STATUS'));
@@ -813,7 +813,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $catCombo->SetDefault($category);
         $catCombo->AddEvent(ON_CHANGE, 'javascript:searchPost();');
-        $tpl->SetVariable('category', _t('BLOG_CATEGORY'));
+        $tpl->SetVariable('category', $this::t('CATEGORY'));
         $tpl->SetVariable('category_field', $catCombo->Get());
 
         // Free text search
@@ -835,9 +835,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $grid->TotalRows($pModel->TotalOfPosts());
         $grid->useMultipleSelection();
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('TITLE')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('BLOG_EDIT_TIMESTAMP')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('EDIT_TIMESTAMP')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('UPDATETIME')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('BLOG_AUTHOR')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('AUTHOR')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('STATUS')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
 
@@ -853,8 +853,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
         $actions->AddOption(Jaws::t('DELETE'),  'delete');
-        $actions->AddOption(_t('BLOG_DRAFT'),     '0');
-        $actions->AddOption(_t('BLOG_PUBLISHED'), '1');
+        $actions->AddOption($this::t('DRAFT'),     '0');
+        $actions->AddOption($this::t('PUBLISHED'), '1');
 
         $execute =& Piwi::CreateWidget('Button', 'executeEntryAction', '', STOCK_YES);
         $execute->AddEvent(ON_CLICK, "javascript:entryDGAction(document.getElementById('entries_actions_combo'));");
@@ -906,7 +906,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             $post['publishtime'] = $date->Format($row['publishtime']);
             $post['updatetime']  = $date->Format($row['updatetime']);
             $post['username']    = $row['username'];
-            $post['published']   = ($row['published'] === true) ? _t('BLOG_PUBLISHED') : _t('BLOG_DRAFT');
+            $post['published']   = ($row['published'] === true) ? $this::t('PUBLISHED') : $this::t('DRAFT');
 
             $actions = '';
             $link = Piwi::CreateWidget('Link', Jaws::t('EDIT'),
@@ -915,7 +915,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             $actions = $link->Get().'&nbsp;';
 
             if ($this->gadget->GetPermission('ManageComments')) {
-                $link = Piwi::CreateWidget('Link', _t('BLOG_COMMENTS'),
+                $link = Piwi::CreateWidget('Link', $this::t('COMMENTS'),
                                            $common_url.'&amp;reqAction=ManageComments&amp;filterby=postid&amp;filter='.$id,
                                            'images/stock/stock-comments.png');
                 $actions.= $link->Get().'&nbsp;';

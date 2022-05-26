@@ -31,7 +31,7 @@ class Blog_Hooks_Users extends Jaws_Gadget_Hook
             return array();
         }
 
-        $entity['title'] = _t('BLOG_ENTRY');
+        $entity['title'] = $this::t('ENTRY');
         $entity['count'] = $postCount;
         $entity['url'] = $this->gadget->urlMap('ViewAuthorPage', array('id' => $uname));
 

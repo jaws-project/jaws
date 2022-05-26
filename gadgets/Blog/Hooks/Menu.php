@@ -23,17 +23,17 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
         $items[] = array('url'    => $this->gadget->urlMap('DefaultAction'),
                          'title'  => $this->gadget->title);
         $items[] = array('url'    => $this->gadget->urlMap('Archive'),
-                         'title'  => _t('BLOG_ARCHIVE'));
+                         'title'  => $this::t('ARCHIVE'));
         $items[] = array('url'    => $this->gadget->urlMap('CategoriesList'),
-                         'title'  => _t('BLOG_ACTIONS_CATEGORIESLIST'),
-                         'title2' => _t('BLOG_CATEGORIES'));
+                         'title'  => $this::t('ACTIONS_CATEGORIESLIST'),
+                         'title2' => $this::t('CATEGORIES'));
         $items[] = array('url'    => $this->gadget->urlMap('Types'),
-                         'title'  => _t('BLOG_ACTIONS_TYPES'),
-                         'title2' => _t('BLOG_TYPES'));
+                         'title'  => $this::t('ACTIONS_TYPES'),
+                         'title2' => $this::t('TYPES'));
         $items[] = array('url'    => $this->gadget->urlMap('PopularPosts'),
-                         'title'  => _t('BLOG_POPULAR_POSTS'));
+                         'title'  => $this::t('POPULAR_POSTS'));
         $items[] = array('url'    => $this->gadget->urlMap('PostsAuthors'),
-                         'title'  => _t('BLOG_POSTS_AUTHORS'));
+                         'title'  => $this::t('POSTS_AUTHORS'));
 
         //Blog model
         $pModel      = $this->gadget->model->load('Posts');

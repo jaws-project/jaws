@@ -736,7 +736,7 @@ function metaWeblog_getRecentPosts($params)
  */
 function metaWeblog_getTemplate($params)
 {
-    return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('BLOG_ERROR_XMLRPC_NO_GETTEMPLATE_SUPPORT'));
+    return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, $this::t('ERROR_XMLRPC_NO_GETTEMPLATE_SUPPORT'));
 }
 
 /**
@@ -748,7 +748,7 @@ function metaWeblog_getTemplate($params)
  */
 function metaWeblog_setTemplate($params)
 {
-    return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('BLOG_ERROR_XMLRPC_NO_SETTEMPLATE_SUPPORT'));
+    return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, $this::t('ERROR_XMLRPC_NO_SETTEMPLATE_SUPPORT'));
 }
 
 /**
