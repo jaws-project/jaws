@@ -30,8 +30,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmQuoteDelete', _t('QUOTES_CONFIRM_DELETE_QUOTE'));
+        $this->gadget->define('incompleteQuoteFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmQuoteDelete', $this::t('CONFIRM_DELETE_QUOTE'));
 
         $tpl = $this->gadget->template->loadAdmin('Quotes.html');
         $tpl->SetBlock('quotes');
@@ -50,7 +50,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
             $combo->AddOption($group['title'], $group['id']);
         }
         $tpl->SetVariable('group_filter', $combo->Get());
-        $tpl->SetVariable('lbl_group_filter', _t('QUOTES_GROUP').':');
+        $tpl->SetVariable('lbl_group_filter', $this::t('GROUP').':');
 
         //Fill the quotes combo..
         $comboQuotes =& Piwi::CreateWidget('Combo', 'quotes_combo');
@@ -77,7 +77,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
                 $groupscombo->AddOption($group['title'], $group['id']);
             }
         }
-        $tpl->SetVariable('lbl_group', _t('QUOTES_GROUP'));
+        $tpl->SetVariable('lbl_group', $this::t('GROUP'));
         $tpl->SetVariable('group', $groupscombo->Get());
 
         // start time
@@ -101,7 +101,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $showTitle->AddOption(Jaws::t('NOO'),  'false');
         $showTitle->AddOption(Jaws::t('YESS'), 'true');
         $showTitle->SetDefault('true');
-        $tpl->SetVariable('lbl_show_title', _t('QUOTES_SHOW_TITLE'));
+        $tpl->SetVariable('lbl_show_title', $this::t('SHOW_TITLE'));
         $tpl->SetVariable('show_title', $showTitle->Get());
 
         // published
@@ -114,14 +114,14 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
 
         // quotation editor
         $quotation =& $this->app->loadEditor('Blocks', 'quotation', '', '');
-        $tpl->SetVariable('lbl_quotation', _t('QUOTES_QUOTE_QUOTATION'));
+        $tpl->SetVariable('lbl_quotation', $this::t('QUOTE_QUOTATION'));
         $tpl->SetVariable('quotation', $quotation->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, "javascript:saveQuote();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $btnDel =& Piwi::CreateWidget('Button', 'btn_del', Jaws::t('DELETE', _t('QUOTES_QUOTE')), STOCK_DELETE);
+        $btnDel =& Piwi::CreateWidget('Button', 'btn_del', Jaws::t('DELETE', $this::t('QUOTE')), STOCK_DELETE);
         $btnDel->AddEvent(ON_CLICK, "javascript:deleteQuote();");
         $btnDel->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $btnDel->Get());

@@ -28,7 +28,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('QUOTES_QUOTE'),
+                'title' => $this::t('QUOTE'),
                 'value' => $pgroups
             );
         }
@@ -45,7 +45,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
     function RecentQuotes()
     {
         $group['id']          = 0;
-        $group['title']       = _t('QUOTES_GROUPS_RECENT');
+        $group['title']       = $this::t('GROUPS_RECENT');
         $group['view_mode']   = $this->gadget->registry->fetch('last_entries_view_mode');
         $group['view_type']   = $this->gadget->registry->fetch('last_entries_view_type');
         $group['show_title']  = $this->gadget->registry->fetch('last_entries_show_title') == 'true';

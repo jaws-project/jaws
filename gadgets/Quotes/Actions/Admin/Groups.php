@@ -19,8 +19,8 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
     function QuoteGroups()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteGroupFields', _t('QUOTES_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmGroupDelete', _t('QUOTES_CONFIRM_DELETE_GROUP'));
+        $this->gadget->define('incompleteGroupFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmGroupDelete', $this::t('CONFIRM_DELETE_GROUP'));
 
         $tpl = $this->gadget->template->loadAdmin('Quotes.html');
         $tpl->SetBlock('quotes');
@@ -44,36 +44,36 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('title', $titleEntry->Get());
 
         $viewMode =& Piwi::CreateWidget('Combo', 'view_mode');
-        $viewMode->AddOption(_t('QUOTES_GROUPS_VIEW_MODE_COMPACT'), 0);
-        $viewMode->AddOption(_t('QUOTES_GROUPS_VIEW_MODE_FULL'),    1);
-        $tpl->SetVariable('lbl_view_mode', _t('QUOTES_GROUPS_VIEW_MODE'));
+        $viewMode->AddOption($this::t('GROUPS_VIEW_MODE_COMPACT'), 0);
+        $viewMode->AddOption($this::t('GROUPS_VIEW_MODE_FULL'),    1);
+        $tpl->SetVariable('lbl_view_mode', $this::t('GROUPS_VIEW_MODE'));
         $tpl->SetVariable('view_mode', $viewMode->Get());
 
         $viewType =& Piwi::CreateWidget('Combo', 'view_type');
-        $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_SIMPLE'),        0);
-        $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_MARQUEE_UP'),    1);
-        $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_MARQUEE_DOWN'),  2);
-        $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_MARQUEE_LEFT'),  3);
-        $viewType->AddOption(_t('QUOTES_GROUPS_VIEW_TYPE_MARQUEE_RIGHT'), 4);
-        $tpl->SetVariable('lbl_view_type', _t('QUOTES_GROUPS_VIEW_TYPE'));
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_SIMPLE'),        0);
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_MARQUEE_UP'),    1);
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_MARQUEE_DOWN'),  2);
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_MARQUEE_LEFT'),  3);
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_MARQUEE_RIGHT'), 4);
+        $tpl->SetVariable('lbl_view_type', $this::t('GROUPS_VIEW_TYPE'));
         $tpl->SetVariable('view_type', $viewType->Get());
 
         $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
         $showTitle->AddOption(Jaws::t('NOO'),  'false');
         $showTitle->AddOption(Jaws::t('YESS'), 'true');
         $showTitle->SetDefault('true');
-        $tpl->SetVariable('lbl_show_title', _t('QUOTES_SHOW_TITLE'));
+        $tpl->SetVariable('lbl_show_title', $this::t('SHOW_TITLE'));
         $tpl->SetVariable('show_title', $showTitle->Get());
 
         $limitcount =& Piwi::CreateWidget('Entry', 'limit_count', '0');
-        $tpl->SetVariable('lbl_limit_count', _t('QUOTES_GROUPS_COUNT_ENTRY'));
+        $tpl->SetVariable('lbl_limit_count', $this::t('GROUPS_COUNT_ENTRY'));
         $tpl->SetVariable('limit_count', $limitcount->Get());
 
         $randomly =& Piwi::CreateWidget('Combo', 'random');
         $randomly->AddOption(Jaws::t('NOO'),  'false');
         $randomly->AddOption(Jaws::t('YESS'), 'true');
         $randomly->SetDefault('true');
-        $tpl->SetVariable('lbl_random', _t('QUOTES_GROUPS_RANDOM'));
+        $tpl->SetVariable('lbl_random', $this::t('GROUPS_RANDOM'));
         $tpl->SetVariable('random', $randomly->Get());
 
         $published =& Piwi::CreateWidget('Combo', 'published');
@@ -87,7 +87,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $saveGroup->AddEvent(ON_CLICK, "javascript:saveGroup();");
         $tpl->SetVariable('btn_save', $saveGroup->Get());
 
-        $GroupQuotes =& Piwi::CreateWidget('Button', 'add_quotes', _t('QUOTES_ADD_QUOTES'), STOCK_EDIT);
+        $GroupQuotes =& Piwi::CreateWidget('Button', 'add_quotes', $this::t('ADD_QUOTES'), STOCK_EDIT);
         $GroupQuotes->AddEvent(ON_CLICK, "javascript:editGroupQuotes();");
         $GroupQuotes->SetStyle('display:none;');
         $tpl->SetVariable('add_quotes', $GroupQuotes->Get());
@@ -96,7 +96,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $cancelAction->Get());
 
-        $deleteGroup =& Piwi::CreateWidget('Button', 'btn_del', Jaws::t('DELETE', _t('QUOTES_GROUP')), STOCK_DELETE);
+        $deleteGroup =& Piwi::CreateWidget('Button', 'btn_del', Jaws::t('DELETE', $this::t('GROUP')), STOCK_DELETE);
         $deleteGroup->AddEvent(ON_CLICK, "javascript:deleteGroup();");
         $deleteGroup->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $deleteGroup->Get());
@@ -129,7 +129,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         }
 
         $tpl->SetVariable('group_quotes_combo', $quotesCombo->Get());
-        $tpl->SetVariable('title', _t('QUOTES_GROUPS_MARK_QUOTES'));
+        $tpl->SetVariable('title', $this::t('GROUPS_MARK_QUOTES'));
 
         $tpl->ParseBlock('quotes/quotes_groups_ui_section');
         $tpl->ParseBlock('quotes');

@@ -36,7 +36,7 @@ class Quotes_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageQuoteGroups')) {
             $menubar->AddOption(
                 'QuoteGroups',
-                _t('QUOTES_GROUPS'),
+                $this::t('GROUPS'),
                 BASE_SCRIPT . '?reqGadget=Quotes&amp;reqAction=QuoteGroups',
                 'gadgets/Quotes/Resources/images/groups_mini.png'
             );

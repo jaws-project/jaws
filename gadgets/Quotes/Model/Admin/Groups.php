@@ -33,7 +33,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         }
 
         if ($gc > 0) {
-            $this->gadget->session->push(_t('QUOTES_GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -53,7 +53,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         }
 
         $this->gadget->session->push(
-            _t('QUOTES_GROUPS_CREATED'),
+            $this::t('GROUPS_CREATED'),
             RESPONSE_NOTICE,
             array('id' => $result, 'title' => $title)
         );
@@ -85,7 +85,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         }
 
         if ($gc > 0) {
-            $this->gadget->session->push(_t('QUOTES_GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GROUPS_DUPLICATE_TITLE'), RESPONSE_ERROR);
             return false;
         }
 
@@ -103,7 +103,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
             $this->gadget->session->push(Jaws::t('ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
-        $this->gadget->session->push(_t('QUOTES_GROUPS_UPDATED', $gid), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_UPDATED', $gid), RESPONSE_NOTICE);
         return true;
     }
 
@@ -117,7 +117,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $this->gadget->session->push(_t('QUOTES_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
         $model = $this->gadget->model->load('Groups');
@@ -128,7 +128,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         }
 
         if(!isset($group[0]['id'])) {
-            $this->gadget->session->push(_t('QUOTES_GROUPS_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GROUPS_GROUP_DOES_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -141,7 +141,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('QUOTES_GROUPS_DELETED', $group[0]['title']), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_DELETED', $group[0]['title']), RESPONSE_NOTICE);
 
         return true;
     }
