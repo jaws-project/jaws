@@ -123,7 +123,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $fromDate->setDateFormat('%Y-%m-%d %H:%M:%S');
         $fromDate->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('filter_from_date', $fromDate->Get());
-        $tpl->SetVariable('lbl_filter_from_date', _t('LOGS_FROM_DATE'));
+        $tpl->SetVariable('lbl_filter_from_date', $this::t('LOGS.FROM_DATE'));
 
         // To Date Filter
         $toDate =& Piwi::CreateWidget('DatePicker', 'filter_to_date', '');
@@ -132,7 +132,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $toDate->setDateFormat('%Y-%m-%d %H:%M:%S');
         $toDate->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('filter_to_date', $toDate->Get());
-        $tpl->SetVariable('lbl_filter_to_date', _t('LOGS_TO_DATE'));
+        $tpl->SetVariable('lbl_filter_to_date', $this::t('LOGS.TO_DATE'));
 
         // Combo for code
         $codeCombo =& Piwi::CreateWidget('Combo', 'filter_code');
