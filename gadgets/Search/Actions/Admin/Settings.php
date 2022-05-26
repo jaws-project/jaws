@@ -47,8 +47,8 @@ class Search_Actions_Admin_Settings extends Jaws_Gadget_Action
         }
 
         $usewithCombo =& Piwi::CreateWidget('Combo', 'use_with');
-        $usewithCombo->AddOption(_t('SEARCH_ALWAYS'), 'always');
-        $usewithCombo->AddOption(_t('SEARCH_ONLY_IN_GADGET'), 'selected');
+        $usewithCombo->AddOption($this::t('ALWAYS'), 'always');
+        $usewithCombo->AddOption($this::t('ONLY_IN_GADGET'), 'selected');
         $usewithCombo->AddEvent(ON_CHANGE, 'javascript:show_gadgets();');
         if ($gSearchable == '*') {
             $usewithCombo->SetDefault('always');
@@ -62,7 +62,7 @@ class Search_Actions_Admin_Settings extends Jaws_Gadget_Action
         $saveButton->AddEvent(ON_CLICK, 'javascript:saveChanges(this.form);');
 
         $tpl->SetVariable('save_button', $saveButton->Get());
-        $tpl->SetVariable('use_with', _t('SEARCH_USE_WITH'));
+        $tpl->SetVariable('use_with', $this::t('USE_WITH'));
         $tpl->SetVariable('use_with_combo', $usewithCombo->Get());
 
         $tpl->ParseBlock('admin');

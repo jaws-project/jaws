@@ -36,15 +36,15 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', $this->gadget->title);
 
-        $tpl->SetVariable('lbl_all', _t('SEARCH_WORD_FILTER_ALL'));
-        $tpl->SetVariable('ttl_all', _t('SEARCH_WORD_FILTER_ALL'));
+        $tpl->SetVariable('lbl_all', $this::t('WORD_FILTER_ALL'));
+        $tpl->SetVariable('ttl_all', $this::t('WORD_FILTER_ALL'));
 
         $model = $this->gadget->model->load('Search');
         $tpl->SetVariable('all', $model->implodeSearch($post));
 
         // gadgets select box
         if ($gadgets_combo) {
-            $tpl->SetVariable('lbl_search_in', _t('SEARCH_SEARCH_IN'));
+            $tpl->SetVariable('lbl_search_in', $this::t('SEARCH_IN'));
             $gadgetList = $model->GetSearchableGadgets();
             $gSearchable = $this->gadget->registry->fetch('searchable_gadgets');
             $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
@@ -69,7 +69,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
             }
         }
 
-        $tpl->SetVariable('search', _t('SEARCH_BUTTON'));
+        $tpl->SetVariable('search', $this::t('BUTTON'));
         $tpl->ParseBlock("$block");
 
         return $tpl->Get();
@@ -105,13 +105,13 @@ class Search_Actions_Search extends Jaws_Gadget_Action
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', $this->gadget->title);
-        $tpl->SetVariable('lbl_word_filter', _t('SEARCH_WORD_FILTER'));
-        $tpl->SetVariable('lbl_all', _t('SEARCH_WORD_FILTER_ALL'));
-        $tpl->SetVariable('lbl_exact', _t('SEARCH_WORD_FILTER_EXACT'));
-        $tpl->SetVariable('lbl_least', _t('SEARCH_WORD_FILTER_LEAST'));
-        $tpl->SetVariable('lbl_exclude', _t('SEARCH_WORD_FILTER_EXCLUDE'));
-        $tpl->SetVariable('lbl_data_filter', _t('SEARCH_DATA_FILTER'));
-        $tpl->SetVariable('lbl_search_in', _t('SEARCH_SEARCH_IN'));
+        $tpl->SetVariable('lbl_word_filter', $this::t('WORD_FILTER'));
+        $tpl->SetVariable('lbl_all', $this::t('WORD_FILTER_ALL'));
+        $tpl->SetVariable('lbl_exact', $this::t('WORD_FILTER_EXACT'));
+        $tpl->SetVariable('lbl_least', $this::t('WORD_FILTER_LEAST'));
+        $tpl->SetVariable('lbl_exclude', $this::t('WORD_FILTER_EXCLUDE'));
+        $tpl->SetVariable('lbl_data_filter', $this::t('DATA_FILTER'));
+        $tpl->SetVariable('lbl_search_in', $this::t('SEARCH_IN'));
 
         $model = $this->gadget->model->load('Search');
         $options = $model->parseSearch($post, $searchable);
@@ -149,7 +149,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         $tpl->SetVariable('gadgets_combo', $gchk->Get());
 
         //Search button
-        $btnSearch =& Piwi::CreateWidget('Button', '', _t('SEARCH_BUTTON'));
+        $btnSearch =& Piwi::CreateWidget('Button', '', $this::t('BUTTON'));
         $btnSearch->SetID('btn_search');
         $btnSearch->SetSubmit(true);
         $tpl->SetVariable('btn_search', $btnSearch->Get());

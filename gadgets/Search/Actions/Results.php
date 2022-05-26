@@ -21,7 +21,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Results.html');
         $tpl->SetBlock('results');
-        $tpl->SetVariable('title', _t('SEARCH_RESULTS'));
+        $tpl->SetVariable('title', $this::t('RESULTS'));
 
         $post = $this->gadget->request->fetch(
             array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'),
@@ -57,7 +57,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         if (!$searchable) {
             $tpl->SetBlock('results/notfound');
             $min_key_len = $this->gadget->registry->fetch('Search/min_key_len');
-            $tpl->SetVariable('message', _t('SEARCH_STRING_TOO_SHORT', $min_key_len));
+            $tpl->SetVariable('message', $this::t('STRING_TOO_SHORT', $min_key_len));
             $tpl->ParseBlock('results/notfound');
         } elseif (count($items) > 1) {
             $tpl->SetVariable(
@@ -71,7 +71,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
             );
             if (count($items) > 2) {
                 $tpl->SetBlock('results/subtitle');
-                $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE',
+                $tpl->SetVariable('text', $this::t('RESULTS_SUBTITLE',
                                              $items['_totalItems'],
                                              $model->implodeSearch()));
                 $tpl->ParseBlock('results/subtitle');
@@ -88,7 +88,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
             foreach ($items as $gadget => $result) {
                 $tpl->SetBlock('results/gadget');
                 $info = Jaws_Gadget::getInstance($gadget);
-                $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
+                $tpl->SetVariable('gadget_result', $this::t('RESULTS_IN_GADGETS',
                                                       count($result),
                                                       $model->implodeSearch(),
                                                       $info->title));
@@ -126,7 +126,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         } else {
             $tpl->SetBlock('results/notfound');
             header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 404 Not Found");
-            $tpl->SetVariable('message', _t('SEARCH_NO_RESULTS', $model->implodeSearch()));
+            $tpl->SetVariable('message', $this::t('NO_RESULTS', $model->implodeSearch()));
             $tpl->ParseBlock('results/notfound');
         }
         $tpl->ParseBlock('results');
@@ -153,7 +153,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
-            $tpl->SetVariable('total', _t('SEARCH_RESULT_COUNT', $pager['total']));
+            $tpl->SetVariable('total', $this::t('RESULT_COUNT', $pager['total']));
 
             $pager_view = '';
             foreach ($pager as $k => $v) {
