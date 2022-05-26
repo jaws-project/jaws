@@ -325,19 +325,23 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         $args = func_get_args();
         array_shift($args);
 
-
-        if ($gadget = strstr($input, '.', true)) {
-            $string = substr($input, strlen($gadget) + 1);
+        if ($component = strstr($input, '.', true)) {
+            $string = substr($input, strlen($component) + 1);
         } else {
-            $gadget = '';
+            $component = '';
             $string = $input;
+        }
+
+        $type = Jaws_Translate::TRANSLATE_GADGET;
+        if ($component == 'global') {
+             $type = Jaws_Translate::TRANSLATE_GLOBAL;
         }
 
         return Jaws_Translate::getInstance()->XTranslate(
             null,
-            Jaws_Translate::TRANSLATE_GADGET,
-            $gadget,
-            strtoupper($string),
+            $type,
+            $component,
+            $string,
             $args
         );
     }
