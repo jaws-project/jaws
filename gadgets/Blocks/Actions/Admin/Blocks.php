@@ -41,8 +41,8 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
 
         // New Button
         if ($this->gadget->GetPermission('AddBlock')) {
-            $newButton =& Piwi::CreateWidget('Button', 'newButton', _t('BLOCKS_NEW'), STOCK_NEW);
-            $newButton->AddEvent(ON_CLICK, 'createNewBlock(\'' . _t('BLOCKS_NEW') . '\');');
+            $newButton =& Piwi::CreateWidget('Button', 'newButton', $this::t('NEW'), STOCK_NEW);
+            $newButton->AddEvent(ON_CLICK, 'createNewBlock(\'' . $this::t('NEW') . '\');');
             $newButton->SetID('newButton');
             $tpl->SetVariable('new_button', $newButton->Get());
         } else {
@@ -68,19 +68,19 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
         $summary =& $this->app->loadEditor('Blocks', 'block_summary');
         $summary->setID('block_summary');
         $summary->TextArea->SetStyle('width: 99%;');
-        $tpl->SetVariable('summary', _t('BLOCKS_SUMMARY'));
+        $tpl->SetVariable('summary', $this::t('SUMMARY'));
         $tpl->SetVariable('summary_field', $summary->Get());
 
         // block content
         $content =& $this->app->loadEditor('Blocks', 'block_content');
         $content->setID('block_content');
         $content->TextArea->SetStyle('width: 99%;');
-        $tpl->SetVariable('content', _t('BLOCKS_CONTENT'));
+        $tpl->SetVariable('content', $this::t('CONTENT'));
         $tpl->SetVariable('content_field', $content->Get());
 
         $dispTitle =& Piwi::CreateWidget('CheckButtons', 'display_title');
         // FIXME: This is an ugly hack to add an ID to a Option...
-        $dispTitle->AddOption(_t('BLOCKS_DISPLAYTITLE'), 'true', null, true);
+        $dispTitle->AddOption($this::t('DISPLAYTITLE'), 'true', null, true);
         $tpl->SetVariable('display_title', $dispTitle->Get());
 
         $preview =& Piwi::CreateWidget('Button', 'previewButton', Jaws::t('PREVIEW'), STOCK_NEW);
@@ -95,7 +95,7 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('DeleteBlock')) {
             $del =& Piwi::CreateWidget('Button', 'delete', Jaws::t('DELETE'), STOCK_DELETE);
-            $del->AddEvent(ON_CLICK, 'if (confirm(\'' . _t('BLOCKS_CONFIRM_DELETE_BLOCK') . '\')) { deleteBlock(); }');
+            $del->AddEvent(ON_CLICK, 'if (confirm(\'' . $this::t('CONFIRM_DELETE_BLOCK') . '\')) { deleteBlock(); }');
             $del->SetID('delButton');
             $tpl->SetVariable('delete', $del->Get());
         } else {
@@ -114,11 +114,11 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
 
         // Messages
         $this->gadget->define('incompleteBlockFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('retrievingMessage',    _t('BLOCKS_MSGRETRIEVING'));
-        $this->gadget->define('updatingMessage',      _t('BLOCKS_MSGUPDATING'));
-        $this->gadget->define('deletingMessage',      _t('BLOCKS_MSGDELETING'));
-        $this->gadget->define('savingMessage',        _t('BLOCKS_MSGSAVING'));
-        $this->gadget->define('sendingMessage',       _t('BLOCKS_MSGSENDING'));
+        $this->gadget->define('retrievingMessage',    $this::t('MSGRETRIEVING'));
+        $this->gadget->define('updatingMessage',      $this::t('MSGUPDATING'));
+        $this->gadget->define('deletingMessage',      $this::t('MSGDELETING'));
+        $this->gadget->define('savingMessage',        $this::t('MSGSAVING'));
+        $this->gadget->define('sendingMessage',       $this::t('MSGSENDING'));
 
         // Acl
         $this->gadget->define('aclAddBlock', $this->gadget->GetPermission('AddBlock')?'true':'false');

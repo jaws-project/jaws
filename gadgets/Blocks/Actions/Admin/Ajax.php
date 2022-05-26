@@ -53,7 +53,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
                                                          RESPONSE_ERROR);
         }
 
-        return $this->gadget->session->response(_t('BLOCKS_ADDED', "#$res"),
+        return $this->gadget->session->response($this::t('ADDED', "#$res"),
                                                      RESPONSE_NOTICE,
                                                      $res);
     }

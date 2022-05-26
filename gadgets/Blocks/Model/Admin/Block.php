@@ -33,7 +33,7 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            $result->SetMessage(_t('BLOCKS_ERROR_NOT_ADDED'));
+            $result->SetMessage($this::t('ERROR_NOT_ADDED'));
         }
 
         return $result;
@@ -62,11 +62,11 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('BLOCKS_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOCKS_ERROR_NOT_UPDATED'));
+            $this->gadget->session->push($this::t('ERROR_NOT_UPDATED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_NOT_UPDATED'));
         }
 
-        $this->gadget->session->push(_t('BLOCKS_UPDATED', $title), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('UPDATED', $title), RESPONSE_NOTICE);
         return true;
     }
 
@@ -84,12 +84,12 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push(_t('BLOCKS_ERROR_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOCKS_ERROR_NOT_UPDATED'));
+            $this->gadget->session->push($this::t('ERROR_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error($this::t('ERROR_NOT_UPDATED'));
         }
         // TODO: we must trigger SHOUT here
 
-        $this->gadget->session->push(_t('BLOCKS_DELETED', $block['title']), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('DELETED', $block['title']), RESPONSE_NOTICE);
         return true;
     }
 

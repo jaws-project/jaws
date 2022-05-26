@@ -29,15 +29,15 @@ class Blocks_Actions_Block extends Jaws_Gadget_Action
             }
 
             $result[] = array(
-                'title' => _t('BLOCKS_BLOCK'),
+                'title' => $this::t('BLOCK'),
                 'value' => $pblocks
             );
 
             $result[] = array(
-                'title' => _t('BLOCKS_DISPLAY_TYPE'),
+                'title' => $this::t('DISPLAY_TYPE'),
                 'value' => array(
-                    0 => _t('BLOCKS_DISPLAY_TYPE_0'),
-                    1 => _t('BLOCKS_DISPLAY_TYPE_1'),
+                    0 => $this::t('DISPLAY_TYPE_0'),
+                    1 => $this::t('DISPLAY_TYPE_1'),
                 ),
             );
         }
