@@ -428,8 +428,8 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                         $params['name'] = 'PrivateMessage';
                         $params['title'] = $this::t('NEW_MESSAGE_NOTIFICATION_TITLE');
                         $params['summary'] = $this::t('NEW_MESSAGE_NOTIFICATION');
-                        $params['verbose'] = _t(
-                            'PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION_DESC',
+                        $params['verbose'] = $this::t(
+                            'NEW_MESSAGE_NOTIFICATION_DESC',
                             $data['subject']
                         );
                         $params['user'] = (int)$recipient_user;
