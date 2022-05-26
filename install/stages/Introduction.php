@@ -22,11 +22,11 @@ class Installer_Introduction extends JawsInstaller
         $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Introduction/templates');
         $tpl->SetBlock('Introduction');
-        $tpl->SetVariable('welcome',    $this->t('INTRO_WELCOME'));
-        $tpl->SetVariable('title_info', $this->t('INTRO_INSTALLER'));
-        $tpl->SetVariable('db_info',    $this->t('INTRO_DATABASE'));
-        $tpl->SetVariable('ftp_info',   $this->t('INTRO_FTP'));
-        $tpl->SetVariable('mail_info',  $this->t('INTRO_MAIL'));
+        $tpl->SetVariable('welcome',    $this::t('INTRO_WELCOME'));
+        $tpl->SetVariable('title_info', $this::t('INTRO_INSTALLER'));
+        $tpl->SetVariable('db_info',    $this::t('INTRO_DATABASE'));
+        $tpl->SetVariable('ftp_info',   $this::t('INTRO_FTP'));
+        $tpl->SetVariable('mail_info',  $this::t('INTRO_MAIL'));
         $tpl->SetVariable('language',   Jaws::t('LANGUAGE'));
         $tpl->SetVariable('next',       Jaws::t('NEXT'));
 

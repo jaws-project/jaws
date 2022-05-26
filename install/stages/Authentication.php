@@ -43,15 +43,15 @@ class Installer_Authentication extends JawsInstaller
         $tpl->Load('display.html', 'stages/Authentication/templates');
         $tpl->SetBlock('Authentication');
 
-        $tpl->SetVariable('key_path_info', $this->t('AUTH_PATH_INFO', 'key.txt', INSTALL_PATH));
-        $tpl->SetVariable('rsa_security',  $this->t('AUTH_ENABLE_SECURITY'));
-        $tpl->SetVariable('auth_upload',   $this->t('AUTH_UPLOAD'));
-        $tpl->SetVariable('key_file_info', $this->t('AUTH_KEY_INFO'));
+        $tpl->SetVariable('key_path_info', $this::t('AUTH_PATH_INFO', 'key.txt', INSTALL_PATH));
+        $tpl->SetVariable('rsa_security',  $this::t('AUTH_ENABLE_SECURITY'));
+        $tpl->SetVariable('auth_upload',   $this::t('AUTH_UPLOAD'));
+        $tpl->SetVariable('key_file_info', $this::t('AUTH_KEY_INFO'));
         $tpl->SetVariable('next',          Jaws::t('NEXT'));
         $tpl->SetVariable('key', $_SESSION['install']['Authentication']['key']);
         $tpl->SetVariable('checked_secure', $_SESSION['secure']? 'checked="checked"' : '');
         $tpl->SetVariable('checked_customize', $_SESSION['customize']? 'checked="checked"' : '');
-        $tpl->SetVariable('custom_installation', $this->t('AUTH_CUSTOM_INSTALL'));
+        $tpl->SetVariable('custom_installation', $this::t('AUTH_CUSTOM_INSTALL'));
 
         $tpl->ParseBlock('Authentication');
         return $tpl->Get();
@@ -85,7 +85,7 @@ class Installer_Authentication extends JawsInstaller
                 $_SESSION['pub_key'] = $pkey['pub_key'];
                 $_SESSION['pvt_key'] = $pkey['pvt_key'];
             } else {
-                return new Jaws_Error($this->t('AUTH_ERROR_RSA_KEY_GENERATION'), 0, JAWS_ERROR_WARNING);
+                return new Jaws_Error($this::t('AUTH_ERROR_RSA_KEY_GENERATION'), 0, JAWS_ERROR_WARNING);
             }
         }
 
@@ -100,10 +100,10 @@ class Installer_Authentication extends JawsInstaller
                 JAWS_DEBUG,
                 "The key found doesn't match the one below, please check that you entered the key correctly"
             );
-            return new Jaws_Error($this->t('AUTH_ERROR_KEY_MATCH', 'key.txt'), 0, JAWS_ERROR_WARNING);
+            return new Jaws_Error($this::t('AUTH_ERROR_KEY_MATCH', 'key.txt'), 0, JAWS_ERROR_WARNING);
         }
         _log(JAWS_DEBUG,"Your key file was not found, please make sure you created it, and the web server is able to read it.");
-        return new Jaws_Error($this->t('AUTH_ERROR_KEY_FILE', 'key.txt'), 0, JAWS_ERROR_WARNING);
+        return new Jaws_Error($this::t('AUTH_ERROR_KEY_FILE', 'key.txt'), 0, JAWS_ERROR_WARNING);
     }
 
     /**

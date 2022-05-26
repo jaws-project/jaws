@@ -78,15 +78,15 @@ class Installer_Settings extends JawsInstaller
         $tpl->Load('display.html', 'stages/Settings/templates');
         $tpl->SetBlock('Settings');
 
-        $tpl->setVariable('lbl_info',           $this->t('SETTINGS_INFO'));
-        $tpl->setVariable('lbl_site_name',      $this->t('SETTINGS_SITE_NAME'));
-        $tpl->setVariable('site_name_info',     $this->t('SETTINGS_SITE_NAME_INFO'));
-        $tpl->setVariable('lbl_site_slogan',    $this->t('SETTINGS_SLOGAN'));
-        $tpl->setVariable('site_slogan_info',   $this->t('SETTINGS_SLOGAN_INFO'));
-        $tpl->setVariable('lbl_site_language',  $this->t('SETTINGS_SITE_LANGUAGE'));
-        $tpl->setVariable('site_language_info', $this->t('SETTINGS_SITE_LANGUAGE_INFO'));
-        $tpl->setVariable('lbl_site_sample',    $this->t('SETTINGS_SITE_SAMPLE'));
-        $tpl->setVariable('site_sample_info',   $this->t('SETTINGS_SITE_SAMPLE_INFO'));
+        $tpl->setVariable('lbl_info',           $this::t('SETTINGS_INFO'));
+        $tpl->setVariable('lbl_site_name',      $this::t('SETTINGS_SITE_NAME'));
+        $tpl->setVariable('site_name_info',     $this::t('SETTINGS_SITE_NAME_INFO'));
+        $tpl->setVariable('lbl_site_slogan',    $this::t('SETTINGS_SLOGAN'));
+        $tpl->setVariable('site_slogan_info',   $this::t('SETTINGS_SLOGAN_INFO'));
+        $tpl->setVariable('lbl_site_language',  $this::t('SETTINGS_SITE_LANGUAGE'));
+        $tpl->setVariable('site_language_info', $this::t('SETTINGS_SITE_LANGUAGE_INFO'));
+        $tpl->setVariable('lbl_site_sample',    $this::t('SETTINGS_SITE_SAMPLE'));
+        $tpl->setVariable('site_sample_info',   $this::t('SETTINGS_SITE_SAMPLE_INFO'));
         $tpl->SetVariable('next',               Jaws::t('NEXT'));
 
         $tpl->SetVariable('site_name',     $values['site_name']);
@@ -178,8 +178,8 @@ class Installer_Settings extends JawsInstaller
         $variables = array();
         $variables['Blog'] = array (
             'timestamp' => Jaws_DB::getInstance()->date(),
-            'blog_content1_title' => $this->t('SAMPLE_BLOG_CONTENT1_TITLE'),
-            'blog_content1_summary' => $this->t('SAMPLE_BLOG_CONTENT1_SUMMARY'),
+            'blog_content1_title' => $this::t('SAMPLE_BLOG_CONTENT1_TITLE'),
+            'blog_content1_summary' => $this::t('SAMPLE_BLOG_CONTENT1_SUMMARY'),
         );
         $variables['Phoo'] = array (
             'timestamp' => Jaws_DB::getInstance()->date(),
@@ -188,18 +188,18 @@ class Installer_Settings extends JawsInstaller
         );
         $variables['LinkDump'] = array (
             'timestamp' => Jaws_DB::getInstance()->date(),
-            'linkdump_title1' => $this->t('SAMPLE_LINKDUMP_TITLE1'),
-            'linkdump_title2' => $this->t('SAMPLE_LINKDUMP_TITLE2'),
-            'linkdump_title3' => $this->t('SAMPLE_LINKDUMP_TITLE3'),
+            'linkdump_title1' => $this::t('SAMPLE_LINKDUMP_TITLE1'),
+            'linkdump_title2' => $this::t('SAMPLE_LINKDUMP_TITLE2'),
+            'linkdump_title3' => $this::t('SAMPLE_LINKDUMP_TITLE3'),
         );
         $variables['Contact'] = array ();
         $variables['Menu'] = array (
             'timestamp' => Jaws_DB::getInstance()->date(),
             'siteurl'   => Jaws_Utils::getBaseURL('/', false),
-            'menu_title1' => $this->t('SAMPLE_MENU_TITLE1'),
-            'menu_title2' => $this->t('SAMPLE_MENU_TITLE2'),
-            'menu_title3' => $this->t('SAMPLE_MENU_TITLE3'),
-            'menu_title4' => $this->t('SAMPLE_MENU_TITLE4'),
+            'menu_title1' => $this::t('SAMPLE_MENU_TITLE1'),
+            'menu_title2' => $this::t('SAMPLE_MENU_TITLE2'),
+            'menu_title3' => $this::t('SAMPLE_MENU_TITLE3'),
+            'menu_title4' => $this::t('SAMPLE_MENU_TITLE4'),
         );
         $variables['Emblems'] = array ();
 

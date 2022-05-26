@@ -33,22 +33,22 @@ class Installer_Requirements extends JawsInstaller
         $tpl->load('display.html', 'stages/Requirements/templates');
         $tpl->setBlock('Requirements');
 
-        $tpl->setVariable('requirements', $this->t('REQUIREMENTS'));
-        $tpl->setVariable('requirement',  $this->t('REQ_REQUIREMENT'));
-        $tpl->setVariable('optional',     $this->t('REQ_OPTIONAL'));
-        $tpl->setVariable('recommended',  $this->t('REQ_RECOMMENDED'));
-        $tpl->setVariable('directive',    $this->t('REQ_DIRECTIVE'));
-        $tpl->setVariable('actual',       $this->t('REQ_ACTUAL'));
-        $tpl->setVariable('result',       $this->t('REQ_RESULT'));
+        $tpl->setVariable('requirements', $this::t('REQUIREMENTS'));
+        $tpl->setVariable('requirement',  $this::t('REQ_REQUIREMENT'));
+        $tpl->setVariable('optional',     $this::t('REQ_OPTIONAL'));
+        $tpl->setVariable('recommended',  $this::t('REQ_RECOMMENDED'));
+        $tpl->setVariable('directive',    $this::t('REQ_DIRECTIVE'));
+        $tpl->setVariable('actual',       $this::t('REQ_ACTUAL'));
+        $tpl->setVariable('result',       $this::t('REQ_RESULT'));
         $tpl->SetVariable('prev',         Jaws::t('PREVIOUS'));
         $tpl->SetVariable('next',         Jaws::t('NEXT'));
         if ($this->_check_path(ROOT_DATA_PATH. 'logs', 'rw', '')) {
-            $tpl->SetVariable('log_use', $this->t('INTRO_LOG', ROOT_DATA_PATH.'logs/install.txt'));
+            $tpl->SetVariable('log_use', $this::t('INTRO_LOG', ROOT_DATA_PATH.'logs/install.txt'));
             $tpl->SetBlock('Requirements/logcheckbox');
             $tpl->SetVariable('checked', !empty($_SESSION['use_log'])? 'checked="checked"' : '');
             $tpl->ParseBlock('Requirements/logcheckbox');
         } else {
-            $tpl->SetVariable('log_use', $this->t('INTRO_LOG_ERROR', 'data/logs'));
+            $tpl->SetVariable('log_use', $this::t('INTRO_LOG_ERROR', 'data/logs'));
         }
 
         $modules = get_loaded_extensions();
@@ -57,15 +57,15 @@ class Installer_Requirements extends JawsInstaller
         _log(JAWS_DEBUG,"Checking requirements...");
         // PHP version
         $tpl->setBlock('Requirements/req_item');
-        $tpl->setVariable('item', $this->t('REQ_PHP_VERSION'));
-        $tpl->setVariable('item_requirement', $this->t('REQ_GREATER_THAN', MIN_PHP_VERSION));
+        $tpl->setVariable('item', $this::t('REQ_PHP_VERSION'));
+        $tpl->setVariable('item_requirement', $this::t('REQ_GREATER_THAN', MIN_PHP_VERSION));
         $tpl->setVariable('item_actual', phpversion());
         if (version_compare(phpversion(), MIN_PHP_VERSION, ">=") == 1) {
             _log(JAWS_DEBUG,"PHP installed version looks ok (>= ".MIN_PHP_VERSION.")");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"PHP installed version (".phpversion().") is not supported");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
@@ -73,15 +73,15 @@ class Installer_Requirements extends JawsInstaller
         // config directory
         $tpl->setBlock('Requirements/req_item');
         $result = $this->_check_path('config', 'r');
-        $tpl->setVariable('item', $this->t('REQ_DIRECTORY', 'config'));
-        $tpl->setVariable('item_requirement', $this->t('REQ_READABLE'));
+        $tpl->setVariable('item', $this::t('REQ_DIRECTORY', 'config'));
+        $tpl->setVariable('item_requirement', $this::t('REQ_READABLE'));
         $tpl->setVariable('item_actual', $this->_get_perms('config'));
         if ($result) {
             _log(JAWS_DEBUG,"config directory has read-permission privileges");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"config directory doesn't have read-permission privileges");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
@@ -89,15 +89,15 @@ class Installer_Requirements extends JawsInstaller
         // data directory
         $tpl->setBlock('Requirements/req_item');
         $result = $this->_check_path(ROOT_DATA_PATH, 'rw', '');
-        $tpl->setVariable('item', $this->t('REQ_DIRECTORY', 'data'));
-        $tpl->setVariable('item_requirement', $this->t('REQ_WRITABLE'));
+        $tpl->setVariable('item', $this::t('REQ_DIRECTORY', 'data'));
+        $tpl->setVariable('item_requirement', $this::t('REQ_WRITABLE'));
         $tpl->setVariable('item_actual', $this->_get_perms(ROOT_DATA_PATH, ''));
         if ($result) {
             _log(JAWS_DEBUG,"data directory has read and write permission privileges");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"data directory doesn't have read and write permission privileges");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
@@ -115,64 +115,64 @@ class Installer_Requirements extends JawsInstaller
         $tpl->setVariable('item_actual', $actual);
         if ($db_state) {
             _log(JAWS_DEBUG,"Available database drivers: $actual");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"No database driver found");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
 
         // XML extension
         $tpl->setBlock('Requirements/req_item');
-        $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'XML'));
+        $tpl->setVariable('item', $this::t('REQ_EXTENSION', 'XML'));
         $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $tpl->setVariable('item_actual', (in_array('xml', $modules)? Jaws::t('YESS') : Jaws::t('NOO')));
         if (in_array('xml', $modules)) {
             _log(JAWS_DEBUG,"xml support is enabled");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"xml support is not enabled");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
 
         // File Upload
         $tpl->setBlock('Requirements/rec_item');
-        $tpl->setVariable('item', $this->t('REQ_FILE_UPLOAD'));
+        $tpl->setVariable('item', $this::t('REQ_FILE_UPLOAD'));
         $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $check = (bool) ini_get('file_uploads');
         $tpl->setVariable('item_actual', ($check ? Jaws::t('YESS'): Jaws::t('NOO')));
         if ($check) {
             _log(JAWS_DEBUG,"PHP accepts file uploads");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"PHP doesn't accept file uploads");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/rec_item');
 
         // Safe mode
         $tpl->setBlock('Requirements/rec_item');
-        $tpl->setVariable('item', $this->t('REQ_SAFE_MODE'));
-        $tpl->setVariable('item_requirement', $this->t('REQ_OFF'));
+        $tpl->setVariable('item', $this::t('REQ_SAFE_MODE'));
+        $tpl->setVariable('item_requirement', $this::t('REQ_OFF'));
         $safe_mode = (bool) ini_get('safe_mode');
-        $tpl->setVariable('item_actual', ($safe_mode ? $this->t('REQ_ON'): $this->t('REQ_OFF')));
+        $tpl->setVariable('item_actual', ($safe_mode ? $this::t('REQ_ON'): $this::t('REQ_OFF')));
         if ($safe_mode) {
             _log(JAWS_DEBUG,"PHP has safe-mode turned on");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         } else {
             _log(JAWS_DEBUG,"PHP has safe-mode turned off");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/rec_item');
 
         // GD/ImageMagick
         $tpl->setBlock('Requirements/rec_item');
-        $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'GD/ImageMagick'));
+        $tpl->setVariable('item', $this::t('REQ_EXTENSION', 'GD/ImageMagick'));
         $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $actual  = in_array('gd', $modules)?'GD' : '';
         $actual .= in_array('magickwand', $modules)? ((empty($actual)? '' : ' + ') . 'ImageMagick') : '';
@@ -180,40 +180,40 @@ class Installer_Requirements extends JawsInstaller
         $tpl->setVariable('item_actual', $actual);
         if (in_array('gd', $modules) || in_array('magickwand', $modules)) {
             _log(JAWS_DEBUG,"PHP has GD or ImageMagick turned on");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"PHP has GD or ImageMagick turned off");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/rec_item');
 
         // Exif extension
         $tpl->setBlock('Requirements/rec_item');
-        $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'Exif'));
+        $tpl->setVariable('item', $this::t('REQ_EXTENSION', 'Exif'));
         $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $tpl->setVariable('item_actual', (in_array('exif', $modules)? Jaws::t('YESS') : Jaws::t('NOO')));
         if (in_array('exif', $modules)) {
             _log(JAWS_DEBUG,"exif support is enabled");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"exif support is not enabled");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/rec_item');
 
         // OpenSSL extension
         $tpl->setBlock('Requirements/rec_item');
-        $tpl->setVariable('item', $this->t('REQ_EXTENSION', 'OpenSSL'));
+        $tpl->setVariable('item', $this::t('REQ_EXTENSION', 'OpenSSL'));
         $tpl->setVariable('item_requirement', Jaws::t('YESS'));
         $tpl->setVariable('item_actual', (in_array('openssl', $modules)? Jaws::t('YESS') : Jaws::t('NOO')));
         if (in_array('openssl', $modules)) {
             _log(JAWS_DEBUG,"openssl extension is loaded");
-            $result_txt = '<span style="color: #0b0;">'.$this->t('REQ_OK').'</span>';
+            $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
         } else {
             _log(JAWS_DEBUG,"openssl extension is not loaded");
-            $result_txt = '<span style="color: #b00;">'.$this->t('REQ_BAD').'</span>';
+            $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/rec_item');
@@ -241,22 +241,22 @@ class Installer_Requirements extends JawsInstaller
         _log(JAWS_DEBUG,"Validating install requirements...");
 
         if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<') == 1) {
-            $text = $this->t('REQ_RESPONSE_PHP_VERSION', MIN_PHP_VERSION);
+            $text = $this::t('REQ_RESPONSE_PHP_VERSION', MIN_PHP_VERSION);
             $type = JAWS_ERROR_ERROR;
             _log(JAWS_DEBUG,$text);
             return new Jaws_Error($text, 0, $type);
         }
 
         if (!$this->_check_path('config', 'r')) {
-            $text = $this->t('REQ_RESPONSE_DIR_PERMISSION', 'config');
+            $text = $this::t('REQ_RESPONSE_DIR_PERMISSION', 'config');
             $type = JAWS_ERROR_ERROR;
         }
 
         if (!$this->_check_path(ROOT_DATA_PATH, 'rw', '')) {
             if (isset($text)) {
-                $text = $this->t('REQ_RESPONSE_DIR_PERMISSION', $this->t('REQ_BAD'));
+                $text = $this::t('REQ_RESPONSE_DIR_PERMISSION', $this::t('REQ_BAD'));
             } else {
-                $text = $this->t('REQ_RESPONSE_DIR_PERMISSION', 'data');
+                $text = $this::t('REQ_RESPONSE_DIR_PERMISSION', 'data');
             }
             $type = JAWS_ERROR_ERROR;
         }
@@ -274,14 +274,14 @@ class Installer_Requirements extends JawsInstaller
             $db_state = ($db_state || in_array($ext, $modules));
         }
         if (!$db_state) {
-            $text = $this->t('REQ_RESPONSE_EXTENSION', implode(' | ', array_keys($this->_db_drivers)));
+            $text = $this::t('REQ_RESPONSE_EXTENSION', implode(' | ', array_keys($this->_db_drivers)));
             $type = JAWS_ERROR_ERROR;
             _log(JAWS_DEBUG,$text);
             return new Jaws_Error($text, 0, $type);
         }
 
         if (!in_array('xml', $modules)) {
-            $text = $this->t('REQ_RESPONSE_EXTENSION', 'XML');
+            $text = $this::t('REQ_RESPONSE_EXTENSION', 'XML');
             $type = JAWS_ERROR_ERROR;
             _log(JAWS_DEBUG,$text);
             return new Jaws_Error($text, 0, $type);

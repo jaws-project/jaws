@@ -30,7 +30,7 @@ class Installer_Customize extends JawsInstaller
         $tpl->Load('display.html', 'stages/Customize/templates');
         $tpl->SetBlock('Customize');
 
-        $tpl->SetVariable('customize_info', $this->t('CUSTOMIZE_INFO'));
+        $tpl->SetVariable('customize_info', $this::t('CUSTOMIZE_INFO'));
 
         $paths = array('data_path', 'base_data_path', 'themes_path', 'base_themes_path', 'cache_path');
         foreach ($paths as $path) {

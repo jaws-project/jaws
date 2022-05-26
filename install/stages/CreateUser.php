@@ -47,16 +47,16 @@ class Installer_CreateUser extends JawsInstaller
         $tpl->Load('display.html', 'stages/CreateUser/templates');
         $tpl->SetBlock('CreateUser');
 
-        $tpl->setVariable('lbl_info',     $this->t('USER_INFO'));
-        $tpl->setVariable('lbl_notice',   $this->t('USER_NOTICE'));
-        $tpl->setVariable('lbl_user',     $this->t('USER_USER'));
-        $tpl->setVariable('user_info',    $this->t('USER_USER_INFO'));
-        $tpl->setVariable('lbl_pass',     $this->t('USER_PASS'));
-        $tpl->setVariable('lbl_repeat',   $this->t('USER_REPEAT'));
-        $tpl->setVariable('repeat_info',  $this->t('USER_REPEAT_INFO'));
-        $tpl->setVariable('lbl_nickname', $this->t('USER_NAME'));
-        $tpl->setVariable('name_info',    $this->t('USER_NAME_INFO'));
-        $tpl->setVariable('lbl_email',    $this->t('USER_EMAIL'));
+        $tpl->setVariable('lbl_info',     $this::t('USER_INFO'));
+        $tpl->setVariable('lbl_notice',   $this::t('USER_NOTICE'));
+        $tpl->setVariable('lbl_user',     $this::t('USER_USER'));
+        $tpl->setVariable('user_info',    $this::t('USER_USER_INFO'));
+        $tpl->setVariable('lbl_pass',     $this::t('USER_PASS'));
+        $tpl->setVariable('lbl_repeat',   $this::t('USER_REPEAT'));
+        $tpl->setVariable('repeat_info',  $this::t('USER_REPEAT_INFO'));
+        $tpl->setVariable('lbl_nickname', $this::t('USER_NAME'));
+        $tpl->setVariable('name_info',    $this::t('USER_NAME_INFO'));
+        $tpl->setVariable('lbl_email',    $this::t('USER_EMAIL'));
         $tpl->SetVariable('next',         Jaws::t('NEXT'));
 
         if ($_SESSION['secure']) {
@@ -130,14 +130,14 @@ class Installer_CreateUser extends JawsInstaller
 
             if ($post['password'] !== $post['repeat']) {
                 _log(JAWS_DEBUG,"The password and repeat boxes don't match, please try again.");
-                return new Jaws_Error($this->t('USER_RESPONSE_PASS_MISMATCH'), 0, JAWS_ERROR_WARNING);
+                return new Jaws_Error($this::t('USER_RESPONSE_PASS_MISMATCH'), 0, JAWS_ERROR_WARNING);
             }
 
             return true;
         }
 
         _log(JAWS_DEBUG,"You must complete the username, nickname, password, and repeat boxes.");
-        return new Jaws_Error($this->t('USER_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
+        return new Jaws_Error($this::t('USER_RESPONSE_INCOMPLETE'), 0, JAWS_ERROR_WARNING);
     }
 
     /**
@@ -222,7 +222,7 @@ class Installer_CreateUser extends JawsInstaller
         if (Jaws_Error::IsError($res)) {
             _log(JAWS_DEBUG,"There was a problem while creating your user:");
             _log(JAWS_DEBUG,$res->GetMessage());
-            return new Jaws_Error($this->t('USER_RESPONSE_CREATE_FAILED'), 0, JAWS_ERROR_ERROR);
+            return new Jaws_Error($this::t('USER_RESPONSE_CREATE_FAILED'), 0, JAWS_ERROR_ERROR);
         }
 
         return true;

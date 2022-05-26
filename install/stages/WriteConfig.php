@@ -62,11 +62,11 @@ class Installer_WriteConfig extends JawsInstaller
         $tpl->SetBlock('WriteConfig');
 
         $config_path = ROOT_JAWS_PATH .'config/';
-        $tpl->setVariable('lbl_info',                $this->t('CONFIG_INFO'));
-        $tpl->setVariable('lbl_solution',            $this->t('CONFIG_SOLUTION'));
-        $tpl->setVariable('lbl_solution_permission', $this->t('CONFIG_SOLUTION_PERMISSION', $config_path));
-        $tpl->setVariable('lbl_solution_upload',     $this->t('CONFIG_SOLUTION_UPLOAD', $config_path. 'JawsConfig.php'));
-        $tpl->SetVariable('lbl_loglevel',            $this->t('CONFIG_LOGLEVEL'));
+        $tpl->setVariable('lbl_info',                $this::t('CONFIG_INFO'));
+        $tpl->setVariable('lbl_solution',            $this::t('CONFIG_SOLUTION'));
+        $tpl->setVariable('lbl_solution_permission', $this::t('CONFIG_SOLUTION_PERMISSION', $config_path));
+        $tpl->setVariable('lbl_solution_upload',     $this::t('CONFIG_SOLUTION_UPLOAD', $config_path. 'JawsConfig.php'));
+        $tpl->SetVariable('lbl_loglevel',            $this::t('CONFIG_LOGLEVEL'));
         $tpl->SetVariable('next',                    Jaws::t('NEXT'));
 
         $request = Jaws_Request::getInstance();
@@ -121,9 +121,9 @@ class Installer_WriteConfig extends JawsInstaller
                 return true;
             }
             _log(JAWS_DEBUG,"Configuration file couldn't be created/updated");
-            return new Jaws_Error($this->t('CONFIG_RESPONSE_WRITE_FAILED'), 0, JAWS_ERROR_ERROR);
+            return new Jaws_Error($this::t('CONFIG_RESPONSE_WRITE_FAILED'), 0, JAWS_ERROR_ERROR);
         }
         
-        return new Jaws_Error($this->t('CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'), 0, JAWS_ERROR_WARNING);
+        return new Jaws_Error($this::t('CONFIG_RESPONSE_MAKE_CONFIG', 'JawsConfig.php'), 0, JAWS_ERROR_WARNING);
   }
 }
