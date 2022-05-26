@@ -166,7 +166,7 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
                 foreach ($keyValue as $subkey => $val) {
                     $objACLs[] = array(
                         'component' => $comp,
-                        'component_title' => _t(strtoupper($comp) . '_TITLE'),
+                        'component_title' => $this::t($comp. '.TITLE'),
                         'key_name' => $keyName,
                         'subkey' => $subkey,
                         'key_title' => $info->acl->description($keyName, $subkey),

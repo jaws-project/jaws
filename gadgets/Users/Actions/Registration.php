@@ -232,8 +232,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $params['name']    = 'UserRegistration';
         $params['key']     = $uData['id'];
         $params['title']   = $this::t('REGISTRATION_USER_SUBJECT', $settings['site_name']);
-        $params['summary'] = _t(
-            'USERS_REGISTRATION_USER_SUMMARY',
+        $params['summary'] = $this::t(
+            'REGISTRATION_USER_SUMMARY',
             $uData['nickname'],
             $site_url,
             $uData['username'],

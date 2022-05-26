@@ -267,8 +267,8 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         $params['key']     = $user;
         $params['name']    = 'UserVerification2';
         $params['title']   = $subject;
-        $params['summary'] = _t(
-            'USERS_REGISTRATION_USER_SUMMARY',
+        $params['summary'] = $this::t(
+            'REGISTRATION_USER_SUMMARY',
             $userInfo['nickname'],
             $site_url,
             $userInfo['username'],
@@ -311,8 +311,8 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $params['key']     = $user;
             $params['name']    = 'UserRegistrationOwner';
             $params['title']   = $subject;
-            $params['summary'] = _t(
-                'USERS_REGISTRATION_OWNER_SUMMARY',
+            $params['summary'] = $this::t(
+                'REGISTRATION_OWNER_SUMMARY',
                 $site_url,
                 $userInfo['username'],
                 $userInfo['nickname'],
