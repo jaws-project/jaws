@@ -25,7 +25,7 @@ class AbuseReporter_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar->AddOption(
             'Reports',
-            _t('ABUSEREPORTER_REPORTS'),
+            $this::t('REPORTS'),
             BASE_SCRIPT . '?reqGadget=AbuseReporter&amp;reqAction=Reports',
             STOCK_DOCUMENTS);
         $menubar->Activate($action);

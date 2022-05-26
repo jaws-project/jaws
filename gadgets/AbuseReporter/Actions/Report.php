@@ -23,18 +23,18 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
         $tpl->SetVariable('action', $post['report_action']);
         $tpl->SetVariable('reference', $post['report_reference']);
 
-        $tpl->SetVariable('lbl_comment', _t('ABUSEREPORTER_COMMENT'));
-        $tpl->SetVariable('lbl_type', _t('ABUSEREPORTER_TYPE'));
-        $tpl->SetVariable('lbl_priority', _t('ABUSEREPORTER_PRIORITY'));
+        $tpl->SetVariable('lbl_comment', $this::t('COMMENT'));
+        $tpl->SetVariable('lbl_type', $this::t('TYPE'));
+        $tpl->SetVariable('lbl_priority', $this::t('PRIORITY'));
 
         // types
         $types = array(
-            0 => _t('ABUSEREPORTER_TYPE_ABUSE_0'),
-            1 => _t('ABUSEREPORTER_TYPE_ABUSE_1'),
-            2 => _t('ABUSEREPORTER_TYPE_ABUSE_2'),
-            3 => _t('ABUSEREPORTER_TYPE_ABUSE_3'),
-            4 => _t('ABUSEREPORTER_TYPE_ABUSE_4'),
-            5 => _t('ABUSEREPORTER_TYPE_ABUSE_5'),
+            0 => $this::t('TYPE_ABUSE_0'),
+            1 => $this::t('TYPE_ABUSE_1'),
+            2 => $this::t('TYPE_ABUSE_2'),
+            3 => $this::t('TYPE_ABUSE_3'),
+            4 => $this::t('TYPE_ABUSE_4'),
+            5 => $this::t('TYPE_ABUSE_5'),
         );
         foreach ($types as $type => $title) {
             $tpl->SetBlock('Report/type');
@@ -45,11 +45,11 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
 
         // priority
         $priorities = array(
-            0 => _t('ABUSEREPORTER_PRIORITY_0'),
-            1 => _t('ABUSEREPORTER_PRIORITY_1'),
-            2 => _t('ABUSEREPORTER_PRIORITY_2'),
-            3 => _t('ABUSEREPORTER_PRIORITY_3'),
-            4 => _t('ABUSEREPORTER_PRIORITY_4'),
+            0 => $this::t('PRIORITY_0'),
+            1 => $this::t('PRIORITY_1'),
+            2 => $this::t('PRIORITY_2'),
+            3 => $this::t('PRIORITY_3'),
+            4 => $this::t('PRIORITY_4'),
         );
         foreach ($priorities as $priority => $title) {
             $tpl->SetBlock('Report/priority');
@@ -100,7 +100,7 @@ class AbuseReporter_Actions_Report extends Jaws_Gadget_Action
             );
         } else {
             return $this->gadget->session->response(
-                _t('ABUSEREPORTER_REPORT_SAVED'),
+                $this::t('REPORT_SAVED'),
                 RESPONSE_NOTICE,
                 $response
             );

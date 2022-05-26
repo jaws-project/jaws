@@ -18,14 +18,14 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $this->gadget->CheckPermission('ManageReports');
         $this->AjaxMe('script.js');
         $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
-        $this->gadget->define('lbl_action', _t('ABUSEREPORTER_ACTION'));
-        $this->gadget->define('lbl_type', _t('ABUSEREPORTER_TYPE'));
-        $this->gadget->define('lbl_priority', _t('ABUSEREPORTER_PRIORITY'));
+        $this->gadget->define('lbl_gadget', $this::t('GADGET'));
+        $this->gadget->define('lbl_action', $this::t('ACTION'));
+        $this->gadget->define('lbl_type', $this::t('TYPE'));
+        $this->gadget->define('lbl_priority', $this::t('PRIORITY'));
         $this->gadget->define('lbl_status', Jaws::t('STATUS'));
         $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
         $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_editReport', _t('ABUSEREPORTER_REPORT_EDIT'));
+        $this->gadget->define('lbl_editReport', $this::t('REPORT_EDIT'));
 
         $tpl = $this->gadget->template->loadAdmin('Reports.html');
         $tpl->SetBlock('Reports');
@@ -41,15 +41,15 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $tpl->SetVariable('lbl_save', Jaws::t('SAVE'));
 
         $tpl->SetVariable('lbl_url', Jaws::t('URL'));
-        $tpl->SetVariable('lbl_gadget', _t('ABUSEREPORTER_GADGET'));
-        $tpl->SetVariable('lbl_action', _t('ABUSEREPORTER_ACTION'));
-        $tpl->SetVariable('lbl_reference', _t('ABUSEREPORTER_REFERENCE'));
-        $tpl->SetVariable('lbl_comment', _t('ABUSEREPORTER_COMMENT'));
-        $tpl->SetVariable('lbl_type', _t('ABUSEREPORTER_TYPE'));
-        $tpl->SetVariable('lbl_priority', _t('ABUSEREPORTER_PRIORITY'));
+        $tpl->SetVariable('lbl_gadget', $this::t('GADGET'));
+        $tpl->SetVariable('lbl_action', $this::t('ACTION'));
+        $tpl->SetVariable('lbl_reference', $this::t('REFERENCE'));
+        $tpl->SetVariable('lbl_comment', $this::t('COMMENT'));
+        $tpl->SetVariable('lbl_type', $this::t('TYPE'));
+        $tpl->SetVariable('lbl_priority', $this::t('PRIORITY'));
         $tpl->SetVariable('lbl_status', Jaws::t('STATUS'));
-        $tpl->SetVariable('lbl_response', _t('ABUSEREPORTER_RESPONSE'));
-        $tpl->SetVariable('lbl_insert_time', _t('ABUSEREPORTER_INSERT_TIME'));
+        $tpl->SetVariable('lbl_response', $this::t('RESPONSE'));
+        $tpl->SetVariable('lbl_insert_time', $this::t('INSERT_TIME'));
 
         // gadgets filter
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
@@ -74,11 +74,11 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         // priority filter
         $priorities = array(
             -1 => Jaws::t('ALL'),
-            0  => _t('ABUSEREPORTER_PRIORITY_0'),
-            1  => _t('ABUSEREPORTER_PRIORITY_1'),
-            2  => _t('ABUSEREPORTER_PRIORITY_2'),
-            3  => _t('ABUSEREPORTER_PRIORITY_3'),
-            4  => _t('ABUSEREPORTER_PRIORITY_4'),
+            0  => $this::t('PRIORITY_0'),
+            1  => $this::t('PRIORITY_1'),
+            2  => $this::t('PRIORITY_2'),
+            3  => $this::t('PRIORITY_3'),
+            4  => $this::t('PRIORITY_4'),
         );
         foreach ($priorities as $priority => $title) {
             $tpl->SetBlock('Reports/filter_priority');
@@ -97,8 +97,8 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         // status filter
         $statuses = array(
             -1 => Jaws::t('ALL'),
-            0  => _t('ABUSEREPORTER_STATUS_0'),
-            1  => _t('ABUSEREPORTER_STATUS_1'),
+            0  => $this::t('STATUS_0'),
+            1  => $this::t('STATUS_1'),
         );
         foreach ($statuses as $status => $title) {
             $tpl->SetBlock('Reports/filter_status');
@@ -117,12 +117,12 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         // types
         $types = array(
            -1 => Jaws::t('ALL'),
-            0 => _t('ABUSEREPORTER_TYPE_ABUSE_0'),
-            1 => _t('ABUSEREPORTER_TYPE_ABUSE_1'),
-            2 => _t('ABUSEREPORTER_TYPE_ABUSE_2'),
-            3 => _t('ABUSEREPORTER_TYPE_ABUSE_3'),
-            4 => _t('ABUSEREPORTER_TYPE_ABUSE_4'),
-            5 => _t('ABUSEREPORTER_TYPE_ABUSE_5'),
+            0 => $this::t('TYPE_ABUSE_0'),
+            1 => $this::t('TYPE_ABUSE_1'),
+            2 => $this::t('TYPE_ABUSE_2'),
+            3 => $this::t('TYPE_ABUSE_3'),
+            4 => $this::t('TYPE_ABUSE_4'),
+            5 => $this::t('TYPE_ABUSE_5'),
         );
         array_shift($types);
         foreach ($types as $type => $title) {
@@ -159,9 +159,9 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         $reports = $model->GetReports($post['filters'], $post['limit'], $post['offset'], $orderBy);
 
         foreach ($reports as $key => &$report) {
-            $report['priority'] = _t('ABUSEREPORTER_PRIORITY_'. $report['priority']);
-            $report['status'] = _t('ABUSEREPORTER_STATUS_'. $report['status']);
-            $report['type'] = _t('ABUSEREPORTER_TYPE_ABUSE_' . $report['type']);
+            $report['priority'] = $this::t('PRIORITY_'. $report['priority']);
+            $report['status'] = $this::t('STATUS_'. $report['status']);
+            $report['type'] = $this::t('TYPE_ABUSE_' . $report['type']);
         }
 
         $reportsCount = $model->GetReportsCount($post['filters']);
@@ -211,7 +211,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('ABUSEREPORTER_REPORT_UPDATED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('REPORT_UPDATED'), RESPONSE_NOTICE);
         }
     }
 
@@ -230,7 +230,7 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
         if (Jaws_Error::isError($result)) {
             return $this->gadget->session->response($result->GetMessage(), RESPONSE_ERROR);
         } else {
-            return $this->gadget->session->response(_t('ABUSEREPORTER_REPORT_DELETED'), RESPONSE_NOTICE);
+            return $this->gadget->session->response($this::t('REPORT_DELETED'), RESPONSE_NOTICE);
         }
     }
 

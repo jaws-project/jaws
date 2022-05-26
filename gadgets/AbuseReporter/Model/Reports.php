@@ -41,7 +41,7 @@ class AbuseReporter_Model_Reports extends Jaws_Gadget_Model
         $result = $reportsTable->exec(JAWS_ERROR_INFO);
         if (Jaws_Error::isError($result)) {
             if ($result->GetCode() == -3) {
-                $result->setMessage(_t('ABUSEREPORTER_ERROR_REPORT_ALREADY_EXIST'));
+                $result->setMessage($this::t('ERROR_REPORT_ALREADY_EXIST'));
             } else {
                 $result->setLevel(JAWS_ERROR_ERROR);
             }
