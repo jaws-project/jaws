@@ -65,7 +65,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
         }
         $groupCombo->AddEvent(ON_CHANGE, 'setRanksCombo(this.value);');
 
-        $tpl->SetVariable('lbl_gid', _t('LINKDUMP_GROUPS_GROUP'));
+        $tpl->SetVariable('lbl_gid', $this::t('GROUPS_GROUP'));
         $tpl->SetVariable('gid', $groupCombo->Get());
 
         $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
@@ -78,7 +78,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
         $urlEntry->SetStyle('direction: ltr;width: 356px;');
         $tpl->SetVariable('url', $urlEntry->Get());
 
-        $tpl->SetVariable('lbl_fast_url', _t('LINKDUMP_FASTURL'));
+        $tpl->SetVariable('lbl_fast_url', $this::t('FASTURL'));
         $fasturl =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $fasturl->SetStyle('direction: ltr; width: 356px;');
         $tpl->SetVariable('fast_url', $fasturl->Get());
@@ -92,19 +92,19 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
         $rank =& Piwi::CreateWidget('Combo', 'rank');
         $rank->SetID('rank');
         $rank->setStyle('width: 128px;');
-        $tpl->SetVariable('lbl_rank', _t('LINKDUMP_RANK'));
+        $tpl->SetVariable('lbl_rank', $this::t('RANK'));
         $tpl->SetVariable('rank', $rank->Get());
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $tpl->SetBlock('linkdump/LinksUI/tags');
-            $tpl->SetVariable('lbl_tag', _t('LINKDUMP_LINKS_TAGS'));
+            $tpl->SetVariable('lbl_tag', $this::t('LINKS_TAGS'));
             $linktags =& Piwi::CreateWidget('Entry', 'tags', '');
             $linktags->SetStyle('direction: ltr; width: 356px;');
             $tpl->SetVariable('tag', $linktags->Get());
             $tpl->ParseBlock('linkdump/LinksUI/tags');
         }
 
-        $tpl->SetVariable('lbl_clicks', _t('LINKDUMP_LINKS_CLICKS'));
+        $tpl->SetVariable('lbl_clicks', $this::t('LINKS_CLICKS'));
         $linkclicks  =& Piwi::CreateWidget('Entry', 'clicks', '');
         $linkclicks->SetEnabled(false);
         $linkclicks->SetStyle('direction: ltr; width: 128px;');

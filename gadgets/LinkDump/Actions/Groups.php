@@ -67,7 +67,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
         $tpl->SetVariable('gid',   $group['id']);
         $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('name', $group['title']);
-        $tpl->SetVariable('feed', _t('LINKDUMP_LINKS_FEED'));
+        $tpl->SetVariable('feed', $this::t('LINKS_FEED'));
 
         $gid = empty($group['fast_url'])? $group['id'] : $group['fast_url'];
         $tpl->SetVariable('url_category', $this->gadget->urlMap('Category', array('id' => $gid)));
@@ -92,7 +92,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
                 $tpl->SetVariable('description', $link['description']);
                 $tpl->SetVariable('url',         $link['url']);
                 $tpl->SetVariable('clicks',      $link['clicks']);
-                $tpl->SetVariable('lbl_clicks',  _t('LINKDUMP_LINKS_CLICKS'));
+                $tpl->SetVariable('lbl_clicks',  $this::t('LINKS_CLICKS'));
                 if ($group['link_type'] == 2) {
                     $lid = empty($link['fast_url'])? $link['id'] : $link['fast_url'];
                     $tpl->SetVariable('visit_url', $this->gadget->urlMap('Link', array('id' => $lid)));
@@ -123,7 +123,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Categories.html');
         $tpl->SetBlock('categories');
-        $tpl->SetVariable('title', _t('LINKDUMP_GROUPS'));
+        $tpl->SetVariable('title', $this::t('GROUPS'));
 
         foreach ($groups as $group) {
             $tpl->SetBlock('categories/item');

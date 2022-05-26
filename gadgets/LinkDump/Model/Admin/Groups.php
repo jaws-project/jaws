@@ -40,7 +40,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('LINKDUMP_GROUPS_ADDED'), RESPONSE_NOTICE, $gid);
+        $this->gadget->session->push($this::t('GROUPS_ADDED'), RESPONSE_NOTICE, $gid);
         return true;
     }
 
@@ -76,7 +76,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
 
         $model = $this->gadget->model->loadAdmin('Links');
         $model->InvalidateFeed($gid);
-        $this->gadget->session->push(_t('LINKDUMP_GROUPS_UPDATED'), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
 
@@ -90,7 +90,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            $this->gadget->session->push(_t('LINKDUMP_GROUPS_NOT_DELETABLE'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GROUPS_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
         $model = $this->gadget->model->load('Groups');
@@ -101,7 +101,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
         }
 
         if(!isset($group['id'])) {
-            $this->gadget->session->push(_t('LINKDUMP_GROUPS_NOT_EXISTS'), RESPONSE_ERROR);
+            $this->gadget->session->push($this::t('GROUPS_NOT_EXISTS'), RESPONSE_ERROR);
             return false;
         }
 
@@ -130,7 +130,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $this->gadget->session->push(_t('LINKDUMP_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
+        $this->gadget->session->push($this::t('GROUPS_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
 }

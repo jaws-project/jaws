@@ -27,7 +27,7 @@ class LinkDump_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($groups)) {
             $max_size = 32;
             foreach ($groups as $group) {
-                $title = _t('LINKDUMP_LINKS_ARCHIVE'). ' - '. $group['title'];
+                $title = $this::t('LINKS_ARCHIVE'). ' - '. $group['title'];
                 $gid = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
                 $url = $this->gadget->urlMap('Category', array('id' => $gid));
                 $urls[] = array('url'   => $url,

@@ -26,7 +26,7 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_Action
         $tpl->SetBlock('linkdump/links_base');
         $gadget = $this->gadget->action->loadAdmin('Groups');
         $tpl->SetVariable('links_tree', $gadget->GetGroupsList());
-        $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('LINKDUMP_GROUPS_ADD'), STOCK_NEW);
+        $add_btn =& Piwi::CreateWidget('Button','btn_add', $this::t('GROUPS_ADD'), STOCK_NEW);
         $add_btn->AddEvent(ON_CLICK, 'javascript:addGroup();');
         $tpl->SetVariable('add', $add_btn->Get());
 
@@ -46,20 +46,20 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_Action
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $tpl->SetVariable('links_tree_image', 'gadgets/LinkDump/Resources/images/logo.mini.png');
-        $tpl->SetVariable('links_tree_title', _t('LINKDUMP_LINKS_TITLE'));
+        $tpl->SetVariable('links_tree_title', $this::t('LINKS_TITLE'));
 
         $this->gadget->define('max_limit_count', $this->gadget->registry->fetch('max_limit_count'));
-        $this->gadget->define('addLinkTitle',     _t('LINKDUMP_LINKS_ADD'));
-        $this->gadget->define('editLinkTitle',    _t('LINKDUMP_LINKS_EDIT'));
-        $this->gadget->define('addGroupTitle',    _t('LINKDUMP_GROUPS_ADD'));
-        $this->gadget->define('editGroupTitle',   _t('LINKDUMP_GROUPS_EDIT'));
+        $this->gadget->define('addLinkTitle',     $this::t('LINKS_ADD'));
+        $this->gadget->define('editLinkTitle',    $this::t('LINKS_EDIT'));
+        $this->gadget->define('addGroupTitle',    $this::t('GROUPS_ADD'));
+        $this->gadget->define('editGroupTitle',   $this::t('GROUPS_EDIT'));
         $this->gadget->define('linkImageSrc',     'gadgets/LinkDump/Resources/images/logo.mini.png');
         $this->gadget->define('linksListCloseImageSrc', STOCK_REMOVE);
         $this->gadget->define('linksListOpenImageSrc',  STOCK_ADD);
-        $this->gadget->define('incompleteFields',   _t('LINKDUMP_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmGroupDelete', _t('LINKDUMP_GROUPS_DELETE_CONFIRM'));
-        $this->gadget->define('confirmLinkDelete',  _t('LINKDUMP_LINKS_DELETE_CONFIRM'));
-        $this->gadget->define('noLinkExists',       _t('LINKDUMP_LINKS_NOEXISTS'));
+        $this->gadget->define('incompleteFields',   $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->define('confirmGroupDelete', $this::t('GROUPS_DELETE_CONFIRM'));
+        $this->gadget->define('confirmLinkDelete',  $this::t('LINKS_DELETE_CONFIRM'));
+        $this->gadget->define('noLinkExists',       $this::t('LINKS_NOEXISTS'));
 
         $tpl->ParseBlock('linkdump/links_base');
         $tpl->ParseBlock('linkdump');
