@@ -144,8 +144,8 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         $tbStatusCombo =& Piwi::CreateWidget('Combo', 'trackback_status');
         $tbStatusCombo->setContainerClass('oneline');
         $tbStatusCombo->SetTitle($this::t('DEFAULT_STATUS', $this::t('TRACKBACK')));
-        $tbStatusCombo->AddOption(_t('COMMENTS_STATUS_APPROVED'), 'approved');
-        $tbStatusCombo->AddOption(_t('COMMENTS_STATUS_WAITING'), 'waiting');
+        $tbStatusCombo->AddOption($this::t('COMMENTS.STATUS_APPROVED'), 'approved');
+        $tbStatusCombo->AddOption($this::t('COMMENTS.STATUS_WAITING'), 'waiting');
         $tbStatusCombo->SetDefault($settings['trackback_status']);
 
         // Pingback

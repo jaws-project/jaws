@@ -234,13 +234,13 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
             $newRow['created'] = $date->Format($row['createtime']);
             switch($row['status']) {
                 case 'approved':
-                    $newRow['status'] = _t('COMMENTS_STATUS_APPROVED');
+                    $newRow['status'] = $this::t('COMMENTS.STATUS_APPROVED');
                     break;
                 case 'waiting':
-                    $newRow['status'] = _t('COMMENTS_STATUS_WAITING');
+                    $newRow['status'] = $this::t('COMMENTS.STATUS_WAITING');
                     break;
                 case 'spam':
-                    $newRow['status'] = _t('COMMENTS_STATUS_SPAM');
+                    $newRow['status'] = $this::t('COMMENTS.STATUS_SPAM');
                     break;
             }
 
