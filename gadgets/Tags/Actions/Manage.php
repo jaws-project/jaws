@@ -42,7 +42,7 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $tpl->SetVariable('title', _t('TAGS_MANAGE_TAGS'));
+        $tpl->SetVariable('title', $this::t('MANAGE_TAGS'));
         if ($this->app->session->user->logged) {
             // Menu navigation
             $this->gadget->action->load('MenuNavigation')->navigation($tpl);
@@ -66,17 +66,17 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_all', Jaws::t('ALL'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
-        $tpl->SetVariable('lbl_tag_name', _t('TAGS_TAG_NAME'));
-        $tpl->SetVariable('lbl_tag_title', _t('TAGS_TAG_TITLE'));
-        $tpl->SetVariable('lbl_tag_usage_count', _t('TAGS_TAG_USAGE_COUNT'));
+        $tpl->SetVariable('lbl_tag_name', $this::t('TAG_NAME'));
+        $tpl->SetVariable('lbl_tag_title', $this::t('TAG_TITLE'));
+        $tpl->SetVariable('lbl_tag_usage_count', $this::t('TAG_USAGE_COUNT'));
         $tpl->SetVariable('filter', Jaws::t('SEARCH'));
-        $tpl->SetVariable('lbl_page_item', _t('TAGS_ITEMS_PER_PAGE'));
+        $tpl->SetVariable('lbl_page_item', $this::t('ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', Jaws::t('ACTIONS'));
         $tpl->SetVariable('lbl_no_action', Jaws::t('NO_ACTION'));
         $tpl->SetVariable('lbl_delete', Jaws::t('DELETE'));
-        $tpl->SetVariable('lbl_merge', _t('TAGS_MERGE'));
-        $tpl->SetVariable('selectMoreThanOneTags',  _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
-        $tpl->SetVariable('enterNewTagName',  _t('TAGS_ENTER_NEW_TAG_NAME'));
+        $tpl->SetVariable('lbl_merge', $this::t('MERGE'));
+        $tpl->SetVariable('selectMoreThanOneTags',  $this::t('SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
+        $tpl->SetVariable('enterNewTagName',  $this::t('ENTER_NEW_TAG_NAME'));
 
         //load other gadget translations
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
@@ -124,7 +124,7 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
             $tagsTotal,
             'ManageTags',
             $params,
-            _t('TAGS_TAG_COUNT', $tagsTotal)
+            $this::t('TAG_COUNT', $tagsTotal)
         );
 
         $tpl->ParseBlock('tags');
@@ -163,7 +163,7 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         $tpl->SetVariable('tag_title', $tag['title']);
         $tpl->SetVariable('description', $tag['description']);
 
-        $tpl->SetVariable('title', _t('TAGS_EDIT_TAG'));
+        $tpl->SetVariable('title', $this::t('EDIT_TAG'));
         // Menu navigation
         $this->gadget->action->load('MenuNavigation')->navigation($tpl);
 
@@ -200,13 +200,13 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         $res = $model->UpdateTag($id, $post, $user);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
-                _t('TAGS_ERROR_CANT_UPDATE_TAG'),
+                $this::t('ERROR_CANT_UPDATE_TAG'),
                 RESPONSE_ERROR,
                 'ManageTags'
             );
         } else {
             $this->gadget->session->push(
-                _t('TAGS_TAG_UPDATED'),
+                $this::t('TAG_UPDATED'),
                 RESPONSE_NOTICE,
                 'ManageTags'
             );
@@ -233,13 +233,13 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         $res = $model->DeleteTags($ids, $user);
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push(
-                _t('TAGS_ERROR_CANT_DELETE_TAG'),
+                $this::t('ERROR_CANT_DELETE_TAG'),
                 RESPONSE_ERROR,
                 'ManageTags'
             );
         } else {
             $this->gadget->session->push(
-                _t('TAGS_TAG_DELETED'),
+                $this::t('TAG_DELETED'),
                 RESPONSE_NOTICE,
                 'ManageTags'
             );
@@ -264,14 +264,14 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
         $ids = $post['tags_checkbox'];
         if (count($ids) < 3) {
             $this->gadget->session->push(
-                _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'),
+                $this::t('SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'),
                 RESPONSE_ERROR,
                 'ManageTags'
             );
         }
         if (empty($post['new_tag_name'])) {
             $this->gadget->session->push(
-                _t('TAGS_ERROR_ENTER_NEW_TAG_NAME'),
+                $this::t('ERROR_ENTER_NEW_TAG_NAME'),
                 RESPONSE_ERROR,
                 'ManageTags'
             );
@@ -287,7 +287,7 @@ class Tags_Actions_Manage extends Jaws_Gadget_Action
             );
         } else {
             $this->gadget->session->push(
-                _t('TAGS_TAGS_MERGED'),
+                $this::t('TAGS_MERGED'),
                 RESPONSE_NOTICE,
                 'ManageTags'
             );

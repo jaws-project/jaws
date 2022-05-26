@@ -23,7 +23,7 @@ class Tags_Actions_Admin_Settings extends Tags_Actions_Admin_Default
         // view tag result limit
         $limit = (int)$this->gadget->registry->fetch('tag_results_limit');
         $limitCombo =& Piwi::CreateWidget('Combo', 'tag_results_limit');
-        $limitCombo->SetTitle(_t('TAGS_DISPLAY_RESULTS_LIMIT'));
+        $limitCombo->SetTitle($this::t('DISPLAY_RESULTS_LIMIT'));
         $limitCombo->AddOption(5, 5);
         $limitCombo->AddOption(10, 10);
         $limitCombo->AddOption(15, 15);
@@ -31,7 +31,7 @@ class Tags_Actions_Admin_Settings extends Tags_Actions_Admin_Default
         $limitCombo->AddOption(30, 30);
         $limitCombo->AddOption(50, 50);
         $limitCombo->SetDefault(($limit>0) ? $limit : 10);
-        $tpl->SetVariable('lbl_tag_results_limit', _t('TAGS_RESULT_LIMIT'));
+        $tpl->SetVariable('lbl_tag_results_limit', $this::t('RESULT_LIMIT'));
         $tpl->SetVariable('tag_results_limit', $limitCombo->Get());
 
         $save =& Piwi::CreateWidget('Button', 'save', Jaws::t('SAVE'), STOCK_SAVE);

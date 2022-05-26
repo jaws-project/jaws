@@ -36,15 +36,15 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
         $gadgets = $model->GetTagableGadgets();
         array_unshift($gadgets, Jaws::t('ALL'));
         $result[] = array(
-            'title' => _t('TAGS_GADGET'),
+            'title' => $this::t('GADGET'),
             'value' => $gadgets
         );
 
         $result[] = array(
-            'title' => _t('TAGS_SHOW_TAGS'),
+            'title' => $this::t('SHOW_TAGS'),
             'value' => array(
-                0 => _t('TAGS_GLOBAL_TAGS'),
-                1 => _t('TAGS_USER_TAGS'),
+                0 => $this::t('GLOBAL_TAGS'),
+                1 => $this::t('USER_TAGS'),
             )
         );
 
@@ -97,9 +97,9 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
         $tpl->SetBlock('tagcloud');
 
         if(!empty($gadget)) {
-            $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_TITLE')));
+            $tpl->SetVariable('title', $this::t('TAG_CLOUD', _t(strtoupper($gadget) . '_TITLE')));
         } else {
-            $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', Jaws::t('ALL')));
+            $tpl->SetVariable('title', $this::t('TAG_CLOUD', Jaws::t('ALL')));
         }
 
         if ($this->app->session->user->logged &&
@@ -284,12 +284,12 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Tag.html');
         $tpl->SetBlock('tag');
-        $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
+        $tpl->SetVariable('title', $this::t('VIEW_TAG', $tag));
         if ($this->app->session->user->logged) {
             // Menu navigation
             $this->gadget->action->load('MenuNavigation')->navigation($tpl);
         }
-        $this->SetTitle(_t('TAGS_VIEW_TAG', $tag));
+        $this->SetTitle($this::t('VIEW_TAG', $tag));
         $this->AddToMetaKeywords($tagInfo['meta_keywords']);
         $this->SetDescription($tagInfo['meta_description']);
 
@@ -301,7 +301,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
             $referencesCount,
             'ViewTag',
             array('tag'=>$tag),
-            _t('TAGS_TAG_ITEM_COUNT', $referencesCount)
+            $this::t('TAG_ITEM_COUNT', $referencesCount)
         );
 
         if (count($references) > 2) {
@@ -386,15 +386,15 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
         $gadgets = $model->GetTagableGadgets();
         array_unshift($gadgets, Jaws::t('ALL'));
         $result[] = array(
-            'title' => _t('TAGS_GADGET'),
+            'title' => $this::t('GADGET'),
             'value' => $gadgets
         );
 
         $result[] = array(
-            'title' => _t('TAGS_SHOW_TAGS'),
+            'title' => $this::t('SHOW_TAGS'),
             'value' => array(
-                0 => _t('TAGS_GLOBAL_TAGS'),
-                1 => _t('TAGS_USER_TAGS'),
+                0 => $this::t('GLOBAL_TAGS'),
+                1 => $this::t('USER_TAGS'),
             )
         );
 
@@ -468,11 +468,11 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Similarity.html');
         $tpl->SetBlock('similarity');
-        $tpl->SetVariable('title', _t('TAGS_SIMILARITY'));
+        $tpl->SetVariable('title', $this::t('SIMILARITY'));
         if (!empty($reqGadget)) {
             $objGadget = Jaws_Gadget::getInstance($reqGadget);
             if (!Jaws_Error::IsError($objGadget)) {
-                $tpl->SetVariable('title', _t('TAGS_SIMILARITY_IN', $objGadget->title));
+                $tpl->SetVariable('title', $this::t('SIMILARITY_IN', $objGadget->title));
             }
         }
 

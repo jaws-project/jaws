@@ -18,7 +18,7 @@ class Tags_Hooks_Menu extends Jaws_Gadget_Hook
         $urls = array();
         $urls[] = array(
             'url' => $this->gadget->urlMap('TagCloud'),
-            'title' => _t('TAGS_TAG_CLOUD', Jaws::t('ALL'))
+            'title' => $this::t('TAG_CLOUD', Jaws::t('ALL'))
         );
 
         $model = $this->gadget->model->load('Tags');
@@ -26,7 +26,7 @@ class Tags_Hooks_Menu extends Jaws_Gadget_Hook
         foreach ($gadgets as $gadget => $title) {
             $urls[] = array(
                 'url' => $this->gadget->urlMap('TagCloud', array('tagged_gadget' => $gadget)),
-                'title' => _t('TAGS_TAG_CLOUD', $title)
+                'title' => $this::t('TAG_CLOUD', $title)
             );
         }
 

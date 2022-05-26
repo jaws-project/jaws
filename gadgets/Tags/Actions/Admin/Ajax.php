@@ -91,7 +91,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('TAGS_TAG_ADDED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('TAG_ADDED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -114,7 +114,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('TAGS_TAG_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('TAG_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -135,7 +135,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('TAGS_TAG_DELETED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('TAG_DELETED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -158,7 +158,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('TAGS_TAGS_MERGED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('TAGS_MERGED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();
@@ -179,7 +179,7 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($res)) {
             $this->gadget->session->push($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $this->gadget->session->push(_t('TAGS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $this->gadget->session->push($this::t('PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $this->gadget->session->pop();

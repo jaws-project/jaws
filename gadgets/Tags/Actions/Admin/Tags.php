@@ -19,10 +19,10 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
         $this->gadget->define('incompleteTagFields',   Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmTagDelete',      _t('TAGS_CONFIRM_DELETE'));
-        $this->gadget->define('selectMoreThanOneTags', _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
-        $this->gadget->define('addTagTitle',           _t('TAGS_ADD_TAG'));
-        $this->gadget->define('editTagTitle',          _t('TAGS_EDIT_TAG'));
+        $this->gadget->define('confirmTagDelete',      $this::t('CONFIRM_DELETE'));
+        $this->gadget->define('selectMoreThanOneTags', $this::t('SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
+        $this->gadget->define('addTagTitle',           $this::t('ADD_TAG'));
+        $this->gadget->define('editTagTitle',          $this::t('EDIT_TAG'));
 
         $tpl = $this->gadget->template->loadAdmin('Tags.html');
         $tpl->SetBlock('tags');
@@ -52,7 +52,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
                 $gadgetsCombo->AddOption($title, $gadget);
             }
             $gadgetsCombo->SetDefault('');
-            $tpl->SetVariable('lbl_gadgets_filter', _t('TAGS_GADGET'));
+            $tpl->SetVariable('lbl_gadgets_filter', $this::t('GADGET'));
             $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
             $tpl->ParseBlock('tags/gadgets_filter');
         } else {
@@ -84,7 +84,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
         $actions->SetTitle(Jaws::t('ACTIONS'));
         $actions->AddOption('&nbsp;', '');
         $actions->AddOption(Jaws::t('DELETE'), 'delete');
-        $actions->AddOption(_t('TAGS_MERGE'), 'merge');
+        $actions->AddOption($this::t('MERGE'), 'merge');
         $tpl->SetVariable('actions_combo', $actions->Get());
 
         $btnExecute =& Piwi::CreateWidget('Button', 'executeTagAction', '', STOCK_YES);
@@ -208,9 +208,9 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
         $grid->SetStyle('width: 100%;');
         $grid->useMultipleSelection();
         $grid->pageBy(15);
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_NAME')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_TITLE')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_USAGE_COUNT')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('TAG_NAME')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('TAG_TITLE')));
+        $grid->AddColumn(Piwi::CreateWidget('Column', $this::t('TAG_USAGE_COUNT')));
         $grid->AddColumn(Piwi::CreateWidget('Column', Jaws::t('ACTIONS')));
         return $grid->Get();
     }
