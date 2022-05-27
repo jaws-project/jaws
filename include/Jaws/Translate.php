@@ -274,7 +274,7 @@ class Jaws_Translate
             $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded data translation for $module, language $language");
         }
 
-        $this->translates[$language][$type][$module] = array_merge($tmp_orig, $tmp_data);
+        $this->translates[$language][$type][$module] = $tmp_data + $tmp_orig;
     }
 
     /**
