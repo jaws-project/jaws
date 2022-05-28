@@ -179,7 +179,11 @@ class Jaws_Translate
         }
 
         if (isset($this->translates[$lang][$type][$component][$string])) {
-            $string = str_replace('\n', "\n", $this->translates[$lang][$type][$component][$string]);
+            $string = Jaws_UTF8::str_replace(
+                array('\n', '\"'),
+                array("\n", '"'),
+                $this->translates[$lang][$type][$component][$string]
+            );
         }
 
         foreach ($params as $key => $value) {
