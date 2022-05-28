@@ -194,9 +194,24 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                 continue;
             }
 
-            $data['strings'][$k]['en'] = $v;
-            $data['strings'][$k][$langTo] =
-                isset($strings[$k])? (($strings[$k] === '')? $this->_EMPTY_STRING : $strings[$k]) : '';
+            $data['strings'][$k]['en'] = Jaws_UTF8::str_replace(
+                array('\n', '\"'),
+                array("\n", '"'),
+                $v
+            );
+            if (isset($strings[$k])) {
+                if ($strings[$k] === '') {
+                    $data['strings'][$k][$langTo] = $this->_EMPTY_STRING;
+                } else {
+                    $data['strings'][$k][$langTo] = Jaws_UTF8::str_replace(
+                        array('\n', '\"'),
+                        array("\n", '"'),
+                        $strings[$k]
+                    );
+                }
+            } else {
+                $data['strings'][$k][$langTo] = '';
+            }
         }
 
         return $data;
@@ -304,7 +319,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                 $v = '';
             }
 
-            $v = preg_replace("$\r\n|\n$", '\n', $v);
+            $v = Jaws_UTF8::str_replace(array("\r\n", "\n", '"'), array('\n', '\n', '\"'), $v);
             $changed = !isset($strings[$k]) || $strings[$k] !== $v;
 
             if ($changed) {
