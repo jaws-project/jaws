@@ -8,7 +8,7 @@
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Jon Wood <jon@substance-it.co.uk>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2021 Jaws Development Group
+ * @copyright  2005-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Translate
@@ -58,7 +58,7 @@ class Jaws_Translate
     var $_load_user_translated = true;
 
     /**
-     * store components translates data
+     * store modules translates data
      *
      * @access  private
      * @var     bool
@@ -140,49 +140,42 @@ class Jaws_Translate
      * Translate a string.
      *
      * @access  public
-     * @param   int     $type       Component type
-     * @param   string  $component  Called component name
+     * @param   int     $type       Type of module
+     * @param   string  $module     Module name
      * @param   string  $string     Statement
      * @param   array   $params     Statement parameters
      * @return  string The translated string, with replacements made.
      */
-    function XTranslate($lang, $type, $component, $string, $params)
+    function XTranslate($lang, $type, $module, $string, $params)
     {
         $lang = empty($lang)? $this->_defaultLanguage : $lang;
         $string = strtoupper($string);
+        $module = strtoupper($module);
 
         switch ($type) {
             case self::TRANSLATE_GLOBAL:
             case self::TRANSLATE_INSTALL:
             case self::TRANSLATE_UPGRADE:
-                break;
-
             case self::TRANSLATE_GADGET:
-                if (array_key_exists($component, self::$real_gadgets_module)) {
-                    $component = self::$real_gadgets_module[$component];
-                }
-                break;
-
             case self::TRANSLATE_PLUGIN:
-                if (array_key_exists($component, self::$real_plugins_module)) {
-                    $component = self::$real_plugins_module[$component];
-                }
                 break;
 
             default:
                 return $string;
         }
 
-        // autoload not loaded component language
-        if (!isset($this->translates[$lang][$type][$component])) {
-            $this->LoadTranslation($component, $type, $lang);
+        // autoload not loaded module language
+        if (!isset($this->translates[$lang][$type][$module])) {
+            if (!$this->LoadTranslation($module, $type, $lang)) {
+                return $string;
+            }
         }
 
-        if (isset($this->translates[$lang][$type][$component][$string])) {
+        if (isset($this->translates[$lang][$type][$module][$string])) {
             $string = Jaws_UTF8::str_replace(
                 array('\n', '\"'),
                 array("\n", '"'),
-                $this->translates[$lang][$type][$component][$string]
+                $this->translates[$lang][$type][$module][$string]
             );
         }
 
@@ -200,85 +193,108 @@ class Jaws_Translate
     /**
      * Loads a translation file.
      *
-     * Loaded translations are kept in $GLOBALS['i18n'], so that they aren't
-     * reloaded.
-     *
      * @access  public
      * @param   string  $module The translation to load
      * @param   string  $type   Type of module(TRANSLATE_GLOBAL, TRANSLATE_GADGET, TRANSLATE_PLUGIN)
      * @param   string  $lang   Optional language code
-     * @return  void
+     * @return  mixed   
      */
     function LoadTranslation($module, $type = self::TRANSLATE_GLOBAL, $lang = null)
     {
-        $language = empty($lang) ? $this->_defaultLanguage : $lang;
+        $lang = empty($lang) ? $this->_defaultLanguage : $lang;
+        $module = strtoupper($module);
 
         // Only attempt to load a translation if it isn't already loaded.
-        if (isset($this->translates[$language][$type][strtoupper($module)])) {
-            return;
+        if (isset($this->translates[$lang][$type][$module])) {
+            return $this->translates[$lang][$type][$module];
         }
 
         switch ($type) {
             case self::TRANSLATE_GADGET:
-                if ($language == 'en') {
+                if (!array_key_exists($module, self::$real_gadgets_module)) {
+                    return false;
+                }
+                $module = self::$real_gadgets_module[$module];
+
+                if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "gadgets/$module/Resources/translates.ini";
                 } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/gadgets/$module.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/gadgets/$module.ini";
                 }
-                $data_i18n = ROOT_DATA_PATH . "languages/$language/gadgets/$module.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$lang/gadgets/$module.ini";
                 break;
 
             case self::TRANSLATE_PLUGIN:
-                if ($language == 'en') {
+                if (!array_key_exists($module, self::$real_plugins_module)) {
+                    return false;
+                }
+                $module = self::$real_plugins_module[$module];
+
+                if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "plugins/$module/Resources/translates.ini";
                 } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/plugins/$module.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/plugins/$module.ini";
                 }
-                $data_i18n = ROOT_DATA_PATH . "languages/$language/plugins/$module.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$lang/plugins/$module.ini";
                 break;
 
             case self::TRANSLATE_INSTALL:
-                if ($language == 'en') {
+                if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "install/Resources/translates.ini";
                 } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/Install.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/Install.ini";
                 }
-                $data_i18n = ROOT_DATA_PATH . "languages/$language/Install.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$lang/Install.ini";
                 break;
 
             case self::TRANSLATE_UPGRADE:
-                if ($language == 'en') {
+                if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "upgrade/Resources/translates.ini";
                 } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/Upgrade.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/Upgrade.ini";
                 }
-                $data_i18n = ROOT_DATA_PATH . "languages/$language/Upgrade.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$lang/Upgrade.ini";
                 break;
 
             default:
-                if ($language == 'en') {
+                if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "include/Jaws/Resources/translates.ini";
                 } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$language/Global.ini";
+                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/Global.ini";
                 }
-                $data_i18n = ROOT_DATA_PATH . "languages/$language/Global.ini";
+                $data_i18n = ROOT_DATA_PATH . "languages/$lang/Global.ini";
         }
 
         $tmp_orig = array();
         if (file_exists($orig_i18n)) {
             $tmp_orig = parse_ini_file($orig_i18n, false, INI_SCANNER_RAW);
-            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded translation for $module, language $language");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded translation for $module, language $lang");
         } else {
-            $GLOBALS['log']->Log(JAWS_DEBUG, "No translation could be found for $module for language $language");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "No translation could be found for $module for language $lang");
         }
 
         $tmp_data = array();
         if ($this->_load_user_translated && Jaws_FileManagement_File::file_exists($data_i18n)) {
             $tmp_data = Jaws_FileManagement_File::parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
-            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded data translation for $module, language $language");
+            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded data translation for $module, language $lang");
         }
 
-        $this->translates[$language][$type][$module] = $tmp_data + $tmp_orig;
+        return $this->translates[$lang][$type][strtoupper($module)] = $tmp_data + $tmp_orig;;
+    }
+
+    /**
+     * Gets module translations
+     *
+     * @access  public
+     * @param   string  $module The translation to load
+     * @param   string  $type   Type of module(TRANSLATE_GLOBAL, TRANSLATE_GADGET, TRANSLATE_PLUGIN)
+     * @param   string  $lang   Optional language code
+     * @return  mixed
+     */
+    function getTranslation($module, $type = self::TRANSLATE_GLOBAL, $lang = null)
+    {
+        $lang = empty($lang) ? $this->_defaultLanguage : $lang;
+        return $this->LoadTranslation($module, $type, $lang);
     }
 
     /**
@@ -294,8 +310,8 @@ class Jaws_Translate
      */
     function AddTranslation($module, $key_name, $key_value, $type = self::TRANSLATE_GLOBAL, $lang = null)
     {
-        $language = empty($lang)? $this->_defaultLanguage : $lang;
-        $this->translates[$language][$type][$module][strtoupper($key_name)] = $key_value;
+        $lang = empty($lang)? $this->_defaultLanguage : $lang;
+        $this->translates[$lang][$type][strtoupper($module)][strtoupper($key_name)] = $key_value;
         return true;
     }
 
