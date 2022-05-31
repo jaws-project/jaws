@@ -1624,7 +1624,7 @@ var Jaws_Gadget = (function () {
                 }
 
                 objGadget.t = function(string, params) {
-                    return Jaws_Gadget.t(gadget, string, params);
+                    return jaws.t(string, params, gadget);
                 }
 
                 // load action base class
@@ -1646,10 +1646,6 @@ var Jaws_Gadget = (function () {
             }
 
             return instances[gadget];
-        },
-
-        t: function(gadget, string, params) {
-            return jaws.Translations[1][gadget.toUpperCase()][string.toUpperCase()];
         },
 
         // call methods that listening the shouted event
@@ -1896,8 +1892,20 @@ $(document).ready(function() {
         jaws.Translations = data;
 
         // define t method
-        jaws.t = function(string, params) {
-            return jaws.Translations[0][''][string.toUpperCase()];
+        jaws.t = function(string, params, module) {
+            string = string.toUpperCase();
+            module = module? module.toUpperCase() : '';
+            type = module? 1 : 0;
+            if (jaws.Translations[type][module].hasOwnProperty(string)) {
+                string = jaws.Translations[type][module][string];
+                string = string.replace(/\\n/g, "\n").replace(/\\"/g, '"');
+                $.map(params, function(val, key) {
+                    string = string.replace('{'+key+'}', val);
+                });
+                string = string.replace(/\s*\{[0-9]+\}/g, '');
+            }
+
+            return string;
         },
 
         // initialize gadgets
