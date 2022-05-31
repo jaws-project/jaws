@@ -1896,7 +1896,9 @@ $(document).ready(function() {
             string = string.toUpperCase();
             module = module? module.toUpperCase() : '';
             type = module? 1 : 0;
-            if (jaws.Translations[type][module].hasOwnProperty(string)) {
+            if (jaws.Translations[type].hasOwnProperty(module) &&
+                jaws.Translations[type][module].hasOwnProperty(string)
+            ) {
                 string = jaws.Translations[type][module][string];
                 string = string.replace(/\\n/g, "\n").replace(/\\"/g, '"');
                 $.map(params, function(val, key) {
