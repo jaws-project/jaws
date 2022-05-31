@@ -154,8 +154,17 @@ class Jaws_Translate
 
         switch ($type) {
             case self::TRANSLATE_GLOBAL:
+                $module = '';
+                break;
+
             case self::TRANSLATE_INSTALL:
+                $module = 'INSTALLER';
+                break;
+
             case self::TRANSLATE_UPGRADE:
+                $module = 'UPGRADER';
+                break;
+
             case self::TRANSLATE_GADGET:
             case self::TRANSLATE_PLUGIN:
                 break;
@@ -239,6 +248,7 @@ class Jaws_Translate
                 break;
 
             case self::TRANSLATE_INSTALL:
+                $module = 'Installer';
                 if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "install/Resources/translates.ini";
                 } else {
@@ -248,6 +258,7 @@ class Jaws_Translate
                 break;
 
             case self::TRANSLATE_UPGRADE:
+                $module = 'Upgrader';
                 if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "upgrade/Resources/translates.ini";
                 } else {
@@ -257,6 +268,7 @@ class Jaws_Translate
                 break;
 
             default:
+                $module = '';
                 if ($lang == 'en') {
                     $orig_i18n = ROOT_JAWS_PATH . "include/Jaws/Resources/translates.ini";
                 } else {
