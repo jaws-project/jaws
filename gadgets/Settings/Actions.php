@@ -48,6 +48,11 @@ $actions['CleanupExpiredCache'] = array(
     'global' => true,
     'file'   => 'Cache',
 );
+$actions['getTranslates'] = array(
+    'standalone' => true,
+    'global' => true,
+    'file'   => 'Translates',
+);
 
 /**
  * Admin actions

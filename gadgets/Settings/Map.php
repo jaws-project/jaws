@@ -24,3 +24,8 @@ $maps[] = array(
     'CleanupExpiredCache',
     'cleanup-expired-cache'
 );
+$maps[] = array(
+    'getTranslates',
+    'settings/translates/{modules}[/restype/{restype}]',
+    array('modules' => '[\p{L}[:digit:]\-_\.\:]+',)
+);
