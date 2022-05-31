@@ -1693,7 +1693,7 @@ function Jaws_Gadget_Action() { return {
             objAction.message = new JawsMessage(objAction);
 
             objAction.t = function(string, params) {
-                return Jaws_Gadget.t(this.gadget.name, string, params);
+                return jaws.t(string, params, this.gadget.name);
             }
 
             // load action initialize method if exist
