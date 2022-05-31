@@ -1623,6 +1623,10 @@ var Jaws_Gadget = (function () {
                     return Jaws_Gadget.shout(objGadget, event, data, dstGadget, broadcast);
                 }
 
+                objGadget.t = function(string, params) {
+                    return Jaws_Gadget.t(gadget, string, params);
+                }
+
                 // load action base class
                 objGadget.action = new (window['Jaws_Gadget_Action']);
                 objGadget.action.gadget = objGadget;
@@ -1642,6 +1646,10 @@ var Jaws_Gadget = (function () {
             }
 
             return instances[gadget];
+        },
+
+        t: function(gadget, string, params) {
+            return jaws.Translations[1][gadget.toUpperCase()][string.toUpperCase()];
         },
 
         // call methods that listening the shouted event
@@ -1687,6 +1695,10 @@ function Jaws_Gadget_Action() { return {
 
             // show/hide message interface 
             objAction.message = new JawsMessage(objAction);
+
+            objAction.t = function(string, params) {
+                return Jaws_Gadget.t(this.gadget.name, string, params);
+            }
 
             // load action initialize method if exist
             if (objAction.init) {
@@ -1874,12 +1886,29 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
-    $.each(jaws.Gadgets, function(index, gadget) {
-        Jaws_Gadget.getInstance(gadget);
-        $.each(jaws[gadget].Actions, function(index, action) {
-            Jaws_Gadget.getInstance(gadget).action.load(action);
+    // load translations
+    let modules = '0:';
+    $.map(jaws.Gadgets, function( gadget, key ) {
+        modules+= ',1:'+ gadget;
+    });
+    let urlTranslates  = 'index.php?reqGadget=Settings&reqAction=getTranslates&modules='+modules+'&restype=gzjson';
+    $.getJSON(urlTranslates, function(data) {
+        jaws.Translations = data;
+
+        // define t method
+        jaws.t = function(string, params) {
+            return jaws.Translations[0][''][string.toUpperCase()];
+        },
+
+        // initialize gadgets
+        $.each(jaws.Gadgets, function(index, gadget) {
+            Jaws_Gadget.getInstance(gadget);
+            $.each(jaws[gadget].Actions, function(index, action) {
+                Jaws_Gadget.getInstance(gadget).action.load(action);
+            });
         });
     });
+
 });
 
 /**
