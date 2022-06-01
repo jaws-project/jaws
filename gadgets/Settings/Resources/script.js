@@ -118,7 +118,7 @@ function Jaws_Gadget_Settings() { return {
      */
     init: function(mainGadget, mainAction) {
         // init mail settings action
-        if (this.gadget.actions.indexOf('MailSettings') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('MailSettings')) {
             this.changeMailer();
         }
     },
