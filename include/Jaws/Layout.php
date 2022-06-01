@@ -642,23 +642,24 @@ class Jaws_Layout
     {
         $result = '';
         $allDefines = $this->app->defines();
-        foreach ($allDefines as $component => $defines) {
-            if (empty($component)) {
-                $jsObj = 'jaws';
-                $actions = array();
-            } else {
-                $jsObj = "jaws.$component";
-                $objGadget = Jaws_Gadget::getInstance($component);
-                $actions = array_keys($objGadget->loaded_actions);
-            }
 
-            $result.= "\t$jsObj = {};\n";
-            $result.= "\t$jsObj.Actions = ". '$.parseJSON(\''. json_encode($actions, JSON_HEX_APOS). '\');'. "\n";
-            $result.= "\t$jsObj.Defines = ". '$.parseJSON(\''. json_encode($defines, JSON_HEX_APOS). '\');'. "\n";
+        $result.= "\tJaws.gadgets = {};\n";
+        $result.= "\tJaws.defines = ". '$.parseJSON(\''. json_encode($allDefines[''], JSON_HEX_APOS). '\');'. "\n";
+        unset($allDefines['']);
+
+        foreach ($allDefines as $component => $defines) {
+            $objGadget = Jaws_Gadget::getInstance($component);
+            $actions = array_keys($objGadget->loaded_actions);
+            $result.= "\tJaws.gadgets.$component = {};\n";
+            $result.= "\tJaws.gadgets.$component.defines = ".
+                '$.parseJSON(\''. json_encode($defines, JSON_HEX_APOS). '\');'. "\n";
+            $result.= "\tJaws.gadgets.$component.actions = ".
+                '$.parseJSON(\''. json_encode(
+                    array_combine($actions, array_fill(0, count($actions), false)),
+                    JSON_HEX_APOS
+                ). '\');'. "\n";
         }
 
-        unset($allDefines['']);
-        $result.= "\tjaws.Gadgets = ". '$.parseJSON(\''. json_encode(array_keys($allDefines)). '\');';
         return $result;
     }
 
