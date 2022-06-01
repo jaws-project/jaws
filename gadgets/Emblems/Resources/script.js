@@ -46,7 +46,7 @@ function updateEmblem(id, el)
  */
 function deleteEmblem(id)
 {
-    if (confirm(jaws.Emblems.Defines.confirmDelete)) {
+    if (confirm(Jaws.gadgets.Emblems.defines.confirmDelete)) {
         EmblemsAjax.callAsync('DeleteEmblem', id);
     }
 }
