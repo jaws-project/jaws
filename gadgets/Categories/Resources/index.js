@@ -34,7 +34,7 @@ function Jaws_Gadget_Categories() { return {
                         },
                         language: {
                             noResults: function() {
-                                return jaws.Categories.Defines.no_results;
+                                return Jaws.gadgets.Categories.defines.no_results;
                             }
                         }
                     };
