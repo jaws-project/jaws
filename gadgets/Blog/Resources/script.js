@@ -408,7 +408,7 @@ function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
  */
 function trackbackDelete(row_id)
 {
-    var confirmation = confirm(jaws.Blog.Defines.deleteConfirm);
+    var confirmation = confirm(Jaws.gadgets.Blog.defines.deleteConfirm);
     if (confirmation) {
         BlogAjax.callAsync('DeleteTrackbacks', row_id);
     }
@@ -427,7 +427,7 @@ function trackbackDGAction(combo)
 
      if (combo.value == 'delete') {
         if (selectedRows) {
-            var confirmation = confirm(jaws.Blog.Defines.deleteConfirm);
+            var confirmation = confirm(Jaws.gadgets.Blog.defines.deleteConfirm);
             if (confirmation) {
                 BlogAjax.callAsync('DeleteTrackbacks', rows);
             }
@@ -452,7 +452,7 @@ function entryDGAction(combo)
 
      if (combo.value == 'delete') {
         if (selectedRows) {
-            var confirmation = confirm(jaws.Blog.Defines.deleteConfirm);
+            var confirmation = confirm(Jaws.gadgets.Blog.defines.deleteConfirm);
             if (confirmation) {
                 BlogAjax.callAsync('DeleteEntries', rows);
             }
@@ -498,7 +498,7 @@ function editCategory(id)
     if (id == 0) return;
     selectedCategory = id;
 
-    $('#legend_title').html(jaws.Blog.Defines.editCategory_title);
+    $('#legend_title').html(Jaws.gadgets.Blog.defines.editCategory_title);
     $('#btn_delete').css('display', 'inline');
     var category = BlogAjax.callSync('GetCategory', id);
 
@@ -545,7 +545,7 @@ function saveCategory()
 {
     if (!$('#name').val())
     {
-        alert(jaws.Blog.Defines.incompleteCategoryFields);
+        alert(Jaws.gadgets.Blog.defines.incompleteCategoryFields);
         return false;
     }
 
@@ -592,7 +592,7 @@ function fillCatInfoForm(content)
  */
 function deleteCategory()
 {
-    if (confirm(jaws.Blog.Defines.deleteMessage)) {
+    if (confirm(Jaws.gadgets.Blog.defines.deleteMessage)) {
         BlogAjax.callAsync('DeleteCategory2', selectedCategory);
     }
 }
@@ -786,7 +786,7 @@ function uploadCategoryImage(fileElem) {
 function removeCategoryImage() {
     $('#image_file').val('');
     deleteCategoryImage = true;
-    $('#image_preview').prop('src', jaws.Blog.Defines.noImageURL + '?' + (new Date()).getTime());
+    $('#image_preview').prop('src', Jaws.gadgets.Blog.defines.noImageURL + '?' + (new Date()).getTime());
 }
 
 function previewCategoryImage(fileElement) {
@@ -802,7 +802,7 @@ function previewCategoryImage(fileElement) {
  * Stops doing a certain action
  */
 function stopAction() {
-    $('#legend_title').html(jaws.Blog.Defines.addCategory_title);
+    $('#legend_title').html(Jaws.gadgets.Blog.defines.addCategory_title);
     $('#btn_delete').css('display', 'none');
     selectedCategory = null;
     categoryImageInfo = null;
@@ -815,11 +815,11 @@ function stopAction() {
     $('#meta_keywords').val('');
     $('#meta_desc').val('');
     $('#description').val('');
-    $('#image_preview').prop('src', jaws.Blog.Defines.noImageURL);
+    $('#image_preview').prop('src', Jaws.gadgets.Blog.defines.noImageURL);
 }
 
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
+    switch (Jaws.defines.mainAction) {
         case 'EditEntry':
         case 'NewEntry':
             toggleUpdate(false);
@@ -836,7 +836,7 @@ $(document).ready(function() {
             break;
 
         case 'ManageCategories':
-            $('#legend_title').html(jaws.Blog.Defines.addCategory_title);
+            $('#legend_title').html(Jaws.gadgets.Blog.defines.addCategory_title);
             break;
     }
 });
