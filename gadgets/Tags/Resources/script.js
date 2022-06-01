@@ -80,7 +80,7 @@ function stopTagAction()
     $('#meta_description').val('');
     $('#btn_cancel').css('display', 'none');
     $('#name').prop('disabled', false);
-    $('#legend_title').html(jaws.Tags.Defines.addTagTitle);
+    $('#legend_title').html(Jaws.gadgets.Tags.defines.addTagTitle);
 
     unselectGridRow('tags_datagrid');
     $('#name').focus();
@@ -101,7 +101,7 @@ function editTag(rowElement, id)
     $('#meta_keywords').val(tag['meta_keywords']);
     $('#meta_description').val(tag['meta_description']);
     $('#btn_cancel').css('display', 'inline');
-    $('#legend_title').html(jaws.Tags.Defines.editTagTitle);
+    $('#legend_title').html(Jaws.gadgets.Tags.defines.editTagTitle);
 }
 
 /**
@@ -110,7 +110,7 @@ function editTag(rowElement, id)
 function updateTag()
 {
     if (!$('#name').val()) {
-        alert(jaws.Tags.Defines.incompleteTagFields);
+        alert(Jaws.gadgets.Tags.defines.incompleteTagFields);
         return false;
     }
 
@@ -145,7 +145,7 @@ function updateTag()
 function deleteTag(id)
 {
     stopTagAction();
-    if (confirm(jaws.Tags.Defines.confirmTagDelete)) {
+    if (confirm(Jaws.gadgets.Tags.defines.confirmTagDelete)) {
         TagsAjax.callAsync('DeleteTags', new Array(id));
     }
     unselectGridRow('tags_datagrid');
@@ -163,13 +163,13 @@ function tagsDGAction(combo)
     }
 
     if (combo.val() == 'delete') {
-        var confirmation = confirm(jaws.Tags.Defines.confirmTagDelete);
+        var confirmation = confirm(Jaws.gadgets.Tags.defines.confirmTagDelete);
         if (confirmation) {
             TagsAjax.callAsync('DeleteTags', rows);
         }
     } else if (combo.val() == 'merge') {
         if(rows.length<2) {
-            alert(jaws.Tags.Defines.selectMoreThanOneTags);
+            alert(Jaws.gadgets.Tags.defines.selectMoreThanOneTags);
             return;
         }
         var newName = prompt("Please enter new tag name:");
@@ -214,7 +214,7 @@ function saveSettings()
 }
 
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
+    switch (Jaws.defines.mainAction) {
         case 'Tags':
             $('#gadgets_filter').selectedIndex = 0;
             initDataGrid('tags_datagrid', TagsAjax, getTagsDataGrid);
