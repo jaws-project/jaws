@@ -10,13 +10,13 @@
 var ECCallback = {
     DeleteEvent: function(response) {
         if (response.type !== 'alert-danger') {
-            location.assign(jaws.EventsCalendar.Defines.events_url);
+            location.assign(Jaws.gadgets.EventsCalendar.defines.events_url);
         }
     },
 
     UpdateShare: function(response) {
         if (response.type !== 'alert-danger') {
-            location.assign(jaws.EventsCalendar.Defines.events_url);
+            location.assign(Jaws.gadgets.EventsCalendar.defines.events_url);
         }
     }
 };
@@ -106,7 +106,7 @@ function submitEvent(form)
  */
 function deleteEvent(id)
 {
-    if (confirm(jaws.EventsCalendar.Defines.confirmDelete)) {
+    if (confirm(Jaws.gadgets.EventsCalendar.defines.confirmDelete)) {
         ECAjax.callAsync('DeleteEvent', {id_set:id});
     }
 }
@@ -123,7 +123,7 @@ function deleteEvents()
     idSet = $.map(idSet, function(input) {
         return input.value;
     });
-    if (confirm(jaws.EventsCalendar.Defines.confirmDelete)) {
+    if (confirm(Jaws.gadgets.EventsCalendar.defines.confirmDelete)) {
         ECAjax.callAsync('DeleteEvent', {id_set:idSet.join(',')});
     }
 }

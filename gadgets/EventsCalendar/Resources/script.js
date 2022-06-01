@@ -300,7 +300,7 @@ function updateRepeatUI(type)
 }
 
 $(document).ready(function () {
-    CONST = jaws.EventsCalendar.Defines.CONST;
+    CONST = Jaws.gadgets.EventsCalendar.defines.CONST;
     initiateEventsDG();
     updateRepeatUI();
     initDatePicker('filter_start_date');
