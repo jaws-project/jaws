@@ -54,12 +54,12 @@ function saveLink()
 {
     if (currentAction == 'Groups') {
         if (!$('#title').val()) {
-            alert(jaws.LinkDump.Defines.incompleteFields);
+            alert(Jaws.gadgets.LinkDump.defines.incompleteFields);
             return false;
         }
 
         lc = parseInt($('#limit_count').val());
-        $('#limit_count').val((lc < 1)? '1' : ((lc > jaws.LinkDump.Defines.max_limit_count)? jaws.LinkDump.Defines.max_limit_count : lc));
+        $('#limit_count').val((lc < 1)? '1' : ((lc > Jaws.gadgets.LinkDump.defines.max_limit_count)? Jaws.gadgets.LinkDump.defines.max_limit_count : lc));
 
         cacheLinkForm = null;
         if (selectedGroup == null) {
@@ -91,7 +91,7 @@ function saveLink()
         }
     } else {
         if (!$('#title').val()) {
-            alert(jaws.LinkDump.Defines.incompleteFields);
+            alert(Jaws.gadgets.LinkDump.defines.incompleteFields);
             return false;
         }
         var tags = "";
@@ -147,7 +147,7 @@ function saveLink()
                     }
 
                     if (old_parent.html() == "") {
-                        old_parent.html(jaws.LinkDump.Defines.noLinkExists);
+                        old_parent.html(Jaws.gadgets.LinkDump.defines.noLinkExists);
                     }
                 }
                 stopAction();
@@ -178,12 +178,12 @@ function AddNewLinkItem(gid, lid, rank)
 {
 
     gLinksDiv = $('#links_group_'+gid);
-    if (gLinksDiv.html() == jaws.LinkDump.Defines.noLinkExists) {
+    if (gLinksDiv.html() == Jaws.gadgets.LinkDump.defines.noLinkExists) {
         gLinksDiv.html('');
     }
 
     var mainDiv = $('<div>').attr('id', "link_"+lid).append(
-        $('<img>').attr({'class': 'icon', 'src': jaws.LinkDump.Defines.linkImageSrc})
+        $('<img>').attr({'class': 'icon', 'src': Jaws.gadgets.LinkDump.defines.linkImageSrc})
     ).append(
         $('<a>').attr('href', 'javascript:void(0);')
             .html($('#title').val())
@@ -210,13 +210,13 @@ function listLinks(gid, force_open)
         if (links_list !== "") {
             divSubList.html(links_list);
         } else {
-            divSubList.html(jaws.LinkDump.Defines.noLinkExists);
+            divSubList.html(Jaws.gadgets.LinkDump.defines.noLinkExists);
         }
-        gFlagimage.attr('src', jaws.LinkDump.Defines.linksListCloseImageSrc);
+        gFlagimage.attr('src', Jaws.gadgets.LinkDump.defines.linksListCloseImageSrc);
     } else {
         if (force_open == null) {
             divSubList.html('');
-            gFlagimage.attr('src', jaws.LinkDump.Defines.linksListOpenImageSrc);
+            gFlagimage.attr('src', Jaws.gadgets.LinkDump.defines.linksListOpenImageSrc);
         }
     }
     if (force_open == null) {
@@ -272,7 +272,7 @@ function addGroup()
     }
     currentAction = 'Groups';
 
-    $('#edit_area span').first().html(jaws.LinkDump.Defines.addGroupTitle);
+    $('#edit_area span').first().html(Jaws.gadgets.LinkDump.defines.addGroupTitle);
     selectedGroup = null;
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'none');
@@ -296,7 +296,7 @@ function addLink(gid)
     currentAction = 'Links';
     selectedLink = null;
 
-    $('#edit_area span').first().html(jaws.LinkDump.Defines.addLinkTitle + ' - ' + $('#group_'+gid+' a').first().next().html());
+    $('#edit_area span').first().html(Jaws.gadgets.LinkDump.defines.addLinkTitle + ' - ' + $('#group_'+gid+' a').first().next().html());
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'none');
     $('#btn_save').css('display', 'inline');
@@ -320,7 +320,7 @@ function editGroup(gid)
     currentAction = 'Groups';
     selectedGroup = gid;
 
-    $('#edit_area span').first().html(jaws.LinkDump.Defines.editGroupTitle + ' - ' + $('#group_'+gid + ' a').first().next().html());
+    $('#edit_area span').first().html(Jaws.gadgets.LinkDump.defines.editGroupTitle + ' - ' + $('#group_'+gid + ' a').first().next().html());
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
@@ -350,7 +350,7 @@ function editLink(element, lid)
     currentAction = 'Links';
     selectedLink = lid;
 
-    $('#edit_area span').first().html(jaws.LinkDump.Defines.editLinkTitle + ' - ' + $('#link_'+lid + ' a').first().html());
+    $('#edit_area span').first().html(Jaws.gadgets.LinkDump.defines.editLinkTitle + ' - ' + $('#link_'+lid + ' a').first().html());
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
@@ -380,7 +380,7 @@ function delLinks()
 {
     if (currentAction == 'Groups') {
         var gid = selectedGroup;
-        var msg = jaws.LinkDump.Defines.confirmGroupDelete;
+        var msg = Jaws.gadgets.LinkDump.defines.confirmGroupDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).find('a').eq(1).html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
@@ -392,7 +392,7 @@ function delLinks()
         }
     } else {
         var lid = selectedLink;
-        var msg = jaws.LinkDump.Defines.confirmLinkDelete;
+        var msg = Jaws.gadgets.LinkDump.defines.confirmLinkDelete;
         msg = msg.substr(0,  msg.indexOf('%s%'))+
               $('link_'+lid).find('a').first().html()+
               msg.substr(msg.indexOf('%s%')+3);
@@ -402,7 +402,7 @@ function delLinks()
                 link_parent = $('#link_'+lid).parent();
                 $('#link_'+lid).remove();
                 if (link_parent.html() == "") {
-                    link_parent.html(jaws.LinkDump.Defines.noLinkExists);
+                    link_parent.html(Jaws.gadgets.LinkDump.defines.noLinkExists);
                 }
             }
             stopAction();
@@ -415,7 +415,7 @@ function upCount()
     var lc = parseInt($('#limit_count').val());
     lc = isNaN(lc)? 0 : lc;
     lc++;
-    lc = (lc < 1)? 1 : ((lc > jaws.LinkDump.Defines.max_limit_count)? jaws.LinkDump.Defines.max_limit_count : lc);
+    lc = (lc < 1)? 1 : ((lc > Jaws.gadgets.LinkDump.defines.max_limit_count)? Jaws.gadgets.LinkDump.defines.max_limit_count : lc);
     $('#limit_count').val(lc);
 }
 
@@ -424,7 +424,7 @@ function downCount()
     var lc = parseInt($('#limit_count').val());
     lc = isNaN(lc)? 0 : lc;
     lc--;
-    lc = (lc < 1)? 1 : ((lc > jaws.LinkDump.Defines.max_limit_count)? jaws.LinkDump.Defines.max_limit_count : lc);
+    lc = (lc < 1)? 1 : ((lc > Jaws.gadgets.LinkDump.defines.max_limit_count)? Jaws.gadgets.LinkDump.defines.max_limit_count : lc);
     $('#limit_count').val(lc);
 }
 
