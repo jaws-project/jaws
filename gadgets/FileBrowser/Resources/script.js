@@ -165,7 +165,7 @@ function saveFile()
     if (!$('#uploadfile').val() &&
         !$('#filename').val())
     {
-        alert(jaws.FileBrowser.Defines.incompleteFields);
+        alert(Jaws.gadgets.FileBrowser.defines.incompleteFields);
         return false;
     }
     if ($('#upload_switch').prop('checked') &&
@@ -191,7 +191,7 @@ function saveFile()
  */
 function delFile(element, file)
 {
-    if (confirm(jaws.FileBrowser.Defines.confirmFileDelete)) {
+    if (confirm(Jaws.gadgets.FileBrowser.defines.confirmFileDelete)) {
         FileBrowserAjax.callAsync('DeleteFile2', [$('#path').val(), file]);
     }
 }
@@ -223,7 +223,7 @@ function editDir(element, dirname)
 function saveDir()
 {
     if (!$('#dirname').val()) {
-        alert(jaws.FileBrowser.Defines.incompleteFields);
+        alert(Jaws.gadgets.FileBrowser.defines.incompleteFields);
         return false;
     }
 
@@ -244,7 +244,7 @@ function saveDir()
  */
 function delDir(element, dir)
 {
-    if (confirm(jaws.FileBrowser.Defines.confirmDirDelete)) {
+    if (confirm(Jaws.gadgets.FileBrowser.defines.confirmDirDelete)) {
         FileBrowserAjax.callAsync('DeleteDir2', [$('#path').val(), dir]);
     }
     
@@ -292,7 +292,7 @@ function stopAction(tab)
 }
 
 $(document).ready(function () {
-    $('#path').val(jaws.FileBrowser.Defines.path);
+    $('#path').val(Jaws.gadgets.FileBrowser.defines.path);
     stopAction('file');
     initDataGrid('fb_datagrid', FileBrowserAjax, 'getFiles');
 });
