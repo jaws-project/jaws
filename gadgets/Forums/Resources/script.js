@@ -71,7 +71,7 @@ function AddNewForumItem(gid, fid, order)
 
     var oldOrder = parentNode.children('.forums_group_item').length;
     var mainDiv = $('<div>').attr({'id': "forum_" + fid, 'class': 'forums_group_item'}).append(
-        $('<img>').attr({'src': jaws.Forums.Defines.forumImageSrc, 'class': 'icon'}),
+        $('<img>').attr({'src': Jaws.gadgets.Forums.defines.forumImageSrc, 'class': 'icon'}),
         $('<a>').attr({'href': 'javascript:editForum(this, ' + fid + ');', 'class': 'icon'}).html($('#title').val())
     );
     if (order < oldOrder) {
@@ -87,7 +87,7 @@ function AddNewForumItem(gid, fid, order)
 function saveForums()
 {
     if ($('#title').val().trim() == '') {
-        alert(jaws.Forums.Defines.incompleteFields);
+        alert(Jaws.gadgets.Forums.defines.incompleteFields);
         return false;
     }
 
@@ -203,7 +203,7 @@ function addGroup()
     }
     currentAction = 'Groups';
 
-    $('#work_area_title').html(jaws.Forums.Defines.addGroupTitle);
+    $('#work_area_title').html(Jaws.gadgets.Forums.defines.addGroupTitle);
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'none');
     $('#btn_save').css('display', 'inline');
@@ -223,7 +223,7 @@ function addForum(gid)
 
     stopAction();
     currentAction = 'Forums';
-    $('#work_area_title').html(jaws.Forums.Defines.addForumTitle + ' - ' + $('#group_'+gid + ' a').first().html());
+    $('#work_area_title').html(Jaws.gadgets.Forums.defines.addForumTitle + ' - ' + $('#group_'+gid + ' a').first().html());
 
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'none');
@@ -246,7 +246,7 @@ function editGroup(gid)
     }
     currentAction = 'Groups';
 
-    $('#work_area_title').html(jaws.Forums.Defines.editGroupTitle + ' - ' + $('#group_'+gid + ' a').first().html());
+    $('#work_area_title').html(Jaws.gadgets.Forums.defines.editGroupTitle + ' - ' + $('#group_'+gid + ' a').first().html());
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
@@ -276,7 +276,7 @@ function editForum(element, fid)
     }
     currentAction = 'Forums';
 
-    $('#work_area_title').html(jaws.Forums.Defines.editForumTitle + ' - ' + $('#forum_'+fid + ' a').first().html());
+    $('#work_area_title').html(Jaws.gadgets.Forums.defines.editForumTitle + ' - ' + $('#forum_'+fid + ' a').first().html());
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
@@ -302,7 +302,7 @@ function delForums()
 {
     if (currentAction == 'Groups') {
         var gid = $('#gid').val();
-        var msg = jaws.Forums.Defines.confirmGroupDelete;
+        var msg = Jaws.gadgets.Forums.defines.confirmGroupDelete;
         msg = msg.substr(0,  msg.indexOf('%s%'))+
               $('#group_'+gid).find('a').first().html()+
               msg.substr(msg.indexOf('%s%') + 3);
@@ -316,7 +316,7 @@ function delForums()
         }
     } else {
         var fid = $('#fid').val();
-        var msg = jaws.Forums.Defines.confirmForumDelete;
+        var msg = Jaws.gadgets.Forums.defines.confirmForumDelete;
         msg = msg.substr(0, msg.indexOf('%s%'))+
               $('#forum_'+fid).find('a').first().html()+
               msg.substr(msg.indexOf('%s%') + 3);
