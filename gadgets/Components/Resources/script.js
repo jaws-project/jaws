@@ -475,13 +475,13 @@ function setupComponent()
             break;
         case 'installed':
             if (pluginsMode) {
-                if (confirm(jaws.Components.Defines.confirmUninstallPlugin)) {
+                if (confirm(Jaws.gadgets.Components.defines.confirmUninstallPlugin)) {
                     ComponentsAjax.callAsync('UninstallPlugin', selectedComponent);
                 }
             } else {
                 if (comp.disabled) {
                     ComponentsAjax.callAsync('EnableGadget', selectedComponent);
-                } else if (confirm(jaws.Components.Defines.confirmUninstallGadget)) {
+                } else if (confirm(Jaws.gadgets.Components.defines.confirmUninstallGadget)) {
                     ComponentsAjax.callAsync('UninstallGadget2', selectedComponent);
                 }
             }
@@ -502,7 +502,7 @@ function enableGadget()
  */
 function disableGadget()
 {
-    if (confirm(jaws.Components.Defines.confirmDisableGadget)) {
+    if (confirm(Jaws.gadgets.Components.defines.confirmDisableGadget)) {
         ComponentsAjax.callAsync('DisableGadget', selectedComponent);
     }
 }
@@ -618,21 +618,21 @@ function usageCheckAll(el)
 }
 
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
+    switch (Jaws.defines.mainAction) {
         case 'Gadgets':
             actions = {
-                outdated: jaws.Components.Defines.lbl_update,
-                disabled: jaws.Components.Defines.lbl_enable,
-                installed: jaws.Components.Defines.lbl_uninstall,
-                notinstalled: jaws.Components.Defines.lbl_install
+                outdated: Jaws.gadgets.Components.defines.lbl_update,
+                disabled: Jaws.gadgets.Components.defines.lbl_enable,
+                installed: Jaws.gadgets.Components.defines.lbl_uninstall,
+                notinstalled: Jaws.gadgets.Components.defines.lbl_install
             };
             pluginsMode = false;
             break;
 
         case 'Plugins':
             actions = {
-                installed: jaws.Components.Defines.lbl_uninstall,
-                notinstalled: jaws.Components.Defines.lbl_install
+                installed: Jaws.gadgets.Components.defines.lbl_uninstall,
+                notinstalled: Jaws.gadgets.Components.defines.lbl_install
             };
             pluginsMode = true;
             break;
