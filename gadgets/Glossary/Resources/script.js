@@ -81,7 +81,7 @@ function updateTerm()
         contents = $('#term_contents').val();
         if (term.blank() || contents.blank())
         {
-            alert(jaws.Glossary.Defines.incompleteGlossaryFields);
+            alert(Jaws.gadgets.Glossary.defines.incompleteGlossaryFields);
             return false;
         }
 
@@ -89,7 +89,7 @@ function updateTerm()
         var combo = document.getElementById('term_id');
         combo.options[combo.selectedIndex].text = term;
         // Call function
-        loading_message = jaws.Glossary.Defines.updatingMessage;
+        loading_message = Jaws.gadgets.Glossary.defines.updatingMessage;
         GlossaryAjax.callAsync('UpdateTerm', [id, term, fast_url, contents]);
     }
 }
@@ -99,7 +99,7 @@ function updateTerm()
  */
 function deleteTerm()
 {
-    loading_message = jaws.Glossary.Defines.deletingMessage;
+    loading_message = Jaws.gadgets.Glossary.defines.deletingMessage;
     GlossaryAjax.callAsync('DeleteTerm', $('#term_id').val());
 }
 
@@ -124,7 +124,7 @@ function switchTab(c, title)
 
     if (c == 'edit') {
         if (currentMode == 'new') {
-            if (jaws.Glossary.Defines.aclAddTerm) {
+            if (Jaws.gadgets.Glossary.defines.aclAddTerm) {
                 saveButton.onclick = function() {
                     newTerm();
                 }
@@ -134,13 +134,13 @@ function switchTab(c, title)
                 }
             }
 
-            if (jaws.Glossary.Defines.aclDeleteTerm) {
+            if (Jaws.gadgets.Glossary.defines.aclDeleteTerm) {
                 delButton.hide();
             }
 
             cancelButton.show();
         } else {
-            if (jaws.Glossary.Defines.aclEditTerm) {
+            if (Jaws.gadgets.Glossary.defines.aclEditTerm) {
                 saveButton.onclick = function() {
                     updateTerm();
                 }
@@ -148,7 +148,7 @@ function switchTab(c, title)
                 saveButton.hide();
             }
 
-            if (jaws.Glossary.Defines.aclDeleteTerm) {
+            if (Jaws.gadgets.Glossary.defines.aclDeleteTerm) {
                 delButton.show();
             }
 
@@ -173,7 +173,7 @@ function edit(id)
 {
     previousID  = id;
     currentMode = 'edit';
-    loading_message = jaws.Glossary.Defines.retrievingMessage;
+    loading_message = Jaws.gadgets.Glossary.defines.retrievingMessage;
     var termData = GlossaryAjax.callSync('GetTerm', id);
     fillEditorEntries(termData);
     editTitle  = termData['term'];
@@ -218,11 +218,11 @@ function newTerm()
     contents = $('#term_contents').val();
     if (term.blank() || contents.blank())
     {
-        alert(jaws.Glossary.Defines.incompleteGlossaryFields);
+        alert(Jaws.gadgets.Glossary.defines.incompleteGlossaryFields);
         return false;
     }
 
-    loading_message = jaws.Glossary.Defines.savingMessage;
+    loading_message = Jaws.gadgets.Glossary.defines.savingMessage;
     GlossaryAjax.callAsync('NewTerm', [term, fast_url, contents]);
 }
 
@@ -255,7 +255,7 @@ function returnToEdit()
             b.disabled = true;
             combo.disabled = true;
         } else {
-            loading_message = jaws.Glossary.Defines.retrievingMessage;
+            loading_message = Jaws.gadgets.Glossary.defines.retrievingMessage;
             var termData = GlossaryAjax.callSync('GetTerm', previousID);
             fillEditorEntries(termData);
             b.disabled = false;
