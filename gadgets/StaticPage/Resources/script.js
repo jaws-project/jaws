@@ -140,7 +140,7 @@ function parseText(form)
  */
 function deletePage(id, redirect)
 {
-    var confirmation = confirm(jaws.StaticPage.Defines.confirmPageDelete);
+    var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmPageDelete);
     if (confirmation) {
         if (redirect) {
             var response = StaticPageAjax.callSync('DeletePage', id);
@@ -158,7 +158,7 @@ function deletePage(id, redirect)
  */
 function deleteTranslation(id, redirect)
 {
-    var confirmation = confirm(jaws.StaticPage.Defines.confirmPageDelete);
+    var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmPageDelete);
     if (confirmation) {
         if (redirect) {
             var response = StaticPageAjax.callSync('DeleteTranslation', id);
@@ -178,7 +178,7 @@ function massiveDelete()
 {
     var rows = $('#pages_datagrid')[0].getSelectedRows();
     if (rows.length > 0) {
-        var confirmation = confirm(jaws.StaticPage.Defines.confirmMassiveDelete);
+        var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmMassiveDelete);
         if (confirmation) {
             StaticPageAjax.callAsync('MassiveDelete', rows);
         }
@@ -248,7 +248,7 @@ function editGroup(rowElement, gid)
 {
     selectedGroup = gid;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
-    $('#legend_title').html(jaws.StaticPage.Defines.edit_group_title);
+    $('#legend_title').html(Jaws.gadgets.StaticPage.defines.edit_group_title);
     var group = StaticPageAjax.callSync('GetGroup', selectedGroup);
     $('#title').val(group['title'].defilter())[0].focus();
     $('#meta_keys').val(group['meta_keywords'].defilter());
@@ -263,7 +263,7 @@ function editGroup(rowElement, gid)
 function saveGroup()
 {
     if (!$('#title').val()) {
-        alert(jaws.StaticPage.Defines.incomplete_fields);
+        alert(Jaws.gadgets.StaticPage.defines.incomplete_fields);
         $('#title')[0].focus();
         return false;
     }
@@ -298,7 +298,7 @@ function saveGroup()
 function deleteGroup(rowElement, gid)
 {
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
-    if (confirm(jaws.StaticPage.Defines.confirm_group_delete)) {
+    if (confirm(Jaws.gadgets.StaticPage.defines.confirm_group_delete)) {
         StaticPageAjax.callAsync('DeleteGroup', gid);
     }
 
@@ -327,7 +327,7 @@ function showSimpleResponse(response)
 function stopAction()
 {
     selectedGroup = 0;
-    $('#legend_title').html(jaws.StaticPage.Defines.add_group_title);
+    $('#legend_title').html(Jaws.gadgets.StaticPage.defines.add_group_title);
     $('#title').val('');
     $('#fast_url').val('');
     $('#meta_keys').val('');
@@ -338,7 +338,7 @@ function stopAction()
 }
 
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
+    switch (Jaws.defines.mainAction) {
         case 'ManagePages':
             initDataGrid('pages_datagrid', StaticPageAjax, 'getPages');
             break;
