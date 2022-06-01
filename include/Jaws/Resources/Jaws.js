@@ -185,7 +185,7 @@ jQuery.extend({
 
             let $li = $('li.active', $ddObj).first();
             // hide menu if not in root and not found selected menu
-            if ($li.length == 0 && location.pathname.match(/^.*\//)[0] != jaws.Defines.base) {
+            if ($li.length == 0 && location.pathname.match(/^.*\//)[0] != Jaws.defines.base) {
                 return false;
             }
 
@@ -687,7 +687,7 @@ function JawsMessage(objOwner)
 {
     this.objOwner = objOwner;
     this.default_container = $(
-        "#"+(jaws.Defines.mainGadget+'_'+ jaws.Defines.mainAction+'_'+'response').toLowerCase()
+        "#"+(Jaws.defines.mainGadget+'_'+ Jaws.defines.mainAction+'_'+'response').toLowerCase()
     );
 
     /**
@@ -732,7 +732,7 @@ function JawsMessage(objOwner)
         if (container.length) {
             if (show) {
                 let loadingMessage = this.objOwner.gadget.defines.loadingMessage ||
-                    jaws.Defines.loadingMessage ||
+                    Jaws.defines.loadingMessage ||
                     '...';
                 container.html(loadingMessage).attr('class', 'response_loading alert-info');
                 container.stop(true, true).fadeIn();
@@ -836,13 +836,13 @@ function tinymce_file_picker_callback(callback, value, meta)
     var browser = '';
     switch (meta.filetype) {
         case 'media':
-            browser = jaws.Defines.editorMediaBrowser || '';
+            browser = Jaws.defines.editorMediaBrowser || '';
             break;
         case 'image':
-            browser = jaws.Defines.editorImageBrowser || '';
+            browser = Jaws.defines.editorImageBrowser || '';
             break;
         case 'file':
-            browser = jaws.Defines.editorFileBrowser || '';
+            browser = Jaws.defines.editorFileBrowser || '';
             break;
     }
 
@@ -901,11 +901,11 @@ function initEditor(selector)
                     'theme': 'default',
                     'readOnly': objEditor.data('readonly') == '1',
                     'resize_enabled': objEditor.data('resizable') == '1',
-                    'toolbar': jaws.Defines.editorToolbar,
-                    'extraPlugins': jaws.Defines.editorPlugins,
-                    'filebrowserBrowseUrl': jaws.Defines.editorFileBrowser || '',
-                    'filebrowserImageBrowseUrl': jaws.Defines.editorImageBrowser || '',
-                    'filebrowserFlashBrowseUrl': jaws.Defines.editorMediaBrowser || '',
+                    'toolbar': Jaws.defines.editorToolbar,
+                    'extraPlugins': Jaws.defines.editorPlugins,
+                    'filebrowserBrowseUrl': Jaws.defines.editorFileBrowser || '',
+                    'filebrowserImageBrowseUrl': Jaws.defines.editorImageBrowser || '',
+                    'filebrowserFlashBrowseUrl': Jaws.defines.editorMediaBrowser || '',
                     'removePlugins': '',
                     'autoParagraph': false,
                     'indentUnit': 'em',
@@ -930,8 +930,8 @@ function initEditor(selector)
                             'directionality': objEditor.data('direction') || 'ltr',
                             'language': objEditor.data('language') || 'en',
                             'theme': 'modern',
-                            'plugins': jaws.Defines.editorPlugins,
-                            'toolbar1': jaws.Defines.editorToolbar,
+                            'plugins': Jaws.defines.editorPlugins,
+                            'toolbar1': Jaws.defines.editorToolbar,
                             'toolbar2': '',
                             'toolbar_items_size': 'small',
                             'template_external_list_url': 'libraries/tinymce/templates.js',
@@ -1580,7 +1580,7 @@ function hideResponseBox(name, timeout)
 function showWorkingNotification(msg)
 {
     if (!msg) {
-        msg = jaws.Defines.loadingMessage;
+        msg = Jaws.defines.loadingMessage;
     }
     $('#working_notification').html(msg);
     $('#working_notification').css('visibility', 'visible');
@@ -1595,36 +1595,34 @@ function hideWorkingNotification()
 }
 
 var Jaws_Gadget = (function () {
-    var instances = {};
 
     return {
         // return singleton instance object of gadget
         getInstance: function(gadget) {
-            if (!instances[gadget]) {
+            if (!Jaws.gadgets.hasOwnProperty(gadget) ||
+                !Jaws.gadgets[gadget].hasOwnProperty('name')
+            ) {
                 var objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
                 objGadget.name = gadget;
                 objGadget.gadget = objGadget;
-                objGadget.objects = {
-                    'Actions': {}
-                };
 
-                if (jaws[gadget]) {
-                    objGadget.defines = jaws[gadget].Defines;
-                    objGadget.actions = jaws[gadget].Actions;
+                if (Jaws.gadgets[gadget]) {
+                    objGadget.defines = Jaws.gadgets[gadget].defines;
+                    objGadget.actions = Jaws.gadgets[gadget].actions;
                 } else {
                     objGadget.defines = [];
-                    objGadget.actions = [];
+                    objGadget.actions = {};
                 }
 
                 // shout interface method
                 objGadget.shout = function(event, data, destGadget, broadcast) {
                     dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
                     broadcast = typeof broadcast !== 'undefined'? broadcast : true;
-                    return Jaws_Gadget.shout(objGadget, event, data, dstGadget, broadcast);
+                    return Jaws.shout(objGadget, event, data, dstGadget, broadcast);
                 }
 
                 objGadget.t = function(string, params) {
-                    return jaws.t(string, params, gadget);
+                    return Jaws.t(string, params, gadget);
                 }
 
                 // load action base class
@@ -1640,36 +1638,14 @@ var Jaws_Gadget = (function () {
 
                 // load gadget initialize method if exist
                 if (objGadget.init) {
-                    objGadget.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
+                    objGadget.init(Jaws.defines.mainGadget, Jaws.defines.mainAction);
                 }
-                instances[gadget] = objGadget;
+                Jaws.gadgets[gadget] = objGadget;
             }
 
-            return instances[gadget];
+            return Jaws.gadgets[gadget];
         },
 
-        // call methods that listening the shouted event
-        shout: function(shouter, event, data, dstGadget, broadcast) {
-            dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
-            broadcast = typeof broadcast !== 'undefined'? broadcast : true;
-
-            var result = null;
-            $.each(instances, function(index, instance) {
-                if (instance.listen && instance.listen[event]) {
-                    // check event broadcasting
-                    if (!broadcast && instance.gadget.name !== dstGadget) {
-                        return true; //continue;
-                    }
-
-                    var ret = instance.listen[event](shouter, data);
-                    if (dstGadget === instance.gadget.name) {
-                        result = ret;
-                    }
-                }
-            });
-
-            return result;
-        }
     };
 
 })();
@@ -1680,7 +1656,9 @@ var Jaws_Gadget = (function () {
 function Jaws_Gadget_Action() { return {
     // return gadget js object instance
     load: function(action) {
-        if (!this.gadget.objects['Actions'][action]) {
+        if (!this.gadget.actions.hasOwnProperty('action') ||
+            !this.gadget.actions[action].hasOwnProperty('name')
+        ) {
             var objAction = new (window['Jaws_Gadget_'+this.gadget.name+'_Action_'+action] || Object);
             objAction.name = action;
             objAction.gadget = this.gadget;
@@ -1693,18 +1671,18 @@ function Jaws_Gadget_Action() { return {
             objAction.message = new JawsMessage(objAction);
 
             objAction.t = function(string, params) {
-                return jaws.t(string, params, this.gadget.name);
+                return Jaws.t(string, params, this.gadget.name);
             }
 
             // load action initialize method if exist
             if (objAction.init) {
-                objAction.init(jaws.Defines.mainGadget, jaws.Defines.mainAction);
+                objAction.init(Jaws.defines.mainGadget, Jaws.defines.mainAction);
             }
 
-            this.gadget.objects['Actions'][action] = objAction;
+            this.gadget.actions[action] = objAction;
         }
 
-        return this.gadget.objects['Actions'][action];
+        return this.gadget.actions[action];
     }
 }};
 
@@ -1742,24 +1720,24 @@ function updateWebPushSubscription(pushSubscription) {
  */
 $(document).ready(function() {
     // detect running in full-screen/standalone mode
-    jaws.standalone =
+    Jaws.standalone =
         window.navigator.standalone ||
         window.matchMedia('(display-mode: standalone)').matches ||
         window.matchMedia('(display-mode: fullscreen)').matches;
 
-    jaws.navigated = false;
+    Jaws.navigated = false;
     if ('navigation' in window.performance) {
-        jaws.navigated = window.performance.navigation.type == 0;
+        Jaws.navigated = window.performance.navigation.type == 0;
     } else {
         let navigations = window.performance.getEntriesByType('navigation');
         if (navigations.length > 0) {
-            jaws.navigated = (navigations[0].type == 'navigate') || (navigations[0].type == 'prerender');
+            Jaws.navigated = (navigations[0].type == 'navigate') || (navigations[0].type == 'prerender');
         }
     }
 
     // grab hash change event
     $(window).on('hashchange', function() {
-        if (!window.location.hash.blank() && jaws.Defines.requestedURL == '') {
+        if (!window.location.hash.blank() && Jaws.defines.requestedURL == '') {
             try {
                 let reqRedirectURL = window.location.hash.substr(1).hex2bin();
                 if (!reqRedirectURL.blank()) {
@@ -1786,11 +1764,11 @@ $(document).ready(function() {
     });
 
     // a solution for exit PWA app when press back-button in home page
-    if (jaws.standalone && history.length > 1 && jaws.Defines.requestedURL == '') {
+    if (Jaws.standalone && history.length > 1 && Jaws.defines.requestedURL == '') {
         history.go(-(history.length - 1));
     }
 
-    if (jaws.Defines.service_worker_enabled && ('serviceWorker' in navigator)) {
+    if (Jaws.defines.service_worker_enabled && ('serviceWorker' in navigator)) {
         navigator.serviceWorker.register('service-worker.js', {}).then(
             function(registration) {
                 if (registration.active) {
@@ -1799,8 +1777,8 @@ $(document).ready(function() {
                         {
                             type: '', // message type
                             base: $('base').first().attr('href'),
-                            script: jaws.Defines.script,
-                            standalone: jaws.standalone
+                            script: Jaws.defines.script,
+                            standalone: Jaws.standalone
                         }
                     );
                 }
@@ -1808,7 +1786,7 @@ $(document).ready(function() {
                 registration.addEventListener('updatefound', () => {
                     registration.update();
                     if (navigator.serviceWorker.controller) {
-                        if (confirm(jaws.Defines.reloadMessage)) {
+                        if (confirm(Jaws.defines.reloadMessage)) {
                             location.reload(true);
                         }
                     }
@@ -1822,7 +1800,7 @@ $(document).ready(function() {
 
         navigator.serviceWorker.ready.then(
             function(serviceWorkerRegistration) {
-                if (jaws.Notification.Defines.webpush_enabled &&
+                if (Jaws.gadgets.Notification.defines.webpush_enabled &&
                     typeof serviceWorkerRegistration.pushManager !== 'undefined'
                 ) {
                     var options = {
@@ -1833,12 +1811,12 @@ $(document).ready(function() {
                     serviceWorkerRegistration.pushManager.getSubscription().then(
                         function(pushSubscription) {
                             if (pushSubscription) {
-                                if (!jaws.Notification.Defines.webpush_subscription) {
+                                if (!Jaws.gadgets.Notification.defines.webpush_subscription) {
                                     // update webpush subscription
                                     updateWebPushSubscription(pushSubscription);
                                 }
                             } else {
-                                if (jaws.Notification.Defines.webpush_anonymouse || jaws.Defines.logged) {
+                                if (Jaws.gadgets.Notification.defines.webpush_anonymouse || Jaws.defines.logged) {
                                     serviceWorkerRegistration.pushManager.subscribe(options).then(
                                         function (pushSubscription) {
                                             // update webpush subscription
@@ -1882,42 +1860,8 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
-    // load translations
-    let modules = '0:';
-    $.map(jaws.Gadgets, function( gadget, key ) {
-        modules+= ',1:'+ gadget;
-    });
-    let urlTranslates  = 'index.php?reqGadget=Settings&reqAction=getTranslates&modules='+modules+'&restype=gzjson';
-    $.getJSON(urlTranslates, function(data) {
-        jaws.Translations = data;
-
-        // define t method
-        jaws.t = function(string, params, module) {
-            string = string.toUpperCase();
-            module = module? module.toUpperCase() : '';
-            type = module? 1 : 0;
-            if (jaws.Translations[type].hasOwnProperty(module) &&
-                jaws.Translations[type][module].hasOwnProperty(string)
-            ) {
-                string = jaws.Translations[type][module][string];
-                string = string.replace(/\\n/g, "\n").replace(/\\"/g, '"');
-                $.map(params, function(val, key) {
-                    string = string.replace('{'+key+'}', val);
-                });
-                string = string.replace(/\s*\{[0-9]+\}/g, '');
-            }
-
-            return string;
-        },
-
-        // initialize gadgets
-        $.each(jaws.Gadgets, function(index, gadget) {
-            Jaws_Gadget.getInstance(gadget);
-            $.each(jaws[gadget].Actions, function(index, action) {
-                Jaws_Gadget.getInstance(gadget).action.load(action);
-            });
-        });
-    });
+    // initializing
+    Jaws.init();
 
 });
 
@@ -1931,3 +1875,84 @@ $(window).on('load', function() {
     }
 
 });
+
+/**
+ * Jaws object
+ *
+ */
+Jaws = {
+    gadgets: [],
+    actions: [],
+    defines: {},
+    translations: {},
+
+    // define t method
+    t: function(string, params, module) {
+        string = string.toUpperCase();
+        module = module? module.toUpperCase() : '';
+        type = module? 1 : 0;
+        if (this.Translations[type].hasOwnProperty(module) &&
+            this.Translations[type][module].hasOwnProperty(string)
+        ) {
+            string = this.Translations[type][module][string];
+            string = string.replace(/\\n/g, "\n").replace(/\\"/g, '"');
+            $.map(params, function(val, key) {
+                string = string.replace('{'+key+'}', val);
+            });
+            string = string.replace(/\s*\{[0-9]+\}/g, '');
+        }
+
+        return string;
+    },
+
+    // call methods that listening the shouted event
+    shout: function(shouter, event, data, dstGadget, broadcast) {
+        dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
+        broadcast = typeof broadcast !== 'undefined'? broadcast : true;
+
+        var result = null;
+        $.each(this.gadgets, function(gadget, objGadget) {
+            if (objGadget.listen && objGadget.listen[event]) {
+                // check event broadcasting
+                if (!broadcast && objGadget.gadget.name !== dstGadget) {
+                    return true; //continue;
+                }
+
+                var ret = objGadget.listen[event](shouter, data);
+                if (dstGadget === objGadget.gadget.name) {
+                    result = ret;
+                }
+            }
+        });
+
+        return result;
+    },
+
+    initGadgets: function() {
+        // initialize gadgets
+        $.each(this.gadgets, function(gadget) {
+            Jaws_Gadget.getInstance(gadget);
+            $.each(Jaws.gadgets[gadget].actions, function(index, action) {
+                Jaws_Gadget.getInstance(gadget).action.load(action);
+            });
+        });
+    },
+
+    init: function() {
+        // load translations
+        let modules = '0:';
+        $.map(this.gadgets, function(gadget, key) {
+            modules+= ',1:'+ gadget;
+        });
+
+        let urlTranslates  = 'index.php?reqGadget=Settings&reqAction=getTranslates&modules='+modules+'&restype=gzjson';
+        $.getJSON(urlTranslates, $.proxy(
+            function(data) {
+                this.translations = data;
+                this.initGadgets();
+            },
+            this
+        ));
+    },
+
+};
