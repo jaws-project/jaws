@@ -40,7 +40,7 @@ function stopAction()
 function editReport(id)
 {
     selectedReport = id;
-    $('#reportModalLabel').html(jaws.AbuseReporter.Defines.lbl_editReport);
+    $('#reportModalLabel').html(Jaws.gadgets.AbuseReporter.defines.lbl_editReport);
     var reportInfo = AbuseReporterAjax.callSync('GetReport', {'id': selectedReport});
     if (reportInfo) {
         $('#report-form input, #report-form select, #report-form textarea').each(
@@ -73,7 +73,7 @@ function saveReport()
  */
 function deleteReport(id)
 {
-    if (confirm(jaws.AbuseReporter.Defines.confirmDelete)) {
+    if (confirm(Jaws.gadgets.AbuseReporter.defines.confirmDelete)) {
         AbuseReporterAjax.callAsync('DeleteReport', {'id': id});
     }
 }
@@ -84,27 +84,27 @@ function deleteReport(id)
 function reportsDataSource(options, callback) {
     var columns = {
         'gadget': {
-            'label': jaws.AbuseReporter.Defines.lbl_gadget,
+            'label': Jaws.gadgets.AbuseReporter.defines.lbl_gadget,
             'property': 'gadget',
             'sortable': true
         },
         'action': {
-            'label': jaws.AbuseReporter.Defines.lbl_action,
+            'label': Jaws.gadgets.AbuseReporter.defines.lbl_action,
             'property': 'action',
             'sortable': true
         },
         'type': {
-            'label': jaws.AbuseReporter.Defines.lbl_type,
+            'label': Jaws.gadgets.AbuseReporter.defines.lbl_type,
             'property': 'type',
             'sortable': true
         },
         'priority': {
-            'label': jaws.AbuseReporter.Defines.lbl_priority,
+            'label': Jaws.gadgets.AbuseReporter.defines.lbl_priority,
             'property': 'priority',
             'sortable': true
         },
         'status': {
-            'label': jaws.AbuseReporter.Defines.lbl_status,
+            'label': Jaws.gadgets.AbuseReporter.defines.lbl_status,
             'property': 'status',
             'sortable': true
         }
@@ -171,7 +171,7 @@ function initiateReportsDG() {
         items: [
             {
                 name: 'edit',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.AbuseReporter.Defines.lbl_edit,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.AbuseReporter.defines.lbl_edit,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editReport(helpers.rowData.id);
@@ -180,7 +180,7 @@ function initiateReportsDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.AbuseReporter.Defines.lbl_delete,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.AbuseReporter.defines.lbl_delete,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteReport(helpers.rowData.id);
