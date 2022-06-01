@@ -96,7 +96,7 @@ function Jaws_Gadget_Directory() { return {
         ];
 
         DirectoryAjax.callAsync(
-            'GetDirectory', {type: jaws.Directory.Defines.type},
+            'GetDirectory', {type: Jaws.gadgets.Directory.defines.type},
             function(response, status) {
                 var dataSource = {};
                 if (response['type'] == 'alert-success') {
@@ -170,11 +170,11 @@ function Jaws_Gadget_Directory() { return {
      */
     init: function(mainGadget, mainAction) {
 
-        if (this.gadget.actions.indexOf('Directory') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('Directory')) {
             //initDatePicker('filter_from_date');
             //initDatePicker('filter_to_date');
         }
-        if (this.gadget.actions.indexOf('DirExplorer') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('DirExplorer')) {
             this.initiateDirectoryDG();
         }
 
