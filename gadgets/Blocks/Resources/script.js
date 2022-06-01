@@ -85,13 +85,13 @@ function updateBlock()
         content = $('#block_content').val();
         if (!title || !content)
         {
-            alert(jaws.Blocks.Defines.incompleteBlockFields);
+            alert(Jaws.gadgets.Blocks.defines.incompleteBlockFields);
             return false;
         }
 
         displayTitle = $('#display_title_true').prop('checked');
         // Call function
-        loading_message = jaws.Blocks.Defines.updatingMessage;
+        loading_message = Jaws.gadgets.Blocks.defines.updatingMessage;
         BlocksAjax.callAsync('UpdateBlock', [id, title, summary, content, displayTitle]);
         // Update Combo
         var combo = $('#block_id')[0];
@@ -107,7 +107,7 @@ function deleteBlock()
 {
     id = $('#hidden_id').val();
     $('#block_id').prop('disabled', true);
-    loading_message = jaws.Blocks.Defines.deletingMessage;
+    loading_message = Jaws.gadgets.Blocks.defines.deletingMessage;
     BlocksAjax.callAsync('DeleteBlock', id);
 }
 
@@ -124,23 +124,23 @@ function switchTab(c, title)
 
     if (c == 'edit') {
         if (currentMode == 'new') {
-            if (!jaws.Blocks.Defines.aclAddBlock) {
+            if (!Jaws.gadgets.Blocks.defines.aclAddBlock) {
                 if ($('#saveButton').length) {
                     $('#saveButton').css('display', 'none');
                 }
             }
 
-            if (jaws.Blocks.Defines.aclDeleteBlock) {
+            if (Jaws.gadgets.Blocks.defines.aclDeleteBlock) {
                 $('#delButton').css('display', 'none');
             }
 
             $('#cancelButton').css('display', 'inline');
         } else {
-            if (!jaws.Blocks.Defines.aclEditBlock) {
+            if (!Jaws.gadgets.Blocks.defines.aclEditBlock) {
                 $('#saveButton').css('display', 'none');
             }
 
-            if (jaws.Blocks.Defines.aclDeleteBlock) {
+            if (Jaws.gadgets.Blocks.defines.aclDeleteBlock) {
                 $('#delButton').css('display', 'inline');
             }
 
@@ -166,7 +166,7 @@ function edit(id)
     previousID  = id;
     currentMode = 'edit';
     $('#block_id').prop('disabled', false);
-    loading_message = jaws.Blocks.Defines.retrievingMessage;
+    loading_message = Jaws.gadgets.Blocks.defines.retrievingMessage;
     var block = BlocksAjax.callSync('GetBlock', id);
     fillEditorEntries(block);
     $('#block_id_txt').html(id);
@@ -213,13 +213,13 @@ function newBlock()
     content = $('#block_content').val();
     if (!$('#block_title').val() || !content)
     {
-        alert(jaws.Blocks.Defines.incompleteBlockFields);
+        alert(Jaws.gadgets.Blocks.defines.incompleteBlockFields);
         return false;
     }
 
     displayTitle = $('#display_title_true').prop('checked');
     // Call function
-    loading_message = jaws.Blocks.Defines.savingMessage;
+    loading_message = Jaws.gadgets.Blocks.defines.savingMessage;
     BlocksAjax.callAsync('NewBlock', [$('#block_title').val(), summary, content, displayTitle]);
 }
 
@@ -254,7 +254,7 @@ function returnToEdit()
             b.disabled = true;
             combo.disabled = true;
         } else {
-            loading_message = jaws.Blocks.Defines.retrievingMessage;
+            loading_message = Jaws.gadgets.Blocks.defines.retrievingMessage;
             var block = BlocksAjax.callSync('GetBlock', previousID);
             fillEditorEntries(block);
             b.disabled = false;
