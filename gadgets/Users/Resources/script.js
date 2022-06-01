@@ -428,7 +428,7 @@ function Jaws_Gadget_Users() { return {
 
         var action = 'UserACL';
         var id = this.selectedUser;
-        if (this.gadget.actions.indexOf('Groups') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('Groups')) {
             action = 'GroupACL';
             id = this.selectedGroup;
         }
@@ -2228,7 +2228,7 @@ function Jaws_Gadget_Users() { return {
         this.SettingsInUsersAjax = new JawsAjax('Settings');
 
         // init login box action
-        if (this.gadget.actions.indexOf('Login') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('Login')) {
             if ($('#loginkey').length) {
                 $('#loginkey').focus();
             } else {
@@ -2238,7 +2238,7 @@ function Jaws_Gadget_Users() { return {
         }
 
         // init users action
-        if (this.gadget.actions.indexOf('Users') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('Users')) {
             this.currentAction = 'UserAccount';
             $('#filter_term').val('');
             $('#filter_type').prop('selectedIndex', 0);
@@ -2349,7 +2349,7 @@ function Jaws_Gadget_Users() { return {
         }
 
         // init groups action
-        if (this.gadget.actions.indexOf('Groups') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('Groups')) {
             this.initiateGroupsDG();
 
             $('#groupModal').on('hidden.bs.modal', $.proxy(function (e) {
@@ -2407,18 +2407,18 @@ function Jaws_Gadget_Users() { return {
         }
 
         // init ACLs action
-        if (this.gadget.actions.indexOf('ACLs') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('ACLs')) {
             this.currentAction = 'ACLs';
             this.initiateACLsTree();
         }
 
         // init online users action
-        if (this.gadget.actions.indexOf('OnlineUsers') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('OnlineUsers')) {
             this.initiateOnlineUsersDG();
         }
 
         // init settings action
-        if (this.gadget.actions.indexOf('Settings') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('Settings')) {
             $('#btnUpdateSettings').on('click', $.proxy(function (e) {
                 this.updateSettings();
             }, this));
