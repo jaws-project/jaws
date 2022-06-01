@@ -57,7 +57,7 @@ function editFeed(id)
  */
 function deleteFeed(id)
 {
-    if (confirm(jaws.FeedReader.Defines.confirmDelete)) {
+    if (confirm(Jaws.gadgets.FeedReader.defines.confirmDelete)) {
         FeedReaderAjax.callAsync('DeleteUserFeed', {'id': id});
     }
 }
@@ -102,11 +102,11 @@ function feedsDataSource(options, callback) {
     // define the columns for the grid
     var columns = [
         {
-            'label': jaws.FeedReader.Defines.lbl_title,
+            'label': Jaws.gadgets.FeedReader.defines.lbl_title,
             'property': 'title',
         },
         {
-            'label': jaws.FeedReader.Defines.lbl_published,
+            'label': Jaws.gadgets.FeedReader.defines.lbl_published,
             'property': 'published',
         }
     ];
@@ -163,7 +163,7 @@ function initiateFeedsDG() {
         items: [
             {
                 name: 'edit',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.FeedReader.Defines.lbl_edit,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.FeedReader.defines.lbl_edit,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editFeed(helpers.rowData.id);
@@ -173,7 +173,7 @@ function initiateFeedsDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.FeedReader.Defines.lbl_delete ,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.FeedReader.defines.lbl_delete ,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteFeed(helpers.rowData.id);
@@ -199,7 +199,7 @@ function initiateFeedsDG() {
  * Initiates gadget
  */
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
+    switch (Jaws.defines.mainAction) {
         case 'UserFeedsList':
             initiateFeedsDG();
             break;
