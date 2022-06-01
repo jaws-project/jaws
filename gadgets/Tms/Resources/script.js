@@ -130,7 +130,7 @@ function deleteTheme()
     if (selectedTheme == '') {
         return false;
     }
-    if (!confirm(jaws.Tms.Defines.confirmDeleteTheme)) {
+    if (!confirm(Jaws.gadgets.Tms.defines.confirmDeleteTheme)) {
         return false;
     }
 
@@ -254,7 +254,7 @@ function saveSettings()
 }
 
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
+    switch (Jaws.defines.mainAction) {
         case 'Themes':
             $('#themes_combo').prop('selectedIndex', -1);
             break;
