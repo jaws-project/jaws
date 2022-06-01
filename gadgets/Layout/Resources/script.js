@@ -96,7 +96,7 @@ function deleteElement(itemId)
         section  = itemDiv.parent().attr('id').replace('layout_', ''),
         position = itemDiv.parent().children('div').index(itemDiv);
 
-    var answer = confirm(jaws.Layout.Defines.confirmDelete);
+    var answer = confirm(Jaws.gadgets.Layout.defines.confirmDelete);
     if (answer) {
         itemDiv.fadeOut(500, function() {$(this).remove();})
         LayoutAjax.callAsync(
@@ -152,12 +152,12 @@ function addGadget(url, title)
 
 function elementAction(url)
 {
-    showDialogBox('actions_dialog', jaws.Layout.Defines.actionsTitle, url, 435, 555);
+    showDialogBox('actions_dialog', Jaws.gadgets.Layout.defines.actionsTitle, url, 435, 555);
 }
 
 function displayWhen(url)
 {
-    showDialogBox('dw_dialog', jaws.Layout.Defines.displayWhenTitle, url, 300, 250);
+    showDialogBox('dw_dialog', Jaws.gadgets.Layout.defines.displayWhenTitle, url, 300, 250);
 }
 
 var prevGadget = '';
@@ -228,7 +228,7 @@ function selectGadget(doc, g)
         });
     } else {
         $('<li>').attr('class', 'action-msg')
-            .html(parent.parent.jaws.Layout.Defines.noActionsMsg)
+            .html(parent.parent.Jaws.gadgets.Layout.defines.noActionsMsg)
             .appendTo($(doc).find('#actions-list'));
     }
     prevGadget = g;
@@ -281,9 +281,9 @@ function saveElementAction(lid, gadget, action, params, title, desc)
 function saveChangeDW(itemId, dw) {
     LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, $('#layout').val(), dw]);
     if (dw == '*') {
-        $('#dw' + itemId).html(jaws.Layout.Defines.displayAlways);
+        $('#dw' + itemId).html(Jaws.gadgets.Layout.defines.displayAlways);
     } else if (dw.blank()) {
-        $('#dw' + itemId).html(jaws.Layout.Defines.displayNever);
+        $('#dw' + itemId).html(Jaws.gadgets.Layout.defines.displayNever);
     } else {
         $('#dw' + itemId).html(dw.replace(/,/g, ', '));
     }
@@ -294,8 +294,8 @@ function saveChangeDW(itemId, dw) {
  *
  */
 function layoutControlsSubmit(sender) {
-    var layout_layout_url = jaws.Layout.Defines.layout_layout_url;
-    var layout_theme_url  = jaws.Layout.Defines.layout_theme_url;
+    var layout_layout_url = Jaws.gadgets.Layout.defines.layout_layout_url;
+    var layout_theme_url  = Jaws.gadgets.Layout.defines.layout_theme_url;
     if (sender.id != 'theme') {
         window.location = layout_layout_url.replace('~layout~', $('#layout').val());
     } else {
