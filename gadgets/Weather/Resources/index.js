@@ -45,7 +45,7 @@ function editRegion(id)
             $('form#region #published').val(geoPos['published'] ? 1 : 0);
             setGoogleMapImage();
 
-            $('#regionModalLabel').html(jaws.Weather.Defines.lbl_geo_position);
+            $('#regionModalLabel').html(Jaws.gadgets.Weather.defines.lbl_geo_position);
             $('#regionModal').modal('show');
         }
     });
@@ -56,7 +56,7 @@ function editRegion(id)
  */
 function deleteRegion(id)
 {
-    if (confirm(jaws.Weather.Defines.confirmDelete)) {
+    if (confirm(Jaws.gadgets.Weather.defines.confirmDelete)) {
         WeatherAjax.callAsync('DeleteUserRegion', {'id': id});
     }
 }
@@ -149,7 +149,7 @@ function getGoogleMap(ev, element)
 function setGoogleMapImage() {
     $('#gmap').prop(
         'src',
-        jaws.Weather.Defines.base_script + '?reqGadget=Weather&reqAction=GetGoogleMapImage' +
+        Jaws.gadgets.Weather.defines.base_script + '?reqGadget=Weather&reqAction=GetGoogleMapImage' +
         '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
         '&zoom=' + ZoomLevel + '&size=' + ImageSize
     );
@@ -215,12 +215,12 @@ function regionsDataSource(options, callback) {
     // define the columns for the grid
     var columns = [
         {
-            'label': jaws.Weather.Defines.lbl_title,
+            'label': Jaws.gadgets.Weather.defines.lbl_title,
             'property': 'title',
             'sortable': true
         },
         {
-            'label': jaws.Weather.Defines.lbl_published,
+            'label': Jaws.gadgets.Weather.defines.lbl_published,
             'property': 'published',
             'sortable': true
         }
@@ -278,7 +278,7 @@ function initiateRegionsDG() {
         items: [
             {
                 name: 'edit',
-                html: '<span class="glyphicon glyphicon-pencil"></span> ' + jaws.Weather.Defines.lbl_edit,
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.Weather.defines.lbl_edit,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     editRegion(helpers.rowData.id);
@@ -288,7 +288,7 @@ function initiateRegionsDG() {
             },
             {
                 name: 'delete',
-                html: '<span class="glyphicon glyphicon-trash"></span> ' + jaws.Weather.Defines.lbl_delete ,
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.Weather.defines.lbl_delete ,
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
                     deleteRegion(helpers.rowData.id);
@@ -318,7 +318,7 @@ function initiateRegionsDG() {
  * Initiates gadget
  */
 $(document).ready(function() {
-    switch (jaws.Defines.mainAction) {
+    switch (Jaws.defines.mainAction) {
         case 'UserRegionsList':
             initiateRegionsDG();
             break;
