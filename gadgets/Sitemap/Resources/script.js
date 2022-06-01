@@ -64,13 +64,13 @@ function listCategories(gadget, force_open)
         if (!category_list.blank()) {
             divSubList.html(category_list);
         } else {
-            divSubList.html(jaws.Sitemap.Defines.noCategoryExists);
+            divSubList.html(Jaws.gadgets.Sitemap.defines.noCategoryExists);
         }
-        $(gFlagimage).attr('src', jaws.Sitemap.Defines.sitemapListCloseImageSrc);
+        $(gFlagimage).attr('src', Jaws.gadgets.Sitemap.defines.sitemapListCloseImageSrc);
     } else {
         if (force_open == null) {
             divSubList.html('');
-            $(gFlagimage).attr('src', jaws.Sitemap.Defines.sitemapListOpenImageSrc);
+            $(gFlagimage).attr('src', Jaws.gadgets.Sitemap.defines.sitemapListOpenImageSrc);
         }
     }
     if (force_open == null) {
@@ -91,7 +91,7 @@ function editGadget(gadget)
     currentAction = 'Gadget';
     selectedGadget = gadget;
 
-    $('#edit_area span').first().html(jaws.Sitemap.Defines.editGadgetTitle + ' - ' + selectedGadget);
+    $('#edit_area span').first().html(Jaws.gadgets.Sitemap.defines.editGadgetTitle + ' - ' + selectedGadget);
     $('#btn_cancel').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
     $('#category_edit').html(cacheGadgetForm);
@@ -121,7 +121,7 @@ function editCategory(element, gadget, cid)
     selectedGadget = gadget;
 
     $('#edit_area span').first().html(
-        jaws.Sitemap.Defines.editCategoryTitle + ' - ' + $('#category_'+cid+' a').first().html()
+        Jaws.gadgets.Sitemap.defines.editCategoryTitle + ' - ' + $('#category_'+cid+' a').first().html()
     );
     $('#btn_cancel').css('display', 'inline');
     $('#btn_save').css('display', 'inline');
