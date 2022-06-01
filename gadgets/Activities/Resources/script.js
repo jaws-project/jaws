@@ -60,12 +60,12 @@ function activitiesDGAction(combo)
         if (rows.length < 1) {
             return;
         }
-        var confirmation = confirm(jaws.Activities.Defines.confirmActivitiesDelete);
+        var confirmation = confirm(Jaws.gadgets.Activities.defines.confirmActivitiesDelete);
         if (confirmation) {
             ActivitiesAjax.callAsync('DeleteActivities', rows);
         }
     } else if (combo.val() == 'deleteAll') {
-        var confirmation = confirm(jaws.Activities.Defines.confirmActivitiesDelete);
+        var confirmation = confirm(Jaws.gadgets.Activities.defines.confirmActivitiesDelete);
         if (confirmation) {
             ActivitiesAjax.callAsync('DeleteAllActivities');
         }
