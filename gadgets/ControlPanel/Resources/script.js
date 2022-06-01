@@ -63,7 +63,7 @@ function Jaws_Gadget_ControlPanel() { return {
      */
     init: function(mainGadget, mainAction) {
         // default action
-        if (this.gadget.actions.indexOf('DefaultAction') >= 0) {
+        if (this.gadget.actions.hasOwnProperty('DefaultAction')) {
             this.storage = new JawsStorage('ControlPanel');
             this.initSidebar();
             this.checkVersion();
