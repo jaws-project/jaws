@@ -17,33 +17,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
-        $this->gadget->define('noMatchesMessage', Jaws::t('COMBO_NO_MATCH_MESSAGE'));
-        $this->gadget->define('confirmGroupDelete', $this::t('USER_CONFIRM_DELETE'));
-        $this->gadget->define('incompleteGroupFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
-        $this->gadget->define('wrongPassword', $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
-        $this->gadget->define('LANGUAGE', array(
-            'title'=> Jaws::t('TITLE'),
-            'name'=> Jaws::t('NAME'),
-            'enabled'=> Jaws::t('ENABLED'),
-            'group_members'=> $this::t('GROUPS_MEMBERS'),
-            'nickname'=> $this::t('USERS_NICKNAME'),
-            'username'=> $this::t('USERS_USERNAME'),
-            'yes'=> Jaws::t('YESS'),
-            'no'=> Jaws::t('NOO'),
-            'view'=> Jaws::t('VIEW'),
-            'edit'=> Jaws::t('EDIT'),
-            'delete'=> Jaws::t('DELETE'),
-            'acls'=> $this::t('ACLS'),
-            'acl_key_title'=> $this::t('ACLS_KEY_TITLE'),
-            'acl'=> $this::t('ACL'),
-            'components'=> $this::t('ACLS_COMPONENTS'),
-            'acl_allow'=> $this::t('ACLS_ACCESS_YES'),
-            'acl_deny'=> $this::t('ACLS_ACCESS_NO'),
-            'add_group_title'=> $this::t('GROUPS_ADD'),
-            'edit_group_title'=> $this::t('GROUPS_EDIT'),
-        ));
+        $this->AjaxMe('script-groups.js');
         $assigns = array();
         $assigns['menubar'] =  empty($menubar)? $this->MenuBar('Groups') : $menubar;
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {

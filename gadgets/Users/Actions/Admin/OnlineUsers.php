@@ -17,26 +17,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmThrowOut',    $this::t('ONLINE_CONFIRM_THROWOUT'));
-        $this->gadget->define('confirmBlockIP',     $this::t('ONLINE_CONFIRM_BLOCKIP'));
-        $this->gadget->define('confirmBlockAgent',  $this::t('ONLINE_CONFIRM_BLOCKAGENT'));
-        $this->gadget->define('datagridNoItems',    Jaws::t('NOTFOUND'));
-        $this->gadget->define('LANGUAGE', array(
-            'username'=> $this::t('USERS_USERNAME'),
-            'nickname'=> $this::t('USERS_NICKNAME'),
-            'superadmin'=> $this::t('ONLINE_ADMIN'),
-            'ip'=> Jaws::t('IP'),
-            'session_type'=> $this::t('ONLINE_SESSION_TYPE'),
-            'last_activetime'=> $this::t('ONLINE_LAST_ACTIVETIME'),
-            'yes'=> Jaws::t('YESS'),
-            'no'=> Jaws::t('NOO'),
-            'active'=> $this::t('ONLINE_ACTIVE'),
-            'inactive'=> $this::t('ONLINE_INACTIVE'),
-            'anonymous'=> $this::t('ONLINE_ANONY'),
-            'delete'=> Jaws::t('DELETE'),
-            'block_ip'=> $this::t('ONLINE_BLOCKING_IP'),
-            'block_agent'=> $this::t('ONLINE_BLOCKING_AGENT'),
-        ));
+        $this->AjaxMe('script-onlineusers.js');
         $assigns = array();
         $assigns['menubar'] =  empty($menubar)? $this->MenuBar('OnlineUsers') : $menubar;
 

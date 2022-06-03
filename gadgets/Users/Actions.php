@@ -411,10 +411,7 @@ $admin_actions['Users'] = array(
     'normal' => true,
     'file' => 'Users',
 );
-$admin_actions['MyAccount'] = array(
-    'normal' => true,
-    'file' => 'MyAccount',
-);
+
 $admin_actions['Authenticate'] = array(
     'standalone' => true,
     'global' => true,

@@ -17,36 +17,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
-        $this->gadget->define('noMatchesMessage', Jaws::t('COMBO_NO_MATCH_MESSAGE'));
-        $this->gadget->define('confirmUserDelete', $this::t('USER_CONFIRM_DELETE'));
-        $this->gadget->define('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
-        $this->gadget->define('wrongPassword', $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
-        $this->gadget->define('LANGUAGE', array(
-            'nickname'=> $this::t('USERS_NICKNAME'),
-            'username'=> $this::t('USERS_USERNAME'),
-            'mobile'=> $this::t('CONTACTS_MOBILE_NUMBER'),
-            'email'=> Jaws::t('EMAIL'),
-            'status'=> Jaws::t('STATUS'),
-            'view'=> Jaws::t('VIEW'),
-            'edit'=> Jaws::t('EDIT'),
-            'acls'=> $this::t('ACLS'),
-            'users_groups'=> $this::t('USERS_GROUPS'),
-            'personal'=> $this::t('PERSONAL'),
-            'contacts'=> $this::t('CONTACTS'),
-            'extra'=> $this::t('EXTRA'),
-            'password'=> $this::t('USERS_PASSWORD'),
-            'name'=> Jaws::t('NAME'),
-            'title'=> Jaws::t('TITLE'),
-            'acl_key_title'=> $this::t('ACLS_KEY_TITLE'),
-            'acl'=> $this::t('ACL'),
-            'components'=> $this::t('ACLS_COMPONENTS'),
-            'acl_allow'=> $this::t('ACLS_ACCESS_YES'),
-            'acl_deny'=> $this::t('ACLS_ACCESS_NO'),
-            'delete'=> Jaws::t('DELETE'),
-        ));
-
+        $this->AjaxMe('script-users.js');
         $statusItems = array(
             0 => $this::t('USERS_STATUS_0'),
             1 => $this::t('USERS_STATUS_1'),
