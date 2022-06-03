@@ -1891,10 +1891,10 @@ Jaws = {
         string = string.toUpperCase();
         module = module? module.toUpperCase() : '';
         type = module? 1 : 0;
-        if (this.Translations[type].hasOwnProperty(module) &&
-            this.Translations[type][module].hasOwnProperty(string)
+        if (Jaws.translations[type].hasOwnProperty(module) &&
+            Jaws.translations[type][module].hasOwnProperty(string)
         ) {
-            string = this.Translations[type][module][string];
+            string = Jaws.translations[type][module][string];
             string = string.replace(/\\n/g, "\n").replace(/\\"/g, '"');
             $.map(params, function(val, key) {
                 string = string.replace('{'+key+'}', val);
@@ -1911,7 +1911,7 @@ Jaws = {
         broadcast = typeof broadcast !== 'undefined'? broadcast : true;
 
         var result = null;
-        $.each(this.gadgets, function(gadget, objGadget) {
+        $.each(Jaws.gadgets, function(gadget, objGadget) {
             if (objGadget.listen && objGadget.listen[event]) {
                 // check event broadcasting
                 if (!broadcast && objGadget.gadget.name !== dstGadget) {
@@ -1941,7 +1941,7 @@ Jaws = {
     init: function() {
         // load translations
         let modules = '0:';
-        $.map(this.gadgets, function(gadget, key) {
+        $.each(this.gadgets, function(gadget, key) {
             modules+= ',1:'+ gadget;
         });
 
