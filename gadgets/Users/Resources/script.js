@@ -177,13 +177,20 @@ function Jaws_Gadget_Users() { return {
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
                 $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
+                if (this.gadget.defines.is_superadmin) {
+                    this.addOptionToCombo(comboElm, {'value': 0, 'title': Jaws.t('all')});
+                }
                 if (response.type === 'alert-success' && response.data.total > 0) {
                     $.each(response.data.records, $.proxy(function (key, group) {
                         this.addOptionToCombo(comboElm, {'value': group.id, 'title': group.title});
                     }, this));
 
                     if ($(comboElm).combobox('selectedItem').value === undefined) {
-                        $(comboElm).combobox('selectByValue', response.data.records[0].id);
+                        if (this.gadget.defines.is_superadmin) {
+                            $(comboElm).combobox('selectByValue', 0);
+                        } else {
+                            $(comboElm).combobox('selectByValue', response.data.records[0].id);
+                        }
                     }
                 }
             }, this)
