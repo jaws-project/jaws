@@ -850,10 +850,10 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('EmailReply.html');
         $tpl->SetBlock('notification');
-        $tpl->SetVariable('lbl_message',  _t_lang($site_language, 'COMMENTS_MESSAGE'));
+        $tpl->SetVariable('lbl_message',  $this::t('MESSAGE|'. $site_language));
         $tpl->SetVariable('message',      $message);
-        $tpl->SetVariable('replier',      _t_lang($site_language, 'COMMENTS_REPLY_BY', $replier));
-        $tpl->SetVariable('lbl_reply',    _t_lang($site_language, 'COMMENTS_REPLY'));
+        $tpl->SetVariable('replier',      $this::t('REPLY_BY|'. $site_language, $replier));
+        $tpl->SetVariable('lbl_reply',    $this::t('REPLY|'. $site_language));
         $tpl->SetVariable('reply',        $reply);
         $tpl->SetVariable('site_name',    $site_name);
         $tpl->SetVariable('site_url',     $site_url);
@@ -869,7 +869,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $ObjMail->AddRecipient($email);
             $ObjMail->AddRecipient('', 'cc');
         }
-        $ObjMail->SetSubject(_t_lang($site_language, 'COMMENTS_YOU_GET_REPLY'));
+        $ObjMail->SetSubject($this::t('YOU_GET_REPLY|'.$site_language));
         $ObjMail->SetBody($template, array('format' => 'html'));
         return $ObjMail->send();
     }
