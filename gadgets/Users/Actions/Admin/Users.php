@@ -18,6 +18,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageUsers');
         $this->AjaxMe('script.js');
         $this->AjaxMe('script-users.js');
+        $this->gadget->define('is_superadmin', $this->app->session->user->superadmin);
         $statusItems = array(
             0 => $this::t('USERS_STATUS_0'),
             1 => $this::t('USERS_STATUS_1'),
