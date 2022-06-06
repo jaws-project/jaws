@@ -212,7 +212,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $tpl = $this->gadget->template->load('SendEmail.html',
             array(
                 'loadFromTheme' => true,
-                'loadRTLDirection' => _t_lang($site_language, 'GLOBAL_LANG_DIRECTION') == 'rtl',
+                'loadRTLDirection' => Jaws::t('LANG_DIRECTION|'. $site_language) == 'rtl',
             )
         );
 

@@ -388,15 +388,15 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl = $this->gadget->template->load('SendReplyTo.html',
             array(
                 'loadFromTheme' => true,
-                'loadRTLDirection' => _t_lang($site_language, 'GLOBAL_LANG_DIRECTION') == 'rtl',
+                'loadRTLDirection' => Jaws::t('LANG_DIRECTION|'. $site_language) == 'rtl',
             )
         );
         $tpl->SetBlock($format);
 
-        $tpl->SetVariable('lbl_name',    _t_lang($site_language, 'GLOBAL_NAME'));
-        $tpl->SetVariable('lbl_email',   _t_lang($site_language, 'GLOBAL_EMAIL'));
-        $tpl->SetVariable('lbl_message', _t_lang($site_language, 'CONTACT_MESSAGE'));
-        $tpl->SetVariable('lbl_reply',   _t_lang($site_language, 'CONTACT_REPLY'));
+        $tpl->SetVariable('lbl_name',    Jaws::t('NAME|'. $site_language));
+        $tpl->SetVariable('lbl_email',   Jaws::t('EMAIL|'. $site_language));
+        $tpl->SetVariable('lbl_message', $this::t('MESSAGE|'. $site_language));
+        $tpl->SetVariable('lbl_reply',   $this::t('REPLY|'. $site_language));
         $tpl->SetVariable('name',        $contact['name']);
         $tpl->SetVariable('email',       $contact['email']);
         $tpl->SetVariable('subject',     $contact['subject']);
@@ -409,7 +409,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $tpl->SetVariable('site-url',    $site_url);
         $tpl->ParseBlock($format);
         $template = $tpl->Get();
-        $subject = _t_lang($site_language, 'CONTACT_REPLY_TO', Jaws_XSS::defilter($contact['subject']));
+        $subject = $this::t('REPLY_TO|'. $site_language, Jaws_XSS::defilter($contact['subject']));
 
         $mail = Jaws_Mail::getInstance();
         $mail->SetFrom($from_email, $from_name);
