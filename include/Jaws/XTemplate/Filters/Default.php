@@ -325,11 +325,11 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         $args = func_get_args();
         array_shift($args);
 
-        if ($component = strstr($input, '.', true)) {
-            $string = substr($input, strlen($component) + 1);
+        @list($string, $lang) = explode('|', $input);
+        if ($component = strstr($string, '.', true)) {
+            $string = substr($string, strlen($component) + 1);
         } else {
             $component = '';
-            $string = $input;
         }
 
         $type = Jaws_Translate::TRANSLATE_GADGET;
@@ -338,7 +338,7 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         }
 
         return Jaws_Translate::getInstance()->XTranslate(
-            null,
+            $lang,
             $type,
             $component,
             $string,

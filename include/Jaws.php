@@ -708,6 +708,7 @@ class Jaws
      */
     public static function t($input, ...$params)
     {
+        @list($input, $lang) = explode('|', $input);
         if ($type = strstr($input, '.', true)) {
             $string = substr($input, strlen($type) + 1);
             if ($component = strstr($string, '.', true)) {
@@ -754,7 +755,7 @@ class Jaws
         }
 
         return Jaws_Translate::getInstance()->XTranslate(
-            '',
+            $lang,
             $type,
             $component,
             $string,

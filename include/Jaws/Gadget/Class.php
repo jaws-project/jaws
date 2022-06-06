@@ -46,8 +46,9 @@ class Jaws_Gadget_Class
      *
      * @return string
      */
-    public static function t($string, ...$params)
+    public static function t($input, ...$params)
     {
+        @list($string, $lang) = explode('|', $input);
         if ($gadget = strstr($string, '.', true)) {
             $string = substr($string, strlen($gadget) + 1);
         } else {
@@ -55,7 +56,7 @@ class Jaws_Gadget_Class
         }
 
         return Jaws_Translate::getInstance()->XTranslate(
-            '',
+            $lang,
             Jaws_Translate::TRANSLATE_GADGET,
             $gadget,
             $string,
