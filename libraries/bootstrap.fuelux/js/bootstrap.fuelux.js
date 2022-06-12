@@ -3311,11 +3311,11 @@ if (typeof jQuery === 'undefined') {
 					);
 			}
 
-			var year = month = day = wday = days = 0;
+			var year = month = day = wday = days = hour = minute = second = 0;
 
 			switch ($.type(args)) {
 				case 'string':
-					args = args.split(/\/|\-/);
+					args = args.split(/\/|\-|\:/);
 					args[1]--;
 					// without break - goto array
 
@@ -3324,6 +3324,9 @@ if (typeof jQuery === 'undefined') {
 						year  = parseInt(args[0]);
 						month = parseInt(Number(args[1]) + 1);
 						day   = parseInt(args[2]);
+						hour    = parseInt(args[3]) || 0;
+						minute  = parseInt(args[4]) || 0;
+						second  = parseInt(args[5]) || 0;
 						days = this.persian_to_jd(year, month, day);
 						break;
 					}
@@ -3344,6 +3347,9 @@ if (typeof jQuery === 'undefined') {
 					year  = parseInt(gdate.getFullYear());
 					month = parseInt(Number(gdate.getMonth()) + 1);
 					day   = parseInt(gdate.getDate());
+					hour    = parseInt(gdate.getHours());
+					minute  = parseInt(gdate.getMinutes());
+					second  = parseInt(gdate.getSeconds());
 					days = this.gregorian_to_jd(year, month, day);
 					break;
 
@@ -3357,6 +3363,9 @@ if (typeof jQuery === 'undefined') {
 			this.jMonth = jdate.month;
 			this.jDay   = jdate.day;
 			this.jWeekDay = jdate.weekDay;
+			this.jHour   = hour;
+			this.jMinute = minute;
+			this.jSecond = second;
 
 			// check is given date in a leap year
 			this.isLeapYear = this.leap_persian(this.jYear);
@@ -3381,39 +3390,78 @@ if (typeof jQuery === 'undefined') {
 				return (this.isLeapYear && month == 12)? 30 : jMonthDays[month-1];
 			}
 
+			this.getHours = function() {
+				return this.jHour;
+			}
+
+			this.getMinutes = function() {
+				return this.jMinute;
+			}
+
+			this.getSeconds = function() {
+				return this.jSecond;
+			}
+
 			this.format = function(format) {
 				var i = 0;
 				var result = '';
-				format = format? format : 'yyyy-mm-dd';
+				format = format? format : 'YYYY-MM-DD';
 				while (i < format.length) {
 					switch (format.charAt(i)) {
-						case 'd':
-							if (format.substr(i, 2) == 'dd') {
+						case 'H':
+							if (format.substr(i, 2) == 'HH') {
 								i++;
-								result += this.jDay;
+								result += this.jHour + 1;
 							} else {
-								result += this.jDay;
+								result += this.jHour + 1;
 							}
-
 							break;
 
 						case 'm':
 							if (format.substr(i, 2) == 'mm') {
 								i++;
+								result += this.jMinute + 1;
+							} else {
+								result += this.jMinute + 1;
+							}
+							break;
+
+						case 's':
+							if (format.substr(i, 2) == 'ss') {
+								i++;
+								result += this.jSecond + 1;
+							} else {
+								result += this.jSecond + 1;
+							}
+							break;
+
+						case 'D':
+							if (format.substr(i, 2) == 'DD') {
+								i++;
+								result += this.jDay;
+							} else {
+								result += this.jDay;
+							}
+
+							break;
+
+						case 'M':
+							if (format.substr(i, 2) == 'MM') {
+								i++;
 								result += this.jMonth;
 							} else {
 								result += this.jMonth;
 							}
 							break;
 
-						case 'y':
-							if (format.substr(i, 4) == 'yyyy') {
+						case 'Y':
+							if (format.substr(i, 4) == 'YYYY') {
 								i+= 3;
 								result += this.jYear;
-							} else if(format.substr(i, 3) == 'yyy') {
+							} else if(format.substr(i, 3) == 'YYY') {
 								i+= 2;
 								result += this.jYear;
-							} else if(format.substr(i, 2) == 'yy') {
+							} else if(format.substr(i, 2) == 'YY') {
 								i++;
 								result += this.jYear;
 							} else {
@@ -3451,13 +3499,16 @@ if (typeof jQuery === 'undefined') {
 					break;
 
 				case 'string':
-					args = args.split(/\/|\-/);
+					args = args.split(/\/|\-|\:/);
 					args[1]--;
 					// without break - goto array
 
 				case 'array':
 					if (args.length) {
-						this.gdate = new Date(args[0], args[1], args[2]);
+						this.gdate = new Date(
+                            parseInt(args[0]), parseInt(args[1]), parseInt(args[2]),
+                            parseInt(args[3]) || 0, parseInt(args[4]) || 0, parseInt(args[5]) || 0
+                        );
 					} else {
 						this.gdate = new Date();
 					}
@@ -3471,6 +3522,9 @@ if (typeof jQuery === 'undefined') {
 			this.gMonth = parseInt(this.gdate.getMonth());
 			this.gDay   = parseInt(this.gdate.getDate());
 			this.gWeekDay = parseInt(this.gdate.getDay());
+			this.gHour   = parseInt(this.gdate.getHours());
+			this.gMinute = parseInt(this.gdate.getMinutes());
+			this.gSecond = parseInt(this.gdate.getSeconds());
 			// check is given date in a leap year
 			this.isLeapYear = ((this.gYear%4) == 0 && ((this.gYear%100) != 0 || (this.gYear%400) == 0));
 
@@ -3490,6 +3544,18 @@ if (typeof jQuery === 'undefined') {
 				return this.gWeekDay;
 			}
 
+			this.getHours = function() {
+				return this.gHour;
+			}
+
+			this.getMinutes = function() {
+				return this.gMinute;
+			}
+
+			this.getSeconds = function() {
+				return this.gSecond;
+			}
+
 			this.getMonthDays = function(month) {
 				return (this.isLeapYear && month == 2)? 29 : gMonthDays[month-1];
 			}
@@ -3497,36 +3563,63 @@ if (typeof jQuery === 'undefined') {
 			this.format = function(format) {
 				var i = 0;
 				var result = '';
-				format = format? format : 'yyyy-mm-dd';
+				format = format? format : 'YYYY-MM-DD';
 				while (i < format.length) {
 					switch (format.charAt(i)) {
-						case 'd':
-							if (format.substr(i, 2) == 'dd') {
+						case 'H':
+							if (format.substr(i, 2) == 'HH') {
 								i++;
-								result += this.gDay;
+								result += this.gHour + 1;
 							} else {
-								result += this.gDay;
+								result += this.gHour + 1;
 							}
-
 							break;
 
 						case 'm':
 							if (format.substr(i, 2) == 'mm') {
 								i++;
+								result += this.gMinute + 1;
+							} else {
+								result += this.gMinute + 1;
+							}
+							break;
+
+						case 's':
+							if (format.substr(i, 2) == 'ss') {
+								i++;
+								result += this.gSecond + 1;
+							} else {
+								result += this.gSecond + 1;
+							}
+							break;
+
+						case 'D':
+							if (format.substr(i, 2) == 'DD') {
+								i++;
+								result += this.gDay;
+							} else {
+								result += this.gDay;
+							}
+
+							break;
+
+						case 'M':
+							if (format.substr(i, 2) == 'MM') {
+								i++;
 								result += this.gMonth + 1;
 							} else {
 								result += this.gMonth + 1;
 							}
 							break;
 
-						case 'y':
-							if (format.substr(i, 4) == 'yyyy') {
+						case 'Y':
+							if (format.substr(i, 4) == 'YYYY') {
 								i+= 3;
 								result += this.gYear;
-							} else if(format.substr(i, 3) == 'yyy') {
+							} else if(format.substr(i, 3) == 'YYY') {
 								i+= 2;
 								result += this.gYear;
-							} else if(format.substr(i, 2) == 'yy') {
+							} else if(format.substr(i, 2) == 'YY') {
 								i++;
 								result += this.gYear;
 							} else {
