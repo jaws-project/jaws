@@ -480,7 +480,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             unset($post['data'][$invalid]);
         }
 
-        $res = $this->gadget->model->load('Contacts')->UpdateContact(
+        $res = $this->gadget->model->load('Contact')->UpdateContact(
             (int)$post['uid'],
             $post['data']
         );
