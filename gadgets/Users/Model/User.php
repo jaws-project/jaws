@@ -30,7 +30,7 @@ class Users_Model_User extends Jaws_Gadget_Model
                 'last_access:integer'
             ),
             'personal' => array(
-                'fname', 'lname', 'gender', 'ssn', 'dob:integer', 'extra', 'public:boolean', 'privacy:boolean',
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'extra', 'public:boolean', 'privacy:boolean',
                 'pgpkey', 'signature', 'about', 'experiences', 'occupations', 'interests'
             ),
             'password' => array('password'),
@@ -120,7 +120,7 @@ class Users_Model_User extends Jaws_Gadget_Model
                 'last_access:integer'
             ),
             'personal' => array(
-                'fname', 'lname', 'gender', 'ssn', 'dob:integer', 'extra', 'public:boolean', 'privacy:boolean',
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'extra', 'public:boolean', 'privacy:boolean',
                 'pgpkey', 'signature', 'about', 'experiences', 'occupations', 'interests'
             ),
             'password' => array('password'),
