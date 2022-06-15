@@ -12,7 +12,7 @@ define('JAWS_ERROR_FATAL',   3); //LOG_CRIT    = 3
  * @package    Core
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2021 Jaws Development Group
+ * @copyright   2005-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Error

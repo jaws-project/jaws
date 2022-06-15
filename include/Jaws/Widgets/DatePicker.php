@@ -5,7 +5,7 @@
  * @category   Widget
  * @package    Core
  * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @copyright  2005-2021 Jaws Development Group
+ * @copyright   2005-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 /**

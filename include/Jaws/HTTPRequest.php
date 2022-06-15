@@ -6,7 +6,7 @@ require_once PEAR_PATH. 'HTTP/Request2.php';
  * @category    Application
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2008-2021 Jaws Development Group
+ * @copyright   2008-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_HTTPRequest
