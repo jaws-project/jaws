@@ -4,8 +4,8 @@
  * @category   Ajax
  * @package    Sitemap
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2006-2021 Jaws Development Group
+ * @author     ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2006-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 var SitemapCallback = {
