@@ -5,7 +5,7 @@
  * @category    Plugin
  * @package     DirExplorer
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2016-2020 Jaws Development Group
+ * @copyright   2016-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class DirExplorer_Plugin extends Jaws_Plugin
