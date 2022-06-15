@@ -4,7 +4,7 @@
  * @category    Ajax
  * @package     Notepad
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2021 Jaws Development Group
+ * @copyright   2013-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 /**

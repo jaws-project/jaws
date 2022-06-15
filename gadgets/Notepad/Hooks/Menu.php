@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Notepad
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2008-2021 Jaws Development Group
+ * @copyright   2008-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Notepad_Hooks_Menu extends Jaws_Gadget_Hook
