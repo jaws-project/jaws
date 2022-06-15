@@ -4,8 +4,8 @@
  * @category    Ajax
  * @package     Logs
  * @author      HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2021 Jaws Development Group
+ * @author      ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2013-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 

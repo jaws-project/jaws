@@ -4,8 +4,8 @@
  *
  * @category    GadgetModel
  * @package     Logs
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2008-2021 Jaws Development Group
+ * @author      ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2008-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Logs_Model_Admin_Settings extends Jaws_Gadget_Model
