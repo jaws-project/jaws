@@ -5,7 +5,7 @@
  * @category    GadgetActions
  * @package     Settings
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2012-2021 Jaws Development Group
+ * @copyright   2012-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions['Settings'] = array(

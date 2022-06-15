@@ -6,7 +6,7 @@
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2021 Jaws Development Group
+ * @copyright   2004-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_Settings() { return {
