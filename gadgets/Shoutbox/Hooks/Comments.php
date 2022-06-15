@@ -4,8 +4,8 @@
  *
  * @category   GadgetHook
  * @package    Shoutbox
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2014-2021 Jaws Development Group
+ * @author     ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2014-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Shoutbox_Hooks_Comments extends Jaws_Gadget_Hook

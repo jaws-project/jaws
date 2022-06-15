@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Shoutbox
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2021 Jaws Development Group
+ * @copyright   2008-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Shoutbox_Hooks_Menu extends Jaws_Gadget_Hook
