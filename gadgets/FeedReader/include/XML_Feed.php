@@ -3,7 +3,7 @@
  * XML_Feed_Reader
  *
  * @author        Ali Fazelzadeh <afz@php.net>
- * @copyright     2007-2012 Ali Fazelzadeh
+ * @copyright   2007-2022 Ali Fazelzadeh
  * @license       http://www.gnu.org/copyleft/lesser.html
  */
 require_once PEAR_PATH. 'XML/Parser.php';
