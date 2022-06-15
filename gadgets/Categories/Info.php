@@ -5,8 +5,8 @@
  * @category    GadgetModel
  * @package     Categories
  * @author      Ali Fazelzadeh <afz@php.net>
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2017-2021 Jaws Development Group
+ * @author      ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2017-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Categories_Info extends Jaws_Gadget
