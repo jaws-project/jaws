@@ -6,8 +6,8 @@
  * @package    UrlMapper
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2006-2021 Jaws Development Group
+ * @author     ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2006-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
