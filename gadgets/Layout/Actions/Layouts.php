@@ -5,7 +5,7 @@
  * @category    GadgetAdmin
  * @package     Layout
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2013-2021 Jaws Development Group
+ * @copyright   2013-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Layout_Actions_Layouts extends Jaws_Gadget_Action
