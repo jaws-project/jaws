@@ -4,8 +4,8 @@
  *
  * @category   Gadget
  * @package    Forums
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2012-2021 Jaws Development Group
+ * @author     ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2012-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Forums_Actions_UserPosts extends Jaws_Gadget_Action
