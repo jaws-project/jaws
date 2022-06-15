@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2021 Jaws Development Group
+ * @copyright   2013-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action

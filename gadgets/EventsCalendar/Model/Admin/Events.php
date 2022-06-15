@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2016-2021 Jaws Development Group
+ * @copyright   2016-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
