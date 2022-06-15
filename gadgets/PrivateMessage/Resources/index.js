@@ -3,8 +3,8 @@
  *
  * @category    Ajax
  * @package     PrivateMessage
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2021 Jaws Development Group
+ * @author      ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2013-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 function Jaws_Gadget_PrivateMessage() { return {
