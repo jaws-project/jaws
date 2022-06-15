@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Contact
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2019-2021 Jaws Development Group
+ * @copyright   2019-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Contact_Informs_Email extends Jaws_Gadget_Action
