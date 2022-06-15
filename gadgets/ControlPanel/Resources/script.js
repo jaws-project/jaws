@@ -4,7 +4,7 @@
  * @category    Ajax
  * @package     ControlPanel
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2013-2021 Jaws Development Group
+ * @copyright   2013-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_ControlPanel() { return {
