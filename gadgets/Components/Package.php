@@ -5,7 +5,7 @@
  * @category   PackageConfig
  * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2007-2021 Jaws Development Group
+ * @copyright   2007-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 $info = array(           
