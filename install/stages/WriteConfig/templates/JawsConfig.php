@@ -4,7 +4,7 @@
  *
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2021 Jaws Development Group
+ * @copyright   2004-2022 Jaws Development Group
  */
 // Path where Jaws is installed
 define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . '/');
