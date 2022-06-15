@@ -5,8 +5,8 @@
  * @package     Comments
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2012-2021 Jaws Development Group
+ * @author      ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2012-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_Comments() { return {

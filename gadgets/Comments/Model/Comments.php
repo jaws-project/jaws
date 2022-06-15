@@ -5,8 +5,8 @@
  * @category    GadgetModel
  * @package     Comments
  * @author      Ali Fazelzadeh <afz@php.net>
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2008-2021 Jaws Development Group
+ * @author      ZehneZiba <zzb@zehneziba.ir>
+ * @copyright   2008-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Model_Comments extends Jaws_Gadget_Model
