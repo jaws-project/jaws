@@ -19,9 +19,13 @@ class Users_Model_User extends Jaws_Gadget_Model
     function get($user, $domain = 0, $fieldsets = array())
     {
         $columns = array(
-            'default'  => array(
+            'default' => array(
                 'users.domain:integer', 'users.id:integer', 'username', 'users.email', 'users.mobile',
                 'nickname', 'contact:integer', 'avatar:boolean', 'status:integer'
+            ),
+            'profile' => array(
+                'username', 'fname', 'lname', 'nickname', 'avatar:boolean', 'gender', 'dob',
+                'last_update:integer'
             ),
             'account'  => array(
                 'superadmin:boolean', 'concurrents:integer', 'logon_hours',
@@ -112,6 +116,10 @@ class Users_Model_User extends Jaws_Gadget_Model
             'default'  => array(
                 'users.domain:integer', 'users.id:integer', 'username', 'users.email', 'users.mobile',
                 'nickname', 'contact:integer', 'avatar:boolean', 'status:integer'
+            ),
+            'profile' => array(
+                'username', 'fname', 'lname', 'nickname', 'avatar:boolean', 'gender', 'dob',
+                'last_update:integer'
             ),
             'account'  => array(
                 'superadmin:boolean', 'concurrents:integer', 'logon_hours',
