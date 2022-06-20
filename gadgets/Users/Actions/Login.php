@@ -1,4 +1,4 @@
-0<?php
+<?php
 /**
  * Users Core Gadget
  *
