@@ -1021,7 +1021,7 @@ function Jaws_Gadget_Users_Action_Users() {
                 if ( gid === undefined) {
                     return false;
                 }
-                this.addUserToGroup(this.selectedUser, gid);
+                this.gadget.addUserToGroup(this.selectedUser, gid);
             }, this));
             $('#btnSaveUserPersonal').on('click', $.proxy(function (e) {
                 this.saveUserPersonal();

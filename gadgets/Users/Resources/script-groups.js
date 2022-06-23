@@ -687,7 +687,7 @@ function Jaws_Gadget_Users_Action_Groups() {
                 if ( uid === undefined) {
                     return false;
                 }
-                this.addUserToGroup(uid, this.selectedGroup);
+                this.gadget.addUserToGroup(uid, this.selectedGroup);
             }, this));
 
             $('button.btn-cancel-select-user').on('click', $.proxy(function (e) {
@@ -707,7 +707,7 @@ function Jaws_Gadget_Users_Action_Groups() {
             $("#user_combo").on('keyup.fu.combobox', $.proxy(function (evt, data) {
                 clearTimeout(this.gadget.searchTimer);
                 this.gadget.searchTimer = setTimeout($.proxy(function() {
-                    this.searchUsersAndFillCombo($('#user_combo'));
+                    this.gadget.searchUsersAndFillCombo($('#user_combo'));
                 }, this), 800);// milliseconds
             }, this)).trigger('keyup.fu.combobox');
         }

@@ -13,10 +13,11 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
+     * @param   string  $alias  User's alias name in the given group
      * @param   int     $owner  The owner of group
      * @return  bool    Returns true if user was successfully added to the group, false if not
      */
-    function add($user, $group, $owner = 0)
+    function add($user, $group, $alias = '', $owner = 0)
     {
         $objORM = Jaws_ORM::getInstance();
         $group = $objORM->table('groups')
@@ -30,8 +31,11 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
         }
 
         $result = $objORM->table('users_groups')
-            ->insert(array('user' => $user, 'group' => $group['id']))
-            ->exec();
+            ->insert(
+                array(
+                    'user' => $user, 'group' => $group['id'], 'alias' => $alias
+                )
+            )->exec();
         if (!Jaws_Error::IsError($result)) {
             if (isset($this->app) && property_exists($this->app, 'session') &&
                 $this->app->session->user->id == $user
@@ -46,7 +50,12 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
             $res = $this->app->listener->Shout(
                 'Users',
                 'UserGroupsChanges',
-                array('action' => 'AddUserToGroup', 'user' => $user,'group' => $group['id'])
+                array(
+                    'action' => 'AddUserToGroup',
+                    'user' => $user,
+                    'group' => $group['id'],
+                    'alias' => $alias
+                )
             );
             if (Jaws_Error::IsError($res)) {
                 // nothing
@@ -57,15 +66,47 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
     }
 
     /**
+     * Adds an user to a group
+     *
+     * @access  public
+     * @param   int     $user   User's ID
+     * @param   int     $group  Group's ID
+     * @param   string  $alias  User's alias name in the given group
+     * @param   int     $owner  The owner of group
+     * @return  bool    Returns true if user was successfully added to the group, false if not
+     */
+    function update($user, $group, $alias = '', $owner = 0)
+    {
+        $objORM = Jaws_ORM::getInstance();
+        $group = $objORM->table('groups')
+            ->select('id:integer', 'name')
+            ->where('owner', (int)$owner)
+            ->and()
+            ->where('id', $group)
+            ->fetchRow();
+        if (Jaws_Error::IsError($group) || empty($group)) {
+            return $group;
+        }
+
+        $result = $objORM->table('users_groups')
+            ->insert(
+                array(
+                    'user' => $user, 'group' => $group['id'], 'alias' => $alias
+                )
+            )->exec();
+    }
+
+    /**
      * Deletes an user from a group
      *
      * @access  public
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
+     * @param   string  $alias  User's alias name in the given group
      * @param   int     $owner  The owner of group
      * @return  bool    Returns true if user was sucessfully deleted from a group, false if not
      */
-    function delete($user, $group, $owner = 0)
+    function delete($user, $group, $alias = '', $owner = 0)
     {
         $objORM = Jaws_ORM::getInstance();
         $result = $objORM->table('groups')
@@ -83,6 +124,8 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
             ->where('user', $user)
             ->and()
             ->where('group', $group)
+            ->and()
+            ->where('alias', $alias)
             ->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
@@ -99,7 +142,12 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
         $res = $this->app->listener->Shout(
             'Users',
             'UserGroupsChanges',
-            array('action' => 'DeleteUserFromGroup', 'user' => $user, 'group' => $group)
+            array(
+                'action' => 'DeleteUserFromGroup',
+                'user'  => $user,
+                'group' => $group['id'],
+                'alias' => $alias
+            )
         );
         if (Jaws_Error::IsError($res)) {
             // nothing

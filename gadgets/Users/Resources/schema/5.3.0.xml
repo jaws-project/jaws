@@ -412,14 +412,6 @@
                 <notnull>true</notnull>
             </field>
 
-            <field>
-                <name>alias</name>
-                <type>text</type>
-                <length>32</length>
-                <default></default>
-                <notnull>true</notnull>
-            </field>
-
             <index>
                 <name><variable>table_prefix</variable>users_groups_user</name>
                 <field>
@@ -435,16 +427,13 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>users_groups_uga</name>
+                <name><variable>table_prefix</variable>users_groups_usrgrp</name>
                 <unique>true</unique>
                 <field>
                     <name>user</name>
                 </field>
                 <field>
                     <name>group</name>
-                </field>
-                <field>
-                    <name>alias</name>
                 </field>
             </index>
 
