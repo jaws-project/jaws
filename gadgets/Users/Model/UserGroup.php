@@ -89,11 +89,16 @@ class Users_Model_UserGroup extends Jaws_Gadget_Model
         }
 
         $result = $objORM->table('users_groups')
-            ->insert(
+            ->update(
                 array(
                     'user' => $user, 'group' => $group['id'], 'alias' => $alias
                 )
-            )->exec();
+            )->where('user', $user)
+            ->and()
+            ->where('group', $group)
+            ->and()
+            ->where('alias', $alias)
+            ->exec();
     }
 
     /**
