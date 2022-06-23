@@ -93,6 +93,17 @@ class Users_Model_Group extends Jaws_Gadget_Model
             }
         }
 
+        // filters
+        $baseFilters = array(
+            'term'       => '',
+            'enabled'    => null,
+            'useralias'  => false,
+        );
+        // remove invalid filters keys
+        $filters = array_intersect_key($filters, $baseFilters);
+        // set undefined keys by default values
+        $filters = array_merge($baseFilters, $filters);
+
         $objORM = Jaws_ORM::getInstance()
             ->table('groups')
             ->select($selectedColumns)
@@ -103,17 +114,9 @@ class Users_Model_Group extends Jaws_Gadget_Model
         if (!empty($user)) {
             $objORM->join('users_groups', 'users_groups.group', 'groups.id');
             $objORM->and()->where('users_groups.user', (int)$user);
+            $objORM->and()->where('users_groups.alias', '', '=', empty($filters['useralias']));
         }
 
-        // filters
-        $baseFilters = array(
-            'term'       => '',
-            'enabled'    => null,
-        );
-        // remove invalid filters keys
-        $filters = array_intersect_key($filters, $baseFilters);
-        // set undefined keys by default values
-        $filters = array_merge($baseFilters, $filters);
         // enabled
         $objORM->and()->where('enabled', (bool)$filters['enabled'], '=', is_null($filters['enabled']));
         // term
@@ -154,6 +157,16 @@ class Users_Model_Group extends Jaws_Gadget_Model
      */
     function listCount($domain = 0, $owner = 0, $user = 0, $filters = array())
     {
+        // filters
+        $baseFilters = array(
+            'term'       => '',
+            'enabled'    => null,
+        );
+        // remove invalid filters keys
+        $filters = array_intersect_key($filters, $baseFilters);
+        // set undefined keys by default values
+        $filters = array_merge($baseFilters, $filters);
+
         $objORM = Jaws_ORM::getInstance()
             ->table('groups')
             ->select('count(groups.id):integer')
@@ -164,17 +177,9 @@ class Users_Model_Group extends Jaws_Gadget_Model
         if (!empty($user)) {
             $objORM->join('users_groups', 'users_groups.group', 'groups.id');
             $objORM->and()->where('users_groups.user', (int)$user);
+            $objORM->and()->where('users_groups.alias', '', '=', empty($filters['useralias']));
         }
 
-        // filters
-        $baseFilters = array(
-            'term'       => '',
-            'enabled'    => null,
-        );
-        // remove invalid filters keys
-        $filters = array_intersect_key($filters, $baseFilters);
-        // set undefined keys by default values
-        $filters = array_merge($baseFilters, $filters);
         // enabled
         $objORM->and()->where('enabled', (bool)$filters['enabled'], '=', is_null($filters['enabled']));
         // term
