@@ -36,11 +36,11 @@ class Users_Model_Friends extends Jaws_Gadget_Model
                     if (!$this->app->session->user->superadmin && $user['superadmin']) {
                         continue;
                     }
-                    $this->gadget->model->load('UserGroup')->add($user['id'], $guid, '', $owner);
+                    $this->gadget->model->load('UserGroup')->add($user['id'], $guid, $owner);
                 }
             } else {
                 if (isset($postedUsers[$user['id']])) {
-                    $this->gadget->model->load('UserGroup')->add($user['id'], $guid, '', $owner);
+                    $this->gadget->model->load('UserGroup')->add($user['id'], $guid, $owner);
 
                 }
             }
