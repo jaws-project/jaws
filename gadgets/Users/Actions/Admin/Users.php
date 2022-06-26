@@ -188,9 +188,17 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $uData['password'] = $JCrypt->decrypt($uData['password']);
         }
 
-        $selGroup = (int)$uData['group'];
-        unset($uData['group']);
+        $selectedGroup = (int)@$uData['group'];
+        if (!$this->app->session->user->superadmin &&
+            (empty($selectedGroup) || !$this->gadget->GetPermission('GroupManage', $selectedGroup))
+        ) {
+            return $this->gadget->session->response(
+                'access denied to selected group',
+                RESPONSE_ERROR
+            );
+        }
 
+        unset($uData['group']);
         $uData['status'] = (int)$uData['status'];
         $uData['superadmin'] = $this->app->session->user->superadmin? (bool)$uData['superadmin'] : false;
         $res = $this->gadget->model->load('User')->add($uData);
@@ -201,15 +209,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         if ($this->app->session->user->superadmin) {
             $guid = $this->gadget->registry->fetch('anon_group');
         } else {
-            // check user group access
-            $groups = $this->gadget->model->load('UserGroup')->getGrantedGroups();
-            $defaultGroup = $groups[0]['id'];
-            foreach ($groups as $group) {
-                if ($selGroup === $group['id']) {
-                    $defaultGroup = $group['id'];
-                }
-            }
-            $guid = $defaultGroup;
+            $guid = $selectedGroup;
         }
 
         if (!empty($guid)) {
