@@ -533,6 +533,9 @@ display:table-cell;
 vertical-align:top;
 text-align:right;
 }
+.combobox-btn{
+vertical-align:bottom;
+}
 /* ----- CONTROL PANEL ----- */
 #control-panel-title{
 height:48px;
