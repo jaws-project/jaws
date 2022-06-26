@@ -705,9 +705,6 @@ class Users_Model_User extends Jaws_Gadget_Model
         $uData['last_update'] = time();
         if (isset($uData['status'])) {
             $uData['status'] = (int)$uData['status'];
-            if ($uData['status'] == 1) {
-                $uData['recovery_key'] = '';
-            }
         }
         if (isset($uData['expiry_date'])) {
             if (empty($uData['expiry_date'])) {

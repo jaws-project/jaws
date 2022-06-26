@@ -49,7 +49,6 @@ function Jaws_Gadget_Users_Action_Users() {
                 if (response.type === 'alert-success') {
                     this.stopUserAction();
                     $('#personalModal').modal('hide');
-                    $('#users-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
                 }
             },
 
@@ -113,7 +112,7 @@ function Jaws_Gadget_Users_Action_Users() {
                     formData['password'] = password;
                     // delete formData['modulus'];
                     // delete formData['exponent'];
-                    this.gadget.ajax.callAsync('AddUser', {'data': formData});
+                    this.ajax.callAsync('AddUser', {'data': formData});
                 } else {
                     var formData = $.unserialize(
                         $('#users-form input, #users-form select, #users-form textarea').serialize()
@@ -124,7 +123,7 @@ function Jaws_Gadget_Users_Action_Users() {
                     delete formData['length'];
                     delete formData['modulus'];
                     delete formData['exponent'];
-                    this.gadget.ajax.callAsync('UpdateUser', {'id':  this.selectedUser, 'data': formData});
+                    this.ajax.callAsync('UpdateUser', {'id':  this.selectedUser, 'data': formData});
                 }
             }, this);
         },
@@ -136,14 +135,14 @@ function Jaws_Gadget_Users_Action_Users() {
             var formData = $.unserialize($('#user-personal-form').serialize());
             delete formData['reqGadget'];
             delete formData['reqAction'];
-            this.gadget.ajax.callAsync('UpdatePersonal', {'id':  this.selectedUser, 'data': formData});
+            this.ajax.callAsync('UpdatePersonal', {'id':  this.selectedUser, 'data': formData});
         },
 
         /**
          * Save user's ACL
          */
         saveUserACL: function() {
-            if ($('#components').val() === '') {
+            if ($('#components').val() === -1) {
                 return;
             }
             var acls = [];
@@ -151,7 +150,7 @@ function Jaws_Gadget_Users_Action_Users() {
                 var keys = $(aclTag).attr('id').split(':');
                 acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
             });
-            this.gadget.ajax.callAsync('UpdateUserACL', {
+            this.ajax.callAsync('UpdateUserACL', {
                 'uid': this.selectedUser,
                 'component': $('#components').val(),
                 'acls': acls
@@ -163,7 +162,7 @@ function Jaws_Gadget_Users_Action_Users() {
          */
         deleteUsers: function (uids) {
             if (confirm(this.t('user_confirm_delete'))) {
-                this.gadget.ajax.callAsync('DeleteUsers', {'uids': uids});
+                this.ajax.callAsync('DeleteUsers', {'uids': uids});
             }
         },
 
@@ -171,7 +170,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Delete user's ACL
          */
         deleteUserACLs: function(acls) {
-            this.gadget.ajax.callAsync('DeleteUserACLs', {
+            this.ajax.callAsync('DeleteUserACLs', {
                 'uid': this.selectedUser,
                 'acls': acls
             });
@@ -181,7 +180,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Save user's contact
          */
         saveUserContact: function() {
-            this.gadget.ajax.callAsync(
+            this.ajax.callAsync(
                 'UpdateUserContacts', {
                     'uid': this.selectedUser,
                     'data': $.unserialize($('#user-contacts-form').serialize())
@@ -192,7 +191,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Save user's extra data
          */
         saveUserExtra: function () {
-            this.gadget.ajax.callAsync(
+            this.ajax.callAsync(
                 'UpdateUserExtra', {
                     'uid': this.selectedUser,
                     'data': $.unserialize($('#user-extra-form').serialize())
@@ -216,7 +215,7 @@ function Jaws_Gadget_Users_Action_Users() {
                     password = objRSACrypt.encrypt(password);
                 }
 
-                this.gadget.ajax.callAsync(
+                this.ajax.callAsync(
                     'UpdateUserPassword', {
                         'uid': this.selectedUser,
                         'password': password,
@@ -290,7 +289,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Delete user from groups
          */
         deleteUserFromGroups: function (groupIds) {
-            this.gadget.ajax.callAsync('DeleteUserFromGroups', {'uid': this.selectedUser, 'groupIds': groupIds});
+            this.ajax.callAsync('DeleteUserFromGroups', {'uid': this.selectedUser, 'groupIds': groupIds});
         },
 
         /**
@@ -343,9 +342,9 @@ function Jaws_Gadget_Users_Action_Users() {
                     if (response.type === 'alert-success') {
                         var cInfo = response.data;
                         if (cInfo) {
-                            this.changeProvince(cInfo['province_home'], 'city_home');
-                            this.changeProvince(cInfo['province_work'], 'city_work');
-                            this.changeProvince(cInfo['province_other'], 'city_other');
+                            this.gadget.changeProvince(cInfo['province_home'], 'city_home');
+                            this.gadget.changeProvince(cInfo['province_work'], 'city_work');
+                            this.gadget.changeProvince(cInfo['province_other'], 'city_other');
 
                             $('#user-contacts-form input, #user-contacts-form select, #user-contacts-form textarea').each(
                                 function () {
@@ -467,7 +466,7 @@ function Jaws_Gadget_Users_Action_Users() {
             }
             columns = Object.values(columns);
 
-            this.gadget.ajax.callAsync(
+            this.ajax.callAsync(
                 'GetUsers', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
@@ -676,7 +675,7 @@ function Jaws_Gadget_Users_Action_Users() {
             }
             columns = Object.values(columns);
 
-            this.gadget.ajax.callAsync(
+            this.ajax.callAsync(
                 'GetObjectACLs', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
@@ -841,7 +840,7 @@ function Jaws_Gadget_Users_Action_Users() {
             }
             columns = Object.values(columns);
 
-            this.gadget.ajax.callAsync(
+            this.ajax.callAsync(
                 'GetUserGroups', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
@@ -988,6 +987,7 @@ function Jaws_Gadget_Users_Action_Users() {
             }, this));
             $('#aclModal').on('hidden.bs.modal', $.proxy(function (e) {
                 this.stopUserAction();
+                $('#components').val("-1").trigger('change');
             }, this)).on('shown.bs.modal', $.proxy(function (e) {
                 this.initiateUserACLsDG();
             }, this));

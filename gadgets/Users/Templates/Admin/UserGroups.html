@@ -9,35 +9,33 @@
 
         <div class="row">
             <form action="#">
-
               <div class="col-xs-8">
+                <div class="input-group">
+                  <div class="input-group input-append dropdown combobox" id="group_combo">
+                    <label for="group_combo"  class="input-group-addon text-input">
+                      {{ "users.groups_group" | t }}
+                    </label>
+                    <input type="text" class="form-control" placeholder=""
+                           data-toggle="tooltip" data-placement="top" title="{{ "users.groups_group" | t }}">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right"></ul>
+                    </div>
+                </div>
 
-                <div class="input-group input-append dropdown combobox" id="group_combo">
-                  <label for="group_combo"  class="input-group-addon text-input">
-                    {{ "users.groups_group" | t }}
-                  </label>
-                  <input type="text" class="form-control" placeholder=""
-                         data-toggle="tooltip" data-placement="top" title="{{ "users.groups_group" | t }}">
-                  <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right"></ul>
-                  </div>
-                  <div class="input-group-btn">
+                  <div class="input-group-btn combobox-btn">
                     <button class="btn-combo btn-warning btn-cancel-select-group" type="button" data-combo-name="group_combo">
                       <span class="glyphicon glyphicon-remove"></span>
                     </button>
                   </div>
-
-                  <div class="input-group-btn">
+                  <div class="input-group-btn combobox-btn">
                     <button class="btn btn-info btn-add-user-group" type="button" id="btnAddUserToGroup">
                       <span class="glyphicon glyphicon-plus"></span> {{ "users.user_join_to_group" | t }}
                     </button>
                   </div>
-
                 </div>
-
 
               </div>
             </form>

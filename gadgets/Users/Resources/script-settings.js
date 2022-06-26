@@ -15,7 +15,7 @@ function Jaws_Gadget_Users_Action_Settings() {
          * Save settings
          */
         updateSettings: function() {
-            this.gadget.ajax.callAsync(
+            this.ajax.callAsync(
                 'UpdateSettings',
                 $.unserialize($('#users_settings input,select,textarea').serialize())
             );

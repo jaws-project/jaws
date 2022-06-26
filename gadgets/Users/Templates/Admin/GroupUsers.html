@@ -11,8 +11,8 @@
             <form action="#">
 
               <div class="col-xs-8">
-
-                <div class="input-group input-append dropdown combobox" id="user_combo">
+                <div class="input-group">
+                  <div class="input-group input-append dropdown combobox" id="user_combo">
                   <label for="user_combo"  class="input-group-addon text-input">
                     {{ "users.user" | t }}
                   </label>
@@ -24,20 +24,19 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right"></ul>
                   </div>
-                  <div class="input-group-btn">
+                </div>
+
+                  <div class="input-group-btn combobox-btn">
                     <button class="btn-combo btn-warning btn-cancel-select-user" type="button" data-combo-name="user_combo">
                       <span class="glyphicon glyphicon-remove"></span>
                     </button>
                   </div>
-
                   <div class="input-group-btn">
-                    <button class="btn btn-info btn-add-user-group" type="button" id="btnAddUserToGroup">
-                      <span class="glyphicon glyphicon-plus"></span> {{ "users.user_join_to_group" | t }}
-                    </button>
-                  </div>
-
+                  <button class="btn btn-info btn-add-user-group" type="button" id="btnAddUserToGroup">
+                    <span class="glyphicon glyphicon-plus"></span> {{ "users.user_join_to_group" | t }}
+                  </button>
                 </div>
-
+                </div>
 
               </div>
             </form>
