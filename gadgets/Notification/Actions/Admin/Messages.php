@@ -85,9 +85,9 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         }
 
         $messageTypes = array(
-            Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL => $this::t('MESSAGE_TYPE_EMAIL'),
-            Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS => $this::t('MESSAGE_TYPE_SMS'),
-            Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB => $this::t('MESSAGE_TYPE_WEB'),
+            Notification_Info::MESSAGE_TYPE_EMAIL => $this::t('MESSAGE_TYPE_EMAIL'),
+            Notification_Info::MESSAGE_TYPE_SMS => $this::t('MESSAGE_TYPE_SMS'),
+            Notification_Info::MESSAGE_TYPE_WEB => $this::t('MESSAGE_TYPE_WEB'),
         );
         foreach ($messageTypes as $value => $title) {
             $tpl->SetBlock('Messages/filter_message_type');
@@ -97,9 +97,9 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         }
 
         $sendStatuses = array(
-            Notification_Info::NOTIFICATION_MESSAGE_STATUS_NOT_SEND => $this::t('MESSAGE_STATUS_NOT_SEND'),
-            Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENDING => $this::t('MESSAGE_STATUS_SENDING'),
-            Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENT => $this::t('MESSAGE_STATUS_SENT'),
+            Notification_Info::MESSAGE_STATUS_PENDING => $this::t('MESSAGE_STATUS_PENDING'),
+            Notification_Info::MESSAGE_STATUS_SENDING => $this::t('MESSAGE_STATUS_SENDING'),
+            Notification_Info::MESSAGE_STATUS_SENT => $this::t('MESSAGE_STATUS_SENT'),
         );
         foreach ($sendStatuses as $value => $title) {
             $tpl->SetBlock('Messages/filter_status');
@@ -139,13 +139,13 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         foreach ($messages as &$message) {
             $messageType = '';
             switch ($message['driver']) {
-                case Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL:
+                case Notification_Info::MESSAGE_TYPE_EMAIL:
                     $messageType = $this::t('MESSAGE_TYPE_EMAIL');
                     break;
-                case Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS:
+                case Notification_Info::MESSAGE_TYPE_SMS:
                     $messageType = $this::t('MESSAGE_TYPE_SMS');
                     break;
-                case Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB:
+                case Notification_Info::MESSAGE_TYPE_WEB:
                     $messageType = $this::t('MESSAGE_TYPE_WEB');
                     break;
             }
@@ -153,13 +153,13 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
 
             $sendStatus = '';
             switch ($message['status']) {
-                case Notification_Info::NOTIFICATION_MESSAGE_STATUS_NOT_SEND:
-                    $sendStatus = $this::t('MESSAGE_STATUS_NOT_SEND');
+                case Notification_Info::MESSAGE_STATUS_PENDING:
+                    $sendStatus = $this::t('MESSAGE_STATUS_PENDING');
                     break;
-                case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENDING:
+                case Notification_Info::MESSAGE_STATUS_SENDING:
                     $sendStatus = $this::t('MESSAGE_STATUS_SENDING');
                     break;
-                case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENT:
+                case Notification_Info::MESSAGE_STATUS_SENT:
                     $sendStatus = $this::t('MESSAGE_STATUS_SENT');
                     break;
             }
@@ -200,25 +200,25 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $objDate = Jaws_Date::getInstance();
         $messageType = '';
         switch ($messageInfo['driver']) {
-            case Notification_Info::NOTIFICATION_MESSAGE_TYPE_EMAIL:
+            case Notification_Info::MESSAGE_TYPE_EMAIL:
                 $messageType = $this::t('MESSAGE_TYPE_EMAIL');
                 break;
-            case Notification_Info::NOTIFICATION_MESSAGE_TYPE_SMS:
+            case Notification_Info::MESSAGE_TYPE_SMS:
                 $messageType = $this::t('MESSAGE_TYPE_SMS');
                 break;
-            case Notification_Info::NOTIFICATION_MESSAGE_TYPE_WEB:
+            case Notification_Info::MESSAGE_TYPE_WEB:
                 $messageType = $this::t('MESSAGE_TYPE_WEB');
                 break;
         }
         $sendStatus = '';
         switch ($messageInfo['status']) {
-            case Notification_Info::NOTIFICATION_MESSAGE_STATUS_NOT_SEND:
-                $sendStatus = $this::t('MESSAGE_STATUS_NOT_SEND');
+            case Notification_Info::MESSAGE_STATUS_PENDING:
+                $sendStatus = $this::t('MESSAGE_STATUS_PENDING');
                 break;
-            case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENDING:
+            case Notification_Info::MESSAGE_STATUS_SENDING:
                 $sendStatus = $this::t('MESSAGE_STATUS_SENDING');
                 break;
-            case Notification_Info::NOTIFICATION_MESSAGE_STATUS_SENT:
+            case Notification_Info::MESSAGE_STATUS_SENT:
                 $sendStatus = $this::t('MESSAGE_STATUS_SENT');
                 break;
         }

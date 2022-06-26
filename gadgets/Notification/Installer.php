@@ -20,6 +20,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         array('webpush_anonymouse', false),
         array('processing', 'false'),
         array('last_update', '0'),
+        array('default_longevity', 600), // seconds(10 min)
         array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
         array('eml_fetch_limit', '100'),
         array('sms_fetch_limit', '100'),
@@ -263,7 +264,17 @@ class Notification_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '2.7.0', '<')) {
             Jaws_DB::getInstance()->truncateTable('notification_message');
             Jaws_DB::getInstance()->truncateTable('notification_recipient');
-            $result = $this->installSchema('schema.xml', array(), '2.6.0.xml');
+            $result = $this->installSchema('2.7.0.xml', array(), '2.6.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '2.8.0', '<')) {
+            // registry keys
+            $this->gadget->registry->insert('default_longevity', 600);
+
+            $result = $this->installSchema('schema.xml', array(), '2.7.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }

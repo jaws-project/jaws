@@ -68,13 +68,6 @@
             </field>
 
             <field>
-                <name>expiry</name>
-                <type>integer</type>
-                <length>8</length>
-                <default>0</default>
-            </field>
-
-            <field>
                 <name>time</name>
                 <type>integer</type>
                 <length>8</length>
@@ -85,13 +78,6 @@
                 <name><variable>table_prefix</variable>notification_hash</name>
                 <field>
                     <name>hash</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>notification_expiry</name>
-                <field>
-                    <name>expiry</name>
                 </field>
             </index>
 

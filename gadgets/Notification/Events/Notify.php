@@ -30,11 +30,16 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $shouter = empty($params['gadget'])? $shouter : $params['gadget'];
 
         $params['time'] = !isset($params['time']) ? (time() + 1) : $params['time'];
-
-        // if time = 0 then delete the notifications
+        // if time < 0 then delete the notifications
         if ($params['time'] < 0) {
             return $model->DeleteNotificationsByKey($params['name'], $params['key']);
         }
+
+        // expire time
+        if (!isset($params['longevity'])) {
+            $params['longevity'] = (int)$this->gadget->registry->fetch('default_longevity');
+        }
+        $params['expiry'] = time() + $params['longevity'];
 
         $users = array();
         if (isset($params['group']) && !empty($params['group'])) {
@@ -177,6 +182,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 $params['verbose'],
                 json_encode($params['variables']),
                 $params['time'],
+                $params['expiry'],
                 isset($params['callback'])? $params['callback'] : '',
                 isset($params['image'])? $params['image'] : ''
             );

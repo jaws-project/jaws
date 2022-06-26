@@ -59,30 +59,42 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                 }
 
                 if (!empty($messages)) {
-                    // set notifications status to sending(2)
-                    $model->UpdateNotificationsStatusById($dType, array_column($messages, 'id'), 2, true);
+                    // set notifications status to sending
+                    $model->UpdateNotificationsStatusById(
+                        $dType,
+                        array_column($messages, 'id'),
+                        Notification_Info::MESSAGE_STATUS_SENDING,
+                        true
+                    );
 
                     // group notifications by message id
                     $messages = $this->GroupByMessages($messages);
                     foreach ($messages as $msgid => $message) {
-                        $res = $objDriver->notify(
-                            $message['shouter'],
-                            $message['name'],
-                            $message['contacts'],
-                            $message['title'],
-                            $message['summary'],
-                            $message['verbose'],
-                            json_decode($message['variables'], true),
-                            $message['time'],
-                            $message['callback'],
-                            $message['image']
-                        );
+                        // if expired
+                        if (!empty($message['expiry']) && $message['expiry'] <= time()) {
+                            $new_status = Notification_Info::MESSAGE_STATUS_EXPIRED;
+                        } else {
+                            $res = $objDriver->notify(
+                                $message['shouter'],
+                                $message['name'],
+                                $message['contacts'],
+                                $message['title'],
+                                $message['summary'],
+                                $message['verbose'],
+                                json_decode($message['variables'], true),
+                                $message['time'],
+                                $message['callback'],
+                                $message['image']
+                            );
+                            $new_status = Jaws_Error::IsError($res)?
+                                Notification_Info::MESSAGE_STATUS_PENDING : Notification_Info::MESSAGE_STATUS_SENT;
+                        }
 
                         // set notifications status
                         $model->UpdateNotificationsStatusById(
                             $dType,
                             $message['ids'],
-                            Jaws_Error::IsError($res)? 1 : 3
+                            $new_status
                         );
                     }
                 }
@@ -112,6 +124,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             if ($lastMessage != $message['message']) {
                 $lastMessage = $message['message'];
                 $groupedMessages[$lastMessage]['time']     = $message['time'];
+                $groupedMessages[$lastMessage]['expiry']   = $message['expiry'];
                 $groupedMessages[$lastMessage]['shouter']  = $message['shouter'];
                 $groupedMessages[$lastMessage]['name']     = $message['name'];
                 $groupedMessages[$lastMessage]['title']    = $message['title'];

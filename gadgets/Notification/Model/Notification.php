@@ -22,7 +22,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()
             ->table('notification_recipient', 'nr')
             ->select(
-                'nr.id:integer', 'message', 'contact', 'nm.time:integer',
+                'nr.id:integer', 'message', 'contact', 'nm.time:integer', 'nm.expiry:integer',
                 'nm.shouter', 'nm.name', 'nm.title',
                 'nm.summary', 'nm.verbose', 'nm.variables', 'nm.callback',
                 'nm.image'
@@ -92,7 +92,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 'nr.id:integer','shouter', 'name', 'title as message_title',
                 'summary', 'callback', 'image', 'nr.driver:integer',
                 'nr.attempts:integer', 'nr.status:integer',
-                'nm.time:integer'
+                'nm.time:integer', 'nm.expiry:integer'
             )->join('notification_recipient as nr', 'nr.message', 'nm.id')
             ->and()->where(
                 'shouter',
@@ -214,13 +214,14 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @param   string      $verbose            Verbose
      * @param   string      $variables          Variables
      * @param   integer     $time               Publish timestamps
+     * @param   integer     $expiry             Expire time
      * @param   string      $callback           Callback URL
      * @param   string      $image              Path of image
      * @return  bool        True or error
      */
     function InsertNotifications(
         $notifications, $shouter, $name, $key, $title, $summary,
-        $verbose, $variables, $time, $callback, $image
+        $verbose, $variables, $time, $expiry, $callback, $image
     ) {
         if (empty($notifications) || (
             empty($notifications['emails']) &&
@@ -244,7 +245,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 'variables'=> $variables,
                 'callback' => $callback,
                 'image'    => $image,
-                'time'     => $time
+                'time'     => $time,
+                'expiry'   => $expiry
             )
         )->and()->where('hash', $key)->and()->where('time', time(), '>')->exec();
         if (Jaws_Error::IsError($messageId)) {
