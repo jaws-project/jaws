@@ -126,7 +126,7 @@ function Jaws_Gadget_Users_Action_Users() {
                     delete formData['exponent'];
                     this.gadget.ajax.callAsync('UpdateUser', {'id':  this.selectedUser, 'data': formData});
                 }
-            }, this.gadget);
+            }, this);
         },
 
         /**
@@ -209,7 +209,7 @@ function Jaws_Gadget_Users_Action_Users() {
                 return false;
             }
 
-            $.loadScript('libraries/js/jsencrypt.min.js', $.proxy(function() {
+            $.loadScript('libraries/js/jsencrypt.min.js', function() {
                 if ($('#pubkey').length) {
                     var objRSACrypt = new JSEncrypt();
                     objRSACrypt.setPublicKey($('#pubkey').val());
@@ -222,7 +222,7 @@ function Jaws_Gadget_Users_Action_Users() {
                         'password': password,
                         'expired': $('#user-password-form #expired').prop('checked')
                     });
-            }, this));
+            }, this);
         },
 
         /**
