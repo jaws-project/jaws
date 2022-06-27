@@ -615,7 +615,7 @@ function usersDataSource(options, callback) {
                 dataSource = {
                     'page': options.pageIndex,
                     'pages': Math.ceil(response['data'].total/options.pageSize),
-                    'count': response['data'].total,
+                    'count': Intl.NumberFormat().format(response['data'].total),
                     'start': options.offset + 1,
                     'end':   options.end,
                     'items': response['data'].records
@@ -914,7 +914,7 @@ function contactsDataSource(options, callback) {
                 dataSource = {
                     'page': options.pageIndex,
                     'pages': Math.ceil(response['data'].total/options.pageSize),
-                    'count': response['data'].total,
+                    'count': Intl.NumberFormat().format(response['data'].total),
                     'start': options.offset + 1,
                     'end':   options.end,
                     'columns': columns,
