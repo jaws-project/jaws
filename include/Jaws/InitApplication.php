@@ -97,6 +97,3 @@ if ($db_jaws_version != JAWS_VERSION) {
 
 // init application
 $jawsApp->init();
-
-// load Piwi initialize
-require_once ROOT_JAWS_PATH . 'include/Jaws/InitPiwi.php';

@@ -175,13 +175,6 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
             );
         }
 
-        $config = array(
-            'DATAGRID_PAGER_FIRSTACTION' => 'javascript: firstValues(); return false;',
-            'DATAGRID_PAGER_PREVACTION'  => 'javascript: previousValues(); return false;',
-            'DATAGRID_PAGER_NEXTACTION'  => 'javascript: nextValues(); return false;',
-            'DATAGRID_PAGER_LASTACTION'  => 'javascript: lastValues(); return false;',
-        );
-        Piwi::addExtraConf($config);
     }
 
 
