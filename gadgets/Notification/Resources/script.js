@@ -82,7 +82,7 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
                     dataSource = {
                         'page': options.pageIndex,
                         'pages': Math.ceil(response['data'].total / options.pageSize),
-                        'count': Intl.NumberFormat().format(response['data'].total),
+                        'count': response['data'].total,
                         'start': options.offset + 1,
                         'end': options.end,
                         'columns': columns,
@@ -364,7 +364,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
                     dataSource = {
                         'page': options.pageIndex,
                         'pages': Math.ceil(response['data'].total / options.pageSize),
-                        'count': Intl.NumberFormat().format(response['data'].total),
+                        'count': response['data'].total,
                         'start': options.offset + 1,
                         'end': options.end,
                         'columns': columns,

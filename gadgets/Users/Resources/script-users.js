@@ -406,30 +406,6 @@ function Jaws_Gadget_Users_Action_Users() {
         },
 
         /**
-         * view user info
-         */
-        viewUser: function (id) {
-            this.ajax.callAsync('GetSyncError', {
-                    'id': id,
-                }, function (response, status, callOptions) {
-                    if (response.type === 'alert-success') {
-                        var syncError = response.data;
-                        $('#sync-error-details-form span').each($.proxy(function (i, elem) {
-                                if ($(elem).data('field') == 'data') {
-                                    $(elem).html(this.gadget.syntaxHighlightJson(syncError[$(elem).data('field')]));
-                                } else {
-                                    $(elem).html(syncError[$(elem).data('field')]);
-                                }
-                            }, this)
-                        );
-
-                        $('#userModal').modal('show');
-                    }
-                }
-            );
-        },
-
-        /**
          * Define the data to be displayed in the user datagrid
          */
         usersDataSource: function (options, callback) {
@@ -486,7 +462,7 @@ function Jaws_Gadget_Users_Action_Users() {
                         dataSource = {
                             'page': options.pageIndex,
                             'pages': Math.ceil(response['data'].total/options.pageSize),
-                            'count': Intl.NumberFormat().format(response['data'].total),
+                            'count': response['data'].total,
                             'start': options.offset + 1,
                             'end':   options.end,
                             'columns': columns,
@@ -695,7 +671,7 @@ function Jaws_Gadget_Users_Action_Users() {
                         dataSource = {
                             'page': options.pageIndex,
                             'pages': Math.ceil(response['data'].total/options.pageSize),
-                            'count': Intl.NumberFormat().format(response['data'].total),
+                            'count': response['data'].total,
                             'start': options.offset + 1,
                             'end':   options.end,
                             'columns': columns,
@@ -860,7 +836,7 @@ function Jaws_Gadget_Users_Action_Users() {
                         dataSource = {
                             'page': options.pageIndex,
                             'pages': Math.ceil(response['data'].total/options.pageSize),
-                            'count': Intl.NumberFormat().format(response['data'].total),
+                            'count': response['data'].total,
                             'start': options.offset + 1,
                             'end':   options.end,
                             'columns': columns,
