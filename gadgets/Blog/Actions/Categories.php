@@ -110,7 +110,12 @@ class Blog_Actions_Categories extends Blog_Actions_Default
      */
     function CategoriesList()
     {
-        $tpl = $this->gadget->template->load('Categories.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Categories.html';
+        } else {
+            $tFilename = 'Categories0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
         $tpl->SetBlock('categories_list');
         $tpl->SetVariable('title', $this::t('CATEGORIES'));
         $pModel = $this->gadget->model->load('Posts');

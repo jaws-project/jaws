@@ -45,7 +45,12 @@ class Blog_Actions_PopularPosts extends Jaws_Gadget_Action
      */
     function PopularPosts($from = 0, $limit = 0)
     {
-        $tpl = $this->gadget->template->load('PopularPosts.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'PopularPosts.html';
+        } else {
+            $tFilename = 'PopularPosts0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
 
         if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'popular_posts_normal';

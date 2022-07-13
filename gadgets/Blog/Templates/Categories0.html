@@ -1,0 +1,26 @@
+<!-- BEGIN categories_list -->
+<div class="gadget_header">
+  <div class="row">
+    <div class="col-xs-12"><h3>{{title}}</h3></div>
+  </div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_content">
+    <ul>
+    <!-- BEGIN item -->
+      <li>
+        <a href="{{url}}">
+          <img class="category_image" src="{{url_image}}" height="128" width="128" alt="{{category}}" />
+          {{category}}
+        </a>
+        <span class="blog-addinfo">
+          ({{howmany}})&nbsp;[<a href="{{atomfeed}}">atom</a> | <a href="{{rssfeed}}">rss</a>]
+        </span>
+        <span>{{subscription}}</span>
+      </li>
+    <!-- END item -->
+    </ul>
+  </div>
+  </div>
+<div class="gadget_footer"></div>
+<!-- END categories_list -->
