@@ -51,13 +51,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
      */
     function TypePosts($type = null, $limit = 0)
     {
-        if ($this->app->requestedActionMode === 'normal') {
-            $tFilename = 'RecentTypePosts.html';
-        } else {
-            $tFilename = 'RecentTypePosts0.html';
-        }
-        $tpl = $this->gadget->template->load($tFilename);
-
+        $tpl = $this->gadget->template->load('RecentTypePosts.html');
         if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'recent_posts_normal';
             $type = (int)$this->gadget->request->fetch('type', 'get');
