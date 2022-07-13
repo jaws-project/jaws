@@ -1,7 +1,7 @@
 <!-- BEGIN faq -->
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{title}}<a id="topfaq">&nbsp;</a></h2></div>
+    <div class="col-xs-12"><h3>{{title}}<a id="topfaq">&nbsp;</a></h3></div>
   </div>
 </div>
 <div class="gadget_container">
@@ -9,7 +9,7 @@
   <div class="summary">
     <ul>
     <!-- BEGIN category -->
-      <li><h4><a href="{{url}}">{{category}}</a></h4>
+      <li><h5><a href="{{url}}">{{category}}</a></h5>
         <ol>
         <!-- BEGIN item -->
           <li><a href="{{url}}#question{{id}}">{{question}}</a></li>
@@ -24,11 +24,11 @@
   <div class="gadget_content">
     <ul>
     <!-- BEGIN category -->
-      <li><h4>{{category}}</h4>
+      <li><h5>{{category}}</h5>
         <ol>
         <!-- BEGIN question -->
           <li>
-            <h5><a href="{{url}}" id="question{{id}}">{{question}}</a></h5>
+            <h6><a href="{{url}}" id="question{{id}}">{{question}}</a></h6>
             <div class="faq_answer">
               {{answer}}
             </div>
