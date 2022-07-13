@@ -71,7 +71,13 @@ class Comments_Actions_RecentComments extends Jaws_Gadget_Action
         $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
 
         $gadget_name = (empty($gadget)) ? Jaws::t('ALL') : $this::t($gadget. '.TITLE');
-        $tpl = $this->gadget->template->load('RecentComments.html');
+
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'RecentComments.html';
+        } else {
+            $tFilename = 'RecentComments0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
         $tpl->SetBlock('recent_comments');
         $tpl->SetVariable('title', $this::t('RECENT_COMMENTS', $gadget_name));
         if(!empty($gadget)) {
