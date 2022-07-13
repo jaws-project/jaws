@@ -60,7 +60,12 @@ class Blog_Actions_Posts extends Blog_Actions_Default
 
         $this->setTitle($this::t('RECENT_POSTS'));
 
-        $tpl = $this->gadget->template->load('Posts.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Posts.html';
+        } else {
+            $tFilename = 'Posts0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
         $tpl->SetBlock('view');
 
         $model = $this->gadget->model->load('Posts');
@@ -249,7 +254,12 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $assigns = array();
         $assigns['posts'] = $posts;
 
-        return $this->gadget->template->xLoad('FavoritePosts.html')->render($assigns);
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'FavoritePosts.html';
+        } else {
+            $tFilename = 'FavoritePosts0.html';
+        }
+        return $this->gadget->template->xLoad($tFilename)->render($assigns);
     }
 
     /**
@@ -260,7 +270,12 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function PostsAuthors()
     {
-        $tpl = $this->gadget->template->load('Authors.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Authors.html';
+        } else {
+            $tFilename = 'Authors0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
         $tpl->SetBlock('posts_authors');
         $tpl->SetVariable('title', $this::t('POSTS_AUTHORS'));
 

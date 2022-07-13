@@ -51,7 +51,12 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
      */
     function TypePosts($type = null, $limit = 0)
     {
-        $tpl = $this->gadget->template->load('RecentTypePosts.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'RecentTypePosts.html';
+        } else {
+            $tFilename = 'RecentTypePosts0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
 
         if ($this->app->requestedActionMode == ACTION_MODE_NORMAL) {
             $baseBlock = 'recent_posts_normal';
@@ -133,7 +138,13 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
      */
     function Types()
     {
-        $tpl = $this->gadget->template->load('Types.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Types.html';
+        } else {
+            $tFilename = 'Types0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
+
         $tpl->SetBlock("types");
         $tpl->SetVariable('title', $this::t('ACTIONS_TYPES'));
         $this->SetTitle($this::t('ACTIONS_TYPES'));
