@@ -26,7 +26,12 @@ class Search_Actions_Search extends Jaws_Gadget_Action
             false
         );
 
-        $tpl = $this->gadget->template->load('Search.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Search.html';
+        } else {
+            $tFilename = 'Search0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
         if ($gadgets_combo) {
             $block = 'Box';
         } else {
@@ -100,7 +105,12 @@ class Search_Actions_Search extends Jaws_Gadget_Action
             false
         );
 
-        $tpl = $this->gadget->template->load('Search.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Search.html';
+        } else {
+            $tFilename = 'Search0.html';
+        }
+        $tpl = $this->gadget->template->load($tFilename);
         $tpl->SetBlock('AdvancedBox');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
