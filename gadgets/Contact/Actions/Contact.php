@@ -136,7 +136,12 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             ->load('Captcha')
             ->xloadCaptcha();
 
-        return $this->gadget->template->xLoad('Contact.html')->render($assigns);
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Contact.html';
+        } else {
+            $tFilename = 'Contact0.html';
+        }
+        return $this->gadget->template->xLoad($tFilename)->render($assigns);
     }
 
 }
