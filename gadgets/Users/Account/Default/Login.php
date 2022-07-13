@@ -29,7 +29,13 @@ class Users_Account_Default_Login extends Users_Account_Default
     function IndexLogin($referrer)
     {
         $this->AjaxMe('index.js');
-        $tpl = $this->gadget->template->load('Login.html');
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Login.html';
+        } else {
+            $tFilename = 'Login0.html';
+        }
+
+        $tpl = $this->gadget->template->load($tFilename);
         $tpl->SetBlock('login');
 
         $response = $this->gadget->session->pop('Login.Response');
