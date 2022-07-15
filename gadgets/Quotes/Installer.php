@@ -4,9 +4,6 @@
  *
  * @category    GadgetModel
  * @package     Quotes
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2012-2022 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Installer extends Jaws_Gadget_Installer
 {
@@ -32,7 +29,9 @@ class Quotes_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'ManageQuotes',
-        'ManageQuoteGroups',
+        'ManageCategories',
+        'ClassificationRestricted',
+        'ClassificationConfidential',
     );
 
     /**
@@ -48,19 +47,14 @@ class Quotes_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $result = $this->installSchema('insert.xml', array(), 'schema.xml', true);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
         return true;
     }
 
     /**
-     * Uninstalls the gadget
+     * Uninstall the gadget
      *
      * @access  public
-     * @return  mixed   True on Success or Jaws_Error on failure
+     * @return  mixed    True on a successful install and Jaws_Error otherwise
      */
     function Uninstall()
     {
@@ -83,7 +77,7 @@ class Quotes_Installer extends Jaws_Gadget_Installer
      * @access  public
      * @param   string  $old    Current version (in registry)
      * @param   string  $new    New version (in the $gadgetInfo file)
-     * @return  mixed   True on Success or Jaws_Error on failure
+     * @return  mixed   True on success, Jaws_Error otherwise
      */
     function Upgrade($old, $new)
     {

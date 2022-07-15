@@ -4,12 +4,17 @@
  *
  * @category   GadgetInfo
  * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Info extends Jaws_Gadget
 {
+    /**
+     * Constants
+     */
+    const CLASSIFICATION_TYPE_PUBLIC = 1;
+    const CLASSIFICATION_TYPE_INTERNAL = 2;
+    const CLASSIFICATION_TYPE_RESTRICTED = 3;
+    const CLASSIFICATION_TYPE_CONFIDENTIAL = 4;
+
     /**
      * Gadget version
      *
@@ -19,12 +24,20 @@ class Quotes_Info extends Jaws_Gadget
     var $version = '1.0.0';
 
     /**
+     * Required gadgets
+     *
+     * @var     array
+     * @access  private
+     */
+    var $requirement = array('Categories');
+
+    /**
      * Default front-end action name
      *
      * @var     string
      * @access  protected
      */
-    var $default_action = 'RecentQuotes';
+    var $default_action = 'recentQuotes';
 
     /**
      * Default back-end action name
@@ -32,5 +45,5 @@ class Quotes_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'Quotes';
+    var $default_admin_action = 'quotes';
 }

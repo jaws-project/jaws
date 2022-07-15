@@ -1,138 +1,227 @@
 <?php
 /**
- * Quotes Gadget Action
+ * Quotes Gadget Admin
  *
  * @category   GadgetAdmin
  * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
 {
-
     /**
-     * Show quotes administration
+     * Builds quotes UI
      *
      * @access  public
-     * @return  string HTML content of administration
+     * @return  string  XHTML UI
      */
-    function Quotes()
+    function quotes()
     {
-        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
-        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
-        if ($calType != 'gregorian') {
-            $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
-        }
-        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $this->app->layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $this->app->layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $this->app->layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
-
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteQuoteFields', $this::t('INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmQuoteDelete', $this::t('CONFIRM_DELETE_QUOTE'));
+        $assigns = array();
+        $assigns['menubar'] = $this->MenuBar('quotes');
+        $assigns['ftime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'ftime'));
+        $assigns['ttime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'ttime'));
 
-        $tpl = $this->gadget->template->loadAdmin('Quotes.html');
-        $tpl->SetBlock('quotes');
-        //Menu bar
-        $tpl->SetVariable('menubar', $this->MenuBar('Quotes'));
-        $tpl->SetBlock('quotes/quotes_section');
-
-        $model = $this->gadget->model->load('Groups');
-        $groups = $model->GetGroups();
-
-        //Group Filter
-        $combo =& Piwi::CreateWidget('Combo', 'group_filter');
-        $combo->AddEvent(ON_CHANGE, 'javascript:fillQuotesCombo();');
-        $combo->AddOption('', -1);
-        foreach($groups as $group) {
-            $combo->AddOption($group['title'], $group['id']);
-        }
-        $tpl->SetVariable('group_filter', $combo->Get());
-        $tpl->SetVariable('lbl_group_filter', $this::t('GROUP').':');
-
-        //Fill the quotes combo..
-        $comboQuotes =& Piwi::CreateWidget('Combo', 'quotes_combo');
-        $comboQuotes->SetSize(24);
-        $comboQuotes->AddEvent(ON_CHANGE, 'javascript:editQuote(this.value);');
-
-        $model = $this->gadget->model->load('Quotes');
-        $quotes = $model->GetQuotes(-1);
-        foreach($quotes as $quote) {
-            $comboQuotes->AddOption($quote['title'], $quote['id']);
-        }
-        $tpl->SetVariable('lbl_quotes', $this->gadget->title);
-        $tpl->SetVariable('combo_quotes', $comboQuotes->Get());
-
-        // title
-        $title =& Piwi::CreateWidget('Entry', 'title', '');
-        $tpl->SetVariable('lbl_title', Jaws::t('TITLE'));
-        $tpl->SetVariable('title', $title->Get());
-
-        // quotes groups
-        $groupscombo =& Piwi::CreateWidget('Combo', 'gid');
-        if (!Jaws_Error::IsError($groups) && !empty($groups)) {
-            foreach($groups as $group) {
-                $groupscombo->AddOption($group['title'], $group['id']);
-            }
-        }
-        $tpl->SetVariable('lbl_group', $this::t('GROUP'));
-        $tpl->SetVariable('group', $groupscombo->Get());
-
-        // start time
-        $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
-        $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $startTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
-        $startTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $tpl->SetVariable('lbl_start_time', Jaws::t('START_TIME'));
-        $tpl->SetVariable('start_time', $startTime->Get());
-
-        // stop time
-        $stopTime =& Piwi::CreateWidget('DatePicker', 'stop_time', '');
-        $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $stopTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
-        $stopTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
-        $tpl->SetVariable('lbl_stop_time', Jaws::t('STOP_TIME'));
-        $tpl->SetVariable('stop_time', $stopTime->Get());
-
-        // show_title
-        $showTitle =& Piwi::CreateWidget('Combo', 'show_title');
-        $showTitle->AddOption(Jaws::t('NOO'),  'false');
-        $showTitle->AddOption(Jaws::t('YESS'), 'true');
-        $showTitle->SetDefault('true');
-        $tpl->SetVariable('lbl_show_title', $this::t('SHOW_TITLE'));
-        $tpl->SetVariable('show_title', $showTitle->Get());
-
-        // published
-        $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->AddOption(Jaws::t('NOO'),  'false');
-        $published->AddOption(Jaws::t('YESS'), 'true');
-        $published->SetDefault('true');
-        $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
-        $tpl->SetVariable('published', $published->Get());
+        $classifications = array(
+            Quotes_Info::CLASSIFICATION_TYPE_PUBLIC => $this::t('CLASSIFICATION_TYPE_1'),
+            Quotes_Info::CLASSIFICATION_TYPE_INTERNAL => $this::t('CLASSIFICATION_TYPE_2'),
+            Quotes_Info::CLASSIFICATION_TYPE_RESTRICTED => $this::t('CLASSIFICATION_TYPE_3'),
+            Quotes_Info::CLASSIFICATION_TYPE_CONFIDENTIAL => $this::t('CLASSIFICATION_TYPE_4')
+        );
+        $assigns['classification'] = $classifications;
+        $this->gadget->define('classifications', $classifications);
 
         // quotation editor
-        $quotation =& $this->app->loadEditor('Blocks', 'quotation', '', '');
-        $tpl->SetVariable('lbl_quotation', $this::t('QUOTE_QUOTATION'));
-        $tpl->SetVariable('quotation', $quotation->Get());
+        $quotation =& $this->app->loadEditor('Quotes', 'quotation', '', '');
+        $quotation->setId('quotation');
+        $assigns['quotation'] = $quotation->Get();
 
-        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', Jaws::t('SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, "javascript:saveQuote();");
-        $tpl->SetVariable('btn_save', $btnSave->Get());
+        $assigns['categories'] = Jaws_Gadget::getInstance('Categories')
+            ->model->load('Categories')
+            ->getCategories(
+                array('gadget' => $this->gadget->name, 'action' => 'Quotes')
+            );
 
-        $btnDel =& Piwi::CreateWidget('Button', 'btn_del', Jaws::t('DELETE', $this::t('QUOTE')), STOCK_DELETE);
-        $btnDel->AddEvent(ON_CLICK, "javascript:deleteQuote();");
-        $btnDel->SetStyle('display:none;');
-        $tpl->SetVariable('btn_del', $btnDel->Get());
+        $assigns['category'] = Jaws_Gadget::getInstance('Categories')
+            ->action
+            ->load('Categories')
+            ->xloadReferenceCategories(
+                array(
+                    'gadget' => $this->gadget->name,
+                    'action' => 'Quotes',
+                    'reference' => 0
+                ),
+                array(
+                    'labels' => array(
+                        'title'  => Jaws::t('CATEGORIES'),
+                        'placeholder' => $this::t('SELECT_CATEGORY')
+                    ),
+                    'multiple'   => false,
+                    'autoinsert' => false,
+                )
+            );
 
-        $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', Jaws::t('CANCEL'), STOCK_CANCEL);
-        $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
-        $tpl->SetVariable('btn_cancel', $cancelAction->Get());
-
-        $tpl->ParseBlock('quotes/quotes_section');
-        $tpl->ParseBlock('quotes');
-        return $tpl->Get();
+        return $this->gadget->template->xLoadAdmin('Quotes.html')->render($assigns);
     }
 
+    /**
+     * Get quotes
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function getQuotes()
+    {
+        $post = $this->gadget->request->fetch(
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
+            'post'
+        );
+        $post['filters']['published'] = $post['filters']['published'] === '0' ?
+            null : filter_var($post['filters']['published'], FILTER_VALIDATE_BOOLEAN);
+
+        $items = $this->gadget->model->load('Quotes')->list(
+            $post['filters'],
+            $post['limit'],
+            $post['offset']
+        );
+        if (Jaws_Error::IsError($items)) {
+            return $this->gadget->session->response($items->getMessage(), RESPONSE_ERROR);
+        }
+        if (count($items) < $post['limit']) {
+            $total = count($items);
+        } else {
+            $total = $this->gadget->model->load('Quotes')->count($post['filters']);
+            if (Jaws_Error::IsError($total)) {
+                return $this->gadget->session->response($total->GetMessage(), RESPONSE_ERROR);
+            }
+        }
+
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total'   => $total,
+                'records' => $items
+            )
+        );
+    }
+
+    /**
+     * Get a quote info
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function getQuote()
+    {
+        $id = (int)$this->gadget->request->fetch('id:integer', 'post');
+
+        $quote = $this->gadget->model->load('Quotes')->get($id);
+        if (Jaws_Error::IsError($quote)) {
+            return $this->gadget->session->response($quote->getMessage(), RESPONSE_ERROR);
+        }
+        return $this->gadget->session->response(
+            '',
+            RESPONSE_NOTICE,
+            $quote
+        );
+    }
+
+    /**
+     * insert a quote
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function insertQuote()
+    {
+        $data = $this->gadget->request->fetch('data:array', 'post');
+
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($data),
+            array(
+                'title', 'quotation', 'classification', 'order', 'ftime',
+                'ttime', 'meta_keywords', 'meta_description', 'published'
+            )
+        );
+        foreach ($invalids as $invalid) {
+            unset($data[$invalid]);
+        }
+
+        $objDate = Jaws_Date::getInstance();
+        if (!empty($data['ftime'])) {
+            $data['ftime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ftime'] . ' 0:0:0'), 'U')
+            );
+        }
+        if (!empty($data['ttime'])) {
+            $data['ttime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ttime'] . ' 0:0:0'), 'U')
+            );
+        }
+
+        $res = $this->gadget->model->loadAdmin('Quotes')->add($data);
+        if (Jaws_Error::isError($res)) {
+            return $this->gadget->session->response($this::t('QUOTE_NOT_ADDED'), RESPONSE_ERROR);
+        }
+        return $this->gadget->session->response($this::t('QUOTE_ADDED'), RESPONSE_NOTICE);
+    }
+
+    /**
+     * Update a quote
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function updateQuote()
+    {
+        $post = $this->gadget->request->fetch(array('id:integer', 'data:array'), 'post');
+
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($post['data']),
+            array(
+                'title', 'quotation', 'classification', 'order', 'ftime',
+                'ttime', 'meta_keywords', 'meta_description', 'published'
+            )
+        );
+        foreach ($invalids as $invalid) {
+            unset($post['data'][$invalid]);
+        }
+
+        $objDate = Jaws_Date::getInstance();
+        if (!empty($post['data']['ftime'])) {
+            $post['data']['ftime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $post['data']['ftime'] . ' 0:0:0'), 'U')
+            );
+        }
+        if (!empty($post['data']['ttime'])) {
+            $post['data']['ttime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $post['data']['ttime'] . ' 0:0:0'), 'U')
+            );
+        }
+
+        $res = $this->gadget->model->loadAdmin('Quotes')->update((int)$post['id'], $post['data']);
+        if (Jaws_Error::isError($res)) {
+            return $this->gadget->session->response($this::t('QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
+        }
+        return $this->gadget->session->response($this::t('QUOTE_UPDATED'), RESPONSE_NOTICE);
+    }
+
+    /**
+     * Delete a quote
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function deleteQuote()
+    {
+        $id = (int)$this->gadget->request->fetch('id:integer', 'post');
+
+        $res = $this->gadget->model->loadAdmin('Quotes')->delete($id);
+        if (Jaws_Error::IsError($res)) {
+            return $this->gadget->session->response($this::t('QUOTE_NOT_DELETED'), RESPONSE_ERROR);
+        }
+        return $this->gadget->session->response($this::t('QUOTE_DELETED'), RESPONSE_NOTICE);
+    }
 }

@@ -4,11 +4,8 @@
  *
  * @category   GadgetMaps
  * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2008-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('RecentQuotes', 'quotes/recent');
-$maps[] = array('ViewQuote', 'quote/{id}');
-$maps[] = array('ViewGroupQuotes', 'quotes/{id}');
-$maps[] = array('QuotesByGroup', 'quotes/group/{id}');
+$maps[] = array('recentQuotes', 'quotes/recent');
+$maps[] = array('viewQuote', 'quote/{id}');
+$maps[] = array('viewGroupQuotes', 'quotes/{id}');
+$maps[] = array('quotesByGroup', 'quotes/group/{id}');

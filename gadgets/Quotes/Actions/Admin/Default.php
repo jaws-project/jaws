@@ -1,43 +1,40 @@
 <?php
 /**
- * Quotes Gadget Action
+ * Quotes Core Gadget
  *
- * @category   GadgetAdmin
- * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget
+ * @package     Quotes
  */
 class Quotes_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
-     * Prepares the quotes menubar
+     * Builds the users menubar
      *
      * @access  public
      * @param   string  $action   Selected action
-     * @return  string  XHTML of menubar
+     * @return  string  XHTML menubar
      */
     function MenuBar($action)
     {
-        $actions = array('Quotes', 'QuoteGroups');
+        $actions = array('quotes', 'categories');
         if (!in_array($action, $actions)) {
-            $action = 'Quotes';
+            $action = 'quotes';
         }
 
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageQuotes')) {
             $menubar->AddOption(
-                'Quotes',
-                $this->gadget->title,
-                BASE_SCRIPT . '?reqGadget=Quotes',
+                'quotes',
+                $this::t('QUOTES'),
+                $this->gadget->url('quotes'),
                 'gadgets/Quotes/Resources/images/quotes_mini.png'
             );
         }
-        if ($this->gadget->GetPermission('ManageQuoteGroups')) {
+        if ($this->gadget->GetPermission('ManageCategories')) {
             $menubar->AddOption(
-                'QuoteGroups',
+                'categories',
                 $this::t('GROUPS'),
-                BASE_SCRIPT . '?reqGadget=Quotes&amp;reqAction=QuoteGroups',
+                $this->gadget->url('categories'),
                 'gadgets/Quotes/Resources/images/groups_mini.png'
             );
         }

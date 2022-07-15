@@ -1,128 +1,115 @@
 <?php
 /**
- * Quotes Gadget
+ * Quotes Model
  *
  * @category   GadgetModel
  * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Model_Quotes extends Jaws_Gadget_Model
 {
     /**
-     * Retrieves data of the quote
+     * Get list of quotes item
      *
      * @access  public
-     * @param   int     $id     Quote ID
-     * @return  mixed   Quote data array or Jaws_Error
+     * @param   array       $filters
+     * @param   bool|int    $limit     Count of quotes to be returned
+     * @param   int         $offset    Offset of data array
+     * @param   string      $orderBy   Order by
+     * @return  array       data
      */
-    function GetQuote($id)
+    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'order desc')
     {
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $res = $quotesTable->select(
-            'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
-            'order:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
-        );
-        return $quotesTable->where('id', $id)->fetchRow();
+        return Jaws_ORM::getInstance()
+            ->table('quotes')
+            ->select(
+                'id:integer', 'title', 'quotation', 'classification:integer', 'order:integer',
+                'ftime:integer', 'ttime:integer', 'meta_keywords', 'meta_description', 'published:boolean',
+                'inserted:integer', 'updated:integer'
+            )->where(
+                'title',
+                @$filters['term'],
+                'like',
+                empty($filters['term'])
+            )->and()->where(
+                'classification',
+                @$filters['classification'],
+                '=',
+                empty($filters['classification'])
+            )->and()->where(
+                'published',
+                @$filters['published'],
+                '=',
+                !isset($filters['published'])
+            )->orderBy($orderBy)
+            ->limit((int)$limit, $offset)
+            ->fetchAll();
     }
 
     /**
-     * Retrieves quotes
+     * Get quotes count
      *
-     * @param   int     $id
-     * @param   int     $gid
-     * @param   int     $limit
-     * @param   int     $offset
-     * @return  mixed   List of quotes or Jaws_Error
+     * @access  public
+     * @param   array       $filters
+     * @return  int         quotes count
      */
-    function GetQuotes($id = -1, $gid = -1, $limit = 0, $offset = null)
+    function count($filters)
     {
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select(
-            'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
-            'order:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean', 'updatetime'
-        );
-
-        if (($id != -1) && ($gid != -1)) {
-            $quotesTable->where('id', $id)->and()->where('gid', $gid);
-        } elseif ($gid != -1) {
-            $quotesTable->where('gid', $gid);
-        } elseif ($id != -1) {
-            $quotesTable->where('id', $id);
-        }
-        $res = $quotesTable->orderBy('id asc')->limit($limit, $offset)->fetchAll();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage());
-        }
-
-        return $res;
+        return Jaws_ORM::getInstance()
+            ->table('quotes')
+            ->select('count(id):integer')
+            ->where(
+                'title',
+                @$filters['term'],
+                'like',
+                empty($filters['term'])
+            )->and()->where(
+                'classification',
+                @$filters['classification'],
+                '=',
+                empty($filters['classification'])
+            )->and()->where(
+                'published',
+                @$filters['published'],
+                '=',
+                !isset($filters['published'])
+            )->fetchOne();
     }
 
     /**
-     * Retrieves quotes that can be published
+     * Get a quote info
      *
      * @access  public
-     * @param   int     $gid        Group ID
-     * @param   int     $limit
-     * @param   bool    $randomly
-     * @return  array   List of quotes or Jaws_Error
+     * @param   int         $id    Quote id
+     * @return  array       data
      */
-    function GetPublishedQuotes($gid, $limit = null, $randomly = false)
+    function get(int $id)
     {
-        $now = Jaws_DB::getInstance()->date();
-
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select('id:integer', 'title', 'quotation', 'order:integer', 'show_title:boolean');
-        $quotesTable->where('gid', $gid)->and()->where('published', true)->and();
-        $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
-        $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
-        $quotesTable->openWhere()->where('stop_time', '', 'is null')->or();
-        $quotesTable->where('stop_time', $now, '>=')->closeWhere();
-
-        if ($randomly) {
-            $quotesTable->orderBy($quotesTable->random());
-        } else {
-            $quotesTable->orderBy('order asc', 'id desc');
+        $quote = Jaws_ORM::getInstance()
+            ->table('quotes')
+            ->select(
+                'id:integer', 'title', 'quotation', 'classification:integer', 'order:integer',
+                'ftime:integer', 'ttime:integer', 'meta_keywords', 'meta_description', 'published:boolean',
+                'inserted:integer', 'updated:integer'
+            )->where('id', $id)
+            ->fetchRow();
+        if (Jaws_Error::IsError($quote)) {
+            return $quote;
         }
 
-        $res = $quotesTable->limit($limit)->fetchAll();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-        return $res;
-    }
-
-    /**
-     * Retrieves latest created quotes
-     *
-     * @access  public
-     * @param   int     $limit
-     * @param   bool    $randomly
-     * @return  array   List of quotes or Jaws_Error
-     */
-    function GetRecentQuotes($limit = null, $randomly = false)
-    {
-        $now = Jaws_DB::getInstance()->date();
-
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select('id:integer', 'title', 'quotation', 'order:integer', 'show_title:boolean');
-        $quotesTable->where('published', true)->and();
-        $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
-        $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
-        $quotesTable->openWhere()->where('stop_time', '', 'is null')->or();
-        $quotesTable->where('stop_time', $now, '>=')->closeWhere();
-
-        if ($randomly) {
-            $quotesTable->orderBy($quotesTable->random());
-        } else {
-            $quotesTable->orderBy('id desc');
+        // quote categories
+        $quote['category'] = array();
+        if (!empty($quote)) {
+            $category = Jaws_ORM::getInstance()->table('categories')
+                ->select('categories.id:integer')
+                ->where('gadget', $this->gadget->name)
+                ->and()->where('action', 'Quotes')
+                ->join('categories_references as r', 'r.category', 'categories.id')
+                ->fetchOne();
+            if (!Jaws_Error::IsError($category)) {
+                $quote['category'] = $category;
+            }
         }
 
-        $res = $quotesTable->limit($limit)->fetchAll();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-        return $res;
+        return $quote;
     }
 }
