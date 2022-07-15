@@ -1,192 +1,93 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <database>
 
- <name><variable>database</variable></name>
+    <name><variable>database</variable></name>
+    <table>
+        <name><variable>table_prefix</variable>quotes</name>
+        <declaration>
 
- <table>
-    <name><variable>table_prefix</variable>quotes</name>
-    <declaration>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-        <field>
-            <name>id</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <autoincrement>true</autoincrement>
-        </field>
-
-        <field>
-            <name>gid</name>
-            <type>integer</type>
-            <notnull>false</notnull>
-        </field>
-
-        <field>
-            <name>title</name>
-            <type>text</type>
-            <length>255</length>
-            <notnull>true</notnull>
-        </field>
-
-        <field>
-            <name>quotation</name>
-            <type>text</type>
-            <notnull>true</notnull>
-        </field>
-
-        <field>
-            <name>quote_type</name>
-            <type>integer</type>
-            <length>1</length>
-            <default>0</default>
-        </field>
-
-        <field>
-            <name>rank</name>
-            <type>integer</type>
-            <default>0</default>
-        </field>
-
-        <field>
-            <name>start_time</name>
-            <type>timestamp</type>
-        </field>
-
-        <field>
-            <name>stop_time</name>
-            <type>timestamp</type>
-        </field>
-
-        <field>
-            <name>createtime</name>
-            <type>timestamp</type>
-        </field>
-
-        <field>
-            <name>updatetime</name>
-            <type>timestamp</type>
-        </field>
-
-        <field>
-            <name>show_title</name>
-            <type>boolean</type>
-            <notnull>true</notnull>
-            <default>true</default>
-        </field>
-
-        <field>
-            <name>fast_url</name>
-            <type>text</type>
-            <length>90</length>
-        </field>
-
-        <field>
-            <name>meta_keywords</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
-
-        <field>
-            <name>meta_description</name>
-            <type>text</type>
-            <length>255</length>
-        </field>
-
-        <field>
-            <name>published</name>
-            <type>boolean</type>
-            <notnull>true</notnull>
-            <default>true</default>
-        </field>
-
-    </declaration>
- </table>
-
- <table>
-    <name><variable>table_prefix</variable>quotes_groups</name>
-    <declaration>
-
-        <field>
-            <name>id</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <autoincrement>true</autoincrement>
-        </field>
-
-        <field>
-            <name>title</name>
-            <type>text</type>
-            <length>128</length>
-            <notnull>true</notnull>
-        </field>
-
-        <field>
-            <name>view_mode</name>
-            <type>integer</type>
-            <length>1</length>
-            <default>0</default>
-        </field>
-
-        <field>
-            <name>view_type</name>
-            <type>integer</type>
-            <length>1</length>
-            <default>0</default>
-        </field>
-
-        <field>
-            <name>show_title</name>
-            <type>boolean</type>
-            <notnull>true</notnull>
-            <default>true</default>
-        </field>
-
-        <field>
-            <name>limit_count</name>
-            <type>integer</type>
-            <notnull>true</notnull>
-            <default>0</default>
-        </field>
-
-        <field>
-            <name>random</name>
-            <type>boolean</type>
-            <notnull>true</notnull>
-            <default>false</default>
-        </field>
-
-        <field>
-            <name>fast_url</name>
-            <type>text</type>
-            <length>90</length>
-        </field>
-
-        <field>
-            <name>meta_keywords</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
-
-        <field>
-            <name>meta_description</name>
-            <type>text</type>
-            <length>255</length>
-        </field>
-
-        <field>
-            <name>published</name>
-            <type>boolean</type>
-            <notnull>true</notnull>
-            <default>true</default>
-        </field>
-
-        <index>
-            <name><variable>table_prefix</variable>quotes_groups_title</name>
             <field>
                 <name>title</name>
+                <type>text</type>
+                <length>255</length>
             </field>
-        </index>
 
-    </declaration>
- </table>
+            <field>
+                <name>quotation</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>classification</name>
+                <type>integer</type>
+                <length>1</length>
+                <default>1</default>
+                <description>1: public, 2: internal(registered users), 3: restricted, 4: confidential</description>
+            </field>
+
+            <field>
+                <name>order</name>
+                <was>rank</was>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>ftime</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+                <description>from time/start time</description>
+            </field>
+
+            <field>
+                <name>ttime</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+                <description>to time/stop time</description>
+            </field>
+
+            <field>
+                <name>inserted</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>updated</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>meta_keywords</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>meta_description</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>published</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
+
+        </declaration>
+    </table>
 
 </database>

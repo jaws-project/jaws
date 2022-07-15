@@ -22,7 +22,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $res = $quotesTable->select(
             'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
-            'rank:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
+            'order:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
         );
         return $quotesTable->where('id', $id)->fetchRow();
     }
@@ -41,7 +41,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $quotesTable->select(
             'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
-            'rank:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean', 'updatetime'
+            'order:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean', 'updatetime'
         );
 
         if (($id != -1) && ($gid != -1)) {
@@ -73,7 +73,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         $now = Jaws_DB::getInstance()->date();
 
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select('id:integer', 'title', 'quotation', 'rank:integer', 'show_title:boolean');
+        $quotesTable->select('id:integer', 'title', 'quotation', 'order:integer', 'show_title:boolean');
         $quotesTable->where('gid', $gid)->and()->where('published', true)->and();
         $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
         $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
@@ -83,7 +83,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         if ($randomly) {
             $quotesTable->orderBy($quotesTable->random());
         } else {
-            $quotesTable->orderBy('rank asc', 'id desc');
+            $quotesTable->orderBy('order asc', 'id desc');
         }
 
         $res = $quotesTable->limit($limit)->fetchAll();
@@ -106,7 +106,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         $now = Jaws_DB::getInstance()->date();
 
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select('id:integer', 'title', 'quotation', 'rank:integer', 'show_title:boolean');
+        $quotesTable->select('id:integer', 'title', 'quotation', 'order:integer', 'show_title:boolean');
         $quotesTable->where('published', true)->and();
         $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
         $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
