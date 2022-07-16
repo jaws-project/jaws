@@ -17,9 +17,24 @@ class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls = array();
         $urls[] = array(
-            'url'   => $this->gadget->urlMap('recentQuotes'),
-            'title' => $this::t('ACTIONS_RECENTQUOTES_TITLE')
+            'url'   => $this->gadget->urlMap('quotes'),
+            'title' => $this::t('ACTIONS_QUOTES_TITLE')
         );
+
+        $categories = Jaws_Gadget::getInstance('Categories')
+            ->model->load('Categories')
+            ->getCategories(
+                array('gadget' => $this->gadget->name, 'action' => 'Quotes')
+            );
+        if (!empty($categories) && !Jaws_Error::IsError($categories)) {
+            foreach ($categories as $category) {
+                $urls[] = array(
+                    'url' => $this->gadget->urlMap('quotes', array('id' => $category['id'])),
+                    'title' => $category['title']
+                );
+            }
+        }
+
         return $urls;
     }
 }

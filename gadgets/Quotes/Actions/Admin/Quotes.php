@@ -134,20 +134,12 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
      */
     function insertQuote()
     {
-        $data = $this->gadget->request->fetch('data:array', 'post');
-
-        // unset invalid keys
-        $invalids = array_diff(
-            array_keys($data),
-            array(
-                'title', 'quotation', 'classification', 'order', 'ftime',
-                'ttime', 'meta_keywords', 'meta_description', 'published'
-            )
+        $data = $this->gadget->request->fetch(
+            array('title', 'quotation', 'classification', 'order', 'ftime',
+                'ttime', 'meta_keywords', 'meta_description', 'published'),
+            'post'
         );
-        foreach ($invalids as $invalid) {
-            unset($data[$invalid]);
-        }
-//        $data['quotation'] = $this->gadget->request->fetch('quotation', 'post', 'strip_crlf');
+        $data['quotation'] = $this->gadget->request->fetch('quotation', 'post', 'strip_crlf');
 
         $objDate = Jaws_Date::getInstance();
         if (!empty($data['ftime'])) {
@@ -178,35 +170,29 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
      */
     function updateQuote()
     {
-        $post = $this->gadget->request->fetch(array('id:integer', 'data:array'), 'post');
-
-        // unset invalid keys
-        $invalids = array_diff(
-            array_keys($post['data']),
-            array(
-                'title', 'quotation', 'classification', 'order', 'ftime',
-                'ttime', 'meta_keywords', 'meta_description', 'published'
-            )
+        $data = $this->gadget->request->fetch(
+            array('title', 'quotation', 'classification', 'order', 'ftime',
+                'ttime', 'meta_keywords', 'meta_description', 'published'),
+            'post'
         );
-        foreach ($invalids as $invalid) {
-            unset($post['data'][$invalid]);
-        }
+        $data['quotation'] = $this->gadget->request->fetch('quotation', 'post', 'strip_crlf');
+        $id = (int)$this->gadget->request->fetch('id:integer', 'post');
 
         $objDate = Jaws_Date::getInstance();
-        if (!empty($post['data']['ftime'])) {
-            $post['data']['ftime'] = $this->app->UserTime2UTC(
-                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $post['data']['ftime'] . ' 0:0:0'), 'U')
+        if (!empty($data['ftime'])) {
+            $data['ftime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ftime'] . ' 0:0:0'), 'U')
             );
         }
-        if (!empty($post['data']['ttime'])) {
-            $post['data']['ttime'] = $this->app->UserTime2UTC(
-                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $post['data']['ttime'] . ' 0:0:0'), 'U')
+        if (!empty($data['ttime'])) {
+            $data['ttime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ttime'] . ' 0:0:0'), 'U')
             );
         }
-        $post['data']['ftime'] = (int)$post['data']['ftime'];
-        $post['data']['ttime'] = (int)$post['data']['ttime'];
+        $data['ftime'] = (int)$data['ftime'];
+        $data['ttime'] = (int)$data['ttime'];
 
-        $res = $this->gadget->model->loadAdmin('Quotes')->update((int)$post['id'], $post['data']);
+        $res = $this->gadget->model->loadAdmin('Quotes')->update($id, $data);
         if (Jaws_Error::isError($res)) {
             return $this->gadget->session->response($this::t('QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
         }

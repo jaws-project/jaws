@@ -15,9 +15,10 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      * @param   bool|int    $limit     Count of quotes to be returned
      * @param   int         $offset    Offset of data array
      * @param   string      $orderBy   Order by
+     * @param   string      $randomly  Order by random ?
      * @return  array       data
      */
-    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'order desc')
+    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'order desc', $random = false)
     {
         $qTable = Jaws_ORM::getInstance()
             ->table('quotes')
@@ -35,6 +36,11 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
                 is_array($filters['classification']) ? $filters['classification'][1] : '=',
                 empty($filters['classification'])
+            )->and()->where(
+                'classification',
+                @$filters['classification_is'],
+                '=',
+                empty($filters['classification_is'])
             )->and()->where(
                 'published',
                 @$filters['published'],
@@ -59,9 +65,13 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
             )->or()->closeWhere('ttime', 0);
         }
 
-        return $qTable->orderBy($orderBy)
-            ->limit((int)$limit, $offset)
-            ->fetchAll();
+        if ($random) {
+            $qTable->orderBy($qTable->random());
+        } else {
+            $qTable->orderBy($orderBy);
+        }
+
+        return $qTable->limit((int)$limit, $offset)->fetchAll();
     }
 
     /**
@@ -86,6 +96,11 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
                 is_array($filters['classification']) ? $filters['classification'][1] : '=',
                 empty($filters['classification'])
+            )->and()->where(
+                'classification',
+                @$filters['classification_is'],
+                '=',
+                empty($filters['classification_is'])
             )->and()->where(
                 'published',
                 @$filters['published'],

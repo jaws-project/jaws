@@ -8,19 +8,16 @@
 /**
  * Index actions
  */
-$actions['display'] = array(
+$actions['quotes'] = array(
     'layout' => true,
     'parametric' => true,
-    'file'   => 'Quotes',
-);
-$actions['recentQuotes'] = array(
     'normal' => true,
     'file' => 'Quotes',
     'navigation' => array(
         'order' => 0
     ),
 );
-$actions['viewQuote'] = array(
+$actions['quote'] = array(
     'normal' => true,
     'file' => 'Quotes',
 );

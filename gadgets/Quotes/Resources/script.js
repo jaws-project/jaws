@@ -43,16 +43,10 @@ function Jaws_Gadget_Quotes_Action_quotes() {
             let data = $.unserialize($('form#quotes-form').serialize());
 
             if (this.selectedQuote === 0) {
-                this.ajax.callAsync('insertQuote', {
-                    data: data,
-                    'category_quotes_0': $('select[name="category_quotes_0"]').find('option:selected').val()
-                });
+                this.ajax.callAsync('insertQuote', data);
             } else {
-                this.ajax.callAsync('updateQuote', {
-                    id: this.selectedQuote,
-                    data: data,
-                    'category_quotes_0': $('select[name="category_quotes_0"]').find('option:selected').val()
-                });
+                data.id = this.selectedQuote;
+                this.ajax.callAsync('updateQuote', data);
             }
         },
 

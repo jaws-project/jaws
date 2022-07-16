@@ -15,6 +15,12 @@ class Quotes_Info extends Jaws_Gadget
     const CLASSIFICATION_TYPE_RESTRICTED = 3;
     const CLASSIFICATION_TYPE_CONFIDENTIAL = 4;
 
+    const VIEW_TYPE_SIMPLE = 1;
+    const VIEW_TYPE_MARQUEE_UP = 2;
+    const VIEW_TYPE_MARQUEE_DOWN = 3;
+    const VIEW_TYPE_MARQUEE_LEFT = 4;
+    const VIEW_TYPE_MARQUEE_RIGHT = 5;
+
     /**
      * Gadget version
      *
@@ -37,7 +43,7 @@ class Quotes_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'recentQuotes';
+    var $default_action = 'quotes';
 
     /**
      * Default back-end action name

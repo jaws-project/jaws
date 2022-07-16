@@ -1,21 +1,22 @@
+{% if showTitle==1 %}
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-9"><h2>{{ "quotes.actions_quotes_title" | t }}</h2></div>
-    <div class="col-xs-3">{% include 'include/Jaws/Resources/XMenuNavigation.html' with navigation %}</div>
+    <div class="col-xs-12"><h2>{{ "quotes.actions_quotes_title" | t }}</h2></div>
   </div>
 </div>
+{% endif %}
 <div class="gadget_container">
   <div class="gadget_content">
     <ul>
       {% for quote in quotes %}
       <li>
         <a href="{{ 'Quotes' | urlmap: 'quote', 'id', quote.id, 'metaurl', quote.meta_keywords }}">{{quote.title}}</a>
+        {% if viewMode==2 %}
+        <p>{{quote.quotation}}</p>
+        {% endif %}
       </li>
       {% endfor %}
     </ul>
-
   </div>
-
-  {% include 'include/Jaws/Resources/XPageNavigation.html' with pagination %}
 </div>
 <div class="gadget_footer"></div>
