@@ -9,14 +9,19 @@
  * Index actions
  */
 $actions['display'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Quotes',
+);
+$actions['recentQuotes'] = array(
     'normal' => true,
     'file' => 'Quotes',
     'navigation' => array(
         'order' => 0
     ),
 );
-$actions['doPayment'] = array(
-    'standalone' => true,
+$actions['viewQuote'] = array(
+    'normal' => true,
     'file' => 'Quotes',
 );
 

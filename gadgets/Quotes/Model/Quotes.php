@@ -19,7 +19,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      */
     function list($filters = array(), $limit = false, $offset = null, $orderBy = 'order desc')
     {
-        return Jaws_ORM::getInstance()
+        $qTable = Jaws_ORM::getInstance()
             ->table('quotes')
             ->select(
                 'id:integer', 'title', 'quotation', 'classification:integer', 'order:integer',
@@ -32,15 +32,34 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 empty($filters['term'])
             )->and()->where(
                 'classification',
-                @$filters['classification'],
-                '=',
+                is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
+                is_array($filters['classification']) ? $filters['classification'][1] : '=',
                 empty($filters['classification'])
             )->and()->where(
                 'published',
                 @$filters['published'],
                 '=',
                 !isset($filters['published'])
-            )->orderBy($orderBy)
+            );
+
+        if (!empty($filters['ftime'])) {
+            $qTable->and()->openWhere(
+                'ftime',
+                $filters['ftime'],
+                '<=',
+                empty($filters['ftime'])
+            )->or()->closeWhere('ftime', 0);
+        }
+        if (!empty($filters['ftime'])) {
+            $qTable->and()->openWhere(
+                'ttime',
+                $filters['ttime'],
+                '>',
+                empty($filters['ttime'])
+            )->or()->closeWhere('ttime', 0);
+        }
+
+        return $qTable->orderBy($orderBy)
             ->limit((int)$limit, $offset)
             ->fetchAll();
     }
@@ -54,7 +73,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      */
     function count($filters)
     {
-        return Jaws_ORM::getInstance()
+        $qTable = Jaws_ORM::getInstance()
             ->table('quotes')
             ->select('count(id):integer')
             ->where(
@@ -64,15 +83,34 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 empty($filters['term'])
             )->and()->where(
                 'classification',
-                @$filters['classification'],
-                '=',
+                is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
+                is_array($filters['classification']) ? $filters['classification'][1] : '=',
                 empty($filters['classification'])
             )->and()->where(
                 'published',
                 @$filters['published'],
                 '=',
                 !isset($filters['published'])
-            )->fetchOne();
+            );
+
+        if (!empty($filters['ftime'])) {
+            $qTable->and()->openWhere(
+                'ftime',
+                $filters['ftime'],
+                '<=',
+                empty($filters['ftime'])
+            )->or()->closeWhere('ftime', 0);
+        }
+        if (!empty($filters['ftime'])) {
+            $qTable->and()->openWhere(
+                'ttime',
+                $filters['ttime'],
+                '>',
+                empty($filters['ttime'])
+            )->or()->closeWhere('ttime', 0);
+        }
+
+        return $qTable->fetchOne();
     }
 
     /**

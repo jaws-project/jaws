@@ -1,0 +1,21 @@
+<div class="gadget_header">
+  <div class="row">
+    <div class="col-xs-9"><h2>{{ "quotes.actions_recentquotes_title" | t }}</h2></div>
+    <div class="col-xs-3">{% include 'include/Jaws/Resources/XMenuNavigation.html' with navigation %}</div>
+  </div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_content">
+    <ul>
+      {% for quote in quotes %}
+      <li>
+        <a href="{{ 'Quotes' | urlmap: 'viewQuote', 'id', quote.id }}">{{quote.title}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+  {% include 'include/Jaws/Resources/XPageNavigation.html' with pagination %}
+</div>
+<div class="gadget_footer"></div>

@@ -147,6 +147,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         foreach ($invalids as $invalid) {
             unset($data[$invalid]);
         }
+//        $data['quotation'] = $this->gadget->request->fetch('quotation', 'post', 'strip_crlf');
 
         $objDate = Jaws_Date::getInstance();
         if (!empty($data['ftime'])) {
@@ -159,6 +160,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
                 (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ttime'] . ' 0:0:0'), 'U')
             );
         }
+        $data['ftime'] = (int)$data['ftime'];
+        $data['ttime'] = (int)$data['ttime'];
 
         $res = $this->gadget->model->loadAdmin('Quotes')->add($data);
         if (Jaws_Error::isError($res)) {
@@ -200,6 +203,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
                 (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $post['data']['ttime'] . ' 0:0:0'), 'U')
             );
         }
+        $post['data']['ftime'] = (int)$post['data']['ftime'];
+        $post['data']['ttime'] = (int)$post['data']['ttime'];
 
         $res = $this->gadget->model->loadAdmin('Quotes')->update((int)$post['id'], $post['data']);
         if (Jaws_Error::isError($res)) {
