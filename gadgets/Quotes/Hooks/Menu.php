@@ -29,7 +29,7 @@ class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
         if (!empty($categories) && !Jaws_Error::IsError($categories)) {
             foreach ($categories as $category) {
                 $urls[] = array(
-                    'url' => $this->gadget->urlMap('quotes', array('id' => $category['id'])),
+                    'url' => $this->gadget->urlMap('quotes', array('category' => $category['id'])),
                     'title' => $category['title']
                 );
             }

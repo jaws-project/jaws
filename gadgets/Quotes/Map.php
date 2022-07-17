@@ -5,6 +5,6 @@
  * @category   GadgetMaps
  * @package    Quotes
  */
-$maps[] = array('quotes', 'quotes[/groups/{id}]');
-$maps[] = array('groups', 'quotes/groups');
+$maps[] = array('quotes', 'quotes[/categories/{category}]');
+$maps[] = array('groups', 'quotes/categories');
 $maps[] = array('quote', 'quotes/{id}[/{metaurl}]');

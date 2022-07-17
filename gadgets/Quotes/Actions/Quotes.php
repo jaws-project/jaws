@@ -93,7 +93,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   int         $count
-     * @param   int         $group
+     * @param   int         $category
      * @param   int         $classification
      * @param   int         $viewMode
      * @param   int         $viewType
@@ -101,13 +101,16 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
      * @param   bool        $showTitle
      * @return  string  XHTML template content
      */
-    function quotes($count = 10, $group = 0, $classification = 0, $viewMode = 2,
+    function quotes($count = 10, $category = 0, $classification = 0, $viewMode = 2,
                     $viewType = 1, $random = 0, $showTitle = 1)
     {
         $page = $this->gadget->request->fetch('page:integer', 'get');
         $page = empty($page) ? 1 : (int)$page;
 
-        $group = (int)$this->gadget->request->fetch('group:integer', 'get');
+
+        if ($this->app->requestedActionMode === 'normal') {
+            $category = (int)$this->gadget->request->fetch('category:integer', 'get');
+        }
 
         $assigns = array();
 
@@ -116,6 +119,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
 
         $filters = array(
             'published' => true,
+            'category' => $category,
             'ftime' => time(),
             'ttime' => time(),
             'classification' => array($this->getCurrentUserClassification(), '<='),

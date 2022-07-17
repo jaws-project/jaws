@@ -15,34 +15,43 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      * @param   bool|int    $limit     Count of quotes to be returned
      * @param   int         $offset    Offset of data array
      * @param   string      $orderBy   Order by
-     * @param   string      $randomly  Order by random ?
+     * @param   string      $random    Order by random ?
      * @return  array       data
      */
-    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'order desc', $random = false)
+    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'q.order desc', $random = false)
     {
         $qTable = Jaws_ORM::getInstance()
-            ->table('quotes')
+            ->table('quotes as q')
             ->select(
-                'id:integer', 'title', 'quotation', 'classification:integer', 'order:integer',
-                'ftime:integer', 'ttime:integer', 'meta_keywords', 'meta_description', 'published:boolean',
-                'inserted:integer', 'updated:integer'
-            )->where(
-                'title',
+                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer', 'q.order:integer',
+                'q.ftime:integer', 'q.ttime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
+                'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
+            )->join('categories_references as cr', 'cr.reference', 'q.id')
+            ->join('categories as cat', 'cat.id', 'cr.category')
+            ->where('cat.gadget', $this->gadget->name)
+            ->and()->where('cat.action', 'Quotes')
+            ->and()->where(
+                'cat.id',
+                @$filters['category'],
+                '=',
+                empty($filters['category'])
+            )->and()->where(
+             'q.title',
                 @$filters['term'],
                 'like',
                 empty($filters['term'])
             )->and()->where(
-                'classification',
+                'q.classification',
                 is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
                 is_array($filters['classification']) ? $filters['classification'][1] : '=',
                 empty($filters['classification'])
             )->and()->where(
-                'classification',
+                'q.classification',
                 @$filters['classification_is'],
                 '=',
                 empty($filters['classification_is'])
             )->and()->where(
-                'published',
+                'q.published',
                 @$filters['published'],
                 '=',
                 !isset($filters['published'])
@@ -50,7 +59,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
 
         if (!empty($filters['ftime'])) {
             $qTable->and()->openWhere(
-                'ftime',
+                'q.ftime',
                 $filters['ftime'],
                 '<=',
                 empty($filters['ftime'])
@@ -58,7 +67,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         }
         if (!empty($filters['ftime'])) {
             $qTable->and()->openWhere(
-                'ttime',
+                'q.ttime',
                 $filters['ttime'],
                 '>',
                 empty($filters['ttime'])
@@ -137,32 +146,17 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      */
     function get(int $id)
     {
-        $quote = Jaws_ORM::getInstance()
-            ->table('quotes')
+        return Jaws_ORM::getInstance()
+            ->table('quotes as q')
             ->select(
-                'id:integer', 'title', 'quotation', 'classification:integer', 'order:integer',
-                'ftime:integer', 'ttime:integer', 'meta_keywords', 'meta_description', 'published:boolean',
-                'inserted:integer', 'updated:integer'
-            )->where('id', $id)
+                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer', 'q.order:integer',
+                'q.ftime:integer', 'q.ttime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
+                'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
+            )->join('categories_references as cr', 'cr.reference', 'q.id')
+            ->join('categories as cat', 'cat.id', 'cr.category')
+            ->where('cat.gadget', $this->gadget->name)
+            ->and()->where('cat.action', 'Quotes')
+            ->and()->where('q.id', $id)
             ->fetchRow();
-        if (Jaws_Error::IsError($quote)) {
-            return $quote;
-        }
-
-        // quote categories
-        $quote['category'] = array();
-        if (!empty($quote)) {
-            $category = Jaws_ORM::getInstance()->table('categories')
-                ->select('categories.id:integer')
-                ->where('gadget', $this->gadget->name)
-                ->and()->where('action', 'Quotes')
-                ->join('categories_references as r', 'r.category', 'categories.id')
-                ->fetchOne();
-            if (!Jaws_Error::IsError($category)) {
-                $quote['category'] = $category;
-            }
-        }
-
-        return $quote;
     }
 }

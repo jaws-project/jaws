@@ -118,7 +118,18 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
 
         // delete category
         // FIXME
-//        $res = Jaws_Gadget::getInstance('Categories')->model->loadAdmin('Categories')->DeleteReferenceCategories($id);
+//        $res = Jaws_Gadget::getInstance('Categories')->action->load('Categories')->deleteReferenceCategories(
+//            array(
+//                'gadget' => $this->gadget->name,
+//                'action' => 'Quotes',
+//                'reference' => $id,
+//                'input_reference' => 0
+//            ),
+//            array(
+//                'multiple' => false,
+//                'autoinsert' => false,
+//            )
+//        );
 //        if (Jaws_Error::IsError($res)) {
 //            //Rollback Transaction
 //            $objORM->rollback();

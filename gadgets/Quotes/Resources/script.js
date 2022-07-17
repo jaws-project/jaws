@@ -78,14 +78,16 @@ function Jaws_Gadget_Quotes_Action_quotes() {
                         $('select[name="category_quotes_0"]').val(quoteInfo.category);
 
                         $('#datepicker_ftime_input').val(
-                            $.dateCalendar(
-                                Jaws.defines.preferences['calendar'], quoteInfo.ftime
-                            ).format('YYYY/MM/DD')
+                            (quoteInfo.ftime === 0) ? '' :
+                                $.dateCalendar(
+                                    Jaws.defines.preferences['calendar'], quoteInfo.ftime
+                                ).format('YYYY/MM/DD')
                         );
                         $('#datepicker_ttime_input').val(
-                            $.dateCalendar(
-                                Jaws.defines.preferences['calendar'], quoteInfo.ttime
-                            ).format('YYYY/MM/DD')
+                            (quoteInfo.ttime === 0) ? '' :
+                                $.dateCalendar(
+                                    Jaws.defines.preferences['calendar'], quoteInfo.ttime
+                                ).format('YYYY/MM/DD')
                         );
 
                         $('#quoteModal').modal('show');
@@ -102,7 +104,6 @@ function Jaws_Gadget_Quotes_Action_quotes() {
             }
         },
 
-
         /**
          * Define the data to be displayed in the quotes datagrid
          */
@@ -111,7 +112,12 @@ function Jaws_Gadget_Quotes_Action_quotes() {
                 'title': {
                     'label': Jaws.t('title'),
                     'property': 'title',
-                    'width': '35%'
+                    'width': '25%'
+                },
+                'category_title': {
+                    'label': this.t('group'),
+                    'property': 'category_title',
+                    'width': '15%'
                 },
                 'classification': {
                     'label': this.t('classification'),
@@ -132,7 +138,7 @@ function Jaws_Gadget_Quotes_Action_quotes() {
                     'label': Jaws.t('updatetime'),
                     'property': 'updated',
                     'sortable': true,
-                    'width': '25%'
+                    'width': '20%'
                 },
             };
 

@@ -58,8 +58,7 @@ class Quotes_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $tables = array('quotes',
-                        'quotes_groups');
+        $tables = array('quotes');
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
