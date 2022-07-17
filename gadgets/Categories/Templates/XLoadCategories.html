@@ -13,11 +13,10 @@
     data-placeholder="{{ category.labels.placeholder }}"
     data-dir={{ category.direction }}
     {{ category.multiple | true: 'multiple' , '' }}
-    data-tags="{{ category.autoinsert | true: 'true' , 'false' }}"
-  >
+    data-tags="{{ category.autoinsert | true: 'true' , 'false' }}">
   {% for item in category.categories %}
     {% if forloop.first  %}
-    <option></option>
+    <option value="0">{{ "global.select" | t }}</option>
     {% endif %}
     <option value="{{ item.id }}" {{ category.selected | contains: item.id, 'id' | true: 'selected', '' }}>
       {{ item.title }}

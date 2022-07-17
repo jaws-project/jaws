@@ -190,6 +190,40 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
     }
 
     /**
+     * Delete reference categories
+     *
+     * @access  public
+     * @param   array   $interface      Gadget connection interface
+     * @return  bool    True if delete successfully otherwise False
+     */
+    function deleteReferenceCategories($interface)
+    {
+        $data = array(
+            'gadget'    => '',
+            'action'    => '',
+            'reference' => 0,
+        );
+        $interface = array_merge($data, $interface);
+
+        $tblCatReference = Jaws_ORM::getInstance()->table('categories_references');
+        $tblCat = Jaws_ORM::getInstance()->table('categories');
+
+        $tblCat->select('categories.id')
+            ->where('categories_references.category', $tblCat->expr('categories.id'))
+            ->and()->where('categories.gadget', $interface['gadget'])
+            ->and()->where('categories.action', $interface['action']);
+        if (!empty($interface['reference'])) {
+            $tblCat->and()->where('categories_references.reference', (int)$interface['reference']);
+        }
+        $res = $tblCatReference->delete()->where('', $tblCat, 'exists')->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return true;
+    }
+
+    /**
      * Gets list of hooked gadgets for categories
      *
      * @access  public
