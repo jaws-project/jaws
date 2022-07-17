@@ -107,8 +107,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         // begin transaction
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
 
-        $res = Jaws_ORM::getInstance()
-            ->table('quotes')
+        $res = $objORM->table('quotes')
             ->delete()
             ->where('id', $id)
             ->exec();
@@ -116,25 +115,19 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
             return $res;
         }
 
-        // delete category
-        // FIXME
-//        $res = Jaws_Gadget::getInstance('Categories')->action->load('Categories')->deleteReferenceCategories(
-//            array(
-//                'gadget' => $this->gadget->name,
-//                'action' => 'Quotes',
-//                'reference' => $id,
-//                'input_reference' => 0
-//            ),
-//            array(
-//                'multiple' => false,
-//                'autoinsert' => false,
-//            )
-//        );
-//        if (Jaws_Error::IsError($res)) {
-//            //Rollback Transaction
-//            $objORM->rollback();
-//            return $res;
-//        }
+        // delete category references
+        $res = Jaws_Gadget::getInstance('Categories')->action->load('Categories')->deleteReferenceCategories(
+            array(
+                'gadget' => $this->gadget->name,
+                'action' => 'Quotes',
+                'reference' => $id
+            )
+        );
+        if (Jaws_Error::IsError($res)) {
+            //Rollback Transaction
+            $objORM->rollback();
+            return $res;
+        }
 
         //Commit Transaction
         $objORM->commit();

@@ -18,12 +18,12 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      * @param   string      $random    Order by random ?
      * @return  array       data
      */
-    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'q.order desc', $random = false)
+    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'q.ftime desc', $random = false)
     {
         $qTable = Jaws_ORM::getInstance()
             ->table('quotes as q')
             ->select(
-                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer', 'q.order:integer',
+                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer',
                 'q.ftime:integer', 'q.ttime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
                 'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
             )->join('categories_references as cr', 'cr.reference', 'q.id')
@@ -149,7 +149,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()
             ->table('quotes as q')
             ->select(
-                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer', 'q.order:integer',
+                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer',
                 'q.ftime:integer', 'q.ttime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
                 'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
             )->join('categories_references as cr', 'cr.reference', 'q.id')

@@ -132,7 +132,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             $filters,
             $count,
             $count * ($page - 1),
-            'order desc',
+            'ftime desc',
             $random
         );
 

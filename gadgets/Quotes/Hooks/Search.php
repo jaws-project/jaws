@@ -46,7 +46,7 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
         )->or()->closeWhere('ttime', 0);
         $objORM->and()->where('classification', $classification, '<=');
         $objORM->and()->loadWhere('search.terms');
-        $result = $objORM->orderBy('order')->fetchAll();
+        $result = $objORM->orderBy('ftime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return false;
         }

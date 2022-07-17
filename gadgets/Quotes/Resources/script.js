@@ -112,22 +112,17 @@ function Jaws_Gadget_Quotes_Action_quotes() {
                 'title': {
                     'label': Jaws.t('title'),
                     'property': 'title',
-                    'width': '25%'
+                    'width': '30%'
                 },
                 'category_title': {
                     'label': this.t('group'),
                     'property': 'category_title',
-                    'width': '15%'
+                    'width': '20%'
                 },
                 'classification': {
                     'label': this.t('classification'),
                     'property': 'classification',
                     'width': '20%'
-                },
-                'order': {
-                    'label': this.t('order'),
-                    'property': 'order',
-                    'width': '10%'
                 },
                 'published': {
                     'label': Jaws.t('published'),

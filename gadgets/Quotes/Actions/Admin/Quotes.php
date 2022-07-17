@@ -135,7 +135,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
     function insertQuote()
     {
         $data = $this->gadget->request->fetch(
-            array('title', 'quotation', 'classification', 'order', 'ftime',
+            array('title', 'quotation', 'classification', 'ftime',
                 'ttime', 'meta_keywords', 'meta_description', 'published'),
             'post'
         );
@@ -146,6 +146,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
             $data['ftime'] = $this->app->UserTime2UTC(
                 (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ftime'] . ' 0:0:0'), 'U')
             );
+        } else {
+            $data['ftime'] = time();
         }
         if (!empty($data['ttime'])) {
             $data['ttime'] = $this->app->UserTime2UTC(
@@ -171,7 +173,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
     function updateQuote()
     {
         $data = $this->gadget->request->fetch(
-            array('title', 'quotation', 'classification', 'order', 'ftime',
+            array('title', 'quotation', 'classification', 'ftime',
                 'ttime', 'meta_keywords', 'meta_description', 'published'),
             'post'
         );
@@ -183,6 +185,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
             $data['ftime'] = $this->app->UserTime2UTC(
                 (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ftime'] . ' 0:0:0'), 'U')
             );
+        } else {
+            $data['ftime'] = time();
         }
         if (!empty($data['ttime'])) {
             $data['ttime'] = $this->app->UserTime2UTC(
