@@ -52,9 +52,19 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 empty($filters['classification_is'])
             )->and()->where(
                 'q.published',
-                @$filters['published'],
+                (bool)@$filters['published'],
                 '=',
-                !isset($filters['published'])
+                ($filters['published'] === '')
+            )->and()->where(
+                'q.ftime',
+                @$filters['from_date'],
+                '>=',
+                empty($filters['from_date'])
+            )->and()->where(
+                'q.ftime',
+                @$filters['to_date'],
+                '<=',
+                empty($filters['to_date'])
             );
 
         if (!empty($filters['ftime'])) {
@@ -65,7 +75,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 empty($filters['ftime'])
             )->or()->closeWhere('ftime', 0);
         }
-        if (!empty($filters['ftime'])) {
+        if (!empty($filters['ttime'])) {
             $qTable->and()->openWhere(
                 'q.ttime',
                 $filters['ttime'],
@@ -111,10 +121,20 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 '=',
                 empty($filters['classification_is'])
             )->and()->where(
-                'published',
-                @$filters['published'],
+                'q.published',
+                (bool)@$filters['published'],
                 '=',
-                !isset($filters['published'])
+                ($filters['published'] === '')
+            )->and()->where(
+                'q.ftime',
+                @$filters['from_date'],
+                '>=',
+                empty($filters['from_date'])
+            )->and()->where(
+                'q.ftime',
+                @$filters['to_date'],
+                '<=',
+                empty($filters['to_date'])
             );
 
         if (!empty($filters['ftime'])) {
@@ -125,7 +145,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 empty($filters['ftime'])
             )->or()->closeWhere('ftime', 0);
         }
-        if (!empty($filters['ftime'])) {
+        if (!empty($filters['ttime'])) {
             $qTable->and()->openWhere(
                 'ttime',
                 $filters['ttime'],

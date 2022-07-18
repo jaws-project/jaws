@@ -41,6 +41,7 @@ function Jaws_Gadget_Quotes_Action_quotes() {
          */
         saveQuote: function() {
             let data = $.unserialize($('form#quotes-form').serialize());
+            // 'category_quotes_0': $('select[name="category_quotes_0"]').find('option:selected').val()
 
             if (this.selectedQuote === 0) {
                 this.ajax.callAsync('insertQuote', data);

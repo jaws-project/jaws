@@ -18,6 +18,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $this->AjaxMe('script.js');
         $assigns = array();
         $assigns['menubar'] = $this->MenuBar('quotes');
+        $assigns['from_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'from_date'));
+        $assigns['to_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'to_date'));
         $assigns['ftime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'ftime'));
         $assigns['ttime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'ttime'));
 
@@ -75,8 +77,18 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
-        $post['filters']['published'] = $post['filters']['published'] === '0' ?
-            null : filter_var($post['filters']['published'], FILTER_VALIDATE_BOOLEAN);
+
+        $objDate = Jaws_Date::getInstance();
+        if (!empty($post['filters']['from_date'])) {
+            $post['filters']['from_date'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $post['filters']['from_date'] . ' 0:0:0'), 'U')
+            );
+        }
+        if (!empty($post['filters']['to_date'])) {
+            $post['filters']['to_date'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $post['filters']['to_date'] . ' 0:0:0'), 'U')
+            );
+        }
 
         $items = $this->gadget->model->load('Quotes')->list(
             $post['filters'],

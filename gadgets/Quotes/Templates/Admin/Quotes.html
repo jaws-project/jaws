@@ -6,6 +6,19 @@
           <form action="#" onsubmit="return false">
 
             <div class="col-xs-2">
+              <label>{{ "quotes.from_time" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              {% include 'include/Jaws/Resources/XDatePicker.html' with from_date as datepicker %}
+            </div>
+            <div class="col-xs-2">
+              <label>{{ "quotes.to_time" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              {% include 'include/Jaws/Resources/XDatePicker.html' with to_date as datepicker %}
+            </div>
+
+            <div class="col-xs-2">
               <label for="filter_term">{{ "global.term" | t }}: </label>
             </div>
             <div class="col-xs-4">
@@ -17,9 +30,9 @@
             </div>
             <div class="col-xs-4">
               <select name="published" id="filter_published" class="form-control">
-                <option value="0">{{ "global.all" | t }}</option>
-                <option value="false">{{ "global.noo" | t }}</option>
-                <option value="true">{{ "global.yess" | t }}</option>
+                <option value="">{{ "global.all" | t }}</option>
+                <option value="0">{{ "global.noo" | t }}</option>
+                <option value="1">{{ "global.yess" | t }}</option>
               </select>
             </div>
 
