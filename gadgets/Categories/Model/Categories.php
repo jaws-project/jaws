@@ -163,15 +163,17 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
         $interface = array_merge($data, $interface);
 
         $objTable = Jaws_ORM::getInstance();
-        // delete reference categories
-        $result = $objTable->table('categories_references')
-            ->delete()
-            ->where('category', $del_categories, 'in')
-            ->and()
-            ->where('reference', (int)$interface['reference'])
-            ->exec();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        if (!empty($del_categories)) {
+            // delete reference categories
+            $result = $objTable->table('categories_references')
+                ->delete()
+                ->where('category', $del_categories, 'in')
+                ->and()
+                ->where('reference', (int)$interface['reference'])
+                ->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         // insert new reference categories
