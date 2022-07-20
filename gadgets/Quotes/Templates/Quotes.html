@@ -9,7 +9,8 @@
     <ul>
       {% for quote in quotes %}
       <li>
-        <a href="{{ 'Quotes' | urlmap: 'quote', 'id', quote.id, 'metaurl', quote.meta_keywords }}">{{quote.title}}</a>
+        {% assign quote.metaurl =  quote.title | metaURL %}
+        <a href="{{ 'Quotes' | urlmap: 'quote', 'id', quote.id, 'metaurl', quote.metaurl }}">{{quote.title}}</a>
       </li>
       {% endfor %}
     </ul>

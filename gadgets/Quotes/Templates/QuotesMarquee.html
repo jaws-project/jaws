@@ -1,7 +1,7 @@
 {% if showTitle==1 %}
 <div class="gadget_header">
   <div class="row">
-    <div class="col-xs-12"><h2>{{ "quotes.actions_quotes_title" | t }}</h2></div>
+    <div class="col-xs-12"><h3>{{ "quotes.actions_quotes_title" | t }}</h3></div>
   </div>
 </div>
 {% endif %}
@@ -12,7 +12,8 @@
       <ul>
         {% for quote in quotes %}
         <li>
-          <a href="{{ 'Quotes' | urlmap: 'quote', 'id', quote.id, 'metaurl', quote.meta_keywords }}">{{quote.title}}</a>
+          {% assign quote.metaurl =  quote.title | metaURL %}
+          <a href="{{ 'Quotes' | urlmap: 'quote', 'id', quote.id, 'metaurl', quote.metaurl }}">{{quote.title}}</a>
           {% if viewMode==2 %}
           <p>{{quote.quotation}}</p>
           {% endif %}

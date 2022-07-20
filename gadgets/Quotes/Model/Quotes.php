@@ -42,14 +42,9 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 empty($filters['term'])
             )->and()->where(
                 'q.classification',
-                is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
-                is_array($filters['classification']) ? $filters['classification'][1] : '=',
+                $filters['classification'],
+                'in',
                 empty($filters['classification'])
-            )->and()->where(
-                'q.classification',
-                @$filters['classification_is'],
-                '=',
-                empty($filters['classification_is'])
             )->and()->where(
                 'q.published',
                 (bool)@$filters['published'],
@@ -121,14 +116,9 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 empty($filters['term'])
             )->and()->where(
                 'q.classification',
-                is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
-                is_array($filters['classification']) ? $filters['classification'][1] : '=',
+                $filters['classification'],
+                'in',
                 empty($filters['classification'])
-            )->and()->where(
-                'q.classification',
-                @$filters['classification_is'],
-                '=',
-                empty($filters['classification_is'])
             )->and()->where(
                 'q.published',
                 (bool)@$filters['published'],

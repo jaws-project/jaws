@@ -101,9 +101,9 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
      * @param   bool        $showTitle
      * @return  string  XHTML template content
      */
-    function quotes($count = 10, $category = 0, $classification = 0, $viewMode = 2,
-                    $viewType = 1, $random = 0, $showTitle = 1)
-    {
+    function quotes($count = 5, $category = 0, $classification = 0, $viewMode = 2,
+        $viewType = 1, $random = 0, $showTitle = 1
+    ) {
         $page = $this->gadget->request->fetch('page:integer', 'get');
         $page = empty($page) ? 1 : (int)$page;
 
@@ -121,11 +121,8 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             'category' => $category,
             'ptime' => time(),
             'xtime' => time(),
-            'classification' => array($this->getCurrentUserClassification(), '<='),
+            'classification' => $this->getCurrentUserClassification(),
         );
-        if (!empty($classification)) {
-            $filters['classification_is'] = $classification;
-        }
 
         $assigns['quotes'] = $this->gadget->model->load('Quotes')->list(
             $filters,
@@ -188,11 +185,13 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($quote)) {
             return Jaws_HTTPError::Get(500);
         }
-        if (empty($quote) || !$quote['published'] || (!empty($quote['ptime']) && $quote['ptime'] > time()) ||
-            (!empty($quote['xtime']) && $quote['xtime'] <= time())) {
+        if (empty($quote) || !$quote['published'] ||
+            (!empty($quote['ptime']) && $quote['ptime'] > time()) ||
+            (!empty($quote['xtime']) && $quote['xtime'] <= time())
+        ) {
             return Jaws_HTTPError::Get(404);
         }
-        if ($quote['classification'] > $this->getCurrentUserClassification()) {
+        if (!in_array($quote['classification'], $this->getCurrentUserClassification())) {
             return Jaws_HTTPError::Get(403);
         }
 
@@ -206,24 +205,25 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
     }
 
     /**
-     * Get current user classification access
+     * Get current user classifications access
      *
      * @access  public
      * @return  int
      */
     function getCurrentUserClassification()
     {
-        $classification = Quotes_Info::CLASSIFICATION_TYPE_PUBLIC;
+        $classifications = array();
+        $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_PUBLIC;
         if ($this->app->session->user->logged) {
-            $classification = Quotes_Info::CLASSIFICATION_TYPE_INTERNAL;
+            $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_INTERNAL;
         }
         if ($this->gadget->GetPermission('ClassificationRestricted')) {
-            $classification = Quotes_Info::CLASSIFICATION_TYPE_RESTRICTED;
+            $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_RESTRICTED;
         }
         if ($this->gadget->GetPermission('ClassificationConfidential')) {
-            $classification = Quotes_Info::CLASSIFICATION_TYPE_CONFIDENTIAL;
+            $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_CONFIDENTIAL;
         }
 
-        return $classification;
+        return $classifications;
     }
 }
