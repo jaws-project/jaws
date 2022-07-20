@@ -120,8 +120,8 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
         $filters = array(
             'published' => true,
             'category' => $category,
-            'ftime' => time(),
-            'ttime' => time(),
+            'ptime' => time(),
+            'xtime' => time(),
             'classification' => array($this->getCurrentUserClassification(), '<='),
         );
         if (!empty($classification)) {
@@ -132,7 +132,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             $filters,
             $count,
             $count * ($page - 1),
-            'ftime desc',
+            'ptime desc',
             $random
         );
 
@@ -189,8 +189,8 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($quote)) {
             return Jaws_HTTPError::Get(500);
         }
-        if (empty($quote) || !$quote['published'] || (!empty($quote['ftime']) && $quote['ftime'] > time()) ||
-            (!empty($quote['ttime']) && $quote['ttime'] <= time())) {
+        if (empty($quote) || !$quote['published'] || (!empty($quote['ptime']) && $quote['ptime'] > time()) ||
+            (!empty($quote['xtime']) && $quote['xtime'] <= time())) {
             return Jaws_HTTPError::Get(404);
         }
         if ($quote['classification'] > $this->getCurrentUserClassification()) {

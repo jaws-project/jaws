@@ -127,7 +127,6 @@
           <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
           <button type="button" class="btn btn-default btn-sm repeater-next">
             <span class="glyphicon glyphicon-chevron-right"></span>
-            <span class="sr-only">Next Page</span>
           </button>
         </div>
       </div>
@@ -162,13 +161,13 @@
                 <div id="collapseExtra" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div class="panel-body row">
                     <div class="form-group col-md-6">
-                      <label for="ftime">{{ "quotes.from_time" | t }}:</label>
-                      {% include 'include/Jaws/Resources/XDatePicker.html' with ftime as datepicker %}
+                      <label for="ptime">{{ "quotes.publish_time" | t }}:</label>
+                      {% include 'include/Jaws/Resources/XDatePicker.html' with ptime as datepicker %}
                     </div>
 
                     <div class="form-group col-md-6">
-                      <label for="ttime">{{ "quotes.to_time" | t }}:</label>
-                      {% include 'include/Jaws/Resources/XDatePicker.html' with ttime as datepicker %}
+                      <label for="xtime">{{ "quotes.expiry_time" | t }}:</label>
+                      {% include 'include/Jaws/Resources/XDatePicker.html' with xtime as datepicker %}
                     </div>
 
                     <div class="form-group col-md-6">

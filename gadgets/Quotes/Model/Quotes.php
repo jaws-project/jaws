@@ -18,13 +18,13 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      * @param   string      $random    Order by random ?
      * @return  array       data
      */
-    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'q.ftime desc', $random = false)
+    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'q.ptime desc', $random = false)
     {
         $qTable = Jaws_ORM::getInstance()
             ->table('quotes as q')
             ->select(
                 'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer',
-                'q.ftime:integer', 'q.ttime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
+                'q.ptime:integer', 'q.xtime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
                 'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
             )->join('categories_references as cr', 'cr.reference', 'q.id')
             ->join('categories as cat', 'cat.id', 'cr.category')
@@ -56,32 +56,32 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 '=',
                 ($filters['published'] === '')
             )->and()->where(
-                'q.ftime',
+                'q.ptime',
                 @$filters['from_date'],
                 '>=',
                 empty($filters['from_date'])
             )->and()->where(
-                'q.ftime',
+                'q.ptime',
                 @$filters['to_date'],
                 '<=',
                 empty($filters['to_date'])
             );
 
-        if (!empty($filters['ftime'])) {
+        if (!empty($filters['ptime'])) {
             $qTable->and()->openWhere(
-                'q.ftime',
-                $filters['ftime'],
+                'q.ptime',
+                $filters['ptime'],
                 '<=',
-                empty($filters['ftime'])
-            )->or()->closeWhere('ftime', 0);
+                empty($filters['ptime'])
+            )->or()->closeWhere('ptime', 0);
         }
-        if (!empty($filters['ttime'])) {
+        if (!empty($filters['xtime'])) {
             $qTable->and()->openWhere(
-                'q.ttime',
-                $filters['ttime'],
+                'q.xtime',
+                $filters['xtime'],
                 '>',
-                empty($filters['ttime'])
-            )->or()->closeWhere('ttime', 0);
+                empty($filters['xtime'])
+            )->or()->closeWhere('xtime', 0);
         }
 
         if ($random) {
@@ -126,32 +126,32 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
                 '=',
                 ($filters['published'] === '')
             )->and()->where(
-                'q.ftime',
+                'q.ptime',
                 @$filters['from_date'],
                 '>=',
                 empty($filters['from_date'])
             )->and()->where(
-                'q.ftime',
+                'q.ptime',
                 @$filters['to_date'],
                 '<=',
                 empty($filters['to_date'])
             );
 
-        if (!empty($filters['ftime'])) {
+        if (!empty($filters['ptime'])) {
             $qTable->and()->openWhere(
-                'ftime',
-                $filters['ftime'],
+                'ptime',
+                $filters['ptime'],
                 '<=',
-                empty($filters['ftime'])
-            )->or()->closeWhere('ftime', 0);
+                empty($filters['ptime'])
+            )->or()->closeWhere('ptime', 0);
         }
-        if (!empty($filters['ttime'])) {
+        if (!empty($filters['xtime'])) {
             $qTable->and()->openWhere(
-                'ttime',
-                $filters['ttime'],
+                'xtime',
+                $filters['xtime'],
                 '>',
-                empty($filters['ttime'])
-            )->or()->closeWhere('ttime', 0);
+                empty($filters['xtime'])
+            )->or()->closeWhere('xtime', 0);
         }
 
         return $qTable->fetchOne();
@@ -170,7 +170,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
             ->table('quotes as q')
             ->select(
                 'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer',
-                'q.ftime:integer', 'q.ttime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
+                'q.ptime:integer', 'q.xtime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
                 'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
             )->join('categories_references as cr', 'cr.reference', 'q.id')
             ->join('categories as cat', 'cat.id', 'cr.category')

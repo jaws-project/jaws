@@ -35,18 +35,18 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
         $objORM->select('id', 'title', 'quotation', 'meta_keywords', 'meta_description', 'updated');
         $objORM->where('published', true);
         $objORM->and()->openWhere(
-            'ftime',
+            'ptime',
             time(),
             '<='
-        )->or()->closeWhere('ftime', 0);
+        )->or()->closeWhere('ptime', 0);
         $objORM->and()->openWhere(
-            'ttime',
+            'xtime',
             time(),
             '>'
-        )->or()->closeWhere('ttime', 0);
+        )->or()->closeWhere('xtime', 0);
         $objORM->and()->where('classification', $classification, '<=');
         $objORM->and()->loadWhere('search.terms');
-        $result = $objORM->orderBy('ftime desc')->fetchAll();
+        $result = $objORM->orderBy('ptime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return false;
         }

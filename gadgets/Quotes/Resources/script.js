@@ -78,16 +78,16 @@ function Jaws_Gadget_Quotes_Action_quotes() {
 
                         $('select[name="category_quotes_0"]').val(quoteInfo.category);
 
-                        $('#datepicker_ftime_input').val(
-                            (quoteInfo.ftime === 0) ? '' :
+                        $('#datepicker_ptime_input').val(
+                            (quoteInfo.ptime === 0) ? '' :
                                 $.dateCalendar(
-                                    Jaws.defines.preferences['calendar'], quoteInfo.ftime
+                                    Jaws.defines.preferences['calendar'], quoteInfo.ptime
                                 ).format('YYYY/MM/DD')
                         );
-                        $('#datepicker_ttime_input').val(
-                            (quoteInfo.ttime === 0) ? '' :
+                        $('#datepicker_xtime_input').val(
+                            (quoteInfo.xtime === 0) ? '' :
                                 $.dateCalendar(
-                                    Jaws.defines.preferences['calendar'], quoteInfo.ttime
+                                    Jaws.defines.preferences['calendar'], quoteInfo.xtime
                                 ).format('YYYY/MM/DD')
                         );
 

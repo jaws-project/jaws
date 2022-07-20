@@ -20,8 +20,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $assigns['menubar'] = $this->MenuBar('quotes');
         $assigns['from_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'from_date'));
         $assigns['to_date'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'to_date'));
-        $assigns['ftime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'ftime'));
-        $assigns['ttime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'ttime'));
+        $assigns['ptime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'ptime'));
+        $assigns['xtime'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'xtime'));
 
         $classifications = array(
             Quotes_Info::CLASSIFICATION_TYPE_PUBLIC => $this::t('CLASSIFICATION_TYPE_1'),
@@ -147,27 +147,27 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
     function insertQuote()
     {
         $data = $this->gadget->request->fetch(
-            array('title', 'quotation', 'classification', 'ftime',
-                'ttime', 'meta_keywords', 'meta_description', 'published'),
+            array('title', 'quotation', 'classification', 'ptime',
+                'xtime', 'meta_keywords', 'meta_description', 'published'),
             'post'
         );
         $data['quotation'] = $this->gadget->request->fetch('quotation', 'post', 'strip_crlf');
 
         $objDate = Jaws_Date::getInstance();
-        if (!empty($data['ftime'])) {
-            $data['ftime'] = $this->app->UserTime2UTC(
-                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ftime'] . ' 0:0:0'), 'U')
+        if (!empty($data['ptime'])) {
+            $data['ptime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ptime'] . ' 0:0:0'), 'U')
             );
         } else {
-            $data['ftime'] = time();
+            $data['ptime'] = time();
         }
-        if (!empty($data['ttime'])) {
-            $data['ttime'] = $this->app->UserTime2UTC(
-                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ttime'] . ' 0:0:0'), 'U')
+        if (!empty($data['xtime'])) {
+            $data['xtime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['xtime'] . ' 0:0:0'), 'U')
             );
         }
-        $data['ftime'] = (int)$data['ftime'];
-        $data['ttime'] = (int)$data['ttime'];
+        $data['ptime'] = (int)$data['ptime'];
+        $data['xtime'] = (int)$data['xtime'];
 
         $res = $this->gadget->model->loadAdmin('Quotes')->add($data);
         if (Jaws_Error::isError($res)) {
@@ -185,28 +185,28 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
     function updateQuote()
     {
         $data = $this->gadget->request->fetch(
-            array('title', 'quotation', 'classification', 'ftime',
-                'ttime', 'meta_keywords', 'meta_description', 'published'),
+            array('title', 'quotation', 'classification', 'ptime',
+                'xtime', 'meta_keywords', 'meta_description', 'published'),
             'post'
         );
         $data['quotation'] = $this->gadget->request->fetch('quotation', 'post', 'strip_crlf');
         $id = (int)$this->gadget->request->fetch('id:integer', 'post');
 
         $objDate = Jaws_Date::getInstance();
-        if (!empty($data['ftime'])) {
-            $data['ftime'] = $this->app->UserTime2UTC(
-                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ftime'] . ' 0:0:0'), 'U')
+        if (!empty($data['ptime'])) {
+            $data['ptime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ptime'] . ' 0:0:0'), 'U')
             );
         } else {
-            $data['ftime'] = time();
+            $data['ptime'] = time();
         }
-        if (!empty($data['ttime'])) {
-            $data['ttime'] = $this->app->UserTime2UTC(
-                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['ttime'] . ' 0:0:0'), 'U')
+        if (!empty($data['xtime'])) {
+            $data['xtime'] = $this->app->UserTime2UTC(
+                (int)$objDate->ToBaseDate(preg_split('/[\/\- :]/', $data['xtime'] . ' 0:0:0'), 'U')
             );
         }
-        $data['ftime'] = (int)$data['ftime'];
-        $data['ttime'] = (int)$data['ttime'];
+        $data['ptime'] = (int)$data['ptime'];
+        $data['xtime'] = (int)$data['xtime'];
 
         $res = $this->gadget->model->loadAdmin('Quotes')->update($id, $data);
         if (Jaws_Error::isError($res)) {
