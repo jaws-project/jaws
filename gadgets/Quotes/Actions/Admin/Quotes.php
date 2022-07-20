@@ -168,6 +168,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         }
         $data['ptime'] = (int)$data['ptime'];
         $data['xtime'] = (int)$data['xtime'];
+        $data['meta_keywords'] = empty($data['meta_keywords']) ? $data['title'] : $data['meta_keywords'];
 
         $res = $this->gadget->model->loadAdmin('Quotes')->add($data);
         if (Jaws_Error::isError($res)) {
@@ -190,6 +191,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
             'post'
         );
         $data['quotation'] = $this->gadget->request->fetch('quotation', 'post', 'strip_crlf');
+        $data['meta_keywords'] = empty($data['meta_keywords']) ? $data['title'] : $data['meta_keywords'];
         $id = (int)$this->gadget->request->fetch('id:integer', 'post');
 
         $objDate = Jaws_Date::getInstance();

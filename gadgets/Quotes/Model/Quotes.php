@@ -103,20 +103,29 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
     function count($filters)
     {
         $qTable = Jaws_ORM::getInstance()
-            ->table('quotes')
-            ->select('count(id):integer')
-            ->where(
-                'title',
+            ->table('quotes as q')
+            ->select('count(q.id):integer')
+            ->join('categories_references as cr', 'cr.reference', 'q.id')
+            ->join('categories as cat', 'cat.id', 'cr.category')
+            ->where('cat.gadget', $this->gadget->name)
+            ->and()->where('cat.action', 'Quotes')
+            ->and()->where(
+                'cat.id',
+                @$filters['category'],
+                '=',
+                empty($filters['category'])
+            )->and()->where(
+                'q.title',
                 @$filters['term'],
                 'like',
                 empty($filters['term'])
             )->and()->where(
-                'classification',
+                'q.classification',
                 is_array($filters['classification']) ? $filters['classification'][0] : $filters['classification'],
                 is_array($filters['classification']) ? $filters['classification'][1] : '=',
                 empty($filters['classification'])
             )->and()->where(
-                'classification',
+                'q.classification',
                 @$filters['classification_is'],
                 '=',
                 empty($filters['classification_is'])
@@ -139,7 +148,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
 
         if (!empty($filters['ptime'])) {
             $qTable->and()->openWhere(
-                'ptime',
+                'q.ptime',
                 $filters['ptime'],
                 '<=',
                 empty($filters['ptime'])
@@ -147,12 +156,13 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         }
         if (!empty($filters['xtime'])) {
             $qTable->and()->openWhere(
-                'xtime',
+                'q.xtime',
                 $filters['xtime'],
                 '>',
                 empty($filters['xtime'])
             )->or()->closeWhere('xtime', 0);
         }
+
 
         return $qTable->fetchOne();
     }

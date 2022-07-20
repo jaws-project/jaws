@@ -107,7 +107,6 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
         $page = $this->gadget->request->fetch('page:integer', 'get');
         $page = empty($page) ? 1 : (int)$page;
 
-
         if ($this->app->requestedActionMode === 'normal') {
             $category = (int)$this->gadget->request->fetch('category:integer', 'get');
         }
