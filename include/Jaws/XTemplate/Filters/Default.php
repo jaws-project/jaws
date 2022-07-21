@@ -250,6 +250,22 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Generate meta url
+     *
+     * @param   string  $string
+     *
+     * @return  string  return UTF-8 encoded safe url 
+     */
+    public static function metaURL($string)
+    {
+        return preg_replace(
+            array('#[^\p{L}[:digit:]_\.\-\s]#u', '#[\s_\-]#u', '#\-\+#u'),
+            array('', '-', '-'),
+            Jaws_UTF8::strtolower($string)
+        );
+    }
+
+    /**
      * get session variables/attributes(user, global, gadget)
      *
      * @param   string    $var
