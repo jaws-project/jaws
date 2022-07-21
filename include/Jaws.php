@@ -144,6 +144,8 @@ class Jaws
     {
         $this->define('', 'script', JAWS_SCRIPT);
         $this->define('', 'base', Jaws_Utils::getBaseURL('/'));
+        $this->define('', 'relBase', Jaws_Utils::getBaseURL('/'));
+        $this->define('', 'absBase', Jaws_Utils::getBaseURL('/', false));
         $this->define('', 'requestedURL', Jaws_Utils::getRequestURL());
 
         // Filesystem management
