@@ -218,17 +218,19 @@ class Jaws_Utils
         static $parts;
         if (!isset($parts)) {
             $parts = array();
+            // server port
+            $parts['port'] = (int)$_SERVER['SERVER_PORT'];
             // server schema
             if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
                 $parts['scheme'] = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
+                // forwarded server port
+                if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+                    $parts['port'] = (int)$_SERVER['HTTP_X_FORWARDED_PORT'];
+                } elseif ($parts['scheme'] == 'https') {
+                    $parts['port'] = 443;
+                }
             } else {
                 $parts['scheme'] = empty($_SERVER['HTTPS'])? 'http' : 'https';
-            }
-            // server port
-            if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
-                $parts['port'] = (int)$_SERVER['HTTP_X_FORWARDED_PORT'];
-            } else {
-                $parts['port'] = (int)$_SERVER['SERVER_PORT'];
             }
 
             //$parts['host'] = $_SERVER['SERVER_NAME'];
