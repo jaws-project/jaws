@@ -11,7 +11,7 @@
 class Jaws_Response_CSV
 {
     /**
-     * Returns json-encoded data
+     * Returns csv encoded data
      *
      * @access  public
      * @param   string  $data   Data string

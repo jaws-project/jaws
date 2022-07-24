@@ -11,7 +11,7 @@
 class Jaws_Response_GZCSV
 {
     /**
-     * Returns json-encoded data
+     * Returns gz-csv encoded data
      *
      * @access  public
      * @param   string  $data   Data string
