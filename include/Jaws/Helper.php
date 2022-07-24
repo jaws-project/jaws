@@ -18,7 +18,7 @@ spl_autoload_register('Jaws::loadClass');
 
 /**
  * Converts the hex representation of data to binary
- * @see http://www.php.net/hex2bin
+ * @see https://www.php.net/hex2bin
  */
 if (!function_exists('hex2bin')) {
     function hex2bin($data)
@@ -40,7 +40,7 @@ function hash64($str)
 
 /**
  * Get GMT/UTC date/time information
- * @see http://www.php.net/getdate
+ * @see https://www.php.net/getdate
  */
 function gmgetdate($ts = null)
 {
@@ -50,7 +50,7 @@ function gmgetdate($ts = null)
 
 /**
  * Parse about any English textual datetime description into a GMT/UTC Unix timestamp
- * @see http://www.php.net/strtotime
+ * @see https://www.php.net/strtotime
  */
 function gmstrtotime($time)
 {
@@ -59,7 +59,7 @@ function gmstrtotime($time)
 
 /**
  * Returns the values from a single column of the input array
- * @see http://www.php.net/array_column
+ * @see https://www.php.net/array_column
  */
 if (!function_exists('array_column')) {
     function array_column($input, $columnKey, $indexKey = null)
@@ -84,7 +84,7 @@ if (!function_exists('array_column')) {
 
 /**
  * Gets the first key of an array
- * @see http://www.php.net/array_key_first
+ * @see https://www.php.net/array_key_first
  */
 if (!function_exists('array_key_first')) {
     function array_key_first($array)
@@ -95,7 +95,7 @@ if (!function_exists('array_key_first')) {
 
 /**
  * Gets the last key of an array
- * @see http://www.php.net/array_key_last
+ * @see https://www.php.net/array_key_last
  */
 if (!function_exists('array_key_last')) {
     function array_key_last($array)
@@ -112,7 +112,7 @@ if (!function_exists('array_key_last')) {
  * @param   bool    $before_needle  If TRUE, it returns the part of the haystack
                                     before the last occurrence of the needle(excluding needle)
  * @return  mixed   Returns the portion of string, or FALSE if needle is not found
- * @see     http://www.php.net/strstr
+ * @see     https://www.php.net/strstr
  */
 if (!function_exists('strrstr')) {
     function strrstr($haystack, $needle, $before_needle = false)
@@ -139,7 +139,7 @@ if (!function_exists('strrstr')) {
  * @param   bool    $before_needle  If TRUE, it returns the part of the haystack
                                     before the last occurrence of the needle(excluding needle)
  * @return  mixed   Returns the portion of string, or FALSE if needle is not found
- * @see     http://www.php.net/stristr
+ * @see     https://www.php.net/stristr
  */
 if (!function_exists('strristr')) {
     function strristr($haystack, $needle, $before_needle = false)
@@ -183,7 +183,7 @@ function mime_decode($text) {
 
 /**
  * Get or Set the HTTP response code
- * @see http://www.php.net/http_response_code
+ * @see https://www.php.net/http_response_code
  */
 if (!function_exists('http_response_code')) {
     function http_response_code($code = null)
@@ -347,7 +347,7 @@ if (!function_exists('build_url'))
  * @param   string  $known_string   The string of known length to compare against 
  * @param   string  $user_string    The user-supplied string 
  * @return  bool    Returns TRUE when the two strings are equal, FALSE otherwise
- * @see     http://www.php.net/hash-equals
+ * @see     https://www.php.net/hash-equals
  */
 if (!function_exists('hash_equals')) {
     function hash_equals($known_string, $user_string)
@@ -372,7 +372,7 @@ if (!function_exists('hash_equals')) {
  *
  * @param   string  $filename   Path to the tested file
  * @return  mixed   Returns the content type in MIME format,or FALSE on failure
- * @see     http://www.php.net/mime_content_type
+ * @see     https://www.php.net/mime_content_type
  */
 if (!function_exists('mime_content_type')) {
     function mime_content_type($filename)
@@ -387,7 +387,7 @@ if (!function_exists('mime_content_type')) {
  * @param   string  $haystack   The string to search in
  * @param   string  $needle     The substring to search for in the haystack
  * @return  bool    Returns true if haystack begins with needle, false otherwise
- * @see     http://www.php.net/str_starts_with
+ * @see     https://www.php.net/str_starts_with
  */
 if (!function_exists('str_starts_with')) {
     function str_starts_with($haystack , $needle)
@@ -402,12 +402,33 @@ if (!function_exists('str_starts_with')) {
  * @param   string  $haystack   The string to search in
  * @param   string  $needle     The substring to search for in the haystack
  * @return  bool    Returns true if haystack ends with needle, false otherwise
- * @see     http://www.php.net/str_ends_with
+ * @see     https://www.php.net/str_ends_with
  */
 if (!function_exists('str_ends_with')) {
     function str_ends_with($haystack , $needle)
     {
         return Jaws_UTF8::substr($haystack, -Jaws_UTF8::strlen($needle)) === $needle;
+    }
+}
+
+/**
+ * Format an array as CSV string
+ *
+ * @param   array   $input      An array of strings
+ * @param   string  $delimiter  The optional delimiter parameter sets the field delimiter
+ * @param   string  $enclosure  The optional enclosure parameter sets the field enclosure
+ * @return  string  Returns formated CSV string
+ * @see     https://www.php.net/manual/en/function.str-getcsv.php
+ * @see     https://www.php.net/manual/en/function.fputcsv.php
+ */
+if (!function_exists('str_putcsv')) {
+    function str_putcsv($input, $delimiter = ',', $enclosure = '"') {
+        $fp = fopen('php://temp', 'r+b');
+        fputcsv($fp, $input, $delimiter, $enclosure);
+        rewind($fp);
+        $data = rtrim(stream_get_contents($fp), "\n");
+        fclose($fp);
+        return $data;
     }
 }
 

@@ -1,0 +1,37 @@
+<?php
+/**
+ * Jaws GZip-CSV Response driver
+ *
+ * @category    Response
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2021-2022 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
+ */
+class Jaws_Response_GZCSV
+{
+    /**
+     * Returns json-encoded data
+     *
+     * @access  public
+     * @param   string  $data   Data string
+     * @return  string  Returns encoded data
+     */
+    static function get($data)
+    {
+        $result = '';
+        foreach ($data as $entry) {
+            $result.= str_putcsv($entry). "\n";
+        }
+        $data = gzencode($result, COMPRESS_LEVEL, FORCE_GZIP);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Content-Length: '.strlen($data));
+        header('Content-Encoding: gzip');
+
+        return $data;
+    }
+
+}
