@@ -456,8 +456,8 @@ class Jaws_Template
             $result = $block->Content;
             foreach ($block->Vars as $k => $v) {
                 if (!is_array($v)) {
-                    $v = str_replace('\\', '\\\\', $v);
-                    $result = str_replace('{{'.$k.'}}', $v, $result);
+                    $v = str_replace('\\', '\\\\', (string)$v);
+                    $result = str_replace('{{'.$k.'}}', $v, (string)$result);
                 }
             }
 
