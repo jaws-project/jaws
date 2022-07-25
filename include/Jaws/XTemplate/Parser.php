@@ -151,7 +151,7 @@ class Jaws_XTemplate_Parser
             : preg_split(
                 self::get('TOKENIZATION_REGEXP'),
                 $source,
-                null,
+                -1,
                 PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
             );
     }
