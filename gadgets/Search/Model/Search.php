@@ -137,12 +137,12 @@ class Search_Model_Search extends Jaws_Gadget_Model
         }
 
         $resTitle = '';
-        $terms = implode(' ', is_array($options['all'])? $options['all'] : explode(' ', $options['all']));
+        $terms = implode(' ', is_array($options['all'])? $options['all'] : explode(' ', (string)$options['all']));
         if (!empty($terms)) {
             $resTitle .= $terms;
         }
 
-        $terms = implode(' +', is_array($options['least'])? $options['least'] : explode(' ', $options['least']));
+        $terms = implode(' +', is_array($options['least'])? $options['least'] : explode(' ', (string)$options['least']));
         if (!empty($terms)) {
             $resTitle .= ' +' . $terms;
         }
@@ -154,7 +154,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
 
         $terms = implode(
             ' -',
-            is_array($options['exclude'])? $options['exclude'] : explode(' ', $options['exclude'])
+            is_array($options['exclude'])? $options['exclude'] : explode(' ', (string)$options['exclude'])
         );
         if (!empty($terms)) {
             $resTitle .= ' -' . $terms;
