@@ -37,7 +37,7 @@ class Jaws_String
     static function AutoParagraph(&$text)
     {
         // cross-platform newlines
-        $text = preg_replace("/(\r\n|\r)/", "\n", $text);
+        $text = preg_replace("/(\r\n|\r)/", "\n", (string)$text);
 
         // All blocks level tags
         $blocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|code|select|';
