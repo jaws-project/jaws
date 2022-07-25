@@ -108,7 +108,7 @@ class Jaws_SharedSegment_File extends Jaws_SharedSegment
     {
         @fseek($this->hSHFile, $start);
         $count = $count?: @filesize($this->sharedPath. (string)$this->ftok);
-        return @fread($this->hSHFile, $count);
+        return $count? @fread($this->hSHFile, $count) : '';
     }
 
     /**
