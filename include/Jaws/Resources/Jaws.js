@@ -448,6 +448,9 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
+        // prevent auto redirect, we handle it manually if required
+        options.headers = {'No-Redirect': '1'};
+
         if (progress) {
             options.xhr = function() {
                 let xhr = $.ajaxSettings.xhr();
@@ -521,6 +524,9 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
+        // prevent auto redirect, we handle it manually if required
+        options.headers = {'No-Redirect': '1'};
+
         if (progress) {
             options.xhr = function() {
                 let xhr = $.ajaxSettings.xhr();
@@ -625,6 +631,9 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
         options.complete = this.onComplete.bind(this, options);
+        // prevent auto redirect, we handle it manually if required
+        options.headers = {'No-Redirect': '1'};
+
         return $.ajax(options);
     };
 

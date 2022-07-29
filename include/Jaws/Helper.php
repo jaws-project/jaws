@@ -475,11 +475,10 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
         $sync = false;
     }
 
-    // detect Ajax request
-    $XMLHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-        ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-
-    if (!empty($next_location) && $XMLHttpRequest) {
+    // no auto redirects?
+    $noRedirect = (bool)@$_SERVER['HTTP_NO_REDIRECT'];
+    _log_var_dump($gadget, $action, $noRedirect, $next_location, $data);
+    if (!empty($next_location) && $noRedirect) {
         if (empty($data)) {
             $data = $next_location;
             http_response_code($status_code);
@@ -498,7 +497,7 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     }
 
     if (!empty($next_location)) {
-        if (!$XMLHttpRequest) {
+        if (!$noRedirect) {
             header('Cache-Control: no-cache, must-revalidate');
             header('Pragma: no-cache');
             header('Location: '.$next_location, true, $status_code);
