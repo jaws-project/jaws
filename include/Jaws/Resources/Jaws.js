@@ -449,7 +449,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.action = action;
         options.callOptions = callOptions;
         // prevent auto redirect, we handle it manually if required
-        options.headers = {'No-Redirect': '1'};
+        options.headers = {'Auto-Redirects': '0'};
 
         if (progress) {
             options.xhr = function() {
@@ -525,7 +525,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.action = action;
         options.callOptions = callOptions;
         // prevent auto redirect, we handle it manually if required
-        options.headers = {'No-Redirect': '1'};
+        options.headers = {'Auto-Redirects': '0'}
 
         if (progress) {
             options.xhr = function() {
@@ -632,7 +632,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.error = this.onError.bind(this, options);
         options.complete = this.onComplete.bind(this, options);
         // prevent auto redirect, we handle it manually if required
-        options.headers = {'No-Redirect': '1'};
+        options.headers = {'Auto-Redirects': '0'}
 
         return $.ajax(options);
     };
