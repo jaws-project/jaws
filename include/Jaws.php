@@ -205,7 +205,7 @@ class Jaws
         Jaws_Translate::getInstance()->init($this->_Preferences['language']);
 
         // pass preferences to client
-        $this->define('', 'preferences', $this->_Preferences);
+        $this->define('', $this->_Preferences);
     }
 
     /**
@@ -538,6 +538,8 @@ class Jaws
             if (!array_key_exists($component, $this->defines)) {
                 $this->defines[$component] = array();
             }
+        } else if (is_array($key)) {
+            $this->defines[$component] = array_merge($this->defines[$component], $key);
         } else {
             $this->defines[$component][$key] = $value;
         }

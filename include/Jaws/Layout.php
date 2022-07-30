@@ -135,6 +135,7 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $this->app->GetLanguage();
+        $this->app->define('', 'direction', Jaws::t('LANG_DIRECTION'));
         $this->app->define('', 'loadingMessage', Jaws::t('LOADING'));
         $this->app->define('', 'reloadMessage', Jaws::t('RELOAD_MESSAGE'));
         $this->app->define('', 'logged', (bool)$this->app->session->user->logged);

@@ -897,14 +897,16 @@ function tinymce_file_picker_callback(callback, value, meta)
 function initEditor(selector)
 {
     var objEditor = $(selector);
-    var editorType = objEditor.data('editor') || 'textarea';
+    var editorType = objEditor.data('editor') || Jaws.defines.editor || 'textarea';
+
     switch(editorType) {
         case 'ckeditor':
+        case 'CKEditor':
             $.loadScript('libraries/ckeditor/ckeditor.js', function() {
                 objEditor.ckeditor({
                     'baseHref': $('base').attr('href'),
-                    'contentsLangDirection': objEditor.data('direction') || 'ltr',
-                    'language': objEditor.data('language') || 'en',
+                    'contentsLangDirection': objEditor.data('direction') || Jaws.defines.direction || 'ltr',
+                    'language': objEditor.data('language') || Jaws.defines.language || 'en',
                     'AutoDetectLanguage': false,
                     'skin': 'moono',
                     'theme': 'default',
@@ -936,8 +938,8 @@ function initEditor(selector)
                     function() {
                         objEditor.tinymce({
                             'document_base_url': '',
-                            'directionality': objEditor.data('direction') || 'ltr',
-                            'language': objEditor.data('language') || 'en',
+                            'directionality': objEditor.data('direction') || Jaws.defines.direction || 'ltr',
+                            'language': objEditor.data('language') || Jaws.defines.language || 'en',
                             'theme': 'modern',
                             'plugins': Jaws.defines.editorPlugins,
                             'toolbar1': Jaws.defines.editorToolbar,
