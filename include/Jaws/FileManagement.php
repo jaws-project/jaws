@@ -46,7 +46,7 @@ class Jaws_FileManagement
      */
     static function getInstance($fmDriver = 'File')
     {
-        $fmDriver = preg_replace('/[^[:alnum:]_\-]/', '', $fmDriver);
+        $fmDriver = preg_replace('/[^[:alnum:]_\-]/', '', (string)$fmDriver);
         if (empty($fmDriver)) {
             $fmDriver = 'File';
         }
