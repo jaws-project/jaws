@@ -477,7 +477,7 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
 
     // auto redirects?
     $autoRedirects = !array_key_exists('HTTP_AUTO_REDIRECTS', $_SERVER) || (bool)$_SERVER['HTTP_AUTO_REDIRECTS'];
-    if (!$autoRedirect && !empty($next_location)) {
+    if (!$autoRedirects && !empty($next_location)) {
         if (empty($data)) {
             $data = $next_location;
             http_response_code($status_code);
