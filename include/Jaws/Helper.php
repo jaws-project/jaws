@@ -475,10 +475,9 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
         $sync = false;
     }
 
-    // no auto redirects?
-    $noRedirect = (bool)@$_SERVER['HTTP_NO_REDIRECT'];
-    _log_var_dump($gadget, $action, $noRedirect, $next_location, $data);
-    if (!empty($next_location) && $noRedirect) {
+    // auto redirects?
+    $autoRedirects = !array_key_exists('HTTP_AUTO_REDIRECTS', $_SERVER) || (bool)$_SERVER['HTTP_AUTO_REDIRECTS'];
+    if (!$autoRedirect && !empty($next_location)) {
         if (empty($data)) {
             $data = $next_location;
             http_response_code($status_code);
@@ -497,7 +496,7 @@ function terminate(&$data = null, $status_code = 0, $next_location = '', $sync =
     }
 
     if (!empty($next_location)) {
-        if (!$noRedirect) {
+        if ($autoRedirects) {
             header('Cache-Control: no-cache, must-revalidate');
             header('Pragma: no-cache');
             header('Location: '.$next_location, true, $status_code);
