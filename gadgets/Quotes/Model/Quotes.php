@@ -1,128 +1,182 @@
 <?php
 /**
- * Quotes Gadget
+ * Quotes Model
  *
  * @category   GadgetModel
  * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Model_Quotes extends Jaws_Gadget_Model
 {
     /**
-     * Retrieves data of the quote
+     * Get list of quotes item
      *
      * @access  public
-     * @param   int     $id     Quote ID
-     * @return  mixed   Quote data array or Jaws_Error
+     * @param   array       $filters
+     * @param   bool|int    $limit     Count of quotes to be returned
+     * @param   int         $offset    Offset of data array
+     * @param   string      $orderBy   Order by
+     * @param   string      $random    Order by random ?
+     * @return  array       data
      */
-    function GetQuote($id)
+    function list($filters = array(), $limit = false, $offset = null, $orderBy = 'q.ptime desc', $random = false)
     {
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $res = $quotesTable->select(
-            'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
-            'order:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
-        );
-        return $quotesTable->where('id', $id)->fetchRow();
-    }
+        $qTable = Jaws_ORM::getInstance()
+            ->table('quotes as q')
+            ->select(
+                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer',
+                'q.ptime:integer', 'q.xtime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
+                'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
+            )->join('categories_references as cr', 'cr.reference', 'q.id')
+            ->join('categories as cat', 'cat.id', 'cr.category')
+            ->where('cat.gadget', $this->gadget->name)
+            ->and()->where('cat.action', 'Quotes')
+            ->and()->where(
+                'cat.id',
+                @$filters['category'],
+                '=',
+                empty($filters['category'])
+            )->and()->where(
+             'q.title',
+                @$filters['term'],
+                'like',
+                empty($filters['term'])
+            )->and()->where(
+                'q.classification',
+                $filters['classification'],
+                'in',
+                empty($filters['classification'])
+            )->and()->where(
+                'q.published',
+                (bool)@$filters['published'],
+                '=',
+                ($filters['published'] === '')
+            )->and()->where(
+                'q.ptime',
+                @$filters['from_date'],
+                '>=',
+                empty($filters['from_date'])
+            )->and()->where(
+                'q.ptime',
+                @$filters['to_date'],
+                '<=',
+                empty($filters['to_date'])
+            );
 
-    /**
-     * Retrieves quotes
-     *
-     * @param   int     $id
-     * @param   int     $gid
-     * @param   int     $limit
-     * @param   int     $offset
-     * @return  mixed   List of quotes or Jaws_Error
-     */
-    function GetQuotes($id = -1, $gid = -1, $limit = 0, $offset = null)
-    {
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select(
-            'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
-            'order:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean', 'updatetime'
-        );
-
-        if (($id != -1) && ($gid != -1)) {
-            $quotesTable->where('id', $id)->and()->where('gid', $gid);
-        } elseif ($gid != -1) {
-            $quotesTable->where('gid', $gid);
-        } elseif ($id != -1) {
-            $quotesTable->where('id', $id);
+        if (!empty($filters['ptime'])) {
+            $qTable->and()->openWhere(
+                'q.ptime',
+                $filters['ptime'],
+                '<=',
+                empty($filters['ptime'])
+            )->or()->closeWhere('ptime', 0);
         }
-        $res = $quotesTable->orderBy('id asc')->limit($limit, $offset)->fetchAll();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage());
+        if (!empty($filters['xtime'])) {
+            $qTable->and()->openWhere(
+                'q.xtime',
+                $filters['xtime'],
+                '>',
+                empty($filters['xtime'])
+            )->or()->closeWhere('xtime', 0);
         }
 
-        return $res;
-    }
-
-    /**
-     * Retrieves quotes that can be published
-     *
-     * @access  public
-     * @param   int     $gid        Group ID
-     * @param   int     $limit
-     * @param   bool    $randomly
-     * @return  array   List of quotes or Jaws_Error
-     */
-    function GetPublishedQuotes($gid, $limit = null, $randomly = false)
-    {
-        $now = Jaws_DB::getInstance()->date();
-
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select('id:integer', 'title', 'quotation', 'order:integer', 'show_title:boolean');
-        $quotesTable->where('gid', $gid)->and()->where('published', true)->and();
-        $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
-        $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
-        $quotesTable->openWhere()->where('stop_time', '', 'is null')->or();
-        $quotesTable->where('stop_time', $now, '>=')->closeWhere();
-
-        if ($randomly) {
-            $quotesTable->orderBy($quotesTable->random());
+        if ($random) {
+            $qTable->orderBy($qTable->random());
         } else {
-            $quotesTable->orderBy('order asc', 'id desc');
+            $qTable->orderBy($orderBy);
         }
 
-        $res = $quotesTable->limit($limit)->fetchAll();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-        return $res;
+        return $qTable->limit((int)$limit, $offset)->fetchAll();
     }
 
     /**
-     * Retrieves latest created quotes
+     * Get quotes count
      *
      * @access  public
-     * @param   int     $limit
-     * @param   bool    $randomly
-     * @return  array   List of quotes or Jaws_Error
+     * @param   array       $filters
+     * @return  int         quotes count
      */
-    function GetRecentQuotes($limit = null, $randomly = false)
+    function count($filters)
     {
-        $now = Jaws_DB::getInstance()->date();
+        $qTable = Jaws_ORM::getInstance()
+            ->table('quotes as q')
+            ->select('count(q.id):integer')
+            ->join('categories_references as cr', 'cr.reference', 'q.id')
+            ->join('categories as cat', 'cat.id', 'cr.category')
+            ->where('cat.gadget', $this->gadget->name)
+            ->and()->where('cat.action', 'Quotes')
+            ->and()->where(
+                'cat.id',
+                @$filters['category'],
+                '=',
+                empty($filters['category'])
+            )->and()->where(
+                'q.title',
+                @$filters['term'],
+                'like',
+                empty($filters['term'])
+            )->and()->where(
+                'q.classification',
+                $filters['classification'],
+                'in',
+                empty($filters['classification'])
+            )->and()->where(
+                'q.published',
+                (bool)@$filters['published'],
+                '=',
+                ($filters['published'] === '')
+            )->and()->where(
+                'q.ptime',
+                @$filters['from_date'],
+                '>=',
+                empty($filters['from_date'])
+            )->and()->where(
+                'q.ptime',
+                @$filters['to_date'],
+                '<=',
+                empty($filters['to_date'])
+            );
 
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->select('id:integer', 'title', 'quotation', 'order:integer', 'show_title:boolean');
-        $quotesTable->where('published', true)->and();
-        $quotesTable->openWhere()->where('start_time', '', 'is null')->or();
-        $quotesTable->where('start_time', $now, '<=')->closeWhere()->and();
-        $quotesTable->openWhere()->where('stop_time', '', 'is null')->or();
-        $quotesTable->where('stop_time', $now, '>=')->closeWhere();
-
-        if ($randomly) {
-            $quotesTable->orderBy($quotesTable->random());
-        } else {
-            $quotesTable->orderBy('id desc');
+        if (!empty($filters['ptime'])) {
+            $qTable->and()->openWhere(
+                'q.ptime',
+                $filters['ptime'],
+                '<=',
+                empty($filters['ptime'])
+            )->or()->closeWhere('ptime', 0);
+        }
+        if (!empty($filters['xtime'])) {
+            $qTable->and()->openWhere(
+                'q.xtime',
+                $filters['xtime'],
+                '>',
+                empty($filters['xtime'])
+            )->or()->closeWhere('xtime', 0);
         }
 
-        $res = $quotesTable->limit($limit)->fetchAll();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-        return $res;
+
+        return $qTable->fetchOne();
+    }
+
+    /**
+     * Get a quote info
+     *
+     * @access  public
+     * @param   int         $id    Quote id
+     * @return  array       data
+     */
+    function get(int $id)
+    {
+        return Jaws_ORM::getInstance()
+            ->table('quotes as q')
+            ->select(
+                'q.id:integer', 'q.title', 'q.quotation', 'q.classification:integer',
+                'q.ptime:integer', 'q.xtime:integer', 'q.meta_keywords', 'q.meta_description', 'q.published:boolean',
+                'q.inserted:integer', 'q.updated:integer', 'cat.title as category_title', 'cat.id as category:integer'
+            )->join('categories_references as cr', 'cr.reference', 'q.id')
+            ->join('categories as cat', 'cat.id', 'cr.category')
+            ->where('cat.gadget', $this->gadget->name)
+            ->and()->where('cat.action', 'Quotes')
+            ->and()->where('q.id', $id)
+            ->fetchRow();
     }
 }

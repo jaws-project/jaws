@@ -4,178 +4,226 @@
  *
  * @category   Gadget
  * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Actions_Quotes extends Jaws_Gadget_Action
 {
     /**
-     * Get Display action params
+     * quotes list layout params
      *
-     * @access  public
-     * @return  array list of Display action params
+     * @access  private
+     * @return  array    list of NewsList action params
      */
-    function DisplayLayoutParams()
+    function quotesLayoutParams()
     {
         $result = array();
-        $qModel = $this->gadget->model->load('Groups');
-        $groups = $qModel->GetGroups();
-        if (!Jaws_Error::isError($groups)) {
-            $pgroups = array();
-            foreach ($groups as $group) {
-                $pgroups[$group['id']] = $group['title'];
-            }
 
-            $result[] = array(
-                'title' => $this::t('QUOTE'),
-                'value' => $pgroups
+        $result[] = array(
+            'title' => Jaws::t('COUNT'),
+            'value' => 5
+        );
+
+        // categories
+        $cats = array(0 => Jaws::t('ALL'));
+        $categories = Jaws_Gadget::getInstance('Categories')
+            ->model->load('Categories')
+            ->getCategories(
+                array('gadget' => $this->gadget->name, 'action' => 'Quotes')
             );
+        if (!Jaws_Error::isError($categories)) {
+            foreach ($categories as $cat) {
+                $cats[$cat['id']] = $cat['title'];
+            }
         }
+        $result[] = array(
+            'title' => Jaws::t('CATEGORY'),
+            'value' => $cats
+        );
+
+        $result[] = array(
+            'title' => $this::t('CLASSIFICATION'),
+            'value' => array(
+                0 => Jaws::t('ALL'),
+                1 => $this::t('CLASSIFICATION_TYPE_1'),
+                2 => $this::t('CLASSIFICATION_TYPE_2'),
+                3 => $this::t('CLASSIFICATION_TYPE_3'),
+                4 => $this::t('CLASSIFICATION_TYPE_4'),
+            ),
+        );
+
+        $result[] = array(
+            'title' => $this::t('GROUPS_VIEW_MODE'),
+            'value' => array(
+                1 => $this::t('GROUPS_VIEW_MODE_COMPACT'),
+                2 => $this::t('GROUPS_VIEW_MODE_FULL'),
+            ),
+        );
+
+        $result[] = array(
+            'title' => $this::t('GROUPS_VIEW_TYPE'),
+            'value' => array(
+                Quotes_Info::VIEW_TYPE_SIMPLE => $this::t('GROUPS_VIEW_TYPE_SIMPLE'),
+                Quotes_Info::VIEW_TYPE_MARQUEE_UP => $this::t('GROUPS_VIEW_TYPE_MARQUEE_UP'),
+                Quotes_Info::VIEW_TYPE_MARQUEE_DOWN => $this::t('GROUPS_VIEW_TYPE_MARQUEE_DOWN'),
+                Quotes_Info::VIEW_TYPE_MARQUEE_LEFT => $this::t('GROUPS_VIEW_TYPE_MARQUEE_LEFT'),
+                Quotes_Info::VIEW_TYPE_MARQUEE_RIGHT => $this::t('GROUPS_VIEW_TYPE_MARQUEE_RIGHT'),
+            ),
+        );
+
+        $result[] = array(
+            'title' => $this::t('GROUPS_RANDOM'),
+            'value' => array(
+                0 => Jaws::t('NOO'),
+                1 => Jaws::t('YESS'),
+            ),
+        );
+
+        $result[] = array(
+            'title' => $this::t('SHOW_TITLE'),
+            'value' => array(
+                0 => Jaws::t('NOO'),
+                1 => Jaws::t('YESS'),
+            ),
+        );
 
         return $result;
     }
 
     /**
-     * Prints the recent quotes
+     * view quotes list
      *
      * @access  public
+     * @param   int         $count
+     * @param   int         $category
+     * @param   int         $classification
+     * @param   int         $viewMode
+     * @param   int         $viewType
+     * @param   int         $random
+     * @param   bool        $showTitle
      * @return  string  XHTML template content
      */
-    function RecentQuotes()
-    {
-        $group['id']          = 0;
-        $group['title']       = $this::t('GROUPS_RECENT');
-        $group['view_mode']   = $this->gadget->registry->fetch('last_entries_view_mode');
-        $group['view_type']   = $this->gadget->registry->fetch('last_entries_view_type');
-        $group['show_title']  = $this->gadget->registry->fetch('last_entries_show_title') == 'true';
-        $group['limit_count'] = $this->gadget->registry->fetch('last_entries_limit');
-        $group['random']      = $this->gadget->registry->fetch('last_entries_view_random') == 'true';
+    function quotes($count = 5, $category = 0, $classification = 0, $viewMode = 2,
+        $viewType = 1, $random = 0, $showTitle = 1
+    ) {
+        $page = $this->gadget->request->fetch('page:integer', 'get');
+        $page = empty($page) ? 1 : (int)$page;
 
-        $model = $this->gadget->model->load('Quotes');
-        $quotes = $model->GetRecentQuotes($group['limit_count'], $group['random']);
-        if (Jaws_Error::IsError($quotes)) {
-            return false;
+        if ($this->app->requestedActionMode === 'normal') {
+            $category = (int)$this->gadget->request->fetch('category:integer', 'get');
         }
 
-        return $this->DisplayQuotes($group, $quotes);
-    }
+        $assigns = array();
 
-    /**
-     * Displays quotes of the specified group
-     *
-     * @access  public
-     * @param   int     $gid    Group ID
-     * @return  string  XHTML template content
-     */
-    function Display($gid)
-    {
-        $qModel = $this->gadget->model->load('Quotes');
-        $gModel = $this->gadget->model->load('Groups');
-        $group = $gModel->GetGroup($gid);
-        if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
-            return false;
-        }
+        // Menu navigation
+        $assigns['navigation'] = $this->gadget->action->load('MenuNavigation')->xnavigation();
 
-        $quotes = $qModel->GetPublishedQuotes($gid, $group['limit_count'], $group['random']);
-        if (Jaws_Error::IsError($quotes)) {
-            return false;
-        }
+        $filters = array(
+            'published' => true,
+            'category' => $category,
+            'ptime' => time(),
+            'xtime' => time(),
+            'classification' => $this->getCurrentUserClassification(),
+        );
 
-        return $this->DisplayQuotes($group, $quotes);
-    }
+        $assigns['quotes'] = $this->gadget->model->load('Quotes')->list(
+            $filters,
+            $count,
+            $count * ($page - 1),
+            'ptime desc',
+            $random
+        );
 
-    /**
-     * Builds the template for displaying quotes
-     *
-     * @access  public
-     * @param   array   $group      Group data array
-     * @param   array   $quotes     List of quotes to be displayed
-     * @return  string  XHTML template content
-     */
-    function DisplayQuotes(&$group, &$quotes)
-    {
-        if (empty($quotes)) {
-            return false;
-        }
+        $assigns['viewMode'] = $viewMode;
+        $assigns['viewType'] = $viewType;
+        $assigns['showTitle'] = $showTitle;
+        $assigns['classification'] = $classification;
 
-        $tpl = $this->gadget->template->load('Quotes.html');
-        $tpl->SetBlock('quotes');
-        $tpl->SetVariable('gid', $group['id']);
-        if ($group['show_title']) {
-            $tpl->SetBlock("quotes/title");
-            $tpl->SetVariable('title', $group['title']);
-            $tpl->ParseBlock("quotes/title");
-        }
-        $block = ($group['view_type']==0)? 'simple' : 'marquee';
-        $tpl->SetBlock("quotes/$block");
-        $tpl->SetVariable('marquee_direction', (($group['view_type']==2)? 'down' :
-            (($group['view_type']==3)? 'left' :
-                (($group['view_type']==4)? 'right' : 'up'))));
-
-        foreach($quotes as $quote) {
-            $tpl->SetBlock("quotes/$block/quote");
-            if ($quote['show_title'] || ($group['view_mode'] == 0)) {
-                $tpl->SetBlock("quotes/$block/quote/quote_title");
-                $tpl->SetVariable('quote_title', $quote['title']);
-                $tpl->SetVariable('url', $this->gadget->urlMap('ViewQuote', array('id' => $quote['id'])));
-                $tpl->ParseBlock("quotes/$block/quote/quote_title");
+        if ($this->app->requestedActionMode === 'normal') {
+            $tFilename = 'Quotes.html';
+            $total = $this->gadget->model->load('Quotes')->count($filters);
+            $assigns['pagination'] = $this->gadget->action->load('PageNavigation')->xpagination(
+                $page,
+                $count,
+                $total,
+                'quotes'
+            );
+        } else {
+            $tFilename = 'QuotesMarquee.html';
+            switch ($viewType) {
+                case Quotes_Info::VIEW_TYPE_SIMPLE:
+                    $marqueeDirection = '';
+                    $tFilename = 'QuotesSimple.html';
+                    break;
+                case Quotes_Info::VIEW_TYPE_MARQUEE_UP:
+                    $marqueeDirection = 'up';
+                    break;
+                case Quotes_Info::VIEW_TYPE_MARQUEE_DOWN:
+                    $marqueeDirection = 'down';
+                    break;
+                case Quotes_Info::VIEW_TYPE_MARQUEE_LEFT:
+                    $marqueeDirection = 'left';
+                    break;
+                case Quotes_Info::VIEW_TYPE_MARQUEE_RIGHT:
+                    $marqueeDirection = 'right';
+                    break;
             }
-            if ($group['view_mode']!= 0) {
-                $tpl->SetBlock("quotes/$block/quote/full_mode");
-                $tpl->SetVariable('quotation', $this->gadget->plugin->parseAdmin($quote['quotation']));
-                $tpl->ParseBlock("quotes/$block/quote/full_mode");
-            }
-            $tpl->ParseBlock("quotes/$block/quote");
+            $assigns['marquee_direction'] = $marqueeDirection;
         }
-        $tpl->ParseBlock("quotes/$block");
 
-        $tpl->ParseBlock('quotes');
-        return $tpl->Get();
+        return $this->gadget->template->xLoad($tFilename)->render($assigns);
     }
 
     /**
-     * Displays quotes by group in standalone mode
+     * View a quote
      *
      * @access  public
-     * @return  XHTML template content
+     * @return  string  XHTML template content
      */
-    function QuotesByGroup()
+    function quote()
     {
-        header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
-        $action = $this->gadget->action->load('Groups');
-        return $action->ViewGroupQuotes();
+        $id = (int)$this->gadget->request->fetch('id:integer', 'get');
+        $quote = $this->gadget->model->load('Quotes')->get($id);
+        if (Jaws_Error::IsError($quote)) {
+            return Jaws_HTTPError::Get(500);
+        }
+        if (empty($quote) || !$quote['published'] ||
+            (!empty($quote['ptime']) && $quote['ptime'] > time()) ||
+            (!empty($quote['xtime']) && $quote['xtime'] <= time())
+        ) {
+            return Jaws_HTTPError::Get(404);
+        }
+        if (!in_array($quote['classification'], $this->getCurrentUserClassification())) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $this->SetDescription($quote['meta_description']);
+
+        $assigns = array();
+        // Menu navigation
+        $assigns['navigation'] = $this->gadget->action->load('MenuNavigation')->xnavigation();
+        $assigns['quote'] = $quote;
+        return $this->gadget->template->xLoad('Quote.html')->render($assigns);
     }
 
     /**
-     * view quote(title and quotation)
+     * Get current user classifications access
      *
      * @access  public
-     * @return  string
+     * @return  int
      */
-    function ViewQuote()
+    function getCurrentUserClassification()
     {
-        $qid = $this->gadget->request->fetch('id', 'get');
-        $qModel = $this->gadget->model->load('Quotes');
-        $gModel = $this->gadget->model->load('Groups');
-        $quote = $qModel->GetQuote($qid);
-        if (Jaws_Error::IsError($quote) || empty($quote) || !$quote['published']) {
-            return false;
+        $classifications = array();
+        $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_PUBLIC;
+        if ($this->app->session->user->logged) {
+            $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_INTERNAL;
         }
-        $group = $gModel->GetGroup($quote['gid']);
-        if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
-            return false;
+        if ($this->gadget->GetPermission('ClassificationRestricted')) {
+            $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_RESTRICTED;
+        }
+        if ($this->gadget->GetPermission('ClassificationConfidential')) {
+            $classifications[] = Quotes_Info::CLASSIFICATION_TYPE_CONFIDENTIAL;
         }
 
-        $this->SetTitle($quote['title']);
-        $tpl = $this->gadget->template->load('Quote.html');
-        $tpl->SetBlock('quote');
-
-        $tpl->SetVariable('title', $group['title']);
-        $tpl->SetVariable('quote_title', $quote['title']);
-        $tpl->SetVariable('quotation', $this->gadget->plugin->parseAdmin($quote['quotation']));
-
-        $tpl->ParseBlock('quote');
-        return $tpl->Get();
+        return $classifications;
     }
 }

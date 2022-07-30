@@ -1,193 +1,136 @@
 <?php
 /**
- * Quotes Gadget
+ * Quotes Model
  *
- * @category    GadgetModel
- * @package     Quotes
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @category   GadgetModel
+ * @package    Quotes
  */
 class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
 {
     /**
-     * Inserts a new quote
+     * add new quote
      *
      * @access  public
-     * @param   string  $title
-     * @param   string  $quotation
-     * @param   int     $gid        Group ID
-     * @param   string  $start_time
-     * @param   string  $stop_time
-     * @param   bool    $show_title
-     * @param   bool    $published
-     * @return  mixed   True on Success or Jaws_Error on failure
+     * @param   array    $data
+     * @return  bool
      */
-    function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
+    function add(array $data)
     {
-        $date = Jaws_Date::getInstance();
-        $now  = Jaws_DB::getInstance()->date();
-        $params['title']       = $title;
-        $params['quotation']   = $quotation;
-        $params['gid']         = $gid;
-        $params['start_time']  = null;
-        $params['stop_time']   = null;
-        if (!empty($start_time)) {
-            $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $this->app->UserTime2UTC($start_time,  'Y-m-d H:i:s');
-        }
-        if (!empty($stop_time)) {
-            $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $this->app->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
-        }
-        $params['createtime']  = $now;
-        $params['updatetime']  = $now;
-        $params['show_title']  = (bool)$show_title;
-        $params['published']   = (bool)$published;
+        // begin transaction
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
 
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $result = $quotesTable->insert($params)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error($this::t('QUOTE_NOT_ADDED'));
+        $data['inserted'] = $data['updated'] = time();
+        $qId = $objORM->table('quotes')
+            ->insert($data)
+            ->exec();
+        if (Jaws_Error::IsError($qId)) {
+            return $qId;
         }
 
-        $this->gadget->session->push(
-            $this::t('QUOTE_ADDED'),
-            RESPONSE_NOTICE,
-            array('id' => $result, 'title' => $title)
+        // insert category
+        $res = Jaws_Gadget::getInstance('Categories')->action->load('Categories')->updateReferenceCategories(
+            array(
+                'gadget' => $this->gadget->name,
+                'action' => 'Quotes',
+                'reference' => $qId,
+                'input_reference' => 0
+            ),
+            array(
+                'multiple' => false,
+                'autoinsert' => false,
+            )
         );
+        if (Jaws_Error::IsError($res)) {
+            $objORM->rollback();
+            return Jaws_Error::raiseError('Error in save categories.');
+        }
 
+        // commit transaction
+        $objORM->commit();
+        return $qId;
+    }
+
+    /**
+     * update a quote
+     *
+     * @access  public
+     * @param   int     $id
+     * @param   array   $data
+     * @return  bool
+     */
+    function update(int $id, array $data)
+    {
+        // begin transaction
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+
+        $data['updated'] = time();
+        $res = $objORM->table('quotes')
+            ->update($data)
+            ->where('id', $id)
+            ->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        // update category
+        $res = Jaws_Gadget::getInstance('Categories')->action->load('Categories')->updateReferenceCategories(
+            array(
+                'gadget' => $this->gadget->name,
+                'action' => 'Quotes',
+                'reference' => $id,
+                'input_reference' => 0
+            ),
+            array(
+                'multiple' => false,
+                'autoinsert' => false,
+            )
+        );
+        if (Jaws_Error::IsError($res)) {
+            $objORM->rollback();
+            return Jaws_Error::raiseError('Error in save categories.');
+        }
+
+        // commit transaction
+        $objORM->commit();
         return true;
     }
 
     /**
-     * Updates the quote
+     * delete a quote
      *
      * @access  public
-     * @param   int     $id         Quote ID
-     * @param   string  $title
-     * @param   string  $quotation
-     * @param   int     $gid        Group ID
-     * @param   string  $start_time
-     * @param   string  $stop_time
-     * @param   bool    $show_title
-     * @param   bool    $published
-     * @return  mixed   True on Success or Jaws_Error on failure
+     * @param   int    $id
+     * @return  bool
      */
-    function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
+    function delete(int $id)
     {
-        $date = Jaws_Date::getInstance();
-        $params['title']       = $title;
-        $params['quotation']   = $quotation;
-        $params['gid']         = $gid;
-        $params['start_time']  = null;
-        $params['stop_time']   = null;
-        if (!empty($start_time)) {
-            $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $params['start_time'] = $this->app->UserTime2UTC($start_time,  'Y-m-d H:i:s');
-        }
-        if (!empty($stop_time)) {
-            $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $params['stop_time'] = $this->app->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+        // begin transaction
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+
+        $res = $objORM->table('quotes')
+            ->delete()
+            ->where('id', $id)
+            ->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
         }
 
-        $params['updatetime']  = Jaws_DB::getInstance()->date();
-        $params['show_title']  = (bool)$show_title;
-        $params['published']   = (bool)$published;
-
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $result = $quotesTable->update($params)->where('id', (int)$id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push($this::t('QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error($this::t('QUOTE_NOT_UPDATED'));
+        // delete category references
+        $res = Jaws_Gadget::getInstance('Categories')->action->load('Categories')->deleteReferenceCategories(
+            array(
+                'gadget' => $this->gadget->name,
+                'action' => 'Quotes',
+                'reference' => $id
+            )
+        );
+        if (Jaws_Error::IsError($res)) {
+            //Rollback Transaction
+            $objORM->rollback();
+            return $res;
         }
 
-        $this->gadget->session->push($this::t('QUOTE_UPDATED'), RESPONSE_NOTICE);
+        //Commit Transaction
+        $objORM->commit();
         return true;
     }
-
-    /**
-     * Deletes the quote
-     *
-     * @access  public
-     * @param   int     $id  Quote ID
-     * @return  mixed   True on Success or Jaws_Error on failure
-     */
-    function DeleteQuote($id)
-    {
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $result = $quotesTable->delete()->where('id', $id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $this->gadget->session->push($this::t('QUOTE_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error($this::t('QUOTE_NOT_DELETED'));
-        }
-
-        $this->gadget->session->push($this::t('QUOTE_DELETED'), RESPONSE_NOTICE);
-        return true;
-    }
-
-
-    /**
-     * Updates group of the quote
-     *
-     * @access  public
-     * @param   int     $qid        Quote ID
-     * @param   int     $gid        Group ID
-     * @param   int     $new_gid    New group ID
-     * @return  bool    True on Success or False on failure
-     */
-    function UpdateQuoteGroup($qid, $gid, $new_gid)
-    {
-        $quotesTable = Jaws_ORM::getInstance()->table('quotes');
-        $quotesTable->update(array('gid' => $new_gid));
-
-        if (($qid != -1) && ($gid != -1)) {
-            $quotesTable->where('id', $qid)->and()->where('gid', $gid);
-        } elseif ($gid != -1) {
-            $quotesTable->where('gid', $gid);
-        } elseif ($qid != -1) {
-            $quotesTable->where('id', $qid);
-        } else {
-            $quotesTable->where('gid', $new_gid);
-        }
-
-        $result = $quotesTable->exec();
-        if (Jaws_Error::IsError($result)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Updates the group ID of quotes
-     *
-     * @access  public
-     * @param   int     $gid    Group ID
-     * @param   array   $quotes Array of IDs
-     * @return  bool    Always True!
-     */
-    function AddQuotesToGroup($gid, $quotes)
-    {
-        $model = $this->gadget->model->load('Quotes');
-        $AllQuotes = $model->GetQuotes(-1, -1);
-
-        foreach ($AllQuotes as $quote) {
-            if ($quote['gid'] == $gid) {
-                if (!in_array($quote['id'], $quotes)) {
-                    $this->UpdateQuoteGroup($quote['id'], -1, 0);
-                }
-            } else {
-                if (in_array($quote['id'], $quotes)) {
-                    $this->UpdateQuoteGroup($quote['id'], -1, $gid);
-                }
-            }
-        }
-        $this->gadget->session->push($this::t('GROUPS_UPDATED_QUOTES'), RESPONSE_NOTICE);
-
-        return true;
-    }
-
-
 }

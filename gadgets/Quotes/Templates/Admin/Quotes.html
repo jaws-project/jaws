@@ -1,50 +1,227 @@
-<!-- BEGIN quotes -->
 <div class="gadget_menubar">{{menubar}}</div>
-<!-- BEGIN quotes_section -->
-<table id="quotes"><tr>
-    <td id="td_quotes">
-      <div><label for="group_filter">{{lbl_group_filter}}</label>{{group_filter}}</div>
-      <div><label for="quotes_combo">{{lbl_quotes}}:</label>{{combo_quotes}}</div>
-    </td>
-    <td id="td_form">
-      <input type="hidden" name="id" id="id" value="0" />
-      <table width="100%">
-        <tr><th><label for="title">{{lbl_title}}:</label></th><td>{{title}}</td></tr>
-        <tr><th><label for="gid">{{lbl_group}}:</label></th><td>{{group}}</td></tr>
-        <tr><th><label for="start_time">{{lbl_start_time}}:</label></th><td>{{start_time}}</td></tr>
-        <tr><th><label for="stop_time">{{lbl_stop_time}}:</label></th><td>{{stop_time}}</td></tr>
-        <tr><th><label for="show_title">{{lbl_show_title}}:</label></th><td>{{show_title}}</td></tr>
-        <tr><th><label for="published">{{lbl_published}}:</label></th><td>{{published}}</td></tr>
-        <tr><td colspan="2"><label for="quotation">{{lbl_quotation}}:</label><br />{{quotation}}</td></tr>
-      </table>
-    </td>
-</tr></table>
-<div class="buttons">{{btn_cancel}}{{btn_del}}{{btn_save}}</div>
-<!-- END quotes_section -->
-<!-- BEGIN groups_section -->
-<table id="quotes_groups">
-  <tr>
-    <td id="td_groups">{{combo_groups}}</td>
-    <td id="td_form">
-      <input type="hidden" name="gid" id="gid" value="0" />
-      <div id="work_area">
-        <table width="100%;">
-          <tr><th><label for="title">{{lbl_title}}:</label></th><td>{{title}}</td></tr>
-          <tr><th><label for="view_mode">{{lbl_view_mode}}:</label></th><td>{{view_mode}}</td></tr>
-          <tr><th><label for="view_type">{{lbl_view_type}}:</label></th><td>{{view_type}}</td></tr>
-          <tr><th><label for="limit_count">{{lbl_limit_count}}:</label></th><td>{{limit_count}}</td></tr>
-          <tr><th><label for="show_title">{{lbl_show_title}}:</label></th><td>{{show_title}}</td></tr>
-          <tr><th><label for="random">{{lbl_random}}:</label></th><td>{{random}}</td></tr>
-          <tr><th><label for="published">{{lbl_published}}:</label></th><td>{{published}}</td></tr>
-        </table>
+<div class="repeater" id="quotes-grid" data-staticheight="500">
+  <div class="repeater-header">
+    <div class="datagrid-filters">
+        <div class="row">
+          <form action="#" onsubmit="return false">
+
+            <div class="col-xs-2">
+              <label>{{ "quotes.from_time" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              {% include 'include/Jaws/Resources/XDatePicker.html' with from_date as datepicker %}
+            </div>
+            <div class="col-xs-2">
+              <label>{{ "quotes.to_time" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              {% include 'include/Jaws/Resources/XDatePicker.html' with to_date as datepicker %}
+            </div>
+
+            <div class="col-xs-2">
+              <label for="filter_term">{{ "global.term" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              <input type="text" class="form-control" name="term" id="filter_term" >
+            </div>
+
+            <div class="col-xs-2">
+              <label for="filter_published">{{ "global.published" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              <select name="published" id="filter_published" class="form-control">
+                <option value="">{{ "global.all" | t }}</option>
+                <option value="0">{{ "global.noo" | t }}</option>
+                <option value="1">{{ "global.yess" | t }}</option>
+              </select>
+            </div>
+
+            <div class="col-xs-2">
+              <label for="filter_classification">{{ "quotes.classification" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              <select name="classification" id="filter_classification" class="form-control">
+                <option value="0">{{ "global.all" | t }}</option>
+                {% for classification in classification %}
+                <option value="{{forloop.key}}">{{ classification }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-xs-2">
+              <label for="filter_category">{{ "global.category" | t }}: </label>
+            </div>
+            <div class="col-xs-4">
+              <select name="category" id="filter_category" class="form-control">
+                <option value="0">{{ "global.all" | t }}</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+          </form>
       </div>
-    </td>
-  </tr>
-</table>
-<div class="buttons">{{btn_cancel}}{{btn_del}}{{add_quotes}}{{btn_save}}</div>
-<!-- END groups_section -->
-<!-- BEGIN quotes_groups_ui_section -->
-<div id="group_quotes_title">{{title}}</div>
-{{group_quotes_combo}}
-<!-- END quotes_groups_ui_section -->
-<!-- END quotes -->
+    </div>
+
+    <p></p>
+
+    <div class="repeater-header-right">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#quoteModal">
+        <span class="glyphicon glyphicon-plus"></span> {{ "global.add" | t }}
+      </button>
+      <button type="button" class="btn btn-success btn-refresh">
+        <span class="glyphicon glyphicon-refresh"></span> {{ "global.reload" | t }}
+      </button>
+    </div>
+  </div>
+
+    <div class="repeater-viewport">
+      <div class="repeater-canvas"></div>
+      <div class="loader repeater-loader"></div>
+    </div>
+    <div class="repeater-footer">
+      <div class="repeater-footer-left">
+        <div class="repeater-itemization">
+          <span>
+            <span class="repeater-start"></span>
+            {{ "global.to" | t }} <span class="repeater-end"></span>
+            {{ "global.of" | t }} <span class="repeater-count"></span>
+            {{ "global.items" | t }}
+          </span>
+          <div class="btn-group selectlist dropup" data-resize="auto">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+              <span class="selected-label">?</span>
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li data-value="10" data-selected="true"><a href="#">10</a></li>
+              <li data-value="25"><a href="#">25</a></li>
+              <li data-value="50"><a href="#">50</a></li>
+            </ul>
+            <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+          </div>
+          <span>{{ "global.perpage" | t }}</span>
+        </div>
+      </div>
+      <div class="repeater-footer-right">
+        <div class="repeater-pagination">
+          <button type="button" class="btn btn-default btn-sm repeater-prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous Page</span>
+          </button>
+          <label class="page-label" id="myPageLabel"></label>
+          <div class="repeater-primaryPaging active">
+            <div class="input-group input-append dropdown combobox dropup">
+              <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right"></ul>
+              </div>
+            </div>
+          </div>
+          <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+          <button type="button" class="btn btn-default btn-sm repeater-next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="quoteModal" tabindex="-1" role="dialog" aria-labelledby="quoteModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "quotes.add_quotes" | t }}</h4>
+      </div>
+      <div class="modal-body">
+        <form id="quotes-form" action="#">
+          <div class="row">
+
+            <div class="form-group col-md-12">
+              <label for="title">{{ "global.title" | t }}:</label>
+              <input class="form-control" name="title" id="title" value="" type="text"/>
+            </div>
+
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingExtra">
+                  <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExtra" aria-expanded="false" aria-controls="collapseExtra">
+                      {{ "global.more" | t }}
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseExtra" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="panel-body row">
+                    <div class="form-group col-md-6">
+                      <label for="ptime">{{ "quotes.publish_time" | t }}:</label>
+                      {% include 'include/Jaws/Resources/XDatePicker.html' with ptime as datepicker %}
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="xtime">{{ "quotes.expiry_time" | t }}:</label>
+                      {% include 'include/Jaws/Resources/XDatePicker.html' with xtime as datepicker %}
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="classification">{{ "quotes.classification" | t }}:</label>
+                      <select name="classification" id="classification" class="form-control">
+                        {% for classification in classification %}
+                        <option value="{{forloop.key}}">{{ classification }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="published">{{ "global.published" | t }}:</label>
+                      <select name="published" id="published" class="form-control">
+                        <option value="0">{{ "global.noo" | t }}</option>
+                        <option value="1" selected>{{ "global.yess" | t }}</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="meta_keywords">{{ "global.meta_keywords" | t }}:</label>
+                      <input class="form-control" name="meta_keywords" id="meta_keywords" value="" type="text"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="meta_description">{{ "global.meta_description" | t }}:</label>
+                      <input class="form-control" name="meta_description" id="meta_description" value="" type="text"/>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label for="quotation">{{ "quotes.quote_quotation" | t }}</label>
+              {{quotation}}
+            </div>
+
+            <div class="form-group col-md-6">
+              <label></label>
+              {% include 'gadgets/Categories/Templates/XLoadCategories.html' with category as category %}
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          {{ "global.cancel" | t }}
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-save-quote">
+          {{ "global.save" | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

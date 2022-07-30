@@ -4,9 +4,6 @@
  *
  * @category   GadgetHook
  * @package    Quotes
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
 {
@@ -14,24 +11,27 @@ class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
      * Returns an array with all available items the Menu gadget can use
      *
      * @access  public
-     * @return  array   List of URLs
+     * @return  array   URLs array
      */
     function Execute()
     {
-        $urls   = array();
-        $urls[] = array('url'   => $this->gadget->urlMap('RecentQuotes'),
-                        'title' => $this->gadget->title);
+        $urls = array();
+        $urls[] = array(
+            'url'   => $this->gadget->urlMap('quotes'),
+            'title' => $this::t('ACTIONS_QUOTES_TITLE')
+        );
 
-        $model  = $this->gadget->model->load('Groups');
-        $groups = $model->GetGroups();
-        if (!Jaws_Error::isError($groups)) {
-            $max_size = 20;
-            foreach ($groups as $group) {
-                $url = $this->gadget->urlMap('ViewGroupQuotes', array('id' => $group['id']));
-                $urls[] = array('url'   => $url,
-                                'title' => (Jaws_UTF8::strlen($group['title']) > $max_size)?
-                                            Jaws_UTF8::substr($group['title'], 0, $max_size).'...' :
-                                            $group['title']);
+        $categories = Jaws_Gadget::getInstance('Categories')
+            ->model->load('Categories')
+            ->getCategories(
+                array('gadget' => $this->gadget->name, 'action' => 'Quotes')
+            );
+        if (!empty($categories) && !Jaws_Error::IsError($categories)) {
+            foreach ($categories as $category) {
+                $urls[] = array(
+                    'url' => $this->gadget->urlMap('quotes', array('category' => $category['id'])),
+                    'title' => $category['title']
+                );
             }
         }
 

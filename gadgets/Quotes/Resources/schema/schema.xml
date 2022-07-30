@@ -33,26 +33,19 @@
             </field>
 
             <field>
-                <name>order</name>
-                <was>rank</was>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
-                <name>ftime</name>
+                <name>ptime</name>
                 <type>integer</type>
                 <length>8</length>
                 <default>0</default>
-                <description>from time/start time</description>
+                <description>publish time</description>
             </field>
 
             <field>
-                <name>ttime</name>
+                <name>xtime</name>
                 <type>integer</type>
                 <length>8</length>
                 <default>0</default>
-                <description>to time/stop time</description>
+                <description>expiry time</description>
             </field>
 
             <field>

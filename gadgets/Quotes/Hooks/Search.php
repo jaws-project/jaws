@@ -4,9 +4,6 @@
  *
  * @category   GadgetHook
  * @package    Quotes
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Hooks_Search extends Jaws_Gadget_Hook
 {
@@ -32,11 +29,24 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
      */
     function Execute($table, &$objORM)
     {
+        $classification = $this->gadget->action->load('Quotes')->getCurrentUserClassification();
+
         $objORM->table('quotes');
-        $objORM->select('id', 'title', 'quotation', 'updatetime');
+        $objORM->select('id', 'title', 'quotation', 'meta_keywords', 'meta_description', 'updated');
         $objORM->where('published', true);
+        $objORM->and()->openWhere(
+            'ptime',
+            time(),
+            '<='
+        )->or()->closeWhere('ptime', 0);
+        $objORM->and()->openWhere(
+            'xtime',
+            time(),
+            '>'
+        )->or()->closeWhere('xtime', 0);
+        $objORM->and()->where('classification', $classification, '<=');
         $objORM->and()->loadWhere('search.terms');
-        $result = $objORM->orderBy('id')->fetchAll();
+        $result = $objORM->orderBy('ptime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -46,10 +56,10 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $quotation = array();
             $quotation['title']   = $r['title'];
-            $quotation['url']     = $this->gadget->urlMap('ViewQuote', array('id' => $r['id']));
+            $quotation['url']     = $this->gadget->urlMap('quote', array('id' => $r['id'], 'metaurl'=>$r['meta_keywords']));
             $quotation['image']   = 'gadgets/Quotes/Resources/images/logo.png';
             $quotation['snippet'] = $r['quotation'];
-            $quotation['date']    = $date->ToISO($r['updatetime']);
+            $quotation['date']    = $date->ToISO($r['updated']);
             $quotations[] = $quotation;
         }
 

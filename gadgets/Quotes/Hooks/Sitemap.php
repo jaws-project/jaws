@@ -4,9 +4,6 @@
  *
  * @category    GadgetHook
  * @package     Quotes
- * @author      ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2008-2022 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
 {
@@ -26,14 +23,17 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
                 'id'     => 0,
                 'parent' => 0,
                 'title'  => $this::t('TITLE'),
-                'url'    => $this->gadget->urlMap('RecentQuotes', array(), array('absolute' => true))
+                'url'    => $this->gadget->urlMap('quotes', array(), array('absolute' => true))
             ),
             'levels' => array(),
             'items'  => array()
         );
         if ($data_type == 0) {
-            $gModel = $this->gadget->model->load('Groups');
-            $categories = $gModel->GetGroups();
+            $categories = Jaws_Gadget::getInstance('Categories')
+                ->model->load('Categories')
+                ->getCategories(
+                    array('gadget' => $this->gadget->name, 'action' => 'Quotes')
+                );
             if (Jaws_Error::IsError($categories)) {
                 return $categories;
             }
@@ -45,8 +45,11 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
                 );
             }
         } elseif ($data_type == 1 || $data_type == 2) {
-            $gModel = $this->gadget->model->load('Groups');
-            $categories = $gModel->GetGroups();
+            $categories = Jaws_Gadget::getInstance('Categories')
+                ->model->load('Categories')
+                ->getCategories(
+                    array('gadget' => $this->gadget->name, 'action' => 'Quotes')
+                );
             if (Jaws_Error::IsError($categories)) {
                 return $categories;
             }
@@ -58,29 +61,27 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
                     'title'  => $category['title'],
                     'lastmod'=> null,
                     'url'    => $this->gadget->urlMap(
-                        'ViewGroupQuotes',
-                        array('id' => $cat),
+                        'quotes',
+                        array('category' => $cat),
                         array('absolute' => true)
                     ),
                 );
             }
 
             if ($data_type == 2) {
-                $pModel = $this->gadget->model->load('Quotes');
-                $pages  = $pModel->GetQuotes();
-                if (Jaws_Error::IsError($pages)) {
-                    return $pages;
+                $quotes = $this->gadget->model->load('Quotes')->list();
+                if (Jaws_Error::IsError($quotes)) {
+                    return $quotes;
                 }
-                foreach ($pages as $page) {
-                    $entry = empty($page['fast_url']) ? $page['id'] : $page['fast_url'];
+                foreach ($quotes as $quote) {
                     $result['items'][] = array(
-                        'id'      => $page['id'],
-                        'parent'  => $page['gid'],
-                        'title'   => $page['title'],
-                        'lastmod' => $page['updatetime'],
-                        'url'     => $this->gadget->urlMap(
-                            'ViewQuote',
-                            array('id' => $entry),
+                        'id'      => $quote['id'],
+                        'parent'  => $quote['category']['id'],
+                        'title'   => $quote['title'],
+                        'lastmod' => $quote['updated'],
+                        'url' => $this->gadget->urlMap(
+                            'quote',
+                            array('id' => $quote['id'], 'metaurl' => $quote['meta_keywords']),
                             array('absolute' => true)
                         ),
                     );

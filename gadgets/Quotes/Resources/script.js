@@ -1,338 +1,298 @@
 /**
  * Quotes Javascript actions
  *
- * @category   Ajax
- * @package    Quotes
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Ajax
+ * @package     Quotes
  */
-/**
- * Use async mode, create Callback
- */
-var QuotesCallback = {
-    AddQuotesToGroup: function(response) {
-        //
+
+function Jaws_Gadget_Quotes() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
+
+function Jaws_Gadget_Quotes_Action_quotes() {
+    return {
+        selectedQuote: 0,
+
+        // ASync callback method
+        AjaxCallback: {
+            insertQuote: function(response) {
+                if (response.type === 'alert-success') {
+                    $('#quoteModal').modal('hide');
+                    $('#quotes-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                }
+            },
+            updateQuote: function(response) {
+                if (response.type === 'alert-success') {
+                    $('#quoteModal').modal('hide');
+                    $('#quotes-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                }
+            },
+            deleteQuote: function(response) {
+                if (response.type === 'alert-success') {
+                    $('#quotes-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+                }
+            },
+        },
+
+        /**
+         * save a quote
+         */
+        saveQuote: function() {
+            let data = $.unserialize($('form#quotes-form').serialize());
+            // 'category_quotes_0': $('select[name="category_quotes_0"]').find('option:selected').val()
+
+            if (this.selectedQuote === 0) {
+                this.ajax.callAsync('insertQuote', data);
+            } else {
+                data.id = this.selectedQuote;
+                this.ajax.callAsync('updateQuote', data);
+            }
+        },
+
+        /**
+         * Edit a quote
+         */
+        editQuote: function(id) {
+            this.selectedQuote = id;
+            this.ajax.callAsync('getQuote', {'id': this.selectedQuote},
+                function (response, status) {
+                    if (response.type === 'alert-success') {
+                        const quoteInfo = response.data;
+                        $('#quotes-form').find('input,select,textarea').each(
+                            function () {
+                                if ($(this).is('select')) {
+                                    if (quoteInfo[$(this).attr('name')] === true) {
+                                        $(this).val('1');
+                                    } else if (quoteInfo[$(this).attr('name')] === false) {
+                                        $(this).val('0');
+                                    } else {
+                                        $(this).val(quoteInfo[$(this).attr('name')]);
+                                    }
+                                } else {
+                                    $(this).val(quoteInfo[$(this).attr('name')]);
+                                }
+                            }
+                        );
+
+                        $('select[name="category_quotes_0"]').val(quoteInfo.category);
+
+                        $('#datepicker_ptime_input').val(
+                            (quoteInfo.ptime === 0) ? '' :
+                                $.dateCalendar(
+                                    Jaws.defines.calendar, quoteInfo.ptime
+                                ).format('YYYY/MM/DD')
+                        );
+                        $('#datepicker_xtime_input').val(
+                            (quoteInfo.xtime === 0) ? '' :
+                                $.dateCalendar(
+                                    Jaws.defines.calendar, quoteInfo.xtime
+                                ).format('YYYY/MM/DD')
+                        );
+
+                        $('#quoteModal').modal('show');
+                    }
+                });
+        },
+
+        /**
+         * Delete quote
+         */
+        deleteQuote: function(id) {
+            if (confirm(Jaws.t('confirm_delete'))) {
+                this.ajax.callAsync('deleteQuote', {'id': id});
+            }
+        },
+
+        /**
+         * Define the data to be displayed in the quotes datagrid
+         */
+        quotesDataSource: function (options, callback) {
+            var columns = {
+                'title': {
+                    'label': Jaws.t('title'),
+                    'property': 'title',
+                    'width': '30%'
+                },
+                'category_title': {
+                    'label': this.t('group'),
+                    'property': 'category_title',
+                    'width': '20%'
+                },
+                'classification': {
+                    'label': this.t('classification'),
+                    'property': 'classification',
+                    'width': '20%'
+                },
+                'published': {
+                    'label': Jaws.t('published'),
+                    'property': 'published',
+                    'width': '10%'
+                },
+                'updated': {
+                    'label': Jaws.t('updatetime'),
+                    'property': 'updated',
+                    'sortable': true,
+                    'width': '20%'
+                },
+            };
+
+            var filters = $.unserialize($('#quotes-grid .datagrid-filters form').serialize());
+
+            // set sort property & direction
+            if (options.sortProperty) {
+                columns[options.sortProperty].sortDirection = options.sortDirection;
+            }
+            columns = Object.values(columns);
+
+            this.gadget.ajax.callAsync(
+                'getQuotes', {
+                    'offset': options.pageIndex * options.pageSize,
+                    'limit': options.pageSize,
+                    'sortDirection': options.sortDirection,
+                    'sortBy': options.sortProperty,
+                    'filters': filters
+                },
+                function(response, status, callOptions) {
+                    var dataSource = {};
+                    if (response.type === 'alert-success') {
+                        callOptions.showMessage = false;
+
+                        // processing end item index of page
+                        options.offset = options.pageIndex*options.pageSize;
+                        options.end = options.offset + options.pageSize;
+                        options.end = (options.end > response['data'].total)? response['data'].total : options.end;
+                        dataSource = {
+                            'page': options.pageIndex,
+                            'pages': Math.ceil(response['data'].total/options.pageSize),
+                            'count': response['data'].total,
+                            'start': options.offset + 1,
+                            'end':   options.end,
+                            'columns': columns,
+                            'items': response['data'].records
+                        };
+                    } else {
+                        dataSource = {
+                            'page': 0,
+                            'pages': 0,
+                            'count': 0,
+                            'start': 0,
+                            'end':   0,
+                            'columns': columns,
+                            'items': {}
+                        };
+                    }
+                    // pass the datasource back to the repeater
+                    callback(dataSource);
+                }
+            );
+        },
+
+        /**
+         * quotes Datagrid column renderer
+         */
+        quotesDGColumnRenderer: function (helpers, callback) {
+            const column = helpers.columnAttr;
+            const rowData = helpers.rowData;
+            let customMarkup = '';
+
+            switch (column) {
+                case 'classification':
+                    customMarkup = this.gadget.defines.classifications[rowData.classification];
+                    break;
+                case 'published':
+                    customMarkup = Jaws.t('noo');
+                    if (rowData.published === true) {
+                        customMarkup = Jaws.t('yess');
+                    }
+                    break;
+                case 'updated':
+                    helpers.item.addClass('text-right');
+                    helpers.item.css('direction', 'ltr');
+                    customMarkup = rowData.updated > 0 ? $.dateCalendar(
+                        Jaws.defines.calendar, rowData.updated
+                    ).format('YYYY/MM/DD HH:mm:ss') : '';
+                    break;
+                default:
+                    customMarkup = helpers.item.text();
+                    break;
+            }
+
+            helpers.item.html(customMarkup);
+            callback();
+        },
+
+        /**
+         * initiate quotes dataGrid
+         */
+        initiateQuoteDG: function() {
+            var list_actions = {
+                width: 50,
+                items: [
+                    {
+                        name: 'edit',
+                        html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.t('edit'),
+                        clickAction: $.proxy(function (helpers, callback, e) {
+                            e.preventDefault();
+                            this.editQuote(helpers.rowData.id);
+                            callback();
+                        }, this)
+
+                    },
+                    {
+                        name: 'delete',
+                        html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.t('delete'),
+                        clickAction: $.proxy(function (helpers, callback, e) {
+                            e.preventDefault();
+                            this.deleteQuote(helpers.rowData.id);
+                            callback();
+                        }, this)
+
+                    },
+                ]
+            };
+
+            // initialize the repeater
+            $('#quotes-grid').repeater({
+                dataSource: $.proxy(this.quotesDataSource, this),
+                list_actions: list_actions,
+                list_columnRendered: $.proxy(this.quotesDGColumnRenderer, this),
+                list_noItemsHTML: Jaws.t('notfound'),
+                list_direction: $('.repeater-canvas').css('direction')
+            });
+
+            // monitor required events
+            $( ".datagrid-filters select" ).change(function() {
+                $('#quotes-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
+            });
+            $( ".datagrid-filters input" ).keypress(function(e) {
+                if (e.which === 13) {
+                    $('#quotes-grid').repeater('render', {clearInfinite: true,pageIncrement: null});
+                }
+            });
+            $("#quotes-grid button.btn-refresh").on('click', function (e) {
+                $('#quotes-grid').repeater('render', {clearInfinite: true, pageIncrement: null});
+            });
+        },
+
+        //------------------------------------------------------------------------------------------------------------------
+        /**
+         * initialize gadget actions
+         */
+        //------------------------------------------------------------------------------------------------------------------
+        init: function (mainGadget, mainAction) {
+            $('#btn-save-quote').on('click', $.proxy(function (e) {
+                this.saveQuote();
+            }, this));
+
+            $('#quoteModal').on('hidden.bs.modal', $.proxy(function (e) {
+                $('form#quotes-form')[0].reset();
+                $('#quotation').val('');
+                this.selectedQuote = 0;
+            }, this));
+
+            this.initiateQuoteDG();
+        }
     }
 };
-
-/**
- * Fills the quotes combo
- */
-function fillQuotesCombo()
-{
-    var box = $('#quotes_combo')[0];
-    box.options.length = 0;
-    var quotes = QuotesAjax.callSync('GetQuotes', [-1, $('#group_filter').val()]);
-    if (quotes.length > 0) {
-        $.each(quotes, function(index, value) {
-            box.options[box.options.length] = new Option(value['title'].defilter(), value['id']);
-        });
-    }
-    stopAction();
-}
-
-/**
- * Clean the form
- */
-function stopAction()
-{
-    switch(currentAction) {
-    case 'Groups':
-        $('#gid').val(0);
-        $('#title').val('');
-        $('#view_mode').val('0');
-        $('#view_type').val('0');
-        $('#show_title').val('true');
-        $('#limit_count').val('0');
-        $('#random').val('false');
-        $('#published').val('true');
-        $('#groups_combo').prop('selectedIndex', -1);
-
-        $('#add_quotes').css('display', 'none');
-        $('#btn_del').css('display', 'none');
-        break;
-    case 'GroupQuotes':
-        editGroup($('#gid').val());
-        break;
-    case 'Quotes':
-        $('#id').val(0);
-        $('#title').val('');
-        $('#show_title').val('true');
-        $('#published').val('true');
-        $('#gid').prop('selectedIndex', $('#group_filter').prop('selectedIndex') - 1);
-        $('#start_time').val('');
-        $('#stop_time').val('');
-        $('#quotation').val('');
-        $('#quotes_combo').prop('selectedIndex', -1);
-        $('#btn_del').css('display', 'none');
-        initDatePicker('start_time');
-        initDatePicker('stop_time');
-        break;
-    }
-}
-
-/**
- * Add/Update a Quote
- */
-function saveQuote()
-{
-    if (!$('#title').val() ||
-        $('#quotation').val().blank() ||
-        $('#gid').val() == 0)
-    {
-        alert(Jaws.gadgets.Quotes.defines.incompleteQuoteFields);
-        return;
-    }
-
-    if($('#id').val() == 0) {
-        var response = QuotesAjax.callSync(
-            'InsertQuote', [
-                $('#title').val(),
-                $('#quotation').val(),
-                $('#gid').val(),
-                $('#start_time').val(),
-                $('#stop_time').val(),
-                $('#show_title').val() == 'true',
-                $('#published').val() == 'true'
-            ]
-        );
-        if (response['type'] == 'alert-success') {
-            if ($('#group_filter').val() == -1 || $('#group_filter').val() == $('#gid').val()) {
-                var box = $('#quotes_combo')[0];
-                box.options[box.options.length] = new Option(response['data']['title'], response['data']['id']);
-            }
-            stopAction();
-        }
-    } else {
-        var box = $('#quotes_combo')[0];
-        var quoteIndex = box.selectedIndex;
-        var response = QuotesAjax.callSync(
-            'UpdateQuote', [
-                $('#id').val(),
-                $('#title').val(),
-                $('#quotation').val(),
-                $('#gid').val(),
-                $('#start_time').val(),
-                $('#stop_time').val(),
-                $('#show_title').val() == 'true',
-                $('#published').val() == 'true'
-            ]
-        );
-        if (response['type'] == 'alert-success') {
-            box.options[quoteIndex].text = $('#title').val();
-            stopAction();
-        }
-    }
-}
-
-/**
- * Delete a Quote
- */
-function deleteQuote()
-{
-    var answer = confirm(Jaws.gadgets.Quotes.defines.confirmQuoteDelete);
-    if (answer) {
-        var box = $('#quotes_combo')[0];
-        var quoteIndex = box.selectedIndex;
-        var response = QuotesAjax.callSync('DeleteQuote', box.value);
-        if (response['type'] == 'alert-success') {
-            box.options[quoteIndex] = null;
-            stopAction();
-        }
-    }
-}
-
-/**
- * Edit a Quote
- *
- */
-function editQuote(id)
-{
-    if (id == 0) return;
-    var quoteInfo = QuotesAjax.callSync('GetQuote', id);
-    currentAction = 'Quotes';
-    $('#id').val(quoteInfo['id']);
-    $('#title').val(quoteInfo['title'].defilter());
-    $('#quotation').val(quoteInfo['quotation']);
-    $('#gid').val(quoteInfo['gid']);
-    if (quoteInfo['gid'] == 0) {
-        $('#gid').prop('selectedIndex', -1);
-    }
-
-    $('#start_time').val((quoteInfo['start_time'] == null)? '': quoteInfo['start_time']);
-    $('#stop_time').val((quoteInfo['stop_time'] == null)? '': quoteInfo['stop_time']);
-    $('#show_title')[0].value = quoteInfo['show_title'];
-    $('#published')[0].value = quoteInfo['published'];
-
-    $('#btn_del').css('display', 'inline');
-}
-
-/**
- * Edit group
- */
-function editGroup(gid)
-{
-    if (gid == 0) return;
-    if (currentAction == 'GroupQuotes') {
-        $('#work_area').html(cacheGroupForm);
-    }
-
-    currentAction = 'Groups';
-    var groupInfo = QuotesAjax.callSync('GetGroup', gid);
-    $('#gid').val(groupInfo['id']);
-    $('#title').val(groupInfo['title'].defilter());
-    $('#view_mode').val(groupInfo['view_mode']);
-    $('#view_type').val(groupInfo['view_type']);
-    $('#limit_count').val(groupInfo['limit_count']);
-    $('#show_title')[0].value = groupInfo['show_title'];
-    $('#random')[0].value = groupInfo['random'];
-    $('#published')[0].value = groupInfo['published'];
-
-    $('#add_quotes').css('display', 'inline');
-    $('#btn_del').css('display', 'inline');
-}
-
-/**
- * Saves data / changes on the group's form
- */
-function saveGroup()
-{
-    if (currentAction == 'Groups') {
-        if (!$('#title').val()) {
-            alert(Jaws.gadgets.Quotes.defines.incompleteGroupFields);
-            return false;
-        }
-
-        if($('#gid').val() == 0) {
-            var response = QuotesAjax.callSync(
-                'InsertGroup', [
-                    $('#title').val(),
-                    $('#view_mode').val(),
-                    $('#view_type').val(),
-                    $('#show_title').val() == 'true',
-                    $('#limit_count').val(),
-                    $('#random').val() == 'true',
-                    $('#published').val() == 'true'
-                ]
-            );
-            if (response['type'] == 'alert-success') {
-                var box = $('#groups_combo')[0];
-                box.options[box.options.length] = new Option(response['data']['title'], response['data']['id']);
-                stopAction();
-            }
-        } else {
-            var box = $('#groups_combo')[0],
-                groupIndex = box.selectedIndex;
-            var response = QuotesAjax.callSync(
-                'UpdateGroup', [
-                    $('#gid').val(),
-                    $('#title').val(),
-                    $('#view_mode').val(),
-                    $('#view_type').val(),
-                    $('#show_title').val() == 'true',
-                    $('#limit_count').val(),
-                    $('#random').val() == 'true',
-                    $('#published').val() == 'true'
-                ]
-            );
-            if (response['type'] == 'alert-success') {
-                box.options[groupIndex].text = $('#title').val();
-                stopAction();
-            }
-        }
-    } else {
-        var inputs  = $('#work_area').find('input');
-        var keys    = [];
-        var counter = 0;
-        for (var i=0; i<inputs.length; i++) {
-            if (inputs[i].name.indexOf('group_quotes') == -1) {
-                continue;
-            }
-
-            if (inputs[i].checked) {
-                keys[counter] = inputs[i].value;
-                counter++;
-            }
-        }
-        QuotesAjax.callAsync('AddQuotesToGroup', [$('#gid').val(), keys]);
-    }
-}
-
-/**
- * Delete group
- */
-function deleteGroup()
-{
-    var answer = confirm(Jaws.gadgets.Quotes.defines.confirmGroupDelete);
-    if (answer) {
-        var box = $('#groups_combo')[0];
-        var quoteIndex = box.selectedIndex;
-        var response = QuotesAjax.callSync('DeleteGroup', box.value);
-        if (response['type'] == 'alert-success') {
-            box.options[quoteIndex] = null;
-            stopAction();
-        }
-    }
-}
-
-/**
- * Show a simple-form with checkboxes so quotes can check their group
- */
-function editGroupQuotes()
-{
-    if ($('#gid').val() == 0) return;
-    if (cacheGroupQuotesForm == null) {
-        cacheGroupQuotesForm = QuotesAjax.callSync('GroupQuotesUI');
-    }
-
-    $('#add_quotes').css('display', 'none');
-    $('#btn_del').css('display', 'none');
-    if (cacheGroupForm == null) {
-        cacheGroupForm = $('#work_area').html();
-    }
-    $('#work_area').html(cacheGroupQuotesForm);
-
-    currentAction = 'GroupQuotes';
-    var quotesList = QuotesAjax.callSync('GetQuotes', [-1, $('#gid').val()]);
-    var inputs  = $('#work_area').find('input');
-
-    if (quotesList) {
-        $.each(quotesList, function(index, value) {
-            for (var i=0; i<inputs.length; i++) {
-                if (inputs[i].name.indexOf('group_quotes') == -1) {
-                    continue;
-                }
-                if (value['id'] == inputs[i].value) {
-                    inputs[i].checked = true;
-                    break
-                }
-            }
-        });
-    }
-}
-
-$(document).ready(function() {
-    switch (Jaws.defines.mainAction) {
-        case 'Quotes':
-            currentAction = 'Quotes';
-            $('#group_filter').prop('selectedIndex', 0);
-            initDatePicker('start_time');
-            initDatePicker('stop_time');
-            break;
-        case 'QuoteGroups':
-            currentAction = 'Groups';
-            break;
-    }
-});
-
-var QuotesAjax = new JawsAjax('Quotes', QuotesCallback);
-
-//Cache for saving the group-form template
-var cacheGroupForm = null;
-
-//Cache for saving the group quotes form template
-var cacheGroupQuotesForm = null;
-
-//Which action are we running?
-var currentAction = null;
