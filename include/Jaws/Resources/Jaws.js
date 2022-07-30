@@ -926,6 +926,7 @@ function initEditor(selector)
             break;
 
         case 'tinymce':
+        case 'TinyMCE':
             $.loadScript('libraries/tinymce/tinymce.min.js', function() {
                 // find and remove old tinymce editor instance
                 tinyMCE.editors.forEach(function(editor, index) {
