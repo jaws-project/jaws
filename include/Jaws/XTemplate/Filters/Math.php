@@ -28,7 +28,7 @@ class Jaws_XTemplate_Filters_Math extends Jaws_XTemplate_Filters
      *
      * @return float
      */
-    public static function divided_by($input, $operand)
+    public static function div($input, $operand)
     {
         return ($operand == 0)? (float)$input : ((float)$input / (float)$operand);
     }
@@ -56,40 +56,40 @@ class Jaws_XTemplate_Filters_Math extends Jaws_XTemplate_Filters
     /**
      * subtraction
      *
-     * @param float $input
-     * @param float $operand
+     * @param float $input1
+     * @param float $input2
      *
      * @return float
      */
-    public static function minus($input, $operand)
+    public static function sub($input1, $input2)
     {
-        return (float)$input - (float)$operand;
+        return (float)$input1 - (float)$input2;
     }
 
     /**
      * modulo
      *
-     * @param float $input
-     * @param float $operand
+     * @param float $input1
+     * @param float $input2
      *
      * @return float
      */
-    public static function modulo($input, $operand)
+    public static function mod($input1, $input2)
     {
-        return fmod((float)$input, (float)$operand);
+        return fmod((float)$input1, (float)$input2);
     }
 
     /**
      * addition
      *
-     * @param float $input
-     * @param float $operand
+     * @param float $input1
+     * @param float $input2
      *
      * @return float
      */
-    public static function plus($input, $operand)
+    public static function add($input1, $input2)
     {
-        return (float)$input + (float)$operand;
+        return (float)$input1 + (float)$input2;
     }
 
     /**
@@ -108,14 +108,40 @@ class Jaws_XTemplate_Filters_Math extends Jaws_XTemplate_Filters
     /**
      * multiplication
      *
-     * @param float $input
-     * @param float $operand
+     * @param float $input1
+     * @param float $input2
      *
      * @return float
      */
-    public static function times($input, $operand)
+    public static function mul($input1, $input2)
     {
-        return (float)$input * (float)$operand;
+        return (float)$input1 * (float)$input2;
+    }
+
+    /**
+     * greater than or equal
+     *
+     * @param float $input1
+     * @param float $input2
+     *
+     * @return float
+     */
+    public static function gt($input1, $input2)
+    {
+        return (float)$input1 >= (float)$input2;
+    }
+
+    /**
+     * less than or equal
+     *
+     * @param float $input1
+     * @param float $input2
+     *
+     * @return float
+     */
+    public static function le($input1, $input2)
+    {
+        return (float)$input1 <= (float)$input2;
     }
 
 }
