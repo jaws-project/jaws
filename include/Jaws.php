@@ -144,6 +144,8 @@ class Jaws
     {
         $this->define('', 'script', JAWS_SCRIPT);
         $this->define('', 'base', Jaws_Utils::getBaseURL('/'));
+        $this->define('', 'relBase', Jaws_Utils::getBaseURL('/'));
+        $this->define('', 'absBase', Jaws_Utils::getBaseURL('/', false));
         $this->define('', 'requestedURL', Jaws_Utils::getRequestURL());
 
         // Filesystem management
@@ -203,7 +205,7 @@ class Jaws
         Jaws_Translate::getInstance()->init($this->_Preferences['language']);
 
         // pass preferences to client
-        $this->define('', 'preferences', $this->_Preferences);
+        $this->define('', $this->_Preferences);
     }
 
     /**
@@ -536,6 +538,8 @@ class Jaws
             if (!array_key_exists($component, $this->defines)) {
                 $this->defines[$component] = array();
             }
+        } else if (is_array($key)) {
+            $this->defines[$component] = array_merge($this->defines[$component], $key);
         } else {
             $this->defines[$component][$key] = $value;
         }
