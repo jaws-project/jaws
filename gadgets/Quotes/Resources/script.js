@@ -81,13 +81,13 @@ function Jaws_Gadget_Quotes_Action_quotes() {
                         $('#datepicker_ptime_input').val(
                             (quoteInfo.ptime === 0) ? '' :
                                 $.dateCalendar(
-                                    Jaws.defines.preferences['calendar'], quoteInfo.ptime
+                                    Jaws.defines.calendar, quoteInfo.ptime
                                 ).format('YYYY/MM/DD')
                         );
                         $('#datepicker_xtime_input').val(
                             (quoteInfo.xtime === 0) ? '' :
                                 $.dateCalendar(
-                                    Jaws.defines.preferences['calendar'], quoteInfo.xtime
+                                    Jaws.defines.calendar, quoteInfo.xtime
                                 ).format('YYYY/MM/DD')
                         );
 
@@ -211,7 +211,7 @@ function Jaws_Gadget_Quotes_Action_quotes() {
                     helpers.item.addClass('text-right');
                     helpers.item.css('direction', 'ltr');
                     customMarkup = rowData.updated > 0 ? $.dateCalendar(
-                        Jaws.defines.preferences['calendar'], rowData.updated
+                        Jaws.defines.calendar, rowData.updated
                     ).format('YYYY/MM/DD HH:mm:ss') : '';
                     break;
                 default:
