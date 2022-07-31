@@ -845,15 +845,29 @@ class Jaws_ORM
      */
     private function _build_where()
     {
-        // removing extra and/or operators at begin/end of statement
-        if (in_array(reset($this->_where), array(' and ', ' or '))) {
-            array_shift($this->_where);
-        }
-        if (in_array(end($this->_where), array(' and ', ' or '))) {
-            array_pop($this->_where);
-        }
-
         $where_str = implode('', $this->_where);
+        // removing extra and/or operators at begin/middle/end of statement
+        do {
+            $temp_where_str = $where_str;
+            $where_str = preg_replace(
+                array(
+                    '@\s+(and|or)\s+(and|or)\s+@',
+                    '@\(\s*(and|or)\s*\)@',
+                    '@\(\s*\)@',
+                    '@^\s*(and|or)\s+@',
+                    '@\s+(and|or)\s*$@',
+                ),
+                array(
+                    ' $1 ',
+                    '',
+                    '',
+                    '',
+                    '',
+                ),
+                $temp_where_str
+            );
+        } while ( $temp_where_str != $where_str );
+
         return empty($where_str)? '' : "where $where_str\n";
     }
 
