@@ -423,7 +423,7 @@ class HTTP_Request2_Response
     public function getBody()
     {
         if (0 == strlen($this->body) || !$this->bodyEncoded
-            || !in_array(strtolower($this->getHeader('content-encoding')), array('gzip', 'deflate'))
+            || !in_array(strtolower((string)$this->getHeader('content-encoding')), array('gzip', 'deflate'))
         ) {
             return $this->body;
 
@@ -434,7 +434,7 @@ class HTTP_Request2_Response
             }
 
             try {
-                switch (strtolower($this->getHeader('content-encoding'))) {
+                switch (strtolower((string)$this->getHeader('content-encoding'))) {
                 case 'gzip':
                     $decoded = self::decodeGzip($this->body);
                     break;
