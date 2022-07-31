@@ -385,12 +385,12 @@ class HTTP_Request2_Adapter_Socket extends HTTP_Request2_Adapter
             return true;
         }
 
-        $lengthKnown = 'chunked' == strtolower($response->getHeader('transfer-encoding'))
+        $lengthKnown = 'chunked' == strtolower((string)$response->getHeader('transfer-encoding'))
                        || null !== $response->getHeader('content-length')
                        // no body possible for such responses, see also request #17031
                        || HTTP_Request2::METHOD_HEAD == $this->request->getMethod()
                        || in_array($response->getStatus(), array(204, 304));
-        $persistent  = 'keep-alive' == strtolower($response->getHeader('connection')) ||
+        $persistent  = 'keep-alive' == strtolower((string)$response->getHeader('connection')) ||
                        (null === $response->getHeader('connection') &&
                         '1.1' == $response->getVersion());
         return $requestKeepAlive && $lengthKnown && $persistent;
