@@ -197,9 +197,9 @@ class Jaws
             '/[^[:alnum:]_\-]/', '', $this->_Preferences['theme']['name']
         );
         $this->_Preferences['theme']['locality'] = (int)$this->_Preferences['theme']['locality'];
-        $this->_Preferences['language'] = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['language']);
-        $this->_Preferences['editor'] = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['editor']);
-        $this->_Preferences['calendar'] = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar']);
+        $this->_Preferences['language'] = preg_replace('/[^[:alnum:]_\-]/', '', (string)$this->_Preferences['language']);
+        $this->_Preferences['editor'] = preg_replace('/[^[:alnum:]_\-]/', '', (string)$this->_Preferences['editor']);
+        $this->_Preferences['calendar'] = preg_replace('/[^[:alnum:]_]/',  '', (string)$this->_Preferences['calendar']);
 
         // load the language translates
         Jaws_Translate::getInstance()->init($this->_Preferences['language']);
@@ -534,13 +534,13 @@ class Jaws
      */
     function define($component, $key, $value = '')
     {
-        if (empty($key)) {
-            if (!array_key_exists($component, $this->defines)) {
-                $this->defines[$component] = array();
-            }
-        } else if (is_array($key)) {
+        if (!array_key_exists($component, $this->defines)) {
+            $this->defines[$component] = array();
+        }
+
+        if (is_array($key)) {
             $this->defines[$component] = array_merge($this->defines[$component], $key);
-        } else {
+        } elseif(!empty($key)) {
             $this->defines[$component][$key] = $value;
         }
     }
