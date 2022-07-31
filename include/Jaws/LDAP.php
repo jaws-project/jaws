@@ -156,7 +156,7 @@ class Jaws_LDAP
         if ($result) {
             //ldap_count_entries
             $data = ldap_get_entries($this->ldapConnection, $result);
-            return data;
+            return $data;
         }
 
         return Jaws_Error::raiseError(
@@ -197,7 +197,7 @@ class Jaws_LDAP
         if ($result) {
             //ldap_count_entries
             $data = ldap_get_entries($this->ldapConnection, $result);
-            return data;
+            return $data;
         }
 
         return Jaws_Error::raiseError(
