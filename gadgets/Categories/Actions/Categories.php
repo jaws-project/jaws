@@ -135,6 +135,18 @@ class Categories_Actions_Categories extends Jaws_Gadget_Action
     }
 
     /**
+     * Delete reference categories
+     *
+     * @access  public
+     * @param   array   $interface      Gadget connection interface
+     * @return  bool    True if delete successfully otherwise False
+     */
+    function deleteReferenceCategories($interface)
+    {
+        return $this->gadget->model->load('Categories')->deleteReferenceCategories($interface);
+    }
+
+    /**
      * Get action/reference categories
      *
      * @access  public

@@ -163,15 +163,17 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
         $interface = array_merge($data, $interface);
 
         $objTable = Jaws_ORM::getInstance();
-        // delete reference categories
-        $result = $objTable->table('categories_references')
-            ->delete()
-            ->where('category', $del_categories, 'in')
-            ->and()
-            ->where('reference', (int)$interface['reference'])
-            ->exec();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        if (!empty($del_categories)) {
+            // delete reference categories
+            $result = $objTable->table('categories_references')
+                ->delete()
+                ->where('category', $del_categories, 'in')
+                ->and()
+                ->where('reference', (int)$interface['reference'])
+                ->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         // insert new reference categories
@@ -184,6 +186,40 @@ class Categories_Model_Categories extends Jaws_Gadget_Model
                 )
             )
             ->exec();
+        }
+
+        return true;
+    }
+
+    /**
+     * Delete reference categories
+     *
+     * @access  public
+     * @param   array   $interface      Gadget connection interface
+     * @return  bool    True if delete successfully otherwise False
+     */
+    function deleteReferenceCategories($interface)
+    {
+        $data = array(
+            'gadget'    => '',
+            'action'    => '',
+            'reference' => 0,
+        );
+        $interface = array_merge($data, $interface);
+
+        $tblCatReference = Jaws_ORM::getInstance()->table('categories_references');
+        $tblCat = Jaws_ORM::getInstance()->table('categories');
+
+        $tblCat->select('categories.id')
+            ->where('categories_references.category', $tblCat->expr('categories.id'))
+            ->and()->where('categories.gadget', $interface['gadget'])
+            ->and()->where('categories.action', $interface['action']);
+        if (!empty($interface['reference'])) {
+            $tblCat->and()->where('categories_references.reference', (int)$interface['reference']);
+        }
+        $res = $tblCatReference->delete()->where('', $tblCat, 'exists')->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
         }
 
         return true;
