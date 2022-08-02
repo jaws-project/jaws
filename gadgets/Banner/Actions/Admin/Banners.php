@@ -177,17 +177,17 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
 
         $btnText =& Piwi::CreateWidget('Button','btn_text', '', 'gadgets/Banner/Resources/images/text.png');
         $btnText->SetTitle($this::t('BANNERS_BANNERTYPE_TEXT'));
-        $btnText->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.Banner.Defines.textTemplate);');
+        $btnText->AddEvent(ON_CLICK, 'javascript:setTemplate(Jaws.gadgets.Banner.defines.textTemplate);');
         $tpl->SetVariable('btn_text', $btnText->Get());
 
         $btnImage =& Piwi::CreateWidget('Button','btn_image', '', 'gadgets/Banner/Resources/images/image.png');
         $btnImage->SetTitle($this::t('BANNERS_BANNERTYPE_IMAGE'));
-        $btnImage->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.Banner.Defines.imageTemplate);');
+        $btnImage->AddEvent(ON_CLICK, 'javascript:setTemplate(Jaws.gadgets.Banner.defines.imageTemplate);');
         $tpl->SetVariable('btn_image', $btnImage->Get());
 
         $btnFlash =& Piwi::CreateWidget('Button','btn_flash', '', 'gadgets/Banner/Resources/images/flash.png');
         $btnFlash->SetTitle($this::t('BANNERS_BANNERTYPE_FLASH'));
-        $btnFlash->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.Banner.Defines.flashTemplate);');
+        $btnFlash->AddEvent(ON_CLICK, 'javascript:setTemplate(Jaws.gadgets.Banner.defines.flashTemplate);');
         $tpl->SetVariable('btn_flash', $btnFlash->Get());
 
         $btnReset =& Piwi::CreateWidget('Button','btn_reset', '', STOCK_UNDO);
