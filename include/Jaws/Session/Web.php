@@ -94,6 +94,8 @@ class Jaws_Session_Web extends Jaws_Session
         //$this->app->registry->fetch('cookie_domain', 'Settings');
         $domain = '';
 
+        // same site
+        $samesite = $this->app->registry->fetch('cookie_samesite', 'Settings');
         // secure
         $secure = $this->app->registry->fetch('cookie_secure', 'Settings') == 'true';
         if (empty($_SERVER['HTTPS'])) {
@@ -101,6 +103,9 @@ class Jaws_Session_Web extends Jaws_Session
                 (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) != 'https')
             ) {
                 $secure = false;
+                if (!in_array($samesite, array('Lax', 'Strict'))) {
+                    $samesite = 'Lax';
+                }
             }
         }
 
@@ -108,9 +113,6 @@ class Jaws_Session_Web extends Jaws_Session
         if (is_null($httponly)) {
             $httponly = $this->app->registry->fetch('cookie_httponly', 'Settings') == 'true';
         }
-
-        // same site
-        $samesite = $this->app->registry->fetch('cookie_samesite', 'Settings');
 
         $reqParts = Jaws_Utils::parseRequestURL();
         // concat port to cookie name because cookie not support port
