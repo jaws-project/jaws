@@ -23,6 +23,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         // Load ControlPanel header
         $this->app->layout->Populate($ReqResult);
 
+        $ReqGadget = $ReqGadget?: (string)$ReqGadget;
         $tpl = $this->app->layout->_Template;
         $tpl->SetVariable('gadget', $ReqGadget);
         $tpl->SetVariable('gadget_version', $ReqGadgetVersion);
