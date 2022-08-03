@@ -278,6 +278,9 @@ class Notification_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            $this->gadget->acl->insert('Message');
+            $this->gadget->acl->insert('DeleteMessage');
         }
 
         if (version_compare($old, '2.9.0', '<')) {
@@ -285,9 +288,6 @@ class Notification_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
-
-            $this->gadget->acl->insert('Message');
-            $this->gadget->acl->insert('DeleteMessage');
         }
 
         return true;
