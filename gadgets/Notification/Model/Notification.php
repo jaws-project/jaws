@@ -403,25 +403,25 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     }
 
     /**
-     * Delete orphaned messages
+     * Delete orphaned message
      *
      * @access  public
-     * @param   int     $messageId  Message id (if passed we need check and delete only this message)
+     * @param   int     $messageId  Message id
      * @return  bool    True or error
      */
-    function DeleteOrphanedMessages($messageId = 0)
+    function DeleteOrphanedMessage($messageId)
     {
-        $msgTable = Jaws_ORM::getInstance()->table('notification_message');
-        $rcpTable = Jaws_ORM::getInstance()->table('notification_recipient');
-        $rcpTable->select('notification_recipient.message')->where(
-            'notification_message.id', $msgTable->expr('notification_recipient.message')
-        );
+        $rcpTable = Jaws_ORM::getInstance()
+            ->table('notification_recipient')
+            ->select('notification_recipient.message')
+            ->where('notification_message.id', $messageId);
 
-        $msgTable->delete()->where('', $rcpTable, 'not exists');
-        if ($messageId > 0) {
-            $msgTable->and()->where('id', $messageId);
-        }
-        return $msgTable->exec();
+        return Jaws_ORM::getInstance()->table('notification_message')
+            ->delete()
+            ->where('id', $messageId)
+            ->and()
+            ->where('', $rcpTable, 'not exists')
+            ->exec();
     }
 
     /**
@@ -429,7 +429,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $recipientId            Recipient id
-     * @param   bool    $deleteSimilarMessage   Delete similar messages ?
+     * @param   bool    $deleteSimilarMessage   Delete similar messages?
      * @return  bool    True or error
      */
     function DeleteMessageRecipient($recipientId, $deleteSimilarMessage = false)
@@ -453,7 +453,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return $res;
         }
 
-        $res = $this->DeleteOrphanedMessages($messageId);
+        $res = $this->DeleteOrphanedMessage($messageId);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
