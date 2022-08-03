@@ -274,13 +274,21 @@ class Notification_Installer extends Jaws_Gadget_Installer
             // registry keys
             $this->gadget->registry->insert('default_longevity', 600);
 
-            $result = $this->installSchema('schema.xml', array(), '2.7.0.xml');
+            $result = $this->installSchema('2.8.0.xml', array(), '2.7.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
         }
 
-        //FIXME add new ACLs (Message, DeleteMessage)
+        if (version_compare($old, '2.9.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '2.8.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $this->gadget->acl->insert('Message');
+            $this->gadget->acl->insert('DeleteMessage');
+        }
 
         return true;
     }

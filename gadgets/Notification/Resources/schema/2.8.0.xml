@@ -102,17 +102,6 @@
                 </field>
             </index>
 
-            <index>
-                <name><variable>table_prefix</variable>notification_ht</name>
-                <field>
-                    <name>hash</name>
-                </field>
-
-                <field>
-                    <name>time</name>
-                </field>
-            </index>
-
         </declaration>
     </table>
 
@@ -176,17 +165,6 @@
                 <name><variable>table_prefix</variable>notification_r_drv</name>
                 <field>
                     <name>driver</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>notification_r_ds</name>
-                <field>
-                    <name>driver</name>
-                </field>
-
-                <field>
-                    <name>status</name>
                 </field>
             </index>
 
