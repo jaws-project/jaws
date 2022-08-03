@@ -711,7 +711,11 @@ class MDB2_Driver_pgsql extends MDB2_Driver_Common
         }
 
         $function = $this->options['multi_query'] ? 'pg_send_query' : 'pg_query';
-        $result = @$function($connection, $query);
+        try {
+            $result = @$function($connection, $query);
+        } catch(Exception $e) {
+        }
+
         if (!$result) {
             $err = $this->raiseError(null, null, null,
                 'Could not execute statement', __FUNCTION__);
