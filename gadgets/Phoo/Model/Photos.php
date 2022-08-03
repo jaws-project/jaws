@@ -119,7 +119,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
             $table->join('phoo_image', 'phoo_image.id',
                 'phoo_image_album.phoo_image_id');
             $table->where('phoo_album_id', $id);
-            if (checkdate($month, $day, $year)) {
+            if (!empty($month) && !empty($day) && !empty($year) && checkdate($month, $day, $year)) {
                 if (strlen($day) == 1) {
                     $day = '0'.$day;
                 }
