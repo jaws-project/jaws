@@ -249,6 +249,15 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             $urlParams['referrer'] = bin2hex($referrer);
         }
 
+        // if stored authtype in session not found, push error message
+        if (is_null($authtype)) {
+            $this->gadget->session->push(
+                Jaws::t('ERROR_SESSION_NOTFOUND'),
+                RESPONSE_WARNING,
+                'Login.Response'
+            );
+        }
+
         if (Jaws_Error::IsError($result)) {
             http_response_code($result->getCode());
             return Jaws_Header::Location(

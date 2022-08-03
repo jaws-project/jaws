@@ -221,20 +221,23 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function Authenticate()
     {
+        // fetch default authentication type from registry
+        $default_authtype = $this->gadget->registry->fetch('authtype');
         // fetch authentication type from session
-        $authtype = $this->gadget->session->auth;
-        if (empty($authtype)) {
-            return Jaws_HTTPError::Get(401, '', 'Authentication type is not valid!');
+        $session_authtype = $this->gadget->session->auth;
+        if (empty($session_authtype)) {
+            // session authtype not found
+            $classname = "Users_Account_{$default_authtype}_Authenticate";
+            $objAccount = new $classname($this->gadget);
+            $loginData = Jaws_Error::raiseError('Authentication type is not valid!', 401, JAWS_ERROR_WARNING);
+        } else {
+            $classname = "Users_Account_{$session_authtype}_Authenticate";
+            $objAccount = new $classname($this->gadget);
+            $loginData = $objAccount->Authenticate();
         }
-
-        // parse referrer url
-        $referrer = Jaws_XSS::filterURL(hex2bin($this->gadget->session->referrer), true, true);
-
-        $classname = "Users_Account_{$authtype}_Authenticate";
-        $objAccount = new $classname($this->gadget);
-        $loginData = $objAccount->Authenticate();
+        
         if (!Jaws_Error::IsError($loginData)) {
-            $loginData['auth'] = $authtype;
+            $loginData['auth'] = $session_authtype;
             // create session & cookie
             $this->app->session->create($loginData, $loginData['remember']);
             // login event logging
@@ -254,10 +257,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $this->gadget->event->shout('LoginUser', $loginData);
         }
 
-        $default_authtype = $this->gadget->registry->fetch('authtype');
+        // parse referrer url
+        $referrer = Jaws_XSS::filterURL(hex2bin((string)$this->gadget->session->referrer), true, true);
         return $objAccount->AuthenticateError(
             $loginData,
-            ($authtype != $default_authtype)? $authtype : '',
+            ($session_authtype != $default_authtype)? $session_authtype : '',
             $referrer
         );
     }
