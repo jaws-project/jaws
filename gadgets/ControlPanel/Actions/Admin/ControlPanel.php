@@ -204,6 +204,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                 array(
                     'gadget' => 'Users',
                     'action' => 'Login',
+                    'domain' => $this->app->session->user->domain,
                     'user'   => $this->app->session->user->id,
                 ),
                 10
