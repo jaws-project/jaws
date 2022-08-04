@@ -519,7 +519,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         // Let everyone know a user has been added
         $res = $this->gadget->event->shout(
             'UserChanges',
-            array('action' => 'AddUser', 'user' => $result)
+            array('action' => 'AddUser', 'user' => $result, 'data' => $uData)
         );
         if (Jaws_Error::IsError($res)) {
             // nothing
@@ -760,7 +760,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         // Let everyone know a user has been added
         $res = $this->gadget->event->shout(
             'UserChanges',
-            array('action' => 'UpdateUser', 'user' => $uid)
+            array('action' => 'UpdateUser', 'user' => $uid, 'data' => $uData)
         );
         if (Jaws_Error::IsError($res)) {
             // nothing
@@ -849,7 +849,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         // Let everyone know a user has been added
         $res = $this->gadget->event->shout(
             'UserChanges',
-            array('action' => 'UpdateUser', 'user' => (int)$id)
+            array('action' => 'UpdateUser', 'user' => (int)$id, 'data' => $pData)
         );
         if (Jaws_Error::IsError($res)) {
             // nothing
@@ -940,7 +940,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         // Let everyone know a user has been added
         $res = $this->gadget->event->shout(
             'UserChanges',
-            array('action' => 'UpdateUser', 'user' => (int)$uid)
+            array('action' => 'UpdateUser', 'user' => (int)$uid, 'data' => $uData)
         );
         if (Jaws_Error::IsError($res)) {
             // nothing
