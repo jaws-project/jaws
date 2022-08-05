@@ -122,7 +122,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
                 $logsTable->and()->where('action', $filters['action']);
             }
             // domain
-            if (isset($filters['domain']) && !empty($filters['domain'])) {
+            if (isset($filters['domain'])) {
                 $logsTable->and()->where('domain', (int)$filters['domain']);
             }
             // user
@@ -184,7 +184,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
             if (isset($filters['action']) && !empty($filters['action'])) {
                 $logsTable->and()->where('action', $filters['action']);
             }
-            if (isset($filters['domain']) && !empty($filters['domain'])) {
+            if (isset($filters['domain'])) {
                 $logsTable->and()->where('domain', (int)$filters['domain']);
             }
             if (isset($filters['user']) && !empty($filters['user'])) {
