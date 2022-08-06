@@ -3337,8 +3337,7 @@ if (typeof jQuery === 'undefined') {
 
 				case 'number':
 					if (isNaN(args)) {
-						this.invalid = true;
-						break;
+						return new Date(NaN);
 					}
 
 					var gdate = new Date();
@@ -3509,8 +3508,7 @@ if (typeof jQuery === 'undefined') {
 			switch ($.type(args)) {
 				case 'number':
 					if (isNaN(args)) {
-						this.invalid = true;
-						break;
+						return new Date(NaN);
 					}
 
 					this.gdate = new Date();
