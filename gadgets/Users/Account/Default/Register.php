@@ -121,7 +121,7 @@ class Users_Account_Default_Register extends Users_Account_Default
 
             // auto login if user activated
             if ($this->gadget->registry->fetch('anon_activation') != 'admin') {
-                unset($userData['password'], $userData['verify_key']);
+                unset($userData['password']);
 
                 // add required attributes for auto login into jaws
                 $userData['internal']    = true;
