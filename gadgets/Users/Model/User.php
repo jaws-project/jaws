@@ -47,7 +47,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select($selectedColumns)
-            ->where('domain', (int)$domain, '=', empty($domain));
+            ->where('domain', (int)$domain);
         if (is_int($user)) {
             $objORM->and()->where('users.id', $user);
         } else {
