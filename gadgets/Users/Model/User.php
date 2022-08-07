@@ -47,7 +47,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select($selectedColumns)
-            ->where('domain', (int)$domain, '=', empty($domain));
+            ->where('domain', (int)$domain);
         if (is_int($user)) {
             $objORM->and()->where('users.id', $user);
         } else {
@@ -871,7 +871,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
             ->select('avatar:blob')
-            ->where('domain', (int)$domain, '=', empty($domain));
+            ->where('domain', (int)$domain);
         if (is_int($user)) {
             $objORM->and()->where('id', (int)$user);
         } else {
@@ -1065,7 +1065,6 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         // check password
         if ($result['password'] !== Jaws_Utils::HashedPassword($password, $result['password'])) {
-            $this->updateLastAccess($result['id'], false);
             // password incorrect event logging
             $this->gadget->event->shout(
                 'Log',
@@ -1160,7 +1159,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         // update last access
-        $this->updateLastAccess($result['id'], true);
+        $this->updateLastAccess($result['id']);
         return $result;
 
     }
@@ -1169,20 +1168,12 @@ class Users_Model_User extends Jaws_Gadget_Model
      * Updates the last login time for the given user
      *
      * @param   int     $user       user id of the user being updated
-     * @param   bool    $success    successfully accessed
      * @return  bool    true if all is ok, false if error
      */
-    private function updateLastAccess($user, $success = true)
+    function updateLastAccess($user)
     {
         $data['last_access'] = time();
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        if ($success) {
-            $data['bad_password_count'] = 0;
-        } else {
-            // increase bad_password_count
-            $data['bad_password_count'] = $usersTable->expr('bad_password_count + ?', 1);
-        }
-
         $result = $usersTable->update($data)->where('id', (int)$user)->exec();
         return !Jaws_Error::IsError($result);
     }
