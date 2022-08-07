@@ -53,7 +53,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
                 )
             );
         }
-        $uData['verify_key'] = Jaws_Utils::RandomText(5, array('number' => true));
+
         if (empty($status)) {
             $uData['status'] = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
         } else {
