@@ -1817,7 +1817,7 @@ $(document).ready(function() {
                 ) {
                     var options = {
                         userVisibleOnly: true,
-                        applicationServerKey: urlBase64ToUint8Array(jaws.Notification.Defines.webpush_pub_key)
+                        applicationServerKey: urlBase64ToUint8Array(Jaws.gadgets.Notification.defines.webpush_pub_key)
                     };
 
                     serviceWorkerRegistration.pushManager.getSubscription().then(
