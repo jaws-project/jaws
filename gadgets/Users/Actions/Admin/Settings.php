@@ -17,6 +17,7 @@ class Users_Actions_Admin_Settings extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageSettings');
         $this->AjaxMe('script.js');
+        $this->AjaxMe('script-settings.js');
 
         $assigns = array();
         $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Settings') : $menubar;
