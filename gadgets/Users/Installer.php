@@ -434,7 +434,14 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '5.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '5.1.0.xml');
+            $result = $this->installSchema('5.3.0.xml', array(), '5.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '5.4.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '5.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }

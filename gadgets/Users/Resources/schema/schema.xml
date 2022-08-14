@@ -286,6 +286,13 @@
             </index>
 
             <index>
+                <name><variable>table_prefix</variable>users_contact</name>
+                <field>
+                    <name>contact</name>
+                </field>
+            </index>
+
+            <index>
                 <name><variable>table_prefix</variable>users_email</name>
                 <field>
                     <name>email</name>
@@ -640,6 +647,13 @@
                 <type>integer</type>
                 <length>8</length>
             </field>
+
+            <index>
+                <name><variable>table_prefix</variable>users_contacts_owner</name>
+                <field>
+                    <name>owner</name>
+                </field>
+            </index>
 
             <index>
                 <name><variable>table_prefix</variable>users_contacts_oc</name>

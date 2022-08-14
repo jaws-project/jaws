@@ -446,7 +446,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     function GetUserContact()
     {
         $uid = (int)$this->gadget->request->fetch('uid', 'post');
-        $cInfo = $this->gadget->model->load('Contact')->getContact($uid);
+        $cInfo = $this->gadget->model->load('Contact')->get($uid);
         if (Jaws_Error::IsError($cInfo)) {
             return $this->gadget->session->response($cInfo->getMessage(), RESPONSE_ERROR);
         }
@@ -480,7 +480,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             unset($post['data'][$invalid]);
         }
 
-        $res = $this->gadget->model->load('Contact')->UpdateContact(
+        $res = $this->gadget->model->load('Contact')->Update(
             (int)$post['uid'],
             $post['data']
         );

@@ -21,7 +21,7 @@ class Users_Actions_VCard extends Users_Actions_Default
 
         require_once ROOT_JAWS_PATH . 'gadgets/Users/include/vCard.php';
 
-        $contacts = $this->gadget->model->load('Contact')->getContacts($this->app->session->user->id);
+        $contacts = $this->gadget->model->load('Contact')->list($this->app->session->user->id);
 
         $result = '';
         foreach ($contacts as $contact) {
@@ -137,7 +137,7 @@ class Users_Actions_VCard extends Users_Actions_Default
             if (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {
-                    $contactId = $this->gadget->model->load('Contact')->updateContact(
+                    $contactId = $this->gadget->model->load('Contact')->update(
                         $this->app->session->user->id,
                         $resul,
                         false
@@ -147,7 +147,7 @@ class Users_Actions_VCard extends Users_Actions_Default
                 foreach ($vCard as $Index => $vCardPart) {
                     $result = $this->PrepareForImport($vCardPart);
                     if ($result) {
-                        $contactId = $this->gadget->model->load('Contact')->updateContact(
+                        $contactId = $this->gadget->model->load('Contact')->update(
                             $this->app->session->user->id,
                             $resul,
                             false
