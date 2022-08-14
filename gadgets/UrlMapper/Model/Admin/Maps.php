@@ -208,7 +208,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
      */
     function GetMapRegExp($map, $vars_regexps)
     {
-        $regexp = str_replace('/', '\/', $map);
+        $regexp = str_replace('/', '\/', (string)$map);
         if (!empty($regexp)) {
             // generate regular expression for optional part
             while(preg_match('@\[([^\]\[]+)\]@', $regexp)) {
