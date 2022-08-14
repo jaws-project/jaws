@@ -15,7 +15,7 @@ class Users_Model_Contact extends Jaws_Gadget_Model
      * @param   mixed   $cid    The contact or ID
      * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
      */
-    function getContact($user, $cid = 0)
+    function get($user, $cid = 0)
     {
         $objORM = Jaws_ORM::getInstance()
             ->table('users_contacts', 'uc')
@@ -24,17 +24,12 @@ class Users_Model_Contact extends Jaws_Gadget_Model
                 'uc.url', 'uc.email', 'uc.address', 'uc.note'
             );
 
-        if (!empty($cid)) {
-            $objORM->where('uc.owner', $user);
-            $objORM->and()->where('uc.id', $cid);
-        } else {
+        if (empty($cid)) {
             $objORM->join('users', 'users.contact', 'uc.id');
-
-            if (is_int($user)) {
-                $objORM->where('uc.owner', $user);
-            } else {
-                $objORM->where('username', Jaws_UTF8::strtolower($user));
-            }
+            $objORM->where('uc.owner', (int)$user);
+        } else {
+            $objORM->where('uc.owner', (int)$user);
+            $objORM->and()->where('uc.id', (int)$cid);
         }
 
         $contact = $objORM->fetchRow();
@@ -102,7 +97,7 @@ class Users_Model_Contact extends Jaws_Gadget_Model
      * @param   int     $offset Offset of data array
      * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
      */
-    function getContacts($user, $limit = 0, $offset = null)
+    function list($user, $limit = 0, $offset = null)
     {
         return Jaws_ORM::getInstance()
             ->table('users_contacts', 'uc')
@@ -117,13 +112,13 @@ class Users_Model_Contact extends Jaws_Gadget_Model
     }
 
     /**
-     * Get user's contact count
+     * Get user's contacts count
      *
      * @access  public
      * @param   int     $user   User ID
      * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
      */
-    function getContactsCount($user)
+    function listCount($user)
     {
         return Jaws_ORM::getInstance()->table('users_contacts')
             ->select('count(id):integer')
@@ -141,7 +136,7 @@ class Users_Model_Contact extends Jaws_Gadget_Model
      * @param   int     $cid    Contact's ID
      * @return  array   Response array (notice or error)
      */
-    function updateContact($uid, $data, $main = true, $cid = 0)
+    function update($uid, $data, $main = true, $cid = 0)
     {
         // unset invalid keys
         $invalids = array_diff(
@@ -222,7 +217,7 @@ class Users_Model_Contact extends Jaws_Gadget_Model
      * @param   array   $ids    Contacts id
      * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
      */
-    function deleteContacts($user, $ids)
+    function delete($user, $ids)
     {
         return Jaws_ORM::getInstance()->table('users_contacts')
             ->delete()

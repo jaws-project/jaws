@@ -28,7 +28,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->AjaxMe('index.js');
         $response = $this->gadget->session->pop('Contact');
         if (!isset($response['data'])) {
-            $contact = $this->gadget->model->load('Contact')->getContact($this->app->session->user->id);
+            $contact = $this->gadget->model->load('Contact')->get($this->app->session->user->id);
             if (Jaws_Error::IsError($contact)) {
                 return Jaws_HTTPError::Get(500);
             }
@@ -162,7 +162,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         );
 
         $contactData = $this->prepareContactData($post);
-        $result = $this->gadget->model->load('Contact')->updateContact(
+        $result = $this->gadget->model->load('Contact')->update(
             $this->app->session->user->id,
             $contactData,
             true // main user contact
@@ -251,7 +251,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserContacts');
         $id = (int)$this->gadget->request->fetch('id', 'post');
 
-        return $this->gadget->model->load('Contact')->getContact($this->app->session->user->id, $id);
+        return $this->gadget->model->load('Contact')->get($this->app->session->user->id, $id);
     }
 
     /**
@@ -269,7 +269,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         );
 
         $currentUser = $this->app->session->user->id;
-        $contacts = $this->gadget->model->load('Contact')->getContacts(
+        $contacts = $this->gadget->model->load('Contact')->list(
             $currentUser,
             $post['limit'],
             $post['offset']
@@ -281,7 +281,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             );
         }
 
-        $total = $this->gadget->model->load('Contact')->getContactsCount($currentUser, $post['search']);
+        $total = $this->gadget->model->load('Contact')->listCount($currentUser, $post['search']);
         if (Jaws_Error::IsError($total)) {
             return $this->gadget->session->response(
                 $total->getMessage(),
@@ -328,7 +328,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
 
         $contactData = $this->prepareContactData($post['data']);
-        $result = $this->gadget->model->load('Contact')->updateContact(
+        $result = $this->gadget->model->load('Contact')->update(
             $this->app->session->user->id,
             $contactData,
             false, // not main user contact
@@ -352,7 +352,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserContacts');
 
         $ids = $this->gadget->request->fetch('ids:array', 'post');
-        $result = $this->gadget->model->load('Contact')->deleteContacts(
+        $result = $this->gadget->model->load('Contact')->delete(
             $this->app->session->user->id,
             $ids
         );
