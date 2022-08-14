@@ -139,7 +139,7 @@ class Users_Actions_VCard extends Users_Actions_Default
                 if ($result) {
                     $contactId = $this->gadget->model->load('Contact')->update(
                         $this->app->session->user->id,
-                        $resul,
+                        $result,
                         false
                     );
                 }
@@ -149,7 +149,7 @@ class Users_Actions_VCard extends Users_Actions_Default
                     if ($result) {
                         $contactId = $this->gadget->model->load('Contact')->update(
                             $this->app->session->user->id,
-                            $resul,
+                            $result,
                             false
                         );
                     }
@@ -217,9 +217,6 @@ class Users_Actions_VCard extends Users_Actions_Default
 
             $data[$mappedTelType[reset($telType)]][reset($telProp)] = $tel['Value'];
         }
-        $data['tel']    = json_encode($data['tel']);
-        $data['fax']    = json_encode($data['fax']);
-        $data['mobile'] = json_encode($data['mobile']);
 
         // email
         foreach ($vCard->EMAIL as $email) {
@@ -236,7 +233,6 @@ class Users_Actions_VCard extends Users_Actions_Default
 
             $data['email'][reset($emailProp)] = $email['Value'];
         }
-        $data['email'] = json_encode($data['email']);
 
         // url
         foreach ($vCard->URL as $url) {
@@ -252,7 +248,6 @@ class Users_Actions_VCard extends Users_Actions_Default
 
             $data['url'][reset($urlProp)] = $url['Value'];
         }
-        $data['url'] = json_encode($data['url']);
 
         // address
         foreach ($vCard->ADR as $address) {
@@ -269,11 +264,10 @@ class Users_Actions_VCard extends Users_Actions_Default
                 'country'     => $address['Country']
             );
         }
-        $data['address'] = json_encode($data['address']);
 
         // photo
         if ($vCard->PHOTO) {
-            $data['image'] = json_encode($vCard->PHOTO[0]);
+            $data['image'] = $vCard->PHOTO[0];
         }
 
         return $data;
