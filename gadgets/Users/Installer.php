@@ -447,6 +447,10 @@ class Users_Installer extends Jaws_Gadget_Installer
             }
         }
 
+        if (version_compare($old, '5.5.0', '<')) {
+            // do nothing!
+        }
+
         return true;
     }
 

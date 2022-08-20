@@ -14,7 +14,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
-    function Login($referrer = '')
+    function Login($defaults = '', $referrer = '')
     {
         return (JAWS_SCRIPT == 'index')? $this->IndexLogin($referrer) : $this->AdminLogin($referrer);
     }

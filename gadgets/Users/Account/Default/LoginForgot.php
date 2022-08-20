@@ -13,7 +13,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
      * @access  public
      * @return  string  XHTML form
      */
-    function LoginForgot($referrer = '')
+    function LoginForgot($defaults = '', $referrer = '')
     {
         $this->AjaxMe('index.js');
         // Load the template
