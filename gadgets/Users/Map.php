@@ -9,8 +9,8 @@ $maps[] = array(
     'Login',
     'users/login[/authtype/{authtype}][/defaults/{defaults}][/referrer/{referrer}]',
     array(
-        'referrer' => '.*',
-        'defaults' => '.*',
+        'defaults' => '[[:alnum:]\-_.@]+',
+        'referrer' => '[[:alnum:]\-_.@]+',
     )
 );
 $maps[] = array('Authenticate', 'users/authenticate');
@@ -18,16 +18,16 @@ $maps[] = array(
     'Registration',
     'users/registration[/authtype/{authtype}][/defaults/{defaults}][/referrer/{referrer}]',
     array(
-        'referrer' => '.*',
-        'defaults' => '.*',
+        'defaults' => '[[:alnum:]\-_.@]+',
+        'referrer' => '[[:alnum:]\-_.@]+',
     )
 );
 $maps[] = array(
     'LoginForgot',
     'users/forget[/authtype/{authtype}][/defaults/{defaults}][/referrer/{referrer}]',
     array(
-        'referrer' => '.*',
-        'defaults' => '.*',
+        'defaults' => '[[:alnum:]\-_.@]+',
+        'referrer' => '[[:alnum:]\-_.@]+',
     )
 );
 $maps[] = array('Logout', 'users/logout');
