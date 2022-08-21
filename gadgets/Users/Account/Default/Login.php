@@ -132,7 +132,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    private function LoginBoxStep1(&$tpl, $reqpost, $referrer)
+    public function LoginBoxStep1(&$tpl, $reqpost, $referrer)
     {
         http_response_code(401);
 
@@ -228,7 +228,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    private function LoginBoxStep2(&$tpl, $reqpost, $referrer)
+    public function LoginBoxStep2(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_2");
@@ -258,7 +258,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    private function LoginBoxStep3(&$tpl, $reqpost, $referrer)
+    public function LoginBoxStep3(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
         $tpl->SetBlock("$block/login_step_3");
