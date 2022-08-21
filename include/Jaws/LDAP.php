@@ -142,15 +142,15 @@ class Jaws_LDAP
     {
         switch ($scope) {
             case self::SCOPE_BASE:
-                $result = @ldap_read($this->ldapConnection, $base, $filter, array(), 0, 1);
+                $result = @ldap_read($this->ldapConnection, $base, $filter, $attributes, 0, 1);
                 break;
 
             case self::SCOPE_ONELEVEL:
-                $result = @ldap_list($this->ldapConnection, $base, $filter, array(), 0, 1);
+                $result = @ldap_list($this->ldapConnection, $base, $filter, $attributes, 0, 1);
                 break;
 
             default:
-                $result = @ldap_search($this->ldapConnection, $base, $filter, array(), 0, 1);
+                $result = @ldap_search($this->ldapConnection, $base, $filter, $attributes, 0, 1);
         }
 
         if ($result) {
@@ -183,15 +183,15 @@ class Jaws_LDAP
     {
         switch ($scope) {
             case self::SCOPE_BASE:
-                $result = @ldap_read($this->ldapConnection, $base, $filter, array(), 0, $limit);
+                $result = @ldap_read($this->ldapConnection, $base, $filter, $attributes, 0, $limit);
                 break;
 
             case self::SCOPE_ONELEVEL:
-                $result = @ldap_list($this->ldapConnection, $base, $filter, array(), 0, $limit);
+                $result = @ldap_list($this->ldapConnection, $base, $filter, $attributes, 0, $limit);
                 break;
 
             default:
-                $result = @ldap_search($this->ldapConnection, $base, $filter, array(), 0, $limit);
+                $result = @ldap_search($this->ldapConnection, $base, $filter, $attributes, 0, $limit);
         }
 
         if ($result) {
