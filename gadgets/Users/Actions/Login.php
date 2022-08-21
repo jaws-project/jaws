@@ -106,9 +106,13 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
             $tpl->ParseBlock('UserLinks');
         } else {
+            $urlParams = array();
             $referrer  = $this->gadget->request->fetch('referrer', 'get');
             $referrer  = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
-            $login_url = $this->gadget->urlMap('Login', array('referrer'  => $referrer));
+            if (!empty($referrer)) {
+                $urlParams['referrer'] = $referrer;
+            }
+            $login_url = $this->gadget->urlMap('Login', $urlParams);
 
             $tpl->SetBlock('LoginLinks');
             $tpl->SetVariable('title', $this::t('LOGINLINKS'));
