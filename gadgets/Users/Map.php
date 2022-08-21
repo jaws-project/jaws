@@ -7,14 +7,28 @@
  */
 $maps[] = array(
     'Login',
-    'users/login[/authtype/{authtype}][/referrer/{referrer}]',
-    array('referrer' => '.*')
+    'users/login[/authtype/{authtype}][/defaults/{defaults}][/referrer/{referrer}]',
+    array(
+        'defaults' => '[[:alnum:]\-_.@]+',
+        'referrer' => '[[:alnum:]\-_.@]+',
+    )
 );
 $maps[] = array('Authenticate', 'users/authenticate');
 $maps[] = array(
     'Registration',
-    'users/registration[/authtype/{authtype}][/referrer/{referrer}]',
-    array('referrer' => '.*')
+    'users/registration[/authtype/{authtype}][/defaults/{defaults}][/referrer/{referrer}]',
+    array(
+        'defaults' => '[[:alnum:]\-_.@]+',
+        'referrer' => '[[:alnum:]\-_.@]+',
+    )
+);
+$maps[] = array(
+    'LoginForgot',
+    'users/forget[/authtype/{authtype}][/defaults/{defaults}][/referrer/{referrer}]',
+    array(
+        'defaults' => '[[:alnum:]\-_.@]+',
+        'referrer' => '[[:alnum:]\-_.@]+',
+    )
 );
 $maps[] = array('Logout', 'users/logout');
 $maps[] = array('Account', 'users/account');
@@ -33,7 +47,6 @@ $maps[] = array('UserGroupUI', 'users/groups/new');
 $maps[] = array('GroupAttributes', 'users/groups/attributes/{gadget}[/{group}]');
 $maps[] = array('EditUserGroup', 'users/groups/{gid}/edit');
 $maps[] = array('ManageGroup', 'users/groups/{gid}/manage');
-$maps[] = array('LoginForgot', 'users/forget');
 $maps[] = array('ReplaceUserEmail', 'users/replace_email[/{key}]');
 $maps[] = array(
     'Profile',

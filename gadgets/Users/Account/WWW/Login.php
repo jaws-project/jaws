@@ -14,7 +14,7 @@ class Users_Account_WWW_Login extends Users_Account_WWW
      * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
-    function Login($referrer = '')
+    function Login($defaults = '', $referrer = '')
     {
         if ($this->app->registry->fetch('http_auth', 'Settings') == 'true') {
             if (isset($_SERVER['PHP_AUTH_USER'])) {

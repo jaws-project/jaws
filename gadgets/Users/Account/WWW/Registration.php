@@ -13,7 +13,7 @@ class Users_Account_WWW_Registration extends Users_Account_WWW
      * @access  public
      * @return  string  XHTML form
      */
-    function Registration($referrer = '')
+    function Registration($defaults = '', $referrer = '')
     {
         $classname = "Users_Account_Default_Registration";
         $objDefaultAccount = new $classname($this->gadget);

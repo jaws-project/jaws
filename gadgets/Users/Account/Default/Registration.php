@@ -13,7 +13,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
      * @access  public
      * @return  string  XHTML form
      */
-    function Registration($referrer = '')
+    function Registration($defaults = '', $referrer = '')
     {
         $this->AjaxMe('index.js');
         // Load the template

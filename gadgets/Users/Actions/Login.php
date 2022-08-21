@@ -106,9 +106,13 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
             $tpl->ParseBlock('UserLinks');
         } else {
+            $urlParams = array();
             $referrer  = $this->gadget->request->fetch('referrer', 'get');
             $referrer  = is_null($referrer)? bin2hex(Jaws_Utils::getRequestURL(true)) : $referrer;
-            $login_url = $this->gadget->urlMap('Login', array('referrer'  => $referrer));
+            if (!empty($referrer)) {
+                $urlParams['referrer'] = $referrer;
+            }
+            $login_url = $this->gadget->urlMap('Login', $urlParams);
 
             $tpl->SetBlock('LoginLinks');
             $tpl->SetVariable('title', $this::t('LOGINLINKS'));
@@ -175,6 +179,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         // set authentication type in session
         $this->gadget->session->auth = $authtype;
 
+        $defaults = (string)$this->gadget->request->fetch('defaults');
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
@@ -209,7 +214,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Login";
         $objAccount = new $classname($this->gadget);
-        return $objAccount->Login(Jaws_XSS::filterURL(hex2bin($referrer), true, true));
+        return $objAccount->Login(hex2bin($defaults), Jaws_XSS::filterURL(hex2bin($referrer), true, true));
     }
 
     /**

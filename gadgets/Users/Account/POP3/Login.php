@@ -14,7 +14,7 @@ class Users_Account_POP3_Login extends Users_Account_POP3
      * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
-    function Login($referrer = '')
+    function Login($defaults = '', $referrer = '')
     {
         if (!function_exists('imap_open')) {
             return Jaws_Error::raiseError(

@@ -14,7 +14,7 @@ class Users_Account_LDAP_Login extends Users_Account_LDAP
      * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
-    function Login($referrer = '')
+    function Login($defaults = '', $referrer = '')
     {
         if (!function_exists('ldap_connect')) {
             return Jaws_Error::raiseError(

@@ -14,7 +14,7 @@ class Users_Account_Github_Login extends Users_Account_Github
      * @param   string  $referrer   Referrer page url
      * @return  mixed   Array of user's information otherwise Jaws_Error
      */
-    function Login($referrer = '')
+    function Login($defaults = '', $referrer = '')
     {
         // Generate a random hash and store in the session for security
         $state = hash('sha256', microtime(TRUE).rand().$_SERVER['REMOTE_ADDR']);

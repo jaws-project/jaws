@@ -44,6 +44,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         // set authentication type in session
         $this->gadget->session->auth = $authtype;
 
+        $defaults = (string)$this->gadget->request->fetch('defaults');
         // store referrer into session
         $referrer = $this->gadget->request->fetch('referrer');
         if (empty($referrer)) {
@@ -70,7 +71,7 @@ class Users_Actions_Recovery extends Jaws_Gadget_Action
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_LoginForgot";
         $objAccount = new $classname($this->gadget);
-        return $objAccount->LoginForgot(Jaws_XSS::filterURL(hex2bin($referrer), true, true));
+        return $objAccount->LoginForgot(hex2bin($defaults), Jaws_XSS::filterURL(hex2bin($referrer), true, true));
     }
 
     /**
