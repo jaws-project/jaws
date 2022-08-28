@@ -22,6 +22,18 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             $interface = $this->gadget->request->fetchAll('post');
             if (!empty($interface['reference'])) {
+                // call gadget hook for check access permission
+                $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
+                if (!Jaws_Error::IsError($objHook)) {
+                    $allowed = $objHook->Execute($interface);
+                    if (Jaws_Error::IsError($allowed) || !$allowed) {
+                        return $this->gadget->session->response(
+                            Jaws::t('HTTP_ERROR_TITLE_403'),
+                            RESPONSE_ERROR
+                        );
+                    }
+                }
+
                 $files = $this->gadget->model->load('Files')->getFiles($interface);
                 foreach ($files as $ndx => $file) {
                     $files[$ndx]['fileurl'] = $this->gadget->urlMap(
@@ -59,24 +71,37 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetBlock("$block/files");
 
         if (!empty($interface['reference'])) {
-            $files = $this->gadget->model->load('Files')->getFiles($interface);
+            try {
+                // call gadget hook for check access permission
+                $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
+                if (!Jaws_Error::IsError($objHook)) {
+                    $allowed = $objHook->Execute($interface);
+                    if (Jaws_Error::IsError($allowed) || !$allowed) {
+                        throw new Exception(Jaws::t('HTTP_ERROR_TITLE_403'), 403);
+                    }
+                }
 
-            foreach ($files as $file) {
-                $tpl->SetBlock("$block/files/file");
-                $tpl->SetVariable('title', $file['title']);
-                $tpl->SetVariable('postname', $file['postname']);
-                $tpl->SetVariable('filehits', $file['filehits']);
-                $tpl->SetVariable('lbl_file', $options['labels']['title']);
-                $tpl->SetVariable(
-                    'fileurl',
-                    $this->gadget->urlMap(
-                        'file',
-                        array('id' => $file['id'], 'key' => $file['filekey'])
-                    )
-                );
+                $files = $this->gadget->model->load('Files')->getFiles($interface);
+                foreach ($files as $file) {
+                    $tpl->SetBlock("$block/files/file");
+                    $tpl->SetVariable('title', $file['title']);
+                    $tpl->SetVariable('postname', $file['postname']);
+                    $tpl->SetVariable('filehits', $file['filehits']);
+                    $tpl->SetVariable('lbl_file', $options['labels']['title']);
+                    $tpl->SetVariable(
+                        'fileurl',
+                        $this->gadget->urlMap(
+                            'file',
+                            array('id' => $file['id'], 'key' => $file['filekey'])
+                        )
+                    );
 
-                $tpl->ParseBlock("$block/files/file");
+                    $tpl->ParseBlock("$block/files/file");
+                }
+            } catch (Exception $error) {
+                // do nothing
             }
+
         }
 
         $tpl->ParseBlock("$block/files");
@@ -122,6 +147,18 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             $interface = $this->gadget->request->fetchAll('post');
             if (!empty($interface['reference'])) {
+                // call gadget hook for check access permission
+                $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
+                if (!Jaws_Error::IsError($objHook)) {
+                    $allowed = $objHook->Execute($interface);
+                    if (Jaws_Error::IsError($allowed) || !$allowed) {
+                        return $this->gadget->session->response(
+                            Jaws::t('HTTP_ERROR_TITLE_403'),
+                            RESPONSE_ERROR
+                        );
+                    }
+                }
+
                 $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
                 $files = $this->gadget->model->load('Files')->getFiles($interface);
                 foreach ($files as $ndx => $file) {
@@ -217,35 +254,48 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         }
 
         if (!empty($interface['reference'])) {
-            $files = $this->gadget->model->load('Files')->getFiles($interface);
-            $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
-            foreach ($files as $file) {
-                $tpl->SetBlock("$block/files/file");
-
-                $fileurl = $this->gadget->urlMap(
-                    'file',
-                    array('id' => $file['id'], 'key' => $file['filekey'])
-                );
-
-                if ($options['preview']) {
-                    switch (substr($file['mimetype'], 0, strpos($file['mimetype'], '/'))) {
-                        case 'image':
-                            $tpl->SetBlock("$block/files/file/image_preview");
-                            $tpl->SetVariable('fileurl', $fileurl);
-                            $tpl->ParseBlock("$block/files/file/image_preview");
-                            break;
+            try {
+                // call gadget hook for check access permission
+                $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
+                if (!Jaws_Error::IsError($objHook)) {
+                    $allowed = $objHook->Execute($interface);
+                    if (Jaws_Error::IsError($allowed) || !$allowed) {
+                        throw new Exception(Jaws::t('HTTP_ERROR_TITLE_403'), 403);
                     }
                 }
 
-                $tpl->SetVariable('fileurl', $fileurl);
-                $tpl->SetVariable('input_action', strtolower($interface['action']));
-                $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
-                $tpl->SetVariable('input_type', $interface['type']);
-                $tpl->SetVariable('fid', $file['id']);
-                $tpl->SetVariable('filename', $file['title']);
-                $tpl->SetVariable('filesize', $file['filesize']);
-                $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
-                $tpl->ParseBlock("$block/files/file");
+                $files = $this->gadget->model->load('Files')->getFiles($interface);
+                $filesPath = strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
+                foreach ($files as $file) {
+                    $tpl->SetBlock("$block/files/file");
+
+                    $fileurl = $this->gadget->urlMap(
+                        'file',
+                        array('id' => $file['id'], 'key' => $file['filekey'])
+                    );
+
+                    if ($options['preview']) {
+                        switch (substr($file['mimetype'], 0, strpos($file['mimetype'], '/'))) {
+                            case 'image':
+                                $tpl->SetBlock("$block/files/file/image_preview");
+                                $tpl->SetVariable('fileurl', $fileurl);
+                                $tpl->ParseBlock("$block/files/file/image_preview");
+                                break;
+                        }
+                    }
+
+                    $tpl->SetVariable('fileurl', $fileurl);
+                    $tpl->SetVariable('input_action', strtolower($interface['action']));
+                    $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
+                    $tpl->SetVariable('input_type', $interface['type']);
+                    $tpl->SetVariable('fid', $file['id']);
+                    $tpl->SetVariable('filename', $file['title']);
+                    $tpl->SetVariable('filesize', $file['filesize']);
+                    $tpl->SetVariable('lbl_remove', $options['labels']['remove']);
+                    $tpl->ParseBlock("$block/files/file");
+                }
+            } catch (Exception $error) {
+                // do nothing
             }
         }
 
