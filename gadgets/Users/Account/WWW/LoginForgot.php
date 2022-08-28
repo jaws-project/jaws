@@ -13,7 +13,7 @@ class Users_Account_WWW_LoginForgot extends Users_Account_WWW
      * @access  public
      * @return  string  XHTML form
      */
-    function LoginForgot($defaults = '', $referrer = '')
+    function LoginForgot($referrer = '')
     {
         $classname = "Users_Account_Default_LoginForgot";
         $objDefaultAccount = new $classname($this->gadget);
