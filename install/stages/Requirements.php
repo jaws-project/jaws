@@ -123,17 +123,18 @@ class Installer_Requirements extends JawsInstaller
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
 
-        // XML extension
+        // XML/DOM extension
         $tpl->setBlock('Requirements/req_item');
-        $tpl->setVariable('item', $this::t('REQ_EXTENSION', 'XML'));
+        $tpl->setVariable('item', $this::t('REQ_EXTENSION', 'XML/DOM'));
         $tpl->setVariable('item_requirement', Jaws::t('YESS'));
-        $tpl->setVariable('item_actual', (in_array('xml', $modules)? Jaws::t('YESS') : Jaws::t('NOO')));
-        if (in_array('xml', $modules)) {
-            _log(JAWS_DEBUG,"xml support is enabled");
+        if (in_array('xml', $modules) || in_array('dom', $modules)) {
+            $tpl->setVariable('item_actual', Jaws::t('YESS'));
             $result_txt = '<span style="color: #0b0;">'.$this::t('REQ_OK').'</span>';
+            _log(JAWS_DEBUG,"xml/dom support is enabled");
         } else {
-            _log(JAWS_DEBUG,"xml support is not enabled");
+            $tpl->setVariable('item_actual', Jaws::t('NOO'));
             $result_txt = '<span style="color: #b00;">'.$this::t('REQ_BAD').'</span>';
+            _log(JAWS_DEBUG,"xml/dom support is not enabled");
         }
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/req_item');
@@ -280,7 +281,7 @@ class Installer_Requirements extends JawsInstaller
             return new Jaws_Error($text, 0, $type);
         }
 
-        if (!in_array('xml', $modules)) {
+        if (!in_array('xml', $modules) && !in_array('dom', $modules)) {
             $text = $this::t('REQ_RESPONSE_EXTENSION', 'XML');
             $type = JAWS_ERROR_ERROR;
             _log(JAWS_DEBUG,$text);
