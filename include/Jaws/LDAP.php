@@ -266,6 +266,26 @@ class Jaws_LDAP
     }
 
     /**
+     * delete attribute values from current attributes
+     *
+     * @access  public
+     * @param   string  $dn     The distinguished name of an LDAP entity
+     * @param   array   $entry  
+     * @return  bool    True on success, otherwise Jaws_Error
+     */
+    function deleteAttribute($dn, $entry)
+    {
+        if (ldap_mod_del($this->ldapConnection, $dn, $entry)) {
+            return true;
+        }
+
+        return Jaws_Error::raiseError(
+            ldap_error($this->ldapConnection),
+            ldap_errno($this->ldapConnection)
+        );
+    }
+
+    /**
      * This function close the LDAP-connection
      *
      * @access  public
