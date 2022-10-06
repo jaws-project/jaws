@@ -240,7 +240,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $objAccount = new $classname($this->gadget);
             $loginData = $objAccount->Authenticate();
         }
-        
+
         if (!Jaws_Error::IsError($loginData)) {
             $loginData['auth'] = $session_authtype;
             // create session & cookie
