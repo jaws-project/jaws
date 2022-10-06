@@ -31,6 +31,11 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
 
         try {
             if ($rcvryData['rcvstep'] == 3) { // user forgot set password step
+                // reset session because previous step not passed!
+                if ($this->gadget->session->last_passed_step != 2) {
+                    $this->gadget->session->delete('temp_recovery_user');
+                }
+
                 // fetch user data from session
                 $userData = $this->gadget->session->temp_recovery_user;
                 if (empty($userData)) {
@@ -84,6 +89,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 // force user to change his password
                 $user['last_password_update'] = time();
 
+                $this->gadget->session->last_passed_step = 3;
                 $rcvryData['rcvstep'] = 4;
                 unset($rcvryData['password'], $rcvryData['old_password']);
                 $this->gadget->session->push(
@@ -101,6 +107,11 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 $resCheck = $htmlPolicy->checkCaptcha('login');
                 if (Jaws_Error::IsError($resCheck)) {
                     throw new Exception($resCheck->getMessage(), 401);
+                }
+
+                // reset session because previous step not passed!
+                if ($this->gadget->session->last_passed_step != 1) {
+                    $this->gadget->session->delete('temp_recovery_user');
                 }
 
                 // fetch user data from session
@@ -125,11 +136,15 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 }
 
                 // goto next step
+                $this->gadget->session->last_passed_step = 2;
                 $rcvryData['rcvstep'] = 3;
                 throw new Exception('', 206);
             }
 
             // user forgot first step
+            // reset stored user information in session
+            $this->gadget->session->delete('temp_recovery_user');
+
             // check captcha
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha('login');
@@ -145,6 +160,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
 
             // goto next step
             $rcvryData['rcvstep'] = 2;
+            $this->gadget->session->last_passed_step = 1;
 
             // send notification to user
             $this->gadget->action->load('Recovery')->NotifyRecoveryKey($userData);
