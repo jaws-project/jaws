@@ -21,6 +21,18 @@ class Jaws_Plugin
     public $app = null;
 
     /**
+     * @var     bool
+     * @access  public
+     */
+     public $pluginType;
+
+    /**
+     * @var     bool
+     * @access  public
+     */
+     public $onlyNormalMode;
+
+    /**
      * Name of the plugin
      *
      * @var     string
