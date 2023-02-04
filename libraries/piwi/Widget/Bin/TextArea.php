@@ -23,6 +23,15 @@ class TextArea extends Bin
     var $_rows;
 
     /**
+     * Number of cols
+     *
+     * @var      string $_cols
+     * @access   private
+     * @see      setCols
+     */
+    var $_cols;
+
+    /**
      * Number of columns
      *
      * @var      string $_columns
