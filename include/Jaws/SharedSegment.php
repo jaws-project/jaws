@@ -11,6 +11,14 @@
 class Jaws_SharedSegment
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * file token
      * @var     int     $ftok
      * @access  private
