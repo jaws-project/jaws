@@ -266,6 +266,7 @@ $GLOBALS['_MDB2_dsninfo_default'] = array(
  * @category    Database
  * @author      Lukas Smith <smith@pooteeweet.org>
  */
+#[\AllowDynamicProperties]
 class MDB2
 {
     // {{{ function setOptions($db, $options)
@@ -1082,6 +1083,7 @@ class MDB2_Driver_Common
      * @access  protected
      */
     public $connected_server_info = '';
+	public $loaded_version_modules;
 
     /**
      * list of all supported features of the given driver
