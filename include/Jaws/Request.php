@@ -13,6 +13,14 @@
  */
 class Jaws_Request
 {
+     /**
+     * Request data
+     *
+     * @var     array
+     * @access  private
+     */
+    private $data;
+
     /**
      * Request filters
      *
@@ -99,7 +107,6 @@ class Jaws_Request
 
         $this->_filters  = array();
         $this->_params   = array();
-        $this->_priority = array();
         $this->_includes = array();
 
         $this->data['get']    = $_GET;
