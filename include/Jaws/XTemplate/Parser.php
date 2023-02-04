@@ -73,6 +73,11 @@ class Jaws_XTemplate_Parser
     );
 
     /**
+     * @var Document The Document that represents the template
+     */
+    private $document;
+ 
+    /**
      * Constructor
      *
      * @param   string  $source

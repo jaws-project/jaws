@@ -17,14 +17,19 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     private $templateName;
 
     /**
-     * @var bool True if the variable is a collection
-     */
-    private $collection;
-
-    /**
      * @var mixed The variable name passed to the child template
      */
     private $variableName;
+
+    /**
+     * @var string The alias name of the variable
+     */
+    private $aliasName;
+
+    /**
+     * @var bool True if the variable is a collection
+     */
+    private $collection;
 
     /**
      * @var Document The Document that represents the included template

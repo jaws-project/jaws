@@ -37,6 +37,11 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
     private $variableName;
 
     /**
+     * @var string The start index of collection
+     */
+    private $start;
+
+    /**
      * @var string The name of the loop, which is a compound of the collection and variable names
      */
     private $name;
