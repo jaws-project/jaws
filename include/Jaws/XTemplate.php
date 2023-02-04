@@ -54,9 +54,14 @@ class Jaws_XTemplate
     private static $tplRootPath = '';
 
     /**
-     * @var Document The root of the node tree
+     * @var engine parser object
      */
-    private $document;
+    private $parser;
+
+    /**
+     * @var context object
+     */
+    private $context;
 
     /**
      * @var array Globally included filters
