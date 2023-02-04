@@ -41,7 +41,7 @@ class Jaws_Template
     var $BlockRegExp;
     var $NewBlockRegExp;
     var $VarsRegExp;
-    var $IsBlockRegexp;
+    var $IsBlockRegExp;
     var $MainBlock;
     var $CurrentBlock;
     var $Blocks = array();
