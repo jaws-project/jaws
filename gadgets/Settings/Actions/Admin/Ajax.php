@@ -2,15 +2,21 @@
 /**
  * Settings AJAX API
  *
- * @category   Ajax
- * @package    Settings
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
+ * @category   	Ajax
+ * @package    	Settings
+ * @author     	Pablo Fischer <pablo@pablo.com.mx>
+ * @author     	Ali Fazelzadeh <afz@php.net>
  * @copyright   2005-2022 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @license    	http://www.gnu.org/copyleft/lesser.html
  */
 class Settings_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
+    /**
+     * @var     object
+     * @access  private
+     */
+    private $_Model = null;
+
     /**
      * Constructor
      *
