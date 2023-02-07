@@ -353,7 +353,7 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         if(Jaws_FileManagement_File::file_exists($data_file)) {
             $writeable = Jaws_FileManagement_File::is_writable($data_file);
         } else {
-            Jaws_FileManagement_File::mkdir(dirname($data_file));
+            Jaws_FileManagement_File::mkdir(dirname($data_file), 0, 3);
             $writeable = Jaws_FileManagement_File::is_writable(dirname($data_file));
         }
 
