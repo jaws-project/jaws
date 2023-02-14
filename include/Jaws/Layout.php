@@ -380,7 +380,7 @@ class Jaws_Layout
      */
     function SetDescription($desc)
     {
-        $this->_Description = strip_tags($desc);
+        $this->_Description = strip_tags((string)$desc);
     }
 
     /**
