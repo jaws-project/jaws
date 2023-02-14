@@ -32,12 +32,20 @@ class Files_Info extends Jaws_Gadget
     var $default_admin_action = 'Files';
 
     /**
-     * Default Filesystem Management driver
+     * Default Filesystem Management driver name
      *
      * @var     int
      * @access  public
      */
     public $fmDriver = 'File'; // readonly
+
+    /**
+     * Filesystem Management driver instance
+     *
+     * @var     int
+     * @access  public
+     */
+    public $fileManagement;
 
     /**
      * Constructor
