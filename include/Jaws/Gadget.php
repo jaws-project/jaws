@@ -9,7 +9,6 @@
  * @copyright   2005-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-#[\AllowDynamicProperties]
 class Jaws_Gadget
 {
     /**
@@ -153,6 +152,13 @@ class Jaws_Gadget
      */
     public $loaded_actions = array();
 
+    /**
+     * Properties of the gadget
+     *
+     * @var     array
+     * @access  private
+     */
+    private $properties = array();
 
     /**
      * Constructor
@@ -765,8 +771,8 @@ class Jaws_Gadget
                 );
         }
 
-        $this->$property = new $classname($this);
-        return $this->$property;
+		$this->properties[$property] = new $classname($this);
+        return $this->properties[$property];
     }
 
 }
