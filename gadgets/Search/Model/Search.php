@@ -285,7 +285,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
     function GetSearchableGadgets()
     {
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
-        $gadgetList = $cmpModel->GetGadgetsList(null, true, true, true);
+        $gadgetList = $cmpModel->GetGadgetsList(null, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
             if (is_file(ROOT_JAWS_PATH . 'gadgets/' . $gadget['name'] . '/Hooks/Search.php'))
