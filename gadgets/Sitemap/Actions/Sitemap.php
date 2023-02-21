@@ -51,9 +51,11 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
         $gadgets = $model->GetAvailableSitemapGadgets();
         foreach ($gadgets as $gadget) {
             $items = $model->GetSitemapData($gadget['name']);
-
+            if (empty($items)) {
+                continue;
+            }
             // Fetch gadget sitemap config
-            $gadgetProperties = $model->GetGadgetProperties($gadget);
+            $gadgetProperties = $model->GetGadgetProperties($gadget['name']);
             $gadgetStatus = null;
             if (!empty($gadgetProperties)) {
                 if(isset($gadgetProperties['status'])) {
@@ -102,7 +104,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
     function GetNextLevel($gadget, $itemsStatus, &$items)
     {
         $tpl = $this->gadget->template->load('Sitemap.html');
-        if (count($items['levels']) > 0) {
+        if (!empty($items) && count($items['levels']) > 0) {
             $tpl->SetBlock('branch');
             foreach ($items['levels'] as $item) {
                 // check item display status
