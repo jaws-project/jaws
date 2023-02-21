@@ -13,7 +13,7 @@
  */
 class Jaws_Request
 {
-     /**
+    /**
      * Request data
      *
      * @var     array
