@@ -48,16 +48,16 @@ class Jaws_XTemplate_Parser
         'IGNORE_CONTROL' => '#',
 
         // Tag start.
-        'TAG_START' => '{%',
+        'TAG_OPEN' => '{%',
 
         // Tag end.
-        'TAG_END' => '%}',
+        'TAG_CLOSE' => '%}',
 
         // Variable start.
-        'VARIABLE_START' => '{{',
+        'VARIABLE_OPEN' => '{{',
 
         // Variable end.
-        'VARIABLE_END' => '}}',
+        'VARIABLE_CLOSE' => '}}',
 
         // Variable name.
         'VARIABLE_NAME' => '[a-zA-Z_][a-zA-Z_0-9.-]*',
@@ -126,6 +126,26 @@ class Jaws_XTemplate_Parser
         }
         // This case is needed for compound settings
         switch ($key) {
+            case 'TAG_START':
+                return self::get('TAG_OPEN') .
+                    '(?!' .
+                    self::get('IGNORE_CONTROL') .
+                    ')';
+            case 'TAG_END':
+                return '(?!' .
+                    self::get('IGNORE_CONTROL') .
+                    ')' .
+                    self::get('TAG_CLOSE');
+            case 'VARIABLE_START':
+                return self::get('VARIABLE_OPEN') .
+                    '(?!' .
+                    self::get('IGNORE_CONTROL') .
+                    ')';
+            case 'VARIABLE_END':
+                return '(?!' .
+                    self::get('IGNORE_CONTROL') .
+                    ')' .
+                    self::get('VARIABLE_CLOSE');
             case 'WHITESPACE_CONTROL':
                 return '[' .
                     self::get('WHITESPACE_CONTROL1') .
@@ -144,10 +164,10 @@ class Jaws_XTemplate_Parser
                     ')/';
             case 'TOKENIZATION_REGEXP':
                 return '/(' .
-                self::$config['TAG_START'] . '.*?' .
-                self::$config['TAG_END'] . '|' .
-                self::$config['VARIABLE_START'] . '.*?' .
-                self::$config['VARIABLE_END'] .
+                self::get('TAG_START') . '.*?' .
+                self::get('TAG_END') . '|' .
+                self::get('VARIABLE_START') . '.*?' .
+                self::get('VARIABLE_END') .
                 ')/';
             default:
                 return null;

@@ -90,6 +90,21 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
                 $this->whitespaceHandler($token);
                 $this->nodelist[] = $this->createVariable($token);
             } else {
+                $token = Jaws_UTF8::str_replace(
+                    array(
+                        Jaws_XTemplate_Parser::get('TAG_OPEN'). Jaws_XTemplate_Parser::get('IGNORE_CONTROL'),
+                        Jaws_XTemplate_Parser::get('IGNORE_CONTROL'). Jaws_XTemplate_Parser::get('TAG_CLOSE'),
+                        Jaws_XTemplate_Parser::get('VARIABLE_OPEN'). Jaws_XTemplate_Parser::get('IGNORE_CONTROL'),
+                        Jaws_XTemplate_Parser::get('IGNORE_CONTROL'). Jaws_XTemplate_Parser::get('VARIABLE_CLOSE')
+                    ),
+                    array(
+                        Jaws_XTemplate_Parser::get('TAG_OPEN'),
+                        Jaws_XTemplate_Parser::get('TAG_CLOSE'),
+                        Jaws_XTemplate_Parser::get('VARIABLE_OPEN'),
+                        Jaws_XTemplate_Parser::get('VARIABLE_CLOSE')
+                    ),
+                    $token
+                );
                 // This is neither a tag or a variable, proceed with an ltrim
                 if (self::$trimAll) {
                     $token = ltrim($token);
