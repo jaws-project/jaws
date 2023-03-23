@@ -39,7 +39,13 @@ class Jaws_XTemplate_Parser
         'VARIABLE_ATTRIBUTE_SEPARATOR' => '.',
 
         // Whitespace control.
-        'WHITESPACE_CONTROL' => '-',
+        'WHITESPACE_CONTROL1' => '-',
+
+        // Whitespace control.
+        'WHITESPACE_CONTROL2' => '~',
+
+        // Whitespace control.
+        'IGNORE_CONTROL' => '#',
 
         // Tag start.
         'TAG_START' => '{%',
@@ -120,6 +126,12 @@ class Jaws_XTemplate_Parser
         }
         // This case is needed for compound settings
         switch ($key) {
+            case 'WHITESPACE_CONTROL':
+                return '[' .
+                    self::get('WHITESPACE_CONTROL1') .
+                    '|' .
+                    self::get('WHITESPACE_CONTROL2') .
+                    ']';
             case 'QUOTED_FRAGMENT':
                 return '(?:' .
                     self::get('QUOTED_STRING') .
