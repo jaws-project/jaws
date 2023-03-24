@@ -512,10 +512,15 @@ class Jaws_ORM
      * @param   string  $target Join target field
      * @param   string  $join   Join type
      * @param   string  $opt    Join condition
+     * @param   bool    $ignore Ignore this join
      * @return  object  Jaws_ORM object
      */
-    function join($table, $source, $target, $join = 'inner', $opt = '=')
+    function join($table, $source, $target, $join = 'inner', $opt = '=', $ignore = false)
     {
+        if ($ignore) {
+            return $this;
+        }
+
         $table  = $this->quoteIdentifier($this->_tbl_prefix. $table, true);
         $source = $this->quoteIdentifier($source);
         $target = $this->quoteIdentifier($target);
@@ -968,7 +973,12 @@ class Jaws_ORM
                         break;
                     }
                 }
-                $result = $this->jawsdb->dbc->queryAll($sql, $this->_types, $this->_fetchmode);
+                $result = $this->jawsdb->dbc->queryAll(
+                    $sql,
+                    $this->_types,
+                    $this->_fetchmode,
+                    (bool)$argument // rekey: first column as its first dimension?
+                );
                 break;
 
             default:
