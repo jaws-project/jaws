@@ -1012,17 +1012,6 @@ function Jaws_Gadget_Users_Action_Users() {
                 this.saveUserPassword();
             }, this));
 
-            // toggle password between hide and show
-            $("input[type='password']+span.input-group-addon").click(
-                function() {
-                    if ($(this).prev().attr('type') == 'password') {
-                        $(this).prev().attr('type', 'text');
-                    } else {
-                        $(this).prev().attr('type', 'password');
-                    }
-                    $(this).find('i').toggleClass('glyphicon-eye-open glyphicon-eye-close');
-                }
-            );
         }
     }
 };
