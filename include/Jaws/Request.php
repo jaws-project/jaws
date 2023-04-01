@@ -54,6 +54,14 @@ class Jaws_Request
     private $_includes;
 
     /**
+     * Regular expressions object instance
+     *
+     * @var     array
+     * @access  private
+     */
+    private $regexp;
+
+    /**
      * Allowed request types
      *
      * @var     array
@@ -108,6 +116,7 @@ class Jaws_Request
         $this->_filters  = array();
         $this->_params   = array();
         $this->_includes = array();
+        $this->regexp = new Jaws_Regexp('/^(\w+)(?>\:(\w+))?(?>\|(\w+))?/');
 
         $this->data['get']    = $_GET;
         $this->data['cookie'] = $_COOKIE;
@@ -279,15 +288,20 @@ class Jaws_Request
         if (is_array($keys)) {
             $result = array();
             foreach ($keys as $key) {
-                $k = strtok($key, ':');
-                $result[$k] = $this->_fetch($key, $method, $filters, $xss_strip, $json_decode, $type_validate);
+                if (false === $this->regexp->match($key)) {
+                    continue;
+                }
+                @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
+                $result[$key] = $this->_fetch($all, $method, $filters, $xss_strip, $json_decode, $type_validate);
             }
 
             return $result;
         }
 
-        $key  = strtok($keys, ':');
-        $type = strtok(':');
+        if (false === $this->regexp->match($keys)) {
+            return null;
+        }
+        @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
 
         if (isset($this->data[$method][$key])) {
             $value = $json_decode? json_decode($this->data[$method][$key]) : $this->data[$method][$key];
@@ -316,12 +330,15 @@ class Jaws_Request
                 $this->filter($value, $key, $filters);
             }
 
-            // check value type
-            if ($type_validate) {
-                return $this->func_type_check[$type]($value)? $value : null;
-            } else {
-                return $value;
+            // type check
+            if ($type_validate && $valid_type) {
+                $value = $this->func_type_check[$valid_type]($value)? $value : null;
             }
+            // type cast
+            if ($cast_type) {
+                settype($value, $cast_type);
+            }
+            return $value;
         }
 
         return null;
