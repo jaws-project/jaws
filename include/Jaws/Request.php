@@ -335,7 +335,7 @@ class Jaws_Request
                 $value = $this->func_type_check[$valid_type]($value)? $value : null;
             }
             // type cast
-            if ($cast_type) {
+            if (!is_null($value) && $cast_type) {
                 settype($value, $cast_type);
             }
             return $value;
