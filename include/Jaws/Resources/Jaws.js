@@ -1872,6 +1872,18 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
+    // toggle password between hide and show
+    $("input[type='password']+span.input-group-addon").click(
+        function() {
+            if ($(this).prev().attr('type') == 'password') {
+                $(this).prev().attr('type', 'text');
+            } else {
+                $(this).prev().attr('type', 'password');
+            }
+            $(this).find('i').toggleClass('glyphicon-eye-open glyphicon-eye-close');
+        }
+    );
+
     // initializing
     Jaws.init();
 
