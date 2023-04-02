@@ -366,4 +366,100 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
         return call_user_func_array(array('Jaws_Utils', 'formatNumber'), $args);
     }
 
+    /**
+     * JSON representation of a value
+     *
+     * @param   mixed   $input  The value being encoded
+     *
+     * @return  string|bool Returns a JSON encoded string on success or false on failure
+     */
+    public static function json_encode($input)
+    {
+        return json_encode($input, JSON_PARTIAL_OUTPUT_ON_ERROR);
+    }
+
+    /**
+     * Decodes a JSON string
+     *
+     * @param   string  $input The json string being decoded
+     *
+     * @return  mixed   Returns the value encoded in json 
+     */
+    public static function json_decode($input)
+    {
+        return json_decode($input, true);
+    }
+
+    /**
+     * Encodes data with MIME base64
+     *
+     * @param   mixed   $input  The data to encode
+     *
+     * @return  string  The encoded data, as a string
+     */
+    public static function base64_encode($input)
+    {
+        return base64_encode($input);
+    }
+
+    /**
+     * Decodes data encoded with MIME base64
+     *
+     * @param   string  $input The encoded data
+     *
+     * @return  string|bool Returns the decoded data or false on failure
+     */
+    public static function base64_decode($input)
+    {
+        return base64_decode($input, true);
+    }
+
+    /**
+     * Convert binary data into hexadecimal representation
+     *
+     * @param   mixed   $input  A string
+     *
+     * @return  string  Returns the hexadecimal representation of the given string
+     */
+    public static function bin2hex($input)
+    {
+        return bin2hex($input);
+    }
+
+    /**
+     * Decodes a hexadecimally encoded binary string
+     *
+     * @param   string  $input Hexadecimal representation of data
+     *
+     * @return  string|bool Returns the binary representation of the given data or false on failure
+     */
+    public static function hex2bin($input)
+    {
+        return hex2bin($input);
+    }
+
+    /**
+     * Converts a string from ISO-8859-1 to UTF-8
+     *
+     * @param   mixed   $input  An ISO-8859-1 string
+     *
+     * @return  string  Returns the UTF-8 translation of string
+     */
+    public static function utf8_encode($input)
+    {
+        return mb_convert_encoding($input, 'UTF-8', 'ISO-8859-1');
+    }
+
+    /**
+     * Converts a string from UTF-8 to ISO-8859-1
+     *
+     * @param   string  $input A UTF-8 encoded string
+     *
+     * @return  string  Returns the ISO-8859-1 translation of string
+     */
+    public static function utf8_decode($input)
+    {
+        return mb_convert_encoding($input, 'ISO-8859-1', 'UTF-8');
+    }
+
 }
