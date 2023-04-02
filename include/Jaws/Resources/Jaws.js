@@ -989,55 +989,6 @@ String.prototype.blank = function() {
 };
 
 /**
- * Javascript format number prototype
- */
-String.prototype.format = function(unit = '') {
-    let num = Number.parseFloat(this);
-
-    let units = {
-        'length': {
-            'step': 1000,
-            'symbol': ['m', 'km', 'Mm', 'Gm', 'Tm', 'Pm']
-        },
-        'power': {
-            'step': 1000,
-            'symbol': ['W', 'kW', 'MW', 'GW', 'TW', 'PW']
-        },
-        'weight': {
-            'step': 1000,
-            'symbol': ['g', 'Kg', 'Mg', 'Gg', 'Tg', 'Pg']
-        },
-        'currency': {
-            'step': 1000,
-            'symbol': ['',  'K',  'M',  'B',  'T',  'Q']
-        },
-        'filesize': {
-            'step': 1024,
-            'symbol': ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
-        },
-        'hashrate': {
-            'step': 1000,
-            'symbol': ['H', 'KH', 'MH', 'GH', 'TH', 'PH']
-        }
-    };
-
-    let symbol = '';
-    if (units.hasOwnProperty(unit)) {
-        let i = 0;
-        while (num >= units[unit]['step']) {
-            i++;
-            num = num/units[unit]['step'];
-        }
-        symbol = ' '+ units[unit]['symbol'][i];
-    }
-
-    let args = [].slice.call(arguments);
-    args.shift()
-    num = num.toFixed(args.shift());
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + symbol;
-};
-
-/**
  * Javascript htmlspecialchars
  *
  * @see https://github.com/hirak/phpjs/blob/master/functions/strings/htmlspecialchars.js
@@ -1141,43 +1092,6 @@ String.prototype.defilter = function(quote_style) {
 
     return string;
 };
-
-/**
- * Javascript PHP hex2bin string prototype
- *
- */
-String.prototype.hex2bin = function() {
-    let i = 0, n = 0, l = this.length - 1, bytes = [];
-
-    try {
-        for (i; i < l; i += 2) {
-            n = parseInt(this.substr(i, 2), 16);
-            if (isNaN(n)) {
-                throw 'invalid hex string!';
-            }
-
-            bytes.push(n);
-        }
-        return String.fromCharCode.apply(String, bytes);
-    } catch (e) {
-        return '';
-    }
-}
-
-/**
- * Javascript PHP bin2hex string prototype
- *
- */
-String.prototype.bin2hex = function() {
-    let i = 0, l = this.length, chr, hex = '';
-
-    for (i; i < l; i++) {
-        chr = this.charCodeAt(i).toString(16);
-        hex += chr.length < 2 ? '0' + chr : chr;
-    }
-
-    return hex;
-}
 
 /**
  * Implement Object.values for older browsers
@@ -1751,7 +1665,7 @@ $(document).ready(function() {
     $(window).on('hashchange', function() {
         if (!window.location.hash.blank() && Jaws.defines.requestedURL == '') {
             try {
-                let reqRedirectURL = window.location.hash.substr(1).hex2bin();
+                let reqRedirectURL = Jaws.filters.hex2bin(window.location.hash.substr(1));
                 if (!reqRedirectURL.blank()) {
                     reqRedirectURL = new URL(
                         reqRedirectURL,
@@ -1908,6 +1822,7 @@ Jaws = {
     gadgets: [],
     actions: [],
     defines: {},
+    filters: {},
     translations: {},
 
     // define t method
@@ -1977,6 +1892,245 @@ Jaws = {
             },
             this
         ));
+    },
+
+};
+
+Jaws.filters = {
+    /**
+     *
+     */
+    upcase: function(input) {
+        return input.toUpperCase();
+    },
+
+    /**
+     *
+     */
+    downcase: function(input) {
+        return input.toLowerCase();
+    },
+
+    /**
+     *
+     */
+    json_encode: function(input) {
+        return JSON.stringify(input);
+    },
+
+    /**
+     *
+     */
+    json_decode: function(input) {
+        return JSON.parse(input);
+    },
+
+    /**
+     * UTF-8 encoding
+     */
+    utf8_encode : function (input) {
+        input = input.replace(/\r\n/g,"\n");
+        let result = '';
+        let c = 0;
+
+        for (let n = 0; n < input.length; n++) {
+            c = input.charCodeAt(n);
+
+            if (c < 128) {
+                result += String.fromCharCode(c);
+            } else if((c > 127) && (c < 2048)) {
+                result += String.fromCharCode((c >> 6) | 192);
+                result += String.fromCharCode((c & 63) | 128);
+            } else {
+                result += String.fromCharCode((c >> 12) | 224);
+                result += String.fromCharCode(((c >> 6) & 63) | 128);
+                result += String.fromCharCode((c & 63) | 128);
+            }
+        }
+
+        return result;
+    },
+
+    /**
+     * UTF-8 decoding
+     */
+    utf8_decode: function (input) {
+        let result = '';
+        let i = 0;
+        let c = c1 = c2 = 0;
+
+        while ( i < input.length ) {
+            c = input.charCodeAt(i);
+
+            if (c < 128) {
+                result += String.fromCharCode(c);
+                i++;
+            } else if((c > 191) && (c < 224)) {
+                c2 = input.charCodeAt(i+1);
+                result += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                i += 2;
+            } else {
+                c2 = input.charCodeAt(i+1);
+                c3 = input.charCodeAt(i+2);
+                result += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                i += 3;
+            }
+        }
+
+        return result;
+    },
+
+    /**
+     *
+     */
+    base64_encode: function(input) {
+        const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        let result = '';
+        let chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        let i = 0;
+
+        input = this.utf8_encode(input);
+        while (i < input.length) {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+
+            result = result +
+                keyStr.charAt(enc1) + keyStr.charAt(enc2) +
+                keyStr.charAt(enc3) + keyStr.charAt(enc4);
+        }
+
+        return result;
+    },
+
+    /**
+     *
+     */
+    base64_decode: function(input) {
+        const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        let result = '';
+        let chr1, chr2, chr3;
+        let enc1, enc2, enc3, enc4;
+        let i = 0;
+
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+        while (i < input.length) {
+            enc1 = keyStr.indexOf(input.charAt(i++));
+            enc2 = keyStr.indexOf(input.charAt(i++));
+            enc3 = keyStr.indexOf(input.charAt(i++));
+            enc4 = keyStr.indexOf(input.charAt(i++));
+
+            chr1 = (enc1 << 2) | (enc2 >> 4);
+            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+            chr3 = ((enc3 & 3) << 6) | enc4;
+
+            result = result + String.fromCharCode(chr1);
+            if (enc3 != 64) {
+                result = result + String.fromCharCode(chr2);
+            }
+            if (enc4 != 64) {
+                result = result + String.fromCharCode(chr3);
+            }
+        }
+
+        return this.utf8_decode(result);
+    },
+
+    /**
+     * Javascript PHP hex2bin string prototype
+     *
+     */
+    hex2bin: function(input) {
+        let i = 0, n = 0, l = input.length - 1, bytes = [];
+
+        try {
+            for (i; i < l; i += 2) {
+                n = parseInt(input.substr(i, 2), 16);
+                if (isNaN(n)) {
+                    throw 'invalid hex string!';
+                }
+
+                bytes.push(n);
+            }
+            return String.fromCharCode.apply(String, bytes);
+        } catch (e) {
+            return '';
+        }
+    },
+
+    /**
+     * Javascript PHP bin2hex string prototype
+     *
+     */
+    bin2hex: function(input) {
+        let i = 0, l = input.length, chr, hex = '';
+
+        for (i; i < l; i++) {
+            chr = input.charCodeAt(i).toString(16);
+            hex += chr.length < 2 ? '0' + chr : chr;
+        }
+
+        return hex;
+    },
+
+    /**
+     * Javascript format number prototype
+     */
+    format: function(input, unit = '') {
+        let num = Number.parseFloat(input);
+
+        let units = {
+            'length': {
+                'step': 1000,
+                'symbol': ['m', 'km', 'Mm', 'Gm', 'Tm', 'Pm']
+            },
+            'power': {
+                'step': 1000,
+                'symbol': ['W', 'kW', 'MW', 'GW', 'TW', 'PW']
+            },
+            'weight': {
+                'step': 1000,
+                'symbol': ['g', 'Kg', 'Mg', 'Gg', 'Tg', 'Pg']
+            },
+            'currency': {
+                'step': 1000,
+                'symbol': ['',  'K',  'M',  'B',  'T',  'Q']
+            },
+            'filesize': {
+                'step': 1024,
+                'symbol': ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+            },
+            'hashrate': {
+                'step': 1000,
+                'symbol': ['H', 'KH', 'MH', 'GH', 'TH', 'PH']
+            }
+        };
+
+        let symbol = '';
+        if (units.hasOwnProperty(unit)) {
+            let i = 0;
+            while (num >= units[unit]['step']) {
+                i++;
+                num = num/units[unit]['step'];
+            }
+            symbol = ' '+ units[unit]['symbol'][i];
+        }
+
+        let args = [].slice.call(arguments);
+        args.shift()
+        num = num.toFixed(args.shift());
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + symbol;
     },
 
 };
