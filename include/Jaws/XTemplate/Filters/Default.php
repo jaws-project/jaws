@@ -109,14 +109,17 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
      *
      * @param   mixed   $input1
      * @param   mixed   $input2
-     * @param   mixed   $yesResult
-     * @param   mixed   $noResult
+     * @param   mixed   $trueResult
+     * @param   mixed   $falseResult
      *
      * @return  mixed
      */
-    public static function equal($input1, $input2, $yesResult, $noResult = null)
+    public static function equal($input1, $input2, $trueResult = null, $falseResult = null)
     {
-        return $input1 == $input2 ? $yesResult : $noResult;
+        $trueResult = isset($trueResult)? $trueResult : true;
+        $falseResult = isset($falseResult)? $falseResult : false;
+
+        return ($input1 == $input2)? $trueResult : $falseResult;
     }
 
     /**
