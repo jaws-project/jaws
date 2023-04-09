@@ -95,9 +95,9 @@ class Jaws_XTemplate_Context
     /**
      * Invokes the filter with the given name
      *
-     * @param   string  $filter The name of the filter
-     * @param   string  $value  The value to filter
-     * @param   array   $args   The additional arguments for the filter
+     * @param   string|array    $filter The name of the filter(s)
+     * @param   string          $value  The value to filter
+     * @param   array           $args   The additional arguments for the filter
      *
      * @return string
      */
@@ -106,23 +106,30 @@ class Jaws_XTemplate_Context
         try {
             array_unshift($args, $value);
 
-            // is filter name exists
-            if (!array_key_exists($filter, $this->filters)) {
-                return $value;
+            $filters = is_array($filter)? $filter : [$filter];
+            foreach ($filters as $filter) {
+                // is filter name exists
+                if (!array_key_exists($filter, $this->filters)) {
+                    break;
+                }
+
+                if (false === $mappedFunction = $this->filters[$filter]) {
+                    // filter function is global or native php method (registered via addFilter method)
+                    $value = call_user_func_array($filter, $args);
+                }
+
+                // if callable
+                if (is_callable($mappedFunction)) {
+                    $value = call_user_func_array($mappedFunction, $args);
+                }
+
+                // filter is part of a class/object
+                $value = call_user_func_array(array($mappedFunction, $filter), $args);
+                // reset value in arags for next iteration in loop
+                $args[0] = $value;
             }
 
-            if (false === $mappedFunction = $this->filters[$filter]) {
-                // filter function is global or native php method (registered via addFilter method)
-                return call_user_func_array($filter, $args);
-            }
-
-            // if callable
-            if (is_callable($mappedFunction)) {
-                return call_user_func_array($mappedFunction, $args);
-            }
-
-            // filter is part of a class/object
-            return call_user_func_array(array($mappedFunction, $filter), $args);
+            return $value;
         } catch (TypeError $typeError) {
             throw new Exception($typeError->getMessage(), 0, $typeError);
         }
