@@ -2063,7 +2063,7 @@ Jaws.filters = {
 
                 bytes.push(n);
             }
-            return String.fromCharCode.apply(String, bytes);
+            return this.utf8_decode(String.fromCharCode.apply(String, bytes));
         } catch (e) {
             return '';
         }
@@ -2074,6 +2074,7 @@ Jaws.filters = {
      *
      */
     bin2hex: function(input) {
+        input = this.utf8_encode(input);
         let i = 0, l = input.length, chr, hex = '';
 
         for (i; i < l; i++) {
@@ -2131,6 +2132,17 @@ Jaws.filters = {
         args.shift()
         num = num.toFixed(args.shift());
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + symbol;
+    },
+
+    /**
+     * call filter(s) indirect as variable
+     */
+    apply: function($filter, input) {
+        $filters = Array.isArray($filter)? $filter : [$filter];
+        for (let i = 0; i < $filters.length; i++) {
+            input = Jaws.filters[$filters[i]].call(this, input);
+        }
+        return input;
     },
 
 };
