@@ -119,7 +119,7 @@ function Jaws_Gadget_Files() { return {
                 }
 
                 // file size
-                if (file.size > maxsize) {
+                if (maxsize > 0 && file.size > maxsize) {
                     throw 'File size is to big: ' + file.name;
                 }
 
