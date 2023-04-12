@@ -16,22 +16,41 @@
  */
 jQuery.extend({
     unserialize: function(str) {
+        let result = {};
         str = decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'');
-        return str.split("&").map(function(n) {
-            n=n.split("=");
-            switch($.type(this[n[0]])) {
-                case "undefined":
-                    this[n[0]] = n[1];
-                    break;
-                case "array":
-                    this[n[0]].push(n[1]);
-                    break;
-                default:
-                    this[n[0]] = [this[n[0]]];
-                    this[n[0]].push(n[1]);
+        $.each(
+            str.split("&"),
+            function(index, n) {
+                n=n.split("=");
+                switch($.type(result[n[0]])) {
+                    case "undefined":
+                        result[n[0]] = n[1];
+                        break;
+                    case "array":
+                        result[n[0]].push(n[1]);
+                        break;
+                    default:
+                        result[n[0]] = [result[n[0]]];
+                        result[n[0]].push(n[1]);
+                }
             }
-            return this;
-        }.bind({}))[0];
+        );
+
+        return result;
+    },
+
+    formData: function(str) {
+        let result = new FormData();
+        str = decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'');
+        $.each(
+            str.split("&"),
+            function(index, n) {
+                n=n.split("=");
+                result.append(n[0], n[1]);
+            }
+        );
+
+        return result;
     },
 
     viewport: function() {
