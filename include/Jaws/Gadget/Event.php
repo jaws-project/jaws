@@ -24,9 +24,10 @@ class Jaws_Gadget_Event extends Jaws_Gadget_Class
      *
      * @access  public
      * @param   string  $event  Event name
+     * @param   int     $error_level  Sets this error level if not exists
      * @return  mixed   Event class object on successful, Jaws_Error otherwise
      */
-    public function &load($event)
+    public function &load($event, $error_level = JAWS_ERROR_NOTICE)
     {
         // filter non validate character
         $event = preg_replace('/[^[:alnum:]_]/', '', $event);
@@ -35,7 +36,7 @@ class Jaws_Gadget_Event extends Jaws_Gadget_Class
             $classname = $this->gadget->name. '_Events_'. $event;
             $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Events/$event.php";
             if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__, 404, $error_level);
             }
 
             include_once($file);
