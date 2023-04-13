@@ -259,7 +259,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget_Class
             array('', '-', '-'),
             Jaws_UTF8::strtolower($meta_title)
         );
-        $fast_url = Jaws_UTF8::substr($meta_title, 0, 90);
+        $meta_title = Jaws_UTF8::substr($meta_title, 0, 90);
 
         return $meta_title;
     }
