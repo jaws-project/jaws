@@ -24,9 +24,10 @@ class Jaws_Gadget_Hook extends Jaws_Gadget_Class
      *
      * @access  public
      * @param   string  $hook  Hook name
+     * @param   int     $error_level  Sets this error level if not exists
      * @return  mixed   Hook class object on successful, Jaws_Error otherwise
      */
-    public function &load($hook)
+    public function &load($hook, $error_level = JAWS_ERROR_NOTICE)
     {
         // filter non validate character
         $hook = preg_replace('/[^[:alnum:]_]/', '', $hook);
@@ -35,7 +36,7 @@ class Jaws_Gadget_Hook extends Jaws_Gadget_Class
             $classname = $this->gadget->name. '_Hooks_'. $hook;
             $file = ROOT_JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Hooks/$hook.php";
             if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__, 404, $error_level);
             }
 
             include_once($file);
