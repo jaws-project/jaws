@@ -10,7 +10,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  * @doc         https://shopify.github.io/liquid/tags/variable/
  */
-class Jaws_XTemplate_Tags_Capture extends Jaws_XTemplate_Tags_Segmental
+class Jaws_XTemplate_Tags_Capture extends Jaws_XTemplate_TagSegmental
 {
     /**
      * The variable to assign to
