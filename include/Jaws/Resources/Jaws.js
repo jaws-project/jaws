@@ -1846,6 +1846,10 @@ Jaws = {
 
     // define t method
     t: function(string, params, module) {
+        if (string.indexOf('.') >= 0) {
+            [module , string] = string.split('.');
+        }
+
         string = string.toUpperCase();
         module = module? module.toUpperCase() : '';
         type = module? 1 : 0;
