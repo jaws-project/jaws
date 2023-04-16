@@ -6242,6 +6242,9 @@ button.close {
   -webkit-overflow-scrolling: touch;
   outline: 0;
 }
+.modal.nested {
+  z-index: 1070;
+}
 .modal.fade .modal-dialog {
   -webkit-transform: translate(0, -25%);
   -ms-transform: translate(0, -25%);
@@ -6287,6 +6290,9 @@ button.close {
   right: 0;
   z-index: 1040;
   background-color: #000;
+}
+.modal-backdrop.nested {
+  z-index: 1060;
 }
 .modal-backdrop.fade {
   filter: alpha(opacity=0);
