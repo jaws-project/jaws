@@ -94,6 +94,23 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Returns the associated index element of an array
+     *
+     * @param   string  $index
+     * @param   array   $input
+     *
+     * @return mixed
+     */
+    public static function indexof($index, array $input)
+    {
+        if (array_key_exists($index, $input)) {
+            return $input[$index];
+        }
+
+        return null;
+    }
+
+    /**
      * Joins elements of an array with a given character between them
      *
      * @param array|\Traversable $input
