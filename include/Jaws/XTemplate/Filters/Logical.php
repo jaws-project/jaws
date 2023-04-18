@@ -1,6 +1,6 @@
 <?php
 /**
- * Template engine logical registered filters
+ * Template engine logical/bitwise operators registered filters
  *
  * @category    Template
  * @package     Core
@@ -13,52 +13,68 @@ class Jaws_XTemplate_Filters_Logical extends Jaws_XTemplate_Filters
     /**
      * and
      *
-     * @param bool $input1
-     * @param bool $input2
+     * @param bool|int  $input1
+     * @param bool|int  $input2
      *
-     * @return bool
+     * @return bool|int
      */
     public static function and($input1, $input2)
     {
-        return (bool)$input1 && (bool)$input2;
+        if (is_numeric($input1)) {
+            return $input1 & $input2;
+        } else {
+            return (bool)$input1 && (bool)$input2;
+        }
     }
 
     /**
      * or
      *
-     * @param bool $input1
-     * @param bool $input2
+     * @param bool|int  $input1
+     * @param bool|int  $input2
      *
-     * @return bool
+     * @return bool|int
      */
     public static function or($input1, $input2)
     {
-        return (bool)$input1 || (bool)$input2;
+        if (is_numeric($input1)) {
+            return $input1 | $input2;
+        } else {
+            return (bool)$input1 || (bool)$input2;
+        }
     }
 
     /**
      * xor
      *
-     * @param bool $input1
-     * @param bool $input2
+     * @param bool|int  $input1
+     * @param bool|int  $input2
      *
-     * @return bool
+     * @return bool|int
      */
     public static function xor($input1, $input2)
     {
-        return (bool)$input1 xor (bool)$input2;
+        if (is_numeric($input1)) {
+            return $input1 ^ $input2;
+        } else {
+            return (bool)$input1 xor (bool)$input2;
+        }
     }
 
     /**
      * not
      *
-     * @param bool $input
+     * @param bool|int  $input
      *
-     * @return bool
+     * @return bool|int
      */
     public static function not($input)
     {
-        return !(bool)$input;
+        if (is_numeric($input)) {
+            return ~$input;
+        } else {
+            return !(bool)$input;
+        }
     }
 
 }
