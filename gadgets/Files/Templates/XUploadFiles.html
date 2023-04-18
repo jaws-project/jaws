@@ -14,7 +14,7 @@
               <a href="javascript:void(0);"
                 onclick="Jaws_Gadget.getInstance('Files').removeFile(this);"
                 title="{{ files.labels.remove }}">
-                {{ files.labels.remove }}
+                <label data-label="remove">{{ files.labels.remove }}</label>
               </a>
             </li>
           </ul>
@@ -35,7 +35,7 @@
       />
     </div>
   </template>
-  <label>{{ files.labels.title }}:</label>
+  <label data-label="title">{{ files.labels.title }}:</label>
   <div>
     <div class="old_files">
       <div>
@@ -86,7 +86,7 @@
         data-maxcount="{{ files.maxcount }}"
         data-initialize="fileuploader"
         onclick="Jaws_Gadget.getInstance('Files').uploadMoreFiles(this);">
-        {{ files.labels.browse }}
+        <label data-label="browse">{{ files.labels.browse }}</label>
       </a>
     </div>
   </div>

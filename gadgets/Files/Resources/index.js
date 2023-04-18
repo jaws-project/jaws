@@ -275,8 +275,25 @@ function Jaws_Gadget_Files() { return {
     /**
      * Get upload reference files interface
      */
-    loadReferenceFiles: function($tpl, $interface, $options = [])
+    loadReferenceFiles: function($tpl, $interface, $options = {})
     {
+        // merge input options with default options
+        $options = Object.assign(
+            {
+                'labels': {
+                    'title':  '',
+                    'browse': '',
+                    'remove': ''
+                },
+                'filetype':  0,
+                'maxsize':   33554432,
+                'dimension': '',
+                'maxcount':  0,
+                'preview':   true
+            },
+            $options
+        );
+
         if (!$interface.hasOwnProperty('input_reference')) {
             $interface['input_reference'] = $interface['reference'];
         }
@@ -293,10 +310,23 @@ function Jaws_Gadget_Files() { return {
             return;
         }
 
-        let preview = Boolean($fileInput.data('preview'));
+        // set label
+        if ($options['labels']['title']) {
+            $tpl.find("[data-label='title']").html($options['labels']['title']);
+        }
+        // set browse label
+        if ($options['labels']['browse']) {
+            $tpl.find("[data-label='browse']").html($options['labels']['browse']);
+        }
+        // preview?
+        $options['preview'] = Boolean($options['preview'] || $fileInput.data('preview'));
+
         this.gadget.ajax.callAsync(
             'loadReferenceFiles',
-            $interface,
+            {
+                'interface': $interface,
+                'options': $options
+            },
             function(response, status) {
                 if (response['type'] == 'alert-success') {
                     $.each(
@@ -314,7 +344,7 @@ function Jaws_Gadget_Files() { return {
                             );
                             liElement.find("[data-type='size']").html(file.filesize);
                             // show preview
-                            if (preview) {
+                            if ($options['preview']) {
                                 liElement.find("[data-type='preview']").show().html(
                                     '<a href="'+file.fileurl+
                                     '" target="_blank"><img src="'+
@@ -322,6 +352,11 @@ function Jaws_Gadget_Files() { return {
                                     '" alt="" width="128"></a>'
                                 );
                             }
+                            // set remove label
+                            if ($options['labels']['remove']) {
+                                liElement.find("[data-label='remove']").html($options['labels']['remove']);
+                            }
+
                             liElement.show();
                         }
                     );

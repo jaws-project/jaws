@@ -20,7 +20,12 @@ class Files_Actions_Files extends Jaws_Gadget_Action
     {
         // FIXME: temporary solution
         if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-            $interface = $this->gadget->request->fetchAll('post');
+            $postedData = $this->gadget->request->fetch(
+                array('interface:array|array', 'options:array|array'),
+                'post'
+            );
+            list($interface, $options) = array_values($postedData);
+
             if (!empty($interface['reference'])) {
                 // call gadget hook for check access permission
                 $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
@@ -145,7 +150,12 @@ class Files_Actions_Files extends Jaws_Gadget_Action
     {
         // FIXME: temporary solution
         if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-            $interface = $this->gadget->request->fetchAll('post');
+            $postedData = $this->gadget->request->fetch(
+                array('interface:array|array', 'options:array|array'),
+                'post'
+            );
+            list($interface, $options) = array_values($postedData);
+
             if (!empty($interface['reference'])) {
                 // call gadget hook for check access permission
                 $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
