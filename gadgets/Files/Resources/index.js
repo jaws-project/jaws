@@ -61,13 +61,8 @@ function Jaws_Gadget_Files() { return {
 
         // show browse button
         $(element).parents().eq(6).find('.btn_browse').show();
-        if (filesCount < 2) {
-            // if removed file was last one remove other elements too
-            $(element).parents().eq(4).remove();
-        } else {
-            // remove DOM element
-            $(element).parents().eq(2).remove();
-        }
+        // remove DOM element
+        $(element).parents().eq(2).remove();
     },
 
     /**
@@ -304,6 +299,7 @@ function Jaws_Gadget_Files() { return {
         let $fileInput = $tpl.find('template').contents().find('input[type="file"]').last();
         $fileInput.attr('name', 'new_files_' + inputIndexName);
 
+        $tpl.find('.new_files').empty();
         var ulElement = $tpl.find('.old_files ul').first().empty();
         if ($interface['reference'] == 0) {
             this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
