@@ -122,19 +122,28 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      */
     function xdisplayReferenceFiles($interface = array(), $options = array())
     {
-        // initiate assign with option array 
-        $assigns = $options;
-        $assigns['interface'] = $interface;
-
-        $assigns['files'] = array();
+        $result = array();
         if (!empty($interface['reference'])) {
-            $files = $this->gadget->model->load('Files')->getFiles($interface);
-            if (!Jaws_Error::IsError($files)) {
-                $assigns['files'] = $files;
+            try {
+                // call gadget hook for check access permission
+                $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
+                if (!Jaws_Error::IsError($objHook)) {
+                    $allowed = $objHook->Execute($interface);
+                    if (Jaws_Error::IsError($allowed) || !$allowed) {
+                        throw new Exception(Jaws::t('HTTP_ERROR_TITLE_403'), 403);
+                    }
+                }
+
+                $files = $this->gadget->model->load('Files')->getFiles($interface);
+                if (!Jaws_Error::IsError($files)) {
+                    $result = $files;
+                }
+            } catch (Exception $error) {
+                // do nothing
             }
         }
 
-        return $assigns;
+        return $result;
     }
 
     /**
@@ -479,6 +488,51 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         }
 
         return $resultFiles;
+    }
+
+    /**
+     * Get interface(gadget/action/reference) files
+     *
+     * @access  public
+     * @return  array   Response array include files attributes
+     */
+    function files()
+    {
+        $postedData = $this->gadget->request->fetch(
+            array('interface:array|array', 'options:array|array'),
+            'post'
+        );
+        list($interface, $options) = array_values($postedData);
+
+        $error_message = Jaws::t('HTTP_ERROR_TITLE_404');
+        if (!empty($interface['reference'])) {
+            try {
+                // call gadget hook for check access permission
+                $objHook = Jaws_Gadget::getInstance($interface['gadget'])->hook->load('Files');
+                if (!Jaws_Error::IsError($objHook)) {
+                    $allowed = $objHook->Execute($interface);
+                    if (Jaws_Error::IsError($allowed) || !$allowed) {
+                        throw new Exception(Jaws::t('HTTP_ERROR_TITLE_403'), 403);
+                    }
+                }
+
+                $files = $this->gadget->model->load('Files')->getFiles($interface);
+                if (!Jaws_Error::IsError($files)) {
+                    return $this->gadget->session->response(
+                        '',
+                        RESPONSE_NOTICE,
+                        $files
+                    );
+                }
+            } catch (Exception $error) {
+                $error_message = $error->getMessage();
+            }
+        }
+
+        return $this->gadget->session->response(
+            $error_message,
+            RESPONSE_ERROR
+        );
     }
 
     /**

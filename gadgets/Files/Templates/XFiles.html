@@ -1,4 +1,4 @@
-{% for file in files.files %}
+{% for file in files %}
 <div class="reference_files">
   {{ files.labels.title }}:
   <a href="{{ 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey }}">
