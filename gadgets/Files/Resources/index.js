@@ -298,6 +298,12 @@ function Jaws_Gadget_Files() { return {
 
         let $fileInput = $tpl.find('template').contents().find('input[type="file"]').last();
         $fileInput.attr('name', 'new_files_' + inputIndexName);
+        // preview
+        $fileInput.attr('data-maxsize', $options['maxsize']);
+        $fileInput.attr('data-preview', $options['preview']);
+        $fileInput.attr('data-dimension', $options['dimension']);
+        // set remove label
+        $tpl.find('template').contents().find('[data-label="remove"]').html($options['labels']['remove']);
 
         $tpl.find('.new_files').empty();
         var ulElement = $tpl.find('.old_files ul').first().empty();
@@ -316,6 +322,8 @@ function Jaws_Gadget_Files() { return {
         }
         // preview?
         $options['preview'] = Boolean($options['preview'] || $fileInput.data('preview'));
+        // max-count
+        $tpl.find("[data-maxcount]").data('maxcount', $options['maxcount']);
 
         this.gadget.ajax.callAsync(
             'loadReferenceFiles',
@@ -347,10 +355,6 @@ function Jaws_Gadget_Files() { return {
                                     file.fileurl+
                                     '" alt="" width="128"></a>'
                                 );
-                            }
-                            // set remove label
-                            if ($options['labels']['remove']) {
-                                liElement.find("[data-label='remove']").html($options['labels']['remove']);
                             }
 
                             liElement.show();
