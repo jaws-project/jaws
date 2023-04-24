@@ -307,10 +307,6 @@ function Jaws_Gadget_Files() { return {
 
         $tpl.find('.new_files').empty();
         var ulElement = $tpl.find('.old_files ul').first().empty();
-        if ($interface['reference'] == 0) {
-            this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
-            return;
-        }
 
         // set label
         if ($options['labels']['title']) {
@@ -324,6 +320,11 @@ function Jaws_Gadget_Files() { return {
         $options['preview'] = Boolean($options['preview'] || $fileInput.data('preview'));
         // max-count
         $tpl.find("[data-maxcount]").data('maxcount', $options['maxcount']);
+
+        if ($interface['reference'] == 0) {
+            this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
+            return;
+        }
 
         this.gadget.ajax.callAsync(
             'loadReferenceFiles',
