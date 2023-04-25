@@ -145,7 +145,11 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
         ) {
             $previousToken = end($this->nodelist);
             if (is_string($previousToken)) { // this can also be a tag or a variable
-                $this->nodelist[key($this->nodelist)] = rtrim($previousToken);
+                if (Jaws_UTF8::substr($token, 2, 1) === Jaws_XTemplate_Parser::get('WHITESPACE_CONTROL1')) {
+                    $this->nodelist[key($this->nodelist)] = rtrim($previousToken);
+                } else {
+                    $this->nodelist[key($this->nodelist)] = rtrim($previousToken, " \t\v\x00");
+                }
             }
         }
 
