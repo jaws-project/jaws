@@ -162,6 +162,39 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Filter array by specific property value
+     *
+     * @param array|\Traversable $input
+     * @param string    $property
+     * @param mixed     $value
+     *
+     * @return mixed    filtered array if success or given input on failure
+     */
+    public static function filter($input, $property, $value = null)
+    {
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+        if (!is_array($input)) {
+            return $input;
+        }
+
+        $condition = array($property => $value);
+        return array_filter(
+            $input,
+            function ($elem) use ($condition) {
+                $key = array_key_first($condition);
+                $val = reset($condition);
+                if (array_key_exists($key, $elem) && (is_null($val)? !empty($elem[$key]) : ($elem[$key] == $val))) {
+                    return true;
+                }
+
+                return false;
+            }
+        );
+    }
+
+    /**
      * Reverse the elements of an array
      *
      * @param array|\Traversable $input
