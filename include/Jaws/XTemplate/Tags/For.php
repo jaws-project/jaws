@@ -75,18 +75,16 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
             $this->type = 'digit';
             $this->variableName = $syntaxRegexp->matches[1];
             $this->start = $syntaxRegexp->matches[2];
-            $this->collectionName = $syntaxRegexp->matches[3];
+            $this->collection = $syntaxRegexp->matches[3];
             $this->name = $syntaxRegexp->matches[1].'-digit';
-            $this->extractAttributes($markup);
         } else {
             $syntaxRegexp = new Jaws_Regexp(
-                '/(\w+)\s+in\s+(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . ')/'
+                '/(\w+)\s+in\s+(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . ')(.*)/m'
             );
             if ($syntaxRegexp->match($markup)) {
                 $this->variableName = $syntaxRegexp->matches[1];
-                $this->collectionName = $syntaxRegexp->matches[2];
                 $this->name = $syntaxRegexp->matches[1] . '-' . $syntaxRegexp->matches[2];
-                $this->extractAttributes($markup);
+                $this->collection = new Jaws_XTemplate_Variable($syntaxRegexp->matches[2] . $syntaxRegexp->matches[3]);
             } else {
                 throw new Exception("Syntax Error in 'for loop' - Valid syntax: for [item] in [collection]");
             }
@@ -137,7 +135,7 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
 
     private function renderCollection($nodelist, $context)
     {
-        $collection = $context->get($this->collectionName);
+        $collection = $this->collection->render($context);
         if ($collection instanceof \Traversable) {
             $collection = iterator_to_array($collection);
         }
@@ -146,35 +144,12 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
             return null;
         }
 
-        $range = array(0, count($collection));
-
-        if (isset($this->attributes['limit']) || isset($this->attributes['offset'])) {
-            $offset = 0;
-
-            if (isset($this->attributes['offset'])) {
-                $offset = ($this->attributes['offset'] == 'continue') ?
-                    $context->registers['for'][$this->name] :
-                    $context->get($this->attributes['offset']);
-            }
-
-            $limit = (isset($this->attributes['limit'])) ? $context->get($this->attributes['limit']) : null;
-            $rangeEnd = $limit ? $limit : count($collection) - $offset;
-            $range = array($offset, $rangeEnd);
-
-            $context->registers['for'][$this->name] = $rangeEnd + $offset;
-        }
-
-        $result = '';
-        $segment = array_slice($collection, $range[0], $range[1], true);
-        if (!count($segment)) {
-            return null;
-        }
-
-        $context->push();
-        $length = count($segment);
-
         $index = 0;
-        foreach ($segment as $key => $item) {
+        $result = '';
+        $length = count($collection);
+        $context->push();
+
+        foreach ($collection as $key => $item) {
             $context->set($this->variableName, $item);
             $context->set(
                 'forloop', array(
@@ -216,17 +191,18 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
             $start = $context->get($this->start);
         }
 
-        $end = $this->collectionName;
-        if (!is_integer($this->collectionName)) {
-            $end = $context->get($this->collectionName);
+        $end = $this->collection;
+        if (!is_integer($this->collection)) {
+            $end = $context->get($this->collection);
         }
 
         $range = array($start, $end);
 
-        $context->push();
-        $result = null;
         $index = 0;
+        $result = null;
         $length = $range[1] - $range[0];
+        $context->push();
+
         for ($i = $range[0]; $i <= $range[1]; $i++) {
             $context->set($this->variableName, $i);
             $context->set(
