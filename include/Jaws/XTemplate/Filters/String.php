@@ -203,11 +203,9 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
             $input = iterator_to_array($input);
         }
         if (is_array($input)) {
-            $input = array_slice($input, $offset, $length);
+            $input = array_slice($input, $offset, $length, true);
         } elseif (is_string($input)) {
-            $input = $length === null
-                ? substr($input, $offset)
-                : substr($input, $offset, $length);
+            $input = substr($input, $offset, $length);
         }
 
         return $input;
