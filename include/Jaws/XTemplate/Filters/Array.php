@@ -185,7 +185,15 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
             function ($elem) use ($condition) {
                 $key = array_key_first($condition);
                 $val = reset($condition);
-                if (array_key_exists($key, $elem) && (is_null($val)? !empty($elem[$key]) : ($elem[$key] == $val))) {
+                // check key exist in sub-dimensions
+                $keys = explode('.', $key);
+                foreach ($keys as $key) {
+                    if (!array_key_exists($key, $elem)) {
+                        return false;
+                    }
+                    $elem = $elem[$key];
+                }
+                if (is_null($val)? !empty($elem) : ($elem == $val)) {
                     return true;
                 }
 
