@@ -115,7 +115,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function prepend($input, $string)
     {
-        return $string . $input;
+        return implode('', array_reverse(func_get_args()));
     }
 
     /**
