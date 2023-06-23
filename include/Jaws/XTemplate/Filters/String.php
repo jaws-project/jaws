@@ -231,7 +231,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      *
      * @return array
      */
-    public static function split($input, $pattern)
+    public static function split($input, $pattern = ',')
     {
         return explode($pattern, $input);
     }

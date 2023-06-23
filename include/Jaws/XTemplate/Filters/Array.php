@@ -118,7 +118,7 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
      *
      * @return string
      */
-    public static function join($input, $glue = ' ')
+    public static function join($input, $glue = ',')
     {
         if ($input instanceof \Traversable) {
             $str = '';
