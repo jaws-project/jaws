@@ -1923,6 +1923,20 @@ Jaws.filters = {
     /**
      *
      */
+    join: function(input, glue = ',') {
+        return Array.isArray(input)? input.join(glue) : input;
+    },
+
+    /**
+     *
+     */
+    split: function(input, pattern = ',') {
+        return String(input).split(pattern);
+    },
+
+    /**
+     *
+     */
     upcase: function(input) {
         return input.toUpperCase();
     },
