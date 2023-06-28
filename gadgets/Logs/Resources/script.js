@@ -277,7 +277,7 @@ function Jaws_Gadget_Logs() { return {
      */
     searchUsersAndFillCombo: function (comboElm) {
         Jaws_Gadget.getInstance('Users').gadget.ajax.callAsync(
-            'GetUsers',
+            'getUsers',
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
                 $(comboElm).find('div.input-group-btn ul.dropdown-menu').html('');
