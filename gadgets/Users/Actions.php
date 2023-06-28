@@ -304,7 +304,7 @@ $actions['Users'] = array(
         'order' => 9
     ),
 );
-$actions['GetUsers'] = array(
+$actions['getUsers'] = array(
     'standalone' => true,
     'file' => 'Users',
 );
@@ -445,7 +445,7 @@ $admin_actions['GetUserExtra'] = array(
     'standalone' => true,
     'file' => 'Users',
 );
-$admin_actions['GetUsers'] = array(
+$admin_actions['getUsers'] = array(
     'standalone' => true,
     'file' => 'Users',
 );

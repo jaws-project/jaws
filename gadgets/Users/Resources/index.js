@@ -593,7 +593,7 @@ function usersDataSource(options, callback) {
     columns = Object.values(columns);
 
     UsersAjax.callAsync(
-        'GetUsers', {
+        'getUsers', {
             'offset': options.pageIndex * options.pageSize,
             'limit': options.pageSize,
             'sortDirection': options.sortDirection,

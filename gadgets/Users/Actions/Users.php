@@ -158,7 +158,7 @@ class Users_Actions_Users extends Users_Actions_Default
      * @access  public
      * @return  string  XHTML content
      */
-    function GetUsers()
+    function getUsers()
     {
         if (!$this->app->session->user->logged) {
             return Jaws_HTTPError::Get(401);
@@ -223,7 +223,7 @@ class Users_Actions_Users extends Users_Actions_Default
             );
         }
         $total = $this->gadget->model->load('User')->listCount(
-            $domain, $group,
+            $domain, $groupFilter,
             array(
                 'term' => $term,
                 'status' => $status,

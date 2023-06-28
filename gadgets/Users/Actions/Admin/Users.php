@@ -69,7 +69,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      * @access  public
      * @return  array  Grid data
      */
-    function GetUsers()
+    function getUsers()
     {
         $post = $this->gadget->request->fetch(
             array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),

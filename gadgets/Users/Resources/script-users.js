@@ -443,7 +443,7 @@ function Jaws_Gadget_Users_Action_Users() {
             columns = Object.values(columns);
 
             this.ajax.callAsync(
-                'GetUsers', {
+                'getUsers', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
                     'sortDirection': options.sortDirection,
