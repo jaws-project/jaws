@@ -21,17 +21,16 @@ class Jaws_Gadget_Template extends Jaws_Gadget_Class
      */
     function &xLoad($filename, $options = array(), $backend = false)
     {
-        $filepath = dirname($filename);
-        $filename = basename($filename);
         $loadFromTheme = isset($options['loadFromTheme'])? $options['loadFromTheme'] : (JAWS_SCRIPT == 'index');
-        // if dirname returned dot ('.'), indicating no slashes in path(current directory)
-        if ($filepath == '.') {
-            $filepath = 'gadgets/'. $this->gadget->name. '/Templates'. ($backend? '/Admin': '');
+        if (isset($options['basePath'])) {
+            $basePath = $options['basePath'];
+        } else {
+            $basePath = 'gadgets/'. $this->gadget->name. '/Templates'. ($backend? '/Admin': '');
         }
 
         unset($options['loadFromTheme']);
         $tpl = new Jaws_XTemplate($loadFromTheme);
-        $tpl->parseFile($filename, $filepath);
+        $tpl->parseFile($filename, $basePath);
         return $tpl;
     }
 
