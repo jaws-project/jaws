@@ -57,26 +57,33 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     public function __construct(array &$tokens, $markup)
     {
         $regex = new Jaws_Regexp(
-            '/('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+)' .
-            '(\s+('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+))?'.
-            '(\s+(with|for)\s+(' .
-            Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') .
-            '+))?(\s+(?:as)\s+(' .
-            Jaws_XTemplate_Parser::get('VARIABLE_NAME').
-            '+))?/'
+            '/' .
+            '(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '+)' .
+            '(?:\s+path\s+(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '+))?'.
+            '(?:\s+(with|for)\s+(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '+))?'.
+            '(?:\s+as\s+(' . Jaws_XTemplate_Parser::get('VARIABLE_NAME') . '+))?' .
+            '/'
         );
 
         if (!$regex->match($markup)) {
             throw new Exception(
-                "Error in tag 'include' - Valid syntax: include '[template]' (with|for) [object|collection]"
+                "Error in tag 'include' - Valid syntax: include 'template' [path 'base path'] (with|for) [object|collection]"
             );
         }
 
         $this->templateName = trim($regex->matches[1], '\'"');
-        $this->templatePath = trim($regex->matches[2], '\'"');
-        $this->variableName = isset($regex->matches[5])? $regex->matches[5] : null;
-        $this->aliasName    = isset($regex->matches[7])? $regex->matches[7] : null;
-        $this->collection   = isset($regex->matches[4])? ($regex->matches[4] == 'for') : null;
+        if (isset($regex->matches[2]) && $regex->matches[2] !== '') {
+            $this->templatePath = trim($regex->matches[2], '\'"');
+        }
+        if (isset($regex->matches[3]) && $regex->matches[3] == 'for') {
+            $this->collection = true;
+        }
+        if (isset($regex->matches[4]) && $regex->matches[4] !== '') {
+            $this->variableName = $regex->matches[4];
+        }
+        if (isset($regex->matches[5]) && $regex->matches[5] !== '') {
+            $this->aliasName = $regex->matches[5];
+        }
 
         $this->extractAttributes($markup);
 
@@ -129,8 +136,8 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
         }
 
         $source = Jaws_XTemplate::readTemplateFile(
-            basename($this->templateName),
-            pathinfo($this->templateName, PATHINFO_DIRNAME)
+            $this->templateName,
+            $this->templatePath
         );
         if ($this->app->cache->exists(Jaws_Cache::key($source)) &&
             $this->hash === Jaws_Cache::key($source)
