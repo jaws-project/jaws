@@ -37,7 +37,7 @@
                 <input class="form-control" name="url2" id="comment_url2" value="{{url2_value}}" type="text" />
             </div>
 
-            {% include 'XCaptcha.html' 'gadgets/Policy/Templates' with comment_form.captcha %}
+            {% include 'XCaptcha.html' path 'gadgets/Policy/Templates' with comment_form.captcha %}
 
             <div><label for="message{{comment_form.rand}}">{{ "comments.message" | t }}:</label>
                 <textarea class="form-control" id="message{{comment_form.rand}}" class="x-large" rows="7" name="message">{{message}}</textarea>
