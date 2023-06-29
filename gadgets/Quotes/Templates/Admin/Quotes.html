@@ -9,13 +9,13 @@
               <label>{{ "quotes.from_time" | t }}: </label>
             </div>
             <div class="col-xs-4">
-              {% include 'XDatePicker.html' 'include/Jaws/Resources' with from_date as datepicker %}
+              {% include 'XDatePicker.html' path 'include/Jaws/Resources' with from_date as datepicker %}
             </div>
             <div class="col-xs-2">
               <label>{{ "quotes.to_time" | t }}: </label>
             </div>
             <div class="col-xs-4">
-              {% include 'XDatePicker.html' 'include/Jaws/Resources' with to_date as datepicker %}
+              {% include 'XDatePicker.html' path 'include/Jaws/Resources' with to_date as datepicker %}
             </div>
 
             <div class="col-xs-2">
@@ -162,12 +162,12 @@
                   <div class="panel-body row">
                     <div class="form-group col-md-6">
                       <label for="ptime">{{ "quotes.publish_time" | t }}:</label>
-                      {% include 'XDatePicker.html' 'include/Jaws/Resources' with ptime as datepicker %}
+                      {% include 'XDatePicker.html' path 'include/Jaws/Resources' with ptime as datepicker %}
                     </div>
 
                     <div class="form-group col-md-6">
                       <label for="xtime">{{ "quotes.expiry_time" | t }}:</label>
-                      {% include 'XDatePicker.html' 'include/Jaws/Resources' with xtime as datepicker %}
+                      {% include 'XDatePicker.html' path 'include/Jaws/Resources' with xtime as datepicker %}
                     </div>
 
                     <div class="form-group col-md-6">
@@ -208,7 +208,7 @@
 
             <div class="form-group col-md-6">
               <label></label>
-              {% include 'XLoadCategories.html' 'gadgets/Categories/Templates' with category as category %}
+              {% include 'XLoadCategories.html' path 'gadgets/Categories/Templates' with category as category %}
             </div>
 
           </div>

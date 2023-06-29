@@ -1,7 +1,7 @@
 <div class="gadget_header">
   <div class="row">
     <div class="col-xs-9"><h2>{{ "quotes.actions_quotes_title" | t }}</h2></div>
-    <div class="col-xs-3">{% include 'XMenuNavigation.html' 'include/Jaws/Resources' with navigation %}</div>
+    <div class="col-xs-3">{% include 'XMenuNavigation.html' path 'include/Jaws/Resources' with navigation %}</div>
   </div>
 </div>
 <div class="gadget_container">
@@ -17,6 +17,6 @@
 
   </div>
 
-  {% include 'XPageNavigation.html' 'include/Jaws/Resources' with pagination %}
+  {% include 'XPageNavigation.html' path 'include/Jaws/Resources' with pagination %}
 </div>
 <div class="gadget_footer"></div>
