@@ -170,7 +170,7 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
      *
      * @return mixed    filtered array if success or given input on failure
      */
-    public static function filter($input, $property, $value = null)
+    public static function filter($input, $property = null, $value = null)
     {
         if ($input instanceof \Traversable) {
             $input = iterator_to_array($input);
@@ -179,19 +179,21 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
             return $input;
         }
 
-        $condition = array($property => $value);
+        $condition = array($property, $value);
         return array_filter(
             $input,
             function ($elem) use ($condition) {
-                $key = array_key_first($condition);
-                $val = reset($condition);
+                $key = $condition[0];
+                $val = $condition[1];
                 // check key exist in sub-dimensions
-                $keys = explode('.', $key);
-                foreach ($keys as $key) {
-                    if (!array_key_exists($key, $elem)) {
-                        return false;
+                if (!is_null($key)) {
+                    $keys = explode('.', $key);
+                    foreach ($keys as $key) {
+                        if (!array_key_exists($key, $elem)) {
+                            return false;
+                        }
+                        $elem = $elem[$key];
                     }
-                    $elem = $elem[$key];
                 }
                 if (is_null($val)? !empty($elem) : ($elem == $val)) {
                     return true;
