@@ -91,14 +91,14 @@
                             <label for="filter_from_date">{{ "logs.from_date" | t }}: </label>
                         </div>
                         <div class="col-xs-3">
-                            {% include 'XDatePicker.html' 'include/Jaws/Resources' with from_date as datepicker %}
+                            {% include 'XDatePicker.html' path 'include/Jaws/Resources' with from_date as datepicker %}
                         </div>
 
                         <div class="col-xs-1">
                             <label for="filter_to_date">{{ "logs.to_date" | t }}: </label>
                         </div>
                         <div class="col-xs-3">
-                            {% include 'XDatePicker.html' 'include/Jaws/Resources' with to_date as datepicker %}
+                            {% include 'XDatePicker.html' path 'include/Jaws/Resources' with to_date as datepicker %}
                         </div>
 
 
