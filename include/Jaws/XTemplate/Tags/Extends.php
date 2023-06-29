@@ -17,6 +17,11 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
     private $templateName;
 
     /**
+     * @var string The base path of the template
+     */
+    private $templatePath;
+
+    /**
      * @var Document The Document that represents the included template
      */
     private $document;
@@ -36,14 +41,19 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
      */
     public function __construct(array &$tokens, $markup)
     {
-        $regex = new Jaws_Regexp('/("[^"]+"|\'[^\']+\')?/');
-        if ($regex->match($markup) && isset($regex->matches[1])) {
-            $this->templateName = trim($regex->matches[1], '\'"');
-        } else {
+        $regex = new Jaws_Regexp(
+            '/('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+)' .
+            '(\s+('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+))?/'
+        );
+
+        if (!$regex->match($markup)) {
             throw new Exception(
                 "Error in tag 'extends' - Valid syntax: extends '[template name]'"
             );
         }
+
+        $this->templateName = trim($regex->matches[1], '\'"');
+        $this->templatePath = trim($regex->matches[2], '\'"');
 
         parent::__construct($tokens, $markup);
     }
@@ -98,8 +108,8 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
     {
         // read the source of the template and create a new sub document
         $source = Jaws_XTemplate::readTemplateFile(
-            basename($this->templateName),
-            pathinfo($this->templateName, PATHINFO_DIRNAME)
+            $this->templateName,
+            $this->templatePath
         );
 
         // tokens in this new document
