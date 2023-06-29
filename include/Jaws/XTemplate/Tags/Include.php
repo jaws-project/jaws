@@ -17,6 +17,11 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     private $templateName;
 
     /**
+     * @var string The base path of the template
+     */
+    private $templatePath;
+
+    /**
      * @var mixed The variable name passed to the child template
      */
     private $variableName;
@@ -53,6 +58,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     {
         $regex = new Jaws_Regexp(
             '/('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+)' .
+            '(\s+('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+))?'.
             '(\s+(with|for)\s+(' .
             Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') .
             '+))?(\s+(?:as)\s+(' .
@@ -67,9 +73,10 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
         }
 
         $this->templateName = trim($regex->matches[1], '\'"');
-        $this->variableName = isset($regex->matches[4])? $regex->matches[4] : null;
-        $this->aliasName    = isset($regex->matches[6])? $regex->matches[6] : null;
-        $this->collection   = isset($regex->matches[3])? ($regex->matches[3] == 'for') : null;
+        $this->templatePath = trim($regex->matches[2], '\'"');
+        $this->variableName = isset($regex->matches[5])? $regex->matches[5] : null;
+        $this->aliasName    = isset($regex->matches[7])? $regex->matches[7] : null;
+        $this->collection   = isset($regex->matches[4])? ($regex->matches[4] == 'for') : null;
 
         $this->extractAttributes($markup);
 
@@ -87,8 +94,8 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     {
         // read the source of the template and create a new sub document
         $source = Jaws_XTemplate::readTemplateFile(
-            basename($this->templateName),
-            pathinfo($this->templateName, PATHINFO_DIRNAME)
+            $this->templateName,
+            $this->templatePath
         );
 
         /*
