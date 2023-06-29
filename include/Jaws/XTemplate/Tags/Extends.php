@@ -42,8 +42,10 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
     public function __construct(array &$tokens, $markup)
     {
         $regex = new Jaws_Regexp(
-            '/('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+)' .
-            '(\s+('.Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT').'+))?/'
+            '/' .
+            '(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '+)' .
+            '(?:\s+path\s+(' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '+))?'.
+            '/'
         );
 
         if (!$regex->match($markup)) {
@@ -53,7 +55,9 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
         }
 
         $this->templateName = trim($regex->matches[1], '\'"');
-        $this->templatePath = trim($regex->matches[2], '\'"');
+        if (isset($regex->matches[2]) && $regex->matches[2] !== '') {
+            $this->templatePath = trim($regex->matches[2], '\'"');
+        }
 
         parent::__construct($tokens, $markup);
     }
@@ -204,8 +208,8 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
         }
 
         $source = Jaws_XTemplate::readTemplateFile(
-            basename($this->templateName),
-            pathinfo($this->templateName, PATHINFO_DIRNAME)
+            $this->templateName,
+            $this->templatePath
         );
         if ($this->app->cache->exists(Jaws_Cache::key($source)) &&
             $this->hash === Jaws_Cache::key($source)
