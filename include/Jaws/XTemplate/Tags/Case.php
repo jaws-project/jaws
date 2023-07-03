@@ -144,7 +144,6 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
                     break;
                 }
             }
-
         }
 
         if ($runElseBlock) {
