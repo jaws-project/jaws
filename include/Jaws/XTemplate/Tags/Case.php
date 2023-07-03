@@ -87,7 +87,7 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
         switch ($tag) {
             case 'when':
                 // push the current nodelist onto the stack and prepare for a new one
-                if ($whenSyntaxRegexp->match($params)) {
+                if ($whenSyntaxRegexp->matchAll($params)) {
                     $this->pushNodelist();
                     $this->right = $whenSyntaxRegexp->matches[0];
                     $this->nodelist = array();
@@ -132,15 +132,19 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
         $runElseBlock = true;
 
         foreach ($this->nodelists as $data) {
-            list($right, $nodelist) = $data;
+            list($rights, $nodelist) = $data;
 
-            if ($this->equalVariables($this->left, $right, $context)) {
-                $runElseBlock = false;
+            foreach ($rights as $right) {
+                if ($this->equalVariables($this->left, $right, $context)) {
+                    $runElseBlock = false;
 
-                $context->push();
-                $output .= $this->renderAll($nodelist, $context);
-                $context->pop();
+                    $context->push();
+                    $output .= $this->renderAll($nodelist, $context);
+                    $context->pop();
+                    break;
+                }
             }
+
         }
 
         if ($runElseBlock) {
