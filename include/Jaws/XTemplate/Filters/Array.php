@@ -195,7 +195,7 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
                         $elem = $elem[$key];
                     }
                 }
-                if (is_null($val)? !empty($elem) : ($elem == $val)) {
+                if (is_null($val)? !empty($elem) : (is_array($val)? in_array($elem, $val) : $elem == $val)) {
                     return true;
                 }
 
@@ -265,6 +265,30 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
         }
 
         return array_unique($input);
+    }
+
+    /**
+     * Exchanges all keys with their associated values in an array
+     *
+     * @param array|\Traversable $input
+     *
+     * @return array
+     */
+    public static function flip($input, $safe = false)
+    {
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+
+        if ($safe) {
+            return array_reduce(array_keys($input), function ($carry, $key) use (&$input) {
+                $carry[$input[$key]] = $carry[$input[$key]] ?? [];
+                $carry[$input[$key]][] = $key;
+                return $carry;
+            }, []);
+        } else {
+            return array_flip($input);
+        }
     }
 
 }
