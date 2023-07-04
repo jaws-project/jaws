@@ -158,6 +158,8 @@ class Jaws_XTemplate_Parser
                     '|(?:[^\s,\|\'"]|' .
                     self::get('QUOTED_STRING') .
                     ')+)';
+            case 'BRACKETED_FRAGMENT':
+                return '(?:\[[^\]]*\])';
             case 'TAG_ATTRIBUTES':
                 return '/(\w+)\s*\:\s*(' .
                     self::get('QUOTED_FRAGMENT') .

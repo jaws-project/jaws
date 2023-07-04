@@ -266,6 +266,14 @@ class Jaws_XTemplate_Context
             return $matches[1];
         }
 
+        if (preg_match('/^\[(.*)\]$/', $key, $matches)) {
+            $array = array_map('trim', explode(',', $matches[1]));
+            foreach ($array as $index => $expr) {
+                $array[$index] = $this->resolve($expr);
+            }
+            return $array;
+        }
+
         if (preg_match('/^(-?\d+)$/', $key, $matches)) {
             return (int)$matches[1];
         }
