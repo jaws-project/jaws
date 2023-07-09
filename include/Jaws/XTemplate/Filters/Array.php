@@ -190,7 +190,11 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
                 // check key exist in sub-dimensions
                 if (!is_null($key)) {
                     $keys = explode('.', $key);
-                    foreach ($keys as $key) {
+                    foreach ($keys as $level => $key) {
+                        if ($key === '') {
+                            return !empty(self::filter($elem, implode('.', array_slice($keys, $level + 1)), $val, $logic));
+                        }
+
                         if (!array_key_exists($key, $elem)) {
                             return false;
                         }
@@ -291,6 +295,27 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
         } else {
             return array_flip($input);
         }
+    }
+
+    /**
+     *  Counts values of an array
+     *
+     * @param array|\Traversable $input
+     * @param string $property use this property of an array element
+     *
+     * @return array
+     */
+    public static function count_values($input, $property = null)
+    {
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+        if (!is_array($input)) {
+            return $input;
+        }
+
+        $array_counts = array_count_values($input);
+        return is_null($property)? $array_counts : (array_key_exists($property, $array_counts)? $array_counts[$property] : 0);
     }
 
 }
