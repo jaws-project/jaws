@@ -136,7 +136,7 @@ function change_lang_option()
         $('#btn_save').css('visibility', 'visible');
         $('#btn_cancel').css('visibility', 'visible');
         $('#lang_strings').html(
-            LanguagesAjax.callSync('GetLangDataUI', [$('#component').val(), $('#lang').val()])
+            LanguagesAjax.callAsync('GetLangDataUI', [$('#component').val(), $('#lang').val()], false, {'async': false})
         );
         filterTranslated();
     }
