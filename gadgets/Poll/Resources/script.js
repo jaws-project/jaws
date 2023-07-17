@@ -163,7 +163,7 @@ function editPoll(element, pid)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var pollInfo = PollAjax.callAsync('GetPoll', selectedPoll, false, {'async': false});
+    var pollInfo = PollAjax.call('GetPoll', selectedPoll, false, {'async': false});
 
     $('#title').val(pollInfo['title'].defilter());
     $('#gid').val(pollInfo['group']);
@@ -189,14 +189,14 @@ function editPollAnswers(element, pid)
     selectDataGridRow(element.parentNode.parentNode);
 
     if (cachePollAnswersForm == null) {
-        cachePollAnswersForm = PollAjax.callAsync('PollAnswersUI', {}, false, {'async': false});
+        cachePollAnswersForm = PollAjax.call('PollAnswersUI', {}, false, {'async': false});
     }
     currentAction = 'PollAnswers';
 
     selectedPoll = pid;
     $('#legend_title').html(Jaws.gadgets.Poll.defines.editAnswers_title);
     $('#p_work_area').html(cachePollAnswersForm);
-    var answersData = PollAjax.callAsync('GetPollAnswers', selectedPoll, false, {'async': false});
+    var answersData = PollAjax.call('GetPollAnswers', selectedPoll, false, {'async': false});
     var answers  = answersData['Answers'];
     $('#title').val(answersData['title'].defilter());
 
@@ -225,7 +225,7 @@ function savePoll()
             answers[i]['id']    = box.options[i].value;
             answers[i]['title'] = box.options[i].text;
         }
-        PollAjax.callAsync('UpdatePollAnswers', [selectedPoll, answers]);
+        PollAjax.call('UpdatePollAnswers', [selectedPoll, answers]);
     } else {
         if (!$('#title').val()) {
             alert(Jaws.gadgets.Poll.defines.incompletePollsFields);
@@ -233,7 +233,7 @@ function savePoll()
         }
 
         if (selectedPoll == null) {
-            PollAjax.callAsync(
+            PollAjax.call(
                 'InsertPoll', [
                     $('#title').val(),
                     $('#gid').val(),
@@ -246,7 +246,7 @@ function savePoll()
                 ]
             );
         } else {
-            PollAjax.callAsync(
+            PollAjax.call(
                 'UpdatePoll', [
                     selectedPoll,
                     $('#title').val(),
@@ -271,7 +271,7 @@ function deletePoll(element, pid)
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
     if (confirm(Jaws.gadgets.Poll.defines.confirmPollDelete)) {
-        PollAjax.callAsync('DeletePoll', pid);
+        PollAjax.call('DeletePoll', pid);
     }
     deselectDataGridRow();
 }
@@ -389,7 +389,7 @@ function editPollGroup(element, gid)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var groupInfo = PollAjax.callAsync('GetPollGroup', selectedPollGroup, false, {'async': false});
+    var groupInfo = PollAjax.call('GetPollGroup', selectedPollGroup, false, {'async': false});
 
     $('#gid').val(groupInfo['id']);
     $('#title').val(groupInfo['title'].defilter());
@@ -408,7 +408,7 @@ function editPollGroupPolls(element, gid)
     selectDataGridRow(element.parentNode.parentNode);
 
     if (cachePollGroupPollsForm == null) {
-        cachePollGroupPollsForm = PollAjax.callAsync('PollGroupPollsUI', {}, false, {'async': false});
+        cachePollGroupPollsForm = PollAjax.call('PollGroupPollsUI', {}, false, {'async': false});
     }
 
     currentAction = 'PollGroupPolls';
@@ -416,7 +416,7 @@ function editPollGroupPolls(element, gid)
     $('#legend_title').html(Jaws.gadgets.Poll.defines.editPollGroupPolls_title);
     $('#pg_work_area').html(cachePollGroupPollsForm);
 
-    var pollsData = PollAjax.callAsync('GetPollGroupPolls', selectedPollGroup, false, {'async': false});
+    var pollsData = PollAjax.call('GetPollGroupPolls', selectedPollGroup, false, {'async': false});
     var pollsList  = pollsData['Polls'];
     $('#title').val(pollsData['title']);
     if ($('#pg_polls_combo').length) {
@@ -448,7 +448,7 @@ function savePollGroup()
                     counter++;
                 }
             }
-            PollAjax.callAsync('AddPollsToPollGroup', [selectedPollGroup, keys]);
+            PollAjax.call('AddPollsToPollGroup', [selectedPollGroup, keys]);
 
         }
     } else {
@@ -458,14 +458,14 @@ function savePollGroup()
         }
 
         if (selectedPollGroup == null) {
-            PollAjax.callAsync(
+            PollAjax.call(
                 'InsertPollGroup', [
                     $('#title').val(),
                     $('#published').val()
                 ]
             );
         } else {
-            PollAjax.callAsync(
+            PollAjax.call(
                 'UpdatePollGroup', [
                     selectedPollGroup,
                     $('#title').val(),
@@ -484,7 +484,7 @@ function deletePollGroup(element, gid)
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
     if (confirm(Jaws.gadgets.Poll.defines.confirmPollGroupDelete)) {
-        PollAjax.callAsync('DeletePollGroup', gid)
+        PollAjax.call('DeletePollGroup', gid)
     }
     deselectDataGridRow();
 }
@@ -496,7 +496,7 @@ function getGroupPolls(gid)
     $('#result_area').html('');
     $('#legend_title').html('');
     if (gid == 0) return;
-    var polls = PollAjax.callAsync('GetGroupPolls', gid, false, {'async': false});
+    var polls = PollAjax.call('GetGroupPolls', gid, false, {'async': false});
     for(var i = 0; i < polls.length; i++) {
         var op = new Option(polls[i]['title'], polls[i]['id']);
         if (i % 2 == 0) {
@@ -513,7 +513,7 @@ function showResult(pid)
 {
     var box = $('#grouppolls')[0];
     $('#legend_title').html(box.options[box.selectedIndex].text);
-    $('#result_area').html(PollAjax.callAsync('PollResultsUI', pid, false, {'async': false}));
+    $('#result_area').html(PollAjax.call('PollResultsUI', pid, false, {'async': false}));
 }
 
 $(document).ready(function() {
