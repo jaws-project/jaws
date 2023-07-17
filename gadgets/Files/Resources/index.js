@@ -248,7 +248,7 @@ function Jaws_Gadget_Files() { return {
      */
     displayReferenceFiles: function($tpl, $interface, $options = [])
     {
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'displayReferenceFiles',
             $interface,
             function(response, status) {
@@ -326,7 +326,7 @@ function Jaws_Gadget_Files() { return {
             return;
         }
 
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'loadReferenceFiles',
             {
                 'interface': $interface,
