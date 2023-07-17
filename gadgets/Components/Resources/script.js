@@ -107,8 +107,8 @@ var ComponentsCallback = {
 function init()
 {
     components = pluginsMode?
-        ComponentsAjax.callSync('GetPlugins'):
-        ComponentsAjax.callSync('GetGadgets');
+        ComponentsAjax.callAsync('GetPlugins', {}, false, {'async': false}):
+        ComponentsAjax.callAsync('GetGadgets', {}, false, {'async': false});
     buildComponentList();
     $('#tabs').find('li').on('click', switchTab);
     $('#components').find('h3').each(function(i) {
@@ -363,8 +363,8 @@ function componentInfo()
     var infoEl = $('#component_info').show();
     if (!infoEl.length) {
         $('#component_form').html(pluginsMode ?
-            ComponentsAjax.callSync('GetPluginInfo', selectedComponent):
-            ComponentsAjax.callSync('GetGadgetInfo', selectedComponent)
+            ComponentsAjax.callAsync('GetPluginInfo', selectedComponent, false, {'async': false}):
+            ComponentsAjax.callAsync('GetGadgetInfo', selectedComponent, false, {'async': false})
         );
     }
     $('#summary').hide();
@@ -380,7 +380,7 @@ function componentRegistry(reset)
 {
     if (!regCache) {
         var table = $('<table>'),
-            res = ComponentsAjax.callSync('GetRegistry', [selectedComponent, pluginsMode]),
+            res = ComponentsAjax.callAsync('GetRegistry', [selectedComponent, pluginsMode], false, {'async': false}),
             div = $('<div>').html(res.ui);
         $('#component_form').append(div.find('div'));
         $.each(res.data, function(name, value) {
@@ -424,7 +424,7 @@ function componentACL(reset)
 {
     if (!aclCache) {
         var table = $('<table>'),
-            res = ComponentsAjax.callSync('GetACL', [selectedComponent, pluginsMode]),
+            res = ComponentsAjax.callAsync('GetACL', [selectedComponent, pluginsMode], false, {'async': false}),
             div = $('<div>').html(res.ui);
         $('#component_form').append(div.find('div'));
         $.each(res.acls, function(i, acl) {
@@ -555,7 +555,7 @@ function pluginUsage(reset)
 {
     if (!usageCache) {
         var tbody = $('<tbody>'),
-            res = ComponentsAjax.callSync('GetPluginUsage', selectedComponent),
+            res = ComponentsAjax.callAsync('GetPluginUsage', selectedComponent, false, {'async': false}),
             div = $('<div>').html(res.ui);
         $('#component_form').append(div.first('div'));
         $.each(res.usage.gadgets, function(i, gadget) {
