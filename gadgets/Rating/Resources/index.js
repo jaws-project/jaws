@@ -10,7 +10,7 @@
  */
 function postRating(data, rate)
 {
-    RatingAjax.callAsync('PostRating', {
+    RatingAjax.call('PostRating', {
         'requested_gadget': data.gadget,
         'requested_action': data.action,
         'reference'       : data.reference,
