@@ -36,7 +36,7 @@ var WeatherCallback = {
 function editRegion(id)
 {
     selectedRegion = id;
-    WeatherAjax.callAsync('GetRegion', {'id': selectedRegion}, function (geoPos) {
+    WeatherAjax.call('GetRegion', {'id': selectedRegion}, function (geoPos) {
         if (geoPos) {
             $('form#region #title').val(geoPos['title'].defilter());
             $('form#region #fast_url').val(geoPos['fast_url']);
@@ -57,7 +57,7 @@ function editRegion(id)
 function deleteRegion(id)
 {
     if (confirm(Jaws.gadgets.Weather.defines.confirmDelete)) {
-        WeatherAjax.callAsync('DeleteUserRegion', {'id': id});
+        WeatherAjax.call('DeleteUserRegion', {'id': id});
     }
 }
 
@@ -178,7 +178,7 @@ function zoomMap(level)
  */
 function updateRegion() {
     if (selectedRegion != null) {
-        WeatherAjax.callAsync(
+        WeatherAjax.call(
             'UpdateRegion', {
                 'data': $.unserialize(
                     $('form#region input,form#region select,form#region textarea').serialize()
@@ -187,7 +187,7 @@ function updateRegion() {
             }
         );
     } else {
-        WeatherAjax.callAsync(
+        WeatherAjax.call(
             'InsertRegion', {
                 'data': $.unserialize(
                     $('#did, form#region input,form#region select,form#region textarea').serialize()
@@ -238,7 +238,7 @@ function regionsDataSource(options, callback) {
         'searchBy': options.search || ''
     };
 
-    WeatherAjax.callAsync('GetUserRegions', options, function (response, status, callOptions) {
+    WeatherAjax.call('GetUserRegions', options, function (response, status, callOptions) {
         if (response.type == 'alert-success') {
             callOptions.showMessage = false;
             var items = response.data.records;

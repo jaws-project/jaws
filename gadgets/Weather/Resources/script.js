@@ -81,7 +81,7 @@ function editRegion(rowElement, id)
     $('#weather_datagrid')[0].selectRow(rowElement);
     selectedRow = rowElement;
 
-    var geoPos = WeatherAjax.callAsync('GetRegion', id, false, {'async': false});
+    var geoPos = WeatherAjax.call('GetRegion', id, false, {'async': false});
     $('#id').val(geoPos['id']);
     $('#title').val(geoPos['title'].defilter());
     $('#fast_url').val(geoPos['fast_url']);
@@ -105,7 +105,7 @@ function updateRegion()
     }
 
     if ($('#id').val() == 0) {
-        WeatherAjax.callAsync(
+        WeatherAjax.call(
             'InsertRegion', [
                 $('#title').val(),
                 $('#fast_url').val(),
@@ -115,7 +115,7 @@ function updateRegion()
             ]
         );
     } else {
-        WeatherAjax.callAsync(
+        WeatherAjax.call(
             'UpdateRegion', [
                 $('#id').val(),
                 $('#title').val(),
@@ -136,7 +136,7 @@ function deleteRegion(rowElement, id)
     stopAction();
     $('#weather_datagrid')[0].selectRow(rowElement);
     if (confirm(Jaws.gadgets.Weather.defines.confirmDelete)) {
-        WeatherAjax.callAsync('DeleteRegion', id);
+        WeatherAjax.call('DeleteRegion', id);
     } else {
         $('#weather_datagrid')[0].unselectRow(rowElement);
         selectedRow = null;
@@ -148,7 +148,7 @@ function deleteRegion(rowElement, id)
  */
 function updateProperties()
 {
-    WeatherAjax.callAsync(
+    WeatherAjax.call(
         'UpdateProperties', [
             $('#unit').val(),
             $('#update_period').val(),
