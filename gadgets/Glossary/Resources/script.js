@@ -174,7 +174,7 @@ function edit(id)
     previousID  = id;
     currentMode = 'edit';
     loading_message = Jaws.gadgets.Glossary.defines.retrievingMessage;
-    var termData = GlossaryAjax.callSync('GetTerm', id);
+    var termData = GlossaryAjax.callAsync('GetTerm', id, false, {'async': false});
     fillEditorEntries(termData);
     editTitle  = termData['term'];
     switchTab('edit', termData['term']);
@@ -256,7 +256,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = Jaws.gadgets.Glossary.defines.retrievingMessage;
-            var termData = GlossaryAjax.callSync('GetTerm', previousID);
+            var termData = GlossaryAjax.callAsync('GetTerm', previousID, false, {'async': false});
             fillEditorEntries(termData);
             b.disabled = false;
             combo.disabled = false;
