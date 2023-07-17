@@ -81,7 +81,7 @@ function editRegion(rowElement, id)
     $('#weather_datagrid')[0].selectRow(rowElement);
     selectedRow = rowElement;
 
-    var geoPos = WeatherAjax.callSync('GetRegion', id);
+    var geoPos = WeatherAjax.callAsync('GetRegion', id, false, {'async': false});
     $('#id').val(geoPos['id']);
     $('#title').val(geoPos['title'].defilter());
     $('#fast_url').val(geoPos['fast_url']);

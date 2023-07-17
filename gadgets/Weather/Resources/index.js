@@ -36,7 +36,7 @@ var WeatherCallback = {
 function editRegion(id)
 {
     selectedRegion = id;
-    WeatherAjax.callSync('GetRegion', {'id': selectedRegion}, function (geoPos) {
+    WeatherAjax.callAsync('GetRegion', {'id': selectedRegion}, function (geoPos) {
         if (geoPos) {
             $('form#region #title').val(geoPos['title'].defilter());
             $('form#region #fast_url').val(geoPos['fast_url']);
@@ -48,7 +48,7 @@ function editRegion(id)
             $('#regionModalLabel').html(Jaws.gadgets.Weather.defines.lbl_geo_position);
             $('#regionModal').modal('show');
         }
-    });
+    }, {'async': false});
 }
 
 /**
