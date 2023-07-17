@@ -428,7 +428,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
     };
 
     /**
-     * Performs asynchronous Ajax request
+     * Performs Ajax request
      *
      * @param   string      action      Gadget action name
      * @param   object      data        Parameters passed to the function
@@ -456,99 +456,32 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.done = done? $.proxy(done, this.callbackObject) : undefined;
         // url
         options.url  = baseScript + '?reqGadget=' + gadget + '&reqAction=' + action;
-        if (callOptions.hasOwnProperty('restype')) {
-            options.url+= '&restype=' + callOptions.restype;
-        } else {
-            options.url+= '&restype=json';
+        if (!callOptions.hasOwnProperty('restype')) {
+            callOptions.restype = 'json';
         }
+        options.url+= '&restype=' + callOptions.restype;
 
         options.type = 'POST';
-        options.async  = true;
-        options.timeout = 10 * 60 * 1000; /* 10 minutes */
-        options.action = action;
-        options.callOptions = callOptions;
-        // prevent auto redirect, we handle it manually if required
-        options.headers = {'Auto-Redirects': '0'};
-
-        if (progress) {
-            options.xhr = function() {
-                let xhr = $.ajaxSettings.xhr();
-                xhr.upload.addEventListener(
-                    'progress',
-                    function(evt) {
-                        if (evt.lengthComputable) {
-                            $.proxy(progress, this.callbackObject, evt.loaded, evt.total);
-                        }
-                    },
-                    false
-                );
-                return xhr;
-            }
-        }
-
-        if (data instanceof FormData) {
-            options.dataType = 'text';
-            options.processData = false;
-            options.contentType = false;
-            options.data = data;
-        } else {
-            options.contentType = 'application/json; charset=utf-8';
-            options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
-        }
-
-        options.beforeSend = this.onSend.bind(this, options);
-        options.success = this.onSuccess.bind(this, options);
-        options.error = this.onError.bind(this, options);
-        options.complete = this.onComplete.bind(this, options);
-        $.ajax(options);
-    };
-
-    /**
-     * Performs synchronous Ajax request
-     *
-     * @param   string      action      Gadget action name
-     * @param   object      data        Parameters passed to the function
-     * @param   function    done        Callback function
-     * @param   object      callOptions
-     * @param   function    progress    Progress callback function
-     * @return  void
-     */
-    this.callSync = function (action, data, done, callOptions, progress) {
-        var options = {};
-        var gadget, baseScript;
-
-        callOptions = callOptions || {};
-        // response message/loading container
-        if (!callOptions.hasOwnProperty('message_container')) {
-            var rc_gadget, rc_action;
-            rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
-            rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
-            callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
-        }
-
-        gadget = callOptions.hasOwnProperty('gadget')? callOptions.gadget : this.gadget;
-        baseScript = callOptions.hasOwnProperty('baseScript')? callOptions.baseScript : this.baseScript;
-
-        options.done = done? $.proxy(done, this.callbackObject) : undefined;
-        // url
-        options.url  = baseScript + '?reqGadget=' + gadget + '&reqAction=' + action;
-        if (callOptions.hasOwnProperty('restype')) {
-            options.url+= '&restype=' + callOptions.restype;
-        } else {
-            options.url+= '&restype=json';
-        }
-
-        options.type = 'POST';
-        options.async  = false;
+        options.async  = callOptions.hasOwnProperty('async')? callOptions.async : true;
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.action = action;
         options.callOptions = callOptions;
         // prevent auto redirect, we handle it manually if required
         options.headers = {'Auto-Redirects': '0'}
 
-        if (progress) {
-            options.xhr = function() {
-                let xhr = $.ajaxSettings.xhr();
+        options.xhr = function() {
+            let xhr = $.ajaxSettings.xhr();
+            switch (callOptions.restype) {
+                case 'json':
+                case 'text':
+                    xhr.responseType = '';
+                    break;
+
+                default:
+                    xhr.responseType = 'blob';
+            }
+
+            if (progress) {
                 xhr.upload.addEventListener(
                     'progress',
                     function(evt) {
@@ -558,8 +491,9 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
                     },
                     false
                 );
-                return xhr;
             }
+
+            return xhr;
         }
 
         if (data instanceof FormData) {
@@ -575,22 +509,16 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
-        //options.complete = this.onComplete.bind(this, options);
-        let result = $.ajax(options);
-        let response = eval('(' + result.responseText + ')');
-        // hide loading
-        this.callbackObject.gadget.message.loading(false, callOptions.message_container);
-
-        // response message
-        if (callOptions.hasOwnProperty('showMessage')) {
-            if (callOptions.showMessage) {
-                this.callbackObject.gadget.message.show(response, callOptions.message_container);
-            }
-        } else if (this.defaultOptions.showMessage) {
-            this.callbackObject.gadget.message.show(response, callOptions.message_container);
+        if (options.async) {
+            options.complete = this.onComplete.bind(this, options);
         }
+        // send ajax request
+        let result = $.ajax(options);
 
-        return response;
+        // if sync
+        if (!options.async) {
+            return this.onComplete.call(this, options, result, '');
+        }
     };
 
     /**
@@ -663,6 +591,23 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
         // ----
+        let disposition = jqXHR.getResponseHeader('content-disposition');
+        if (disposition) {
+            let filename = '';
+            let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            let matches = filenameRegex.exec(disposition);
+            if (matches != null && matches[1]) {
+                filename = matches[1].replace(/['"]/g, '');
+            }
+            let url = URL.createObjectURL(data); 
+            let link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.append(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        }
     };
 
     this.onError = function (reqOptions, jqXHR, textStatus, errorThrown) {
@@ -673,7 +618,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         // hide loading
         this.callbackObject.gadget.message.loading(false, reqOptions.callOptions.message_container);
 
-        response = eval('(' + jqXHR.responseText + ')');
+        let response = eval('(' + jqXHR.responseText + ')');
         // ajax redirect
         if ([301, 302].indexOf(jqXHR.status) != -1) {
             window.location = response;
@@ -701,6 +646,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         } else if (this.defaultOptions.showMessage) {
             this.callbackObject.gadget.message.show(response, reqOptions.callOptions.message_container);
         }
+
+        return response;
     };
 
 }
@@ -1199,9 +1146,9 @@ var JawsDataGrid = {
         var firstValues = $('#' + this.name)[0].getFirstPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callSync('getData', [firstValues, $('#' + this.name)[0].id]);
+            result = objGadget.callAsync('getData', [firstValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callSync('getData', [firstValues, $('#' + this.name)[0].id]);
+            result = objGadget.ajax.callAsync('getData', [firstValues, $('#' + this.name)[0].id], false, {'async': false});
         }
         resetGrid(this.name, result);
         $('#' + this.name)[0].firstPage();
@@ -1215,9 +1162,9 @@ var JawsDataGrid = {
         var previousValues = $('#' + this.name)[0].getPreviousPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callSync('getData', [previousValues, $('#' + this.name)[0].id]);
+            result = objGadget.callAsync('getData', [previousValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callSync('getData', [previousValues, $('#' + this.name)[0].id]);
+            result = objGadget.ajax.callAsync('getData', [previousValues, $('#' + this.name)[0].id], false, {'async': false});
         }
 
         resetGrid(this.name, result);
@@ -1232,9 +1179,9 @@ var JawsDataGrid = {
         var nextValues     = $('#' + this.name)[0].getNextPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callSync('getData', [nextValues, $('#' + this.name)[0].id]);
+            result = objGadget.callAsync('getData', [nextValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callSync('getData', [nextValues, $('#' + this.name)[0].id]);
+            result = objGadget.ajax.callAsync('getData', [nextValues, $('#' + this.name)[0].id], false, {'async': false});
         }
         
         resetGrid(this.name, result);
@@ -1249,9 +1196,9 @@ var JawsDataGrid = {
         var lastValues = $('#' + this.name)[0].getLastPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callSync('getData', [lastValues, $('#' + this.name)[0].id]);
+            result = objGadget.callAsync('getData', [lastValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callSync('getData', [lastValues, $('#' + this.name)[0].id]);
+            result = objGadget.ajax.callAsync('getData', [lastValues, $('#' + this.name)[0].id], false, {'async': false});
         }
 
         resetGrid(this.name, result);
@@ -1266,9 +1213,9 @@ var JawsDataGrid = {
         var currentPage = $('#' + this.name)[0].getCurrentPage();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callSync('getData', [currentPage, $('#' + this.name)[0].id]);
+            result = objGadget.callAsync('getData', [currentPage, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callSync('getData', [currentPage, $('#' + this.name)[0].id]);
+            result = objGadget.ajax.callAsync('getData', [currentPage, $('#' + this.name)[0].id], false, {'async': false});
         }
 
         resetGrid(this.name, result);
