@@ -128,7 +128,7 @@ function parseText(form)
     var title   = form['title'].value;
     var content = $('#content').val();
 
-    content = StaticPageAjax.callSync('ParseText', content);
+    content = StaticPageAjax.callAsync('ParseText', content, false, {'async': false});
     $('#preview').css('display', 'table');
 
     $('#previewTitle').html(title);
@@ -143,7 +143,7 @@ function deletePage(id, redirect)
     var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = StaticPageAjax.callSync('DeletePage', id);
+            var response = StaticPageAjax.callAsync('DeletePage', id, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 window.location = StaticPageAjax.baseScript + '?reqGadget=StaticPage';
             }
@@ -161,7 +161,7 @@ function deleteTranslation(id, redirect)
     var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = StaticPageAjax.callSync('DeleteTranslation', id);
+            var response = StaticPageAjax.callAsync('DeleteTranslation', id, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 window.location = StaticPageAjax.baseScript + '?reqGadget=StaticPage';
             }
@@ -207,22 +207,24 @@ function searchPage()
  */
 function getPages(name, offset, reset)
 {
-    var result = StaticPageAjax.callSync(
+    var result = StaticPageAjax.callAsync(
         'SearchPages', [
             $('#group').val(),
             $('#status').val(),
             $('#search').val(),
             $('#orderby').val(),
             offset
-        ]
+        ],
+        false, {'async': false}
     );
     if (reset) {
-        var total = StaticPageAjax.callSync(
+        var total = StaticPageAjax.callAsync(
             'SizeOfSearch', [
                 $('#group').val(),
                 $('#status').val(),
                 $('#search').val()
-            ]
+            ],
+            false, {'async': false}
         );
     }
     resetGrid(name, result, total);
@@ -233,9 +235,9 @@ function getPages(name, offset, reset)
  */
 function getPagesGroups(name, offset, reset)
 {
-    var groups = StaticPageAjax.callSync('GetGroupsGrid', offset);
+    var groups = StaticPageAjax.callAsync('GetGroupsGrid', offset, false, {'async': false});
     if (reset) {
-        var total = StaticPageAjax.callSync('GetGroupsCount');
+        var total = StaticPageAjax.callAsync('GetGroupsCount', {}, false, {'async': false});
     }
 
     resetGrid(name, groups, total);
@@ -249,7 +251,7 @@ function editGroup(rowElement, gid)
     selectedGroup = gid;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('#legend_title').html(Jaws.gadgets.StaticPage.defines.edit_group_title);
-    var group = StaticPageAjax.callSync('GetGroup', selectedGroup);
+    var group = StaticPageAjax.callAsync('GetGroup', selectedGroup, false, {'async': false});
     $('#title').val(group['title'].defilter())[0].focus();
     $('#meta_keys').val(group['meta_keywords'].defilter());
     $('#meta_desc').val(group['meta_description'].defilter());
