@@ -54,7 +54,7 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
         }
         columns = Object.values(columns);
 
-        this.ajax.callAsync(
+        this.ajax.call(
             'GetMessages', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
@@ -168,7 +168,7 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
      * View message details
      */
     viewMessage: function (id) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'GetMessage',
             {'recipient_id': id},
             function (response, status, callOptions) {
@@ -200,7 +200,7 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
             return false;
         }
 
-        this.ajax.callAsync(
+        this.ajax.call(
             'DeleteMessage',
             {'recipient_id': id, 'delete_similar': deleteSimilar},
             function (response, status, callOptions) {
@@ -232,7 +232,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
      *
      */
     getNotificationDrivers: function (name, offset, reset) {
-        var result = this.ajax.callAsync('GetNotificationDrivers', {}, false, {'async': false});
+        var result = this.ajax.call('GetNotificationDrivers', {}, false, {'async': false});
         resetGrid(name, result);
     },
 
@@ -240,7 +240,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
      * Install a notification driver
      */
     installDriver: function (dName) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'InstallNotificationDriver', {'driver': dName},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -253,7 +253,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
      * Uninstall a notification driver
      */
     uninstallDriver: function (dName) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'UninstallNotificationDriver', {'driver': dName},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -271,7 +271,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
         $('#title').val(driverInfo.title.defilter());
         $('#enabled').val(driverInfo.enabled ? 1 : 0);
 
-        this.ajax.callAsync(
+        this.ajax.call(
             'GetNotificationDriverSettings',
             {'id': driverInfo.id},
             function (response, status, callOptions) {
@@ -308,7 +308,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
 
         var data = $.unserialize($('#driver-form').serialize());
         var settings = $.unserialize($('#driver-settings-form').serialize());
-        this.ajax.callAsync(
+        this.ajax.call(
             'UpdateNotificationDriver', {
                 'id': this.selectedDriver,
                 'data': data,
@@ -344,7 +344,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
         }
         columns = Object.values(columns);
 
-        this.ajax.callAsync(
+        this.ajax.call(
             'GetNotificationDrivers', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
@@ -466,7 +466,7 @@ function Jaws_Gadget_Notification_Action_Settings() { return {
      * save gadget settings
      */
     saveSettings: function(form) {
-    this.ajax.callAsync(
+    this.ajax.call(
         'SaveSettings',
         {
             'gadgets_drivers': $.unserialize($('#gadgets_drivers select').serialize())
