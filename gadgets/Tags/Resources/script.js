@@ -47,7 +47,7 @@ var TagsCallback = {
  */
 function getTagsDataGrid(name, offset, reset)
 {
-    var tags = TagsAjax.callAsync(
+    var tags = TagsAjax.call(
         'SearchTags',
         {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val(), 'offset': offset},
         false, {'async': false}
@@ -57,7 +57,7 @@ function getTagsDataGrid(name, offset, reset)
         $('#' + name)[0].setCurrentPage(0);
         stopTagAction();
 
-        var total = TagsAjax.callAsync(
+        var total = TagsAjax.call(
             'SizeOfTagsSearch',
             {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val()},
             false, {'async': false}
@@ -95,7 +95,7 @@ function stopTagAction()
 function editTag(rowElement, id)
 {
     selectGridRow('tags_datagrid', rowElement.parentNode.parentNode);
-    var tag = TagsAjax.callAsync('GetTag', id, false, {'async': false});
+    var tag = TagsAjax.call('GetTag', id, false, {'async': false});
     $('#id').val(id);
     $('#name').val(tag['name']);
     $('#title').val(tag['title']);
@@ -117,7 +117,7 @@ function updateTag()
     }
 
     if ($('#id').val() == 0) {
-        TagsAjax.callAsync(
+        TagsAjax.call(
             'AddTag', {
                 'name':$('#name').val(),
                 'title':$('#title').val(),
@@ -127,7 +127,7 @@ function updateTag()
             }
         );
     } else {
-        TagsAjax.callAsync(
+        TagsAjax.call(
             'UpdateTag', {
                 'id': $('#id').val(),
                 'name':$('#name').val(),
@@ -148,7 +148,7 @@ function deleteTag(id)
 {
     stopTagAction();
     if (confirm(Jaws.gadgets.Tags.defines.confirmTagDelete)) {
-        TagsAjax.callAsync('DeleteTags', new Array(id));
+        TagsAjax.call('DeleteTags', new Array(id));
     }
     unselectGridRow('tags_datagrid');
 }
@@ -167,7 +167,7 @@ function tagsDGAction(combo)
     if (combo.val() == 'delete') {
         var confirmation = confirm(Jaws.gadgets.Tags.defines.confirmTagDelete);
         if (confirmation) {
-            TagsAjax.callAsync('DeleteTags', rows);
+            TagsAjax.call('DeleteTags', rows);
         }
     } else if (combo.val() == 'merge') {
         if(rows.length<2) {
@@ -178,7 +178,7 @@ function tagsDGAction(combo)
         if (newName.trim() == "") {
             return;
         }
-        TagsAjax.callAsync('MergeTags', [rows, newName]);
+        TagsAjax.call('MergeTags', [rows, newName]);
     }
 }
 
@@ -187,7 +187,7 @@ function tagsDGAction(combo)
  */
 function changeGadget(gadget)
 {
-    var actions = TagsAjax.callAsync('GetGadgetActions', gadget, false, {'async': false});
+    var actions = TagsAjax.call('GetGadgetActions', gadget, false, {'async': false});
     $('#actions').empty();
 
     var newoption = new Option("", "");
@@ -212,7 +212,7 @@ function searchTags()
  */
 function saveSettings()
 {
-    TagsAjax.callAsync('SaveSettings', $('#tag_results_limit').val());
+    TagsAjax.call('SaveSettings', $('#tag_results_limit').val());
 }
 
 $(document).ready(function() {
