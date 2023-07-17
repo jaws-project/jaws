@@ -85,14 +85,15 @@ function saveMenus()
         }
         cacheMenuForm = null;
         if (selectedGroup == null) {
-            var response = MenuAjax.callSync(
+            var response = MenuAjax.callAsync(
                 'InsertGroup', [
                     $('#title').val(),
                     $('#home').val(),
                     $('#title_view').val(),
                     $('#view_type').val(),
                     $('#published').val()
-                ]
+                ],
+                false, {'async': false}
             );
             if (response['type'] == 'alert-success') {
                 var gid = response['data'];
@@ -117,7 +118,7 @@ function saveMenus()
             return false;
         }
         if (selectedMenu == null) {
-            var response = MenuAjax.callSync(
+            var response = MenuAjax.callAsync(
                 'InsertMenu', [
                     $('#pid').val(),
                     $('#gid').val(),
@@ -132,7 +133,8 @@ function saveMenus()
                     $('#order').val(),
                     $('#status').val(),
                     $('#imagename').val()
-                ]
+                ],
+                false, {'async': false}
             );
             if (response['type'] == 'alert-success') {
                 var mid = response['text'].substr(0, response['text'].indexOf('%%'));
@@ -141,7 +143,7 @@ function saveMenus()
                 stopAction();
             }
         } else {
-            var response = MenuAjax.callSync(
+            var response = MenuAjax.callAsync(
                 'UpdateMenu', [
                     $('#mid').val(),
                     $('#pid').val(),
@@ -157,7 +159,8 @@ function saveMenus()
                     $('#order').val(),
                     $('#status').val(),
                     $('#imagename').val()
-                ]
+                ],
+                false, {'async': false}
             );
             if (response['type'] == 'alert-success') {
                 $('#menu_'+$('#mid').val()).find('a').first().html($('#title').val());
@@ -217,7 +220,7 @@ function setOrderCombo(gid, pid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = MenuAjax.callSync('GetGroupUI');
+        cacheGroupForm = MenuAjax.callAsync('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
 
@@ -257,7 +260,7 @@ function mm_leave(eid)
 function addMenu(gid, pid)
 {
     if (cacheMenuForm == null) {
-        cacheMenuForm = MenuAjax.callSync('GetMenuUI');
+        cacheMenuForm = MenuAjax.callAsync('GetMenuUI', {}, false, {'async': false});
     }
 
     stopAction();
@@ -297,7 +300,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = MenuAjax.callSync('GetGroupUI');
+        cacheGroupForm = MenuAjax.callAsync('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
     selectedGroup = gid;
@@ -309,7 +312,7 @@ function editGroup(gid)
     $('#btn_add').css('display', 'none');
     $('#menus_edit').html(cacheGroupForm);  
 
-    var groupInfo = MenuAjax.callSync('GetGroups', selectedGroup);
+    var groupInfo = MenuAjax.callAsync('GetGroups', selectedGroup, false, {'async': false});
 
     $('#gid').val(groupInfo['id']);
     $('#title').val(groupInfo['title'].defilter());
@@ -326,7 +329,7 @@ function editMenu(mid)
 {
     if (mid == 0) return;
     if (cacheMenuForm == null) {
-        cacheMenuForm = MenuAjax.callSync('GetMenuUI');
+        cacheMenuForm = MenuAjax.callAsync('GetMenuUI', {}, false, {'async': false});
     }
     currentAction = 'Menus';
 
@@ -350,7 +353,7 @@ function editMenu(mid)
     $('#menu_'+mid).find('div').first().css('background-color', m_bg_color);
 
     selectedMenu = mid;
-    var menuInfo = MenuAjax.callSync('GetMenu', selectedMenu);
+    var menuInfo = MenuAjax.callAsync('GetMenu', selectedMenu, false, {'async': false});
     getParentMenus(menuInfo['gid'], mid);
 
     $('#mid').val(menuInfo['id']);
@@ -395,7 +398,7 @@ function delMenus()
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             cacheMenuForm = null;
-            var response = MenuAjax.callSync('DeleteGroup', gid);
+            var response = MenuAjax.callAsync('DeleteGroup', gid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#group_'+gid).remove();
             }
@@ -406,7 +409,7 @@ function delMenus()
         var msg = Jaws.gadgets.Menu.defines.confirmMenuDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('#menu_'+mid).find('a').first().html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = MenuAjax.callSync('DeleteMenu', mid);
+            var response = MenuAjax.callAsync('DeleteMenu', mid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#menu_'+mid).remove();
             }
@@ -419,7 +422,7 @@ function delMenus()
  * Get list of menu levels
  */
 function getParentMenus(gid, mid) {
-    var parents = MenuAjax.callSync('GetParentMenus', [gid, mid]);
+    var parents = MenuAjax.callAsync('GetParentMenus', [gid, mid], false, {'async': false});
     $('#pid').empty();
     $.each(parents, function(key, item) {
         $('#pid').append($('<option>').val(item['pid']).text(item['title']));
@@ -448,7 +451,7 @@ function getReferences(gadget)
         }
         return;
     }
-    var links = MenuAjax.callSync('GetPublicURList', gadget);
+    var links = MenuAjax.callAsync('GetPublicURList', gadget, false, {'async': false});
     cachedMenus[gadget] = new Array();
     $('#references').empty();
     $.each(links, function(i, link) {
