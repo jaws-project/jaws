@@ -38,7 +38,7 @@ function updateEmblem(id, el)
             url: inputs[1].value,
             published: inputs[2].checked
         };
-    EmblemsAjax.callAsync('UpdateEmblem', [id, data]);
+    EmblemsAjax.call('UpdateEmblem', [id, data]);
 }
 
 /**
@@ -47,7 +47,7 @@ function updateEmblem(id, el)
 function deleteEmblem(id)
 {
     if (confirm(Jaws.gadgets.Emblems.defines.confirmDelete)) {
-        EmblemsAjax.callAsync('DeleteEmblem', id);
+        EmblemsAjax.call('DeleteEmblem', id);
     }
 }
 
