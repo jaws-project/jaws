@@ -432,6 +432,19 @@ class Jaws_Request
         return true;
     }
 
+    /** Delete input data by key
+     *
+     * @param   string  $key        Key name
+     * @param   string  $method     Request method
+     * @return  bool    True
+     */
+    function delete($key, $method = '')
+    {
+        $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
+        unset($this->data[$method][$key]);
+        return true;
+    }
+
     /**
      * Get raw/untouched part of input data 
      *
