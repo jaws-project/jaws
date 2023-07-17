@@ -159,7 +159,7 @@ function editContact(element, id)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var contact = ContactAjax.callAsync('GetContact', id, false, {'async': false});
+    var contact = ContactAjax.call('GetContact', id, false, {'async': false});
     $('#id').val(contact['id']);
     $('#contact_ip').html(contact['ip']);
     $('#name').val(contact['name']);
@@ -198,14 +198,14 @@ function editReply(element, id)
     selectDataGridRow(element.parentNode.parentNode);
 
     if (cacheReplyForm == null) {
-        cacheReplyForm = ContactAjax.callAsync('ReplyUI', false, {'async': false});
+        cacheReplyForm = ContactAjax.call('ReplyUI', false, {'async': false});
     }
     currentAction = 'Reply';
 
     selectedContact = id;
     $('#legend_title').html(Jaws.gadgets.Contact.defines.contactReply_title);
     $('#c_work_area').html(cacheReplyForm);
-    var replyData = ContactAjax.callAsync('GetReply', selectedContact, false, {'async': false});
+    var replyData = ContactAjax.call('GetReply', selectedContact, false, {'async': false});
     $('#id').val(replyData['id']);
     $('#name').val(replyData['name']);
     $('#email').val(replyData['email']);
@@ -224,7 +224,7 @@ function editReply(element, id)
  */
 function updateContact(send_reply)
 {
-    ContactAjax.callAsync(
+    ContactAjax.call(
         'UpdateContact',
         Object.assign(
             $.unserialize($('#contact_ui input,#contact_ui select,#contact_ui textarea').serialize()),
@@ -242,7 +242,7 @@ function deleteContact(element, id)
     stopAction();
     selectDataGridRow($(element).parent().parent());
     if (confirm(Jaws.gadgets.Contact.defines.confirmContactDelete)) {
-        ContactAjax.callAsync('DeleteContact', id);
+        ContactAjax.call('DeleteContact', id);
     }
     unselectDataGridRow();
 }
@@ -253,10 +253,10 @@ function deleteContact(element, id)
  */
 function getContacts(name, offset, reset)
 {
-    var result = ContactAjax.callAsync('GetContacts', [$('#recipient_filter').val(), offset], false, {'async': false});
+    var result = ContactAjax.call('GetContacts', [$('#recipient_filter').val(), offset], false, {'async': false});
     if (reset) {
         $('#' + name)[0].setCurrentPage(0);
-        var total = ContactAjax.callAsync('GetContactsCount', $('#recipient_filter').val(), false, {'async': false});
+        var total = ContactAjax.call('GetContactsCount', $('#recipient_filter').val(), false, {'async': false});
     }
     resetGrid(name, result, total);
 }
@@ -269,7 +269,7 @@ function editRecipient(element, id)
 {
     currentAction = 'Recipients';
     selectDataGridRow(element.parentNode.parentNode);
-    var recipient = ContactAjax.callAsync('GetRecipient', id, false, {'async': false});
+    var recipient = ContactAjax.call('GetRecipient', id, false, {'async': false});
     $('#id').val(recipient['id']);
     $('#name').val(recipient['name'].defilter());
     $('#email').val(recipient['email']);
@@ -293,12 +293,12 @@ function updateRecipient()
     }
 
     if ($('#id').val() == 0) {
-        ContactAjax.callAsync(
+        ContactAjax.call(
             'InsertRecipient',
             $.unserialize($('#recipient input,#recipient select,#recipient textarea').serialize())
         );
     } else {
-        ContactAjax.callAsync(
+        ContactAjax.call(
             'UpdateRecipient',
             $.unserialize($('#recipient input,#recipient select,#recipient textarea').serialize())
         );
@@ -313,7 +313,7 @@ function deleteRecipient(element, id)
     stopAction();
     selectDataGridRow($(element).parent().parent());
     if (confirm(Jaws.gadgets.Contact.defines.confirmRecipientDelete)) {
-        ContactAjax.callAsync('DeleteRecipient', id);
+        ContactAjax.call('DeleteRecipient', id);
     }
     unselectDataGridRow();
 }
@@ -324,7 +324,7 @@ function deleteRecipient(element, id)
  */
 function updateProperties()
 {
-    ContactAjax.callAsync(
+    ContactAjax.call(
         'UpdateProperties', [
             $('#use_antispam').val(),
             $('#email_format').val(),
@@ -366,7 +366,7 @@ function updateUsers(group)
         $('#users').val(0);
         group = false;
     }
-    var users = ContactAjax.callAsync('GetUsers', group, false, {'async': false});
+    var users = ContactAjax.call('GetUsers', group, false, {'async': false});
     $('#users').empty().append($('<option>').html(Jaws.gadgets.Contact.defines.lblAllGroupUsers).val(0));
     $.each(users, function(i, user) {
         $('#users').append($('<option>').html(user['nickname']).val(user['id']));
@@ -469,7 +469,7 @@ function removeAttachment() {
  */
 function previewMessage()
 {
-    var preview  = ContactAjax.callAsync('GetMessagePreview', $('#message').val(), false, {'async': false}),
+    var preview  = ContactAjax.call('GetMessagePreview', $('#message').val(), false, {'async': false}),
         width    = 750,
         height   = 500,
         left     = ($(document).width() - width) / 2,
@@ -521,7 +521,7 @@ function sendEmail()
         return;
     }
 
-    ContactAjax.callAsync(
+    ContactAjax.call(
         'SendEmail',
         [target, $('#subject').val(), body, $('#filename').val()]
     );
