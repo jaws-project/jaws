@@ -97,7 +97,7 @@ function addEntry(title)
  */
 function filterAlbums(gid)
 {
-    var response = PhooAjax.callSync('GetAlbums');
+    var response = PhooAjax.callAsync('GetAlbums', {}, false, {'async': false});
     var select = $('#albums_list');
     select.options.length = 0;
     for (var i=0; i<response.length; i++) {
