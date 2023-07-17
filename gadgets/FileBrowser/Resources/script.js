@@ -149,7 +149,7 @@ function editFile(element, fname)
     switchTab('file');
     $('#upload_switch').prop('disabled', false);
 
-    var dbfile = FileBrowserAjax.callSync('DBFileInfo', [$('#path').val(), fname]);
+    var dbfile = FileBrowserAjax.callAsync('DBFileInfo', [$('#path').val(), fname], false, {'async': false});
     if (dbfile['id']) {
         $('#file_title').val(dbfile['title'].defilter());
         $('#file_description').val(dbfile['description'].defilter());
@@ -209,7 +209,7 @@ function editDir(element, dirname)
     selectDataGridRow(element.parentNode.parentNode);
     switchTab('dir');
 
-    var dbfile = FileBrowserAjax.callSync('DBFileInfo', [$('#path').val(), dirname]);
+    var dbfile = FileBrowserAjax.callAsync('DBFileInfo', [$('#path').val(), dirname], false, {'async': false});
     if (dbfile['id']) {
         $('#dir_title').val(dbfile['title']);
         $('#dir_description').val(dbfile['description']);
@@ -255,13 +255,14 @@ function delDir(element, dir)
  */
 function getFiles(name, offset, reset)
 {
-    var result = FileBrowserAjax.callSync(
+    var result = FileBrowserAjax.callAsync(
         'GetDirectory',
-        [$('#path').val(), offset, $('#order_type').val()]
+        [$('#path').val(), offset, $('#order_type').val()],
+        false, {'async': false}
     );
     if (reset) {
-        var total = FileBrowserAjax.callSync('GetDirContentsCount', $('#path').val());
-        var loc   = FileBrowserAjax.callSync('GetLocation', $('#path').val());
+        var total = FileBrowserAjax.callAsync('GetDirContentsCount', $('#path').val(), false, {'async': false});
+        var loc   = FileBrowserAjax.callAsync('GetLocation', $('#path').val(), false, {'async': false});
         $('#location').html(loc);
     }
     resetGrid(name, result, total);
