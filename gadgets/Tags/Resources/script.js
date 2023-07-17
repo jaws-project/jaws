@@ -47,18 +47,20 @@ var TagsCallback = {
  */
 function getTagsDataGrid(name, offset, reset)
 {
-    var tags = TagsAjax.callSync(
+    var tags = TagsAjax.callAsync(
         'SearchTags',
-        {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val(), 'offset': offset}
+        {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val(), 'offset': offset},
+        false, {'async': false}
     );
 
     if (reset) {
         $('#' + name)[0].setCurrentPage(0);
         stopTagAction();
 
-        var total = TagsAjax.callSync(
+        var total = TagsAjax.callAsync(
             'SizeOfTagsSearch',
-            {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val()}
+            {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val()},
+            false, {'async': false}
         );
 
     }
@@ -93,7 +95,7 @@ function stopTagAction()
 function editTag(rowElement, id)
 {
     selectGridRow('tags_datagrid', rowElement.parentNode.parentNode);
-    var tag = TagsAjax.callSync('GetTag', id);
+    var tag = TagsAjax.callAsync('GetTag', id, false, {'async': false});
     $('#id').val(id);
     $('#name').val(tag['name']);
     $('#title').val(tag['title']);
@@ -185,7 +187,7 @@ function tagsDGAction(combo)
  */
 function changeGadget(gadget)
 {
-    var actions = TagsAjax.callSync('GetGadgetActions', gadget);
+    var actions = TagsAjax.callAsync('GetGadgetActions', gadget, false, {'async': false});
     $('#actions').empty();
 
     var newoption = new Option("", "");
