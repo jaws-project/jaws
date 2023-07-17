@@ -113,7 +113,7 @@ function editTheme(theme)
 
     cleanWorkingArea(true);
 
-    var themeInfo = TmsAjax.callAsync('GetThemeInfo', theme, false, {'async': false});
+    var themeInfo = TmsAjax.call('GetThemeInfo', theme, false, {'async': false});
     if (themeInfo == null) {
         return false; //Check
     }
@@ -134,7 +134,7 @@ function deleteTheme()
         return false;
     }
 
-    TmsAjax.callAsync('DeleteTheme', selectedTheme);
+    TmsAjax.call('DeleteTheme', selectedTheme);
 }
 
 /**
@@ -199,7 +199,7 @@ function addRepository(form)
     var name = form['name'].value,
         url  = form['url'].value;
 
-    TmsAjax.callAsync('newrepository', [name, url]);
+    TmsAjax.call('newrepository', [name, url]);
     cleanForm(form);
 }
 
@@ -212,7 +212,7 @@ function updateRepository(form)
         url  = form['url'].value,
         id   = form['id'].value;
 
-    TmsAjax.callAsync('updaterepository', [id, name, url]);
+    TmsAjax.call('updaterepository', [id, name, url]);
     cleanForm(form);
 }
 
@@ -233,7 +233,7 @@ function submitForm(form)
  */
 function deleteRepository(id)
 {
-    TmsAjax.callAsync('deleterepository', id);
+    TmsAjax.call('deleterepository', id);
     cleanForm($('#repositories_form')[0]);
 }
 
@@ -242,7 +242,7 @@ function deleteRepository(id)
  */
 function editRepository(id)
 {
-    TmsAjax.callAsync('getrepository', id);
+    TmsAjax.call('getrepository', id);
 }
 
 /**
@@ -250,7 +250,7 @@ function editRepository(id)
  */
 function saveSettings()
 {
-    TmsAjax.callAsync('savesettings', $('#share_themes').val());
+    TmsAjax.call('savesettings', $('#share_themes').val());
 }
 
 $(document).ready(function() {
