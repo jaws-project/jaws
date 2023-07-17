@@ -28,13 +28,14 @@ function stopAction() {
  * Open report windows
  */
 function openReportWindows(gadget, action, reference, url) {
-    var reportUI = AbuseReporterAjax.callSync(
+    var reportUI = AbuseReporterAjax.callAsync(
         'ReportUI',
         {
             'report_gadget': gadget,
             'report_action': action,
             'report_reference': reference
-        }
+        },
+        false, {'async': false}
     );
     $("#report-dialog-" + gadget + '-' + action + '-' + reference).html(reportUI);
     $('#reportModal-'+ gadget + '-' + action + '-' + reference).modal();

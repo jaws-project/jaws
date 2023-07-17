@@ -41,7 +41,7 @@ function editReport(id)
 {
     selectedReport = id;
     $('#reportModalLabel').html(Jaws.gadgets.AbuseReporter.defines.lbl_editReport);
-    var reportInfo = AbuseReporterAjax.callSync('GetReport', {'id': selectedReport});
+    var reportInfo = AbuseReporterAjax.callAsync('GetReport', {'id': selectedReport}, false, {'async': false});
     if (reportInfo) {
         $('#report-form input, #report-form select, #report-form textarea').each(
             function () {
