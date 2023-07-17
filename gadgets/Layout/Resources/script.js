@@ -171,7 +171,7 @@ function selectGadget(doc, g)
         $(doc).find('#' + prevGadget).attr('class', 'gadget-item');
     }
     $(doc).find('#' + g).attr('class', 'gadget-item gadget-selected');
-    var actions = LayoutAjax.callSync('GetGadgetActions', g);
+    var actions = LayoutAjax.callAsync('GetGadgetActions', g, false, {'async': false});
     if (actions.length > 0) {
         $.each(actions, function(actionIndex, item) {
             var li = $('<li>').attr('id', 'action_' + item['action']);
