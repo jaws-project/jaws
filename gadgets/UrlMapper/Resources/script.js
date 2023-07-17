@@ -108,7 +108,7 @@ function rebuildAliasCombo()
     while(combo.options.length != 0) {
         combo.options[0] = null;
     }
-    var aliases = UrlMapperAjax.callSync('GetAliases');
+    var aliases = UrlMapperAjax.callAsync('GetAliases', {}, false, {'async': false});
     if (aliases != false) {
         var i =0;
         $.each(aliases, function(index, value) {
@@ -130,7 +130,7 @@ function rebuildAliasCombo()
  */
 function editAlias(id)
 {
-    var alias = UrlMapperAjax.callSync('GetAlias', id);
+    var alias = UrlMapperAjax.callAsync('GetAlias', id, false, {'async': false});
     $('#alias_id').val(id);
     $('#custom_url').val(alias['real_url']);
     $('#alias').val(alias['alias_url']);
@@ -209,7 +209,7 @@ function editErrorMap(element, emid)
     $('#legend_title').html(Jaws.gadgets.UrlMapper.defines.editErrorMap_title);
     selectDataGridRow($(element).parent().parent()[0]);
 
-    var errorMapInfo = UrlMapperAjax.callSync('GetErrorMap', selectedErrorMap);
+    var errorMapInfo = UrlMapperAjax.callAsync('GetErrorMap', selectedErrorMap, false, {'async': false});
     $('#url').val(errorMapInfo['url']);
     $('#code').val(errorMapInfo['code']);
     $('#new_url').val(errorMapInfo['new_url']);
@@ -229,7 +229,7 @@ function editMap(element, mid)
     $('#legend_title').html(Jaws.gadgets.UrlMapper.defines.editMap_title);
     selectDataGridRow(element.parentNode.parentNode);
 
-    var mapInfo = UrlMapperAjax.callSync('GetMap', selectedMap);
+    var mapInfo = UrlMapperAjax.callAsync('GetMap', selectedMap, false, {'async': false});
     $('#map_route').val(mapInfo['map']);
     $('#map_ext').val(mapInfo['extension']);
     $('#map_order').val(mapInfo['order']);
@@ -254,9 +254,10 @@ function showActionMaps()
 
     resetGrid('maps_datagrid', '');
     //Get maps of this action and gadget
-    var result = UrlMapperAjax.callSync(
+    var result = UrlMapperAjax.callAsync(
         'GetActionMaps',
-        [$('#gadgets_combo').val(), $('#actions_combo').val()]
+        [$('#gadgets_combo').val(), $('#actions_combo').val()],
+        false, {'async': false}
     );
     resetGrid('maps_datagrid', result);
     enableMapEditingArea(false);
@@ -269,7 +270,7 @@ function rebuildActionCombo()
 {
     var combo = $('#actions_combo')[0];
     var selectedGadget = $('#gadgets_combo').val();
-    var actions = UrlMapperAjax.callSync('GetGadgetActions', selectedGadget);
+    var actions = UrlMapperAjax.callAsync('GetGadgetActions', selectedGadget, false, {'async': false});
 
     combo.options.length = 0;
     if (actions != false) {
@@ -337,17 +338,17 @@ function getErrorMaps(name, offset, reset)
         'new_code'  : $('#filter_new_code').val()
     };
 
-    var result = UrlMapperAjax.callSync('GetErrorMaps', {
+    var result = UrlMapperAjax.callAsync('GetErrorMaps', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
-    });
+    }, false, {'async': false});
 
     if (reset) {
         $('#' + name)[0].setCurrentPage(0);
-        var total = UrlMapperAjax.callSync('GetErrorMapsCount', {
+        var total = UrlMapperAjax.callAsync('GetErrorMapsCount', {
             'filters': filters
-        });
+        }, false, {'async': false});
 
     }
     resetGrid(name, result, total);
