@@ -37,7 +37,7 @@ var FeedReaderCallback = {
 function editFeed(id)
 {
     selectedFeed = id;
-    FeedReaderAjax.callAsync('GetUserFeed', {'id': selectedFeed}, function (feed) {
+    FeedReaderAjax.call('GetUserFeed', {'id': selectedFeed}, function (feed) {
         if (feed) {
             $('form#feed #title').val(feed['title'].defilter());
             $('form#feed #url').val(feed['url']);
@@ -58,7 +58,7 @@ function editFeed(id)
 function deleteFeed(id)
 {
     if (confirm(Jaws.gadgets.FeedReader.defines.confirmDelete)) {
-        FeedReaderAjax.callAsync('DeleteUserFeed', {'id': id});
+        FeedReaderAjax.call('DeleteUserFeed', {'id': id});
     }
 }
 
@@ -67,7 +67,7 @@ function deleteFeed(id)
  */
 function updateFeed() {
     if (selectedFeed != null) {
-        FeedReaderAjax.callAsync(
+        FeedReaderAjax.call(
             'UpdateFeed', {
                 'data': $.unserialize(
                     $('form#feed input,form#feed select,form#feed textarea').serialize()
@@ -76,7 +76,7 @@ function updateFeed() {
             }
         );
     } else {
-        FeedReaderAjax.callAsync(
+        FeedReaderAjax.call(
             'InsertFeed', {
                 'data': $.unserialize(
                     $('#did, form#feed input,form#feed select,form#feed textarea').serialize()
@@ -123,7 +123,7 @@ function feedsDataSource(options, callback) {
         'searchBy': options.search || ''
     };
 
-    FeedReaderAjax.callAsync('GetUserFeeds', options, function (response, status, callOptions) {
+    FeedReaderAjax.call('GetUserFeeds', options, function (response, status, callOptions) {
         if (response.type == 'alert-success') {
             callOptions.showMessage = false;
             var items = response.data.records;

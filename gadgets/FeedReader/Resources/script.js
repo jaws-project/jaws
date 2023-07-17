@@ -123,7 +123,7 @@ function updateFeed()
     }
 
     if($('#id').val()==0) {
-            FeedReaderAjax.callAsync(
+            FeedReaderAjax.call(
                 'InsertFeed', [
                     $('#title').val(),
                     $('#url').val(),
@@ -136,7 +136,7 @@ function updateFeed()
                 ]
             );
     } else {
-        FeedReaderAjax.callAsync(
+        FeedReaderAjax.call(
             'UpdateFeed', [
                 $('#id').val(),
                 $('#title').val(),
@@ -161,7 +161,7 @@ function deleteFeed(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(Jaws.gadgets.FeedReader.defines.confirmFeedDelete);
     if (answer) {
-        FeedReaderAjax.callAsync('DeleteFeed', id);
+        FeedReaderAjax.call('DeleteFeed', id);
     }
     unselectDataGridRow();
 }
@@ -173,7 +173,7 @@ function deleteFeed(element, id)
 function editFeed(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
-    FeedReaderAjax.callAsync('GetFeed', id);
+    FeedReaderAjax.call('GetFeed', id);
 }
 
 $(document).ready(function() {
