@@ -92,7 +92,7 @@ function updateBlock()
         displayTitle = $('#display_title_true').prop('checked');
         // Call function
         loading_message = Jaws.gadgets.Blocks.defines.updatingMessage;
-        BlocksAjax.callAsync('UpdateBlock', [id, title, summary, content, displayTitle]);
+        BlocksAjax.call('UpdateBlock', [id, title, summary, content, displayTitle]);
         // Update Combo
         var combo = $('#block_id')[0];
         combo.options[combo.selectedIndex].text = title;
@@ -108,7 +108,7 @@ function deleteBlock()
     id = $('#hidden_id').val();
     $('#block_id').prop('disabled', true);
     loading_message = Jaws.gadgets.Blocks.defines.deletingMessage;
-    BlocksAjax.callAsync('DeleteBlock', id);
+    BlocksAjax.call('DeleteBlock', id);
 }
 
 /**
@@ -167,7 +167,7 @@ function edit(id)
     currentMode = 'edit';
     $('#block_id').prop('disabled', false);
     loading_message = Jaws.gadgets.Blocks.defines.retrievingMessage;
-    var block = BlocksAjax.callAsync('GetBlock', id, false, {'async': false});
+    var block = BlocksAjax.call('GetBlock', id, false, {'async': false});
     fillEditorEntries(block);
     $('#block_id_txt').html(id);
     switchTab('edit', block['title']);
@@ -183,7 +183,7 @@ function preview()
     $('#preview_title').html($('#block_title').val());
 
     // Use this if you want to use plugins
-    BlocksAjax.callAsync('ParseText', block_content);
+    BlocksAjax.call('ParseText', block_content);
     //$('#preview_contents').html(block_content);
 }
 
@@ -220,7 +220,7 @@ function newBlock()
     displayTitle = $('#display_title_true').prop('checked');
     // Call function
     loading_message = Jaws.gadgets.Blocks.defines.savingMessage;
-    BlocksAjax.callAsync('NewBlock', [$('#block_title').val(), summary, content, displayTitle]);
+    BlocksAjax.call('NewBlock', [$('#block_title').val(), summary, content, displayTitle]);
 }
 
 /**
@@ -255,7 +255,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = Jaws.gadgets.Blocks.defines.retrievingMessage;
-            var block = BlocksAjax.callAsync('GetBlock', previousID, false, {'async': false});
+            var block = BlocksAjax.call('GetBlock', previousID, false, {'async': false});
             fillEditorEntries(block);
             b.disabled = false;
             combo.disabled = false;
