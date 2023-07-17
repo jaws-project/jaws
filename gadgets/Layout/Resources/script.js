@@ -99,7 +99,7 @@ function deleteElement(itemId)
     var answer = confirm(Jaws.gadgets.Layout.defines.confirmDelete);
     if (answer) {
         itemDiv.fadeOut(500, function() {$(this).remove();})
-        LayoutAjax.callAsync(
+        LayoutAjax.call(
             'DeleteElement', [
                 itemId,
                 $('#layout').val(),
@@ -129,7 +129,7 @@ function initUI()
         if ((new_section  != item.data('old_section')) ||
             (new_position != item.data('old_position'))
         ) {
-            LayoutAjax.callAsync(
+            LayoutAjax.call(
                 'MoveElement', [
                     item.attr('id').replace('item_', ''),      // item id
                     $('#layout').val(),                        // layout name
@@ -171,7 +171,7 @@ function selectGadget(doc, g)
         $(doc).find('#' + prevGadget).attr('class', 'gadget-item');
     }
     $(doc).find('#' + g).attr('class', 'gadget-item gadget-selected');
-    var actions = LayoutAjax.callAsync('GetGadgetActions', g, false, {'async': false});
+    var actions = LayoutAjax.call('GetGadgetActions', g, false, {'async': false});
     if (actions.length > 0) {
         $.each(actions, function(actionIndex, item) {
             var li = $('<li>').attr('id', 'action_' + item['action']);
@@ -238,7 +238,7 @@ function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
     params = (params == null)? null : params.split(',');
-    LayoutAjax.callAsync(
+    LayoutAjax.call(
         'AddGadget',
         [gadget, action, params, $('#layout').val()]
     );
@@ -269,7 +269,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     params = (params == null)? null : params.split(',');
     $('#ea' + lid).html(title);
     $('#ea' + lid).parent().parent().attr('title', desc);
-    LayoutAjax.callAsync(
+    LayoutAjax.call(
         'UpdateElementAction',
         [lid, $('#layout').val(), gadget, action, params]
     );
@@ -279,7 +279,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
  * Update display when 
  */
 function saveChangeDW(itemId, dw) {
-    LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, $('#layout').val(), dw]);
+    LayoutAjax.call('UpdateDisplayWhen', [itemId, $('#layout').val(), dw]);
     if (dw == '*') {
         $('#dw' + itemId).html(Jaws.gadgets.Layout.defines.displayAlways);
     } else if (dw.blank()) {
