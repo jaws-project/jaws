@@ -39,16 +39,16 @@ function getSubscriptions(name, offset, reset)
         'gadget'    : $('#filter_gadget').val()
     };
 
-    var result = SubscriptionAjax.callSync('GetSubscriptions', {
+    var result = SubscriptionAjax.callAsync('GetSubscriptions', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
-    });
+    }, false, {'async': false});
 
     if (reset) {
-        var total = SubscriptionAjax.callSync('GetSubscriptionsCount', {
+        var total = SubscriptionAjax.callAsync('GetSubscriptionsCount', {
             'filters': filters
-        });
+        }, false, {'async': false});
     }
     resetGrid(name, result, total);
 }
