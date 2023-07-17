@@ -60,7 +60,7 @@ function listCategories(gadget, force_open)
     gFlagimage = $('#gadget_' + gadget + ' img')[0];
     divSubList = $('#sitemap_gadget_' + gadget);
     if (divSubList.html() == '') {
-        var category_list = SitemapAjax.callSync('GetCategoriesList', gadget);
+        var category_list = SitemapAjax.callAsync('GetCategoriesList', gadget, false, {'async': false});
         if (!category_list.blank()) {
             divSubList.html(category_list);
         } else {
@@ -86,7 +86,7 @@ function editGadget(gadget)
     if (gadget == null) return;
     unselectTreeRow();
     if (cacheGadgetForm == null) {
-        cacheGadgetForm = SitemapAjax.callSync('GetGadgetUI');
+        cacheGadgetForm = SitemapAjax.callAsync('GetGadgetUI', {}, false, {'async': false});
     }
     currentAction = 'Gadget';
     selectedGadget = gadget;
@@ -96,7 +96,7 @@ function editGadget(gadget)
     $('#btn_save').css('display', 'inline');
     $('#category_edit').html(cacheGadgetForm);
 
-    var gadgetInfo = SitemapAjax.callSync('GetGadget', {'gname':gadget});
+    var gadgetInfo = SitemapAjax.callAsync('GetGadget', {'gname':gadget}, false, {'async': false});
 
     if (gadgetInfo != null) {
         $('#priority').val(gadgetInfo['priority']);
@@ -114,7 +114,7 @@ function editCategory(element, gadget, cid)
     if (cid == 0) return;
     selectTreeRow(element.parentNode);
     if (cacheCategoryForm == null) {
-        cacheCategoryForm = SitemapAjax.callSync('GetCategoryUI');
+        cacheCategoryForm = SitemapAjax.callAsync('GetCategoryUI', {}, false, {'async': false});
     }
     currentAction = 'Category';
     selectedCategory = cid;
@@ -127,7 +127,7 @@ function editCategory(element, gadget, cid)
     $('#btn_save').css('display', 'inline');
     $('#category_edit').html(cacheCategoryForm);
 
-    var categoryInfo = SitemapAjax.callSync('GetCategory', {'gname':gadget, 'cid':cid});
+    var categoryInfo = SitemapAjax.callAsync('GetCategory', {'gname':gadget, 'cid':cid}, false, {'async': false});
 
     if (categoryInfo != null) {
         $('#cid').val(categoryInfo['id']);
