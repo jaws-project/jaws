@@ -99,7 +99,7 @@ function AutoDraft()
     }
     var content = $('#content').val();
 
-    StaticPageAjax.callAsync(
+    StaticPageAjax.call(
         'AutoDraft',
         [id, group, fasturl, showtitle, title, content, language, tags, published]
     );
@@ -128,7 +128,7 @@ function parseText(form)
     var title   = form['title'].value;
     var content = $('#content').val();
 
-    content = StaticPageAjax.callAsync('ParseText', content, false, {'async': false});
+    content = StaticPageAjax.call('ParseText', content, false, {'async': false});
     $('#preview').css('display', 'table');
 
     $('#previewTitle').html(title);
@@ -143,12 +143,12 @@ function deletePage(id, redirect)
     var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = StaticPageAjax.callAsync('DeletePage', id, false, {'async': false});
+            var response = StaticPageAjax.call('DeletePage', id, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 window.location = StaticPageAjax.baseScript + '?reqGadget=StaticPage';
             }
         } else {
-            StaticPageAjax.callAsync('DeletePage', id);
+            StaticPageAjax.call('DeletePage', id);
         }
     }
 }
@@ -161,12 +161,12 @@ function deleteTranslation(id, redirect)
     var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = StaticPageAjax.callAsync('DeleteTranslation', id, false, {'async': false});
+            var response = StaticPageAjax.call('DeleteTranslation', id, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 window.location = StaticPageAjax.baseScript + '?reqGadget=StaticPage';
             }
         } else {
-            StaticPageAjax.callAsync('DeleteTranslation', id);
+            StaticPageAjax.call('DeleteTranslation', id);
         }
     }
 }
@@ -180,7 +180,7 @@ function massiveDelete()
     if (rows.length > 0) {
         var confirmation = confirm(Jaws.gadgets.StaticPage.defines.confirmMassiveDelete);
         if (confirmation) {
-            StaticPageAjax.callAsync('MassiveDelete', rows);
+            StaticPageAjax.call('MassiveDelete', rows);
         }
     }
 }
@@ -191,7 +191,7 @@ function massiveDelete()
 function updateSettings()
 {
     var settings = [$('#default_page').val(), $('#multilanguage').val()];
-    StaticPageAjax.callAsync('UpdateSettings', settings);
+    StaticPageAjax.call('UpdateSettings', settings);
 }
 
 /**
@@ -207,7 +207,7 @@ function searchPage()
  */
 function getPages(name, offset, reset)
 {
-    var result = StaticPageAjax.callAsync(
+    var result = StaticPageAjax.call(
         'SearchPages', [
             $('#group').val(),
             $('#status').val(),
@@ -218,7 +218,7 @@ function getPages(name, offset, reset)
         false, {'async': false}
     );
     if (reset) {
-        var total = StaticPageAjax.callAsync(
+        var total = StaticPageAjax.call(
             'SizeOfSearch', [
                 $('#group').val(),
                 $('#status').val(),
@@ -235,9 +235,9 @@ function getPages(name, offset, reset)
  */
 function getPagesGroups(name, offset, reset)
 {
-    var groups = StaticPageAjax.callAsync('GetGroupsGrid', offset, false, {'async': false});
+    var groups = StaticPageAjax.call('GetGroupsGrid', offset, false, {'async': false});
     if (reset) {
-        var total = StaticPageAjax.callAsync('GetGroupsCount', {}, false, {'async': false});
+        var total = StaticPageAjax.call('GetGroupsCount', {}, false, {'async': false});
     }
 
     resetGrid(name, groups, total);
@@ -251,7 +251,7 @@ function editGroup(rowElement, gid)
     selectedGroup = gid;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('#legend_title').html(Jaws.gadgets.StaticPage.defines.edit_group_title);
-    var group = StaticPageAjax.callAsync('GetGroup', selectedGroup, false, {'async': false});
+    var group = StaticPageAjax.call('GetGroup', selectedGroup, false, {'async': false});
     $('#title').val(group['title'].defilter())[0].focus();
     $('#meta_keys').val(group['meta_keywords'].defilter());
     $('#meta_desc').val(group['meta_description'].defilter());
@@ -271,7 +271,7 @@ function saveGroup()
     }
 
     if (selectedGroup == 0) {
-        StaticPageAjax.callAsync(
+        StaticPageAjax.call(
             'InsertGroup', [
                 $('#title').val(),
                 $('#fast_url').val(),
@@ -281,7 +281,7 @@ function saveGroup()
             ]
         );
     } else {
-        StaticPageAjax.callAsync(
+        StaticPageAjax.call(
             'UpdateGroup', [
                 selectedGroup,
                 $('#title').val(),
@@ -301,7 +301,7 @@ function deleteGroup(rowElement, gid)
 {
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     if (confirm(Jaws.gadgets.StaticPage.defines.confirm_group_delete)) {
-        StaticPageAjax.callAsync('DeleteGroup', gid);
+        StaticPageAjax.call('DeleteGroup', gid);
     }
 
     stopAction();
